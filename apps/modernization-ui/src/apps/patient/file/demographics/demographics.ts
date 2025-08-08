@@ -23,7 +23,7 @@ import { patientNames } from './name';
 import { patientEthnicity } from './ethnicity';
 import { patientIdentifications } from './identification';
 
-type PatientDemographics = {
+type PatientDemographicsData = {
     summary: MemoizedSupplier<Promise<PatientFileDemographicsSummary>>;
     administrative: MemoizedSupplier<Promise<AdministrativeInformation>>;
     names: MemoizedSupplier<Promise<NameDemographic[]>>;
@@ -37,9 +37,9 @@ type PatientDemographics = {
     general: MemoizedSupplier<Promise<GeneralInformationDemographic>>;
 };
 
-export type { PatientDemographics };
+export type { PatientDemographicsData };
 
-const demographics = (patient: number): PatientDemographics => ({
+const demographics = (patient: number): PatientDemographicsData => ({
     summary: new MemoizedSupplier(() => demographicsSummary(patient)),
     administrative: new MemoizedSupplier(() => patientAdministrative(patient)),
     names: new MemoizedSupplier(() => patientNames(patient)),

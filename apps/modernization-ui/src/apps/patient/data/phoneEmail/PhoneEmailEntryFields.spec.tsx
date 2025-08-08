@@ -78,6 +78,14 @@ describe('when entering patient phone & email demographics', () => {
         expect(await findByText('The Phone & email as of is required.')).toBeInTheDocument();
     });
 
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+
+        const dateInput = getByLabelText('Phone & email as of');
+
+        expect(dateInput).toHaveAttribute('aria-description', 'This date defaults to today and can be changed if needed');
+    });
+
     it('should be valid with as of, type, and use', async () => {
         const user = userEvent.setup();
 

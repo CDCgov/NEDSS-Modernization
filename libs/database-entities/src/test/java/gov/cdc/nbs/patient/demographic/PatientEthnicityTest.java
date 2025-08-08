@@ -23,7 +23,7 @@ class PatientEthnicityTest {
             121L,
             LocalDate.parse("2010-03-03"),
             "ethnic-group-value",
-            "unknown-reason-value",
+            null,
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
         )
@@ -34,8 +34,7 @@ class PatientEthnicityTest {
         .returns(LocalDateTime.parse("2020-03-03T10:15:30"), p -> p.audit().changed().changedOn())
         .extracting(Person::getEthnicity)
         .returns(LocalDate.parse("2010-03-03"), PatientEthnicity::asOf)
-        .returns("ethnic-group-value", PatientEthnicity::ethnicGroup)
-        .returns("unknown-reason-value", PatientEthnicity::unknownReason);
+        .returns("ethnic-group-value", PatientEthnicity::ethnicGroup);
   }
 
   @Test
@@ -189,5 +188,72 @@ class PatientEthnicityTest {
 
   }
 
+  @Test
+  void should_remove_detailed_ethnicity_when_updated_to_unknown() {
+    Person patient = new Person(121L, "local-id-value")
+        .update(
+            new PatientCommand.UpdateEthnicityInfo(
+                121L,
+                LocalDate.parse("2010-03-03"),
+                "ethnic-group-value",
+                null,
+                131L,
+                LocalDateTime.parse("2020-03-03T10:15:30")
+            )
+        ).add(
+            new PatientCommand.AddDetailedEthnicity(
+                121L,
+                "ethnicity-value",
+                131L,
+                LocalDateTime.parse("2020-03-03T10:15:30")
+            )
+        ).add(
+            new PatientCommand.AddDetailedEthnicity(
+                121L,
+                "next-ethnicity-value",
+                131L,
+                LocalDateTime.parse("2020-03-03T10:15:30")
+            )
+        ).update(
+            new PatientCommand.UpdateEthnicityInfo(
+                121L,
+                LocalDate.parse("2013-12-11"),
+                "UNK",
+                "unknown-reason-value",
+                131L,
+                LocalDateTime.parse("2020-03-03T10:15:30")
+            )
+        );
 
+    assertThat(patient)
+        .extracting(Person::getEthnicity)
+        .returns("UNK", PatientEthnicity::ethnicGroup)
+        .returns("unknown-reason-value", PatientEthnicity::unknownReason)
+        .extracting(PatientEthnicity::ethnicities)
+        .satisfies(details -> assertThat(details).isEmpty());
+
+  }
+
+  @Test
+  void should_only_apply_unknown_reason_for_unknown_ethnicity() {
+
+    Person patient = new Person(121L, "local-id-value");
+
+    patient.update(
+        new PatientCommand.UpdateEthnicityInfo(
+            121L,
+            LocalDate.parse("2010-03-03"),
+            "ethnic-group-value",
+            "unknown-reason-value",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
+
+    assertThat(patient)
+        .extracting(Person::getEthnicity)
+        .extracting(PatientEthnicity::unknownReason)
+        .satisfies(reason -> assertThat(reason).isNull())
+    ;
+  }
 }

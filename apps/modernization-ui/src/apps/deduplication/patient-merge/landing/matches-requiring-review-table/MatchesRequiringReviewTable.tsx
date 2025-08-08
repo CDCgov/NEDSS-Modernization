@@ -93,7 +93,7 @@ export const MatchesRequiringReviewTable = () => {
                     <Button
                         sizing="small"
                         className={styles.reviewButton}
-                        onClick={() => nav(`/deduplication/merge/${match.matchId}`)}>
+                        onClick={() => nav(`/deduplication/merge/${match.groupId}`)}>
                         Review
                     </Button>
                 );

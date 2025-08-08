@@ -5,10 +5,10 @@ import { RaceEntry } from './entry';
 import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
 import { vi } from 'vitest';
 
-const mockDetailResolver = jest.fn();
+const mockDetailResolver = vi.fn();
 
 vi.mock('options/race', () => ({
-    useDetailedRaceOptions: (category?: string) => mockDetailResolver(category)
+    useDetailedRaceOptions: () => ({ options: [], load: mockDetailResolver })
 }));
 
 type Props = Partial<RaceEntryFieldsProps> & { entry?: RaceEntry };
@@ -60,7 +60,7 @@ describe('Race entry fields', () => {
 
         const user = userEvent.setup();
 
-        const { getByLabelText, getByText } = render(
+        const { getByLabelText } = render(
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
@@ -72,12 +72,6 @@ describe('Race entry fields', () => {
         const race = getByLabelText('Race');
 
         await user.selectOptions(race, 'selected');
-
-        const detailed = getByLabelText('Detailed race');
-
-        await user.click(detailed);
-
-        expect(getByText('detailed race')).toBeInTheDocument();
 
         expect(mockDetailResolver).toBeCalledWith('selected');
     });
@@ -183,5 +177,13 @@ describe('Race entry fields', () => {
 
         expect(getByText('category not valid')).toBeInTheDocument();
         expect(validator).toBeCalledWith(19, expect.objectContaining({ value: 'other' }));
+    });
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+        const dateInput = getByLabelText('Race as of');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            "This field defaults to today's date and can be changed if needed."
+        );
     });
 });

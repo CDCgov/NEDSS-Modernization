@@ -7,9 +7,7 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
-import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
-import gov.cdc.nbs.patient.demographic.GeneralInformation;
-import gov.cdc.nbs.patient.demographic.PatientEthnicity;
+import gov.cdc.nbs.patient.demographic.*;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
@@ -25,6 +23,30 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class PersonTest {
+
+  @Test
+  void should_create_patient() {
+
+    Person actual = new Person(
+        new PatientCommand.CreatePatient(
+            1033L,
+            "local-id-value",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
+
+    assertThat(actual)
+        .returns(1033L, Person::id)
+        .returns("local-id-value", Person::localId)
+        .satisfies(current -> assertThat(current.addresses()).isEmpty())
+        .satisfies(current -> assertThat(current.phones()).isEmpty())
+        .satisfies(current -> assertThat(current.names()).isEmpty())
+        .satisfies(current -> assertThat(current.identifications()).isEmpty())
+        .satisfies(current -> assertThat(current.race().details()).isEmpty())
+    ;
+
+  }
 
   @Test
   @SuppressWarnings("squid:S5961")
@@ -53,7 +75,6 @@ class PersonTest {
     assertThat(actual.getId()).isEqualTo(117L);
     assertThat(actual.getLocalId()).isEqualTo("patient-local-id");
 
-    assertThat(actual.getVersionCtrlNbr()).isEqualTo((short) 1);
     assertThat(actual.getCd()).isEqualTo("PAT");
     assertThat(actual.getElectronicInd()).isEqualTo('N');
     assertThat(actual.getEdxInd()).isEqualTo("Y");
@@ -71,21 +92,14 @@ class PersonTest {
         .extracting(Person::recordStatus)
         .satisfies(RecordStatusAssertions.active("2020-03-03T10:15:30"));
 
-    assertThat(actual.getBirthTime()).isEqualTo("2000-09-03T00:00");
-    assertThat(actual.getBirthGenderCd()).isEqualTo(Gender.M);
-    assertThat(actual.getCurrSexCd()).isEqualTo(Gender.F);
-    assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
-    assertThat(actual.getGeneralInformation().maritalStatus()).isEqualTo("Marital Status");
+    assertThat(actual.generalInformation().maritalStatus()).isEqualTo("Marital Status");
 
-    assertThat(actual.getGeneralInformation().asOf()).isEqualTo("2019-03-03");
-    assertThat(actual.getAsOfDateAdmin()).isEqualTo("2019-03-03");
-    assertThat(actual.getAsOfDateSex()).isEqualTo("2019-03-03");
-    assertThat(actual.getDescription()).isEqualTo("comments");
+    assertThat(actual.generalInformation().asOf()).isEqualTo("2019-03-03");
 
-    assertThat(actual.getGeneralInformation().stateHIVCase()).isEqualTo("HIV-Case");
+    assertThat(actual.generalInformation().stateHIVCase()).isEqualTo("HIV-Case");
 
     assertThat(actual)
-        .extracting(Person::getEthnicity)
+        .extracting(Person::ethnicity)
         .returns("EthCode", PatientEthnicity::ethnicGroup)
         .returns(LocalDate.parse("2019-03-03"), PatientEthnicity::asOf);
 
@@ -123,7 +137,7 @@ class PersonTest {
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"));
 
-    assertThat(patient.getNames()).satisfiesExactly(
+    assertThat(patient.names()).satisfiesExactly(
         actual -> assertThat(actual)
             .returns(LocalDate.parse("2023-05-15"), PersonName::getAsOfDate)
             .returns("prefix", PersonName::getNmPrefix)
@@ -192,7 +206,7 @@ class PersonTest {
         )
     );
 
-    assertThat(patient.getNames()).satisfiesExactly(
+    assertThat(patient.names()).satisfiesExactly(
         actual -> assertThat(actual)
             .extracting(PersonName::getId)
             .returns(117L, PersonNameId::getPersonUid)
@@ -268,7 +282,7 @@ class PersonTest {
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(171L, "2021-04-05T06:07:08"));
 
-    assertThat(patient.getNames()).satisfiesExactly(
+    assertThat(patient.names()).satisfiesExactly(
         actual -> assertThat(actual)
             .returns(LocalDate.parse("2023-05-15"), PersonName::getAsOfDate)
             .returns("prefix", PersonName::getNmPrefix)
@@ -344,7 +358,7 @@ class PersonTest {
         .returns(171L, person -> person.audit().changed().changedBy())
         .returns(LocalDateTime.parse("2021-03-03T10:15:30"), person -> person.audit().changed().changedOn());
 
-    assertThat(patient.getNames()).satisfiesExactlyInAnyOrder(
+    assertThat(patient.names()).satisfiesExactlyInAnyOrder(
         actual -> assertThat(actual)
             .extracting(PersonName::getId)
             .returns(117L, PersonNameId::getPersonUid)
@@ -373,7 +387,7 @@ class PersonTest {
         )
     );
 
-    assertThat(actual.getNames()).satisfiesExactly(
+    assertThat(actual.names()).satisfiesExactly(
         actualPrimary -> assertThat(actualPrimary)
             .returns(LocalDate.parse("2021-05-15"), PersonName::getAsOfDate)
             .returns("First", PersonName::getFirstNm)
@@ -423,12 +437,7 @@ class PersonTest {
         )
     );
 
-    assertThat(actual.getFirstNm()).isEqualTo("First");
-    assertThat(actual.getMiddleNm()).isEqualTo("Middle");
-    assertThat(actual.getLastNm()).isEqualTo("Last");
-    assertThat(actual.getNmSuffix()).isEqualTo(Suffix.JR);
-
-    assertThat(actual.getNames()).satisfiesExactly(
+    assertThat(actual.names()).satisfiesExactly(
         actualPrimary -> assertThat(actualPrimary)
             .returns("First", PersonName::getFirstNm)
             .returns("Middle", PersonName::getMiddleNm)
@@ -471,7 +480,7 @@ class PersonTest {
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
         ),
-        () ->  4861L
+        () -> 4861L
     );
 
     assertThat(actual.addresses())
@@ -518,7 +527,7 @@ class PersonTest {
             131L,
             LocalDateTime.parse("2023-03-03T10:15:30")
         ),
-        () ->  4861L
+        () -> 4861L
     );
 
     assertThat(patient)
@@ -580,7 +589,7 @@ class PersonTest {
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
         ),
-        () ->  4861L
+        () -> 4861L
     );
 
     patient.update(
@@ -662,7 +671,7 @@ class PersonTest {
             131L,
             LocalDateTime.parse("2020-03-03T10:15:30")
         ),
-        () ->  4861L
+        () -> 4861L
     );
 
     patient.add(
@@ -732,7 +741,7 @@ class PersonTest {
             .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
     );
 
-    assertThat(patient.phoneNumbers())
+    assertThat(patient.phones())
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns(5347L, p -> p.getId().getLocatorUid())
@@ -805,7 +814,7 @@ class PersonTest {
             .satisfies(AuditAssertions.changed(171L, "2023-07-01T13:17:00"))
     );
 
-    assertThat(patient.phoneNumbers())
+    assertThat(patient.phones())
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .isInstanceOf(TeleEntityLocatorParticipation.class)
@@ -898,7 +907,6 @@ class PersonTest {
         );
   }
 
-
   @Test
   void should_delete_patient_without_associations() {
 
@@ -918,7 +926,6 @@ class PersonTest {
     );
 
     assertThat(actual)
-        .returns((short) 2, Person::getVersionCtrlNbr)
         .satisfies(
             updated -> assertThat(updated)
                 .extracting(Person::audit)
@@ -1083,6 +1090,52 @@ class PersonTest {
   }
 
   @Test
+  void should_not_update_unknown_identity() {
+    Person patient = new Person(117L, "local-id-value");
+
+    patient.add(
+        new PatientCommand.AddIdentification(
+            117L,
+            LocalDate.parse("1999-09-09"),
+            "identification-value",
+            "authority-value",
+            "identification-type",
+            131L,
+            LocalDateTime.parse("2023-03-03T10:15:30")
+        )
+    );
+
+    patient.update(
+        new PatientCommand.UpdateIdentification(
+            117L,
+            1013,
+            LocalDate.parse("2001-05-19"),
+            "updated-identification-value",
+            "updated-authority-value",
+            "updated-identification-type",
+            171L,
+            LocalDateTime.parse("2020-03-13T13:15:30")
+        )
+    );
+
+    assertThat(patient.identifications()).satisfiesExactly(
+        actual -> assertThat(actual)
+            .satisfies(
+                identification -> assertThat(identification)
+                    .extracting(EntityId::getAudit)
+                    .satisfies(AuditAssertions.added(131L, "2023-03-03T10:15:30"))
+                    .satisfies(AuditAssertions.changed(131L, "2023-03-03T10:15:30"))
+            )
+            .returns("identification-type", EntityId::getTypeCd)
+            .returns(LocalDate.parse("1999-09-09"), EntityId::getAsOfDate)
+            .returns("authority-value", EntityId::getAssigningAuthorityCd)
+            .returns("identification-value", EntityId::getRootExtensionTxt)
+
+    );
+  }
+
+
+  @Test
   void should_delete_existing_identity() {
     Person patient = new Person(117L, "local-id-value");
 
@@ -1149,6 +1202,73 @@ class PersonTest {
   }
 
   @Test
+  void should_not_delete_unknown_identity() {
+    Person patient = new Person(117L, "local-id-value");
+
+    patient.add(
+        new PatientCommand.AddIdentification(
+            117L,
+            LocalDate.parse("1999-09-09"),
+            "identification-value",
+            "authority-value",
+            "identification-type",
+            131L,
+            LocalDateTime.parse("2023-03-03T10:15:30")
+        )
+    );
+
+    patient.add(
+        new PatientCommand.AddIdentification(
+            117L,
+            LocalDate.parse("2001-05-19"),
+            "other-identification-value",
+            "other-authority-value",
+            "other-identification-type",
+            131L,
+            LocalDateTime.parse("2023-03-03T10:15:30")
+        )
+    );
+
+    patient.delete(
+        new PatientCommand.DeleteIdentification(
+            117,
+            7,
+            171L,
+            LocalDateTime.parse("2020-03-13T13:15:30")
+        )
+    );
+
+    assertThat(patient)
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30"));
+
+    assertThat(patient.identifications()).satisfiesExactly(
+        actual -> assertThat(actual)
+            .satisfies(
+                identification -> assertThat(identification)
+                    .satisfies(id -> assertThat(id)
+                        .extracting(EntityId::recordStatus)
+                        .satisfies(RecordStatusAssertions.active("2023-03-03T10:15:30"))
+                    )
+                    .extracting(EntityId::getId)
+                    .returns((short) 1, EntityIdId::getEntityIdSeq)
+
+            ),
+        actual -> assertThat(actual)
+            .satisfies(
+                identification -> assertThat(identification)
+                    .satisfies(id -> assertThat(id)
+                        .extracting(EntityId::recordStatus)
+                        .satisfies(RecordStatusAssertions.active("2023-03-03T10:15:30"))
+                    )
+                    .extracting(EntityId::getId)
+                    .returns((short) 2, EntityIdId::getEntityIdSeq)
+            )
+    );
+  }
+
+
+  @Test
   void should_update_patient_mortality_when_patient_is_deceased() {
 
     Person patient = new Person(121L, "local-id-value");
@@ -1172,9 +1292,12 @@ class PersonTest {
     );
 
     assertThat(patient)
-        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateMorbidity)
-        .returns(Deceased.Y, Person::getDeceasedIndCd)
-        .returns(LocalDate.parse("1987-11-17"), Person::getDeceasedTime)
+        .satisfies(updated -> assertThat(updated)
+            .extracting(Person::mortality)
+            .returns(LocalDate.parse("2023-06-01"), PatientMortality::asOf)
+            .returns(Deceased.Y, PatientMortality::deceased)
+            .returns(LocalDate.parse("1987-11-17"), PatientMortality::deceasedOn)
+        )
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
   }
@@ -1209,8 +1332,8 @@ class PersonTest {
                 .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"))
         )
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
+            actual -> assertThat(actual.locationOfDeath())
+                .hasValueSatisfying(
                     address -> assertThat(address)
                         .returns("U", PostalEntityLocatorParticipation::getCd)
                         .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
@@ -1264,17 +1387,14 @@ class PersonTest {
     );
 
     assertThat(patient)
-        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateMorbidity)
-        .returns(Deceased.N, Person::getDeceasedIndCd)
-        .returns(null, Person::getDeceasedTime)
         .satisfies(
             changed -> assertThat(changed)
                 .extracting(Person::audit)
                 .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
         )
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
+            actual -> assertThat(actual.locationOfDeath())
+                .hasValueSatisfying(
                     address -> assertThat(address)
                         .returns("U", PostalEntityLocatorParticipation::getCd)
                         .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
@@ -1285,6 +1405,10 @@ class PersonTest {
                         .returns(null, PostalLocator::getCntryCd)
                 )
         )
+        .extracting(Person::mortality)
+        .returns(LocalDate.parse("2023-06-01"), PatientMortality::asOf)
+        .returns(Deceased.N, PatientMortality::deceased)
+        .returns(null, PatientMortality::deceasedOn)
     ;
   }
 
@@ -1328,12 +1452,15 @@ class PersonTest {
     );
 
     assertThat(patient)
-        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateMorbidity)
-        .returns(Deceased.UNK, Person::getDeceasedIndCd)
-        .returns(null, Person::getDeceasedTime)
+        .satisfies(updated -> assertThat(updated)
+            .extracting(Person::mortality)
+            .returns(LocalDate.parse("2023-06-01"), PatientMortality::asOf)
+            .returns(Deceased.UNK, PatientMortality::deceased)
+            .returns(null, PatientMortality::deceasedOn)
+        )
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
+            actual -> assertThat(actual.locationOfDeath())
+                .hasValueSatisfying(
                     address -> assertThat(address)
                         .returns("U", PostalEntityLocatorParticipation::getCd)
                         .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
@@ -1388,11 +1515,15 @@ class PersonTest {
     );
 
     assertThat(patient)
-        .returns(LocalDate.parse("2023-06-21"), Person::getAsOfDateMorbidity)
-        .returns(LocalDate.parse("1986-11-16"), Person::getDeceasedTime)
+        .satisfies(updated -> assertThat(updated)
+            .extracting(Person::mortality)
+            .returns(LocalDate.parse("2023-06-21"), PatientMortality::asOf)
+            .returns(Deceased.Y, PatientMortality::deceased)
+            .returns(LocalDate.parse("1986-11-16"), PatientMortality::deceasedOn)
+        )
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
+            actual -> assertThat(actual.locationOfDeath())
+                .hasValueSatisfying(
                     address -> assertThat(address)
                         .returns("U", PostalEntityLocatorParticipation::getCd)
                         .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
@@ -1413,7 +1544,7 @@ class PersonTest {
         new PatientCommand.UpdateGender(
             121L,
             LocalDate.parse("2023-06-01"),
-            Gender.U.value(),
+            Gender.F.value(),
             "gender-unknown-reason",
             "gender-preferred",
             "gender-additional",
@@ -1423,13 +1554,41 @@ class PersonTest {
     );
 
     assertThat(patient)
-        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateSex)
-        .returns(Gender.U, Person::getCurrSexCd)
-        .returns("gender-unknown-reason", Person::getSexUnkReasonCd)
-        .returns("gender-preferred", Person::getPreferredGenderCd)
-        .returns("gender-additional", Person::getAdditionalGenderCd)
+        .satisfies(updated -> assertThat(updated)
+            .extracting(Person::sexBirth)
+            .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf)
+            .returns(Gender.F, PatientSexBirth::gender)
+            .returns("gender-preferred", PatientSexBirth::preferredGender)
+            .returns("gender-additional", PatientSexBirth::additionalGender)
+            .returns(null, PatientSexBirth::genderUnknownReason)
+        )
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
+
+  }
+
+  @Test
+  void should_update_unknown_reason_when_gender_is_Unknown() {
+    Person patient = new Person(121L, "local-id-value");
+
+    patient.update(
+        new PatientCommand.UpdateGender(
+            121L,
+            LocalDate.parse("2023-06-01"),
+            Gender.U.value(),
+            "gender-unknown-reason",
+            null,
+            null,
+            131L,
+            LocalDateTime.parse("2019-03-03T10:15:30")
+        )
+    );
+
+    assertThat(patient)
+        .extracting(Person::sexBirth)
+        .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf)
+        .returns(Gender.U, PatientSexBirth::gender)
+        .returns("gender-unknown-reason", PatientSexBirth::genderUnknownReason);
 
   }
 
@@ -1446,6 +1605,41 @@ class PersonTest {
             LocalDate.of(1949, 10, 15),
             Gender.U.value(),
             Indicator.NO.getId(),
+            null,
+            null,
+            null,
+            null,
+            null,
+            131L,
+            LocalDateTime.parse("2019-03-03T10:15:30")
+        ),
+        generator
+    );
+
+    assertThat(patient)
+        .satisfies(updated -> assertThat(updated)
+            .extracting(Person::sexBirth)
+            .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf)
+            .returns(LocalDateTime.parse("1949-10-15T00:00:00"), PatientSexBirth::birthday)
+            .returns(Gender.U, PatientSexBirth::birthGender)
+        )
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
+  }
+
+  @Test
+  void should_update_patient_with_multiple_birth() {
+    Person patient = new Person(1049L, "local-id-value");
+
+    AddressIdentifierGenerator generator = () -> 1157L;
+
+    patient.update(
+        new PatientCommand.UpdateBirth(
+            1049L,
+            LocalDate.parse("2023-06-01"),
+            LocalDate.of(1949, 10, 15),
+            Gender.U.value(),
+            Indicator.YES.getId(),
             17,
             null,
             null,
@@ -1458,10 +1652,13 @@ class PersonTest {
     );
 
     assertThat(patient)
-        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateSex)
-        .returns(LocalDateTime.parse("1949-10-15T00:00:00"), Person::getBirthTime)
-        .returns(Gender.U, Person::getBirthGenderCd)
-        .returns((short) 17, Person::getBirthOrderNbr)
+        .satisfies(updated -> assertThat(updated)
+            .extracting(Person::sexBirth)
+            .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf)
+            .returns(LocalDateTime.parse("1949-10-15T00:00:00"), PatientSexBirth::birthday)
+            .returns(Indicator.YES.getId(), PatientSexBirth::multipleBirth)
+            .returns((short) 17, PatientSexBirth::birthOrder)
+        )
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
   }
@@ -1492,8 +1689,8 @@ class PersonTest {
 
     assertThat(patient)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
+            actual -> assertThat(actual.locationOfBirth())
+                .hasValueSatisfying(
                     address -> assertThat(address)
                         .returns("F", PostalEntityLocatorParticipation::getCd)
                         .returns("BIR", PostalEntityLocatorParticipation::getUseCd)
@@ -1524,8 +1721,11 @@ class PersonTest {
     );
 
     assertThat(patient)
-        .returns(LocalDate.parse("2023-06-01"), Person::getAsOfDateAdmin)
-        .returns("comments", Person::getDescription)
+        .satisfies(updated -> assertThat(updated)
+            .extracting(Person::administrative)
+            .returns(LocalDate.parse("2023-06-01"), PatientAdministrativeInformation::asOf)
+            .returns("comments", PatientAdministrativeInformation::comments)
+        )
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
   }

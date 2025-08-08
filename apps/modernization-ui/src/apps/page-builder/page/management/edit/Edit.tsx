@@ -7,7 +7,7 @@ import {
     usePageManagement
 } from 'apps/page-builder/page/management';
 import { Loading } from 'components/Spinner';
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { NavLinkButton } from 'design-system/button';
 import { PageContent } from './content/PageContent';
 import { ManageSectionModal } from './section/manage/ManageSectionModal';
 import { ModalRef } from '@trussworks/react-uswds';

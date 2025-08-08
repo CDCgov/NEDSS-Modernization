@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.data.LimitString;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
@@ -12,7 +11,6 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import gov.cdc.nbs.support.IdentificationMother;
-import gov.cdc.nbs.support.RaceMother;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
@@ -28,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 @Component
 @ScenarioScope
@@ -406,76 +401,6 @@ public class PatientMother {
             value,
             RandomUtil.maybeOneFrom("GA"),
             type,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
-  }
-
-  public void withRace(final PatientIdentifier identifier) {
-    withRace(identifier, RandomUtil.getRandomFromArray(RaceMother.RACE_LIST));
-  }
-
-  public void withRace(
-      final PatientIdentifier identifier,
-      final String race
-  ) {
-    withRace(identifier, RandomUtil.dateInPast(), race);
-  }
-
-  public void withRace(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String race
-  ) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddRace(
-            identifier.id(),
-            asOf,
-            race,
-            this.settings.createdBy(),
-            LocalDateTime.now()
-        )
-    );
-  }
-
-  public void withRaceIncluding(
-      final PatientIdentifier identifier,
-      final String race,
-      final String detail
-  ) {
-    Person patient = managed(identifier);
-
-    LocalDate asOf = patient.getRace().races()
-        .stream()
-        .filter(r -> Objects.equals(r.getRaceCategoryCd(), race) && Objects.equals(r.getRaceCd(), race))
-        .findFirst()
-        .map(PersonRace::getAsOfDate)
-        .orElseThrow();
-
-    List<String> details =
-        Stream.concat(
-                //  any existing details for the race category
-                patient.getRace().races()
-                    .stream()
-                    .filter(
-                        existing -> !Objects.equals(existing.getRaceCategoryCd(), existing.getRaceCd())
-                            && Objects.equals(existing.getRaceCategoryCd(), race)
-                    )
-                    .map(PersonRace::getRaceCd),
-                //  the new detail
-                Stream.of(detail)
-            )
-            .toList();
-
-
-
-    patient.update(
-        new PatientCommand.UpdateRaceInfo(
-            identifier.id(),
-            asOf,
-            race,
-            details,
             this.settings.createdBy(),
             this.settings.createdOn()));
   }
@@ -863,6 +788,45 @@ public class PatientMother {
     client.sql("update person set [description] = ? where person_uid = ?")
         .param(value)
         .param(identifier.id())
+        .update();
+  }
+
+  public void withRace(final PatientIdentifier patient) {
+    withRace(patient, RandomUtil.oneFrom("2106-3", "2054-5", "2028-9", "U"));
+  }
+
+  public void withRace(final PatientIdentifier patient, final String race) {
+    this.client.sql(
+            """
+                insert into Person_race (
+                    person_uid,
+                    as_of_date,
+                    race_cd,
+                    race_category_cd,
+                    add_user_id,
+                    add_time,
+                    last_chg_user_id,
+                    last_chg_time,
+                    record_status_cd,
+                    record_status_time
+                ) values (
+                    :patient,
+                    :asOf,
+                    :race,
+                    :race,
+                    :addedBy,
+                    :addedOn,
+                    :addedBy,
+                    :addedOn,
+                    'ACTIVE',
+                    :addedOn
+                );
+                """
+        ).param("patient", patient.id())
+        .param("asOf", RandomUtil.dateInPast())
+        .param("race", race)
+        .param("addedBy", settings.createdBy())
+        .param("addedOn", settings.createdOn())
         .update();
   }
 }

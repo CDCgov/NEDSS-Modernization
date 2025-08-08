@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Navigate } from 'react-router';
-import { permissions } from 'libs/permission';
+import { permissions, Permitted } from 'libs/permission';
 import { PageTitle } from 'page';
 import { Guarded } from 'libs/guard';
 import { RedirectHome } from 'routes';
@@ -14,6 +14,8 @@ const LazyPatientFileEvents = lazy(() => import('./events').then((module) => ({ 
 const LazyPatientFileDemographics = lazy(() =>
     import('./demographics').then((module) => ({ default: module.PatientFileDemographics }))
 );
+
+const LazyPatientFileEdit = lazy(() => import('./edit').then((module) => ({ default: module.PatientFileEdit })));
 
 const routing = [
     {
@@ -56,6 +58,16 @@ const routing = [
                     <Suspense>
                         <LazyPatientFileDemographics />
                     </Suspense>
+                )
+            },
+            {
+                path: 'edit',
+                element: (
+                    <Permitted permission={permissions.patient.update} fallback={<RedirectHome />}>
+                        <Suspense>
+                            <LazyPatientFileEdit />
+                        </Suspense>
+                    </Permitted>
                 )
             }
         ]

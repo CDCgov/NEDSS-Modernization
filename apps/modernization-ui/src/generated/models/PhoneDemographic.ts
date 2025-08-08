@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type PhoneDemographic = {
+    identifier?: number;
     asOf?: string;
     type?: string;
     use?: string;

@@ -61,7 +61,7 @@ class PatientNameDemographicRowMapper implements RowMapper<PatientNameDemographi
 
   @Override
   public PatientNameDemographic mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
-    long identifier = resultSet.getLong(this.columns.identifier());
+    short identifier = resultSet.getShort(this.columns.identifier());
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
     Selectable prefix = prefixMapper.mapRow(resultSet, rowNum);
     String first = resultSet.getString(this.columns.first());

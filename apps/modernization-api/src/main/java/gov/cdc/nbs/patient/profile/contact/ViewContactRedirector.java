@@ -24,7 +24,7 @@ class ViewContactRedirector {
         this.redirector = redirector;
     }
 
-    @PreAuthorize("hasAuthority('VIEW-INVESTIGATION')")
+    @PreAuthorize("hasAuthority('VIEW-CT_CONTACT')")
     @GetMapping("/nbs/api/profile/{patient}/contact/{identifier}")
     ResponseEntity<Void> view(
         @PathVariable final long patient,

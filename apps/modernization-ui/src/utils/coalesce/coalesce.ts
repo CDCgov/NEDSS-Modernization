@@ -3,7 +3,7 @@ import { exists } from 'utils/exists';
 /**
  * Evaluates the arguments in order and returns the first non null, defined value.
  *
- * @param items The items
+ * @param {I} items The items.
  * @return {I} the first non null, defined value.
  */
 const coalesce = <I>(...items: I[]) => {

@@ -15,11 +15,9 @@ type GeneralInformationDemographic = {
     stateHIVCase?: Sensitive<string>;
 };
 
-type GeneralInformationDemographicEntry = Omit<GeneralInformationDemographic, 'stateHIVCase'> & {
-    stateHIVCase?: string;
-};
+type HasGeneralInformationDemographic = { general?: GeneralInformationDemographic };
 
-export type { GeneralInformationDemographic, GeneralInformationDemographicEntry };
+export type { GeneralInformationDemographic, HasGeneralInformationDemographic };
 
 const initial = (asOf: string = today()): GeneralInformationDemographic => ({
     asOf: asOf,

@@ -28,7 +28,7 @@ type AssociatedWithProps = {
 
 const AssociatedWith = ({ patient, children }: AssociatedWithProps) => (
     <span className={styles.association}>
-        <a href={`/nbs/api/profile/${patient}/investigation/${children.id}`}>{children.local}</a>
+        <a href={`/nbs/api/profile/${patient}/investigation/${children.id}`}>{children.local}</a>{' '}
         <strong>{children.condition}</strong>
         {children.status}
     </span>

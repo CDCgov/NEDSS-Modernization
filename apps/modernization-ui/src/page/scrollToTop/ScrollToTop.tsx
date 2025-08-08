@@ -1,29 +1,21 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
 
-import styles from './scroll-to-top.module.scss';
+type ScrollToTopProps = { title: string };
 
-const ScrollToTop = ({ children, title }: { children: React.ReactNode; title: string }) => {
+const ScrollToTop = ({ title }: ScrollToTopProps) => {
     const { pathname } = useLocation();
     const initialFocusRef = useRef<HTMLDivElement>(null);
-    const lastPathnameRef = useRef<string>('');
 
     useEffect(() => {
-        if (pathname !== lastPathnameRef.current) {
-            window.scrollTo(0, 0);
-            lastPathnameRef.current = pathname;
+        window.scrollTo(0, 0);
 
-            if (initialFocusRef.current) {
-                initialFocusRef.current.focus();
-            }
+        if (initialFocusRef.current) {
+            initialFocusRef.current.focus();
         }
     }, [pathname]);
 
-    return (
-        <div ref={initialFocusRef} tabIndex={-1} aria-label={title} className={styles.mainContent}>
-            {children}
-        </div>
-    );
+    return <span role="region" ref={initialFocusRef} tabIndex={-1} aria-label={title} />;
 };
 
 export { ScrollToTop };

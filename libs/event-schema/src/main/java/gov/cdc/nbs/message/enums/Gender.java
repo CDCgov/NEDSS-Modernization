@@ -1,9 +1,9 @@
 package gov.cdc.nbs.message.enums;
 
 public enum Gender {
-  F("F", "Female"),
-  M("M", "Male"),
-  U("U", "Unknown");
+  F("F"),
+  M("M"),
+  U("U");
 
   public static Gender resolve(final String value) {
     return value == null
@@ -17,15 +17,9 @@ public enum Gender {
   }
 
   private final String value;
-  private final String display;
 
-  Gender(String value, String display) {
+  Gender(String value) {
     this.value = value;
-    this.display = display;
-  }
-
-  public String display() {
-    return this.display;
   }
 
   public String value() {

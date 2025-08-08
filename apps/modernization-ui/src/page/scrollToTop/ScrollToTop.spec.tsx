@@ -24,40 +24,16 @@ describe('ScrollToTop', () => {
 
     describe('Accessibility', () => {
         it('should have no accessibility violations', async () => {
-            const { container } = renderWithRouter(
-                <ScrollToTop title="Test Title">
-                    <div>
-                        <h1>Page Title</h1>
-                        <p>Some content for testing accessibility</p>
-                        <button>Test Button</button>
-                    </div>
-                </ScrollToTop>
-            );
+            const { container } = renderWithRouter(<ScrollToTop title="Test Title" />);
 
             const results = await axe(container);
             expect(results).toHaveNoViolations();
         });
     });
 
-    describe('Rendering', () => {
-        it('should render children correctly', () => {
-            const { getByText } = renderWithRouter(
-                <ScrollToTop title="Test Title">
-                    <div>Test Content</div>
-                </ScrollToTop>
-            );
-
-            expect(getByText('Test Content')).toBeInTheDocument();
-        });
-    });
-
     describe('Scroll and Focus Behavior', () => {
         it('should scroll to top on initial render', () => {
-            renderWithRouter(
-                <ScrollToTop title="Test Title">
-                    <div>Test Content</div>
-                </ScrollToTop>
-            );
+            renderWithRouter(<ScrollToTop title="Test Title" />);
 
             expect(mockScrollTo).toHaveBeenCalledWith(0, 0);
         });

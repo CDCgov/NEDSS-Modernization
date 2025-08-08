@@ -9,7 +9,7 @@ import { useNameCodedValues } from 'apps/patient/data/name/useNameCodedValues';
 export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ name: NameInformationEntry }>();
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="name.last"
@@ -29,7 +29,6 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
                     />
                 )}
             />
-
             <Controller
                 control={control}
                 name="name.first"
@@ -49,7 +48,6 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
                     />
                 )}
             />
-
             <Controller
                 control={control}
                 name="name.middle"
@@ -69,7 +67,6 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
                     />
                 )}
             />
-
             <Controller
                 control={control}
                 name="name.suffix"
@@ -87,6 +84,6 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
                     />
                 )}
             />
-        </section>
+        </>
     );
 };

@@ -31,12 +31,5 @@ dependencies {
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
-    // querydsl
-    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier("jakarta") })
-
 }
 
-compileJava {
-    options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'
-}

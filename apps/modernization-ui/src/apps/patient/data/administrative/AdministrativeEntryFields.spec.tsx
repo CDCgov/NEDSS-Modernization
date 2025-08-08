@@ -42,4 +42,12 @@ describe('when entering patient administrative information', () => {
 
         expect(queryByText('The Information as of date is required.')).toBeInTheDocument();
     });
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+        const dateInput = getByLabelText('Information as of date');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            "This field defaults to today's date and can be changed if needed."
+        );
+    });
 });

@@ -13,7 +13,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
     const { control } = useFormContext<BasicIdentificationEntry>();
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="type"
@@ -69,6 +69,6 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                     />
                 )}
             />
-        </section>
+        </>
     );
 };

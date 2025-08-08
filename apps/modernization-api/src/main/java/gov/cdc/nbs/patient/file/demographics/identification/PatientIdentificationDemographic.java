@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record PatientIdentificationDemographic(
     @JsonProperty(required = true)
-    long identifier,
+    short sequence,
     @JsonProperty(required = true)
     @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
     @JsonProperty(required = true)

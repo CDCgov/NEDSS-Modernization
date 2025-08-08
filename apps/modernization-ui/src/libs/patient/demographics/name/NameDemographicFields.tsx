@@ -8,7 +8,7 @@ import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry
 import { NameDemographic } from './names';
 import { useNameCodedValues } from './useNameCodedValues';
 
-const AS_OF_DATE_LABEL = 'Name as of';
+const AS_OF_DATE_LABEL = 'As of';
 const TYPE_LABEL = 'Type';
 
 type NameDemographicFieldsProps = {} & EntryFieldsProps;
@@ -35,6 +35,7 @@ const NameDemographicFields = ({ orientation = 'horizontal', sizing = 'medium' }
                         error={error?.message}
                         required
                         sizing={sizing}
+                        aria-description="This date defaults to today and can be changed if needed"
                     />
                 )}
             />

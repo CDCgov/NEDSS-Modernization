@@ -70,6 +70,14 @@ describe('when entering patient address demographics', () => {
         expect(getByLabelText('Address comments')).toBeInTheDocument();
     });
 
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+
+        const dateInput = getByLabelText('Address as of');
+
+        expect(dateInput).toHaveAttribute('aria-description', 'This date defaults to today and can be changed if needed');
+    });
+
     it('should require type', async () => {
         const user = userEvent.setup();
         const { getByLabelText, getByText } = render(<Fixture />);

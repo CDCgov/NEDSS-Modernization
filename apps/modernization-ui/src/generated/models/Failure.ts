@@ -3,6 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export type Failure = {
-    reason?: string;
+    reason: string;
 };
 

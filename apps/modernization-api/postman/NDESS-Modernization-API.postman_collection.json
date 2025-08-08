@@ -862,6 +862,70 @@
 									"response": []
 								},
 								{
+									"name": "Documents",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/documents",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"documents"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Contacts named by patient",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/contacts",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"contacts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Patient named by contacts",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/contacts/named",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"contacts",
+												"named"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Laboratory Reports",
 									"request": {
 										"method": "GET",
@@ -1329,6 +1393,55 @@
 								"nbs",
 								"api",
 								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"administrative\": {\n        \"asOf\": \"{{localDate}}\",\n        \"comment\": \"Developer testing the editing of a patient\"\n    },\n    \"names\": [\n        {\n            \"asOf\": \"{{localDate}}\",\n            \"type\": \"L\",\n            \"first\": \"{{$randomFirstName}}\",\n            \"middle\": \"{{$randomFirstName}}\",\n            \"last\": \"{{$randomLastName}}\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/nbs/api/patients/{{patient}}",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"nbs",
+								"api",
+								"patients",
+								"{{patient}}"
 							]
 						}
 					},

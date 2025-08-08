@@ -1,18 +1,19 @@
 import { vi } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
-import { createMemoryRouter, Navigate, RouterProvider, useNavigate } from 'react-router';
-import { CountiesCodedValues } from 'location';
+import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
 import { useShowCancelModal } from '../cancelAddPatientPanel';
 import { PatientDataEntryMethodProvider } from '../usePatientDataEntryMethod';
 import { Selectable } from 'options';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { PageProvider } from 'page';
 
+window.scrollTo = vi.fn();
+
 class MockIntersectionObserver {
-    observe = jest.fn();
-    unobserve = jest.fn();
-    disconnect = jest.fn();
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
 }
 
 Object.defineProperty(window, 'IntersectionObserver', {
@@ -25,38 +26,31 @@ Object.defineProperty(window, 'IntersectionObserver', {
 Object.defineProperty(window, 'IntersectionObserverEntry', {
     writable: true,
     configurable: true,
-    value: jest.fn()
+    value: vi.fn()
 });
 
 vi.mock('options/concepts', () => ({
     useConceptOptions: () => ({ options: [] })
 }));
 
-const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
-vi.mock('location/useCountyCodedValues', () => ({
-    useCountyCodedValues: () => mockCountyCodedValues
-}));
-
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<any>('react-router');
     return {
         ...actual,
-        useNavigate: jest.fn()
+        useNavigate: vi.fn()
     };
 });
 
-const mockLocationCodedValues = {
-    states: {
-        all: [{ name: 'StateName', value: '1' }]
-    },
-    counties: {
-        byState: () => [{ name: 'CountyName', value: '2' }]
-    },
-    countries: [{ name: 'CountryName', value: '3' }]
-};
+const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
 
-vi.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
+
+const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+
+vi.mock('options/location', () => ({
+    useCountyOptions: () => mockCountyCodedValues,
+    useCountryOptions: () => mockCountryCodedValues,
+    useStateOptions: () => mockStateCodedValues
 }));
 
 const mockRaceCategories: Selectable[] = [{ value: '1', name: 'race name' }];
@@ -68,7 +62,7 @@ const mockDetailedRaces: Selectable[] = [
 
 vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
-    useDetailedRaceOptions: () => mockDetailedRaces
+    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: jest.fn })
 }));
 
 vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
@@ -109,16 +103,12 @@ const renderWithRouter = () => {
             element: (
                 <PageProvider>
                     <PatientDataEntryMethodProvider>
-                    <SkipLinkProvider>
-                        <AddPatientExtended />
-                    </SkipLinkProvider>
-                </PatientDataEntryMethodProvider>
+                        <SkipLinkProvider>
+                            <AddPatientExtended />
+                        </SkipLinkProvider>
+                    </PatientDataEntryMethodProvider>
                 </PageProvider>
             )
-        },
-        {
-            path: '/add-patient',
-            element: <Navigate to={'/'} />
         }
     ];
 
@@ -157,9 +147,9 @@ describe('AddPatientExtended', () => {
     });
 
     it('should redirect to add-patient when cancel is clicked', () => {
-        const { getByText } = renderWithRouter();
+        renderWithRouter();
 
-        const cancelButton = getByText('Cancel');
+        const cancelButton = screen.getByRole('button', { name: 'Cancel' });
         cancelButton.click();
 
         expect(useNavigate).toBeCalled();

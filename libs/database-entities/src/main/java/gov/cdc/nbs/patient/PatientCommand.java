@@ -43,7 +43,7 @@ public sealed interface PatientCommand {
   }
 
 
-  record AddRace(
+  record AddRaceInfo(
       long person,
       LocalDate asOf,
       String category,
@@ -52,7 +52,7 @@ public sealed interface PatientCommand {
       LocalDateTime requestedOn
   ) implements PatientCommand {
 
-    public AddRace(
+    public AddRaceInfo(
         long person,
         LocalDate asOf,
         String category,
@@ -210,7 +210,7 @@ public sealed interface PatientCommand {
 
   record UpdatePhone(
       long person,
-      long id,
+      long identifier,
       String type,
       String use,
       LocalDate asOf,
@@ -448,7 +448,7 @@ public sealed interface PatientCommand {
 
   record DeleteNameInfo(
       long person,
-      int sequence,
+      short sequence,
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {

@@ -7,6 +7,7 @@ import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.testing.support.concept.ConceptParameterResolver;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 @Transactional
 public class InvestigationSteps {
 
+  private final Available<PatientIdentifier> availablePatients;
   private final Active<PatientIdentifier> activePatient;
   private final Active<JurisdictionIdentifier> activeJurisdiction;
   private final Active<ProgramAreaIdentifier> activeProgramArea;
@@ -26,6 +28,7 @@ public class InvestigationSteps {
   private final ConceptParameterResolver resolver;
 
   public InvestigationSteps(
+      final Available<PatientIdentifier> availablePatients,
       final Active<PatientIdentifier> activePatient,
       final Active<JurisdictionIdentifier> activeJurisdiction,
       final Active<ProgramAreaIdentifier> activeProgramArea,
@@ -34,6 +37,7 @@ public class InvestigationSteps {
       final InvestigationMother mother,
       final ConceptParameterResolver resolver
   ) {
+    this.availablePatients = availablePatients;
     this.activePatient = activePatient;
     this.activeJurisdiction = activeJurisdiction;
     this.activeProgramArea = activeProgramArea;
@@ -64,6 +68,21 @@ public class InvestigationSteps {
         )
     );
   }
+
+  @Given("the previous patient is a subject of an investigation for {programArea} within {jurisdiction}")
+  public void previousSubject(
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction
+  ) {
+    availablePatients.maybePrevious().ifPresent(
+        patient -> mother.create(
+            patient,
+            jurisdiction,
+            programArea
+        )
+    );
+  }
+
 
   @Given("the patient is a subject of {int} investigations")
   public void the_patient_is_a_subject_N_investigation(final int n) {

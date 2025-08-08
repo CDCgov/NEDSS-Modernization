@@ -1,16 +1,17 @@
 import { TableCard, TableCardProps } from 'design-system/card';
 import { LoadingOverlay } from 'libs/loading';
 import { MemoizedSupplier } from 'libs/supplying';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 import { Await } from 'react-router';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { Column } from 'design-system/table';
 
 import styles from './treatments.module.scss';
-import { internalizeDate, internalizeDateTime } from 'date';
+import { internalizeDateTime } from 'date';
 import { displayProvider } from 'libs/provider';
 import { Associations } from 'libs/events/investigations/associated';
 import { PatientFileTreatment } from '.';
+import { ClassicModalButton } from 'libs/classic';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };
@@ -28,13 +29,22 @@ const columnPreferences: ColumnPreference[] = [
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
 
-const columns: Column<PatientFileTreatment>[] = [
+const columns = (onClose: () => void): Column<PatientFileTreatment>[] => [
     {
         ...EVENT_ID,
         className: styles['local-header'],
         sortable: true,
         value: (value) => value.local,
-        render: (value) => <a href={`/nbs/api/profile/${value.patient}/treatment/${value.id}`}>{value.local}</a>
+        render: (value) => (
+            <ClassicModalButton
+                tertiary
+                sizing={'small'}
+                className={styles['event-id']}
+                url={`/nbs/api/patients/${value.patient}/treatments/${value.id}`}
+                onClose={onClose}>
+                {value.local}
+            </ClassicModalButton>
+        )
     },
     {
         ...DATE_RECEIVED,
@@ -48,23 +58,20 @@ const columns: Column<PatientFileTreatment>[] = [
         ...PROVIDER,
         sortable: true,
         className: styles['text-header'],
-        value: (value) => value.provider?.first,
-        render: (value) => displayProvider(value.provider),
-        sortIconType: 'alpha'
+        value: (value) => displayProvider(value.provider)
     },
     {
         ...TREATMENT_DATE,
         className: styles['treatment-date-header'],
         sortable: true,
         value: (value) => value.treatedOn,
-        render: (value) => internalizeDate(value.treatedOn)
+        sortIconType: 'numeric'
     },
     {
         ...TREATMENT,
         sortable: true,
         value: (value) => value.description,
-        render: (value) => <strong>{value.description}</strong>,
-        sortIconType: 'alpha'
+        render: (value) => <strong>{value.description}</strong>
     },
     {
         ...ASSOCIATED_WITH,
@@ -77,17 +84,18 @@ const columns: Column<PatientFileTreatment>[] = [
 
 type InternalCardProps = {
     data?: PatientFileTreatment[];
+    onClose: () => void;
 } & Omit<
     TableCardProps<PatientFileTreatment>,
     'columnPreferencesKey' | 'defaultColumnPreferences' | 'columns' | 'data' | 'title'
 >;
 
-const InternalCard = ({ sizing, data = [], ...remaining }: InternalCardProps) => (
+const InternalCard = ({ sizing, data = [], onClose, ...remaining }: InternalCardProps) => (
     <TableCard
         title="Treatments"
         sizing={sizing}
         data={data}
-        columns={columns}
+        columns={columns(onClose)}
         columnPreferencesKey="patient.file.treatments.preferences"
         defaultColumnPreferences={columnPreferences}
         {...remaining}
@@ -96,17 +104,26 @@ const InternalCard = ({ sizing, data = [], ...remaining }: InternalCardProps) =>
 
 type PatientFileTreatmentsCardProps = {
     provider: MemoizedSupplier<Promise<PatientFileTreatment[]>>;
-} & Omit<InternalCardProps, 'data'>;
+} & Omit<InternalCardProps, 'data' | 'onClose'>;
 
 const PatientFileTreatmentsCard = ({ provider, ...remaining }: PatientFileTreatmentsCardProps) => {
+    const [key, setKey] = useState<number>(0);
+
+    const handleClose = () => {
+        provider.reset();
+        setKey((current) => current + 1);
+    };
     return (
         <Suspense
+            key={key}
             fallback={
                 <LoadingOverlay>
-                    <InternalCard {...remaining} />
+                    <InternalCard {...remaining} onClose={handleClose} />
                 </LoadingOverlay>
             }>
-            <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
+            <Await resolve={provider.get()}>
+                {(data) => <InternalCard data={data} {...remaining} onClose={handleClose} />}
+            </Await>
         </Suspense>
     );
 };

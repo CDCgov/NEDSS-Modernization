@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext } from 'react';
 import { MemoizedSupplier } from 'libs/supplying/';
 import { Patient } from './patient';
-import { PatientDemographics } from './demographics';
+import { PatientDemographicsData } from './demographics';
 import { PatientFileSummaryData } from './summary';
 import { PatientFileEventData } from './events';
 
@@ -10,7 +10,7 @@ type PatientFileData = {
     patient: Patient;
     summary: MemoizedSupplier<PatientFileSummaryData>;
     events: MemoizedSupplier<PatientFileEventData>;
-    demographics: MemoizedSupplier<PatientDemographics>;
+    demographics: MemoizedSupplier<PatientDemographicsData>;
 };
 
 const PatientContext = createContext<PatientFileData | undefined>(undefined);

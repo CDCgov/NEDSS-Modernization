@@ -1,20 +1,35 @@
-import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import SystemManagementPage from './SystemManagementPage';
-import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
+import { vi } from 'vitest';
 
-const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'DECISION_SUPPORT_ADMIN', 'REPORTADMIN'];
+const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'SRTADMIN-SYSTEM', 'ALERTADMIN-SYSTEM'];
 const mockAllows = (permission: string) => mockPermissions.includes(permission);
 const mockAllowFn = jest.fn(mockAllows);
 
-vi.mock('../../../libs/permission/usePermissions', () => ({
+vi.mock('libs/permission/usePermissions', () => ({
     usePermissions: () => ({ permissions: mockPermissions, allows: mockAllowFn })
 }));
+
+vi.mock('./VisibleWrapper', () => {
+    const React = require('react');
+    const { useEffect } = require('react');
+
+    return {
+        __esModule: true,
+        default: ({ children, onVisibilityChange }: any) => {
+            useEffect(() => {
+                onVisibilityChange(true);
+            }, []);
+            return <div>{children}</div>;
+        }
+    };
+});
 
 describe('SystemManagementPage', () => {
     beforeEach(() => {
         mockAllowFn.mockImplementation(mockAllows);
+        vi.resetModules();
     });
 
     it('renders heading and search bar', () => {
@@ -30,22 +45,31 @@ describe('SystemManagementPage', () => {
         expect(input).toHaveAttribute('placeholder', 'Filter by keyword');
     });
 
-    it('filters sections based on user input', async () => {
+    it('renders only visible cards', () => {
         render(
             <MemoryRouter>
                 <SystemManagementPage />
             </MemoryRouter>
         );
-        const user = userEvent.setup();
-        await user.type(screen.getByPlaceholderText(/filter by keyword/i), 'page');
 
-        await waitFor(() => {
-            expect(screen.queryByText(/Manage local results/i)).not.toBeInTheDocument();
-            expect(screen.queryByText(/Manage alerts/i)).not.toBeInTheDocument();
+        expect(screen.getByText(/Manage pages/i)).toBeInTheDocument();
+        expect(screen.queryByText(/deduplication/i)).not.toBeInTheDocument();
+    });
 
-            expect(
-                screen.getByText((content) => content.toLowerCase().includes('manage pages'))
-            ).toBeInTheDocument();
-        });
+    it('respects permissions and only renders allowed sections', () => {
+        render(
+            <MemoryRouter>
+                <SystemManagementPage />
+            </MemoryRouter>
+        );
+
+        // Page, Case Report and Decision Support section is allowed by permissions
+        expect(screen.queryByText(/Manage Pages/i)).toBeInTheDocument();
+        expect(screen.queryByText(/Manage laboratories/i)).toBeInTheDocument();
+        expect(screen.queryByText(/Manage Alerts/i)).toBeInTheDocument();
+
+        // Security and Person Match section shouldn't render
+        expect(screen.queryByText(/Security/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Manage data elements/i)).not.toBeInTheDocument();
     });
 });

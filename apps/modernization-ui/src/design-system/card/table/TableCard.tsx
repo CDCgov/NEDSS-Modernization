@@ -1,13 +1,7 @@
-import { ComponentType, FC } from 'react';
-import { SortableDataTable, DataTableProps, Column } from 'design-system/table';
-import {
-    ColumnPreference,
-    ColumnPreferencesAction,
-    useColumnPreferences,
-    withColumnPreferences
-} from 'design-system/table/preferences';
-import { Tag } from 'design-system/tag';
 import { Sizing } from 'design-system/field';
+import { Column, SortableDataTable } from 'design-system/table';
+import { ColumnPreference, ColumnPreferenceProvider, ColumnPreferencesAction } from 'design-system/table/preferences';
+import { Tag } from 'design-system/tag';
 import { Card, CardProps } from '../Card';
 
 export type TableCardProps<V> = {
@@ -38,44 +32,27 @@ const TableCard = <V,>({
     sizing,
     ...props
 }: TableCardProps<V>) => {
-    const ColumnPreferencesCard = withColumnPreferences(Card, {
-        storageKey: columnPreferencesKey,
-        defaults: defaultColumnPreferences
-    });
-    const ManagedDataTable = withColumnPreferencesDataTable(SortableDataTable<V>);
     return (
-        <ColumnPreferencesCard
-            id={id}
-            title={title}
-            className={className}
-            collapsible={collapsible}
-            open={collapsible && props.data.length > 0}
-            flair={<Tag size={sizing}>{props.data.length}</Tag>}
-            actions={
-                <>
-                    {actions}
-                    <ColumnPreferencesAction sizing={sizing} />
-                </>
-            }>
-            <ManagedDataTable {...props} id={`${id}-table`} sizing={sizing} columns={columns} />
-        </ColumnPreferencesCard>
+        <ColumnPreferenceProvider id={columnPreferencesKey} defaults={defaultColumnPreferences}>
+            {({ apply }) => (
+                <Card
+                    id={id}
+                    title={title}
+                    className={className}
+                    collapsible={collapsible}
+                    open={collapsible && props.data.length > 0}
+                    flair={<Tag size={sizing}>{props.data.length}</Tag>}
+                    actions={
+                        <>
+                            {actions}
+                            <ColumnPreferencesAction sizing={sizing} />
+                        </>
+                    }>
+                    <SortableDataTable {...props} id={`${id}-table`} sizing={sizing} columns={apply(columns)} />
+                </Card>
+            )}
+        </ColumnPreferenceProvider>
     );
-};
-
-/**
- * Higher-order component to wrap a DataTable component with columns applied according to column preferences.
- * If there is no column preferences context, the original columns are used.
- * @param {FC} WrappedComponent DataTable component
- * @return {FC<DataTableProps<V>>} A modified DataTable component with columns applied
- */
-const withColumnPreferencesDataTable = <V,>(WrappedComponent: ComponentType<DataTableProps<V>>) => {
-    const EnhancedComponent: FC<DataTableProps<V>> = (props) => {
-        const { apply } = useColumnPreferences();
-        const columns = apply(props.columns);
-        return <WrappedComponent {...props} columns={columns} />;
-    };
-
-    return EnhancedComponent;
 };
 
 export { TableCard };

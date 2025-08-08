@@ -36,8 +36,8 @@ const columnPreferences: ColumnPreference[] = [
     { ...REPORT_DATE, moveable: true, toggleable: true },
     { ...CONDITION, moveable: true, toggleable: true },
     { ...TREATMENT_INFO, moveable: true, toggleable: true },
-    { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
-    { ...JURISDICTION, moveable: true, toggleable: true }
+    { ...JURISDICTION, moveable: true, toggleable: true },
+    { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
 
 const columns: Column<PatientFileMorbidityReport>[] = [
@@ -82,10 +82,10 @@ const columns: Column<PatientFileMorbidityReport>[] = [
                 <MaybeLabeledValue orientation="vertical" label="Reporting facility:">
                     {value.reportingFacility}
                 </MaybeLabeledValue>
-                <MaybeLabeledValue orientation="vertical" label="Ordering provider:">
+                <MaybeLabeledValue orientation="vertical" label="Provider:">
                     {displayProvider(value.orderingProvider)}
                 </MaybeLabeledValue>
-                <MaybeLabeledValue orientation="vertical" label="Reporting provider:">
+                <MaybeLabeledValue orientation="vertical" label="Reporter:">
                     {displayProvider(value.reportingProvider)}
                 </MaybeLabeledValue>
             </>

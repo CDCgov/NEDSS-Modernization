@@ -5,28 +5,23 @@ import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
-import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
-import gov.cdc.nbs.patient.GenderConverter;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
-import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
-import gov.cdc.nbs.patient.demographic.GeneralInformation;
-import gov.cdc.nbs.patient.demographic.PatientEthnicity;
-import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
+import gov.cdc.nbs.patient.demographic.*;
 import gov.cdc.nbs.patient.demographic.name.PatientLegalNameResolver;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Predicate;
+
+import static java.util.function.Predicate.not;
 
 @Getter
 @Setter
@@ -34,12 +29,15 @@ import java.util.*;
 @SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7027", "javaarchitecture:S7091"})
 //  Bidirectional mappings require knowledge of each other
 public class Person {
+  public static final Predicate<EntityLocatorParticipation> BIRTH_PLACE = EntityLocatorParticipation.withUse("BIR");
+  public static final Predicate<EntityLocatorParticipation> DEATH_PLACE = EntityLocatorParticipation.withUse("DTH");
   @Id
-  @Column(name = "person_uid", nullable = false)
+  @Column(name = "person_uid")
   private Long id;
 
-  @Column(name = "version_ctrl_nbr", nullable = false)
-  private Short versionCtrlNbr;
+  @Version
+  @Column(name = "version_ctrl_nbr")
+  private short versionCtrlNbr;
 
   @Column(name = "cd", length = 50)
   private String cd;
@@ -69,64 +67,24 @@ public class Person {
   private NBSEntity nbsEntity;
 
   // administrative
-  @Column(name = "as_of_date_admin")
-  private LocalDate asOfDateAdmin;
-
-  @Column(name = "description", length = 2000)
-  private String description;
+  @Embedded
+  private PatientAdministrativeInformation administrative;
 
   // general information
   @Embedded
   private GeneralInformation generalInformation;
 
   // Mortality
-  @Column(name = "as_of_date_morbidity")
-  private LocalDate asOfDateMorbidity;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "deceased_ind_cd", length = 20)
-  @ColumnTransformer(read = "UPPER(deceased_ind_cd)")
-  private Deceased deceasedIndCd;
-
-  @Column(name = "deceased_time")
-  private LocalDate deceasedTime;
+  @Embedded
+  private PatientMortality mortality;
 
   // Ethnicity
   @Embedded
   private PatientEthnicity ethnicity;
 
   // Sex & birth
-  @Column(name = "as_of_date_sex")
-  private LocalDate asOfDateSex;
-
-  @Column(name = "birth_time")
-  private LocalDateTime birthTime;
-
-  @Column(name = "birth_time_calc")
-  private LocalDateTime birthTimeCalc;
-
-  @Convert(converter = GenderConverter.class)
-  @Column(name = "curr_sex_cd")
-  private Gender currSexCd;
-
-  @Column(name = "sex_unk_reason_cd", length = 20)
-  private String sexUnkReasonCd;
-
-  @Column(name = "preferred_gender_cd", length = 20)
-  private String preferredGenderCd;
-
-  @Column(name = "additional_gender_cd", length = 50)
-  private String additionalGenderCd;
-
-  @Convert(converter = GenderConverter.class)
-  @Column(name = "birth_gender_cd", columnDefinition = "CHAR")
-  private Gender birthGenderCd;
-
-  @Column(name = "multiple_birth_ind", length = 20)
-  private String multipleBirthInd;
-
-  @Column(name = "birth_order_nbr")
-  private Short birthOrderNbr;
+  @Embedded
+  private PatientSexBirth sexBirth;
 
   // Names
   // The name fields on Person are redundant, a patient's name is resolved from
@@ -158,7 +116,7 @@ public class Person {
   private List<PersonName> names;
 
   @Embedded
-  private PatientRaceDemographic race;
+  private PatientRaceDemographics race;
 
   @Embedded
   private Audit audit;
@@ -170,13 +128,10 @@ public class Person {
   private Status status;
 
   protected Person() {
-    this.versionCtrlNbr = 1;
     this.audit = new Audit();
     this.recordStatus = new RecordStatus();
     this.status = new Status();
-    this.race = new PatientRaceDemographic(this);
-    this.generalInformation = new GeneralInformation();
-    this.ethnicity = new PatientEthnicity();
+    this.race = new PatientRaceDemographics(this);
   }
 
   public Person(final long identifier, final String localId) {
@@ -206,23 +161,11 @@ public class Person {
 
     this.nbsEntity = new NBSEntity(patient);
 
-    this.asOfDateAdmin = patient.asOf();
-    this.description = patient.comments();
-
+    this.administrative = new PatientAdministrativeInformation(patient);
     this.generalInformation = new GeneralInformation(patient);
-
-    resolveDateOfBirth(patient.dateOfBirth());
-
-    this.birthGenderCd = patient.birthGender();
-    this.currSexCd = patient.currentGender();
-
-    this.deceasedIndCd = patient.deceased();
-    this.deceasedTime = patient.deceasedTime();
-
-    this.asOfDateSex = patient.asOf();
-    this.asOfDateMorbidity = patient.asOf();
-
     this.ethnicity = new PatientEthnicity(patient);
+    this.sexBirth = new PatientSexBirth(patient);
+    this.mortality = new PatientMortality(patient);
 
     this.status = new Status(patient.requestedOn());
     this.recordStatus = new gov.cdc.nbs.audit.RecordStatus(patient.requestedOn());
@@ -230,26 +173,9 @@ public class Person {
 
   }
 
-  private void resolveDateOfBirth(final LocalDate dateOfBirth) {
-    if (dateOfBirth != null) {
-      this.birthTime = dateOfBirth.atStartOfDay();
-    } else {
-      this.birthTime = null;
-    }
-    this.birthTimeCalc = this.birthTime;
-  }
-
   public PersonName add(final SoundexResolver resolver, final PatientCommand.AddName added) {
 
     Collection<PersonName> existing = ensureNames();
-
-    if (existing.isEmpty()) {
-
-      this.firstNm = added.first();
-      this.middleNm = added.middle();
-      this.lastNm = added.last();
-      this.nmSuffix = Suffix.resolve(added.suffix());
-    }
 
     PersonNameId identifier = PersonNameId.from(this.id, existing.size() + 1);
 
@@ -299,7 +225,7 @@ public class Person {
     return this.names;
   }
 
-  public List<PersonName> getNames() {
+  public List<PersonName> names() {
     return this.names == null ? List.of() : this.names.stream().filter(PersonName.active()).toList();
   }
 
@@ -309,7 +235,7 @@ public class Person {
         : PatientLegalNameResolver.resolve(this.names, asOf);
   }
 
-  public void add(final PatientCommand.AddRace added) {
+  public void add(final PatientCommand.AddRaceInfo added) {
     this.race.patient(this).add(added);
     changed(added);
   }
@@ -322,10 +248,6 @@ public class Person {
   public void delete(final PatientCommand.DeleteRaceInfo deleted) {
     this.race.delete(deleted);
     changed(deleted);
-  }
-
-  public List<PersonRace> getRaces() {
-    return this.race.races();
   }
 
   public EntityId add(final PatientCommand.AddIdentification information) {
@@ -361,20 +283,20 @@ public class Person {
     changed(address);
   }
 
+  public Optional<PostalEntityLocatorParticipation> locationOfBirth() {
+    return this.nbsEntity.addresses(BIRTH_PLACE).findFirst();
+  }
+
+  public Optional<PostalEntityLocatorParticipation> locationOfDeath() {
+    return this.nbsEntity.addresses(DEATH_PLACE).findFirst();
+  }
+
   public List<PostalEntityLocatorParticipation> addresses() {
-    return this.nbsEntity.addresses();
+    return this.nbsEntity.addresses(not(BIRTH_PLACE.or(DEATH_PLACE))).toList();
   }
 
   public Collection<TeleEntityLocatorParticipation> phones() {
     return this.nbsEntity.phones();
-  }
-
-  public List<TeleEntityLocatorParticipation> phoneNumbers() {
-    return this.nbsEntity.phoneNumbers();
-  }
-
-  public List<TeleEntityLocatorParticipation> emailAddresses() {
-    return this.nbsEntity.emailAddress();
   }
 
   public List<EntityId> identifications() {
@@ -399,8 +321,15 @@ public class Person {
     changed(phone);
   }
 
+  private GeneralInformation ensureGeneralInformation() {
+    if (this.generalInformation == null) {
+      this.generalInformation = new GeneralInformation();
+    }
+    return this.generalInformation;
+  }
+
   public void update(final PatientCommand.UpdateGeneralInfo info) {
-    this.generalInformation.update(info);
+    ensureGeneralInformation().update(info);
     changed(info);
   }
 
@@ -408,40 +337,40 @@ public class Person {
       final PermissionScopeResolver resolver,
       final PatientCommand.AssociateStateHIVCase associate
   ) {
-    this.generalInformation.associate(resolver, associate);
+    ensureGeneralInformation().associate(resolver, associate);
   }
 
   public Person update(final PatientCommand.UpdateAdministrativeInfo info) {
-    this.asOfDateAdmin = info.asOf();
-    this.description = info.comment();
+    if (this.administrative == null) {
+      this.administrative = new PatientAdministrativeInformation();
+    }
+    this.administrative.update(info);
 
     changed(info);
 
     return this;
   }
 
+  private PatientSexBirth ensurePatientSexBirth() {
+    if (sexBirth == null) {
+      this.sexBirth = new PatientSexBirth();
+    }
+    return this.sexBirth;
+  }
+
   public void update(
       final PatientCommand.UpdateBirth birth,
       final AddressIdentifierGenerator identifierGenerator
   ) {
-    this.asOfDateSex = birth.asOf();
-    resolveDateOfBirth(birth.bornOn());
-    this.birthGenderCd = Gender.resolve(birth.gender());
-    this.multipleBirthInd = birth.multipleBirth();
-    this.birthOrderNbr = birth.birthOrder() == null ? null : birth.birthOrder().shortValue();
 
+    ensurePatientSexBirth().update(birth);
     this.nbsEntity.update(birth, identifierGenerator);
 
     changed(birth);
   }
 
   public void update(final PatientCommand.UpdateGender changes) {
-
-    this.asOfDateSex = changes.asOf();
-    this.currSexCd = Gender.resolve(changes.current());
-    this.sexUnkReasonCd = changes.unknownReason();
-    this.preferredGenderCd = changes.preferred();
-    this.additionalGenderCd = changes.additional();
+    ensurePatientSexBirth().update(changes);
 
     changed(changes);
   }
@@ -450,14 +379,10 @@ public class Person {
       final PatientCommand.UpdateMortality info,
       final AddressIdentifierGenerator identifierGenerator
   ) {
-    this.asOfDateMorbidity = info.asOf();
-    this.deceasedIndCd = Deceased.resolve(info.deceased());
-
-    if (Objects.equals(Deceased.Y, this.deceasedIndCd)) {
-      this.deceasedTime = info.deceasedOn();
-    } else {
-      this.deceasedTime = null;
+    if (this.mortality == null) {
+      this.mortality = new PatientMortality();
     }
+    this.mortality.update(info);
     this.nbsEntity.update(info, identifierGenerator);
 
     changed(info);
@@ -465,7 +390,8 @@ public class Person {
 
   public void delete(
       final PatientCommand.Delete delete,
-      final PatientAssociationCountFinder finder) throws PatientHasAssociatedEventsException {
+      final PatientAssociationCountFinder finder
+  ) throws PatientHasAssociatedEventsException {
 
     long associations = finder.count(this.id);
 
@@ -478,49 +404,34 @@ public class Person {
     changed(delete);
   }
 
-  public Person update(final PatientCommand.UpdateEthnicityInfo info) {
-    if (info.ethnicGroup() != null) {
-      this.ethnicity.update(info);
-
-      changed(info);
+  private PatientEthnicity ensureEthnicity() {
+    if (this.ethnicity == null) {
+      this.ethnicity = new PatientEthnicity();
     }
+    return this.ethnicity;
+  }
+
+  public Person update(final PatientCommand.UpdateEthnicityInfo info) {
+    ensureEthnicity().update(info);
+
+    changed(info);
 
     return this;
   }
 
   public Person add(final PatientCommand.AddDetailedEthnicity add) {
-    this.ethnicity.add(this, add).ifPresent(added -> changed(add));
+    ensureEthnicity().add(this, add).ifPresent(added -> changed(add));
     return this;
   }
 
   public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
-    this.ethnicity.remove(remove);
+    ensureEthnicity().remove(remove);
 
     changed(remove);
   }
 
   private void changed(final PatientCommand command) {
-    this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
-
     this.audit.changed(command.requester(), command.requestedOn());
-  }
-
-  public GeneralInformation getGeneralInformation() {
-    if (this.generalInformation == null) {
-      this.generalInformation = new GeneralInformation();
-    }
-
-    return this.generalInformation;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-    Person person = (Person) o;
-    return Objects.equals(id, person.id);
   }
 
   public Audit audit() {
@@ -535,16 +446,45 @@ public class Person {
     return status;
   }
 
-  @Override
-  public int hashCode() {
-    return this.id == null ? System.identityHashCode(this) : Objects.hash(id);
+  public Long id() {
+    return id;
   }
 
-  @Override
-  public String toString() {
-    return "Person{" +
-        "id=" + id +
-        '}';
+  public String localId() {
+    return localId;
   }
 
+  public PatientAdministrativeInformation administrative() {
+    return administrative;
+  }
+
+  public PatientSexBirth sexBirth() {
+    return sexBirth;
+  }
+
+  public PatientEthnicity ethnicity() {
+    return ethnicity;
+  }
+
+  public PatientRaceDemographics race() {
+    return race;
+  }
+
+  public GeneralInformation generalInformation() {
+    return generalInformation;
+  }
+
+  public PatientMortality mortality() {
+    return mortality;
+  }
+
+  public long signature() {
+    return Objects.hash(
+        administrative == null ? 0 : administrative.signature(),
+        generalInformation == null ? 0 : generalInformation.signature(),
+        mortality == null ? 0 : mortality.signature(),
+        ethnicity == null ? 0 : ethnicity.signature(),
+        sexBirth == null ? 0 : sexBirth.signature()
+    );
+  }
 }

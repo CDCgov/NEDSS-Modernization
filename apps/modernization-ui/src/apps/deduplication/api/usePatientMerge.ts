@@ -4,11 +4,11 @@ import { PatientMergeForm } from '../patient-merge/details/merge-review/model/Pa
 export const usePatientMerge = () => {
     const mergePatients = (
         mergeForm: PatientMergeForm,
-        matchId: string,
+        groupId: string,
         onSuccess: () => void,
         onError: () => void
     ) => {
-        fetch(`${Config.deduplicationUrl}/merge/${matchId}`, {
+        fetch(`${Config.deduplicationUrl}/merge/${groupId}`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

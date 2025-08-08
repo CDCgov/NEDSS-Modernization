@@ -68,4 +68,12 @@ describe('when entering patient general information demographics', () => {
 
         expect(getByText('The General information as of is required.')).toBeInTheDocument();
     });
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+        const dateInput = getByLabelText('General information as of');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            "This field defaults to today's date and can be changed if needed."
+        );
+    });
 });

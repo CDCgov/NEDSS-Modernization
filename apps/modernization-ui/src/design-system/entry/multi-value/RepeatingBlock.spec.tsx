@@ -137,7 +137,6 @@ describe('RepeatingBlock', () => {
 
         const button = getByRole('button', { name: 'Add test title' });
         expect(button).toBeInTheDocument();
-        expect(button).toHaveAttribute('aria-description');
     });
 
     it('should display add button with correct size', () => {
@@ -347,12 +346,9 @@ describe('RepeatingBlock', () => {
 
         const update = getByRole('button', { name: 'Update test title' });
         expect(update).toBeInTheDocument();
-        expect(update).toHaveAttribute('aria-description');
-        expect(update.innerHTML).not.toContain('svg');
 
         const cancel = getByRole('button', { name: 'Cancel' });
         expect(cancel).toBeInTheDocument();
-        expect(cancel).toHaveAttribute('aria-description');
     });
 
     it('should delete row when delete icon clicked', async () => {
