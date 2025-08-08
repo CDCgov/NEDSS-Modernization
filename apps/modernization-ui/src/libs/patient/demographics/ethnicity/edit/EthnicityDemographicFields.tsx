@@ -45,6 +45,7 @@ const EthnicityDemographicsFields = ({
                         error={error?.message}
                         required
                         sizing={sizing}
+                        aria-description="This field defaults to today's date and can be changed if needed."
                     />
                 )}
             />
