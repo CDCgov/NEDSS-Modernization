@@ -11,7 +11,7 @@ const resolve = <I>(fallback: Fallback<I>): I => {
 };
 
 const mapOr =
-    <R, S, O>(mapping: Mapping<R, S>, fallback: Fallback<O>) =>
+    <R, S, O = S>(mapping: Mapping<R, S>, fallback: Fallback<O>) =>
     (value?: R | null): S | O =>
         value ? mapping(value) : resolve(fallback);
 

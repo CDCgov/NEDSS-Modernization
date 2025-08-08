@@ -1,7 +1,13 @@
 import { DetailValue, DetailView } from 'design-system/entry/multi-value';
 import { internalizeDate } from 'date';
-import { RaceDemographic } from './race';
-import { displayNoData } from 'design-system/data';
+import { mapOr } from 'utils/mapping';
+import { Selectable } from 'options';
+import { RaceDemographic, labels } from './race';
+
+const displayDetails = mapOr<Selectable[], string | undefined>(
+    (details) => details.map((detail) => detail.name).join(', '),
+    undefined
+);
 
 type RaceDemographicViewProps = {
     entry: RaceDemographic;
@@ -10,11 +16,9 @@ type RaceDemographicViewProps = {
 const RaceDemographicView = ({ entry }: RaceDemographicViewProps) => {
     return (
         <DetailView>
-            <DetailValue label="Race as of">{internalizeDate(entry.asOf)}</DetailValue>
-            <DetailValue label="Race">{entry.race.name}</DetailValue>
-            <DetailValue label="Detailed race">
-                {entry.detailed.length > 0 ? entry.detailed.map((detail) => detail.name).join(', ') : displayNoData()}
-            </DetailValue>
+            <DetailValue label={labels.asOf}>{internalizeDate(entry.asOf)}</DetailValue>
+            <DetailValue label={labels.race}>{entry.race.name}</DetailValue>
+            <DetailValue label={labels.detailed}>{displayDetails(entry.detailed)}</DetailValue>
         </DetailView>
     );
 };

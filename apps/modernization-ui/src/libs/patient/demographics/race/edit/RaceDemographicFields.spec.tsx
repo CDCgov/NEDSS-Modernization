@@ -1,35 +1,31 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { RaceEntry } from './entry';
-import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
+import { RaceDemographic } from '../race';
+import { RaceDemographicFields, RaceDemographicFieldsProps } from './RaceDemographicFields';
+import { RaceOptions } from './useRaceOptions';
 
-const mockDetailResolver = jest.fn();
+const mockSelected = jest.fn();
 
-jest.mock('options/race', () => ({
-    useDetailedRaceOptions: () => ({ options: [], load: mockDetailResolver })
-}));
-
-type Props = Partial<RaceEntryFieldsProps> & { entry?: RaceEntry };
+type Props = Partial<RaceDemographicFieldsProps> & { entry?: RaceDemographic } & Partial<RaceOptions>;
 
 const Fixture = ({
     categories = [],
+    details = [],
+    selected = mockSelected,
     categoryValidator = jest.fn().mockResolvedValue('true'),
-    entry = {
-        id: 19,
-        asOf: '04/11/2022',
-        race: null,
-        detailed: []
-    }
+    entry
 }: Props) => {
-    const form = useForm<RaceEntry>({
+    const form = useForm<RaceDemographic>({
         mode: 'onBlur',
         defaultValues: entry
     });
 
+    const options = { categories, details, selected };
+
     return (
         <FormProvider {...form}>
-            <RaceEntryFields categories={categories} categoryValidator={categoryValidator} />
+            <RaceDemographicFields options={options} categoryValidator={categoryValidator} />
         </FormProvider>
     );
 };
@@ -38,7 +34,7 @@ describe('Race entry fields', () => {
     it('should render the proper labels', () => {
         const { getByLabelText } = render(<Fixture />);
 
-        expect(getByLabelText('Race as of')).toBeInTheDocument();
+        expect(getByLabelText('As of')).toBeInTheDocument();
         expect(getByLabelText('Race')).toBeInTheDocument();
     });
 
@@ -54,30 +50,27 @@ describe('Race entry fields', () => {
         expect(getByText('Detailed race')).toBeInTheDocument();
     });
 
-    it('detailed race values should depend on the race category', async () => {
-        mockDetailResolver.mockReturnValue([{ value: 'detailed', name: 'detailed race' }]);
-
+    it('detailed race values should be enabled when there are details available', async () => {
         const user = userEvent.setup();
 
-        const { getByLabelText, getByText } = render(
+        render(
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
                     { value: 'selected', name: 'selected name' }
                 ]}
+                details={[{ value: 'detailed', name: 'detailed race' }]}
             />
         );
 
-        const race = getByLabelText('Race');
+        const detailed = screen.getByLabelText('Detailed race');
 
-        await user.selectOptions(race, 'selected');
+        await user.click(detailed);
 
-        expect(mockDetailResolver).toBeCalledWith('selected');
+        expect(screen.getByText('detailed race')).toBeInTheDocument();
     });
 
     it('detailed race values should clear when the category changes', async () => {
-        mockDetailResolver.mockReturnValue([{ value: 'other-detailed', name: 'other detailed name' }]);
-
         const entry = {
             id: 389,
             asOf: '05/08/2013',
@@ -87,7 +80,7 @@ describe('Race entry fields', () => {
 
         const user = userEvent.setup();
 
-        const { getByLabelText } = render(
+        const { rerender } = render(
             <Fixture
                 entry={entry}
                 categories={[
@@ -97,12 +90,22 @@ describe('Race entry fields', () => {
             />
         );
 
-        const race = getByLabelText('Race');
-        const detailed = getByLabelText('Detailed race');
+        const race = screen.getByRole('combobox', { name: 'Race' });
+        await user.selectOptions(race, 'other');
 
-        await user.selectOptions(race, 'other').then(() => user.click(detailed));
+        expect(mockSelected).toBeCalledWith({ value: 'other', name: 'other name' });
 
-        expect(mockDetailResolver).toBeCalledWith('other');
+        rerender(
+            <Fixture
+                categories={[
+                    { value: 'other', name: 'other name' },
+                    { value: 'selected', name: 'selected name' }
+                ]}
+                details={[{ value: 'other-detailed', name: 'other detailed' }]}
+            />
+        );
+
+        const detailed = screen.getByLabelText('Detailed race');
         expect(detailed).toHaveValue('');
     });
 
@@ -118,12 +121,12 @@ describe('Race entry fields', () => {
             />
         );
 
-        const asOf = getByLabelText('Race as of');
+        const asOf = getByLabelText('As of');
         const race = getByLabelText('Race');
 
         await user.type(asOf, '01/20/2020').then(() => user.selectOptions(race, 'other'));
 
-        expect(queryByText('The Race as of is required')).not.toBeInTheDocument();
+        expect(queryByText('The As of is required')).not.toBeInTheDocument();
         expect(queryByText('The Race is required')).not.toBeInTheDocument();
     });
 
@@ -132,11 +135,11 @@ describe('Race entry fields', () => {
 
         const { getByLabelText, getByText } = render(<Fixture />);
 
-        const asOf = getByLabelText('Race as of');
+        const asOf = getByLabelText('As of');
 
         await user.clear(asOf).then(() => user.tab());
 
-        expect(getByText(/The Race as of is required/)).toBeInTheDocument();
+        expect(getByText(/The As of is required/)).toBeInTheDocument();
     });
 
     it('should require race category', async () => {
@@ -157,10 +160,16 @@ describe('Race entry fields', () => {
 
         const { getByRole, getByText } = render(
             <Fixture
+                entry={{
+                    id: 19,
+                    asOf: '04/11/2022',
+                    race: { name: 'Selected Name', value: 'selected-value' },
+                    detailed: []
+                }}
                 categoryValidator={validator}
                 categories={[
-                    { value: '1', name: 'race name' },
-                    { value: 'other', name: 'other name' }
+                    { value: 'other', name: 'other name' },
+                    { value: 'selected', name: 'selected name' }
                 ]}
             />
         );
@@ -179,7 +188,7 @@ describe('Race entry fields', () => {
     });
     it('should have accessibility description for the as of date field', () => {
         const { getByLabelText } = render(<Fixture />);
-        const dateInput = getByLabelText('Race as of');
+        const dateInput = getByLabelText('As of');
         expect(dateInput).toHaveAttribute(
             'aria-description',
             "This field defaults to today's date and can be changed if needed."

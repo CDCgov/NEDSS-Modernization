@@ -24,7 +24,7 @@ const initial = (asOf: string = today()): Partial<RaceDemographic> => ({
 export { initial };
 
 const labels = {
-    asOf: 'Race as of',
+    asOf: 'As of',
     race: 'Race',
     detailed: 'Detailed race'
 };

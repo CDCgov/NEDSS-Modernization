@@ -10,11 +10,9 @@
         gap: 1rem;
 
         overflow-y: scroll;
-        scroll-snap-type: y proximity;
 
         & > * {
             margin-bottom: 1rem;
-            scroll-snap-align: center;
         }
 
         padding-bottom: calc(100vh - var(--demographics-form-height, 100%));

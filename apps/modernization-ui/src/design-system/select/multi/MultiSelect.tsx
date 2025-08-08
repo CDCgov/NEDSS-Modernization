@@ -1,47 +1,38 @@
 import { FocusEventHandler, useState } from 'react';
-import Select, { MultiValue } from 'react-select';
-import { Field, Orientation, Sizing } from 'design-system/field';
-import { Selectable, asValue as asSelectableValue } from 'options';
 import classNames from 'classnames';
-
-import { styles, theme } from 'design-system/select/multi';
+import Select, { MultiValue } from 'react-select';
+import { Selectable, asValue as asSelectableValue } from 'options';
+import { Field, FieldProps } from 'design-system/field';
+import { styles, theme } from './design';
 import { CheckboxOption } from './CheckboxOption';
 import { DropdownIndicator } from './DropdownIndicator';
 
 type MultiSelectProps = {
     id: string;
     name: string;
-    label: string;
     placeholder?: string;
     disabled?: boolean;
     options: Selectable[];
     value?: Selectable[];
     onBlur?: FocusEventHandler<HTMLInputElement>;
     onChange?: (value: Selectable[]) => void;
-    orientation?: Orientation;
-    sizing?: Sizing;
-    error?: string;
-    required?: boolean;
     asValue?: (selectable: Selectable) => string;
     asDisplay?: (selectable: Selectable) => string;
-};
+} & FieldProps;
 
 export const MultiSelect = ({
     id,
     name,
-    label,
     options,
     value = [],
     onChange,
     onBlur,
-    orientation,
-    sizing,
-    error,
-    required,
     placeholder = '- Select -',
     disabled = false,
+    sizing,
     asValue = asSelectableValue,
-    asDisplay = (selectable: Selectable) => selectable.name
+    asDisplay = (selectable: Selectable) => selectable.name,
+    ...remaining
 }: MultiSelectProps) => {
     const [searchText, setSearchText] = useState('');
 
@@ -58,7 +49,7 @@ export const MultiSelect = ({
     };
 
     return (
-        <Field orientation={orientation} sizing={sizing} label={label} htmlFor={id} required={required} error={error}>
+        <Field htmlFor={id} {...remaining} sizing={sizing}>
             <Select<Selectable, true>
                 theme={theme}
                 styles={styles}
