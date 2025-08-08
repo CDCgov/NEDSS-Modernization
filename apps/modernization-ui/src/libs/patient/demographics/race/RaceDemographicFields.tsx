@@ -94,6 +94,7 @@ const RaceDemographicFields = ({
                         options={detailedRaces}
                         error={error?.message}
                         sizing={sizing}
+                        helperText="Use Crtl to select more than one"
                     />
                 )}
             />

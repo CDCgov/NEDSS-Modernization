@@ -14,7 +14,7 @@ describe('phone email demographic', () => {
     it('display as of', () => {
         render(<RaceDemographicView entry={entry} />);
 
-        const actual = screen.getByRole('definition', { name: 'Race as of' });
+        const actual = screen.getByRole('definition', { name: 'As of' });
 
         expect(actual).toHaveTextContent('01/01/2000');
     });

@@ -1,1 +1,5 @@
 @use 'design-system/table/header/widths';
+
+.category-header {
+    @include widths.fixed(35ch);
+}

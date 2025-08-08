@@ -2,13 +2,10 @@ import { internalizeDate } from 'date';
 import { SortHandler, SortingProvider } from 'libs/sorting';
 import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
 import { Column, columnSortResolver } from 'design-system/table';
-import { initial, RaceDemographic } from './race';
+import { RaceDemographic } from './race';
 import { RaceDemographicView } from './RaceDemographicView';
-import { RaceDemographicFields } from './RaceDemographicFields';
 
 import styles from './race-demographic-card.module.scss';
-import { useRaceCategoryOptions } from 'options/race';
-import { categoryValidator } from './edit/categoryValidator';
 
 const columns: Column<RaceDemographic>[] = [
     {
@@ -21,9 +18,9 @@ const columns: Column<RaceDemographic>[] = [
         render: (v) => internalizeDate(v.asOf)
     },
     {
-        id: 'race-race',
+        id: 'race-category',
         name: 'Race',
-        className: styles['text-header'],
+        className: styles['category-header'],
         sortable: true,
         sortIconType: 'alpha',
         value: (v) => v.race?.name
@@ -38,9 +35,7 @@ const columns: Column<RaceDemographic>[] = [
 
 type RaceDemographicCardProps = {
     title?: string;
-} & Omit<RepeatingBlockProps<RaceDemographic>, 'columns' | 'formRenderer' | 'viewRenderer' | 'defaultValues' | 'title'>;
-
-const defaultValue = initial();
+} & Omit<RepeatingBlockProps<RaceDemographic>, 'columns' | 'viewRenderer' | 'title'>;
 
 const sortResolver = columnSortResolver(columns);
 
@@ -51,17 +46,7 @@ const RaceDemographicCard = ({
     data = [],
     ...remaining
 }: RaceDemographicCardProps) => {
-    const categories = useRaceCategoryOptions();
-
     const renderView = (entry: RaceDemographic) => <RaceDemographicView entry={entry} />;
-    const renderForm = (entry?: RaceDemographic) => (
-        <RaceDemographicFields
-            categories={categories}
-            categoryValidator={categoryValidator(data)}
-            entry={entry}
-            sizing={sizing}
-        />
-    );
 
     return (
         <SortingProvider appendToUrl={false}>
@@ -75,9 +60,7 @@ const RaceDemographicCard = ({
                             columns={columns}
                             data={sorted}
                             features={{ sorting }}
-                            defaultValues={defaultValue}
                             viewRenderer={renderView}
-                            formRenderer={renderForm}
                             collapsible={collapsible}
                         />
                     )}
