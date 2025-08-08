@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Heading } from 'components/heading';
 import { SearchBar } from 'design-system/search/SearchBar';
-import { AlertMessage } from 'design-system/alert/AlertMessage';
+import { AlertMessage } from 'design-system/message';
 import { CaseReportLaboratorySection } from '../components/case-report-and-lab/CaseReportLaboratorySection';
 import { DecisionSupportSection } from '../components/decision-support/DecisionSupportSection';
 import { EpiLinkSection } from '../components/epi-link-lot-number/EpiLinkSection';
