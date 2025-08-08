@@ -1,12 +1,12 @@
 import { Selectable } from 'options';
 import { useConceptOptions } from 'options/concepts';
 
-type AddressCodedValues = {
+type AddressOptions = {
     types: Selectable[];
     uses: Selectable[];
 };
 
-const useAddressCodedValues = (): AddressCodedValues => {
+const useAddressOptions = (): AddressOptions => {
     const types = useConceptOptions('EL_TYPE_PST_PAT', { lazy: false });
     const uses = useConceptOptions('EL_USE_PST_PAT', { lazy: false });
 
@@ -16,4 +16,5 @@ const useAddressCodedValues = (): AddressCodedValues => {
     };
 };
 
-export { useAddressCodedValues };
+export { useAddressOptions };
+export type { AddressOptions };

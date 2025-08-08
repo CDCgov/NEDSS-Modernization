@@ -2,7 +2,10 @@ import { SortHandler, SortingProvider } from 'libs/sorting';
 import { columnSortResolver } from 'design-system/table';
 import { RaceRepeatingBlock, RaceRepeatingBlockProps, columns } from './RaceRepeatingBlock';
 
-type RaceDemographicCardProps = Omit<RaceRepeatingBlockProps, 'columns' | 'viewRenderer'>;
+type RaceDemographicCardProps = Omit<
+    RaceRepeatingBlockProps,
+    'columns' | 'formRenderer' | 'viewRenderer' | 'defaultValues'
+>;
 
 const sortResolver = columnSortResolver(columns);
 

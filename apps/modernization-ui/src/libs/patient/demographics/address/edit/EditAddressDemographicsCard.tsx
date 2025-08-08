@@ -1,18 +1,38 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
-import { HasAddressDemographics } from '../address';
-import { AddressDemographicCard, AddressDemographicCardProps } from '../AddressDemographicCard';
+import { Sizing } from 'design-system/field';
+import { AddressDemographic, HasAddressDemographics, initial } from '../address';
+import { AddressDemographicCardProps } from '../AddressDemographicCard';
+import { AddressDemographicFields } from './AddressDemographicFields';
+import { AddressDemographicRepeatingBlock } from '../AddressDemographicRepeatingBlock';
+import { useAddressOptions } from './useAddressOptions';
+
+const defaultValues = initial();
 
 type EditAddressDemographicsCardProps = {
     form: UseFormReturn<HasAddressDemographics>;
-} & Omit<AddressDemographicCardProps, 'id' | 'collapsible'>;
+} & Omit<AddressDemographicCardProps, 'id' | 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
 
 const EditAddressDemographicsCard = ({ form, ...remaining }: EditAddressDemographicsCardProps) => {
+    const options = useAddressOptions();
+
     return (
         <Controller
             control={form.control}
             name="addresses"
             render={({ field: { onChange, value, name } }) => (
-                <AddressDemographicCard {...remaining} id={name} collapsible={false} data={value} onChange={onChange} />
+                <AddressDemographicRepeatingBlock
+                    {...remaining}
+                    id={name}
+                    collapsible={false}
+                    data={value}
+                    viewable
+                    editable
+                    defaultValues={defaultValues}
+                    formRenderer={(_?: AddressDemographic, sizing?: Sizing) => (
+                        <AddressDemographicFields sizing={sizing} options={options} />
+                    )}
+                    onChange={onChange}
+                />
             )}
         />
     );
