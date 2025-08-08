@@ -1,8 +1,8 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { FormProvider, useForm } from 'react-hook-form';
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { MemoryRouter, Route, Routes, useNavigate } from 'react-router';
 import { MergeReview } from './MergeReview';
 import { PatientMergeForm } from './model/PatientMergeForm';
 import { AlertProvider } from 'alert';
@@ -17,6 +17,13 @@ jest.mock('apps/deduplication/api/useRemoveMerge', () => ({
         return { keepAllSeparate: mockKeepAllSeparate };
     }
 }));
+jest.mock('react-router', () => {
+    const original = jest.requireActual('react-router');
+    return {
+        ...original,
+        useNavigate: jest.fn()
+    };
+});
 
 const Fixture = () => {
     const form = useForm<PatientMergeForm>();
@@ -144,5 +151,91 @@ describe('MergeReview', () => {
 
         await user.click(getAllByRole('button', { name: 'Merge all' })[0]);
         expect(onMerge).toHaveBeenCalled();
+    });
+
+    it('should navigate to patient summary if fromPatientFileSummary is true when "Back" is clicked', async () => {
+        const mockNav = jest.fn();
+        (useNavigate as jest.Mock).mockReturnValue(mockNav);
+
+        const data: Partial<MergeCandidate>[] = [
+            {
+                personUid: '100',
+                personLocalId: '001',
+                adminComments: { date: '2025-05-01T00:00', comment: 'First comment' },
+                ethnicity: {},
+                sexAndBirth: {},
+                mortality: {},
+                general: {},
+                investigations: []
+            }
+        ];
+
+        const Wrapper = () => {
+            const form = useForm<PatientMergeForm>();
+            return (
+                <FormProvider {...form}>
+                    <MergeReview
+                        mergeCandidates={data as MergeCandidate[]}
+                        onPreview={onPreview}
+                        onRemovePatient={onRemove}
+                        onMerge={onMerge}
+                    />
+                </FormProvider>
+            );
+        };
+
+        const { getByText } = render(
+            <AlertProvider>
+                <MemoryRouter
+                    initialEntries={[
+                        {
+                            pathname: '/deduplication/merge/1234',
+                            state: { fromPatientFileSummary: true, patientId: '999' }
+                        }
+                    ]}
+                >
+                    <Routes>
+                        <Route path="/deduplication/merge/:matchId" element={<Wrapper />} />
+                    </Routes>
+                </MemoryRouter>
+            </AlertProvider>
+        );
+
+        const user = userEvent.setup();
+        await user.click(getByText('Back'));
+        expect(mockNav).toHaveBeenCalledWith('/patient/999/summary');
+    });
+
+    it('should go back normally when fromPatientFileSummary is false', async () => {
+        const mockNav = jest.fn();
+        (useNavigate as jest.Mock).mockReturnValue(mockNav);
+
+        const Wrapper = () => {
+            const form = useForm<PatientMergeForm>();
+            return (
+                <FormProvider {...form}>
+                    <MergeReview
+                        mergeCandidates={[]}
+                        onPreview={onPreview}
+                        onRemovePatient={onRemove}
+                        onMerge={onMerge}
+                    />
+                </FormProvider>
+            );
+        };
+
+        render(
+            <AlertProvider>
+                <MemoryRouter initialEntries={['/deduplication/merge/1234']}>
+                    <Routes>
+                        <Route path="/deduplication/merge/:matchId" element={<Wrapper />} />
+                    </Routes>
+                </MemoryRouter>
+            </AlertProvider>
+        );
+
+        const user = userEvent.setup();
+        await user.click(screen.getByText('Back'));
+        expect(mockNav).toHaveBeenCalledWith('/deduplication/merge');
     });
 });

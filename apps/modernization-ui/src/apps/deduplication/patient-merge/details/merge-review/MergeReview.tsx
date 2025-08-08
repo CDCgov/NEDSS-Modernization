@@ -1,7 +1,7 @@
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useLocation } from 'react-router';
 import styles from './merge-review.module.scss';
 import { AdminCommentsSelection } from './patient-form/admin-comments/AdminCommentsSelection';
 import { NameSelection } from './patient-form/name/NameSelection';
@@ -28,7 +28,10 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMer
     const { matchId } = useParams();
     const { keepAllSeparate } = useRemoveMerge();
     const nav = useNavigate();
+    const location = useLocation();
     const { showAlert, showError } = useAlert();
+    const fromPatientFileSummary = location.state?.fromPatientFileSummary ?? false;
+    const fromPatientId = location.state?.patientId;
 
     const handleKeepAllSeparate = () => {
         if (matchId !== undefined) {
@@ -43,12 +46,17 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMer
             title: 'Success',
             message: (
                 <span>
-                    You have chosen to keep the following patients separate: <strong>{patientIds}.</strong> They have
+                    You have chosen to keep the following patients separate: <strong>{patientIds}</strong>. They have
                     been removed from the matches requiring review.
                 </span>
             )
         });
-        nav('/deduplication/merge');
+
+        if (fromPatientFileSummary) {
+            nav(`/patient/${fromPatientId}/summary`);
+        } else {
+            nav('/deduplication/merge');
+        }
     };
 
     const handleKeepSeparateError = () => {
@@ -60,7 +68,13 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMer
             <header>
                 <Heading level={1}>Patient matches requiring review</Heading>
                 <div className={styles.buttons}>
-                    <Button secondary onClick={() => nav('/deduplication/merge')}>
+                    <Button
+                        secondary
+                        onClick={() =>
+                            fromPatientFileSummary
+                                ? nav(`/patient/${fromPatientId}/summary`)
+                                : nav('/deduplication/merge')
+                        }>
                         Back
                     </Button>
                     <Button secondary onClick={onPreview}>
