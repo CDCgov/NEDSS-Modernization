@@ -5,11 +5,9 @@ import { PatientFileDemographicsSummaryCard } from '../demographics/summary';
 import { PatientFileOpenInvestigationsCard } from './openInvestigations';
 import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
 import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
-import { AlertMessage } from 'design-system/message';
 import { FeatureToggle } from 'feature';
 import { usePatientMergeQueueStatus } from '../usePatientMergeQueueStatus';
-import { useNavigate } from 'react-router';
-import { permissions, Permitted } from 'libs/permission';
+import { MergeAlert } from './MergeAlert';
 
 const PatientFileSummary = () => {
     const { summary, demographics, patient } = usePatientFileData();
@@ -19,26 +17,11 @@ const PatientFileSummary = () => {
         mergeGroup,
         loading: mergeQueueLoading
     } = usePatientMergeQueueStatus(patient?.id?.toString());
-    const nav = useNavigate();
 
     return (
         <PatientFileView patient={patient} sizing={sizing}>
             {inMergeQueue && !mergeQueueLoading && (
-                <AlertMessage type="warning" slim>
-                    We found potential duplicates for this patient in system-identified matches.&nbsp;&nbsp;&nbsp;
-                    <Permitted permission={permissions.patient.merge}>
-                        <a
-                            href={`/deduplication/merge/${mergeGroup}`}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                nav(`/deduplication/merge/${mergeGroup}`, {
-                                    state: { fromPatientFileSummary: true, patientId: patient?.patientId?.toString() }
-                                });
-                            }}>
-                            Review Matches
-                        </a>
-                    </Permitted>
-                </AlertMessage>
+                <MergeAlert mergeGroup={mergeGroup} patientId={patient?.patientId?.toString()} />
             )}
 
             <PatientFileDemographicsSummaryCard
