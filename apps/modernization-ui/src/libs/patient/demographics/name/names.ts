@@ -3,7 +3,7 @@ import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 
 type NameDemographic = EffectiveDated & {
-    identifier?: number;
+    sequence?: number;
     type: Selectable | null;
     prefix?: Selectable | null;
     first?: string;
@@ -35,3 +35,18 @@ const initial = (asOf: string = today()): Partial<NameDemographic> => ({
 });
 
 export { initial };
+
+const labels = {
+    asOf: 'As of',
+    type: 'Type',
+    prefix: 'Prefix',
+    first: 'First',
+    middle: 'Middle',
+    secondMiddle: 'Second middle',
+    last: 'Last',
+    secondLast: 'Second last',
+    suffix: 'Suffix',
+    degree: 'Degree'
+};
+
+export { labels };
