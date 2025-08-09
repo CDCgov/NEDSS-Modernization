@@ -3,6 +3,7 @@ import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 
 type PhoneEmailDemographic = EffectiveDated & {
+    identifier?: number;
     type: Selectable;
     use: Selectable;
     countryCode?: string;

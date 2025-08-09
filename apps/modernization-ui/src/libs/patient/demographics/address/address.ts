@@ -3,6 +3,7 @@ import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 
 type AddressDemographic = EffectiveDated & {
+    identifier?: number;
     type: Selectable;
     use: Selectable;
     address1?: string;

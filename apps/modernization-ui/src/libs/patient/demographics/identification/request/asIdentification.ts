@@ -6,10 +6,11 @@ import { IdentificationDemographic } from '../identifications';
 const asIdentification = (
     demographic: Partial<IdentificationDemographic>
 ): IdentificationDemographicRequest | undefined => {
-    const { asOf, type, issuer, value } = demographic;
+    const { sequence, asOf, type, issuer, value } = demographic;
 
     if (asOf && exists(type) && value) {
         return {
+            sequence,
             asOf,
             type: asValue(type),
             value,
