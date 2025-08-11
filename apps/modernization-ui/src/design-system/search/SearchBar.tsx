@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Button } from 'design-system/button/Button';
 import { Sizing } from 'design-system/field';
 import styles from './SearchBar.module.scss';
+import { Icons } from '../icon';
 
 type SearchBarProps = {
     size?: Sizing;
@@ -11,6 +12,7 @@ type SearchBarProps = {
     value?: string;
     onChange?: (value: string) => void;
     onSearch?: (value: string) => void;
+    iconName?: Icons;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'value' | 'onChange'>;
 
 export const SearchBar = ({
@@ -20,6 +22,7 @@ export const SearchBar = ({
     value: controlledValue,
     onChange: controlledOnChange,
     onSearch,
+    iconName = 'search',
     ...props
 }: SearchBarProps) => {
     // Internal state only if no controlledValue provided
@@ -79,7 +82,7 @@ export const SearchBar = ({
                     <Button
                         type="button"
                         sizing={size}
-                        icon="close"
+                        icon={'close'}
                         onClick={handleClear}
                         className={classNames(styles.clearButton, styles[`size-${size}`])}
                         aria-label="Clear"
@@ -89,7 +92,7 @@ export const SearchBar = ({
             <div>
                 <Button
                     sizing={size}
-                    icon="search"
+                    icon={iconName}
                     className={classNames(styles.searchButton, styles[`size-${size}`], { [styles.tall]: tall })}
                     onClick={() => onSearch?.(value)}
                     aria-label="Search"
