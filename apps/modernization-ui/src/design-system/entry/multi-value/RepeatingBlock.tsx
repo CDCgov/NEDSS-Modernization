@@ -16,6 +16,11 @@ import { entryColumns } from './entryColumns';
 
 import styles from './RepeatingBlock.module.scss';
 
+type DefaultValuesResolver<D> = (() => D) | D;
+
+const resolveDefaultValues = <I,>(initial?: DefaultValuesResolver<I>) =>
+    initial instanceof Function ? initial() : initial;
+
 type RepeatingBlockProps<V extends FieldValues> = {
     features?: DataTableFeatures;
     columns: Column<V>[];
@@ -26,7 +31,7 @@ type RepeatingBlockProps<V extends FieldValues> = {
     viewRenderer: (entry: V, sizing?: Sizing) => ReactNode;
     // edit properties
     editable?: boolean;
-    defaultValues?: DefaultValues<V>; // Provide all default values to allow `isDirty` to function
+    defaultValues?: DefaultValuesResolver<DefaultValues<V>>; // Provide all default values to allow `isDirty` to function
     errors?: ReactNode[];
     onChange?: (data: V[]) => void;
     isDirty?: (isDirty: boolean) => void;
@@ -52,7 +57,11 @@ const RepeatingBlock = <V extends FieldValues>({
     formRenderer,
     viewRenderer
 }: RepeatingBlockProps<V>) => {
-    const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onBlur', defaultValues });
+    const form = useForm<V>({
+        mode: 'onSubmit',
+        reValidateMode: 'onBlur',
+        defaultValues: resolveDefaultValues(defaultValues)
+    });
 
     const interaction = useMultiValueEntry<V>({
         values: data,
@@ -81,7 +90,7 @@ const RepeatingBlock = <V extends FieldValues>({
             form.reset(interaction.selected.value);
         } else {
             // Conversely, if status is not editing, reset to default values to clear form between state changes
-            form.reset(defaultValues);
+            form.reset(resolveDefaultValues(defaultValues));
         }
     }, [interaction.status, interaction.selected?.value, form.reset]);
 
@@ -193,7 +202,7 @@ type EntryActionColumnProps<T extends FieldValues> = {
     interaction: MultiValueEntryInteraction<T>;
     viewable: boolean;
     editable: boolean;
-    defaultValues?: DefaultValues<T>;
+    defaultValues?: DefaultValuesResolver<DefaultValues<T>>;
     sizing?: Sizing;
 };
 
@@ -209,7 +218,7 @@ const EntryActionColumn = <E extends FieldValues>({
     const handleRemove = (identifier: string) => {
         if (interaction.selected?.id === identifier) {
             // the entry being removed is the one currently selected, reset the form.
-            form.reset(defaultValues);
+            form.reset(resolveDefaultValues(defaultValues));
         }
         interaction.remove(identifier);
     };
@@ -307,7 +316,7 @@ type EditFooterProps<T extends FieldValues> = {
     interaction: MultiValueEntryInteraction<T>;
     title: string;
     clearable: boolean;
-    defaultValues?: DefaultValues<T>;
+    defaultValues?: DefaultValuesResolver<DefaultValues<T>>;
     sizing?: Sizing;
 };
 
@@ -320,19 +329,19 @@ const EditFooter = <E extends FieldValues>({
     sizing
 }: EditFooterProps<E>) => {
     const handleClear = () => {
-        form.reset(defaultValues);
+        form.reset(resolveDefaultValues(defaultValues));
     };
 
     const handleAdd = (value: E) => {
         // form reset must be triggered prior to `add` call,
         // otherwise internal form state retains some values and fails to properly reset
-        form.reset(defaultValues);
+        form.reset(resolveDefaultValues(defaultValues));
         interaction.add(value);
     };
 
     const handleUpdate = (value: E) => {
         // set the form values to the updated values sync the pending state
-        form.reset(defaultValues);
+        form.reset(resolveDefaultValues(defaultValues));
         interaction.update(value);
     };
 

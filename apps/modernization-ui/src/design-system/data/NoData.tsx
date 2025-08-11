@@ -2,4 +2,6 @@ const displayNoData = () => '---';
 
 const NoData = displayNoData;
 
-export { NoData, displayNoData };
+const orNoData = (value?: string) => (value ? value : displayNoData());
+
+export { NoData, displayNoData, orNoData };

@@ -1,18 +1,41 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
-import { HasAddressDemographics } from '../address';
-import { AddressDemographicCard, AddressDemographicCardProps } from '../AddressDemographicCard';
+import { Sizing } from 'design-system/field';
+import { PatientDemographicsDefaults } from '../../demographics';
+import { AddressDemographic, HasAddressDemographics, initial } from '../address';
+import {
+    AddressDemographicRepeatingBlock,
+    AddressDemographicRepeatingBlockProps
+} from '../AddressDemographicRepeatingBlock';
+import { AddressDemographicFields } from './AddressDemographicFields';
+import { useAddressOptions } from './useAddressOptions';
 
 type EditAddressDemographicsCardProps = {
     form: UseFormReturn<HasAddressDemographics>;
-} & Omit<AddressDemographicCardProps, 'id' | 'collapsible'>;
+    defaults: PatientDemographicsDefaults;
+} & Omit<AddressDemographicRepeatingBlockProps, 'id' | 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
 
-const EditAddressDemographicsCard = ({ form, ...remaining }: EditAddressDemographicsCardProps) => {
+const EditAddressDemographicsCard = ({ form, defaults, ...remaining }: EditAddressDemographicsCardProps) => {
+    const options = useAddressOptions();
+    const defaultValues = initial(defaults?.asOf, defaults?.address);
+
     return (
         <Controller
             control={form.control}
             name="addresses"
             render={({ field: { onChange, value, name } }) => (
-                <AddressDemographicCard {...remaining} id={name} collapsible={false} data={value} onChange={onChange} />
+                <AddressDemographicRepeatingBlock
+                    {...remaining}
+                    id={name}
+                    collapsible={false}
+                    data={value}
+                    viewable
+                    editable
+                    defaultValues={defaultValues}
+                    formRenderer={(_?: AddressDemographic, sizing?: Sizing) => (
+                        <AddressDemographicFields sizing={sizing} options={options} />
+                    )}
+                    onChange={onChange}
+                />
             )}
         />
     );

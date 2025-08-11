@@ -5,10 +5,11 @@ import { NameDemographic } from '../names';
 import { NameDemographicRequest } from './nameRequest';
 
 const asName = (demographic: Partial<NameDemographic>): NameDemographicRequest | undefined => {
-    const { asOf, type, prefix, first, middle, secondMiddle, last, secondLast, suffix, degree } = demographic;
+    const { sequence, asOf, type, prefix, first, middle, secondMiddle, last, secondLast, suffix, degree } = demographic;
 
     if (asOf && exists(type)) {
         return {
+            sequence,
             asOf,
             type: asValue(type),
             prefix: asValue(prefix),

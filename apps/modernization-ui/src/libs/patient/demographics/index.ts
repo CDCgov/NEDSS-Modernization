@@ -10,8 +10,9 @@ export type { RaceDemographic } from './race';
 export type { SexBirthDemographic } from './sex-birth';
 
 export { initial } from './demographics';
-export type { PatientDemographics } from './demographics';
+export type { PatientDemographics, PatientDemographicsDefaults } from './demographics';
 
 export { PatientDemographicsForm } from './PatientDemographicsForm';
+export { usePatientDemographicDefaults } from './usePatientDemographicDefaults';
 
 export { sections } from './sections';

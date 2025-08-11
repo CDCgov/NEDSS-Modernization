@@ -4,11 +4,25 @@ import { AddressDemographic } from '../address';
 import { AddressDemographicRequest } from './addressRequest';
 
 const asAddress = (demographic: Partial<AddressDemographic>): AddressDemographicRequest | undefined => {
-    const { asOf, use, type, state, county, country, address1, address2, city, zipcode, censusTract, comment } =
-        demographic;
+    const {
+        identifier,
+        asOf,
+        use,
+        type,
+        state,
+        county,
+        country,
+        address1,
+        address2,
+        city,
+        zipcode,
+        censusTract,
+        comment
+    } = demographic;
 
     if (asOf && exists(use) && exists(type)) {
         return {
+            identifier,
             asOf,
             type: asValue(type),
             use: asValue(use),

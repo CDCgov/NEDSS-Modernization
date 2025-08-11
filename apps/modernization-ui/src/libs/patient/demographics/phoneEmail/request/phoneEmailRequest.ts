@@ -2,6 +2,7 @@ import { EffectiveDated, HasComments } from 'utils';
 
 type PhoneEmailDemographicRequest = EffectiveDated &
     HasComments & {
+        identifier?: number;
         type: string;
         use: string;
         countryCode?: string;

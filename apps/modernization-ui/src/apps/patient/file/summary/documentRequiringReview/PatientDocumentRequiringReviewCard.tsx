@@ -14,7 +14,7 @@ import { MaybeLabeledValue } from 'design-system/value';
 import { ResultedTests } from 'libs/events/tests';
 
 import styles from './drr.module.scss';
-import { OrElseNoData } from 'design-system/data';
+import { displayNoData } from 'design-system/data';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -52,20 +52,20 @@ const resolveUrl = (value: PatientFileDocumentRequiringReview) => {
 };
 
 const renderEventDate = (value?: PatientFileDocumentRequiringReview) => {
-    if (value?.type === 'Morbidity Report' || value?.type === 'Case Report') {
+    if (value?.eventDate && (value?.type === 'Morbidity Report' || value?.type === 'Case Report')) {
         return (
             <MaybeLabeledValue label="Report date" orientation="vertical">
                 {internalizeDate(value.eventDate)}
             </MaybeLabeledValue>
         );
-    } else if (value?.type === 'Laboratory Report') {
+    } else if (value?.eventDate && value?.type === 'Laboratory Report') {
         return (
             <MaybeLabeledValue label="Date collected" orientation="vertical">
                 {internalizeDate(value.eventDate)}
             </MaybeLabeledValue>
         );
     }
-    return internalizeDate(value?.eventDate);
+    return displayNoData();
 };
 
 const renderEventId = (value: PatientFileDocumentRequiringReview) => {
@@ -119,7 +119,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,
-        render: (value) => <OrElseNoData>{renderEventDate(value)}</OrElseNoData>
+        render: (value) => renderEventDate(value)
     },
     {
         ...DESCRIPTION,
