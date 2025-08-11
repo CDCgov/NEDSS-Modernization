@@ -149,6 +149,23 @@ const GeneralInformationDemographicFields = ({
         />
         <Controller
             control={form.control}
+            name="general.primaryLanguage"
+            render={({ field: { onChange, onBlur, value, name } }) => (
+                <SingleSelect
+                    label={labels.primaryLanguage}
+                    orientation={orientation}
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    id={name}
+                    name={name}
+                    options={options.primaryLanguages}
+                    sizing={sizing}
+                />
+            )}
+        />
+        <Controller
+            control={form.control}
             name="general.speaksEnglish"
             render={({ field: { onChange, onBlur, value, name } }) => (
                 <SingleSelect
