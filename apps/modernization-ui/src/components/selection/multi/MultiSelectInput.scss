@@ -15,7 +15,7 @@
     .multi-select__control {
         border-width: 1px;
         border-style: solid;
-        border-color: colors.$base-dark;
+        border-color: colors.$base-dark !important;
         border-radius: 0;
 
         .multi-select__indicator {
