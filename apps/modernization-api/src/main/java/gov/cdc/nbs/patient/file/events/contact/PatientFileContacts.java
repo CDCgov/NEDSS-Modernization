@@ -19,6 +19,8 @@ record PatientFileContacts(
       @JsonProperty(required = true) long patient,
       @JsonProperty(required = true) long identifier,
       @JsonProperty(required = true) String local,
+      @JsonProperty(required = true)
+      String condition,
       String processingDecision,
       String referralBasis,
       @JsonProperty(required = true)
@@ -28,8 +30,6 @@ record PatientFileContacts(
       NamedContact named,
       String priority,
       String disposition,
-      @JsonProperty(required = true)
-      String condition,
       AssociatedInvestigation associated
   ) {
   }

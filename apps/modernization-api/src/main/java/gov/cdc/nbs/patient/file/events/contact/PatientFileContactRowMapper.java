@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.PatientFileContact> {
 
   record Column(
-      int condition,
       int patient,
       int identifier,
       int local,
+      int condition,
       int referralBasis,
       int processingDecision,
       int createdOn,
@@ -60,6 +60,7 @@ class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.Patie
         patient,
         identifier,
         local,
+        condition,
         processingDecision,
         referralBasis,
         createdOn,
@@ -67,7 +68,6 @@ class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.Patie
         named,
         priority,
         disposition,
-        condition,
         associated
     );
   }
