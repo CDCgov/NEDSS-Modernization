@@ -536,16 +536,4 @@ export class PatientFileService {
             },
         });
     }
-    /**
-     * Checks if the patient with the given personUid is currently in the merge queue.
-     */
-    public static isPatientInMergeQueue(personUid: string): CancelablePromise<MergeStatus> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: `/nbs/api/deduplication/merge/status/{personUid}`,
-            path: {
-                'personUid': personUid,
-            },
-        }) as CancelablePromise<MergeStatus>;
-    }
 }
