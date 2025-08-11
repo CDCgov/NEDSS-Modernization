@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { PatientMergeHistoryCard } from './PatientMergeHistoryCard';
-import type { PatientFileMergeHistory } from './mergeHistory';
+import type { PatientFileMergeHistory } from './model/mergeHistory';
 import { MemoizedSupplier } from 'libs/supplying';
 
 let mockPermissions: string[] = [];

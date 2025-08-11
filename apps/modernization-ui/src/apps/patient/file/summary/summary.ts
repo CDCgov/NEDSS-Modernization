@@ -2,7 +2,7 @@ import { MemoizedSupplier } from 'libs/supplying';
 import { PatientFileDocumentRequiringReview, patientDDR } from './documentRequiringReview';
 import { PatientFileOpenInvestigation, patientOpenInvestigations } from './openInvestigations';
 import { patientMergeHistory } from './mergeHistory/patientMergeHistory';
-import { PatientFileMergeHistory } from './mergeHistory/mergeHistory';
+import { PatientFileMergeHistory } from './mergeHistory/model/mergeHistory';
 
 type PatientFileSummaryData = {
     drr: MemoizedSupplier<Promise<PatientFileDocumentRequiringReview[]>>;

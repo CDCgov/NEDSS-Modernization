@@ -1,30 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { PatientFileService } from 'generated';
+import { useApi } from 'libs/api';
 
 export function usePatientMergeQueueStatus(personUid?: string) {
-    const [inMergeQueue, setInMergeQueue] = useState<boolean | null>(null);
-    const [mergeGroup, setMergeGroup] = useState<number | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<Error | null>(null);
+    const { data, error, isLoading, load } = useApi({
+        resolver: PatientFileService.isPatientInMergeQueue
+    });
 
     useEffect(() => {
-        if (!personUid) {
-            setInMergeQueue(null);
-            setMergeGroup(null);
-            return;
+        if (personUid) {
+            load(personUid);
         }
+    }, [personUid, load]);
 
-        setLoading(true);
-        setError(null);
-
-        PatientFileService.isPatientInMergeQueue(personUid)
-            .then((res) => {
-                setInMergeQueue(res.inMergeQueue);
-                setMergeGroup(res.mergeGroup ?? null);
-            })
-            .catch((err) => setError(err))
-            .finally(() => setLoading(false));
-    }, [personUid]);
-
-    return { inMergeQueue, mergeGroup, loading, error };
+    return {
+        inMergeQueue: data?.inMergeQueue ?? null,
+        mergeGroup: data?.mergeGroup ?? null,
+        loading: isLoading,
+        error
+    };
 }

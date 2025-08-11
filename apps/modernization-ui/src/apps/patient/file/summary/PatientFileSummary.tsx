@@ -20,10 +20,11 @@ const PatientFileSummary = () => {
 
     return (
         <PatientFileView patient={patient} sizing={sizing}>
-            {inMergeQueue && !mergeQueueLoading && (
-                <MergeAlert mergeGroup={mergeGroup} patientId={patient?.patientId?.toString()} />
-            )}
-
+            <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
+                {inMergeQueue && !mergeQueueLoading && (
+                    <MergeAlert mergeGroup={mergeGroup} patientId={patient?.patientId?.toString()} />
+                )}
+            </FeatureToggle>
             <PatientFileDemographicsSummaryCard
                 id="demographics-summary"
                 provider={demographics.get().summary}
