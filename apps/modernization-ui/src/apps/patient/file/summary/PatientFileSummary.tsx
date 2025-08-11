@@ -7,7 +7,7 @@ import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
 import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
 import { FeatureToggle } from 'feature';
 import { usePatientMergeQueueStatus } from '../usePatientMergeQueueStatus';
-import { MergeAlert } from './MergeAlert';
+import { MergeAlert } from './mergeHistory/MergeAlert';
 
 const PatientFileSummary = () => {
     const { summary, demographics, patient } = usePatientFileData();
