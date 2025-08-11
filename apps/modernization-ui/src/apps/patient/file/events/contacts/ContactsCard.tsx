@@ -1,28 +1,28 @@
-import { PatientFileContact, PatientFileContacts } from './contactsNamed';
+import { Suspense, useState } from 'react';
+import { Await, NavLink } from 'react-router';
+import { MemoizedSupplier } from 'libs/supplying';
+import { internalizeDate, internalizeDateTime } from 'date';
+import { exists } from 'utils';
+import { LoadingOverlay } from 'libs/loading';
+import { Shown } from 'conditional-render';
+import { Sizing } from 'design-system/field';
+import { displayNoData } from 'design-system/data';
 import { Card, TableCardProps } from 'design-system/card';
-import { Section } from 'design-system/card/section/Section';
+import { Tag } from 'design-system/tag';
+import { MaybeLabeledValue } from 'design-system/value';
+import { Section } from 'design-system/card';
 import { Column, SortableDataTable } from 'design-system/table';
 import { ColumnPreference, ColumnPreferenceProvider, ColumnPreferencesAction } from 'design-system/table/preferences';
 
-import styles from './contacts-card.module.scss';
-import { internalizeDate, internalizeDateTime } from 'date';
-import { DisplayableName, displayName } from 'name';
-import { AssociatedWith } from '../investigations/associated';
-import { Tag } from 'design-system/tag';
-import { Sizing } from 'design-system/field';
-import { Patient } from 'apps/patient/file/patient';
-import { MaybeLabeledValue } from 'design-system/value';
-import { Suspense, useState } from 'react';
-import { LoadingOverlay } from 'libs/loading';
-import { Await } from 'react-router';
-import { MemoizedSupplier } from 'libs/supplying';
+import { maybeDisplayName } from 'name';
 import { ClassicModalButton } from 'libs/classic';
-import { Shown } from 'conditional-render';
-import { exists } from 'utils';
-import { displayNoData } from 'design-system/data';
+import { AssociatedWith } from 'libs/events/investigations/associated';
+import { PatientFileContact, PatientFileContacts } from './contacts';
+
+import styles from './contacts-card.module.scss';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
-const DATE_CREATED = { id: 'createx-on', name: 'Date created' };
+const DATE_CREATED = { id: 'created-on', name: 'Date created' };
 const DATE_NAMED = { id: 'named-on', name: 'Date named' };
 const NAME = { id: 'name', name: 'Name' };
 const DESCRIPTION = { id: 'description', name: 'Description' };
@@ -37,8 +37,6 @@ const columnPreferences: ColumnPreference[] = [
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
 
-const displayPatientName = (value?: DisplayableName) => <a href="patient....">{value && displayName('full')(value)}</a>;
-
 const columns = (onClose: () => void): Column<PatientFileContact>[] => [
     {
         ...EVENT_ID,
@@ -51,7 +49,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
                     tertiary
                     sizing="small"
                     className={styles['event-id']}
-                    url={`/nbs/api/profile/${value.patient}/contact/${value.identifier}?condition=${value.associated?.id}`}
+                    url={`/nbs/api/profile/${value.patient}/contact/${value.identifier}?condition=${value.condition}`}
                     onClose={onClose}>
                     {value.local}
                 </ClassicModalButton>
@@ -80,13 +78,8 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
         ...NAME,
         className: styles['text-header'],
         sortable: true,
-        value: (value) => value.named?.first ?? value.named?.last ?? '',
-        render: (value) => (
-            <>
-                <a href={`/patient/${value.named.patientId}`}>{displayPatientName(value.named)}</a>
-            </>
-        ),
-        sortIconType: 'alpha'
+        value: (value) => maybeDisplayName(value.named),
+        render: (value) => <NavLink to={`/patient/${value.named.patientId}`}>{maybeDisplayName(value.named)}</NavLink>
     },
     {
         ...DESCRIPTION,
@@ -118,10 +111,11 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
     }
 ];
 
+type TitleResolver = (condition: string) => string;
+
 type InternalCardProps = {
-    patient: Patient;
     data?: PatientFileContacts[];
-    titleResolver: (patient?: DisplayableName, contact?: PatientFileContacts) => string;
+    titleResolver: TitleResolver;
     onClose: () => void;
 } & Omit<TableCardProps<PatientFileContacts>, 'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'>;
 
@@ -135,15 +129,7 @@ const dataLength = (data: PatientFileContacts[]) => {
     return count;
 };
 
-const InternalCard = ({
-    patient,
-    sizing,
-    title,
-    data = [],
-    onClose,
-    titleResolver,
-    ...remaining
-}: InternalCardProps) => {
+const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...remaining }: InternalCardProps) => {
     return (
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
             {(apply) => (
@@ -158,7 +144,7 @@ const InternalCard = ({
                         {data.map((contact) => (
                             <Section
                                 key={contact.condition}
-                                title={titleResolver(patient.name, contact)}
+                                title={titleResolver(contact.condition)}
                                 id={`${contact.condition}-${title}`}
                                 sizing={sizing}
                                 className={styles.card}

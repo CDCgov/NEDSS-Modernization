@@ -16,6 +16,7 @@ class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.Patie
       int patient,
       int identifier,
       int local,
+      int condition,
       int referralBasis,
       int processingDecision,
       int createdOn,
@@ -42,6 +43,7 @@ class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.Patie
       final ResultSet resultSet,
       final int rowNum
   ) throws SQLException {
+    String condition = resultSet.getString(columns.condition);
     long patient = resultSet.getLong(this.columns.patient());
     long identifier = resultSet.getLong(this.columns.identifier());
     String local = resultSet.getString(this.columns.local());
@@ -58,6 +60,7 @@ class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.Patie
         patient,
         identifier,
         local,
+        condition,
         processingDecision,
         referralBasis,
         createdOn,

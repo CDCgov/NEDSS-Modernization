@@ -1,10 +1,9 @@
-import { maybeJson } from 'libs/api';
-import { PatientFileContacts } from 'libs/events/contacts/contactsNamed';
-import { transformer } from 'libs/events/contacts/transformer';
+import { get, maybeJson } from 'libs/api';
 import { mapOr } from 'utils/mapping';
+import { PatientFileContacts, transformer } from '../contacts';
 
 const patientContacts = (patient: number): Promise<PatientFileContacts[]> =>
-    fetch(`/nbs/api/patients/${patient}/contacts`, { credentials: 'same-origin' })
+    fetch(get(`/nbs/api/patients/${patient}/contacts`))
         .then(maybeJson)
         .then(mapOr((response) => response.map(transformer), []))
         .catch(() => []);
