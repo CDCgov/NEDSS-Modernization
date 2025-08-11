@@ -28,6 +28,8 @@ record PatientFileContacts(
       NamedContact named,
       String priority,
       String disposition,
+      @JsonProperty(required = true)
+      String condition,
       AssociatedInvestigation associated
   ) {
   }

@@ -24,7 +24,7 @@ class BasePatientFIleContactFinder implements PatientFileContactFinder {
     this.extractor = new MultiMapResultSetExtractor<>(
         (rs, rowNum) -> rs.getString(1),
         new PatientFileContactRowMapper(
-            new PatientFileContactRowMapper.Column(2, 3, 4, 5, 6, 7, 8,
+            new PatientFileContactRowMapper.Column(1, 2, 3, 4, 5, 6, 7, 8,
                 new NamedContactRowMapper.Columns(9, 10, 11, 12, 13),
                 14, 15,
                 new AssociatedInvestigationRowMapper.Column(16, 17, 18, 19)

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.PatientFileContact> {
 
   record Column(
+      int condition,
       int patient,
       int identifier,
       int local,
@@ -42,6 +43,7 @@ class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.Patie
       final ResultSet resultSet,
       final int rowNum
   ) throws SQLException {
+    String condition = resultSet.getString(columns.condition);
     long patient = resultSet.getLong(this.columns.patient());
     long identifier = resultSet.getLong(this.columns.identifier());
     String local = resultSet.getString(this.columns.local());
@@ -65,6 +67,7 @@ class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.Patie
         named,
         priority,
         disposition,
+        condition,
         associated
     );
   }

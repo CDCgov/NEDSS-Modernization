@@ -11,7 +11,7 @@ const PatientFile = () => {
     const data = useLoaderData<PatientFileData>();
 
     return (
-        <Suspense fallback={<Spinner />}>
+        <Suspense fallback={<Spinner />} key={data.id}>
             <Await resolve={data} errorElement={<RedirectHome />}>
                 {(data: PatientFileData) => (
                     <PatientFileProvider data={data}>
