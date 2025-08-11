@@ -36,6 +36,7 @@ const GeneralInformationDemographicFields = ({
                     error={error?.message}
                     required
                     sizing={sizing}
+                    aria-description="This field defaults to today's date and can be changed if needed."
                 />
             )}
         />
@@ -142,23 +143,6 @@ const GeneralInformationDemographicFields = ({
                     id={name}
                     name={name}
                     options={options.educationLevels}
-                    sizing={sizing}
-                />
-            )}
-        />
-        <Controller
-            control={form.control}
-            name="general.primaryLanguage"
-            render={({ field: { onChange, onBlur, value, name } }) => (
-                <SingleSelect
-                    label={labels.primaryLanguage}
-                    orientation={orientation}
-                    value={value}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    id={name}
-                    name={name}
-                    options={options.primaryLanguages}
                     sizing={sizing}
                 />
             )}
