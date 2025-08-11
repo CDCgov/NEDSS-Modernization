@@ -33,8 +33,9 @@ class PatientFilePatientNamedByContactFinder extends BasePatientFIleContactFinde
               [revisions].mpr_id                              as [patient],
               [contact_record].[CT_Contact_uid]               as [identifier],
               [contact_record].local_id                       as [local],
+              [investigation].cd                              as [investigation_condition],
               [contact_record].contact_referral_basis_cd      as [referral_basis],
-              [processing_descision].code_desc_txt            as [processing_descision],
+              [processing_decision].code_desc_txt            as [processing_decision],
               [contact_record].[add_time]                     as [created_on],
               [contact_record].named_On_Date                  as [named_on],
               cast(
@@ -73,9 +74,9 @@ class PatientFilePatientNamedByContactFinder extends BasePatientFIleContactFinde
                           [suffix].[code_set_nm] = 'P_NM_SFX'
                       and [suffix].[code] = [named].nm_suffix
       
-              left join NBS_SRTE..Code_value_general [processing_descision] with (nolock) on
-                          [processing_descision].[code] = [contact_record].[processing_decision_cd]
-                      and [processing_descision].code_set_nm = 'STD_CONTACT_RCD_PROCESSING_DECISION'
+              left join NBS_SRTE..Code_value_general [processing_decision] with (nolock) on
+                          [processing_decision].[code] = [contact_record].[processing_decision_cd]
+                      and [processing_decision].code_set_nm = 'STD_CONTACT_RCD_PROCESSING_DECISION'
       
               left join NBS_SRTE..Code_value_general [priority] on
                           [priority].code = [contact_record].priority_cd

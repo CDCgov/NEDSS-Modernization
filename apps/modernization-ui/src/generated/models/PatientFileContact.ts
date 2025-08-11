@@ -15,6 +15,7 @@ export type PatientFileContact = {
     named: NamedContact;
     priority?: string;
     disposition?: string;
+    condition: string;
     associated?: AssociatedInvestigation;
 };
 
