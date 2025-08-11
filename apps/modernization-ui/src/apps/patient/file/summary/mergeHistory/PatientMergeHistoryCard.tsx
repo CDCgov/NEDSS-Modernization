@@ -4,7 +4,7 @@ import { Section } from 'design-system/card/section/Section';
 import { Column, SortableDataTable } from 'design-system/table';
 import { Card } from 'design-system/card';
 import { Tag } from 'design-system/tag';
-import { PatientFileMergeHistory } from './mergeHistory';
+import { PatientFileMergeHistory } from './model/mergeHistory';
 import { MemoizedSupplier } from 'libs/supplying';
 import { format } from 'date-fns';
 import { displayName } from 'name/displayName';

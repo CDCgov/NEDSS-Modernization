@@ -31,6 +31,7 @@ import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+import {MergeStatus} from "../../apps/patient/file/summary/mergeHistory/model/MergeStatus";
 export class PatientFileService {
     /**
      * Patient File Header
@@ -534,5 +535,17 @@ export class PatientFileService {
                 'patientId': patientId,
             },
         });
+    }
+    /**
+     * Checks if the patient with the given personUid is currently in the merge queue.
+     */
+    public static isPatientInMergeQueue(personUid: string): CancelablePromise<MergeStatus> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: `/nbs/api/deduplication/merge/status/{personUid}`,
+            path: {
+                'personUid': personUid,
+            },
+        }) as CancelablePromise<MergeStatus>;
     }
 }
