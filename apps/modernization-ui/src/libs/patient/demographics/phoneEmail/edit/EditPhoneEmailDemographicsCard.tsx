@@ -10,7 +10,7 @@ import { usePhoneEmailOptions } from './usePhoneEmailOptions';
 type EditPhoneEmailDemographicsCardProps = {
     form: UseFormReturn<HasPhoneEmailDemographics>;
     defaults: PatientDemographicsDefaults;
-} & Omit<PhoneEmailDemographicCardProps, 'id' | 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
+} & Omit<PhoneEmailDemographicCardProps, 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
 
 const EditPhoneEmailDemographicsCard = ({ form, defaults, ...remaining }: EditPhoneEmailDemographicsCardProps) => {
     const options = usePhoneEmailOptions();
@@ -19,10 +19,9 @@ const EditPhoneEmailDemographicsCard = ({ form, defaults, ...remaining }: EditPh
         <Controller
             control={form.control}
             name="phoneEmails"
-            render={({ field: { onChange, value, name } }) => (
+            render={({ field: { onChange, value } }) => (
                 <PhoneEmailDemographicRepeatingBlock
                     {...remaining}
-                    id={name}
                     collapsible={false}
                     data={value}
                     viewable

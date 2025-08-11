@@ -11,6 +11,7 @@ import { maybeDisplayName } from 'name';
 import {
     PatientDemographics,
     PatientDemographicsDefaults,
+    PatientDemographicsEntry,
     PatientDemographicsForm,
     usePatientDemographicDefaults
 } from 'libs/patient/demographics';
@@ -21,6 +22,7 @@ import { evaluated } from './evaluated';
 import { useEditPatient } from './useEditPatient';
 
 import styles from './patient-file-edit.module.scss';
+import { usePendingFormEntry } from 'design-system/entry/pending';
 
 const PatientFileEdit = () => {
     const { patient, demographics, refresh } = usePatientFileData();
@@ -76,13 +78,15 @@ type InternalProps = {
 };
 
 const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel, onError }: InternalProps) => {
-    const interaction = useEditPatient();
-
-    const form = useForm<PatientDemographics>({
+    const form = useForm<PatientDemographicsEntry>({
         defaultValues: demographics,
         mode: 'onBlur',
         reValidateMode: 'onBlur'
     });
+
+    const pending = usePendingFormEntry({ form });
+
+    const interaction = useEditPatient({ onValidate: pending.check });
 
     useEffect(() => {
         if (interaction.status === 'error') {
@@ -92,7 +96,7 @@ const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel
         }
     }, [interaction.status, interaction.status === 'error' && interaction.reason]);
 
-    const working = !form.formState.isValid || interaction.status !== 'waiting';
+    const disabled = !form.formState.isValid || pending.pending.length > 0 || interaction.status !== 'waiting';
 
     const handleSave = form.handleSubmit((input) => interaction.edit(patient.id, input));
 
@@ -104,13 +108,19 @@ const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel
                     <Button secondary onClick={onCancel}>
                         Cancel
                     </Button>
-                    <Button onClick={handleSave} disabled={working}>
+                    <Button onClick={handleSave} disabled={disabled}>
                         Save
                     </Button>
                 </>
             )}
             navigation={EditNavigation}>
-            <PatientDemographicsForm form={form} defaults={defaults} sizing={sizing} className={styles.demographics} />
+            <PatientDemographicsForm
+                form={form}
+                defaults={defaults}
+                pending={pending}
+                sizing={sizing}
+                className={styles.demographics}
+            />
             <NavigationGuard id="patient.edit.cancel" form={form} activated={interaction.status !== 'completed'} />
         </PatientFileLayout>
     );

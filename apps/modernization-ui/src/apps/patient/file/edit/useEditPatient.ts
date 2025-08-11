@@ -1,42 +1,57 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
-import { PatientDemographics } from 'libs/patient/demographics';
+import { PatientDemographicsEntry } from 'libs/patient/demographics';
 import { transformer } from 'libs/patient/demographics/transformer';
 import { isFailure, put, RequestError } from 'libs/api';
 import { PatientDemographicsRequest } from 'libs/patient/demographics/request';
 
 type Step =
-    | { status: 'requesting'; patient: number; demographics: PatientDemographics }
+    | { status: 'requesting'; patient: number; demographics: PatientDemographicsEntry }
     | { status: 'completed' }
     | { status: 'error'; reason: string }
+    | { status: 'invalid' }
     | { status: 'waiting' };
 
 type Action =
-    | { type: 'request'; patient: number; demographics: PatientDemographics }
+    | { type: 'request'; patient: number; demographics: PatientDemographicsEntry }
     | { type: 'complete' }
     | { type: 'fail'; reason: string };
 
-const reducer = (current: Step, action: Action): Step => {
-    switch (action.type) {
-        case 'request': {
-            return { status: 'requesting', patient: action.patient, demographics: action.demographics };
+const reducer =
+    (onValidate: Validator) =>
+    (current: Step, action: Action): Step => {
+        switch (action.type) {
+            case 'request': {
+                const valid = onValidate(action.demographics);
+
+                return valid
+                    ? { status: 'requesting', patient: action.patient, demographics: action.demographics }
+                    : { status: 'waiting' };
+            }
+            case 'complete': {
+                return { status: 'completed' };
+            }
+            default: {
+                return current;
+            }
         }
-        case 'complete': {
-            return { status: 'completed' };
-        }
-        default: {
-            return current;
-        }
-    }
+    };
+
+type EditPatientState =
+    | { status: 'waiting' | 'requesting' | 'completed' | 'invalid' }
+    | { status: 'error'; reason: string };
+
+type Validator = (demographics: PatientDemographicsEntry) => boolean;
+
+type EditPatientSettings = {
+    onValidate: Validator;
 };
 
-type EditPatientState = { status: 'waiting' | 'requesting' | 'completed' } | { status: 'error'; reason: string };
-
 type EditPatientInteraction = {
-    edit: (patient: number, demographics: PatientDemographics) => void;
+    edit: (patient: number, demographics: PatientDemographicsEntry) => void;
 } & EditPatientState;
 
-const useEditPatient = (): EditPatientInteraction => {
-    const [step, dispatch] = useReducer(reducer, { status: 'waiting' });
+const useEditPatient = ({ onValidate }: EditPatientSettings): EditPatientInteraction => {
+    const [step, dispatch] = useReducer(reducer(onValidate), { status: 'waiting' });
 
     useEffect(() => {
         if (step.status === 'requesting') {
@@ -49,7 +64,8 @@ const useEditPatient = (): EditPatientInteraction => {
     }, [step.status, dispatch]);
 
     const edit = useCallback(
-        (patient: number, demographics: PatientDemographics) => dispatch({ type: 'request', patient, demographics }),
+        (patient: number, demographics: PatientDemographicsEntry) =>
+            dispatch({ type: 'request', patient, demographics }),
         [dispatch]
     );
 
@@ -79,8 +95,6 @@ const resolver = (request: Request) =>
             const message = await response
                 .json()
                 .then((failed) => (isFailure(failed) ? failed.reason : 'An unexpected error occurred.'));
-
-            console.log('ehgar!', message);
 
             throw new RequestError(response.status, message);
         }
