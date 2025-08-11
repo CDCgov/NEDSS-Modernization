@@ -35,7 +35,6 @@ export const MergeDetails = () => {
     const nav = useNavigate();
     const location = useLocation();
     const fromPatientFileSummary = location.state?.fromPatientFileSummary;
-    const toSurvivingPersonId = location.state?.patientId;
 
     useEffect(() => {
         if (matchId !== undefined) {
@@ -161,9 +160,10 @@ export const MergeDetails = () => {
                             </span>
                         )
                     });
+                    const survivingLocalId = getSurvivingLocalId();
                     nav(
-                        fromPatientFileSummary && toSurvivingPersonId
-                            ? `/patient/${toSurvivingPersonId}/summary`
+                        fromPatientFileSummary && survivingLocalId
+                            ? `/patient/${survivingLocalId}/summary`
                             : '/deduplication/merge'
                     );
                 },
