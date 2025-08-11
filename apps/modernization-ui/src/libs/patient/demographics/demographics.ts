@@ -9,6 +9,8 @@ import { HasEthnicityDemographic, initial as initialEthnicity } from './ethnicit
 import { HasSexBirthDemographic, initial as initialSexBirth } from './sex-birth';
 import { HasMortalityDemographic, initial as initialMortality } from './mortality';
 import { HasGeneralInformationDemographic, initial as initialGeneral } from './general';
+import { AddressDemographicDefaults } from './address/address';
+import { Supplier } from 'libs/supplying';
 
 type PatientDemographics = HasAdministrativeInformation &
     HasNameDemographics &
@@ -22,6 +24,13 @@ type PatientDemographics = HasAdministrativeInformation &
     HasGeneralInformationDemographic;
 
 export type { PatientDemographics };
+
+type PatientDemographicsDefaults = {
+    asOf: Supplier<string>;
+    address?: AddressDemographicDefaults;
+};
+
+export type { PatientDemographicsDefaults };
 
 const initial = (asOf: string = today()) => ({
     administrative: initialAdministrative(asOf),

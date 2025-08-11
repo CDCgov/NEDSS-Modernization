@@ -7,7 +7,7 @@ import { PhoneEmailDemographicFields } from './PhoneEmailDemographicFields';
 const Fixture = () => {
     const form = useForm<PhoneEmailDemographic>({
         mode: 'onBlur',
-        defaultValues: initial()
+        defaultValues: initial(() => '02/06/2023')
     });
     return (
         <FormProvider {...form}>

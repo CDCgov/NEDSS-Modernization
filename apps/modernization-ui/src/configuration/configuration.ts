@@ -4,6 +4,7 @@ type Toggle = { enabled: boolean };
 
 type Defaults = {
     sizing: Sizing;
+    country?: string;
 };
 
 type Settings = {

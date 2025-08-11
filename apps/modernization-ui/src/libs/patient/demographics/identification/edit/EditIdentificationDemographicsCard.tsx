@@ -1,5 +1,6 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { Sizing } from 'design-system/field';
+import { PatientDemographicsDefaults } from '../../demographics';
 import { HasIdentificationDemographics, IdentificationDemographic, initial } from '../identifications';
 import {
     IdentificationDemographicRepeatingBlock,
@@ -8,16 +9,19 @@ import {
 import { IdentificationDemographicFields } from './IdentificationDemographicFields';
 import { useIdentificationOptions } from './useIdentificationOptions';
 
-const defaultValues = initial();
-
 type EditIdentificationDemographicsCardProps = {
     form: UseFormReturn<HasIdentificationDemographics>;
+    defaults: PatientDemographicsDefaults;
 } & Omit<
     IdentificationDemographicRepeatingBlockProps,
     'id' | 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'
 >;
 
-const EditIdentificationDemographicsCard = ({ form, ...remaining }: EditIdentificationDemographicsCardProps) => {
+const EditIdentificationDemographicsCard = ({
+    form,
+    defaults,
+    ...remaining
+}: EditIdentificationDemographicsCardProps) => {
     const options = useIdentificationOptions();
 
     return (
@@ -32,7 +36,7 @@ const EditIdentificationDemographicsCard = ({ form, ...remaining }: EditIdentifi
                     data={value}
                     onChange={onChange}
                     editable
-                    defaultValues={defaultValues}
+                    defaultValues={initial(defaults.asOf)}
                     formRenderer={(_?: IdentificationDemographic, sizing?: Sizing) => (
                         <IdentificationDemographicFields sizing={sizing} options={options} />
                     )}

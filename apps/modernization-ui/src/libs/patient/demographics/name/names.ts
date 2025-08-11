@@ -1,4 +1,4 @@
-import { today } from 'date';
+import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 
@@ -21,8 +21,8 @@ type HasNameDemographics = {
 
 export type { NameDemographic, HasNameDemographics };
 
-const initial = (asOf: string = today()): Partial<NameDemographic> => ({
-    asOf,
+const initial = (asOf: Supplier<string>): Partial<NameDemographic> => ({
+    asOf: asOf(),
     type: undefined,
     prefix: undefined,
     first: undefined,
