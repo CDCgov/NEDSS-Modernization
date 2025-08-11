@@ -33,3 +33,13 @@ globalThis.fetch = vi.fn(() =>
         // Add more methods if needed
     } as unknown as Response)
 );
+
+globalThis.ResizeObserver = class {
+    private callback: (...args: any[]) => void;
+    constructor(callback: (...args: any[]) => void) {
+        this.callback = callback;
+    }
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+};

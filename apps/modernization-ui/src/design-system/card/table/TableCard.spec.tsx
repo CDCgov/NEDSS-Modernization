@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 import { TableCard, TableCardProps } from './TableCard';
 
-const mockApply = jest.fn();
+const mockApply = vi.fn();
 
 vi.mock('design-system/table/preferences/useColumnPreferences', () => ({
     useColumnPreferences: () => ({
@@ -75,7 +75,7 @@ const Fixture = (props: Partial<TableCardProps<TestData>>) => {
 
 describe('TableCard', () => {
     beforeEach(() => {
-        jest.resetAllMocks();
+        vi.resetAllMocks();
         mockApply.mockReturnValue(columns);
     });
 

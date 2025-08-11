@@ -6,12 +6,12 @@ import { vi } from 'vitest';
 
 vi.mock('generated', () => ({
     ConceptOptionsService: {
-        concepts: jest.fn()
+        concepts: vi.fn()
     }
 }));
 
 vi.mock('options/useSelectableOptions', () => ({
-    useSelectableOptions: jest.fn()
+    useSelectableOptions: vi.fn()
 }));
 
 describe('useConceptOptions', () => {
@@ -22,11 +22,11 @@ describe('useConceptOptions', () => {
     const mockResponse = { options: mockOptions };
 
     beforeEach(() => {
-        jest.clearAllMocks();
-        (ConceptOptionsService.concepts as jest.Mock).mockResolvedValue(mockResponse);
-        (useSelectableOptions as jest.Mock).mockReturnValue({
+        vi.clearAllMocks();
+        (ConceptOptionsService.concepts as vi.Mock).mockResolvedValue(mockResponse);
+        (useSelectableOptions as vi.Mock).mockReturnValue({
             options: mockOptions,
-            load: jest.fn()
+            load: vi.fn()
         });
     });
 
@@ -49,7 +49,7 @@ describe('useConceptOptions', () => {
     it('should resolve options using ConceptOptionsService', async () => {
         renderHook(() => useConceptOptions('valueSet', { lazy: false }));
 
-        const resolver = (useSelectableOptions as jest.Mock).mock.calls[0][0].resolver;
+        const resolver = (useSelectableOptions as vi.Mock).mock.calls[0][0].resolver;
         const resolvedOptions = await resolver();
 
         expect(ConceptOptionsService.concepts).toHaveBeenCalledWith({ name: 'valueSet' });

@@ -11,7 +11,7 @@ const mockNameCodedValues = {
     degrees: [{ name: 'BA', value: 'BA' }]
 };
 
-jest.mock('./useNameCodedValues', () => ({
+vi.mock('./useNameCodedValues', () => ({
     useNameCodedValues: () => mockNameCodedValues
 }));
 
