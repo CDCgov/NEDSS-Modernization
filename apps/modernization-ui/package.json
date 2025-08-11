@@ -149,5 +149,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "^4.46.2"
     }
 }
