@@ -1,6 +1,7 @@
 import { EffectiveDated } from 'utils';
 
 type NameDemographicRequest = EffectiveDated & {
+    sequence?: number;
     type: string;
     prefix?: string;
     first?: string;

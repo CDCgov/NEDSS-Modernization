@@ -1,28 +1,24 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PatientDemographics } from '../demographics';
 import { NameDemographicFields } from './NameDemographicFields';
-
-const mockNameCodedValues = {
-    types: [{ name: 'Adopted name', value: 'AN' }],
-    prefixes: [{ name: 'Miss', value: 'MS' }],
-    suffixes: [{ name: 'Sr.', value: 'SR' }],
-    degrees: [{ name: 'BA', value: 'BA' }]
-};
-
-jest.mock('./useNameCodedValues', () => ({
-    useNameCodedValues: () => mockNameCodedValues
-}));
+import { HasNameDemographics } from '../names';
 
 const Fixture = () => {
-    const form = useForm<PatientDemographics>({
+    const form = useForm<HasNameDemographics>({
         mode: 'onBlur'
     });
 
     return (
         <FormProvider {...form}>
-            <NameDemographicFields />
+            <NameDemographicFields
+                options={{
+                    types: [{ name: 'Adopted name', value: 'AN' }],
+                    prefixes: [{ name: 'Miss', value: 'MS' }],
+                    suffixes: [{ name: 'Sr.', value: 'SR' }],
+                    degrees: [{ name: 'BA', value: 'BA' }]
+                }}
+            />
         </FormProvider>
     );
 };

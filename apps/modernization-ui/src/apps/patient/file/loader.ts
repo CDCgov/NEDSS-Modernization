@@ -1,12 +1,9 @@
-import { PatientFileService } from 'generated';
 import { MemoizedSupplier } from 'libs/supplying';
 import { PatientFileData } from './usePatientFileData';
-import { Patient } from './patient';
 import { summary } from './summary';
 import { events } from './events';
 import { demographics } from './demographics';
-
-const description = (patientId: number): Promise<Patient> => PatientFileService.file({ patientId });
+import { description } from './description';
 
 type LoaderParams = { params: { id: string } };
 

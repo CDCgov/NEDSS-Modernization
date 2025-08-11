@@ -4,7 +4,7 @@ import { Sizing } from 'design-system/field';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 import { sections } from './sections';
 import { BackToTop } from 'libs/page/back-to-top';
-import { PatientDemographics } from './demographics';
+import { PatientDemographics, PatientDemographicsDefaults } from './demographics';
 import { EditAdministrativeInformationCard } from './administrative';
 import { EditGeneralInformationDemographicCard } from './general';
 import { EditEthnicityDemographicCard } from './ethnicity';
@@ -22,10 +22,11 @@ import classNames from 'classnames';
 
 type PatientDemographicsFormProps = {
     form: UseFormReturn<PatientDemographics>;
+    defaults: PatientDemographicsDefaults;
     sizing?: Sizing;
 } & JSX.IntrinsicElements['div'];
 
-const PatientDemographicsForm = ({ form, sizing, className, ...remaining }: PatientDemographicsFormProps) => {
+const PatientDemographicsForm = ({ form, defaults, sizing, className, ...remaining }: PatientDemographicsFormProps) => {
     const content = useRef<HTMLDivElement>(null);
 
     const deceasedOn = useWatch({ control: form.control, name: 'mortality.deceasedOn' });
@@ -39,11 +40,11 @@ const PatientDemographicsForm = ({ form, sizing, className, ...remaining }: Pati
             </aside>
             <div ref={content} className={styles.content}>
                 <EditAdministrativeInformationCard id="administrative" form={form} sizing={sizing} />
-                <EditNameDemographicsCard form={form} sizing={sizing} />
-                <EditAddressDemographicsCard form={form} sizing={sizing} />
-                <EditPhoneEmailDemographicsCard form={form} sizing={sizing} />
-                <EditIdentificationDemographicsCard form={form} sizing={sizing} />
-                <EditRaceDemographicsCard form={form} sizing={sizing} />
+                <EditNameDemographicsCard form={form} defaults={defaults} sizing={sizing} />
+                <EditAddressDemographicsCard form={form} defaults={defaults} sizing={sizing} />
+                <EditPhoneEmailDemographicsCard form={form} defaults={defaults} sizing={sizing} />
+                <EditIdentificationDemographicsCard form={form} defaults={defaults} sizing={sizing} />
+                <EditRaceDemographicsCard form={form} defaults={defaults} sizing={sizing} />
                 <EditEthnicityDemographicCard id="ethnicity" form={form} sizing={sizing} />
                 <EditSexBirthDemographicCard id="sex-birth" form={form} sizing={sizing} ageResolver={ageResolver} />
                 <EditMortalityDemographicCard id="mortality" form={form} sizing={sizing} />

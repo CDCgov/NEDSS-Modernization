@@ -8,7 +8,12 @@ import { useComponentSizing } from 'design-system/sizing';
 import { Button } from 'design-system/button';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { maybeDisplayName } from 'name';
-import { PatientDemographics, PatientDemographicsForm } from 'libs/patient/demographics';
+import {
+    PatientDemographics,
+    PatientDemographicsDefaults,
+    PatientDemographicsForm,
+    usePatientDemographicDefaults
+} from 'libs/patient/demographics';
 import { usePatientFileData } from '../usePatientFileData';
 import { PatientFileLayout } from '../PatientFileLayout';
 import { Patient } from '../patient';
@@ -18,8 +23,9 @@ import { useEditPatient } from './useEditPatient';
 import styles from './patient-file-edit.module.scss';
 
 const PatientFileEdit = () => {
-    const { patient, demographics } = usePatientFileData();
+    const { patient, demographics, refresh } = usePatientFileData();
     const sizing = useComponentSizing();
+    const defaults = usePatientDemographicDefaults();
 
     const navigate = useNavigate();
 
@@ -32,7 +38,7 @@ const PatientFileEdit = () => {
                 <strong>{`${maybeDisplayName(patient.name)} (Patient ID: ${patient.patientId})`}</strong>.
             </span>
         );
-        demographics.reset();
+        refresh();
         navigate(-1);
     }, [showSuccess, navigate]);
 
@@ -43,11 +49,12 @@ const PatientFileEdit = () => {
     return (
         <Suspense fallback={<PatientFileLayout patient={patient} navigation={EditNavigation} />}>
             <Await resolve={evaluated(demographics.get())}>
-                {(defaultValues) => (
+                {(demographics) => (
                     <Internal
                         patient={patient}
                         sizing={sizing}
-                        defaultValues={defaultValues}
+                        demographics={demographics}
+                        defaults={defaults}
                         onCancel={handleCancel}
                         onSuccess={handleSuccess}
                         onError={handleError}
@@ -60,18 +67,19 @@ const PatientFileEdit = () => {
 
 type InternalProps = {
     patient: Patient;
-    defaultValues: PatientDemographics;
+    demographics: PatientDemographics;
+    defaults: PatientDemographicsDefaults;
     sizing?: Sizing;
     onSuccess: () => void;
     onCancel: () => void;
     onError: (reason: string) => void;
 };
 
-const Internal = ({ patient, defaultValues, sizing, onSuccess, onCancel, onError }: InternalProps) => {
+const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel, onError }: InternalProps) => {
     const interaction = useEditPatient();
 
     const form = useForm<PatientDemographics>({
-        defaultValues,
+        defaultValues: demographics,
         mode: 'onBlur',
         reValidateMode: 'onBlur'
     });
@@ -102,7 +110,7 @@ const Internal = ({ patient, defaultValues, sizing, onSuccess, onCancel, onError
                 </>
             )}
             navigation={EditNavigation}>
-            <PatientDemographicsForm form={form} sizing={sizing} className={styles.demographics} />
+            <PatientDemographicsForm form={form} defaults={defaults} sizing={sizing} className={styles.demographics} />
             <NavigationGuard id="patient.edit.cancel" form={form} activated={interaction.status !== 'completed'} />
         </PatientFileLayout>
     );
