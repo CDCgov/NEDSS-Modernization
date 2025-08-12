@@ -137,6 +137,7 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
                     id={'patient-file-contact-named'}
                     title={title}
                     collapsible
+                    open={dataLength(data) > 0}
                     flair={<Tag size={sizing}>{dataLength(data)}</Tag>}
                     className={styles.card}
                     actions={<ColumnPreferencesAction sizing={sizing} />}>
