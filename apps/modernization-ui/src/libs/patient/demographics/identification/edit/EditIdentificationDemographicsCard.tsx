@@ -12,10 +12,7 @@ import { useIdentificationOptions } from './useIdentificationOptions';
 type EditIdentificationDemographicsCardProps = {
     form: UseFormReturn<HasIdentificationDemographics>;
     defaults: PatientDemographicsDefaults;
-} & Omit<
-    IdentificationDemographicRepeatingBlockProps,
-    'id' | 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'
->;
+} & Omit<IdentificationDemographicRepeatingBlockProps, 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
 
 const EditIdentificationDemographicsCard = ({
     form,
@@ -28,10 +25,9 @@ const EditIdentificationDemographicsCard = ({
         <Controller
             control={form.control}
             name="identifications"
-            render={({ field: { onChange, value, name } }) => (
+            render={({ field: { onChange, value } }) => (
                 <IdentificationDemographicRepeatingBlock
                     {...remaining}
-                    id={name}
                     collapsible={false}
                     data={value}
                     onChange={onChange}

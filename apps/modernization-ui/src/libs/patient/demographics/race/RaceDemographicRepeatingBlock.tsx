@@ -33,7 +33,7 @@ const columns: Column<RaceDemographic>[] = [
 
 type RaceDemographicRepeatingBlockProps = {
     title?: string;
-} & Omit<RepeatingBlockProps<RaceDemographic>, 'columns' | 'viewRenderer' | 'title'>;
+} & Omit<RepeatingBlockProps<RaceDemographic>, 'columns' | 'viewRenderer'>;
 
 const RaceDemographicRepeatingBlock = ({
     title = 'Race',

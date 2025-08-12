@@ -6,7 +6,7 @@ import {
     columns
 } from './RaceDemographicRepeatingBlock';
 
-type RaceDemographicCardProps = Omit<
+type RaceDemographicCardProps = { title?: string } & Omit<
     RaceDemographicRepeatingBlockProps,
     'columns' | 'formRenderer' | 'viewRenderer' | 'defaultValues'
 >;

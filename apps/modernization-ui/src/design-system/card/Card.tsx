@@ -34,17 +34,18 @@ const Card = ({
 }: CardProps) => {
     const [collapsed, setCollapsed] = useState<boolean>(!open);
 
+    const cardId = useId();
     const collapsibleId = useId();
 
     return (
         <section
-            id={id}
+            id={cardId}
             role="group"
-            aria-labelledby={`${id}-title`}
+            aria-labelledby={id}
             className={classNames(styles.card, className)}
             {...remaining}>
             <CardHeader
-                id={`${id}-title`}
+                id={id}
                 title={title}
                 level={level}
                 flair={flair}
@@ -55,7 +56,7 @@ const Card = ({
                     <Shown when={collapsible}>
                         <Button
                             className={classNames(styles.toggle, { [styles.collapsed]: collapsed })}
-                            sizing="small"
+                            sizing={remaining.sizing}
                             tertiary
                             icon="expand_less"
                             aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}

@@ -10,51 +10,14 @@
 body {
     height: 100vh;
     background-color: colors.$background;
-    scroll-behavior: smooth;
 }
 
 #root {
     height: 100%;
 }
 
-.select-indicator {
-    background-image:
-        url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0Ij48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTEyIDUuODNMMTUuMTcgOWwxLjQxLTEuNDFMMTIgMyA3LjQxIDcuNTkgOC44MyA5IDEyIDUuODN6bTAgMTIuMzRMOC44MyAxNWwtMS40MSAxLjQxTDEyIDIxbDQuNTktNC41OUwxNS4xNyAxNSAxMiAxOC4xN3oiLz48L3N2Zz4=),
-        linear-gradient(transparent, transparent);
-}
-
-.common-card {
-    background: colors.$base-white;
-    border: 1px solid colors.$border;
-    border-radius: 5px;
-    min-height: 147px;
-    height: auto;
-}
-
-.font-sans-xl {
-    font-size: 32px !important;
-    font-family: sans-serif !important;
-}
-
-td span {
-    word-break: break-word;
-}
-
-.required {
-    @include components.required();
-}
-.required-before {
-    &::before {
-        content: '* ';
-        color: colors.$mandatory;
-    }
-}
-
-.text-red {
-    color: colors.$mandatory !important;
-}
-
 a {
+    scroll-behavior: smooth;
     color: colors.$primary;
     font-weight: 600;
     text-decoration: none;
@@ -62,26 +25,4 @@ a {
     &:hover {
         text-decoration: underline;
     }
-}
-
-.page-title-bar {
-    min-height: 78px;
-    font-family: sans-serif;
-    padding: 0 23px;
-    border-bottom: 1px solid #e7e9e9;
-    .add-patient-button {
-        height: fit-content;
-        margin: 0 !important;
-    }
-    .hide-button {
-        display: none;
-    }
-}
-
-.text-uppercase {
-    text-transform: uppercase;
-}
-
-.display-inline-flex {
-    display: inline-flex;
 }
