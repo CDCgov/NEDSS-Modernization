@@ -33,6 +33,8 @@ const PatientFileEdit = () => {
 
     const { showSuccess, showError } = useAlert();
 
+    const goBack = () => navigate(-1);
+
     const handleSuccess = useCallback(() => {
         showSuccess(
             <span>
@@ -41,10 +43,8 @@ const PatientFileEdit = () => {
             </span>
         );
         refresh();
-        navigate(-1);
-    }, [showSuccess, navigate]);
-
-    const handleCancel = useCallback(() => navigate(-1), [navigate]);
+        goBack();
+    }, [showSuccess, goBack]);
 
     const handleError = useCallback((reason: string) => showError(reason), [showError]);
 
@@ -57,7 +57,7 @@ const PatientFileEdit = () => {
                         sizing={sizing}
                         demographics={demographics}
                         defaults={defaults}
-                        onCancel={handleCancel}
+                        onCancel={goBack}
                         onSuccess={handleSuccess}
                         onError={handleError}
                     />
