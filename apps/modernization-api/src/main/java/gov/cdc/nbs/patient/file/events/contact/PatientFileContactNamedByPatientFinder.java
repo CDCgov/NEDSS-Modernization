@@ -45,9 +45,9 @@ class PatientFileContactNamedByPatientFinder extends BasePatientFIleContactFinde
                               len([named].local_id) - len(id_settings.prefix) - len(id_settings.suffix)
                       ) as bigint
               ) - id_settings.initial                         as [name_patient_id],
-              [named].first_nm                                as [named_first_name],
-              [named].middle_nm                               as [named_middle_name],
-              [named].last_nm                                 as [named_last_name],
+              [person].first_nm                               as [named_first_name],
+              [person].middle_nm                              as [named_middle_name],
+              [person].last_nm                                as [named_last_name],
               [suffix].code_short_desc_txt                    as [named_suffix],
               [priority].code_desc_txt                        as [priority],
               [disposition].code_desc_txt                     as [disposition],
@@ -68,11 +68,14 @@ class PatientFileContactNamedByPatientFinder extends BasePatientFIleContactFinde
                       [condition].condition_cd = [investigation].cd
       
               join Person [named] with (nolock) on
-                          [named].person_uid = [contact_record].CONTACT_ENTITY_UID
+                       [named].person_uid = [contact_record].CONTACT_ENTITY_UID
+      
+              left join Person_name [person] with (nolock) on
+                       [person].person_uid = [named].person_uid
       
               left join NBS_SRTE..Code_value_general [suffix] with (nolock) on
                           [suffix].[code_set_nm] = 'P_NM_SFX'
-                      and [suffix].[code] = [named].nm_suffix
+                      and [suffix].[code] = [person].nm_suffix
       
               left join NBS_SRTE..Code_value_general [processing_decision] with (nolock) on
                           [processing_decision].[code] = [contact_record].[processing_decision_cd]
