@@ -70,8 +70,8 @@ class PatientFilePatientNamedByContactFinder extends BasePatientFIleContactFinde
               join Person [named] with (nolock) on
                           [named].person_uid = [contact_record].subject_entity_uid
       
-              join Person_name [person] with (nolock) on
-                          [person].person_uid = [contact_record].CONTACT_ENTITY_UID
+              left join Person_name [person] with (nolock) on
+                           [person].person_uid = [named].person_uid
       
               left join NBS_SRTE..Code_value_general [suffix] with (nolock) on
                           [suffix].[code_set_nm] = 'P_NM_SFX'
