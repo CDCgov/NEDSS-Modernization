@@ -1,18 +1,23 @@
 import { displayNoData } from 'design-system/data';
-import { ContactsCard, ContactsCardProps } from 'libs/events/contacts/ContactsCard';
-import { PatientFileContacts } from 'libs/events/contacts/contactsNamed';
+import { mapOr } from 'utils/mapping';
 import { DisplayableName, displayName } from 'name';
+import { Patient } from '../../patient';
+import { ContactsCard, ContactsCardProps } from '../contacts';
 
-type PatientFilePatientsNamedCardProps = Omit<ContactsCardProps, 'title' | 'titleResolver'>;
+type PatientFilePatientsNamedCardProps = { patient: Patient } & Omit<ContactsCardProps, 'title' | 'titleResolver'>;
 
-const titleResolver = (patient?: DisplayableName, contact?: PatientFileContacts): string => {
-    const name = patient ? displayName('short')(patient) : displayNoData();
+const maybeDisplayPatient = mapOr(displayName('short'), displayNoData);
 
-    return `${patient && name} was named as a contact in the following ${contact?.condition} investigation(s)`;
-};
+const titleResolver =
+    (patient?: DisplayableName) =>
+    (condition: string): string => {
+        return `${maybeDisplayPatient(patient)} was named as a contact in the following ${condition} investigation(s)`;
+    };
 
-const PatientFilePatientsNamedCard = ({ ...remaining }: PatientFilePatientsNamedCardProps) => {
-    return <ContactsCard {...remaining} title={'Patients named by patient'} titleResolver={titleResolver} />;
+const PatientFilePatientsNamedCard = ({ patient, ...remaining }: PatientFilePatientsNamedCardProps) => {
+    return (
+        <ContactsCard {...remaining} title={'Patients named by patient'} titleResolver={titleResolver(patient.name)} />
+    );
 };
 
 export { PatientFilePatientsNamedCard };

@@ -31,17 +31,17 @@ const columns: Column<RaceDemographic>[] = [
     }
 ];
 
-type RaceRepeatingBlockProps = {
+type RaceDemographicRepeatingBlockProps = {
     title?: string;
-} & Omit<RepeatingBlockProps<RaceDemographic>, 'columns' | 'viewRenderer' | 'title'>;
+} & Omit<RepeatingBlockProps<RaceDemographic>, 'columns' | 'viewRenderer'>;
 
-const RaceRepeatingBlock = ({
+const RaceDemographicRepeatingBlock = ({
     title = 'Race',
     sizing,
     collapsible = true,
     data = [],
     ...remaining
-}: RaceRepeatingBlockProps) => {
+}: RaceDemographicRepeatingBlockProps) => {
     const renderView = (entry: RaceDemographic) => <RaceDemographicView entry={entry} />;
 
     return (
@@ -57,5 +57,5 @@ const RaceRepeatingBlock = ({
     );
 };
 
-export { RaceRepeatingBlock, columns };
-export type { RaceRepeatingBlockProps };
+export { RaceDemographicRepeatingBlock, columns };
+export type { RaceDemographicRepeatingBlockProps };

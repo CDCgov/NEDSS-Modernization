@@ -30,10 +30,10 @@ const labels = {
     asOf: 'As of',
     deceased: 'Is the patient deceased?',
     deceasedOn: 'Date of death',
-    city: 'City of death',
-    state: 'State of death',
-    county: 'County of death',
-    country: 'Country of death'
+    city: 'Death city',
+    state: 'Death state',
+    county: 'Death county',
+    country: 'Death country'
 };
 
 export { labels };

@@ -1,23 +1,41 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
-import { HasIdentificationDemographics } from '../identifications';
-import { IdentificationDemographicCard, IdentificationDemographicCardProps } from '../IdentificationDemographicCard';
+import { Sizing } from 'design-system/field';
+import { PatientDemographicsDefaults } from '../../demographics';
+import { HasIdentificationDemographics, IdentificationDemographic, initial } from '../identifications';
+import {
+    IdentificationDemographicRepeatingBlock,
+    IdentificationDemographicRepeatingBlockProps
+} from '../IdentificationDemographicRepeatingBlock';
+import { IdentificationDemographicFields } from './IdentificationDemographicFields';
+import { useIdentificationOptions } from './useIdentificationOptions';
 
 type EditIdentificationDemographicsCardProps = {
     form: UseFormReturn<HasIdentificationDemographics>;
-} & Omit<IdentificationDemographicCardProps, 'id' | 'collapsible'>;
+    defaults: PatientDemographicsDefaults;
+} & Omit<IdentificationDemographicRepeatingBlockProps, 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
 
-const EditIdentificationDemographicsCard = ({ form, ...remaining }: EditIdentificationDemographicsCardProps) => {
+const EditIdentificationDemographicsCard = ({
+    form,
+    defaults,
+    ...remaining
+}: EditIdentificationDemographicsCardProps) => {
+    const options = useIdentificationOptions();
+
     return (
         <Controller
             control={form.control}
             name="identifications"
-            render={({ field: { onChange, value, name } }) => (
-                <IdentificationDemographicCard
+            render={({ field: { onChange, value } }) => (
+                <IdentificationDemographicRepeatingBlock
                     {...remaining}
-                    id={name}
                     collapsible={false}
                     data={value}
                     onChange={onChange}
+                    editable
+                    defaultValues={initial(defaults.asOf)}
+                    formRenderer={(_?: IdentificationDemographic, sizing?: Sizing) => (
+                        <IdentificationDemographicFields sizing={sizing} options={options} />
+                    )}
                 />
             )}
         />

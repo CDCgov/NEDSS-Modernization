@@ -1,12 +1,12 @@
 import { Selectable } from 'options';
 import { useConceptOptions } from 'options/concepts';
 
-type PhoneEmailCodedValues = {
+type PhoneEmailOptions = {
     types: Selectable[];
     uses: Selectable[];
 };
 
-const usePhoneEmailCodedValues = (): PhoneEmailCodedValues => {
+const usePhoneEmailOptions = (): PhoneEmailOptions => {
     const types = useConceptOptions('EL_TYPE_TELE_PAT', { lazy: false });
     const uses = useConceptOptions('EL_USE_TELE_PAT', { lazy: false });
 
@@ -16,5 +16,5 @@ const usePhoneEmailCodedValues = (): PhoneEmailCodedValues => {
     };
 };
 
-export { usePhoneEmailCodedValues };
-export type { PhoneEmailCodedValues };
+export { usePhoneEmailOptions };
+export type { PhoneEmailOptions };

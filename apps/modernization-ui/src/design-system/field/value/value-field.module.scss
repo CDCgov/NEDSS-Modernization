@@ -4,14 +4,14 @@
 
 .view {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
 
     color: colors.$base-darkest;
     line-height: normal;
 
     box-sizing: border-box;
 
-    padding: 0.5rem 1.5rem 0.5rem 1rem;
+    padding: 0.5rem 1rem 0.5rem 1.25rem;
 
     @extend %medium;
 

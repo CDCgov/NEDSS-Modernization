@@ -31,6 +31,7 @@ import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+import {MergeStatus} from "../../apps/patient/file/summary/mergeHistory/model/MergeStatus";
 export class PatientFileService {
     /**
      * Patient File Header

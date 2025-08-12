@@ -4,40 +4,32 @@ import { validDateRule, DatePickerInput } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { SingleSelect } from 'design-system/select';
 import { TextInputField } from 'design-system/input';
-import { PhoneEmailDemographic } from './phoneEmails';
-import { usePhoneEmailCodedValues } from './usePhoneEmailCodedValues';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
+import { MaskedTextInputField } from 'design-system/input/text';
+import { EmailField, maybeValidateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
+import { Verification } from 'libs/verification';
+import { labels, PhoneEmailDemographic } from '../phoneEmails';
+import { PhoneEmailOptions } from './usePhoneEmailOptions';
 
-type PhoneEmailDemographicFieldsProps = {} & EntryFieldsProps;
-
-const AS_OF_DATE_LABEL = 'Phone & email as of';
-const TYPE_LABEL = 'Type';
-const USE_LABEL = 'Use';
-const COUNTRY_CODE_LABEL = 'Country label';
-const PHONE_NUMBER_LABEL = 'Phone number';
-const EXTENSION_LABEL = 'Extension';
-const EMAIL_LABEL = 'Email';
-const URL_LABEL = 'URL';
-const COMMENTS_LABEL = 'Phone & email comments';
+type PhoneEmailDemographicFieldsProps = { options: PhoneEmailOptions } & EntryFieldsProps;
 
 const PhoneEmailDemographicFields = ({
     orientation = 'horizontal',
-    sizing = 'medium'
+    sizing = 'medium',
+    options
 }: PhoneEmailDemographicFieldsProps) => {
     const { control } = useFormContext<PhoneEmailDemographic>();
 
-    const coded = usePhoneEmailCodedValues();
-
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validDateRule(AS_OF_DATE_LABEL), ...validateRequiredRule(AS_OF_DATE_LABEL) }}
+                rules={{ ...validDateRule(labels.asOf), ...validateRequiredRule(labels.asOf) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         id={name}
-                        label={AS_OF_DATE_LABEL}
+                        label={labels.asOf}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -46,6 +38,7 @@ const PhoneEmailDemographicFields = ({
                         error={error?.message}
                         required
                         sizing={sizing}
+                        aria-description="This date defaults to today and can be changed if needed"
                     />
                 )}
             />
@@ -53,17 +46,17 @@ const PhoneEmailDemographicFields = ({
             <Controller
                 control={control}
                 name="type"
-                rules={{ ...validateRequiredRule(TYPE_LABEL) }}
+                rules={{ ...validateRequiredRule(labels.type) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label={TYPE_LABEL}
+                        label={labels.type}
                         orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        id={`name-${name}`}
-                        name={`name-${name}`}
-                        options={coded.types}
+                        id={name}
+                        name={name}
+                        options={options.types}
                         error={error?.message}
                         required
                         sizing={sizing}
@@ -73,17 +66,17 @@ const PhoneEmailDemographicFields = ({
             <Controller
                 control={control}
                 name="use"
-                rules={{ ...validateRequiredRule(USE_LABEL) }}
+                rules={{ ...validateRequiredRule(labels.use) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label={USE_LABEL}
+                        label={labels.use}
                         orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        id={`name-${name}`}
-                        name={`name-${name}`}
-                        options={coded.uses}
+                        id={name}
+                        name={name}
+                        options={options.uses}
                         error={error?.message}
                         required
                         sizing={sizing}
@@ -93,17 +86,24 @@ const PhoneEmailDemographicFields = ({
             <Controller
                 control={control}
                 name="countryCode"
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <TextInputField
-                        label={COUNTRY_CODE_LABEL}
-                        orientation={orientation}
+                rules={{
+                    pattern: {
+                        value: /^\+?\d{1,20}$/,
+                        message: 'A Country code should be 1 to 20 digits.'
+                    }
+                }}
+                render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
+                    <MaskedTextInputField
+                        id={name}
+                        label={labels.countryCode}
+                        type="tel"
+                        mask="____________________"
+                        pattern="^\+?\d{1,20}$"
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
-                        id={`name-${name}`}
-                        name={`name-${name}`}
+                        onBlur={onBlur}
+                        orientation={orientation}
                         error={error?.message}
-                        required
                         sizing={sizing}
                     />
                 )}
@@ -111,16 +111,15 @@ const PhoneEmailDemographicFields = ({
             <Controller
                 control={control}
                 name="phoneNumber"
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <TextInputField
-                        label={PHONE_NUMBER_LABEL}
-                        orientation={orientation}
+                rules={validPhoneNumberRule(labels.phoneNumber)}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                    <PhoneNumberInputField
+                        id={name}
+                        label={labels.phoneNumber}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        value={value}
-                        type="text"
-                        name={name}
-                        id={name}
+                        orientation={orientation}
                         error={error?.message}
                         sizing={sizing}
                     />
@@ -129,52 +128,68 @@ const PhoneEmailDemographicFields = ({
             <Controller
                 control={control}
                 name="extension"
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <TextInputField
-                        label={EXTENSION_LABEL}
-                        orientation={orientation}
+                rules={{
+                    pattern: {
+                        value: /^\+?\d{1,20}$/,
+                        message: 'An Extension should be 1 to 20 digits.'
+                    }
+                }}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                    <MaskedTextInputField
+                        id={name}
+                        label={labels.extension}
+                        mask="____________________"
+                        pattern="^\+?\d{1,20}$"
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        value={value}
-                        type="text"
-                        name={name}
-                        id={name}
+                        orientation={orientation}
                         error={error?.message}
                         sizing={sizing}
                     />
                 )}
             />
+
             <Controller
                 control={control}
                 name="email"
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <TextInputField
-                        label={EMAIL_LABEL}
-                        orientation={orientation}
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        value={value}
-                        type="text"
+                rules={maxLengthRule(100, labels.email)}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                    <Verification
+                        control={control}
                         name={name}
-                        id={name}
-                        error={error?.message}
-                        sizing={sizing}
+                        constraint={maybeValidateEmail(labels.email)}
+                        render={({ verify, violation }) => (
+                            <EmailField
+                                id={name}
+                                label={labels.email}
+                                onBlur={() => {
+                                    verify();
+                                    onBlur();
+                                }}
+                                onChange={onChange}
+                                value={value}
+                                orientation={orientation}
+                                error={error?.message}
+                                warning={violation}
+                                sizing={sizing}
+                            />
+                        )}
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="url"
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                rules={maxLengthRule(100, labels.url)}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <TextInputField
-                        label={URL_LABEL}
-                        orientation={orientation}
+                        id={name}
+                        label={labels.url}
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
-                        type="text"
-                        name={name}
-                        id={name}
+                        orientation={orientation}
                         error={error?.message}
                         sizing={sizing}
                     />
@@ -183,10 +198,10 @@ const PhoneEmailDemographicFields = ({
             <Controller
                 control={control}
                 name="comment"
-                rules={{ ...maxLengthRule(2000, COMMENTS_LABEL) }}
+                rules={{ ...maxLengthRule(2000, labels.comment) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <TextAreaField
-                        label={COMMENTS_LABEL}
+                        label={labels.comment}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -198,7 +213,7 @@ const PhoneEmailDemographicFields = ({
                     />
                 )}
             />
-        </section>
+        </>
     );
 };
 

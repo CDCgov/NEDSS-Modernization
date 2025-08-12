@@ -6,6 +6,7 @@ type PatientFileContacts = {
 };
 
 type PatientFileContact = {
+    condition: string;
     patient: number;
     identifier: number;
     local: string;
@@ -27,4 +28,4 @@ type NamedContact = {
     suffix?: string;
 };
 
-export type { PatientFileContacts, PatientFileContact };
+export type { PatientFileContacts, PatientFileContact, NamedContact };

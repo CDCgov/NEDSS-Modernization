@@ -6,7 +6,7 @@ import { PatientFileVaccinations } from './vaccinations/vaccinations';
 import { patientVaccinations } from './vaccinations/patientVaccinations';
 import { PatientFileTreatment } from './treatments/treatment';
 import { patientTreatments } from './treatments/patientTreatments';
-import { PatientFileContacts } from 'libs/events/contacts/contactsNamed';
+import { PatientFileContacts } from 'apps/patient/file/events/contacts';
 import { PatientFileDocument } from './documents/documents';
 import { patientDocuments } from './documents/patientDocuments';
 import { patientsNamed } from './patientsNamed/patientNamed';

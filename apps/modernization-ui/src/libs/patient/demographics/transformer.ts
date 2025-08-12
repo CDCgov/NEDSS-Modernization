@@ -1,5 +1,5 @@
 import { maybeMap, maybeMapAll } from 'utils/mapping';
-import { PatientDemographics } from './demographics';
+import { PatientDemographicsEntry } from './demographics';
 import { PatientDemographicsRequest } from './request';
 import { asAdministrative } from './administrative';
 import { asName } from './name';
@@ -25,7 +25,7 @@ const maybeBirth = maybeMap(asBirth);
 const maybeMortality = maybeMap(asMortality);
 const maybeGeneral = maybeMap(asGeneral);
 
-const transformer = (demographics: PatientDemographics): PatientDemographicsRequest => {
+const transformer = (demographics: PatientDemographicsEntry): PatientDemographicsRequest => {
     const administrative = maybeAsAdministrative(demographics.administrative);
     const names = asNames(demographics.names);
     const addresses = asAddresses(demographics.addresses);

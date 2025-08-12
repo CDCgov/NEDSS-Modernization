@@ -69,6 +69,7 @@ const SexBirthDemographicFields = ({
                         error={error?.message}
                         required
                         sizing={sizing}
+                        aria-description="This field defaults to today's date and can be changed if needed."
                     />
                 )}
             />
@@ -210,7 +211,7 @@ const SexBirthDemographicFields = ({
                     }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <NumericInput
-                            label={labels.multiple}
+                            label={labels.order}
                             id={name}
                             name={name}
                             value={value}

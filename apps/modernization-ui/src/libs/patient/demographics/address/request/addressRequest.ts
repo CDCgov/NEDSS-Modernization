@@ -2,6 +2,7 @@ import { EffectiveDated, HasComments } from 'utils';
 
 type AddressDemographicRequest = EffectiveDated &
     HasComments & {
+        identifier?: number;
         type: string;
         use: string;
         address1?: string;

@@ -4,10 +4,11 @@ import { PhoneEmailDemographic } from '../phoneEmails';
 import { PhoneEmailDemographicRequest } from './phoneEmailRequest';
 
 const asPhoneEmail = (demographic: Partial<PhoneEmailDemographic>): PhoneEmailDemographicRequest | undefined => {
-    const { asOf, type, use, countryCode, phoneNumber, extension, email, url, comment } = demographic;
+    const { identifier, asOf, type, use, countryCode, phoneNumber, extension, email, url, comment } = demographic;
 
     if (asOf && exists(type) && exists(use)) {
         return {
+            identifier,
             asOf,
             type: asValue(type),
             use: asValue(use),
