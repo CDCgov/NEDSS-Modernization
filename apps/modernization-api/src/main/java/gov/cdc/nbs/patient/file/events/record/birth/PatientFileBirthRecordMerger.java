@@ -2,6 +2,10 @@ package gov.cdc.nbs.patient.file.events.record.birth;
 
 class PatientFileBirthRecordMerger {
 
+  private PatientFileBirthRecordMerger() {
+
+  }
+
   static PatientFileBirthRecord merge(final PatientFileBirthRecord current, final PatientFileBirthRecord next) {
 
     PatientFileBirthRecord.MotherInformation mother = merge(current.mother(), next.mother());

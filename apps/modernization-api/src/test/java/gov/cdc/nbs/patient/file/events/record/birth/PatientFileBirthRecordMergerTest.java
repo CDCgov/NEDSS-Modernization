@@ -72,7 +72,7 @@ class PatientFileBirthRecordMergerTest {
         ),
         null
     );
-    ;
+
     PatientFileBirthRecord.MotherInformation next = new PatientFileBirthRecord.MotherInformation(
         new PatientFileBirthRecord.MotherInformation.Name(
             "next-first-name-value",
@@ -100,7 +100,7 @@ class PatientFileBirthRecordMergerTest {
         ),
         null
     );
-    ;
+
     PatientFileBirthRecord.MotherInformation next = new PatientFileBirthRecord.MotherInformation(
         new PatientFileBirthRecord.MotherInformation.Name(
             "next-first-name-value",
@@ -128,7 +128,7 @@ class PatientFileBirthRecordMergerTest {
         ),
         null
     );
-    ;
+
     PatientFileBirthRecord.MotherInformation next = new PatientFileBirthRecord.MotherInformation(
         new PatientFileBirthRecord.MotherInformation.Name(
             null,
@@ -156,7 +156,7 @@ class PatientFileBirthRecordMergerTest {
         ),
         null
     );
-    ;
+
     PatientFileBirthRecord.MotherInformation next = new PatientFileBirthRecord.MotherInformation(
         new PatientFileBirthRecord.MotherInformation.Name(
             null,
@@ -184,7 +184,7 @@ class PatientFileBirthRecordMergerTest {
         ),
         null
     );
-    ;
+
     PatientFileBirthRecord.MotherInformation next = new PatientFileBirthRecord.MotherInformation(
         new PatientFileBirthRecord.MotherInformation.Name(
             null,
@@ -212,7 +212,7 @@ class PatientFileBirthRecordMergerTest {
         ),
         null
     );
-    ;
+
     PatientFileBirthRecord.MotherInformation next = new PatientFileBirthRecord.MotherInformation(
         new PatientFileBirthRecord.MotherInformation.Name(
             null,

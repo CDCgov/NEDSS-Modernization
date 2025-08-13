@@ -162,9 +162,9 @@ class BirthRecordMother {
     include(new BirthRecordIdentifier(identifier, local));
   }
 
-  private void include(final BirthRecordIdentifier record) {
-    this.active.active(record);
-    this.cleaner.include(record.identifier());
+  private void include(final BirthRecordIdentifier document) {
+    this.active.active(document);
+    this.cleaner.include(document.identifier());
   }
 
   private void forPatient(final long identifier, final long patient) {
@@ -178,23 +178,23 @@ class BirthRecordMother {
         .update();
   }
 
-  void receivedOn(final BirthRecordIdentifier record, final LocalDateTime on) {
+  void receivedOn(final BirthRecordIdentifier document, final LocalDateTime on) {
     this.client.sql("update Clinical_document set add_time = ? where clinical_document_uid = ?")
         .param(on)
-        .param(record.identifier())
+        .param(document.identifier())
         .update();
   }
 
-  void collectedOn(final BirthRecordIdentifier record, final LocalDate on) {
+  void collectedOn(final BirthRecordIdentifier document, final LocalDate on) {
     this.client.sql("update Clinical_document set record_status_time = ? where clinical_document_uid = ?")
         .param(on)
-        .param(record.identifier())
+        .param(document.identifier())
         .update();
   }
 
-  void bornAt(final BirthRecordIdentifier record, final OrganizationIdentifier organization) {
+  void bornAt(final BirthRecordIdentifier document, final OrganizationIdentifier organization) {
     this.client.sql(PARTICIPATE_IN)
-        .param("identifier", record.identifier())
+        .param("identifier", document.identifier())
         .param("type", "FacilityOfBirth")
         .param("addedOn", settings.createdOn())
         .param("addedBy", settings.createdBy())
@@ -204,11 +204,11 @@ class BirthRecordMother {
   }
 
   void associated(
-      final BirthRecordIdentifier record,
+      final BirthRecordIdentifier document,
       final InvestigationIdentifier investigation
   ) {
     this.client.sql(ASSOCIATE_INVESTIGATION)
-        .param("identifier", record.identifier())
+        .param("identifier", document.identifier())
         .param("investigation", investigation.identifier())
         .update();
   }
@@ -252,12 +252,12 @@ class BirthRecordMother {
       """;
 
   private void question(
-      final BirthRecordIdentifier record,
+      final BirthRecordIdentifier document,
       final String question,
       final String answer
   ) {
     this.client.sql(QUESTION)
-        .param("identifier", record.identifier())
+        .param("identifier", document.identifier())
         .param("question", question)
         .param("answer", answer)
         .param("addedOn", settings.createdOn())
@@ -266,7 +266,7 @@ class BirthRecordMother {
   }
 
   void motherName(
-      final BirthRecordIdentifier record,
+      final BirthRecordIdentifier document,
       final String first,
       final String middle,
       final String last,
@@ -274,24 +274,24 @@ class BirthRecordMother {
   ) {
 
     if (first != null) {
-      question(record, "MTH201", first);
+      question(document, "MTH201", first);
     }
 
     if (middle != null) {
-      question(record, "MTH202", middle);
+      question(document, "MTH202", middle);
     }
 
     if (last != null) {
-      question(record, "MTH203", last);
+      question(document, "MTH203", last);
     }
 
     if (suffix != null) {
-      question(record, "MTH204", suffix);
+      question(document, "MTH204", suffix);
     }
   }
 
   void motherAddress(
-      final BirthRecordIdentifier record,
+      final BirthRecordIdentifier document,
       final String address,
       final String address2,
       final String city,
@@ -300,27 +300,27 @@ class BirthRecordMother {
       final String zip
   ) {
     if (address != null) {
-      question(record, "DEM159_MTH", address);
+      question(document, "DEM159_MTH", address);
     }
 
     if (address2 != null) {
-      question(record, "DEM160_MTH", address2);
+      question(document, "DEM160_MTH", address2);
     }
 
     if (city != null) {
-      question(record, "MTH209", city);
+      question(document, "MTH209", city);
     }
 
     if (state != null) {
-      question(record, "MTH166", state);
+      question(document, "MTH166", state);
     }
 
     if (county != null) {
-      question(record, "MTH168", county);
+      question(document, "MTH168", county);
     }
 
     if (zip != null) {
-      question(record, "MTH169", zip);
+      question(document, "MTH169", zip);
     }
   }
 }
