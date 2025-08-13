@@ -883,6 +883,28 @@
 									"response": []
 								},
 								{
+									"name": "Birth Record",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base}}/nbs/api/patients/{{patient}}/records/birth",
+											"host": [
+												"{{base}}"
+											],
+											"path": [
+												"nbs",
+												"api",
+												"patients",
+												"{{patient}}",
+												"records",
+												"birth"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Contacts named by patient",
 									"request": {
 										"method": "GET",

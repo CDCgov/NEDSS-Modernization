@@ -12,6 +12,7 @@ import type { PatientAddressDemographic } from '../models/PatientAddressDemograp
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientEthnicityDemographic } from '../models/PatientEthnicityDemographic';
 import type { PatientFile } from '../models/PatientFile';
+import type { PatientFileBirthRecord } from '../models/PatientFileBirthRecord';
 import type { PatientFileContacts } from '../models/PatientFileContacts';
 import type { PatientFileDocument } from '../models/PatientFileDocument';
 import type { PatientFileTreatment } from '../models/PatientFileTreatment';
@@ -31,7 +32,6 @@ import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-import {MergeStatus} from "../../apps/patient/file/summary/mergeHistory/model/MergeStatus";
 export class PatientFileService {
     /**
      * Patient File Header
@@ -171,6 +171,25 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/reports/laboratory',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Birth records
+     * Provides Birth records for a patient
+     * @returns PatientFileBirthRecord OK
+     * @throws ApiError
+     */
+    public static birthRecords({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientFileBirthRecord>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/records/birth',
             path: {
                 'patient': patient,
             },

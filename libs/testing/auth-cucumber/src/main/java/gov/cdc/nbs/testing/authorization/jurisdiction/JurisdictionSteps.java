@@ -21,7 +21,7 @@ public class JurisdictionSteps {
     this.mother.create(name);
   }
 
-  @ParameterType(name = "jurisdiction", value = "\"?([\\w ]*)\"?")
+  @ParameterType(name = "jurisdiction", value = "\"?([\\w -]*)\"?")
   public JurisdictionIdentifier jurisdiction(final String value) {
     return resolver.resolve(value).orElse(null);
   }
