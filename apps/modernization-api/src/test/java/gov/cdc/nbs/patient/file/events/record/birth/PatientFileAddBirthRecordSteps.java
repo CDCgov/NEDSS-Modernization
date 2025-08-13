@@ -61,7 +61,7 @@ public class PatientFileAddBirthRecordSteps {
 
     activeResponse.active(
         authenticated.request(
-            MockMvcRequestBuilders.get("/nbs/api/patients/{patient}/records/birth/redirect", patient)));
+            MockMvcRequestBuilders.get("/nbs/api/patients/{patient}/records/birth/add", patient)));
   }
 
   @Then("NBS is prepared to view a birth record")
