@@ -10,6 +10,7 @@ import { PatientFileContactsNamedCard } from './contactsNamed/PatientFileContact
 import { PatientFileDocumentsCard } from './documents/PatientFileDocumentsCard';
 import { PatientFileView } from '../PatientFileView';
 import { PatientFilePatientsNamedCard } from './patientsNamed/PatientFilePatientsNamedCard';
+import { PatientFileBirthRecordCard } from './record/birth';
 
 const PatientFileEvents = () => {
     const { id, patient, events } = usePatientFileData();
@@ -39,19 +40,25 @@ const PatientFileEvents = () => {
                 <PatientFileVaccinationsCard
                     id="vaccinations"
                     patient={id}
-                    provider={events.get().reports.vaccination}
+                    provider={events.get().vaccination}
                     sizing={sizing}
                 />
-                <PatientFileTreatmentsCard id="treatments" provider={events.get().reports.treatment} sizing={sizing} />
-                <PatientFileDocumentsCard id="documents" provider={events.get().reports.documents} sizing={sizing} />
+                <PatientFileBirthRecordCard
+                    id="birth-records"
+                    patient={id}
+                    provider={events.get().birthRecords}
+                    sizing={sizing}
+                />
+                <PatientFileTreatmentsCard id="treatments" provider={events.get().treatment} sizing={sizing} />
+                <PatientFileDocumentsCard id="documents" provider={events.get().documents} sizing={sizing} />
                 <PatientFileContactsNamedCard
-                    provider={events.get().reports.contactNamed}
+                    provider={events.get().contactNamed}
                     id={'contact-named'}
                     patient={patient}
                     sizing={sizing}
                 />
                 <PatientFilePatientsNamedCard
-                    provider={events.get().reports.patientNamed}
+                    provider={events.get().patientNamed}
                     id={'patient-named'}
                     patient={patient}
                     sizing={sizing}

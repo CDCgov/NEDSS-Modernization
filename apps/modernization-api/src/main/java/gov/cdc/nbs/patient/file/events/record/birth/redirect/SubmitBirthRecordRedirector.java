@@ -24,7 +24,7 @@ class SubmitBirthRecordRedirector {
     }
 
     @PreAuthorize("hasAuthority('ADD-BIRTHRECORD')")
-    @GetMapping("/nbs/api/patients/{patient}/records/birth/redirect")
+    @GetMapping("/nbs/api/patients/{patient}/records/birth/add")
     ResponseEntity<Void> view(
         @PathVariable final long patient
     ) {

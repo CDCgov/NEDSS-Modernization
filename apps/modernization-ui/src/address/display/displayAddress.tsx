@@ -9,6 +9,7 @@ export type DisplayableAddress = {
     city?: string | null;
     state?: string | null;
     zipcode?: string | null;
+    county?: string | null;
 };
 
 /** Returns the multiline text portion of an address. Example: "123 Main St\nSpringfield, IL 62701"

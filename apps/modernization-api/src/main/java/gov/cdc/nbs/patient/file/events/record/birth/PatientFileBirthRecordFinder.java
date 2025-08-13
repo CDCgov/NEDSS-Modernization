@@ -21,7 +21,7 @@ class PatientFileBirthRecordFinder {
               and [patient].cd = 'PAT'
               and [patient].record_status_cd = 'ACTIVE'
       )
-      select\s
+      select
           [revisions].mpr_id                          as [patient],
           [record].clinical_document_uid              as [identifier],
           [record].local_id                           as [local],
@@ -83,7 +83,8 @@ class PatientFileBirthRecordFinder {
           left join NBS_SRTE..State_code [state] with (nolock) on
                   [state].state_cd = [mother_info_answer].[answer_txt]
               and [mother_info_question].question_identifier = 'MTH166'
-      
+      order by
+          [record].local_id desc
       """;
 
   private final JdbcClient client;
