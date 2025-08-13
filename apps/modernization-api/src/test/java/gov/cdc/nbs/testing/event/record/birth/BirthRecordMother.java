@@ -107,6 +107,7 @@ class BirthRecordMother {
       """;
 
   private static final String DELETE_IN = """
+      delete from nbs_answer where act_uid in (:identifiers);
       delete from Participation where act_class_cd = 'DOCCLIN' and act_uid in (:identifiers);
       delete from Clinical_Document where clinical_document_uid in (:identifiers);
       delete from Act_relationship where source_class_cd = 'DOCCLIN' and source_act_uid in (:identifiers);
@@ -210,5 +211,116 @@ class BirthRecordMother {
         .param("identifier", record.identifier())
         .param("investigation", investigation.identifier())
         .update();
+  }
+
+  private static final String QUESTION = """
+      merge into nbs_answer [answer]
+      using (
+          select
+              :identifier  as [act_uid],
+              :answer      as [answer_txt],
+              [question].nbs_question_uid,
+              [question].version_ctrl_nbr as [nbs_question_version_ctrl_nbr]
+          from nbs_question [question]
+          where [question].question_identifier = :question
+      ) as source
+      on      [answer].act_uid            = [source].act_uid
+          and [answer].nbs_question_uid   = [source].nbs_question_uid
+      when matched then
+          update set
+              answer_txt = [source].answer_txt
+      when not matched then
+          insert (
+              act_uid,
+              answer_txt,
+              nbs_question_uid,
+              nbs_question_version_ctrl_nbr,
+              record_status_cd,
+              record_status_time,
+              last_chg_user_id,
+              last_chg_time
+          ) values (
+              [source].act_uid,
+              [source].answer_txt,
+              [source].nbs_question_uid,
+              [source].nbs_question_version_ctrl_nbr,
+              'ACTIVE',
+              :addedOn,
+              :addedBy,
+              :addedOn
+          );
+      """;
+
+  private void question(
+      final BirthRecordIdentifier record,
+      final String question,
+      final String answer
+  ) {
+    this.client.sql(QUESTION)
+        .param("identifier", record.identifier())
+        .param("question", question)
+        .param("answer", answer)
+        .param("addedOn", settings.createdOn())
+        .param("addedBy", settings.createdBy())
+        .update();
+  }
+
+  void motherName(
+      final BirthRecordIdentifier record,
+      final String first,
+      final String middle,
+      final String last,
+      final String suffix
+  ) {
+
+    if (first != null) {
+      question(record, "MTH201", first);
+    }
+
+    if (middle != null) {
+      question(record, "MTH202", middle);
+    }
+
+    if (last != null) {
+      question(record, "MTH203", last);
+    }
+
+    if (suffix != null) {
+      question(record, "MTH204", suffix);
+    }
+  }
+
+  void motherAddress(
+      final BirthRecordIdentifier record,
+      final String address,
+      final String address2,
+      final String city,
+      final String state,
+      final String county,
+      final String zip
+  ) {
+    if (address != null) {
+      question(record, "DEM159_MTH", address);
+    }
+
+    if (address2 != null) {
+      question(record, "DEM160_MTH", address2);
+    }
+
+    if (city != null) {
+      question(record, "MTH209", city);
+    }
+
+    if (state != null) {
+      question(record, "MTH166", state);
+    }
+
+    if (county != null) {
+      question(record, "MTH168", county);
+    }
+
+    if (zip != null) {
+      question(record, "MTH169", zip);
+    }
   }
 }

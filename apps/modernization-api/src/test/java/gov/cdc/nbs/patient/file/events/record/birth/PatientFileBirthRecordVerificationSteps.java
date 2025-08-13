@@ -83,6 +83,126 @@ public class PatientFileBirthRecordVerificationSteps {
         );
   }
 
+  @Then("the patient file has the birth record includes the mother's first name {string}")
+  public void motherFirstName(final String value) throws Exception {
+    String local = local();
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.mother.name.first=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
+  @Then("the patient file has the birth record includes the mother's middle name {string}")
+  public void motherMiddleName(final String value) throws Exception {
+    String local = local();
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.mother.name.middle=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
+  @Then("the patient file has the birth record includes the mother's last name {string}")
+  public void motherLastName(final String value) throws Exception {
+    String local = local();
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.mother.name.last=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
+  @Then("the patient file has the birth record includes the mother's name with the suffix {string}")
+  public void motherSuffix(final String value) throws Exception {
+    String local = local();
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.mother.name.suffix=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
+  @Then("the patient file has the birth record includes the mother's street address {string}")
+  public void motherAddress(final String value) throws Exception {
+    String local = local();
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.mother.address.address=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
+  @Then("the patient file has the birth record includes the mother's street address 2 {string}")
+  public void motherAddress2(final String value) throws Exception {
+    String local = local();
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.mother.address.address2=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
+  @Then("the patient file has the birth record includes the mother's city {string}")
+  public void motherCity(final String value) throws Exception {
+    String local = local();
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.mother.address.city=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
+  @Then("the patient file has the birth record includes the mother's state {string}")
+  public void motherState(final String value) throws Exception {
+    String local = local();
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.mother.address.state=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
+  @Then("the patient file has the birth record includes the mother's county {string}")
+  public void motherCounty(final String value) throws Exception {
+    String local = local();
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.mother.address.county=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
+  @Then("the patient file has the birth record includes the mother's zip code {string}")
+  public void motherZipcode(final String value) throws Exception {
+    String local = local();
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.[?(@.local=='%s' && @.mother.address.zipcode=='%s')]",
+                local, value
+            ).exists()
+        );
+  }
+
   @Then("the patient file has the birth record associated with the investigation")
   public void associated() throws Exception {
     InvestigationIdentifier investigation = this.activeInvestigation.active();

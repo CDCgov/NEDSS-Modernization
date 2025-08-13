@@ -34,7 +34,7 @@ public class BirthRecordSteps {
 
   @Given("the patient has a birth record")
   public void has() {
-    has(RandomUtil.getRandomString(50));
+    has(RandomUtil.getRandomNumericString(50));
   }
 
   @Given("the patient has the {string} birth record")
@@ -64,6 +64,30 @@ public class BirthRecordSteps {
   public void reportedAt(final OrganizationIdentifier organization) {
     activeRecord.maybeActive()
         .ifPresent(record -> mother.bornAt(record, organization));
+  }
+
+  @Given("the birth record has the mother named {string} {string}")
+  public void motherName(final String first, final String last) {
+    motherFullName(first, null, last, null);
+  }
+
+  @Given("the birth record has the mother named {string} {string} {string} {nameSuffix}")
+  public void motherFullName(final String first, final String middle, final String last, final String suffix) {
+    activeRecord.maybeActive()
+        .ifPresent(record -> mother.motherName(record, first, middle, last, suffix));
+  }
+
+  @Given("the birth record has the mother living at {string} {string} {string} {state} {string} in {county}")
+  public void motherFullAddress(
+      final String address,
+      final String address2,
+      final String city,
+      final String state,
+      final String zip,
+      final String county
+  ) {
+    activeRecord.maybeActive()
+        .ifPresent(record -> mother.motherAddress(record, address, address2, city, state, county, zip));
   }
 
   @Given("the birth record is associated with the investigation")

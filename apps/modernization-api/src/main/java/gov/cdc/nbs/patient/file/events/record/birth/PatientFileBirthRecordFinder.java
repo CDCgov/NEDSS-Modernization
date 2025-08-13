@@ -1,10 +1,11 @@
 package gov.cdc.nbs.patient.file.events.record.birth;
 
-import org.springframework.jdbc.core.RowMapper;
+import gov.cdc.nbs.sql.AccumulatingResultSetExtractor;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Collection;
 
 @Component
 class PatientFileBirthRecordFinder {
@@ -20,7 +21,7 @@ class PatientFileBirthRecordFinder {
               and [patient].cd = 'PAT'
               and [patient].record_status_cd = 'ACTIVE'
       )
-      select
+      select\s
           [revisions].mpr_id                          as [patient],
           [record].clinical_document_uid              as [identifier],
           [record].local_id                           as [local],
@@ -29,10 +30,15 @@ class PatientFileBirthRecordFinder {
           [record].record_status_time                 as [collected_on],
           [certificate].root_extension_txt            as [certificate],
           [mother_info_question].question_identifier  as [question],
-          [mother_info_answer].answer_txt             as [mother_info_answer]
+          case [mother_info_question].question_identifier
+              when 'MTH166' then [state].code_desc_txt
+              when 'MTH168' then [county].code_desc_txt
+              when 'MTH204' then [suffix].code_short_desc_txt
+              else [mother_info_answer].answer_txt
+          end             as [mother_info_answer]
       from revisions
       
-          join Participation as [subject_of_record]  with (nolock) ON
+          join Participation as [subject_of_record]  with (nolock) on
                   [subject_of_record].subject_entity_uid = revisions.person_uid
               and [subject_of_record].type_cd = 'SubjOfBirth'
               and [subject_of_record].record_status_cd = 'ACTIVE'
@@ -47,7 +53,7 @@ class PatientFileBirthRecordFinder {
                   [certificate].act_uid = [record].clinical_document_uid
               and [certificate].record_status_cd = 'ACTIVE'
       
-          left join Participation AS [facility_of_birth]  with (nolock) on
+          left join Participation AS [facility_of_birth]  with (nolock) ON\s
                   [record].clinical_document_uid = [facility_of_birth].act_uid
               and [facility_of_birth].record_status_cd = 'ACTIVE'
               and [facility_of_birth].act_class_cd = 'DOCCLIN'
@@ -64,20 +70,38 @@ class PatientFileBirthRecordFinder {
           left join NBS_question [mother_info_question] with (nolock) on
                   [mother_info_question].[nbs_question_uid] = [mother_info_answer].[nbs_question_uid]
               and [mother_info_question].question_identifier in ( 'MTH201','MTH202','MTH203','MTH204','DEM159_MTH','DEM160_MTH','MTH209','MTH166','MTH169','MTH168')
+      
+          left join NBS_SRTE..Code_value_general [suffix] on
+                  [suffix].[code_set_nm] = 'P_NM_SFX'
+              and [suffix].[code] = [mother_info_answer].[answer_txt]
+              and [mother_info_question].question_identifier = 'MTH204'
+      
+          left join NBS_SRTE..State_county_code_value [county] with (nolock) on
+                  [county].[code] = [mother_info_answer].[answer_txt]
+              and [mother_info_question].question_identifier = 'MTH168'
+      
+          left join NBS_SRTE..State_code [state] with (nolock) on
+                  [state].state_cd = [mother_info_answer].[answer_txt]
+              and [mother_info_question].question_identifier = 'MTH166'
+      
       """;
 
   private final JdbcClient client;
-  private final RowMapper<PatientFileBirthRecord> mapper;
+  private final ResultSetExtractor<Collection<PatientFileBirthRecord>> extractor;
 
   PatientFileBirthRecordFinder(final JdbcClient client) {
     this.client = client;
-    this.mapper = new PatientFileBirthRecordRowMapper();
+    this.extractor = new AccumulatingResultSetExtractor<>(
+        (resultSet, rowNum) -> resultSet.getString(2),
+        new PatientFileBirthRecordRowMapper(),
+        PatientFileBirthRecordMerger::merge
+    );
+
   }
 
-  List<PatientFileBirthRecord> find(final long patient) {
+  Collection<PatientFileBirthRecord> find(final long patient) {
     return this.client.sql(QUERY)
         .param(patient)
-        .query(mapper)
-        .list();
+        .query(this.extractor);
   }
 }

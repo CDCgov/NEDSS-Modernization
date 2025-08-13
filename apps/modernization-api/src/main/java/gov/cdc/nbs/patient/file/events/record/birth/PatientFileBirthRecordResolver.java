@@ -31,11 +31,11 @@ class PatientFileBirthRecordResolver {
     this.associatedInvestigationFinder = associatedInvestigationFinder;
   }
 
-  List<PatientFileBirthRecord> resolve(final long patient) {
+  Collection<PatientFileBirthRecord> resolve(final long patient) {
 
     PermissionScope associationScope = this.scopeResolver.resolve(ASSOCIATION);
 
-    List<PatientFileBirthRecord> records = finder.find(patient);
+    Collection<PatientFileBirthRecord> records = finder.find(patient);
 
     if (!records.isEmpty()) {
 
