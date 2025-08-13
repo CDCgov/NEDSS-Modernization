@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @ScenarioScope
 class BirthRecordMother {
 
-  private final static String CREATE = """
+  private static final String CREATE = """
       insert into Act(act_uid, class_cd, mood_cd) values (:identifier, 'DOCCLIN','EVN');
       
       insert into Clinical_document(

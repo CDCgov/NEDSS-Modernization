@@ -47,8 +47,8 @@ public class BirthRecordSteps {
   public void createdOn(final LocalDate on, final LocalTime at) {
     activeRecord.maybeActive()
         .ifPresent(
-            record -> mother.receivedOn(
-                record,
+            found -> mother.receivedOn(
+                found,
                 LocalDateTime.of(on, at)
             )
         );
@@ -57,13 +57,13 @@ public class BirthRecordSteps {
   @When("the birth record was collected on {localDate}")
   public void collectedOn(final LocalDate on) {
     activeRecord.maybeActive()
-        .ifPresent(record -> mother.collectedOn(record, on));
+        .ifPresent(found -> mother.collectedOn(found, on));
   }
 
   @Given("the birth record has the patient born at {organization}")
   public void reportedAt(final OrganizationIdentifier organization) {
     activeRecord.maybeActive()
-        .ifPresent(record -> mother.bornAt(record, organization));
+        .ifPresent(found -> mother.bornAt(found, organization));
   }
 
   @Given("the birth record has the mother named {string} {string}")
@@ -74,7 +74,7 @@ public class BirthRecordSteps {
   @Given("the birth record has the mother named {string} {string} {string} {nameSuffix}")
   public void motherFullName(final String first, final String middle, final String last, final String suffix) {
     activeRecord.maybeActive()
-        .ifPresent(record -> mother.motherName(record, first, middle, last, suffix));
+        .ifPresent(found -> mother.motherName(found, first, middle, last, suffix));
   }
 
   @Given("the birth record has the mother living at {string} {string} {string} {state} {string} in {county}")
@@ -87,13 +87,13 @@ public class BirthRecordSteps {
       final String county
   ) {
     activeRecord.maybeActive()
-        .ifPresent(record -> mother.motherAddress(record, address, address2, city, state, county, zip));
+        .ifPresent(found -> mother.motherAddress(found, address, address2, city, state, county, zip));
   }
 
   @Given("the birth record is associated with the investigation")
   public void associatedWith() {
     activeRecord.maybeActive()
-        .ifPresent(record -> mother.associated(record, activeInvestigation.active()));
+        .ifPresent(found -> mother.associated(found, activeInvestigation.active()));
   }
 
 }
