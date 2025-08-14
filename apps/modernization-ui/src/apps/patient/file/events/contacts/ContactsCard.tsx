@@ -142,33 +142,37 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
                     id={'patient-file-contact-named'}
                     title={title}
                     collapsible
-                    open={dataLength(data) > 0}
+                    open={data.length > 0}
                     flair={<Tag size={sizing}>{dataLength(data)}</Tag>}
                     className={styles.card}
                     actions={<ColumnPreferencesAction sizing={sizing} />}>
-                    <div className={styles.content}>
-                        {data.map((contact) => (
-                            <Section
-                                key={contact.condition}
-                                title={titleResolver(contact.condition)}
-                                id={`${contact.condition}-${title}`}
-                                sizing={sizing}
-                                className={styles.card}
-                                subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}>
-                                <SortableDataTable
-                                    columns={apply.apply(columns(onClose))}
-                                    data={contact.contacts}
-                                    {...remaining}
+                    <Shown when={data.length > 0} fallback={<Empty />}>
+                        <div className={styles.content}>
+                            {data.map((contact) => (
+                                <Section
+                                    key={contact.condition}
+                                    title={titleResolver(contact.condition)}
+                                    id={`${contact.condition}-${title}`}
                                     sizing={sizing}
-                                />
-                            </Section>
-                        ))}
-                    </div>
+                                    className={styles.card}
+                                    subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}>
+                                    <SortableDataTable
+                                        columns={apply.apply(columns(onClose))}
+                                        data={contact.contacts}
+                                        {...remaining}
+                                        sizing={sizing}
+                                    />
+                                </Section>
+                            ))}
+                        </div>
+                    </Shown>
                 </Card>
             )}
         </ColumnPreferenceProvider>
     );
 };
+
+const Empty = () => <div className={styles.empty}>No data has been added.</div>;
 
 type ContactsCardProps = {
     provider: MemoizedSupplier<Promise<PatientFileContacts[]>>;

@@ -25,33 +25,33 @@ describe('when evaluating that a value exists', () => {
         expect(actual).toBe(true);
     });
 
-    it('should resolve that the array value exists', () => {
-        const actual = exists([]);
-
-        expect(actual).toBe(true);
-    });
-
     it('should resolve that an empty object value does not exist', () => {
         const actual = exists({});
 
         expect(actual).toBe(false);
     });
-});
 
-it('should resolve that the undefined value does not exist', () => {
-    const actual = exists(undefined);
+    it('should resolve that the undefined value does not exist', () => {
+        const actual = exists(undefined);
 
-    expect(actual).toBe(false);
-});
+        expect(actual).toBe(false);
+    });
 
-it('should resolve that the null value does not exist', () => {
-    const actual = exists(null);
+    it('should resolve that the null value does not exist', () => {
+        const actual = exists(null);
 
-    expect(actual).toBe(false);
-});
+        expect(actual).toBe(false);
+    });
 
-it('should resolve that an empty string value does not exist', () => {
-    const actual = exists('');
+    it('should resolve that an empty string value does not exist', () => {
+        const actual = exists('');
 
-    expect(actual).toBe(false);
+        expect(actual).toBe(false);
+    });
+
+    it('should resolve that an empty array value does not exists', () => {
+        const actual = exists([]);
+
+        expect(actual).toBe(false);
+    });
 });
