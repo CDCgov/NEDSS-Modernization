@@ -11,24 +11,24 @@ import org.springframework.test.web.reactive.server.WebTestClient;
     classes = {GatewayApplication.class, LandingServiceProvider.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
-        "nbs.gateway.landing.base=/welcome"
+        "nbs.gateway.landing.uri=localhost:10000",
+        "nbs.gateway.landing.base=/landing"
     })
 @Import(LandingServiceProvider.class)
-class LandingRouteLocatorTest {
-
+class LandingRouteLocatorConfigurationTest {
 
   @Autowired
   WebTestClient webClient;
 
   @Test
-  void should_redirect_to_welcome() {
+  void should_redirect_to_configured_landing() {
     webClient
         .get().uri(
             builder -> builder
                 .path("/")
                 .build())
         .exchange()
-        .expectHeader().location("/welcome")
+        .expectHeader().location("/landing")
         .expectStatus().is3xxRedirection();
   }
 

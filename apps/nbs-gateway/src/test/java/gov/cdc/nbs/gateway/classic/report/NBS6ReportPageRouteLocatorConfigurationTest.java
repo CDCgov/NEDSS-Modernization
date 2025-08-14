@@ -1,7 +1,6 @@
 package gov.cdc.nbs.gateway.classic.report;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import gov.cdc.nbs.gateway.classic.NBSClassicService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,9 +28,6 @@ class NBS6ReportPageRouteLocatorConfigurationTest {
 
   @Autowired
   WebTestClient webClient;
-
-  @Autowired
-  NBSClassicService service;
 
   @ParameterizedTest
   @ValueSource(strings = {"reports", "basic", "advanced", "column", "run", "save", "error"})

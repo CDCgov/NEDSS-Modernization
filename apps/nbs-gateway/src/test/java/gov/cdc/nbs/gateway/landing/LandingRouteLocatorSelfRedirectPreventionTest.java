@@ -38,7 +38,8 @@ class LandingRouteLocatorSelfRedirectPreventionTest {
         .get().uri(
             builder -> builder
                 .path("/")
-                .build())
+                .build()
+        )
         .exchange()
         .expectStatus()
         .isOk();
