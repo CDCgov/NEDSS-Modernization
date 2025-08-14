@@ -14,7 +14,6 @@ testing {
 
             dependencies {
                 implementation.bundle(libs.bundles.testing)
-                implementation libs.spring.kafka.test
             }
         }
     }

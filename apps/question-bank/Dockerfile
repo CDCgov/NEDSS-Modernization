@@ -1,4 +1,4 @@
-FROM gradle:8-jdk21 AS builder
+FROM gradle:9-jdk21 AS builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -33,7 +33,7 @@ RUN jlink \
   --no-man-pages \
   --output page-builder/runtime
 
-FROM redhat/ubi9-micro:latest
+FROM redhat/ubi10-micro:latest
 
 ENV NBS_DATASOURCE_SERVER=nbs-mssql
 

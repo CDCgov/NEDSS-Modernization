@@ -31,7 +31,7 @@ class NBS6LogoRouteConfiguration {
         .route(
             "nbs7-logo",
             route -> route.path(settings.resource())
-                .filters(filters -> filters.rewritePath(".", settings.path()))
+                .filters(filters -> filters.setPath(settings.path()))
                 .uri(service.uri())
         )
         .build();

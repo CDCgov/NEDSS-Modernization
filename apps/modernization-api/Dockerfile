@@ -10,9 +10,9 @@ RUN npm install
 # Copy required sources
 COPY apps/modernization-ui .
 
-RUN npx react-scripts build
+RUN npm run build
 
-FROM gradle:8-jdk21 AS api-builder
+FROM gradle:9-jdk21 AS api-builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -46,12 +46,11 @@ RUN jdeps --ignore-missing-deps -q  \
 RUN jlink \
   --add-modules $(cat deps.info),jdk.crypto.cryptoki \
   --strip-debug \
-  --compress 2 \
   --no-header-files \
   --no-man-pages \
   --output modernization-api/runtime
 
-FROM redhat/ubi9-micro:latest
+FROM redhat/ubi10-micro:latest
 
 ENV NBS_DATASOURCE_SERVER=nbs-mssql
 ENV NBS_ELASTICSEARCH_SERVER=elasticsearch
