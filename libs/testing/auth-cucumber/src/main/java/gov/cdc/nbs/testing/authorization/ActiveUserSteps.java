@@ -2,10 +2,8 @@ package gov.cdc.nbs.testing.authorization;
 
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@SuppressWarnings("java:S100")
+
 public class ActiveUserSteps {
 
   private final ActiveUserMother mother;
@@ -26,12 +24,12 @@ public class ActiveUserSteps {
   }
 
   @Given("the {string} user exists")
-  public void the_user_exists(final String name) {
+  public void create(final String name) {
     mother.create(name);
   }
 
   @Given("the user {string} {string} exists as {string}")
-  public void the_user_named_exists(final String first, final String last, final String username) {
+  public void create(final String first, final String last, final String username) {
     mother.create(username, first, last);
   }
 }
