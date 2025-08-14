@@ -8,7 +8,6 @@ import jakarta.annotation.PreDestroy;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.UUID;
 
 @Component
@@ -96,7 +95,7 @@ class ActiveUserMother {
         .param("username", username)
         .param("firstName", first)
         .param("lastName", last)
-        .param("addedOn", Timestamp.from(this.settings.createdOn()))
+        .param("addedOn", this.settings.createdOn())
         .param("addedBy", this.settings.createdBy())
         .query(Long.class)
         .single();

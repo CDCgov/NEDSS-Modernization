@@ -10,7 +10,7 @@ dependencies {
 
     implementation libs.bundles.security
 
-    implementation libs.bundles.jpa
+    implementation libs.bundles.jdbc
 
     implementation project(':authentication')
     implementation project(':testing-support')

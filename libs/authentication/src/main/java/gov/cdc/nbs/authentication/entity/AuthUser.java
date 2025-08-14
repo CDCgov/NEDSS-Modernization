@@ -74,16 +74,8 @@ public class AuthUser {
     this.id = id;
   }
 
-  public List<AuthUserRole> authUserRoles() {
-    return authUserRoles;
-  }
-
   public void setAuthUserRoles(List<AuthUserRole> authUserRoles) {
     this.authUserRoles = authUserRoles;
-  }
-
-  public List<AuthProgAreaAdmin> adminProgramAreas() {
-    return adminProgramAreas;
   }
 
   public void setAdminProgramAreas(List<AuthProgAreaAdmin> adminProgramAreas) {
@@ -98,48 +90,24 @@ public class AuthUser {
     this.userId = userId;
   }
 
-  public String userType() {
-    return userType;
-  }
-
   public void setUserType(String userType) {
     this.userType = userType;
-  }
-
-  public String userFirstNm() {
-    return userFirstNm;
   }
 
   public void setUserFirstNm(String userFirstNm) {
     this.userFirstNm = userFirstNm;
   }
 
-  public String userLastNm() {
-    return userLastNm;
-  }
-
   public void setUserLastNm(String userLastNm) {
     this.userLastNm = userLastNm;
-  }
-
-  public Character masterSecAdminInd() {
-    return masterSecAdminInd;
   }
 
   public void setMasterSecAdminInd(Character masterSecAdminInd) {
     this.masterSecAdminInd = masterSecAdminInd;
   }
 
-  public Character progAreaAdminInd() {
-    return progAreaAdminInd;
-  }
-
   public void setProgAreaAdminInd(Character progAreaAdminInd) {
     this.progAreaAdminInd = progAreaAdminInd;
-  }
-
-  public Long nedssEntryId() {
-    return nedssEntryId;
   }
 
   public void setNedssEntryId(Long nedssEntryId) {

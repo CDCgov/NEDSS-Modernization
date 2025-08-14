@@ -5,8 +5,6 @@ import gov.cdc.nbs.testing.authorization.AuthenticationSupportSettings;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-
 @Component
 public class AuthorizationRoleMother {
 
@@ -93,7 +91,7 @@ public class AuthorizationRoleMother {
         .param("programArea", programArea)
         .param("jurisdiction", jurisdiction)
         .param("guest", String.valueOf(guest))
-        .param("addedOn", Timestamp.from(this.settings.createdOn()))
+        .param("addedOn", this.settings.createdOn())
         .param("addedBy", this.settings.createdBy())
         .update();
   }

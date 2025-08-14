@@ -2,21 +2,14 @@ package gov.cdc.nbs.testing.authorization;
 
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.authentication.enums.SecurityEventType;
+import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.support.Active;
-import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
-import jakarta.annotation.PostConstruct;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import jakarta.annotation.PreDestroy;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Component
@@ -52,43 +45,22 @@ class SessionMother {
       """;
 
   private final Active<SessionCookie> active;
-  private final Available<SessionCookie> available;
-  private final NamedParameterJdbcTemplate template;
+  private final JdbcClient client;
+  private final TestingDataCleaner<String> cleaner;
 
-  SessionMother(
-      final Active<SessionCookie> active,
-      final JdbcTemplate template
-  ) {
+  SessionMother(final Active<SessionCookie> active, JdbcClient client) {
     this.active = active;
-    this.template = new NamedParameterJdbcTemplate(template);
-    this.available = new Available<>();
+    this.client = client;
+    this.cleaner = new TestingDataCleaner<>(client, DELETE, "identifiers");
   }
 
-  @PostConstruct
+  @PreDestroy
   void reset() {
-    List<String> identifiers = this.available.all()
-        .map(SessionCookie::identifier)
-        .toList();
-
-    if (!identifiers.isEmpty()) {
-      Map<String, List<String>> parameters = Map.of("identifiers", identifiers);
-
-      template.execute(
-          DELETE,
-          new MapSqlParameterSource(parameters),
-          PreparedStatement::executeUpdate
-      );
-
-      this.available.reset();
-    }
-
-    this.active.reset();
+    this.cleaner.clean();
   }
 
   void create(final ActiveUser user) {
     SessionCookie session = login(user);
-
-    available.available(session);
     active.active(session);
   }
 
@@ -108,20 +80,13 @@ class SessionMother {
       final SecurityEventType type
   ) {
     // insert security_log event with sessionId
-    Map<String, ? extends Serializable> parameters = Map.of(
-        "user", user.username(),
-        "type", type.name(),
-        "time", Timestamp.from(Instant.now()),
-        "session", session,
-        "entry", user.nedssEntry()
-    );
-
-    this.template.execute(
-        INSERT,
-        new MapSqlParameterSource(parameters),
-        PreparedStatement::executeUpdate
-    );
-
+    this.client.sql(INSERT)
+        .param("user", user.username())
+        .param("type", type.name())
+        .param("time", LocalDateTime.now())
+        .param("session", session)
+        .param("entry", user.nedssEntry())
+        .update();
   }
 
   public void logout(final ActiveUser current, final String session) {

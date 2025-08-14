@@ -7,8 +7,6 @@ import jakarta.annotation.PreDestroy;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-
 @Component
 @ScenarioScope
 public class PermissionSetMother {
@@ -121,7 +119,7 @@ public class PermissionSetMother {
     long id = this.client.sql(CREATE)
         .param("name", "")
         .param("description", "")
-        .param("addedOn", Timestamp.from(this.settings.createdOn()))
+        .param("addedOn", this.settings.createdOn())
         .param("addedBy", this.settings.createdBy())
         .query(Long.class)
         .single();
@@ -130,7 +128,7 @@ public class PermissionSetMother {
         .param("set", id)
         .param("operation", operation)
         .param("object", object)
-        .param("addedOn", Timestamp.from(this.settings.createdOn()))
+        .param("addedOn", this.settings.createdOn())
         .param("addedBy", this.settings.createdBy())
         .update();
 

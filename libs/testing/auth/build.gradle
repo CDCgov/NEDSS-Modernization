@@ -19,7 +19,7 @@ testing {
 dependencies {
     implementation libs.springBoot
 
-    implementation libs.bundles.jpa
+    implementation libs.bundles.jdbc
     implementation libs.cucumber.java
     implementation libs.cucumber.spring
 
