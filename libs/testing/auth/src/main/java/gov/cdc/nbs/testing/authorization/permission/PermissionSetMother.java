@@ -1,84 +1,140 @@
 package gov.cdc.nbs.testing.authorization.permission;
 
-import gov.cdc.nbs.authentication.entity.AuthAudit;
-import gov.cdc.nbs.authentication.entity.AuthBusObjType;
-import gov.cdc.nbs.authentication.entity.AuthBusOpType;
-import gov.cdc.nbs.authentication.entity.AuthPermSet;
 import gov.cdc.nbs.testing.authorization.AuthenticationSupportSettings;
-import gov.cdc.nbs.testing.support.Available;
+import gov.cdc.nbs.testing.data.TestingDataCleaner;
+import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PreDestroy;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
+import java.sql.Timestamp;
 
 @Component
+@ScenarioScope
 public class PermissionSetMother {
 
-    private final AuthenticationSupportSettings settings;
-    private final EntityManager entityManager;
-    private final PermissionSetCleaner cleaner;
-    private final Available<Long> available;
+  private static final String CREATE = """
+      insert into Auth_perm_set(
+        perm_set_nm,
+        perm_set_desc,
+        add_user_id,
+        add_time,
+        last_chg_user_id,
+        last_chg_time,
+        record_status_cd,
+        record_status_time
+      ) values (
+        :name,
+        :description,
+        :addedBy,
+        :addedOn,
+        :addedBy,
+        :addedOn,
+        'ACTIVE',
+        :addedOn
+      );
+      
+      select @@identity
+      """;
 
-    private final AuthorizationObjectTypeFinder objectFinder;
-    private final AuthorizationOperationTypeFinder operationFinder;
+  private static final String ASSIGN = """
+      -- assign the object right
+      insert into Auth_bus_obj_rt (
+        auth_perm_set_uid,
+        auth_bus_obj_type_uid,
+        add_user_id,
+        add_time,
+        last_chg_user_id,
+        last_chg_time,
+        record_status_cd,
+        record_status_time
+      )
+      select
+          :set,
+          [object].auth_bus_obj_type_uid,
+          :addedBy,
+          :addedOn,
+          :addedBy,
+          :addedOn,
+          'ACTIVE',
+          :addedOn
+      from Auth_bus_obj_type [object]
+      where [object].[bus_obj_nm] = :object;
+      
+      -- assign the operation right
+      insert into Auth_bus_op_rt (
+        auth_bus_obj_rt_uid,
+        auth_bus_op_type_uid,
+        bus_op_user_rt,
+        bus_op_guest_rt,
+        add_user_id,
+        add_time,
+        last_chg_user_id,
+        last_chg_time,
+        record_status_cd,
+        record_status_time
+      )
+      select
+        @@identity,
+        [operation].auth_bus_op_type_uid,
+        'T',
+        'T',
+        :addedBy,
+        :addedOn,
+        :addedBy,
+        :addedOn,
+        'ACTIVE',
+        :addedOn
+      from Auth_bus_op_type [operation]
+      where [operation].[bus_op_nm] = :operation;
+      """;
 
-    PermissionSetMother(
-            final AuthenticationSupportSettings settings,
-            final EntityManager entityManager,
-            final PermissionSetCleaner cleaner,
-            final AuthorizationObjectTypeFinder objectFinder,
-            final AuthorizationOperationTypeFinder operationFinder) {
-        this.settings = settings;
-        this.entityManager = entityManager;
-        this.cleaner = cleaner;
-        this.objectFinder = objectFinder;
-        this.operationFinder = operationFinder;
-        this.available = new Available<>();
-    }
+  private static final String DELETE = """
+      delete from Auth_user_role where auth_perm_set_uid in (:identifiers);
+      delete from Auth_bus_op_rt where auth_bus_obj_rt_uid in (select auth_bus_obj_rt_uid from Auth_bus_obj_rt where auth_perm_set_uid in (:identifiers));
+      delete from Auth_bus_obj_rt where auth_perm_set_uid in (:identifiers);
+      delete from Auth_perm_set where auth_perm_set_uid in (:identifiers);
+      """;
 
-    @Transactional
-    public void reset() {
-        this.available.all().forEach(this.cleaner::clean);
-        this.available.reset();
-    }
+  private final AuthenticationSupportSettings settings;
+  private final JdbcClient client;
+  private final TestingDataCleaner<Long> cleaner;
 
-    private AuthAudit resolveAudit() {
-        return new AuthAudit(settings.createdBy(), settings.createdOn());
-    }
 
-    public long allow(final String operation, final String object) {
 
-        AuthPermSet set = createPermissionSet();
+  PermissionSetMother(
+      final AuthenticationSupportSettings settings,
+      final JdbcClient client
+  ) {
+    this.settings = settings;
+    this.client = client;
+    this.cleaner = new TestingDataCleaner<>(client, DELETE, "identifiers");
+  }
 
-        createRight(set, operation, object);
+  @PreDestroy
+  public void reset() {
+    this.cleaner.clean();
+  }
 
-        return set.id();
-    }
+  public long allow(final String operation, final String object) {
 
-    private AuthPermSet createPermissionSet() {
+    long id = this.client.sql(CREATE)
+        .param("name", "")
+        .param("description", "")
+        .param("addedOn", Timestamp.from(this.settings.createdOn()))
+        .param("addedBy", this.settings.createdBy())
+        .query(Long.class)
+        .single();
 
-        AuthAudit audit = resolveAudit();
+    this.client.sql(ASSIGN)
+        .param("set", id)
+        .param("operation", operation)
+        .param("object", object)
+        .param("addedOn", Timestamp.from(this.settings.createdOn()))
+        .param("addedBy", this.settings.createdBy())
+        .update();
 
-        AuthPermSet permissionSet = new AuthPermSet()
-                .name("Test-Permission")
-                .description("Permission set used for integration testing")
-                .audit(audit);
 
-        this.entityManager.persist(permissionSet);
-
-        this.available.available(permissionSet.id());
-
-        return permissionSet;
-    }
-
-    private void createRight(
-            final AuthPermSet set,
-            final String operation,
-            final String object
-    ) {
-        AuthBusObjType objectType = this.objectFinder.find(object);
-        AuthBusOpType operationType = this.operationFinder.find(operation);
-        set.addObjectRight(operationType, objectType);
-    }
-
+    return id;
+  }
 }
