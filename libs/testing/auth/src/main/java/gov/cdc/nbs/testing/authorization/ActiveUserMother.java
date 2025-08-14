@@ -1,43 +1,82 @@
 package gov.cdc.nbs.testing.authorization;
 
-import gov.cdc.nbs.authentication.entity.AuthAudit;
-import gov.cdc.nbs.authentication.entity.AuthUser;
+import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import jakarta.persistence.EntityManager;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Component
 @ScenarioScope
 class ActiveUserMother {
 
+  private static final String CREATE = """
+      insert into Auth_user (
+        nedss_entry_id,
+        user_id,
+        user_first_nm,
+        user_last_nm,
+        prog_area_admin_ind,
+        master_sec_admin_ind,
+        user_type,
+        add_user_id,
+        add_time,
+        last_chg_user_id,
+        last_chg_time,
+        record_status_cd,
+        record_status_time
+      ) values (
+        :nedss,
+        :username,
+        :firstName,
+        :lastName,
+        'F',
+        'F',
+        'internalUser',
+        :addedBy,
+        :addedOn,
+        :addedBy,
+        :addedOn,
+        'ACTIVE',
+        :addedOn
+      );
+      
+      select @@Identity
+      """;
+
+  private static final String DELETE = """
+      delete from Auth_user_role where auth_user_uid in (:identifiers);
+      delete from Auth_user where auth_user_uid in (:identifiers);
+      """;
+
   private final AuthenticationSupportSettings settings;
   private final SequentialIdentityGenerator idGenerator;
-  private final EntityManager entityManager;
-  private final ActiveUserCleaner cleaner;
+  private final JdbcClient client;
+  private final TestingDataCleaner<Long> cleaner;
+
   private final Available<ActiveUser> users;
 
   ActiveUserMother(
       final AuthenticationSupportSettings settings,
       final SequentialIdentityGenerator idGenerator,
-      final EntityManager entityManager,
-      final ActiveUserCleaner cleaner,
+      final JdbcClient client,
       final Available<ActiveUser> users
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
-    this.entityManager = entityManager;
-    this.cleaner = cleaner;
+    this.client = client;
     this.users = users;
+    this.cleaner = new TestingDataCleaner<>(client, DELETE, "identifiers");
   }
 
   @PreDestroy
   public void reset() {
-    this.users.all().forEach(this.cleaner::clean);
+    this.cleaner.clean();
   }
 
   ActiveUser create(final String name) {
@@ -49,31 +88,27 @@ class ActiveUserMother {
       final String first,
       final String last
   ) {
-    AuthUser user = new AuthUser();
-    user.setUserId(username);
-    user.setUserType("internalUser");
-    user.setUserFirstNm(first);
-    user.setUserLastNm(last);
-    user.setMasterSecAdminInd('F');
-    user.setProgAreaAdminInd('F');
 
-    return including(user);
+    long nedss = idGenerator.next();
+
+    long id = this.client.sql(CREATE)
+        .param("nedss", nedss)
+        .param("username", username)
+        .param("firstName", first)
+        .param("lastName", last)
+        .param("addedOn", Timestamp.from(this.settings.createdOn()))
+        .param("addedBy", this.settings.createdBy())
+        .query(Long.class)
+        .single();
+
+    ActiveUser activeUser = new ActiveUser(id, username, nedss);
+    include(activeUser);
+    return activeUser;
   }
 
-  private ActiveUser including(final AuthUser user) {
-    long identifier = idGenerator.next();
-    user.setNedssEntryId(identifier);
-
-    AuthAudit audit = new AuthAudit(this.settings.createdBy(), this.settings.createdOn());
-
-    user.setAudit(audit);
-
-    entityManager.persist(user);
-
-    ActiveUser activeUser = new ActiveUser(user.getId(), user.getUserId(), user.getNedssEntryId());
+  private void include(final ActiveUser activeUser) {
     users.available(activeUser);
-
-    return activeUser;
+    cleaner.include(activeUser.id());
   }
 
   ActiveUser create() {
