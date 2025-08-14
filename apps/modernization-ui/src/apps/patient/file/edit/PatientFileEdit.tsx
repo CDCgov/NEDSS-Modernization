@@ -8,6 +8,7 @@ import { useComponentSizing } from 'design-system/sizing';
 import { Button } from 'design-system/button';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { maybeDisplayName } from 'name';
+import { exists } from 'utils/exists';
 import {
     PatientDemographics,
     PatientDemographicsDefaults,
@@ -15,6 +16,7 @@ import {
     PatientDemographicsForm,
     usePatientDemographicDefaults
 } from 'libs/patient/demographics';
+import { usePendingFormEntry } from 'design-system/entry/pending';
 import { usePatientFileData } from '../usePatientFileData';
 import { PatientFileLayout } from '../PatientFileLayout';
 import { Patient } from '../patient';
@@ -22,7 +24,6 @@ import { evaluated } from './evaluated';
 import { useEditPatient } from './useEditPatient';
 
 import styles from './patient-file-edit.module.scss';
-import { usePendingFormEntry } from 'design-system/entry/pending';
 
 const PatientFileEdit = () => {
     const { patient, demographics, refresh } = usePatientFileData();
@@ -96,7 +97,9 @@ const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel
         }
     }, [interaction.status, interaction.status === 'error' && interaction.reason]);
 
-    const disabled = !form.formState.isValid || pending.pending.length > 0 || interaction.status !== 'waiting';
+    const disabled =
+        (form.formState.isValid && !exists(form.formState.dirtyFields)) ||
+        (!form.formState.isValid && exists(form.formState.dirtyFields) && interaction.status === 'waiting');
 
     const handleSave = form.handleSubmit((input) => interaction.edit(patient.id, input));
 
