@@ -20,6 +20,7 @@ import { AssociatedWith } from 'libs/events/investigations/associated';
 import { PatientFileContact, PatientFileContacts } from './contacts';
 
 import styles from './contacts-card.module.scss';
+import { maybeMap } from 'utils/mapping';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'created-on', name: 'Date created' };
@@ -37,6 +38,8 @@ const columnPreferences: ColumnPreference[] = [
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
 
+const displayReferralBasis = maybeMap((value) => ` (${value})`);
+
 const columns = (onClose: () => void): Column<PatientFileContact>[] => [
     {
         ...EVENT_ID,
@@ -53,9 +56,11 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
                     onClose={onClose}>
                     {value.local}
                 </ClassicModalButton>
-                <strong>{value.processingDecision}</strong>
                 <br />
-                {value.referralBasis && `(${value.referralBasis})`}
+                <strong>
+                    {value.processingDecision}
+                    {displayReferralBasis(value.referralBasis)}
+                </strong>
             </>
         )
     },
@@ -69,7 +74,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
     },
     {
         ...DATE_NAMED,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.namedOn,
         render: (value) => internalizeDate(value.namedOn)

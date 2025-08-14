@@ -19,6 +19,8 @@
 function exists<T>(value: T | null | undefined): value is NonNullable<T> {
     if (typeof value === 'object' && value && !Array.isArray(value)) {
         return Object.keys(value).length > 0;
+    } else if (typeof value === 'object' && Array.isArray(value)) {
+        return value.length > 0;
     } else if (typeof value === 'string') {
         return value.length > 0;
     }

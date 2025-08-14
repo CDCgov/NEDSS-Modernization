@@ -1,5 +1,6 @@
 import { exists } from 'utils';
 import { Shown } from 'conditional-render';
+import { NoData } from 'design-system/data';
 import { AssociatedInvestigation } from './associated';
 
 import styles from './associations.module.scss';
@@ -10,7 +11,7 @@ type AssociationsProps = {
 };
 
 const Associations = ({ patient, children }: AssociationsProps) => (
-    <Shown when={exists(children)}>
+    <Shown when={exists(children)} fallback={<NoData />}>
         <span className={styles.associations}>
             {children?.map((association, index) => (
                 <AssociatedWith key={index} patient={patient}>
