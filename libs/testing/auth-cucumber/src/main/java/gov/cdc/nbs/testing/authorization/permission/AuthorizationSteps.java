@@ -52,7 +52,7 @@ public class AuthorizationSteps {
 
   @Given("I am a security administrator")
   public void securityAdmin() {
-    activeUser.maybeActive().ifPresent(roleMother::systemAdmin);
+    activeUser.maybeActive().ifPresent(roleMother::securityAdmin);
   }
 
   @Given("I can {string} any {string} for {programArea} within all jurisdictions")

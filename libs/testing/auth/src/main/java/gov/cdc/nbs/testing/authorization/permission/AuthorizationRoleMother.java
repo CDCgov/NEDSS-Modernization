@@ -1,31 +1,53 @@
 package gov.cdc.nbs.testing.authorization.permission;
 
-import gov.cdc.nbs.authentication.entity.AuthAudit;
-import gov.cdc.nbs.authentication.entity.AuthPermSet;
-import gov.cdc.nbs.authentication.entity.AuthUser;
-import gov.cdc.nbs.authentication.entity.AuthUserRole;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.authorization.AuthenticationSupportSettings;
-import jakarta.persistence.EntityManager;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
 
 @Component
 public class AuthorizationRoleMother {
 
+  private static final String ASSIGN = """
+      insert into auth_user_role(
+        auth_user_uid,
+        auth_perm_set_uid,
+        prog_area_cd,
+        jurisdiction_cd,
+        role_guest_ind,
+        add_user_id,
+        add_time,
+        last_chg_user_id,
+        last_chg_time,
+        record_status_cd,
+        record_status_time
+      ) values (
+        :user,
+        :set,
+        :programArea,
+        :jurisdiction,
+        :guest,
+        :addedBy,
+        :addedOn,
+        :addedBy,
+        :addedOn,
+        'ACTIVE',
+        :addedOn
+      );
+      """;
+
   private final AuthenticationSupportSettings settings;
   private final JdbcClient client;
-  private final EntityManager entityManager;
 
 
   AuthorizationRoleMother(
       final AuthenticationSupportSettings settings,
-      final JdbcClient client,
-      final EntityManager entityManager
+      final JdbcClient client
   ) {
     this.settings = settings;
     this.client = client;
-    this.entityManager = entityManager;
 
   }
 
@@ -64,19 +86,16 @@ public class AuthorizationRoleMother {
       final String programArea,
       final String jurisdiction
   ) {
-    AuthUser authUser = this.entityManager.find(AuthUser.class, user.id());
-    AuthPermSet authPermSet = this.entityManager.find(AuthPermSet.class, set);
 
-    AuthUserRole role = new AuthUserRole(authUser, authPermSet)
-        .guest(guest)
-        .programArea(programArea)
-        .jurisdiction(jurisdiction)
-        .audit(resolveAudit());
-
-    this.entityManager.persist(role);
+    this.client.sql(ASSIGN)
+        .param("user", user.id())
+        .param("set", set)
+        .param("programArea", programArea)
+        .param("jurisdiction", jurisdiction)
+        .param("guest", String.valueOf(guest))
+        .param("addedOn", Timestamp.from(this.settings.createdOn()))
+        .param("addedBy", this.settings.createdBy())
+        .update();
   }
 
-  private AuthAudit resolveAudit() {
-    return new AuthAudit(settings.createdBy(), settings.createdOn());
-  }
 }
