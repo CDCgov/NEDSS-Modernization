@@ -124,17 +124,10 @@ type InternalCardProps = {
     onClose: () => void;
 } & Omit<TableCardProps<PatientFileContacts>, 'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'>;
 
-const dataLength = (data: PatientFileContacts[]) => {
-    let count = 0;
-    data.map((cond) => {
-        cond.contacts.map(() => {
-            count++;
-        });
-    });
-    return count;
-};
+const dataLength = (data: PatientFileContacts[]) => data.reduce((current, next) => current + next.contacts.length, 0);
 
 const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...remaining }: InternalCardProps) => {
+    const total = dataLength(data);
     return (
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
             {(apply) => (
@@ -143,7 +136,7 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
                     title={title}
                     collapsible
                     open={data.length > 0}
-                    flair={<Tag size={sizing}>{dataLength(data)}</Tag>}
+                    flair={<Tag size={sizing}>{total}</Tag>}
                     className={styles.card}
                     actions={<ColumnPreferencesAction sizing={sizing} />}>
                     <Shown when={data.length > 0} fallback={<Empty />}>
