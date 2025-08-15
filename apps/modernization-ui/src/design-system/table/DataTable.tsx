@@ -18,6 +18,10 @@ type DataTableFeatures = {
     filtering?: FilterInteraction;
 };
 
+type DataTableOptions = {
+    stickyHeaders?: boolean;
+};
+
 type DataTableProps<V> = {
     id: string;
     className?: string;
@@ -26,6 +30,7 @@ type DataTableProps<V> = {
     sizing?: Sizing;
     onEmpty?: EmptyRenderer;
     features?: DataTableFeatures;
+    options?: DataTableOptions;
 };
 
 const DataTable = <V,>({
@@ -35,7 +40,8 @@ const DataTable = <V,>({
     data,
     sizing,
     onEmpty = defaultEmptyHandler,
-    features = {}
+    features = {},
+    options = {}
 }: DataTableProps<V>) => {
     const resolvedClasses = classNames('usa-table--borderless', styles.table, {
         [styles.sized]: sizing,
@@ -51,6 +57,7 @@ const DataTable = <V,>({
                     sizing={sizing}
                     filtering={features.filtering}
                     sorting={features.sorting}
+                    sticky={options.stickyHeaders}
                 />
                 <tbody>
                     <Shown when={data.length > 0} fallback={onEmpty(columns.length)}>

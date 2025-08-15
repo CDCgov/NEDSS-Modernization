@@ -124,6 +124,7 @@ const PatientSearchResultTable = ({ results, sizing }: Props) => {
             sizing={sizing}
             features={{ sorting, filtering }}
             onEmpty={() => <></>}
+            options={{ stickyHeaders: true }}
         />
     );
 };

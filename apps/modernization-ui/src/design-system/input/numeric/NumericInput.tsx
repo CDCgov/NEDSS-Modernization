@@ -17,7 +17,7 @@ const NumericInput = ({
     sizing,
     error,
     required,
-    placeholder = 'No Data',
+    placeholder,
     ...remaining
 }: NumericInputProps) => {
     return (

@@ -111,7 +111,14 @@ const LaboratoryReportSearchResultsTable = ({ results, jurisdictionResolver }: P
         }
     ];
 
-    return <DataTable<LabReport> id="laboratory-report-search-results" columns={apply(columns)} data={results} />;
+    return (
+        <DataTable<LabReport>
+            id="laboratory-report-search-results"
+            columns={apply(columns)}
+            data={results}
+            options={{ stickyHeaders: true }}
+        />
+    );
 };
 
 export { LaboratoryReportSearchResultsTable, preferences };

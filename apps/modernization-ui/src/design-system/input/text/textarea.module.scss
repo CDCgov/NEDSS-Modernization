@@ -1,15 +1,14 @@
 @use 'styles/colors';
 
-.textArea {
+.container {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     min-width: fit-content;
 
-
     textarea {
-        min-width: 100%;
-        max-width: 40rem;
+        flex-grow: 1;
+        max-width: 70ch;
     }
 
     .counter {
