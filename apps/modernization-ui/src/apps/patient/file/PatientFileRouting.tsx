@@ -1,74 +1,39 @@
-import { lazy, Suspense } from 'react';
-import { Navigate } from 'react-router';
-import { permissions, Permitted } from 'libs/permission';
-import { PageTitle } from 'page';
-import { Guarded } from 'libs/guard';
+import { Navigate, RouteObject } from 'react-router';
 import { RedirectHome } from 'routes';
-import { loader } from './loader';
 
-const LazyPatientFile = lazy(() => import('./PatientFile').then((module) => ({ default: module.PatientFile })));
-const LazyPatientFileSummary = lazy(() =>
-    import('./summary/PatientFileSummary').then((module) => ({ default: module.PatientFileSummary }))
-);
-const LazyPatientFileEvents = lazy(() => import('./events').then((module) => ({ default: module.PatientFileEvents })));
-const LazyPatientFileDemographics = lazy(() =>
-    import('./demographics').then((module) => ({ default: module.PatientFileDemographics }))
-);
-
-const LazyPatientFileEdit = lazy(() => import('./edit').then((module) => ({ default: module.PatientFileEdit })));
-
-const routing = [
+const routing: RouteObject[] = [
     {
         path: '/patient/:id',
-        element: (
-            <Guarded
-                feature={(features) => features.patient.file.enabled}
-                permission={permissions.patient.file}
-                fallback={<RedirectHome />}>
-                <Suspense>
-                    <PageTitle title="Patient file">
-                        <LazyPatientFile />
-                    </PageTitle>
-                </Suspense>
-            </Guarded>
-        ),
+        lazy: {
+            loader: async () => (await import('./loader')).loader,
+            Component: async () => (await import('./GuardedPatientFile')).GuardedPatientFile
+        },
         errorElement: <RedirectHome />,
-        loader,
         children: [
             { index: true, element: <Navigate to="summary" replace /> },
             {
                 path: 'summary',
-                element: (
-                    <Suspense>
-                        <LazyPatientFileSummary />
-                    </Suspense>
-                )
+                lazy: {
+                    Component: async () => (await import('./summary/PatientFileSummary')).PatientFileSummary
+                }
             },
             {
                 path: 'events',
-                element: (
-                    <Suspense>
-                        <LazyPatientFileEvents />
-                    </Suspense>
-                )
+                lazy: {
+                    Component: async () => (await import('./events')).PatientFileEvents
+                }
             },
             {
                 path: 'demographics',
-                element: (
-                    <Suspense>
-                        <LazyPatientFileDemographics />
-                    </Suspense>
-                )
+                lazy: {
+                    Component: async () => (await import('./demographics')).PatientFileDemographics
+                }
             },
             {
                 path: 'edit',
-                element: (
-                    <Permitted permission={permissions.patient.update} fallback={<RedirectHome />}>
-                        <Suspense>
-                            <LazyPatientFileEdit />
-                        </Suspense>
-                    </Permitted>
-                )
+                lazy: {
+                    Component: async () => (await import('./edit')).GuardedPatientFileEdit
+                }
             }
         ]
     }

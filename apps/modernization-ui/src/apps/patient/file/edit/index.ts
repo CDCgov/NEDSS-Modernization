@@ -1,1 +1,1 @@
-export { PatientFileEdit } from './PatientFileEdit';
+export { GuardedPatientFileEdit } from './GuardedPatientFileEdit';

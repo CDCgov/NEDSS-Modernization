@@ -1,18 +1,21 @@
-import { PatientDataEntryProvider } from './PatientDataEntryProvider';
-import { AddPatientExtended } from './extended/AddPatientExtended';
-import { AddPatientBasic } from './basic/AddPatientBasic';
-
 const routing = [
     {
-        element: <PatientDataEntryProvider />,
+        path: '/patient/add',
+        lazy: {
+            Component: async () => (await import('./PatientDataEntryProvider')).PatientDataEntryProvider
+        },
         children: [
             {
-                path: '/patient/add',
-                element: <AddPatientBasic />
+                index: true,
+                lazy: {
+                    Component: async () => (await import('./basic/AddPatientBasic')).AddPatientBasic
+                }
             },
             {
                 path: '/patient/add/extended',
-                element: <AddPatientExtended />
+                lazy: {
+                    Component: async () => (await import('./extended/AddPatientExtended')).AddPatientExtended
+                }
             }
         ]
     }

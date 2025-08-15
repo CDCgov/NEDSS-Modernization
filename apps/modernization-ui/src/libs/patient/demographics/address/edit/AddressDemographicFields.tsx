@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 import { DatePickerInput, validDateRule } from 'design-system/date';
@@ -15,19 +16,27 @@ import { SingleSelect } from 'design-system/select';
 import { AddressOptions } from './useAddressOptions';
 import { AddressDemographic, labels } from '../address';
 
-type AddressDemographicFieldsProps = { options: AddressOptions } & EntryFieldsProps;
+type AddressDemographicFieldsProps = { options: AddressOptions; entry?: AddressDemographic } & EntryFieldsProps;
 
 const AddressDemographicFields = ({
     orientation = 'horizontal',
     sizing = 'medium',
-    options
+    options,
+    entry
 }: AddressDemographicFieldsProps) => {
-    const { control } = useFormContext<AddressDemographic>();
+    const { control, setValue } = useFormContext<AddressDemographic>();
 
-    const selectedState = useWatch({ control, name: 'state' });
+    const selectedState = useWatch({ control, name: 'state.value', defaultValue: entry?.state?.value });
+
+    useEffect(() => {
+        if (selectedState !== entry?.state?.value) {
+            //  when the category differs from the entry, clear the details
+            setValue('county', undefined);
+        }
+    }, [selectedState]);
 
     const states = useStateOptions();
-    const county = useCountyOptions(selectedState?.name);
+    const county = useCountyOptions(selectedState);
     const country = useCountryOptions();
 
     return (

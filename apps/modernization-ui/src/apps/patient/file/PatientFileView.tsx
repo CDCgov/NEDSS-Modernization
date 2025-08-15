@@ -9,6 +9,7 @@ import { PatientFileLayout } from './PatientFileLayout';
 import { DeleteAction } from './delete';
 
 import styles from './patient-file-view.module.scss';
+import { useLocation } from 'react-router';
 
 type PatientFileViewProps = {
     patient: Patient;
@@ -25,25 +26,28 @@ const PatientFileView = ({ patient, sizing, children }: PatientFileViewProps) =>
     </PatientFileLayout>
 );
 
-const ViewActions = (patient: Patient) => (
-    <>
-        <DeleteAction patient={patient} />
-        <Button
-            onClick={openPrintableView(patient.id)}
-            aria-label="Print"
-            data-tooltip-position="top"
-            data-tooltip-offset="center"
-            icon="print"
-            sizing="medium"
-            secondary
-        />
-        <Permitted permission={permissions.patient.update}>
-            <NavLinkButton icon="edit" secondary sizing="medium" to="../edit">
-                Edit
-            </NavLinkButton>
-        </Permitted>
-    </>
-);
+const ViewActions = (patient: Patient) => {
+    const { pathname } = useLocation();
+    return (
+        <>
+            <DeleteAction patient={patient} />
+            <Button
+                onClick={openPrintableView(patient.id)}
+                aria-label="Print"
+                data-tooltip-position="top"
+                data-tooltip-offset="center"
+                icon="print"
+                sizing="medium"
+                secondary
+            />
+            <Permitted permission={permissions.patient.update}>
+                <NavLinkButton icon="edit" secondary sizing="medium" to="../edit" state={{ return: pathname }}>
+                    Edit
+                </NavLinkButton>
+            </Permitted>
+        </>
+    );
+};
 
 export { PatientFileView };
 
