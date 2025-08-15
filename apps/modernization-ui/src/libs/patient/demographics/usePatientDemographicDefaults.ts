@@ -1,11 +1,8 @@
 import { today } from 'date';
-import { useLocationDefaults } from 'libs/location';
 import { PatientDemographicsDefaults } from './demographics';
 
 const usePatientDemographicDefaults = (): PatientDemographicsDefaults => {
-    const location = useLocationDefaults();
-
-    return { asOf: today, address: location };
+    return { asOf: today, address: { country: { value: '840', name: 'United States' } } };
 };
 
 export { usePatientDemographicDefaults };
