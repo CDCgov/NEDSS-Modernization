@@ -21,11 +21,13 @@ const EthnicityDemographicsFields = ({
     sizing,
     orientation = 'horizontal'
 }: EthnicityDemographicsFieldsProps) => {
-    const selectedEthnicity = useWatch({ control: form.control, name: 'ethnicity.ethnicGroup' });
+    const selectedEthnicity = useWatch({ control: form.control, name: 'ethnicity.ethnicGroup.value' });
 
     useEffect(() => {
-        form.setValue('ethnicity.unknownReason', undefined);
-        form.setValue('ethnicity.detailed', []);
+        if (selectedEthnicity !== HISPANIC) {
+            form.setValue('ethnicity.unknownReason', undefined);
+            form.setValue('ethnicity.detailed', []);
+        }
     }, [selectedEthnicity]);
 
     return (
@@ -67,7 +69,7 @@ const EthnicityDemographicsFields = ({
                 )}
             />
 
-            {selectedEthnicity?.value === HISPANIC && (
+            {selectedEthnicity === HISPANIC && (
                 <Controller
                     control={form.control}
                     name="ethnicity.detailed"
@@ -87,7 +89,7 @@ const EthnicityDemographicsFields = ({
                     )}
                 />
             )}
-            {selectedEthnicity?.value === UNKNOWN && (
+            {selectedEthnicity === UNKNOWN && (
                 <Controller
                     control={form.control}
                     name="ethnicity.unknownReason"
