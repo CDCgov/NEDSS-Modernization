@@ -68,6 +68,7 @@ const SystemManagementPage = () => {
                         aria-label="Search"
                         value={filter}
                         onChange={setFilter}
+                        iconName={'filter_alt'}
                     />
                 </div>
             </header>

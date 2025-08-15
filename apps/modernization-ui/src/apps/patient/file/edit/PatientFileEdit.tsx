@@ -8,12 +8,15 @@ import { useComponentSizing } from 'design-system/sizing';
 import { Button } from 'design-system/button';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { maybeDisplayName } from 'name';
+import { exists } from 'utils/exists';
 import {
     PatientDemographics,
     PatientDemographicsDefaults,
+    PatientDemographicsEntry,
     PatientDemographicsForm,
     usePatientDemographicDefaults
 } from 'libs/patient/demographics';
+import { usePendingFormEntry } from 'design-system/entry/pending';
 import { usePatientFileData } from '../usePatientFileData';
 import { PatientFileLayout } from '../PatientFileLayout';
 import { Patient } from '../patient';
@@ -31,6 +34,8 @@ const PatientFileEdit = () => {
 
     const { showSuccess, showError } = useAlert();
 
+    const goBack = () => navigate(-1);
+
     const handleSuccess = useCallback(() => {
         showSuccess(
             <span>
@@ -39,10 +44,8 @@ const PatientFileEdit = () => {
             </span>
         );
         refresh();
-        navigate(-1);
-    }, [showSuccess, navigate]);
-
-    const handleCancel = useCallback(() => navigate(-1), [navigate]);
+        goBack();
+    }, [showSuccess, goBack]);
 
     const handleError = useCallback((reason: string) => showError(reason), [showError]);
 
@@ -55,7 +58,7 @@ const PatientFileEdit = () => {
                         sizing={sizing}
                         demographics={demographics}
                         defaults={defaults}
-                        onCancel={handleCancel}
+                        onCancel={goBack}
                         onSuccess={handleSuccess}
                         onError={handleError}
                     />
@@ -76,13 +79,15 @@ type InternalProps = {
 };
 
 const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel, onError }: InternalProps) => {
-    const interaction = useEditPatient();
-
-    const form = useForm<PatientDemographics>({
+    const form = useForm<PatientDemographicsEntry>({
         defaultValues: demographics,
         mode: 'onBlur',
         reValidateMode: 'onBlur'
     });
+
+    const pending = usePendingFormEntry({ form });
+
+    const interaction = useEditPatient({ onValidate: pending.check });
 
     useEffect(() => {
         if (interaction.status === 'error') {
@@ -92,7 +97,9 @@ const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel
         }
     }, [interaction.status, interaction.status === 'error' && interaction.reason]);
 
-    const working = !form.formState.isValid || interaction.status !== 'waiting';
+    const disabled =
+        (form.formState.isValid && !exists(form.formState.dirtyFields)) ||
+        (!form.formState.isValid && exists(form.formState.dirtyFields) && interaction.status === 'waiting');
 
     const handleSave = form.handleSubmit((input) => interaction.edit(patient.id, input));
 
@@ -104,13 +111,19 @@ const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel
                     <Button secondary onClick={onCancel}>
                         Cancel
                     </Button>
-                    <Button onClick={handleSave} disabled={working}>
+                    <Button onClick={handleSave} disabled={disabled}>
                         Save
                     </Button>
                 </>
             )}
             navigation={EditNavigation}>
-            <PatientDemographicsForm form={form} defaults={defaults} sizing={sizing} className={styles.demographics} />
+            <PatientDemographicsForm
+                form={form}
+                defaults={defaults}
+                pending={pending}
+                sizing={sizing}
+                className={styles.demographics}
+            />
             <NavigationGuard id="patient.edit.cancel" form={form} activated={interaction.status !== 'completed'} />
         </PatientFileLayout>
     );

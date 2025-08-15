@@ -1,4 +1,4 @@
-import { today } from 'date';
+import { HasPendingEntry } from 'design-system/entry/pending';
 import { HasAdministrativeInformation, initial as initialAdministrative } from './administrative';
 import { HasAddressDemographics } from './address';
 import { HasNameDemographics } from './name';
@@ -25,24 +25,31 @@ type PatientDemographics = HasAdministrativeInformation &
 
 export type { PatientDemographics };
 
+type PatientDemographicsEntry = PatientDemographics & HasPendingEntry;
+
 type PatientDemographicsDefaults = {
     asOf: Supplier<string>;
     address?: AddressDemographicDefaults;
 };
 
-export type { PatientDemographicsDefaults };
+export type { PatientDemographicsEntry, PatientDemographicsDefaults };
 
-const initial = (asOf: string = today()) => ({
-    administrative: initialAdministrative(asOf),
-    ethnicity: initialEthnicity(asOf),
-    sexBirth: initialSexBirth(asOf),
-    mortality: initialMortality(asOf),
-    general: initialGeneral(asOf),
-    names: [],
-    addresses: [],
-    phoneEmails: [],
-    identifications: [],
-    races: []
-});
+const initial = (defaults: PatientDemographicsDefaults): PatientDemographicsEntry => {
+    const asOf = defaults.asOf();
+
+    return {
+        pending: [],
+        administrative: initialAdministrative(asOf),
+        ethnicity: initialEthnicity(asOf),
+        sexBirth: initialSexBirth(asOf),
+        mortality: initialMortality(asOf),
+        general: initialGeneral(asOf),
+        names: [],
+        addresses: [],
+        phoneEmails: [],
+        identifications: [],
+        races: []
+    };
+};
 
 export { initial };

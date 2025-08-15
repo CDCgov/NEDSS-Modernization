@@ -75,3 +75,7 @@ management:
       access: read_only
     info:
       access: read_only
+spring:
+  threads:
+    virtual:
+      enabled: true

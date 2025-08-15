@@ -97,7 +97,7 @@ public class UserMother {
   }
 
   private void setSecurityContext(AuthUser user) {
-    UserDetails userDetails = userService.loadUserByUsername(user.getUserId());
+    UserDetails userDetails = userService.loadUserByUsername(user.userId());
     SecurityContextHolder.getContext().setAuthentication(
         new PreAuthenticatedAuthenticationToken(
             userDetails,

@@ -11,7 +11,7 @@ const maybeDisplayPatient = mapOr(displayName('short'), displayNoData);
 const titleResolver =
     (patient?: DisplayableName) =>
     (condition: string): string => {
-        return `The following contacts were named by ${maybeDisplayPatient(patient)}'s investigation of ${condition}`;
+        return `The following contacts were named in ${maybeDisplayPatient(patient)}'s investigation of ${condition}`;
     };
 
 const PatientFileContactsNamedCard = ({ patient, ...remaining }: PatientFileContactsNamedProps) => {

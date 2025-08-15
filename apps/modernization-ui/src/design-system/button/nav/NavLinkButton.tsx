@@ -19,7 +19,7 @@ const NavLinkButton = ({
     const labelPosition = 'labelPosition' in remaining ? remaining.labelPosition : undefined;
 
     return (
-        <NavLink {...remaining}>
+        <NavLink {...remaining} tabIndex={-1}>
             <Button
                 className={className}
                 sizing={sizing}

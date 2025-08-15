@@ -81,7 +81,7 @@ describe('TableCard', () => {
 
     it('renders without crashing', () => {
         const { container } = render(<Fixture />);
-        expect(container.querySelector('section#tablecard')).toBeInTheDocument();
+        expect(container.querySelector('#tablecard')).toBeInTheDocument();
     });
 
     it('should render with no accessibility violations', async () => {

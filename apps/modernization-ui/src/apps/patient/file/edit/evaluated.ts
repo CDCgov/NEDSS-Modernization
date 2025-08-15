@@ -23,7 +23,8 @@ const initial = () => ({
     addresses: [],
     phoneEmails: [],
     identifications: [],
-    races: []
+    races: [],
+    pending: []
 });
 
 /**

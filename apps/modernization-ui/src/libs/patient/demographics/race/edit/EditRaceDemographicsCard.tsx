@@ -10,7 +10,7 @@ import { useRaceOptions } from './useRaceOptions';
 type EditRaceDemographicsCardProps = {
     form: UseFormReturn<HasRaceDemographics>;
     defaults: PatientDemographicsDefaults;
-} & Omit<RaceDemographicRepeatingBlockProps, 'id' | 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
+} & Omit<RaceDemographicRepeatingBlockProps, 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
 
 const EditRaceDemographicsCard = ({ form, defaults, ...remaining }: EditRaceDemographicsCardProps) => {
     const options = useRaceOptions();
@@ -19,10 +19,9 @@ const EditRaceDemographicsCard = ({ form, defaults, ...remaining }: EditRaceDemo
         <Controller
             control={form.control}
             name="races"
-            render={({ field: { onChange, value, name } }) => (
+            render={({ field: { onChange, value } }) => (
                 <RaceDemographicRepeatingBlock
                     {...remaining}
-                    id={name}
                     collapsible={false}
                     data={value}
                     viewable

@@ -12,7 +12,7 @@ import { useAddressOptions } from './useAddressOptions';
 type EditAddressDemographicsCardProps = {
     form: UseFormReturn<HasAddressDemographics>;
     defaults: PatientDemographicsDefaults;
-} & Omit<AddressDemographicRepeatingBlockProps, 'id' | 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
+} & Omit<AddressDemographicRepeatingBlockProps, 'collapsible' | 'formRenderer' | 'editable' | 'defaultValues'>;
 
 const EditAddressDemographicsCard = ({ form, defaults, ...remaining }: EditAddressDemographicsCardProps) => {
     const options = useAddressOptions();
@@ -22,10 +22,9 @@ const EditAddressDemographicsCard = ({ form, defaults, ...remaining }: EditAddre
         <Controller
             control={form.control}
             name="addresses"
-            render={({ field: { onChange, value, name } }) => (
+            render={({ field: { onChange, value } }) => (
                 <AddressDemographicRepeatingBlock
                     {...remaining}
-                    id={name}
                     collapsible={false}
                     data={value}
                     viewable

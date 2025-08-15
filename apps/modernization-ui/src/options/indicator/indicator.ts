@@ -2,7 +2,7 @@ import { Selectable } from 'options/selectable';
 
 const YES = { value: 'Y', name: 'Yes' };
 const NO = { value: 'N', name: 'No' };
-const UNKNOWN = { value: 'U', name: 'Unknown' };
+const UNKNOWN = { value: 'UNK', name: 'Unknown' };
 
 type Indicators = {
     yes: Selectable;

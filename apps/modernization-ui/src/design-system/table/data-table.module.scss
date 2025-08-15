@@ -37,6 +37,7 @@
         td {
             border-style: none !important;
             white-space: pre-wrap;
+            overflow-wrap: break-word;
             vertical-align: top;
 
             &.fixed {

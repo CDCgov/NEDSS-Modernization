@@ -9,7 +9,7 @@ import {
 
 const sortResolver = columnSortResolver(columns);
 
-type AddressDemographicCardProps = Omit<
+type AddressDemographicCardProps = { title?: string } & Omit<
     AddressDemographicRepeatingBlockProps,
     'columns' | 'formRenderer' | 'viewRenderer' | 'defaultValues'
 >;

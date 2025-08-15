@@ -3,7 +3,7 @@ import { transformer } from './transformer';
 
 describe('when transforming entered extended patient data', () => {
     it('should transform administrative to a format accepted by the API', () => {
-        const entry: PatientDemographics = {
+        const entry = {
             administrative: { asOf: '04/13/2017', comment: 'entered-value' }
         };
 
@@ -15,7 +15,7 @@ describe('when transforming entered extended patient data', () => {
     });
 
     it('should transform names', () => {
-        const entry: PatientDemographics = {
+        const entry = {
             administrative: { asOf: '04/13/2017' },
             names: [
                 {
@@ -35,7 +35,7 @@ describe('when transforming entered extended patient data', () => {
     });
 
     it('should transform addresses', () => {
-        const entry: PatientDemographics = {
+        const entry = {
             administrative: { asOf: '04/13/2017' },
             addresses: [
                 {
@@ -58,7 +58,7 @@ describe('when transforming entered extended patient data', () => {
     });
 
     it('should transform phone and emails', () => {
-        const entry: PatientDemographics = {
+        const entry = {
             administrative: { asOf: '04/13/2017' },
             phoneEmails: [
                 {
@@ -80,8 +80,8 @@ describe('when transforming entered extended patient data', () => {
         );
     });
 
-    it('should transform identifictions', () => {
-        const entry: PatientDemographics = {
+    it('should transform identifications', () => {
+        const entry = {
             administrative: { asOf: '04/13/2017' },
             identifications: [
                 {
@@ -104,7 +104,7 @@ describe('when transforming entered extended patient data', () => {
     });
 
     it('should transform races', () => {
-        const entry: PatientDemographics = {
+        const entry = {
             administrative: { asOf: '04/13/2017' },
             races: [
                 {
@@ -126,7 +126,7 @@ describe('when transforming entered extended patient data', () => {
     });
 
     it('should transform ethnicity', () => {
-        const entry: PatientDemographics = {
+        const entry = {
             administrative: { asOf: '04/13/2017' },
             ethnicity: {
                 asOf: '04/13/2017',
@@ -145,7 +145,7 @@ describe('when transforming entered extended patient data', () => {
     });
 
     it('should transform sex', () => {
-        const entry: PatientDemographics = {
+        const entry = {
             administrative: { asOf: '04/13/2017' },
             sexBirth: {
                 asOf: '04/13/2017',
@@ -163,7 +163,7 @@ describe('when transforming entered extended patient data', () => {
     });
 
     it('should transform birth', () => {
-        const entry: PatientDemographics = {
+        const entry = {
             administrative: { asOf: '04/13/2017' },
             sexBirth: {
                 asOf: '04/13/2017',
@@ -181,7 +181,7 @@ describe('when transforming entered extended patient data', () => {
     });
 
     it('should transform mortality', () => {
-        const entry: PatientDemographics = {
+        const entry = {
             administrative: { asOf: '04/13/2017' },
             mortality: {
                 asOf: '04/13/2017',
@@ -199,7 +199,7 @@ describe('when transforming entered extended patient data', () => {
     });
 
     it('should transform general information', () => {
-        const entry: PatientDemographics = {
+        const entry = {
             administrative: { asOf: '04/13/2017' },
             general: {
                 asOf: '04/13/2017',

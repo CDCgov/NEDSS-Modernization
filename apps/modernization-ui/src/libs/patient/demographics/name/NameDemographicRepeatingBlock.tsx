@@ -19,7 +19,7 @@ const columns: Column<NameDemographic>[] = [
     { id: 'name-type', name: 'Type', className: styles['coded-header'], sortable: true, value: (v) => v.type?.name },
     {
         id: 'name-prefix',
-        name: labels.asOf,
+        name: labels.prefix,
         className: styles['coded-header'],
         sortable: true,
         value: (v) => v.prefix?.name

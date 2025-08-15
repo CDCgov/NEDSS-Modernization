@@ -8,6 +8,7 @@ export type PatientFileContact = {
     patient: number;
     identifier: number;
     local: string;
+    condition: string;
     processingDecision?: string;
     referralBasis?: string;
     createdOn: string;
@@ -15,7 +16,6 @@ export type PatientFileContact = {
     named: NamedContact;
     priority?: string;
     disposition?: string;
-    condition: string;
     associated?: AssociatedInvestigation;
 };
 

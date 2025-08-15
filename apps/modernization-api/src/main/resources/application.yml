@@ -119,12 +119,3 @@ springdoc:
 server:
   tomcat:
     max-part-count: 100 # to accommodate intercepted multipart requests from NBS6
-
-kafka:
-  enabled: false
-
-kafkadef:
-  topics:
-    patient:
-      request: patient
-      status: patient-status

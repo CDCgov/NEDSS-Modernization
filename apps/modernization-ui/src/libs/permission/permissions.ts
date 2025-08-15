@@ -24,6 +24,10 @@ export const permissions = {
         edit: 'EDIT-OBSERVATIONMORBIDITYREPORT',
         view: 'VIEW-OBSERVATIONMORBIDITYREPORT'
     },
+    birthRecord: {
+        add: 'Add-BirthRecord',
+        view: 'View-BirthRecord'
+    },
     reports: {
         template: {
             view: 'VIEWREPORTTEMPLATE-REPORTING'
