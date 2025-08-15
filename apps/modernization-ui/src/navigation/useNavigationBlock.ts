@@ -9,8 +9,6 @@ type NavigationBlockSettings = {
     activated?: boolean;
     /** A list of routes that do not block navigation. */
     allowed?: Paths;
-    /** Callback to handle when navigation is blocked. Use this to take action like opening a modal. */
-    onBlock?: () => void;
 };
 
 type NavigationBlockInteraction = {
@@ -49,11 +47,7 @@ const isNavigating = (current: RouterLocation, next: RouterLocation) => current.
  * @param {NavigationBlockSettings} props - The properties object.
  * @return {NavigationBlockInteraction} Functions to control navigation.
  */
-const useNavigationBlock = ({
-    activated = true,
-    onBlock,
-    allowed
-}: NavigationBlockSettings): NavigationBlockInteraction => {
+const useNavigationBlock = ({ activated = true, allowed }: NavigationBlockSettings): NavigationBlockInteraction => {
     const [isEngaged, setEngaged] = useState<boolean>(false);
 
     const shouldBlock = useCallback<BlockerFunction>(
@@ -63,7 +57,7 @@ const useNavigationBlock = ({
                 const blocked = isBlockedPath(nextLocation.pathname);
                 const exempt = !isAllowedPath(allowed, nextLocation.pathname);
                 const result = navigating && blocked && exempt;
-
+                console.log(currentLocation.pathname, nextLocation.pathname, result);
                 return result;
             }
 
@@ -75,16 +69,22 @@ const useNavigationBlock = ({
     const blocker = useBlocker(shouldBlock);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        console.log('activated', activated);
+        console.log('isEngaged', isEngaged);
+    }, [isEngaged, activated]);
+
+    useEffect(() => {
+        console.log('blocker', blocker);
+    }, [blocker]);
+
     // Reset the blocker if the user cleans the form
     useEffect(() => {
-        if (blocker.state === 'blocked') {
-            // navigation has been attempted, so fire onBlock event
-            onBlock?.();
-        } else if (blocker.state === 'proceeding' && blocker.location) {
+        if (blocker.state === 'proceeding' && blocker.location) {
             //  The block has been resolved, navigate the user to the location that was blocked.
             navigate(blocker.location);
         }
-    }, [blocker.state, onBlock, navigate, blocker.location]);
+    }, [blocker.state, navigate, blocker.location]);
 
     // Prompt
     useEffect(() => {

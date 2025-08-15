@@ -7,13 +7,6 @@ import { RedirectHome } from 'routes';
 import { loader } from './loader';
 
 const LazyPatientFile = lazy(() => import('./PatientFile').then((module) => ({ default: module.PatientFile })));
-const LazyPatientFileSummary = lazy(() =>
-    import('./summary/PatientFileSummary').then((module) => ({ default: module.PatientFileSummary }))
-);
-const LazyPatientFileEvents = lazy(() => import('./events').then((module) => ({ default: module.PatientFileEvents })));
-const LazyPatientFileDemographics = lazy(() =>
-    import('./demographics').then((module) => ({ default: module.PatientFileDemographics }))
-);
 
 const LazyPatientFileEdit = lazy(() => import('./edit').then((module) => ({ default: module.PatientFileEdit })));
 
@@ -38,27 +31,21 @@ const routing = [
             { index: true, element: <Navigate to="summary" replace /> },
             {
                 path: 'summary',
-                element: (
-                    <Suspense>
-                        <LazyPatientFileSummary />
-                    </Suspense>
-                )
+                lazy: {
+                    Component: async () => (await import('./summary/PatientFileSummary')).PatientFileSummary
+                }
             },
             {
                 path: 'events',
-                element: (
-                    <Suspense>
-                        <LazyPatientFileEvents />
-                    </Suspense>
-                )
+                lazy: {
+                    Component: async () => (await import('./events')).PatientFileEvents
+                }
             },
             {
                 path: 'demographics',
-                element: (
-                    <Suspense>
-                        <LazyPatientFileDemographics />
-                    </Suspense>
-                )
+                lazy: {
+                    Component: async () => (await import('./demographics')).PatientFileDemographics
+                }
             },
             {
                 path: 'edit',

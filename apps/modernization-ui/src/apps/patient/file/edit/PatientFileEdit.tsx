@@ -1,5 +1,6 @@
 import { Suspense, useCallback, useEffect } from 'react';
-import { Await, useNavigate } from 'react-router';
+import { Await, useLocation, useNavigate } from 'react-router';
+import { defaultTo } from 'libs/supplying';
 import { useForm } from 'react-hook-form';
 import { useAlert } from 'alert';
 import { NavigationGuard } from 'design-system/entry/navigation-guard';
@@ -10,7 +11,6 @@ import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabN
 import { maybeDisplayName } from 'name';
 import { exists } from 'utils/exists';
 import {
-    PatientDemographics,
     PatientDemographicsDefaults,
     PatientDemographicsEntry,
     PatientDemographicsForm,
@@ -26,6 +26,8 @@ import { useEditPatient } from './useEditPatient';
 import styles from './patient-file-edit.module.scss';
 
 const PatientFileEdit = () => {
+    const { state } = useLocation();
+
     const { patient, demographics, refresh } = usePatientFileData();
     const sizing = useComponentSizing();
     const defaults = usePatientDemographicDefaults();
@@ -34,7 +36,10 @@ const PatientFileEdit = () => {
 
     const { showSuccess, showError } = useAlert();
 
-    const goBack = () => navigate(-1);
+    const goBack = useCallback(() => {
+        const path = defaultTo('..', state?.return);
+        navigate(path);
+    }, [navigate, state?.return]);
 
     const handleSuccess = useCallback(() => {
         showSuccess(
@@ -45,7 +50,7 @@ const PatientFileEdit = () => {
         );
         refresh();
         goBack();
-    }, [showSuccess, goBack]);
+    }, [showSuccess, refresh, goBack]);
 
     const handleError = useCallback((reason: string) => showError(reason), [showError]);
 
@@ -70,7 +75,7 @@ const PatientFileEdit = () => {
 
 type InternalProps = {
     patient: Patient;
-    demographics: PatientDemographics;
+    demographics: PatientDemographicsEntry;
     defaults: PatientDemographicsDefaults;
     sizing?: Sizing;
     onSuccess: () => void;

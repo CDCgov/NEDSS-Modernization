@@ -58,17 +58,6 @@ describe('useNavigationBlock', () => {
         expect(mockBlocker.reset).toHaveBeenCalled();
     });
 
-    it('should call onBlock when navigation is triggered', () => {
-        const onBlock = jest.fn();
-        mockBlocker.state = 'unblocked';
-        const { rerender } = renderHook(() => useNavigationBlock({ activated: true, onBlock }));
-        act(() => {
-            mockBlocker.state = 'blocked';
-        });
-        rerender();
-        expect(onBlock).toHaveBeenCalled();
-    });
-
     it('should not block when route in list of unblockable routes', () => {
         let blockerResult: boolean | undefined = undefined;
         (useBlocker as jest.Mock).mockImplementation((fn) => {
