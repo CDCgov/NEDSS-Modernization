@@ -3,7 +3,6 @@
 
 .horizontal {
     --label-area-width: 13rem;
-    --label-area-font-size: inherit;
 
     padding: 0.5rem 1.5rem;
     align-items: flex-start;
@@ -22,7 +21,6 @@
 
         label {
             font-weight: 700;
-            font-size: var(--label-area-font-size);
 
             &.required {
                 @include components.required();
@@ -43,6 +41,7 @@
         }
 
         .message {
+            padding-top: 0.5rem;
             width: 9rem;
             flex-shrink: 1;
             flex-grow: 1;
@@ -52,23 +51,16 @@
     &.small {
         .left {
             --label-area-width: 12rem;
-            --label-area-font-size: #{components.$small-font-size};
 
             padding-top: 0.25rem;
         }
 
+        .right {
+            .message {
+                padding-top: 0.25rem;
+            }
+        }
+
         padding-left: 1rem;
-    }
-
-    &.medium {
-        .left {
-            --label-area-font-size: #{components.$medium-font-size};
-        }
-    }
-
-    &.large {
-        .left {
-            --label-area-font-size: #{components.$large-font-size};
-        }
     }
 }
