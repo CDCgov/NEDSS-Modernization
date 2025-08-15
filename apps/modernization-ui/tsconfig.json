@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "baseUrl": "src",
+        "baseUrl": "./src",
         "target": "ES2021",
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
@@ -19,8 +19,11 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "jsx": "react-jsx",
-        "types": ["node"],
-        "plugins": [{ "name": "typescript-plugin-css-modules" }]
+        "types": ["node", "vite/client", "vite-plugin-svgr/client"],
+        "plugins": [{ "name": "typescript-plugin-css-modules" }],
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     },
     "include": ["src"]
 }

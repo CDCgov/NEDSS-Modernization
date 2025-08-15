@@ -2,15 +2,16 @@ import { renderHook } from '@testing-library/react';
 import { useConceptOptions } from './useConceptOptions';
 import { ConceptOptionsService } from 'generated';
 import { useSelectableOptions } from 'options/useSelectableOptions';
+import { vi } from 'vitest';
 
-jest.mock('generated', () => ({
+vi.mock('generated', () => ({
     ConceptOptionsService: {
-        concepts: jest.fn()
+        concepts: vi.fn()
     }
 }));
 
-jest.mock('options/useSelectableOptions', () => ({
-    useSelectableOptions: jest.fn()
+vi.mock('options/useSelectableOptions', () => ({
+    useSelectableOptions: vi.fn()
 }));
 
 describe('useConceptOptions', () => {
@@ -21,11 +22,11 @@ describe('useConceptOptions', () => {
     const mockResponse = { options: mockOptions };
 
     beforeEach(() => {
-        jest.clearAllMocks();
-        (ConceptOptionsService.concepts as jest.Mock).mockResolvedValue(mockResponse);
-        (useSelectableOptions as jest.Mock).mockReturnValue({
+        vi.clearAllMocks();
+        (ConceptOptionsService.concepts as vi.Mock).mockResolvedValue(mockResponse);
+        (useSelectableOptions as vi.Mock).mockReturnValue({
             options: mockOptions,
-            load: jest.fn()
+            load: vi.fn()
         });
     });
 
@@ -48,7 +49,7 @@ describe('useConceptOptions', () => {
     it('should resolve options using ConceptOptionsService', async () => {
         renderHook(() => useConceptOptions('valueSet', { lazy: false }));
 
-        const resolver = (useSelectableOptions as jest.Mock).mock.calls[0][0].resolver;
+        const resolver = (useSelectableOptions as vi.Mock).mock.calls[0][0].resolver;
         const resolvedOptions = await resolver();
 
         expect(ConceptOptionsService.concepts).toHaveBeenCalledWith({ name: 'valueSet' });

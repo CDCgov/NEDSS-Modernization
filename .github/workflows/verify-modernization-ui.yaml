@@ -24,6 +24,10 @@ jobs:
         working-directory: ./apps/modernization-ui
         run: npm install
 
+      - name: Lint
+        working-directory: ./apps/modernization-ui
+        run: npm run lint
+
       - name: Verify
         working-directory: ./apps/modernization-ui
         run: npm run test:all

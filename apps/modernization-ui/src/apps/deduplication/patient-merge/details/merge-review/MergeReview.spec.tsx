@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
@@ -7,21 +8,21 @@ import { MergeReview } from './MergeReview';
 import { PatientMergeForm } from './model/PatientMergeForm';
 import { AlertProvider } from 'alert';
 
-const onPreview = jest.fn();
-const onRemove = jest.fn();
-const onMerge = jest.fn();
+const onPreview = vi.fn();
+const onRemove = vi.fn();
+const onMerge = vi.fn();
 
-const mockKeepAllSeparate = jest.fn();
-jest.mock('apps/deduplication/api/useRemoveMerge', () => ({
+const mockKeepAllSeparate = vi.fn();
+vi.mock('apps/deduplication/api/useRemoveMerge', () => ({
     useRemoveMerge: () => {
         return { keepAllSeparate: mockKeepAllSeparate };
     }
 }));
-jest.mock('react-router', () => {
-    const original = jest.requireActual('react-router');
+vi.mock('react-router', async () => {
+    const actual = await vi.importActual('react-router');
     return {
-        ...original,
-        useNavigate: jest.fn()
+        ...actual,
+        useNavigate: vi.fn()
     };
 });
 
@@ -60,7 +61,7 @@ const Fixture = () => {
         }
     ];
     return (
-        <AlertProvider>
+        <AlertProvider duration={1000}>
             <MemoryRouter initialEntries={['/deduplication/merge/1234']}>
                 <Routes>
                     <Route
@@ -154,8 +155,8 @@ describe('MergeReview', () => {
     });
 
     it('should navigate to patient summary if fromPatientFileSummary is true when "Back" is clicked', async () => {
-        const mockNav = jest.fn();
-        (useNavigate as jest.Mock).mockReturnValue(mockNav);
+        const mockNav = vi.fn();
+        (useNavigate as vi.Mock).mockReturnValue(mockNav);
 
         const data: Partial<MergeCandidate>[] = [
             {
@@ -192,8 +193,7 @@ describe('MergeReview', () => {
                             pathname: '/deduplication/merge/1234',
                             state: { fromPatientFileSummary: true, patientId: '999' }
                         }
-                    ]}
-                >
+                    ]}>
                     <Routes>
                         <Route path="/deduplication/merge/:matchId" element={<Wrapper />} />
                     </Routes>
@@ -207,8 +207,8 @@ describe('MergeReview', () => {
     });
 
     it('should go back normally when fromPatientFileSummary is false', async () => {
-        const mockNav = jest.fn();
-        (useNavigate as jest.Mock).mockReturnValue(mockNav);
+        const mockNav = vi.fn();
+        (useNavigate as vi.Mock).mockReturnValue(mockNav);
 
         const Wrapper = () => {
             const form = useForm<PatientMergeForm>();

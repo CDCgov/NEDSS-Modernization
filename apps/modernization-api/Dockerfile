@@ -10,7 +10,7 @@ RUN npm install
 # Copy required sources
 COPY apps/modernization-ui .
 
-RUN npm run build
+RUN npm run build:only
 
 FROM gradle:9-jdk21 AS api-builder
 

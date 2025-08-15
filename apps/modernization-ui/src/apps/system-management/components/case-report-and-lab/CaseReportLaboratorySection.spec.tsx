@@ -5,9 +5,9 @@ import { CaseReportLaboratorySection } from './CaseReportLaboratorySection';
 const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'DECISION_SUPPORT_ADMIN', 'REPORTADMIN', 'SRTADMIN-SYSTEM'];
 
 const mockAllows = (p: string) => mockPermissions.includes(p);
-const mockAllowFn = jest.fn(mockAllows);
+const mockAllowFn = vi.fn(mockAllows);
 
-jest.mock('../../../../libs/permission/usePermissions', () => ({
+vi.mock('../../../../libs/permission/usePermissions', () => ({
     usePermissions: () => ({
         permissions: mockPermissions,
         allows: mockAllowFn,

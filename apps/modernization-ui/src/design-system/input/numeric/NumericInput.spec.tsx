@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { NumericInput } from './NumericInput';
 
 describe('when entering numeric values for a field', () => {

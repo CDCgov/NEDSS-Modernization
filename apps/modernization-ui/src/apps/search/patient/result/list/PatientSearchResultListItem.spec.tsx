@@ -3,9 +3,9 @@ import { MemoryRouter } from 'react-router';
 import { PatientSearchResultListItem } from './PatientSearchResultListItem';
 import { PatientSearchResult } from 'generated/graphql/schema';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
-jest.mock('design-system/date/clock', () => ({
+vi.mock('design-system/date/clock', () => ({
     now: () => mockNow()
 }));
 

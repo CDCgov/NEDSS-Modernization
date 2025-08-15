@@ -3,6 +3,17 @@ import { PageManagementProvider } from '../../usePageManagement';
 import { PublishPage } from './PublishPage';
 import { render } from '@testing-library/react';
 import { PagesResponse } from 'apps/page-builder/generated';
+import { vi } from 'vitest';
+
+// Mock the PagePublishControllerService and PageInformationService to prevent fetch/network calls
+vi.mock('apps/page-builder/generated', () => ({
+    PagePublishControllerService: {
+        publishPage: vi.fn().mockResolvedValue({})
+    },
+    PageInformationService: {
+        find: vi.fn().mockResolvedValue({ conditions: [] })
+    }
+}));
 
 describe('When PublishPage renders', () => {
     const modalRef = { current: null };

@@ -1,4 +1,4 @@
-import { render, act } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FilterInteraction, FilterType } from 'design-system/filter';
 import { HeaderFilterField } from './HeaderFilterField';
@@ -28,6 +28,13 @@ const Fixture = ({ id, type = 'text' }: { id: string; type?: FilterType }) => {
 };
 
 describe('when filtering table data from the header', () => {
+    beforeEach(() => {
+        mockValueOf.mockReset();
+        mockApply.mockClear();
+        mockAdd.mockClear();
+        mockClear.mockClear();
+    });
+
     it('should render the input for text filters', () => {
         const { getByRole } = render(<Fixture id="test-id" />);
         const input = getByRole('textbox', { name: 'filter by Testing' });
@@ -61,7 +68,7 @@ describe('when filtering table data from the header', () => {
 
     it('should clear the filter when clearing text from an input with existing value', async () => {
         mockValueOf.mockReturnValue('existing value');
-        
+
         const { getByRole } = render(<Fixture id="clearing-value" />);
         const input = getByRole('textbox');
 
@@ -71,15 +78,15 @@ describe('when filtering table data from the header', () => {
         expect(mockAdd).toHaveBeenCalledWith('clearing-value', undefined);
         expect(mockClear).toHaveBeenCalledWith('clearing-value');
     });
-    
+
     it('should not clear the filter when there is no existing filter value', async () => {
         mockValueOf.mockReturnValue('');
-        
+
         const { getByRole } = render(<Fixture id="clearing-value" />);
         const input = getByRole('textbox');
 
         mockClear.mockClear();
-        
+
         const user = userEvent.setup();
         await user.clear(input);
 
