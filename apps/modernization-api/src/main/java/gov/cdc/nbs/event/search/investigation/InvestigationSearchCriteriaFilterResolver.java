@@ -221,8 +221,8 @@ class InvestigationSearchCriteriaFilterResolver {
             RangeQuery.of(
                 range -> range.term(
                     term -> term.field("rpt_form_cmplt_time")
-                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .to(FlexibleInstantConverter.toString(reported.getTo())
+                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .lte(FlexibleInstantConverter.toString(reported.getTo())
                         )
                 )
             )
@@ -235,8 +235,8 @@ class InvestigationSearchCriteriaFilterResolver {
             RangeQuery.of(
                 range -> range.term(
                     term -> term.field("activity_from_time")
-                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .to(FlexibleInstantConverter.toString(reported.getTo())
+                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .lte(FlexibleInstantConverter.toString(reported.getTo())
                         )
                 )
             )
@@ -249,8 +249,8 @@ class InvestigationSearchCriteriaFilterResolver {
             RangeQuery.of(
                 range -> range.term(
                     term -> term.field("activity_to_time")
-                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
                 )
             )
     );
@@ -262,8 +262,8 @@ class InvestigationSearchCriteriaFilterResolver {
             RangeQuery.of(
                 range -> range.term(
                     term -> term.field("notification_add_time")
-                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
                 )
             )
     );
@@ -290,8 +290,8 @@ class InvestigationSearchCriteriaFilterResolver {
             RangeQuery.of(
                 range -> range.term(
                     term -> term.field("add_time")
-                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
                 )
             )
     );
@@ -318,8 +318,8 @@ class InvestigationSearchCriteriaFilterResolver {
             RangeQuery.of(
                 range -> range.term(
                     term -> term.field("public_health_case_last_chg_time")
-                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
                 )
             )
     );
