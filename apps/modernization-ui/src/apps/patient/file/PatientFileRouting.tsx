@@ -1,32 +1,14 @@
-import { lazy, Suspense } from 'react';
-import { Navigate } from 'react-router';
-import { permissions, Permitted } from 'libs/permission';
-import { PageTitle } from 'page';
-import { Guarded } from 'libs/guard';
+import { Navigate, RouteObject } from 'react-router';
 import { RedirectHome } from 'routes';
-import { loader } from './loader';
 
-const LazyPatientFile = lazy(() => import('./PatientFile').then((module) => ({ default: module.PatientFile })));
-
-const LazyPatientFileEdit = lazy(() => import('./edit').then((module) => ({ default: module.PatientFileEdit })));
-
-const routing = [
+const routing: RouteObject[] = [
     {
         path: '/patient/:id',
-        element: (
-            <Guarded
-                feature={(features) => features.patient.file.enabled}
-                permission={permissions.patient.file}
-                fallback={<RedirectHome />}>
-                <Suspense>
-                    <PageTitle title="Patient file">
-                        <LazyPatientFile />
-                    </PageTitle>
-                </Suspense>
-            </Guarded>
-        ),
+        lazy: {
+            loader: async () => (await import('./loader')).loader,
+            Component: async () => (await import('./GuardedPatientFile')).GuardedPatientFile
+        },
         errorElement: <RedirectHome />,
-        loader,
         children: [
             { index: true, element: <Navigate to="summary" replace /> },
             {
@@ -49,13 +31,9 @@ const routing = [
             },
             {
                 path: 'edit',
-                element: (
-                    <Permitted permission={permissions.patient.update} fallback={<RedirectHome />}>
-                        <Suspense>
-                            <LazyPatientFileEdit />
-                        </Suspense>
-                    </Permitted>
-                )
+                lazy: {
+                    Component: async () => (await import('./edit')).GuardedPatientFileEdit
+                }
             }
         ]
     }
