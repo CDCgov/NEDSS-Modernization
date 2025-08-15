@@ -99,7 +99,7 @@ const useNavigationBlock = ({ activated = true, allowed }: NavigationBlockSettin
 
     const unblock = useCallback(() => {
         if (blocker.state === 'blocked') {
-            setTimeout(() => blocker.proceed());
+            blocker.proceed();
         }
     }, [blocker.state, blocker.proceed]);
 
