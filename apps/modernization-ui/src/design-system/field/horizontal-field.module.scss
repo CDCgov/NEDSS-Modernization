@@ -24,6 +24,10 @@
         label {
             font-weight: 700;
             font-size: var(--label-area-font-size);
+
+            &.required {
+                @include components.required();
+            }
         }
     }
 

@@ -36,7 +36,7 @@ const HorizontalField = ({
             [styles.large]: sizing === 'large'
         })}>
         <div className={styles.left}>
-            <label className={classNames({ required })} htmlFor={htmlFor}>
+            <label className={classNames({ [styles.required]: required })} htmlFor={htmlFor}>
                 {label}
             </label>
 
