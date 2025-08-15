@@ -57,7 +57,6 @@ const useNavigationBlock = ({ activated = true, allowed }: NavigationBlockSettin
                 const blocked = isBlockedPath(nextLocation.pathname);
                 const exempt = !isAllowedPath(allowed, nextLocation.pathname);
                 const result = navigating && blocked && exempt;
-                console.log(currentLocation.pathname, nextLocation.pathname, result);
                 return result;
             }
 
@@ -68,15 +67,6 @@ const useNavigationBlock = ({ activated = true, allowed }: NavigationBlockSettin
 
     const blocker = useBlocker(shouldBlock);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        console.log('activated', activated);
-        console.log('isEngaged', isEngaged);
-    }, [isEngaged, activated]);
-
-    useEffect(() => {
-        console.log('blocker', blocker);
-    }, [blocker]);
 
     // Reset the blocker if the user cleans the form
     useEffect(() => {
@@ -109,7 +99,7 @@ const useNavigationBlock = ({ activated = true, allowed }: NavigationBlockSettin
 
     const unblock = useCallback(() => {
         if (blocker.state === 'blocked') {
-            blocker.proceed();
+            setTimeout(() => blocker.proceed());
         }
     }, [blocker.state, blocker.proceed]);
 
