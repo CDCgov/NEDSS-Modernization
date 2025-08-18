@@ -8,41 +8,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 @SpringBootTest(
     classes = {GatewayApplication.class, WelcomeServiceProvider.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
-        "nbs.gateway.ui.service=localhost:10001",
-        "nbs.gateway.welcome.enabled=true"
+        "nbs.gateway.landing.base=/landing",
+        "nbs.gateway.welcome.enabled=false"
     })
 @Import(WelcomeServiceProvider.class)
-class WelcomeFeatureFlagEnabledTest {
+class WelcomeFeatureFlagDisabledTest {
 
   @RegisterExtension
-  static WireMockExtension service = WireMockExtension.newInstance()
-      .options(wireMockConfig().port(10001))
+  static WireMockExtension classic = WireMockExtension.newInstance()
+      .options(wireMockConfig().port(10000))
       .build();
 
   @Autowired
   WebTestClient webClient;
 
   @Test
-  void should_route_to_ui_service() {
-    service.stubFor(get(urlEqualTo("/welcome")).willReturn(ok()));
-
+  void should_redirect_to_root() {
     webClient
         .get().uri(
             builder -> builder
                 .path("/welcome")
-                .build()
-        )
+                .build())
         .exchange()
-        .expectStatus()
-        .isOk();
+        .expectHeader().location("/")
+        .expectStatus().is3xxRedirection();
+  }
+
+  @Test
+  void should_redirect_sub_paths_to_root() {
+    webClient
+        .get().uri(
+            builder -> builder
+                .path("/welcome/learn")
+                .build())
+        .exchange()
+        .expectHeader().location("/")
+        .expectStatus().is3xxRedirection();
   }
 
 }

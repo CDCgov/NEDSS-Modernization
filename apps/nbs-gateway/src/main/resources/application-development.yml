@@ -5,6 +5,11 @@ nbs:
   gateway:
     log:
       level: INFO
+    landing:
+      uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
+      base: '/welcome'
+    welcome:
+      enabled: true
     patient:
       file:
         enabled: true
