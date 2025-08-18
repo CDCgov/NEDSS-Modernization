@@ -49,12 +49,6 @@ public class GeneralInformation {
   public GeneralInformation() {
   }
 
-  public GeneralInformation(final PatientCommand.AddPatient patient) {
-    this.asOf = patient.asOf();
-    this.maritalStatus = patient.maritalStatus();
-    this.stateHIVCase = patient.stateHIVCase();
-  }
-
   public void update(final PatientCommand.UpdateGeneralInfo info) {
     this.asOf = info.asOf();
     this.maritalStatus = info.maritalStatus();

@@ -47,68 +47,7 @@ class PersonTest {
     ;
 
   }
-
-  @Test
-  @SuppressWarnings("squid:S5961")
-    // Allow more than 25 assertions
-  void should_create_new_person_when_patient_added() {
-
-    PatientCommand.AddPatient request = new PatientCommand.AddPatient(
-        117L,
-        "patient-local-id",
-        LocalDate.parse("2000-09-03"),
-        Gender.M,
-        Gender.F,
-        Deceased.N,
-        null,
-        "Marital Status",
-        "EthCode",
-        LocalDate.parse("2019-03-03"),
-        "comments",
-        "HIV-Case",
-        131L,
-        LocalDateTime.parse("2020-03-03T10:15:30")
-    );
-
-    Person actual = new Person(request);
-
-    assertThat(actual.getId()).isEqualTo(117L);
-    assertThat(actual.getLocalId()).isEqualTo("patient-local-id");
-
-    assertThat(actual.getCd()).isEqualTo("PAT");
-    assertThat(actual.getElectronicInd()).isEqualTo('N');
-    assertThat(actual.getEdxInd()).isEqualTo("Y");
-
-    assertThat(actual)
-        .extracting(Person::audit)
-        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
-        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"));
-
-    assertThat(actual)
-        .extracting(Person::status)
-        .satisfies(StatusAssertions.active("2020-03-03T10:15:30"));
-
-    assertThat(actual)
-        .extracting(Person::recordStatus)
-        .satisfies(RecordStatusAssertions.active("2020-03-03T10:15:30"));
-
-    assertThat(actual.generalInformation().maritalStatus()).isEqualTo("Marital Status");
-
-    assertThat(actual.generalInformation().asOf()).isEqualTo("2019-03-03");
-
-    assertThat(actual.generalInformation().stateHIVCase()).isEqualTo("HIV-Case");
-
-    assertThat(actual)
-        .extracting(Person::ethnicity)
-        .returns("EthCode", PatientEthnicity::ethnicGroup)
-        .returns(LocalDate.parse("2019-03-03"), PatientEthnicity::asOf);
-
-    assertThat(actual.getPersonParentUid())
-        .as("Master Patient Record set itself as parent")
-        .isSameAs(actual);
-
-  }
-
+  
   @Test
   void should_add_name() {
     Person patient = new Person(117L, "local-id-value");

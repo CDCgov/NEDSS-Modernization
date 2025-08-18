@@ -35,14 +35,6 @@ public class PatientEthnicity {
 
   }
 
-  public PatientEthnicity(final PatientCommand.AddPatient patient) {
-    this.ethnicGroupInd = patient.ethnicityCode();
-
-    if (this.ethnicGroupInd != null) {
-      this.asOfDateEthnicity = patient.asOf();
-    }
-  }
-
   public LocalDate asOf() {
     return asOfDateEthnicity;
   }

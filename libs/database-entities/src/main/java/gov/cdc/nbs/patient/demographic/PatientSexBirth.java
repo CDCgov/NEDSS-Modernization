@@ -50,14 +50,6 @@ public class PatientSexBirth {
 
   }
 
-  public PatientSexBirth(final PatientCommand.AddPatient patient) {
-    resolveDateOfBirth(patient.dateOfBirth());
-
-    this.asOf = patient.asOf();
-    this.birthGender = patient.birthGender();
-    this.gender = patient.currentGender();
-  }
-
   private void resolveDateOfBirth(final LocalDate dateOfBirth) {
     if (dateOfBirth != null) {
       this.birthday = dateOfBirth.atStartOfDay();

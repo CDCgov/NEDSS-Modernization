@@ -19,11 +19,6 @@ public class PatientAdministrativeInformation {
   public PatientAdministrativeInformation() {
   }
 
-  public PatientAdministrativeInformation(final PatientCommand.AddPatient patient) {
-    this.asOf = patient.asOf();
-    this.comments = patient.comments();
-  }
-
   public void update(final PatientCommand.UpdateAdministrativeInfo info) {
     this.asOf = info.asOf();
     this.comments = info.comment();

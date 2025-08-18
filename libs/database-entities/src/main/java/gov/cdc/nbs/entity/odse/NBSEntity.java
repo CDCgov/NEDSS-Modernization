@@ -37,13 +37,9 @@ public class NBSEntity {
   protected NBSEntity() {
   }
 
-  public NBSEntity(Long id, String classCd) {
+  public NBSEntity(final Long id, final String classCd) {
     this.id = id;
     this.classCd = classCd;
-  }
-
-  public NBSEntity(final PatientCommand.AddPatient patient) {
-    this(patient.person(), "PSN");
   }
 
   public void update(

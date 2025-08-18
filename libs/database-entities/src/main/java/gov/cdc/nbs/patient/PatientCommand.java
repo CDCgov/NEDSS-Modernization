@@ -1,8 +1,5 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.enums.Gender;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,26 +20,6 @@ public sealed interface PatientCommand {
   ) implements PatientCommand {
   }
 
-
-  record AddPatient(
-      long person,
-      String localId,
-      LocalDate dateOfBirth,
-      Gender birthGender,
-      Gender currentGender,
-      Deceased deceased,
-      LocalDate deceasedTime,
-      String maritalStatus,
-      String ethnicityCode,
-      LocalDate asOf,
-      String comments,
-      String stateHIVCase,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
-
-
   record AddRaceInfo(
       long person,
       LocalDate asOf,
@@ -51,16 +28,6 @@ public sealed interface PatientCommand {
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {
-
-    public AddRaceInfo(
-        long person,
-        LocalDate asOf,
-        String category,
-        long requester,
-        LocalDateTime requestedOn
-    ) {
-      this(person, asOf, category, List.of(), requester, requestedOn);
-    }
 
   }
 

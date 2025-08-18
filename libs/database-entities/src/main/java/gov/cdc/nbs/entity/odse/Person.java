@@ -156,23 +156,6 @@ public class Person {
     this.audit = new Audit(patient.requester(), patient.requestedOn());
   }
 
-  public Person(final PatientCommand.AddPatient patient) {
-    this(patient.person(), patient.localId());
-
-    this.nbsEntity = new NBSEntity(patient);
-
-    this.administrative = new PatientAdministrativeInformation(patient);
-    this.generalInformation = new GeneralInformation(patient);
-    this.ethnicity = new PatientEthnicity(patient);
-    this.sexBirth = new PatientSexBirth(patient);
-    this.mortality = new PatientMortality(patient);
-
-    this.status = new Status(patient.requestedOn());
-    this.recordStatus = new gov.cdc.nbs.audit.RecordStatus(patient.requestedOn());
-    this.audit = new Audit(patient.requester(), patient.requestedOn());
-
-  }
-
   public PersonName add(final SoundexResolver resolver, final PatientCommand.AddName added) {
 
     Collection<PersonName> existing = ensureNames();

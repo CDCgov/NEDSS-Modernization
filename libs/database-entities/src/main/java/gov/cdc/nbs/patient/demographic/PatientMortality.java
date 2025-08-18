@@ -26,13 +26,6 @@ public class PatientMortality {
   public PatientMortality() {
   }
 
-  public PatientMortality(final PatientCommand.AddPatient patient) {
-    this.asOf = patient.asOf();
-    this.deceased = patient.deceased();
-    this.deceasedOn = patient.deceasedTime();
-
-  }
-
   public void update(
       final PatientCommand.UpdateMortality info
   ) {
