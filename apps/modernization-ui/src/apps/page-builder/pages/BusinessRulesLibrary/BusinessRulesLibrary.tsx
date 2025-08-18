@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react';
-import './BusinessRulesLibrary.scss';
+import { useEffect, useRef, useState } from 'react';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { Breadcrumb } from 'breadcrumb';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { Status, usePagination } from 'pagination';
+import { PaginationProvider, Status, usePagination } from 'pagination';
 import { BusinessRuleSort, RuleSortField, useFetchPageRules } from 'apps/page-builder/hooks/api/useFetchPageRules';
 import { useAlert } from 'libs/alert';
 import { useDownloadPageLibrary } from 'apps/page-builder/hooks/api/useDownloadPageLibrary';
 import { Direction } from 'libs/sorting';
+import { ModalRef } from '@trussworks/react-uswds';
+import './BusinessRulesLibrary.scss';
 
-export const BusinessRulesLibrary = ({ modalRef }: any) => {
+const Internal = () => {
+    const modalRef = useRef<ModalRef>(null);
     const { search, response, error, isLoading } = useFetchPageRules();
     const { page: curPage, ready, firstPage, reload } = usePagination();
     const [sort, setSort] = useState<BusinessRuleSort | undefined>({
@@ -100,3 +102,11 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
         </>
     );
 };
+
+const BusinessRulesLibrary = () => (
+    <PaginationProvider>
+        <Internal />
+    </PaginationProvider>
+);
+
+export { BusinessRulesLibrary };
