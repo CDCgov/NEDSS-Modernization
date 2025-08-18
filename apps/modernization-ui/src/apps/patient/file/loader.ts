@@ -4,8 +4,9 @@ import { summary } from './summary';
 import { events } from './events';
 import { demographics } from './demographics';
 import { description } from './description';
+import { Params } from 'react-router';
 
-type LoaderParams = { params: { id: string } };
+type LoaderParams = { params: Params<string> };
 
 const loader = ({ params }: LoaderParams): Promise<PatientFileData> =>
     description(Number(params.id)).then((patient) => ({

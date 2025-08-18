@@ -25,8 +25,10 @@ const EthnicityDemographicsFields = ({
 
     useEffect(() => {
         if (selectedEthnicity !== HISPANIC) {
-            form.setValue('ethnicity.unknownReason', undefined);
             form.setValue('ethnicity.detailed', []);
+        }
+        if (selectedEthnicity !== UNKNOWN) {
+            form.setValue('ethnicity.unknownReason', undefined);
         }
     }, [selectedEthnicity]);
 
