@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -74,10 +76,17 @@ public class PatientFileAddBirthRecordSteps {
   public void addRedirected() throws Exception {
     long patient = activePatient.active().id();
 
-    String expected = "/nbs/PageAction.do?method=createGenericLoad&businessObjectType=BIR&Action=DSFilePath";
-
     activeResponse.active()
-        .andExpect(MockMvcResultMatchers.header().string("Location", expected))
+        .andExpect(MockMvcResultMatchers.header().string(
+                "Location",
+                allOf(
+                    containsString("method=createGenericLoad"),
+                    containsString("mode=Create"),
+                    containsString("Action=DSFilePath"),
+                    containsString("businessObjectType=BIR")
+                )
+            )
+        )
         .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
         .andExpect(MockMvcResultMatchers.cookie().value("Return-Patient", String.valueOf(patient)));
   }
