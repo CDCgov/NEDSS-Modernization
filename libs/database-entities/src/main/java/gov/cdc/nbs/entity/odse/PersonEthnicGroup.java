@@ -57,7 +57,7 @@ public class PersonEthnicGroup {
       final Person person,
       final PatientCommand.AddDetailedEthnicity added) {
     this.id = new PersonEthnicGroupId(
-        person.getId(),
+        person.id(),
         added.ethnicity());
 
     this.personUid = person;

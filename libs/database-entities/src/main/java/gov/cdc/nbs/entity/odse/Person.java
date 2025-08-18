@@ -14,8 +14,6 @@ import gov.cdc.nbs.patient.demographic.name.PatientLegalNameResolver;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -23,8 +21,7 @@ import java.util.function.Predicate;
 
 import static java.util.function.Predicate.not;
 
-@Getter
-@Setter
+
 @Entity
 @SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7027", "javaarchitecture:S7091"})
 //  Bidirectional mappings require knowledge of each other
@@ -475,6 +472,10 @@ public class Person {
 
   public PatientMortality mortality() {
     return mortality;
+  }
+
+  public NBSEntity entity() {
+    return nbsEntity;
   }
 
   public long signature() {

@@ -39,15 +39,15 @@ class PatientIdentificationEditService {
         demographics);
 
     changes.added()
-        .map(demographic -> asAddIdentification(patient.getId(), context, demographic))
+        .map(demographic -> asAddIdentification(patient.id(), context, demographic))
         .forEach(patient::add);
 
     changes.altered()
-        .map(match -> asUpdateIdentification(patient.getId(), context, match.right()))
+        .map(match -> asUpdateIdentification(patient.id(), context, match.right()))
         .forEach(patient::update);
 
     changes.removed()
-        .map(existing -> asDeleteIdentification(patient.getId(), context, existing))
+        .map(existing -> asDeleteIdentification(patient.id(), context, existing))
         .forEach(patient::delete);
   }
 

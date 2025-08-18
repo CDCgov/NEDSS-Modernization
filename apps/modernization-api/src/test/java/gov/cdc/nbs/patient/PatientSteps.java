@@ -60,8 +60,6 @@ public class PatientSteps {
           identifier,
           resolveRace(value));
 
-      case "id" -> mother.withId(identifier, Long.parseLong(value));
-
       case "local id" -> mother.withLocalId(identifier, value);
 
       case "phone number" -> mother.withPhone(

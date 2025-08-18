@@ -32,7 +32,7 @@ class PatientEthnicityTest {
     assertThat(patient)
         .returns(131L, p -> p.audit().changed().changedBy())
         .returns(LocalDateTime.parse("2020-03-03T10:15:30"), p -> p.audit().changed().changedOn())
-        .extracting(Person::getEthnicity)
+        .extracting(Person::ethnicity)
         .returns(LocalDate.parse("2010-03-03"), PatientEthnicity::asOf)
         .returns("ethnic-group-value", PatientEthnicity::ethnicGroup);
   }
@@ -61,7 +61,7 @@ class PatientEthnicityTest {
         )
     );
 
-    assertThat(patient.getEthnicity().ethnicities())
+    assertThat(patient.ethnicity().ethnicities())
         .satisfiesExactlyInAnyOrder(
             detail -> assertThat(detail)
                 .returns("ACTIVE", e -> e.recordStatus().status())
@@ -86,7 +86,7 @@ class PatientEthnicityTest {
         )
     );
 
-    assertThat(patient.getEthnicity().ethnicities()).isEmpty();
+    assertThat(patient.ethnicity().ethnicities()).isEmpty();
 
   }
 
@@ -123,7 +123,7 @@ class PatientEthnicityTest {
         )
     );
 
-    assertThat(patient.getEthnicity().ethnicities())
+    assertThat(patient.ethnicity().ethnicities())
         .satisfiesExactlyInAnyOrder(
             actual -> assertThat(actual)
                 .returns("ACTIVE", group -> group.recordStatus().status())
@@ -177,7 +177,7 @@ class PatientEthnicityTest {
         )
     );
 
-    assertThat(patient.getEthnicity().ethnicities())
+    assertThat(patient.ethnicity().ethnicities())
         .satisfiesExactly(
             actual -> assertThat(actual)
                 .returns("ACTIVE", group -> group.recordStatus().status())
@@ -226,7 +226,7 @@ class PatientEthnicityTest {
         );
 
     assertThat(patient)
-        .extracting(Person::getEthnicity)
+        .extracting(Person::ethnicity)
         .returns("UNK", PatientEthnicity::ethnicGroup)
         .returns("unknown-reason-value", PatientEthnicity::unknownReason)
         .extracting(PatientEthnicity::ethnicities)
@@ -251,7 +251,7 @@ class PatientEthnicityTest {
     );
 
     assertThat(patient)
-        .extracting(Person::getEthnicity)
+        .extracting(Person::ethnicity)
         .extracting(PatientEthnicity::unknownReason)
         .satisfies(reason -> assertThat(reason).isNull())
     ;

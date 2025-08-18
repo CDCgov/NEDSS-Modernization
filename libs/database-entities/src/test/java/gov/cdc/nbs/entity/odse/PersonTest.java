@@ -926,7 +926,7 @@ class PersonTest {
         .returns(LocalDateTime.parse("2019-03-03T10:15:30"), person -> person.audit().changed().changedOn());
 
     assertThat(actual)
-        .extracting(Person::getGeneralInformation)
+        .extracting(Person::generalInformation)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf)
         .returns("marital status", GeneralInformation::maritalStatus)
         .returns("mothers maiden name", GeneralInformation::mothersMaidenName)
@@ -1511,14 +1511,7 @@ class PersonTest {
                 .extracting(Person::audit)
                 .satisfies(AuditAssertions.changed(131L, "2023-03-07T11:19:23"))
         )
-        .satisfies(
-            actual -> assertThat(actual.locationOfDeath())
-                .hasValueSatisfying(
-                    address -> assertThat(address)
-                        .extracting(PostalEntityLocatorParticipation::recordStatus)
-                        .satisfies(RecordStatusAssertions.inactive("2023-03-07T11:19:23"))
-                )
-        )
+        .satisfies(actual -> assertThat(actual.locationOfDeath()).isNotPresent())
         .extracting(Person::mortality)
         .returns(null, PatientMortality::asOf)
         .returns(null, PatientMortality::deceased)
