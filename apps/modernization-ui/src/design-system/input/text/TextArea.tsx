@@ -45,7 +45,7 @@ const TextArea = ({
     };
 
     return (
-        <div className={styles.textArea}>
+        <div className={styles.container}>
             <textarea
                 autoComplete="off"
                 id={id}

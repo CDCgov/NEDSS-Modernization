@@ -31,7 +31,6 @@ const columns: Column<AddressDemographic>[] = [
     {
         id: 'address-address',
         name: 'Address',
-        className: styles['text-header'],
         sortable: true,
         value: displayAddress
     },
