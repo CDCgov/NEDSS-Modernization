@@ -31,8 +31,9 @@ class SubmitBirthRecordRedirector {
 
         URI location = UriComponentsBuilder.fromPath(LOCATION)
             .queryParam("method", "createGenericLoad")
-            .queryParam("businessObjectType", "BIR")
+            .queryParam("mode", "Create")
             .queryParam("Action", "DSFilePath")
+            .queryParam("businessObjectType", "BIR")
             .build()
             .toUri();
 
