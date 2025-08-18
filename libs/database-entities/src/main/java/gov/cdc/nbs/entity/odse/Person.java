@@ -341,6 +341,14 @@ public class Person {
     return this.sexBirth;
   }
 
+  public void clear(final PatientCommand.ClearBirthDemographics command) {
+    if (this.sexBirth != null) {
+      this.sexBirth.clear(command);
+    }
+    this.nbsEntity.clear(command);
+    changed(command);
+  }
+
   public void update(
       final PatientCommand.UpdateBirth birth,
       final AddressIdentifierGenerator identifierGenerator
@@ -369,6 +377,14 @@ public class Person {
     this.nbsEntity.update(info, identifierGenerator);
 
     changed(info);
+  }
+
+  public void clear(final PatientCommand.ClearMoralityDemographics command) {
+    if (this.mortality != null) {
+      this.mortality.clear();
+    }
+    this.nbsEntity.clear(command);
+    changed(command);
   }
 
   public void delete(

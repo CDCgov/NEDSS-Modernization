@@ -20,6 +20,7 @@ public sealed interface PatientCommand {
   ) implements PatientCommand {
   }
 
+
   record AddRaceInfo(
       long person,
       LocalDate asOf,
@@ -157,6 +158,7 @@ public sealed interface PatientCommand {
       LocalDateTime requestedOn) implements PatientCommand {
   }
 
+
   record AddPhone(
       long person,
       String type,
@@ -219,6 +221,10 @@ public sealed interface PatientCommand {
   }
 
 
+  record ClearMoralityDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
+  }
+
+
   record UpdateEthnicityInfo(
       long person,
       LocalDate asOf,
@@ -228,6 +234,10 @@ public sealed interface PatientCommand {
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {
+  }
+
+
+  record ClearEthnicityDemographics(long person, long requester, LocalDateTime requestedOn) {
   }
 
 
@@ -259,6 +269,10 @@ public sealed interface PatientCommand {
   }
 
 
+  record ClearAdministrativeInformation(long person, long requester, LocalDateTime requestedOn) {
+  }
+
+
   record UpdateGeneralInfo(
       long person,
       LocalDate asOf,
@@ -272,6 +286,10 @@ public sealed interface PatientCommand {
       String speaksEnglishCode,
       long requester,
       LocalDateTime requestedOn) implements PatientCommand {
+  }
+
+
+  record ClearGeneralInformationDemographics(long person, long requester, LocalDateTime requestedOn) {
   }
 
 
@@ -292,6 +310,10 @@ public sealed interface PatientCommand {
   }
 
 
+  record ClearBirthDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
+  }
+
+
   record UpdateGender(
       long person,
       LocalDate asOf,
@@ -302,6 +324,10 @@ public sealed interface PatientCommand {
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {
+  }
+
+
+  record ClearGenderDemographics(long person, long requester, LocalDateTime requestedOn) {
   }
 
 

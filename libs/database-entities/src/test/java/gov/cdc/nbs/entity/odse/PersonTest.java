@@ -47,7 +47,7 @@ class PersonTest {
     ;
 
   }
-  
+
   @Test
   void should_add_name() {
     Person patient = new Person(117L, "local-id-value");
@@ -1473,6 +1473,59 @@ class PersonTest {
         .satisfies(AuditAssertions.changed(171L, "2019-03-03T10:15:30"))
     ;
   }
+
+  @Test
+  void should_clear_patient_mortality() {
+
+    Person patient = new Person(121L, "local-id-value");
+
+    AddressIdentifierGenerator generator = () -> 1157L;
+
+    patient.update(
+        new PatientCommand.UpdateMortality(
+            121L,
+            LocalDate.parse("2023-06-01"),
+            "Y",
+            LocalDate.of(1987, Month.NOVEMBER, 17),
+            "city",
+            "state",
+            "county",
+            "country",
+            121L,
+            LocalDateTime.parse("2019-03-03T10:15:30")
+        ),
+        generator
+    );
+
+    patient.clear(
+        new PatientCommand.ClearMoralityDemographics(
+            121L,
+            131L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient)
+        .satisfies(
+            changed -> assertThat(changed)
+                .extracting(Person::audit)
+                .satisfies(AuditAssertions.changed(131L, "2023-03-07T11:19:23"))
+        )
+        .satisfies(
+            actual -> assertThat(actual.locationOfDeath())
+                .hasValueSatisfying(
+                    address -> assertThat(address)
+                        .extracting(PostalEntityLocatorParticipation::recordStatus)
+                        .satisfies(RecordStatusAssertions.inactive("2023-03-07T11:19:23"))
+                )
+        )
+        .extracting(Person::mortality)
+        .returns(null, PatientMortality::asOf)
+        .returns(null, PatientMortality::deceased)
+        .returns(null, PatientMortality::deceasedOn)
+    ;
+  }
+
 
   @Test
   void should_update_patient_gender() {

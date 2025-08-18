@@ -39,6 +39,12 @@ public class PatientMortality {
     }
   }
 
+  public void clear() {
+    this.asOf = null;
+    this.deceased = null;
+    this.deceasedOn = null;
+  }
+
   public LocalDate asOf() {
     return asOf;
   }
@@ -52,6 +58,6 @@ public class PatientMortality {
   }
 
   public long signature() {
-    return Objects.hash(asOf,deceased, deceasedOn);
+    return Objects.hash(asOf, deceased, deceasedOn);
   }
 }

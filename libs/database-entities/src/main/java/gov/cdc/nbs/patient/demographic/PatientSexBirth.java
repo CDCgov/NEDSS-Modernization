@@ -67,6 +67,18 @@ public class PatientSexBirth {
     this.birthOrder = birth.birthOrder() == null ? null : birth.birthOrder().shortValue();
   }
 
+  public void clear(final PatientCommand.ClearBirthDemographics ignored) {
+    this.birthday = null;
+    this.birthdayCalc = null;
+    this.birthGender = null;
+    this.multipleBirth = null;
+    this.birthOrder = null;
+
+    if(this.gender == null && this.preferredGender == null && this.genderUnknownReason == null && this.additionalGender == null) {
+      this.asOf = null;
+    }
+  }
+
   public void update(final PatientCommand.UpdateGender changes) {
 
     this.asOf = changes.asOf();
@@ -76,6 +88,18 @@ public class PatientSexBirth {
     this.additionalGender = changes.additional();
 
   }
+
+  public void clear(final PatientCommand.ClearGenderDemographics ignored) {
+    this.gender = null;
+    this.genderUnknownReason = null;
+    this.preferredGender = null;
+    this.additionalGender = null;
+
+    if(this.birthday == null && this.birthdayCalc == null && this.birthGender == null && this.multipleBirth == null && this.birthOrder == null) {
+      this.asOf = null;
+    }
+  }
+
 
   public LocalDate asOf() {
     return asOf;

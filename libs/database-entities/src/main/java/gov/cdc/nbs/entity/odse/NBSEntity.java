@@ -79,6 +79,10 @@ public class NBSEntity {
     return participation;
   }
 
+  public void clear(final PatientCommand.ClearBirthDemographics command) {
+    maybeMortalityLocator().ifPresent(locator -> locator.clear(command));
+  }
+
   public void update(
       final PatientCommand.UpdateMortality info,
       final AddressIdentifierGenerator identifierGenerator
@@ -101,7 +105,8 @@ public class NBSEntity {
 
   private PostalEntityLocatorParticipation createMortalityLocator(
       final PatientCommand.UpdateMortality info,
-      final AddressIdentifierGenerator identifierGenerator) {
+      final AddressIdentifierGenerator identifierGenerator
+  ) {
     EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(
         this.id,
         identifierGenerator.generate()
@@ -116,6 +121,10 @@ public class NBSEntity {
     ensureLocators().add(participation);
 
     return participation;
+  }
+
+  public void clear(final PatientCommand.ClearMoralityDemographics command) {
+    maybeMortalityLocator().ifPresent(locator -> locator.clear(command));
   }
 
   public EntityId add(final PatientCommand.AddIdentification added) {
@@ -264,4 +273,5 @@ public class NBSEntity {
         .findFirst()
         .ifPresent(existing -> existing.delete(deleted));
   }
+
 }
