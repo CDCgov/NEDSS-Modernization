@@ -80,7 +80,7 @@ public class NBSEntity {
   }
 
   public void clear(final PatientCommand.ClearBirthDemographics command) {
-    maybeMortalityLocator().ifPresent(locator -> locator.clear(command));
+    maybeBirthLocator().ifPresent(locator -> locator.clear(command));
   }
 
   public void update(

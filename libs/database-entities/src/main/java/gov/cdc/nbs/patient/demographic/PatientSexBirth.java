@@ -74,7 +74,7 @@ public class PatientSexBirth {
     this.multipleBirth = null;
     this.birthOrder = null;
 
-    if(this.gender == null && this.preferredGender == null && this.genderUnknownReason == null && this.additionalGender == null) {
+    if(this.gender == null && this.preferredGender == null && this.additionalGender == null) {
       this.asOf = null;
     }
   }
@@ -95,7 +95,7 @@ public class PatientSexBirth {
     this.preferredGender = null;
     this.additionalGender = null;
 
-    if(this.birthday == null && this.birthdayCalc == null && this.birthGender == null && this.multipleBirth == null && this.birthOrder == null) {
+    if(this.birthday == null && this.birthGender == null && this.multipleBirth == null && this.birthOrder == null) {
       this.asOf = null;
     }
   }

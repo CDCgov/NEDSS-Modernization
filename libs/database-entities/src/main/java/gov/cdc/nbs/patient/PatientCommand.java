@@ -269,7 +269,8 @@ public sealed interface PatientCommand {
   }
 
 
-  record ClearAdministrativeInformation(long person, long requester, LocalDateTime requestedOn) {
+  record ClearAdministrativeInformation(long person, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {
   }
 
 
@@ -289,7 +290,8 @@ public sealed interface PatientCommand {
   }
 
 
-  record ClearGeneralInformationDemographics(long person, long requester, LocalDateTime requestedOn) {
+  record ClearGeneralInformationDemographics(long person, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {
   }
 
 
@@ -451,6 +453,14 @@ public sealed interface PatientCommand {
   record AssociateStateHIVCase(
       long person,
       String stateHIVCase,
+      long requester,
+      LocalDateTime requestedOn
+  ) implements PatientCommand {
+  }
+
+
+  record DisassociateStateHIVCase(
+      long person,
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {

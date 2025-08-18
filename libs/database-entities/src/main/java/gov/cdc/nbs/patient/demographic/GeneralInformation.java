@@ -61,6 +61,21 @@ public class GeneralInformation {
     this.speaksEnglish = info.speaksEnglishCode();
   }
 
+  public void clear(final PatientCommand.ClearGeneralInformationDemographics command) {
+    this.maritalStatus = null;
+    this.mothersMaidenName = null;
+    this.adultsInHouse = null;
+    this.childrenInHouse = null;
+    this.occupation = null;
+    this.educationLevel = null;
+    this.primaryLanguage = null;
+    this.speaksEnglish = null;
+
+    if (stateHIVCase == null) {
+      this.asOf = null;
+    }
+  }
+
   public void associate(
       final PermissionScopeResolver resolver,
       final PatientCommand.AssociateStateHIVCase associate
@@ -68,6 +83,16 @@ public class GeneralInformation {
     PermissionScope scope = resolver.resolve(HIV_PERMISSION);
     if (scope.allowed()) {
       this.stateHIVCase = associate.stateHIVCase();
+    }
+  }
+
+  public void disassociate(
+      final PermissionScopeResolver resolver,
+      final PatientCommand.DisassociateStateHIVCase ignored
+  ) {
+    PermissionScope scope = resolver.resolve(HIV_PERMISSION);
+    if (scope.allowed()) {
+      this.stateHIVCase = null;
     }
   }
 

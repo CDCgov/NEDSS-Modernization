@@ -313,11 +313,27 @@ public class Person {
     changed(info);
   }
 
+  public void clear(final PatientCommand.ClearGeneralInformationDemographics command) {
+    if (this.generalInformation != null) {
+      this.generalInformation.clear(command);
+      changed(command);
+    }
+  }
+
   public void associate(
       final PermissionScopeResolver resolver,
       final PatientCommand.AssociateStateHIVCase associate
   ) {
     ensureGeneralInformation().associate(resolver, associate);
+  }
+
+  public void disassociate(
+      final PermissionScopeResolver resolver,
+      final PatientCommand.DisassociateStateHIVCase associate
+  ) {
+    if (this.generalInformation != null) {
+      this.generalInformation.disassociate(resolver, associate);
+    }
   }
 
   public Person update(final PatientCommand.UpdateAdministrativeInfo info) {
@@ -327,6 +343,15 @@ public class Person {
     this.administrative.update(info);
 
     changed(info);
+
+    return this;
+  }
+
+  public Person clear(final PatientCommand.ClearAdministrativeInformation command) {
+    if (this.administrative != null) {
+      this.administrative.clear(command);
+      changed(command);
+    }
 
     return this;
   }
@@ -341,9 +366,10 @@ public class Person {
   public void clear(final PatientCommand.ClearBirthDemographics command) {
     if (this.sexBirth != null) {
       this.sexBirth.clear(command);
+      this.nbsEntity.clear(command);
+      changed(command);
     }
-    this.nbsEntity.clear(command);
-    changed(command);
+
   }
 
   public void update(
@@ -363,6 +389,12 @@ public class Person {
     changed(changes);
   }
 
+  public void clear(final PatientCommand.ClearGenderDemographics command) {
+    if (this.sexBirth != null) {
+      this.sexBirth.clear(command);
+    }
+  }
+
   public void update(
       final PatientCommand.UpdateMortality info,
       final AddressIdentifierGenerator identifierGenerator
@@ -379,9 +411,10 @@ public class Person {
   public void clear(final PatientCommand.ClearMoralityDemographics command) {
     if (this.mortality != null) {
       this.mortality.clear();
+      this.nbsEntity.clear(command);
+      changed(command);
     }
-    this.nbsEntity.clear(command);
-    changed(command);
+
   }
 
   public void delete(
@@ -424,6 +457,13 @@ public class Person {
     ensureEthnicity().remove(remove);
 
     changed(remove);
+  }
+
+  public Person clear(final PatientCommand.ClearEthnicityDemographics command) {
+    if(this.ethnicity != null) {
+      this.ethnicity.clear(command);
+    }
+    return this;
   }
 
   private void changed(final PatientCommand command) {

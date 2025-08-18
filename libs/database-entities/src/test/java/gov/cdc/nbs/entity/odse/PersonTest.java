@@ -1,5 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
+import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Indicator;
@@ -19,8 +20,7 @@ import java.time.Month;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class PersonTest {
 
@@ -50,7 +50,14 @@ class PersonTest {
 
   @Test
   void should_add_name() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
@@ -108,7 +115,14 @@ class PersonTest {
 
   @Test
   void should_add_another_name() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
@@ -179,7 +193,14 @@ class PersonTest {
 
   @Test
   void should_update_existing_name() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
@@ -251,7 +272,14 @@ class PersonTest {
 
   @Test
   void should_remove_existing_name() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     patient.add(
@@ -308,7 +336,14 @@ class PersonTest {
 
   @Test
   void should_add_minimal_name_at_sequence_one() {
-    Person actual = new Person(117L, "local-id-value");
+    Person actual = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     actual.add(
@@ -343,7 +378,14 @@ class PersonTest {
   @Test
   void should_add_secondary_name() {
 
-    Person actual = new Person(117L, "local-id-value");
+    Person actual = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
     SoundexResolver resolver = mock(SoundexResolver.class);
 
     actual.add(
@@ -402,7 +444,14 @@ class PersonTest {
   @Test
   void should_add_minimal_postal_address() {
 
-    Person actual = new Person(117L, "local-id-value");
+    Person actual = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     actual.add(
         new PatientCommand.AddAddress(
@@ -446,7 +495,14 @@ class PersonTest {
   @Test
   void should_add_postal_address() {
 
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddAddress(
@@ -511,7 +567,14 @@ class PersonTest {
   @Test
   void should_update_existing_postal_address() {
 
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddAddress(
@@ -593,7 +656,14 @@ class PersonTest {
   @Test
   void should_delete_existing_postal_address() {
 
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddAddress(
@@ -655,7 +725,14 @@ class PersonTest {
 
   @Test
   void should_add_phone() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddPhone(
@@ -710,7 +787,14 @@ class PersonTest {
 
   @Test
   void should_update_existing_phone() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddPhone(
@@ -785,7 +869,14 @@ class PersonTest {
 
   @Test
   void should_delete_existing_phone() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddPhone(
@@ -853,7 +944,14 @@ class PersonTest {
 
     when(finder.count(anyLong())).thenReturn(0L);
 
-    Person actual = new Person(117L, "local-id-value");
+    Person actual = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     actual.delete(
         new PatientCommand.Delete(
@@ -883,7 +981,14 @@ class PersonTest {
 
     when(finder.count(anyLong())).thenReturn(1L);
 
-    Person actual = new Person(117L, "local-id-value");
+    Person actual = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     LocalDateTime deletedOn = LocalDateTime.parse("2023-03-03T10:15:30");
     var deleteCommand = new PatientCommand.Delete(
@@ -904,7 +1009,14 @@ class PersonTest {
 
   @Test
   void should_set_general_info_fields() {
-    Person actual = new Person(121L, "local-id-value");
+    Person actual = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
     var command = new PatientCommand.UpdateGeneralInfo(
         121L,
         LocalDate.parse("2010-03-03"),
@@ -939,8 +1051,68 @@ class PersonTest {
   }
 
   @Test
+  void should_noop_when_clearing_general_information_when_no_general_information() {
+
+    Person patient = new Person(new PatientCommand.CreatePatient(
+        307L,
+        "TEST307",
+        883L,
+        LocalDateTime.parse("2002-03-05T07:11:13")
+    ));
+
+    patient.clear(
+        new PatientCommand.ClearGeneralInformationDemographics(
+            121L,
+            131L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient)
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.added(883L, "2002-03-05T07:11:13"));
+  }
+
+  @Test
+  void should_noop_when_disassociating_state_HIV_case_when_no_current_association() {
+
+    PermissionScopeResolver resolver = mock(PermissionScopeResolver.class);
+
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            307L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
+
+    patient.disassociate(
+        resolver,
+        new PatientCommand.DisassociateStateHIVCase(
+            121L,
+            131L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient)
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.added(883L, "2002-03-05T07:11:13"));
+
+    verifyNoInteractions(resolver);
+  }
+
+  @Test
   void should_add_identity_with_sequence_one() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddIdentification(
@@ -981,7 +1153,14 @@ class PersonTest {
 
   @Test
   void should_update_existing_identity() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddIdentification(
@@ -1030,7 +1209,14 @@ class PersonTest {
 
   @Test
   void should_not_update_unknown_identity() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddIdentification(
@@ -1076,7 +1262,14 @@ class PersonTest {
 
   @Test
   void should_delete_existing_identity() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddIdentification(
@@ -1142,7 +1335,14 @@ class PersonTest {
 
   @Test
   void should_not_delete_unknown_identity() {
-    Person patient = new Person(117L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            117L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddIdentification(
@@ -1207,10 +1407,18 @@ class PersonTest {
   }
 
 
+
   @Test
   void should_update_patient_mortality_when_patient_is_deceased() {
 
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -1244,7 +1452,16 @@ class PersonTest {
   @Test
   void should_update_patient_mortality_with_new_mortality_location_when_patient_is_deceased() {
 
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
+
+
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -1289,7 +1506,14 @@ class PersonTest {
   @Test
   void should_clear_patient_mortality_when_patient_is_not_deceased() {
 
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -1354,7 +1578,14 @@ class PersonTest {
   @Test
   void should_clear_patient_mortality_when_patient_is_not_known_to_be_deceased() {
 
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -1417,7 +1648,14 @@ class PersonTest {
   @Test
   void should_update_patient_mortality_with_changed_mortality_location_when_patient_is_deceased() {
 
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -1477,7 +1715,14 @@ class PersonTest {
   @Test
   void should_clear_patient_mortality() {
 
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -1519,11 +1764,40 @@ class PersonTest {
     ;
   }
 
+  @Test
+  void should_noop_when_clearing_demographics_when_not_present() {
+
+    Person patient = new Person(new PatientCommand.CreatePatient(
+        307L,
+        "TEST307",
+        883L,
+        LocalDateTime.parse("2002-03-05T07:11:13")
+    ));
+
+    patient.clear(
+        new PatientCommand.ClearMoralityDemographics(
+            121L,
+            131L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient)
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.added(883L, "2002-03-05T07:11:13"));
+  }
 
   @Test
   void should_update_patient_gender() {
 
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.update(
         new PatientCommand.UpdateGender(
@@ -1554,7 +1828,14 @@ class PersonTest {
 
   @Test
   void should_update_unknown_reason_when_gender_is_Unknown() {
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.update(
         new PatientCommand.UpdateGender(
@@ -1578,8 +1859,42 @@ class PersonTest {
   }
 
   @Test
+  void should_noop_when_clearing_patient_gender_when_no_gender() {
+
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            307L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
+    ;
+
+    patient.clear(
+        new PatientCommand.ClearGenderDemographics(
+            121L,
+            131L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient)
+        .returns(null, Person::sexBirth)
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.added(883L, "2002-03-05T07:11:13"));
+  }
+
+  @Test
   void should_update_patient_birth() {
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -1614,7 +1929,14 @@ class PersonTest {
 
   @Test
   void should_update_patient_with_multiple_birth() {
-    Person patient = new Person(1049L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            1049L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -1650,7 +1972,14 @@ class PersonTest {
 
   @Test
   void should_update_patient_birth_with_location() {
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -1691,9 +2020,88 @@ class PersonTest {
   }
 
   @Test
+  void should_clear_patient_birth_demographics() {
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
+
+    AddressIdentifierGenerator generator = () -> 1157L;
+
+    patient.update(
+        new PatientCommand.UpdateBirth(
+            121L,
+            LocalDate.parse("2023-06-01"),
+            null,
+            null,
+            null,
+            null,
+            "city",
+            "state",
+            "county",
+            "country",
+            131L,
+            LocalDateTime.parse("2019-03-03T10:15:30")
+        ),
+        generator
+    );
+
+    patient.clear(
+        new PatientCommand.ClearBirthDemographics(121L,
+            131L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient)
+        .satisfies(
+            actual -> assertThat(actual.locationOfBirth()).isNotPresent()
+        )
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2023-03-07T11:19:23"));
+  }
+
+  @Test
+  void should_noop_when_clearing_birth_demographics_when_not_present() {
+
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            307L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
+
+    patient.clear(
+        new PatientCommand.ClearBirthDemographics(
+            121L,
+            131L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient)
+        .returns(null, Person::sexBirth)
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.added(883L, "2002-03-05T07:11:13"));
+  }
+
+  @Test
   void should_update_patient_administrative() {
 
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    );
 
     patient.update(
         new PatientCommand.UpdateAdministrativeInfo(
@@ -1713,5 +2121,65 @@ class PersonTest {
         )
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));
+  }
+
+  @Test
+  void should_clear_administrative_information() {
+
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).update(
+        new PatientCommand.UpdateAdministrativeInfo(
+            121L,
+            LocalDate.parse("2023-06-01"),
+            "comments",
+            131L,
+            LocalDateTime.parse("2019-03-03T10:15:30")
+        )
+    ).clear(
+        new PatientCommand.ClearAdministrativeInformation(
+            121L,
+            131L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient)
+        .satisfies(updated -> assertThat(updated)
+            .extracting(Person::administrative)
+            .returns(null, PatientAdministrativeInformation::asOf)
+            .returns(null, PatientAdministrativeInformation::comments)
+        )
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.changed(131L, "2023-03-07T11:19:23"));
+  }
+
+  @Test
+  void should_noop_when_clearing_administrative_information_with_no_administrative_information() {
+
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).clear(
+        new PatientCommand.ClearAdministrativeInformation(
+            121L,
+            131L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient)
+        .returns(null, Person::administrative)
+        .extracting(Person::audit)
+        .satisfies(AuditAssertions.added(883L, "2002-03-05T07:11:13"));
   }
 }

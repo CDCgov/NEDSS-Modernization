@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.demographic;
 
+import gov.cdc.nbs.entity.odse.AuditAssertions;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonEthnicGroup;
 import gov.cdc.nbs.entity.odse.PersonEthnicGroupId;
@@ -16,9 +17,14 @@ class PatientEthnicityTest {
   @Test
   void should_change_ethnicity() {
 
-    Person patient = new Person(121L, "local-id-value");
-
-    patient.update(
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).update(
         new PatientCommand.UpdateEthnicityInfo(
             121L,
             LocalDate.parse("2010-03-03"),
@@ -40,17 +46,23 @@ class PatientEthnicityTest {
   @Test
   void should_add_detailed_ethnicity() {
 
-    Person patient = new Person(121L, "local-id-value")
-        .update(
-            new PatientCommand.UpdateEthnicityInfo(
-                121L,
-                LocalDate.parse("2010-03-03"),
-                "ethnic-group-value",
-                null,
-                131L,
-                LocalDateTime.parse("2020-03-03T10:15:30")
-            )
-        );
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).update(
+        new PatientCommand.UpdateEthnicityInfo(
+            121L,
+            LocalDate.parse("2010-03-03"),
+            "ethnic-group-value",
+            null,
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddDetailedEthnicity(
@@ -75,7 +87,46 @@ class PatientEthnicityTest {
   @Test
   void should_not_add_detailed_ethnicity_if_patient_does_not_already_have_an_ethnicity() {
 
-    Person patient = new Person(121L, "local-id-value");
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).add(
+        new PatientCommand.AddDetailedEthnicity(
+            121L,
+            "ethnicity-value",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
+
+    assertThat(patient.ethnicity().ethnicities()).isEmpty();
+
+  }
+
+  @Test
+  void should_not_add_detailed_ethnicity_when_unknown() {
+
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).update(
+        new PatientCommand.UpdateEthnicityInfo(
+            121L,
+            LocalDate.parse("2010-03-03"),
+            "UNK",
+            null,
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
 
     patient.add(
         new PatientCommand.AddDetailedEthnicity(
@@ -94,8 +145,14 @@ class PatientEthnicityTest {
   @Test
   void should_add_another_detailed_ethnicity() {
 
-    Person patient = new Person(121L, "local-id-value")
-        .update(
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).update(
             new PatientCommand.UpdateEthnicityInfo(
                 121L,
                 LocalDate.parse("2010-03-03"),
@@ -142,31 +199,37 @@ class PatientEthnicityTest {
   @Test
   void should_remove_detailed_ethnicity() {
 
-    Person patient = new Person(121L, "local-id-value")
-        .update(
-            new PatientCommand.UpdateEthnicityInfo(
-                121L,
-                LocalDate.parse("2010-03-03"),
-                "ethnic-group-value",
-                null,
-                131L,
-                LocalDateTime.parse("2020-03-03T10:15:30")
-            )
-        ).add(
-            new PatientCommand.AddDetailedEthnicity(
-                121L,
-                "ethnicity-value",
-                131L,
-                LocalDateTime.parse("2020-03-03T10:15:30")
-            )
-        ).add(
-            new PatientCommand.AddDetailedEthnicity(
-                121L,
-                "next-ethnicity-value",
-                131L,
-                LocalDateTime.parse("2020-03-03T10:15:30")
-            )
-        );
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            121L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).update(
+        new PatientCommand.UpdateEthnicityInfo(
+            121L,
+            LocalDate.parse("2010-03-03"),
+            "ethnic-group-value",
+            null,
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    ).add(
+        new PatientCommand.AddDetailedEthnicity(
+            121L,
+            "ethnicity-value",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    ).add(
+        new PatientCommand.AddDetailedEthnicity(
+            121L,
+            "next-ethnicity-value",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
 
     patient.remove(
         new PatientCommand.RemoveDetailedEthnicity(
@@ -190,40 +253,46 @@ class PatientEthnicityTest {
 
   @Test
   void should_remove_detailed_ethnicity_when_updated_to_unknown() {
-    Person patient = new Person(121L, "local-id-value")
-        .update(
-            new PatientCommand.UpdateEthnicityInfo(
-                121L,
-                LocalDate.parse("2010-03-03"),
-                "ethnic-group-value",
-                null,
-                131L,
-                LocalDateTime.parse("2020-03-03T10:15:30")
-            )
-        ).add(
-            new PatientCommand.AddDetailedEthnicity(
-                121L,
-                "ethnicity-value",
-                131L,
-                LocalDateTime.parse("2020-03-03T10:15:30")
-            )
-        ).add(
-            new PatientCommand.AddDetailedEthnicity(
-                121L,
-                "next-ethnicity-value",
-                131L,
-                LocalDateTime.parse("2020-03-03T10:15:30")
-            )
-        ).update(
-            new PatientCommand.UpdateEthnicityInfo(
-                121L,
-                LocalDate.parse("2013-12-11"),
-                "UNK",
-                "unknown-reason-value",
-                131L,
-                LocalDateTime.parse("2020-03-03T10:15:30")
-            )
-        );
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            307L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).update(
+        new PatientCommand.UpdateEthnicityInfo(
+            121L,
+            LocalDate.parse("2010-03-03"),
+            "ethnic-group-value",
+            null,
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    ).add(
+        new PatientCommand.AddDetailedEthnicity(
+            121L,
+            "ethnicity-value",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    ).add(
+        new PatientCommand.AddDetailedEthnicity(
+            121L,
+            "next-ethnicity-value",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    ).update(
+        new PatientCommand.UpdateEthnicityInfo(
+            121L,
+            LocalDate.parse("2013-12-11"),
+            "UNK",
+            "unknown-reason-value",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
 
     assertThat(patient)
         .extracting(Person::ethnicity)
@@ -237,9 +306,14 @@ class PatientEthnicityTest {
   @Test
   void should_only_apply_unknown_reason_for_unknown_ethnicity() {
 
-    Person patient = new Person(121L, "local-id-value");
-
-    patient.update(
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            307L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).update(
         new PatientCommand.UpdateEthnicityInfo(
             121L,
             LocalDate.parse("2010-03-03"),
@@ -256,4 +330,78 @@ class PatientEthnicityTest {
         .satisfies(reason -> assertThat(reason).isNull())
     ;
   }
+
+  @Test
+  void should_clear_ethnicity_demographics() {
+
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            307L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).update(
+        new PatientCommand.UpdateEthnicityInfo(
+            121L,
+            LocalDate.parse("2010-03-03"),
+            "ethnic-group-value",
+            null,
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
+
+    patient.add(
+        new PatientCommand.AddDetailedEthnicity(
+            121L,
+            "ethnicity-value",
+            131L,
+            LocalDateTime.parse("2020-03-03T10:15:30")
+        )
+    );
+
+    patient.clear(
+        new PatientCommand.ClearEthnicityDemographics(
+            1046L,
+            673L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient.ethnicity())
+        .returns(null, PatientEthnicity::asOf)
+        .returns(null, PatientEthnicity::ethnicGroup)
+        .returns(null, PatientEthnicity::unknownReason)
+        .extracting(PatientEthnicity::ethnicities)
+        .satisfies(details -> assertThat(details).isEmpty());
+
+  }
+
+  @Test
+  void should_noop_when_clearing_ethnicity_demographics_when_not_present() {
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            307L,
+            "TEST307",
+            883L,
+            LocalDateTime.parse("2002-03-05T07:11:13")
+        )
+    ).clear(
+        new PatientCommand.ClearEthnicityDemographics(
+            1046L,
+            673L,
+            LocalDateTime.parse("2023-03-07T11:19:23")
+        )
+    );
+
+    assertThat(patient)
+        .satisfies(
+            changed -> assertThat(changed)
+                .extracting(Person::audit)
+                .satisfies(AuditAssertions.added(883L, "2002-03-05T07:11:13"))
+        )
+        .returns(null, Person::ethnicity);
+  }
 }
+

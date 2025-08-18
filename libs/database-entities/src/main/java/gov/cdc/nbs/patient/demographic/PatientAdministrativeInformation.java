@@ -25,6 +25,11 @@ public class PatientAdministrativeInformation {
 
   }
 
+  public void clear(final PatientCommand.ClearAdministrativeInformation command) {
+    this.asOf = null;
+    this.comments = null;
+  }
+
   public LocalDate asOf() {
     return asOf;
   }
@@ -36,4 +41,6 @@ public class PatientAdministrativeInformation {
   public long signature() {
     return Objects.hash(asOf, comments);
   }
+
+
 }
