@@ -81,7 +81,7 @@ const renderType = (value: PatientFileDocumentRequiringReview) => {
     return (
         <>
             {value.type}
-            <Shown when={!value.isElectronic}>
+            <Shown when={value.isElectronic}>
                 <br />
                 <Tooltip message="Electronic indicator">
                     {(id) => (
