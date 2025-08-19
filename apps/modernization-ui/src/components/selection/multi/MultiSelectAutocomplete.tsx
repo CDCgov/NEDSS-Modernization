@@ -4,7 +4,7 @@ import AsyncSelect from 'react-select/async';
 import { EntryWrapper } from 'components/Entry';
 import { Selectable } from 'options';
 
-import './MultiSelectInput.scss';
+import 'design-system/select/multi/multi-select.scss';
 
 const CheckedOption = (props: any) => {
     return (
