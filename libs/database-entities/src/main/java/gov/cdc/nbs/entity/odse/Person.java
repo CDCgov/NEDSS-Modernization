@@ -329,10 +329,11 @@ public class Person {
 
   public void disassociate(
       final PermissionScopeResolver resolver,
-      final PatientCommand.DisassociateStateHIVCase associate
+      final PatientCommand.DisassociateStateHIVCase disassociate
   ) {
     if (this.generalInformation != null) {
-      this.generalInformation.disassociate(resolver, associate);
+      this.generalInformation.disassociate(resolver);
+      changed(disassociate);
     }
   }
 
@@ -392,6 +393,7 @@ public class Person {
   public void clear(final PatientCommand.ClearGenderDemographics command) {
     if (this.sexBirth != null) {
       this.sexBirth.clearGenderDemographics();
+      changed(command);
     }
   }
 
@@ -462,6 +464,7 @@ public class Person {
   public Person clear(final PatientCommand.ClearEthnicityDemographics command) {
     if(this.ethnicity != null) {
       this.ethnicity.clear();
+      changed(command);
     }
     return this;
   }

@@ -83,10 +83,7 @@ public class GeneralInformation {
     }
   }
 
-  public void disassociate(
-      final PermissionScopeResolver resolver,
-      final PatientCommand.DisassociateStateHIVCase ignored
-  ) {
+  public void disassociate(final PermissionScopeResolver resolver) {
     PermissionScope scope = resolver.resolve(HIV_PERMISSION);
     if (scope.allowed()) {
       this.stateHIVCase = null;

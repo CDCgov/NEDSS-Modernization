@@ -237,7 +237,7 @@ public sealed interface PatientCommand {
   }
 
 
-  record ClearEthnicityDemographics(long person, long requester, LocalDateTime requestedOn) {
+  record ClearEthnicityDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
   }
 
 
@@ -329,7 +329,7 @@ public sealed interface PatientCommand {
   }
 
 
-  record ClearGenderDemographics(long person, long requester, LocalDateTime requestedOn) {
+  record ClearGenderDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
   }
 
 

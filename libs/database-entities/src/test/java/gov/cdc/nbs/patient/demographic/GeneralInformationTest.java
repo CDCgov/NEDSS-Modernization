@@ -176,14 +176,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.disassociate(
-        resolver,
-        new PatientCommand.DisassociateStateHIVCase(
-            263L,
-            12L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+    actual.disassociate(resolver);
 
     assertThat(actual.stateHIVCase()).isNull();
   }
@@ -272,14 +265,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.disassociate(
-        resolver,
-        new PatientCommand.DisassociateStateHIVCase(
-            263L,
-            12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+    actual.disassociate(resolver);
 
     assertThat(actual)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
@@ -313,14 +299,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.disassociate(
-        resolver,
-        new PatientCommand.DisassociateStateHIVCase(
-            263L,
-            12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+    actual.disassociate(resolver);
 
     assertThat(actual)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
@@ -354,14 +333,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.disassociate(
-        resolver,
-        new PatientCommand.DisassociateStateHIVCase(
-            263L,
-            12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+    actual.disassociate(resolver);
 
     assertThat(actual)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
@@ -395,14 +367,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.disassociate(
-        resolver,
-        new PatientCommand.DisassociateStateHIVCase(
-            263L,
-            12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+    actual.disassociate(resolver);
 
     assertThat(actual)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
@@ -436,14 +401,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.disassociate(
-        resolver,
-        new PatientCommand.DisassociateStateHIVCase(
-            263L,
-            12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+    actual.disassociate(resolver);
 
     assertThat(actual)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
@@ -477,14 +435,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.disassociate(
-        resolver,
-        new PatientCommand.DisassociateStateHIVCase(
-            263L,
-            12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+    actual.disassociate(resolver);
 
     assertThat(actual)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
@@ -518,14 +469,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.disassociate(
-        resolver,
-        new PatientCommand.DisassociateStateHIVCase(
-            263L,
-            12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+    actual.disassociate(resolver);
 
     assertThat(actual)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
@@ -559,14 +503,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.disassociate(
-        resolver,
-        new PatientCommand.DisassociateStateHIVCase(
-            263L,
-            12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+    actual.disassociate(resolver);
 
     assertThat(actual)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
