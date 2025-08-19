@@ -80,7 +80,11 @@ const renderType = (value: PatientFileDocumentRequiringReview) => {
         <>
             {value.type}
             <br />
-            {value.isElectronic && <Tag variant="accent">{'E'}</Tag>}
+            {value.isElectronic && (
+                <Tag variant="accent" size="small">
+                    {'E'}
+                </Tag>
+            )}
         </>
     );
 };
