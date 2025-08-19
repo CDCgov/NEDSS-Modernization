@@ -14,9 +14,7 @@ const PatientFileSummary = () => {
 
     return (
         <PatientFileView patient={patient} sizing={sizing}>
-            <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
-                <MergeAlert patientId={patient?.patientId?.toString()} />
-            </FeatureToggle>
+            <MergeAlert patientId={patient?.patientId?.toString()} />
             <PatientFileDemographicsSummaryCard
                 id="demographics-summary"
                 provider={demographics.get().summary}
