@@ -9,7 +9,6 @@ import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { NumericInput, TextInputField } from 'design-system/input';
 import { ValueField } from 'design-system/field';
-import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 import { HasSexBirthDemographic, labels } from '../sexBirth';
 import { SexBirthOptions } from './useSexBirthOptions';
 
@@ -33,10 +32,6 @@ const SexBirthDemographicFields = ({
 
     const age = ageResolver(currentBirthday);
 
-    const countries = useCountryOptions();
-    const states = useStateOptions();
-    const counties = useCountyOptions(selectedState?.value);
-
     const isMultipleBirth = isEqual(options.multipleBirth.yes);
     const isUnknownGender = isEqual(options.genders.unknown);
 
@@ -44,6 +39,7 @@ const SexBirthDemographicFields = ({
         if (!selectedState) {
             form.setValue('sexBirth.county', undefined);
         }
+        options.location.state(selectedState);
     }, [selectedState]);
 
     useEffect(() => {
@@ -256,7 +252,7 @@ const SexBirthDemographicFields = ({
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={states}
+                        options={options.location.states}
                         sizing={sizing}
                     />
                 )}
@@ -273,7 +269,7 @@ const SexBirthDemographicFields = ({
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={counties}
+                        options={options.location.counties}
                         sizing={sizing}
                     />
                 )}
@@ -291,7 +287,7 @@ const SexBirthDemographicFields = ({
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={countries}
+                        options={options.location.countries}
                         sizing={sizing}
                     />
                 )}

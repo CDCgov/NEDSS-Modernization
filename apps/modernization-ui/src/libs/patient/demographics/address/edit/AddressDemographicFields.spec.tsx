@@ -5,23 +5,22 @@ import { render, screen } from '@testing-library/react';
 import { AddressDemographicFields } from './AddressDemographicFields';
 import { HasAddressDemographics } from '../address';
 import { AddressOptions } from './useAddressOptions';
+import { LocationOptions } from 'options/location';
+
+const mockState = jest.fn();
+
+const location: LocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: mockState
+};
 
 const options: AddressOptions = {
     types: [{ name: 'House', value: 'H' }],
-    uses: [{ name: 'Home', value: 'HM' }]
+    uses: [{ name: 'Home', value: 'HM' }],
+    location
 };
-
-const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
-
-const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
-
-const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
-
-jest.mock('options/location', () => ({
-    useCountyOptions: () => mockCountyCodedValues,
-    useCountryOptions: () => mockCountryCodedValues,
-    useStateOptions: () => mockStateCodedValues
-}));
 
 const Fixture = () => {
     const form = useForm<HasAddressDemographics>({
