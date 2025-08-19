@@ -29,7 +29,6 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
     }
   }
 
-
   private final Column columns;
   private final SelectableRowMapper ethnicityMapper;
   private final SelectableRowMapper unknownReasonMapper;
@@ -54,12 +53,14 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
     Selectable unknownReason = unknownReasonMapper.mapRow(resultSet, rowNum);
     Selectable detail = detailMapper.mapRow(resultSet, rowNum);
 
-    List<Selectable> detailed = detail == null || Objects.equals(detail.value(), ethnicGroup.value())
+    String ethnicGroupValue = ethnicGroup != null ? ethnicGroup.value() : null;
+    List<Selectable> detailed = detail == null || Objects.equals(detail.value(), ethnicGroupValue)
         ? List.of()
         : List.of(detail);
 
-    Selectable unknown =
-        ethnicGroup.value().equalsIgnoreCase("UNK") ? unknownReason : null;
+    Selectable unknown = "UNK".equalsIgnoreCase(ethnicGroupValue)
+        ? unknownReason
+        : null;
 
     return new PatientEthnicityDemographic(
         asOf,
