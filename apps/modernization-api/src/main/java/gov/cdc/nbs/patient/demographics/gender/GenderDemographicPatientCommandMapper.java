@@ -23,6 +23,17 @@ public class GenderDemographicPatientCommandMapper {
     );
   }
 
+  public static PatientCommand.ClearGenderDemographics asClearGenderDemographics(
+      final long patient,
+      final RequestContext context
+  ) {
+    return new PatientCommand.ClearGenderDemographics(
+        patient,
+        context.requestedBy(),
+        context.requestedAt()
+    );
+  }
+
   private GenderDemographicPatientCommandMapper() {
     // static
   }

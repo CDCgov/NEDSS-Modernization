@@ -93,6 +93,18 @@ public class GeneralInformation {
     PermissionScope scope = resolver.resolve(HIV_PERMISSION);
     if (scope.allowed()) {
       this.stateHIVCase = null;
+
+      if (this.maritalStatus == null
+          && this.mothersMaidenName == null
+          && this.adultsInHouse == null
+          && this.childrenInHouse == null
+          && this.occupation == null
+          && this.educationLevel == null
+          && this.primaryLanguage == null
+          && this.speaksEnglish == null
+      ) {
+        this.asOf = null;
+      }
     }
   }
 
