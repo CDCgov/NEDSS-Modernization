@@ -3,7 +3,7 @@ import { Sizing } from 'design-system/field';
 import styles from './tag.module.scss';
 import classNames from 'classnames';
 
-export type TagVariant = 'default' | 'success' | 'warning' | 'error' | 'info' | 'gray';
+export type TagVariant = 'default' | 'success' | 'warning' | 'error' | 'info' | 'gray' | 'accent';
 
 export type TagProps = {
     children: React.ReactNode | React.ReactNode[];
