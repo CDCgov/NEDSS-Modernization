@@ -16,6 +16,7 @@ import { ResultedTests } from 'libs/events/tests';
 import styles from './drr.module.scss';
 import { displayNoData } from 'design-system/data';
 import { Tag } from 'design-system/tag';
+import { Shown } from 'conditional-render';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -79,12 +80,12 @@ const renderType = (value: PatientFileDocumentRequiringReview) => {
     return (
         <>
             {value.type}
-            <br />
-            {value.isElectronic && (
+            <Shown when={value.isElectronic}>
+                <br />
                 <Tag variant="accent" size="small">
-                    {'E'}
+                    E
                 </Tag>
-            )}
+            </Shown>
         </>
     );
 };
