@@ -9,16 +9,15 @@ type MergeAlertProps = {
 };
 
 export const MergeAlert = ({ patientId }: MergeAlertProps) => {
-    const nav = useNavigate();
-
     return (
         <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
-            <MergeAlertContent patientId={patientId} nav={nav} />
+            <MergeAlertContent patientId={patientId} />
         </FeatureToggle>
     );
 };
 
-const MergeAlertContent = ({ patientId, nav }: { patientId?: string; nav: ReturnType<typeof useNavigate> }) => {
+const MergeAlertContent = ({ patientId }: { patientId?: string }) => {
+    const nav = useNavigate();
     const { inMergeQueue, mergeGroup, loading } = usePatientMergeQueueStatus(patientId);
 
     if (loading || !inMergeQueue) return null;
