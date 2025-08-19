@@ -315,7 +315,7 @@ public class Person {
 
   public void clear(final PatientCommand.ClearGeneralInformationDemographics command) {
     if (this.generalInformation != null) {
-      this.generalInformation.clear(command);
+      this.generalInformation.clear();
       changed(command);
     }
   }
@@ -349,7 +349,7 @@ public class Person {
 
   public Person clear(final PatientCommand.ClearAdministrativeInformation command) {
     if (this.administrative != null) {
-      this.administrative.clear(command);
+      this.administrative.clear();
       changed(command);
     }
 
@@ -365,7 +365,7 @@ public class Person {
 
   public void clear(final PatientCommand.ClearBirthDemographics command) {
     if (this.sexBirth != null) {
-      this.sexBirth.clear(command);
+      this.sexBirth.clearBirthDemographics();
       this.nbsEntity.clear(command);
       changed(command);
     }
@@ -391,7 +391,7 @@ public class Person {
 
   public void clear(final PatientCommand.ClearGenderDemographics command) {
     if (this.sexBirth != null) {
-      this.sexBirth.clear(command);
+      this.sexBirth.clearGenderDemographics();
     }
   }
 
@@ -461,7 +461,7 @@ public class Person {
 
   public Person clear(final PatientCommand.ClearEthnicityDemographics command) {
     if(this.ethnicity != null) {
-      this.ethnicity.clear(command);
+      this.ethnicity.clear();
     }
     return this;
   }

@@ -73,13 +73,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.clear(
-        new PatientCommand.ClearGeneralInformationDemographics(
-            1046L,
-            673L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    actual.clear();
 
     assertThat(actual)
         .returns(null, GeneralInformation::asOf)
@@ -131,13 +125,7 @@ class GeneralInformationTest {
         )
     );
 
-    actual.clear(
-        new PatientCommand.ClearGeneralInformationDemographics(
-            1046L,
-            673L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    actual.clear();
 
     assertThat(actual)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);

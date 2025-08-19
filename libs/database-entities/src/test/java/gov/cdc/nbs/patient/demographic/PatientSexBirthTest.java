@@ -17,20 +17,14 @@ class PatientSexBirthTest {
 
     PatientSexBirth demographic = new PatientSexBirth();
 
-    demographic.clear(
-        new PatientCommand.ClearBirthDemographics(
-            121L,
-            131L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    demographic.clearBirthDemographics();
 
     assertThat(demographic)
         .returns(null, PatientSexBirth::asOf);
   }
 
   @Test
-  void should_not_clear_as_of_if_gender_still_present() {
+  void should_not_clear_GenderDemographics_BirthDemographics_as_of_if_gender_still_present() {
     PatientSexBirth demographic = new PatientSexBirth();
 
     demographic.update(
@@ -46,20 +40,14 @@ class PatientSexBirthTest {
         )
     );
 
-    demographic.clear(
-        new PatientCommand.ClearBirthDemographics(
-            121L,
-            131L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    demographic.clearBirthDemographics();
 
     assertThat(demographic)
         .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
-  void should_not_clear_as_of_if_preferred_gender_still_present() {
+  void should_not_clear_GenderDemographics_BirthDemographics_as_of_if_preferred_gender_still_present() {
     PatientSexBirth demographic = new PatientSexBirth();
 
     demographic.update(
@@ -75,20 +63,14 @@ class PatientSexBirthTest {
         )
     );
 
-    demographic.clear(
-        new PatientCommand.ClearBirthDemographics(
-            121L,
-            131L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    demographic.clearBirthDemographics();
 
     assertThat(demographic)
         .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
-  void should_not_clear_as_of_if_additional_gender_still_present() {
+  void should_not_clear_GenderDemographics_BirthDemographics_as_of_if_additional_gender_still_present() {
     PatientSexBirth demographic = new PatientSexBirth();
 
     demographic.update(
@@ -104,13 +86,7 @@ class PatientSexBirthTest {
         )
     );
 
-    demographic.clear(
-        new PatientCommand.ClearBirthDemographics(
-            121L,
-            131L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    demographic.clearBirthDemographics();
 
     assertThat(demographic)
         .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
@@ -121,20 +97,14 @@ class PatientSexBirthTest {
 
     PatientSexBirth demographic = new PatientSexBirth();
 
-    demographic.clear(
-        new PatientCommand.ClearGenderDemographics(
-            121L,
-            131L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    demographic.clearGenderDemographics();
 
     assertThat(demographic)
         .returns(null, PatientSexBirth::asOf);
   }
 
   @Test
-  void should_not_clear_as_of_when_birthday_is_present() {
+  void should_not_clear_GenderDemographics_BirthDemographics_as_of_when_birthday_is_present() {
     PatientSexBirth demographic = new PatientSexBirth();
 
     demographic.update(
@@ -154,20 +124,14 @@ class PatientSexBirthTest {
         )
     );
 
-    demographic.clear(
-        new PatientCommand.ClearGenderDemographics(
-            121L,
-            131L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    demographic.clearGenderDemographics();
 
     assertThat(demographic)
         .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
-  void should_not_clear_as_of_when_birth_gender_is_present() {
+  void should_not_clear_GenderDemographics_BirthDemographics_as_of_when_birth_gender_is_present() {
     PatientSexBirth demographic = new PatientSexBirth();
 
     demographic.update(
@@ -187,20 +151,14 @@ class PatientSexBirthTest {
         )
     );
 
-    demographic.clear(
-        new PatientCommand.ClearGenderDemographics(
-            121L,
-            131L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    demographic.clearGenderDemographics();
 
     assertThat(demographic)
         .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
-  void should_not_clear_as_of_when_multiple_birth_is_present() {
+  void should_not_clear_GenderDemographics_BirthDemographics_as_of_when_multiple_birth_is_present() {
     PatientSexBirth demographic = new PatientSexBirth();
 
     demographic.update(
@@ -220,20 +178,14 @@ class PatientSexBirthTest {
         )
     );
 
-    demographic.clear(
-        new PatientCommand.ClearGenderDemographics(
-            121L,
-            131L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    demographic.clearGenderDemographics();
 
     assertThat(demographic)
         .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
-  void should_not_clear_as_of_when_birth_order_is_present() {
+  void should_not_clear_GenderDemographics_BirthDemographics_as_of_when_birth_order_is_present() {
     PatientSexBirth demographic = new PatientSexBirth();
 
     demographic.update(
@@ -241,7 +193,7 @@ class PatientSexBirthTest {
             121L,
             LocalDate.parse("2023-06-01"),
             null,
-           null,
+            null,
             null,
             10,
             null,
@@ -253,13 +205,7 @@ class PatientSexBirthTest {
         )
     );
 
-    demographic.clear(
-        new PatientCommand.ClearGenderDemographics(
-            121L,
-            131L,
-            LocalDateTime.parse("2023-03-07T11:19:23")
-        )
-    );
+    demographic.clearGenderDemographics();
 
     assertThat(demographic)
         .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);

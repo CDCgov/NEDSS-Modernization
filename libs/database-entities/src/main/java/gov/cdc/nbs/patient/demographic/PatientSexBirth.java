@@ -46,10 +46,6 @@ public class PatientSexBirth {
   @Column(name = "birth_order_nbr")
   private Short birthOrder;
 
-  public PatientSexBirth() {
-
-  }
-
   private void resolveDateOfBirth(final LocalDate dateOfBirth) {
     if (dateOfBirth != null) {
       this.birthday = dateOfBirth.atStartOfDay();
@@ -67,7 +63,7 @@ public class PatientSexBirth {
     this.birthOrder = birth.birthOrder() == null ? null : birth.birthOrder().shortValue();
   }
 
-  public void clear(final PatientCommand.ClearBirthDemographics ignored) {
+  public void clearBirthDemographics() {
     this.birthday = null;
     this.birthdayCalc = null;
     this.birthGender = null;
@@ -89,7 +85,7 @@ public class PatientSexBirth {
 
   }
 
-  public void clear(final PatientCommand.ClearGenderDemographics ignored) {
+  public void clearGenderDemographics() {
     this.gender = null;
     this.genderUnknownReason = null;
     this.preferredGender = null;

@@ -23,9 +23,6 @@ public class PatientMortality {
   @Column(name = "deceased_time")
   private LocalDate deceasedOn;
 
-  public PatientMortality() {
-  }
-
   public void update(
       final PatientCommand.UpdateMortality info
   ) {

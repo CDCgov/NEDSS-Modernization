@@ -1869,7 +1869,6 @@ class PersonTest {
             LocalDateTime.parse("2002-03-05T07:11:13")
         )
     );
-    ;
 
     patient.clear(
         new PatientCommand.ClearGenderDemographics(

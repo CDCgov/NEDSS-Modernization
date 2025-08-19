@@ -46,9 +46,6 @@ public class GeneralInformation {
   @Column(name = "ehars_id", length = 20)
   private String stateHIVCase;
 
-  public GeneralInformation() {
-  }
-
   public void update(final PatientCommand.UpdateGeneralInfo info) {
     this.asOf = info.asOf();
     this.maritalStatus = info.maritalStatus();
@@ -61,7 +58,7 @@ public class GeneralInformation {
     this.speaksEnglish = info.speaksEnglishCode();
   }
 
-  public void clear(final PatientCommand.ClearGeneralInformationDemographics command) {
+  public void clear() {
     this.maritalStatus = null;
     this.mothersMaidenName = null;
     this.adultsInHouse = null;
