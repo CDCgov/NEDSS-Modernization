@@ -1,17 +1,15 @@
-import React from 'react';
 import { Sizing } from 'design-system/field';
-import styles from './tag.module.scss';
 import classNames from 'classnames';
+import styles from './tag.module.scss';
 
 export type TagVariant = 'default' | 'success' | 'warning' | 'error' | 'info' | 'gray' | 'accent';
 
 export type TagProps = {
-    children: React.ReactNode | React.ReactNode[];
     variant?: TagVariant;
     size?: Sizing;
     weight?: 'regular' | 'bold';
-};
+} & JSX.IntrinsicElements['div'];
 
-export const Tag = ({ children, variant = 'default', size = 'medium', weight = 'regular' }: TagProps) => {
-    return <div className={classNames(styles[variant], styles[size], styles[weight])}>{children}</div>;
+export const Tag = ({ variant = 'default', size = 'medium', weight = 'regular', ...remaining }: TagProps) => {
+    return <div className={classNames(styles[variant], styles[size], styles[weight])} {...remaining} />;
 };

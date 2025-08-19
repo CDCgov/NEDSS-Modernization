@@ -2,6 +2,9 @@ import { ReactNode, useCallback, useId, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { TooltipMessage, TooltipMessageProps } from './TooltipMessage';
 
+import styles from './tooltip.module.scss';
+import classNames from 'classnames';
+
 type Children = (id: string) => ReactNode | ReactNode[];
 
 type Placement = {
@@ -61,7 +64,7 @@ const Tooltip = ({ children, message, spanClass, ...remaining }: TooltipProps) =
 
     return (
         <span
-            className={spanClass}
+            className={classNames(styles.container, spanClass)}
             ref={targeted}
             onMouseEnter={() => setVisible(true)}
             onMouseLeave={() => setVisible(false)}>
