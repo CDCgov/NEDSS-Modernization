@@ -18,6 +18,7 @@ import { displayNoData } from 'design-system/data';
 import { Tag } from 'design-system/tag';
 import { Shown } from 'conditional-render';
 import { Tooltip } from 'design-system/tooltip';
+import { ValueView } from 'design-system/data-display/ValueView';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -81,7 +82,7 @@ const renderType = (value: PatientFileDocumentRequiringReview) => {
     return (
         <>
             {value.type}
-            <Shown when={true}>
+            <Shown when={value.isElectronic}>
                 <br />
                 <Tooltip message="Electronic indicator" spanClass={styles.electronicIndicator}>
                     {() => (
