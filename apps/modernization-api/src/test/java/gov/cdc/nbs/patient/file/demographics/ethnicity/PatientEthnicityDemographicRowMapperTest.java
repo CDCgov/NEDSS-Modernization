@@ -109,4 +109,27 @@ class PatientEthnicityDemographicRowMapperTest {
     Selectable detailed = demographic.detailed().toArray(new Selectable[1])[0];
     assertThat(detailed).isNull();
   }
+
+  @Test
+  void should_map_matching_detail() throws SQLException {
+    // Mock
+    ResultSet resultSet = Mockito.mock(ResultSet.class);
+    LocalDateTime asOf = LocalDateTime.now();
+    when(resultSet.getObject(1, LocalDateTime.class)).thenReturn(asOf); // as of
+    // ethnicity
+    when(resultSet.getString(2)).thenReturn("2135-2");
+    when(resultSet.getString(3)).thenReturn("Hispanic or Latino");
+    // unknown reason
+    when(resultSet.getString(4)).thenReturn(null);
+    when(resultSet.getString(5)).thenReturn(null);
+    // detail
+    when(resultSet.getString(6)).thenReturn("2135-2");
+    when(resultSet.getString(7)).thenReturn("Hispanic or Latino");
+
+    // Act
+    PatientEthnicityDemographic demographic = mapper.mapRow(resultSet, 1);
+
+    // Verify
+    assertThat(demographic.detailed()).isEmpty();
+  }
 }
