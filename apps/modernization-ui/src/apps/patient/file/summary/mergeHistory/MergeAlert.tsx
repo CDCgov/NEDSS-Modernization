@@ -5,7 +5,7 @@ import { FeatureToggle } from 'feature';
 import { usePatientMergeQueueStatus } from './api/usePatientMergeQueueStatus';
 
 type MergeAlertProps = {
-    patientId?: string;
+    patientId: string | number;
 };
 
 export const MergeAlert = ({ patientId }: MergeAlertProps) => {
@@ -16,7 +16,7 @@ export const MergeAlert = ({ patientId }: MergeAlertProps) => {
     );
 };
 
-const MergeAlertContent = ({ patientId }: { patientId?: string }) => {
+const MergeAlertContent = ({ patientId }: { patientId: string | number }) => {
     const nav = useNavigate();
     const { inMergeQueue, mergeGroup, loading } = usePatientMergeQueueStatus(patientId);
 
