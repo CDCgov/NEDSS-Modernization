@@ -7,3 +7,8 @@
 .reporting-header {
     @include widths.fixed(15rem);
 }
+
+.electronicIndicator {
+    display: flex;
+    width: 1.5rem;
+}

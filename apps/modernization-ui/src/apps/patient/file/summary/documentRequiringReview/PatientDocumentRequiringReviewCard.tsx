@@ -17,6 +17,7 @@ import styles from './drr.module.scss';
 import { displayNoData } from 'design-system/data';
 import { Tag } from 'design-system/tag';
 import { Shown } from 'conditional-render';
+import { Tooltip } from 'design-system/tooltip';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -80,11 +81,15 @@ const renderType = (value: PatientFileDocumentRequiringReview) => {
     return (
         <>
             {value.type}
-            <Shown when={value.isElectronic}>
+            <Shown when={true}>
                 <br />
-                <Tag variant="accent" size="small">
-                    E
-                </Tag>
+                <Tooltip message="Electronic indicator" spanClass={styles.electronicIndicator}>
+                    {() => (
+                        <Tag variant="accent" size="small">
+                            E
+                        </Tag>
+                    )}
+                </Tooltip>
             </Shown>
         </>
     );

@@ -12,6 +12,7 @@ type Placement = {
 type TooltipProps = {
     /** The message that is displayed on hover */
     message: string;
+    spanClass?: string;
     /** The target element that will display the tooltip when hovered. */
     children: Children;
 } & Omit<TooltipMessageProps, 'children'>;
@@ -39,7 +40,7 @@ type TooltipProps = {
  
  @return {Tooltip}
  */
-const Tooltip = ({ children, message, ...remaining }: TooltipProps) => {
+const Tooltip = ({ children, message, spanClass, ...remaining }: TooltipProps) => {
     const id = useId();
     const [visible, setVisible] = useState<boolean>(false);
     const [placement, setPlacement] = useState<Placement | undefined>();
@@ -59,7 +60,11 @@ const Tooltip = ({ children, message, ...remaining }: TooltipProps) => {
     );
 
     return (
-        <span ref={targeted} onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}>
+        <span
+            className={spanClass}
+            ref={targeted}
+            onMouseEnter={() => setVisible(true)}
+            onMouseLeave={() => setVisible(false)}>
             {children(id)}
             {createPortal(
                 <TooltipMessage id={id} style={{ position: 'fixed', ...placement }} visible={visible} {...remaining}>
