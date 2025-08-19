@@ -7,6 +7,8 @@ import { styles, theme } from './design';
 import { CheckboxOption } from './CheckboxOption';
 import { DropdownIndicator } from './DropdownIndicator';
 
+import './multi-select.scss';
+
 type MultiSelectProps = {
     id: string;
     name: string;
