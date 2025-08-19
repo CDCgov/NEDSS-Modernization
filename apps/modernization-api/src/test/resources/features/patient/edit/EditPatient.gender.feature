@@ -27,3 +27,11 @@ Feature: Editing of Patient gender demographics
     And I view the patient's gender demographics
     Then the patient's current gender is unknown with the reason being did not ask
     And the patient history contains the previous version
+
+  Scenario: I can clear the gender demographics of a patient
+    Given the patient's gender as of 07/11/2013 is Female
+    And  the patient has the "additional" additional gender
+    And the patient has a preferred gender of Transgender Unspecified
+    When I edit the patient with entered demographics
+    And I view the patient's gender demographics
+    Then no value is returned

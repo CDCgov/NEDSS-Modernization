@@ -39,3 +39,15 @@ Feature: Editing of Patient birth demographics
     And the patient file birth demographics has the patient born in the state of New York
     And the patient file birth demographics has the patient born in the country of United States
     And the patient history contains the previous version
+
+  Scenario: I can clear the birth demographics of a patient
+    Given the patient was born on 02/03/2005 as of 07/11/2013
+    And the patient was born a Male
+    And the patient was the 2nd to be born
+    And the patient was born in the city of "Salem Center"
+    And the patient was born in the county of Westchester County
+    And the patient was born in the state of New York
+    And the patient was born in the country of United States
+    When I edit the patient with entered demographics
+    And I view the patient's birth demographics
+    Then no value is returned

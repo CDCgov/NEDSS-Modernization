@@ -20,6 +20,17 @@ public class AdministrativePatientCommandMapper {
     );
   }
 
+  public static PatientCommand.ClearAdministrativeInformation asClearAdministrativeInformation(
+      final long patient,
+      final RequestContext context
+  ) {
+    return new PatientCommand.ClearAdministrativeInformation(
+        patient,
+        context.requestedBy(),
+        context.requestedAt()
+    );
+  }
+
   private AdministrativePatientCommandMapper() {
     //  static
   }

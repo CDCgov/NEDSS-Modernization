@@ -69,3 +69,11 @@ Feature: Editing of Patient ethnicity demographics
     And the patient file ethnicity demographics does not include the Spanish origin Spaniard
     And the patient file ethnicity demographics includes the Spanish origin Cuban
     And the patient ethnicity history contains the previous version
+
+  Scenario: I can clear the ethnicity demographics of a patient
+    Given the patient has the ethnicity Hispanic or Latino
+    And the patient ethnicity includes a Spanish origin of Cuban
+    And the patient ethnicity includes a Spanish origin of Central American
+    When I edit the patient with entered demographics
+    And I view the patient's ethnicity demographics
+    Then no value is returned

@@ -46,18 +46,6 @@ public class PatientSexBirth {
   @Column(name = "birth_order_nbr")
   private Short birthOrder;
 
-  public PatientSexBirth() {
-
-  }
-
-  public PatientSexBirth(final PatientCommand.AddPatient patient) {
-    resolveDateOfBirth(patient.dateOfBirth());
-
-    this.asOf = patient.asOf();
-    this.birthGender = patient.birthGender();
-    this.gender = patient.currentGender();
-  }
-
   private void resolveDateOfBirth(final LocalDate dateOfBirth) {
     if (dateOfBirth != null) {
       this.birthday = dateOfBirth.atStartOfDay();
@@ -75,6 +63,18 @@ public class PatientSexBirth {
     this.birthOrder = birth.birthOrder() == null ? null : birth.birthOrder().shortValue();
   }
 
+  public void clearBirthDemographics() {
+    this.birthday = null;
+    this.birthdayCalc = null;
+    this.birthGender = null;
+    this.multipleBirth = null;
+    this.birthOrder = null;
+
+    if(this.gender == null && this.preferredGender == null && this.additionalGender == null) {
+      this.asOf = null;
+    }
+  }
+
   public void update(final PatientCommand.UpdateGender changes) {
 
     this.asOf = changes.asOf();
@@ -84,6 +84,18 @@ public class PatientSexBirth {
     this.additionalGender = changes.additional();
 
   }
+
+  public void clearGenderDemographics() {
+    this.gender = null;
+    this.genderUnknownReason = null;
+    this.preferredGender = null;
+    this.additionalGender = null;
+
+    if(this.birthday == null && this.birthGender == null && this.multipleBirth == null && this.birthOrder == null) {
+      this.asOf = null;
+    }
+  }
+
 
   public LocalDate asOf() {
     return asOf;

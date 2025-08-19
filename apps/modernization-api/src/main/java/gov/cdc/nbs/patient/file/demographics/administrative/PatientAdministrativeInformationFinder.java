@@ -17,6 +17,7 @@ class PatientAdministrativeInformationFinder {
       from Person [patient]
       where [patient].person_uid = ?
           and [patient].cd = 'PAT'
+          and [patient].as_of_date_admin is not null
       """;
 
   private final JdbcClient client;

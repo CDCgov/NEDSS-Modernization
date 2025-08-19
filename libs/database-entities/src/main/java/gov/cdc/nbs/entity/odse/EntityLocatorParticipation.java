@@ -130,4 +130,9 @@ public abstract class EntityLocatorParticipation {
     this.audit.changed(command.requester(), command.requestedOn());
   }
 
+  protected void inactivate(final PatientCommand command) {
+    changed(command);
+    this.recordStatus.inactivate(command.requestedOn());
+  }
+
 }

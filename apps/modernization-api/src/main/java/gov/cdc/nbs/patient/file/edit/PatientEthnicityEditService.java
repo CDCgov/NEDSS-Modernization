@@ -29,18 +29,18 @@ class PatientEthnicityEditService {
       final EthnicityDemographic demographic
   ) {
     //  apply any changes to the base ethnicity
-    patient.update(asUpdateEthnicityInfo(patient.getId(), context, demographic));
+    patient.update(asUpdateEthnicityInfo(patient.id(), context, demographic));
 
     //  resolve the changes for the details
     Changes<PersonEthnicGroup, String> changes =
-        resolver.resolve(patient.getEthnicity().ethnicities(), demographic.detailed());
+        resolver.resolve(patient.ethnicity().ethnicities(), demographic.detailed());
 
     changes.added()
-        .map(detail -> asAddDetailedEthnicity(patient.getId(), context, detail))
+        .map(detail -> asAddDetailedEthnicity(patient.id(), context, detail))
         .forEach(patient::add);
 
     changes.removed()
-        .map(detail -> asRemoveDetailedEthnicity(patient.getId(), context, detail.ethnicGroup()))
+        .map(detail -> asRemoveDetailedEthnicity(patient.id(), context, detail.ethnicGroup()))
         .forEach(patient::remove);
   }
 
