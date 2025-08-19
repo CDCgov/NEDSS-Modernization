@@ -56,7 +56,7 @@ public class NBSEntity {
         .stream()
         .filter(PostalEntityLocatorParticipation.class::isInstance)
         .map(PostalEntityLocatorParticipation.class::cast)
-        .filter(EntityLocatorParticipation.withUse("BIR"))
+        .filter(EntityLocatorParticipation.withUse("BIR").and(EntityLocatorParticipation.active()))
         .findFirst();
   }
 
@@ -99,7 +99,7 @@ public class NBSEntity {
         .stream()
         .filter(PostalEntityLocatorParticipation.class::isInstance)
         .map(PostalEntityLocatorParticipation.class::cast)
-        .filter(EntityLocatorParticipation.withUse("DTH"))
+        .filter(EntityLocatorParticipation.withUse("DTH").and(EntityLocatorParticipation.active()))
         .findFirst();
   }
 
