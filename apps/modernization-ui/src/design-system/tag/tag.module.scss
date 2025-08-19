@@ -41,6 +41,10 @@
     @include tag(colors.$base-dark, colors.$base-lighter);
 }
 
+.accent {
+    @include tag(colors.$base-white, colors.$accent);
+}
+
 // Size variations
 .small {
     @include tag-size(0.75rem);
