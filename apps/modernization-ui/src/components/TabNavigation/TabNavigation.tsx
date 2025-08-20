@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router';
 import { ReactElement } from 'react';
 import classNames from 'classnames';
 import style from './tabNavigation.module.scss';
+import React from 'react';
 
 type NavigationProps = {
     path: string;
