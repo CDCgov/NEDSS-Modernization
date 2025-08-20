@@ -1,7 +1,7 @@
-import { indicators } from 'coded';
 import { Selectable } from 'options';
 import { useConceptOptions } from 'options/concepts';
 import { genders } from 'options/gender';
+import { indicators } from 'options/indicator';
 
 type SexBirthCodedValues = {
     genders: Selectable[];
@@ -18,7 +18,7 @@ const useSexBirthCodedValues = (): SexBirthCodedValues => {
         genders: genders.all,
         preferredGenders: preferredGenders.options,
         genderUnknownReasons: genderUnknownReasons.options,
-        multipleBirth: indicators
+        multipleBirth: indicators.all
     };
 };
 
