@@ -1,8 +1,8 @@
-import { Link, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import { ReactElement } from 'react';
 import classNames from 'classnames';
 import style from './tabNavigation.module.scss';
-import React from 'react';
+import { NavLinkButton } from 'design-system/button';
 
 type NavigationProps = {
     path: string;
@@ -12,21 +12,17 @@ type NavigationProps = {
 const TabNavigationEntry = ({ children, path }: NavigationProps) => {
     const { pathname } = useLocation();
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLAnchorElement>) => {
-        if (event.key === ' ') {
-            event.preventDefault();
-            (event.target as HTMLDivElement).click();
-        }
-    };
-
     return (
         <div className={classNames(style.tab, { [style.active]: isActive(path, pathname) })}>
-            <Link
+            <NavLinkButton
+                secondary
+                tertiary
+                active
                 to={path}
-                onKeyDown={handleKeyDown}
+                sizing="medium"
                 className={classNames(style.tabContent, { [style.active]: isActive(path, pathname) })}>
                 {children}
-            </Link>
+            </NavLinkButton>
         </div>
     );
 };
