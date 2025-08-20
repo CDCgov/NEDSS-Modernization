@@ -14,7 +14,6 @@ const TabNavigationEntry = ({ children, path }: NavigationProps) => {
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLAnchorElement>) => {
         if (event.key === ' ') {
-            console.log('handle click');
             event.preventDefault();
             (event.target as HTMLDivElement).click();
         }
