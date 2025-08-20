@@ -24,12 +24,14 @@ import { useEditPatient } from './useEditPatient';
 
 import styles from './patient-file-edit.module.scss';
 
+const resolveBackPath = defaultTo('..');
+
 const PatientFileEdit = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
 
     const goBack = useCallback(() => {
-        const path = defaultTo('..', state?.return);
+        const path = resolveBackPath(state?.return);
         navigate(path);
     }, [navigate, state?.return]);
 
