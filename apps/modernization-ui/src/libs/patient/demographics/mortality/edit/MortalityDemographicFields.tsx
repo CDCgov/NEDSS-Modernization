@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
-import { not } from 'utils/predicate';
 import { isEqual } from 'options';
 import { indicators } from 'options/indicator';
 import { Shown } from 'conditional-render';
@@ -9,11 +8,10 @@ import { EntryFieldsProps } from 'design-system/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { TextInputField } from 'design-system/input';
-import { HasMortalityDemographic, labels } from '../mortality';
 import { MoralityOptions } from './useMortalityOptions';
+import { HasMortalityDemographic, labels } from '../mortality';
 
 const isDeceased = isEqual(indicators.yes);
-const isAlive = not(isDeceased);
 
 type MortalityDemographicFieldsProps = {
     form: UseFormReturn<HasMortalityDemographic>;
@@ -27,7 +25,11 @@ const MortalityDemographicFields = ({
     options
 }: MortalityDemographicFieldsProps) => {
     const selectedState = useWatch({ control: form.control, name: 'mortality.state' });
-    const selectedDeceased = useWatch({ control: form.control, name: 'mortality.deceased' });
+
+    const selectedDeceased = useWatch({
+        control: form.control,
+        name: 'mortality.deceased'
+    });
 
     useEffect(() => {
         if (!selectedState) {
@@ -35,20 +37,6 @@ const MortalityDemographicFields = ({
         }
         options.location.state(selectedState);
     }, [selectedState?.value, options.location.state, form.setValue]);
-
-    useEffect(() => {
-        if (isAlive(selectedDeceased)) {
-            form.setValue('mortality.deceasedOn', undefined);
-            form.setValue('mortality.state', undefined);
-            form.setValue('mortality.city', undefined);
-            form.setValue('mortality.county', undefined);
-            form.setValue('mortality.country', undefined);
-        }
-    }, [selectedDeceased?.value, form.setValue]);
-
-    const values = useWatch({ control: form.control, name: 'mortality' });
-
-    useEffect(() => console.log('mortality', values), [values]);
 
     return (
         <>
@@ -92,7 +80,6 @@ const MortalityDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="mortality.deceasedOn"
-                    shouldUnregister
                     rules={validDateRule(labels.deceasedOn)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <DatePickerInput
@@ -110,7 +97,6 @@ const MortalityDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="mortality.city"
-                    shouldUnregister
                     rules={maxLengthRule(100, labels.city)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <TextInputField
@@ -129,7 +115,6 @@ const MortalityDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="mortality.state"
-                    shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label={labels.state}
@@ -147,7 +132,6 @@ const MortalityDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="mortality.county"
-                    shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label={labels.county}
@@ -166,7 +150,6 @@ const MortalityDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="mortality.country"
-                    shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label={labels.country}
@@ -186,4 +169,4 @@ const MortalityDemographicFields = ({
     );
 };
 
-export { MortalityDemographicFields };
+export { MortalityDemographicFields, type MortalityDemographicFieldsProps };

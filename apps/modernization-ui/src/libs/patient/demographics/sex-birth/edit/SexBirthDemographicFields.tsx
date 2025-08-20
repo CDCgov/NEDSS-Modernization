@@ -40,13 +40,13 @@ const SexBirthDemographicFields = ({
             form.setValue('sexBirth.county', undefined);
         }
         options.location.state(selectedState);
-    }, [selectedState]);
+    }, [selectedState?.value, options.location.state, form.setValue]);
 
     useEffect(() => {
         if (!isUnknownGender(selectedCurrentGender)) {
             form.setValue('sexBirth.unknownReason', undefined);
         }
-    }, [selectedCurrentGender]);
+    }, [selectedCurrentGender, form.setValue]);
 
     return (
         <>
