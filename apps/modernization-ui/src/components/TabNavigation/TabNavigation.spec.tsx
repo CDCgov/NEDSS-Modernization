@@ -32,7 +32,7 @@ describe('TabNavigation and TabNavigationEntry', () => {
             route: '/different-path'
         });
         const linkElement = getByText('Test Link');
-        expect(linkElement).toHaveClass(style.active);
+        expect(linkElement).not.toHaveClass(style.active);
     });
 
     test('TabNavigation renders multiple children correctly', () => {
