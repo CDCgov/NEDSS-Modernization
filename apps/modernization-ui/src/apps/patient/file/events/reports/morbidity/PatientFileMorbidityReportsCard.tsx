@@ -31,7 +31,7 @@ const JURISDICTION = { id: 'jurisdiction', name: 'Jurisdiction' };
 const columnPreferences: ColumnPreference[] = [
     { ...EVENT_ID },
     { ...DATE_RECEIVED, moveable: true, toggleable: true },
-    { ...DATE_ADDED, moveable: true, toggleable: true, hidden: true },
+    { ...DATE_ADDED, moveable: true, toggleable: true },
     { ...FACILITY_PROVIDER, moveable: true, toggleable: true },
     { ...REPORT_DATE, moveable: true, toggleable: true },
     { ...CONDITION, moveable: true, toggleable: true },
