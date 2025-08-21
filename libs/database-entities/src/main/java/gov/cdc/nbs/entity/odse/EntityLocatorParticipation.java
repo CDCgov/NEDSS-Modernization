@@ -127,6 +127,9 @@ public abstract class EntityLocatorParticipation {
   }
 
   protected void changed(final PatientCommand command) {
+    if(this.audit == null) {
+      this.audit = new Audit(command.requester(), command.requestedOn());
+    }
     this.audit.changed(command.requester(), command.requestedOn());
   }
 
