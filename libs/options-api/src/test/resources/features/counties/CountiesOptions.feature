@@ -20,6 +20,12 @@ Feature: County Options REST API
     And there is a "waterman" county for New York state
     And there is a "waulk" county for New York state
     And there is a "wheelhouse" county for New York state
+    And there is a "Mist County" county for Minnesota state
+
+  Scenario: I can find counties for a state
+    When I am trying to find counties for Minnesota state
+    Then there are options available
+    And the option named "Mist County" is included
 
   Scenario: I can find specific counties
     When I am trying to find counties that start with "reg" for New York state
@@ -39,3 +45,4 @@ Feature: County Options REST API
   Scenario: I cannot find specific counties in the wrong state
     When I am trying to find counties that start with "reg" for Missouri state
     Then there aren't any options available
+
