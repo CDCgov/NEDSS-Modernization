@@ -18,9 +18,7 @@ const TabNavigationEntry = ({ children, path }: NavigationProps) => {
             <NavLinkButton
                 secondary
                 tertiary
-                active
                 to={path}
-                sizing="medium"
                 className={classNames(style.tabContent, { [style.active]: isActive(path, pathname) })}>
                 {children}
             </NavLinkButton>
