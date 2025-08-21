@@ -80,6 +80,7 @@ const MortalityDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="mortality.deceasedOn"
+                    shouldUnregister
                     rules={validDateRule(labels.deceasedOn)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <DatePickerInput
@@ -97,6 +98,7 @@ const MortalityDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="mortality.city"
+                    shouldUnregister
                     rules={maxLengthRule(100, labels.city)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <TextInputField
@@ -115,6 +117,7 @@ const MortalityDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="mortality.state"
+                    shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label={labels.state}
@@ -132,6 +135,7 @@ const MortalityDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="mortality.county"
+                    shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label={labels.county}
@@ -150,6 +154,7 @@ const MortalityDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="mortality.country"
+                    shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label={labels.country}

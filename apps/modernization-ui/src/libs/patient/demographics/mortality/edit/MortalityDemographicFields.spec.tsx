@@ -89,6 +89,7 @@ describe('when entering patient mortality demographics', () => {
         await user.selectOptions(getByLabelText('Is the patient deceased?'), 'Y');
 
         // Verify previously input data is cleared
+
         expect(getByLabelText('Date of death')).toHaveValue('');
         expect(getByLabelText('Death city')).toHaveValue('');
         expect(getByLabelText('Death state')).toHaveValue('');
