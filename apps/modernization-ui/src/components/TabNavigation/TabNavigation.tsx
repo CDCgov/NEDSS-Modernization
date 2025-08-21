@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import classNames from 'classnames';
 import style from './tabNavigation.module.scss';
 import { NavLinkButton } from 'design-system/button';
+import { Sizing } from 'design-system/field';
 
 type NavigationProps = {
     path: string;
@@ -32,12 +33,18 @@ type Children = ReactElement<NavigationProps>;
 export type TabNavigationProps = {
     className?: string;
     children?: Children | Children[];
-    newTab?: boolean;
+    sizing?: Sizing;
 };
 
-const TabNavigation = ({ newTab = false, children = [], className }: TabNavigationProps) => {
+const TabNavigation = ({ sizing = 'medium', children = [], className }: TabNavigationProps) => {
     return (
-        <div className={classNames(newTab ? style['new-tab-navigation'] : style['tab-navigation'], className)}>
+        <div
+            className={classNames(
+                style['tab-navigation'],
+                sizing === 'large' && style['large'],
+                sizing === 'medium' && style['medium'],
+                className
+            )}>
             {ensureArray(children).map((child, index) => (
                 <div key={index}>{child}</div>
             ))}

@@ -7,7 +7,6 @@ import { NavigationGuard } from 'design-system/entry/navigation-guard';
 
 import { useComponentSizing } from 'design-system/sizing';
 import { Button } from 'design-system/button';
-import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { maybeDisplayName } from 'name';
 import { exists } from 'utils/exists';
 import {
@@ -23,6 +22,7 @@ import { evaluated } from './evaluated';
 import { useEditPatient } from './useEditPatient';
 
 import styles from './patient-file-edit.module.scss';
+import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 
 const PatientFileEdit = () => {
     const { state } = useLocation();
@@ -108,7 +108,7 @@ const PatientFileEdit = () => {
 export { PatientFileEdit };
 
 const EditNavigation = (patient: Patient) => (
-    <TabNavigation newTab>
+    <TabNavigation sizing="medium">
         <TabNavigationEntry path={`/patient/${patient.patientId}/edit`}>Demographics</TabNavigationEntry>
     </TabNavigation>
 );
