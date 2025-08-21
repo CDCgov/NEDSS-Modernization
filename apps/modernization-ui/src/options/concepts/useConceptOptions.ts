@@ -1,8 +1,8 @@
 import { addDays } from 'date-fns';
 import { get, maybeJson } from 'libs/api';
-import { Selectable } from 'options/selectable';
-import { cache } from 'options/cached';
-import { useSelectableOptions } from 'options/useSelectableOptions';
+import { Selectable } from '../selectable';
+import { useSelectableOptions } from '../useSelectableOptions';
+import { cache } from '../cache/cached';
 
 const expiration = () => addDays(new Date(), 1);
 
@@ -22,8 +22,8 @@ const resolver = (name: string) => () =>
             .then((response) => response.options)
     );
 
-const useConceptOptions = (valueSet: string, { lazy = false }: Settings): ConceptOptions => {
-    return useSelectableOptions({ resolver: resolver(valueSet), lazy });
+const useConceptOptions = (valueSet: string, settings?: Settings): ConceptOptions => {
+    return useSelectableOptions({ resolver: resolver(valueSet), ...settings });
 };
 
 export { useConceptOptions };

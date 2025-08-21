@@ -19,16 +19,14 @@ type CacheSettings = {
 
 const cache =
     <I>(settings: CacheSettings) =>
-    (promise: Supplier<Promise<I>>): Promise<I> => {
+    (supplier: Supplier<Promise<I>>): Promise<I> => {
         return retrieve<I>(settings).then((found) => {
             if (found) {
-                console.log('using cached values for ', settings.id);
                 return found;
             }
 
             // no value is currently cached, call the promise
-            console.log('retrieving values for ', settings.id);
-            return promise().then((resolved) => {
+            return supplier().then((resolved) => {
                 if (exists(resolved)) {
                     // a values has been produced, store it
                     store(settings)(resolved);

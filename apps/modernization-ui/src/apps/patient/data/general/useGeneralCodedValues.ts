@@ -13,10 +13,10 @@ type GeneralCodedValues = {
 };
 
 const useGeneralCodedValues = (): GeneralCodedValues => {
-    const maritalStatuses = useConceptOptions('P_MARITAL', { lazy: false });
-    const educationLevels = useConceptOptions('P_EDUC_LVL', { lazy: false });
-    const primaryLanguages = usePrimaryLanguageOptions({ lazy: false });
-    const primaryOccupations = useOccupationOptions({ lazy: false });
+    const maritalStatuses = useConceptOptions('P_MARITAL');
+    const educationLevels = useConceptOptions('P_EDUC_LVL');
+    const primaryLanguages = usePrimaryLanguageOptions();
+    const primaryOccupations = useOccupationOptions();
 
     return {
         maritalStatuses: maritalStatuses.options,
