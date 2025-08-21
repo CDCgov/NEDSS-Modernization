@@ -8,17 +8,7 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientNameHistoryListener;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -165,14 +155,22 @@ public class PersonName {
     this.nmDegree = info.degree();
     this.nmUseCd = info.type();
 
-    this.audit.changed(info.requester(), info.requestedOn());
+    changed(info);
 
     return this;
   }
 
   public void delete(final PatientCommand.DeleteNameInfo deleted) {
     this.recordStatus.inactivate(deleted.requestedOn());
-    this.audit.changed(deleted.requester(), deleted.requestedOn());
+    changed(deleted);
+  }
+
+  protected void changed(final PatientCommand command) {
+    if (this.audit == null) {
+      this.audit = new Audit(command.requester(), command.requestedOn());
+    }
+
+    this.audit.changed(command.requester(), command.requestedOn());
   }
 
   public RecordStatus recordStatus() {
