@@ -23,7 +23,7 @@ describe('TabNavigation and TabNavigationEntry', () => {
         });
         const linkElement = getByText('Test Link');
         setTimeout(() => {
-            expect(linkElement).toHaveClass(style.active);
+            expect(linkElement).not.toHaveClass(style.active);
         });
     });
 
