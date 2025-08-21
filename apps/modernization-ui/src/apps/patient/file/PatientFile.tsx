@@ -4,7 +4,6 @@ import { RedirectHome } from 'routes';
 import { Spinner } from 'components/Spinner';
 import { PageTitle } from 'page';
 import { ComponentSizingProvider } from 'design-system/sizing';
-import { AlertProvider } from 'libs/alert';
 
 import { PatientFileProvider, PatientFileData } from './usePatientFileData';
 
