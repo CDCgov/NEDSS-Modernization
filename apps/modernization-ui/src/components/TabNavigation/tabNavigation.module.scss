@@ -2,14 +2,12 @@
 
 .tab-navigation {
     --tab-text-color: #{colors.$base-darkest};
-    --tab-text-active-color: #{colors.$base-darkest};
     --tab-text-hover-color: #{colors.$primary};
 
     display: flex;
     align-items: flex-start;
     gap: 1rem;
     background-color: colors.$clear;
-    padding-bottom: 1rem;
 
     .tab {
         .tabContent {
@@ -17,56 +15,52 @@
             color: var(--tab-text-color);
             text-decoration: none !important;
             border-bottom: 0.4375rem solid transparent;
-            padding-bottom: 0.5rem;
             line-height: 1.25;
+
+            border-radius: unset !important;
+
             cursor: pointer;
 
             &.active {
                 font-weight: 700;
-                color: var(--tab-text-active-color);
                 border-bottom-color: colors.$primary;
             }
 
             &:hover {
                 color: var(--tab-text-hover-color);
             }
+
+            --button-color-hover: transparent !important;
+            --button-border-color-hover: transparent !important;
         }
     }
 }
 
-.new-tab-navigation {
-    --tab-text-color: #{colors.$base-darkest};
-    --tab-text-active-color: #{colors.$primary};
-    --tab-text-hover-color: #{colors.$primary};
-    display: flex;
-    align-items: flex-start;
-    background-color: colors.$clear;
-
+.large {
+    --tab-text-active-color: #{colors.$base-darkest};
     .tab {
-        padding: 1rem 1rem 1rem 1rem;
+        .tabContent {
+            color: var(--tab-text-active-color);
+            font-size: 2rem;
+            padding-bottom: 0.5rem;
+        }
+    }
+}
 
+.medium {
+    --tab-text-active-color: #{colors.$primary};
+
+    gap: unset;
+    .tab {
+        padding-top: 0.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
         &.active {
             background-color: colors.$primary-lightest;
         }
-
         .tabContent {
-            border: 0;
-            text-decoration: none !important;
-            line-height: 1.25;
-            padding-bottom: 0.5rem;
-
-            cursor: pointer;
-            border-bottom: 0.5rem solid transparent;
-            color: var(--tab-text-color);
-
             &.active {
-                font-weight: 700;
                 color: var(--tab-text-active-color);
-                border-bottom-color: colors.$primary;
-            }
-
-            &:hover {
-                color: var(--tab-text-hover-color);
             }
         }
     }

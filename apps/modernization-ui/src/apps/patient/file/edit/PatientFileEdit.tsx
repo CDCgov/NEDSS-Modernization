@@ -143,7 +143,7 @@ const ReadyPatientFileEdit = ({ patient, entry }: ReadyPatientFileEditProps) => 
 export { PatientFileEdit };
 
 const EditNavigation = (patient: Patient) => (
-    <TabNavigation newTab>
+    <TabNavigation sizing="medium">
         <TabNavigationEntry path={`/patient/${patient.patientId}/edit`}>Demographics</TabNavigationEntry>
     </TabNavigation>
 );
