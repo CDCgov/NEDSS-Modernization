@@ -5,7 +5,7 @@
 .view {
     display: grid;
     grid-template-columns: var(--label-area-width, 13rem) 1fr;
-    gap: 1rem;
+    gap: 2rem;
 
     color: colors.$base-darkest;
     line-height: normal;
