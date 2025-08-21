@@ -1,6 +1,6 @@
-import { indicators } from 'coded';
 import { Selectable } from 'options';
 import { useConceptOptions } from 'options/concepts';
+import { indicators } from 'options/indicator';
 import { usePrimaryLanguageOptions } from 'options/language';
 import { useOccupationOptions } from 'options/occupations';
 
@@ -23,7 +23,7 @@ const useGeneralCodedValues = (): GeneralCodedValues => {
         educationLevels: educationLevels.options,
         primaryLanguages: primaryLanguages.options,
         primaryOccupations: primaryOccupations.options,
-        speaksEnglish: indicators
+        speaksEnglish: indicators.all
     };
 };
 

@@ -159,8 +159,8 @@ class LabReportSearchCriteriaFilterResolver {
             RangeQuery.of(
                 range -> range.term(
                     term -> term.field("activity_to_time")
-                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
                 )
             )
     );
@@ -172,8 +172,8 @@ class LabReportSearchCriteriaFilterResolver {
             RangeQuery.of(
                 range -> range.term(
                     term -> term.field("effective_from_time")
-                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
                 )
             )
     );
@@ -185,8 +185,8 @@ class LabReportSearchCriteriaFilterResolver {
             RangeQuery.of(
                 range -> range.term(
                     term -> term.field("rpt_to_state_time")
-                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
                 )
             )
     );
@@ -213,8 +213,8 @@ class LabReportSearchCriteriaFilterResolver {
             RangeQuery.of(
                 range -> range.term(
                     term -> term.field("add_time")
-                        .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .to(FlexibleInstantConverter.toString(reported.getTo()))
+                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
                 )
             )
     );
@@ -240,8 +240,8 @@ class LabReportSearchCriteriaFilterResolver {
         reported ->
             RangeQuery.of(
                 range -> range.term(term -> term.field("observation_last_chg_time")
-                    .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                    .to(FlexibleInstantConverter.toString(reported.getTo()))
+                    .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                    .lte(FlexibleInstantConverter.toString(reported.getTo()))
                 )
             )
     );

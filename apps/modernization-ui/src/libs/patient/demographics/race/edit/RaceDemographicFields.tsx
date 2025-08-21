@@ -24,7 +24,7 @@ const RaceDemographicFields = ({
 
     const id = useWatch({ control, name: 'id' });
 
-    const selectedCategory = useWatch({ control, name: 'race', defaultValue: entry?.race });
+    const selectedCategory = useWatch({ control, name: 'race' });
 
     useEffect(() => {
         if (selectedCategory?.value !== entry?.race?.value) {
@@ -95,7 +95,6 @@ const RaceDemographicFields = ({
                         options={options.details}
                         error={error?.message}
                         sizing={sizing}
-                        helperText="Use Crtl to select more than one"
                     />
                 )}
             />

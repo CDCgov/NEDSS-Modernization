@@ -46,15 +46,6 @@ public class GeneralInformation {
   @Column(name = "ehars_id", length = 20)
   private String stateHIVCase;
 
-  public GeneralInformation() {
-  }
-
-  public GeneralInformation(final PatientCommand.AddPatient patient) {
-    this.asOf = patient.asOf();
-    this.maritalStatus = patient.maritalStatus();
-    this.stateHIVCase = patient.stateHIVCase();
-  }
-
   public void update(final PatientCommand.UpdateGeneralInfo info) {
     this.asOf = info.asOf();
     this.maritalStatus = info.maritalStatus();
@@ -67,6 +58,21 @@ public class GeneralInformation {
     this.speaksEnglish = info.speaksEnglishCode();
   }
 
+  public void clear() {
+    this.maritalStatus = null;
+    this.mothersMaidenName = null;
+    this.adultsInHouse = null;
+    this.childrenInHouse = null;
+    this.occupation = null;
+    this.educationLevel = null;
+    this.primaryLanguage = null;
+    this.speaksEnglish = null;
+
+    if (stateHIVCase == null) {
+      this.asOf = null;
+    }
+  }
+
   public void associate(
       final PermissionScopeResolver resolver,
       final PatientCommand.AssociateStateHIVCase associate
@@ -74,6 +80,25 @@ public class GeneralInformation {
     PermissionScope scope = resolver.resolve(HIV_PERMISSION);
     if (scope.allowed()) {
       this.stateHIVCase = associate.stateHIVCase();
+    }
+  }
+
+  public void disassociate(final PermissionScopeResolver resolver) {
+    PermissionScope scope = resolver.resolve(HIV_PERMISSION);
+    if (scope.allowed()) {
+      this.stateHIVCase = null;
+
+      if (this.maritalStatus == null
+          && this.mothersMaidenName == null
+          && this.adultsInHouse == null
+          && this.childrenInHouse == null
+          && this.occupation == null
+          && this.educationLevel == null
+          && this.primaryLanguage == null
+          && this.speaksEnglish == null
+      ) {
+        this.asOf = null;
+      }
     }
   }
 

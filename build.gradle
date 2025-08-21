@@ -10,14 +10,14 @@ buildscript {
     }
 
     ext {
-        commit = System.getenv('github_sha_short') ?: ''
+        commit = System.getenv('GITHUB_SHA') ?: ''
     }
 }
 
 plugins {
     id 'java-library'
     id 'jacoco'
-    id 'org.sonarqube' version '6.1.0.5360'
+    id 'org.sonarqube' version '6.2.0.5505'
 }
 
 version = '1.0.1-SNAPSHOT'  // The plugin will assign the root project version to all its subprojects.

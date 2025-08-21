@@ -91,10 +91,18 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     changed(birth);
   }
 
+  public void clear(final PatientCommand.ClearBirthDemographics command) {
+    inactivate(command);
+  }
+
   public void update(final PatientCommand.UpdateMortality mortality) {
     this.asOfDate = mortality.asOf();
     this.locator.update(mortality);
     changed(mortality);
+  }
+
+  public void clear(final PatientCommand.ClearMoralityDemographics command) {
+    inactivate(command);
   }
 
   @Override
@@ -119,4 +127,5 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
         ", use='" + useCd + '\'' +
         '}';
   }
+
 }

@@ -4,27 +4,14 @@ plugins {
 
 group = 'gov.cdc.nbs.testing.auth-cucumber'
 
-testing {
-    suites {
-        test {
-            useJUnitJupiter()
-
-            dependencies {
-                implementation.bundle(libs.bundles.testing)
-            }
-        }
-    }
-}
-
 dependencies {
 
     implementation libs.springBoot
 
     implementation libs.bundles.security
 
-    implementation libs.bundles.jpa
-    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
-    
+    implementation libs.bundles.jdbc
+
     implementation project(':authentication')
     implementation project(':testing-support')
     implementation project(':testing-identity')

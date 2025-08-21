@@ -23,9 +23,9 @@
         "react": "^18",
         "react-dom": "^18",
         "react-hook-form": "7.54.2",
-        "react-router": "7.6.3",
+        "react-router": "7.8.0",
         "react-scripts": "5.0.1",
-        "react-select": "^5.7.2",
+        "react-select": "^5.10.2",
         "typescript": "5.8.2",
         "web-vitals": "^4.2.3"
     },
@@ -86,7 +86,7 @@
     "scripts": {
         "clean": "rm -rf node_modules && rm package-lock.json && npm install",
         "start": "react-scripts start",
-        "build": "npx react-scripts test --watchAll=false && react-scripts build",
+        "build": "react-scripts build",
         "test": "react-scripts test",
         "test:all": "react-scripts test src/ --watchAll=false",
         "test:coverageAll": "react-scripts test src/ --coverage --watchAll=false",

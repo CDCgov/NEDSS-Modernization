@@ -78,24 +78,28 @@ Environment
 Variable,and [other useful means](https://docs.spring.io/spring-boot/reference/features/external-config.html).
 The default profile contains the following properties configuration most likely to change.
 
-| Name                                                   | Default                 | Description                                                                         |
-|--------------------------------------------------------| ----------------------- |-------------------------------------------------------------------------------------|
-| nbs.gateway.defaults.protocol                          | `http`                  | The default protocol used to connect to services. Intra-pod communication is `http` |
-| nbs.gateway.classic                                    | `http://localhost:7001` | The URI location of the classic NBS Application                                     |
-| nbs.gateway.patient.search.enabled                     | `true`                  | Enables the Patient Search routing                                                  |
-| nbs.gateway.patient.search.service                     | `localhost:8080`        | The host name of the Patient Search service                                         |
-| nbs.gateway.patient.file.enabled                       | `false`                 | Enables the Patient File routing                                                    |
-| nbs.gateway.patient.file.service                       | `localhost:8080`        | The host name of the Patient File service                                           |
-| nbs.gateway.pagebuilder.enabled                        | `false`                 | Enables Page Builder routing                                                        |
-| nbs.gateway.pagebuilder.service                        | `localhost:8080`        | The host name of the service                                                        |
-| nbs.gateway.pagebuilder.page.library.enabled           | `false`                 | Enables the Page Builder Page Library routing                                       |
-| nbs.gateway.pagebuilder.page.management.create.enabled | `false`                 | Enables the Page Builder Page creation routing                                      |
-| nbs.gateway.pagebuilder.page.management.edit.enabled   | `false`                 | Enables the Page Builder Page preview/edit routing                                  |
-| nbs.gateway.deduplication.enabled                      | `false`                 | Enables routing to the Deduplication Api                                            |
-| nbs.gateway.deduplication.service                      | `localhost:8083`        | The host name of the Deduplication Api                                              |
-| nbs.gateway.deduplication.uri                          | `http://localhost:8083` | The full URI of the Deduplication Api                                               |
-| nbs.gateway.deduplication.merge.enabled                | `false`                 | Enables the routing for modernized System Identified merge list                     |
-| nbs.gateway.system.management.enabled                  | `false`                 | Enables the routing for modernized System Management screen                         |
+| Name                                                   | Default                 | Description                                                                                                                             |
+|--------------------------------------------------------|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| nbs.gateway.defaults.protocol                          | `http`                  | The default protocol used to connect to services. Intra-pod communication is `http`                                                     |
+| nbs.gateway.classic                                    | `http://localhost:7001` | The URI location of the classic NBS Application                                                                                         |
+| nbs.gateway.landing.uri                                | `no://op`               | The URI for the service that contains the desired landing page.  Defaults to `no://op` since this is a redirect.                        |
+| nbs.gateway.landing.base                               | `/nbs/login`            | The path to redirect to when a user navigates to the base `/` path.  The landing redirect is not applied if this value is equal to `/`. |
+| nbs.gateway.welcome.enabled                            | `false`                 | Enables routing to the `/welcome` page meant for non-production environments.                                                           |
+| nbs.gateway.patient.search.enabled                     | `true`                  | Enables the Patient Search routing                                                                                                      |
+| nbs.gateway.patient.search.service                     | `localhost:8080`        | The host name of the Patient Search service                                                                                             |
+| nbs.gateway.patient.file.enabled                       | `false`                 | Enables the Patient File routing                                                                                                        |
+| nbs.gateway.patient.file.service                       | `localhost:8080`        | The host name of the Patient File service                                                                                               |
+| nbs.gateway.pagebuilder.enabled                        | `false`                 | Enables Page Builder routing                                                                                                            |
+| nbs.gateway.pagebuilder.service                        | `localhost:8080`        | The host name of the service                                                                                                            |
+| nbs.gateway.pagebuilder.page.library.enabled           | `false`                 | Enables the Page Builder Page Library routing                                                                                           |
+| nbs.gateway.pagebuilder.page.management.create.enabled | `false`                 | Enables the Page Builder Page creation routing                                                                                          |
+| nbs.gateway.pagebuilder.page.management.edit.enabled   | `false`                 | Enables the Page Builder Page preview/edit routing                                                                                      |
+| nbs.gateway.deduplication.enabled                      | `false`                 | Enables routing to the Deduplication Api                                                                                                |
+| nbs.gateway.deduplication.service                      | `localhost:8083`        | The host name of the Deduplication Api                                                                                                  |
+| nbs.gateway.deduplication.uri                          | `http://localhost:8083` | The full URI of the Deduplication Api                                                                                                   |
+| nbs.gateway.deduplication.merge.enabled                | `false`                 | Enables the routing for modernized System Identified merge list                                                                         |
+| nbs.gateway.system.management.enabled                  | `false`                 | Enables the routing for modernized System Management screen                                                                             |
+
 ### Logo
 
 By default, the NBS logo is served from the path `/images/nedssLogo.jpg` with the content coming from
@@ -103,9 +107,14 @@ the `nbs.gateway.classic` service. The logo can be changed by setting the `nbs.g
 the file to use as the logo.
 
 | Name                  | Default                 | Description                                                 |
-| --------------------- | ----------------------- | ----------------------------------------------------------- |
+|-----------------------|-------------------------|-------------------------------------------------------------|
 | nbs.gateway.logo.path | `/images/nedssLogo.jpg` | The path to serve the NBS logo on.                          |
 | nbs.gateway.logo.file |                         | The file system path to the image to serve as the NBS logo. |
+
+### Landing and Welcome page
+
+There is a "Welcome to the NBS 7 demo site" landing page that can be enabled for non-production environment by setting
+the `nbs.gateway.welcome.enabled` property to `true` and the `nbs.gateway.landing.base` property.
 
 ### Logging
 
@@ -113,7 +122,7 @@ Shortcut configurations have been created for logging of Spring resources. Each 
 including `ERROR`, `WARN`, `INFO`, `DEBUG`, and `TRACE`.
 
 | Name                           | Default | Description                                                                                                                                  |
-| ------------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+|--------------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | nbs.gateway.log.level          | `INFO`  | A shortcut to the logging level for `org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping` which logs the routing handler. |
 | nbs.gateway.security.log.level | `INFO`  | A shortcut to the logging level for `org.springframework.security` which logs Spring Security.                                               |
 
@@ -127,7 +136,7 @@ Authentication is not enabled by default. The `nbs-gateway` has been preconfigur
 enabling the `oidc` profile. The profile requires a specific set of configuration values.
 
 | Name                            | Default                                                                              | Description                                                                          |
-| ------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+|---------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
 | spring.profiles.include         |                                                                                      | The Spring property to include profiles. Set to `oidc` to enable OIDC authentication |
 | nbs.security.oidc.protocol      | `http`                                                                               | The protocol used to communicate with the OIDC compatible Identity Provider          |
 | nbs.security.oidc.host          |                                                                                      | The hostname of the OIDC compatible Identity Provider                                |

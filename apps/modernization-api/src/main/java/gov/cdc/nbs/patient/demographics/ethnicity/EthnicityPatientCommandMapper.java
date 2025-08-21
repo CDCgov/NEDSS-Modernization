@@ -32,6 +32,17 @@ public class EthnicityPatientCommandMapper {
     );
   }
 
+  public static PatientCommand.ClearEthnicityDemographics asClearEthnicityDemographics(
+      final long patient,
+      final RequestContext context
+  ) {
+    return new PatientCommand.ClearEthnicityDemographics(
+        patient,
+        context.requestedBy(),
+        context.requestedAt()
+    );
+  }
+
   private EthnicityPatientCommandMapper() {
     //  static
   }

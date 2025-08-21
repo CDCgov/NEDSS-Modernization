@@ -30,6 +30,17 @@ public class GeneralInformationDemographicPatientCommandMapper {
 
   }
 
+  public static PatientCommand.ClearGeneralInformationDemographics asClearGeneralInformationDemographics(
+      final long patient,
+      final RequestContext context
+  ) {
+    return new PatientCommand.ClearGeneralInformationDemographics(
+        patient,
+        context.requestedBy(),
+        context.requestedAt()
+    );
+  }
+
   public static PatientCommand.AssociateStateHIVCase asAssociateStateHIVCase(
       final long patient,
       final RequestContext context,
@@ -51,6 +62,17 @@ public class GeneralInformationDemographicPatientCommandMapper {
     return demographic.stateHIVCase() == null || demographic.stateHIVCase().isBlank()
         ? Optional.empty()
         : Optional.of(asAssociateStateHIVCase(patient, context, demographic));
+  }
+
+  public static PatientCommand.DisassociateStateHIVCase asDisassociateStateHIVCase(
+      final long patient,
+      final RequestContext context
+  ) {
+    return new PatientCommand.DisassociateStateHIVCase(
+        patient,
+        context.requestedBy(),
+        context.requestedAt()
+    );
   }
 
   private GeneralInformationDemographicPatientCommandMapper() {

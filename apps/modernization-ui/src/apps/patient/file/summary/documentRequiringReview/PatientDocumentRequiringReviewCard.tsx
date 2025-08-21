@@ -15,6 +15,9 @@ import { ResultedTests } from 'libs/events/tests';
 
 import styles from './drr.module.scss';
 import { displayNoData } from 'design-system/data';
+import { Tag } from 'design-system/tag';
+import { Shown } from 'conditional-render';
+import { Tooltip } from 'design-system/tooltip';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -74,6 +77,24 @@ const renderEventId = (value: PatientFileDocumentRequiringReview) => {
     return <a href={classicUrl}>{value.local}</a>;
 };
 
+const renderType = (value: PatientFileDocumentRequiringReview) => {
+    return (
+        <>
+            {value.type}
+            <Shown when={value.isElectronic}>
+                <br />
+                <Tooltip message="Electronic indicator">
+                    {(id) => (
+                        <Tag variant="accent" size="small" aria-describedby={id}>
+                            E
+                        </Tag>
+                    )}
+                </Tooltip>
+            </Shown>
+        </>
+    );
+};
+
 const EVENT_ID = { id: 'id', name: 'Event ID' };
 const DOCUMENT_TYPE = { id: 'type', name: 'Document type' };
 const DATE_RECEIVED = { id: 'dateReceived', name: 'Date received' };
@@ -89,7 +110,13 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         value: (value) => value.local,
         render: renderEventId
     },
-    { ...DOCUMENT_TYPE, className: styles['text-header'], sortable: true, value: (value) => value.type },
+    {
+        ...DOCUMENT_TYPE,
+        className: styles['text-header'],
+        sortable: true,
+        value: (value) => value.type,
+        render: (value) => renderType(value)
+    },
     {
         ...DATE_RECEIVED,
         className: styles['date-time-header'],

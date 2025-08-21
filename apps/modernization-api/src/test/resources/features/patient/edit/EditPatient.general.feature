@@ -30,6 +30,20 @@ Feature: Editing of Patient General Information
     And the patient file general information includes that the patient does not speak English
     And the patient history contains the previous version
 
+  Scenario: I can clear the general information demographics
+    Given the patient's martial status as of 02/17/1947 is Widowed
+    And the patient's maternal maiden name is "Havisham"
+    And the patient lives with 3 adults
+    And the patient lives with 17 children
+    And the patient's primary occupation is Wholesale Trade
+    And the patient's education level is Some college credit, but less than 1 year
+    And the patient's primary language is Welsh
+    And the patient does not speak English
+    When I edit the patient with entered demographics
+    And I view the patient's general information demographics
+    Then no value is returned
+
+
   Scenario: I can edit a patient with general information demographics that include a State HIV case when I have access to HIV fields
     Given I can "HIVQuestions" any "Global"
     And I enter the general information state HIV case of "case-number"
@@ -38,13 +52,19 @@ Feature: Editing of Patient General Information
     Then the patient file general information includes a state HIV case of "case-number"
     And the patient history contains the previous version
 
-  Scenario: I can edit a patient with general information demographics that does not include a blank State HIV case
+  Scenario: I can disassociate a State HIV case when I have access to HIV fields
     Given I can "HIVQuestions" any "Global"
-    And I enter the general information state HIV case of ""
+    And the patient is associated with state HIV case "case-number"
     When I edit the patient with entered demographics
     And I view the patient's general information demographics
-    Then the patient file general information does not include a state HIV case
-    And the patient history contains the previous version
+    Then no value is returned
+
+  Scenario: I cannot disassociate a State HIV case without access to HIV fields
+    Given the patient is associated with state HIV case "case-number"
+    When I edit the patient with entered demographics
+    And I can "HIVQuestions" any "Global"
+    And I view the patient's general information demographics
+    Then the patient file general information includes a state HIV case of "case-number"
 
   Scenario: I can edit a patient's general information but it will not include the state HIV case a patient may be associated with without having access to HIV Fields
     Given I enter the general information state HIV case of "case-number"

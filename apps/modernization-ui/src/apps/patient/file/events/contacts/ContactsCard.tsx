@@ -20,6 +20,7 @@ import { AssociatedWith } from 'libs/events/investigations/associated';
 import { PatientFileContact, PatientFileContacts } from './contacts';
 
 import styles from './contacts-card.module.scss';
+import { maybeMap } from 'utils/mapping';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'created-on', name: 'Date created' };
@@ -37,6 +38,8 @@ const columnPreferences: ColumnPreference[] = [
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
 
+const displayReferralBasis = maybeMap((value) => ` (${value})`);
+
 const columns = (onClose: () => void): Column<PatientFileContact>[] => [
     {
         ...EVENT_ID,
@@ -53,9 +56,11 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
                     onClose={onClose}>
                     {value.local}
                 </ClassicModalButton>
-                <strong>{value.processingDecision}</strong>
                 <br />
-                {value.referralBasis && `(${value.referralBasis})`}
+                <strong>
+                    {value.processingDecision}
+                    {displayReferralBasis(value.referralBasis)}
+                </strong>
             </>
         )
     },
@@ -69,7 +74,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
     },
     {
         ...DATE_NAMED,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.namedOn,
         render: (value) => internalizeDate(value.namedOn)
@@ -119,17 +124,10 @@ type InternalCardProps = {
     onClose: () => void;
 } & Omit<TableCardProps<PatientFileContacts>, 'data' | 'columns' | 'defaultColumnPreferences' | 'columnPreferencesKey'>;
 
-const dataLength = (data: PatientFileContacts[]) => {
-    let count = 0;
-    data.map((cond) => {
-        cond.contacts.map(() => {
-            count++;
-        });
-    });
-    return count;
-};
+const dataLength = (data: PatientFileContacts[]) => data.reduce((current, next) => current + next.contacts.length, 0);
 
 const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...remaining }: InternalCardProps) => {
+    const total = dataLength(data);
     return (
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
             {(apply) => (
@@ -137,33 +135,37 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
                     id={'patient-file-contact-named'}
                     title={title}
                     collapsible
-                    open={dataLength(data) > 0}
-                    flair={<Tag size={sizing}>{dataLength(data)}</Tag>}
+                    open={data.length > 0}
+                    flair={<Tag size={sizing}>{total}</Tag>}
                     className={styles.card}
                     actions={<ColumnPreferencesAction sizing={sizing} />}>
-                    <div className={styles.content}>
-                        {data.map((contact) => (
-                            <Section
-                                key={contact.condition}
-                                title={titleResolver(contact.condition)}
-                                id={`${contact.condition}-${title}`}
-                                sizing={sizing}
-                                className={styles.card}
-                                subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}>
-                                <SortableDataTable
-                                    columns={apply.apply(columns(onClose))}
-                                    data={contact.contacts}
-                                    {...remaining}
+                    <Shown when={data.length > 0} fallback={<Empty />}>
+                        <div className={styles.content}>
+                            {data.map((contact) => (
+                                <Section
+                                    key={contact.condition}
+                                    title={titleResolver(contact.condition)}
+                                    id={`${contact.condition}-${title}`}
                                     sizing={sizing}
-                                />
-                            </Section>
-                        ))}
-                    </div>
+                                    className={styles.card}
+                                    subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}>
+                                    <SortableDataTable
+                                        columns={apply.apply(columns(onClose))}
+                                        data={contact.contacts}
+                                        {...remaining}
+                                        sizing={sizing}
+                                    />
+                                </Section>
+                            ))}
+                        </div>
+                    </Shown>
                 </Card>
             )}
         </ColumnPreferenceProvider>
     );
 };
+
+const Empty = () => <div className={styles.empty}>No data has been added.</div>;
 
 type ContactsCardProps = {
     provider: MemoizedSupplier<Promise<PatientFileContacts[]>>;

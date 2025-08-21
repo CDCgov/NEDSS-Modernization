@@ -41,15 +41,15 @@ class PatientAddressEditService {
         demographics);
 
     changes.added()
-        .map(demographic -> asAddAddress(patient.getId(), context, demographic))
+        .map(demographic -> asAddAddress(patient.id(), context, demographic))
         .forEach(command -> patient.add(command, addressIdentifierGenerator));
 
     changes.altered()
-        .map(match -> asUpdateAddress(patient.getId(), context, match.right()))
+        .map(match -> asUpdateAddress(patient.id(), context, match.right()))
         .forEach(patient::update);
 
     changes.removed()
-        .map(existing -> asDeleteAddress(patient.getId(), context, existing))
+        .map(existing -> asDeleteAddress(patient.id(), context, existing))
         .forEach(patient::delete);
 
   }

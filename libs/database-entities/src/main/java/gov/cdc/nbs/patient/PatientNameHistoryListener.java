@@ -27,7 +27,7 @@ public class PatientNameHistoryListener {
       {"javaarchitecture:S7027", "javaarchitecture:S7091"}
   )
   void preUpdate(final PersonName personName) {
-    long identifier = personName.getPersonUid().getId();
+    long identifier = personName.getPersonUid().id();
     int sequence = personName.getId().getPersonNameSeq();
     int currentVersion = getCurrentVersionNumber(identifier, sequence);
     this.creator.createPersonNameHistory(identifier, currentVersion + 1, sequence);

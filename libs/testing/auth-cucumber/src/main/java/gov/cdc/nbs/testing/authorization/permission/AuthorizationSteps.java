@@ -1,13 +1,11 @@
 package gov.cdc.nbs.testing.authorization.permission;
 
 import gov.cdc.nbs.testing.authorization.ActiveUser;
-import gov.cdc.nbs.testing.support.Active;
-import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
-import io.cucumber.java.Before;
+import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
@@ -33,13 +31,6 @@ public class AuthorizationSteps {
     this.roleMother = roleMother;
   }
 
-  @Before
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void clean() {
-    roleMother.reset();
-    //  need to figure out how to remove permission sets also
-  }
-
   @Given("I can {string} any {string}")
   public void authorize(
       final String operation,
@@ -50,20 +41,18 @@ public class AuthorizationSteps {
 
     long set = setMother.allow(operation, object);
 
-    roleMother.allowAny(user.id(), set);
+    roleMother.allowAny(user, set);
 
   }
 
   @Given("I am a master system administrator")
   public void systemAdmin() {
-    ActiveUser user = activeUser.active();
-    roleMother.systemAdmin(user.id());
+    activeUser.maybeActive().ifPresent(roleMother::systemAdmin);
   }
 
   @Given("I am a security administrator")
   public void securityAdmin() {
-    ActiveUser user = activeUser.active();
-    roleMother.securityAdmin(user.id());
+    activeUser.maybeActive().ifPresent(roleMother::securityAdmin);
   }
 
   @Given("I can {string} any {string} for {programArea} within all jurisdictions")
@@ -73,7 +62,7 @@ public class AuthorizationSteps {
       final ProgramAreaIdentifier programArea
   ) {
     activeUser.maybeActive().ifPresent(user -> roleMother.allowAny(
-            user.id(),
+            user,
             setMother.allow(operation, object),
             programArea.code(),
             "ALL"
@@ -90,7 +79,7 @@ public class AuthorizationSteps {
   ) {
 
     activeUser.maybeActive().ifPresent(user -> roleMother.allowAny(
-            user.id(),
+            user,
             setMother.allow(operation, object),
             programArea.code(),
             jurisdiction.code()
@@ -108,7 +97,7 @@ public class AuthorizationSteps {
 
     long set = setMother.allow(operation, object);
 
-    roleMother.allowShared(user.id(), set);
+    roleMother.allowShared(user, set);
 
   }
 
@@ -123,7 +112,7 @@ public class AuthorizationSteps {
 
     long set = setMother.allow(operation, object);
 
-    roleMother.allowShared(user.id(), set, programArea.code(), jurisdiction.code());
+    roleMother.allowShared(user, set, programArea.code(), jurisdiction.code());
   }
 
   @Given("the {string} user can {string} any {string} for {programArea} within all jurisdictions")
@@ -157,6 +146,6 @@ public class AuthorizationSteps {
 
     long set = setMother.allow(operation, object);
 
-    roleMother.allowAny(authorizedUser.id(), set, programArea.code(), jurisdiction.code());
+    roleMother.allowAny(authorizedUser, set, programArea.code(), jurisdiction.code());
   }
 }

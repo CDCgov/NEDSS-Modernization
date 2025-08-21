@@ -46,15 +46,15 @@ class PatientNameEditService {
     Changes<PersonName, NameDemographic> changes = resolver.resolve(patient.names(), demographics);
 
     changes.added()
-        .map(demographic -> asAddName(patient.getId(), context, demographic))
+        .map(demographic -> asAddName(patient.id(), context, demographic))
         .forEach(command -> patient.add(soundexResolver, command));
 
     changes.altered()
-        .map(match -> asUpdateName(patient.getId(), context, match.right()))
+        .map(match -> asUpdateName(patient.id(), context, match.right()))
         .forEach(command -> patient.update(soundexResolver, command));
 
     changes.removed()
-        .map(existing -> asDeleteName(patient.getId(), existing.getId().getPersonNameSeq(), context))
+        .map(existing -> asDeleteName(patient.id(), existing.getId().getPersonNameSeq(), context))
         .forEach(patient::delete);
   }
 }

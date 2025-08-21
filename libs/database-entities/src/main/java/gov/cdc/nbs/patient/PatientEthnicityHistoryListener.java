@@ -28,7 +28,7 @@ public class PatientEthnicityHistoryListener {
         {"javaarchitecture:S7027","javaarchitecture:S7091"}
     )
     void preRemove(final PersonEthnicGroup personEthnicGroup) {
-        long personUid = personEthnicGroup.getPersonUid().getId();
+        long personUid = personEthnicGroup.getPersonUid().id();
         String personEthnicityGroupCd = personEthnicGroup.getId().getEthnicGroupCd();
         int currentVersion = getCurrentVersionNumber(personUid, personEthnicityGroupCd);
         this.creator.createPersonEthnicityLocatorHistory(personUid, personEthnicityGroupCd, currentVersion + 1);

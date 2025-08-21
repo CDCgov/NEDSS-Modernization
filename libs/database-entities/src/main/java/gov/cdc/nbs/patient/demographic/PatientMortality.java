@@ -23,16 +23,6 @@ public class PatientMortality {
   @Column(name = "deceased_time")
   private LocalDate deceasedOn;
 
-  public PatientMortality() {
-  }
-
-  public PatientMortality(final PatientCommand.AddPatient patient) {
-    this.asOf = patient.asOf();
-    this.deceased = patient.deceased();
-    this.deceasedOn = patient.deceasedTime();
-
-  }
-
   public void update(
       final PatientCommand.UpdateMortality info
   ) {
@@ -44,6 +34,12 @@ public class PatientMortality {
     } else {
       this.deceasedOn = null;
     }
+  }
+
+  public void clear() {
+    this.asOf = null;
+    this.deceased = null;
+    this.deceasedOn = null;
   }
 
   public LocalDate asOf() {
@@ -59,6 +55,6 @@ public class PatientMortality {
   }
 
   public long signature() {
-    return Objects.hash(asOf,deceased, deceasedOn);
+    return Objects.hash(asOf, deceased, deceasedOn);
   }
 }

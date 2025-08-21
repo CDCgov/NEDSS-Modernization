@@ -7,6 +7,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { Address } from './models/Address';
 export type { AddressDemographic } from './models/AddressDemographic';
 export type { Administrative } from './models/Administrative';
 export type { Allowed } from './models/Allowed';
@@ -35,6 +36,7 @@ export type { LoginRequest } from './models/LoginRequest';
 export type { LoginResponse } from './models/LoginResponse';
 export type { Me } from './models/Me';
 export type { MortalityDemographic } from './models/MortalityDemographic';
+export type { MotherInformation } from './models/MotherInformation';
 export type { Name } from './models/Name';
 export type { NamedContact } from './models/NamedContact';
 export type { NameDemographic } from './models/NameDemographic';
@@ -45,6 +47,7 @@ export type { PatientAddressDemographic } from './models/PatientAddressDemograph
 export type { PatientDemographicsSummary } from './models/PatientDemographicsSummary';
 export type { PatientEthnicityDemographic } from './models/PatientEthnicityDemographic';
 export { PatientFile } from './models/PatientFile';
+export type { PatientFileBirthRecord } from './models/PatientFileBirthRecord';
 export type { PatientFileContact } from './models/PatientFileContact';
 export type { PatientFileContacts } from './models/PatientFileContacts';
 export type { PatientFileDocument } from './models/PatientFileDocument';

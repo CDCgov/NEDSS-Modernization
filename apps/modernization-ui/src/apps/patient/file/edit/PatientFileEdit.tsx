@@ -1,20 +1,21 @@
-import { Suspense, useCallback, useEffect } from 'react';
-import { Await, useNavigate } from 'react-router';
+import { useCallback, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { defaultTo } from 'libs/supplying';
 import { useForm } from 'react-hook-form';
 import { useAlert } from 'alert';
 import { NavigationGuard } from 'design-system/entry/navigation-guard';
-import { Sizing } from 'design-system/field';
+
 import { useComponentSizing } from 'design-system/sizing';
 import { Button } from 'design-system/button';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { maybeDisplayName } from 'name';
+import { exists } from 'utils/exists';
 import {
-    PatientDemographics,
-    PatientDemographicsDefaults,
     PatientDemographicsEntry,
     PatientDemographicsForm,
     usePatientDemographicDefaults
 } from 'libs/patient/demographics';
+import { usePendingFormEntry } from 'design-system/entry/pending';
 import { usePatientFileData } from '../usePatientFileData';
 import { PatientFileLayout } from '../PatientFileLayout';
 import { Patient } from '../patient';
@@ -22,14 +23,21 @@ import { evaluated } from './evaluated';
 import { useEditPatient } from './useEditPatient';
 
 import styles from './patient-file-edit.module.scss';
-import { usePendingFormEntry } from 'design-system/entry/pending';
+
+const resolveBackPath = defaultTo('..');
 
 const PatientFileEdit = () => {
+    const { state } = useLocation();
+    const navigate = useNavigate();
+
+    const goBack = useCallback(() => {
+        const path = resolveBackPath(state?.return);
+        navigate(path);
+    }, [navigate, state?.return]);
+
     const { patient, demographics, refresh } = usePatientFileData();
     const sizing = useComponentSizing();
     const defaults = usePatientDemographicDefaults();
-
-    const navigate = useNavigate();
 
     const { showSuccess, showError } = useAlert();
 
@@ -41,48 +49,19 @@ const PatientFileEdit = () => {
             </span>
         );
         refresh();
-        navigate(-1);
-    }, [showSuccess, navigate]);
-
-    const handleCancel = useCallback(() => navigate(-1), [navigate]);
+        goBack();
+    }, [showSuccess, refresh, goBack]);
 
     const handleError = useCallback((reason: string) => showError(reason), [showError]);
 
-    return (
-        <Suspense fallback={<PatientFileLayout patient={patient} navigation={EditNavigation} />}>
-            <Await resolve={evaluated(demographics.get())}>
-                {(demographics) => (
-                    <Internal
-                        patient={patient}
-                        sizing={sizing}
-                        demographics={demographics}
-                        defaults={defaults}
-                        onCancel={handleCancel}
-                        onSuccess={handleSuccess}
-                        onError={handleError}
-                    />
-                )}
-            </Await>
-        </Suspense>
-    );
-};
-
-type InternalProps = {
-    patient: Patient;
-    demographics: PatientDemographics;
-    defaults: PatientDemographicsDefaults;
-    sizing?: Sizing;
-    onSuccess: () => void;
-    onCancel: () => void;
-    onError: (reason: string) => void;
-};
-
-const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel, onError }: InternalProps) => {
     const form = useForm<PatientDemographicsEntry>({
-        defaultValues: demographics,
         mode: 'onBlur',
         reValidateMode: 'onBlur'
     });
+
+    useEffect(() => {
+        evaluated(demographics.get()).then(form.reset);
+    }, []);
 
     const pending = usePendingFormEntry({ form });
 
@@ -90,13 +69,15 @@ const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel
 
     useEffect(() => {
         if (interaction.status === 'error') {
-            onError(interaction.reason);
+            handleError(interaction.reason);
         } else if (interaction.status === 'completed') {
-            onSuccess();
+            handleSuccess();
         }
-    }, [interaction.status, interaction.status === 'error' && interaction.reason]);
+    }, [interaction.status, interaction.status === 'error' && interaction.reason, handleError, handleSuccess]);
 
-    const disabled = !form.formState.isValid || pending.pending.length > 0 || interaction.status !== 'waiting';
+    const disabled =
+        (form.formState.isValid && !exists(form.formState.dirtyFields)) ||
+        (!form.formState.isValid && exists(form.formState.dirtyFields) && interaction.status === 'waiting');
 
     const handleSave = form.handleSubmit((input) => interaction.edit(patient.id, input));
 
@@ -105,7 +86,7 @@ const Internal = ({ patient, demographics, defaults, sizing, onSuccess, onCancel
             patient={patient}
             actions={() => (
                 <>
-                    <Button secondary onClick={onCancel}>
+                    <Button secondary onClick={goBack}>
                         Cancel
                     </Button>
                     <Button onClick={handleSave} disabled={disabled}>

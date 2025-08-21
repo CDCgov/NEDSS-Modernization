@@ -19,9 +19,9 @@ testing {
 dependencies {
     implementation libs.springBoot
 
-    implementation libs.bundles.jpa
-    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
-    
+    implementation libs.bundles.jdbc
+    implementation libs.cucumber.java
+    implementation libs.cucumber.spring
 
 
     implementation project(':authentication')

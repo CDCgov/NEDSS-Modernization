@@ -6,7 +6,8 @@ $large-height: 1.25rem;
 
 .header {
     &.action {
-        visibility: hidden;
+        color: transparent;
+        user-select: none;
     }
 
     &.fixed {

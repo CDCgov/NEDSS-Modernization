@@ -31,18 +31,6 @@ public class PatientEthnicity {
   }, orphanRemoval = true)
   private List<PersonEthnicGroup> ethnicities;
 
-  public PatientEthnicity() {
-
-  }
-
-  public PatientEthnicity(final PatientCommand.AddPatient patient) {
-    this.ethnicGroupInd = patient.ethnicityCode();
-
-    if (this.ethnicGroupInd != null) {
-      this.asOfDateEthnicity = patient.asOf();
-    }
-  }
-
   public LocalDate asOf() {
     return asOfDateEthnicity;
   }
@@ -100,6 +88,13 @@ public class PatientEthnicity {
     this.ethnicities.removeIf(detail -> Objects.equals(detail.getId().getEthnicGroupCd(), remove.ethnicity()));
   }
 
+  public void clear() {
+    this.asOfDateEthnicity = null;
+    this.ethnicGroupInd  = null;
+    this.ethnicUnkReasonCd = null;
+    this.ethnicities.clear();
+  }
+
   public long signature() {
     return Objects.hash(
         asOfDateEthnicity,
@@ -107,4 +102,6 @@ public class PatientEthnicity {
         ethnicUnkReasonCd
     );
   }
+
+
 }
