@@ -16,10 +16,10 @@ class EntityIdTest {
   void should_inactive_an_identification_when_deleted() {
     Person patient = new Person(117L, "local-id-value");
 
-    EntityIdId identifier = new EntityIdId(patient.getId(), (short) 3);
+    EntityIdId identifier = new EntityIdId(patient.id(), (short) 3);
 
     EntityId identification = new EntityId(
-        patient.getNbsEntity(),
+        patient.entity(),
         identifier,
         new PatientCommand.AddIdentification(
             117L,

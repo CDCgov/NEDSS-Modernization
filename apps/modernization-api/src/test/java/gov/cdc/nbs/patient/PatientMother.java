@@ -292,7 +292,7 @@ public class PatientMother {
 
     patient.add(
         new PatientCommand.AddAddress(
-            patient.getId(),
+            patient.id(),
             asOf,
             type,
             use,
@@ -325,7 +325,7 @@ public class PatientMother {
 
     patient.add(
         new PatientCommand.AddAddress(
-            patient.getId(),
+            patient.id(),
             RandomUtil.dateInPast(),
             type,
             use,
@@ -350,7 +350,7 @@ public class PatientMother {
 
     patient.add(
         new PatientCommand.AddAddress(
-            patient.getId(),
+            patient.id(),
             RandomUtil.dateInPast(),
             faker.address().streetAddress(),
             null,
@@ -655,17 +655,12 @@ public class PatientMother {
             this.settings.createdOn()));
   }
 
-  public void withLocalId(final PatientIdentifier identifier, final String localId) {
-    Person patient = managed(identifier);
-    patient.setLocalId(localId);
+  public void withLocalId(final PatientIdentifier patient, final String localId) {
+    client.sql("update Person set local_id = ? where person_uid = ?")
+        .param(localId)
+        .param(patient.id())
+        .update();
   }
-
-  public void withId(final PatientIdentifier identifier, final long id) {
-    Person patient = managed(identifier);
-
-    patient.setId(id);
-  }
-
 
   public void withMortality(final PatientIdentifier identifier) {
 

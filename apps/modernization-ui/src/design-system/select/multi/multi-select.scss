@@ -18,11 +18,16 @@
 
 .multi-select {
     max-width: 20rem;
+
     .multi-select__control {
         border-width: 1px;
         border-style: solid;
         border-color: colors.$base-dark !important;
         border-radius: 0;
+
+        &.multi-select__control--is-disabled {
+            border-color: colors.$disabled !important;
+        }
 
         .multi-select__indicator {
             color: colors.$base-darker !important;

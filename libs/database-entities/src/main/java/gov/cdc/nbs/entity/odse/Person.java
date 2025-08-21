@@ -14,8 +14,6 @@ import gov.cdc.nbs.patient.demographic.name.PatientLegalNameResolver;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -23,8 +21,7 @@ import java.util.function.Predicate;
 
 import static java.util.function.Predicate.not;
 
-@Getter
-@Setter
+
 @Entity
 @SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7027", "javaarchitecture:S7091"})
 //  Bidirectional mappings require knowledge of each other
@@ -154,23 +151,6 @@ public class Person {
     this.status = new Status(patient.requestedOn());
     this.recordStatus = new RecordStatus(patient.requestedOn());
     this.audit = new Audit(patient.requester(), patient.requestedOn());
-  }
-
-  public Person(final PatientCommand.AddPatient patient) {
-    this(patient.person(), patient.localId());
-
-    this.nbsEntity = new NBSEntity(patient);
-
-    this.administrative = new PatientAdministrativeInformation(patient);
-    this.generalInformation = new GeneralInformation(patient);
-    this.ethnicity = new PatientEthnicity(patient);
-    this.sexBirth = new PatientSexBirth(patient);
-    this.mortality = new PatientMortality(patient);
-
-    this.status = new Status(patient.requestedOn());
-    this.recordStatus = new gov.cdc.nbs.audit.RecordStatus(patient.requestedOn());
-    this.audit = new Audit(patient.requester(), patient.requestedOn());
-
   }
 
   public PersonName add(final SoundexResolver resolver, final PatientCommand.AddName added) {
@@ -333,11 +313,28 @@ public class Person {
     changed(info);
   }
 
+  public void clear(final PatientCommand.ClearGeneralInformationDemographics command) {
+    if (this.generalInformation != null) {
+      this.generalInformation.clear();
+      changed(command);
+    }
+  }
+
   public void associate(
       final PermissionScopeResolver resolver,
       final PatientCommand.AssociateStateHIVCase associate
   ) {
     ensureGeneralInformation().associate(resolver, associate);
+  }
+
+  public void disassociate(
+      final PermissionScopeResolver resolver,
+      final PatientCommand.DisassociateStateHIVCase disassociate
+  ) {
+    if (this.generalInformation != null) {
+      this.generalInformation.disassociate(resolver);
+      changed(disassociate);
+    }
   }
 
   public Person update(final PatientCommand.UpdateAdministrativeInfo info) {
@@ -351,11 +348,29 @@ public class Person {
     return this;
   }
 
+  public Person clear(final PatientCommand.ClearAdministrativeInformation command) {
+    if (this.administrative != null) {
+      this.administrative.clear();
+      changed(command);
+    }
+
+    return this;
+  }
+
   private PatientSexBirth ensurePatientSexBirth() {
     if (sexBirth == null) {
       this.sexBirth = new PatientSexBirth();
     }
     return this.sexBirth;
+  }
+
+  public void clear(final PatientCommand.ClearBirthDemographics command) {
+    if (this.sexBirth != null) {
+      this.sexBirth.clearBirthDemographics();
+      this.nbsEntity.clear(command);
+      changed(command);
+    }
+
   }
 
   public void update(
@@ -375,6 +390,13 @@ public class Person {
     changed(changes);
   }
 
+  public void clear(final PatientCommand.ClearGenderDemographics command) {
+    if (this.sexBirth != null) {
+      this.sexBirth.clearGenderDemographics();
+      changed(command);
+    }
+  }
+
   public void update(
       final PatientCommand.UpdateMortality info,
       final AddressIdentifierGenerator identifierGenerator
@@ -386,6 +408,15 @@ public class Person {
     this.nbsEntity.update(info, identifierGenerator);
 
     changed(info);
+  }
+
+  public void clear(final PatientCommand.ClearMoralityDemographics command) {
+    if (this.mortality != null) {
+      this.mortality.clear();
+      this.nbsEntity.clear(command);
+      changed(command);
+    }
+
   }
 
   public void delete(
@@ -428,6 +459,14 @@ public class Person {
     ensureEthnicity().remove(remove);
 
     changed(remove);
+  }
+
+  public Person clear(final PatientCommand.ClearEthnicityDemographics command) {
+    if(this.ethnicity != null) {
+      this.ethnicity.clear();
+      changed(command);
+    }
+    return this;
   }
 
   private void changed(final PatientCommand command) {
@@ -476,6 +515,10 @@ public class Person {
 
   public PatientMortality mortality() {
     return mortality;
+  }
+
+  public NBSEntity entity() {
+    return nbsEntity;
   }
 
   public long signature() {

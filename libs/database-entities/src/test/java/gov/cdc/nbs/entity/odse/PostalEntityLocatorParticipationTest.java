@@ -17,8 +17,8 @@ class PostalEntityLocatorParticipationTest {
     Person patient = new Person(117L, "local-id-value");
 
     PostalEntityLocatorParticipation address = new PostalEntityLocatorParticipation(
-        patient.getNbsEntity(),
-        new EntityLocatorParticipationId(patient.getId(), 5331L),
+        patient.entity(),
+        new EntityLocatorParticipationId(patient.id(), 5331L),
         new PatientCommand.AddAddress(
             117L,
             LocalDate.parse("2021-07-07"),

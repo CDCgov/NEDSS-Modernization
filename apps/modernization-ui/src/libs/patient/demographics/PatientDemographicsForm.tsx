@@ -1,6 +1,7 @@
 import { useCallback, useRef } from 'react';
 import { UseFormReturn, useWatch } from 'react-hook-form';
 import classNames from 'classnames';
+import { SkipLink } from 'SkipLink';
 import { Sizing } from 'design-system/field';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 import { sections } from './sections';
@@ -24,7 +25,6 @@ import { EditIdentificationDemographicsCard } from './identification';
 import { EditRaceDemographicsCard } from './race';
 
 import styles from './patient-demographics-form.module.scss';
-import { SkipLink } from 'SkipLink';
 
 const NAME_ENTRY = { id: 'names', name: 'Name' };
 const ADDRESS_ENTRY = { id: 'addresses', name: 'Address' };
@@ -33,16 +33,16 @@ const IDENTIFICATION_ENTRY = { id: 'identifications', name: 'Identification' };
 const RACE_ENTRY = { id: 'races', name: 'Race' };
 
 type PatientDemographicsFormProps = {
-    form: UseFormReturn<PatientDemographicsEntry>;
-    defaults: PatientDemographicsDefaults;
     pending: PendingFormEntryInteraction;
+    defaults: PatientDemographicsDefaults;
+    form: UseFormReturn<PatientDemographicsEntry>;
     sizing?: Sizing;
 } & JSX.IntrinsicElements['div'];
 
 const PatientDemographicsForm = ({
-    form,
-    defaults,
     pending,
+    defaults,
+    form,
     sizing,
     className,
     ...remaining

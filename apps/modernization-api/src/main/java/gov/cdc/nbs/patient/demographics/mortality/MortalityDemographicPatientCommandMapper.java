@@ -23,6 +23,17 @@ public class MortalityDemographicPatientCommandMapper {
         context.requestedAt());
   }
 
+  public static PatientCommand.ClearMoralityDemographics asClearMoralityDemographics(
+      final long patient,
+      final RequestContext context
+  ) {
+    return new PatientCommand.ClearMoralityDemographics(
+        patient,
+        context.requestedBy(),
+        context.requestedAt()
+    );
+  }
+
   private MortalityDemographicPatientCommandMapper() {
     // static
   }

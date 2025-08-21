@@ -5,7 +5,6 @@ import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
-import static org.hamcrest.Matchers.emptyString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class WebInteractionSteps {
@@ -43,7 +42,7 @@ public class WebInteractionSteps {
   @Then("no value is returned")
   public void empty() throws Exception {
     this.activeAction.active()
-        .andExpect(content().string(emptyString()));
+        .andExpect(jsonPath("$").doesNotExist());
   }
 
   @Then("no values are returned")

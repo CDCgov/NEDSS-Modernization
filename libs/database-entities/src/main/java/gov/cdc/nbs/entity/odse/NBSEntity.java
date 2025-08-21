@@ -37,13 +37,9 @@ public class NBSEntity {
   protected NBSEntity() {
   }
 
-  public NBSEntity(Long id, String classCd) {
+  public NBSEntity(final Long id, final String classCd) {
     this.id = id;
     this.classCd = classCd;
-  }
-
-  public NBSEntity(final PatientCommand.AddPatient patient) {
-    this(patient.person(), "PSN");
   }
 
   public void update(
@@ -60,7 +56,7 @@ public class NBSEntity {
         .stream()
         .filter(PostalEntityLocatorParticipation.class::isInstance)
         .map(PostalEntityLocatorParticipation.class::cast)
-        .filter(participation -> Objects.equals("BIR", participation.getUseCd()))
+        .filter(EntityLocatorParticipation.withUse("BIR").and(EntityLocatorParticipation.active()))
         .findFirst();
   }
 
@@ -83,6 +79,10 @@ public class NBSEntity {
     return participation;
   }
 
+  public void clear(final PatientCommand.ClearBirthDemographics command) {
+    maybeBirthLocator().ifPresent(locator -> locator.clear(command));
+  }
+
   public void update(
       final PatientCommand.UpdateMortality info,
       final AddressIdentifierGenerator identifierGenerator
@@ -99,13 +99,14 @@ public class NBSEntity {
         .stream()
         .filter(PostalEntityLocatorParticipation.class::isInstance)
         .map(PostalEntityLocatorParticipation.class::cast)
-        .filter(participation -> Objects.equals("DTH", participation.getUseCd()))
+        .filter(EntityLocatorParticipation.withUse("DTH").and(EntityLocatorParticipation.active()))
         .findFirst();
   }
 
   private PostalEntityLocatorParticipation createMortalityLocator(
       final PatientCommand.UpdateMortality info,
-      final AddressIdentifierGenerator identifierGenerator) {
+      final AddressIdentifierGenerator identifierGenerator
+  ) {
     EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(
         this.id,
         identifierGenerator.generate()
@@ -120,6 +121,10 @@ public class NBSEntity {
     ensureLocators().add(participation);
 
     return participation;
+  }
+
+  public void clear(final PatientCommand.ClearMoralityDemographics command) {
+    maybeMortalityLocator().ifPresent(locator -> locator.clear(command));
   }
 
   public EntityId add(final PatientCommand.AddIdentification added) {
@@ -268,4 +273,5 @@ public class NBSEntity {
         .findFirst()
         .ifPresent(existing -> existing.delete(deleted));
   }
+
 }

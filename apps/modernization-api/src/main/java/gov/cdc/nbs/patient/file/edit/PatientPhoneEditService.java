@@ -42,15 +42,15 @@ class PatientPhoneEditService {
         demographics);
 
     changes.added()
-        .map(demographic -> asAddPhone(patient.getId(), context, demographic))
+        .map(demographic -> asAddPhone(patient.id(), context, demographic))
         .forEach(command -> patient.add(command, phoneIdentifierGenerator));
 
     changes.altered()
-        .map(match -> asUpdatePhone(patient.getId(), context, match.right()))
+        .map(match -> asUpdatePhone(patient.id(), context, match.right()))
         .forEach(patient::update);
 
     changes.removed()
-        .map(existing -> asDeletePhone(patient.getId(), context, existing))
+        .map(existing -> asDeletePhone(patient.id(), context, existing))
         .forEach(patient::delete);
   }
 }

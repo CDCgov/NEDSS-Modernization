@@ -1,15 +1,17 @@
 import { useEffect } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
+import { isEqual } from 'options';
+import { indicators } from 'options/indicator';
+import { Shown } from 'conditional-render';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { TextInputField } from 'design-system/input';
-import { Shown } from 'conditional-render';
-import { isEqual } from 'options';
-import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
-import { HasMortalityDemographic, labels } from '../mortality';
 import { MoralityOptions } from './useMortalityOptions';
+import { HasMortalityDemographic, labels } from '../mortality';
+
+const isDeceased = isEqual(indicators.yes);
 
 type MortalityDemographicFieldsProps = {
     form: UseFormReturn<HasMortalityDemographic>;
@@ -23,23 +25,18 @@ const MortalityDemographicFields = ({
     options
 }: MortalityDemographicFieldsProps) => {
     const selectedState = useWatch({ control: form.control, name: 'mortality.state' });
-    const selectedDeceased = useWatch({ control: form.control, name: 'mortality.deceased' });
 
-    const isDeceased = isEqual(options.deceased.yes);
-
-    const countries = useCountryOptions();
-    const states = useStateOptions();
-    const counties = useCountyOptions(selectedState?.value);
+    const selectedDeceased = useWatch({
+        control: form.control,
+        name: 'mortality.deceased'
+    });
 
     useEffect(() => {
-        if (isDeceased(selectedDeceased)) {
-            form.resetField('mortality.deceasedOn');
-            form.resetField('mortality.state');
-            form.resetField('mortality.city');
-            form.resetField('mortality.county');
-            form.resetField('mortality.country');
+        if (!selectedState) {
+            form.setValue('mortality.county', undefined);
         }
-    }, [selectedDeceased?.value]);
+        options.location.state(selectedState);
+    }, [selectedState?.value, options.location.state, form.setValue]);
 
     return (
         <>
@@ -130,7 +127,7 @@ const MortalityDemographicFields = ({
                             onBlur={onBlur}
                             id={name}
                             name={name}
-                            options={states}
+                            options={options.location.states}
                             sizing={sizing}
                         />
                     )}
@@ -148,7 +145,7 @@ const MortalityDemographicFields = ({
                             onBlur={onBlur}
                             id={name}
                             name={name}
-                            options={counties}
+                            options={options.location.counties}
                             sizing={sizing}
                         />
                     )}
@@ -167,7 +164,7 @@ const MortalityDemographicFields = ({
                             onBlur={onBlur}
                             id={name}
                             name={name}
-                            options={countries}
+                            options={options.location.countries}
                             sizing={sizing}
                         />
                     )}
@@ -177,4 +174,4 @@ const MortalityDemographicFields = ({
     );
 };
 
-export { MortalityDemographicFields };
+export { MortalityDemographicFields, type MortalityDemographicFieldsProps };

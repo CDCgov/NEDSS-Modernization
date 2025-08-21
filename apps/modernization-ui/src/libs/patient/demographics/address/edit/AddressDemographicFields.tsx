@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import {
@@ -26,18 +25,15 @@ const AddressDemographicFields = ({
 }: AddressDemographicFieldsProps) => {
     const { control, setValue } = useFormContext<AddressDemographic>();
 
-    const selectedState = useWatch({ control, name: 'state.value', defaultValue: entry?.state?.value });
+    const selectedState = useWatch({ control, name: 'state', defaultValue: entry?.state });
 
     useEffect(() => {
-        if (selectedState !== entry?.state?.value) {
+        if (selectedState?.value !== entry?.state?.value) {
             //  when the category differs from the entry, clear the details
             setValue('county', undefined);
         }
-    }, [selectedState]);
-
-    const states = useStateOptions();
-    const county = useCountyOptions(selectedState);
-    const country = useCountryOptions();
+        options.location.state(selectedState);
+    }, [selectedState?.value, options.location.state]);
 
     return (
         <>
@@ -169,7 +165,7 @@ const AddressDemographicFields = ({
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={states}
+                        options={options.location.states}
                         error={error?.message}
                         sizing={sizing}
                     />
@@ -204,7 +200,7 @@ const AddressDemographicFields = ({
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={county}
+                        options={options.location.counties}
                         sizing={sizing}
                     />
                 )}
@@ -237,7 +233,7 @@ const AddressDemographicFields = ({
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={country}
+                        options={options.location.countries}
                         sizing={sizing}
                     />
                 )}

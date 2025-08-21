@@ -35,7 +35,7 @@ class PatientRaceEditService {
         .forEach(patient::add);
 
     changes.altered()
-        .map(match -> asUpdate(patient.getId(), context, match.right()))
+        .map(match -> asUpdate(patient.id(), context, match.right()))
         .forEach(patient::update);
 
     changes.removed()
