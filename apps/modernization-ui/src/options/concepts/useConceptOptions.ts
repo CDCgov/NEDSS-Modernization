@@ -1,7 +1,10 @@
-import { ConceptOptionsService } from 'generated';
+import { addDays } from 'date-fns';
+import { get, maybeJson } from 'libs/api';
 import { Selectable } from 'options/selectable';
+import { cache } from 'options/cached';
 import { useSelectableOptions } from 'options/useSelectableOptions';
-import { useMemo } from 'react';
+
+const expiration = () => addDays(new Date(), 1);
 
 type ConceptOptions = {
     options: Selectable[];
@@ -12,14 +15,15 @@ type Settings = {
     lazy?: boolean;
 };
 
-const resolver = (valueSet: string) => () =>
-    ConceptOptionsService.concepts({
-        name: valueSet
-    }).then((response) => response.options);
+const resolver = (name: string) => () =>
+    cache<Selectable[]>({ id: `concept.options.${name}`, expiration, storage: localStorage })(() =>
+        fetch(get(`/nbs/api/options/concepts/${name}`))
+            .then(maybeJson)
+            .then((response) => response.options)
+    );
 
-const useConceptOptions = (valueSet: string, { lazy = true }: Settings): ConceptOptions => {
-    const cachedResolver = useMemo(() => resolver(valueSet), [valueSet]);
-    return useSelectableOptions({ resolver: cachedResolver, lazy });
+const useConceptOptions = (valueSet: string, { lazy = false }: Settings): ConceptOptions => {
+    return useSelectableOptions({ resolver: resolver(valueSet), lazy });
 };
 
 export { useConceptOptions };
