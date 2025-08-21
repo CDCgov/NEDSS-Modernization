@@ -101,6 +101,7 @@ const ReadyPatientFileEdit = ({ patient, entry }: ReadyPatientFileEditProps) => 
 
     useEffect(() => {
         if (interaction.status === 'error') {
+            console.log('error', interaction.reason);
             handleError(interaction.reason);
         } else if (interaction.status === 'completed') {
             handleSuccess();
