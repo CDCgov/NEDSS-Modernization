@@ -49,6 +49,7 @@
 
 .medium {
     --tab-text-active-color: #{colors.$primary};
+    font-size: 1.125rem;
 
     gap: unset;
     .tab {
@@ -59,7 +60,6 @@
             background-color: colors.$primary-lightest;
         }
         .tabContent {
-            font-size: 1.75rem;
             &.active {
                 color: var(--tab-text-active-color);
             }
