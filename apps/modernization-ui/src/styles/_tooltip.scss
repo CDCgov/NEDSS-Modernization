@@ -10,7 +10,7 @@ $bubbleWidth: calc($arrowWidth + 100%);
 
         @if $offset == 'left' {
             right: 100%;
-            transform: translateX($arrowBuffer);
+            transform: translateX(22%);
         } @else if $offset == 'right' {
             right: 0;
             transform: translateX(calc(100% - $arrowBuffer));
