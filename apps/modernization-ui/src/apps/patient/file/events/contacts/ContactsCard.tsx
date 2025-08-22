@@ -84,9 +84,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
         className: styles['text-header'],
         sortable: true,
         value: (value) => maybeDisplayName(value.named),
-        render: (value) => (
-            <NavLink to={`/patient/${value.named.patientId}/summary`}>{maybeDisplayName(value.named)}</NavLink>
-        )
+        render: (value) => <NavLink to={`/patient/${value.named.patientId}`}>{maybeDisplayName(value.named)}</NavLink>
     },
     {
         ...DESCRIPTION,
