@@ -59,6 +59,7 @@
             background-color: colors.$primary-lightest;
         }
         .tabContent {
+            font-size: 1.75rem;
             &.active {
                 color: var(--tab-text-active-color);
             }
