@@ -16,7 +16,7 @@ export const MergeAlert = ({ patientId }: MergeAlertProps) => {
     );
 };
 
-const MergeAlertContent = ({ patientId }: { patientId: string | number }) => {
+const MergeAlertContent = ({ patientId }: MergeAlertProps) => {
     const nav = useNavigate();
     const { inMergeQueue, mergeGroup, loading } = usePatientMergeQueueStatus(patientId);
 
