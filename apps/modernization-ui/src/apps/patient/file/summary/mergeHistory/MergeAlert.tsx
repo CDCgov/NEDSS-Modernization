@@ -5,20 +5,21 @@ import { FeatureToggle } from 'feature';
 import { usePatientMergeQueueStatus } from './api/usePatientMergeQueueStatus';
 
 type MergeAlertProps = {
+    id: number;
     patientId: string | number;
 };
 
-export const MergeAlert = ({ patientId }: MergeAlertProps) => {
+export const MergeAlert = ({ id, patientId }: MergeAlertProps) => {
     return (
         <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
-            <MergeAlertContent patientId={patientId} />
+            <MergeAlertContent id={id} patientId={patientId} />
         </FeatureToggle>
     );
 };
 
-const MergeAlertContent = ({ patientId }: { patientId: string | number }) => {
+const MergeAlertContent = ({ id, patientId }: MergeAlertProps) => {
     const nav = useNavigate();
-    const { inMergeQueue, mergeGroup, loading } = usePatientMergeQueueStatus(patientId);
+    const { inMergeQueue, mergeGroup, loading } = usePatientMergeQueueStatus(id);
 
     if (loading || !inMergeQueue) return null;
 
