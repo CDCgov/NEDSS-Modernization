@@ -10,7 +10,7 @@ const PatientFile = () => {
     return (
         <ComponentSizingProvider>
             <PageTitle title="Patient file" />
-            <PatientFileProvider data={data}>
+            <PatientFileProvider data={data} key={data.id}>
                 <Outlet />
             </PatientFileProvider>
         </ComponentSizingProvider>
