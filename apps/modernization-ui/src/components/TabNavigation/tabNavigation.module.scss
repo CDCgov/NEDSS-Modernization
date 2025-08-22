@@ -49,6 +49,7 @@
 
 .medium {
     --tab-text-active-color: #{colors.$primary};
+    font-size: 1.125rem;
 
     gap: unset;
     .tab {
