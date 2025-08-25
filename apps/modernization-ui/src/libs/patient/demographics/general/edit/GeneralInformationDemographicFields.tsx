@@ -188,20 +188,18 @@ const GeneralInformationDemographicFields = ({
                 rules={maxLengthRule(16, labels.stateHIVCase)}
                 shouldUnregister
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
-                    <>
-                        <TextInputField
-                            label={labels.stateHIVCase}
-                            orientation={orientation}
-                            onBlur={onBlur}
-                            onChange={(value) => onChange({ value: value })}
-                            maxLength={16}
-                            value={isAllowed(value) ? value.value : undefined}
-                            id={name}
-                            name={name}
-                            error={error?.message}
-                            sizing={sizing}
-                        />
-                    </>
+                    <TextInputField
+                        label={labels.stateHIVCase}
+                        orientation={orientation}
+                        onBlur={onBlur}
+                        onChange={(value) => onChange({ value: value })}
+                        maxLength={16}
+                        value={isAllowed(value) ? value.value : undefined}
+                        id={name}
+                        name={name}
+                        error={error?.message}
+                        sizing={sizing}
+                    />
                 )}
             />
         </Permitted>
