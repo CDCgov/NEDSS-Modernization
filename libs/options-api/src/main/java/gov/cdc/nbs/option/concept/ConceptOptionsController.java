@@ -17,6 +17,18 @@ class ConceptOptionsController {
   }
 
   @Operation(
+      operationId = "addressUses",
+      summary = "Concept Options by Value Set",
+      description = "Provides address type options from the NBS Entity Locator Use Postal for Patients value set.",
+      tags = "ConceptOptions"
+  )
+  @GetMapping("nbs/api/options/concepts/EL_USE_PST_PAT")
+  ConceptOptionsResponse addressUses() {
+    Collection<ConceptOption> found = this.finder.find("EL_USE_PST_PAT", "BIR", "DTH");
+    return ConceptOptionsResponseMapper.asResponse("EL_USE_PST_PAT", found);
+  }
+
+  @Operation(
       operationId = "concepts",
       summary = "Concept Options by Value Set",
       description = "Provides options from Concepts grouped into a value set.",
