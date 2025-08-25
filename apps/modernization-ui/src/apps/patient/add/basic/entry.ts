@@ -2,6 +2,7 @@ import { today } from 'date';
 import { IdentificationEntry } from 'apps/patient/data';
 import { AdministrativeEntry } from 'apps/patient/data/entry';
 import { Selectable } from 'options';
+import { Sensitive } from 'libs/sensitive';
 
 type NameInformationEntry = {
     last?: string;
@@ -17,18 +18,18 @@ type BasicPersonalDetailsEntry = {
     deceased?: Selectable;
     deceasedOn?: string;
     maritalStatus?: Selectable;
-    stateHIVCase?: string;
+    stateHIVCase?: Sensitive<string>;
 };
 
 type BasicAddressEntry = {
-    address1?: string;
-    address2?: string;
-    city?: string;
-    county?: Selectable;
-    state?: Selectable;
-    zipcode?: string;
-    country?: Selectable;
-    censusTract?: string;
+    address1?: string | null;
+    address2?: string | null;
+    city?: string | null;
+    county?: Selectable | null;
+    state?: Selectable | null;
+    zipcode?: string | null;
+    country?: Selectable | null;
+    censusTract?: string | null;
 };
 
 type BasicWorkPhone = { phone: string; extension?: string };

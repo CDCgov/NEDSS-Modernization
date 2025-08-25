@@ -1,6 +1,6 @@
+import { initial, PatientDemographicsEntry, usePatientDemographicDefaults } from 'libs/patient/demographics';
 import { useCallback } from 'react';
 import { useLocation } from 'react-router';
-import { ExtendedNewPatientEntry, initial } from './entry';
 
 type Interaction = {
     /**
@@ -9,9 +9,9 @@ type Interaction = {
      *  1. Use the {@code extended} if present
      *  2. Otherwise use the initial values for Extended patient data entry.
      *
-     * @return  {ExtendedNewPatientEntry} The defaults values.
+     * @return  {PatientDemographicsEntry} The defaults values.
      */
-    initialize: () => ExtendedNewPatientEntry;
+    initialize: () => PatientDemographicsEntry;
 };
 
 /**
@@ -21,12 +21,13 @@ type Interaction = {
  */
 const useAddPatientExtendedDefaults = (): Interaction => {
     const location = useLocation();
+    const defaults = usePatientDemographicDefaults();
 
     const initialize = useCallback(() => {
         if (location.state?.extended) {
             return location.state?.extended;
         } else {
-            return initial();
+            return initial(defaults);
         }
     }, [location.state?.defaults]);
 

@@ -171,7 +171,7 @@ describe('when transforming entered basic patient data', () => {
                 administrative: { asOf: '04/13/2017' },
                 personalDetails: {
                     maritalStatus: { value: 'marital-status-value', name: 'marital-status-name' },
-                    stateHIVCase: 'state-hiv-case-value'
+                    stateHIVCase: { value: 'state-hiv-case-value' }
                 }
             };
 
@@ -559,7 +559,7 @@ describe('when transforming entered basic patient data', () => {
                 administrative: { asOf: '11/07/2019' },
                 identifications: [
                     {
-                        id: 'id-value',
+                        value: 'id-value',
                         type: { value: 'identification-type-value', name: 'identification-type-name' },
                         issuer: { value: 'issuer-value', name: 'issuer-name' }
                     }

@@ -1,4 +1,4 @@
-export type { RaceDemographic, HasRaceDemographics } from './race';
+export { initial, type RaceDemographic, type HasRaceDemographics } from './race';
 
 export { RaceDemographicCard } from './RaceDemographicCard';
 export type { RaceDemographicCardProps } from './RaceDemographicCard';

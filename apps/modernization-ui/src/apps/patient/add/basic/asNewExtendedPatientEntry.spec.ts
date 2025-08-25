@@ -104,13 +104,13 @@ describe('Basic form to extended transfer', () => {
         const date = today();
         const initial: BasicNewPatientEntry = {
             administrative: { asOf: date },
-            identifications: [{ type: asSelectable('ID'), issuer: asSelectable('test authority'), id: '12344' }]
+            identifications: [{ type: asSelectable('ID'), issuer: asSelectable('test authority'), value: '12344' }]
         };
 
         const result = asNewExtendedPatientEntry(initial);
 
         expect(result.identifications).toBeTruthy();
-        expect(result.identifications?.at(0)?.id).toBe('12344');
+        expect(result.identifications?.at(0)?.value).toBe('12344');
         expect(result.identifications?.at(0)?.issuer?.name).toBe('test authority');
         expect(result.identifications?.at(0)?.type?.name).toBe('ID');
     });
@@ -161,7 +161,7 @@ describe('Basic form to extended transfer', () => {
                 deceased: asSelectable('Y'),
                 deceasedOn: '01/01/2004',
                 maritalStatus: asSelectable('Anulled'),
-                stateHIVCase: '1234'
+                stateHIVCase: { value: '1234' }
             }
         };
 
@@ -169,7 +169,7 @@ describe('Basic form to extended transfer', () => {
 
         expect(result.administrative?.comment).toBe('test comments');
 
-        expect(result.birthAndSex).toEqual(
+        expect(result.sexBirth).toEqual(
             expect.objectContaining({
                 bornOn: '01/01/1999',
                 sex: expect.objectContaining({
@@ -193,7 +193,7 @@ describe('Basic form to extended transfer', () => {
         expect(result.general).toEqual(
             expect.objectContaining({
                 maritalStatus: expect.objectContaining({ name: 'Anulled' }),
-                stateHIVCase: '1234'
+                stateHIVCase: expect.objectContaining({ value: '1234' })
             })
         );
     });

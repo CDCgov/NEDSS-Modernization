@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
-import { CreatedPatient, Creator, NewPatient, Transformer } from './api';
+import { CreatedPatient, Creator } from './api';
+import { PatientDemographicsRequest } from 'libs/patient/demographics/request';
+import { Mapping } from 'utils';
 
 type Step<I> =
     | { status: 'requesting'; entry: I }
-    | { status: 'creating'; input: NewPatient }
+    | { status: 'creating'; input: PatientDemographicsRequest }
     | { status: 'created'; created: CreatedPatient }
     | { status: 'waiting' };
 
 type Action<I> =
     | { type: 'request'; entry: I }
-    | { type: 'create'; input: NewPatient }
+    | { type: 'create'; input: PatientDemographicsRequest }
     | { type: 'complete'; created: CreatedPatient }
     | { type: 'wait' };
 
@@ -46,7 +48,7 @@ type AddPatientInteraction<I> = AddPatientState & {
 };
 
 type AddPatientSettings<E> = {
-    transformer: Transformer<E>;
+    transformer: Mapping<E, PatientDemographicsRequest>;
     creator: Creator;
 };
 

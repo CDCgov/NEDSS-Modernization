@@ -1,7 +1,7 @@
 export { PhoneEmailDemographicCard } from './PhoneEmailDemographicCard';
 export type { PhoneEmailDemographicCardProps } from './PhoneEmailDemographicCard';
 
-export type { PhoneEmailDemographic, HasPhoneEmailDemographics } from './phoneEmails';
+export { type PhoneEmailDemographic, type HasPhoneEmailDemographics, initial } from './phoneEmails';
 
 export { PhoneEmailDemographicView } from './PhoneEmailDemographicView';
 export { PhoneEmailDemographicFields } from './edit/PhoneEmailDemographicFields';

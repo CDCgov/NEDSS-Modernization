@@ -40,7 +40,7 @@ jest.mock('options/location', () => ({
 const Fixture = ({ formValues }: { formValues?: Partial<ExtendedNewPatientEntry> }) => {
     const form = useForm<ExtendedNewPatientEntry>({
         mode: 'onBlur',
-        defaultValues: { birthAndSex: { multiple: { value: 'Y', name: 'Yes' } }, ...formValues }
+        defaultValues: { sexBirth: { multiple: { value: 'Y', name: 'Yes' } }, ...formValues }
     });
 
     return (

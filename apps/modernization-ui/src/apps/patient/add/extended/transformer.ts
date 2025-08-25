@@ -38,8 +38,8 @@ const transformer: Transformer<ExtendedNewPatientEntry> = (entry: ExtendedNewPat
     const races = asRaces(entry.races);
 
     const ethnicity = maybeAsEthnicity(entry.ethnicity);
-    const gender = maybeAsSex(entry.birthAndSex);
-    const birth = maybeBirth(entry.birthAndSex);
+    const gender = maybeAsSex(entry.sexBirth);
+    const birth = maybeBirth(entry.sexBirth);
     const mortality = maybeMortality(entry.mortality);
     const general = maybeGeneral(entry.general);
 

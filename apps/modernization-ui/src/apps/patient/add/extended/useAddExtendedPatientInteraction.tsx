@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext } from 'react';
 import { AddPatientInteraction } from 'apps/patient/add';
-import { ExtendedNewPatientEntry } from './entry';
 import { Created, Working } from '../useAddPatient';
+import { PatientDemographicsEntry } from 'libs/patient/demographics';
 
 type Invalid = {
     status: 'invalid';
@@ -17,7 +17,7 @@ type ValidationErrors = {
 };
 
 type AddExtendedPatientInteraction = AddExtendedPatientState &
-    Pick<AddPatientInteraction<ExtendedNewPatientEntry>, 'create'> & {
+    Pick<AddPatientInteraction<PatientDemographicsEntry>, 'create'> & {
         setSubFormState: (subFormState: Partial<SubFormDirtyState>) => void;
     };
 

@@ -5,7 +5,7 @@ import { BasicIdentificationEntry } from '../entry';
 const entry: BasicIdentificationEntry = {
     type: { name: 'Account number', value: 'AN' },
     issuer: { name: 'Texas', value: 'TX' },
-    id: '1122'
+    value: '1122'
 };
 
 describe('BasicIdentificationView', () => {

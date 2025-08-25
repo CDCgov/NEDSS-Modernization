@@ -3,8 +3,8 @@ import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 
 type IdentificationEntry = EffectiveDated & {
-    type: Selectable | null;
-    id: string | null;
+    type?: Selectable | null;
+    value?: string | null;
     issuer?: Selectable | null;
 };
 
@@ -14,7 +14,7 @@ const initial = (asOf: string = today()): Partial<IdentificationEntry> => ({
     asOf,
     type: undefined,
     issuer: undefined,
-    id: ''
+    value: ''
 });
 
 export { initial };

@@ -69,7 +69,7 @@ const identificationBasic = (initial: Partial<PatientCriteriaEntry>): BasicIdent
         ? [
               {
                   type: initial.identificationType,
-                  id: initial.identification
+                  value: initial.identification
               }
           ]
         : [];

@@ -1,27 +1,26 @@
 import { exists, isEmpty, orUndefined } from 'utils';
-import { Mapping, maybeMap, maybeMapAll } from 'utils/mapping';
-import { asValue, Selectable } from 'options';
+import { internalizeDate, today } from 'date';
+import { mapOr, Mapping, maybeMap, maybeMapAll, maybeMapEach } from 'utils/mapping';
+import { asSelectable, asValue, isEqual, Selectable } from 'options';
 import { LEGAL } from 'options/name/types';
 import { HOME as HOME_ADDRESS } from 'options/address/uses';
 import { HOUSE } from 'options/address/types';
 import { CELL_PHONE, PHONE, EMAIL } from 'options/phone/types';
 import { HOME as HOME_PHONE, MOBILE_CONTACT, PRIMARY_WORKPLACE } from 'options/phone/uses';
-import { Race } from 'apps/patient/data/race/api';
-import { NewPatient } from 'apps/patient/add/api';
+import { PatientDemographicsRequest } from 'libs/patient/demographics/request';
 import {
-    Address,
-    Birth,
-    Ethnicity,
-    GeneralInformation,
-    Identification,
-    Mortality,
-    Name,
-    PhoneEmail,
-    Sex
-} from 'apps/patient/data/api';
-
-import { asAdministrative } from 'apps/patient/data';
-
+    NameDemographicRequest,
+    BirthDemographicRequest,
+    SexDemographicRequest,
+    MortalityDemographicRequest,
+    GeneralInformationDemographicRequest,
+    AddressDemographicRequest,
+    EthnicityDemographicRequest,
+    IdentificationDemographicRequest,
+    PhoneEmailDemographicRequest,
+    RaceDemographicRequest
+} from 'libs/patient/demographics';
+import { asAdministrative } from 'libs/patient/demographics/administrative';
 import {
     BasicAddressEntry,
     BasicEthnicityRace,
@@ -31,20 +30,12 @@ import {
     NameInformationEntry,
     BasicPersonalDetailsEntry
 } from './entry';
+import { not } from 'utils/predicate';
+import { isAllowed, Sensitive } from 'libs/sensitive';
 
-const maybeMapEach =
-    <R, S>(...mappings: Mapping<R, S>[]) =>
-    (value?: R): NonNullable<S>[] => {
-        if (value) {
-            return mappings.reduce((previous, current) => {
-                const mapped = current(value);
-                return mapped ? [...previous, mapped] : previous;
-            }, [] as NonNullable<S>[]);
-        }
+const orElseToday = mapOr((value: string) => internalizeDate(value), today);
 
-        return [];
-    };
-
+const maybeAsAdministrative = maybeMap(asAdministrative);
 const maybeAsBirth = (asOf: string) => maybeMap(asBirth(asOf));
 const maybeAsGender = (asOf: string) => maybeMap(asGender(asOf));
 const maybeAsMortality = (asOf: string) => maybeMap(asMortality(asOf));
@@ -58,11 +49,10 @@ const asPhones = (asOf: string) => maybeMapEach(asHomePhone(asOf), asWorkPone(as
 
 const asIdentifications = (asOf: string) => maybeMapAll(asIdentification(asOf));
 
-const transformer = (entry: BasicNewPatientEntry): NewPatient => {
-    const administrative = asAdministrative(entry.administrative);
+const transformer = (entry: BasicNewPatientEntry): PatientDemographicsRequest => {
+    const asOf = orElseToday(entry.administrative.asOf);
 
-    const { asOf } = administrative;
-
+    const administrative = maybeAsAdministrative(entry.administrative);
     const names = asNames(asOf)(entry.name);
     const birth = maybeAsBirth(asOf)(entry.personalDetails);
     const gender = maybeAsGender(asOf)(entry.personalDetails);
@@ -91,7 +81,7 @@ const transformer = (entry: BasicNewPatientEntry): NewPatient => {
 
 const asName =
     (asOf: string) =>
-    (entry: NameInformationEntry): Name | undefined => {
+    (entry: NameInformationEntry): NameDemographicRequest | undefined => {
         if (!isEmpty(entry)) {
             const { first, middle, last, suffix } = entry;
             return {
@@ -107,7 +97,7 @@ const asName =
 
 const asBirth =
     (asOf: string) =>
-    (entry: BasicPersonalDetailsEntry): Birth | undefined => {
+    (entry: BasicPersonalDetailsEntry): BirthDemographicRequest | undefined => {
         const { bornOn, birthSex } = entry;
 
         if (bornOn || birthSex) {
@@ -121,7 +111,7 @@ const asBirth =
 
 const asGender =
     (asOf: string) =>
-    (entry: BasicPersonalDetailsEntry): Sex | undefined => {
+    (entry: BasicPersonalDetailsEntry): SexDemographicRequest | undefined => {
         const { currentSex } = entry;
 
         if (currentSex) {
@@ -134,7 +124,7 @@ const asGender =
 
 const asMortality =
     (asOf: string) =>
-    (entry: BasicPersonalDetailsEntry): Mortality | undefined => {
+    (entry: BasicPersonalDetailsEntry): MortalityDemographicRequest | undefined => {
         const { deceased, deceasedOn } = entry;
 
         if (deceased || deceasedOn) {
@@ -146,23 +136,32 @@ const asMortality =
         }
     };
 
+const asValueIfAllowed = (sensitive?: Sensitive<string>) => {
+    if (isAllowed(sensitive) && sensitive.value) {
+        return sensitive.value;
+    }
+};
+
 const asGeneral =
     (asOf: string) =>
-    (entry: BasicPersonalDetailsEntry): GeneralInformation | undefined => {
-        const { maritalStatus, stateHIVCase } = entry;
-        if (maritalStatus || stateHIVCase) {
+    (entry: BasicPersonalDetailsEntry): GeneralInformationDemographicRequest | undefined => {
+        const stateHIVCase = asValueIfAllowed(entry.stateHIVCase);
+
+        if (entry.maritalStatus || stateHIVCase) {
             return {
                 asOf,
                 stateHIVCase,
-                maritalStatus: asValue(maritalStatus)
+                maritalStatus: asValue(entry.maritalStatus)
             };
         }
     };
 
+const notDefaultCountry = not(isEqual(asSelectable('840')));
+
 const asAddress =
     (asOf: string) =>
-    (entry: BasicAddressEntry): Address | undefined => {
-        if (!isEmpty(entry)) {
+    (entry: BasicAddressEntry): AddressDemographicRequest | undefined => {
+        if (!isEmpty(entry) && notDefaultCountry(entry.country)) {
             const { state, county, country, address1, address2, city, zipcode, censusTract } = entry;
 
             return {
@@ -183,7 +182,7 @@ const asAddress =
 
 const asEthnicity =
     (asOf: string) =>
-    (entry: BasicEthnicityRace): Ethnicity | undefined => {
+    (entry: BasicEthnicityRace): EthnicityDemographicRequest | undefined => {
         const { ethnicity } = entry;
 
         if (exists(ethnicity)) {
@@ -197,7 +196,7 @@ const asEthnicity =
 
 const asRace =
     (asOf: string) =>
-    (entry: Selectable): Race | undefined => {
+    (entry: Selectable): RaceDemographicRequest | undefined => {
         if (exists(entry)) {
             return {
                 asOf,
@@ -209,7 +208,7 @@ const asRace =
 
 const asHomePhone =
     (asOf: string) =>
-    (entry: BasicPhoneEmail): PhoneEmail | undefined => {
+    (entry: BasicPhoneEmail): PhoneEmailDemographicRequest | undefined => {
         const { home } = entry;
 
         if (home) {
@@ -224,7 +223,7 @@ const asHomePhone =
 
 const asWorkPone =
     (asOf: string) =>
-    (entry: BasicPhoneEmail): PhoneEmail | undefined => {
+    (entry: BasicPhoneEmail): PhoneEmailDemographicRequest | undefined => {
         const { work } = entry;
 
         if (!isEmpty(entry.work)) {
@@ -240,7 +239,7 @@ const asWorkPone =
 
 const asCellPhone =
     (asOf: string) =>
-    (entry: BasicPhoneEmail): PhoneEmail | undefined => {
+    (entry: BasicPhoneEmail): PhoneEmailDemographicRequest | undefined => {
         const { cell } = entry;
 
         if (cell) {
@@ -255,7 +254,7 @@ const asCellPhone =
 
 const asEmail =
     (asOf: string) =>
-    (entry: BasicPhoneEmail): PhoneEmail | undefined => {
+    (entry: BasicPhoneEmail): PhoneEmailDemographicRequest | undefined => {
         const { email } = entry;
 
         if (email) {
@@ -270,14 +269,14 @@ const asEmail =
 
 const asIdentification =
     (asOf: string) =>
-    (entry: BasicIdentificationEntry): Identification | undefined => {
-        const { type, issuer, id } = entry;
+    (entry: BasicIdentificationEntry): IdentificationDemographicRequest | undefined => {
+        const { type, issuer, value } = entry;
 
-        if (exists(type) && id) {
+        if (exists(type) && value) {
             return {
                 asOf,
                 type: asValue(type),
-                value: id,
+                value,
                 issuer: asValue(issuer)
             };
         }

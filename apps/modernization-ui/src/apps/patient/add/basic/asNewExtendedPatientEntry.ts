@@ -1,23 +1,46 @@
-import { ExtendedNewPatientEntry } from '../extended';
-import { BasicNewPatientEntry } from './entry';
-import { AddressEntry, IdentificationEntry, NameEntry, PhoneEmailEntry, RaceEntry } from 'apps/patient/data';
+import { internalizeDate, today } from 'date';
+import { asSelectable, isEqual, Selectable } from 'options';
+import { exists, isEmpty, orNull, orUndefined } from 'utils';
+import { not } from 'utils/predicate';
+import { mapOr, maybeMapAll, maybeMapEach } from 'utils/mapping';
 import { LEGAL } from 'options/name/types';
 import { HOME as HOME_ADDRESS } from 'options/address/uses';
 import { HOUSE } from 'options/address/types';
 import { CELL_PHONE, PHONE, EMAIL } from 'options/phone/types';
 import { HOME as HOME_PHONE, MOBILE_CONTACT, PRIMARY_WORKPLACE } from 'options/phone/uses';
-import { isEmpty } from 'utils';
+import { IdentificationDemographic, PatientDemographicsEntry } from 'libs/patient/demographics';
+import { NameDemographic, initial as initialName } from 'libs/patient/demographics/name';
+import { AddressDemographic, initial as initialAddress } from 'libs/patient/demographics/address';
+import { PhoneEmailDemographic, initial as initialPhoneEmail } from 'libs/patient/demographics/phoneEmail';
+import { RaceDemographic, initial as initialRace } from 'libs/patient/demographics/race';
+import {
+    BasicAddressEntry,
+    BasicIdentificationEntry,
+    BasicNewPatientEntry,
+    BasicPhoneEmail,
+    NameInformationEntry
+} from './entry';
 
-const asNewExtendedPatientEntry = (initial: BasicNewPatientEntry): ExtendedNewPatientEntry => {
+const orElseToday = mapOr((value: string) => internalizeDate(value), today);
+
+const asNewExtendedPatientEntry = (initial: BasicNewPatientEntry): PatientDemographicsEntry => {
+    const asOf = orElseToday(initial.administrative.asOf);
+
+    const names = asNames(asOf)(initial.name);
+    const addresses = asAddresses(asOf)(initial.address);
+    const phoneEmails = asPhones(asOf)(initial.phoneEmail);
+    const races = asRaces(asOf)(initial.ethnicityRace?.races);
+    const identifications = asIdentifications(asOf)(initial.identifications);
+
     return {
         administrative: initial.administrative,
-        names: nameExtended(initial),
-        addresses: addressExtended(initial),
-        phoneEmails: phoneEmailsExtended(initial),
-        races: raceExtended(initial),
-        identifications: identificationExtended(initial),
+        names,
+        addresses,
+        phoneEmails,
+        races,
+        identifications,
         ethnicity: { asOf: initial.administrative.asOf, ethnicGroup: initial.ethnicityRace?.ethnicity, detailed: [] },
-        birthAndSex: {
+        sexBirth: {
             asOf: initial.administrative.asOf,
             bornOn: initial.personalDetails?.bornOn,
             sex: initial.personalDetails?.birthSex,
@@ -36,147 +59,140 @@ const asNewExtendedPatientEntry = (initial: BasicNewPatientEntry): ExtendedNewPa
     };
 };
 
-const identificationExtended = (initial: BasicNewPatientEntry): IdentificationEntry[] => {
-    const identifications: IdentificationEntry[] = [];
-
-    if (initial.identifications?.length ?? 0 > 0) {
-        initial.identifications?.map((identity) => {
-            if (!isEmpty({ issuer: identity.issuer, id: identity.id, type: identity.type })) {
-                identifications.push({
-                    asOf: initial.administrative.asOf,
-                    type: identity.type,
-                    issuer: identity.issuer,
-                    id: identity.id
-                });
-            }
-        });
-    }
-    return identifications;
-};
-
-const raceExtended = (initial: BasicNewPatientEntry): RaceEntry[] => {
-    const races: RaceEntry[] = [];
-
-    if (initial.ethnicityRace?.races?.length ?? 0 > 0) {
-        initial.ethnicityRace?.races?.map((race) => {
-            races.push({
-                id: new Date().getTime(),
-                asOf: initial.administrative.asOf,
-                race: race ?? null,
-                detailed: []
-            });
-        });
-    }
-    return races;
-};
-
-const phoneEmailsExtended = (initial: BasicNewPatientEntry): PhoneEmailEntry[] => {
-    const phoneEmails: PhoneEmailEntry[] = [];
-    if (
-        !isEmpty({
-            home: initial.phoneEmail?.home,
-            workNum: initial.phoneEmail?.work?.phone,
-            workExt: initial.phoneEmail?.work?.extension,
-            cell: initial.phoneEmail?.cell,
-            email: initial.phoneEmail?.email
-        })
-    ) {
-        if (initial.phoneEmail?.home) {
-            phoneEmails.push({
-                asOf: initial.administrative.asOf,
-                type: PHONE,
-                use: HOME_PHONE,
-                phoneNumber: initial.phoneEmail.home
-            });
+const asName =
+    (asOf: string) =>
+    (entry: NameInformationEntry): NameDemographic | undefined => {
+        if (!isEmpty(entry)) {
+            return {
+                ...initialName(() => asOf),
+                type: { ...LEGAL },
+                first: orNull(entry.first),
+                middle: orNull(entry.middle),
+                last: orNull(entry.last),
+                suffix: orNull(entry.suffix)
+            };
         }
+    };
 
-        if (initial.phoneEmail?.cell) {
-            phoneEmails.push({
-                asOf: initial.administrative.asOf,
-                type: CELL_PHONE,
-                use: MOBILE_CONTACT,
-                phoneNumber: initial.phoneEmail.cell
-            });
+const asNames = (asOf: string) => maybeMapEach(asName(asOf));
+
+const notDefaultCountry = not(isEqual(asSelectable('840')));
+
+const asAddress =
+    (asOf: string) =>
+    (entry: BasicAddressEntry): AddressDemographic | undefined => {
+        if (!isEmpty(entry) && notDefaultCountry(entry.country)) {
+            const { state, county, country, address1, address2, city, zipcode, censusTract } = entry;
+
+            return {
+                ...initialAddress(() => asOf),
+                type: { ...HOUSE },
+                use: { ...HOME_ADDRESS },
+                county: orNull(county),
+                state: orNull(state),
+                country: orNull(country),
+                address1: orNull(address1),
+                address2: orNull(address2),
+                city: orNull(city),
+                zipcode: orNull(zipcode),
+                censusTract: orNull(censusTract)
+            };
         }
+    };
 
-        if (initial.phoneEmail?.work?.phone) {
-            phoneEmails.push({
-                asOf: initial.administrative.asOf,
-                type: PHONE,
-                use: PRIMARY_WORKPLACE,
-                phoneNumber: initial.phoneEmail.work.phone,
-                extension: initial.phoneEmail.work.extension ?? undefined
-            });
+const asAddresses = (asOf: string) => maybeMapEach(asAddress(asOf));
+
+const asPhones = (asOf: string) => maybeMapEach(asHomePhone(asOf), asWorkPone(asOf), asCellPhone(asOf), asEmail(asOf));
+
+const asHomePhone =
+    (asOf: string) =>
+    (entry: BasicPhoneEmail): PhoneEmailDemographic | undefined => {
+        const { home } = entry;
+
+        if (home) {
+            return {
+                ...initialPhoneEmail(() => asOf),
+                type: { ...PHONE },
+                use: { ...HOME_PHONE },
+                phoneNumber: home
+            };
         }
+    };
 
-        if (initial.phoneEmail?.email) {
-            phoneEmails.push({
-                asOf: initial.administrative.asOf,
-                type: EMAIL,
-                use: HOME_PHONE,
-                email: initial.phoneEmail.email ?? undefined
-            });
+const asWorkPone =
+    (asOf: string) =>
+    (entry: BasicPhoneEmail): PhoneEmailDemographic | undefined => {
+        const { work } = entry;
+
+        if (!isEmpty(work)) {
+            return {
+                ...initialPhoneEmail(() => asOf),
+                type: { ...PHONE },
+                use: { ...PRIMARY_WORKPLACE },
+                phoneNumber: orNull(work?.phone),
+                extension: orNull(work?.extension)
+            };
         }
+    };
 
-        return phoneEmails;
-    }
+const asCellPhone =
+    (asOf: string) =>
+    (entry: BasicPhoneEmail): PhoneEmailDemographic | undefined => {
+        const { cell } = entry;
 
-    return [];
-};
+        if (cell) {
+            return {
+                ...initialPhoneEmail(() => asOf),
+                type: { ...CELL_PHONE },
+                use: { ...MOBILE_CONTACT },
+                phoneNumber: cell
+            };
+        }
+    };
 
-const nameExtended = (initial: BasicNewPatientEntry): NameEntry[] => {
-    if (
-        !isEmpty({
-            first: initial.name?.first,
-            last: initial.name?.last,
-            middle: initial.name?.middle,
-            suffix: initial.name?.suffix
-        })
-    ) {
-        return [
-            {
-                asOf: initial.administrative.asOf,
-                type: LEGAL,
-                first: initial.name?.first,
-                last: initial.name?.last,
-                middle: initial.name?.middle,
-                suffix: initial.name?.suffix
-            }
-        ];
-    }
-    return [];
-};
+const asEmail =
+    (asOf: string) =>
+    (entry: BasicPhoneEmail): PhoneEmailDemographic | undefined => {
+        const { email } = entry;
 
-const addressExtended = (initial: BasicNewPatientEntry): AddressEntry[] => {
-    if (
-        !isEmpty({
-            address1: initial.address?.address1,
-            address2: initial.address?.address2,
-            city: initial.address?.city,
-            state: initial.address?.state,
-            zipcode: initial.address?.zipcode,
-            county: initial.address?.county,
-            country: initial.address?.country
-        })
-    ) {
-        return [
-            {
-                asOf: initial.administrative.asOf,
-                type: HOUSE,
-                use: HOME_ADDRESS,
-                address1: initial.address?.address1 ?? undefined,
-                address2: initial.address?.address2 ?? undefined,
-                city: initial.address?.city ?? undefined,
-                state: initial.address?.state,
-                zipcode: initial.address?.zipcode ?? undefined,
-                county: initial.address?.county,
-                country: initial.address?.country,
-                censusTract: initial.address?.censusTract ?? undefined
-            }
-        ];
-    }
+        if (email) {
+            return {
+                ...initialPhoneEmail(() => asOf),
+                type: { ...EMAIL },
+                use: { ...HOME_PHONE },
+                email
+            };
+        }
+    };
 
-    return [];
-};
+const asRace =
+    (asOf: string) =>
+    (entry: Selectable): RaceDemographic | undefined => {
+        if (exists(entry)) {
+            return {
+                ...initialRace(() => asOf),
+                race: entry
+            };
+        }
+    };
+
+const asRaces = (asOf: string) => maybeMapAll(asRace(asOf));
+
+const asIdentifications = (asOf: string) => maybeMapAll(asIdentification(asOf));
+
+const asIdentification =
+    (asOf: string) =>
+    (entry: BasicIdentificationEntry): IdentificationDemographic | undefined => {
+        const { type, issuer, value } = entry;
+
+        if (exists(type) && value) {
+            return {
+                asOf,
+                type,
+                value,
+                issuer
+            };
+        }
+    };
 
 export { asNewExtendedPatientEntry };

@@ -6,11 +6,11 @@ import { Button } from 'design-system/button';
 import { PatientCreatedPanel } from 'apps/patient/add/PatientCreatedPanel';
 import { usePatientDataEntryMethod } from 'apps/patient/add/usePatientDataEntryMethod';
 import { AddPatientLayout } from 'apps/patient/add/layout';
-import { ExtendedNewPatientEntry } from './entry';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
+import { PatientDemographicsEntry } from 'libs/patient/demographics';
 
 const sections: NavSection[] = [
     { id: 'administrative', label: 'Administrative' },
@@ -30,7 +30,7 @@ export const AddPatientExtended = () => {
     const { initialize } = useAddPatientExtendedDefaults();
     const { toBasic } = usePatientDataEntryMethod();
 
-    const form = useForm<ExtendedNewPatientEntry>({
+    const form = useForm<PatientDemographicsEntry>({
         defaultValues: initialize(),
         mode: 'onBlur',
         reValidateMode: 'onBlur'

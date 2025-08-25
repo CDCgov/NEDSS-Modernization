@@ -1,7 +1,6 @@
 import { act } from 'react';
 import { renderHook } from '@testing-library/react';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
-import { ExtendedNewPatientEntry } from './entry';
 
 const setup = () => {
     return renderHook(() => useAddExtendedPatient());
@@ -25,7 +24,7 @@ describe('when adding patients with extended data', () => {
     it('should validate when attempting to create', async () => {
         const { result } = setup();
 
-        const entry: ExtendedNewPatientEntry = {
+        const entry = {
             administrative: { asOf: '04/13/2017', comment: 'entered' }
         };
 
@@ -39,7 +38,7 @@ describe('when adding patients with extended data', () => {
     it('should validate name sub form is not dirty when attempting to create', async () => {
         const { result } = setup();
 
-        const entry: ExtendedNewPatientEntry = {
+        const entry = {
             administrative: { asOf: '04/13/2017', comment: 'entered' }
         };
 
@@ -63,7 +62,7 @@ describe('when adding patients with extended data', () => {
     it('should validate address sub form is not dirty when attempting to create', async () => {
         const { result } = setup();
 
-        const entry: ExtendedNewPatientEntry = {
+        const entry = {
             administrative: { asOf: '04/13/2017', comment: 'entered' }
         };
 
@@ -86,7 +85,7 @@ describe('when adding patients with extended data', () => {
     it('should validate phone sub form is not dirty when attempting to create', async () => {
         const { result } = setup();
 
-        const entry: ExtendedNewPatientEntry = {
+        const entry = {
             administrative: { asOf: '04/13/2017', comment: 'entered' }
         };
 
@@ -109,7 +108,7 @@ describe('when adding patients with extended data', () => {
     it('should validate identification sub form is not dirty when attempting to create', async () => {
         const { result } = setup();
 
-        const entry: ExtendedNewPatientEntry = {
+        const entry = {
             administrative: { asOf: '04/13/2017', comment: 'entered' }
         };
 
@@ -133,7 +132,7 @@ describe('when adding patients with extended data', () => {
     it('should validate race sub form is not dirty when attempting to create', async () => {
         const { result } = setup();
 
-        const entry: ExtendedNewPatientEntry = {
+        const entry = {
             administrative: { asOf: '04/13/2017', comment: 'entered' }
         };
 
@@ -157,7 +156,7 @@ describe('when adding patients with extended data', () => {
     it('should revalidate when dirty state changed', async () => {
         const { result } = setup();
 
-        const entry: ExtendedNewPatientEntry = {
+        const entry = {
             administrative: { asOf: '04/13/2017', comment: 'entered' }
         };
 

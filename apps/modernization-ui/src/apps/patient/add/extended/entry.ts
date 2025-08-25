@@ -18,7 +18,7 @@ type ExtendedNewPatientEntry = {
     identifications?: IdentificationEntry[];
     races?: RaceEntry[];
     ethnicity?: EthnicityEntry;
-    birthAndSex?: BirthEntry & SexEntry;
+    sexBirth?: BirthEntry & SexEntry;
     mortality?: MortalityEntry;
     general?: GeneralInformationEntry;
 };
@@ -29,7 +29,7 @@ const initial = (asOf: string = today()) => ({
     administrative: {
         asOf: asOf
     },
-    birthAndSex: {
+    sexBirth: {
         asOf: asOf
     },
     ethnicity: initialEthnicity(asOf),

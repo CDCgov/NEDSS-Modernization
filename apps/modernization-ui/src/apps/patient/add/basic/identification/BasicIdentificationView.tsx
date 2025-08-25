@@ -11,7 +11,7 @@ export const BasicIdentificationView = ({ entry, sizing }: Props) => {
         <>
             <ValueView title="Type" value={entry.type?.name} sizing={sizing} required />
             <ValueView title="Assigning authority" value={entry.issuer?.name} sizing={sizing} />
-            <ValueView title="ID value" value={entry.id} sizing={sizing} required />
+            <ValueView title="ID value" value={entry.value} sizing={sizing} required />
         </>
     );
 };

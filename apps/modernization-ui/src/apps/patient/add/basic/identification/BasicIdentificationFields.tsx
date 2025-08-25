@@ -51,7 +51,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
             />
             <Controller
                 control={control}
-                name="id"
+                name="value"
                 rules={{ ...validateRequiredRule(ID_VALUE_LABEL), ...maxLengthRule(100, ID_VALUE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input

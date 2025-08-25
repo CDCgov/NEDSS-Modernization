@@ -1,24 +1,22 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { AddPatientState, useAddPatient, creator } from 'apps/patient/add';
-import { Creator, Transformer } from 'apps/patient/add/api';
-import { ExtendedNewPatientEntry } from './entry';
-import { transformer } from './transformer';
 import {
     AddExtendedPatientInteraction,
     AddExtendedPatientState,
     SubFormDirtyState,
     ValidationErrors
 } from './useAddExtendedPatientInteraction';
+import { PatientDemographicsEntry, transformer } from 'libs/patient/demographics';
 
 type ExtendedStep =
-    | { status: 'validating'; entry: ExtendedNewPatientEntry }
+    | { status: 'validating'; entry: PatientDemographicsEntry }
     | { status: 'revalidating' }
-    | { status: 'valid'; entry: ExtendedNewPatientEntry }
+    | { status: 'valid'; entry: PatientDemographicsEntry }
     | { status: 'invalid'; validationErrors: ValidationErrors }
     | { status: 'waiting' };
 
 type ExtendedAction =
-    | { type: 'validate'; entry: ExtendedNewPatientEntry }
+    | { type: 'validate'; entry: PatientDemographicsEntry }
     | { type: 'revalidate' }
     | { type: 'invalidate'; validationErrors: ValidationErrors }
     | { type: 'validated' };
@@ -82,7 +80,7 @@ const useAddExtendedPatient = (): AddExtendedPatientInteraction => {
 
     const state: AddExtendedPatientState = useMemo(() => evaluateState(step, addPatient), [step, addPatient]);
 
-    const create = useCallback((entry: ExtendedNewPatientEntry) => dispatch({ type: 'validate', entry }), [dispatch]);
+    const create = useCallback((entry: PatientDemographicsEntry) => dispatch({ type: 'validate', entry }), [dispatch]);
 
     return {
         ...state,
@@ -106,4 +104,3 @@ const evaluateState = (step: ExtendedStep, state: AddPatientState): AddExtendedP
 };
 
 export { useAddExtendedPatient };
-export type { Transformer, Creator };

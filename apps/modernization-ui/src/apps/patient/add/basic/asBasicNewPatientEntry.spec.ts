@@ -226,7 +226,7 @@ describe('when adding a new patient from a patient search', () => {
             expect.objectContaining({
                 identifications: expect.arrayContaining([
                     expect.objectContaining({
-                        id: 'identification-value',
+                        value: 'identification-value',
                         type: expect.objectContaining({
                             name: 'Identification type',
                             value: 'identification-type-value'

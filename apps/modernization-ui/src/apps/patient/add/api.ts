@@ -11,6 +11,7 @@ import {
     GeneralInformation
 } from 'apps/patient/data/api';
 import { Race } from 'apps/patient/data/race/api';
+import { PatientDemographicsRequest } from 'libs/patient/demographics/request';
 
 type NewPatient = {
     administrative?: Administrative;
@@ -35,7 +36,7 @@ type CreatedPatient = {
     };
 };
 
-type Transformer<E> = (entry: E) => NewPatient;
-type Creator = (input: NewPatient) => Promise<CreatedPatient>;
+type Transformer<E> = (entry: E) => PatientDemographicsRequest;
+type Creator = (input: PatientDemographicsRequest) => Promise<CreatedPatient>;
 
 export type { NewPatient, CreatedPatient, Transformer, Creator };
