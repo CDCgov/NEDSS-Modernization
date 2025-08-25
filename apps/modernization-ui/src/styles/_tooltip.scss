@@ -12,8 +12,8 @@ $bubbleWidth: calc($arrowWidth + 100%);
             left: 100%;
             transform: translateX(-100%);
         } @else if $offset == 'right' {
-            right: 0;
-            transform: translateX(calc(100% - $arrowBuffer));
+            left: 25%;
+            transform: translateX(-10%);
         } @else if $offset == 'center' {
             left: 50%;
             transform: translateX(-50%);
@@ -62,7 +62,7 @@ $bubbleWidth: calc($arrowWidth + 100%);
 
         font-weight: normal;
         font-size: 0.875rem;
-        line-height: 1.3;
+        line-height: 1.2;
     }
 
     &::after {
@@ -167,7 +167,7 @@ $bubbleWidth: calc($arrowWidth + 100%);
 
         &::after {
             border-top-width: $arrowWidth;
-            bottom: 101%;
+            bottom: 100%;
             transform: translateY(calc(-1 * #{$arrowWidth}));
             @include vertical-arrow();
         }
