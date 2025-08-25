@@ -31,7 +31,7 @@ public class ConceptOptionsVerificationSteps {
   @Then("the concept named {string} is not included")
   public void the_option_named_is_not_included(final String concept) throws Exception {
     this.response.active()
-        .andExpect(jsonPath("$.options[*].name", hasItem(not(equalToIgnoringCase(concept)))));
+        .andExpect(jsonPath("$.options[*].name", not(hasItem(equalToIgnoringCase(concept)))));
   }
 
   @Then("there are concepts available")
