@@ -85,9 +85,15 @@ public class PatientBirthDemographicsSteps {
 
   @Given("the patient was born in the city of {string}")
   public void city(final String city) {
+    city(city, LocalDate.now());
+  }
+
+  @Given("the patient was born in the city of {string} as of {localDate}")
+  public void city(final String city, final LocalDate asOf) {
     this.active.maybeActive().ifPresent(
         patient -> applier.withBirthLocation(
             patient,
+            asOf,
             city,
             null,
             null,
@@ -111,9 +117,15 @@ public class PatientBirthDemographicsSteps {
 
   @Given("the patient was born in the state of {state}")
   public void state(final String state) {
+    state(state, LocalDate.now());
+  }
+
+  @Given("the patient was born in the state of {state} as of {localDate}")
+  public void state(final String state, final LocalDate asOf) {
     this.active.maybeActive().ifPresent(
         patient -> applier.withBirthLocation(
             patient,
+            asOf,
             null,
             null,
             state,
