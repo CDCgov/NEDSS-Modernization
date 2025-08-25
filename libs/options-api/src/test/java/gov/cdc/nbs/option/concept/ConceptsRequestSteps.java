@@ -8,15 +8,13 @@ import org.springframework.test.web.servlet.ResultActions;
 
 public class ConceptsRequestSteps {
 
-  @Autowired
-  ConceptsRequest request;
+  private final ConceptsRequest request;
 
-  @Autowired
-  Active<ResultActions> response;
+  private final Active<ResultActions> response;
 
-  @Before("@request")
-  public void reset() {
-    response.reset();
+  ConceptsRequestSteps(final ConceptsRequest request, Active<ResultActions> response) {
+    this.request = request;
+    this.response = response;
   }
 
   @When("I request all concepts for the {string} value set")
