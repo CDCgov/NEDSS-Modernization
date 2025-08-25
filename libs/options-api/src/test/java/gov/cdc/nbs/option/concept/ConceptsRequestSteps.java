@@ -1,9 +1,7 @@
 package gov.cdc.nbs.option.concept;
 
 import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 
 public class ConceptsRequestSteps {
