@@ -63,7 +63,7 @@ const columns = (onClose: () => void): Column<PatientFileVaccinations>[] => [
         ...ORG_PROV,
         sortable: true,
         className: styles['text-header'],
-        value: (value) => value.organization,
+        value: (value) => value.organization ?? displayProvider(value.provider),
         render: (value) => (
             <Shown when={exists(value.organization) || exists(value.provider)} fallback={displayNoData()}>
                 <MaybeLabeledValue orientation="vertical" label="Organization">
