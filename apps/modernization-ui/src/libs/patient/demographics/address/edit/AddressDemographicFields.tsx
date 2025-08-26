@@ -29,7 +29,6 @@ const AddressDemographicFields = ({
 
     useEffect(() => {
         if (selectedState?.value !== entry?.state?.value) {
-            //  when the category differs from the entry, clear the details
             setValue('county', null);
         }
         options.location.state(selectedState);

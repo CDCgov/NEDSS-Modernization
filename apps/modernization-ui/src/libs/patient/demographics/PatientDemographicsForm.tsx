@@ -36,6 +36,7 @@ type PatientDemographicsFormProps = {
     pending: PendingFormEntryInteraction;
     defaults: PatientDemographicsDefaults;
     form: UseFormReturn<PatientDemographicsEntry>;
+    entry?: PatientDemographicsEntry;
     sizing?: Sizing;
 } & JSX.IntrinsicElements['div'];
 
@@ -43,6 +44,7 @@ const PatientDemographicsForm = ({
     pending,
     defaults,
     form,
+    entry,
     sizing,
     className,
     ...remaining
@@ -112,8 +114,14 @@ const PatientDemographicsForm = ({
                     isValid={pending.onValid(RACE_ENTRY)}
                 />
                 <EditEthnicityDemographicCard id="ethnicity" form={form} sizing={sizing} />
-                <EditSexBirthDemographicCard id="sex-birth" form={form} sizing={sizing} ageResolver={ageResolver} />
-                <EditMortalityDemographicCard id="mortality" form={form} sizing={sizing} />
+                <EditSexBirthDemographicCard
+                    id="sex-birth"
+                    form={form}
+                    sizing={sizing}
+                    ageResolver={ageResolver}
+                    entry={entry?.sexBirth}
+                />
+                <EditMortalityDemographicCard id="mortality" form={form} sizing={sizing} entry={entry?.mortality} />
                 <EditGeneralInformationDemographicCard id="general-information" form={form} sizing={sizing} />
                 <BackToTop sizing={sizing} target={content.current} />
             </div>
