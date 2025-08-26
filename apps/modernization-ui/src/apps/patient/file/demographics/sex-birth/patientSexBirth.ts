@@ -1,10 +1,13 @@
-import { PatientFileService } from 'generated';
+import { get, maybeJson } from 'libs/api';
 import { asOfAgeResolver } from 'date';
 import { PatientFileSexBirthDemographic } from './PatientFileSexBirthDemographic';
 
 const patientSexBirth = (patient: number): Promise<PatientFileSexBirthDemographic> =>
-    PatientFileService.sexBirthDemographics({ patient }).then((response) => ({
-        demographic: response,
-        ageResolver: asOfAgeResolver(response?.deceasedOn)
-    }));
+    fetch(get(`/nbs/api/patients/${patient}/demographics/mortality`))
+        .then(maybeJson)
+        .then((response) => ({
+            demographic: response,
+            ageResolver: asOfAgeResolver(response?.deceasedOn)
+        }));
+
 export { patientSexBirth };
