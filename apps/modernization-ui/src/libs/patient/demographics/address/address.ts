@@ -1,21 +1,23 @@
 import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options';
-import { EffectiveDated } from 'utils';
+import { EffectiveDated, orNull } from 'utils';
+import { Nullable } from 'utils/object';
 
-type AddressDemographic = EffectiveDated & {
-    identifier?: number;
-    type: Selectable;
-    use: Selectable;
-    address1?: string;
-    address2?: string;
-    city?: string;
-    state?: Selectable;
-    zipcode?: string;
-    county?: Selectable;
-    censusTract?: string;
-    country?: Selectable;
-    comment?: string;
-};
+type AddressDemographic = EffectiveDated &
+    Nullable<{
+        identifier?: number;
+        type: Selectable;
+        use: Selectable;
+        address1: string;
+        address2: string;
+        city: string;
+        state: Selectable;
+        zipcode: string;
+        county: Selectable;
+        censusTract: string;
+        country: Selectable;
+        comment?: string;
+    }>;
 
 type HasAddressDemographics = {
     addresses?: AddressDemographic[];
@@ -28,19 +30,19 @@ type AddressDemographicDefaults = {
     country?: Selectable;
 };
 
-const initial = (asOf: Supplier<string>, defaults?: AddressDemographicDefaults): Partial<AddressDemographic> => ({
+const initial = (asOf: Supplier<string>, defaults?: AddressDemographicDefaults): AddressDemographic => ({
     asOf: asOf(),
-    type: undefined,
-    use: undefined,
-    address1: undefined,
-    address2: undefined,
-    city: undefined,
-    state: defaults?.state,
-    zipcode: undefined,
-    county: undefined,
-    country: defaults?.country,
-    censusTract: undefined,
-    comment: undefined
+    type: null,
+    use: null,
+    address1: null,
+    address2: null,
+    city: null,
+    state: orNull(defaults?.state),
+    zipcode: null,
+    county: null,
+    country: orNull(defaults?.country),
+    censusTract: null,
+    comment: null
 });
 
 export type { AddressDemographicDefaults };

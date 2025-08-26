@@ -1,15 +1,17 @@
-import { today } from 'date';
+import { Supplier } from 'libs/supplying';
+import { EffectiveDated } from 'utils';
+import { Nullable } from 'utils/object';
 
-type AdministrativeInformation = {
-    asOf?: string;
-    comment?: string;
-};
+type AdministrativeInformation = EffectiveDated &
+    Nullable<{
+        comment: string;
+    }>;
 
 type HasAdministrativeInformation = { administrative?: AdministrativeInformation };
 
 export type { AdministrativeInformation, HasAdministrativeInformation };
 
-const initial = (asOf: string = today()): AdministrativeInformation => ({ asOf });
+const initial = (asOf: Supplier<string>): AdministrativeInformation => ({ asOf: asOf(), comment: null });
 
 export { initial };
 
