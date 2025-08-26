@@ -3,18 +3,16 @@ import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 import { Nullable } from 'utils/object';
 
-type NameDemographic = EffectiveDated &
-    Nullable<{
-        sequence?: number;
-        type: Selectable;
-        prefix: Selectable;
-        first: string;
-        middle: string;
-        secondMiddle: string;
-        last: string;
-        secondLast: string;
-        suffix: Selectable;
-        degree: Selectable;
+type NameDemographic = EffectiveDated & { sequence?: number } & Nullable<{
+        type?: Selectable;
+        prefix?: Selectable;
+        first?: string;
+        middle?: string;
+        secondMiddle?: string;
+        last?: string;
+        secondLast?: string;
+        suffix?: Selectable;
+        degree?: Selectable;
     }>;
 
 type HasNameDemographics = {

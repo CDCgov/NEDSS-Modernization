@@ -33,7 +33,7 @@ const MortalityDemographicFields = ({
 
     useEffect(() => {
         if (!selectedState) {
-            form.setValue('mortality.county', undefined);
+            form.setValue('mortality.county', null);
         }
         options.location.state(selectedState);
     }, [selectedState?.value, options.location.state, form.setValue]);

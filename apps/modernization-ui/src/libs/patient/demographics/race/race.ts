@@ -1,14 +1,8 @@
 import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
-import { Nullable } from 'utils/object';
 
-type RaceDemographic = EffectiveDated &
-    Nullable<{
-        id: number;
-        race: Selectable;
-        detailed: Selectable[];
-    }>;
+type RaceDemographic = EffectiveDated & { id: number; race: Selectable | null; detailed: Selectable[] };
 
 type HasRaceDemographics = {
     races?: RaceDemographic[];

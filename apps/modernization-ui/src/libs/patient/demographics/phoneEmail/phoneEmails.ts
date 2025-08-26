@@ -3,17 +3,15 @@ import { Nullable } from 'utils/object';
 import { Selectable } from 'options';
 import { Supplier } from 'libs/supplying';
 
-type PhoneEmailDemographic = EffectiveDated &
-    Nullable<{
-        identifier?: number;
-        type: Selectable;
-        use: Selectable;
-        countryCode: string;
-        phoneNumber: string;
-        extension: string;
-        email: string;
-        url: string;
-        comment: string;
+type PhoneEmailDemographic = EffectiveDated & { identifier?: number } & Nullable<{
+        type?: Selectable;
+        use?: Selectable;
+        countryCode?: string;
+        phoneNumber?: string;
+        extension?: string;
+        email?: string;
+        url?: string;
+        comment?: string;
     }>;
 
 type HasPhoneEmailDemographics = {

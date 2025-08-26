@@ -3,12 +3,10 @@ import { Selectable } from 'options/selectable';
 import { EffectiveDated } from 'utils';
 import { Nullable } from 'utils/object';
 
-type IdentificationDemographic = EffectiveDated &
-    Nullable<{
-        sequence?: number;
-        type: Selectable;
-        issuer: Selectable;
-        value: string;
+type IdentificationDemographic = EffectiveDated & { sequence?: number } & Nullable<{
+        type?: Selectable;
+        issuer?: Selectable;
+        value?: string;
     }>;
 
 type HasIdentificationDemographics = {

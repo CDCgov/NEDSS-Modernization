@@ -3,19 +3,18 @@ import { Selectable } from 'options';
 import { EffectiveDated, orNull } from 'utils';
 import { Nullable } from 'utils/object';
 
-type AddressDemographic = EffectiveDated &
+type AddressDemographic = { identifier?: number } & EffectiveDated &
     Nullable<{
-        identifier?: number;
-        type: Selectable;
-        use: Selectable;
-        address1: string;
-        address2: string;
-        city: string;
-        state: Selectable;
-        zipcode: string;
-        county: Selectable;
-        censusTract: string;
-        country: Selectable;
+        type?: Selectable;
+        use?: Selectable;
+        address1?: string;
+        address2?: string;
+        city?: string;
+        state?: Selectable;
+        zipcode?: string;
+        county?: Selectable;
+        censusTract?: string;
+        country?: Selectable;
         comment?: string;
     }>;
 

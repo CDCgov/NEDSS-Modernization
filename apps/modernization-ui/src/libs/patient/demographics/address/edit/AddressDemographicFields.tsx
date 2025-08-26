@@ -30,7 +30,7 @@ const AddressDemographicFields = ({
     useEffect(() => {
         if (selectedState?.value !== entry?.state?.value) {
             //  when the category differs from the entry, clear the details
-            setValue('county', undefined);
+            setValue('county', null);
         }
         options.location.state(selectedState);
     }, [selectedState?.value, options.location.state]);

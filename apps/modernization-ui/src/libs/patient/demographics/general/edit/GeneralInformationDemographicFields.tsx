@@ -78,7 +78,7 @@ const GeneralInformationDemographicFields = ({
         <Controller
             control={form.control}
             name="general.adultsInResidence"
-            rules={numericRangeRule(0, 99999)}
+            rules={numericRangeRule(0, 9999)}
             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                 <NumericInput
                     label={labels.adultsInResidence}
@@ -89,6 +89,7 @@ const GeneralInformationDemographicFields = ({
                     id={name}
                     name={name}
                     min="0"
+                    max="9999"
                     error={error?.message}
                     sizing={sizing}
                 />
@@ -97,7 +98,7 @@ const GeneralInformationDemographicFields = ({
         <Controller
             control={form.control}
             name="general.childrenInResidence"
-            rules={numericRangeRule(0, 99999)}
+            rules={numericRangeRule(0, 9999)}
             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                 <NumericInput
                     label={labels.childrenInResidence}
@@ -108,6 +109,7 @@ const GeneralInformationDemographicFields = ({
                     id={name}
                     name={name}
                     min="0"
+                    max="9999"
                     error={error?.message}
                     sizing={sizing}
                 />

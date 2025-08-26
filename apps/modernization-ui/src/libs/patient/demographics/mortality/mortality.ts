@@ -6,7 +6,6 @@ import { Nullable } from 'utils/object';
 
 type MortalityDemographic = EffectiveDated &
     Nullable<{
-        asOf?: string;
         deceased?: Selectable;
         deceasedOn?: string;
     }> &

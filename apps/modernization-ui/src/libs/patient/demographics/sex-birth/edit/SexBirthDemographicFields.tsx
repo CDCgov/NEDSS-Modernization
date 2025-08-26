@@ -37,14 +37,14 @@ const SexBirthDemographicFields = ({
 
     useEffect(() => {
         if (!selectedState) {
-            form.setValue('sexBirth.county', undefined);
+            form.setValue('sexBirth.county', null);
         }
         options.location.state(selectedState);
     }, [selectedState?.value, options.location.state, form.setValue]);
 
     useEffect(() => {
         if (!isUnknownGender(selectedCurrentGender)) {
-            form.setValue('sexBirth.unknownReason', undefined);
+            form.setValue('sexBirth.unknownReason', null);
         }
     }, [selectedCurrentGender, form.setValue]);
 

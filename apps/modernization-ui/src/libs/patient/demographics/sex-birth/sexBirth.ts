@@ -6,18 +6,18 @@ import { Nullable } from 'utils/object';
 
 type SexDemographic = EffectiveDated &
     Nullable<{
-        current: Selectable;
+        current?: Selectable;
         unknownReason?: Selectable;
-        transgenderInformation: Selectable;
-        additionalGender: string;
+        transgenderInformation?: Selectable;
+        additionalGender?: string;
     }>;
 
 type BirthDemographic = EffectiveDated &
     Nullable<{
-        bornOn: string;
-        sex: Selectable;
-        multiple: Selectable;
-        order: number;
+        bornOn?: string;
+        sex?: Selectable;
+        multiple?: Selectable;
+        order?: number;
     }> &
     Nullable<Location>;
 

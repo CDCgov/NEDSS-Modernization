@@ -5,10 +5,9 @@ import { Nullable } from 'utils/object';
 
 type EthnicityDemographic = EffectiveDated &
     Nullable<{
-        ethnicGroup: Selectable;
+        ethnicGroup?: Selectable;
         unknownReason?: Selectable;
-        detailed: Selectable[];
-    }>;
+    }> & { detailed: Selectable[] };
 
 type HasEthnicityDemographic = {
     ethnicity?: EthnicityDemographic;

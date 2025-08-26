@@ -8,8 +8,8 @@ import { Validator } from './validation';
  * @return {Validator}
  */
 const validateIfPresent =
-    <I>(validator: Validator<I>): Validator<I | undefined> =>
-    (value?: I): boolean | string =>
+    <I>(validator: Validator<I>): Validator<I | null | undefined> =>
+    (value?: I | null): boolean | string =>
         value ? validator(value) : true;
 
 export { validateIfPresent };

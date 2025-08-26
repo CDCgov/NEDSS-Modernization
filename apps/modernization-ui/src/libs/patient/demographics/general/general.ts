@@ -6,15 +6,15 @@ import { Sensitive } from 'libs/sensitive';
 
 type GeneralInformationDemographic = EffectiveDated &
     Nullable<{
-        maritalStatus: Selectable;
-        maternalMaidenName: string;
-        adultsInResidence: number;
-        childrenInResidence: number;
-        primaryOccupation: Selectable;
-        educationLevel: Selectable;
-        primaryLanguage: Selectable;
-        speaksEnglish: Selectable;
-        stateHIVCase: Sensitive<string>;
+        maritalStatus?: Selectable;
+        maternalMaidenName?: string;
+        adultsInResidence?: number;
+        childrenInResidence?: number;
+        primaryOccupation?: Selectable;
+        educationLevel?: Selectable;
+        primaryLanguage?: Selectable;
+        speaksEnglish?: Selectable;
+        stateHIVCase?: Sensitive<string>;
     }>;
 
 type HasGeneralInformationDemographic = { general?: GeneralInformationDemographic };

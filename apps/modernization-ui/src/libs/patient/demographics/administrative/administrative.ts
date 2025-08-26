@@ -1,13 +1,11 @@
 import { Supplier } from 'libs/supplying';
 import { EffectiveDated } from 'utils';
-import { Nullable } from 'utils/object';
 
-type AdministrativeInformation = EffectiveDated &
-    Nullable<{
-        comment: string;
-    }>;
+type AdministrativeInformation = EffectiveDated & {
+    comment?: string | null;
+};
 
-type HasAdministrativeInformation = { administrative?: AdministrativeInformation };
+type HasAdministrativeInformation = { administrative?: Partial<AdministrativeInformation> };
 
 export type { AdministrativeInformation, HasAdministrativeInformation };
 
