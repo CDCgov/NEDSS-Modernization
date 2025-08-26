@@ -1,13 +1,13 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { Permitted } from 'libs/permission';
-import { onChangeAdapter } from 'libs/form';
-import { NumericInput, TextInputField } from 'design-system/input';
+import { GeneralInformationEntry } from '../entry';
+import { NumericInput } from 'design-system/input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { useGeneralCodedValues } from './useGeneralCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
-import { GeneralInformationEntry } from '../entry';
+import { Input } from 'components/FormInputs/Input';
 
 const AS_OF_DATE_LABEL = 'General information as of';
 const MATERNAL_MAIDEN_NAME_LABEL = "Mother's maiden name";
@@ -30,7 +30,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         label={AS_OF_DATE_LABEL}
                         orientation={orientation}
                         value={value}
-                        onChange={onChangeAdapter(onChange)}
+                        onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
                         required
@@ -47,7 +47,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         label="Marital status"
                         orientation={orientation}
                         value={value}
-                        onChange={onChangeAdapter(onChange)}
+                        onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
@@ -61,15 +61,17 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                 name="general.maternalMaidenName"
                 rules={maxLengthRule(50, MATERNAL_MAIDEN_NAME_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <TextInputField
+                    <Input
                         label={MATERNAL_MAIDEN_NAME_LABEL}
                         orientation={orientation}
                         placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onBlur={onBlur}
-                        onChange={onChangeAdapter(onChange)}
-                        value={value}
+                        onChange={onChange}
+                        type="text"
+                        defaultValue={value}
                         id={name}
                         name={name}
+                        htmlFor={name}
                         error={error?.message}
                         sizing={sizing}
                     />
@@ -123,7 +125,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         label="Primary occupation"
                         orientation={orientation}
                         value={value}
-                        onChange={onChangeAdapter(onChange)}
+                        onChange={onChange}
                         onBlur={onBlur}
                         options={coded.primaryOccupations}
                         id={name}
@@ -140,7 +142,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         label="Highest level of education"
                         orientation={orientation}
                         value={value}
-                        onChange={onChangeAdapter(onChange)}
+                        onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
@@ -157,7 +159,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         label="Primary language"
                         orientation={orientation}
                         value={value}
-                        onChange={onChangeAdapter(onChange)}
+                        onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
@@ -174,7 +176,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         label="Speaks English"
                         orientation={orientation}
                         value={value}
-                        onChange={onChangeAdapter(onChange)}
+                        onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
@@ -189,14 +191,16 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                     name="general.stateHIVCase"
                     rules={maxLengthRule(16, STATE_HIV_CASE_LABEL)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                        <TextInputField
+                        <Input
                             label={STATE_HIV_CASE_LABEL}
                             orientation={orientation}
                             placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onBlur={onBlur}
-                            onChange={onChangeAdapter(onChange)}
+                            onChange={onChange}
                             maxLength={16}
-                            value={value}
+                            type="text"
+                            defaultValue={value}
+                            htmlFor={name}
                             id={name}
                             name={name}
                             error={error?.message}

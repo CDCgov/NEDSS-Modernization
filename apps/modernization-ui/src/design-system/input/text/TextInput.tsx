@@ -36,7 +36,7 @@ const TextInput = ({
     const current = value ?? '';
 
     const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
-        const next = event.target.value ?? '';
+        const next = event.target.value ?? null;
         onChange?.(next);
     };
 
