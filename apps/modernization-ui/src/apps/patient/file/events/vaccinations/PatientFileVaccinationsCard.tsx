@@ -14,6 +14,9 @@ import { Associations } from 'libs/events/investigations/associated';
 import { PatientFileVaccinations } from './vaccinations';
 
 import styles from './patient-file-vaccinations.module.scss';
+import { Shown } from 'conditional-render';
+import { exists } from 'utils';
+import { displayNoData } from 'design-system/data';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };
@@ -62,14 +65,14 @@ const columns = (onClose: () => void): Column<PatientFileVaccinations>[] => [
         className: styles['text-header'],
         value: (value) => value.organization,
         render: (value) => (
-            <>
+            <Shown when={exists(value.organization) || exists(value.provider)} fallback={displayNoData()}>
                 <MaybeLabeledValue orientation="vertical" label="Organization">
                     {value.organization}
                 </MaybeLabeledValue>
                 <MaybeLabeledValue orientation="vertical" label="Provider">
                     {displayProvider(value.provider)}
                 </MaybeLabeledValue>
-            </>
+            </Shown>
         )
     },
     {
