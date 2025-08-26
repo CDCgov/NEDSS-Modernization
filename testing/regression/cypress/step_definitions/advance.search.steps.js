@@ -233,7 +233,7 @@ Given(
 Given(
   "the user navigate to the patient profile page for {string}",
   (string) => {    
-    cy.visit(`/patient-profile/${string}`);
+    cy.visit(`/patient/${string}/summary`);
   }
 );
 
