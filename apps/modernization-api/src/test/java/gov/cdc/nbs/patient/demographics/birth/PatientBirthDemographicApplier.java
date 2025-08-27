@@ -146,6 +146,8 @@ class PatientBirthDemographicApplier {
                       last_chg_time,
                       record_status_cd,
                       record_status_time,
+                      status_cd,
+                      status_time,
                       as_of_date,
                       use_cd,
                       class_cd
@@ -156,6 +158,8 @@ class PatientBirthDemographicApplier {
                       getDate(),
                       getDate(),
                       'ACTIVE',
+                      getDate(),
+                      'A',
                       getDate(),
                       :asOf,
                       'BIR',

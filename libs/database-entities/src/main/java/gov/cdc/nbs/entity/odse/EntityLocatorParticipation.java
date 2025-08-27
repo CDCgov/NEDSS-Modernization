@@ -137,6 +137,7 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
   protected void inactivate(final PatientCommand command) {
     changed(command);
     this.recordStatus.inactivate(command.requestedOn());
+    this.status.inactivate(command.requestedOn());
   }
 
 }
