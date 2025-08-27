@@ -1,7 +1,6 @@
 import { act } from 'react';
 import { renderHook } from '@testing-library/react';
 import { AddPatientSettings, useAddPatient } from './useAddPatient';
-import { NewPatient } from './api';
 
 type Example = {};
 
@@ -20,7 +19,7 @@ describe('when adding patients with extended data', () => {
     });
 
     it('should transition to created when creation is completed', async () => {
-        const input: NewPatient = { administrative: { asOf: '04/13/2017', comment: 'transformed' } };
+        const input = { administrative: { asOf: '04/13/2017', comment: 'transformed' } };
 
         const transformer = jest.fn();
 
