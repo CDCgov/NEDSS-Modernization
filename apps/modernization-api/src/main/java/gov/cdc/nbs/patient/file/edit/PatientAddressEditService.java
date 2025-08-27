@@ -18,14 +18,19 @@ import static gov.cdc.nbs.patient.demographics.address.AddressDemographicPatient
 @Component
 class PatientAddressEditService {
 
+  private static long identifiedBy(final PostalEntityLocatorParticipation participation) {
+    return participation.getId().getLocatorUid();
+  }
+
   private static long identifiedBy(final AddressDemographic demographic) {
     return demographic.identifier() == null ? demographic.hashCode() : demographic.identifier();
   }
 
   private final ChangeResolver<PostalEntityLocatorParticipation, AddressDemographic, Long> resolver = ChangeResolver
       .ofDifferingTypes(
-          PostalEntityLocatorParticipation::identifier,
-          PatientAddressEditService::identifiedBy);
+          PatientAddressEditService::identifiedBy,
+          PatientAddressEditService::identifiedBy
+      );
 
   private final AddressIdentifierGenerator addressIdentifierGenerator;
 

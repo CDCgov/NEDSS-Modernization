@@ -1,13 +1,5 @@
 package gov.cdc.nbs.patient.file.edit;
 
-import static gov.cdc.nbs.patient.demographics.phone.PhoneDemographicPatientCommandMapper.asAddPhone;
-import static gov.cdc.nbs.patient.demographics.phone.PhoneDemographicPatientCommandMapper.asUpdatePhone;
-import static gov.cdc.nbs.patient.demographics.phone.PhoneDemographicPatientCommandMapper.asDeletePhone;
-
-import java.util.Collection;
-
-import org.springframework.stereotype.Component;
-
 import gov.cdc.nbs.change.ChangeResolver;
 import gov.cdc.nbs.change.Changes;
 import gov.cdc.nbs.entity.odse.Person;
@@ -15,9 +7,18 @@ import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+
+import static gov.cdc.nbs.patient.demographics.phone.PhoneDemographicPatientCommandMapper.*;
 
 @Component
 class PatientPhoneEditService {
+
+  private static long identifiedBy(final TeleEntityLocatorParticipation participation) {
+    return participation.getId().getLocatorUid();
+  }
 
   private static long identifiedBy(final PhoneDemographic demographic) {
     return demographic.identifier() == null ? demographic.hashCode() : demographic.identifier();
@@ -25,8 +26,9 @@ class PatientPhoneEditService {
 
   private final ChangeResolver<TeleEntityLocatorParticipation, PhoneDemographic, Long> resolver = ChangeResolver
       .ofDifferingTypes(
-          TeleEntityLocatorParticipation::identifier,
-          PatientPhoneEditService::identifiedBy);
+          PatientPhoneEditService::identifiedBy,
+          PatientPhoneEditService::identifiedBy
+      );
 
   private final PhoneIdentifierGenerator phoneIdentifierGenerator;
 

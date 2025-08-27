@@ -24,12 +24,8 @@ import java.util.function.Predicate;
 @Getter
 @Entity
 @Table(name = "Entity_id")
-@SuppressWarnings(
-    //  The PatientIdentificationHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
-)
 @EntityListeners(PatientIdentificationHistoryListener.class)
-public class EntityId {
+public class EntityId implements Identifiable<EntityIdId> {
 
   public static Predicate<EntityId> active() {
     return input -> input.recordStatus.isActive();
@@ -49,7 +45,7 @@ public class EntityId {
 
   @Column(name = "assigning_authority_cd", length = 199)
   private String assigningAuthorityCd;
-  
+
   @Column(name = "root_extension_txt", length = 100)
   private String rootExtensionTxt;
 
@@ -104,6 +100,11 @@ public class EntityId {
     this.recordStatus.inactivate(deleted.requestedOn());
 
     this.audit.changed(deleted.requester(), deleted.requestedOn());
+  }
+
+  @Override
+  public EntityIdId identifier() {
+    return this.id;
   }
 
   public Audit audit() {
