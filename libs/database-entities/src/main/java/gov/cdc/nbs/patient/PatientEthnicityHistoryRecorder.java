@@ -24,22 +24,26 @@ class PatientEthnicityHistoryRecorder {
               user_affiliation_txt
           )
           select
-              person_uid,
-              ethnic_group_cd,
-              (select count(*) + 1 from Person_ethnic_group_hist where person_uid = :patient and ethnic_group_cd = :group),
-              add_reason_cd,
-              add_time,
-              add_user_id,
-              ethnic_group_desc_txt,
-              last_chg_reason_cd,
-              last_chg_time,
-              last_chg_user_id,
-              record_status_cd,
-              record_status_time,
-              user_affiliation_txt
-          from Person_ethnic_group
-          where person_uid = :patient
-          and ethnic_group_cd = :group
+              [ethnicity].person_uid,
+              [ethnicity].ethnic_group_cd,
+              [patient].version_ctrl_nbr,
+              [ethnicity].add_reason_cd,
+              [ethnicity].add_time,
+              [ethnicity].add_user_id,
+              [ethnicity].ethnic_group_desc_txt,
+              [ethnicity].last_chg_reason_cd,
+              [ethnicity].last_chg_time,
+              [ethnicity].last_chg_user_id,
+              [ethnicity].record_status_cd,
+              [ethnicity].record_status_time,
+              [ethnicity].user_affiliation_txt
+          from Person_ethnic_group [ethnicity]
+      
+              join [Person] [patient] on
+                  [patient].person_uid = [ethnicity].person_uid
+      
+          where [ethnicity].person_uid = :patient
+          and [ethnicity].ethnic_group_cd = :group
       """;
 
   private final JdbcClient client;

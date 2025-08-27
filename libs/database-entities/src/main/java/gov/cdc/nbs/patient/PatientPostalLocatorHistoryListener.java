@@ -16,7 +16,7 @@ public class PatientPostalLocatorHistoryListener {
 
     @PreUpdate
     void preUpdate(final Identifiable<EntityLocatorParticipationId> updated) {
-       this.creator.record(updated.identifier());
+       this.creator.snapshot(updated.identifier());
     }
 
 

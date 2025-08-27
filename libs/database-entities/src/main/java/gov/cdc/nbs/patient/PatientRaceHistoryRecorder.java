@@ -26,24 +26,28 @@ class PatientRaceHistoryRecorder {
           as_of_date
       )
       select
-          person_uid,
-          race_cd,
-          (select count(*) from Person_race_hist where person_uid = :patient and race_cd = :race),
-          add_reason_cd,
-          add_time,
-          add_user_id,
-          last_chg_reason_cd,
-          last_chg_time,
-          last_chg_user_id,
-          race_category_cd,
-          race_desc_txt,
-          record_status_cd,
-          record_status_time,
-          user_affiliation_txt,
-          as_of_date
-      from Person_race
-      where person_uid = :patient
-        and race_cd = :race
+          [race].person_uid,
+          [race].race_cd,
+          [patient].version_ctrl_nbr,
+          [race].add_reason_cd,
+          [race].add_time,
+          [race].add_user_id,
+          [race].last_chg_reason_cd,
+          [race].last_chg_time,
+          [race].last_chg_user_id,
+          [race].race_category_cd,
+          [race].race_desc_txt,
+          [race].record_status_cd,
+          [race].record_status_time,
+          [race].user_affiliation_txt,
+          [race].as_of_date
+      from Person_race [race]
+      
+          join [Person] [patient] on
+              [patient].person_uid = [race].person_uid
+      
+      where [race].person_uid = :patient
+        and [race].race_cd = :race
       """;
 
   private final JdbcClient client;
