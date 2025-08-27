@@ -8,7 +8,7 @@ class SearchResultsPage {
   }
 
   naviageToAddNewPatient() {
-    cy.visit('/add-patient');
+    cy.visit('/patient/add');
     cy.wait(500);
   }
 }

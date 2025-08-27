@@ -26,7 +26,7 @@ class PatientSearchPage {
      * Clicks the Search button.
      */
     clickSearch() {
-        cy.get('button[data-testid="button"]').contains("Search").click();
+        cy.get('button').contains("Search").click();
       }
   
     /**
