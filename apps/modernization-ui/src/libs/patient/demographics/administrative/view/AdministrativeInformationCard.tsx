@@ -8,7 +8,7 @@ import styles from './administrative-information-card.module.scss';
 
 type AdministrativeInformationCardProps = {
     title?: string;
-    data?: AdministrativeInformation;
+    data?: Partial<AdministrativeInformation>;
 } & Omit<CardProps, 'subtext' | 'children' | 'title'>;
 
 const AdministrativeInformationCard = ({

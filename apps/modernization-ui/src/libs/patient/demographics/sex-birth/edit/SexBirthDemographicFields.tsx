@@ -5,30 +5,40 @@ import { isEqual } from 'options';
 import { Shown } from 'conditional-render';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { NumericInput, TextInputField } from 'design-system/input';
 import { ValueField } from 'design-system/field';
-import { HasSexBirthDemographic, labels } from '../sexBirth';
+import { HasSexBirthDemographic, SexBirthDemographic, labels } from '../sexBirth';
 import { SexBirthOptions } from './useSexBirthOptions';
 
 type SexBirthDemographicFieldsProps = {
     form: UseFormReturn<HasSexBirthDemographic>;
     options: SexBirthOptions;
     ageResolver: AgeResolver;
+    entry?: SexBirthDemographic;
 } & EntryFieldsProps;
 
 const SexBirthDemographicFields = ({
     form,
     options,
     ageResolver,
+    entry,
     orientation = 'horizontal',
     sizing
 }: SexBirthDemographicFieldsProps) => {
-    const currentBirthday = useWatch({ control: form.control, name: 'sexBirth.bornOn' });
-    const selectedCurrentGender = useWatch({ control: form.control, name: 'sexBirth.current' });
-    const selectedState = useWatch({ control: form.control, name: 'sexBirth.state' });
-    const selectedMultipleBirth = useWatch({ control: form.control, name: 'sexBirth.multiple' });
+    const currentBirthday = useWatch({ control: form.control, name: 'sexBirth.bornOn', defaultValue: entry?.bornOn });
+    const selectedCurrentGender = useWatch({
+        control: form.control,
+        name: 'sexBirth.current',
+        defaultValue: entry?.current
+    });
+    const selectedState = useWatch({ control: form.control, name: 'sexBirth.state', defaultValue: entry?.state });
+    const selectedMultipleBirth = useWatch({
+        control: form.control,
+        name: 'sexBirth.multiple',
+        defaultValue: entry?.multiple
+    });
 
     const age = ageResolver(currentBirthday);
 
@@ -36,15 +46,15 @@ const SexBirthDemographicFields = ({
     const isUnknownGender = isEqual(options.genders.unknown);
 
     useEffect(() => {
-        if (!selectedState) {
-            form.setValue('sexBirth.county', undefined);
+        if (selectedState?.value !== entry?.state?.value) {
+            form.setValue('sexBirth.county', null);
         }
         options.location.state(selectedState);
     }, [selectedState?.value, options.location.state, form.setValue]);
 
     useEffect(() => {
         if (!isUnknownGender(selectedCurrentGender)) {
-            form.setValue('sexBirth.unknownReason', undefined);
+            form.setValue('sexBirth.unknownReason', null);
         }
     }, [selectedCurrentGender, form.setValue]);
 
@@ -201,18 +211,15 @@ const SexBirthDemographicFields = ({
                     control={form.control}
                     name="sexBirth.order"
                     shouldUnregister
-                    rules={{
-                        min: { value: 0, message: 'Must be a positive number.' },
-                        max: { value: 100000, message: 'Must be less than 100000.' }
-                    }}
+                    rules={numericRangeRule(0, 9999)}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <NumericInput
                             label={labels.order}
                             id={name}
                             name={name}
                             value={value}
-                            max={100000}
-                            maxLength={5}
+                            min="0"
+                            max="9999"
                             onChange={onChange}
                             onBlur={onBlur}
                             error={error?.message}
@@ -296,4 +303,4 @@ const SexBirthDemographicFields = ({
     );
 };
 
-export { SexBirthDemographicFields };
+export { SexBirthDemographicFields, type SexBirthDemographicFieldsProps };

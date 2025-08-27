@@ -9,22 +9,24 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { TextInputField } from 'design-system/input';
 import { MoralityOptions } from './useMortalityOptions';
-import { HasMortalityDemographic, labels } from '../mortality';
+import { HasMortalityDemographic, labels, MortalityDemographic } from '../mortality';
 
 const isDeceased = isEqual(indicators.yes);
 
 type MortalityDemographicFieldsProps = {
     form: UseFormReturn<HasMortalityDemographic>;
     options: MoralityOptions;
+    entry?: MortalityDemographic;
 } & EntryFieldsProps;
 
 const MortalityDemographicFields = ({
     orientation = 'horizontal',
     sizing = 'medium',
     form,
-    options
+    options,
+    entry
 }: MortalityDemographicFieldsProps) => {
-    const selectedState = useWatch({ control: form.control, name: 'mortality.state' });
+    const selectedState = useWatch({ control: form.control, name: 'mortality.state', defaultValue: entry?.state });
 
     const selectedDeceased = useWatch({
         control: form.control,
@@ -32,8 +34,8 @@ const MortalityDemographicFields = ({
     });
 
     useEffect(() => {
-        if (!selectedState) {
-            form.setValue('mortality.county', undefined);
+        if (selectedState?.value !== entry?.state?.value) {
+            form.setValue('mortality.county', null);
         }
         options.location.state(selectedState);
     }, [selectedState?.value, options.location.state, form.setValue]);

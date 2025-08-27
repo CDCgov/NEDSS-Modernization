@@ -1,7 +1,7 @@
-import { PatientFileService } from 'generated';
+import { get, maybeJson } from 'libs/api';
 import { GeneralInformationDemographic } from 'libs/patient/demographics/general';
 
 const patientGeneral = (patient: number): Promise<GeneralInformationDemographic> =>
-    PatientFileService.generalInformationDemographics({ patient }).then();
+    fetch(get(`/nbs/api/patients/${patient}/demographics/general`)).then(maybeJson);
 
 export { patientGeneral };

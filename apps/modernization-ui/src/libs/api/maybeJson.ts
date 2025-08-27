@@ -7,7 +7,7 @@
  */
 const maybeJson = (response: Response) => {
     if (response.ok) {
-        return response.status !== 204 ? response.json() : Promise.resolve();
+        return response.status !== 204 ? response.json().catch(() => Promise.resolve()) : Promise.resolve();
     } else {
         return Promise.reject(response);
     }

@@ -1,4 +1,3 @@
-import { PatientDemographics } from './demographics';
 import { transformer } from './transformer';
 
 describe('when transforming entered extended patient data', () => {
