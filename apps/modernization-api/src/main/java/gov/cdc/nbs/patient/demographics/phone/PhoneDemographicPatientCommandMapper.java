@@ -51,7 +51,7 @@ public class PhoneDemographicPatientCommandMapper {
       final TeleEntityLocatorParticipation existing) {
     return new PatientCommand.DeletePhone(
         patient,
-        existing.identifier(),
+        existing.identifier().getLocatorUid(),
         context.requestedBy(),
         context.requestedAt());
   }

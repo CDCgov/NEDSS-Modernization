@@ -6,11 +6,11 @@ import jakarta.persistence.*;
 
 @Entity
 @DiscriminatorValue(PostalEntityLocatorParticipation.POSTAL_CLASS_CODE)
-@SuppressWarnings(
-    //  The PatientPostalLocatorHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
-)
 @EntityListeners(PatientPostalLocatorHistoryListener.class)
+@SuppressWarnings(
+    //  Bidirectional mappings require knowledge of each other
+    "javaarchitecture:S7027"
+)
 public class PostalEntityLocatorParticipation extends EntityLocatorParticipation {
 
   static final String POSTAL_CLASS_CODE = "PST";

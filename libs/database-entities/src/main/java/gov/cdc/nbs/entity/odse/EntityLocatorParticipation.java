@@ -26,7 +26,7 @@ import java.util.function.Predicate;
 @EntityListeners(PatientEntityLocatorHistoryListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "class_cd", discriminatorType = DiscriminatorType.STRING)
-public abstract class EntityLocatorParticipation {
+public abstract class EntityLocatorParticipation implements Identifiable<EntityLocatorParticipationId> {
 
   public static <V extends EntityLocatorParticipation> Predicate<V> active() {
     return input -> input.recordStatus().isActive();
@@ -106,8 +106,9 @@ public abstract class EntityLocatorParticipation {
     this.audit = new Audit(command.requester(), command.requestedOn());
   }
 
-  public long identifier() {
-    return this.id.getLocatorUid();
+  @Override
+  public EntityLocatorParticipationId identifier() {
+    return this.id;
   }
 
   public abstract Locator getLocator();
@@ -127,7 +128,7 @@ public abstract class EntityLocatorParticipation {
   }
 
   protected void changed(final PatientCommand command) {
-    if(this.audit == null) {
+    if (this.audit == null) {
       this.audit = new Audit(command.requester(), command.requestedOn());
     }
     this.audit.changed(command.requester(), command.requestedOn());
@@ -136,6 +137,7 @@ public abstract class EntityLocatorParticipation {
   protected void inactivate(final PatientCommand command) {
     changed(command);
     this.recordStatus.inactivate(command.requestedOn());
+    this.status.inactivate(command.requestedOn());
   }
 
 }

@@ -18,12 +18,12 @@ import java.util.function.Predicate;
 @Getter
 @Entity
 @Table(name = "Person_name")
-@SuppressWarnings(
-    //  The PatientNameHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
-)
 @EntityListeners(PatientNameHistoryListener.class)
-public class PersonName {
+@SuppressWarnings(
+    //  Bidirectional mappings require knowledge of each other
+    "javaarchitecture:S7027"
+)
+public class PersonName implements Identifiable<PersonNameId> {
 
   public static Predicate<PersonName> active() {
     return input -> input.recordStatus.status().equals("ACTIVE");
@@ -171,6 +171,11 @@ public class PersonName {
     }
 
     this.audit.changed(command.requester(), command.requestedOn());
+  }
+
+  @Override
+  public PersonNameId identifier() {
+    return this.id;
   }
 
   public RecordStatus recordStatus() {
