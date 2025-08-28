@@ -40,7 +40,7 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
   private NBSEntity nbsEntity;
 
   @Column(name = "cd", length = 50)
-  protected String cd;
+  protected String type;
 
   @Column(name = "cd_desc_txt", length = 100)
   private String cdDescTxt;
@@ -55,13 +55,13 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
   private LocalDate fromTime;
 
   @Column(name = "locator_desc_txt", length = 2000)
-  protected String locatorDescTxt;
+  protected String comment;
 
   @Column(name = "to_time")
   private LocalDate toTime;
 
   @Column(name = "use_cd", length = 20)
-  protected String useCd;
+  protected String use;
 
   @Column(name = "user_affiliation_txt", length = 20)
   private String userAffiliationTxt;
@@ -74,7 +74,7 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
   private short versionCtrlNbr;
 
   @Column(name = "as_of_date")
-  protected LocalDate asOfDate;
+  protected LocalDate asOf;
 
   @Embedded
   private Audit audit;
@@ -109,19 +109,19 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
   public abstract Locator locator();
 
   public LocalDate asOf() {
-    return this.asOfDate;
+    return this.asOf;
   }
 
   public String type() {
-    return this.cd;
+    return this.type;
   }
 
   public String use() {
-    return useCd;
+    return use;
   }
 
   public String comments() {
-    return this.locatorDescTxt;
+    return this.comment;
   }
 
   public Audit audit() {
