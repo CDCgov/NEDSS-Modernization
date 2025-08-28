@@ -257,7 +257,7 @@ Then("nagivate to add new patient page", () => {
 });
 
 Given("create a new patient profile", () => {
-  cy.visit('/add-patient');
+  cy.visit('/patient/add');
   addPatientPage.addSimplePatient()
   addPatientPage.clickViewPatientProfile();
 });
