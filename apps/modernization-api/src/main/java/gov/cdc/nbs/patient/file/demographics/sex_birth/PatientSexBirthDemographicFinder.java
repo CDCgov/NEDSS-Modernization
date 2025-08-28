@@ -52,9 +52,8 @@ class PatientSexBirthDemographicFinder {
           left join NBS_SRTE..State_code [state] on
                   [state].state_cd = [address].state_cd
       
-          left join NBS_SRTE..Code_value_general [county] on
-                      [county].code_set_nm = 'PHVS_COUNTY_FIPS_6-4'
-                  and [county].[code] = [address].[cnty_cd]
+          left join NBS_SRTE..State_county_code_value [county]  with (nolock) on
+                  [county].[code] = [address].[cnty_cd]
       
           left join NBS_SRTE..Country_code [country] on
                   [country].code = [address].cntry_cd
