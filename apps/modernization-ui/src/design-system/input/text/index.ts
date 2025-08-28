@@ -6,3 +6,5 @@ export type { TextInputFieldProps } from './TextInputField';
 
 export { MaskedTextInputField } from './MaskedTextInputField';
 export type { MaskedTextInputFieldProps } from './MaskedTextInputField';
+
+export { TextAreaField, type TextAreaFieldProps } from './TextAreaField';
