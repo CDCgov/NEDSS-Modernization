@@ -1,6 +1,7 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NavSection, InPageNavigation } from './InPageNavigation';
+import { MemoryRouter } from 'react-router';
 
 const mockSections: NavSection[] = [
     { id: 'section1', label: 'Section 1' },
@@ -22,13 +23,21 @@ Object.defineProperty(window, 'IntersectionObserver', {
     value: MockIntersectionObserver
 });
 
+const Fixture = () => {
+    return (
+        <MemoryRouter initialEntries={['/testPage']}>
+            <InPageNavigation title="On this page" sections={mockSections} />
+        </MemoryRouter>
+    );
+};
+
 describe('AddPatientExtendedNav', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it('renders the nav title and section links', () => {
-        const { container, getByText } = render(<InPageNavigation title="On this page" sections={mockSections} />);
+        const { container, getByText } = render(<Fixture />);
 
         expect(container.textContent).toBe('On this pageSection 1Section 2');
         expect(getByText('Section 1')).toBeInTheDocument();
@@ -36,13 +45,13 @@ describe('AddPatientExtendedNav', () => {
     });
 
     it('renders links with correct href attributes', () => {
-        const { getByText } = render(<InPageNavigation title="On this page" sections={mockSections} />);
+        const { getByText } = render(<Fixture />);
 
         const link1 = getByText('Section 1');
         const link2 = getByText('Section 2');
 
-        expect(link1.getAttribute('href')).toBe('#section1');
-        expect(link2.getAttribute('href')).toBe('#section2');
+        expect(link1.getAttribute('href')).toBe('/testPage#section1');
+        expect(link2.getAttribute('href')).toBe('/testPage#section2');
     });
 
     it('calls scrollIntoView when a link is clicked', () => {
@@ -50,7 +59,7 @@ describe('AddPatientExtendedNav', () => {
         const mockElement = { scrollIntoView: scrollIntoViewMock };
         jest.spyOn(document, 'getElementById').mockReturnValue(mockElement as any);
 
-        const { getByText } = render(<InPageNavigation title="On this page" sections={mockSections} />);
+        const { getByText } = render(<Fixture />);
 
         const link = getByText('Section 1');
         userEvent.click(link);
