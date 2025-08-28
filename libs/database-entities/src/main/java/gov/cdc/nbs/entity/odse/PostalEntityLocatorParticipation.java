@@ -106,17 +106,12 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
   }
 
   @Override
-  public PostalLocator getLocator() {
+  public PostalLocator locator() {
     return locator;
   }
 
   public void setLocator(final PostalLocator locator) {
     this.locator = locator;
-  }
-
-  @Override
-  public String getClassCd() {
-    return POSTAL_CLASS_CODE;
   }
 
   @Override

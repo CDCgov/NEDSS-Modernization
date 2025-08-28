@@ -6,15 +6,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Objects;
 
-@AllArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "Postal_locator")
 public class PostalLocator extends Locator {
@@ -150,6 +144,44 @@ public class PostalLocator extends Locator {
 
     changed(update);
   }
+
+  public Long identifier() {
+    return id;
+  }
+
+  public String address1() {
+    return streetAddr1;
+  }
+
+  public String address2() {
+    return streetAddr2;
+  }
+
+  public String city() {
+    return cityDescTxt;
+  }
+
+  public String county() {
+    return cntyCd;
+  }
+
+  public String zip() {
+    return zipCd;
+  }
+
+  public String state() {
+    return stateCd;
+  }
+
+  public String country() {
+    return cntryCd;
+  }
+
+  public String censusTract() {
+    return censusTract;
+  }
+
+
 
   @Override
   public String toString() {

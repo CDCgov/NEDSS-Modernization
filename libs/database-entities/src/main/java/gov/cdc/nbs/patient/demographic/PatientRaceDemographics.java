@@ -107,22 +107,27 @@ public class PatientRaceDemographics {
       final PatientCommand.UpdateRaceInfo changes
   ) {
 
-    // change all the races for this category
-    Collection<PatientRace> changed = ensureRaces().stream()
+    //  find all the races that are associated with the change
+    Collection<PatientRace> associated = ensureRaces().stream()
         .filter(inCategory(changes.category()))
-        .map(race -> race.update(changes))
         .toList();
 
-    List<String> detailed = changes.detailed();
+    //  apply changes to the as of date for existing races
+    associated.stream()
+        .filter(existing -> !Objects.equals(changes.asOf(), existing.asOf()))
+        .forEach(race -> race.update(changes));
 
-    Collection<String> existingDetails = changed.stream()
+    Collection<String> existingDetails = associated.stream()
         .filter(isDetail())
         .map(PatientRace::detail)
         .toList();
 
+    List<String> detailed = changes.detailed();
+
     ArrayList<String> added = new ArrayList<>(detailed);
     added.removeAll(existingDetails);
 
+    //  add any new values
     added.stream()
         .map(
             detail -> new PatientCommand.AddDetailedRace(
@@ -138,6 +143,7 @@ public class PatientRaceDemographics {
     ArrayList<String> removed = new ArrayList<>(existingDetails);
     removed.removeAll(detailed);
 
+    //  remove any values that no longer apply
     removed.stream()
         .map(PatientRaceDemographics::identifiedBy)
         .reduce(Predicate::or)
