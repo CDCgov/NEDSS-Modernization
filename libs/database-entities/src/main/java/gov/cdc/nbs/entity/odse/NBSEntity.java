@@ -202,7 +202,7 @@ public class NBSEntity {
     this.ensureLocators().stream()
         .filter(PostalEntityLocatorParticipation.class::isInstance)
         .map(PostalEntityLocatorParticipation.class::cast)
-        .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), changes.id()))
+        .filter(existing -> Objects.equals(existing.identifier().getLocatorUid(), changes.id()))
         .findFirst()
         .ifPresent(existing -> existing.update(changes));
   }
@@ -211,7 +211,7 @@ public class NBSEntity {
     this.ensureLocators().stream()
         .filter(PostalEntityLocatorParticipation.class::isInstance)
         .map(PostalEntityLocatorParticipation.class::cast)
-        .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), deleted.id()))
+        .filter(existing -> Objects.equals(existing.identifier().getLocatorUid(), deleted.id()))
         .findFirst()
         .ifPresent(existing -> existing.delete(deleted));
   }
@@ -260,7 +260,7 @@ public class NBSEntity {
     this.ensureLocators().stream()
         .filter(EntityLocatorParticipation.active().and(TeleEntityLocatorParticipation.class::isInstance))
         .map(TeleEntityLocatorParticipation.class::cast)
-        .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), phone.identifier()))
+        .filter(existing -> Objects.equals(existing.identifier().getLocatorUid(), phone.identifier()))
         .findFirst()
         .ifPresent(existing -> existing.update(phone));
   }
@@ -269,7 +269,7 @@ public class NBSEntity {
     this.ensureLocators().stream()
         .filter(EntityLocatorParticipation.active().and(TeleEntityLocatorParticipation.class::isInstance))
         .map(TeleEntityLocatorParticipation.class::cast)
-        .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), deleted.id()))
+        .filter(existing -> Objects.equals(existing.identifier().getLocatorUid(), deleted.id()))
         .findFirst()
         .ifPresent(existing -> existing.delete(deleted));
   }

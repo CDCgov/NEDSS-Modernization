@@ -59,17 +59,12 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
   }
 
   @Override
-  public TeleLocator getLocator() {
+  public TeleLocator locator() {
     return locator;
   }
 
   public void setLocator(final TeleLocator locator) {
     this.locator = locator;
-  }
-
-  @Override
-  public String getClassCd() {
-    return TELECOM_CLASS_CODE;
   }
 
   @Override

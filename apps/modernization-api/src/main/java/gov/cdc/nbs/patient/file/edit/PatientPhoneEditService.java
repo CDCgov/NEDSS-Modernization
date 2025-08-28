@@ -17,7 +17,7 @@ import static gov.cdc.nbs.patient.demographics.phone.PhoneDemographicPatientComm
 class PatientPhoneEditService {
 
   private static long identifiedBy(final TeleEntityLocatorParticipation participation) {
-    return participation.getId().getLocatorUid();
+    return participation.identifier().getLocatorUid();
   }
 
   private static long identifiedBy(final PhoneDemographic demographic) {

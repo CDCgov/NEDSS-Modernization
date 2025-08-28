@@ -6,22 +6,17 @@ import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientEntityLocatorHistoryListener;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-@AllArgsConstructor
-@Getter
-@Setter
+
 @Entity
 @Table(name = "Entity_locator_participation")
 @SuppressWarnings(
-    //  The PatientEntityLocatorHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
+    //  Bidirectional mappings require knowledge of each other
+    "javaarchitecture:S7027"
 )
 @EntityListeners(PatientEntityLocatorHistoryListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -111,12 +106,22 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
     return this.id;
   }
 
-  public abstract Locator getLocator();
+  public abstract Locator locator();
 
-  public abstract String getClassCd();
+  public LocalDate asOf() {
+    return this.asOfDate;
+  }
+
+  public String type() {
+    return this.cd;
+  }
 
   public String use() {
     return useCd;
+  }
+
+  public String comments() {
+    return this.locatorDescTxt;
   }
 
   public Audit audit() {
