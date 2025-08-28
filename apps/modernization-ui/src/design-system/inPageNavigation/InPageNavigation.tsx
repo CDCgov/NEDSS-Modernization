@@ -23,6 +23,8 @@ export const InPageNavigation: React.FC<InPageNavigationProps> = ({ sections, ti
             const element = document.getElementById(location.hash.substring(1));
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                console.error(`InPageNavigation failed to navigate to ${location.hash}`);
             }
         }
     }, [location.hash]);
@@ -34,9 +36,10 @@ export const InPageNavigation: React.FC<InPageNavigationProps> = ({ sections, ti
                 {sections.map((section) => (
                     <Link
                         id={`inPageNav-${section.id}`}
-                        className={classNames(styles.navOptions)}
+                        className={classNames(styles.navOption)}
                         key={section.id}
-                        to={`${window.location.pathname}#${section.id}`}>
+                        state={location.state}
+                        to={{ pathname: location.pathname, hash: section.id }}>
                         {section.label}
                     </Link>
                 ))}
