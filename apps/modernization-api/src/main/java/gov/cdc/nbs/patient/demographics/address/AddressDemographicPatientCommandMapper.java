@@ -57,7 +57,7 @@ public class AddressDemographicPatientCommandMapper {
       final PostalEntityLocatorParticipation existing) {
     return new PatientCommand.DeleteAddress(
         patient,
-        existing.identifier(),
+        existing.identifier().getLocatorUid(),
         context.requestedBy(),
         context.requestedAt());
   }

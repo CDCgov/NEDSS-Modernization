@@ -1,21 +1,17 @@
-import { UseFormReturn } from 'react-hook-form';
-import { EntryFieldsProps, Required } from 'design-system/entry';
+import { Required } from 'design-system/entry';
 import { Card, CardProps } from 'design-system/card';
-import { HasSexBirthDemographic } from '../sexBirth';
 import { useSexBirthOptions } from './useSexBirthOptions';
-import { SexBirthDemographicFields } from './SexBirthDemographicFields';
-import { AgeResolver } from 'date';
+import { SexBirthDemographicFields, SexBirthDemographicFieldsProps } from './SexBirthDemographicFields';
 
 type EditSexBirthDemographicCardProps = {
-    form: UseFormReturn<HasSexBirthDemographic>;
-    ageResolver: AgeResolver;
     title?: string;
-} & EntryFieldsProps &
+} & Omit<SexBirthDemographicFieldsProps, 'options'> &
     Omit<CardProps, 'subtext' | 'children' | 'title'>;
 
 const EditSexBirthDemographicCard = ({
     form,
     ageResolver,
+    entry,
     title = 'Sex & birth',
     sizing,
     orientation = 'horizontal',
@@ -28,6 +24,7 @@ const EditSexBirthDemographicCard = ({
             <SexBirthDemographicFields
                 form={form}
                 ageResolver={ageResolver}
+                entry={entry}
                 sizing={sizing}
                 orientation={orientation}
                 options={options}

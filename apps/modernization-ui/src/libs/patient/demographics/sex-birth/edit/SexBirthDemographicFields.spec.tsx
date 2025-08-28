@@ -8,25 +8,24 @@ import { useCallback } from 'react';
 import { SexBirthOptions } from './useSexBirthOptions';
 import { genders } from 'options/gender';
 import { indicators } from 'options/indicator';
+import { LocationOptions } from 'options/location';
+
+const mockState = jest.fn();
+
+const location: LocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: mockState
+};
 
 const mockSexBirthCodedValues: SexBirthOptions = {
     genders: genders,
     preferredGenders: [{ name: 'FTM', value: 'FTM' }],
     genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
-    multipleBirth: indicators
+    multipleBirth: indicators,
+    location
 };
-
-const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
-
-const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
-
-const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
-
-jest.mock('options/location', () => ({
-    useCountyOptions: () => mockCountyCodedValues,
-    useCountryOptions: () => mockCountryCodedValues,
-    useStateOptions: () => mockStateCodedValues
-}));
 
 const Fixture = () => {
     const form = useForm<PatientDemographics>({

@@ -1,34 +1,32 @@
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { DatePickerInput, validDateRule } from 'design-system/date';
-import { SingleSelect } from 'design-system/select';
-import { Input } from 'components/FormInputs/Input';
-import { displayAgeAsOfToday, displayAgeAsOf } from 'date';
-import { maxLengthRule } from 'validation/entry';
-import { EntryFieldsProps } from 'design-system/entry';
-import { ValueView } from 'design-system/data-display/ValueView';
-import { BasicPersonalDetailsEntry } from '../entry';
-import { Indicator, indicators } from 'coded';
-import { useSexBirthCodedValues } from 'apps/patient/data/sexAndBirth/useSexBirthCodedValues';
-import { useGeneralCodedValues } from 'apps/patient/data/general/useGeneralCodedValues';
 import { Permitted } from 'libs/permission';
+import { indicators } from 'options/indicator';
+import { genders } from 'options/gender';
+import { useConceptOptions } from 'options/concepts';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { ValueField } from 'design-system/field';
+import { EntryFieldsProps } from 'design-system/entry';
+import { TextInputField } from 'design-system/input';
+import { SingleSelect } from 'design-system/select';
+import { asOfAgeResolver } from 'date';
+import { maxLengthRule } from 'validation/entry';
+
+import { BasicPersonalDetailsEntry } from '../entry';
 
 const BORN_ON_LABEL = 'Date of birth';
 const DECEASED_ON_LABEL = 'Date of death';
 const STATE_HIV_CASE_LABEL = 'State HIV case ID';
-const ENTRY_FIELD_PLACEHOLDER = '';
 
 export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
-    const { control, formState, getFieldState } = useFormContext<{ personalDetails: BasicPersonalDetailsEntry }>();
+    const { control } = useFormContext<{ personalDetails: BasicPersonalDetailsEntry }>();
     const currentBirthday = useWatch({ control, name: 'personalDetails.bornOn' });
     const deceasedOn = useWatch({ control, name: 'personalDetails.deceasedOn' });
     const selectedDeceased = useWatch({ control, name: 'personalDetails.deceased' });
-    const age = useMemo(
-        () => (deceasedOn ? displayAgeAsOf(currentBirthday, deceasedOn) : displayAgeAsOfToday(currentBirthday)),
-        [currentBirthday, deceasedOn]
-    );
+    const ageResolver = useCallback(asOfAgeResolver(deceasedOn), [deceasedOn]);
+    const age = ageResolver(currentBirthday);
 
-    const { invalid: bornOnInvalid } = getFieldState('personalDetails.bornOn', formState);
+    const maritalStatuses = useConceptOptions('P_MARITAL', { lazy: false });
 
     return (
         <>
@@ -49,7 +47,9 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                     />
                 )}
             />
-            <ValueView title="Current age" value={!bornOnInvalid ? age : null} sizing={sizing} />
+            <ValueField label="Current age" sizing={sizing}>
+                {age}
+            </ValueField>
             <Controller
                 control={control}
                 name="personalDetails.currentSex"
@@ -63,7 +63,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={useSexBirthCodedValues().genders}
+                        options={genders.all}
                     />
                 )}
             />
@@ -80,7 +80,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={useSexBirthCodedValues().genders}
+                        options={genders.all}
                     />
                 )}
             />
@@ -97,11 +97,11 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={indicators}
+                        options={indicators.all}
                     />
                 )}
             />
-            {selectedDeceased?.value === Indicator.Yes && (
+            {selectedDeceased?.value === indicators.yes.value && (
                 <Controller
                     control={control}
                     name="personalDetails.deceasedOn"
@@ -134,7 +134,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={useGeneralCodedValues().maritalStatuses}
+                        options={maritalStatuses.options}
                     />
                 )}
             />
@@ -144,17 +144,14 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                     name="personalDetails.stateHIVCase"
                     rules={maxLengthRule(16, STATE_HIV_CASE_LABEL)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                        <Input
+                        <TextInputField
                             label={STATE_HIV_CASE_LABEL}
                             orientation={orientation}
                             sizing={sizing}
-                            placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onBlur={onBlur}
                             onChange={onChange}
                             maxLength={16}
-                            type="text"
-                            defaultValue={value}
-                            htmlFor={name}
+                            value={value}
                             id={name}
                             name={name}
                             error={error?.message}

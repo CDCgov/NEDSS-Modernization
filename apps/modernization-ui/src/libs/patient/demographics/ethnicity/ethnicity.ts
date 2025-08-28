@@ -1,12 +1,13 @@
-import { today } from 'date';
+import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options';
+import { EffectiveDated } from 'utils';
+import { Nullable } from 'utils/object';
 
-type EthnicityDemographic = {
-    asOf?: string;
-    ethnicGroup?: Selectable;
-    unknownReason?: Selectable;
-    detailed?: Selectable[];
-};
+type EthnicityDemographic = EffectiveDated &
+    Nullable<{
+        ethnicGroup?: Selectable;
+        unknownReason?: Selectable;
+    }> & { detailed: Selectable[] };
 
 type HasEthnicityDemographic = {
     ethnicity?: EthnicityDemographic;
@@ -14,10 +15,10 @@ type HasEthnicityDemographic = {
 
 export type { EthnicityDemographic, HasEthnicityDemographic };
 
-const initial = (asOf: string = today()): EthnicityDemographic => ({
-    asOf,
-    ethnicGroup: undefined,
-    unknownReason: undefined,
+const initial = (asOf: Supplier<string>): EthnicityDemographic => ({
+    asOf: asOf(),
+    ethnicGroup: null,
+    unknownReason: null,
     detailed: []
 });
 

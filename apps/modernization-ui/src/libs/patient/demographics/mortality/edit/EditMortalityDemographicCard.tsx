@@ -1,18 +1,16 @@
-import { UseFormReturn } from 'react-hook-form';
-import { EntryFieldsProps, Required } from 'design-system/entry';
+import { Required } from 'design-system/entry';
 import { Card, CardProps } from 'design-system/card';
-import { HasMortalityDemographic } from '../mortality';
 import { useMortalityOptions } from './useMortalityOptions';
-import { MortalityDemographicFields } from './MortalityDemographicFields';
+import { MortalityDemographicFields, MortalityDemographicFieldsProps } from './MortalityDemographicFields';
 
 type EditMortalityDemographicCardProps = {
-    form: UseFormReturn<HasMortalityDemographic>;
     title?: string;
-} & EntryFieldsProps &
+} & Omit<MortalityDemographicFieldsProps, 'options'> &
     Omit<CardProps, 'subtext' | 'children' | 'title'>;
 
 const EditMortalityDemographicCard = ({
     form,
+    entry,
     title = 'Mortality',
     sizing,
     orientation = 'horizontal',
@@ -22,7 +20,13 @@ const EditMortalityDemographicCard = ({
 
     return (
         <Card title={title} info={<Required />} {...remaining}>
-            <MortalityDemographicFields form={form} sizing={sizing} orientation={orientation} options={options} />
+            <MortalityDemographicFields
+                form={form}
+                sizing={sizing}
+                orientation={orientation}
+                options={options}
+                entry={entry}
+            />
         </Card>
     );
 };

@@ -230,7 +230,7 @@ public class PatientHistoryRecorder {
     this.client = client;
   }
 
-  public void snapshot(final long patient) {
+  void snapshot(final long patient) {
     this.client.sql(CREATE)
         .param(patient)
         .update();

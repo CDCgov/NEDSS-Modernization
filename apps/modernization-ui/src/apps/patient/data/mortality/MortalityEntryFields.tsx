@@ -1,36 +1,41 @@
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { Indicator, indicators } from 'coded';
 import { EntryFieldsProps } from 'design-system/entry';
+import { useLocationOptions } from 'options/location';
+import { indicators } from 'options/indicator';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { MortalityEntry } from 'apps/patient/data/entry';
-import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 
 const AS_OF_DATE_LABEL = 'Mortality information as of';
 const DECEASED_ON_LABEL = 'Date of death';
 const DEATH_CITY_LABEL = 'Death city';
 
 export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
-    const { control, resetField } = useFormContext<{ mortality: MortalityEntry }>();
+    const { control, setValue } = useFormContext<{ mortality: MortalityEntry }>();
     const selectedState = useWatch({ control, name: 'mortality.state' });
     const selectedDeceased = useWatch({ control, name: 'mortality.deceased' });
 
-    const countries = useCountryOptions();
-    const states = useStateOptions();
-    const counties = useCountyOptions(selectedState?.value);
+    const location = useLocationOptions();
 
     useEffect(() => {
-        if (selectedDeceased?.value !== Indicator.Yes) {
-            resetField('mortality.deceasedOn');
-            resetField('mortality.state');
-            resetField('mortality.city');
-            resetField('mortality.county');
-            resetField('mortality.country');
+        if (!selectedState) {
+            setValue('mortality.county', undefined);
         }
-    }, [selectedDeceased?.value]);
+        location.state(selectedState);
+    }, [selectedState?.value, location.state]);
+
+    useEffect(() => {
+        if (selectedDeceased?.value !== 'Y') {
+            setValue('mortality.deceasedOn', undefined);
+            setValue('mortality.state', undefined);
+            setValue('mortality.city', undefined);
+            setValue('mortality.county', undefined);
+            setValue('mortality.country', undefined);
+        }
+    }, [selectedDeceased?.value, setValue]);
 
     return (
         <section>
@@ -65,12 +70,12 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={indicators}
+                        options={indicators.all}
                         sizing={sizing}
                     />
                 )}
             />
-            {selectedDeceased?.value === Indicator.Yes && (
+            {selectedDeceased?.value === indicators.yes.value && (
                 <>
                     <Controller
                         control={control}
@@ -124,7 +129,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                                 onBlur={onBlur}
                                 id={name}
                                 name={name}
-                                options={states}
+                                options={location.states}
                                 sizing={sizing}
                             />
                         )}
@@ -142,7 +147,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                                 onBlur={onBlur}
                                 id={name}
                                 name={name}
-                                options={counties}
+                                options={location.counties}
                                 sizing={sizing}
                             />
                         )}
@@ -161,7 +166,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                                 onBlur={onBlur}
                                 id={name}
                                 name={name}
-                                options={countries}
+                                options={location.countries}
                                 sizing={sizing}
                             />
                         )}

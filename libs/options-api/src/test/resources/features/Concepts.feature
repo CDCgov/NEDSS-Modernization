@@ -31,3 +31,8 @@ Feature: Concept Options REST API
   Scenario: I cannot find concepts that do not exist
     When I request all concepts for the "non-existing" value set
     Then there aren't any concepts available
+
+  Scenario: The "Birth Place" and "Death Place" address uses are not returned
+    When I request all concepts for the "EL_USE_PST_PAT" value set
+    Then the concept named "Birth Place" is not included
+    And the concept named "Death Place" is not included

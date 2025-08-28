@@ -3,7 +3,7 @@ import { NameDemographic } from './names';
 import { internalizeDate } from 'date';
 
 type NameDemographicViewProps = {
-    entry: NameDemographic;
+    entry: Partial<NameDemographic>;
 };
 
 const NameDemographicView = ({ entry }: NameDemographicViewProps) => {

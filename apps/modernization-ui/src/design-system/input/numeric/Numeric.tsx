@@ -3,12 +3,12 @@ import classNames from 'classnames';
 import { onlyNumericKeys, onlyDecimalKeys } from './onlyNumericKeys';
 import { useNumeric } from './useNumeric';
 
-type NumericOnChange = (value?: number) => void;
+type NumericOnChange = (value?: number | null) => void;
 
 type NumericProps = {
     id: string;
     inputMode?: 'decimal' | 'numeric';
-    value?: number;
+    value?: number | null;
     onChange?: NumericOnChange;
     onBlur?: () => void;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;

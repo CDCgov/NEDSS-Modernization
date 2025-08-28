@@ -1,13 +1,13 @@
 import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options/selectable';
+import { EffectiveDated } from 'utils';
+import { Nullable } from 'utils/object';
 
-type IdentificationDemographic = {
-    sequence?: number;
-    asOf: string;
-    type?: Selectable;
-    issuer?: Selectable;
-    value?: string;
-};
+type IdentificationDemographic = EffectiveDated & { sequence?: number } & Nullable<{
+        type?: Selectable;
+        issuer?: Selectable;
+        value?: string;
+    }>;
 
 type HasIdentificationDemographics = {
     identifications?: IdentificationDemographic[];
@@ -15,11 +15,11 @@ type HasIdentificationDemographics = {
 
 export type { IdentificationDemographic, HasIdentificationDemographics };
 
-const initial = (asOf: Supplier<string>): Partial<IdentificationDemographic> => ({
+const initial = (asOf: Supplier<string>): IdentificationDemographic => ({
     asOf: asOf(),
-    type: undefined,
-    issuer: undefined,
-    value: undefined
+    type: null,
+    issuer: null,
+    value: null
 });
 
 export { initial };

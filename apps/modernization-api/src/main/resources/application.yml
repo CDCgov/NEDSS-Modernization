@@ -103,19 +103,11 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-
-  kafka:
-    bootstrap-servers: localhost:9092
-    listener:
-      ackMode: record
-    consumer:
-      group-id: patient-group
-      enable-auto-commit: false
-      auto-offset-reset: earliest
-
 springdoc:
   packages-to-scan: "gov.cdc.nbs"
 
 server:
   tomcat:
-    max-part-count: 100 # to accommodate intercepted multipart requests from NBS6
+    # to accommodate intercepted multipart requests from NBS6.  The value was chosen based on the largest number of
+    # questions on a page builder page.  This can vary by STLT depending on the page templates that exist.
+    max-part-count: 550

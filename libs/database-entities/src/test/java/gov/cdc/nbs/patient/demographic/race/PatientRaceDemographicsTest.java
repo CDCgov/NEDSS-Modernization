@@ -459,7 +459,7 @@ class PatientRaceDemographicsTest {
             "race-category-value",
             List.of(),
             171L,
-            LocalDateTime.parse("2020-03-03T10:15:30")
+            LocalDateTime.parse("2019-07-11T13:17:19")
         )
     );
 
@@ -477,7 +477,7 @@ class PatientRaceDemographicsTest {
 
     assertThat(raceDemographic.details()).satisfiesExactlyInAnyOrder(
         updated -> assertThat(updated)
-            .describedAs("Expected Race Category changed")
+            .describedAs("Expected Race Category not changed")
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
@@ -489,8 +489,8 @@ class PatientRaceDemographicsTest {
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.changed())
-                            .returns(131L, Changed::changedBy)
-                            .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
+                            .returns(171L, Changed::changedBy)
+                            .returns(LocalDateTime.parse("2019-07-11T13:17:19"), Changed::changedOn)
                     )
             ),
         added -> assertThat(added)
@@ -550,13 +550,13 @@ class PatientRaceDemographicsTest {
             "race-category-value",
             List.of(),
             131L,
-            LocalDateTime.parse("2020-03-03T10:15:30")
+            LocalDateTime.parse("2023-11-13T17:19:23")
         )
     );
 
-    assertThat(raceDemographic.details()).satisfiesExactlyInAnyOrder(
+    assertThat(raceDemographic.details()).satisfiesExactly(
         updated -> assertThat(updated)
-            .describedAs("Expected Race Category changed")
+            .describedAs("Expected Race Category not changed")
             .satisfies(
                 race -> assertThat(race)
                     .describedAs("expected race data")
@@ -568,7 +568,7 @@ class PatientRaceDemographicsTest {
                     .describedAs("expected race audit state")
                     .satisfies(
                         audit -> assertThat(audit.changed())
-                            .returns(131L, Changed::changedBy)
+                            .returns(171L, Changed::changedBy)
                             .returns(LocalDateTime.parse("2020-03-03T10:15:30"), Changed::changedOn)
                     )
             )

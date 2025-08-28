@@ -14,7 +14,7 @@ const PatientFileSummary = () => {
 
     return (
         <PatientFileView patient={patient} sizing={sizing}>
-            {!!patient?.patientId && <MergeAlert patientId={patient.patientId} />}
+            {!!patient?.id && <MergeAlert patientId={patient.id} />}
             <PatientFileDemographicsSummaryCard
                 id="demographics-summary"
                 provider={demographics.get().summary}

@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import { permissions, Permitted } from 'libs/permission';
 import { Button, NavLinkButton } from 'design-system/button';
 import { Sizing } from 'design-system/field';
-import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { BackToTop } from 'libs/page/back-to-top';
 import { Patient } from './patient';
 import { PatientFileLayout } from './PatientFileLayout';
@@ -10,6 +9,7 @@ import { DeleteAction } from './delete';
 
 import styles from './patient-file-view.module.scss';
 import { useLocation } from 'react-router';
+import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 
 type PatientFileViewProps = {
     patient: Patient;
@@ -52,7 +52,7 @@ const ViewActions = (patient: Patient) => {
 export { PatientFileView };
 
 const ViewNavigation = (patient: Patient) => (
-    <TabNavigation newTab>
+    <TabNavigation sizing="medium">
         <TabNavigationEntry path={`/patient/${patient.patientId}/summary`}>Summary</TabNavigationEntry>
         <TabNavigationEntry path={`/patient/${patient.patientId}/events`}>Events</TabNavigationEntry>
         <TabNavigationEntry path={`/patient/${patient.patientId}/demographics`}>Demographics</TabNavigationEntry>

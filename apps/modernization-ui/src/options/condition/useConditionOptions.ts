@@ -1,8 +1,7 @@
-import { ConditionOptionsService } from 'generated';
-import { useSelectableOptions } from 'options/useSelectableOptions';
+import { cachedSelectableResolver, useSelectableOptions } from 'options';
 
-const resolver = () => ConditionOptionsService.all();
+const resolver = cachedSelectableResolver('condition.options', '/nbs/api/options/conditions');
 
-const useConditionOptions = (settings = { lazy: false }) => useSelectableOptions({ ...settings, resolver });
+const useConditionOptions = () => useSelectableOptions({ resolver });
 
 export { useConditionOptions };

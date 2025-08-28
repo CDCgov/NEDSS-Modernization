@@ -1,11 +1,11 @@
 [versions]
-springBoot = '3.5.4'
-spring-security = '6.5.2'
+springBoot = '3.5.5'
+spring-security = '6.5.3'
 jackson = '2.19.0'
 queryDSL = '5.1.0'
 
 junit-jupiter = '5.13.4'
-cucumber = '7.27.0'
+cucumber = '7.27.2'
 assertj = '3.27.4'
 testcontainers = '1.21.0'
 

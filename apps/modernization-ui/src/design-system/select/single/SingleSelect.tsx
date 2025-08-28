@@ -9,7 +9,7 @@ type Props = {
     placeholder?: string;
     options: Selectable[];
     value?: Selectable | null;
-    onChange?: (value?: Selectable) => void;
+    onChange?: (value: Selectable | null) => void;
     orientation?: Orientation;
     sizing?: Sizing;
     error?: string;

@@ -5,7 +5,7 @@ import { SexBirthDemographic, labels } from '../sexBirth';
 type SexBirthDemographicViewProps = {
     sizing?: Sizing;
     ageResolver: AgeResolver;
-    demographic?: SexBirthDemographic;
+    demographic?: Partial<SexBirthDemographic>;
 };
 
 const SexBirthDemographicView = ({ ageResolver, sizing, demographic }: SexBirthDemographicViewProps) => {

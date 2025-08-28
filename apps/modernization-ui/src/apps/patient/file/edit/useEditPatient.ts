@@ -30,6 +30,9 @@ const reducer =
             case 'complete': {
                 return { status: 'completed' };
             }
+            case 'fail': {
+                return { status: 'error', reason: action.reason };
+            }
             default: {
                 return current;
             }

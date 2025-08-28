@@ -36,16 +36,12 @@ const TextInput = ({
     const current = value ?? '';
 
     const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
-        const next = event.target.value;
-        if (next) {
-            onChange?.(next);
-        } else {
-            onChange?.();
-        }
+        const next = event.target.value ?? null;
+        onChange?.(next);
     };
 
     const handleClear = () => {
-        onChange?.();
+        onChange?.('');
         onClear?.();
     };
 

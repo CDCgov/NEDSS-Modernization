@@ -8,7 +8,7 @@ Feature: Viewing the administrative information of a patient
 
   Scenario:  I cannot view the administrative information of a patient that does not exist
     When I view the Administrative information for patient 1039
-    Then it was not found
+    Then no value is returned
 
   Scenario: I can view the patient's administrative information
     Given the patient has an administrative as of date of 09/13/2013

@@ -3,15 +3,15 @@ import { DetailValue, DetailView } from 'design-system/entry/multi-value';
 import { AddressDemographic } from './address';
 
 type AddressDemographicViewProps = {
-    entry: AddressDemographic;
+    entry: Partial<AddressDemographic>;
 };
 
 const AddressDemographicView = ({ entry }: AddressDemographicViewProps) => {
     return (
         <DetailView>
             <DetailValue label="Address as of">{internalizeDate(entry.asOf)}</DetailValue>
-            <DetailValue label="Type">{entry.type.name}</DetailValue>
-            <DetailValue label="Use">{entry.use.name}</DetailValue>
+            <DetailValue label="Type">{entry.type?.name}</DetailValue>
+            <DetailValue label="Use">{entry.use?.name}</DetailValue>
             <DetailValue label="Street address 1">{entry.address1}</DetailValue>
             <DetailValue label="Street address 2">{entry.address2}</DetailValue>
             <DetailValue label="City">{entry.city}</DetailValue>

@@ -3,37 +3,23 @@ package gov.cdc.nbs.entity.odse;
 import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.audit.Status;
-import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
-import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientNameHistoryListener;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
-import lombok.Getter;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-@Getter
 @Entity
 @Table(name = "Person_name")
-@SuppressWarnings(
-    //  The PatientNameHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
-)
 @EntityListeners(PatientNameHistoryListener.class)
-public class PersonName {
+@SuppressWarnings(
+    //  Bidirectional mappings require knowledge of each other
+    "javaarchitecture:S7027"
+)
+public class PersonName implements Identifiable<PersonNameId> {
 
   public static Predicate<PersonName> active() {
     return input -> input.recordStatus.status().equals("ACTIVE");
@@ -81,9 +67,8 @@ public class PersonName {
   @Column(name = "nm_prefix", length = 20)
   private String nmPrefix;
 
-  @Convert(converter = SuffixConverter.class)
   @Column(name = "nm_suffix", length = 20)
-  private Suffix nmSuffix;
+  private String nmSuffix;
 
   @Column(name = "nm_use_cd", length = 20)
   private String nmUseCd;
@@ -121,7 +106,7 @@ public class PersonName {
     this.middleNm2 = added.secondMiddle();
     applyLastName(added.last(), resolver);
     applySecondLastName(added.secondLast(), resolver);
-    this.nmSuffix = Suffix.resolve(added.suffix());
+    this.nmSuffix = added.suffix();
     this.nmDegree = added.degree();
     this.nmUseCd = added.type();
 
@@ -145,14 +130,6 @@ public class PersonName {
     this.secondLastNameSoundex = resolver.resolve(value);
   }
 
-  public LocalDate asOf() {
-    return this.asOfDate;
-  }
-
-  public String type() {
-    return this.nmUseCd;
-  }
-
   public PersonName update(final SoundexResolver resolver, final PatientCommand.UpdateNameInfo info) {
     this.asOfDate = info.asOf();
     this.nmPrefix = info.prefix();
@@ -161,18 +138,87 @@ public class PersonName {
     this.middleNm2 = info.secondMiddle();
     applyLastName(info.last(), resolver);
     applySecondLastName(info.secondLast(), resolver);
-    this.nmSuffix = Suffix.resolve(info.suffix());
+    this.nmSuffix = info.suffix();
     this.nmDegree = info.degree();
     this.nmUseCd = info.type();
 
-    this.audit.changed(info.requester(), info.requestedOn());
+    changed(info);
 
     return this;
   }
 
   public void delete(final PatientCommand.DeleteNameInfo deleted) {
     this.recordStatus.inactivate(deleted.requestedOn());
-    this.audit.changed(deleted.requester(), deleted.requestedOn());
+    changed(deleted);
+  }
+
+  protected void changed(final PatientCommand command) {
+    if (this.audit == null) {
+      this.audit = new Audit(command.requester(), command.requestedOn());
+    }
+
+    this.audit.changed(command.requester(), command.requestedOn());
+  }
+
+  @Override
+  public PersonNameId identifier() {
+    return this.id;
+  }
+
+  public LocalDate asOf() {
+    return this.asOfDate;
+  }
+
+  public String type() {
+    return this.nmUseCd;
+  }
+
+  public String prefix() {
+    return nmPrefix;
+  }
+
+  public String first() {
+    return firstNm;
+  }
+
+  public String firstSoundex() {
+    return firstNameSoundex;
+  }
+
+  public String middle() {
+    return middleNm;
+  }
+
+  public String secondMiddle() {
+    return middleNm2;
+  }
+
+  public String last() {
+    return lastNm;
+  }
+
+  public String lastSoundex() {
+    return lastNameSoundex;
+  }
+
+  public String secondLast() {
+    return lastNm2;
+  }
+
+  public String secondLastSoundex() {
+    return secondLastNameSoundex;
+  }
+
+  public String degree() {
+    return nmDegree;
+  }
+
+  public String suffix() {
+    return nmSuffix;
+  }
+
+  public Audit audit() {
+    return audit;
   }
 
   public RecordStatus recordStatus() {

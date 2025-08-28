@@ -9,13 +9,15 @@ import { displayAgeAsOf, today } from 'date';
 import { NoData } from 'design-system/data';
 import { Heading, HeadingLevel } from 'components/heading';
 
+const orElseToday = defaultTo(today);
+
 import styles from './patient-descriptor.module.scss';
 
 const maybeDisplayName = mapOr(displayName('fullLastFirst'), '---');
 
 const maybeDisplayBirthday = (birthday?: string, asOf?: string) => {
     if (birthday) {
-        return `${birthday} (${displayAgeAsOf(birthday, defaultTo(today, asOf))})`;
+        return `${birthday} (${displayAgeAsOf(birthday, orElseToday(asOf))})`;
     }
 };
 

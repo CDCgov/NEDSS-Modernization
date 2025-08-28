@@ -1,8 +1,7 @@
-import { PrimaryLanguageOptionsService } from 'generated';
-import { useSelectableOptions } from 'options/useSelectableOptions';
+import { cachedSelectableResolver, useSelectableOptions } from 'options';
 
-const resolver = () => PrimaryLanguageOptionsService.primaryLanguages();
+const resolver = cachedSelectableResolver('primary-languages.options', '/nbs/api/options/languages/primary');
 
-const usePrimaryLanguageOptions = (settings = { lazy: false }) => useSelectableOptions({ ...settings, resolver });
+const usePrimaryLanguageOptions = () => useSelectableOptions({ resolver });
 
 export { usePrimaryLanguageOptions };

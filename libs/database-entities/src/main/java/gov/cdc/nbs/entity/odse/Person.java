@@ -4,8 +4,6 @@ import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
-import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
-import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
@@ -98,9 +96,8 @@ public class Person {
   @Column(name = "last_nm", length = 50)
   private String lastNm;
 
-  @Convert(converter = SuffixConverter.class)
   @Column(name = "nm_suffix", length = 20)
-  private Suffix nmSuffix;
+  private String nmSuffix;
 
   @OneToMany(
       mappedBy = "personUid",
@@ -176,7 +173,7 @@ public class Person {
     PersonNameId identifier = PersonNameId.from(updated.person(), updated.sequence());
 
     ensureNames().stream()
-        .filter(name -> Objects.equals(name.getId(), identifier))
+        .filter(name -> Objects.equals(name.identifier(), identifier))
         .findFirst()
         .ifPresent(name -> name.update(resolver, updated));
 
@@ -186,7 +183,7 @@ public class Person {
   public void delete(final PatientCommand.DeleteNameInfo deleted) {
     PersonNameId identifier = PersonNameId.from(deleted.person(), deleted.sequence());
     ensureNames().stream()
-        .filter(name -> Objects.equals(name.getId(), identifier))
+        .filter(name -> Objects.equals(name.identifier(), identifier))
         .findFirst()
         .ifPresent(name -> delete(deleted, name));
 
@@ -462,7 +459,7 @@ public class Person {
   }
 
   public Person clear(final PatientCommand.ClearEthnicityDemographics command) {
-    if(this.ethnicity != null) {
+    if (this.ethnicity != null) {
       this.ethnicity.clear();
       changed(command);
     }

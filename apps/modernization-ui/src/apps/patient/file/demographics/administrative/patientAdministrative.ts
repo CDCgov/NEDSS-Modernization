@@ -1,5 +1,6 @@
-import { PatientFileService } from 'generated';
+import { get, maybeJson } from 'libs/api';
 
-const patientAdministrative = (patient: number) => PatientFileService.administrative({ patient }).then();
+const patientAdministrative = (patient: number) =>
+    fetch(get(`/nbs/api/patients/${patient}/demographics/administrative`)).then(maybeJson);
 
 export { patientAdministrative };

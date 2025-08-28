@@ -6,15 +6,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Objects;
 
-@AllArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "Postal_locator")
 public class PostalLocator extends Locator {
@@ -36,16 +30,16 @@ public class PostalLocator extends Locator {
   private String cityCd;
 
   @Column(name = "city_desc_txt", length = 100)
-  private String cityDescTxt;
+  private String city;
 
   @Column(name = "cntry_cd", length = 20)
-  private String cntryCd;
+  private String country;
 
   @Column(name = "cntry_desc_txt", length = 100)
   private String cntryDescTxt;
 
   @Column(name = "cnty_cd", length = 20)
-  private String cntyCd;
+  private String county;
 
   @Column(name = "cnty_desc_txt", length = 100)
   private String cntyDescTxt;
@@ -57,7 +51,7 @@ public class PostalLocator extends Locator {
   private String regionDistrictCd;
 
   @Column(name = "state_cd", length = 20)
-  private String stateCd;
+  private String state;
 
   @Column(name = "street_addr1", length = 100)
   private String streetAddr1;
@@ -89,11 +83,11 @@ public class PostalLocator extends Locator {
     this.id = identifier.getLocatorUid();
     this.streetAddr1 = address.address1();
     this.streetAddr2 = address.address2();
-    this.cityDescTxt = address.city();
-    this.stateCd = address.state();
+    this.city = address.city();
+    this.state = address.state();
     this.zipCd = address.zip();
-    this.cntyCd = address.county();
-    this.cntryCd = address.country();
+    this.county = address.county();
+    this.country = address.country();
     this.censusTract = address.censusTract();
   }
 
@@ -107,48 +101,99 @@ public class PostalLocator extends Locator {
 
   PostalLocator(
       final long identifier,
-      final PatientCommand.UpdateMortality mortality) {
+      final PatientCommand.UpdateMortality mortality
+  ) {
     super(mortality);
 
     this.id = identifier;
   }
 
   public void update(final PatientCommand.UpdateBirth birth) {
-    this.cityDescTxt = birth.city();
-    this.stateCd = birth.state();
-    this.cntyCd = birth.county();
-    this.cntryCd = birth.country();
 
-    changed(birth);
+    long before = Objects.hash(this.city, this.state, this.county, this.country);
+
+    this.city = birth.city();
+    this.state = birth.state();
+    this.county = birth.county();
+    this.country = birth.country();
+
+    long after = Objects.hash(this.city, this.state, this.county, this.country);
+
+    if (before != after) {
+      changed(birth);
+    }
   }
 
   public void update(final PatientCommand.UpdateMortality mortality) {
+
+    long before = Objects.hash(this.city, this.state, this.county, this.country);
+
     if (Objects.equals(mortality.deceased(), Deceased.Y.value())) {
-      this.cityDescTxt = mortality.city();
-      this.stateCd = mortality.state();
-      this.cntyCd = mortality.county();
-      this.cntryCd = mortality.country();
+      this.city = mortality.city();
+      this.state = mortality.state();
+      this.county = mortality.county();
+      this.country = mortality.country();
     } else {
-      this.cityDescTxt = null;
-      this.stateCd = null;
-      this.cntyCd = null;
-      this.cntryCd = null;
+      this.city = null;
+      this.state = null;
+      this.county = null;
+      this.country = null;
     }
 
-    changed(mortality);
+    long after = Objects.hash(this.city, this.state, this.county, this.country);
+
+    if (before != after) {
+      changed(mortality);
+    }
   }
 
   public void update(final PatientCommand.UpdateAddress update) {
     this.streetAddr1 = update.address1();
     this.streetAddr2 = update.address2();
-    this.cityDescTxt = update.city();
-    this.stateCd = update.state();
+    this.city = update.city();
+    this.state = update.state();
     this.zipCd = update.zip();
-    this.cntyCd = update.county();
-    this.cntryCd = update.country();
+    this.county = update.county();
+    this.country = update.country();
     this.censusTract = update.censusTract();
 
     changed(update);
+  }
+
+  public Long identifier() {
+    return id;
+  }
+
+  public String address1() {
+    return streetAddr1;
+  }
+
+  public String address2() {
+    return streetAddr2;
+  }
+
+  public String city() {
+    return city;
+  }
+
+  public String county() {
+    return county;
+  }
+
+  public String zip() {
+    return zipCd;
+  }
+
+  public String state() {
+    return state;
+  }
+
+  public String country() {
+    return country;
+  }
+
+  public String censusTract() {
+    return censusTract;
   }
 
   @Override

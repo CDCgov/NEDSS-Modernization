@@ -1,11 +1,9 @@
-import { StatesOptionsService } from 'generated';
-import { Selectable } from 'options';
-import { useSelectableOptions } from 'options/useSelectableOptions';
+import { cachedSelectableResolver, useSelectableOptions } from 'options';
 
-const resolver = () => StatesOptionsService.states();
+const resolver = cachedSelectableResolver('state.options', '/nbs/api/options/states');
 
-const useStateOptions = (): Selectable[] => {
-    const { options } = useSelectableOptions({ resolver, lazy: false });
+const useStateOptions = () => {
+    const { options } = useSelectableOptions({ resolver });
 
     return options;
 };

@@ -1,13 +1,11 @@
 import { Selectable, useSelectableOptions, SelectableOptionsInteraction } from 'options';
-import { RaceOptionsService } from 'generated';
+import { selectableResolver } from 'options/selectableResolver';
 
 const resolver = (category?: string) =>
-    category
-        ? RaceOptionsService.detailedRaces({ category }).then((options) => options as Selectable[])
-        : Promise.resolve<Selectable[]>([]);
+    category ? selectableResolver(`/nbs/api/options/races/${category}`) : Promise.resolve<Selectable[]>([]);
 
 const useDetailedRaceOptions = (): SelectableOptionsInteraction<string> => {
-    return useSelectableOptions({ resolver, lazy: true });
+    return useSelectableOptions({ resolver });
 };
 
 export { useDetailedRaceOptions };

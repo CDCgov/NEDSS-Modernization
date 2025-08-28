@@ -5,7 +5,7 @@ import { SensitiveValueField } from 'libs/sensitive';
 
 type GeneralInformationDemographicViewProps = {
     sizing?: Sizing;
-    demographic?: GeneralInformationDemographic;
+    demographic?: Partial<GeneralInformationDemographic>;
 };
 
 const GeneralInformationDemographicView = ({ sizing, demographic }: GeneralInformationDemographicViewProps) => {

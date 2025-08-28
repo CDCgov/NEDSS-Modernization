@@ -8,7 +8,7 @@ type SelectProps = {
     className?: string;
     options: Selectable[];
     value?: Selectable | null;
-    onChange?: (value?: Selectable) => void;
+    onChange?: (value: Selectable | null) => void;
     placeholder?: string;
     sizing?: Sizing;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'value'>;
@@ -40,10 +40,8 @@ const Select = ({
     const find = findByValue(options);
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        if (onChange) {
-            const selected = find(event.target.value);
-            onChange(selected);
-        }
+        const selected = find(event.target.value) ?? null;
+        onChange?.(selected);
     };
 
     return (

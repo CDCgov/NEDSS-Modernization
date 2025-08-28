@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router';
-import { TabNavigation, TabNavigationEntry, TabNavigationProps } from './TabNavigation';
 import { Meta, StoryObj } from '@storybook/react/*';
+import { TabNavigation, TabNavigationEntry, TabNavigationProps } from './TabNavigation';
 
 const meta = {
     title: 'Design System/TabNavigation',
@@ -23,7 +23,7 @@ const renderTabs = (args: TabNavigationProps) => (
 
 export const Default: Story = {
     args: {
-        newTab: true
+        sizing: 'large'
     },
     render: renderTabs
 };

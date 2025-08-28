@@ -5,23 +5,25 @@ import userEvent from '@testing-library/user-event';
 import { MortalityDemographicFields } from './MortalityDemographicFields';
 import { HasMortalityDemographic, initial } from '../mortality';
 import { useMortalityOptions } from './useMortalityOptions';
+import { LocationOptions } from 'options/location';
 
-const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
+const mockState = jest.fn();
 
-const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
-
-const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+const mockLocationOptions: LocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: mockState
+};
 
 jest.mock('options/location', () => ({
-    useCountyOptions: () => mockCountyCodedValues,
-    useCountryOptions: () => mockCountryCodedValues,
-    useStateOptions: () => mockStateCodedValues
+    useLocationOptions: () => mockLocationOptions
 }));
 
 const Fixture = () => {
     const form = useForm<HasMortalityDemographic>({
         mode: 'onBlur',
-        defaultValues: { mortality: initial() }
+        defaultValues: { mortality: initial(() => '06/25/2001') }
     });
 
     const options = useMortalityOptions();
@@ -87,6 +89,7 @@ describe('when entering patient mortality demographics', () => {
         await user.selectOptions(getByLabelText('Is the patient deceased?'), 'Y');
 
         // Verify previously input data is cleared
+
         expect(getByLabelText('Date of death')).toHaveValue('');
         expect(getByLabelText('Death city')).toHaveValue('');
         expect(getByLabelText('Death state')).toHaveValue('');

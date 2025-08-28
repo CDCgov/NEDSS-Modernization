@@ -46,7 +46,7 @@ class EntityIdTest {
             .extracting(EntityId::recordStatus)
             .satisfies(RecordStatusAssertions.inactive("2020-03-13T13:15:30"))
         )
-        .extracting(EntityId::getAudit)
+        .extracting(EntityId::audit)
         .extracting(Audit::changed)
         .returns(191L, Changed::changedBy)
         .returns(LocalDateTime.parse("2020-03-13T13:15:30"), Changed::changedOn)

@@ -1,8 +1,7 @@
-import { OccupationOptionsService } from 'generated';
-import { useSelectableOptions } from 'options/useSelectableOptions';
+import { cachedSelectableResolver, useSelectableOptions } from 'options';
 
-const resolver = () => OccupationOptionsService.occupations();
+const resolver = cachedSelectableResolver('occupations.options', '/nbs/api/options/occupations');
 
-const useOccupationOptions = (settings = { lazy: false }) => useSelectableOptions({ ...settings, resolver });
+const useOccupationOptions = () => useSelectableOptions({ resolver });
 
 export { useOccupationOptions };
