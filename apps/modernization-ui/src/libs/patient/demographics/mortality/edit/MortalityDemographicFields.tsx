@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
-import { isEqual } from 'options';
+import { isEqual, Selectable } from 'options';
 import { indicators } from 'options/indicator';
 import { Shown } from 'conditional-render';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
@@ -26,19 +26,21 @@ const MortalityDemographicFields = ({
     options,
     entry
 }: MortalityDemographicFieldsProps) => {
-    const selectedState = useWatch({ control: form.control, name: 'mortality.state', defaultValue: entry?.state });
-
     const selectedDeceased = useWatch({
         control: form.control,
         name: 'mortality.deceased'
     });
 
     useEffect(() => {
-        if (selectedState?.value !== entry?.state?.value) {
-            form.setValue('mortality.county', null);
-        }
-        options.location.state(selectedState);
-    }, [selectedState?.value, options.location.state, form.setValue]);
+        // load counties for initial state
+        options.location.state(entry?.state);
+    }, [entry?.state]);
+
+    const handleStateChange = (state: Selectable | null) => {
+        // when user selects a different state, clear selected county and load new county list
+        form.setValue('mortality.county', null);
+        options.location.state(state);
+    };
 
     return (
         <>
@@ -125,7 +127,10 @@ const MortalityDemographicFields = ({
                             label={labels.state}
                             orientation={orientation}
                             value={value}
-                            onChange={onChange}
+                            onChange={(v) => {
+                                handleStateChange(v);
+                                onChange(v);
+                            }}
                             onBlur={onBlur}
                             id={name}
                             name={name}
