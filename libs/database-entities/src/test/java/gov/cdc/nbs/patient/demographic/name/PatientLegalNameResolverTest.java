@@ -150,7 +150,7 @@ class PatientLegalNameResolverTest {
 
     assertThat(actual)
         .hasValueSatisfying(
-            name -> assertThat(name.getId().getPersonNameSeq()).isEqualTo((short) 5)
+            name -> assertThat(name.identifier().getPersonNameSeq()).isEqualTo((short) 5)
         );
   }
 
@@ -232,7 +232,7 @@ class PatientLegalNameResolverTest {
 
     assertThat(actual)
         .hasValueSatisfying(
-            name -> assertThat(name.getId().getPersonNameSeq()).isEqualTo((short) 3)
+            name -> assertThat(name.identifier().getPersonNameSeq()).isEqualTo((short) 3)
         );
   }
 
@@ -314,7 +314,7 @@ class PatientLegalNameResolverTest {
 
     assertThat(actual)
         .hasValueSatisfying(
-            name -> assertThat(name.getId().getPersonNameSeq()).isEqualTo((short) 5)
+            name -> assertThat(name.identifier().getPersonNameSeq()).isEqualTo((short) 5)
         );
   }
 }
