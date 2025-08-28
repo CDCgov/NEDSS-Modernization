@@ -153,7 +153,7 @@ public class NBSEntity {
     Collection<EntityId> existing = ensureEntityIds();
     EntityIdId identifier = new EntityIdId(info.person(), (short) info.id());
 
-    existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst()
+    existing.stream().filter(p -> Objects.equals(p.identifier(), identifier)).findFirst()
         .ifPresent(identification -> identification.update(info));
 
   }
@@ -162,7 +162,7 @@ public class NBSEntity {
     Collection<EntityId> existing = ensureEntityIds();
     EntityIdId identifier = new EntityIdId(deleted.person(), (short) deleted.id());
 
-    existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst()
+    existing.stream().filter(p -> Objects.equals(p.identifier(), identifier)).findFirst()
         .ifPresent(identification -> identification.delete(deleted));
   }
 

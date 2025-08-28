@@ -1133,17 +1133,17 @@ class PersonTest {
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
-                    .extracting(EntityId::getAudit)
+                    .extracting(EntityId::audit)
                     .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30"))
                     .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30"))
             )
-            .returns("identification-type", EntityId::getTypeCd)
-            .returns(LocalDate.parse("1999-09-09"), EntityId::getAsOfDate)
-            .returns("authority-value", EntityId::getAssigningAuthorityCd)
-            .returns("identification-value", EntityId::getRootExtensionTxt)
+            .returns("identification-type", EntityId::type)
+            .returns(LocalDate.parse("1999-09-09"), EntityId::asOf)
+            .returns("authority-value", EntityId::issuer)
+            .returns("identification-value", EntityId::value)
             .satisfies(
                 identification -> assertThat(identification)
-                    .extracting(EntityId::getId)
+                    .extracting(EntityId::identifier)
                     .returns((short) 1, EntityIdId::getEntityIdSeq)
             )
 
@@ -1194,14 +1194,14 @@ class PersonTest {
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
-                    .extracting(EntityId::getAudit)
+                    .extracting(EntityId::audit)
                     .satisfies(AuditAssertions.added(131L, "2023-03-03T10:15:30"))
                     .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30"))
             )
-            .returns("updated-identification-type", EntityId::getTypeCd)
-            .returns(LocalDate.parse("2001-05-19"), EntityId::getAsOfDate)
-            .returns("updated-authority-value", EntityId::getAssigningAuthorityCd)
-            .returns("updated-identification-value", EntityId::getRootExtensionTxt)
+            .returns("updated-identification-type", EntityId::type)
+            .returns(LocalDate.parse("2001-05-19"), EntityId::asOf)
+            .returns("updated-authority-value", EntityId::issuer)
+            .returns("updated-identification-value", EntityId::value)
 
     );
   }
@@ -1246,14 +1246,14 @@ class PersonTest {
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
-                    .extracting(EntityId::getAudit)
+                    .extracting(EntityId::audit)
                     .satisfies(AuditAssertions.added(131L, "2023-03-03T10:15:30"))
                     .satisfies(AuditAssertions.changed(131L, "2023-03-03T10:15:30"))
             )
-            .returns("identification-type", EntityId::getTypeCd)
-            .returns(LocalDate.parse("1999-09-09"), EntityId::getAsOfDate)
-            .returns("authority-value", EntityId::getAssigningAuthorityCd)
-            .returns("identification-value", EntityId::getRootExtensionTxt)
+            .returns("identification-type", EntityId::type)
+            .returns(LocalDate.parse("1999-09-09"), EntityId::asOf)
+            .returns("authority-value", EntityId::issuer)
+            .returns("identification-value", EntityId::value)
 
     );
   }
@@ -1315,7 +1315,7 @@ class PersonTest {
                         .extracting(EntityId::recordStatus)
                         .satisfies(RecordStatusAssertions.inactive("2020-03-13T13:15:30"))
                     )
-                    .extracting(EntityId::getId)
+                    .extracting(EntityId::identifier)
                     .returns((short) 1, EntityIdId::getEntityIdSeq)
 
             ),
@@ -1326,7 +1326,7 @@ class PersonTest {
                         .extracting(EntityId::recordStatus)
                         .satisfies(RecordStatusAssertions.active("2023-03-03T10:15:30"))
                     )
-                    .extracting(EntityId::getId)
+                    .extracting(EntityId::identifier)
                     .returns((short) 2, EntityIdId::getEntityIdSeq)
             )
     );
@@ -1388,7 +1388,7 @@ class PersonTest {
                         .extracting(EntityId::recordStatus)
                         .satisfies(RecordStatusAssertions.active("2023-03-03T10:15:30"))
                     )
-                    .extracting(EntityId::getId)
+                    .extracting(EntityId::identifier)
                     .returns((short) 1, EntityIdId::getEntityIdSeq)
 
             ),
@@ -1399,7 +1399,7 @@ class PersonTest {
                         .extracting(EntityId::recordStatus)
                         .satisfies(RecordStatusAssertions.active("2023-03-03T10:15:30"))
                     )
-                    .extracting(EntityId::getId)
+                    .extracting(EntityId::identifier)
                     .returns((short) 2, EntityIdId::getEntityIdSeq)
             )
     );
