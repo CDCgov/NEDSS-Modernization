@@ -1,7 +1,7 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { EntryFieldsProps } from 'design-system/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { TextAreaField } from 'design-system/input/text/TextAreaField';
+import { TextAreaField } from 'design-system/input/text';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { HasAdministrativeInformation, labels } from '../administrative';
 
