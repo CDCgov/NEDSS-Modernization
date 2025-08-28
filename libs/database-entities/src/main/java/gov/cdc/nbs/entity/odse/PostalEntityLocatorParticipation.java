@@ -4,6 +4,8 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientPostalLocatorHistoryListener;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @DiscriminatorValue(PostalEntityLocatorParticipation.POSTAL_CLASS_CODE)
 @EntityListeners(PatientPostalLocatorHistoryListener.class)
@@ -35,10 +37,10 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
 
     super(address, nbs, identifier);
 
-    this.cd = address.type();
-    this.useCd = address.use();
-    this.asOfDate = address.asOf();
-    this.locatorDescTxt = address.comments();
+    this.type = address.type();
+    this.use = address.use();
+    this.asOf = address.asOf();
+    this.comment = address.comments();
 
     this.locator = new PostalLocator(address, identifier);
   }
@@ -49,9 +51,9 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
       final PatientCommand.UpdateBirth birth
   ) {
     super(birth, nbs, identifier);
-    this.cd = "F";
-    this.useCd = "BIR";
-    this.asOfDate = birth.asOf();
+    this.type = "F";
+    this.use = "BIR";
+    this.asOf = birth.asOf();
 
     this.locator = new PostalLocator(identifier.getLocatorUid(), birth);
   }
@@ -62,19 +64,19 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
       final PatientCommand.UpdateMortality mortality
   ) {
     super(mortality, nbs, identifier);
-    this.cd = "U";
-    this.useCd = "DTH";
-    this.asOfDate = mortality.asOf();
+    this.type = "U";
+    this.use = "DTH";
+    this.asOf = mortality.asOf();
 
     this.locator = new PostalLocator(identifier.getLocatorUid(), mortality);
   }
 
   public void update(final PatientCommand.UpdateAddress update) {
 
-    this.asOfDate = update.asOf();
-    this.cd = update.type();
-    this.useCd = update.use();
-    this.locatorDescTxt = update.comments();
+    this.asOf = update.asOf();
+    this.type = update.type();
+    this.use = update.use();
+    this.comment = update.comments();
     changed(update);
 
     this.locator.update(update);
@@ -86,9 +88,12 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
   }
 
   public void update(final PatientCommand.UpdateBirth birth) {
-    this.asOfDate = birth.asOf();
+    if (!Objects.equals(birth.asOf(), asOf)) {
+      this.asOf = birth.asOf();
+      changed(birth);
+    }
+
     this.locator.update(birth);
-    changed(birth);
   }
 
   public void clear(final PatientCommand.ClearBirthDemographics command) {
@@ -96,9 +101,12 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
   }
 
   public void update(final PatientCommand.UpdateMortality mortality) {
-    this.asOfDate = mortality.asOf();
+    if (!Objects.equals(mortality.asOf(), asOf)) {
+      this.asOf = mortality.asOf();
+      changed(mortality);
+    }
+
     this.locator.update(mortality);
-    changed(mortality);
   }
 
   public void clear(final PatientCommand.ClearMoralityDemographics command) {
@@ -118,8 +126,8 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
   public String toString() {
     return "PostalEntityLocatorParticipation{" +
         "locator=" + locator +
-        ", cd='" + cd + '\'' +
-        ", use='" + useCd + '\'' +
+        ", cd='" + type + '\'' +
+        ", use='" + use + '\'' +
         '}';
   }
 
