@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useId, useState } from 'react';
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
@@ -34,10 +34,18 @@ const Card = ({
 }: CardProps) => {
     const [collapsed, setCollapsed] = useState<boolean>(!open);
 
+    const cardId = useId();
+    const collapsibleId = useId();
+
     return (
-        <section id={id} aria-labelledby={`${id}-title`} className={classNames(styles.card, className)} {...remaining}>
+        <section
+            id={cardId}
+            role="group"
+            aria-labelledby={id}
+            className={classNames(styles.card, className)}
+            {...remaining}>
             <CardHeader
-                id={`${id}-title`}
+                id={id}
                 title={title}
                 level={level}
                 flair={flair}
@@ -48,10 +56,12 @@ const Card = ({
                     <Shown when={collapsible}>
                         <Button
                             className={classNames(styles.toggle, { [styles.collapsed]: collapsed })}
-                            sizing="small"
+                            sizing={remaining.sizing}
                             tertiary
                             icon="expand_less"
                             aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
+                            aria-controls={collapsibleId}
+                            aria-expanded={!collapsed}
                             onClick={() => setCollapsed((current) => !current)}
                         />
                     </Shown>
@@ -59,7 +69,9 @@ const Card = ({
             />
 
             <Shown when={collapsible} fallback={children}>
-                <Collapsible open={!collapsed}>{children}</Collapsible>
+                <Collapsible id={collapsibleId} open={!collapsed}>
+                    {children}
+                </Collapsible>
             </Shown>
             <Shown when={!collapsed}>
                 <footer>{footer}</footer>

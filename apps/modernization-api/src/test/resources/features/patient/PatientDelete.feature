@@ -13,7 +13,7 @@ Feature: Patient Delete
 
   Scenario: I can not delete a patient that does not exist
     When I delete an unknown patient
-    Then there is no patient to delete
+    Then I am unable to delete the patient because it was not found
 
   Scenario: I can not delete a patient that is associated with an investigation
     Given the patient is a subject of an investigation
@@ -47,12 +47,15 @@ Feature: Patient Delete
     Then the patient is not deleted because of an association with an event
 
   Scenario: I can not delete a patient that named a contact
-    Given the patient is a subject of an investigation
-    And the patient names a contact
+    Given I have another patient
+    And the patient is a subject of an investigation
+    And the patient names the previous patient as a contact on the investigation
     When I delete the patient
     Then the patient is not deleted because of an association with an event
 
   Scenario: I can not delete a patient that was named as a contact
-    Given the patient is named as a contact
+    Given the patient is a subject of an investigation
+    And I have another patient
+    And the patient was named as a contact in the investigation
     When I delete the patient
     Then the patient is not deleted because of an association with an event

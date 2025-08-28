@@ -1,57 +1,55 @@
 import { useEffect } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
+import { isEqual } from 'options';
+import { indicators } from 'options/indicator';
+import { Shown } from 'conditional-render';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { TextInputField } from 'design-system/input';
-import { Shown } from 'conditional-render';
-import { isEqual } from 'options';
-import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
-import { HasMortalityDemographic, labels } from '../mortality';
-import { useMortalityOptions } from './useMortalityOptions';
+import { MoralityOptions } from './useMortalityOptions';
+import { HasMortalityDemographic, labels, MortalityDemographic } from '../mortality';
 
-const AS_OF_DATE_LABEL = 'Mortality information as of';
+const isDeceased = isEqual(indicators.yes);
 
-type MortalityDemographicFieldsProps = EntryFieldsProps & JSX.IntrinsicElements['section'];
+type MortalityDemographicFieldsProps = {
+    form: UseFormReturn<HasMortalityDemographic>;
+    options: MoralityOptions;
+    entry?: MortalityDemographic;
+} & EntryFieldsProps;
 
 const MortalityDemographicFields = ({
     orientation = 'horizontal',
     sizing = 'medium',
-    ...remaining
+    form,
+    options,
+    entry
 }: MortalityDemographicFieldsProps) => {
-    const { control, resetField } = useFormContext<HasMortalityDemographic>();
-    const selectedState = useWatch({ control, name: 'mortality.state' });
-    const selectedDeceased = useWatch({ control, name: 'mortality.deceased' });
+    const selectedState = useWatch({ control: form.control, name: 'mortality.state', defaultValue: entry?.state });
 
-    const options = useMortalityOptions();
-
-    const isDeceased = isEqual(options.deceased.yes);
-
-    const countries = useCountryOptions();
-    const states = useStateOptions();
-    const counties = useCountyOptions(selectedState?.value);
+    const selectedDeceased = useWatch({
+        control: form.control,
+        name: 'mortality.deceased'
+    });
 
     useEffect(() => {
-        if (isDeceased(selectedDeceased)) {
-            resetField('mortality.deceasedOn');
-            resetField('mortality.state');
-            resetField('mortality.city');
-            resetField('mortality.county');
-            resetField('mortality.country');
+        if (selectedState?.value !== entry?.state?.value) {
+            form.setValue('mortality.county', null);
         }
-    }, [selectedDeceased?.value]);
+        options.location.state(selectedState);
+    }, [selectedState?.value, options.location.state, form.setValue]);
 
     return (
-        <section {...remaining}>
+        <>
             <Controller
-                control={control}
+                control={form.control}
                 name="mortality.asOf"
-                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
+                rules={{ ...validateRequiredRule(labels.asOf), ...validDateRule(labels.asOf) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         id={name}
-                        label={AS_OF_DATE_LABEL}
+                        label={labels.asOf}
                         orientation={orientation}
                         value={value}
                         onChange={onChange}
@@ -63,7 +61,7 @@ const MortalityDemographicFields = ({
                 )}
             />
             <Controller
-                control={control}
+                control={form.control}
                 name="mortality.deceased"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
@@ -82,7 +80,7 @@ const MortalityDemographicFields = ({
 
             <Shown when={isDeceased(selectedDeceased)}>
                 <Controller
-                    control={control}
+                    control={form.control}
                     name="mortality.deceasedOn"
                     shouldUnregister
                     rules={validDateRule(labels.deceasedOn)}
@@ -100,7 +98,7 @@ const MortalityDemographicFields = ({
                     )}
                 />
                 <Controller
-                    control={control}
+                    control={form.control}
                     name="mortality.city"
                     shouldUnregister
                     rules={maxLengthRule(100, labels.city)}
@@ -119,7 +117,7 @@ const MortalityDemographicFields = ({
                     )}
                 />
                 <Controller
-                    control={control}
+                    control={form.control}
                     name="mortality.state"
                     shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
@@ -131,13 +129,13 @@ const MortalityDemographicFields = ({
                             onBlur={onBlur}
                             id={name}
                             name={name}
-                            options={states}
+                            options={options.location.states}
                             sizing={sizing}
                         />
                     )}
                 />
                 <Controller
-                    control={control}
+                    control={form.control}
                     name="mortality.county"
                     shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
@@ -149,14 +147,14 @@ const MortalityDemographicFields = ({
                             onBlur={onBlur}
                             id={name}
                             name={name}
-                            options={counties}
+                            options={options.location.counties}
                             sizing={sizing}
                         />
                     )}
                 />
 
                 <Controller
-                    control={control}
+                    control={form.control}
                     name="mortality.country"
                     shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
@@ -168,14 +166,14 @@ const MortalityDemographicFields = ({
                             onBlur={onBlur}
                             id={name}
                             name={name}
-                            options={countries}
+                            options={options.location.countries}
                             sizing={sizing}
                         />
                     )}
                 />
             </Shown>
-        </section>
+        </>
     );
 };
 
-export { MortalityDemographicFields };
+export { MortalityDemographicFields, type MortalityDemographicFieldsProps };

@@ -1,7 +1,7 @@
-import { PatientFileService } from 'generated';
-import { PhoneEmailDemographic } from 'libs/patient/demographics/phoneEmail/phoneEmails';
+import { get, maybeJson } from 'libs/api';
+import { PhoneEmailDemographic } from 'libs/patient/demographics/phoneEmail';
 
-const patientPhoneEmail = (patient: number): Promise<Array<PhoneEmailDemographic>> =>
-    PatientFileService.phones({ patient }).then();
+const patientPhoneEmail = (patient: number): Promise<PhoneEmailDemographic[]> =>
+    fetch(get(`/nbs/api/patients/${patient}/demographics/phones`)).then(maybeJson);
 
 export { patientPhoneEmail };

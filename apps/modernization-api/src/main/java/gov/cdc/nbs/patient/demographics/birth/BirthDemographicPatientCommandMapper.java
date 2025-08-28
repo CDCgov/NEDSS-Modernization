@@ -27,6 +27,17 @@ public class BirthDemographicPatientCommandMapper {
     );
   }
 
+  public static PatientCommand.ClearBirthDemographics asClearBirthDemographics(
+      final long patient,
+      final RequestContext context
+  ) {
+    return new PatientCommand.ClearBirthDemographics(
+        patient,
+        context.requestedBy(),
+        context.requestedAt()
+    );
+  }
+
   private BirthDemographicPatientCommandMapper() {
     // static
   }

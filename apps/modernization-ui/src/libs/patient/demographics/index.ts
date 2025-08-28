@@ -8,3 +8,11 @@ export type { NameDemographic } from './name';
 export type { PhoneEmailDemographic } from './phoneEmail';
 export type { RaceDemographic } from './race';
 export type { SexBirthDemographic } from './sex-birth';
+
+export { initial } from './demographics';
+export type { PatientDemographics, PatientDemographicsDefaults, PatientDemographicsEntry } from './demographics';
+
+export { PatientDemographicsForm } from './PatientDemographicsForm';
+export { usePatientDemographicDefaults } from './usePatientDemographicDefaults';
+
+export { sections } from './sections';

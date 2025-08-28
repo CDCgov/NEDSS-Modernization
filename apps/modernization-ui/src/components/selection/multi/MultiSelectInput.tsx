@@ -6,7 +6,7 @@ import { EntryWrapper } from 'components/Entry';
 
 import { theme, styles, CheckboxOption } from 'design-system/select/multi';
 
-import './MultiSelectInput.scss';
+import 'design-system/select/multi/multi-select.scss';
 
 const asSelected = (selectables: Selectable[]) => (item: string) =>
     selectables.find((option) => option.value === item) || null;

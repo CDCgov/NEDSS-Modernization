@@ -76,12 +76,15 @@ Feature: Patient File
     Then the patient file cannot be deleted because the patient has associations
 
   Scenario: The Patient file of a patient that names a contact should not be deletable
-    Given the patient is a subject of an investigation
-    And the patient names a contact
+    Given I have another patient
+    And the patient is a subject of an investigation
+    And the patient names the previous patient as a contact on the investigation
     When I view the Patient File
     Then the patient file cannot be deleted because the patient has associations
 
   Scenario: The Patient file of a patient that is named as a contact should not be deletable
-    Given the patient is named as a contact
+    Given the patient is a subject of an investigation
+    And I have another patient
+    And the patient was named as a contact in the investigation
     When I view the Patient File
     Then the patient file cannot be deleted because the patient has associations

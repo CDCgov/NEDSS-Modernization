@@ -1,33 +1,21 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.entity.odse.PersonRace;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-
+import gov.cdc.nbs.entity.odse.Identifiable;
+import gov.cdc.nbs.entity.odse.PatientRaceId;
 import jakarta.persistence.PreRemove;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PatientRaceHistoryListener {
-    private final PatientRaceHistoryCreator creator;
-    private final JdbcTemplate template;
+  private final PatientRaceHistoryRecorder creator;
 
-    public PatientRaceHistoryListener(PatientRaceHistoryCreator creator, JdbcTemplate template) {
-        this.creator = creator;
-        this.template = template;
-    }
+  PatientRaceHistoryListener(final PatientRaceHistoryRecorder creator) {
+    this.creator = creator;
+  }
 
-    @PreRemove
-    @SuppressWarnings({"javaarchitecture:S7027","javaarchitecture:S7091"})
-    void preRemove(final PersonRace personRace) {
-        long personUid = personRace.getPersonUid().getId();
-        String raceCode = personRace.getRaceCd();
-        int currentVersion = getCurrentVersionNumber(personUid, raceCode);
-        this.creator.createPersonRaceHistory(personUid, raceCode, currentVersion + 1);
-    }
+  @PreRemove
+  void preRemove(final Identifiable<PatientRaceId> removed) {
+    this.creator.snapshot(removed.identifier());
+  }
 
-    private int getCurrentVersionNumber(long personUid, String raceCode) {
-        String query = "SELECT MAX(version_ctrl_nbr) FROM Person_race_hist WHERE person_uid = ? and race_cd = ?";
-        Integer maxVersionControlNumber = template.queryForObject(query, Integer.class, personUid, raceCode);
-        return maxVersionControlNumber != null ? maxVersionControlNumber : 0;
-    }
 }

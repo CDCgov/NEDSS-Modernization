@@ -14,6 +14,7 @@ export type PatientMorbidityReport = {
     receivedOn?: string;
     reportedOn?: string;
     condition?: string;
+    processingDecision?: string;
     reportingFacility?: string;
     orderingProvider?: DisplayableSimpleName;
     reportingProvider?: DisplayableSimpleName;

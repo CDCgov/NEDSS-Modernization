@@ -1,29 +1,29 @@
 package gov.cdc.nbs.patient.profile.history;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PatientEthnicityPreviousVersionVerifier {
-    private static final String QUERY = """
-      select 1 from Person_ethnic_group [person_ethnic]
-          join Person_ethnic_group_hist [person_ethnic_history] on
-                  [person_ethnic_history].[person_uid] = [person_ethnic].[person_uid]
-      where [person_ethnic].person_uid = ?
+class PatientEthnicityPreviousVersionVerifier {
+  private static final String QUERY = """
+      select 1 from Person_ethnic_group [current]
+          join Person_ethnic_group_hist [history] on
+                  [history].[person_uid] = [current].[person_uid]
+      
+      where [current].person_uid = ?
       """;
-    private static final int RESULT_COLUMN = 1;
-    private static final int PATIENT_PARAMETER = 1;
-    private final JdbcTemplate template;
 
-    public PatientEthnicityPreviousVersionVerifier(JdbcTemplate template) {
-        this.template = template;
-    }
+  private final JdbcClient client;
 
-    public boolean verify(long personUid) {
-        return !this.template.query(
-                QUERY,
-                statement -> statement.setLong(PATIENT_PARAMETER, personUid),
-                (resultSet, row) -> resultSet.getLong(RESULT_COLUMN)
-        ).isEmpty();
-    }
+  PatientEthnicityPreviousVersionVerifier(final JdbcClient client) {
+    this.client = client;
+  }
+
+  boolean verify(long patient) {
+    return this.client.sql(QUERY)
+        .param(patient)
+        .query(Boolean.class)
+        .optional()
+        .orElse(false);
+  }
 }

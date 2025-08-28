@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { GeneralInformationDemographicView } from './GeneralInformationDemographicView';
 
-describe('SexBirthDemographicView', () => {
+describe('GeneralInformationDemographicView', () => {
     it('should display "As of" when present', () => {
         render(<GeneralInformationDemographicView demographic={{ asOf: '2020-03-17' }} />);
 

@@ -1,0 +1,3 @@
+.demographics {
+    --demographics-form-height: calc(100vh - var(--patient-file-header-height, 0) - var(--nav-bar-height, 70px));
+}

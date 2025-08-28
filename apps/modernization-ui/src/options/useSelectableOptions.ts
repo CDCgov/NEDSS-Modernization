@@ -2,38 +2,39 @@ import { useCallback, useEffect, useReducer } from 'react';
 import { SelectableResolver, findByValue } from './findByValue';
 import { Selectable } from './selectable';
 
-type State = { status: 'idle' | 'loading' } | { status: 'loaded'; options: Selectable[] };
+type State<C> = { status: 'idle' | 'loading'; criteria?: C } | { status: 'loaded'; options: Selectable[] };
 
-type Action = { type: 'reset' } | { type: 'load' } | { type: 'loaded'; options: Selectable[] };
+type Action<C> = { type: 'reset' } | { type: 'load'; criteria?: C } | { type: 'loaded'; options: Selectable[] };
 
-const reducer = (_state: State, action: Action): State => {
+const reducer = <C>(_state: State<C>, action: Action<C>): State<C> => {
     switch (action.type) {
         case 'load':
-            return { ...initial, status: 'loading' };
+            return { status: 'loading', criteria: action.criteria };
         case 'loaded':
             return { status: 'loaded', options: action.options };
         default:
-            return { ...initial };
+            return { status: 'idle' };
     }
 };
 
-const initial: State = {
-    status: 'idle'
-};
-
-type Interaction = {
-    load: () => void;
+type SelectableOptionsInteraction<C> = {
+    load: (criteria?: C) => void;
     options: Selectable[];
     resolve: SelectableResolver;
 };
 
-type Settings = {
-    resolver: () => Promise<Selectable[]>;
+type SelectableOptionsSettings<C> = {
+    resolver: (criteria?: C) => Promise<Selectable[]>;
     lazy?: boolean;
 };
 
-const useSelectableOptions = ({ resolver, lazy = false }: Settings): Interaction => {
-    const [state, dispatch] = useReducer(reducer, initial);
+const useSelectableOptions = <V = undefined>({
+    resolver,
+    lazy = false
+}: SelectableOptionsSettings<V>): SelectableOptionsInteraction<V> => {
+    const [state, dispatch] = useReducer(reducer<V>, {
+        status: 'idle'
+    });
 
     useEffect(() => {
         if (!lazy) {
@@ -43,12 +44,12 @@ const useSelectableOptions = ({ resolver, lazy = false }: Settings): Interaction
 
     useEffect(() => {
         if (state.status === 'loading') {
-            resolver().then((resolved) => dispatch({ type: 'loaded', options: resolved }));
+            resolver(state.criteria).then((resolved) => dispatch({ type: 'loaded', options: resolved }));
         }
     }, [state.status]);
 
     const options = state.status === 'loaded' ? state.options : [];
-    const load = useCallback(() => dispatch({ type: 'load' }), [dispatch]);
+    const load = useCallback((criteria?: V) => dispatch({ type: 'load', criteria }), [dispatch]);
     const resolve = findByValue(options);
 
     return {
@@ -59,3 +60,4 @@ const useSelectableOptions = ({ resolver, lazy = false }: Settings): Interaction
 };
 
 export { useSelectableOptions };
+export type { SelectableOptionsInteraction };

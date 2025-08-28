@@ -8,17 +8,7 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientNameHistoryListener;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -28,12 +18,12 @@ import java.util.function.Predicate;
 @Getter
 @Entity
 @Table(name = "Person_name")
-@SuppressWarnings(
-    //  The PatientNameHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
-)
 @EntityListeners(PatientNameHistoryListener.class)
-public class PersonName {
+@SuppressWarnings(
+    //  Bidirectional mappings require knowledge of each other
+    "javaarchitecture:S7027"
+)
+public class PersonName implements Identifiable<PersonNameId> {
 
   public static Predicate<PersonName> active() {
     return input -> input.recordStatus.status().equals("ACTIVE");
@@ -165,14 +155,27 @@ public class PersonName {
     this.nmDegree = info.degree();
     this.nmUseCd = info.type();
 
-    this.audit.changed(info.requester(), info.requestedOn());
+    changed(info);
 
     return this;
   }
 
   public void delete(final PatientCommand.DeleteNameInfo deleted) {
     this.recordStatus.inactivate(deleted.requestedOn());
-    this.audit.changed(deleted.requester(), deleted.requestedOn());
+    changed(deleted);
+  }
+
+  protected void changed(final PatientCommand command) {
+    if (this.audit == null) {
+      this.audit = new Audit(command.requester(), command.requestedOn());
+    }
+
+    this.audit.changed(command.requester(), command.requestedOn());
+  }
+
+  @Override
+  public PersonNameId identifier() {
+    return this.id;
   }
 
   public RecordStatus recordStatus() {

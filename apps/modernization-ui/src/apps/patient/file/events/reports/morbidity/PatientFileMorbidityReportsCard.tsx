@@ -4,15 +4,16 @@ import { LoadingOverlay } from 'libs/loading';
 import { MemoizedSupplier } from 'libs/supplying';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
+import { Shown } from 'conditional-render';
+import { permissions, Permitted } from 'libs/permission';
 import { TableCard, TableCardProps } from 'design-system/card';
-import { PatientFileMorbidityReport } from './morbidity-report';
 import { internalizeDateTime } from 'date';
 import { displayProvider } from 'libs/provider';
-import { MaybeLabeledValue } from 'design-system/value';
-import { Associations } from 'libs/events/investigations/associated';
-import { ResultedTests } from 'libs/events/tests';
-import { permissions, Permitted } from 'libs/permission';
 import { LinkButton } from 'design-system/button';
+import { MaybeLabeledValue } from 'design-system/value';
+import { PatientFileMorbidityReport } from './morbidity-report';
+import { ResultedTests } from 'libs/events/tests';
+import { Associations } from 'libs/events/investigations/associated';
 import { TreatmentList } from 'libs/events/reports/morbidity';
 
 import styles from './morbidity-reports.module.scss';
@@ -35,8 +36,8 @@ const columnPreferences: ColumnPreference[] = [
     { ...REPORT_DATE, moveable: true, toggleable: true },
     { ...CONDITION, moveable: true, toggleable: true },
     { ...TREATMENT_INFO, moveable: true, toggleable: true },
-    { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
-    { ...JURISDICTION, moveable: true, toggleable: true }
+    { ...JURISDICTION, moveable: true, toggleable: true },
+    { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
 ];
 
 const columns: Column<PatientFileMorbidityReport>[] = [
@@ -45,7 +46,15 @@ const columns: Column<PatientFileMorbidityReport>[] = [
         className: styles['local-header'],
         sortable: true,
         value: (value) => value.local,
-        render: (value) => <a href={`/nbs/api/profile/${value.patient}/report/morbidity/${value.id}`}>{value.local}</a>
+        render: (value) => (
+            <>
+                <a href={`/nbs/api/profile/${value.patient}/report/morbidity/${value.id}`}>{value.local}</a>
+                <Shown when={Boolean(value.processingDecision)}>
+                    <br />
+                    {value.processingDecision}
+                </Shown>
+            </>
+        )
     },
     {
         ...DATE_RECEIVED,
@@ -73,10 +82,10 @@ const columns: Column<PatientFileMorbidityReport>[] = [
                 <MaybeLabeledValue orientation="vertical" label="Reporting facility:">
                     {value.reportingFacility}
                 </MaybeLabeledValue>
-                <MaybeLabeledValue orientation="vertical" label="Ordering provider:">
+                <MaybeLabeledValue orientation="vertical" label="Provider:">
                     {displayProvider(value.orderingProvider)}
                 </MaybeLabeledValue>
-                <MaybeLabeledValue orientation="vertical" label="Reporting provider:">
+                <MaybeLabeledValue orientation="vertical" label="Reporter:">
                     {displayProvider(value.reportingProvider)}
                 </MaybeLabeledValue>
             </>

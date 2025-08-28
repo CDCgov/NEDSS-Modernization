@@ -10,6 +10,7 @@ type Sensitive<V> = Allowed<V> | Restricted;
 
 export type { Sensitive };
 
-const isAllowed = <A>(sensitive?: Sensitive<A>): sensitive is Allowed<A> => (sensitive ? 'value' in sensitive : false);
+const isAllowed = <A>(sensitive?: Sensitive<A> | null): sensitive is Allowed<A> =>
+    sensitive ? 'value' in sensitive : false;
 
 export { isAllowed };

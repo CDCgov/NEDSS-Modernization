@@ -4,7 +4,7 @@ import { useSorting } from 'libs/sorting';
 import { usePageLibraryProperties } from './usePageLibraryProperties';
 import { usePageSummarySearch } from './usePageSummarySearch';
 
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { NavLinkButton } from 'design-system/button';
 import { TableProvider } from 'components/Table/TableProvider';
 
 import {

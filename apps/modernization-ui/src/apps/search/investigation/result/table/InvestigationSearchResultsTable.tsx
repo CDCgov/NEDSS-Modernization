@@ -111,6 +111,7 @@ const InvestigationSearchResultsTable = ({ results, notificationStatusResolver }
             id="investigation-search-results"
             columns={apply(columns(notificationStatusResolver))}
             data={results}
+            options={{ stickyHeaders: true }}
         />
     );
 };

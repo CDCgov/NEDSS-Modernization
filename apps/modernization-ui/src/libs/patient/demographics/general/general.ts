@@ -1,37 +1,37 @@
-import { today } from 'date';
-import { Sensitive } from 'libs/sensitive';
+import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options';
+import { EffectiveDated } from 'utils';
+import { Nullable } from 'utils/object';
+import { Sensitive } from 'libs/sensitive';
 
-type GeneralInformationDemographic = {
-    asOf?: string;
-    maritalStatus?: Selectable;
-    maternalMaidenName?: string;
-    adultsInResidence?: number;
-    childrenInResidence?: number;
-    primaryOccupation?: Selectable;
-    educationLevel?: Selectable;
-    primaryLanguage?: Selectable;
-    speaksEnglish?: Selectable;
-    stateHIVCase?: Sensitive<string>;
-};
+type GeneralInformationDemographic = EffectiveDated &
+    Nullable<{
+        maritalStatus?: Selectable;
+        maternalMaidenName?: string;
+        adultsInResidence?: number;
+        childrenInResidence?: number;
+        primaryOccupation?: Selectable;
+        educationLevel?: Selectable;
+        primaryLanguage?: Selectable;
+        speaksEnglish?: Selectable;
+        stateHIVCase?: Sensitive<string>;
+    }>;
 
-type GeneralInformationDemographicEntry = Omit<GeneralInformationDemographic, 'stateHIVCase'> & {
-    stateHIVCase?: string;
-};
+type HasGeneralInformationDemographic = { general?: GeneralInformationDemographic };
 
-export type { GeneralInformationDemographic, GeneralInformationDemographicEntry };
+export type { GeneralInformationDemographic, HasGeneralInformationDemographic };
 
-const initial = (asOf: string = today()): GeneralInformationDemographic => ({
-    asOf: asOf,
-    maritalStatus: undefined,
-    maternalMaidenName: undefined,
-    adultsInResidence: undefined,
-    childrenInResidence: undefined,
-    primaryOccupation: undefined,
-    educationLevel: undefined,
-    primaryLanguage: undefined,
-    speaksEnglish: undefined,
-    stateHIVCase: undefined
+const initial = (asOf: Supplier<string>): GeneralInformationDemographic => ({
+    asOf: asOf(),
+    maritalStatus: null,
+    maternalMaidenName: null,
+    adultsInResidence: null,
+    childrenInResidence: null,
+    primaryOccupation: null,
+    educationLevel: null,
+    primaryLanguage: null,
+    speaksEnglish: null,
+    stateHIVCase: null
 });
 
 export { initial };

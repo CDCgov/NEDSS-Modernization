@@ -49,7 +49,8 @@ class PatientDemographicsSummaryAddressFinder {
       
                       where   [eff_as_of].[entity_uid]         = [locators].entity_uid
                           and [eff_as_of].[class_cd]           = [locators].[class_cd]
-                          and [eff_as_of].[record_status_cd]   = [locators].[record_status_cd]
+                          and [eff_as_of].[record_status_cd]   = 'ACTIVE'
+                          and [eff_as_of].[use_cd] not in ('BIR', 'DTH')
                           and [eff_as_of].[as_of_date]         <= ?
                   )
           and [locators].locator_uid = (
@@ -58,7 +59,8 @@ class PatientDemographicsSummaryAddressFinder {
               from Entity_locator_participation [eff_seq]\s
                               where   [eff_seq].[entity_uid]         = [locators].entity_uid
                           and [eff_seq].[class_cd]           = [locators].[class_cd]
-                          and [eff_seq].[record_status_cd]   = [locators].[record_status_cd]
+                          and [eff_seq].[record_status_cd]   = 'ACTIVE'
+                          and [eff_seq].[use_cd] not in ('BIR', 'DTH')
                           and [eff_seq].[as_of_date]         = [locators].as_of_date
           )
       """;

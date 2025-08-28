@@ -1,0 +1,1 @@
+export { GuardedAddNewPage } from './GuardedAddNewPage';

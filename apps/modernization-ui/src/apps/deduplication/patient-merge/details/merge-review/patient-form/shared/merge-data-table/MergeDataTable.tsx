@@ -59,6 +59,7 @@ export const MergeDataTable = <V,>({
         {
             id: 'view-icon',
             name: '',
+            className: styles['selection-header'],
             render: (v) => (
                 <div className={styles.action}>
                     <Button

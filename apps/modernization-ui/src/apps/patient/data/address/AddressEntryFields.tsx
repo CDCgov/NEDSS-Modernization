@@ -3,13 +3,18 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
-import { CensusTractInputField, validCensusTractRule } from './census-tract';
+import {
+    validZipCodeRule,
+    ZipCodeInputField,
+    CensusTractInputField,
+    validCensusTractRule
+} from 'libs/demographics/location';
 import { AddressEntry } from './entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { useAddressCodedValues } from './useAddressCodedValues';
-import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
+import { useLocationOptions } from 'options/location';
 import { TextInputField } from 'design-system/input';
+import { useEffect } from 'react';
 
 const AS_OF_DATE_LABEL = 'Address as of';
 const TYPE_LABEL = 'Type';
@@ -22,14 +27,19 @@ const CENSUS_TRACT_LABEL = 'Census tract';
 const COMMENTS_LABEL = 'Address comments';
 
 export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
-    const { control } = useFormContext<AddressEntry>();
+    const { control, setValue } = useFormContext<AddressEntry>();
     const coded = useAddressCodedValues();
 
     const selectedState = useWatch({ control, name: 'state' });
 
-    const countries = useCountryOptions();
-    const states = useStateOptions();
-    const counties = useCountyOptions(selectedState?.value);
+    const location = useLocationOptions();
+
+    useEffect(() => {
+        if (!selectedState) {
+            setValue('county', undefined);
+        }
+        location.state(selectedState);
+    }, [selectedState?.value, location.state]);
 
     return (
         <section>
@@ -49,6 +59,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         error={error?.message}
                         required
                         sizing={sizing}
+                        aria-description="This date defaults to today and can be changed if needed"
                     />
                 )}
             />
@@ -156,7 +167,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={states}
+                        options={location.states}
                         sizing={sizing}
                     />
                 )}
@@ -189,7 +200,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={counties}
+                        options={location.counties}
                         sizing={sizing}
                     />
                 )}
@@ -222,7 +233,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={countries}
+                        options={location.countries}
                         sizing={sizing}
                         autoComplete="off"
                     />

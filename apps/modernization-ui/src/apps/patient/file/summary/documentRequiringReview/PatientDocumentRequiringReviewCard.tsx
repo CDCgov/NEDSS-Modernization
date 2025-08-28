@@ -10,10 +10,14 @@ import { internalizeDateTime } from 'date/InternalizeDateTime';
 import { renderFacilityProvider, renderMorbidity } from '../../renderPatientFile';
 import { PatientFileDocumentRequiringReview } from './drr';
 import { TableCardProps } from 'design-system/card/table/TableCard';
-import { LabeledValue, MaybeLabeledValue } from 'design-system/value';
+import { MaybeLabeledValue } from 'design-system/value';
 import { ResultedTests } from 'libs/events/tests';
 
 import styles from './drr.module.scss';
+import { displayNoData } from 'design-system/data';
+import { Tag } from 'design-system/tag';
+import { Shown } from 'conditional-render';
+import { Tooltip } from 'design-system/tooltip';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (
@@ -51,22 +55,44 @@ const resolveUrl = (value: PatientFileDocumentRequiringReview) => {
 };
 
 const renderEventDate = (value?: PatientFileDocumentRequiringReview) => {
-    if (value?.type === 'Morbidity Report') {
+    if (value?.eventDate && (value?.type === 'Morbidity Report' || value?.type === 'Case Report')) {
         return (
-            <>
-                <LabeledValue label="Report Date" orientation="vertical">
-                    {internalizeDate(value.eventDate)}
-                </LabeledValue>
-            </>
+            <MaybeLabeledValue label="Report date" orientation="vertical">
+                {internalizeDate(value.eventDate)}
+            </MaybeLabeledValue>
+        );
+    } else if (value?.eventDate && value?.type === 'Laboratory Report') {
+        return (
+            <MaybeLabeledValue label="Date collected" orientation="vertical">
+                {internalizeDate(value.eventDate)}
+            </MaybeLabeledValue>
         );
     }
-    return internalizeDate(value?.eventDate);
+    return displayNoData();
 };
 
 const renderEventId = (value: PatientFileDocumentRequiringReview) => {
     const classicUrl = resolveUrl(value);
 
     return <a href={classicUrl}>{value.local}</a>;
+};
+
+const renderType = (value: PatientFileDocumentRequiringReview) => {
+    return (
+        <>
+            {value.type}
+            <Shown when={value.isElectronic}>
+                <br />
+                <Tooltip message="Electronic indicator">
+                    {(id) => (
+                        <Tag variant="accent" size="small" aria-describedby={id}>
+                            E
+                        </Tag>
+                    )}
+                </Tooltip>
+            </Shown>
+        </>
+    );
 };
 
 const EVENT_ID = { id: 'id', name: 'Event ID' };
@@ -84,7 +110,13 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         value: (value) => value.local,
         render: renderEventId
     },
-    { ...DOCUMENT_TYPE, className: styles['text-header'], sortable: true, value: (value) => value.type },
+    {
+        ...DOCUMENT_TYPE,
+        className: styles['text-header'],
+        sortable: true,
+        value: (value) => value.type,
+        render: (value) => renderType(value)
+    },
     {
         ...DATE_RECEIVED,
         className: styles['date-time-header'],
@@ -96,8 +128,9 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     {
         ...REPORTING,
         sortable: true,
-        sortIconType: 'alpha',
-        value: (value) => value.reportingFacility ?? value.orderingProvider?.first ?? value.orderingFacility,
+
+        value: (value) =>
+            value.reportingFacility ?? value.orderingProvider?.first ?? value.sendingFacility ?? value.orderingFacility,
         className: styles['reporting-header'],
         render: (value) =>
             renderFacilityProvider(
@@ -109,7 +142,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     },
     {
         ...EVENT_DATE,
-        className: styles['date-header'],
+        className: styles['date-time-header'],
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,
@@ -118,7 +151,6 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
     {
         ...DESCRIPTION,
         sortable: true,
-        sortIconType: 'alpha',
         value: (value) => value.condition ?? value.resultedTests?.at(0)?.name,
         render: renderDescription
     }

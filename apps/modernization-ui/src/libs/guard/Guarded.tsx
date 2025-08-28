@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
-import { RedirectHome } from 'routes';
 import { FeatureToggle, FeatureToggleProps } from 'feature';
 import { Permitted, PermittedProps } from 'libs/permission';
 
 type GuardedProps = {
     feature: FeatureToggleProps['guard'];
     permission: PermittedProps['permission'];
+    fallback?: ReactNode;
     children: ReactNode;
 };
 
@@ -15,9 +15,9 @@ type GuardedProps = {
  * @param {GuardedProps} props
  * @return {ReactNode} The component displayed when the feature and permission evaluation passes.
  */
-const Guarded = ({ permission, feature, children }: GuardedProps) => (
-    <FeatureToggle guard={feature} fallback={<RedirectHome />}>
-        <Permitted permission={permission} fallback={<RedirectHome />}>
+const Guarded = ({ permission, feature, fallback, children }: GuardedProps) => (
+    <FeatureToggle guard={feature} fallback={fallback}>
+        <Permitted permission={permission} fallback={fallback}>
             {children}
         </Permitted>
     </FeatureToggle>

@@ -6,7 +6,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    @extend %thin-bottom;
 
     .subtext {
         font-size: 0.875rem;
@@ -44,5 +43,9 @@
                 border-left: 1px solid colors.$base-lighter;
             }
         }
+    }
+
+    &:not(:has(button[aria-expanded='false'])) {
+        @extend %thin-bottom;
     }
 }

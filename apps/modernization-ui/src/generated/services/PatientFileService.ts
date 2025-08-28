@@ -4,27 +4,78 @@
 /* eslint-disable */
 import type { Administrative } from '../models/Administrative';
 import type { DocumentRequiringReview } from '../models/DocumentRequiringReview';
+import type { EditedPatient } from '../models/EditedPatient';
 import type { ExistingRaceCategoryInvalid } from '../models/ExistingRaceCategoryInvalid';
 import type { ExistingRaceCategoryValid } from '../models/ExistingRaceCategoryValid';
+import type { Failure } from '../models/Failure';
 import type { PatientAddressDemographic } from '../models/PatientAddressDemographic';
 import type { PatientDemographicsSummary } from '../models/PatientDemographicsSummary';
 import type { PatientEthnicityDemographic } from '../models/PatientEthnicityDemographic';
 import type { PatientFile } from '../models/PatientFile';
+import type { PatientFileBirthRecord } from '../models/PatientFileBirthRecord';
+import type { PatientFileContacts } from '../models/PatientFileContacts';
+import type { PatientFileDocument } from '../models/PatientFileDocument';
+import type { PatientFileTreatment } from '../models/PatientFileTreatment';
 import type { PatientGeneralInformationDemographic } from '../models/PatientGeneralInformationDemographic';
 import type { PatientIdentificationDemographic } from '../models/PatientIdentificationDemographic';
 import type { PatientInvestigation } from '../models/PatientInvestigation';
 import type { PatientLabReport } from '../models/PatientLabReport';
+import type { PatientMergeHistory } from '../models/PatientMergeHistory';
 import type { PatientMorbidityReport } from '../models/PatientMorbidityReport';
 import type { PatientMortalityDemographic } from '../models/PatientMortalityDemographic';
 import type { PatientNameDemographic } from '../models/PatientNameDemographic';
 import type { PatientPhoneDemographic } from '../models/PatientPhoneDemographic';
 import type { PatientRaceDemographic } from '../models/PatientRaceDemographic';
 import type { PatientSexBirthDemographic } from '../models/PatientSexBirthDemographic';
+import type { PatientVaccination } from '../models/PatientVaccination';
 import type { Success } from '../models/Success';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class PatientFileService {
+    /**
+     * Patient File Header
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static edit({
+        patient,
+        requestBody,
+    }: {
+        patient: number,
+        requestBody: EditedPatient,
+    }): CancelablePromise<(Failure | Success)> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/api/patients/{patient}',
+            path: {
+                'patient': patient,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * Allows deleting of a patient.
+     * @returns Success The patient has been deleted
+     * @throws ApiError
+     */
+    public static delete({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Success> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/nbs/api/patients/{patient}',
+            path: {
+                'patient': patient,
+            },
+            errors: {
+                400: `The patient could not be deleted.`,
+            },
+        });
+    }
     /**
      * Validates that a patient can accept a race demographic for the given category.
      * @returns any Allowable race category for the patient
@@ -46,6 +97,44 @@ export class PatientFileService {
             },
             errors: {
                 400: `The race category is already present on the patient`,
+            },
+        });
+    }
+    /**
+     * Patient File Vaccinations
+     * Provides Vaccinations for a patient
+     * @returns PatientVaccination OK
+     * @throws ApiError
+     */
+    public static vaccinations({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientVaccination>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/vaccinations',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Treatments
+     * Provides Treatments for a patient
+     * @returns PatientFileTreatment OK
+     * @throws ApiError
+     */
+    public static treatments({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientFileTreatment>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/treatments',
+            path: {
+                'patient': patient,
             },
         });
     }
@@ -82,6 +171,63 @@ export class PatientFileService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/patients/{patient}/reports/laboratory',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Birth records
+     * Provides Birth records for a patient
+     * @returns PatientFileBirthRecord OK
+     * @throws ApiError
+     */
+    public static birthRecords({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientFileBirthRecord>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/records/birth',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Merge History
+     * Provides the merge history for a patient
+     * @returns PatientMergeHistory OK
+     * @throws ApiError
+     */
+    public static mergeHistory({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientMergeHistory>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/merge/history',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Documents
+     * Provides Documents for a patient
+     * @returns PatientFileDocument OK
+     * @throws ApiError
+     */
+    public static documents({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientFileDocument>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/documents',
             path: {
                 'patient': patient,
             },
@@ -316,6 +462,44 @@ export class PatientFileService {
         });
     }
     /**
+     * Patient File Contacts named by patient
+     * Provides contacts that were named by a patient during an investigation
+     * @returns PatientFileContacts OK
+     * @throws ApiError
+     */
+    public static contactsNamedByPatient({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientFileContacts>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/contacts',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
+     * Patient File Contacts that named patient
+     * Provides contacts that named the patient during their investigation
+     * @returns PatientFileContacts OK
+     * @throws ApiError
+     */
+    public static patientNamedByContact({
+        patient,
+    }: {
+        patient: number,
+    }): CancelablePromise<Array<PatientFileContacts>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/patients/{patient}/contacts/named',
+            path: {
+                'patient': patient,
+            },
+        });
+    }
+    /**
      * Patient File Header
      * @returns PatientFile OK
      * @throws ApiError
@@ -368,27 +552,6 @@ export class PatientFileService {
             url: '/nbs/api/patient/{patientId}/investigations/open',
             path: {
                 'patientId': patientId,
-            },
-        });
-    }
-    /**
-     * Allows deleting of a patient.
-     * @returns Success The patient has been deleted
-     * @throws ApiError
-     */
-    public static delete({
-        patient,
-    }: {
-        patient: number,
-    }): CancelablePromise<Success> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/nbs/api/patients/{patient}',
-            path: {
-                'patient': patient,
-            },
-            errors: {
-                400: `The patient could not be deleted.`,
             },
         });
     }

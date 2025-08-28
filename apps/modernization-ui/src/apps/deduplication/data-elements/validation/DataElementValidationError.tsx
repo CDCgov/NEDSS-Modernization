@@ -1,6 +1,5 @@
 import { Shown } from 'conditional-render';
 import { AlertMessage } from 'design-system/message';
-import React from 'react';
 
 export type InUseDataElements = { passes: string[]; fields: string[] };
 
@@ -18,7 +17,11 @@ export const DataElementValidationError = ({ validationError }: Props) => {
                     configuration. If you would like to remove this data element, first remove it from the following
                     pass configurations:
                 </span>
-                <ul>{validationError?.passes.map((p) => <li key={p}>{p}</li>)}</ul>
+                <ul>
+                    {validationError?.passes.map((p) => (
+                        <li key={p}>{p}</li>
+                    ))}
+                </ul>
             </AlertMessage>
         </Shown>
     );

@@ -12,7 +12,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing =
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="administrative.asOf"
@@ -29,6 +29,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing =
                         error={error?.message}
                         sizing={sizing}
                         required
+                        aria-description="This field defaults to today's date and can be changed if needed."
                     />
                 )}
             />
@@ -50,6 +51,6 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing =
                     />
                 )}
             />
-        </section>
+        </>
     );
 };

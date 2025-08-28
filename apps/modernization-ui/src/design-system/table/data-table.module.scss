@@ -12,9 +12,11 @@
         font-size: 14px;
 
         thead {
-            position: sticky;
-            top: 0;
-            z-index: 20;
+            &.sticky {
+                position: sticky;
+                top: 0;
+                z-index: 20;
+            }
 
             th {
                 white-space: nowrap;
@@ -37,6 +39,7 @@
         td {
             border-style: none !important;
             white-space: pre-wrap;
+            overflow-wrap: break-word;
             vertical-align: top;
 
             &.fixed {

@@ -22,19 +22,12 @@ const useFormNavigationBlock = <V extends FieldValues, C, D extends FieldValues 
     const blocker = useNavigationBlock(remaining);
 
     useEffect(() => {
-        if (!form.formState.isSubmitting && (form.formState.isDirty || exists(form.formState.dirtyFields))) {
-            // isDirty can sometimes be true without any dirtyFields present, only block when the form is dirty AND dirtyFields has keys.
+        if (!form.formState.isSubmitting && exists(form.formState.dirtyFields)) {
             blocker.block();
         } else {
             blocker.allow();
         }
-    }, [
-        form.formState.isSubmitting,
-        form.formState.isDirty,
-        exists(form.formState.dirtyFields),
-        blocker.allow,
-        blocker.block
-    ]);
+    }, [form.formState.isSubmitting, exists(form.formState.dirtyFields), blocker.allow, blocker.block]);
 
     return blocker;
 };

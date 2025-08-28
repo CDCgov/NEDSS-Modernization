@@ -10,7 +10,7 @@ type TextInputProps = {
     id: string;
     type?: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'search';
-    value?: string;
+    value?: string | null;
     onChange?: TextOnChange;
     onBlur?: () => void;
     onClear?: () => void;
@@ -36,16 +36,12 @@ const TextInput = ({
     const current = value ?? '';
 
     const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
-        const next = event.target.value;
-        if (next) {
-            onChange?.(next);
-        } else {
-            onChange?.();
-        }
+        const next = event.target.value ?? null;
+        onChange?.(next);
     };
 
     const handleClear = () => {
-        onChange?.();
+        onChange?.('');
         onClear?.();
     };
 

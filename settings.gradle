@@ -22,72 +22,79 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = 'nbs-modernization'
+
 // apps
 include ':modernization-api'
-project(':modernization-api').projectDir = new File('apps/modernization-api')
+project(':modernization-api').projectDir = mkdir('apps/modernization-api')
+
 include ':question-bank'
-project(':question-bank').projectDir = new File('apps/question-bank')
+project(':question-bank').projectDir = mkdir('apps/question-bank')
 
 include ':nbs-gateway'
-project(':nbs-gateway').projectDir = new File('apps/nbs-gateway')
+project(':nbs-gateway').projectDir = mkdir('apps/nbs-gateway')
 
 // feature modules
-
 include ':me-api'
-project(':me-api').projectDir = new File('libs/me-api')
+project(':me-api').projectDir = mkdir('libs/me-api')
 
 include ':configuration-api'
-project(':configuration-api').projectDir = new File('libs/configuration-api')
+project(':configuration-api').projectDir = mkdir('libs/configuration-api')
 
 include ':options-api'
-project(':options-api').projectDir = new File('libs/options-api')
+project(':options-api').projectDir = mkdir('libs/options-api')
 
 // libs
 include ':database-entities'
-project(':database-entities').projectDir = new File('libs/database-entities')
+project(':database-entities').projectDir = mkdir('libs/database-entities')
+
 include ':event-schema'
-project(':event-schema').projectDir = new File('libs/event-schema')
+project(':event-schema').projectDir = mkdir('libs/event-schema')
 
 include ':authentication'
-project(':authentication').projectDir = new File('libs/authentication')
+project(':authentication').projectDir = mkdir('libs/authentication')
 
 include ':authorization'
-project(':authorization').projectDir = new File('libs/authorization')
+project(':authorization').projectDir = mkdir('libs/authorization')
 
 include ':audit'
-project(':audit').projectDir = new File('libs/audit')
+project(':audit').projectDir = mkdir('libs/audit')
+
 include ':id-generator'
-project(':id-generator').projectDir = new File('libs/id-generator')
+project(':id-generator').projectDir = mkdir('libs/id-generator')
+
 include ':accumulation'
-project(':accumulation').projectDir = new File('libs/accumulation')
+project(':accumulation').projectDir = mkdir('libs/accumulation')
+
+include ':change'
+project(':change').projectDir = mkdir('libs/change')
 
 include ':web'
-project(':web').projectDir = new File('libs/web')
+project(':web').projectDir = mkdir('libs/web')
 
 include ':classic-interaction'
-project(':classic-interaction').projectDir = new File('libs/classic-interaction')
+project(':classic-interaction').projectDir = mkdir('libs/classic-interaction')
 
 include ':redirect'
-project(':redirect').projectDir = new File('libs/redirect')
+project(':redirect').projectDir = mkdir('libs/redirect')
 
 //  testing libraries
 include ':testing-support'
-project(':testing-support').projectDir = new File('libs/testing/support')
+project(':testing-support').projectDir = mkdir('libs/testing/support')
 
 include ':testing-identity'
-project(':testing-identity').projectDir = new File('libs/testing/identity')
+project(':testing-identity').projectDir = mkdir('libs/testing/identity')
 
 include ':testing-auth'
-project(':testing-auth').projectDir = new File('libs/testing/auth')
+project(':testing-auth').projectDir = mkdir('libs/testing/auth')
 
 include ':testing-auth-cucumber'
-project(':testing-auth-cucumber').projectDir = new File('libs/testing/auth-cucumber')
+project(':testing-auth-cucumber').projectDir = mkdir('libs/testing/auth-cucumber')
 
 include ':testing-classic-interaction-cucumber'
-project(':testing-classic-interaction-cucumber').projectDir = new File('libs/testing/classic-interaction-cucumber')
+project(':testing-classic-interaction-cucumber').projectDir = mkdir('libs/testing/classic-interaction-cucumber')
 
 include ':testing-http-interaction'
-project(':testing-http-interaction').projectDir = new File('libs/testing/http-interaction')
+project(':testing-http-interaction').projectDir = mkdir('libs/testing/http-interaction')
 
 include ':testing-database'
-project(':testing-database').projectDir = new File('libs/testing/database')
+project(':testing-database').projectDir = mkdir('libs/testing/database')

@@ -5,16 +5,15 @@ import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
 import { MortalityEntryFields } from './MortalityEntryFields';
 import { internalizeDate } from 'date';
 
-const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
-
-const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
-
-const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+const mockLocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: jest.fn()
+};
 
 jest.mock('options/location', () => ({
-    useCountyOptions: () => mockCountyCodedValues,
-    useCountryOptions: () => mockCountryCodedValues,
-    useStateOptions: () => mockStateCodedValues
+    useLocationOptions: () => mockLocationOptions
 }));
 
 const Fixture = () => {
@@ -93,5 +92,13 @@ describe('when entering patient mortality demographics', () => {
         expect(getByLabelText('Death state')).toHaveValue('');
         expect(getByLabelText('Death county')).toHaveValue('');
         expect(getByLabelText('Death country')).toHaveValue('');
+    });
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+        const dateInput = getByLabelText('Mortality information as of');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            "This field defaults to today's date and can be changed if needed."
+        );
     });
 });

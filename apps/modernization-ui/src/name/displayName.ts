@@ -1,6 +1,7 @@
 import { exists } from 'utils';
 import { NameFormat } from './format';
 import { DisplayableName } from './displayableName';
+import { mapOr } from 'utils/mapping';
 
 /**
  * Displays a name in a 'full' or 'short' format.  Where the 'short' format will
@@ -50,3 +51,7 @@ const displayShortName = ({ first, last }: DisplayableName) => {
 };
 
 export { displayName };
+
+const maybeDisplayName = mapOr(displayName('fullLastFirst'), '---');
+
+export { maybeDisplayName };

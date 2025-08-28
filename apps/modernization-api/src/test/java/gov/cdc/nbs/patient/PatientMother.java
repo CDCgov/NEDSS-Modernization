@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.data.LimitString;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
@@ -12,7 +11,6 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import gov.cdc.nbs.support.IdentificationMother;
-import gov.cdc.nbs.support.RaceMother;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
@@ -28,15 +26,50 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 @Component
 @ScenarioScope
 @Transactional
 public class PatientMother {
+
+  private static final String CREATE = """
+      insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
+      
+      insert into Person(
+          person_uid,
+          person_parent_uid,
+          local_id,
+          version_ctrl_nbr,
+          cd,
+          electronic_ind,
+          edx_ind,
+          add_time,
+          add_user_id,
+          last_chg_time,
+          last_chg_user_id,
+          record_status_cd,
+          record_status_time,
+          status_cd,
+          status_time
+      ) values (
+          :identifier,
+          :identifier,
+          :local,
+          1,
+          'PAT',
+          'N',
+          'Y',
+          :addedOn,
+          :addedBy,
+          :addedOn,
+          :addedBy,
+          'ACTIVE',
+          :addedOn,
+          'A',
+          :addedOn
+      );
+      """;
 
   private static final String DELETE_IN = """  
       -- Remove the history
@@ -85,13 +118,16 @@ public class PatientMother {
       
       delete Participation from @revisions [revision]
           join  Participation on
-                  [subject_entity_uid] = [revision].[person_uid];
+                  [subject_entity_uid] = [revision].[person_uid]
+              and [subject_class_cd] = 'PSN';
       
       delete Entity from @revisions [revision]
         join  Entity on
-          [entity_uid] = [revision].[person_uid];
+                  [entity_uid] = [revision].[person_uid]
+              and [class_cd] = 'PSN';
       
       --  Remove the Patient
+      delete from Participation where subject_class_cd = 'PSN' and subject_entity_uid in (:identifiers);
       
       delete from [locator]
       from [Tele_locator] [locator]
@@ -117,7 +153,7 @@ public class PatientMother {
       
       delete from person where person_uid in (:identifiers);
       
-      delete from entity where entity_uid in (:identifiers);
+      delete from entity where [class_cd] = 'PSN' and entity_uid in (:identifiers);
       """;
 
   private final Faker faker;
@@ -188,18 +224,16 @@ public class PatientMother {
     long identifier = idGenerator.next();
     String local = localIdentifierGenerator.generate();
 
-    Person patient = new Person(
-        new PatientCommand.CreatePatient(
-            identifier,
-            local,
-            settings.createdBy(),
-            settings.createdOn()));
-
-    this.entityManager.persist(patient);
+    this.client.sql(CREATE)
+        .param("identifier", identifier)
+        .param("local", local)
+        .param("addedOn", this.settings.createdOn())
+        .param("addedBy", this.settings.createdBy())
+        .update();
 
     long shortId = this.shortIdentifierResolver.resolve(local).orElse(0L);
 
-    return new PatientIdentifier(patient.getId(), shortId, local);
+    return new PatientIdentifier(identifier, shortId, local);
   }
 
   private Person managed(final PatientIdentifier identifier) {
@@ -258,7 +292,7 @@ public class PatientMother {
 
     patient.add(
         new PatientCommand.AddAddress(
-            patient.getId(),
+            patient.id(),
             asOf,
             type,
             use,
@@ -291,7 +325,7 @@ public class PatientMother {
 
     patient.add(
         new PatientCommand.AddAddress(
-            patient.getId(),
+            patient.id(),
             RandomUtil.dateInPast(),
             type,
             use,
@@ -316,7 +350,7 @@ public class PatientMother {
 
     patient.add(
         new PatientCommand.AddAddress(
-            patient.getId(),
+            patient.id(),
             RandomUtil.dateInPast(),
             faker.address().streetAddress(),
             null,
@@ -367,76 +401,6 @@ public class PatientMother {
             value,
             RandomUtil.maybeOneFrom("GA"),
             type,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
-  }
-
-  public void withRace(final PatientIdentifier identifier) {
-    withRace(identifier, RandomUtil.getRandomFromArray(RaceMother.RACE_LIST));
-  }
-
-  public void withRace(
-      final PatientIdentifier identifier,
-      final String race
-  ) {
-    withRace(identifier, RandomUtil.dateInPast(), race);
-  }
-
-  public void withRace(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String race
-  ) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddRace(
-            identifier.id(),
-            asOf,
-            race,
-            this.settings.createdBy(),
-            LocalDateTime.now()
-        )
-    );
-  }
-
-  public void withRaceIncluding(
-      final PatientIdentifier identifier,
-      final String race,
-      final String detail
-  ) {
-    Person patient = managed(identifier);
-
-    LocalDate asOf = patient.getRace().races()
-        .stream()
-        .filter(r -> Objects.equals(r.getRaceCategoryCd(), race) && Objects.equals(r.getRaceCd(), race))
-        .findFirst()
-        .map(PersonRace::getAsOfDate)
-        .orElseThrow();
-
-    List<String> details =
-        Stream.concat(
-                //  any existing details for the race category
-                patient.getRace().races()
-                    .stream()
-                    .filter(
-                        existing -> !Objects.equals(existing.getRaceCategoryCd(), existing.getRaceCd())
-                            && Objects.equals(existing.getRaceCategoryCd(), race)
-                    )
-                    .map(PersonRace::getRaceCd),
-                //  the new detail
-                Stream.of(detail)
-            )
-            .toList();
-
-
-
-    patient.update(
-        new PatientCommand.UpdateRaceInfo(
-            identifier.id(),
-            asOf,
-            race,
-            details,
             this.settings.createdBy(),
             this.settings.createdOn()));
   }
@@ -691,17 +655,12 @@ public class PatientMother {
             this.settings.createdOn()));
   }
 
-  public void withLocalId(final PatientIdentifier identifier, final String localId) {
-    Person patient = managed(identifier);
-    patient.setLocalId(localId);
+  public void withLocalId(final PatientIdentifier patient, final String localId) {
+    client.sql("update Person set local_id = ? where person_uid = ?")
+        .param(localId)
+        .param(patient.id())
+        .update();
   }
-
-  public void withId(final PatientIdentifier identifier, final long id) {
-    Person patient = managed(identifier);
-
-    patient.setId(id);
-  }
-
 
   public void withMortality(final PatientIdentifier identifier) {
 
@@ -824,6 +783,45 @@ public class PatientMother {
     client.sql("update person set [description] = ? where person_uid = ?")
         .param(value)
         .param(identifier.id())
+        .update();
+  }
+
+  public void withRace(final PatientIdentifier patient) {
+    withRace(patient, RandomUtil.oneFrom("2106-3", "2054-5", "2028-9", "U"));
+  }
+
+  public void withRace(final PatientIdentifier patient, final String race) {
+    this.client.sql(
+            """
+                insert into Person_race (
+                    person_uid,
+                    as_of_date,
+                    race_cd,
+                    race_category_cd,
+                    add_user_id,
+                    add_time,
+                    last_chg_user_id,
+                    last_chg_time,
+                    record_status_cd,
+                    record_status_time
+                ) values (
+                    :patient,
+                    :asOf,
+                    :race,
+                    :race,
+                    :addedBy,
+                    :addedOn,
+                    :addedBy,
+                    :addedOn,
+                    'ACTIVE',
+                    :addedOn
+                );
+                """
+        ).param("patient", patient.id())
+        .param("asOf", RandomUtil.dateInPast())
+        .param("race", race)
+        .param("addedBy", settings.createdBy())
+        .param("addedOn", settings.createdOn())
         .update();
   }
 }

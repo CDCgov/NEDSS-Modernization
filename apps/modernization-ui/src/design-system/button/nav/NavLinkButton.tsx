@@ -1,31 +1,40 @@
-import { RefAttributes } from 'react';
 import { NavLink, NavLinkProps } from 'react-router';
-import classnames from 'classnames';
-import { Sizing } from 'design-system/field';
-import styles from './navlink-button.module.scss';
+import { Button, StandardButtonProps } from '../Button';
+import { ReactNode } from 'react';
 
-type Props = {
-    to: string;
-    label?: string;
-    type?: 'outline';
-    className?: string;
-    dataTestId?: string;
-    state?: any;
-    sizing?: Sizing;
-} & Omit<NavLinkProps, 'classname'> &
-    RefAttributes<HTMLAnchorElement>;
+type NavLinkButtonProps = Omit<NavLinkProps, 'children'> & StandardButtonProps & { children?: ReactNode };
 
-const NavLinkButton = ({ type, to, label, className, dataTestId, children, state, sizing }: Props) => (
-    <NavLink
-        className={classnames(className, 'usa-button', sizing && styles[sizing], {
-            'usa-button--outline': type === 'outline'
-        })}
-        to={to}
-        data-testid={dataTestId}
-        aria-label={label}
-        state={state}>
-        {children}
-    </NavLink>
-);
+const NavLinkButton = ({
+    className,
+    sizing,
+    icon,
+    active,
+    tertiary,
+    secondary,
+    destructive,
+    disabled,
+    children,
+    ...remaining
+}: NavLinkButtonProps) => {
+    const labelPosition = 'labelPosition' in remaining ? remaining.labelPosition : undefined;
+
+    return (
+        <NavLink {...remaining} tabIndex={-1}>
+            <Button
+                className={className}
+                sizing={sizing}
+                icon={icon}
+                labelPosition={labelPosition}
+                active={active}
+                tertiary={tertiary}
+                secondary={secondary}
+                destructive={destructive}
+                disabled={disabled}>
+                {children}
+            </Button>
+        </NavLink>
+    );
+};
 
 export { NavLinkButton };
+export type { NavLinkButtonProps };

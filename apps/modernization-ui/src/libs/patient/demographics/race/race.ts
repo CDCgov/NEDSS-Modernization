@@ -1,18 +1,32 @@
-import { today } from 'date';
+import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 
-type RaceDemographic = EffectiveDated & {
-    race: Selectable;
-    detailed: Array<Selectable>;
+type RaceDemographic = EffectiveDated & { id: number; race: Selectable | null; detailed: Selectable[] };
+
+type HasRaceDemographics = {
+    races?: RaceDemographic[];
 };
 
-export type { RaceDemographic };
+export type { RaceDemographic, HasRaceDemographics };
 
-const initial = (asOf: string = today()): Partial<RaceDemographic> => ({
-    asOf,
-    race: undefined,
+const initial = (asOf: Supplier<string>): RaceDemographic => ({
+    id: new Date().getTime(),
+    asOf: asOf(),
+    race: null,
     detailed: []
 });
 
 export { initial };
+
+const labels = {
+    asOf: 'As of',
+    race: 'Race',
+    detailed: 'Detailed race'
+};
+
+export { labels };
+
+type RaceCategoryValidator = (id: number, category: Selectable | null) => Promise<string | boolean>;
+
+export type { RaceCategoryValidator };

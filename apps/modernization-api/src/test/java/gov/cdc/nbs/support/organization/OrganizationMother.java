@@ -1,5 +1,6 @@
 package gov.cdc.nbs.support.organization;
 
+import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
@@ -7,9 +8,6 @@ import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @ScenarioScope
@@ -32,7 +30,7 @@ class OrganizationMother {
   private final JdbcClient client;
   private final Available<OrganizationIdentifier> available;
   private final Active<OrganizationIdentifier> active;
-  private final List<Long> identifiers;
+  private final TestingDataCleaner<Long> cleaner;
 
   OrganizationMother(
       final SequentialIdentityGenerator idGenerator,
@@ -45,20 +43,12 @@ class OrganizationMother {
 
     this.available = available;
     this.active = active;
-    this.identifiers = new ArrayList<>();
+    this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
   }
 
   @PreDestroy
   void reset() {
-
-    if (!identifiers.isEmpty()) {
-
-      client.sql(DELETE_IN)
-          .param("identifiers", identifiers)
-          .update();
-
-      this.identifiers.clear();
-    }
+    this.cleaner.clean();
   }
 
   void create(final String name) {
@@ -72,7 +62,7 @@ class OrganizationMother {
         .param("local", local)
         .update();
 
-    this.identifiers.add(identifier);
+    this.cleaner.include(identifier);
 
     OrganizationIdentifier created = new OrganizationIdentifier(identifier);
 

@@ -6,5 +6,12 @@
     .association {
         display: flex;
         flex-direction: column;
+        white-space: break-spaces !important;
     }
+}
+
+.association {
+    display: flex;
+    flex-direction: column;
+    white-space: break-spaces !important;
 }

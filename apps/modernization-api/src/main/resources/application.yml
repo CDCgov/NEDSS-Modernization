@@ -16,9 +16,6 @@ nbs:
     server: ${nbs.wildfly.host}:${nbs.wildfly.port}
     port: 7001
     url: http://${nbs.wildfly.server}
-  uid:
-    suffix: GA01
-    seed: 10000000
   datasource:
     server: localhost
     port: 1433
@@ -106,28 +103,11 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-
-  kafka:
-    bootstrap-servers: localhost:9092
-    listener:
-      ackMode: record
-    consumer:
-      group-id: patient-group
-      enable-auto-commit: false
-      auto-offset-reset: earliest
-
 springdoc:
   packages-to-scan: "gov.cdc.nbs"
 
 server:
   tomcat:
-    max-part-count: 100 # to accommodate intercepted multipart requests from NBS6
-
-kafka:
-  enabled: false
-
-kafkadef:
-  topics:
-    patient:
-      request: patient
-      status: patient-status
+    # to accommodate intercepted multipart requests from NBS6.  The value was chosen based on the largest number of
+    # questions on a page builder page.  This can vary by STLT depending on the page templates that exist.
+    max-part-count: 550

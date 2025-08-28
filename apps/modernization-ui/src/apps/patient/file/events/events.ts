@@ -2,6 +2,16 @@ import { MemoizedSupplier } from 'libs/supplying';
 import { PatientFileInvestigation, patientInvestigations } from './investigations';
 import { PatientFileLaboratoryReport, patientLaboratoryReports } from './reports/laboratory';
 import { PatientFileMorbidityReport, patientMorbidityReports } from './reports/morbidity';
+import { PatientFileVaccinations } from './vaccinations/vaccinations';
+import { patientVaccinations } from './vaccinations/patientVaccinations';
+import { PatientFileTreatment } from './treatments/treatment';
+import { patientTreatments } from './treatments/patientTreatments';
+import { PatientFileContacts } from 'apps/patient/file/events/contacts';
+import { PatientFileDocument } from './documents/documents';
+import { patientDocuments } from './documents/patientDocuments';
+import { patientsNamed } from './patientsNamed/patientNamed';
+import { patientContacts } from './contactsNamed/patientContacts';
+import { patientBirthRecords, PatientFileBirthRecord } from './record/birth';
 
 type Reports = {
     laboratory: MemoizedSupplier<Promise<PatientFileLaboratoryReport[]>>;
@@ -10,6 +20,12 @@ type Reports = {
 
 type PatientFileEventData = {
     investigations: MemoizedSupplier<Promise<PatientFileInvestigation[]>>;
+    vaccination: MemoizedSupplier<Promise<PatientFileVaccinations[]>>;
+    treatment: MemoizedSupplier<Promise<PatientFileTreatment[]>>;
+    contactNamed: MemoizedSupplier<Promise<PatientFileContacts[]>>;
+    documents: MemoizedSupplier<Promise<PatientFileDocument[]>>;
+    patientNamed: MemoizedSupplier<Promise<PatientFileContacts[]>>;
+    birthRecords: MemoizedSupplier<Promise<PatientFileBirthRecord[]>>;
     reports: Reports;
 };
 
@@ -17,6 +33,12 @@ export type { PatientFileEventData };
 
 const events = (patient: number): PatientFileEventData => ({
     investigations: new MemoizedSupplier(() => patientInvestigations(patient)),
+    vaccination: new MemoizedSupplier(() => patientVaccinations(patient)),
+    treatment: new MemoizedSupplier(() => patientTreatments(patient)),
+    contactNamed: new MemoizedSupplier(() => patientContacts(patient)),
+    documents: new MemoizedSupplier(() => patientDocuments(patient)),
+    patientNamed: new MemoizedSupplier(() => patientsNamed(patient)),
+    birthRecords: new MemoizedSupplier(() => patientBirthRecords(patient)),
     reports: {
         laboratory: new MemoizedSupplier(() => patientLaboratoryReports(patient)),
         morbidity: new MemoizedSupplier(() => patientMorbidityReports(patient))

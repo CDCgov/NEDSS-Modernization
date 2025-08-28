@@ -37,6 +37,7 @@ type BaseHeaderProps<V> = ColumnOptions & {
 
 const BaseHeader = <V,>({ className, sizing, column, children, ...remaining }: BaseHeaderProps<V>) => (
     <th
+        scope="col"
         className={classNames(
             styles.header,
             {

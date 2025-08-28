@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from 'react';
-import { Destination } from './Destination';
+
+type Destination = 'current' | 'window' | 'none';
 
 type Redirect =
     | { status: 'idle' }
@@ -52,6 +53,7 @@ const useRedirect = ({ destination = 'current' }: Props) => {
 };
 
 export { useRedirect };
+export type { Destination };
 
 const navigateTo = (location: string) => (window.location.href = location);
 

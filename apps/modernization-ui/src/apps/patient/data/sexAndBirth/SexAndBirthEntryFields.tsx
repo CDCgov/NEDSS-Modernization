@@ -9,7 +9,7 @@ import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { BirthEntry, MortalityEntry, SexEntry } from 'apps/patient/data/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
-import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
+import { useLocationOptions } from 'options/location';
 
 const UNKNOWN_GENDER = 'U';
 
@@ -32,15 +32,14 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
 
     const coded = useSexBirthCodedValues();
 
-    const countries = useCountryOptions();
-    const states = useStateOptions();
-    const counties = useCountyOptions(selectedState?.value);
+    const location = useLocationOptions();
 
     useEffect(() => {
         if (!selectedState) {
             setValue('birthAndSex.county', undefined);
         }
-    }, [selectedState]);
+        location.state(selectedState);
+    }, [selectedState?.value, location.state]);
 
     useEffect(() => {
         if (UNKNOWN_GENDER !== selectedCurrentGender?.value) {
@@ -65,6 +64,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         error={error?.message}
                         required
                         sizing={sizing}
+                        aria-description="This field defaults to today's date and can be changed if needed."
                     />
                 )}
             />
@@ -257,7 +257,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={states}
+                        options={location.states}
                         sizing={sizing}
                     />
                 )}
@@ -274,7 +274,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={counties}
+                        options={location.counties}
                         sizing={sizing}
                     />
                 )}
@@ -292,7 +292,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={countries}
+                        options={location.countries}
                         sizing={sizing}
                     />
                 )}

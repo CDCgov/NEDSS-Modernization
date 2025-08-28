@@ -3,7 +3,8 @@
 @use 'styles/components';
 
 .view {
-    display: flex;
+    display: grid;
+    grid-template-columns: var(--label-area-width, 13rem) 1fr;
     gap: 2rem;
 
     color: colors.$base-darkest;
@@ -11,7 +12,7 @@
 
     box-sizing: border-box;
 
-    padding: 0.5rem 1.5rem 0.5rem 1rem;
+    padding: 0.5rem 1rem 0.5rem 1.25rem;
 
     @extend %medium;
 
@@ -22,14 +23,14 @@
         align-items: center;
         height: var(--component-height);
         font-weight: 700;
-        width: 13rem;
     }
 
     .value {
         display: flex;
         align-items: center;
         height: var(--component-height);
-        width: 20rem;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
     }
 
     &:not(:last-child) {
@@ -37,13 +38,9 @@
     }
 
     &.small {
-        @extend %small;
+        --label-area-width: 12rem;
 
-        .content {
-            .label {
-                width: 12rem;
-            }
-        }
+        @extend %small;
     }
 
     &.large {

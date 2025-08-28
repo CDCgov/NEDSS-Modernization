@@ -3,15 +3,15 @@ import { internalizeDate } from 'date';
 import { PhoneEmailDemographic } from './phoneEmails';
 
 type PhoneEmailDemographicViewProps = {
-    entry: PhoneEmailDemographic;
+    entry: Partial<PhoneEmailDemographic>;
 };
 
 const PhoneEmailDemographicView = ({ entry }: PhoneEmailDemographicViewProps) => {
     return (
         <DetailView>
             <DetailValue label="Phone & email as of">{internalizeDate(entry.asOf)}</DetailValue>
-            <DetailValue label="Type">{entry.type.name}</DetailValue>
-            <DetailValue label="Use">{entry.use.name}</DetailValue>
+            <DetailValue label="Type">{entry.type?.name}</DetailValue>
+            <DetailValue label="Use">{entry.use?.name}</DetailValue>
             <DetailValue label="Country code">{entry.countryCode}</DetailValue>
             <DetailValue label="Phone number">{entry.phoneNumber}</DetailValue>
             <DetailValue label="Extension">{entry.extension}</DetailValue>

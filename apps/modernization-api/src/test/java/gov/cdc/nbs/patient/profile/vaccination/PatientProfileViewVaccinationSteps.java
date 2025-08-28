@@ -1,56 +1,63 @@
 package gov.cdc.nbs.patient.profile.vaccination;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 public class PatientProfileViewVaccinationSteps {
 
-  @Value("${nbs.wildfly.url:http://wildfly:7001}")
-  String classicUrl;
 
-  @Autowired
-  TestPatientIdentifier patients;
+  private final String classicUrl;
 
-  @Autowired
-  TestVaccinations vaccinations;
+  private final TestPatientIdentifier patients;
 
-  @Autowired
-  MockMvc mvc;
+  private final Active<VaccinationIdentifier> vaccinations;
 
-  @Autowired
-  Active<SessionCookie> activeSession;
+  private final MockMvc mvc;
 
-  @Autowired
-  Active<MockHttpServletResponse> activeResponse;
+  private final Active<SessionCookie> activeSession;
 
-  @Autowired
-  Active<UserDetails> activeUserDetails;
+  private final Active<MockHttpServletResponse> activeResponse;
 
-  @Autowired
-  @Qualifier("classicRestService")
-  MockRestServiceServer server;
+
+  private final MockRestServiceServer server;
+
+  PatientProfileViewVaccinationSteps(
+      final TestPatientIdentifier patients,
+      final Active<VaccinationIdentifier> vaccinations,
+      final MockMvc mvc,
+      final Active<SessionCookie> activeSession,
+      final Active<MockHttpServletResponse> activeResponse,
+      @Qualifier("classicRestService") final MockRestServiceServer server,
+      @Value("${nbs.wildfly.url:http://wildfly:7001}") final String classicUrl
+  ) {
+    this.patients = patients;
+    this.vaccinations = vaccinations;
+    this.mvc = mvc;
+    this.activeSession = activeSession;
+    this.activeResponse = activeResponse;
+    this.server = server;
+    this.classicUrl = classicUrl;
+  }
 
   @Before
   public void reset() {
-    activeResponse.reset();
     server.reset();
   }
 
@@ -59,7 +66,7 @@ public class PatientProfileViewVaccinationSteps {
     long patient = patients.one().id();
 
     server.expect(
-        requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+            requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
@@ -67,17 +74,17 @@ public class PatientProfileViewVaccinationSteps {
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    long vaccination = vaccinations.one();
+    long vaccination = vaccinations.active().identifier();
 
-    String request = 
+    String request =
         "/nbs/api/profile/%d/vaccination/%d".formatted(
-        patient,
-        vaccination);
+            patient,
+            vaccination);
 
     activeResponse.active(
         mvc.perform(
-            MockMvcRequestBuilders.get(request)
-                .cookie(activeSession.active().asCookie()))
+                MockMvcRequestBuilders.get(request)
+                    .cookie(activeSession.active().asCookie()))
             .andReturn()
             .getResponse());
   }
@@ -90,7 +97,7 @@ public class PatientProfileViewVaccinationSteps {
   @Then("I am redirected to Classic NBS to view a Vaccination")
   public void i_am_redirected_to_classic_nbs_to_view_a_vaccination() {
     long patient = patients.one().id();
-    long vaccination = vaccinations.one();
+    long vaccination = vaccinations.active().identifier();
 
     String expected = "/nbs/PageAction.do?method=viewGenericLoad&businessObjectType=VAC&Action=DSFilePath&actUid="
         + vaccination;

@@ -7,17 +7,18 @@ import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.testing.support.concept.ConceptParameterResolver;
-import io.cucumber.java.Before;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Transactional
 public class InvestigationSteps {
 
+  private final Available<PatientIdentifier> availablePatients;
   private final Active<PatientIdentifier> activePatient;
   private final Active<JurisdictionIdentifier> activeJurisdiction;
   private final Active<ProgramAreaIdentifier> activeProgramArea;
@@ -27,13 +28,16 @@ public class InvestigationSteps {
   private final ConceptParameterResolver resolver;
 
   public InvestigationSteps(
+      final Available<PatientIdentifier> availablePatients,
       final Active<PatientIdentifier> activePatient,
       final Active<JurisdictionIdentifier> activeJurisdiction,
       final Active<ProgramAreaIdentifier> activeProgramArea,
       final Active<ProviderIdentifier> activeProvider,
       final Active<InvestigationIdentifier> activeInvestigation,
       final InvestigationMother mother,
-      final ConceptParameterResolver resolver) {
+      final ConceptParameterResolver resolver
+  ) {
+    this.availablePatients = availablePatients;
     this.activePatient = activePatient;
     this.activeJurisdiction = activeJurisdiction;
     this.activeProgramArea = activeProgramArea;
@@ -41,11 +45,6 @@ public class InvestigationSteps {
     this.activeInvestigation = activeInvestigation;
     this.mother = mother;
     this.resolver = resolver;
-  }
-
-  @Before
-  public void clean() {
-    mother.reset();
   }
 
   @Given("the patient is a subject of an investigation")
@@ -70,6 +69,21 @@ public class InvestigationSteps {
     );
   }
 
+  @Given("the previous patient is a subject of an investigation for {programArea} within {jurisdiction}")
+  public void previousSubject(
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction
+  ) {
+    availablePatients.maybePrevious().ifPresent(
+        patient -> mother.create(
+            patient,
+            jurisdiction,
+            programArea
+        )
+    );
+  }
+
+
   @Given("the patient is a subject of {int} investigations")
   public void the_patient_is_a_subject_N_investigation(final int n) {
     PatientIdentifier patient = this.activePatient.active();
@@ -80,7 +94,8 @@ public class InvestigationSteps {
       mother.create(
           patient,
           jurisdiction,
-          programArea);
+          programArea
+      );
     }
   }
 
@@ -93,7 +108,9 @@ public class InvestigationSteps {
         investigation -> mother.within(
             investigation,
             programArea,
-            jurisdiction));
+            jurisdiction
+        )
+    );
   }
 
   @Given("the investigation is for the {condition} condition")
@@ -116,36 +133,36 @@ public class InvestigationSteps {
     activeInvestigation.maybeActive().ifPresent(mother::forPregnancyUnknownPatient);
   }
 
-  @Given("the investigation was created by {user} on {date}")
-  public void the_investigation_was_created_on(final ActiveUser user, final Instant date) {
+  @Given("the investigation was created by {user} on {localDate}")
+  public void the_investigation_was_created_on(final ActiveUser user, final LocalDate date) {
     activeInvestigation.maybeActive().ifPresent(investigation -> this.mother.created(investigation, user.id(), date));
   }
 
-  @Given("the investigation was updated by {user} on {date}")
-  public void the_investigation_was_updated_on(final ActiveUser user, final Instant date) {
+  @Given("the investigation was updated by {user} on {localDate}")
+  public void the_investigation_was_updated_on(final ActiveUser user, final LocalDate date) {
     activeInvestigation.maybeActive().ifPresent(investigation -> this.mother.updated(investigation, user.id(), date));
   }
 
   @Given("the investigation has been closed")
   public void the_investigation_has_been_closed() {
     this.activeInvestigation.maybeActive()
-        .ifPresent(active -> mother.closed(active, Instant.now()));
+        .ifPresent(active -> mother.closed(active, LocalDate.now()));
   }
 
-  @Given("the investigation was closed on {date}")
-  public void the_investigation_was_closed_on(final Instant on) {
+  @Given("the investigation was closed on {localDate}")
+  public void the_investigation_was_closed_on(final LocalDate on) {
     this.activeInvestigation.maybeActive()
         .ifPresent(active -> mother.closed(active, on));
   }
 
-  @Given("the investigation was started on {date}")
-  public void the_investigation_started_on(final Instant on) {
+  @Given("the investigation was started on {localDate}")
+  public void the_investigation_started_on(final LocalDate on) {
     this.activeInvestigation.maybeActive()
         .ifPresent(active -> mother.started(active, on));
   }
 
-  @Given("the investigation was reported on {date}")
-  public void the_investigation_reported_on(final Instant on) {
+  @Given("the investigation was reported on {localDate}")
+  public void the_investigation_reported_on(final LocalDate on) {
     this.activeInvestigation.maybeActive()
         .ifPresent(active -> mother.reported(active, on));
   }

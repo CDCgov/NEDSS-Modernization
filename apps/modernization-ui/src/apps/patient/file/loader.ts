@@ -1,14 +1,12 @@
-import { PatientFileService } from 'generated';
 import { MemoizedSupplier } from 'libs/supplying';
 import { PatientFileData } from './usePatientFileData';
-import { Patient } from './patient';
 import { summary } from './summary';
 import { events } from './events';
 import { demographics } from './demographics';
+import { description } from './description';
+import { Params } from 'react-router';
 
-const description = (patientId: number): Promise<Patient> => PatientFileService.file({ patientId });
-
-type LoaderParams = { params: { id: string } };
+type LoaderParams = { params: Params<string> };
 
 const loader = ({ params }: LoaderParams): Promise<PatientFileData> =>
     description(Number(params.id)).then((patient) => ({

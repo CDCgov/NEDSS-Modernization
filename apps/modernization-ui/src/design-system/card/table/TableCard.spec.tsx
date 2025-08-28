@@ -1,19 +1,20 @@
 import { render } from '@testing-library/react';
-import { TableCard, TableCardProps } from './TableCard';
 import { Column } from 'design-system/table';
 import { axe } from 'jest-axe';
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
+import { TableCard, TableCardProps } from './TableCard';
 
 const mockApply = jest.fn();
+
+global.structuredClone = (val) => val;
 
 jest.mock('design-system/table/preferences/useColumnPreferences', () => ({
     useColumnPreferences: () => ({
         apply: mockApply
-    })
-}));
-
-jest.mock('design-system/table/preferences/withColumnPreferences', () => ({
-    withColumnPreferences: (Component: any) => (props: any) => <Component {...props} />
+    }),
+    ColumnPreferenceProvider: ({ children }: { children: (a: { apply: () => TestData[] }) => ReactNode }) =>
+        children({ apply: mockApply })
 }));
 
 type TestData = {
@@ -76,7 +77,7 @@ describe('TableCard', () => {
 
     it('renders without crashing', () => {
         const { container } = render(<Fixture />);
-        expect(container.querySelector('section#tablecard')).toBeInTheDocument();
+        expect(container.querySelector('#tablecard')).toBeInTheDocument();
     });
 
     it('should render with no accessibility violations', async () => {

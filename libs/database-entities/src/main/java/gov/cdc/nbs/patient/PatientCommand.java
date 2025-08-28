@@ -1,8 +1,5 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.enums.Gender;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,26 +21,7 @@ public sealed interface PatientCommand {
   }
 
 
-  record AddPatient(
-      long person,
-      String localId,
-      LocalDate dateOfBirth,
-      Gender birthGender,
-      Gender currentGender,
-      Deceased deceased,
-      LocalDate deceasedTime,
-      String maritalStatus,
-      String ethnicityCode,
-      LocalDate asOf,
-      String comments,
-      String stateHIVCase,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
-
-
-  record AddRace(
+  record AddRaceInfo(
       long person,
       LocalDate asOf,
       String category,
@@ -51,16 +29,6 @@ public sealed interface PatientCommand {
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {
-
-    public AddRace(
-        long person,
-        LocalDate asOf,
-        String category,
-        long requester,
-        LocalDateTime requestedOn
-    ) {
-      this(person, asOf, category, List.of(), requester, requestedOn);
-    }
 
   }
 
@@ -190,6 +158,7 @@ public sealed interface PatientCommand {
       LocalDateTime requestedOn) implements PatientCommand {
   }
 
+
   record AddPhone(
       long person,
       String type,
@@ -210,7 +179,7 @@ public sealed interface PatientCommand {
 
   record UpdatePhone(
       long person,
-      long id,
+      long identifier,
       String type,
       String use,
       LocalDate asOf,
@@ -252,6 +221,10 @@ public sealed interface PatientCommand {
   }
 
 
+  record ClearMoralityDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
+  }
+
+
   record UpdateEthnicityInfo(
       long person,
       LocalDate asOf,
@@ -261,6 +234,10 @@ public sealed interface PatientCommand {
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {
+  }
+
+
+  record ClearEthnicityDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
   }
 
 
@@ -292,6 +269,11 @@ public sealed interface PatientCommand {
   }
 
 
+  record ClearAdministrativeInformation(long person, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {
+  }
+
+
   record UpdateGeneralInfo(
       long person,
       LocalDate asOf,
@@ -305,6 +287,11 @@ public sealed interface PatientCommand {
       String speaksEnglishCode,
       long requester,
       LocalDateTime requestedOn) implements PatientCommand {
+  }
+
+
+  record ClearGeneralInformationDemographics(long person, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {
   }
 
 
@@ -325,6 +312,10 @@ public sealed interface PatientCommand {
   }
 
 
+  record ClearBirthDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
+  }
+
+
   record UpdateGender(
       long person,
       LocalDate asOf,
@@ -335,6 +326,10 @@ public sealed interface PatientCommand {
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {
+  }
+
+
+  record ClearGenderDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
   }
 
 
@@ -448,7 +443,7 @@ public sealed interface PatientCommand {
 
   record DeleteNameInfo(
       long person,
-      int sequence,
+      short sequence,
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {
@@ -458,6 +453,14 @@ public sealed interface PatientCommand {
   record AssociateStateHIVCase(
       long person,
       String stateHIVCase,
+      long requester,
+      LocalDateTime requestedOn
+  ) implements PatientCommand {
+  }
+
+
+  record DisassociateStateHIVCase(
+      long person,
       long requester,
       LocalDateTime requestedOn
   ) implements PatientCommand {

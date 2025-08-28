@@ -29,7 +29,7 @@ testing {
             dependencies {
                 implementation(libs.spring.test)
                 implementation(libs.spring.security.test)
-                implementation "org.wiremock:wiremock-standalone:3.13.0"
+                implementation "org.wiremock:wiremock-standalone:3.13.1"
             }
         }
     }
@@ -45,6 +45,14 @@ dependencies {
     implementation 'org.springframework.security:spring-security-oauth2-client'
     implementation libs.springBoot.actuator
 
+    constraints {
+        implementation("io.projectreactor.netty:reactor-netty-http:1.2.9") {
+            because("CVE-2025-22227")
+        }
+        implementation("io.netty:netty-codec-http2:4.1.124.Final") {
+            because("CVE-2025-55163")
+        }
+    }
 }
 
 tasks.withType(JavaExec).configureEach {

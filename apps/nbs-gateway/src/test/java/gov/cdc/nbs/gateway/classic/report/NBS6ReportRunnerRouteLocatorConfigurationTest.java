@@ -1,7 +1,6 @@
 package gov.cdc.nbs.gateway.classic.report;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import gov.cdc.nbs.gateway.classic.NBSClassicService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,6 @@ class NBS6ReportRunnerRouteLocatorConfigurationTest {
 
   @Autowired
   WebTestClient webClient;
-
-  @Autowired
-  NBSClassicService service;
 
   @Test
   void should_apply_report_path_to_referer_from_the_NBS_Report_cookie() {

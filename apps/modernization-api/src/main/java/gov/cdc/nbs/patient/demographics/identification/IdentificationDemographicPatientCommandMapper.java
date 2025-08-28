@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.demographics.identification;
 
+import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 
@@ -8,8 +9,7 @@ public class IdentificationDemographicPatientCommandMapper {
   public static PatientCommand.AddIdentification asAddIdentification(
       final long patient,
       final RequestContext context,
-      final IdentificationDemographic demographic
-  ) {
+      final IdentificationDemographic demographic) {
 
     return new PatientCommand.AddIdentification(
         patient,
@@ -18,8 +18,33 @@ public class IdentificationDemographicPatientCommandMapper {
         demographic.issuer(),
         demographic.type(),
         context.requestedBy(),
-        context.requestedAt()
-    );
+        context.requestedAt());
+  }
+
+  public static PatientCommand.UpdateIdentification asUpdateIdentification(
+      final long patient,
+      final RequestContext context,
+      final IdentificationDemographic demographic) {
+    return new PatientCommand.UpdateIdentification(
+        patient,
+        demographic.sequence(),
+        demographic.asOf(),
+        demographic.value(),
+        demographic.issuer(),
+        demographic.type(),
+        context.requestedBy(),
+        context.requestedAt());
+  }
+
+  public static PatientCommand.DeleteIdentification asDeleteIdentification(
+      final long patient,
+      final RequestContext context,
+      final EntityId existing) {
+    return new PatientCommand.DeleteIdentification(
+        patient,
+        existing.getId().getEntityIdSeq(),
+        context.requestedBy(),
+        context.requestedAt());
   }
 
   private IdentificationDemographicPatientCommandMapper() {

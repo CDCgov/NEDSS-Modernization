@@ -1,34 +1,34 @@
 @use 'styles/borders';
 @use 'styles/components';
 
-.horizontalInput {
-    display: flex;
-    flex-direction: row;
+.horizontal {
+    --label-area-width: 13rem;
+
     padding: 0.5rem 1.5rem;
     align-items: flex-start;
     gap: 2rem;
 
+    display: grid;
+    grid-template-columns: var(--label-area-width) 1fr;
+
     @extend %thin-bottom;
 
     .left {
-        --label-area-width: 13rem;
-        --label-area-font-size: inherit;
-
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         padding-top: 0.5rem;
-        min-width: var(--label-area-width);
-        width: var(--label-area-width);
 
         label {
             font-weight: 700;
-            font-size: var(--label-area-font-size);
+
+            &.required {
+                @include components.required();
+            }
         }
     }
 
     .right {
-        width: 100%;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -38,10 +38,10 @@
         .children {
             min-width: fit-content;
             width: 20rem;
-            flex-shrink: 0;
         }
 
         .message {
+            padding-top: 0.5rem;
             width: 9rem;
             flex-shrink: 1;
             flex-grow: 1;
@@ -49,25 +49,18 @@
     }
 
     &.small {
-        .left {
-            --label-area-width: 12rem;
-            --label-area-font-size: #{components.$small-font-size};
+        --label-area-width: 12rem;
 
+        .left {
             padding-top: 0.25rem;
         }
 
+        .right {
+            .message {
+                padding-top: 0.25rem;
+            }
+        }
+
         padding-left: 1rem;
-    }
-
-    &.medium {
-        .left {
-            --label-area-font-size: #{components.$medium-font-size};
-        }
-    }
-
-    &.large {
-        .left {
-            --label-area-font-size: #{components.$large-font-size};
-        }
     }
 }

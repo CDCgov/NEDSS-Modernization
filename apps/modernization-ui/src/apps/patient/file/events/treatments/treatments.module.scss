@@ -1,0 +1,15 @@
+@use 'design-system/table/header/widths';
+
+.date-time-header {
+    @include widths.fixed(7rem);
+}
+
+.treatment-date-header {
+    @include widths.fixed(8rem);
+}
+
+.event-id {
+    font-size: 0.75rem;
+    min-height: unset;
+    font-weight: 600;
+}

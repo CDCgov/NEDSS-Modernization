@@ -1,15 +1,13 @@
 package gov.cdc.nbs.support.provider;
 
+import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
-import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Component
 @ScenarioScope
@@ -51,7 +49,7 @@ class ProviderMother {
   private final JdbcClient client;
   private final Available<ProviderIdentifier> available;
   private final Active<ProviderIdentifier> active;
-  private final Collection<Long> identifiers;
+  private final TestingDataCleaner<Long> cleaner;
 
   ProviderMother(
       final SequentialIdentityGenerator idGenerator,
@@ -64,19 +62,12 @@ class ProviderMother {
     this.available = available;
     this.active = active;
 
-    this.identifiers = new ArrayList<>();
+    this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
   }
 
-  @PostConstruct
+  @PreDestroy
   void reset() {
-    if (!identifiers.isEmpty()) {
-
-      this.client.sql(DELETE_IN)
-          .param("identifiers", identifiers)
-          .update();
-
-      this.identifiers.clear();
-    }
+    this.cleaner.clean();
   }
 
   void create(final String prefix, final String first, final String last) {
@@ -93,8 +84,7 @@ class ProviderMother {
     ProviderIdentifier.Name name = new ProviderIdentifier.Name(prefix, first, last);
 
     ProviderIdentifier created = new ProviderIdentifier(identifier, name);
-
-    this.identifiers.add(identifier);
+    this.cleaner.include(identifier);
 
     this.available.available(created);
     this.active.active(created);

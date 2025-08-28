@@ -1,13 +1,18 @@
+import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { validCensusTractRule, CensusTractInputField } from 'apps/patient/data/address';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
+import {
+    validZipCodeRule,
+    ZipCodeInputField,
+    validCensusTractRule,
+    CensusTractInputField
+} from 'libs/demographics/location';
+import { useLocationOptions } from 'options/location';
 import { maxLengthRule } from 'validation/entry';
 import { BasicNewPatientEntry } from 'apps/patient/add/basic/entry';
 import { TextInputField } from 'design-system/input';
-import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
 
 const STREET_ADDRESS_LABEL = 'Street address 1';
 const STREET_ADDRESS_2_LABEL = 'Street address 2';
@@ -16,15 +21,20 @@ const ZIP_LABEL = 'Zip';
 const CENSUS_TRACT_LABEL = 'Census tract';
 
 export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
-    const { control } = useFormContext<BasicNewPatientEntry>();
+    const { control, setValue } = useFormContext<BasicNewPatientEntry>();
     const selectedState = useWatch({ control, name: 'address.state' });
 
-    const countries = useCountryOptions();
-    const states = useStateOptions();
-    const counties = useCountyOptions(selectedState?.value);
+    const location = useLocationOptions();
+
+    useEffect(() => {
+        if (!selectedState) {
+            setValue('address.county', undefined);
+        }
+        location.state(selectedState);
+    }, [selectedState?.value, location.state]);
 
     return (
-        <section>
+        <>
             <Controller
                 control={control}
                 name="address.address1"
@@ -94,7 +104,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={states}
+                        options={location.states}
                     />
                 )}
             />
@@ -127,7 +137,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={counties}
+                        options={location.counties}
                     />
                 )}
             />
@@ -160,11 +170,11 @@ export const BasicAddressFields = ({ orientation = 'horizontal', sizing = 'mediu
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={countries}
+                        options={location.countries}
                         autoComplete="off"
                     />
                 )}
             />
-        </section>
+        </>
     );
 };

@@ -21,7 +21,7 @@ const LinkButton = ({
 }: LinkButtonProps) => {
     const labelPosition = 'labelPosition' in remaining ? remaining.labelPosition : undefined;
     return (
-        <a href={disabled ? undefined : href} target={target} rel={rel} {...remaining}>
+        <a href={disabled ? undefined : href} target={target} rel={rel} {...remaining} tabIndex={-1}>
             <Button
                 className={className}
                 sizing={sizing}

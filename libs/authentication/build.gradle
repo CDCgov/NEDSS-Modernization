@@ -34,10 +34,6 @@ dependencies {
     // database
     implementation libs.mssql.jdbc
 
-    // querydsl
-    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier("jakarta") })
-
     implementation libs.bundles.jackson
 
     // lombok
@@ -46,6 +42,3 @@ dependencies {
 
 }
 
-compileJava {
-    options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'
-}

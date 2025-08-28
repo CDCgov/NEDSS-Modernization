@@ -1,0 +1,1 @@
+export { AdministrativeInformationCard } from './AdministrativeInformationCard';

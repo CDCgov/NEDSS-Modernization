@@ -1,0 +1,1 @@
+export { GuardedPatientFileEdit } from './GuardedPatientFileEdit';

@@ -1,4 +1,4 @@
-export * from './displayName';
+export { displayName, maybeDisplayName } from './displayName';
 export * from './displayNameElement';
 export * from './matchesLegalName';
 

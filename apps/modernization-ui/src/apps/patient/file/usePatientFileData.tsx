@@ -1,19 +1,22 @@
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
 import { MemoizedSupplier } from 'libs/supplying/';
 import { Patient } from './patient';
-import { PatientDemographics } from './demographics';
+import { PatientDemographicsData } from './demographics';
 import { PatientFileSummaryData } from './summary';
 import { PatientFileEventData } from './events';
+import { description } from './description';
 
 type PatientFileData = {
     id: number;
     patient: Patient;
     summary: MemoizedSupplier<PatientFileSummaryData>;
     events: MemoizedSupplier<PatientFileEventData>;
-    demographics: MemoizedSupplier<PatientDemographics>;
+    demographics: MemoizedSupplier<PatientDemographicsData>;
 };
 
-const PatientContext = createContext<PatientFileData | undefined>(undefined);
+type PatientFileInteraction = PatientFileData & { refresh: () => void };
+
+const PatientContext = createContext<PatientFileInteraction | undefined>(undefined);
 
 type PatientProviderProps = {
     data: PatientFileData;
@@ -21,7 +24,19 @@ type PatientProviderProps = {
 };
 
 const PatientFileProvider = ({ data, children }: PatientProviderProps) => {
-    return <PatientContext.Provider value={data}>{children}</PatientContext.Provider>;
+    const [value, setValue] = useState<PatientFileData>(data);
+
+    const refresh = useCallback(() => {
+        data.demographics.reset();
+        description(value.patient.patientId).then((patient) => setValue((current) => ({ ...current, patient })));
+    }, [value]);
+
+    const interaction = {
+        ...value,
+        refresh
+    };
+
+    return <PatientContext.Provider value={interaction}>{children}</PatientContext.Provider>;
 };
 
 const usePatientFileData = () => {

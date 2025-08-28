@@ -4,21 +4,21 @@ import classNames from 'classnames';
 import styles from './collapsible.module.scss';
 
 type CollapsibleProps = {
+    id: string;
     className?: string;
     open?: boolean;
     children: ReactNode;
 };
 
-const Collapsible = ({ open = true, children }: CollapsibleProps) => {
+const Collapsible = ({ id, open = true, children }: CollapsibleProps) => {
     const [height, setHeight] = useState<number | undefined>(open ? undefined : 0);
     const contentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!height || !open || !contentRef.current) return undefined;
-
         if (contentRef.current) {
             const resizeObserver = new ResizeObserver((element) => {
-                setHeight(element[0].contentRect.height);
+                const next = open ? element[0].contentRect.height : 0;
+                setHeight(next);
             });
 
             resizeObserver.observe(contentRef.current);
@@ -26,20 +26,14 @@ const Collapsible = ({ open = true, children }: CollapsibleProps) => {
         }
     }, [height, open, contentRef.current]);
 
-    useEffect(() => {
-        if (open) setHeight(contentRef.current?.getBoundingClientRect().height);
-        else setHeight(0);
-    }, [open]);
-
     return (
         <div
+            id={id}
             style={{ height }}
             className={classNames(styles.collapsible, {
                 [styles.collapsed]: !open
             })}>
-            <div ref={contentRef}>
-                <div>{children}</div>
-            </div>
+            <div ref={contentRef}>{children}</div>
         </div>
     );
 };

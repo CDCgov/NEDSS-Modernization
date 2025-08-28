@@ -48,7 +48,7 @@ describe('MortalityDemographicView', () => {
             />
         );
 
-        const actual = screen.getByRole('definition', { name: 'City of death' });
+        const actual = screen.getByRole('definition', { name: 'Death city' });
 
         expect(actual).toHaveTextContent('death city value');
     });
@@ -66,7 +66,7 @@ describe('MortalityDemographicView', () => {
             />
         );
 
-        const actual = screen.getByRole('definition', { name: 'State of death' });
+        const actual = screen.getByRole('definition', { name: 'Death state' });
 
         expect(actual).toHaveTextContent('death state name');
     });
@@ -84,7 +84,7 @@ describe('MortalityDemographicView', () => {
             />
         );
 
-        const actual = screen.getByRole('definition', { name: 'County of death' });
+        const actual = screen.getByRole('definition', { name: 'Death county' });
 
         expect(actual).toHaveTextContent('death county name');
     });
@@ -102,7 +102,7 @@ describe('MortalityDemographicView', () => {
             />
         );
 
-        const actual = screen.getByRole('definition', { name: 'Country of death' });
+        const actual = screen.getByRole('definition', { name: 'Death country' });
 
         expect(actual).toHaveTextContent('death country name');
     });

@@ -1,6 +1,7 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { render } from '@testing-library/react';
+import { LocationOptions } from 'options/location';
 import { AddressEntry } from './entry';
 import { AddressEntryFields } from './AddressEntryFields';
 import { AddressCodedValues } from './useAddressCodedValues';
@@ -14,16 +15,17 @@ jest.mock('./useAddressCodedValues', () => ({
     useAddressCodedValues: () => mockAddressCodedValues
 }));
 
-const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
+const mockState = jest.fn();
 
-const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
-
-const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+const mockLocationOptions: LocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: mockState
+};
 
 jest.mock('options/location', () => ({
-    useCountyOptions: () => mockCountyCodedValues,
-    useCountryOptions: () => mockCountryCodedValues,
-    useStateOptions: () => mockStateCodedValues
+    useLocationOptions: () => mockLocationOptions
 }));
 
 const Fixture = () => {
@@ -67,6 +69,17 @@ describe('when entering patient address demographics', () => {
         expect(getByLabelText('Census tract')).toBeInTheDocument();
         expect(getByLabelText('Country')).toBeInTheDocument();
         expect(getByLabelText('Address comments')).toBeInTheDocument();
+    });
+
+    it('should have accessibility description for the as of date field', () => {
+        const { getByLabelText } = render(<Fixture />);
+
+        const dateInput = getByLabelText('Address as of');
+
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            'This date defaults to today and can be changed if needed'
+        );
     });
 
     it('should require type', async () => {
