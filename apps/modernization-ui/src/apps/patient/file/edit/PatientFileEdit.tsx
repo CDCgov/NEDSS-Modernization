@@ -67,6 +67,7 @@ const ReadyPatientFileEdit = ({ patient, entry }: ReadyPatientFileEditProps) => 
 
     const goBack = useCallback(() => {
         const path = resolveBackPath(state?.return);
+        console.log('back path', state.return);
         navigate(path);
     }, [navigate, state?.return]);
 
