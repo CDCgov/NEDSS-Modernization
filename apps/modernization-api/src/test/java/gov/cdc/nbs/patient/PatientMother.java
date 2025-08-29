@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient;
 import gov.cdc.nbs.data.LimitString;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
@@ -667,25 +666,15 @@ public class PatientMother {
 
   public void withMortality(final PatientIdentifier identifier) {
 
-    Person patient = managed(identifier);
+    String indicator = RandomUtil.indicator();
 
-    Deceased indicator = RandomUtil.deceased();
+    LocalDate deceasedOn = "Y".equals(indicator) ? RandomUtil.dateInPast() : null;
 
-    LocalDate deceasedOn = indicator == Deceased.Y ? RandomUtil.dateInPast() : null;
-
-    patient.update(
-        new PatientCommand.UpdateMortality(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            indicator.value(),
-            deceasedOn,
-            null,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()),
-        this.addressIdentifierGenerator);
+    this.client.sql("update Person set deceased_time = ?, deceased_ind_cd = ? where person_uid = ?")
+        .param(deceasedOn)
+        .param(indicator)
+        .param(identifier.id())
+        .update();
   }
 
   public void withEthnicity(
