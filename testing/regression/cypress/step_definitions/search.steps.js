@@ -143,8 +143,8 @@ When("I search by email as {string}", (string) => {
   searchPage.search();
 });
 
-Then("I should see Results with the phone number as {string}", (string) => {
-  cy.get('div[data-item-type="phone"]').first().scrollIntoView().contains(string).should("be.visible");
+Then("I should see Results with the phone number as {string}", (string) => {  
+  cy.get('div[data-item-type="phone"]').contains(string).should("be.visible");
 
 });
 
