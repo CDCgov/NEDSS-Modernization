@@ -241,20 +241,23 @@ public class PatientMother {
   }
 
   public void deleted(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.delete(
-        new PatientCommand.Delete(
-            identifier.id(),
-            this.settings.createdBy(),
-            this.settings.createdOn()),
-        id -> 0);
+    withStatus(identifier, "LOG_DEL", LocalDateTime.now());
   }
 
   public void superseded(final PatientIdentifier identifier) {
-    managed(identifier)
-        .recordStatus()
-        .change("SUPERCEDED", LocalDateTime.now());
+    withStatus(identifier, "SUPERCEDED", LocalDateTime.now());
+  }
+
+  private void withStatus(
+      final PatientIdentifier patient,
+      final String status,
+      final LocalDateTime when
+  ) {
+    this.client.sql("update Person set record_status_cd = ?, record_status_time = ? where person_uid = ?")
+        .param(status)
+        .param(when)
+        .param(patient.id())
+        .update();
   }
 
   public void withAddress(
