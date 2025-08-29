@@ -4,7 +4,7 @@ set -e
 BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 NBS6_PATH=$BASE/builder/NEDSSDev/
-NBS6_VERSION=NBS_6.0.17.1
+NBS6_VERSION=NBS_6.0.18
 clean=false
 
 
