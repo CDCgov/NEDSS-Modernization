@@ -40,13 +40,17 @@ $bubbleOffset: 0.5rem;
         transition-delay: 0s;
     }
 
+    // --- POSITIONS ---
     &[data-tooltip-position='top'] {
-        &::before {
+        // Default 'center' offset
+        &:not([data-tooltip-offset])::before,
+        &[data-tooltip-offset='center']::before {
             bottom: calc(100% + #{$bubbleOffset});
             left: 50%;
             transform: translateX(-50%);
         }
-        &::after {
+        &:not([data-tooltip-offset])::after,
+        &[data-tooltip-offset='center']::after {
             border-right: $arrowWidth solid transparent;
             border-left: $arrowWidth solid transparent;
             border-top: $arrowWidth solid colors.$base-darkest;
@@ -54,21 +58,84 @@ $bubbleOffset: 0.5rem;
             left: 50%;
             transform: translateX(-50%);
         }
+
+        // Left offset: arrow is on the right of the bubble
+        &[data-tooltip-offset='left'] {
+            &::before {
+                bottom: calc(100% + #{$bubbleOffset});
+                right: 0;
+            }
+            &::after {
+                border-right: $arrowWidth solid transparent;
+                border-left: $arrowWidth solid transparent;
+                border-top: $arrowWidth solid colors.$base-darkest;
+                bottom: 100%;
+                right: $arrowWidth;
+            }
+        }
+
+        // Right offset: arrow is on the left of the bubble
+        &[data-tooltip-offset='right'] {
+            &::before {
+                bottom: calc(100% + #{$bubbleOffset});
+                left: 0;
+            }
+            &::after {
+                border-right: $arrowWidth solid transparent;
+                border-left: $arrowWidth solid transparent;
+                border-top: $arrowWidth solid colors.$base-darkest;
+                bottom: 100%;
+                left: $arrowWidth;
+            }
+        }
     }
 
     &[data-tooltip-position='bottom'] {
-        &::before {
+        // Default (center) and 'center' offset logic
+        &:not([data-tooltip-offset])::before,
+        &[data-tooltip-offset='center']::before {
             top: calc(100% + #{$bubbleOffset});
             left: 50%;
             transform: translateX(-50%);
         }
-        &::after {
+        &:not([data-tooltip-offset])::after,
+        &[data-tooltip-offset='center']::after {
             border-right: $arrowWidth solid transparent;
             border-left: $arrowWidth solid transparent;
             border-bottom: $arrowWidth solid colors.$base-darkest;
             top: 100%;
             left: 50%;
             transform: translateX(-50%);
+        }
+
+        // Left offset
+        &[data-tooltip-offset='left'] {
+            &::before {
+                top: calc(100% + #{$bubbleOffset});
+                right: 0;
+            }
+            &::after {
+                border-right: $arrowWidth solid transparent;
+                border-left: $arrowWidth solid transparent;
+                border-bottom: $arrowWidth solid colors.$base-darkest;
+                top: 100%;
+                right: $arrowWidth;
+            }
+        }
+
+        // Right offset
+        &[data-tooltip-offset='right'] {
+            &::before {
+                top: calc(100% + #{$bubbleOffset});
+                left: 0;
+            }
+            &::after {
+                border-right: $arrowWidth solid transparent;
+                border-left: $arrowWidth solid transparent;
+                border-bottom: $arrowWidth solid colors.$base-darkest;
+                top: 100%;
+                left: $arrowWidth;
+            }
         }
     }
 
