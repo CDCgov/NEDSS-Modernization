@@ -12,11 +12,11 @@ import java.time.LocalDate;
 @Table(name = "Person_race")
 @IdClass(PatientRaceId.class)
 @SuppressWarnings(
-    //  The PatientRaceHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
+    //  Bidirectional mappings require knowledge of each other
+    "javaarchitecture:S7027"
 )
 @EntityListeners(PatientRaceHistoryListener.class)
-public class PatientRace {
+public class PatientRace implements Identifiable<PatientRaceId> {
 
   @Id
   @Column(name = "race_cd", nullable = false, length = 20)
@@ -80,6 +80,11 @@ public class PatientRace {
 
   public long patient() {
     return patient.id();
+  }
+
+  @Override
+  public PatientRaceId identifier() {
+    return new PatientRaceId(this.patient.id(), this.race);
   }
 
   public LocalDate asOf() {

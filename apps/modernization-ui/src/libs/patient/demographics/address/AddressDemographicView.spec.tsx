@@ -11,6 +11,7 @@ const entry: AddressDemographic = {
     address2: 'address 2 value',
     city: 'new york city',
     county: asSelectable('AK', 'Ark county'),
+    state: asSelectable('state-value', 'state-name'),
     country: asSelectable('US', 'United states'),
     censusTract: 'census tract value',
     zipcode: '12345'

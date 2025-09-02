@@ -88,29 +88,33 @@ class PatientMortalityDemographicApplier {
                     and [participation].use_cd = 'DTH'
                     and [participation].class_cd = 'PST'
                 when  not matched then
-                    insert (
-                      version_ctrl_nbr,
-                      entity_uid,
-                      locator_uid,
-                      add_time,
-                      last_chg_time,
-                      record_status_cd,
-                      record_status_time,
-                      as_of_date,
-                      use_cd,
-                      class_cd
-                  ) values (
-                      1,
-                      source.patient,
-                      :locator,
-                      getDate(),
-                      getDate(),
-                      'ACTIVE',
-                      getDate(),
-                      getDate(),
-                      'DTH',
-                      'PST'
-                  );
+                  insert (
+                    version_ctrl_nbr,
+                    entity_uid,
+                    locator_uid,
+                    add_time,
+                    last_chg_time,
+                    record_status_cd,
+                    record_status_time,
+                    status_cd,
+                    status_time,
+                    as_of_date,
+                    use_cd,
+                    class_cd
+                ) values (
+                    1,
+                    source.patient,
+                    :locator,
+                    getDate(),
+                    getDate(),
+                    'ACTIVE',
+                    getDate(),
+                    'A',
+                    getDate(),
+                    getDate(),
+                    'DTH',
+                    'PST'
+                );
                 
                 --- Locator
                 merge into Postal_locator [locator]

@@ -141,10 +141,11 @@ The `default` profile contains the following properties configuration most likel
 The modernization-api includes the [configuration-api](/libs/configuration-api/README.md) to expose the configuration
 endpoint.
 
-### Kafka
+### Interactions with NBS6.X WildFly instance
 
-| Name                                        | Default        | Description                                                               |
-|---------------------------------------------|----------------|---------------------------------------------------------------------------|
-| kafka.enabled                               | false          | Weather or not the Modernization API connects to Kafka                    |
-| spring.kafka.bootstrap-servers              | localhost:9092 | URL of one or more Kafka brokers to obtain information about the cluster. |
-| spring.kafka.properties.schema.registry.url | localhost:9091 | URL of the server providing the centralized message schema repository.    |
+There are a handful of endpoints that intercept requests from the NBS6.X WildFly instance in order to route to the
+modernized Patient file. Some of the intercepted POST requests contain a large amount of form fields represented as
+multipart form-data that easily hit the default `max-part-count` of Tomcat. A threshold of `550` has been set to
+accommodate Page Builder templates with large number of questions. Due to the customizability of Page Builder templates
+this limit may not be sufficient in some deployments. The `max-part-count` can be overridden using the
+`SERVER_TOMCAT_MAX_PART_COUNT` environment variable.

@@ -2,19 +2,19 @@ import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
 import { AddressRepeatingBlock } from './AddressRepeatingBlock';
 import { AddressEntry } from 'apps/patient/data';
+import { LocationOptions } from 'options/location';
 
-const mockLocationCodedValues = {
-    states: {
-        all: [{ name: 'StateName', value: '1' }]
-    },
-    counties: {
-        byState: (state: string) => [{ name: 'CountyName', value: '2' }]
-    },
-    countries: [{ name: 'CountryName', value: '3' }]
+const mockState = jest.fn();
+
+const mockLocationOptions: LocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: mockState
 };
 
-jest.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
+jest.mock('options/location', () => ({
+    useLocationOptions: () => mockLocationOptions
 }));
 
 const onChange = jest.fn();

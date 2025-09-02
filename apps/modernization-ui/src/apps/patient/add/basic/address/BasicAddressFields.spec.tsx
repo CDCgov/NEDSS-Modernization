@@ -3,17 +3,19 @@ import userEvent from '@testing-library/user-event';
 import { AddressEntry } from 'apps/patient/data';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BasicAddressFields } from './BasicAddressFields';
+import { LocationOptions } from 'options/location';
 
-const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
+const mockState = jest.fn();
 
-const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
-
-const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+const mockLocationOptions: LocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: mockState
+};
 
 jest.mock('options/location', () => ({
-    useCountyOptions: () => mockCountyCodedValues,
-    useCountryOptions: () => mockCountryCodedValues,
-    useStateOptions: () => mockStateCodedValues
+    useLocationOptions: () => mockLocationOptions
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {

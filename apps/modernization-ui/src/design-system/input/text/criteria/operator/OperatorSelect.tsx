@@ -6,7 +6,7 @@ export type OperatorSelectProps = {
     id: string;
     value?: Selectable | null;
     mode?: 'alpha' | 'all';
-    onChange: (value?: Selectable) => void;
+    onChange: (value: Selectable | null) => void;
     ariaLabel?: string;
 };
 

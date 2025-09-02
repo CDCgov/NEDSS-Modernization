@@ -16,7 +16,8 @@ public class OptionsVerificationSteps {
     this.response = response;
   }
 
-  @Then("there are {int} option(s) included")
+  @Then("there is {int} option included")
+  @Then("there are {int} options included")
   public void there_are_n_options(final int n) throws Exception {
     this.response.active()
         .andExpect(jsonPath("$", hasSize(n)));

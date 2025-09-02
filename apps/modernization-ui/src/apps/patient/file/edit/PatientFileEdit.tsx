@@ -1,14 +1,14 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { defaultTo } from 'libs/supplying';
 import { useForm } from 'react-hook-form';
 import { useAlert } from 'alert';
+import { maybeDisplayName } from 'name';
 import { NavigationGuard } from 'design-system/entry/navigation-guard';
-
+import { Shown } from 'conditional-render';
+import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { useComponentSizing } from 'design-system/sizing';
 import { Button } from 'design-system/button';
-import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
-import { maybeDisplayName } from 'name';
 import { exists } from 'utils/exists';
 import {
     PatientDemographicsEntry,
@@ -16,17 +16,52 @@ import {
     usePatientDemographicDefaults
 } from 'libs/patient/demographics';
 import { usePendingFormEntry } from 'design-system/entry/pending';
-import { usePatientFileData } from '../usePatientFileData';
-import { PatientFileLayout } from '../PatientFileLayout';
 import { Patient } from '../patient';
+import { PatientFileLayout } from '../PatientFileLayout';
+import { usePatientFileData } from '../usePatientFileData';
 import { evaluated } from './evaluated';
 import { useEditPatient } from './useEditPatient';
 
 import styles from './patient-file-edit.module.scss';
+import { LoadingOverlay } from 'libs/loading';
+
+const PatientFileEdit = () => {
+    const { patient, demographics } = usePatientFileData();
+
+    const [entry, setEntry] = useState<PatientDemographicsEntry>();
+
+    useEffect(() => {
+        evaluated(demographics.get()).then(setEntry);
+    }, []);
+
+    // Suspense and Await are not used here because it causes the blocker within useBlocker to detach
+    // from the router resulting in it's state not updating.  This successfully blocks navigation
+    // however, the confirmation modal is not displayed.
+    return (
+        <Shown when={exists(entry)} fallback={<LoadingPatientFileEdit patient={patient} />}>
+            {entry && <ReadyPatientFileEdit entry={entry} patient={patient} />}
+        </Shown>
+    );
+};
+
+type LoadingPatientFileEditProps = {
+    patient: Patient;
+};
+
+const LoadingPatientFileEdit = ({ patient }: LoadingPatientFileEditProps) => (
+    <LoadingOverlay>
+        <PatientFileLayout patient={patient} navigation={EditNavigation} />
+    </LoadingOverlay>
+);
 
 const resolveBackPath = defaultTo('..');
 
-const PatientFileEdit = () => {
+type ReadyPatientFileEditProps = {
+    patient: Patient;
+    entry: PatientDemographicsEntry;
+};
+
+const ReadyPatientFileEdit = ({ patient, entry }: ReadyPatientFileEditProps) => {
     const { state } = useLocation();
     const navigate = useNavigate();
 
@@ -35,7 +70,7 @@ const PatientFileEdit = () => {
         navigate(path);
     }, [navigate, state?.return]);
 
-    const { patient, demographics, refresh } = usePatientFileData();
+    const { refresh } = usePatientFileData();
     const sizing = useComponentSizing();
     const defaults = usePatientDemographicDefaults();
 
@@ -43,10 +78,10 @@ const PatientFileEdit = () => {
 
     const handleSuccess = useCallback(() => {
         showSuccess(
-            <span>
+            <>
                 You have successfully edited{' '}
                 <strong>{`${maybeDisplayName(patient.name)} (Patient ID: ${patient.patientId})`}</strong>.
-            </span>
+            </>
         );
         refresh();
         goBack();
@@ -56,12 +91,9 @@ const PatientFileEdit = () => {
 
     const form = useForm<PatientDemographicsEntry>({
         mode: 'onBlur',
-        reValidateMode: 'onBlur'
+        reValidateMode: 'onBlur',
+        defaultValues: entry
     });
-
-    useEffect(() => {
-        evaluated(demographics.get()).then(form.reset);
-    }, []);
 
     const pending = usePendingFormEntry({ form });
 
@@ -96,9 +128,10 @@ const PatientFileEdit = () => {
             )}
             navigation={EditNavigation}>
             <PatientDemographicsForm
-                form={form}
-                defaults={defaults}
                 pending={pending}
+                defaults={defaults}
+                form={form}
+                entry={entry}
                 sizing={sizing}
                 className={styles.demographics}
             />
@@ -110,7 +143,7 @@ const PatientFileEdit = () => {
 export { PatientFileEdit };
 
 const EditNavigation = (patient: Patient) => (
-    <TabNavigation newTab>
+    <TabNavigation sizing="medium">
         <TabNavigationEntry path={`/patient/${patient.patientId}/edit`}>Demographics</TabNavigationEntry>
     </TabNavigation>
 );

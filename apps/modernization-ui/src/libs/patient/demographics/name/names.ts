@@ -1,19 +1,19 @@
 import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
+import { Nullable } from 'utils/object';
 
-type NameDemographic = EffectiveDated & {
-    sequence?: number;
-    type: Selectable | null;
-    prefix?: Selectable | null;
-    first?: string;
-    middle?: string;
-    secondMiddle?: string;
-    last?: string;
-    secondLast?: string;
-    suffix?: Selectable | null;
-    degree?: Selectable | null;
-};
+type NameDemographic = EffectiveDated & { sequence?: number } & Nullable<{
+        type?: Selectable;
+        prefix?: Selectable;
+        first?: string;
+        middle?: string;
+        secondMiddle?: string;
+        last?: string;
+        secondLast?: string;
+        suffix?: Selectable;
+        degree?: Selectable;
+    }>;
 
 type HasNameDemographics = {
     names?: NameDemographic[];
@@ -21,17 +21,17 @@ type HasNameDemographics = {
 
 export type { NameDemographic, HasNameDemographics };
 
-const initial = (asOf: Supplier<string>): Partial<NameDemographic> => ({
+const initial = (asOf: Supplier<string>): NameDemographic => ({
     asOf: asOf(),
-    type: undefined,
-    prefix: undefined,
-    first: undefined,
-    middle: undefined,
-    secondMiddle: undefined,
-    last: undefined,
-    secondLast: undefined,
-    suffix: undefined,
-    degree: undefined
+    type: null,
+    prefix: null,
+    first: null,
+    middle: null,
+    secondMiddle: null,
+    last: null,
+    secondLast: null,
+    suffix: null,
+    degree: null
 });
 
 export { initial };
