@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { AgeResolver } from 'date';
-import { isEqual } from 'options';
+import { isEqual, Selectable } from 'options';
 import { Shown } from 'conditional-render';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
@@ -33,7 +33,7 @@ const SexBirthDemographicFields = ({
         name: 'sexBirth.current',
         defaultValue: entry?.current
     });
-    const selectedState = useWatch({ control: form.control, name: 'sexBirth.state', defaultValue: entry?.state });
+
     const selectedMultipleBirth = useWatch({
         control: form.control,
         name: 'sexBirth.multiple',
@@ -46,11 +46,15 @@ const SexBirthDemographicFields = ({
     const isUnknownGender = isEqual(options.genders.unknown);
 
     useEffect(() => {
-        if (selectedState?.value !== entry?.state?.value) {
-            form.setValue('sexBirth.county', null);
-        }
-        options.location.state(selectedState);
-    }, [selectedState?.value, options.location.state, form.setValue]);
+        // load counties for initial state
+        options.location.state(entry?.state);
+    }, [entry?.state]);
+
+    const handleStateChange = (state: Selectable | null) => {
+        // when user selects a different state, clear selected county and load new county list
+        form.setValue('sexBirth.county', null);
+        options.location.state(state);
+    };
 
     useEffect(() => {
         if (!isUnknownGender(selectedCurrentGender)) {
@@ -255,7 +259,10 @@ const SexBirthDemographicFields = ({
                         label={labels.state}
                         orientation={orientation}
                         value={value}
-                        onChange={onChange}
+                        onChange={(v) => {
+                            handleStateChange(v);
+                            onChange(v);
+                        }}
                         onBlur={onBlur}
                         id={name}
                         name={name}

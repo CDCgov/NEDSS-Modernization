@@ -5,23 +5,12 @@ import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientIdentificationHistoryListener;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
-import lombok.Getter;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.function.Predicate;
 
 
-@Getter
 @Entity
 @Table(name = "Entity_id")
 @EntityListeners(PatientIdentificationHistoryListener.class)
@@ -105,6 +94,22 @@ public class EntityId implements Identifiable<EntityIdId> {
   @Override
   public EntityIdId identifier() {
     return this.id;
+  }
+
+  public LocalDate asOf() {
+    return asOfDate;
+  }
+
+  public String type() {
+    return typeCd;
+  }
+
+  public String issuer() {
+    return assigningAuthorityCd;
+  }
+
+  public String value() {
+    return rootExtensionTxt;
   }
 
   public Audit audit() {

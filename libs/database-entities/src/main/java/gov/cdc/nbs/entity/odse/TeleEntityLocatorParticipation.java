@@ -34,19 +34,19 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
   ) {
     super(phone, nbs, identifier);
 
-    this.cd = phone.type();
-    this.useCd = phone.use();
-    this.asOfDate = phone.asOf();
-    this.locatorDescTxt = phone.comment();
+    this.type = phone.type();
+    this.use = phone.use();
+    this.asOf = phone.asOf();
+    this.comment = phone.comment();
 
     this.locator = new TeleLocator(phone, identifier);
   }
 
   public void update(final PatientCommand.UpdatePhone phone) {
-    this.cd = phone.type();
-    this.useCd = phone.use();
-    this.asOfDate = phone.asOf();
-    this.locatorDescTxt = phone.comment();
+    this.type = phone.type();
+    this.use = phone.use();
+    this.asOf = phone.asOf();
+    this.comment = phone.comment();
 
     this.locator.update(phone);
 
@@ -59,7 +59,7 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
   }
 
   @Override
-  public TeleLocator getLocator() {
+  public TeleLocator locator() {
     return locator;
   }
 
@@ -68,16 +68,11 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
   }
 
   @Override
-  public String getClassCd() {
-    return TELECOM_CLASS_CODE;
-  }
-
-  @Override
   public String toString() {
     return "TeleEntityLocatorParticipation{" +
         "locator=" + locator +
-        ", cd='" + cd + '\'' +
-        ", use='" + useCd + '\'' +
+        ", cd='" + type + '\'' +
+        ", use='" + use + '\'' +
         '}';
   }
 }

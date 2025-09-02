@@ -21,7 +21,7 @@ public class PatientLegalNameResolver {
         )
         .max(
             Comparator.comparing(PersonName::asOf)
-            .thenComparing(name -> name.getId().getPersonNameSeq())
+            .thenComparing(name -> name.identifier().getPersonNameSeq())
         );
   }
 

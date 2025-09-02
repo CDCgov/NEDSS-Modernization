@@ -10,6 +10,7 @@ import { DeleteAction } from './delete';
 import styles from './patient-file-view.module.scss';
 import { useLocation } from 'react-router';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
+import { Shown } from 'conditional-render';
 
 type PatientFileViewProps = {
     patient: Patient;
@@ -30,7 +31,11 @@ const ViewActions = (patient: Patient) => {
     const { pathname } = useLocation();
     return (
         <>
-            <DeleteAction patient={patient} />
+            <Shown when={patient.status === 'ACTIVE'}>
+                <Permitted permission={permissions.patient.delete}>
+                    <DeleteAction patient={patient} />
+                </Permitted>
+            </Shown>
             <Button
                 onClick={openPrintableView(patient.id)}
                 aria-label="Print"
@@ -40,11 +45,14 @@ const ViewActions = (patient: Patient) => {
                 sizing="medium"
                 secondary
             />
-            <Permitted permission={permissions.patient.update}>
-                <NavLinkButton icon="edit" secondary sizing="medium" to="../edit" state={{ return: pathname }}>
-                    Edit
-                </NavLinkButton>
-            </Permitted>
+
+            <Shown when={patient.status === 'ACTIVE'}>
+                <Permitted permission={permissions.patient.update}>
+                    <NavLinkButton icon="edit" secondary sizing="medium" to="../edit" state={{ return: pathname }}>
+                        Edit
+                    </NavLinkButton>
+                </Permitted>
+            </Shown>
         </>
     );
 };

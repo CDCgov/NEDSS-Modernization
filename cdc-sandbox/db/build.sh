@@ -7,10 +7,13 @@ clean=false
 
 ##
 
-while getopts ":c" opt; do
+while getopts ":c:p:" opt; do
   case $opt in
     c)
       clean=true
+      ;;
+    p)
+      DATABASE_PASSWORD="$OPTARG"
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -22,7 +25,7 @@ done
 
 if [ -z "$DATABASE_PASSWORD" ]
 then
-    echo "DATABASE_PASSWORD is required"
+    echo "A password for the database is required, please provide one using the -p option or by setting the DATABASE_PASSWORD environment variable."
     exit 1
 fi
 

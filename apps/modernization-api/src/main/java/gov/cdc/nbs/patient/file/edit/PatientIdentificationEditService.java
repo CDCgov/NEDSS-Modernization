@@ -1,19 +1,18 @@
 package gov.cdc.nbs.patient.file.edit;
 
-import java.util.Collection;
-import java.util.Objects;
-
-import org.springframework.stereotype.Component;
-
 import gov.cdc.nbs.change.ChangeResolver;
 import gov.cdc.nbs.change.Changes;
+import gov.cdc.nbs.change.Match;
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographics.identification.IdentificationDemographic;
-import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemographicPatientCommandMapper.asAddIdentification;
-import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemographicPatientCommandMapper.asUpdateIdentification;
-import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemographicPatientCommandMapper.asDeleteIdentification;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.Objects;
+
+import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemographicPatientCommandMapper.*;
 
 @Component
 class PatientIdentificationEditService {
@@ -23,7 +22,18 @@ class PatientIdentificationEditService {
   }
 
   private static long identifyPersonName(EntityId identifier) {
-    return Objects.hash(identifier.getId().getEntityIdSeq());
+    return Objects.hash(identifier.identifier().getEntityIdSeq());
+  }
+
+  private static boolean changed(final Match.Both<EntityId, IdentificationDemographic> both) {
+    EntityId existing = both.left();
+    IdentificationDemographic demographic = both.right();
+
+    return !(Objects.equals(existing.asOf(), demographic.asOf())
+        && Objects.equals(existing.type(), demographic.type())
+        && Objects.equals(existing.issuer(), demographic.issuer())
+        && Objects.equals(existing.value(), demographic.value())
+    );
   }
 
   private final ChangeResolver<EntityId, IdentificationDemographic, Long> resolver = ChangeResolver
@@ -43,6 +53,7 @@ class PatientIdentificationEditService {
         .forEach(patient::add);
 
     changes.altered()
+        .filter(PatientIdentificationEditService::changed)
         .map(match -> asUpdateIdentification(patient.id(), context, match.right()))
         .forEach(patient::update);
 

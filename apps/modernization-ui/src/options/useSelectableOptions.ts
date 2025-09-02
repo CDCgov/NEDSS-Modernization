@@ -1,17 +1,27 @@
 import { useCallback, useEffect, useReducer } from 'react';
-import { SelectableResolver, findByValue } from './findByValue';
 import { Selectable } from './selectable';
 
-type State<C> = { status: 'idle' | 'loading'; criteria?: C } | { status: 'loaded'; options: Selectable[] };
+type State<C> =
+    | { status: 'idle' | 'loading'; criteria?: C }
+    | { status: 'loaded'; criteria?: C; options: Selectable[] };
 
-type Action<C> = { type: 'reset' } | { type: 'load'; criteria?: C } | { type: 'loaded'; options: Selectable[] };
+type Action<C> =
+    | { type: 'reset' }
+    | { type: 'load'; criteria?: C }
+    | { type: 'loaded'; criteria?: C; options: Selectable[] };
 
-const reducer = <C>(_state: State<C>, action: Action<C>): State<C> => {
+const reducer = <C>(current: State<C>, action: Action<C>): State<C> => {
     switch (action.type) {
         case 'load':
             return { status: 'loading', criteria: action.criteria };
         case 'loaded':
-            return { status: 'loaded', options: action.options };
+            if (current.status === 'loading' && current.criteria === action.criteria) {
+                // the options for the current criteria have been loaded, update the state
+                return { status: 'loaded', options: action.options, criteria: action.criteria };
+            } else {
+                // ignore loaded action for previous criteria
+                return current;
+            }
         default:
             return { status: 'idle' };
     }
@@ -20,7 +30,6 @@ const reducer = <C>(_state: State<C>, action: Action<C>): State<C> => {
 type SelectableOptionsInteraction<C> = {
     load: (criteria?: C) => void;
     options: Selectable[];
-    resolve: SelectableResolver;
 };
 
 type SelectableOptionsSettings<C> = {
@@ -44,18 +53,18 @@ const useSelectableOptions = <V = undefined>({
 
     useEffect(() => {
         if (state.status === 'loading') {
-            resolver(state.criteria).then((resolved) => dispatch({ type: 'loaded', options: resolved }));
+            resolver(state.criteria).then((resolved) =>
+                dispatch({ type: 'loaded', criteria: state.criteria, options: resolved })
+            );
         }
-    }, [state.status]);
+    }, [state.status, state.criteria]);
 
     const options = state.status === 'loaded' ? state.options : [];
     const load = useCallback((criteria?: V) => dispatch({ type: 'load', criteria }), [dispatch]);
-    const resolve = findByValue(options);
 
     return {
         options,
-        load,
-        resolve
+        load
     };
 };
 

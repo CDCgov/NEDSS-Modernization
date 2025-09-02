@@ -53,7 +53,7 @@ class PostalEntityLocatorParticipationTest {
     assertThat(address)
         .isInstanceOf(PostalEntityLocatorParticipation.class)
         .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
-        .returns(5331L, p -> p.getId().getLocatorUid())
+        .returns(5331L, p -> p.identifier().getLocatorUid())
         .extracting(EntityLocatorParticipation::recordStatus)
         .satisfies(RecordStatusAssertions.inactive("2021-05-24T11:01:17"))
     ;

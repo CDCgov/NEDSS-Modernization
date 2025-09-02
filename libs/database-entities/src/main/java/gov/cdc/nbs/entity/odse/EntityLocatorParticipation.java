@@ -6,22 +6,17 @@ import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientEntityLocatorHistoryListener;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-@AllArgsConstructor
-@Getter
-@Setter
+
 @Entity
 @Table(name = "Entity_locator_participation")
 @SuppressWarnings(
-    //  The PatientEntityLocatorHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
+    //  Bidirectional mappings require knowledge of each other
+    "javaarchitecture:S7027"
 )
 @EntityListeners(PatientEntityLocatorHistoryListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -45,7 +40,7 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
   private NBSEntity nbsEntity;
 
   @Column(name = "cd", length = 50)
-  protected String cd;
+  protected String type;
 
   @Column(name = "cd_desc_txt", length = 100)
   private String cdDescTxt;
@@ -60,13 +55,13 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
   private LocalDate fromTime;
 
   @Column(name = "locator_desc_txt", length = 2000)
-  protected String locatorDescTxt;
+  protected String comment;
 
   @Column(name = "to_time")
   private LocalDate toTime;
 
   @Column(name = "use_cd", length = 20)
-  protected String useCd;
+  protected String use;
 
   @Column(name = "user_affiliation_txt", length = 20)
   private String userAffiliationTxt;
@@ -79,7 +74,7 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
   private short versionCtrlNbr;
 
   @Column(name = "as_of_date")
-  protected LocalDate asOfDate;
+  protected LocalDate asOf;
 
   @Embedded
   private Audit audit;
@@ -111,12 +106,22 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
     return this.id;
   }
 
-  public abstract Locator getLocator();
+  public abstract Locator locator();
 
-  public abstract String getClassCd();
+  public LocalDate asOf() {
+    return this.asOf;
+  }
+
+  public String type() {
+    return this.type;
+  }
 
   public String use() {
-    return useCd;
+    return use;
+  }
+
+  public String comments() {
+    return this.comment;
   }
 
   public Audit audit() {
