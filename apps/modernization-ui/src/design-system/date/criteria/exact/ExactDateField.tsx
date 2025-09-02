@@ -9,7 +9,7 @@ import styles from './exact-date-field.module.scss';
 
 type Field = keyof DateEntry;
 
-const next = (field: Field, value: number | undefined) =>
+const next = (field: Field, value: number | undefined | null) =>
     value !== undefined ? withProperty<DateEntry, number>(field, value) : withoutProperty<DateEntry>(field);
 
 type ExactDateFieldProps = {
@@ -28,7 +28,7 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
     }, [value]);
 
     const handleFieldOnChange = useCallback(
-        (field: Field) => (value: number | undefined) => {
+        (field: Field) => (value: number | undefined | null) => {
             const equals = next(field, value)(criteria);
 
             if (equals) {

@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 
 type RaceOptions = {
     categories: Selectable[];
-    selected: (category?: Selectable) => void;
+    selected: (category?: Selectable | null) => void;
     details: Selectable[];
 };
 
@@ -13,7 +13,7 @@ const useRaceOptions = (): RaceOptions => {
 
     const { options: details, load } = useDetailedRaceOptions();
 
-    const selected = useCallback((category?: Selectable) => load(category?.value), [load]);
+    const selected = useCallback((category?: Selectable | null) => load(category?.value), [load]);
 
     return {
         categories,

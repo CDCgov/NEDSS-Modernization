@@ -5,31 +5,16 @@ import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientIdentificationHistoryListener;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
-import lombok.Getter;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.function.Predicate;
 
 
-@Getter
 @Entity
 @Table(name = "Entity_id")
-@SuppressWarnings(
-    //  The PatientIdentificationHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
-)
 @EntityListeners(PatientIdentificationHistoryListener.class)
-public class EntityId {
+public class EntityId implements Identifiable<EntityIdId> {
 
   public static Predicate<EntityId> active() {
     return input -> input.recordStatus.isActive();
@@ -49,7 +34,7 @@ public class EntityId {
 
   @Column(name = "assigning_authority_cd", length = 199)
   private String assigningAuthorityCd;
-  
+
   @Column(name = "root_extension_txt", length = 100)
   private String rootExtensionTxt;
 
@@ -104,6 +89,27 @@ public class EntityId {
     this.recordStatus.inactivate(deleted.requestedOn());
 
     this.audit.changed(deleted.requester(), deleted.requestedOn());
+  }
+
+  @Override
+  public EntityIdId identifier() {
+    return this.id;
+  }
+
+  public LocalDate asOf() {
+    return asOfDate;
+  }
+
+  public String type() {
+    return typeCd;
+  }
+
+  public String issuer() {
+    return assigningAuthorityCd;
+  }
+
+  public String value() {
+    return rootExtensionTxt;
   }
 
   public Audit audit() {

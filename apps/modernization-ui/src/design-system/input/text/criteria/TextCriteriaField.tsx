@@ -61,7 +61,7 @@ export const TextCriteriaField = ({
     const effectiveOperator = operatorValue.operator || operator;
 
     const onSelectionChange = useCallback(
-        (selectedOperation?: Selectable) => {
+        (selectedOperation: Selectable | null) => {
             const criteriaValue = asTextCriteriaOrString(
                 operatorValue.value,
                 selectedOperation?.value as TextOperation

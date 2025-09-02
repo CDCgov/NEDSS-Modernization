@@ -2,11 +2,7 @@ import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 
-type RaceDemographic = EffectiveDated & {
-    id: number;
-    race: Selectable;
-    detailed: Array<Selectable>;
-};
+type RaceDemographic = EffectiveDated & { id: number; race: Selectable | null; detailed: Selectable[] };
 
 type HasRaceDemographics = {
     races?: RaceDemographic[];
@@ -14,10 +10,10 @@ type HasRaceDemographics = {
 
 export type { RaceDemographic, HasRaceDemographics };
 
-const initial = (asOf: Supplier<string>): Partial<RaceDemographic> => ({
+const initial = (asOf: Supplier<string>): RaceDemographic => ({
     id: new Date().getTime(),
     asOf: asOf(),
-    race: undefined,
+    race: null,
     detailed: []
 });
 

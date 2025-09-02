@@ -23,7 +23,7 @@ jest.mock('options/location', () => ({
 const Fixture = () => {
     const form = useForm<HasMortalityDemographic>({
         mode: 'onBlur',
-        defaultValues: { mortality: initial() }
+        defaultValues: { mortality: initial(() => '06/25/2001') }
     });
 
     const options = useMortalityOptions();

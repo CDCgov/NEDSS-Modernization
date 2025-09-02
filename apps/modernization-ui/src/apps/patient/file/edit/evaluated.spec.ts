@@ -14,13 +14,17 @@ describe('when evaluating PatientDemographicEntry', () => {
     it('should initialize administrative when not present', () => {
         const actual = evaluateAdministrative(undefined);
 
-        expect(actual).toEqual(expect.objectContaining({ administrative: { asOf: '09/17/2013' } }));
+        expect(actual).toEqual(
+            expect.objectContaining({ administrative: expect.objectContaining({ asOf: '09/17/2013' }) })
+        );
     });
 
     it('should use values from administrative', () => {
         const actual = evaluateAdministrative({ asOf: '11/19/2023' });
 
-        expect(actual).toEqual(expect.objectContaining({ administrative: { asOf: '11/19/2023' } }));
+        expect(actual).toEqual(
+            expect.objectContaining({ administrative: expect.objectContaining({ asOf: '11/19/2023' }) })
+        );
     });
 
     it('should initialize ethnicity when not present', () => {

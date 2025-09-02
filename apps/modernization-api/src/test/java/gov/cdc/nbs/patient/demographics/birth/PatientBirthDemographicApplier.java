@@ -111,6 +111,17 @@ class PatientBirthDemographicApplier {
       final String state,
       final String country
   ) {
+    withBirthLocation(identifier, LocalDate.now(), city, county, state, country);
+  }
+
+  void withBirthLocation(
+      final PatientIdentifier identifier,
+      final LocalDate asOf,
+      final String city,
+      final String county,
+      final String state,
+      final String country
+  ) {
 
     long locator = this.addressIdentifierGenerator.generate();
     client.sql(
@@ -135,6 +146,8 @@ class PatientBirthDemographicApplier {
                       last_chg_time,
                       record_status_cd,
                       record_status_time,
+                      status_cd,
+                      status_time,
                       as_of_date,
                       use_cd,
                       class_cd
@@ -146,7 +159,9 @@ class PatientBirthDemographicApplier {
                       getDate(),
                       'ACTIVE',
                       getDate(),
+                      'A',
                       getDate(),
+                      :asOf,
                       'BIR',
                       'PST'
                   );
@@ -197,6 +212,7 @@ class PatientBirthDemographicApplier {
                 """
         )
         .param("patient", identifier.id())
+        .param("asOf", asOf)
         .param("locator", locator)
         .param("city", city)
         .param("county", county)
