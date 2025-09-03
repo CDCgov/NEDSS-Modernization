@@ -3,8 +3,8 @@ package gov.cdc.nbs.patient;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
-import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.demographics.identification.PatientIdentificationDemographicApplier;
+import gov.cdc.nbs.patient.demographics.name.PatientNameDemographicApplier;
 import gov.cdc.nbs.patient.demographics.phone.PatientEmailDemographicApplier;
 import gov.cdc.nbs.patient.demographics.phone.PatientPhoneDemographicApplier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -169,7 +169,7 @@ public class PatientMother {
   private final PatientEmailDemographicApplier emailDemographicApplier;
   private final PatientPhoneDemographicApplier phoneDemographicApplier;
   private final PatientIdentificationDemographicApplier identificationDemographicApplier;
-  private final SoundexResolver soundexResolver;
+  private final PatientNameDemographicApplier nameDemographicApplier;
 
   PatientMother(
       final MotherSettings settings,
@@ -184,7 +184,7 @@ public class PatientMother {
       final PatientEmailDemographicApplier emailDemographicApplier,
       final PatientPhoneDemographicApplier phoneDemographicApplier,
       final PatientIdentificationDemographicApplier identificationDemographicApplier,
-      final SoundexResolver soundexResolver
+      final PatientNameDemographicApplier nameDemographicApplier
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
@@ -198,7 +198,7 @@ public class PatientMother {
     this.emailDemographicApplier = emailDemographicApplier;
     this.phoneDemographicApplier = phoneDemographicApplier;
     this.identificationDemographicApplier = identificationDemographicApplier;
-    this.soundexResolver = soundexResolver;
+    this.nameDemographicApplier = nameDemographicApplier;
     this.faker = new Faker(Locale.of("en-us"));
 
     this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
@@ -380,71 +380,16 @@ public class PatientMother {
   }
 
   public void withName(final PatientIdentifier identifier) {
-    withName(
-        identifier,
-        RandomUtil.dateInPast(),
-        "L",
-        faker.name().firstName(),
-        faker.name().firstName(),
-        faker.name().lastName(),
-        null);
+    this.nameDemographicApplier.withName(identifier);
   }
 
   public void withName(
       final PatientIdentifier identifier,
       final String type,
       final String first,
-      final String last) {
-    withName(
-        identifier,
-        RandomUtil.dateInPast(),
-        type,
-        first,
-        last);
-  }
-
-  public void withName(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String type,
-      final String first,
-      final String last) {
-    withName(
-        identifier,
-        asOf,
-        type,
-        first,
-        null,
-        last,
-        null);
-  }
-
-  public void withName(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String type,
-      final String first,
-      final String middle,
-      final String last,
-      final String suffix) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        this.soundexResolver,
-        new PatientCommand.AddName(
-            identifier.id(),
-            asOf,
-            null,
-            first,
-            middle,
-            null,
-            last,
-            null,
-            suffix,
-            null,
-            type,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+      final String last
+  ) {
+    this.nameDemographicApplier.withName(identifier, type, first, last);
   }
 
   public void withPhone(final PatientIdentifier identifier) {
