@@ -1,8 +1,7 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
+import gov.cdc.nbs.patient.demographics.address.PatientAddressDemographicApplier;
 import gov.cdc.nbs.patient.demographics.identification.PatientIdentificationDemographicApplier;
 import gov.cdc.nbs.patient.demographics.name.PatientNameDemographicApplier;
 import gov.cdc.nbs.patient.demographics.phone.PatientEmailDemographicApplier;
@@ -17,15 +16,12 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import jakarta.persistence.EntityManager;
-import net.datafaker.Faker;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Locale;
 
 @Component
 @ScenarioScope
@@ -155,13 +151,10 @@ public class PatientMother {
       delete from entity where [class_cd] = 'PSN' and entity_uid in (:identifiers);
       """;
 
-  private final Faker faker;
   private final MotherSettings settings;
   private final SequentialIdentityGenerator idGenerator;
   private final PatientLocalIdentifierGenerator localIdentifierGenerator;
-  private final AddressIdentifierGenerator addressIdentifierGenerator;
   private final PatientShortIdentifierResolver shortIdentifierResolver;
-  private final EntityManager entityManager;
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
   private final TestingDataCleaner<Long> cleaner;
@@ -170,28 +163,26 @@ public class PatientMother {
   private final PatientPhoneDemographicApplier phoneDemographicApplier;
   private final PatientIdentificationDemographicApplier identificationDemographicApplier;
   private final PatientNameDemographicApplier nameDemographicApplier;
+  private final PatientAddressDemographicApplier addressDemographicApplier;
 
   PatientMother(
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator,
       final PatientLocalIdentifierGenerator localIdentifierGenerator,
-      final AddressIdentifierGenerator addressIdentifierGenerator,
       final PatientShortIdentifierResolver shortIdentifierResolver,
-      final EntityManager entityManager,
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final JdbcClient client,
       final PatientEmailDemographicApplier emailDemographicApplier,
       final PatientPhoneDemographicApplier phoneDemographicApplier,
       final PatientIdentificationDemographicApplier identificationDemographicApplier,
-      final PatientNameDemographicApplier nameDemographicApplier
+      final PatientNameDemographicApplier nameDemographicApplier,
+      final PatientAddressDemographicApplier addressDemographicApplier
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.localIdentifierGenerator = localIdentifierGenerator;
-    this.addressIdentifierGenerator = addressIdentifierGenerator;
     this.shortIdentifierResolver = shortIdentifierResolver;
-    this.entityManager = entityManager;
     this.available = available;
     this.active = active;
     this.client = client;
@@ -199,7 +190,7 @@ public class PatientMother {
     this.phoneDemographicApplier = phoneDemographicApplier;
     this.identificationDemographicApplier = identificationDemographicApplier;
     this.nameDemographicApplier = nameDemographicApplier;
-    this.faker = new Faker(Locale.of("en-us"));
+    this.addressDemographicApplier = addressDemographicApplier;
 
     this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
   }
@@ -241,10 +232,6 @@ public class PatientMother {
     return new PatientIdentifier(identifier, shortId, local);
   }
 
-  private Person managed(final PatientIdentifier identifier) {
-    return this.entityManager.find(Person.class, identifier.id());
-  }
-
   public void deleted(final PatientIdentifier identifier) {
     withStatus(identifier, "LOG_DEL", LocalDateTime.now());
   }
@@ -265,115 +252,22 @@ public class PatientMother {
         .update();
   }
 
-  public void withAddress(
-      final PatientIdentifier identifier,
-      final String address,
-      final String city,
-      final String county,
-      final String state,
-      final String zip) {
-    withAddress(identifier, "H", address, city, county, state, zip);
-  }
-
-  public void withAddress(
-      final PatientIdentifier identifier,
-      final String use,
-      final String address,
-      final String city,
-      final String county,
-      final String state,
-      final String zip) {
-    withAddress(identifier, "H", use, address, city, county, state, zip);
-  }
-
-  public void withAddress(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String address,
-      final String city,
-      final String county,
-      final String state,
-      final String zip,
-      final LocalDate asOf) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddAddress(
-            patient.id(),
-            asOf,
-            type,
-            use,
-            address,
-            null,
-            city,
-            state,
-            zip,
-            county,
-            "840",
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        addressIdentifierGenerator
-    );
-  }
-
-  public void withAddress(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String address,
-      final String city,
-      final String county,
-      final String state,
-      final String zip) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddAddress(
-            patient.id(),
-            RandomUtil.dateInPast(),
-            type,
-            use,
-            address,
-            null,
-            city,
-            state,
-            zip,
-            county,
-            "840",
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        addressIdentifierGenerator
-    );
-  }
-
   public void withAddress(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddAddress(
-            patient.id(),
-            RandomUtil.dateInPast(),
-            faker.address().streetAddress(),
-            null,
-            faker.address().city(),
-            RandomUtil.getRandomStateCode(),
-            faker.address().zipCode(),
-            null,
-            RandomUtil.country(),
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        addressIdentifierGenerator
-    );
+    addressDemographicApplier.withAddress(identifier);
   }
+
+  public void withAddress(
+      final PatientIdentifier identifier,
+      final String address,
+      final String city,
+      final String county,
+      final String state,
+      final String zip
+  ) {
+    addressDemographicApplier.withAddress(identifier, "H", address, city, county, state, zip);
+  }
+
+
 
   public void withIdentification(final PatientIdentifier identifier) {
     identificationDemographicApplier.withIdentification(identifier);
