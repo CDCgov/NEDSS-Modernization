@@ -49,7 +49,7 @@ class TeleEntityLocatorParticipationTest {
         .satisfies(AuditAssertions.changed(293L, "2023-03-10T10:15:30"));
 
     assertThat(participation)
-        .returns(5347L, p -> p.getId().getLocatorUid())
+        .returns(5347L, p -> p.identifier().getLocatorUid())
         .extracting(EntityLocatorParticipation::recordStatus)
         .satisfies(RecordStatusAssertions.inactive("2023-03-10T10:15:30"))
 

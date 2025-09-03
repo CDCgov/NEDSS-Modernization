@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import {
@@ -14,6 +14,7 @@ import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { SingleSelect } from 'design-system/select';
 import { AddressOptions } from './useAddressOptions';
 import { AddressDemographic, labels } from '../address';
+import { Selectable } from 'options';
 
 type AddressDemographicFieldsProps = { options: AddressOptions; entry?: AddressDemographic } & EntryFieldsProps;
 
@@ -25,15 +26,16 @@ const AddressDemographicFields = ({
 }: AddressDemographicFieldsProps) => {
     const { control, setValue } = useFormContext<AddressDemographic>();
 
-    const selectedState = useWatch({ control, name: 'state', defaultValue: entry?.state });
-
     useEffect(() => {
-        if (selectedState?.value !== entry?.state?.value) {
-            //  when the category differs from the entry, clear the details
-            setValue('county', undefined);
-        }
-        options.location.state(selectedState);
-    }, [selectedState?.value, options.location.state]);
+        // on form initialization, load counties for selected state
+        options.location.state(entry?.state);
+    }, [entry?.state]);
+
+    const handleStateChange = (state: Selectable | null) => {
+        // when user selects a different state, clear selected county and load new county list
+        setValue('county', null);
+        options.location.state(state);
+    };
 
     return (
         <>
@@ -161,7 +163,10 @@ const AddressDemographicFields = ({
                         label={labels.state}
                         orientation={orientation}
                         value={value}
-                        onChange={onChange}
+                        onChange={(v) => {
+                            handleStateChange(v);
+                            onChange(v);
+                        }}
                         onBlur={onBlur}
                         id={name}
                         name={name}

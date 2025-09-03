@@ -6,7 +6,7 @@ type Patient = {
     id: number;
     patientId: number;
     local: string;
-    status: string;
+    status: 'ACTIVE' | 'INACTIVE' | 'SUPERSEDED';
     deletability: Deletability;
     sex?: string;
     birthday?: string;

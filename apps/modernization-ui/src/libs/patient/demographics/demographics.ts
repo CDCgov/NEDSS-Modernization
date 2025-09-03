@@ -35,15 +35,13 @@ type PatientDemographicsDefaults = {
 export type { PatientDemographicsEntry, PatientDemographicsDefaults };
 
 const initial = (defaults: PatientDemographicsDefaults): PatientDemographicsEntry => {
-    const asOf = defaults.asOf();
-
     return {
         pending: [],
-        administrative: initialAdministrative(asOf),
-        ethnicity: initialEthnicity(asOf),
-        sexBirth: initialSexBirth(asOf),
-        mortality: initialMortality(asOf),
-        general: initialGeneral(asOf),
+        administrative: initialAdministrative(defaults.asOf),
+        ethnicity: initialEthnicity(defaults.asOf),
+        sexBirth: initialSexBirth(defaults.asOf),
+        mortality: initialMortality(defaults.asOf),
+        general: initialGeneral(defaults.asOf),
         names: [],
         addresses: [],
         phoneEmails: [],

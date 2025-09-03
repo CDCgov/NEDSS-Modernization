@@ -3,11 +3,11 @@ import { defaultTo } from 'libs/supplying';
 
 const orElseToday = defaultTo(today);
 
-type AgeResolver = (birthday?: string) => string | undefined;
+type AgeResolver = (birthday?: string | null) => string | undefined;
 
 const asOfAgeResolver =
-    (asOf?: string): AgeResolver =>
-    (birthday?: string) => {
+    (asOf?: string | null): AgeResolver =>
+    (birthday?: string | null) => {
         if (birthday) {
             return displayAgeAsOf(birthday, orElseToday(asOf));
         }

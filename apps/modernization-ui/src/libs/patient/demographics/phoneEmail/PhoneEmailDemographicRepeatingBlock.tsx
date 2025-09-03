@@ -21,7 +21,7 @@ const columns: Column<PhoneEmailDemographic>[] = [
         name: 'Type',
         className: styles.typeWidth,
         sortable: true,
-        value: (v) => `${v.type.name} / ${v.use.name}`
+        value: (v) => `${v.type?.name} / ${v.use?.name}`
     },
     {
         id: 'phone-email-number',

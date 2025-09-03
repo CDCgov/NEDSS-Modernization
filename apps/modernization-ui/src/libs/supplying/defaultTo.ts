@@ -2,7 +2,7 @@ import { Supplier } from './supplier';
 
 const defaultTo =
     <T>(fallback: T | Supplier<T>) =>
-    (value?: T) => {
+    (value?: T | null) => {
         if (value) {
             return value;
         }

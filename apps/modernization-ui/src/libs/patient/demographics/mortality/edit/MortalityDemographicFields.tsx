@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
-import { isEqual } from 'options';
+import { isEqual, Selectable } from 'options';
 import { indicators } from 'options/indicator';
 import { Shown } from 'conditional-render';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
@@ -9,34 +9,38 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { TextInputField } from 'design-system/input';
 import { MoralityOptions } from './useMortalityOptions';
-import { HasMortalityDemographic, labels } from '../mortality';
+import { HasMortalityDemographic, labels, MortalityDemographic } from '../mortality';
 
 const isDeceased = isEqual(indicators.yes);
 
 type MortalityDemographicFieldsProps = {
     form: UseFormReturn<HasMortalityDemographic>;
     options: MoralityOptions;
+    entry?: MortalityDemographic;
 } & EntryFieldsProps;
 
 const MortalityDemographicFields = ({
     orientation = 'horizontal',
     sizing = 'medium',
     form,
-    options
+    options,
+    entry
 }: MortalityDemographicFieldsProps) => {
-    const selectedState = useWatch({ control: form.control, name: 'mortality.state' });
-
     const selectedDeceased = useWatch({
         control: form.control,
         name: 'mortality.deceased'
     });
 
     useEffect(() => {
-        if (!selectedState) {
-            form.setValue('mortality.county', undefined);
-        }
-        options.location.state(selectedState);
-    }, [selectedState?.value, options.location.state, form.setValue]);
+        // load counties for initial state
+        options.location.state(entry?.state);
+    }, [entry?.state]);
+
+    const handleStateChange = (state: Selectable | null) => {
+        // when user selects a different state, clear selected county and load new county list
+        form.setValue('mortality.county', null);
+        options.location.state(state);
+    };
 
     return (
         <>
@@ -123,7 +127,10 @@ const MortalityDemographicFields = ({
                             label={labels.state}
                             orientation={orientation}
                             value={value}
-                            onChange={onChange}
+                            onChange={(v) => {
+                                handleStateChange(v);
+                                onChange(v);
+                            }}
                             onBlur={onBlur}
                             id={name}
                             name={name}

@@ -26,7 +26,7 @@ const columns: Column<AddressDemographic>[] = [
         name: labels.type,
         className: styles.typeWidth,
         sortable: true,
-        value: (v) => `${v.type.name} / ${v.use.name}`
+        value: (v) => `${v.type?.name} / ${v.use?.name}`
     },
     {
         id: 'address-address',

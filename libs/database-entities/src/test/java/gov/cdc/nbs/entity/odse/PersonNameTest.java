@@ -49,7 +49,7 @@ class PersonNameTest {
 
     assertThat(name)
         .satisfies(
-            removed -> assertThat(removed.getAudit())
+            removed -> assertThat(removed.audit())
                 .describedAs("expected name audit state")
                 .satisfies(
                     audit -> assertThat(audit.changed())
@@ -63,7 +63,7 @@ class PersonNameTest {
                 .returns("INACTIVE", s -> s.recordStatus().status())
                 .returns(LocalDateTime.parse("2020-03-03T10:15:30"), s -> s.recordStatus().appliedOn())
         )
-        .extracting(PersonName::getId)
+        .extracting(PersonName::identifier)
         .returns(117L, PersonNameId::getPersonUid)
         .returns((short) 2, PersonNameId::getPersonNameSeq)
     ;
@@ -94,8 +94,8 @@ class PersonNameTest {
     );
 
     assertThat(actual)
-        .returns("First", PersonName::getFirstNm)
-        .returns("First_encoded", PersonName::getFirstNameSoundex);
+        .returns("First", PersonName::first)
+        .returns("First_encoded", PersonName::firstSoundex);
   }
 
   @Test
@@ -123,8 +123,8 @@ class PersonNameTest {
     );
 
     assertThat(actual)
-        .returns("Last", PersonName::getLastNm)
-        .returns("Last_encoded", PersonName::getLastNameSoundex);
+        .returns("Last", PersonName::last)
+        .returns("Last_encoded", PersonName::lastSoundex);
   }
 
   @Test
@@ -156,8 +156,8 @@ class PersonNameTest {
     );
 
     assertThat(actual)
-        .returns("Second-Last", PersonName::getLastNm2)
-        .returns("Second-Last_encoded", PersonName::getSecondLastNameSoundex);
+        .returns("Second-Last", PersonName::secondLast)
+        .returns("Second-Last_encoded", PersonName::secondLastSoundex);
   }
 
   @Test
@@ -203,8 +203,8 @@ class PersonNameTest {
     );
 
     assertThat(actual)
-        .returns("update_first_name", PersonName::getFirstNm)
-        .returns("update_first_name_encoded", PersonName::getFirstNameSoundex);
+        .returns("update_first_name", PersonName::first)
+        .returns("update_first_name_encoded", PersonName::firstSoundex);
   }
 
   @Test
@@ -250,8 +250,8 @@ class PersonNameTest {
     );
 
     assertThat(actual)
-        .returns("update_last_name", PersonName::getLastNm)
-        .returns("update_last_name_encoded", PersonName::getLastNameSoundex);
+        .returns("update_last_name", PersonName::last)
+        .returns("update_last_name_encoded", PersonName::lastSoundex);
   }
 
   @Test
@@ -297,7 +297,7 @@ class PersonNameTest {
     );
 
     assertThat(actual)
-        .returns("update_second_last_name", PersonName::getLastNm2)
-        .returns("update_second_last_name_encoded", PersonName::getSecondLastNameSoundex);
+        .returns("update_second_last_name", PersonName::secondLast)
+        .returns("update_second_last_name_encoded", PersonName::secondLastSoundex);
   }
 }

@@ -10,6 +10,7 @@ type EditMortalityDemographicCardProps = {
 
 const EditMortalityDemographicCard = ({
     form,
+    entry,
     title = 'Mortality',
     sizing,
     orientation = 'horizontal',
@@ -19,7 +20,13 @@ const EditMortalityDemographicCard = ({
 
     return (
         <Card title={title} info={<Required />} {...remaining}>
-            <MortalityDemographicFields form={form} sizing={sizing} orientation={orientation} options={options} />
+            <MortalityDemographicFields
+                form={form}
+                sizing={sizing}
+                orientation={orientation}
+                options={options}
+                entry={entry}
+            />
         </Card>
     );
 };

@@ -131,7 +131,7 @@ const ReadyPatientFileEdit = ({ patient, entry }: ReadyPatientFileEditProps) => 
                 pending={pending}
                 defaults={defaults}
                 form={form}
-                // entry={entry}
+                entry={entry}
                 sizing={sizing}
                 className={styles.demographics}
             />

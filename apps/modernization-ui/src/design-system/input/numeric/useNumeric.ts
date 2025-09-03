@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 
-type NumericValue = number | undefined;
+type NumericValue = number | undefined | null;
 type State = { value?: NumericValue };
 type Action = { type: 'initialize'; value: NumericValue } | { type: 'change'; value: number } | { type: 'clear' };
 
