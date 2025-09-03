@@ -4,12 +4,12 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
+import gov.cdc.nbs.patient.demographics.identification.PatientIdentificationDemographicApplier;
 import gov.cdc.nbs.patient.demographics.phone.PatientEmailDemographicApplier;
 import gov.cdc.nbs.patient.demographics.phone.PatientPhoneDemographicApplier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
-import gov.cdc.nbs.support.IdentificationMother;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
@@ -168,6 +168,7 @@ public class PatientMother {
   private final JdbcClient client;
   private final PatientEmailDemographicApplier emailDemographicApplier;
   private final PatientPhoneDemographicApplier phoneDemographicApplier;
+  private final PatientIdentificationDemographicApplier identificationDemographicApplier;
   private final SoundexResolver soundexResolver;
 
   PatientMother(
@@ -182,6 +183,7 @@ public class PatientMother {
       final JdbcClient client,
       final PatientEmailDemographicApplier emailDemographicApplier,
       final PatientPhoneDemographicApplier phoneDemographicApplier,
+      final PatientIdentificationDemographicApplier identificationDemographicApplier,
       final SoundexResolver soundexResolver
   ) {
     this.settings = settings;
@@ -195,6 +197,7 @@ public class PatientMother {
     this.client = client;
     this.emailDemographicApplier = emailDemographicApplier;
     this.phoneDemographicApplier = phoneDemographicApplier;
+    this.identificationDemographicApplier = identificationDemographicApplier;
     this.soundexResolver = soundexResolver;
     this.faker = new Faker(Locale.of("en-us"));
 
@@ -373,41 +376,7 @@ public class PatientMother {
   }
 
   public void withIdentification(final PatientIdentifier identifier) {
-    withIdentification(
-        identifier,
-        RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
-        RandomUtil.getRandomNumericString(8));
-  }
-
-  public void withIdentification(
-      final PatientIdentifier identifier,
-      final String type,
-      final String value) {
-
-    withIdentification(
-        identifier,
-        type,
-        value,
-        RandomUtil.dateInPast());
-
-  }
-
-  public void withIdentification(
-      final PatientIdentifier identifier,
-      final String type,
-      final String value,
-      final LocalDate asOf) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddIdentification(
-            identifier.id(),
-            asOf,
-            value,
-            RandomUtil.maybeOneFrom("GA"),
-            type,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+    identificationDemographicApplier.withIdentification(identifier);
   }
 
   public void withName(final PatientIdentifier identifier) {
