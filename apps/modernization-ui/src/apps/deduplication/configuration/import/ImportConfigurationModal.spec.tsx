@@ -4,8 +4,8 @@ import { BlockingAttribute, MatchingAttribute, MatchMethod } from 'apps/deduplic
 import { ImportConfigurationModal } from './ImportConfigurationModal';
 import { AlgorithmExport } from 'apps/deduplication/api/model/AlgorithmExport';
 
-const onImport = jest.fn();
-const onCancel = jest.fn();
+const onImport = vi.fn();
+const onCancel = vi.fn();
 
 // mock file.text()
 File.prototype.text = function () {

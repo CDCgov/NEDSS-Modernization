@@ -1,0 +1,63 @@
+import { vi } from 'vitest';
+import '@testing-library/jest-dom/vitest';
+import * as matchers from 'vitest-axe/matchers';
+
+expect.extend(matchers);
+
+// All tests will create dates in the EST Timezone. UTC-5 or UTC-4 during DST
+// eslint-disable-next-line no-undef
+process.env.TZ = 'America/New_York';
+
+// Provide a minimal jest mock for compatibility with most common usages
+// Only assign the functions that are actually used in your codebase
+globalThis.jest = {
+    fn: vi.fn,
+    mock: vi.mock,
+    clearAllMocks: vi.clearAllMocks,
+    restoreAllMocks: vi.restoreAllMocks,
+    resetAllMocks: vi.resetAllMocks,
+    spyOn: vi.spyOn,
+    clearAllTimers: vi.clearAllTimers,
+    useFakeTimers: vi.useFakeTimers,
+    advanceTimersByTime: vi.advanceTimersByTime
+    // Add more mappings if needed
+} as any;
+
+// Global fetch mock to prevent live network calls in all tests
+globalThis.fetch = vi.fn(() =>
+    Promise.resolve({
+        ok: true,
+        status: 200,
+        json: async () => ({}),
+        text: async () => ''
+        // Add more methods if needed
+    } as unknown as Response)
+);
+// Mock the global Request object for unit tests
+type MockRequestInit = {
+    method?: string;
+    headers?: any;
+    body?: any;
+    credentials?: string;
+};
+
+class MockRequest {
+    url: string;
+    options: MockRequestInit;
+    constructor(url: string, options?: MockRequestInit) {
+        this.url = url;
+        this.options = options || {};
+    }
+}
+
+globalThis.Request = MockRequest as any;
+
+globalThis.ResizeObserver = class {
+    private callback: (...args: any[]) => void;
+    constructor(callback: (...args: any[]) => void) {
+        this.callback = callback;
+    }
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+};
