@@ -623,38 +623,29 @@ public class PatientMother {
 
 
   public void withBirthInformation(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
 
-    patient.update(
-        new PatientCommand.UpdateBirth(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            RandomUtil.dateInPast(),
-            RandomUtil.maybeGender(),
-            RandomUtil.maybeIndicator(),
-            null,
-            null,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()),
-        this.addressIdentifierGenerator);
+    client.sql("""
+            update Person set
+                              as_of_date_sex = :asOf,
+                              birth_time = :birthday,
+                              birth_gender_cd = :gender,
+                              multiple_birth_ind = :multiple
+                          where person_uid = :patient
+            """)
+        .param("patient", identifier.id())
+        .param("asOf",  RandomUtil.dateInPast())
+        .param("birthday",  RandomUtil.dateInPast())
+        .param("gender", RandomUtil.maybeGender())
+        .param("multiple", RandomUtil.maybeIndicator())
+        .update();
   }
 
   public void withGender(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.update(
-        new PatientCommand.UpdateGender(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            RandomUtil.gender().value(),
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+    client.sql("update Person set as_of_date_sex = :asOf, curr_sex_cd = :gender where person_uid = :patient")
+        .param("patient", identifier.id())
+        .param("asOf",  RandomUtil.dateInPast())
+        .param("gender", RandomUtil.gender())
+        .update();
   }
 
   public void withLocalId(final PatientIdentifier patient, final String localId) {
