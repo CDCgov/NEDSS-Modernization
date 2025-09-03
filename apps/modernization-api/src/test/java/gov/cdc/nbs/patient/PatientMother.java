@@ -1,11 +1,11 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.data.LimitString;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
-import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
+import gov.cdc.nbs.patient.demographics.phone.PatientEmailDemographicApplier;
+import gov.cdc.nbs.patient.demographics.phone.PatientPhoneDemographicApplier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
@@ -160,13 +160,14 @@ public class PatientMother {
   private final SequentialIdentityGenerator idGenerator;
   private final PatientLocalIdentifierGenerator localIdentifierGenerator;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
-  private final PhoneIdentifierGenerator phoneIdentifierGenerator;
   private final PatientShortIdentifierResolver shortIdentifierResolver;
   private final EntityManager entityManager;
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
   private final TestingDataCleaner<Long> cleaner;
   private final JdbcClient client;
+  private final PatientEmailDemographicApplier emailDemographicApplier;
+  private final PatientPhoneDemographicApplier phoneDemographicApplier;
   private final SoundexResolver soundexResolver;
 
   PatientMother(
@@ -174,24 +175,26 @@ public class PatientMother {
       final SequentialIdentityGenerator idGenerator,
       final PatientLocalIdentifierGenerator localIdentifierGenerator,
       final AddressIdentifierGenerator addressIdentifierGenerator,
-      final PhoneIdentifierGenerator phoneIdentifierGenerator,
       final PatientShortIdentifierResolver shortIdentifierResolver,
       final EntityManager entityManager,
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final JdbcClient client,
+      final PatientEmailDemographicApplier emailDemographicApplier,
+      final PatientPhoneDemographicApplier phoneDemographicApplier,
       final SoundexResolver soundexResolver
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.localIdentifierGenerator = localIdentifierGenerator;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
-    this.phoneIdentifierGenerator = phoneIdentifierGenerator;
     this.shortIdentifierResolver = shortIdentifierResolver;
     this.entityManager = entityManager;
     this.available = available;
     this.active = active;
     this.client = client;
+    this.emailDemographicApplier = emailDemographicApplier;
+    this.phoneDemographicApplier = phoneDemographicApplier;
     this.soundexResolver = soundexResolver;
     this.faker = new Faker(Locale.of("en-us"));
 
@@ -476,30 +479,13 @@ public class PatientMother {
   }
 
   public void withPhone(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddPhone(
-            identifier.id(),
-            RandomUtil.oneFrom("AN", "BP", "CP", "FAX", "PH"),
-            RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
-            RandomUtil.dateInPast(),
-            RandomUtil.getRandomString(15),
-            faker.phoneNumber().cellPhone(),
-            faker.phoneNumber().extension(),
-            null,
-            null,
-            RandomUtil.getRandomString(),
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        phoneIdentifierGenerator
-    );
+    phoneDemographicApplier.withPhone(identifier);
   }
 
   public void withPhone(
       final PatientIdentifier identifier,
-      final String number) {
+      final String number
+  ) {
     withPhone(identifier, null, number, null);
   }
 
@@ -507,120 +493,23 @@ public class PatientMother {
       final PatientIdentifier identifier,
       final String countryCode,
       final String number,
-      final String extension) {
-    withPhone(identifier, "PH", "H", countryCode, number, extension);
-  }
-
-  public void withPhone(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String countryCode,
-      final String number,
-      final String extension) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddPhone(
-            identifier.id(),
-            type,
-            use,
-            RandomUtil.dateInPast(),
-            countryCode,
-            number,
-            extension,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        phoneIdentifierGenerator
-    );
-  }
-
-  public void withPhone(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String countryCode,
-      final String number,
-      final String extension,
-      final LocalDate date) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddPhone(
-            identifier.id(),
-            type,
-            use,
-            date,
-            countryCode,
-            number,
-            extension,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        phoneIdentifierGenerator
-    );
+      final String extension
+  ) {
+    phoneDemographicApplier.withPhone(identifier, "PH", "H", countryCode, number, extension, RandomUtil.dateInPast());
   }
 
   public void withEmail(final PatientIdentifier identifier) {
-    withEmail(identifier, LimitString.toMaxLength(faker.internet().emailAddress(), 100));
+    emailDemographicApplier.withEmail(identifier);
   }
 
   public void withEmail(final PatientIdentifier identifier, final String email) {
-    withEmail(
+    emailDemographicApplier.withEmail(
         identifier,
         "NET",
         RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
         email,
         RandomUtil.dateInPast());
   }
-
-  public void withEmail(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String email,
-      final LocalDate asOf) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddPhone(
-            identifier.id(),
-            type,
-            use,
-            asOf,
-            null,
-            null,
-            null,
-            email,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        phoneIdentifierGenerator
-    );
-  }
-
-  public void withEmail(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String email) {
-    withEmail(
-        identifier,
-        type,
-        use,
-        email,
-        RandomUtil.dateInPast());
-  }
-
 
   public void withBirthInformation(final PatientIdentifier identifier) {
 
@@ -633,8 +522,8 @@ public class PatientMother {
                           where person_uid = :patient
             """)
         .param("patient", identifier.id())
-        .param("asOf",  RandomUtil.dateInPast())
-        .param("birthday",  RandomUtil.dateInPast())
+        .param("asOf", RandomUtil.dateInPast())
+        .param("birthday", RandomUtil.dateInPast())
         .param("gender", RandomUtil.maybeGender())
         .param("multiple", RandomUtil.maybeIndicator())
         .update();
@@ -643,7 +532,7 @@ public class PatientMother {
   public void withGender(final PatientIdentifier identifier) {
     client.sql("update Person set as_of_date_sex = :asOf, curr_sex_cd = :gender where person_uid = :patient")
         .param("patient", identifier.id())
-        .param("asOf",  RandomUtil.dateInPast())
+        .param("asOf", RandomUtil.dateInPast())
         .param("gender", RandomUtil.gender())
         .update();
   }
