@@ -1,51 +1,7 @@
 @use 'styles/colors';
 
 $arrowWidth: 0.5rem;
-$arrowBuffer: calc(0.5rem + #{$arrowWidth});
-$bubbleWidth: calc($arrowWidth + 100%);
-
-@mixin bubble($position, $offset: 'none') {
-    @if $position == 'top' or $position == 'bottom' {
-        #{$position}: $bubbleWidth;
-
-        @if $offset == 'left' {
-            left: 100%;
-            transform: translateX(-100%);
-        } @else if $offset == 'right' {
-            left: 25%;
-            transform: translateX(-10%);
-        } @else if $offset == 'center' {
-            left: 50%;
-            transform: translateX(-50%);
-        } @else {
-            right: 50%;
-            transform: translateX(50%);
-        }
-    } @else {
-        // left / right
-        #{$position}: calc(1rem + 100%);
-        transform: translateY(50%);
-        bottom: 50%;
-    }
-}
-
-@mixin vertical-arrow {
-    border-right-width: $arrowWidth;
-    border-right-color: colors.$clear;
-    border-left-width: $arrowWidth;
-    border-left-color: colors.$clear;
-    right: 50%;
-    transform: translateX(50%);
-}
-
-@mixin horizontal-arrow {
-    border-top-width: $arrowWidth;
-    border-top-color: colors.$clear;
-    border-bottom-width: $arrowWidth;
-    border-bottom-color: colors.$clear;
-    bottom: 50%;
-    transform: translateY(50%);
-}
+$bubbleOffset: 0.5rem;
 
 @mixin tooltip($messageProperty: 'aria-label') {
     position: relative;
@@ -59,10 +15,9 @@ $bubbleWidth: calc($arrowWidth + 100%);
         background: colors.$base-darkest;
         padding: 0.5rem;
         border-radius: 0.25rem;
-
         font-weight: normal;
         font-size: 0.875rem;
-        line-height: 1.2;
+        line-height: 1.3;
     }
 
     &::after {
@@ -85,91 +40,134 @@ $bubbleWidth: calc($arrowWidth + 100%);
         transition-delay: 0s;
     }
 
-    &[data-tooltip-position='bottom'] {
-        &:not([data-tooltip-offset])::before {
-            @include bubble(top);
+    // --- POSITIONS ---
+    &[data-tooltip-position='top'] {
+        // Default 'center' offset
+        &:not([data-tooltip-offset])::before,
+        &[data-tooltip-offset='center']::before {
+            bottom: calc(100% + #{$bubbleOffset});
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        &:not([data-tooltip-offset])::after,
+        &[data-tooltip-offset='center']::after {
+            border-right: $arrowWidth solid transparent;
+            border-left: $arrowWidth solid transparent;
+            border-top: $arrowWidth solid colors.$base-darkest;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
+        // Left offset: arrow is on the right of the bubble
         &[data-tooltip-offset='left'] {
             &::before {
-                @include bubble(top, left);
+                bottom: calc(100% + #{$bubbleOffset});
+                right: 0;
+            }
+            &::after {
+                border-right: $arrowWidth solid transparent;
+                border-left: $arrowWidth solid transparent;
+                border-top: $arrowWidth solid colors.$base-darkest;
+                bottom: 100%;
+                right: $arrowWidth;
             }
         }
 
+        // Right offset: arrow is on the left of the bubble
         &[data-tooltip-offset='right'] {
             &::before {
-                @include bubble(top, right);
+                bottom: calc(100% + #{$bubbleOffset});
+                left: 0;
+            }
+            &::after {
+                border-right: $arrowWidth solid transparent;
+                border-left: $arrowWidth solid transparent;
+                border-top: $arrowWidth solid colors.$base-darkest;
+                bottom: 100%;
+                left: $arrowWidth;
             }
         }
+    }
 
-        &[data-tooltip-offset='center'] {
-            &::before {
-                @include bubble(top, center);
-            }
+    &[data-tooltip-position='bottom'] {
+        // Default (center) and 'center' offset logic
+        &:not([data-tooltip-offset])::before,
+        &[data-tooltip-offset='center']::before {
+            top: calc(100% + #{$bubbleOffset});
+            left: 50%;
+            transform: translateX(-50%);
         }
-
-        &::after {
-            border-bottom-width: $arrowWidth;
+        &:not([data-tooltip-offset])::after,
+        &[data-tooltip-offset='center']::after {
+            border-right: $arrowWidth solid transparent;
+            border-left: $arrowWidth solid transparent;
+            border-bottom: $arrowWidth solid colors.$base-darkest;
             top: 100%;
-            transform: translateY(calc(-1 * #{$arrowWidth}));
-            @include vertical-arrow();
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        // Left offset
+        &[data-tooltip-offset='left'] {
+            &::before {
+                top: calc(100% + #{$bubbleOffset});
+                right: 0;
+            }
+            &::after {
+                border-right: $arrowWidth solid transparent;
+                border-left: $arrowWidth solid transparent;
+                border-bottom: $arrowWidth solid colors.$base-darkest;
+                top: 100%;
+                right: $arrowWidth;
+            }
+        }
+
+        // Right offset
+        &[data-tooltip-offset='right'] {
+            &::before {
+                top: calc(100% + #{$bubbleOffset});
+                left: 0;
+            }
+            &::after {
+                border-right: $arrowWidth solid transparent;
+                border-left: $arrowWidth solid transparent;
+                border-bottom: $arrowWidth solid colors.$base-darkest;
+                top: 100%;
+                left: $arrowWidth;
+            }
         }
     }
 
     &[data-tooltip-position='left'] {
         &::before {
-            @include bubble(right);
+            right: calc(100% + #{$bubbleOffset});
+            top: 50%;
+            transform: translateY(-50%);
         }
-
         &::after {
-            border-left-width: $arrowWidth;
+            border-top: $arrowWidth solid transparent;
+            border-bottom: $arrowWidth solid transparent;
+            border-left: $arrowWidth solid colors.$base-darkest;
             right: 100%;
-            transform: translateX(calc(-1 * #{$arrowWidth}));
-            @include horizontal-arrow();
+            top: 50%;
+            transform: translateY(-50%);
         }
     }
 
     &[data-tooltip-position='right'] {
         &::before {
-            @include bubble(left);
+            left: calc(100% + #{$bubbleOffset});
+            top: 50%;
+            transform: translateY(-50%);
         }
-
         &::after {
-            border-right-width: $arrowWidth;
+            border-top: $arrowWidth solid transparent;
+            border-bottom: $arrowWidth solid transparent;
+            border-right: $arrowWidth solid colors.$base-darkest;
             left: 100%;
-            transform: translateX(calc(-1 * #{$arrowWidth}));
-            @include horizontal-arrow();
-        }
-    }
-
-    &[data-tooltip-position='top'] {
-        &:not([data-tooltip-offset])::before {
-            @include bubble(bottom);
-        }
-
-        &[data-tooltip-offset='left'] {
-            &::before {
-                @include bubble(bottom, left);
-            }
-        }
-
-        &[data-tooltip-offset='right'] {
-            &::before {
-                @include bubble(bottom, right);
-            }
-        }
-
-        &[data-tooltip-offset='center'] {
-            &::before {
-                @include bubble(bottom, center);
-            }
-        }
-
-        &::after {
-            border-top-width: $arrowWidth;
-            bottom: 100%;
-            transform: translateY(calc(-1 * #{$arrowWidth}));
-            @include vertical-arrow();
+            top: 50%;
+            transform: translateY(-50%);
         }
     }
 }
