@@ -3,39 +3,23 @@ import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
 import { AddressRepeatingBlock } from './AddressRepeatingBlock';
 import { AddressEntry } from 'apps/patient/data';
+import { LocationOptions } from 'options/location';
 
-// const mockLocationCodedValues = {
-//     states: {
-//         all: [{ name: 'StateName', value: '1' }]
-//     },
-//     counties: {
-//         byState: (state: string) => [{ name: 'CountyName', value: '2' }]
-//     },
-//     countries: [{ name: 'CountryName', value: '3' }]
-// };
+const mockState = vi.fn();
 
-// vi.mock('location/useLocationCodedValues', () => ({
-//     useLocationCodedValues: () => mockLocationCodedValues
-// }));
-vi.mock('options/concepts', () => ({
-    useConceptOptions: () => ({ options: [] })
-}));
+const mockLocationOptions: LocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: mockState
+};
 
 vi.mock('options/location', () => ({
-    useCountyOptions: () => [{ name: 'CountyName', value: '2' }],
-    useCountryOptions: () => [{ name: 'CountryName', value: '3' }],
-    useStateOptions: () => [{ name: 'StateName', value: '1' }]
+    useLocationOptions: () => mockLocationOptions
 }));
 
-vi.mock('apps/patient/add/data/address/useAddressCodedValues', () => ({
-    useAddressCodedValues: () => ({
-        types: [{ name: 'House', value: 'H' }],
-        uses: [{ name: 'Home', value: 'HM' }]
-    })
-}));
-
-const onChange = jest.fn();
-const isDirty = jest.fn();
+const onChange = vi.fn();
+const isDirty = vi.fn();
 
 type FixtureProps = {
     values?: AddressEntry[];

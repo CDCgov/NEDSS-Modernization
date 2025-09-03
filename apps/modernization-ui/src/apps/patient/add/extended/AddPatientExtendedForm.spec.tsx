@@ -7,41 +7,18 @@ import { internalizeDate } from 'date';
 import { ValidationErrors } from './useAddExtendedPatientInteraction';
 import { Selectable } from 'options';
 
-vi.mock('options/concepts', () => ({
-    useConceptOptions: () => ({ options: [] })
-}));
-
-const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
-
-const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
-
-const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+const mockLocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: vi.fn()
+};
 
 vi.mock('options/location', () => ({
-    useCountyOptions: () => mockCountyCodedValues,
-    useCountryOptions: () => mockCountryCodedValues,
-    useStateOptions: () => mockStateCodedValues
+    useLocationOptions: () => mockLocationOptions
 }));
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
-const mockLocationCodedValues = {
-    states: {
-        all: [{ name: 'StateName', value: '1' }]
-    },
-    counties: {
-        byState: () => [{ name: 'CountyName', value: '2' }]
-    },
-    countries: [{ name: 'CountryName', value: '3' }]
-};
-
-vi.mock('location/useLocationCodedValues', () => ({
-    useLocationCodedValues: () => mockLocationCodedValues
-}));
-const mockPatientPhoneCodedValues = {
-    types: [{ name: 'Phone', value: 'PH' }],
-    uses: [{ name: 'Home', value: 'H' }]
-};
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 const mockRaceCategories: Selectable[] = [{ value: '1', name: 'race name' }];
 
@@ -120,7 +97,7 @@ describe('AddPatientExtendedForm', () => {
     });
 
     it('should set default date for as of fields', () => {
-        const { getByLabelText, getByRole } = render(<Fixture asOf="05/07/1977" />);
+        const { getByLabelText } = render(<Fixture asOf="05/07/1977" />);
 
         //  The Repeating block as of dates are being initialized to today's date within the component.
         const expected = internalizeDate(new Date());

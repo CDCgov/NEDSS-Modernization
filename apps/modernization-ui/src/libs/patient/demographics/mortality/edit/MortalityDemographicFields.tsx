@@ -1,45 +1,46 @@
 import { useEffect } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
+import { isEqual, Selectable } from 'options';
+import { indicators } from 'options/indicator';
+import { Shown } from 'conditional-render';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { TextInputField } from 'design-system/input';
-import { Shown } from 'conditional-render';
-import { isEqual } from 'options';
-import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
-import { HasMortalityDemographic, labels } from '../mortality';
 import { MoralityOptions } from './useMortalityOptions';
+import { HasMortalityDemographic, labels, MortalityDemographic } from '../mortality';
+
+const isDeceased = isEqual(indicators.yes);
 
 type MortalityDemographicFieldsProps = {
     form: UseFormReturn<HasMortalityDemographic>;
     options: MoralityOptions;
+    entry?: MortalityDemographic;
 } & EntryFieldsProps;
 
 const MortalityDemographicFields = ({
     orientation = 'horizontal',
     sizing = 'medium',
     form,
-    options
+    options,
+    entry
 }: MortalityDemographicFieldsProps) => {
-    const selectedState = useWatch({ control: form.control, name: 'mortality.state' });
-    const selectedDeceased = useWatch({ control: form.control, name: 'mortality.deceased' });
-
-    const isDeceased = isEqual(options.deceased.yes);
-
-    const countries = useCountryOptions();
-    const states = useStateOptions();
-    const counties = useCountyOptions(selectedState?.value);
+    const selectedDeceased = useWatch({
+        control: form.control,
+        name: 'mortality.deceased'
+    });
 
     useEffect(() => {
-        if (isDeceased(selectedDeceased)) {
-            form.resetField('mortality.deceasedOn');
-            form.resetField('mortality.state');
-            form.resetField('mortality.city');
-            form.resetField('mortality.county');
-            form.resetField('mortality.country');
-        }
-    }, [selectedDeceased?.value]);
+        // load counties for initial state
+        options.location.state(entry?.state);
+    }, [entry?.state]);
+
+    const handleStateChange = (state: Selectable | null) => {
+        // when user selects a different state, clear selected county and load new county list
+        form.setValue('mortality.county', null);
+        options.location.state(state);
+    };
 
     return (
         <>
@@ -126,11 +127,14 @@ const MortalityDemographicFields = ({
                             label={labels.state}
                             orientation={orientation}
                             value={value}
-                            onChange={onChange}
+                            onChange={(v) => {
+                                handleStateChange(v);
+                                onChange(v);
+                            }}
                             onBlur={onBlur}
                             id={name}
                             name={name}
-                            options={states}
+                            options={options.location.states}
                             sizing={sizing}
                         />
                     )}
@@ -148,7 +152,7 @@ const MortalityDemographicFields = ({
                             onBlur={onBlur}
                             id={name}
                             name={name}
-                            options={counties}
+                            options={options.location.counties}
                             sizing={sizing}
                         />
                     )}
@@ -167,7 +171,7 @@ const MortalityDemographicFields = ({
                             onBlur={onBlur}
                             id={name}
                             name={name}
-                            options={countries}
+                            options={options.location.countries}
                             sizing={sizing}
                         />
                     )}
@@ -177,4 +181,4 @@ const MortalityDemographicFields = ({
     );
 };
 
-export { MortalityDemographicFields };
+export { MortalityDemographicFields, type MortalityDemographicFieldsProps };

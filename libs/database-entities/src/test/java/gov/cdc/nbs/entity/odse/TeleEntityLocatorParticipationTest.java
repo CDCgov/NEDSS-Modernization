@@ -16,8 +16,8 @@ class TeleEntityLocatorParticipationTest {
     Person patient = new Person(117L, "local-id-value");
 
     TeleEntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
-        patient.getNbsEntity(),
-        new EntityLocatorParticipationId(patient.getId(), 5347L),
+        patient.entity(),
+        new EntityLocatorParticipationId(patient.id(), 5347L),
         new PatientCommand.AddPhone(
             117L,
             "type-value",
@@ -49,7 +49,7 @@ class TeleEntityLocatorParticipationTest {
         .satisfies(AuditAssertions.changed(293L, "2023-03-10T10:15:30"));
 
     assertThat(participation)
-        .returns(5347L, p -> p.getId().getLocatorUid())
+        .returns(5347L, p -> p.identifier().getLocatorUid())
         .extracting(EntityLocatorParticipation::recordStatus)
         .satisfies(RecordStatusAssertions.inactive("2023-03-10T10:15:30"))
 

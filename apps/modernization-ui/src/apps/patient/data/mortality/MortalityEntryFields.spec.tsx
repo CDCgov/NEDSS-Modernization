@@ -5,16 +5,15 @@ import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
 import { MortalityEntryFields } from './MortalityEntryFields';
 import { internalizeDate } from 'date';
 
-const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
-
-const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
-
-const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+const mockLocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: vi.fn()
+};
 
 vi.mock('options/location', () => ({
-    useCountyOptions: () => mockCountyCodedValues,
-    useCountryOptions: () => mockCountryCodedValues,
-    useStateOptions: () => mockStateCodedValues
+    useLocationOptions: () => mockLocationOptions
 }));
 
 const Fixture = () => {

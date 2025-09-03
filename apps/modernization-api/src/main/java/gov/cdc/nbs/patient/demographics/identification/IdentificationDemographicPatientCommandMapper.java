@@ -42,9 +42,10 @@ public class IdentificationDemographicPatientCommandMapper {
       final EntityId existing) {
     return new PatientCommand.DeleteIdentification(
         patient,
-        existing.getId().getEntityIdSeq(),
+        existing.identifier().getEntityIdSeq(),
         context.requestedBy(),
-        context.requestedAt());
+        context.requestedAt()
+    );
   }
 
   private IdentificationDemographicPatientCommandMapper() {

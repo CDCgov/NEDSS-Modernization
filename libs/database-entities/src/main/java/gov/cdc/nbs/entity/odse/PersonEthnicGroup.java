@@ -4,16 +4,7 @@ import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientEthnicityHistoryListener;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +14,12 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "Person_ethnic_group")
-@SuppressWarnings(
-    //  The PatientEthnicityHistoryListener is an entity listener specifically for instances of this class
-    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
-)
 @EntityListeners(PatientEthnicityHistoryListener.class)
-public class PersonEthnicGroup {
+@SuppressWarnings(
+    //  Bidirectional mappings require knowledge of each other
+    "javaarchitecture:S7027"
+)
+public class PersonEthnicGroup implements Identifiable<PersonEthnicGroupId> {
   @EmbeddedId
   private PersonEthnicGroupId id;
 
@@ -57,7 +48,7 @@ public class PersonEthnicGroup {
       final Person person,
       final PatientCommand.AddDetailedEthnicity added) {
     this.id = new PersonEthnicGroupId(
-        person.getId(),
+        person.id(),
         added.ethnicity());
 
     this.personUid = person;
@@ -65,6 +56,11 @@ public class PersonEthnicGroup {
 
     this.recordStatus = new RecordStatus(added.requestedOn());
     this.audit = new Audit(added.requester(), added.requestedOn());
+  }
+
+  @Override
+  public PersonEthnicGroupId identifier() {
+    return this.id;
   }
 
   public RecordStatus recordStatus() {

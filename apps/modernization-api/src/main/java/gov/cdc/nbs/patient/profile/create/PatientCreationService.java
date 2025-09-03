@@ -147,6 +147,6 @@ class PatientCreationService {
   }
 
   private CreatedPatient.Name asName(final PersonName name) {
-    return new CreatedPatient.Name(name.getFirstNm(), name.getLastNm());
+    return new CreatedPatient.Name(name.first(), name.last());
   }
 }

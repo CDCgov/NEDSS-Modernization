@@ -5,11 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "Tele_locator")
 public class TeleLocator extends Locator {
@@ -57,6 +53,30 @@ public class TeleLocator extends Locator {
     this.urlAddress = phone.url();
 
     changed(phone);
+  }
+
+  public Long identifier() {
+    return id;
+  }
+
+  public String countryCode() {
+    return cntryCd;
+  }
+
+  public String email() {
+    return emailAddress;
+  }
+
+  public String extension() {
+    return extensionTxt;
+  }
+
+  public String phoneNumber() {
+    return phoneNbrTxt;
+  }
+
+  public String url() {
+    return urlAddress;
   }
 
   @Override

@@ -3,7 +3,7 @@ import { ValueField, ValueFieldProps } from 'design-system/field';
 import { isAllowed, Sensitive } from './sensitive';
 
 type SensitiveValueFieldProps = {
-    children?: Sensitive<ReactNode>;
+    children?: Sensitive<ReactNode> | null;
 } & Omit<ValueFieldProps, 'children'>;
 
 const SensitiveValueField = ({ children, ...remaining }: SensitiveValueFieldProps) => {

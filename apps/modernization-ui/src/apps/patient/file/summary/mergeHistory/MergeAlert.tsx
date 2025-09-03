@@ -1,14 +1,26 @@
 import { AlertMessage } from 'design-system/message';
 import { useNavigate } from 'react-router';
 import { permissions, Permitted } from 'libs/permission';
+import { FeatureToggle } from 'feature';
+import { usePatientMergeQueueStatus } from './api/usePatientMergeQueueStatus';
 
 type MergeAlertProps = {
-    mergeGroup: number | null;
-    patientId: string;
+    patientId: string | number;
 };
 
-export const MergeAlert = ({ mergeGroup, patientId }: MergeAlertProps) => {
+export const MergeAlert = ({ patientId }: MergeAlertProps) => {
+    return (
+        <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
+            <MergeAlertContent patientId={patientId} />
+        </FeatureToggle>
+    );
+};
+
+const MergeAlertContent = ({ patientId }: MergeAlertProps) => {
     const nav = useNavigate();
+    const { inMergeQueue, mergeGroup, loading } = usePatientMergeQueueStatus(patientId);
+
+    if (loading || !inMergeQueue) return null;
 
     return (
         <Permitted permission={permissions.patient.merge}>

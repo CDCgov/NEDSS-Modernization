@@ -1,14 +1,16 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import classNames from 'classnames';
 import { findByValue, Selectable } from 'options';
 import { Sizing } from 'design-system/field';
+
+const hashed = (options: Selectable[]) => options.reduce((previous, next) => previous + next.value, '');
 
 type SelectProps = {
     id: string;
     className?: string;
     options: Selectable[];
     value?: Selectable | null;
-    onChange?: (value?: Selectable) => void;
+    onChange?: (value: Selectable | null) => void;
     placeholder?: string;
     sizing?: Sizing;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'value'>;
@@ -37,14 +39,13 @@ const Select = ({
     placeholder = '- Select -',
     ...inputProps
 }: SelectProps) => {
-    const find = findByValue(options);
-
-    const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        if (onChange) {
-            const selected = find(event.target.value);
-            onChange(selected);
-        }
-    };
+    const handleChange = useCallback(
+        (event: ChangeEvent<HTMLSelectElement>) => {
+            const selected = findByValue(options)(event.target.value) ?? null;
+            onChange?.(selected);
+        },
+        [hashed(options), onChange]
+    );
 
     return (
         <select

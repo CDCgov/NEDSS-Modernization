@@ -13,7 +13,8 @@ public class CountyAutocompleteSteps {
 
   CountyAutocompleteSteps(
       final AutocompleteRequester request,
-      final Active<ResultActions> response) {
+      final Active<ResultActions> response
+  ) {
     this.request = request;
     this.response = response;
   }
@@ -28,7 +29,8 @@ public class CountyAutocompleteSteps {
   public void i_am_trying_to_find_n_counties_for_state_that_start_with(
       final int limit,
       final String criteria,
-      final String state) throws Exception {
+      final String state
+  ) throws Exception {
     response.active(request.complete(NAME, criteria, state, limit));
   }
 

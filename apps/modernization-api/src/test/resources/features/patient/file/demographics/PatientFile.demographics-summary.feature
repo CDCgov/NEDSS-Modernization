@@ -19,7 +19,9 @@ Feature: Summarizing the demographics of a patient
     And the demographics summary of the patient does not contain any races
 
   Scenario: I can view the patient's most recent address in the summarized demographics
-    Given the patient has a House - Home address at "307 One Street" "Miami" "12345" as of 05/17/1999
+    Given the patient was born in the city of "Castle Rock" as of 04/15/2020
+    And the patient was born in the state of Maine
+    And the patient has a House - Home address at "307 One Street" "Miami" "12345" as of 05/17/1999
     And the patient has an Office - Primary Business address at "673 Work Blvd" "San Francisco" "92112" as of 04/15/2020
     And the patient has a House - Home address at "227 Electric Ave" "Derry" Maine 12345 as of 04/15/2020
     When I view the demographics summary of the patient

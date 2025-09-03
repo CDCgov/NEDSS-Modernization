@@ -16,10 +16,10 @@ class EntityIdTest {
   void should_inactive_an_identification_when_deleted() {
     Person patient = new Person(117L, "local-id-value");
 
-    EntityIdId identifier = new EntityIdId(patient.getId(), (short) 3);
+    EntityIdId identifier = new EntityIdId(patient.id(), (short) 3);
 
     EntityId identification = new EntityId(
-        patient.getNbsEntity(),
+        patient.entity(),
         identifier,
         new PatientCommand.AddIdentification(
             117L,
@@ -46,7 +46,7 @@ class EntityIdTest {
             .extracting(EntityId::recordStatus)
             .satisfies(RecordStatusAssertions.inactive("2020-03-13T13:15:30"))
         )
-        .extracting(EntityId::getAudit)
+        .extracting(EntityId::audit)
         .extracting(Audit::changed)
         .returns(191L, Changed::changedBy)
         .returns(LocalDateTime.parse("2020-03-13T13:15:30"), Changed::changedOn)

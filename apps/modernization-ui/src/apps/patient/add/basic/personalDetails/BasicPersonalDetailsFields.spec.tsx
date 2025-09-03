@@ -1,13 +1,11 @@
 import { vi } from 'vitest';
+import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SexBirthCodedValues } from 'apps/patient/data/sexAndBirth/useSexBirthCodedValues';
-import { FormProvider, useForm } from 'react-hook-form';
 import { BasicPersonalDetailsFields } from './BasicPersonalDetailsFields';
 import { BasicPersonalDetailsEntry } from '../entry';
-import { GeneralCodedValues } from 'apps/patient/data/general/useGeneralCodedValues';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
 let mockPermissions: string[] = [];
 
@@ -19,31 +17,8 @@ vi.mock('design-system/date/clock', () => ({
     now: () => mockNow()
 }));
 
-const mockPatientCodedValues: GeneralCodedValues = {
-    maritalStatuses: [{ name: 'Married', value: 'M' }],
-    primaryOccupations: [{ name: 'Tester', value: 'T' }],
-    educationLevels: [{ name: '1 or more years of college', value: '1' }],
-    primaryLanguages: [{ name: 'Welsh', value: 'W' }],
-    speaksEnglish: [{ name: 'Yes', value: 'Y' }]
-};
-
-vi.mock('apps/patient/data/general/useGeneralCodedValues', () => ({
-    useGeneralCodedValues: () => mockPatientCodedValues
-}));
-
-const mockSexBirthCodedValues: SexBirthCodedValues = {
-    genders: [
-        { name: 'Male', value: 'M' },
-        { name: 'Female', value: 'F' },
-        { name: 'Unknown', value: 'U' }
-    ],
-    preferredGenders: [{ name: 'FTM', value: 'FTM' }],
-    genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
-    multipleBirth: [{ name: 'Yes', value: 'Y' }]
-};
-
-vi.mock('apps/patient/data/sexAndBirth/useSexBirthCodedValues', () => ({
-    useSexBirthCodedValues: () => mockSexBirthCodedValues
+vi.mock('options/concepts', () => ({
+    useConceptOptions: () => ({ options: [{ name: 'Married', value: 'M' }] })
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {

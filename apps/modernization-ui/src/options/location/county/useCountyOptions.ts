@@ -1,26 +1,13 @@
-import { CountyOptionsService } from 'generated';
 import { Selectable } from 'options/selectable';
-import { useSelectableOptions } from 'options/useSelectableOptions';
-import { useEffect } from 'react';
+import { selectableResolver } from 'options/selectableResolver';
+import { SelectableOptionsInteraction, useSelectableOptions } from 'options/useSelectableOptions';
 
-const resolver = (state?: string | null) => () => {
-    return state
-        ? CountyOptionsService.countyAutocomplete({
-              criteria: '',
-              state,
-              limit: 100000
-          })
-        : Promise.resolve([]);
+const resolver = (state?: string | null) => {
+    return state ? selectableResolver(`/nbs/api/options/counties/${state}`) : Promise.resolve<Selectable[]>([]);
 };
 
-const useCountyOptions = (state?: string | null): Selectable[] => {
-    const { options, load } = useSelectableOptions({ resolver: resolver(state), lazy: true });
-
-    useEffect(() => {
-        load();
-    }, [state, load]);
-
-    return options;
+const useCountyOptions = (): SelectableOptionsInteraction<string> => {
+    return useSelectableOptions({ resolver, lazy: true });
 };
 
 export { useCountyOptions };

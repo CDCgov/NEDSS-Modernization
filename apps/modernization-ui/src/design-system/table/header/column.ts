@@ -7,7 +7,7 @@ type SortIconType = 'alpha' | 'numeric';
 type CellValue = string | number | boolean | Date;
 
 type HasRenderFunction<R> = { render: (value: R, index: number) => ReactNode | undefined };
-type HasValueFunction<R, C = CellValue> = { value: Mapping<R, C | undefined> };
+type HasValueFunction<R, C = CellValue> = { value: Mapping<R, C | null | undefined> };
 
 type Rendered<R, C = CellValue> =
     | HasRenderFunction<R>

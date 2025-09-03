@@ -58,7 +58,7 @@ public class PatientService {
     long after = patient.signature();
 
     if (before != after) {
-      this.historyCreator.snapshot(patient.getId());
+      this.historyCreator.snapshot(patient.id());
     }
   }
 

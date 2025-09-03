@@ -1,5 +1,5 @@
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { useCountryOptions, useCountyOptions, useStateOptions } from 'options/location';
+import { useEffect } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import {
@@ -14,21 +14,28 @@ import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { SingleSelect } from 'design-system/select';
 import { AddressOptions } from './useAddressOptions';
 import { AddressDemographic, labels } from '../address';
+import { Selectable } from 'options';
 
-type AddressDemographicFieldsProps = { options: AddressOptions } & EntryFieldsProps;
+type AddressDemographicFieldsProps = { options: AddressOptions; entry?: AddressDemographic } & EntryFieldsProps;
 
 const AddressDemographicFields = ({
     orientation = 'horizontal',
     sizing = 'medium',
-    options
+    options,
+    entry
 }: AddressDemographicFieldsProps) => {
-    const { control } = useFormContext<AddressDemographic>();
+    const { control, setValue } = useFormContext<AddressDemographic>();
 
-    const selectedState = useWatch({ control, name: 'state' });
+    useEffect(() => {
+        // on form initialization, load counties for selected state
+        options.location.state(entry?.state);
+    }, [entry?.state]);
 
-    const states = useStateOptions();
-    const county = useCountyOptions(selectedState?.name);
-    const country = useCountryOptions();
+    const handleStateChange = (state: Selectable | null) => {
+        // when user selects a different state, clear selected county and load new county list
+        setValue('county', null);
+        options.location.state(state);
+    };
 
     return (
         <>
@@ -156,11 +163,14 @@ const AddressDemographicFields = ({
                         label={labels.state}
                         orientation={orientation}
                         value={value}
-                        onChange={onChange}
+                        onChange={(v) => {
+                            handleStateChange(v);
+                            onChange(v);
+                        }}
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={states}
+                        options={options.location.states}
                         error={error?.message}
                         sizing={sizing}
                     />
@@ -195,7 +205,7 @@ const AddressDemographicFields = ({
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={county}
+                        options={options.location.counties}
                         sizing={sizing}
                     />
                 )}
@@ -228,7 +238,7 @@ const AddressDemographicFields = ({
                         onChange={onChange}
                         id={name}
                         name={name}
-                        options={country}
+                        options={options.location.countries}
                         sizing={sizing}
                     />
                 )}

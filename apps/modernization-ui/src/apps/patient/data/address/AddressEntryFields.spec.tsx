@@ -2,6 +2,7 @@ import { vi } from 'vitest';
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { render } from '@testing-library/react';
+import { LocationOptions } from 'options/location';
 import { AddressEntry } from './entry';
 import { AddressEntryFields } from './AddressEntryFields';
 import { AddressCodedValues } from './useAddressCodedValues';
@@ -15,16 +16,17 @@ vi.mock('./useAddressCodedValues', () => ({
     useAddressCodedValues: () => mockAddressCodedValues
 }));
 
-const mockStateCodedValues = [{ name: 'StateName', value: '1' }];
+const mockState = vi.fn();
 
-const mockCountryCodedValues = [{ name: 'CountryName', value: '3' }];
-
-const mockCountyCodedValues = [{ name: 'CountyName', value: '2' }];
+const mockLocationOptions: LocationOptions = {
+    states: [{ name: 'StateName', value: '1' }],
+    counties: [{ name: 'CountyName', value: '2' }],
+    countries: [{ name: 'CountryName', value: '3' }],
+    state: mockState
+};
 
 vi.mock('options/location', () => ({
-    useCountyOptions: () => mockCountyCodedValues,
-    useCountryOptions: () => mockCountryCodedValues,
-    useStateOptions: () => mockStateCodedValues
+    useLocationOptions: () => mockLocationOptions
 }));
 
 const Fixture = () => {
@@ -75,7 +77,10 @@ describe('when entering patient address demographics', () => {
 
         const dateInput = getByLabelText('Address as of');
 
-        expect(dateInput).toHaveAttribute('aria-description', 'This date defaults to today and can be changed if needed');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            'This date defaults to today and can be changed if needed'
+        );
     });
 
     it('should require type', async () => {

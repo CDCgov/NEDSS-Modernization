@@ -33,7 +33,7 @@ describe('when displaying the demographics summary of a patient', () => {
             id: 17,
             patientId: 397,
             local: 'local-id-value',
-            status: 'status value',
+            status: 'ACTIVE',
             deletability: 'Deletable'
         };
 
@@ -47,7 +47,7 @@ describe('when displaying the demographics summary of a patient', () => {
             id: 17,
             patientId: 397,
             local: 'local-id-value',
-            status: 'status value',
+            status: 'ACTIVE',
             deletability: 'Deletable',
             sex: 'gender-value'
         };
@@ -62,7 +62,7 @@ describe('when displaying the demographics summary of a patient', () => {
             id: 17,
             patientId: 397,
             local: 'local-id-value',
-            status: 'status value',
+            status: 'ACTIVE',
             deletability: 'Deletable'
         };
 
@@ -91,7 +91,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 id: 17,
                 patientId: 397,
                 local: 'local-id-value',
-                status: 'status value',
+                status: 'ACTIVE',
                 deletability: 'Deletable',
                 name: {
                     first: 'first-name-value',
@@ -115,7 +115,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 id: 17,
                 patientId: 397,
                 local: 'local-id-value',
-                status: 'status value',
+                status: 'ACTIVE',
                 deletability: 'Deletable',
                 name: {
                     first: 'first-name-value'
@@ -136,7 +136,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 id: 17,
                 patientId: 397,
                 local: 'local-id-value',
-                status: 'status value',
+                status: 'ACTIVE',
                 deletability: 'Deletable',
                 name: {
                     middle: 'middle-name-value'
@@ -157,7 +157,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 id: 17,
                 patientId: 397,
                 local: 'local-id-value',
-                status: 'status value',
+                status: 'ACTIVE',
                 deletability: 'Deletable',
                 name: {
                     last: 'last-name-value'
@@ -178,7 +178,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 id: 17,
                 patientId: 397,
                 local: 'local-id-value',
-                status: 'status value',
+                status: 'ACTIVE',
                 deletability: 'Deletable',
                 name: {
                     suffix: 'suffix-value'
@@ -203,7 +203,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 id: 17,
                 patientId: 397,
                 local: 'local-id-value',
-                status: 'status value',
+                status: 'ACTIVE',
                 deletability: 'Deletable',
                 birthday: '08/09/1979'
             };
@@ -220,7 +220,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 id: 17,
                 patientId: 397,
                 local: 'local-id-value',
-                status: 'status value',
+                status: 'ACTIVE',
                 deletability: 'Deletable',
                 birthday: '08/09/1979',
                 deceasedOn: '11/18/2010'

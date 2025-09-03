@@ -1,4 +1,5 @@
-import { AdministrativeInformation, PatientDemographics } from 'libs/patient/demographics';
+import { PatientDemographics, PatientDemographicsEntry } from 'libs/patient/demographics';
+import { AdministrativeInformation, initial as initialAdministrative } from 'libs/patient/demographics/administrative';
 import { EthnicityDemographic, initial as initialEthnicity } from 'libs/patient/demographics/ethnicity';
 import { MortalityDemographic, initial as initialMortality } from 'libs/patient/demographics/mortality';
 import { SexBirthDemographic, initial as initialSexBirth } from 'libs/patient/demographics/sex-birth';
@@ -7,6 +8,7 @@ import { PatientDemographicsData } from '../demographics';
 import { internalizeDate, today } from 'date';
 import { mapOr, Mapping, maybeMapAll } from 'utils/mapping';
 import { EffectiveDated } from 'utils';
+import { Supplier } from 'libs/supplying';
 
 const into =
     <P extends string, R, S>(property: P, mapping: Mapping<R, S>): Mapping<R, Record<P, S>> =>
@@ -33,20 +35,18 @@ const initial = () => ({
  * @param {PatientDemographicsData} data The demographics data for a patient.
  * @return {Promise} A Promise containing the `PatientDemographics`
  */
-const evaluated = (data: PatientDemographicsData): Promise<Required<PatientDemographics>> =>
+const evaluated = (data: PatientDemographicsData): Promise<PatientDemographicsEntry> =>
     Promise.all([
-        data.administrative.get().then(asAdministrative),
+        data.administrative.get().then(evaluateAdministrative),
         data.names.get().then(into('names', copyAll)),
         data.addresses.get().then(into('addresses', copyAll)),
         data.phoneEmail.get().then(into('phoneEmails', copyAll)),
         data.identifications.get().then(into('identifications', copyAll)),
         data.race.get().then(into('races', copyAll)),
-        data.ethnicity.get().then(into('ethnicity', mapOr(asEthnicity, initialEthnicity))),
-        data.sexBirth
-            .get()
-            .then((resolved) => into('sexBirth', mapOr(asSexBirth, initialSexBirth))(resolved.demographic)),
-        data.mortality.get().then(into('mortality', mapOr(asMortality, initialMortality))),
-        data.general.get().then(into('general', mapOr(asGeneralInformation, initialGeneral)))
+        data.ethnicity.get().then(evaluateEthnicity),
+        data.sexBirth.get().then((resolved) => evaluateSexBirth(resolved.demographic)),
+        data.mortality.get().then(evaluateMortality),
+        data.general.get().then(evaluateGeneralInformation)
     ]).then(
         (resolved) =>
             resolved.reduce((current, next) => ({ ...current, ...next }), initial()) as Required<PatientDemographics>
@@ -54,28 +54,46 @@ const evaluated = (data: PatientDemographicsData): Promise<Required<PatientDemog
 
 export { evaluated };
 
-const asAdministrative = (demographic: AdministrativeInformation) => ({
-    administrative: { ...demographic, asOf: orElseToday(demographic.asOf) }
-});
-
-const asEthnicity = (demographic: EthnicityDemographic) => ({
+const asAdministrative = (demographic: Partial<AdministrativeInformation>) => ({
     ...demographic,
     asOf: orElseToday(demographic.asOf)
 });
 
-const asSexBirth = (demographic: SexBirthDemographic) => ({
+const asOfToday =
+    <E extends EffectiveDated>(fn: (supplier: Supplier<string>) => E) =>
+    () =>
+        fn(today);
+
+const evaluateAdministrative = into('administrative', mapOr(asAdministrative, asOfToday(initialAdministrative)));
+
+const asEthnicity = (demographic: Partial<EthnicityDemographic>) => ({
+    ...demographic,
+    asOf: orElseToday(demographic.asOf)
+});
+
+const evaluateEthnicity = into('ethnicity', mapOr(asEthnicity, asOfToday(initialEthnicity)));
+
+const asSexBirth = (demographic: Partial<SexBirthDemographic>) => ({
     ...demographic,
     asOf: orElseToday(demographic.asOf),
     bornOn: internalizeDate(demographic.bornOn)
 });
 
-const asMortality = (demographic: MortalityDemographic) => ({
+const evaluateSexBirth = into('sexBirth', mapOr(asSexBirth, asOfToday(initialSexBirth)));
+
+const asMortality = (demographic: Partial<MortalityDemographic>) => ({
     ...demographic,
     asOf: orElseToday(demographic.asOf),
     deceasedOn: internalizeDate(demographic.deceasedOn)
 });
 
-const asGeneralInformation = (demographic: GeneralInformationDemographic) => ({
+const evaluateMortality = into('mortality', mapOr(asMortality, asOfToday(initialMortality)));
+
+const asGeneralInformation = (demographic: Partial<GeneralInformationDemographic>) => ({
     ...demographic,
     asOf: internalizeDate(demographic.asOf)
 });
+
+const evaluateGeneralInformation = into('general', mapOr(asGeneralInformation, asOfToday(initialGeneral)));
+
+export { evaluateAdministrative, evaluateEthnicity, evaluateSexBirth, evaluateMortality, evaluateGeneralInformation };

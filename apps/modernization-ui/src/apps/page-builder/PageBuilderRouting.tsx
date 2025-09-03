@@ -1,15 +1,5 @@
-import { FeatureGuard, FeatureLayout } from 'feature';
-import { PaginationProvider } from 'pagination';
+import { FeatureLayout } from 'feature';
 import { Navigate, RouteObject } from 'react-router';
-import { PageLibrary } from './page/library/PageLibrary';
-import { Edit } from './page/management/edit/Edit';
-import { PreviewPage } from './page/management/preview';
-import { PageDetails } from './page/management/preview/PageDetails/PageDetails';
-import { AddNewPage } from './pages/AddNewPage/AddNewPage';
-import { AddBusinessRule } from './pages/BusinessRulesLibrary/Add/AddBusinessRules';
-import { BusinessRulesLibrary } from './pages/BusinessRulesLibrary/BusinessRulesLibrary';
-import { EditBusinessRule } from './pages/BusinessRulesLibrary/Edit/EditBusinessRules';
-import { ViewBusinessRule } from './pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule';
 
 const routing: RouteObject[] = [
     {
@@ -24,20 +14,15 @@ const routing: RouteObject[] = [
                 children: [
                     {
                         index: true,
-                        element: (
-                            <FeatureGuard guard={(features) => features?.pageBuilder?.page?.library?.enabled}>
-                                <PageLibrary />
-                            </FeatureGuard>
-                        )
+                        lazy: {
+                            Component: async () => (await import('./page/library')).GuardedPageLibrary
+                        }
                     },
                     {
                         path: 'add',
-                        element: (
-                            <FeatureGuard
-                                guard={(features) => features?.pageBuilder?.page?.management?.create?.enabled}>
-                                <AddNewPage />
-                            </FeatureGuard>
-                        )
+                        lazy: {
+                            Component: async () => (await import('./pages/AddNewPage')).GuardedAddNewPage
+                        }
                     },
                     {
                         path: ':pageId',
@@ -49,38 +34,60 @@ const routing: RouteObject[] = [
                         children: [
                             {
                                 index: true,
-                                element: <PreviewPage />
+                                lazy: {
+                                    Component: async () => (await import('./page/management/preview')).PreviewPage
+                                }
                             },
                             {
                                 path: 'edit',
-                                element: <Edit />
+                                lazy: {
+                                    Component: async () => (await import('./page/management/edit/Edit')).Edit
+                                }
                             },
                             {
                                 path: 'details',
-                                element: <PageDetails />
+                                lazy: {
+                                    Component: async () =>
+                                        (await import('./page/management/preview/PageDetails/PageDetails')).PageDetails
+                                }
                             },
                             {
                                 path: 'business-rules',
                                 children: [
                                     {
                                         index: true,
-                                        element: (
-                                            <PaginationProvider>
-                                                <BusinessRulesLibrary />
-                                            </PaginationProvider>
-                                        )
+                                        lazy: {
+                                            Component: async () =>
+                                                (await import('./pages/BusinessRulesLibrary/BusinessRulesLibrary'))
+                                                    .BusinessRulesLibrary
+                                        }
                                     },
                                     {
                                         path: ':ruleId',
-                                        element: <ViewBusinessRule />
+                                        lazy: {
+                                            Component: async () =>
+                                                (
+                                                    await import(
+                                                        './pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule'
+                                                    )
+                                                ).ViewBusinessRule
+                                        }
                                     },
                                     {
                                         path: 'add',
-                                        element: <AddBusinessRule />
+                                        lazy: {
+                                            Component: async () =>
+                                                (await import('./pages/BusinessRulesLibrary/Add/AddBusinessRules'))
+                                                    .AddBusinessRule
+                                        }
                                     },
                                     {
                                         path: 'edit/:ruleId',
-                                        element: <EditBusinessRule />
+                                        lazy: {
+                                            Component: async () =>
+                                                (await import('./pages/BusinessRulesLibrary/Edit/EditBusinessRules'))
+                                                    .EditBusinessRule
+                                        }
                                     }
                                 ]
                             }

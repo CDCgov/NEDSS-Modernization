@@ -8,11 +8,15 @@ import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import org.springframework.stereotype.Component;
 
+import static gov.cdc.nbs.patient.demographics.administrative.AdministrativePatientCommandMapper.asClearAdministrativeInformation;
 import static gov.cdc.nbs.patient.demographics.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
+import static gov.cdc.nbs.patient.demographics.birth.BirthDemographicPatientCommandMapper.asClearBirthDemographics;
 import static gov.cdc.nbs.patient.demographics.birth.BirthDemographicPatientCommandMapper.asUpdateBirth;
+import static gov.cdc.nbs.patient.demographics.ethnicity.EthnicityPatientCommandMapper.asClearEthnicityDemographics;
+import static gov.cdc.nbs.patient.demographics.gender.GenderDemographicPatientCommandMapper.asClearGenderDemographics;
 import static gov.cdc.nbs.patient.demographics.gender.GenderDemographicPatientCommandMapper.asUpdateGender;
-import static gov.cdc.nbs.patient.demographics.general.GeneralInformationDemographicPatientCommandMapper.asUpdateGeneralInfo;
-import static gov.cdc.nbs.patient.demographics.general.GeneralInformationDemographicPatientCommandMapper.maybeAsAssociateStateHIVCase;
+import static gov.cdc.nbs.patient.demographics.general.GeneralInformationDemographicPatientCommandMapper.*;
+import static gov.cdc.nbs.patient.demographics.mortality.MortalityDemographicPatientCommandMapper.asClearMoralityDemographics;
 import static gov.cdc.nbs.patient.demographics.mortality.MortalityDemographicPatientCommandMapper.asUpdateMortality;
 
 @Component
@@ -73,29 +77,48 @@ class PatientEditService {
 
     changes.maybeAdministrative()
         .map(administrative -> asUpdateAdministrativeInfo(identifier, context, administrative))
-        .ifPresent(patient::update);
-
-    changes.maybeBirth()
-        .map(demographic -> asUpdateBirth(identifier, context, demographic))
-        .ifPresent(command -> patient.update(command, addressIdentifierGenerator));
+        .ifPresentOrElse(patient::update, () -> patient.clear(asClearAdministrativeInformation(identifier, context)));
 
     changes.maybeGender()
         .map(demographic -> asUpdateGender(identifier, context, demographic))
-        .ifPresent(patient::update);
+        .ifPresentOrElse(
+            patient::update,
+            () -> patient.clear(asClearGenderDemographics(identifier, context))
+        );
+
+    changes.maybeBirth()
+        .map(demographic -> asUpdateBirth(identifier, context, demographic))
+        .ifPresentOrElse(
+            command -> patient.update(command, addressIdentifierGenerator),
+            () -> patient.clear(asClearBirthDemographics(identifier, context))
+        );
 
     changes.maybeMortality()
         .map(demographic -> asUpdateMortality(identifier, context, demographic))
-        .ifPresent(command -> patient.update(command, addressIdentifierGenerator));
+        .ifPresentOrElse(
+            command -> patient.update(command, addressIdentifierGenerator),
+            () -> patient.clear(asClearMoralityDemographics(identifier, context))
+        );
 
     changes.maybeGeneralInformation()
         .map(demographic -> asUpdateGeneralInfo(identifier, context, demographic))
-        .ifPresent(patient::update);
+        .ifPresentOrElse(
+            patient::update,
+            () -> patient.clear(asClearGeneralInformationDemographics(identifier, context))
+        );
 
     changes.maybeGeneralInformation()
         .flatMap(demographic -> maybeAsAssociateStateHIVCase(identifier, context, demographic))
-        .ifPresent(association -> patient.associate(permissionScopeResolver, association));
+        .ifPresentOrElse(
+            association -> patient.associate(permissionScopeResolver, association),
+            () -> patient.disassociate(permissionScopeResolver, asDisassociateStateHIVCase(identifier, context))
+        );
 
-    changes.maybeEthnicity().ifPresent(demographic -> ethnicityEditService.apply(context, patient, demographic));
+    changes.maybeEthnicity()
+        .ifPresentOrElse(
+            demographic -> ethnicityEditService.apply(context, patient, demographic),
+            () -> patient.clear(asClearEthnicityDemographics(patient.id(), context))
+        );
 
     addressEditService.apply(context, patient, changes.addresses());
     nameEditService.apply(context, patient, changes.names());

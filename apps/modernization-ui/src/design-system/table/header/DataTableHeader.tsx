@@ -5,15 +5,17 @@ import { Column } from './column';
 import { ColumnHeader } from './ColumnHeader';
 
 import styles from '../data-table.module.scss';
+import classNames from 'classnames';
 
 type HeaderRowProps<V> = {
     columns: Column<V>[];
     sizing?: Sizing;
     sorting?: SortingInteraction;
     filtering?: FilterInteraction;
+    sticky?: boolean;
 };
 
-const DataTableHeader = <T,>({ columns, sizing, sorting, filtering }: HeaderRowProps<T>) => {
+const DataTableHeader = <T,>({ columns, sizing, sorting, filtering, sticky = false }: HeaderRowProps<T>) => {
     return (
         <>
             <colgroup>
@@ -21,7 +23,7 @@ const DataTableHeader = <T,>({ columns, sizing, sorting, filtering }: HeaderRowP
                     <col className={column.className} key={index} />
                 ))}
             </colgroup>
-            <thead>
+            <thead className={classNames({ [styles.sticky]: sticky })}>
                 <tr>
                     {columns.map((column, index) => (
                         <ColumnHeader

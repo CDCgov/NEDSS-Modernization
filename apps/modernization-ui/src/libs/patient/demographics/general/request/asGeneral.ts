@@ -1,10 +1,11 @@
 import { asValue } from 'options';
+import { orUndefined } from 'utils';
 import { isEmpty } from 'utils/isEmpty';
 import { GeneralInformationDemographic } from '../general';
 import { GeneralInformationDemographicRequest } from './generalRequest';
 import { isAllowed, Sensitive } from 'libs/sensitive';
 
-const asValueIdAllowed = (sensitive?: Sensitive<string>) => {
+const asValueIfAllowed = (sensitive?: Sensitive<string> | null) => {
     if (isAllowed(sensitive) && sensitive.value) {
         return sensitive.value;
     }
@@ -35,10 +36,10 @@ const asGeneral = (
             educationLevel: asValue(educationLevel),
             speaksEnglish: asValue(speaksEnglish),
             primaryLanguage: asValue(primaryLanguage),
-            maternalMaidenName,
-            adultsInResidence,
-            childrenInResidence,
-            stateHIVCase: asValueIdAllowed(stateHIVCase)
+            maternalMaidenName: orUndefined(maternalMaidenName),
+            adultsInResidence: orUndefined(adultsInResidence),
+            childrenInResidence: orUndefined(childrenInResidence),
+            stateHIVCase: asValueIfAllowed(stateHIVCase)
         };
     }
 };

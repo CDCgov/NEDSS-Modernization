@@ -9,11 +9,6 @@ nbs:
     home:
       uri: ${nbs.gateway.classic}
       base: '/nbs/HomePage.do?method=loadHomePage'
-    landing:
-      uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
-      base: '/welcome'
-    welcome:
-      enabled: true
     ui:
       service: 'localhost:3000'
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.ui.service}'

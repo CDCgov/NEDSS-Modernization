@@ -1,29 +1,19 @@
-import { Suspense } from 'react';
-import { Await, Outlet, useLoaderData } from 'react-router';
-import { RedirectHome } from 'routes';
-import { Spinner } from 'components/Spinner';
+import { Outlet, useLoaderData } from 'react-router';
+import { PageTitle } from 'page';
 import { ComponentSizingProvider } from 'design-system/sizing';
 
 import { PatientFileProvider, PatientFileData } from './usePatientFileData';
-import { AlertProvider } from 'libs/alert';
 
 const PatientFile = () => {
     const data = useLoaderData<PatientFileData>();
 
     return (
-        <Suspense fallback={<Spinner />} key={data.id}>
-            <Await resolve={data} errorElement={<RedirectHome />}>
-                {(data: PatientFileData) => (
-                    <PatientFileProvider data={data}>
-                        <AlertProvider>
-                            <ComponentSizingProvider>
-                                <Outlet />
-                            </ComponentSizingProvider>
-                        </AlertProvider>
-                    </PatientFileProvider>
-                )}
-            </Await>
-        </Suspense>
+        <ComponentSizingProvider>
+            <PageTitle title="Patient file" />
+            <PatientFileProvider data={data} key={data.id}>
+                <Outlet />
+            </PatientFileProvider>
+        </ComponentSizingProvider>
     );
 };
 

@@ -10,14 +10,14 @@ const displayDetails = mapOr<Selectable[], string | undefined>(
 );
 
 type RaceDemographicViewProps = {
-    entry: RaceDemographic;
+    entry: Partial<RaceDemographic>;
 };
 
 const RaceDemographicView = ({ entry }: RaceDemographicViewProps) => {
     return (
         <DetailView>
             <DetailValue label={labels.asOf}>{internalizeDate(entry.asOf)}</DetailValue>
-            <DetailValue label={labels.race}>{entry.race.name}</DetailValue>
+            <DetailValue label={labels.race}>{entry.race?.name}</DetailValue>
             <DetailValue label={labels.detailed}>{displayDetails(entry.detailed)}</DetailValue>
         </DetailView>
     );

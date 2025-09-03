@@ -17,8 +17,8 @@ class PostalEntityLocatorParticipationTest {
     Person patient = new Person(117L, "local-id-value");
 
     PostalEntityLocatorParticipation address = new PostalEntityLocatorParticipation(
-        patient.getNbsEntity(),
-        new EntityLocatorParticipationId(patient.getId(), 5331L),
+        patient.entity(),
+        new EntityLocatorParticipationId(patient.id(), 5331L),
         new PatientCommand.AddAddress(
             117L,
             LocalDate.parse("2021-07-07"),
@@ -53,7 +53,7 @@ class PostalEntityLocatorParticipationTest {
     assertThat(address)
         .isInstanceOf(PostalEntityLocatorParticipation.class)
         .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
-        .returns(5331L, p -> p.getId().getLocatorUid())
+        .returns(5331L, p -> p.identifier().getLocatorUid())
         .extracting(EntityLocatorParticipation::recordStatus)
         .satisfies(RecordStatusAssertions.inactive("2021-05-24T11:01:17"))
     ;

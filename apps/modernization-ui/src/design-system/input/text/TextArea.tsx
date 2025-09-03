@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
 import styles from './textarea.module.scss';
 
 type TextOnChange = (value?: string) => void;
@@ -27,25 +27,15 @@ const TextArea = ({
     className,
     ...props
 }: TextAreaProps) => {
-    const [current, setCurrent] = useState<string>(value ?? '');
-
-    useEffect(() => {
-        setCurrent(value ?? '');
-    }, [value]);
+    const current = value ?? '';
 
     const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        const next = event.target.value;
-        if (next) {
-            setCurrent(next);
-            onChange?.(next);
-        } else {
-            setCurrent('');
-            onChange?.();
-        }
+        const next = event.target.value ?? null;
+        onChange?.(next);
     };
 
     return (
-        <div className={styles.textArea}>
+        <div className={styles.container}>
             <textarea
                 autoComplete="off"
                 id={id}
@@ -56,8 +46,6 @@ const TextArea = ({
                 onBlur={onBlur}
                 placeholder={placeholder}
                 value={current}
-                required={props.required}
-                aria-required={props.required}
                 {...props}
             />
             <div className={styles.counter}>

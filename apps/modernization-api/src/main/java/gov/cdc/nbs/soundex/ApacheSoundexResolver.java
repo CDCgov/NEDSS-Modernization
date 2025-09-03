@@ -12,6 +12,15 @@ class ApacheSoundexResolver implements SoundexResolver {
     if (value == null || value.isEmpty()) {
       return null;
     }
-    return Soundex.US_ENGLISH.encode(value);
+
+    try {
+      return Soundex.US_ENGLISH.encode(value);
+
+    } catch (IllegalArgumentException e) {
+      //  contains a character that is not mapped.
+      return null;
+    }
+
+
   }
 }
