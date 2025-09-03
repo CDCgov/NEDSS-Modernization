@@ -10,6 +10,15 @@ import { PageProvider } from 'page';
 
 window.scrollTo = vi.fn();
 
+// Mock useNavigate so it can be configured in tests
+vi.mock('react-router', async () => {
+    const actual = await vi.importActual('react-router');
+    return {
+        ...actual,
+        useNavigate: vi.fn()
+    };
+});
+
 class MockIntersectionObserver {
     observe = vi.fn();
     unobserve = vi.fn();
@@ -84,7 +93,7 @@ vi.mock('apps/patient/data/phoneEmail/usePhoneCodedValues', () => ({
 }));
 
 vi.mock('../cancelAddPatientPanel/useShowCancelModal', () => ({
-    useShowCancelModal: jest.fn()
+    useShowCancelModal: vi.fn()
 }));
 
 const renderWithRouter = () => {
@@ -109,8 +118,8 @@ const renderWithRouter = () => {
 
 describe('AddPatientExtended', () => {
     beforeEach(() => {
-        (useShowCancelModal as jest.Mock).mockReturnValue({ value: false });
-        (useNavigate as jest.Mock).mockReturnValue(jest.fn());
+        (useShowCancelModal as vi.Mock).mockReturnValue({ value: false });
+        (useNavigate as vi.Mock).mockReturnValue(vi.fn());
     });
 
     it('should have a heading', () => {
@@ -147,7 +156,7 @@ describe('AddPatientExtended', () => {
     });
 
     it('should not show modal when local storage flag is set', () => {
-        (useShowCancelModal as jest.Mock).mockReturnValue({ value: true });
+        (useShowCancelModal as vi.Mock).mockReturnValue({ value: true });
         const { queryByRole } = renderWithRouter();
 
         const modal = queryByRole('dialog', { name: 'Warning' });

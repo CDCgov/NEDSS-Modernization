@@ -33,6 +33,24 @@ globalThis.fetch = vi.fn(() =>
         // Add more methods if needed
     } as unknown as Response)
 );
+// Mock the global Request object for unit tests
+type MockRequestInit = {
+    method?: string;
+    headers?: any;
+    body?: any;
+    credentials?: string;
+};
+
+class MockRequest {
+    url: string;
+    options: MockRequestInit;
+    constructor(url: string, options?: MockRequestInit) {
+        this.url = url;
+        this.options = options || {};
+    }
+}
+
+globalThis.Request = MockRequest as any;
 
 globalThis.ResizeObserver = class {
     private callback: (...args: any[]) => void;
