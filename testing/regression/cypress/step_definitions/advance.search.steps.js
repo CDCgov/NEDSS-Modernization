@@ -233,7 +233,7 @@ Given(
 Given(
   "the user navigate to the patient profile page for {string}",
   (string) => {    
-    cy.visit(`/patient-profile/${string}`);
+    cy.visit(`/patient/${string}/summary`);
   }
 );
 
@@ -257,7 +257,7 @@ Then("nagivate to add new patient page", () => {
 });
 
 Given("create a new patient profile", () => {
-  cy.visit('/add-patient');
+  cy.visit('/patient/add');
   addPatientPage.addSimplePatient()
   addPatientPage.clickViewPatientProfile();
 });
