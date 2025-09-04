@@ -31,7 +31,7 @@ public class PatientPhoneDemographicApplier {
         identifier,
         RandomUtil.oneFrom("AN", "BP", "CP", "FAX", "PH"),
         RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
-        RandomUtil.getRandomString(15),
+        RandomUtil.getRandomNumericString(15),
         faker.phoneNumber().cellPhone(),
         faker.phoneNumber().extension(),
         RandomUtil.dateInPast()

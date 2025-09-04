@@ -2,10 +2,15 @@ package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.demographics.address.PatientAddressDemographicApplier;
+import gov.cdc.nbs.patient.demographics.birth.PatientBirthDemographicApplier;
+import gov.cdc.nbs.patient.demographics.ethnicity.PatientEthnicityDemographicApplier;
+import gov.cdc.nbs.patient.demographics.gender.PatientGenderApplier;
 import gov.cdc.nbs.patient.demographics.identification.PatientIdentificationDemographicApplier;
+import gov.cdc.nbs.patient.demographics.mortality.PatientMortalityDemographicApplier;
 import gov.cdc.nbs.patient.demographics.name.PatientNameDemographicApplier;
 import gov.cdc.nbs.patient.demographics.phone.PatientEmailDemographicApplier;
 import gov.cdc.nbs.patient.demographics.phone.PatientPhoneDemographicApplier;
+import gov.cdc.nbs.patient.demographics.race.PatientRaceDemographicApplier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
@@ -18,14 +23,13 @@ import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import static gov.cdc.nbs.support.util.RandomUtil.oneFrom;
 
 @Component
 @ScenarioScope
-@Transactional
 public class PatientMother {
 
   private static final String CREATE = """
@@ -164,6 +168,11 @@ public class PatientMother {
   private final PatientIdentificationDemographicApplier identificationDemographicApplier;
   private final PatientNameDemographicApplier nameDemographicApplier;
   private final PatientAddressDemographicApplier addressDemographicApplier;
+  private final PatientRaceDemographicApplier raceDemographicApplier;
+  private final PatientGenderApplier genderDemographicApplier;
+  private final PatientEthnicityDemographicApplier ethnicityDemographicApplier;
+  private final PatientBirthDemographicApplier birthDemographicApplier;
+  private final PatientMortalityDemographicApplier mortalityDemographicApplier;
 
   PatientMother(
       final MotherSettings settings,
@@ -177,7 +186,12 @@ public class PatientMother {
       final PatientPhoneDemographicApplier phoneDemographicApplier,
       final PatientIdentificationDemographicApplier identificationDemographicApplier,
       final PatientNameDemographicApplier nameDemographicApplier,
-      final PatientAddressDemographicApplier addressDemographicApplier
+      final PatientAddressDemographicApplier addressDemographicApplier,
+      final PatientRaceDemographicApplier raceDemographicApplier,
+      final PatientGenderApplier genderDemographicApplier,
+      final PatientEthnicityDemographicApplier ethnicityDemographicApplier,
+      final PatientBirthDemographicApplier birthDemographicApplier,
+      final PatientMortalityDemographicApplier mortalityDemographicApplier
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
@@ -191,6 +205,11 @@ public class PatientMother {
     this.identificationDemographicApplier = identificationDemographicApplier;
     this.nameDemographicApplier = nameDemographicApplier;
     this.addressDemographicApplier = addressDemographicApplier;
+    this.raceDemographicApplier = raceDemographicApplier;
+    this.genderDemographicApplier = genderDemographicApplier;
+    this.ethnicityDemographicApplier = ethnicityDemographicApplier;
+    this.birthDemographicApplier = birthDemographicApplier;
+    this.mortalityDemographicApplier = mortalityDemographicApplier;
 
     this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
   }
@@ -314,35 +333,17 @@ public class PatientMother {
     emailDemographicApplier.withEmail(
         identifier,
         "NET",
-        RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
+        oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
         email,
         RandomUtil.dateInPast());
   }
 
   public void withBirthInformation(final PatientIdentifier identifier) {
-
-    client.sql("""
-            update Person set
-                              as_of_date_sex = :asOf,
-                              birth_time = :birthday,
-                              birth_gender_cd = :gender,
-                              multiple_birth_ind = :multiple
-                          where person_uid = :patient
-            """)
-        .param("patient", identifier.id())
-        .param("asOf", RandomUtil.dateInPast())
-        .param("birthday", RandomUtil.dateInPast())
-        .param("gender", RandomUtil.maybeGender())
-        .param("multiple", RandomUtil.maybeIndicator())
-        .update();
+    birthDemographicApplier.withBirthInformation(identifier);
   }
 
   public void withGender(final PatientIdentifier identifier) {
-    client.sql("update Person set as_of_date_sex = :asOf, curr_sex_cd = :gender where person_uid = :patient")
-        .param("patient", identifier.id())
-        .param("asOf", RandomUtil.dateInPast())
-        .param("gender", RandomUtil.gender())
-        .update();
+    genderDemographicApplier.withGender(identifier);
   }
 
   public void withLocalId(final PatientIdentifier patient, final String localId) {
@@ -353,155 +354,20 @@ public class PatientMother {
   }
 
   public void withMortality(final PatientIdentifier identifier) {
-
-    String indicator = RandomUtil.indicator();
-
-    LocalDate deceasedOn = "Y".equals(indicator) ? RandomUtil.dateInPast() : null;
-
-    this.client.sql("update Person set deceased_time = ?, deceased_ind_cd = ? where person_uid = ?")
-        .param(deceasedOn)
-        .param(indicator)
-        .param(identifier.id())
-        .update();
+    mortalityDemographicApplier.withMortality(identifier);
   }
 
-  public void withEthnicity(
-      final PatientIdentifier identifier,
-      final String ethnicity,
-      final LocalDate asOf
-  ) {
-    client.sql(
-            """
-                update person set
-                    ethnic_group_ind = ?,
-                    as_of_date_ethnicity = ?
-                where person_uid = ?
-                """
-        )
-        .param(ethnicity)
-        .param(asOf)
-        .param(identifier.id())
-        .update();
-  }
-
-  public void withEthnicity(
-      final PatientIdentifier identifier,
-      final String ethnicity
-  ) {
-    withEthnicity(identifier, ethnicity, RandomUtil.dateInPast());
-  }
 
   public void withEthnicity(final PatientIdentifier identifier) {
-    withEthnicity(identifier, RandomUtil.ethnicity());
+    this.ethnicityDemographicApplier.withEthnicity(identifier);
   }
 
-
-  public void withSpecificEthnicity(
-      final PatientIdentifier identifier,
-      final String detail
-  ) {
-    client.sql(
-            """
-                insert into Person_ethnic_group(
-                    person_uid,
-                    ethnic_group_cd,
-                    add_time,
-                    add_user_id,
-                    record_status_cd
-                ) values (
-                    :patient,
-                    :detail,
-                    :addedOn,
-                    :addedBy,
-                    'ACTIVE'
-                )
-                """
-        )
-        .param("patient", identifier.id())
-        .param("detail", detail)
-        .param("addedOn", this.settings.createdOn())
-        .param("addedBy", this.settings.createdBy())
-        .update();
-  }
-
-  public void withUnknownEthnicity(
-      final PatientIdentifier identifier,
-      final String reason
-  ) {
-    withUnknownEthnicity(identifier, reason, RandomUtil.dateInPast());
-  }
-
-  public void withUnknownEthnicity(
-      final PatientIdentifier identifier,
-      final String reason,
-      final LocalDate asOf
-  ) {
-    client.sql(
-            """
-                update person set
-                    ethnic_group_ind = 'UNK',
-                    ethnic_unk_reason_cd = ?,
-                    as_of_date_ethnicity = ?
-                where person_uid = ?
-                """
-        )
-        .param(reason)
-        .param(asOf)
-        .param(identifier.id())
-        .update();
-  }
-
-
-  public void withAsOf(final PatientIdentifier identifier, final LocalDate value) {
-    client.sql("update person set as_of_date_admin = ? where person_uid = ?")
-        .param(value)
-        .param(identifier.id())
-        .update();
-  }
-
-  public void withComment(final PatientIdentifier identifier, final String value) {
-    client.sql("update person set [description] = ? where person_uid = ?")
-        .param(value)
-        .param(identifier.id())
-        .update();
-  }
 
   public void withRace(final PatientIdentifier patient) {
-    withRace(patient, RandomUtil.oneFrom("2106-3", "2054-5", "2028-9", "U"));
+    raceDemographicApplier.withRace(patient);
   }
 
   public void withRace(final PatientIdentifier patient, final String race) {
-    this.client.sql(
-            """
-                insert into Person_race (
-                    person_uid,
-                    as_of_date,
-                    race_cd,
-                    race_category_cd,
-                    add_user_id,
-                    add_time,
-                    last_chg_user_id,
-                    last_chg_time,
-                    record_status_cd,
-                    record_status_time
-                ) values (
-                    :patient,
-                    :asOf,
-                    :race,
-                    :race,
-                    :addedBy,
-                    :addedOn,
-                    :addedBy,
-                    :addedOn,
-                    'ACTIVE',
-                    :addedOn
-                );
-                """
-        ).param("patient", patient.id())
-        .param("asOf", RandomUtil.dateInPast())
-        .param("race", race)
-        .param("addedBy", settings.createdBy())
-        .param("addedOn", settings.createdOn())
-        .update();
+    raceDemographicApplier.withRace(patient, race);
   }
 }

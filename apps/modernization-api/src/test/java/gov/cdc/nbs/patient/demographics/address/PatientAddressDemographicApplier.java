@@ -36,7 +36,7 @@ public class PatientAddressDemographicApplier {
         null,
         randomState(),
         faker.address().zipCode(),
-        RandomUtil.dateInPast()
+        LocalDate.now()
     );
   }
 
@@ -62,7 +62,7 @@ public class PatientAddressDemographicApplier {
       final String state,
       final String zip
   ) {
-    withAddress(identifier, type, use, address, city, county, state, zip, RandomUtil.dateInPast());
+    withAddress(identifier, type, use, address, city, county, state, zip, LocalDate.now());
   }
 
   public void withAddress(

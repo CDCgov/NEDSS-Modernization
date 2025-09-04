@@ -1,14 +1,17 @@
 package gov.cdc.nbs.patient.demographics.gender;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+import static gov.cdc.nbs.support.util.RandomUtil.oneFrom;
+
 @Component
-class PatientGenderApplier {
+public class PatientGenderApplier {
+
+  private static final String[] GENDERS = {"U", "M", "F"};
 
   private final JdbcClient client;
 
@@ -16,11 +19,15 @@ class PatientGenderApplier {
     this.client = client;
   }
 
+  public void withGender(final PatientIdentifier identifier) {
+    withGender(identifier, oneFrom(GENDERS));
+  }
+
   void withGender(
       final PatientIdentifier patient,
       final String gender
   ) {
-    withGender(patient, RandomUtil.dateInPast(), gender);
+    withGender(patient, LocalDate.now(), gender);
   }
 
   void withGender(

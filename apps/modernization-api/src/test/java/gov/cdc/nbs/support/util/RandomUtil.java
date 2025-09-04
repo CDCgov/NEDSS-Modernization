@@ -1,7 +1,5 @@
 package gov.cdc.nbs.support.util;
 
-import gov.cdc.nbs.message.enums.Deceased;
-
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Random;
@@ -18,14 +16,6 @@ public class RandomUtil {
     LOGGER.log(System.Logger.Level.INFO, "Random data generated with seed: %d", randomSeed);
   }
 
-
-
-  public static String getRandomString(int length) {
-    int leftLimit = 48; // 0
-    int rightLimit = 126; // ~
-    return RANDOM.ints(leftLimit, rightLimit + 1).limit(length)
-        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
-  }
 
   public static String getRandomNumericString(int length) {
     int leftLimit = 48; // 0
@@ -55,34 +45,6 @@ public class RandomUtil {
     return (flip == 0)
         ? oneFrom(values)
         : null;
-  }
-
-  public static Deceased deceased() {
-    return RandomUtil.oneFrom(Deceased.Y, Deceased.N, Deceased.UNK);
-  }
-
-  public static String ethnicity() {
-    return RandomUtil.oneFrom(
-        "2135-2",   // Hispanic
-        "2186-5",           // Non-Hispanic
-        "UNK"               // Unknown
-    );
-  }
-
-  public static String gender() {
-    return oneFrom("U", "M", "F");
-  }
-
-  public static String maybeGender() {
-    return maybeOneFrom("U", "M", "F");
-  }
-
-  public static String indicator() {
-    return oneFrom("N", "Y", "UNK");
-  }
-
-  public static String maybeIndicator() {
-    return maybeOneFrom("N", "Y", "UNK");
   }
 
   public static LocalDate dateInPast() {
