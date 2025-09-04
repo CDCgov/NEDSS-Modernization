@@ -8,8 +8,13 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+import static gov.cdc.nbs.support.util.RandomUtil.maybeOneFrom;
+
 @Component
-class PatientBirthDemographicApplier {
+public class PatientBirthDemographicApplier {
+
+  private static final String[] GENDERS = {"U", "M", "F"};
+  private static final String[] INDICATORS = {"N", "Y", "UNK"};
 
   private final JdbcClient client;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
@@ -20,6 +25,24 @@ class PatientBirthDemographicApplier {
   ) {
     this.client = client;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
+  }
+
+  public void withBirthInformation(final PatientIdentifier identifier) {
+
+    client.sql("""
+            update Person set
+              as_of_date_sex = :asOf,
+              birth_time = :birthday,
+              birth_gender_cd = :gender,
+              multiple_birth_ind = :multiple
+            where person_uid = :patient
+            """)
+        .param("patient", identifier.id())
+        .param("asOf", RandomUtil.dateInPast())
+        .param("birthday", RandomUtil.dateInPast())
+        .param("gender", maybeOneFrom(GENDERS))
+        .param("multiple", maybeOneFrom(INDICATORS))
+        .update();
   }
 
   void withBirthday(

@@ -7,8 +7,12 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+import static gov.cdc.nbs.support.util.RandomUtil.oneFrom;
+
 @Component
-class PatientRaceDemographicApplier {
+public class PatientRaceDemographicApplier {
+
+  private static final String[] RACES = {"2106-3", "2054-5", "2028-9", "U"};
 
   private final JdbcClient client;
   private final MotherSettings settings;
@@ -16,6 +20,14 @@ class PatientRaceDemographicApplier {
   PatientRaceDemographicApplier(final JdbcClient client, final MotherSettings settings) {
     this.client = client;
     this.settings = settings;
+  }
+
+  public void withRace(final PatientIdentifier patient) {
+    withRace(patient, oneFrom(RACES));
+  }
+
+  public void withRace(final PatientIdentifier patient, final String race) {
+    withRace(patient, LocalDate.now(), race);
   }
 
   void withRace(

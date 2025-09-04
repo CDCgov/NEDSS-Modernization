@@ -150,19 +150,5 @@ public class PatientSteps {
     };
   }
 
-  @Given("the patient has the phone number {string}-{string} x{string}")
-  public void the_patient_has_the_phone_number(
-      final String countryCode,
-      final String number,
-      final String extension) {
 
-    PatientIdentifier identifier = this.patient.active();
-
-    mother.withPhone(
-        identifier,
-        countryCode,
-        number,
-        extension);
-
-  }
 }

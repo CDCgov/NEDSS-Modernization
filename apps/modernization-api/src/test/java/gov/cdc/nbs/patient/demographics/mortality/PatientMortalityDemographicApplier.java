@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+import static gov.cdc.nbs.support.util.RandomUtil.oneFrom;
+
 @Component
-class PatientMortalityDemographicApplier {
+public class PatientMortalityDemographicApplier {
+
+  private static final String[] INDICATORS = {"N", "Y", "UNK"};
 
   private final JdbcClient client;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
@@ -21,6 +25,20 @@ class PatientMortalityDemographicApplier {
     this.client = client;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
   }
+
+  public void withMortality(final PatientIdentifier identifier) {
+
+    String indicator = oneFrom(INDICATORS);
+
+    LocalDate deceasedOn = "Y".equals(indicator) ? RandomUtil.dateInPast() : null;
+
+    this.client.sql("update Person set deceased_time = ?, deceased_ind_cd = ? where person_uid = ?")
+        .param(deceasedOn)
+        .param(indicator)
+        .param(identifier.id())
+        .update();
+  }
+
 
   void withDeceasedOn(
       final PatientIdentifier identifier,
