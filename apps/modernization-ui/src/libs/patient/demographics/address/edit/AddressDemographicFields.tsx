@@ -247,7 +247,7 @@ const AddressDemographicFields = ({
                 control={control}
                 name="comment"
                 rules={{ ...maxLengthRule(2000, labels.comment) }}
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <TextAreaField
                         label={labels.comment}
                         orientation={orientation}
@@ -256,6 +256,7 @@ const AddressDemographicFields = ({
                         id={name}
                         name={name}
                         sizing={sizing}
+                        error={error?.message}
                     />
                 )}
             />
