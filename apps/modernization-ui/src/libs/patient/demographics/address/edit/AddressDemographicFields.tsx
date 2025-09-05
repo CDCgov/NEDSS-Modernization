@@ -247,15 +247,17 @@ const AddressDemographicFields = ({
                 control={control}
                 name="comment"
                 rules={{ ...maxLengthRule(2000, labels.comment) }}
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <TextAreaField
                         label={labels.comment}
                         orientation={orientation}
                         value={value}
                         onChange={onChange}
+                        onBlur={onBlur}
                         id={name}
                         name={name}
                         sizing={sizing}
+                        error={error?.message}
                     />
                 )}
             />
@@ -263,4 +265,4 @@ const AddressDemographicFields = ({
     );
 };
 
-export { AddressDemographicFields };
+export { AddressDemographicFields, type AddressDemographicFieldsProps };
