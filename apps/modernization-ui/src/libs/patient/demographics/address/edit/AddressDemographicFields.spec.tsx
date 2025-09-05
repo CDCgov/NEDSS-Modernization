@@ -178,4 +178,18 @@ describe('when entering patient address demographics', () => {
             expect(validationError).toBeInTheDocument();
         }
     });
+
+    it('should not allow comments over 2000 characters', async () => {
+        const user = userEvent.setup();
+
+        render(<Fixture />);
+
+        const comments = screen.getByLabelText('Comments');
+
+        const longComment = 'a'.repeat(2001);
+
+        await user.type(comments, `${longComment}{tab}`);
+
+        expect(screen.getByText('The Comments only allows 2000 characters max.')).toBeInTheDocument();
+    });
 });
