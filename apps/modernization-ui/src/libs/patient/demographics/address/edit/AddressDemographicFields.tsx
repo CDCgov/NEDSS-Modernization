@@ -265,4 +265,4 @@ const AddressDemographicFields = ({
     );
 };
 
-export { AddressDemographicFields };
+export { AddressDemographicFields, type AddressDemographicFieldsProps };

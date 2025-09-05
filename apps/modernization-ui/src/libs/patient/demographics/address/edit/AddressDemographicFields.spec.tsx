@@ -1,9 +1,8 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-
+import { AddressDemographic } from '../address';
 import { AddressDemographicFields } from './AddressDemographicFields';
-import { HasAddressDemographics } from '../address';
 import { AddressOptions } from './useAddressOptions';
 import { LocationOptions } from 'options/location';
 
@@ -22,9 +21,12 @@ const options: AddressOptions = {
     location
 };
 
-const Fixture = () => {
-    const form = useForm<HasAddressDemographics>({
-        mode: 'onBlur'
+type FixtureProps = { entry?: Partial<AddressDemographic> };
+
+const Fixture = ({ entry }: FixtureProps) => {
+    const form = useForm<AddressDemographic>({
+        mode: 'onBlur',
+        defaultValues: entry
     });
     return (
         <FormProvider {...form}>
@@ -179,16 +181,16 @@ describe('when entering patient address demographics', () => {
         }
     });
 
-    it('should not allow comments over 2000 characters', async () => {
+    it('should not allow comments over 2000 characters ', async () => {
         const user = userEvent.setup();
 
-        render(<Fixture />);
+        const longComment = 'a'.repeat(2000);
+
+        render(<Fixture entry={{ asOf: '04/15/2019', comment: longComment }} />);
 
         const comments = screen.getByLabelText('Comments');
 
-        const longComment = 'a'.repeat(2001);
-
-        await user.type(comments, `${longComment}{tab}`);
+        await user.type(comments, 'more comment{tab}');
 
         expect(screen.getByText('The Comments only allows 2000 characters max.')).toBeInTheDocument();
     });
