@@ -114,8 +114,10 @@ public class NBSEntity {
     boolean hasLocation =
         mortality.city() != null || mortality.county() != null || mortality.state() != null || mortality.country() != null;
 
+    //  is the patient deceased?
+    boolean deceased = Objects.equals(mortality.deceased(), "Y");
 
-    if (hasLocation) {
+    if (deceased && hasLocation) {
       //  if so make sure the location values are updated
       maybeMortalityLocator()
           .orElseGet(() -> createMortalityLocator(mortality, identifierGenerator))

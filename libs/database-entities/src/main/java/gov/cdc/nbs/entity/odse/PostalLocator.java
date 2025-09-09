@@ -1,6 +1,5 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.PatientCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +12,7 @@ import java.util.Objects;
 @Table(name = "Postal_locator")
 public class PostalLocator extends Locator {
 
+  private static final String YES = "Y";
   @Id
   @Column(name = "postal_locator_uid", nullable = false, updatable = false)
   private Long id;
@@ -128,7 +128,7 @@ public class PostalLocator extends Locator {
 
     long before = Objects.hash(this.city, this.state, this.county, this.country);
 
-    if (Objects.equals(mortality.deceased(), Deceased.Y.value())) {
+    if (Objects.equals(mortality.deceased(), YES)) {
       this.city = mortality.city();
       this.state = mortality.state();
       this.county = mortality.county();
