@@ -376,7 +376,9 @@ public class Person {
   ) {
 
     ensurePatientSexBirth().update(birth);
-    this.nbsEntity.update(birth, identifierGenerator);
+    if (birth.city() != null || birth.county() != null || birth.state() != null || birth.country() != null) {
+      this.nbsEntity.update(birth, identifierGenerator);
+    }
 
     changed(birth);
   }
@@ -402,7 +404,10 @@ public class Person {
       this.mortality = new PatientMortality();
     }
     this.mortality.update(info);
-    this.nbsEntity.update(info, identifierGenerator);
+
+    if (info.city() != null || info.county() != null || info.state() != null || info.country() != null) {
+      this.nbsEntity.update(info, identifierGenerator);
+    }
 
     changed(info);
   }
