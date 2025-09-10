@@ -15,11 +15,22 @@ enum Status {
 }
 
 type ModalState = {
+    /**
+     * The URL displayed in the classic modal.
+     */
     url?: string;
     status: Status;
+    /**
+     * The form action to be performed when the modal is closed, if any.
+     */
+    action?: string;
 };
 
-type Action = { type: 'open'; location: string } | { type: 'opened' } | { type: 'closed' } | { type: 'reset' };
+type Action =
+    | { type: 'open'; location: string }
+    | { type: 'opened' }
+    | { type: 'closed'; action?: string }
+    | { type: 'reset' };
 
 const classicModalReducer = (state: ModalState, action: Action) => {
     switch (action.type) {
@@ -28,7 +39,7 @@ const classicModalReducer = (state: ModalState, action: Action) => {
         case 'opened':
             return { ...state, status: Status.Open };
         case 'closed':
-            return { ...state, status: Status.Closed };
+            return { ...state, status: Status.Closed, action: action.action };
         case 'reset':
             return { status: Status.Idle };
     }
@@ -74,11 +85,15 @@ const useClassicModal = (): ClassicModal => {
 
     useEffect(() => {
         if (form && state.url && state.status === Status.Opening) {
-            //  NBS Classic will invoke the submit method directly, the default handling of the form should be disabled to prevent it from triggering navigation.
-            form.submit = () => dispatch({ type: 'closed' });
+            //  NBS Classic will invoke the submit method directly, the default handling of the form
+            // should be disabled to prevent it from triggering navigation.  The form action will be
+            // set by the modal to perform an action when the modal is closed.  If an action was set
+            // then store it in the state so that it can be used by the caller
+            form.submit = () => dispatch({ type: 'closed', action: form.action });
             showModal(state.url);
         } else if (form && state.status === Status.Closed) {
             form.submit = () => {};
+            form.action = '';
         }
     }, [form, state]);
 

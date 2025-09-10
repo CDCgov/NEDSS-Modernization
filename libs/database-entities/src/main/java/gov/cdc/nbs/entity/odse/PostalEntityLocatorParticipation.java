@@ -83,8 +83,7 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
   }
 
   public void delete(final PatientCommand.DeleteAddress deleted) {
-    this.recordStatus().inactivate(deleted.requestedOn());
-    changed(deleted);
+    inactivate(deleted);
   }
 
   public void update(final PatientCommand.UpdateBirth birth) {

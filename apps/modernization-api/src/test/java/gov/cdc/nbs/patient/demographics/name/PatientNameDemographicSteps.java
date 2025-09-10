@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.demographics.name;
 
-import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
@@ -9,30 +8,30 @@ import java.time.LocalDate;
 
 public class PatientNameDemographicSteps {
 
-  private final PatientMother mother;
+  private final PatientNameDemographicApplier applier;
   private final Active<PatientIdentifier> patient;
 
   PatientNameDemographicSteps(
-      final PatientMother mother,
+      final PatientNameDemographicApplier applier,
       final Active<PatientIdentifier> patient
   ) {
-    this.mother = mother;
+    this.applier = applier;
     this.patient = patient;
   }
 
   @Given("the patient has a name")
-  public void the_patient_has_a_name() {
-    mother.withName(patient.active());
+  public void legalName() {
+    applier.withName(patient.active());
   }
 
   @Given("the patient has the {nameUse} name {string} {string}")
-  public void the_patient_has_the_name(
+  public void legalName(
       final String type,
       final String first,
       final String last
   ) {
 
-    mother.withName(
+    applier.withName(
         patient.active(),
         type,
         first.equals("null") ? null : first,
@@ -41,14 +40,14 @@ public class PatientNameDemographicSteps {
   }
 
   @Given("the patient has the {nameUse} name {string} {string} as of {localDate}")
-  public void the_patient_has_the_name_as_of(
+  public void name(
       final String type,
       final String first,
       final String last,
       final LocalDate asOf
   ) {
 
-    mother.withName(
+    applier.withName(
         patient.active(),
         asOf,
         type,
@@ -58,7 +57,7 @@ public class PatientNameDemographicSteps {
   }
 
   @Given("the patient has the {nameUse} name {string} {string} {string}, {nameSuffix} as of {localDate}")
-  public void the_patient_has_the_name_use_first_middle_last_suffix_as_of(
+  public void name(
       final String type,
       final String first,
       final String middle,
@@ -67,7 +66,7 @@ public class PatientNameDemographicSteps {
       final LocalDate asOf
   ) {
 
-    mother.withName(
+    applier.withName(
         patient.active(),
         asOf,
         type,

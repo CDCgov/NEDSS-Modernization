@@ -1,6 +1,9 @@
 import { maybeMap } from 'utils/mapping';
 
-const maybeAsJson = maybeMap((body: object | string | number) => JSON.stringify(body));
+const maybeAsJsonPayload = maybeMap((body: object | string | number) => ({
+    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' }
+}));
 
 /**
  * Creates a standard GET request to the API.
@@ -17,6 +20,22 @@ const get = (url: string) => {
 };
 
 /**
+ * Creates a standard POST request to the API with an optional request `body`.  If a body is provided it is converted to JSON.
+ *
+ * @param {string} url The URL of the request.
+ * @param {object} body The body of the request.
+ * @return {Request} The resulting Request
+ */
+const post = (url: string, body?: object) => {
+    const payload = maybeAsJsonPayload(body);
+    return new Request(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        ...payload
+    });
+};
+
+/**
  * Creates a standard PUT request to the API with an optional request `body`.  If a body is provided it is converted to JSON.
  *
  * @param {string} url The URL of the request.
@@ -24,12 +43,11 @@ const get = (url: string) => {
  * @return {Request} The resulting Request
  */
 const put = (url: string, body?: object) => {
+    const payload = maybeAsJsonPayload(body);
     return new Request(url, {
         method: 'PUT',
-        body: maybeAsJson(body),
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'same-origin'
+        ...payload
     });
 };
 
-export { get, put };
+export { get, post, put };

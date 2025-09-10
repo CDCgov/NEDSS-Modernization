@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.demographics.address;
 
-import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
@@ -9,25 +8,25 @@ import java.time.LocalDate;
 
 public class PatientAddressDemographicSteps {
 
-  private final PatientMother mother;
+  private final PatientAddressDemographicApplier applier;
 
   private final Active<PatientIdentifier> activePatient;
 
   PatientAddressDemographicSteps(
-      final PatientMother mother,
+      final PatientAddressDemographicApplier applier,
       final Active<PatientIdentifier> activePatient
   ) {
-    this.mother = mother;
+    this.applier = applier;
     this.activePatient = activePatient;
   }
 
   @Given("the patient has an address")
-  public void the_patient_has_an_address() {
-    mother.withAddress(activePatient.active());
+  public void homeAddress() {
+    applier.withAddress(activePatient.active());
   }
 
   @Given("the patient has a {string} address at {string} {string} {string}")
-  public void the_patient_has_an_address_at(
+  public void address(
       final String use,
       final String address,
       final String city,
@@ -38,7 +37,7 @@ public class PatientAddressDemographicSteps {
 
     String resolvedUse = resolveUse(use);
 
-    mother.withAddress(
+    applier.withAddress(
         identifier,
         resolvedUse,
         address,
@@ -63,7 +62,7 @@ public class PatientAddressDemographicSteps {
   }
 
   @Given("the patient has a {addressType} - {addressUse} address at {string} {string} {string}")
-  public void the_patient_has_an_address_at(
+  public void address(
       final String type,
       final String use,
       final String address,
@@ -72,7 +71,7 @@ public class PatientAddressDemographicSteps {
 
     PatientIdentifier identifier = activePatient.active();
 
-    mother.withAddress(
+    applier.withAddress(
         identifier,
         type,
         use,
@@ -85,7 +84,7 @@ public class PatientAddressDemographicSteps {
   }
 
   @Given("the patient has a(n) {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
-  public void the_patient_has_an_address_as_of_at(
+  public void address(
       final String type,
       final String use,
       final String address,
@@ -96,7 +95,7 @@ public class PatientAddressDemographicSteps {
 
     PatientIdentifier identifier = activePatient.active();
 
-    mother.withAddress(
+    applier.withAddress(
         identifier,
         type,
         use,
@@ -111,7 +110,7 @@ public class PatientAddressDemographicSteps {
 
   @Given(
       "the patient has a(n) {addressType} - {addressUse} address at {string} {string} {state} {postalCode} as of {localDate}")
-  public void the_patient_has_an_address_as_of_at(
+  public void address(
       final String type,
       final String use,
       final String address,
@@ -123,7 +122,7 @@ public class PatientAddressDemographicSteps {
 
     PatientIdentifier identifier = activePatient.active();
 
-    mother.withAddress(
+    applier.withAddress(
         identifier,
         type,
         use,

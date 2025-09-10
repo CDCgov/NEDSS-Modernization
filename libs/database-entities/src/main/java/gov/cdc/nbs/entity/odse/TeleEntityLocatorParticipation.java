@@ -54,8 +54,7 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
   }
 
   public void delete(final PatientCommand.DeletePhone deleted) {
-    this.recordStatus.inactivate(deleted.requestedOn());
-    changed(deleted);
+    inactivate(deleted);
   }
 
   @Override
