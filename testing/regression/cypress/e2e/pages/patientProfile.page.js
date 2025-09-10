@@ -23,6 +23,7 @@ class PatientProfilePage {
     cy.url().then((url) => {      
       const urlParts = url.split('/');
       const patientId = urlParts[urlParts.length - 2];
+      debugger
       Cypress.env('patientId', patientId);
       cy.log(patientId);
     });
@@ -42,7 +43,8 @@ class PatientProfilePage {
   }
 
   delete() {
-    cy.get("button").contains("Delete patient").wait(2000).click({ force: true });
+    cy.get('button[aria-label="Delete"]').click({ force: true })
+    // cy.get("button").contains("Delete patient").wait(2000).click({ force: true });
   }
 
   confirmDelete() {
