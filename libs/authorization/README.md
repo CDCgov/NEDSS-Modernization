@@ -1,6 +1,6 @@
 # authorization
 
-A utility library for the NEDSS Modernization project that provides
+A utility library for NEDSS Modernization applications that provides
 standardized [object/operation](../../documentation/authorization/NBS6-Authorization.md) permission resolution for
 backend services.
 
