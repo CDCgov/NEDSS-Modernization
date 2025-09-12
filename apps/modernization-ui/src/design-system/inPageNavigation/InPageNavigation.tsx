@@ -30,7 +30,7 @@ export const InPageNavigation: React.FC<InPageNavigationProps> = ({ sections, ti
     }, [location.hash]);
 
     return (
-        <nav>
+        <nav aria-label={title}>
             <div className={styles.navTitle}>{title}</div>
             <div className={styles.navOptions}>
                 {sections.map((section) => (
