@@ -6,8 +6,7 @@ import { defaultTo } from 'libs/supplying';
 
 import styles from './administrative-information-card.module.scss';
 
-
-const orElseNoData = defaultTo('No comments available.') 
+const orElseNoData = defaultTo('No comments available.');
 
 type AdministrativeInformationCardProps = {
     title?: string;
@@ -31,7 +30,7 @@ const AdministrativeInformationCard = ({
                     [styles.medium]: sizing === 'medium',
                     [styles.large]: sizing === 'large'
                 })}>
-               {orElseNoData(data?.comment)}
+                {orElseNoData(data?.comment)}
             </div>
         </Card>
     );
