@@ -1,10 +1,13 @@
 import classNames from 'classnames';
 import { internalizeDate } from 'date';
 import { Card, CardProps } from 'design-system/card';
-import { OrElseNoData } from 'design-system/data';
 import { AdministrativeInformation } from '../administrative';
+import { defaultTo } from 'libs/supplying';
 
 import styles from './administrative-information-card.module.scss';
+
+
+const orElseNoData = defaultTo('No comments available.') 
 
 type AdministrativeInformationCardProps = {
     title?: string;
@@ -28,7 +31,7 @@ const AdministrativeInformationCard = ({
                     [styles.medium]: sizing === 'medium',
                     [styles.large]: sizing === 'large'
                 })}>
-                <OrElseNoData>{data?.comment}</OrElseNoData>
+               {orElseNoData(data?.comment)}
             </div>
         </Card>
     );
