@@ -45,7 +45,7 @@ Shared components that offer common utilities and standardized interactions with
   between `wildfly` and `spring-boot` based services.
 - [Database-Entities](libs/database-entities/README.md)
 - [Event-Schema](libs/event-schema/README.md)
-- [Id Generator](libs/id-generator/README.md)
+- [Id Generator](libs/id-generator/README.md) - A Java implementation of the `getNextUid_sp` stored procedure used to create identifiers within NBS.
 - [Web](libs/web) - Standardizes handling of Cookie management and provides a common `Response` pattern.
 
 #### Testing libraries
