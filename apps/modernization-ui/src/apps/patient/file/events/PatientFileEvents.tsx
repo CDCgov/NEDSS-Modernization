@@ -11,16 +11,13 @@ import { PatientFileDocumentsCard } from './documents/PatientFileDocumentsCard';
 import { PatientFileView } from '../PatientFileView';
 import { PatientFilePatientsNamedCard } from './patientsNamed/PatientFilePatientsNamedCard';
 import { PatientFileBirthRecordCard } from './record/birth';
-import { SkipLink } from 'SkipLink';
 
 const PatientFileEvents = () => {
     const { id, patient, events } = usePatientFileData();
     const sizing = useComponentSizing();
 
     return (
-        <>
-            <SkipLink id="patient-name-header" />
-            <ClassicModalProvider>
+        <ClassicModalProvider>
                 <PatientFileView patient={patient} sizing={sizing}>
                     <PatientFileInvestigationsCard
                         id="investigations"
@@ -67,8 +64,7 @@ const PatientFileEvents = () => {
                         sizing={sizing}
                     />
                 </PatientFileView>
-            </ClassicModalProvider>
-        </>
+        </ClassicModalProvider>
     );
 };
 

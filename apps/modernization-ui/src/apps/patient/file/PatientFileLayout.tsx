@@ -1,6 +1,7 @@
 import { CSSProperties, ReactNode, useCallback, useState } from 'react';
 import { Patient } from './patient';
 import { PatientFileHeader } from './PatientFileHeader';
+import { SkipLink } from 'SkipLink';
 
 import styles from './patient-file-layout.module.scss';
 
@@ -21,13 +22,16 @@ const PatientFileLayout = ({ patient, actions, navigation, children }: PatientFi
     }, []);
 
     return (
-        <div className={styles.file}>
-            <header ref={targeted}>
-                <PatientFileHeader patient={patient} actions={actions?.(patient)} />
-                <nav>{navigation(patient)}</nav>
-            </header>
-            <main style={inline}>{children}</main>
-        </div>
+        <>
+            <SkipLink id="patient-name-header" />
+            <div className={styles.file}>
+                <header id="patient-name-header" ref={targeted} tabIndex={-1}>
+                    <PatientFileHeader patient={patient} actions={actions?.(patient)} />
+                    <nav>{navigation(patient)}</nav>
+                </header>
+                <main style={inline}>{children}</main>
+            </div>
+        </>
     );
 };
 

@@ -7,16 +7,13 @@ import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
 import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
 import { FeatureToggle } from 'feature';
 import { MergeAlert } from './mergeHistory/MergeAlert';
-import { SkipLink } from 'SkipLink';
 
 const PatientFileSummary = () => {
     const { summary, demographics, patient } = usePatientFileData();
     const sizing = useComponentSizing();
 
     return (
-        <>
-            <SkipLink id="patient-name-header" />
-            <PatientFileView patient={patient} sizing={sizing}>
+        <PatientFileView patient={patient} sizing={sizing}>
                 {!!patient?.id && <MergeAlert patientId={patient.id} />}
                 <PatientFileDemographicsSummaryCard
                     id="demographics-summary"
@@ -34,14 +31,9 @@ const PatientFileSummary = () => {
                     sizing={sizing}
                 />
                 <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
-                    <PatientMergeHistoryCard
-                        id="merge-history"
-                        provider={summary.get().mergeHistory}
-                        patient={patient}
-                    />
+                    <PatientMergeHistoryCard id="merge-history" provider={summary.get().mergeHistory} patient={patient} />
                 </FeatureToggle>
-            </PatientFileView>
-        </>
+        </PatientFileView>
     );
 };
 

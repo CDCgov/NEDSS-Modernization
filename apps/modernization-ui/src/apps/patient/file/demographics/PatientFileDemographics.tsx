@@ -11,8 +11,6 @@ import { PatientFileRaceCard } from './race';
 import { PatientFileSexBirthCard } from './sex-birth';
 import { PatientFileGeneralInformationCard } from './general';
 import { PatientFileMortalityCard } from './mortality';
-import { SkipLink } from 'SkipLink';
-
 
 import styles from './patient-file-demographics.module.scss';
 
@@ -22,9 +20,7 @@ const PatientFileDemographics = () => {
     const sizing = useComponentSizing();
 
     return (
-        <>
-            <SkipLink id='patient-name-header'/>
-            <PatientFileView patient={patient} sizing={sizing}>
+        <PatientFileView patient={patient} sizing={sizing}>
                 <div className={styles.container}>
                     <PatientFileAdministrativeInformationCard
                         id="patient-file-administrative"
@@ -78,8 +74,7 @@ const PatientFileDemographics = () => {
                         />
                     </span>
                 </div>
-            </PatientFileView>
-        </>
+        </PatientFileView>
     );
 };
 
