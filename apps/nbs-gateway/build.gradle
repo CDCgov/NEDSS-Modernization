@@ -39,18 +39,19 @@ dependencies {
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux:4.3.0'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux:4.3.1'
     implementation libs.bundles.security
     implementation libs.bundles.oidc
     implementation 'org.springframework.security:spring-security-oauth2-client'
     implementation libs.springBoot.actuator
 
     constraints {
-        implementation("io.projectreactor.netty:reactor-netty-http:1.2.9") {
-            because("CVE-2025-22227")
-        }
-        implementation("io.netty:netty-codec-http2:4.1.124.Final") {
+        implementation("io.projectreactor.netty:reactor-netty-http:1.2.10") {
+            because("CVE-2025-58056")
             because("CVE-2025-55163")
+        }
+        implementation("io.netty:netty-codec-http2:4.1.127.Final") {
+            because("CVE-2025-8916")
         }
     }
 }

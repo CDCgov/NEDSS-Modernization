@@ -16,4 +16,11 @@ describe('when displaying administrative comments for a patient', () => {
         expect(screen.getByText('random comments')).toBeInTheDocument();
         expect(screen.getByText('As of 01/25/2025')).toBeInTheDocument();
     });
+
+    it('should display No comments available when no comments are present', () => {
+        const data = { comment: '' };
+        render(<AdministrativeInformationCard data={data} collapsible id={'test'} title={'test'} />);
+
+        expect(screen.getByText('No comments available.')).toBeInTheDocument();
+    });
 });
