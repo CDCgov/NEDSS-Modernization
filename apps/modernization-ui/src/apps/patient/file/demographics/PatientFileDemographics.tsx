@@ -11,69 +11,75 @@ import { PatientFileRaceCard } from './race';
 import { PatientFileSexBirthCard } from './sex-birth';
 import { PatientFileGeneralInformationCard } from './general';
 import { PatientFileMortalityCard } from './mortality';
+import { SkipLink } from 'SkipLink';
+
 
 import styles from './patient-file-demographics.module.scss';
+
 
 const PatientFileDemographics = () => {
     const { demographics, patient } = usePatientFileData();
     const sizing = useComponentSizing();
 
     return (
-        <PatientFileView patient={patient} sizing={sizing}>
-            <div className={styles.container}>
-                <PatientFileAdministrativeInformationCard
-                    id="patient-file-administrative"
-                    sizing={sizing}
-                    provider={demographics.get().administrative}
-                />
-                <PatientFileNameCard
-                    id="patient-file-names"
-                    sizing={sizing}
-                    provider={demographics.get().names}
-                    editable={false}
-                />
-                <PatientFileAddressCard
-                    id="patient-file-address"
-                    sizing={sizing}
-                    provider={demographics.get().addresses}
-                />
-                <PatientFilePhoneEmailCard
-                    id="patient-file-phone-email"
-                    sizing={sizing}
-                    provider={demographics.get().phoneEmail}
-                />
-                <PatientFileIdentificationCard
-                    id="patient-file-identification"
-                    sizing={sizing}
-                    provider={demographics.get().identifications}
-                />
-                <PatientFileRaceCard id="patient-file-race" provider={demographics.get().race} sizing={sizing} />
-                <span data-half>
-                    <PatientFileEthnicityCard
-                        id="patient-file-ethnicity"
+        <>
+            <SkipLink id='patient-name-header'/>
+            <PatientFileView patient={patient} sizing={sizing}>
+                <div className={styles.container}>
+                    <PatientFileAdministrativeInformationCard
+                        id="patient-file-administrative"
                         sizing={sizing}
-                        provider={demographics.get().ethnicity}
+                        provider={demographics.get().administrative}
                     />
-                    <PatientFileSexBirthCard
-                        id="patient-file-sex-birth"
-                        provider={demographics.get().sexBirth}
+                    <PatientFileNameCard
+                        id="patient-file-names"
                         sizing={sizing}
+                        provider={demographics.get().names}
+                        editable={false}
                     />
-                </span>
-                <span data-half>
-                    <PatientFileMortalityCard
-                        id="patient-file-mortality"
-                        provider={demographics.get().mortality}
+                    <PatientFileAddressCard
+                        id="patient-file-address"
                         sizing={sizing}
+                        provider={demographics.get().addresses}
                     />
-                    <PatientFileGeneralInformationCard
-                        id="patient-file-general"
-                        provider={demographics.get().general}
+                    <PatientFilePhoneEmailCard
+                        id="patient-file-phone-email"
                         sizing={sizing}
+                        provider={demographics.get().phoneEmail}
                     />
-                </span>
-            </div>
-        </PatientFileView>
+                    <PatientFileIdentificationCard
+                        id="patient-file-identification"
+                        sizing={sizing}
+                        provider={demographics.get().identifications}
+                    />
+                    <PatientFileRaceCard id="patient-file-race" provider={demographics.get().race} sizing={sizing} />
+                    <span data-half>
+                        <PatientFileEthnicityCard
+                            id="patient-file-ethnicity"
+                            sizing={sizing}
+                            provider={demographics.get().ethnicity}
+                        />
+                        <PatientFileSexBirthCard
+                            id="patient-file-sex-birth"
+                            provider={demographics.get().sexBirth}
+                            sizing={sizing}
+                        />
+                    </span>
+                    <span data-half>
+                        <PatientFileMortalityCard
+                            id="patient-file-mortality"
+                            provider={demographics.get().mortality}
+                            sizing={sizing}
+                        />
+                        <PatientFileGeneralInformationCard
+                            id="patient-file-general"
+                            provider={demographics.get().general}
+                            sizing={sizing}
+                        />
+                    </span>
+                </div>
+            </PatientFileView>
+        </>
     );
 };
 
