@@ -14,25 +14,25 @@ const PatientFileSummary = () => {
 
     return (
         <PatientFileView patient={patient} sizing={sizing}>
-                {!!patient?.id && <MergeAlert patientId={patient.id} />}
-                <PatientFileDemographicsSummaryCard
-                    id="demographics-summary"
-                    provider={demographics.get().summary}
-                    sizing={sizing}
-                />
-                <PatientFileOpenInvestigationsCard
-                    id="open-investigations"
-                    provider={summary.get().openInvestigations}
-                    sizing={sizing}
-                />
-                <PatientDocumentRequiringReviewCard
-                    id="documents-requiring-review"
-                    provider={summary.get().drr}
-                    sizing={sizing}
-                />
-                <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
-                    <PatientMergeHistoryCard id="merge-history" provider={summary.get().mergeHistory} patient={patient} />
-                </FeatureToggle>
+            {!!patient?.id && <MergeAlert patientId={patient.id} />}
+            <PatientFileDemographicsSummaryCard
+                id="demographics-summary"
+                provider={demographics.get().summary}
+                sizing={sizing}
+            />
+            <PatientFileOpenInvestigationsCard
+                id="open-investigations"
+                provider={summary.get().openInvestigations}
+                sizing={sizing}
+            />
+            <PatientDocumentRequiringReviewCard
+                id="documents-requiring-review"
+                provider={summary.get().drr}
+                sizing={sizing}
+            />
+            <FeatureToggle guard={(features) => features.patient.file.mergeHistory?.enabled}>
+                <PatientMergeHistoryCard id="merge-history" provider={summary.get().mergeHistory} patient={patient} />
+            </FeatureToggle>
         </PatientFileView>
     );
 };
