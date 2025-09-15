@@ -25,7 +25,7 @@ const PatientFileLayout = ({ patient, actions, navigation, children }: PatientFi
         <>
             <SkipLink id="patient-name-header" />
             <div className={styles.file}>
-                <header ref={targeted}>
+                <header id="patient-name-header" ref={targeted}>
                     <PatientFileHeader patient={patient} actions={actions?.(patient)} />
                     <nav>{navigation(patient)}</nav>
                 </header>

@@ -49,9 +49,7 @@ const notActive = not(equalsIgnoreCase('active'));
 
 const PatientDescriptor = ({ patient, headingLevel }: PatientDescriptorProps) => (
     <div className={styles.title}>
-        <Heading id="patient-name-header" tabIndex={-1} level={headingLevel}>
-            {maybeDisplayName(patient.name)}
-        </Heading>
+        <Heading level={headingLevel}>{maybeDisplayName(patient.name)}</Heading>
         <span className={styles.values}>
             <Value>{patient.sex}</Value>
             <Value>{maybeDisplayBirthday(patient.birthday, patient.deceasedOn)}</Value>
