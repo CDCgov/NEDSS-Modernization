@@ -4,7 +4,6 @@ import { render, screen } from '@testing-library/react';
 
 describe('PatientFileLayout', () => {
     it('should focus the header when skip link is clicked', async () => {
-
         render(
             <SkipLinkProvider>
                 <PatientFileLayout
@@ -16,7 +15,7 @@ describe('PatientFileLayout', () => {
                         deletability: 'Deletable',
                         name: {
                             first: 'John',
-                            last: 'Doe',
+                            last: 'Doe'
                         }
                     }}
                     navigation={() => <div>Nav</div>}>
@@ -26,7 +25,7 @@ describe('PatientFileLayout', () => {
         );
         const skipLink = screen.getByRole('link', { name: /skip to main content/i });
         const header = screen.getByRole('banner');
-        
-        expect(skipLink.getAttribute('href')).toBe(`#${header.id}`); 
+
+        expect(skipLink.getAttribute('href')).toBe(`#${header.id}`);
     });
 });
