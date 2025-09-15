@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useCallback, useState } from 'react';
+import { CSSProperties, ReactNode, useCallback, useId, useState } from 'react';
 import { Patient } from './patient';
 import { PatientFileHeader } from './PatientFileHeader';
 import { SkipLink } from 'SkipLink';
@@ -14,6 +14,7 @@ type PatientFileLayoutProps = {
 
 const PatientFileLayout = ({ patient, actions, navigation, children }: PatientFileLayoutProps) => {
     const [inline, setInline] = useState<CSSProperties | undefined>();
+    const headerId = useId();
 
     const targeted = useCallback((element: HTMLElement | null) => {
         if (element) {
@@ -23,9 +24,9 @@ const PatientFileLayout = ({ patient, actions, navigation, children }: PatientFi
 
     return (
         <>
-            <SkipLink id="patient-name-header" />
+            <SkipLink id={headerId} />
             <div className={styles.file}>
-                <header id="patient-name-header" ref={targeted}>
+                <header id={headerId} ref={targeted}>
                     <PatientFileHeader patient={patient} actions={actions?.(patient)} />
                     <nav>{navigation(patient)}</nav>
                 </header>
