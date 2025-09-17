@@ -109,8 +109,11 @@ Then("the user is taken to the top of the page", () => {
   cy.window().its("scrollY").should("be.equal", 0);
 });
 
-Then("user clicks on a patient's profile {string} tab", (string) => {
-  patientProfilePage.clickOnTab(string);
+Then("user clicks on a patient's profile {string} tab", (string) => {  
+  
+  cy.wait(5000);
+  cy.get("button").contains(string).click();
+  // patientProfilePage.clickOnTab(string);
   cy.wait(5000);
 });
 
