@@ -117,7 +117,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                     rules={{
                         required: { value: true, message: 'At least one status is required' }
                     }}
-                    render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                    render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                         <CheckboxGroup
                             name={name}
                             label={'Include records that are'}
@@ -127,7 +127,6 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                             options={statusOptions}
                             value={value}
                             onChange={onChange}
-                            onBlur={onBlur}
                             error={error?.message}
                         />
                     )}
