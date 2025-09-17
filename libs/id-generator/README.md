@@ -6,13 +6,11 @@ Ids. This library simplifies retrieving valid Ids from this table.
 
 ## Usage
 
-In your project gradle build file **build.gradle** include:
+In your project's **build.gradle** file include:
 
 ```
 implementation project(':id-generator')
 ```
-
-In addition, ensure that the project is on the classpath of the importing project.
 
 There is a convenience annotation to make an `IdGeneratorService` available for injection in a Spring based project.
 
