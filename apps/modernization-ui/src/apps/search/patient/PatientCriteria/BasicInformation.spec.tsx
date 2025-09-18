@@ -4,7 +4,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { BasicInformation } from './BasicInformation';
 import { PatientCriteriaEntry } from '../criteria';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
-import { error } from 'console';
 
 const mockAllows = jest.fn();
 
@@ -12,9 +11,9 @@ jest.mock('libs/permission/usePermissions', () => ({
     usePermissions: () => ({ permissions: [], allows: mockAllows })
 }));
 
-const Fixture = () => {
+const Fixture = ({ mode }: { mode?: 'onChange' | 'onBlur' }) => {
     const form = useForm<PatientCriteriaEntry>({
-        mode: 'onChange',
+        mode: mode ?? 'onChange',
         defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] }
     });
 
@@ -78,5 +77,21 @@ describe('when Basic information renders', () => {
         expect(errorMessage).toHaveTextContent('The Date of birth should occur after');
         expect(errorMessage).toHaveTextContent('The Date of birth should have a month between');
         expect(errorMessage).toHaveTextContent('The Date of birth should be at least');
+    });
+
+    it('should not show an error message when unchecking all status boxes then tabbing to next checkbox', async () => {
+        mockAllows.mockReturnValue(true);
+        const { getByRole, queryByRole } = render(<Fixture mode="onBlur" />);
+
+        const user = userEvent.setup();
+
+        const statusCheckbox = getByRole('checkbox', { name: 'Active' });
+        expect(statusCheckbox).toBeChecked();
+        await user.click(statusCheckbox);
+        expect(statusCheckbox).not.toBeChecked();
+        await user.tab();
+
+        const errorMessage = queryByRole('alert');
+        expect(errorMessage).not.toBeInTheDocument();
     });
 });
