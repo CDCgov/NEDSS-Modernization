@@ -6,7 +6,13 @@ on:
     paths:
       - "apps/question-bank/**"
       - "libs/authentication/**"
+      - "libs/accumulation/**"
+      - "libs/audit/**"
       - "libs/id-generator/**"
+      - "libs/web/**"
+      - "libs/classic-interaction/**"
+      - "libs/redirect/**"
+      - "gradle/libs.versions.toml"
 
 jobs:
   sonar_scan:
