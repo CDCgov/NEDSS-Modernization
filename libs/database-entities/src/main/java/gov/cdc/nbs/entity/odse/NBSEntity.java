@@ -44,11 +44,33 @@ public class NBSEntity {
 
   public void update(
       final PatientCommand.UpdateBirth birth,
-      final AddressIdentifierGenerator identifierGenerator) {
-    PostalEntityLocatorParticipation found = maybeBirthLocator()
-        .orElseGet(() -> createBirthLocator(birth, identifierGenerator));
+      final AddressIdentifierGenerator identifierGenerator
+  ) {
 
-    found.update(birth);
+    //  does the command include a location?
+    boolean hasLocation =
+        birth.city() != null || birth.county() != null || birth.state() != null || birth.country() != null;
+
+    if (hasLocation) {
+      //  if so make sure the location values are updated
+      maybeBirthLocator()
+          .orElseGet(() -> createBirthLocator(birth, identifierGenerator))
+          .update(birth);
+    } else {
+      //  inactivate the existing locator
+      maybeBirthLocator()
+          .ifPresent(
+              locator -> locator.delete(
+                  new PatientCommand.DeleteAddress(
+                      locator.identifier().getEntityUid(),
+                      locator.identifier().getLocatorUid(),
+                      birth.requester(),
+                      birth.requestedOn()
+                  )
+              )
+          );
+    }
+
   }
 
   private Optional<PostalEntityLocatorParticipation> maybeBirthLocator() {
@@ -84,14 +106,37 @@ public class NBSEntity {
   }
 
   public void update(
-      final PatientCommand.UpdateMortality info,
+      final PatientCommand.UpdateMortality mortality,
       final AddressIdentifierGenerator identifierGenerator
   ) {
 
-    PostalEntityLocatorParticipation found = maybeMortalityLocator()
-        .orElseGet(() -> createMortalityLocator(info, identifierGenerator));
+    //  does the command include a location?
+    boolean hasLocation =
+        mortality.city() != null || mortality.county() != null || mortality.state() != null || mortality.country() != null;
 
-    found.update(info);
+    //  is the patient deceased?
+    boolean deceased = Objects.equals(mortality.deceased(), "Y");
+
+    if (deceased && hasLocation) {
+      //  if so make sure the location values are updated
+      maybeMortalityLocator()
+          .orElseGet(() -> createMortalityLocator(mortality, identifierGenerator))
+          .update(mortality);
+    } else {
+      //  inactivate the existing locator
+      maybeMortalityLocator()
+          .ifPresent(
+              locator -> locator.delete(
+                  new PatientCommand.DeleteAddress(
+                      locator.identifier().getEntityUid(),
+                      locator.identifier().getLocatorUid(),
+                      mortality.requester(),
+                      mortality.requestedOn()
+                  )
+              )
+          );
+    }
+
   }
 
   private Optional<PostalEntityLocatorParticipation> maybeMortalityLocator() {
@@ -214,6 +259,14 @@ public class NBSEntity {
         .filter(existing -> Objects.equals(existing.identifier().getLocatorUid(), deleted.id()))
         .findFirst()
         .ifPresent(existing -> existing.delete(deleted));
+  }
+
+  List<PostalEntityLocatorParticipation> addresses() {
+    return this.ensureLocators().stream().flatMap(
+        obj -> (obj instanceof PostalEntityLocatorParticipation postal) ?
+            Stream.of(postal) :
+            Stream.empty()
+    ).toList();
   }
 
   public Stream<PostalEntityLocatorParticipation> addresses(final Predicate<EntityLocatorParticipation> filter) {

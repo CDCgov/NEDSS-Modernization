@@ -1556,16 +1556,7 @@ class PersonTest {
         )
         .satisfies(
             actual -> assertThat(actual.locationOfDeath())
-                .hasValueSatisfying(
-                    address -> assertThat(address)
-                        .returns("U", PostalEntityLocatorParticipation::type)
-                        .returns("DTH", PostalEntityLocatorParticipation::use)
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .returns(null, PostalLocator::city)
-                        .returns(null, PostalLocator::state)
-                        .returns(null, PostalLocator::county)
-                        .returns(null, PostalLocator::country)
-                )
+                .isNotPresent()
         )
         .extracting(Person::mortality)
         .returns(LocalDate.parse("2023-06-01"), PatientMortality::asOf)
@@ -1629,16 +1620,7 @@ class PersonTest {
         )
         .satisfies(
             actual -> assertThat(actual.locationOfDeath())
-                .hasValueSatisfying(
-                    address -> assertThat(address)
-                        .returns("U", PostalEntityLocatorParticipation::type)
-                        .returns("DTH", PostalEntityLocatorParticipation::use)
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .returns(null, PostalLocator::city)
-                        .returns(null, PostalLocator::state)
-                        .returns(null, PostalLocator::county)
-                        .returns(null, PostalLocator::country)
-                )
+                .isNotPresent()
         )
         .extracting(Person::audit)
         .satisfies(AuditAssertions.changed(131L, "2019-03-03T10:15:30"));

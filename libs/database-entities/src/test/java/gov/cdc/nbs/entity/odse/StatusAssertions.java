@@ -15,6 +15,9 @@ public class StatusAssertions {
     return status('A', when);
   }
 
+  public static Consumer<Status> inactive(final String when) {
+    return status('I', when);
+  }
 
   public static Consumer<Status> status(final char value, final String when) {
     return status(value, LocalDateTime.parse(when));

@@ -402,6 +402,7 @@ public class Person {
       this.mortality = new PatientMortality();
     }
     this.mortality.update(info);
+
     this.nbsEntity.update(info, identifierGenerator);
 
     changed(info);

@@ -1,16 +1,19 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.data.LimitString;
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
-import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
-import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
+import gov.cdc.nbs.patient.demographics.address.PatientAddressDemographicApplier;
+import gov.cdc.nbs.patient.demographics.birth.PatientBirthDemographicApplier;
+import gov.cdc.nbs.patient.demographics.ethnicity.PatientEthnicityDemographicApplier;
+import gov.cdc.nbs.patient.demographics.gender.PatientGenderApplier;
+import gov.cdc.nbs.patient.demographics.identification.PatientIdentificationDemographicApplier;
+import gov.cdc.nbs.patient.demographics.mortality.PatientMortalityDemographicApplier;
+import gov.cdc.nbs.patient.demographics.name.PatientNameDemographicApplier;
+import gov.cdc.nbs.patient.demographics.phone.PatientEmailDemographicApplier;
+import gov.cdc.nbs.patient.demographics.phone.PatientPhoneDemographicApplier;
+import gov.cdc.nbs.patient.demographics.race.PatientRaceDemographicApplier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
-import gov.cdc.nbs.support.IdentificationMother;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
@@ -18,19 +21,15 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import jakarta.persistence.EntityManager;
-import net.datafaker.Faker;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Locale;
+
+import static gov.cdc.nbs.support.util.RandomUtil.oneFrom;
 
 @Component
 @ScenarioScope
-@Transactional
 public class PatientMother {
 
   private static final String CREATE = """
@@ -156,45 +155,61 @@ public class PatientMother {
       delete from entity where [class_cd] = 'PSN' and entity_uid in (:identifiers);
       """;
 
-  private final Faker faker;
   private final MotherSettings settings;
   private final SequentialIdentityGenerator idGenerator;
   private final PatientLocalIdentifierGenerator localIdentifierGenerator;
-  private final AddressIdentifierGenerator addressIdentifierGenerator;
-  private final PhoneIdentifierGenerator phoneIdentifierGenerator;
   private final PatientShortIdentifierResolver shortIdentifierResolver;
-  private final EntityManager entityManager;
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
   private final TestingDataCleaner<Long> cleaner;
   private final JdbcClient client;
-  private final SoundexResolver soundexResolver;
+  private final PatientEmailDemographicApplier emailDemographicApplier;
+  private final PatientPhoneDemographicApplier phoneDemographicApplier;
+  private final PatientIdentificationDemographicApplier identificationDemographicApplier;
+  private final PatientNameDemographicApplier nameDemographicApplier;
+  private final PatientAddressDemographicApplier addressDemographicApplier;
+  private final PatientRaceDemographicApplier raceDemographicApplier;
+  private final PatientGenderApplier genderDemographicApplier;
+  private final PatientEthnicityDemographicApplier ethnicityDemographicApplier;
+  private final PatientBirthDemographicApplier birthDemographicApplier;
+  private final PatientMortalityDemographicApplier mortalityDemographicApplier;
 
   PatientMother(
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator,
       final PatientLocalIdentifierGenerator localIdentifierGenerator,
-      final AddressIdentifierGenerator addressIdentifierGenerator,
-      final PhoneIdentifierGenerator phoneIdentifierGenerator,
       final PatientShortIdentifierResolver shortIdentifierResolver,
-      final EntityManager entityManager,
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final JdbcClient client,
-      final SoundexResolver soundexResolver
+      final PatientEmailDemographicApplier emailDemographicApplier,
+      final PatientPhoneDemographicApplier phoneDemographicApplier,
+      final PatientIdentificationDemographicApplier identificationDemographicApplier,
+      final PatientNameDemographicApplier nameDemographicApplier,
+      final PatientAddressDemographicApplier addressDemographicApplier,
+      final PatientRaceDemographicApplier raceDemographicApplier,
+      final PatientGenderApplier genderDemographicApplier,
+      final PatientEthnicityDemographicApplier ethnicityDemographicApplier,
+      final PatientBirthDemographicApplier birthDemographicApplier,
+      final PatientMortalityDemographicApplier mortalityDemographicApplier
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.localIdentifierGenerator = localIdentifierGenerator;
-    this.addressIdentifierGenerator = addressIdentifierGenerator;
-    this.phoneIdentifierGenerator = phoneIdentifierGenerator;
     this.shortIdentifierResolver = shortIdentifierResolver;
-    this.entityManager = entityManager;
     this.available = available;
     this.active = active;
     this.client = client;
-    this.soundexResolver = soundexResolver;
-    this.faker = new Faker(Locale.of("en-us"));
+    this.emailDemographicApplier = emailDemographicApplier;
+    this.phoneDemographicApplier = phoneDemographicApplier;
+    this.identificationDemographicApplier = identificationDemographicApplier;
+    this.nameDemographicApplier = nameDemographicApplier;
+    this.addressDemographicApplier = addressDemographicApplier;
+    this.raceDemographicApplier = raceDemographicApplier;
+    this.genderDemographicApplier = genderDemographicApplier;
+    this.ethnicityDemographicApplier = ethnicityDemographicApplier;
+    this.birthDemographicApplier = birthDemographicApplier;
+    this.mortalityDemographicApplier = mortalityDemographicApplier;
 
     this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
   }
@@ -236,268 +251,68 @@ public class PatientMother {
     return new PatientIdentifier(identifier, shortId, local);
   }
 
-  private Person managed(final PatientIdentifier identifier) {
-    return this.entityManager.find(Person.class, identifier.id());
-  }
-
   public void deleted(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.delete(
-        new PatientCommand.Delete(
-            identifier.id(),
-            this.settings.createdBy(),
-            this.settings.createdOn()),
-        id -> 0);
+    withStatus(identifier, "LOG_DEL", LocalDateTime.now());
   }
 
   public void superseded(final PatientIdentifier identifier) {
-    managed(identifier)
-        .recordStatus()
-        .change("SUPERCEDED", LocalDateTime.now());
+    withStatus(identifier, "SUPERCEDED", LocalDateTime.now());
   }
 
-  public void withAddress(
-      final PatientIdentifier identifier,
-      final String address,
-      final String city,
-      final String county,
-      final String state,
-      final String zip) {
-    withAddress(identifier, "H", address, city, county, state, zip);
-  }
-
-  public void withAddress(
-      final PatientIdentifier identifier,
-      final String use,
-      final String address,
-      final String city,
-      final String county,
-      final String state,
-      final String zip) {
-    withAddress(identifier, "H", use, address, city, county, state, zip);
-  }
-
-  public void withAddress(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String address,
-      final String city,
-      final String county,
-      final String state,
-      final String zip,
-      final LocalDate asOf) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddAddress(
-            patient.id(),
-            asOf,
-            type,
-            use,
-            address,
-            null,
-            city,
-            state,
-            zip,
-            county,
-            "840",
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        addressIdentifierGenerator
-    );
-  }
-
-  public void withAddress(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String address,
-      final String city,
-      final String county,
-      final String state,
-      final String zip) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddAddress(
-            patient.id(),
-            RandomUtil.dateInPast(),
-            type,
-            use,
-            address,
-            null,
-            city,
-            state,
-            zip,
-            county,
-            "840",
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        addressIdentifierGenerator
-    );
+  private void withStatus(
+      final PatientIdentifier patient,
+      final String status,
+      final LocalDateTime when
+  ) {
+    this.client.sql("update Person set record_status_cd = ?, record_status_time = ? where person_uid = ?")
+        .param(status)
+        .param(when)
+        .param(patient.id())
+        .update();
   }
 
   public void withAddress(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddAddress(
-            patient.id(),
-            RandomUtil.dateInPast(),
-            faker.address().streetAddress(),
-            null,
-            faker.address().city(),
-            RandomUtil.getRandomStateCode(),
-            faker.address().zipCode(),
-            null,
-            RandomUtil.country(),
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        addressIdentifierGenerator
-    );
+    addressDemographicApplier.withAddress(identifier);
   }
+
+  public void withAddress(
+      final PatientIdentifier identifier,
+      final String address,
+      final String city,
+      final String county,
+      final String state,
+      final String zip
+  ) {
+    addressDemographicApplier.withAddress(identifier, "H", address, city, county, state, zip);
+  }
+
+
 
   public void withIdentification(final PatientIdentifier identifier) {
-    withIdentification(
-        identifier,
-        RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
-        RandomUtil.getRandomNumericString(8));
-  }
-
-  public void withIdentification(
-      final PatientIdentifier identifier,
-      final String type,
-      final String value) {
-
-    withIdentification(
-        identifier,
-        type,
-        value,
-        RandomUtil.dateInPast());
-
-  }
-
-  public void withIdentification(
-      final PatientIdentifier identifier,
-      final String type,
-      final String value,
-      final LocalDate asOf) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddIdentification(
-            identifier.id(),
-            asOf,
-            value,
-            RandomUtil.maybeOneFrom("GA"),
-            type,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+    identificationDemographicApplier.withIdentification(identifier);
   }
 
   public void withName(final PatientIdentifier identifier) {
-    withName(
-        identifier,
-        RandomUtil.dateInPast(),
-        "L",
-        faker.name().firstName(),
-        faker.name().firstName(),
-        faker.name().lastName(),
-        null);
+    this.nameDemographicApplier.withName(identifier);
   }
 
   public void withName(
       final PatientIdentifier identifier,
       final String type,
       final String first,
-      final String last) {
-    withName(
-        identifier,
-        RandomUtil.dateInPast(),
-        type,
-        first,
-        last);
-  }
-
-  public void withName(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String type,
-      final String first,
-      final String last) {
-    withName(
-        identifier,
-        asOf,
-        type,
-        first,
-        null,
-        last,
-        null);
-  }
-
-  public void withName(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String type,
-      final String first,
-      final String middle,
-      final String last,
-      final String suffix) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        this.soundexResolver,
-        new PatientCommand.AddName(
-            identifier.id(),
-            asOf,
-            null,
-            first,
-            middle,
-            null,
-            last,
-            null,
-            suffix,
-            null,
-            type,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+      final String last
+  ) {
+    this.nameDemographicApplier.withName(identifier, type, first, last);
   }
 
   public void withPhone(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddPhone(
-            identifier.id(),
-            RandomUtil.oneFrom("AN", "BP", "CP", "FAX", "PH"),
-            RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
-            RandomUtil.dateInPast(),
-            RandomUtil.getRandomString(15),
-            faker.phoneNumber().cellPhone(),
-            faker.phoneNumber().extension(),
-            null,
-            null,
-            RandomUtil.getRandomString(),
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        phoneIdentifierGenerator
-    );
+    phoneDemographicApplier.withPhone(identifier);
   }
 
   public void withPhone(
       final PatientIdentifier identifier,
-      final String number) {
+      final String number
+  ) {
     withPhone(identifier, null, number, null);
   }
 
@@ -505,154 +320,30 @@ public class PatientMother {
       final PatientIdentifier identifier,
       final String countryCode,
       final String number,
-      final String extension) {
-    withPhone(identifier, "PH", "H", countryCode, number, extension);
-  }
-
-  public void withPhone(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String countryCode,
-      final String number,
-      final String extension) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddPhone(
-            identifier.id(),
-            type,
-            use,
-            RandomUtil.dateInPast(),
-            countryCode,
-            number,
-            extension,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        phoneIdentifierGenerator
-    );
-  }
-
-  public void withPhone(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String countryCode,
-      final String number,
-      final String extension,
-      final LocalDate date) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddPhone(
-            identifier.id(),
-            type,
-            use,
-            date,
-            countryCode,
-            number,
-            extension,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        phoneIdentifierGenerator
-    );
+      final String extension
+  ) {
+    phoneDemographicApplier.withPhone(identifier, "PH", "H", countryCode, number, extension, RandomUtil.dateInPast());
   }
 
   public void withEmail(final PatientIdentifier identifier) {
-    withEmail(identifier, LimitString.toMaxLength(faker.internet().emailAddress(), 100));
+    emailDemographicApplier.withEmail(identifier);
   }
 
   public void withEmail(final PatientIdentifier identifier, final String email) {
-    withEmail(
+    emailDemographicApplier.withEmail(
         identifier,
         "NET",
-        RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
+        oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
         email,
         RandomUtil.dateInPast());
   }
-
-  public void withEmail(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String email,
-      final LocalDate asOf) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddPhone(
-            identifier.id(),
-            type,
-            use,
-            asOf,
-            null,
-            null,
-            null,
-            email,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        ),
-        phoneIdentifierGenerator
-    );
-  }
-
-  public void withEmail(
-      final PatientIdentifier identifier,
-      final String type,
-      final String use,
-      final String email) {
-    withEmail(
-        identifier,
-        type,
-        use,
-        email,
-        RandomUtil.dateInPast());
-  }
-
 
   public void withBirthInformation(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.update(
-        new PatientCommand.UpdateBirth(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            RandomUtil.dateInPast(),
-            RandomUtil.maybeGender(),
-            RandomUtil.maybeIndicator(),
-            null,
-            null,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()),
-        this.addressIdentifierGenerator);
+    birthDemographicApplier.withBirthInformation(identifier);
   }
 
   public void withGender(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.update(
-        new PatientCommand.UpdateGender(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            RandomUtil.gender().value(),
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+    genderDemographicApplier.withGender(identifier);
   }
 
   public void withLocalId(final PatientIdentifier patient, final String localId) {
@@ -663,165 +354,20 @@ public class PatientMother {
   }
 
   public void withMortality(final PatientIdentifier identifier) {
-
-    Person patient = managed(identifier);
-
-    Deceased indicator = RandomUtil.deceased();
-
-    LocalDate deceasedOn = indicator == Deceased.Y ? RandomUtil.dateInPast() : null;
-
-    patient.update(
-        new PatientCommand.UpdateMortality(
-            identifier.id(),
-            RandomUtil.dateInPast(),
-            indicator.value(),
-            deceasedOn,
-            null,
-            null,
-            null,
-            null,
-            this.settings.createdBy(),
-            this.settings.createdOn()),
-        this.addressIdentifierGenerator);
+    mortalityDemographicApplier.withMortality(identifier);
   }
 
-  public void withEthnicity(
-      final PatientIdentifier identifier,
-      final String ethnicity,
-      final LocalDate asOf
-  ) {
-    client.sql(
-            """
-                update person set
-                    ethnic_group_ind = ?,
-                    as_of_date_ethnicity = ?
-                where person_uid = ?
-                """
-        )
-        .param(ethnicity)
-        .param(asOf)
-        .param(identifier.id())
-        .update();
-  }
-
-  public void withEthnicity(
-      final PatientIdentifier identifier,
-      final String ethnicity
-  ) {
-    withEthnicity(identifier, ethnicity, RandomUtil.dateInPast());
-  }
 
   public void withEthnicity(final PatientIdentifier identifier) {
-    withEthnicity(identifier, RandomUtil.ethnicity());
+    this.ethnicityDemographicApplier.withEthnicity(identifier);
   }
 
-
-  public void withSpecificEthnicity(
-      final PatientIdentifier identifier,
-      final String detail
-  ) {
-    client.sql(
-            """
-                insert into Person_ethnic_group(
-                    person_uid,
-                    ethnic_group_cd,
-                    add_time,
-                    add_user_id,
-                    record_status_cd
-                ) values (
-                    :patient,
-                    :detail,
-                    :addedOn,
-                    :addedBy,
-                    'ACTIVE'
-                )
-                """
-        )
-        .param("patient", identifier.id())
-        .param("detail", detail)
-        .param("addedOn", this.settings.createdOn())
-        .param("addedBy", this.settings.createdBy())
-        .update();
-  }
-
-  public void withUnknownEthnicity(
-      final PatientIdentifier identifier,
-      final String reason
-  ) {
-    withUnknownEthnicity(identifier, reason, RandomUtil.dateInPast());
-  }
-
-  public void withUnknownEthnicity(
-      final PatientIdentifier identifier,
-      final String reason,
-      final LocalDate asOf
-  ) {
-    client.sql(
-            """
-                update person set
-                    ethnic_group_ind = 'UNK',
-                    ethnic_unk_reason_cd = ?,
-                    as_of_date_ethnicity = ?
-                where person_uid = ?
-                """
-        )
-        .param(reason)
-        .param(asOf)
-        .param(identifier.id())
-        .update();
-  }
-
-
-  public void withAsOf(final PatientIdentifier identifier, final LocalDate value) {
-    client.sql("update person set as_of_date_admin = ? where person_uid = ?")
-        .param(value)
-        .param(identifier.id())
-        .update();
-  }
-
-  public void withComment(final PatientIdentifier identifier, final String value) {
-    client.sql("update person set [description] = ? where person_uid = ?")
-        .param(value)
-        .param(identifier.id())
-        .update();
-  }
 
   public void withRace(final PatientIdentifier patient) {
-    withRace(patient, RandomUtil.oneFrom("2106-3", "2054-5", "2028-9", "U"));
+    raceDemographicApplier.withRace(patient);
   }
 
   public void withRace(final PatientIdentifier patient, final String race) {
-    this.client.sql(
-            """
-                insert into Person_race (
-                    person_uid,
-                    as_of_date,
-                    race_cd,
-                    race_category_cd,
-                    add_user_id,
-                    add_time,
-                    last_chg_user_id,
-                    last_chg_time,
-                    record_status_cd,
-                    record_status_time
-                ) values (
-                    :patient,
-                    :asOf,
-                    :race,
-                    :race,
-                    :addedBy,
-                    :addedOn,
-                    :addedBy,
-                    :addedOn,
-                    'ACTIVE',
-                    :addedOn
-                );
-                """
-        ).param("patient", patient.id())
-        .param("asOf", RandomUtil.dateInPast())
-        .param("race", race)
-        .param("addedBy", settings.createdBy())
-        .param("addedOn", settings.createdOn())
-        .update();
+    raceDemographicApplier.withRace(patient, race);
   }
 }

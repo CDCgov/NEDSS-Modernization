@@ -132,6 +132,10 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
     return recordStatus;
   }
 
+  public Status status() {
+    return status;
+  }
+
   protected void changed(final PatientCommand command) {
     if (this.audit == null) {
       this.audit = new Audit(command.requester(), command.requestedOn());
