@@ -11,18 +11,20 @@ import editMortalityModule from "./profile/editMortality.module";
 
 class PatientProfilePage {
   isDisplayed() {
-    cy.get(".patient-summary").should("be.visible");
+    cy.get("h2#demographics-summary").contains("Patient summary");``    
   }
 
   print() {
-    cy.get("button").contains("Delete patient").invoke("removeAttr", "target").click({ force: true });
     cy.wait(1000);
+    cy.get('button[aria-label="Delete"]').click({ force: true })
+    // cy.get("button").contains("Delete patient").invoke("removeAttr", "target").click({ force: true });
+    
   }
 
   setPatientProfileENVID() {
     cy.url().then((url) => {      
       const urlParts = url.split('/');
-      const patientId = urlParts[urlParts.length - 2];
+      const patientId = urlParts[urlParts.length - 2];      
       Cypress.env('patientId', patientId);
       cy.log(patientId);
     });
@@ -42,15 +44,19 @@ class PatientProfilePage {
   }
 
   delete() {
-    cy.get("button").contains("Delete patient").wait(2000).click({ force: true });
+    cy.get('button[aria-label="Delete"]').click({ force: true })    
   }
 
   confirmDelete() {
-    cy.get("footer[class=usa-modal__footer] button").eq(1).click();
+    cy.wait(1000);
+    cy.get("button").contains("Delete")
+    // cy.get("dialog[class=usa-modal] button").eq(1).click();
   }
 
   cancelDelete() {
-    cy.get("footer[class=usa-modal__footer] button").eq(0).click();
+    cy.wait(1000);
+    cy.get("button").contains("Cancel")
+    // cy.get("dialog[class=usa-modal] button").eq(0).click();
   }
 
   navigatePatinet() {
@@ -65,8 +71,8 @@ class PatientProfilePage {
 
   clickOnTab(tabName) {
     cy.intercept("POST", "/graphql").as("graphqlRequest");
-    cy.contains("a", tabName).click();
-    cy.wait("@graphqlRequest");
+    cy.contains("button", tabName).click();
+    // cy.wait("@graphqlRequest");
   }
 
   clickOnButton(buttonName) {
@@ -83,7 +89,7 @@ class PatientProfilePage {
 
   addName(fName) {
     addNameModule.date().type().first(fName).last().add();
-    cy.wait("@graphqlRequest");
+    // cy.wait("@graphqlRequest");
   }
 
   isNameAdded(fName) {
@@ -164,7 +170,7 @@ class PatientProfilePage {
         break;
     }
     cy.contains(section).scrollIntoView();
-    cy.wait("@graphqlRequest");
+    // cy.wait("@graphqlRequest");
     cy.get("button.usa-button.grid-row").eq(len).click();
   }
 

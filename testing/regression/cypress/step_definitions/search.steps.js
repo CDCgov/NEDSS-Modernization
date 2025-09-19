@@ -38,7 +38,7 @@ Then("I should see no results found text", () => {
 });
 
 Then("I should see No Results found text", () => {
-  cy.contains("No results found").should("be.visible");
+  cy.get("div#patient-search-results table tbody tr").should("not.exist");
 });
 
 Then("I should see no result found text", () => {
@@ -143,8 +143,8 @@ When("I search by email as {string}", (string) => {
   searchPage.search();
 });
 
-Then("I should see Results with the phone number as {string}", (string) => {
-  cy.get('div[data-item-type="phone"]').first().scrollIntoView().contains(string).should("be.visible");
+Then("I should see Results with the phone number as {string}", (string) => {  
+  cy.get('div[data-item-type="phone"]').contains(string).should("be.visible");
 
 });
 

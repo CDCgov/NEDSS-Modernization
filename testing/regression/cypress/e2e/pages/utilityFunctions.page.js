@@ -145,7 +145,7 @@ class UtilityFunctions {
   checkELRActivityLog(fakeRandomData) {
     cy.get("a").contains("Home").click();              
     cy.contains('System Management').click();
-    cy.xpath("/html/body/div/div/div[2]/div/table[5]/thead/tr/th/a/img").click();              
+    cy.xpath("/html/body/div/div/div/div[2]/div[2]/section/div/div/div/a[1]").click();                  
     cy.contains('Manage ELR Activity Log').click();
     cy.get("#searchButton").click()
     cy.xpath("/html/body/div[2]/div[1]/form/div[4]/div/fieldset/table/tbody/tr/td/table/thead/tr/th[7]/img").click();

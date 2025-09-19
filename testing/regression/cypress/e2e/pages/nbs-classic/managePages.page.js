@@ -1,8 +1,7 @@
 class ClassicManagePagesPage {
     
   navigateToPageLibrary() {
-    cy.contains('System Management').click()
-    cy.get('#systemAdmin5 a').eq(0).click()
+    cy.contains('System Management').click()    
     cy.contains('Manage Pages').click()
   }
 
