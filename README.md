@@ -45,7 +45,7 @@ Shared components that offer common utilities and standardized interactions with
   between `wildfly` and `spring-boot` based services.
 - [Database-Entities](libs/database-entities/README.md)
 - [Event-Schema](libs/event-schema/README.md)
-- [Id Generator](libs/id-generator/README.md)
+- [Id Generator](libs/id-generator/README.md) - A Java implementation of the `getNextUid_sp` stored procedure used to create identifiers within NBS.
 - [Web](libs/web) - Standardizes handling of Cookie management and provides a common `Response` pattern.
 
 #### Testing libraries
@@ -181,6 +181,42 @@ achieved by altering the configuration to point to the local instances.
 | PAGEBUILDER_API_PORT     | `8095`              | The port that page-builder is served from.                      |
 | NBS_GATEWAY_SERVER       | `nbs-gateway`       | The host name of the server that provides the NBS Gateway.      |
 | NBS_GATEWAY_PORT         | `8000`              | The port the NBS Gateway is served from.                        |
+
+```mermaid
+flowchart TD
+    subgraph External
+        User[User]
+    end
+
+    subgraph NBS7
+        GW[nbs-gateway]
+        M[modernization-api/moderniztion-ui]
+        PB[pagebuilder-api]
+        ES[(elasticsearch)]
+        DB[(nbs-mssql)]
+        WF(wildfly)
+    end
+
+    User --> GW
+
+    GW --routes--> M
+    GW --routes--> PB
+    GW --routes--> WF
+
+    M --read/write--> DB
+    M --read/write--> ES
+    M --request--> WF
+
+    PB --read/write--> DB
+    PB --request--> WF
+
+    style GW fill:#8168b3,stroke:#333,stroke-width:2px
+    style M fill:#1a4480,stroke:#333,stroke-width:2px
+    style PB fill:#28a0cb,stroke:#333,stroke-width:2px
+    style DB fill:#565c65,stroke:#333,stroke-width:2px
+    style ES fill:#565c65,stroke:#333,stroke-width:2px
+    style WF fill:#c05600,stroke:#333,stroke-width:2px
+```
 
 #### Configuring the NBS-Gateway to use local modernization-ui
 

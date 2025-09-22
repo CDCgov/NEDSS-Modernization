@@ -73,7 +73,7 @@ const Card = ({
                     {children}
                 </Collapsible>
             </Shown>
-            <Shown when={!collapsed}>
+            <Shown when={!collapsed && !!footer}>
                 <footer>{footer}</footer>
             </Shown>
         </section>

@@ -8,6 +8,7 @@ on:
       - "apps/modernization-api/**"
       - "apps/modernization-ui/**"
       - "libs/**"
+      - "gradle/libs.versions.toml"
 
 jobs:
   sonar_scan:
