@@ -34,9 +34,7 @@ class SearchPage {
   }
 
   selectId() {
-    cy.get('svg[aria-label="Collapse Basic information"]').first().click()
-    cy.get('svg[aria-label="Expand ID"]').first().click()
-    cy.wait(500);
+    cy.get("svg").eq(4).click();    
   }
 
   enterIdType(type) {
@@ -58,10 +56,8 @@ class SearchPage {
   }
 
   selectRace() {
-    cy.get('svg[aria-label="Collapse Basic information"]').first().click()
-    cy.get('svg[aria-label="Expand Race/Ethnicity"]').first().click()
-    cy.wait(500);
-    cy.wait(1000);
+    cy.get("svg").eq(5).click();
+    cy.wait(500);    
   }
 
   enterEthnicity(type) {
@@ -100,6 +96,7 @@ class SearchPage {
   // }
 
   selectState(string) {
+    // cy.get('div[aria-label="Address"]').click({ force: true });
     cy.get("select[name='state']").select(string);    
     cy.wait(500);
   }
@@ -141,7 +138,8 @@ class SearchPage {
   }
 
   clickAddressTab() {    
-    cy.get('summary').contains("Address").click();
+    cy.wait(500)
+    cy.get("svg").eq(2).click();            
   }
 
 verifyTableColumns() {

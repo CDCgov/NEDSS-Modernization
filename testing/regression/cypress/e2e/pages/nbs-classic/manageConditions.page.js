@@ -2,8 +2,7 @@ class ClassicManageConditionsPage {
 
   navigateToConditionsLibrary() {
     cy.contains('System Management').click()
-    cy.get('#systemAdmin5 a').eq(0).click()
-    cy.contains('Manage Conditions').click()
+    cy.contains('Manage conditions').click()
   }
 
   clickAddNewBtn() {

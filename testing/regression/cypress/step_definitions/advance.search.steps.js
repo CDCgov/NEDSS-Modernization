@@ -90,6 +90,7 @@ Then("confirms the deletion of the patient", () => {
 });
 
 Then("the user is directed to the Home screen", () => {
+  cy.wait(1500);
   cy.url().should("include", "/search/patients");
 });
 
@@ -97,8 +98,8 @@ Then("cancels the deletion of the patient", () => {
   patientProfilePage.cancelDelete();
 });
 
-Then("the user remains on the same profile page", () => {
-  cy.url().should("include", "/patient-profile/");
+Then("the user remains on the same profile page", () => {  
+  cy.url().should("include", "/summary");
 });
 
 When("the user clicks on the Back to top button", () => {
@@ -109,8 +110,11 @@ Then("the user is taken to the top of the page", () => {
   cy.window().its("scrollY").should("be.equal", 0);
 });
 
-Then("user clicks on a patient's profile {string} tab", (string) => {
-  patientProfilePage.clickOnTab(string);
+Then("user clicks on a patient's profile {string} tab", (string) => {  
+  
+  cy.wait(5000);
+  cy.get("button").contains(string).click();
+  // patientProfilePage.clickOnTab(string);
   cy.wait(5000);
 });
 
@@ -233,7 +237,7 @@ Given(
 Given(
   "the user navigate to the patient profile page for {string}",
   (string) => {    
-    cy.visit(`/patient-profile/${string}`);
+    cy.visit(`/patient/${string}/summary`);
   }
 );
 
@@ -257,7 +261,7 @@ Then("nagivate to add new patient page", () => {
 });
 
 Given("create a new patient profile", () => {
-  cy.visit('/add-patient');
+  cy.visit('/patient/add');
   addPatientPage.addSimplePatient()
   addPatientPage.clickViewPatientProfile();
 });

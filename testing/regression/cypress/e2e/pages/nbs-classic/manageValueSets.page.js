@@ -2,8 +2,7 @@ class ClassicManageValueSetsPage {
 
   navigateToValueSetsLibrary() {
     cy.contains('System Management').click()
-    cy.get('#systemAdmin5 a').eq(0).click()
-    cy.contains('Manage Value Sets').click()
+    cy.contains('Manage value sets').click()
   }
 
   clickAddNewBtn() {

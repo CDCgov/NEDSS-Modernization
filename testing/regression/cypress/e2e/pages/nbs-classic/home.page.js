@@ -138,7 +138,7 @@ class ClassicHomePage {
   } 
 
   clickSortTableOption(string) {
-    cy.get(`svg[aria-label="${string}"]`).click();
+    cy.get(`button[aria-label="${string}"]`).click();
   }
 
   verifyTopAfterSortSearch(string) {

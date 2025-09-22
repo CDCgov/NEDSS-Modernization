@@ -1,12 +1,11 @@
 class EventsTabPage {
   get table() {
-    return "table[data-testid=table]";
+    return "section";
   }
 
   selectMultipleInvestigations() {
     const conditionText = "Acanthamoeba Disease (Excluding Keratitis)";
-    const conditionColumnIndex = 3;
-
+    const conditionColumnIndex = 3;    
     cy.get(this.table)
       .eq(0)
       .find("tbody tr")
@@ -50,10 +49,10 @@ class EventsTabPage {
       tableIndex = 7;
     }
 
-    const myArray = [];
+    const myArray = [];    
     cy.get(this.table)
       .eq(tableIndex)
-      .find("th")
+      .find("h2")
       .then((headerElements) => {
         const headers = Cypress.$.map(headerElements, (headerElement) => {
           return Cypress.$(headerElement).text().trim();
