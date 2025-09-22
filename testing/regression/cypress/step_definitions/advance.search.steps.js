@@ -90,6 +90,7 @@ Then("confirms the deletion of the patient", () => {
 });
 
 Then("the user is directed to the Home screen", () => {
+  cy.wait(1500);
   cy.url().should("include", "/search/patients");
 });
 
@@ -97,8 +98,8 @@ Then("cancels the deletion of the patient", () => {
   patientProfilePage.cancelDelete();
 });
 
-Then("the user remains on the same profile page", () => {
-  cy.url().should("include", "/patient-profile/");
+Then("the user remains on the same profile page", () => {  
+  cy.url().should("include", "/summary");
 });
 
 When("the user clicks on the Back to top button", () => {

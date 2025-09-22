@@ -209,8 +209,11 @@ Then("the HL7 message is processed by the data ingestion service", () => {
         clientid: clientid,
         clientsecret: secret,
       },
-    }).then((response: { body: string }) => {
-      status = JSON.parse(response.body).status;
+    }).then((response: { body: string }) => {      
+      status = response.status;                  
+      if (JSON.parse(response.body)[1].match(/Status:\s*(\S+)/) !== null ) {
+        status = JSON.parse(response.body)[1].match(/Status:\s*(\S+)/)[1];
+      }
       cy.log("Recieved status of: " + status);
       if (status === "Success") {
         return;
