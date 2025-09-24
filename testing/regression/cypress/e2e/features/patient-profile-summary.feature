@@ -7,14 +7,13 @@ Feature: User access the Patient Profile Summary page.
         Given the user navigate to the patient profile page for "78917"
         Then user clicks on a patient's profile "Summary" tab
         Then I should see the following elements
-            | Patient ID    |
-            | SEX           |
-            | DATE OF BIRTH |
-            | PHONE         |
-            | EMAIL         |
-            | ADDRESS       |
-            | ETHNICITY     |
-            | RACE          |
+            | Patient ID     |
+            | PHONE          |
+            | EMAIL          |
+            | ADDRESS        |
+            | ETHNICITY      |
+            | RACE           |
+            | IDENTIFICATION |
 
     Scenario: User navigates to the top of the page
         Given the user navigate to the patient profile page for "78917"
