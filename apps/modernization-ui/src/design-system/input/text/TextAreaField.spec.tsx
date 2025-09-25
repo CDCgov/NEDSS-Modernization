@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { TextAreaField } from "./TextAreaField";
-import { axe } from "jest-axe";
+import { axe } from "vitest-axe";
 
 describe('when entering text values for a field', () => {
   it('should render with no accessibility violations', async () => {

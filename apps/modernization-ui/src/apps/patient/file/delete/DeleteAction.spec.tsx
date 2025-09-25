@@ -1,34 +1,34 @@
+import { vi } from 'vitest';
 import { ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Permitted } from 'libs/permission';
 import { DeleteAction } from './DeleteAction';
 import { useDeletePatient } from './useDeletePatient';
-import { AlertProvider } from 'libs/alert';
 
-const mockShowSuccess = jest.fn();
-const mockShowError = jest.fn();
-const mockGo = jest.fn();
+const mockShowSuccess = vi.fn();
+const mockShowError = vi.fn();
+const mockGo = vi.fn();
 
-jest.mock('libs/alert', () => ({
+vi.mock('libs/alert', () => ({
     useAlert: () => ({
         showSuccess: mockShowSuccess,
         showError: mockShowError
     })
 }));
 
-jest.mock('apps/search', () => ({
+vi.mock('apps/search', () => ({
     useSearchNavigation: () => ({
         go: mockGo
     })
 }));
 
-jest.mock('./useDeletePatient', () => ({
+vi.mock('./useDeletePatient', () => ({
     useDeletePatient: jest.fn()
 }));
 
-jest.mock('libs/permission', () => ({
-    Permitted: jest.fn(({ children }: { children: ReactNode }) => <>{children}</>),
+vi.mock('libs/permission', () => ({
+    Permitted: vi.fn(({ children }: { children: ReactNode }) => <>{children}</>),
     permissions: {
         patient: {
             delete: 'DELETE-PATIENT'

@@ -9,10 +9,10 @@ const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: jest.fn()
+    state: vi.fn()
 };
 
-jest.mock('options/location', () => ({
+vi.mock('options/location', () => ({
     useLocationOptions: () => mockLocationOptions
 }));
 

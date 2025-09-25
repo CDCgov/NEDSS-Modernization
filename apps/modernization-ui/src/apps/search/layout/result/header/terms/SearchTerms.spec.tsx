@@ -11,9 +11,9 @@ const mockRemove = jest.fn();
 const mockFocusedTarget = jest.fn();
 const mockWithout = jest.fn();
 
-jest.mock('SkipLink/SkipLinkContext');
-jest.mock('apps/search');
-jest.mock('utils/focusedTarget');
+vi.mock('SkipLink/SkipLinkContext');
+vi.mock('apps/search');
+vi.mock('utils/focusedTarget');
 
 const terms: Term[] = [
     { title: 'Term1', name: 'term1', source: 'term1', value: '1' },

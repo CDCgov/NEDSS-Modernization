@@ -16,5 +16,4 @@ const dev = {
     }
 };
 
-// eslint-disable-next-line no-undef
-export const Config = process.env.NODE_ENV === 'development' ? dev : prod;
+export const Config = import.meta.env.MODE === 'development' ? dev : prod;

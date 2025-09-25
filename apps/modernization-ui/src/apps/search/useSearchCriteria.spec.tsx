@@ -4,11 +4,11 @@ import { useSearchParams } from 'react-router';
 import { useSearchCriteria } from './useSearchCriteria';
 import { decrypt, encrypt } from 'cryptography';
 
-jest.mock('react-router', () => ({
+vi.mock('react-router', () => ({
     useSearchParams: jest.fn()
 }));
 
-jest.mock('cryptography', () => ({
+vi.mock('cryptography', () => ({
     decrypt: jest.fn(),
     encrypt: jest.fn()
 }));

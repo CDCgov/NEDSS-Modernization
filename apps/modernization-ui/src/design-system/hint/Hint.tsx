@@ -30,7 +30,6 @@ type HintProps = {
  * An accompanying `aria-describedby` should be set on the described element.
  * Ex: `<div aria-describedby='my-hint'>Something confusing</div><Hint id='my-hint'>More info</Hint>`
  * @return {Hint}
-
  */
 const Hint = ({ id, enabled = true, children, target, position }: HintProps) => {
     const [visible, setVisible] = useState(false);

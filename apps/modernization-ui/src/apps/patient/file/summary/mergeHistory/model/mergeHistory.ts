@@ -1,6 +1,6 @@
 export type PatientFileMergeHistory = {
-    supersededPersonLocalId?: string,
-    supersededPersonLegalName?: string,
-    mergeTimestamp?: string,
-    mergedByUser?: string
-}
+    supersededPersonLocalId?: string;
+    supersededPersonLegalName?: string;
+    mergeTimestamp?: string;
+    mergedByUser?: string;
+};

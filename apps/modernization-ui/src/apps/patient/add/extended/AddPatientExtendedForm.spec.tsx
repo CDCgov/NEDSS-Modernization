@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { FormProvider, useForm } from 'react-hook-form';
 import { render, screen, within } from '@testing-library/react';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
@@ -10,14 +11,14 @@ const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: jest.fn()
+    state: vi.fn()
 };
 
-jest.mock('options/location', () => ({
+vi.mock('options/location', () => ({
     useLocationOptions: () => mockLocationOptions
 }));
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 const mockRaceCategories: Selectable[] = [{ value: '1', name: 'race name' }];
 
@@ -26,7 +27,7 @@ const mockDetailedRaces: Selectable[] = [
     { value: '3', name: 'detailed race2' }
 ];
 
-jest.mock('options/race', () => ({
+vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
     useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: jest.fn })
 }));
@@ -96,7 +97,7 @@ describe('AddPatientExtendedForm', () => {
     });
 
     it('should set default date for as of fields', () => {
-        const { getByLabelText, getByRole } = render(<Fixture asOf="05/07/1977" />);
+        const { getByLabelText } = render(<Fixture asOf="05/07/1977" />);
 
         //  The Repeating block as of dates are being initialized to today's date within the component.
         const expected = internalizeDate(new Date());

@@ -1,20 +1,25 @@
+import { vi } from 'vitest';
+import { render } from '@testing-library/react';
 import { usePage } from 'page';
 import { NavBar } from './NavBar';
-import { render } from '@testing-library/react';
-import { permissions} from 'libs/permission';
+import { permissions } from 'libs/permission';
 
 let mockPermissions: string[] = [];
 const mockAllowFn = jest.fn((permission: string) => mockPermissions.includes(permission));
 
-jest.mock('../../libs/permission/usePermissions', () => ({
-    usePermissions: () => ({
-        permissions: mockPermissions,
-        allows: mockAllowFn,
-    }),
+vi.mock('page', () => ({
+    usePage: vi.fn()
 }));
 
-jest.mock('page', () => ({
-    usePage: jest.fn(),
+vi.mock('react-router', () => ({
+    useLocation: vi.fn()
+}));
+
+vi.mock('../../libs/permission/usePermissions', () => ({
+    usePermissions: () => ({
+        permissions: mockPermissions,
+        allows: mockAllowFn
+    })
 }));
 
 const renderNavBarWithPermissions = (permissions: string[]) => {
@@ -40,7 +45,7 @@ describe('NavBar component tests', () => {
         });
     });
 
-    describe('Data Entry section', ()=>{
+    describe('Data Entry section', () => {
         it.each([
             [permissions.morbidityReport.add],
             [permissions.labReport.add],
@@ -57,10 +62,8 @@ describe('NavBar component tests', () => {
         });
     });
 
-    describe('Merge Patients Section', ()=> {
-        it.each([
-            [permissions.patient.merge]
-        ])('should show Merge Patients with permission: %s', (permission) => {
+    describe('Merge Patients Section', () => {
+        it.each([[permissions.patient.merge]])('should show Merge Patients with permission: %s', (permission) => {
             const { getByText } = renderNavBarWithPermissions([permission]);
             expect(getByText('Merge Patients')).toBeInTheDocument();
         });
@@ -76,7 +79,7 @@ describe('NavBar component tests', () => {
             [permissions.reports.template.view],
             [permissions.reports.public.view],
             [permissions.reports.private.view],
-            [permissions.reports.reportingFacility.view],
+            [permissions.reports.reportingFacility.view]
         ])('should show Reports with permission: %s', (permission) => {
             const { getByText } = renderNavBarWithPermissions([permission]);
             expect(getByText('Reports')).toBeInTheDocument();
@@ -85,7 +88,7 @@ describe('NavBar component tests', () => {
         it('should show Reports with multiple report permissions', () => {
             const { getByText } = renderNavBarWithPermissions([
                 permissions.reports.template.view,
-                permissions.reports.private.view,
+                permissions.reports.private.view
             ]);
             expect(getByText('Reports')).toBeInTheDocument();
         });

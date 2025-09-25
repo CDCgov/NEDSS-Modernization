@@ -1,8 +1,9 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SignIn } from './SignIn';
 
-jest.mock('SkipLink/SkipLinkContext', () => ({
+vi.mock('SkipLink/SkipLinkContext', () => ({
     useSkipLink: () => ({ skipTo: jest.fn() })
 }));
 

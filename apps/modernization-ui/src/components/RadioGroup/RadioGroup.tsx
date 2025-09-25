@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Radio } from '@trussworks/react-uswds';
 import { ChangeEvent } from 'react';
 

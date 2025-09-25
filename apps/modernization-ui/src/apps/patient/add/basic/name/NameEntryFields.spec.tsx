@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -11,7 +12,7 @@ const mockPatientNameCodedValues = {
     degrees: [{ name: 'BA', value: 'BA' }]
 };
 
-jest.mock('apps/patient/data/name/useNameCodedValues', () => ({
+vi.mock('apps/patient/data/name/useNameCodedValues', () => ({
     useNameCodedValues: () => mockPatientNameCodedValues
 }));
 

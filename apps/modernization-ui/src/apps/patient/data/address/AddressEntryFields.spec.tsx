@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { render } from '@testing-library/react';
@@ -11,11 +12,11 @@ const mockAddressCodedValues: AddressCodedValues = {
     uses: [{ name: 'Home', value: 'HM' }]
 };
 
-jest.mock('./useAddressCodedValues', () => ({
+vi.mock('./useAddressCodedValues', () => ({
     useAddressCodedValues: () => mockAddressCodedValues
 }));
 
-const mockState = jest.fn();
+const mockState = vi.fn();
 
 const mockLocationOptions: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
@@ -24,7 +25,7 @@ const mockLocationOptions: LocationOptions = {
     state: mockState
 };
 
-jest.mock('options/location', () => ({
+vi.mock('options/location', () => ({
     useLocationOptions: () => mockLocationOptions
 }));
 

@@ -57,6 +57,7 @@ type Interaction<V> = {
  * @return {Interaction<C>} Interaction result
  */
 const useSearchCriteria = <C extends object>({ defaultValues }: Options<C>): Interaction<C> => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_searchParams, setSearchParams] = useSearchParams();
 
     const { found } = useSearchCriteriaEncrypted();

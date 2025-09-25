@@ -1,5 +1,5 @@
 import { render, screen, within } from '@testing-library/react';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { DataTable } from './DataTable';
 import { Column } from './header/column';
 import { Sizing } from 'design-system/field';

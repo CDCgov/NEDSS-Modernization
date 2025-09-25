@@ -1,13 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import { MortalityDemographicFields } from './MortalityDemographicFields';
 import { HasMortalityDemographic, initial } from '../mortality';
 import { useMortalityOptions } from './useMortalityOptions';
 import { LocationOptions } from 'options/location';
 
-const mockState = jest.fn();
+const mockState = vi.fn();
 
 const mockLocationOptions: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
@@ -16,7 +15,7 @@ const mockLocationOptions: LocationOptions = {
     state: mockState
 };
 
-jest.mock('options/location', () => ({
+vi.mock('options/location', () => ({
     useLocationOptions: () => mockLocationOptions
 }));
 

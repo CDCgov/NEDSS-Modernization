@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { act } from 'react';
 import { renderHook } from '@testing-library/react';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
@@ -8,7 +9,7 @@ const setup = () => {
 };
 
 const mockCreate = jest.fn();
-jest.mock('../useAddPatient', () => ({
+vi.mock('../useAddPatient', () => ({
     useAddPatient: () => {
         return {
             status: 'waiting',

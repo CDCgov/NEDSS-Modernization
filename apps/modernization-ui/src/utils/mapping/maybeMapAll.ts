@@ -4,9 +4,8 @@ import { Mapping } from './mapping';
 type MapEach<I, O> = (values?: I[]) => NonNullable<O>[];
 
 /**
- *
- * Maps each element of an array using the provided mapping function, excluding any elements that map to a non-existant value.
- *
+ * Maps each element of an array using the provided mapping function, excluding any elements that map to a
+ * non-existent value.
  * @param {Mapping} mapping The mapping function to apply to each element.
  * @return {MapEnsuringEach} The function that maps each element producing the new array.
  */

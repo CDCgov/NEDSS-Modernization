@@ -440,16 +440,16 @@ const mockResponse: MergeCandidate[] = [
     }
 ];
 
-const mockFetch = jest.fn();
+const mockFetch = vi.fn();
 let mockLoading = false;
-jest.mock('apps/deduplication/api/useMergeDetails', () => ({
+vi.mock('apps/deduplication/api/useMergeDetails', () => ({
     useMergeDetails: () => {
         return { fetchPatientMergeDetails: mockFetch, loading: mockLoading, response: mockResponse };
     }
 }));
 
-const mockRemovePatient = jest.fn();
-jest.mock('apps/deduplication/api/useRemoveMerge', () => ({
+const mockRemovePatient = vi.fn();
+vi.mock('apps/deduplication/api/useRemoveMerge', () => ({
     useRemoveMerge: () => {
         return { removePatient: mockRemovePatient };
     }
@@ -517,7 +517,7 @@ describe('MergeDetails', () => {
         // modal should pop up
         expect(getByText('Remove from group')).toBeInTheDocument();
 
-        //click confirm
+        // click confirm
         await user.click(getAllByText('Remove')[2]);
 
         // api called

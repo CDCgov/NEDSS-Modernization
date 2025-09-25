@@ -4,7 +4,7 @@ import { internalizeDate } from 'date';
 
 const mockNow = jest.fn();
 
-jest.mock('./clock', () => ({
+vi.mock('./clock', () => ({
     now: () => mockNow()
 }));
 

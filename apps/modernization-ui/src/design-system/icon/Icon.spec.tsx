@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { Icon } from './Icon';
 import { Icons } from './types';
 import userEvent from '@testing-library/user-event';
