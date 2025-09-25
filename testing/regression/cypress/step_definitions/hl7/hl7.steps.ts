@@ -159,7 +159,7 @@ Given("I have a HL7 message containing a {string} test", (testType: string) => {
     }
   );
 });
-
+  
 When("I submit the HL7 message", () => {
   expect(hl7Message).not.to.be.null;
   const baseurl = Cypress.env("DI_API");
@@ -209,8 +209,11 @@ Then("the HL7 message is processed by the data ingestion service", () => {
         clientid: clientid,
         clientsecret: secret,
       },
-    }).then((response: { body: string }) => {
-      status = JSON.parse(response.body).status;
+    }).then((response: { body: string }) => {      
+      status = response.status;                  
+      if (JSON.parse(response.body)[1].match(/Status:\s*(\S+)/) !== null ) {
+        status = JSON.parse(response.body)[1].match(/Status:\s*(\S+)/)[1];
+      }
       cy.log("Recieved status of: " + status);
       if (status === "Success") {
         return;
@@ -226,8 +229,8 @@ Then("the HL7 message is processed by the data ingestion service", () => {
 Then("an Investigation is created for the HL7 message", () => {
   // Navigate to ELR activity log
   cy.get("a").contains("Home").click();
-  cy.contains("System Management").click();
-  cy.xpath("/html/body/div/div/div[2]/div/table[5]/thead/tr/th/a/img").click();
+  cy.contains("System Management").click();  
+  cy.xpath("/html/body/div/div/div/div[2]/div[2]/section/div/div/div/a[1]").click();
   cy.contains("Manage ELR Activity Log").click();
 
   // Search for recent records

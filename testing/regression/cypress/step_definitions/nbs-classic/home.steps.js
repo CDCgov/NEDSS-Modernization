@@ -5,22 +5,6 @@ Then("Navigate to Patient Search pane", () => {
     classicHomePage.navigateToPatientSearchPane()
 });
 
-Then("Enter Last Name text box input {string}", (text) => {
-    classicHomePage.enterLastName(text)
-});
-
-Then("Enter First Name text box input {string}", (text) => {
-    classicHomePage.enterFirstName(text)
-});
-
-Then("Click on Add New button in patient Search pane", () => {
-    classicHomePage.clickAddNewBtnInPatientSearchPane()
-});
-
-Then("Click on Add new lab report in patient Search pane", () => {
-    classicHomePage.clickAddNewLabReportBtnInPatientSearchPane()
-});
-
 Then("Verify Add Lab Report page displayed", () => {
     classicHomePage.verifyAddLabReport()
 });
@@ -61,7 +45,7 @@ Then("Verify Merge Candidate List is displayed to user", () => {
     classicHomePage.verifyMergeCandidateListDisplayed()
 });
 
-Then("Click on Reports tab on upper left side", () => {
+Then("Classic Click on Reports tab on upper left side", () => {
     classicHomePage.clickReportsTab()
 });
 

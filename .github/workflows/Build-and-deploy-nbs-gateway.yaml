@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - "apps/nbs-gateway/**"
+      - "gradle/libs.versions.toml"
 
 jobs:
   call-build-microservice-container-workflow:

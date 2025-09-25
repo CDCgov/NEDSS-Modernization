@@ -8,7 +8,7 @@ class AddPatientPage {
   }
 
   clickSumbitSaveButton() {
-    cy.get(".add-patient-button").eq(2).click();
+    cy.get("button").contains("Save").click();
   }
 
   enterPaxName() {
@@ -16,9 +16,9 @@ class AddPatientPage {
     const randomLastName = faker.person.lastName();
     const randomMiddleName = faker.person.middleName();
 
-    cy.get("#lastName").type(randomLastName);
-    cy.get("#firstName").type(randomFirstName);
-    cy.get("#middleName").type(randomMiddleName);    
+    cy.get('input[id="name.last"]').type(randomLastName);
+    cy.get('input[id="name.first"]').type(randomFirstName);
+    cy.get('input[id="name.middle"]').type(randomMiddleName);    
   }
 
   addSimplePatient() {
@@ -29,23 +29,28 @@ class AddPatientPage {
   addPatient() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");    
-    cy.get("select[name=currentGender]").select("Female");    
-    cy.get("select[name=birthGender]").select("Female");    
-    cy.get("select[name=deceased]").select("No");
-
+    cy.get('select[id="name.suffix"]').select("Esquire");    
+    cy.get('select[id="personalDetails.currentSex"]').select("Female");    
+    cy.get('select[id="personalDetails.birthSex"]').select("Female");        
+    cy.get('select[id="personalDetails.deceased"]').select("No");        
+    
     this.clickSumbitSaveButton();
 
     this.clickViewPatientLink();
   }
 
   clearInformationAsOfDate() {
-    cy.get('#asOf').clear();
+    // cy.get('#asOf').clear();
+    cy.get('input[id="administrative.asOf"]').clear();
+    
   }
 
   addPatientBlank() {
-    cy.get('button[class="usa-button add-patient-button"]').click();
-    cy.get('#form-error').should('exist').and('have.text', 'You have some invalid inputs. Please correct the invalid inputs before moving forward.');
+    // cy.get('button[class="usa-button add-patient-button"]').click();
+
+    this.clickSumbitSaveButton();
+    cy.get('span[id="administrative.asOf-error"]').should('exist').and('have.text', 'The Information as of date is required.');
+    // cy.get('#form-error').should('exist').and('have.text', 'You have some invalid inputs. Please correct the invalid inputs before moving forward.');
   }
 
   addPatientSingleDetail() {
@@ -92,11 +97,12 @@ class AddPatientPage {
     cy.get(".usa-button.padding-105.text-center").click();
   }
 
-  addPatientOtherInformation() {    
-    cy.get("select[name=currentGender]").select("Female");    
-    cy.get("select[name=birthGender]").select("Female");    
-    cy.get("select[name=deceased]").select("No");    
-    cy.get("select[name=maritalStatus]").select("Married");    
+  addPatientOtherInformation() {    ;    
+    cy.get('select[id="personalDetails.currentSex"]').select("Female");    
+    cy.get('select[id="personalDetails.birthSex"]').select("Female");        
+    cy.get('select[id="personalDetails.deceased"]').select("No");
+    cy.get('select[id="personalDetails.maritalStatus"]').select("Married");
+    
     this.clickSumbitSaveButton();
 
     this.clickViewPatientLink();
@@ -106,27 +112,27 @@ class AddPatientPage {
     const randomFirstStreet = faker.location.streetAddress();
     const randomLastStreet = faker.location.secondaryAddress();
     const randomCity = faker.location.city();
-
-    cy.get("#streetAddress1").type(randomFirstStreet);
-    cy.get("#streetAddress2").type(randomLastStreet);
-    cy.get('input[id="location.city"]').type(randomCity);    
-    cy.get("select[name=state]").select("California");
-    cy.get("#zip").type("93501");    
-    cy.get("select[name=country]").select("United States");
-
+    
+    cy.get('input[id="address.address1"]').type(randomFirstStreet);
+    cy.get('input[id="address.address2"]').type(randomLastStreet);
+      
+    cy.get('input[id="address.city"]').type(randomCity);    
+    cy.get('select[id="address.state"]').select("California");
+    cy.get('input[id="address.zipcode"]').type("93501");
+    cy.get('select[id="address.county"]').select("United States");              
     this.clickSumbitSaveButton();
 
     this.clickViewPatientLink();
   }
 
   viewPatientProfile() {
-    cy.get('header h1')
+    cy.get('nav')
     .should('be.visible')
-    .and('contain.text', 'Patient profile');
+    .and('contain.text', 'Patient file');
   }
 
   viewPatientID(patientIDString) {
-    cy.get('.common-card.patient-summary .border-bottom span')
+    cy.get('header span')
     .contains(patientIDString)
     .should('be.visible');
   }
@@ -141,11 +147,10 @@ class AddPatientPage {
 
   addPatientselectEthnicity() {
     this.enterPaxName();
-
-    cy.get("select[name=suffix]").select("Esquire");    
-    cy.get("select[name=currentGender]").select("Female");    
-    cy.get("select[name=birthGender]").select("Female");    
-    cy.get("select[name=deceased]").select("No");
+       
+    cy.get('select[id="personalDetails.currentSex"]').select("Female");    
+    cy.get('select[id="personalDetails.birthSex"]').select("Female");        
+    cy.get('select[id="personalDetails.deceased"]').select("No");
 
     cy.get("label[for='2135-2']").click();
 
@@ -157,10 +162,10 @@ class AddPatientPage {
   addPatientselectRace() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");    
-    cy.get("select[name=currentGender]").select("Female");    
-    cy.get("select[name=birthGender]").select("Female");    
-    cy.get("select[name=deceased]").select("No");
+    cy.get('select[id="name.suffix"]').select("Esquire");    
+    cy.get('select[id="personalDetails.currentSex"]').select("Female");    
+    cy.get('select[id="personalDetails.birthSex"]').select("Female");        
+    cy.get('select[id="personalDetails.deceased"]').select("No");
 
     cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
@@ -173,10 +178,10 @@ class AddPatientPage {
   addPatientSelectTwoRace() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");    
-    cy.get("select[name=currentGender]").select("Female");    
-    cy.get("select[name=birthGender]").select("Female");    
-    cy.get("select[name=deceased]").select("No");
+    cy.get('select[id="name.suffix"]').select("Esquire");    
+    cy.get('select[id="personalDetails.currentSex"]').select("Female");    
+    cy.get('select[id="personalDetails.birthSex"]').select("Female");        
+    cy.get('select[id="personalDetails.deceased"]').select("No");
 
     cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
@@ -190,10 +195,10 @@ class AddPatientPage {
   addPatientId_Identificatione() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");    
-    cy.get("select[name=currentGender]").select("Female");    
-    cy.get("select[name=birthGender]").select("Female");    
-    cy.get("select[name=deceased]").select("No");
+    cy.get('select[id="name.suffix"]').select("Esquire");    
+    cy.get('select[id="personalDetails.currentSex"]').select("Female");    
+    cy.get('select[id="personalDetails.birthSex"]').select("Female");        
+    cy.get('select[id="personalDetails.deceased"]').select("No");
 
     cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
@@ -211,12 +216,14 @@ class AddPatientPage {
   addPatientAssigningAuthority_Identificatione() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");    
-    cy.get("select[name=currentGender]").select("Female");    
-    cy.get("select[name=birthGender]").select("Female");    
-    cy.get("select[name=deceased]").select("No");
+    cy.get('select[id="name.suffix"]').select("Esquire");    
+    cy.get('select[id="personalDetails.currentSex"]').select("Female");    
+    cy.get('select[id="personalDetails.birthSex"]').select("Female");        
+    cy.get('select[id="personalDetails.deceased"]').select("No");
 
-    cy.get("label[for='2135-2']").click();
+    
+    cy.get('select[id="ethnicityRace.ethnicity"]').select("Hispanic or Latino");
+    // cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
     cy.get("label[for='2028-9']").click();
     cy.get("label[for='2106-3']").click();    
@@ -234,10 +241,10 @@ class AddPatientPage {
   addPatientAddAnotherID() {
     this.enterPaxName();
 
-    cy.get("select[name=suffix]").select("Esquire");    
-    cy.get("select[name=currentGender]").select("Female");    
-    cy.get("select[name=birthGender]").select("Female");    
-    cy.get("select[name=deceased]").select("No");
+    cy.get('select[id="name.suffix"]').select("Esquire");    
+    cy.get('select[id="personalDetails.currentSex"]').select("Female");    
+    cy.get('select[id="personalDetails.birthSex"]').select("Female");        
+    cy.get('select[id="personalDetails.deceased"]').select("No");
 
     cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
