@@ -1,4 +1,5 @@
 # Dockerfile to build elasticsearch image
+# TODO(MCM): UPDATE
 FROM docker.elastic.co/elasticsearch/elasticsearch:7.17.7
 
 # Relaxes security and sets node to single
