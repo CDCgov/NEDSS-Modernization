@@ -34,8 +34,6 @@ services:
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
     ports:
       - "8080:8080"
-    # networks:
-    #   - nbs
 
   pagebuilder-api:
     build:
@@ -49,8 +47,6 @@ services:
       - TOKEN_SECRET=${TOKEN_SECRET}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-    # networks:
-    #   - nbs
 
   nbs-gateway:
     build:
@@ -78,10 +74,3 @@ services:
       - NBS_GATEWAY_PAGEBUILDER_SERVICE=${PAGEBUILDER_SERVICE}
     ports:
       - "8000:8000"
-#     networks:
-#       - nbs
-
-# networks:
-#   nbs:
-#     name: nbs
-#     external: true      

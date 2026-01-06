@@ -2,53 +2,20 @@ include:
   - ../../NEDSSDev/docker-compose.yml
   - ../docker-compose.yml
 services:
-  # nbs-mssql:
-  #   build:
-  #     context: ./db
-  #     args:
-  #       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-  #   container_name: nbs-mssql
-  #   ports:
-  #     - 1433:1433
-  #   volumes:
-  #     - nbs-mssql-data:/var/opt/mssql
-  #   environment:
-  #     - ACCEPT_EULA=1
-  #     - SQLCMDPASSWORD=${DATABASE_PASSWORD}
-  #     - MSSQL_SA_PASSWORD=${DATABASE_PASSWORD}
-  #   networks:
-  #     - nbs
-  # wildfly:
-  #   build: ./nbs-classic
-  #   image: nbs-classic:6.0.18
-  #   container_name: wildfly
-  #   depends_on:
-  #     - nbs-mssql
-  #   ports:
-  #     - "9990:9990"
-  #     - "7001:7001"
-  #     - "8787:8787"
-  #   volumes:
-  #     - ./nbs-classic/data/iis:/usr/nbs/iis
-  #   networks:
-  #     - nbs
   elasticsearch:
     container_name: elasticsearch
     build: ./elasticsearch
-    # networks:
-    #   - nbs7
     ports:
       - 9200:9200
       - 9300:9300
     environment:
       - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m" # limit memory usage
+
   kibana:
     container_name: kibana
     build: ./kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    # networks:
-    #   - nbs7
     depends_on:
       - elasticsearch
     ports:
@@ -68,8 +35,7 @@ services:
       - NIFI_SENSITIVE_PROPS_KEY=12345678901234567890A
       - JDBC_CONNECTION_STRING=jdbc:sqlserver://nbs-mssql:1433;integratedSecurity=false;encrypt=false;databaseName=NBS_ODSE;user=sa;password=${DATABASE_PASSWORD};authenticationScheme=nativeAuthentication;
       - ELASTICSEARCH_HTTP_HOSTS=http://elasticsearch:9200
-    # networks:
-    #   - nbs7
+
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:latest
@@ -83,14 +49,3 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       NBS7_BASE_URL: "http://localhost:8000"
     entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"
-    # networks:
-    #   - nbs7
-# volumes:
-  # nbs-mssql-data:
-  # nbs-mssql-working:
-  # nbs6-iis-data:
-# networks:
-#   nbs7:
-#     name: nbs
-#     external: true
-    # driver: bridge
