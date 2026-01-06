@@ -114,16 +114,17 @@ cp sample.env .env
 4. Visit the [NBS Login page](http://localhost:8000/nbs/login)
 
    ```
-   username: msa
+   username: superuser
    password:
    ```
 
-5. To create your own user account:
-   - Navigate to System Management
-   - Expand Security Management
-   - Click Manage Users & click Add
-   - Enter userId, First Name and Last Name
-   - Add a Role(s) & click submit
+5. To stop the containers, use docker compose
+
+```sh
+docker compose down
+# OR to also reset DB volume
+docker comose down -v
+```
 
 To learn more about the build process view the cdc-sandbox [README](cdc-sandbox/README.md)
 
