@@ -31,7 +31,7 @@ services:
       - NIFI_JVM_HEAP_INIT=1g
       - NIFI_JVM_HEAP_MAX=2g
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
-      - SINGLE_USER_CREDENTIALS_PASSWORD=${NIFI_PASSWORD}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${NIFI_PASSWORD:-PizzaIsGood33!}
       - NIFI_SENSITIVE_PROPS_KEY=12345678901234567890A
       - JDBC_CONNECTION_STRING=jdbc:sqlserver://nbs-mssql:1433;integratedSecurity=false;encrypt=false;databaseName=NBS_ODSE;user=sa;password=${DATABASE_PASSWORD};authenticationScheme=nativeAuthentication;
       - ELASTICSEARCH_HTTP_HOSTS=http://elasticsearch:9200
@@ -46,6 +46,6 @@ services:
       - ./keycloak/theme/nbs:/opt/keycloak/themes/nbs
     environment:
       KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-PizzaIsGood33!}
       NBS7_BASE_URL: "http://localhost:8000"
     entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"

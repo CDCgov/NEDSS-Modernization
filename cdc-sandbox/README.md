@@ -40,8 +40,6 @@ Secrets must be provided at build time for the various containers. The following
 
 ```sh
 export DATABASE_PASSWORD=
-export NIFI_PASSWORD=
-export KEYCLOAK_ADMIN_PASSWORD=
 export PARAMETER_SECRET=
 export TOKEN_SECRET=
 ```
@@ -66,4 +64,3 @@ To access the NBS application visit **http://localhost:7001/nbs/login**.
 |superuser|
 
 The password field should be left blank
-
