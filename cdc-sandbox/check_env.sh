@@ -14,8 +14,3 @@ echo "Reading from "$ROOT/.env" file..."
 set -a
 source "$ROOT/.env"
 set +a
-
-echo "Reading from "$BASE/.env" file..."    
-set -a
-source "$BASE/.env"
-set +a

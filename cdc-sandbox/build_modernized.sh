@@ -4,15 +4,13 @@ BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 source $BASE/check_env.sh
 
-if [ -z "$DATABASE_PASSWORD" ] || [ -z "$NIFI_PASSWORD" ] || [ -z "$KEYCLOAK_ADMIN_PASSWORD" ] || [ -z "$TOKEN_SECRET" ] || [ -z "$PARAMETER_SECRET" ] 
+if [ -z "$DATABASE_PASSWORD" ] || [ -z "$TOKEN_SECRET" ] || [ -z "$PARAMETER_SECRET" ] 
 then
-    echo "DATABASE_PASSWORD, NIFI_PASSWORD, KEYCLOAK_ADMIN_PASSWORD, TOKEN_SECRET, PARAMETER_SECRET are required"
+    echo "DATABASE_PASSWORD,TOKEN_SECRET, PARAMETER_SECRET are required"
     exit 1
 else
     echo "Building modernized services with:"
     echo "DATABASE_PASSWORD: $DATABASE_PASSWORD"
-    echo "NIFI_PASSWORD: $NIFI_PASSWORD"
-    echo "KEYCLOAK_ADMIN_PASSWORD: $KEYCLOAK_ADMIN_PASSWORD"
     echo "PARAMETER_SECRET: $PARAMETER_SECRET"
     echo "TOKEN_SECRET: $TOKEN_SECRET"
 fi
