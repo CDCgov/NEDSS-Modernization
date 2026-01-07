@@ -32,8 +32,6 @@ services:
       - PARAMETER_SECRET=${PARAMETER_SECRET}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-    ports:
-      - "8080:8080"
 
   pagebuilder-api:
     build:
