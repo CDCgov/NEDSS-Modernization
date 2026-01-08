@@ -152,8 +152,8 @@ class PatientSearchCriteriaFilterResolver {
     return Optional.of(
         ScriptQuery.of(q -> q.script(
             Script.of(
-                script -> script.source(
-                        "doc['birth_time'].size()!=0 && doc['birth_time'].value.getDayOfMonth() == " + equalsDate.day())
+                script -> script.source(so -> so.scriptString(
+                        "doc['birth_time'].size()!=0 && doc['birth_time'].value.getDayOfMonth() == " + equalsDate.day()))
                     .lang(PAINLESS)))));
   }
 
@@ -171,9 +171,9 @@ class PatientSearchCriteriaFilterResolver {
         ScriptQuery.of(
             query -> query.script(
                 Script.of(script -> script
-                    .source(
+                    .source(so -> so.scriptString(
                         "doc['birth_time'].size()!=0 && doc['birth_time'].value.getMonthValue() == "
-                            + equalsDate.month())
+                            + equalsDate.month()))
                     .lang(PAINLESS)))));
   }
 
@@ -191,8 +191,8 @@ class PatientSearchCriteriaFilterResolver {
         ScriptQuery.of(
             query -> query.script(
                 Script.of(
-                    script -> script.source(
-                            "doc['birth_time'].size()!=0 && doc['birth_time'].value.getYear() == " + equalsDate.year())
+                    script -> script.source(so -> so.scriptString(
+                            "doc['birth_time'].size()!=0 && doc['birth_time'].value.getYear() == " + equalsDate.year()))
                         .lang(PAINLESS)))));
   }
 

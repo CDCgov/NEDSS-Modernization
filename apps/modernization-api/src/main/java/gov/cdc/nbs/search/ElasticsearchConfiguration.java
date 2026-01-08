@@ -3,10 +3,10 @@ package gov.cdc.nbs.search;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
-import co.elastic.clients.transport.rest_client.RestClientTransport;
+import co.elastic.clients.transport.rest5_client.Rest5ClientTransport;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpHost;
-import org.elasticsearch.client.RestClient;
+import java.net.URI;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,19 +16,19 @@ class ElasticsearchConfiguration {
 
 
   @Bean
-  RestClient elasticsearchRestClient(
+  Rest5Client elasticsearchRestClient(
       @Value("${nbs.elasticsearch.url}") final String url
   ) {
-    return RestClient.builder(HttpHost.create(url))
+    return Rest5Client.builder(URI.create(url))
         .build();
   }
 
   @Bean
   ElasticsearchTransport elasticsearchTransport(
-      final RestClient restClient,
+      final Rest5Client restClient,
       final ObjectMapper objectMapper
   ) {
-    return new RestClientTransport(
+    return new Rest5ClientTransport(
         restClient,
         new JacksonJsonpMapper(objectMapper)
     );
