@@ -123,7 +123,7 @@ cp sample.env .env
 ```sh
 docker compose down
 # OR to also reset DB volume
-docker comose down -v
+docker compose down -v
 ```
 
 To learn more about the build process view the cdc-sandbox [README](cdc-sandbox/README.md)
