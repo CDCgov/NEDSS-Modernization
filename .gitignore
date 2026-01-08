@@ -7,6 +7,9 @@ log/
 *.zip
 .project
 .tool-versions
+.settings
+.classpath
+.factorypath
 
 # dependencies
 node_modules/
