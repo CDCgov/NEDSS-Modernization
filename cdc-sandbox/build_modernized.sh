@@ -20,7 +20,7 @@ fi
 echo "Starting elasticsearch reverse-proxy"
 docker compose -f $BASE/docker-compose.yml up elasticsearch --build -d
 
-# Start of modernization-api initializes the elasticserach indices 
+# Start of modernization-api initializes the elasticsearch indices 
 echo "Starting modernized application services"
 docker compose -f $BASE/docker-compose.yml  up --build -d
 
