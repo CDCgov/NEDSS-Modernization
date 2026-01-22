@@ -25,6 +25,11 @@ updates:
       - "/apps/modernization-api"
       - "/apps/nbs-gateway"
       - "/apps/question-bank"
+      - "/cdc-sandbox/nifi"
+      - "/cdc-sandbox/kibana"
+      - "/cdc-sandbox/elasticsearch"
+      - "/cdc-sandbox/nbs6-win-container"
+      - "/cdc-sandbox/common-asset-server"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 2
