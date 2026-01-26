@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - buildtest
     paths:
       - "!libs/testing/**"
       - "apps/modernization-api/**"

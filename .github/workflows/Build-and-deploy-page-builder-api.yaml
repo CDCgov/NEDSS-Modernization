@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - buildtest
     paths:
       - "apps/question-bank/**"
       - "libs/authentication/**"
