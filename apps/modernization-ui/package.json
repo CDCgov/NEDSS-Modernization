@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@apollo/client": "^3.11.8",
+        "@apollo/client": "^4.1.2",
         "@apollo/react-testing": "^4.0.0",
         "@eslint/compat": "^1.2.5",
         "@hello-pangea/dnd": "^18.0.1",
