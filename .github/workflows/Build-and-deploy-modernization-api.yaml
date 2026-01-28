@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - mcm/build-up-elasticsearch
     paths:
       - "!libs/testing/**"
       - "apps/modernization-api/**"
