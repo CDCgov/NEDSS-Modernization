@@ -38,8 +38,6 @@ services:
       - NIFI_SENSITIVE_PROPS_KEY=12345678901234567890A
       - JDBC_CONNECTION_STRING=jdbc:sqlserver://nbs-mssql:1433;integratedSecurity=false;encrypt=false;databaseName=NBS_ODSE;user=sa;password=${DATABASE_PASSWORD};authenticationScheme=nativeAuthentication;
       - ELASTICSEARCH_HTTP_HOSTS=http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
 
   keycloak:
     container_name: keycloak
