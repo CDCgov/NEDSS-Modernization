@@ -483,8 +483,8 @@ class PatientDemographicQueryResolver {
   private Script searchDateOfBirthScript(final String value) {
     return Script.of(
         script -> script.source(so -> so.scriptString(
-                "doc['birth_time'].size()!=0 && (doc['birth_time'].value.toString().substring(5,10)+'-'+doc['birth_time'].value.toString().substring(0,4)).contains('"
-                    + value + "')"))
+            "doc['birth_time'].size()!=0 && (doc['birth_time'].value.toString().substring(5,10)+'-'+doc['birth_time'].value.toString().substring(0,4)).contains('"
+                + value + "')"))
             .lang(PAINLESS));
   }
 
