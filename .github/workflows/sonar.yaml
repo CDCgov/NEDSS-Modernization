@@ -107,7 +107,7 @@ jobs:
         run: zip -r test-report.zip ./build/reports/*
 
       - name: Publish Testing Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: testing
           path: ./test-report.zip
