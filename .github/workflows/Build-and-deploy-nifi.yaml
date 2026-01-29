@@ -14,27 +14,8 @@ jobs:
       security-events: write
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-other-microservice-container.yaml@main
     with:
-      microservice_name: nifi
+      microservice_name: nbs7-nifi
       dockerfile_relative_path: ./cdc-sandbox/nifi
       environment_classifier: SNAPSHOT
     secrets:
-      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-      ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  call-update-helm:
-    permissions:
-      id-token: write
-      contents: write      
-      pull-requests: write
-    needs: call-build-microservice-container-workflow
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
-    with:
-      microservice_name: nifi
-      values_file_with_path: charts/nifi-efs/values-int1.yaml
-      new_image_tag: ${{ needs.call-build-microservice-container-workflow.outputs.output_image_tag }}
-    secrets:
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+      NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}

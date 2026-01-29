@@ -5,8 +5,8 @@ name: "Sonar Scanner"
 on:
   workflow_call:
     secrets:
-      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID:
-        description: "Secret named CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID where ECR resides."
+      NBS_ACCOUNTID:
+        description: "Secret named NBS_ACCOUNTID where ECR resides."
         required: true
       PASSED_GITHUB_TOKEN:
         description: "Secret named GITHUB_TOKEN that references the github token for this repository."
@@ -37,7 +37,7 @@ on:
       - ".github/workflows/sonar.yaml"
 env:
   deployment_env: dev
-  accountid: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
+  accountid: ${{secrets.NBS_ACCOUNTID}}
   passed_github_token: ${{secrets.PASSED_GITHUB_TOKEN}}
   sonar_token: ${{secrets.SONAR_TOKEN}}
   test_database_user: ${{secrets.DATABASE_USER}}
@@ -55,7 +55,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
@@ -80,8 +80,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: "arn:aws:iam::${{ env.accountid }}:role/cdc-github-${{ env.github_repo_name }}-${{ env.deployment_env }}-role"
-          aws-region: us-east-1
+          role-to-assume: "arn:aws:iam::${{ env.accountid }}:role/github-actions-nbs-deployment-role"
+          aws-region: us-east-2
 
       - name: Login to Amazon ECR
         id: login-ecr
