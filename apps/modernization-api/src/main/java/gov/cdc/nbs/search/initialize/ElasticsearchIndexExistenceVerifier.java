@@ -36,7 +36,7 @@ class ElasticsearchIndexExistenceVerifier {
 
     try {
 
-      List<IndicesRecord> existing = client.cat().indices().valueBody();
+      List<IndicesRecord> existing = client.cat().indices().indices();
 
       for (IndicesRecord found : existing) {
         remaining.remove(found.index());
