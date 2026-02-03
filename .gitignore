@@ -42,7 +42,8 @@ cdc-sandbox/nifi/nifi_conf/conf/flow.json.gz
 cdc-sandbox/NEDSSDev
 cdc-sandbox/.env
 
-# report-execution layer
+# report-execution app
 __pycache__/
 .ruff_cache/
+.pytest_cache/
 .venv/
