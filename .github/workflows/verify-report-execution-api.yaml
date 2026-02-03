@@ -1,0 +1,31 @@
+name: Verify Report Execution API
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "apps/report-execution/**"
+
+jobs:
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        working-directory: ./apps/report-execution
+        run: uv sync --frozen
+
+      - name: Run tests
+        working-directory: ./apps/report-execution
+        run: uv run pytest
