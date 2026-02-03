@@ -12,8 +12,7 @@ COPY pyproject.toml pytest.toml uv.toml uv.lock ./
 RUN uv sync --frozen
 
 # Copy application code
-COPY main.py ./
-COPY report-libraries ./report-libraries
+COPY src ./src
 
 # Expose the port FastAPI will run on
 EXPOSE 8000
