@@ -82,7 +82,7 @@ uv run pytest src/main_test.py
 
 ### Code Formatting and Linting
 
-This project uses [Ruff](https://docs.astral.sh/ruff/) for linting and formatting.
+This project uses [Ruff](https://docs.astral.sh/ruff/) (also created by Astral, the makers of uv) for linting and formatting.
 
 **Check for issues:**
 ```bash

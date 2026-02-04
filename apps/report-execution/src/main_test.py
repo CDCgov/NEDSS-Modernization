@@ -1,4 +1,4 @@
-"""Unit tests for the report-execution FastAPI application."""
+"""Unit tests for the entrypoint of the Report Execution service."""
 
 import pytest
 from fastapi.testclient import TestClient
@@ -33,63 +33,84 @@ class TestRootEndpoint:
         assert response.headers["content-type"] == "application/json"
 
 
-class TestItemsEndpoint:
-    """Tests for the items endpoint (/items/{item_id})."""
+class TestReportExecuteEndpoint:
+    """Tests for the report execution endpoint (/report/execute)."""
 
-    def test_read_item_with_valid_id(self, client):
-        """Test reading an item with a valid integer ID."""
-        item_id = 42
-        response = client.get(f"/items/{item_id}")
-
-        assert response.status_code == 200
-        assert response.json() == {"item_id": item_id, "q": None}
-
-    def test_read_item_with_query_parameter(self, client):
-        """Test reading an item with an optional query parameter."""
-        item_id = 123
-        query_value = "test-query"
-        response = client.get(f"/items/{item_id}", params={"q": query_value})
+    def test_execute_report_with_valid_spec(self, client):
+        """Test executing a report with a valid ReportSpec."""
+        report_spec = {
+            "version": 1,
+            "is_export": True,
+            "report_title": "Test Report",
+            "library_name": "test_library",
+            "data_source_name": "random_db_table_0",
+            "subset_query": "SELECT * FROM test",
+        }
+        response = client.post("/report/execute", json=report_spec)
 
         assert response.status_code == 200
-        assert response.json() == {"item_id": item_id, "q": query_value}
+        assert response.json() == {
+            "report_title": "Test Report",
+            "library_name": "test_library",
+        }
 
-    def test_read_item_with_zero_id(self, client):
-        """Test reading an item with ID zero."""
-        response = client.get("/items/0")
+    def test_execute_report_with_time_range(self, client):
+        """Test executing a report with an optional time range."""
+        report_spec = {
+            "version": 1,
+            "is_export": False,
+            "report_title": "Time-based Report",
+            "library_name": "analytics",
+            "data_source_name": "random_db_table_1",
+            "subset_query": "SELECT * FROM events WHERE date > ?",
+            "time_range": {"start": "2024-01-01", "end": "2024-12-31"},
+        }
+        response = client.post("/report/execute", json=report_spec)
 
         assert response.status_code == 200
-        assert response.json() == {"item_id": 0, "q": None}
+        assert response.json() == {
+            "report_title": "Time-based Report",
+            "library_name": "analytics",
+        }
 
-    def test_read_item_with_negative_id(self, client):
-        """Test reading an item with a negative ID."""
-        response = client.get("/items/-1")
+    def test_execute_report_without_time_range(self, client):
+        """Test executing a report without providing time_range."""
+        report_spec = {
+            "version": 2,
+            "is_export": True,
+            "report_title": "Simple Report",
+            "library_name": "basic_lib",
+            "data_source_name": "random_db_table_2",
+            "subset_query": "SELECT COUNT(*) FROM users",
+        }
+        response = client.post("/report/execute", json=report_spec)
 
         assert response.status_code == 200
-        assert response.json() == {"item_id": -1, "q": None}
+        assert response.json() == {
+            "report_title": "Simple Report",
+            "library_name": "basic_lib",
+        }
 
-    def test_read_item_with_invalid_id_type(self, client):
-        """Test that non-integer IDs return a validation error."""
-        response = client.get("/items/not-a-number")
+    def test_execute_report_missing_required_fields(self, client):
+        """Test that missing required fields return a validation error."""
+        incomplete_spec = {
+            "version": 1,
+            "report_title": "Incomplete Report",
+        }
+        response = client.post("/report/execute", json=incomplete_spec)
 
         assert response.status_code == 422  # Unprocessable Entity
-        assert "detail" in response.json()
 
-    @pytest.mark.parametrize("item_id,query,expected", [
-        (1, None, {"item_id": 1, "q": None}),
-        (100, "search", {"item_id": 100, "q": "search"}),
-        (999, "", {"item_id": 999, "q": ""}),
-        (5, "complex query string", {"item_id": 5, "q": "complex query string"}),
-    ])
-    def test_read_item_parametrized(self, client, item_id, query, expected):
-        """Test multiple combinations of item_id and query parameters."""
-        params = {"q": query} if query is not None else {}
-        response = client.get(f"/items/{item_id}", params=params)
+    def test_execute_report_invalid_field_types(self, client):
+        """Test that invalid field types return a validation error."""
+        invalid_spec = {
+            "version": "not_an_int",
+            "is_export": True,
+            "report_title": "Test Report",
+            "library_name": "test_library",
+            "data_source_name": "random_db_table_3",
+            "subset_query": "SELECT * FROM test",
+        }
+        response = client.post("/report/execute", json=invalid_spec)
 
-        assert response.status_code == 200
-        assert response.json() == expected
-
-    def test_read_item_content_type(self, client):
-        """Test that the items endpoint returns JSON content type."""
-        response = client.get("/items/1")
-
-        assert response.headers["content-type"] == "application/json"
+        assert response.status_code == 422  # Unprocessable Entity

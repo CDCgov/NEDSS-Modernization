@@ -1,1 +1,1 @@
-# Tests package for report-execution app
+# Tests package for report-execution service
