@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper@sha256:8ac3e0e062836122363c861f6b2ad8ba4e4a47d574eda27c8512cf6458cafbb1
+    image: confluentinc/cp-zookeeper@sha256:7610a50b13e7e9f6dc0dd00585ffdcb0bbed27392bef6b45791ef4087b2a746c
     hostname: zookeeper
     container_name: zookeeper
     ports:
