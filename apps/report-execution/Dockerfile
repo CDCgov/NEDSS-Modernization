@@ -3,14 +3,17 @@ FROM python:3.14-slim
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-WORKDIR /app
+WORKDIR /usr/report-execution
+
+# Copy relevant application code
+COPY apps/report-execution/pyproject.toml pyproject.toml
+COPY apps/report-execution/pytest.toml  pytest.toml
+COPY apps/report-execution/uv.toml uv.toml
+COPY apps/report-execution/uv.lock uv.lock
+COPY apps/report-execution/src src
 
 # Install dependencies
-COPY pyproject.toml pytest.toml uv.toml uv.lock ./
 RUN uv sync --frozen
-
-# Copy application code
-COPY src ./src
 
 # Expose the port FastAPI will run on
 EXPOSE 8000

@@ -72,3 +72,9 @@ services:
       - NBS_GATEWAY_PAGEBUILDER_SERVICE=${PAGEBUILDER_SERVICE}
     ports:
       - "8000:8000"
+
+  report-execution-api:
+    build:
+      context: ./
+      dockerfile: ./apps/report-execution/Dockerfile
+    container_name: report-execution
