@@ -1,0 +1,69 @@
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # Enable version updates for NPM
+  - package-ecosystem: "npm"
+    directories:
+      - "/apps/modernization-ui"
+      - "/testing/regression"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
+
+  # Enable version updates for Gradle
+  - package-ecosystem: "gradle"
+    directory: "/gradle"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    directories:
+      - "/apps/modernization-api"
+      - "/apps/nbs-gateway"
+      - "/apps/question-bank"
+      - "/cdc-sandbox/nifi"
+      - "/cdc-sandbox/kibana"
+      - "/cdc-sandbox/elasticsearch"
+      - "/cdc-sandbox/nbs6-win-container"
+      - "/cdc-sandbox/common-asset-server"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
+
+  # Enable version updates for Docker Compose
+  - package-ecosystem: "docker-compose"
+    directories:
+      - "/"
+      - "/cdc-sandbox"
+      - "/cdc-sandbox/kafka"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    # Workflow files stored in the default location of `.github/workflows`
+    # You don't need to specify `/.github/workflows` for `directory`. You can use `directory: "/"`.
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
