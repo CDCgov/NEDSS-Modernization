@@ -9,7 +9,7 @@
 
 1. Install `uv`, following [the instructions outlined on their website](https://docs.astral.sh/uv/getting-started/installation/).
 
-1. Install Python 3.14 with `uv`:
+1. Ensure you have Python 3.14 installed.  If you don't already have a means of managing Python versions, this can be accomplished directly with `uv`:
     ```bash
     uv python install 3.14
     ```
