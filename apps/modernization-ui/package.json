@@ -81,7 +81,7 @@
         "sass": "^1.78.0",
         "storybook": "^8.6.10",
         "typescript-plugin-css-modules": "^5.0.2",
-        "webpack": "^5.90.1"
+        "webpack": "^5.105.0"
     },
     "scripts": {
         "clean": "rm -rf node_modules && rm package-lock.json && npm install",
