@@ -16,21 +16,15 @@ def client():
     return TestClient(app)
 
 
-class TestRootEndpoint:
-    """Tests for the root endpoint (/)."""
+class TestHealthCheckEndpoint:
+    """Tests for the health check endpoint (/status)."""
 
-    def test_read_root_returns_hello_world(self, client):
-        """Test that the root endpoint returns the expected greeting."""
-        response = client.get("/")
+    def test_health_check_returns_success(self, client):
+        """Test that the health check endpoint returns a success message."""
+        response = client.get("/status")
 
         assert response.status_code == 200
-        assert response.json() == {"Hello": "World"}
-
-    def test_read_root_content_type(self, client):
-        """Test that the root endpoint returns JSON content type."""
-        response = client.get("/")
-
-        assert response.headers["content-type"] == "application/json"
+        assert response.json() == "Report Execution Service is up and running!"
 
 
 class TestReportExecuteEndpoint:

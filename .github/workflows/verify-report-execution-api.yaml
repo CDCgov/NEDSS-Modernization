@@ -2,9 +2,16 @@ name: Verify Report Execution API
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/report-execution/**"
+      - ".github/workflows/verify-report-execution-api.yaml"
   pull_request:
     paths:
       - "apps/report-execution/**"
+      - ".github/workflows/verify-report-execution-api.yaml"
 
 jobs:
   test:

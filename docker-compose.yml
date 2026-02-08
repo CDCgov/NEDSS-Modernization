@@ -78,3 +78,5 @@ services:
       context: ./
       dockerfile: ./apps/report-execution/Dockerfile
     container_name: report-execution
+    ports:
+      - "8001:8001"

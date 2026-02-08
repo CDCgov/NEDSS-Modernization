@@ -1,6 +1,7 @@
 [pytest]
-testpaths = ["src"]
-python_files = ["*_test.py"]
+pythonpath = ["."]
+testpaths = ["tests"]
+python_files = ["*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = [

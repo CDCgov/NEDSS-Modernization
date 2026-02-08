@@ -1,5 +1,8 @@
 FROM python:3.14-slim
 
+# Specify FastAPI application port, defaulting to 8001
+ENV UVICORN_PORT=8001
+
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
@@ -15,8 +18,5 @@ COPY apps/report-execution/src src
 # Install dependencies
 RUN uv sync --frozen
 
-# Expose the port FastAPI will run on
-EXPOSE 8000
-
 # Run the FastAPI application using uvicorn
-CMD ["uv", "run", "fastapi", "dev", "--host", "0.0.0.0", "--port", "8000", "main.py"]
+CMD ["uvicorn", "src.main:app"]

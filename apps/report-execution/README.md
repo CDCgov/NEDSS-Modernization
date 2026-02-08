@@ -9,7 +9,7 @@
 
 1. Install `uv`, following [the instructions outlined on their website](https://docs.astral.sh/uv/getting-started/installation/).
 
-1. Install Python 3.14 with `uv`:
+1. Ensure you have Python 3.14 installed.  If you don't already have a means of managing Python versions, this can be accomplished directly with `uv`:
     ```bash
     uv python install 3.14
     ```
@@ -19,16 +19,16 @@
     uv sync --frozen
     ```
 
-1. Start the FastAPI development server!
+1. Start the FastAPI development server with [Uvicorn](https://uvicorn.dev/) (the default ASGI server program shipped with FastAPI):
 
     ```bash
-    uv run fastapi dev src/main.py
+    uvicorn src.main:app
     ```
 
 The application will be available at:
-- API: http://localhost:8000
-- Interactive API docs (Swagger UI): http://localhost:8000/docs
-- Alternative API docs (ReDoc): http://localhost:8000/redoc
+- API: http://localhost:8001
+- Interactive API docs (Swagger UI): http://localhost:8001/docs
+- Alternative API docs (ReDoc): http://localhost:8001/redoc
 
 
 ## Testing

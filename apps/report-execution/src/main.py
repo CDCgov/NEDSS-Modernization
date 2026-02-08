@@ -21,13 +21,18 @@ class ReportSpec(BaseModel):
     time_range: Optional[TimeRange] = None
 
 
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
+@app.get("/status")
+async def health_check():
+    """
+    Check service health status.
+
+    Returns: Status text
+    """
+    return "Report Execution Service is up and running!"
 
 
 @app.post("/report/execute")
-async def read_item(report_spec: ReportSpec):
+async def execute_report(report_spec: ReportSpec):
     return {
         "report_title": report_spec.report_title,
         "library_name": report_spec.library_name,
