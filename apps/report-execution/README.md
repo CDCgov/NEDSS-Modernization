@@ -14,7 +14,7 @@
     uv python install 3.14
     ```
 
-1. Once both `uv` and Python are set up, install all project dependencies, as outlined in `pyproject.toml`:
+1. Install all project dependencies, as outlined in `pyproject.toml`:
     ```bash
     uv sync --frozen
     ```
