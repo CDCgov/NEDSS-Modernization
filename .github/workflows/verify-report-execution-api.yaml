@@ -11,7 +11,7 @@ on:
   pull_request:
     paths:
       - "apps/report-execution/**"
-      - ".github/workflows/verify-report-execution-api.yaml"
+      - ".github/workflows/verify-report-execution.yaml"
 
 jobs:
   test:
