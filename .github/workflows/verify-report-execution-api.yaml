@@ -1,4 +1,4 @@
-name: Verify Report Execution API
+name: Verify Report Execution Service
 
 on:
   workflow_dispatch:
