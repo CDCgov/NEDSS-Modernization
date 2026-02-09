@@ -47,7 +47,7 @@ jobs:
         working-directory: testing/regression/
         run: zip -r cypress-report.zip reports/cucumber-report/*
       # Upload artifact
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: cypress-report
           path: testing/regression/cypress-report.zip
