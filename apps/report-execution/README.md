@@ -2,17 +2,14 @@
 
 ## Prerequisites
 
-- Python 3.14 or higher
-- [uv](https://docs.astral.sh/uv/) - Fast Python package and project manager
-
-## Getting Started
-
-1. Install `uv`, following [the instructions outlined on their website](https://docs.astral.sh/uv/getting-started/installation/).
+1. Install [uv](https://docs.astral.sh/uv/) (a Python package and project manager), following [the instructions outlined on their website](https://docs.astral.sh/uv/getting-started/installation/).
 
 1. Ensure you have Python 3.14 installed.  If you don't already have a means of managing Python versions, this can be accomplished directly with `uv`:
     ```bash
     uv python install 3.14
     ```
+
+## Getting Started
 
 1. Install all project dependencies, as outlined in `pyproject.toml`:
     ```bash
