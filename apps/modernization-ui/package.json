@@ -78,7 +78,7 @@
         "openapi-typescript-codegen": "^0.29.0",
         "prettier": "^3.2.5",
         "prop-types": "^15.8.1",
-        "sass": "^1.78.0",
+        "sass": "^1.97.3",
         "storybook": "^8.6.10",
         "typescript-plugin-css-modules": "^5.0.2",
         "webpack": "^5.105.0"
