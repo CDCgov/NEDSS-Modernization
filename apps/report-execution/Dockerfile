@@ -2,6 +2,7 @@ FROM python:3.14-slim
 
 # Specify FastAPI application port, defaulting to 8001
 ENV UVICORN_PORT=8001
+ENV UVICORN_HOST="0.0.0.0"
 
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
