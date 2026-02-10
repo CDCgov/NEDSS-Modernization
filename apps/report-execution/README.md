@@ -2,27 +2,30 @@
 
 ## Prerequisites
 
-- Python 3.14 or higher
-- [uv](https://docs.astral.sh/uv/) - Fast Python package and project manager
-
-## Getting Started
-
-1. Install `uv`, following [the instructions outlined on their website](https://docs.astral.sh/uv/getting-started/installation/).
+1. Install [uv](https://docs.astral.sh/uv/) (a Python package and project manager), following [the instructions outlined on their website](https://docs.astral.sh/uv/getting-started/installation/).
 
 1. Ensure you have Python 3.14 installed.  If you don't already have a means of managing Python versions, this can be accomplished directly with `uv`:
     ```bash
     uv python install 3.14
     ```
 
-1. Once both `uv` and Python are set up, install all project dependencies, as outlined in `pyproject.toml`:
+## Getting Started
+
+1. Install all project dependencies, as outlined in `pyproject.toml`:
     ```bash
     uv sync --frozen
     ```
 
+1. (Optional) Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development (particularly helpful if you're running outside of Docker):
+
+```sh
+cp sample.env .env
+```
+
 1. Start the FastAPI development server with [Uvicorn](https://uvicorn.dev/) (the default ASGI server program shipped with FastAPI):
 
     ```bash
-    uvicorn src.main:app
+    uv run uvicorn src.main:app
     ```
 
 The application will be available at:
