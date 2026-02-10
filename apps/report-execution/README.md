@@ -22,7 +22,7 @@
 1. Start the FastAPI development server with [Uvicorn](https://uvicorn.dev/) (the default ASGI server program shipped with FastAPI):
 
     ```bash
-    uvicorn src.main:app
+    uv run uvicorn src.main:app
     ```
 
 The application will be available at:
