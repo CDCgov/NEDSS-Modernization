@@ -10,7 +10,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2191
       ZOOKEEPER_TICK_TIME: 2000
   kafka:
-    image: confluentinc/cp-kafka@sha256:8cf10463209bbd1ec6868dbd61566b8d066975a3e24a298ecb9af7ab414e8316
+    image: confluentinc/cp-kafka@sha256:d20bd62f01826c454e88530efc6d73654cb4697182f37206742b96c7b947236e
     hostname: kafka
     container_name: kafka
     ports:
