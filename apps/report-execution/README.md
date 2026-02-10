@@ -16,6 +16,12 @@
     uv sync --frozen
     ```
 
+1. (Optional) Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development:
+
+```sh
+cp sample.env .env
+```
+
 1. Start the FastAPI development server with [Uvicorn](https://uvicorn.dev/) (the default ASGI server program shipped with FastAPI):
 
     ```bash
