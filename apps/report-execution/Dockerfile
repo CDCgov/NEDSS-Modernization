@@ -16,4 +16,4 @@ RUN uv sync --frozen
 COPY src ./src
 
 # Run the FastAPI application using uvicorn
-CMD ["uvicorn", "src.main:app"]
+CMD ["uv", "run", "uvicorn", "src.main:app"]
