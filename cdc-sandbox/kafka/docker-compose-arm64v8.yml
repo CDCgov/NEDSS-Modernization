@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper@sha256:8ac3e0e062836122363c861f6b2ad8ba4e4a47d574eda27c8512cf6458cafbb1
+    image: confluentinc/cp-zookeeper@sha256:7610a50b13e7e9f6dc0dd00585ffdcb0bbed27392bef6b45791ef4087b2a746c
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -36,7 +36,7 @@ services:
           - 'kafka-local'
 
   schema:
-    image: confluentinc/cp-schema-registry@sha256:3a2196ef60b9d71706b63e290f596c425d367483cd8ce89d3ee4c250056a964c
+    image: confluentinc/cp-schema-registry@sha256:ba3353d723c3f0b5c5d84d63b5dfd864e2b6b271dd34d569aae7f6e7beaf84c7
     container_name: schema
     hostname: schema
     ports:
