@@ -511,14 +511,14 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.128.0" },
-    { name = "pydantic", specifier = ">=2.12.5" },
+    { name = "fastapi", extras = ["standard"], specifier = "~=0.128" },
+    { name = "pydantic", specifier = ">=2.12.5,<3" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "pytest", specifier = ">=9.0.2" },
-    { name = "ruff", specifier = ">=0.15.0" },
+    { name = "pytest", specifier = ">=9.0.2,<10" },
+    { name = "ruff", specifier = ">=0.15.0,<1" },
 ]
 
 [[package]]
