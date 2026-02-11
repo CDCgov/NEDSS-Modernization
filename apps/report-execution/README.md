@@ -16,7 +16,7 @@
     uv sync --frozen
     ```
 
-1. (Optional) Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development (particularly helpful if you're running outside of Docker):
+1. (Optional) Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development (particularly helpful if you're running outside of Docker).  _NOTE: You'll need to install and configure [direnv](https://direnv.net/) (or an equivalent shell extension) in order to make these environment variables available to the application._
 
 ```sh
 cp sample.env .env
