@@ -1,5 +1,5 @@
 # Dockerfile to build nifi image
-FROM apache/nifi:1.19.0
+FROM apache/nifi:1.28.1
 
 COPY ./nifi_drivers/ /var/opt/nifi_drivers/
 COPY ./nifi_conf/conf/ /opt/nifi/nifi-current/conf/
