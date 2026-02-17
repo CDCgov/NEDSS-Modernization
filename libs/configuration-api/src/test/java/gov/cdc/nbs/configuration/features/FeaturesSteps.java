@@ -19,6 +19,7 @@ public class FeaturesSteps {
       case "deduplication" -> "features.deduplication.enabled";
       case "deduplication merge" -> "features.deduplication.merge.enabled";
       case "system management" -> "features.system.management.enabled";
+      case "report execution" -> "features.report.execution.enabled";
       default -> value;
     };
   }
