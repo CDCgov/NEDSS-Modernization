@@ -7,8 +7,8 @@
 1. Java 21
 2. Node / NPM
 3. nbs-mssql, elasticsearch, and nifi docker containers are running. See [CDC Sandbox](../../cdc-sandbox/README.md)
-4. `DATABASE_PASSWORD`, `TOKEN_SECRET` and `PARAMETER_SECRET` environment variables are set or relevant properties set
-   in an `application-local.yml`
+4. Environmental Variables: Essential secrets and service URLs must be loaded into your shell. See Environment Setup
+   below.
 
 ### VSCode
 
@@ -18,16 +18,34 @@
 3. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
 4. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
 
-## Tests
+## Environment Setup
 
-Prior to running tests the `cdc-sandbox/test-db/` image must be built. To build this image run the following command in
-the `cdc-sandbox` directory.
+Prior to running tests the database image must be built. To build this image run the following command in
+the `cdc-sandbox` directory. The containers do not need to be running to run the tests. The image just need to be built.
 
 ```sh
-docker compose up test-db -d
+./build_all.sh
 ```
 
-To run all tests:
+Additionaly, this project uses a `.env` file in the root directory to manage local configuration. A script is provided
+to load these variables into your current shell session.
+
+To initialize your .env file (if you haven't already), The setup script will automatically copy sample.env to .env if
+it's missing.
+
+```sh
+source ./check_env.sh
+```
+
+**Note**: You must use `source` (or `.`) to ensure the variables persist in your current shell. Running the script as
+`./check_env.sh` will not export the variables to your active session.
+
+**Windows Users**: Use Git Bash (included with Git for Windows) or WSL. Standard PowerShell or Command Prompt do not
+support this syntax.
+
+## Tests
+
+### To run all tests:
 
 ```bash
 ./gradlew :modernization-api:test
