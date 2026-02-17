@@ -39,7 +39,7 @@ attempts=0
 until curl -sf http://localhost:9200/person/_mapping > /dev/null 2>&1; do
   attempts=$((attempts + 1))
   if [ $attempts -ge 24 ]; then
-    echo "Timed out waiting for Elasticsearch indices"
+    echo "Timed out waiting for Elasticsearch indices (is modernization-api running?)"
     exit 1
   fi
   sleep 5
