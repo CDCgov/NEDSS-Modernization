@@ -18,6 +18,7 @@ plugins {
     id 'java-library'
     id 'jacoco'
     id 'org.sonarqube' version '6.2.0.5505'
+    id "com.diffplug.spotless"  version "8.2.1"
 }
 
 version = '1.0.1-SNAPSHOT'  // The plugin will assign the root project version to all its subprojects.
@@ -35,6 +36,21 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'jvm-test-suite'
     apply plugin: 'jacoco'
+    apply plugin: 'com.diffplug.spotless'
+
+    spotless {
+        java {
+            targetExclude '**/generated/**/*.java'
+            googleJavaFormat()
+            formatAnnotations()
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+    }
+
+    tasks.named('compileJava') {
+        dependsOn tasks.named('spotlessApply')
+    }
 
     java {
         toolchain {
