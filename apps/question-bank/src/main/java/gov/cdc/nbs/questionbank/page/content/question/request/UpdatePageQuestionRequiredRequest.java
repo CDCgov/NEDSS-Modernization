@@ -1,5 +1,3 @@
 package gov.cdc.nbs.questionbank.page.content.question.request;
 
-public record UpdatePageQuestionRequiredRequest(boolean required) {
-
-}
+public record UpdatePageQuestionRequiredRequest(boolean required) {}

@@ -17,5 +17,4 @@ public class PatientRaceHistoryListener {
   void preRemove(final Identifiable<PatientRaceId> removed) {
     this.creator.snapshot(removed.identifier());
   }
-
 }

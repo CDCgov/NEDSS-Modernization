@@ -1,26 +1,26 @@
 package gov.cdc.nbs.patient.search.email;
 
+import java.util.Collection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
 
 @Component
 class PatientSearchResultEmailFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select distinct
       [locator].as_of_date            as [as_of],
       [email_address].email_address   as [email],
       [locator].locator_uid as [locator_uid]
       from Entity_locator_participation [locator]
-      
+
       join Tele_locator [email_address] on
       [email_address].[tele_locator_uid] = [locator].[locator_uid]
       and [email_address].record_status_cd = 'ACTIVE'
       and [email_address].email_address is not null
-      
-      
+
+
       where   [locator].entity_uid = ?
       and [locator].[class_cd] = 'TELE'
       and [locator].record_status_cd = 'ACTIVE'
@@ -37,7 +37,9 @@ class PatientSearchResultEmailFinder {
   }
 
   Collection<String> find(final long patient) {
-    return this.template.query(QUERY, statement -> statement.setLong(PATIENT_PARAMETER, patient),
+    return this.template.query(
+        QUERY,
+        statement -> statement.setLong(PATIENT_PARAMETER, patient),
         (rs, row) -> rs.getString(EMAIL_COLUMN));
   }
 }

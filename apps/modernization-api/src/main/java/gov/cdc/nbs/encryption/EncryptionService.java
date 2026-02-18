@@ -2,16 +2,15 @@ package gov.cdc.nbs.encryption;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.exception.EncryptionException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
+import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EncryptionService {
@@ -21,11 +20,8 @@ public class EncryptionService {
   private final ObjectMapper mapper;
   private final SecureRandom random = new SecureRandom();
 
-
   public EncryptionService(
-      @Value("${nbs.security.parameterSecret}") final String secret,
-      final ObjectMapper mapper
-  ) {
+      @Value("${nbs.security.parameterSecret}") final String secret, final ObjectMapper mapper) {
     this.secret = secret;
     this.mapper = mapper;
   }
@@ -46,19 +42,14 @@ public class EncryptionService {
       var gcmParameterSpec = new GCMParameterSpec(SALT_LENGTH * 8, salt);
 
       cipher.init(
-          Cipher.ENCRYPT_MODE,
-          new SecretKeySpec(secret.getBytes(), "AES"),
-          gcmParameterSpec
-      );
+          Cipher.ENCRYPT_MODE, new SecretKeySpec(secret.getBytes(), "AES"), gcmParameterSpec);
 
       // encrypt object
       byte[] encrypted = cipher.doFinal(serialized);
 
       // concatenate salt + encrypted bytes
-      var saltAndEncryptedBytes = ByteBuffer.allocate(encrypted.length + salt.length)
-          .put(salt)
-          .put(encrypted)
-          .array();
+      var saltAndEncryptedBytes =
+          ByteBuffer.allocate(encrypted.length + salt.length).put(salt).put(encrypted).array();
 
       // base64 encode
       return Base64.getUrlEncoder().encodeToString(saltAndEncryptedBytes);
@@ -85,10 +76,7 @@ public class EncryptionService {
       var gcmParameterSpec = new GCMParameterSpec(SALT_LENGTH * 8, salt);
 
       cipher.init(
-          Cipher.DECRYPT_MODE,
-          new SecretKeySpec(secret.getBytes(), "AES"),
-          gcmParameterSpec
-      );
+          Cipher.DECRYPT_MODE, new SecretKeySpec(secret.getBytes(), "AES"), gcmParameterSpec);
 
       // decrypt content
       var serialized = cipher.doFinal(decodedContent);

@@ -1,11 +1,17 @@
 package gov.cdc.nbs.questionbank.template;
 
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.net.URI;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -16,18 +22,10 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 public class ImportTemplateSteps {
 
   private static final String LOCATION =
       "http://localhost:8080/nbs/PreviewTemplate.do?method=viewTemplate&srcTemplateNm=TEMPLATE_NAME&src=Import&templateUid=TEMPLATE_UID";
-
 
   private static final String XML =
       """
@@ -69,8 +67,7 @@ public class ImportTemplateSteps {
       @Qualifier("classicRestService") final MockRestServiceServer server,
       @Value("${nbs.wildfly.url:http://wildfly:7001}") final String classicUrl,
       final TemplateImportRequest request,
-      final PageMother mother
-  ) {
+      final PageMother mother) {
     this.server = server;
     this.classicUrl = classicUrl;
     this.request = request;
@@ -80,24 +77,24 @@ public class ImportTemplateSteps {
   @Given("I have template to import")
   public void i_have_a_template_to_import() {
     WaTemplate page = mother.one();
-    template.active(new TemplateXml(
-        page.getTemplateNm(),
-        XML.replaceAll(
-            "TEMPLATE_NAME",
-            page.getTemplateNm())));
+    template.active(
+        new TemplateXml(
+            page.getTemplateNm(), XML.replaceAll("TEMPLATE_NAME", page.getTemplateNm())));
   }
 
   @When("I import a template")
   public void i_import_a_template() throws Exception {
     WaTemplate page = mother.one();
     HttpHeaders headers = new HttpHeaders();
-    URI uri = UriComponentsBuilder.fromUriString(LOCATION)
-        .replaceQueryParam("srcTemplateNm", page.getTemplateNm())
-        .replaceQueryParam("templateUid", page.getId().toString())
-        .build()
-        .toUri();
+    URI uri =
+        UriComponentsBuilder.fromUriString(LOCATION)
+            .replaceQueryParam("srcTemplateNm", page.getTemplateNm())
+            .replaceQueryParam("templateUid", page.getId().toString())
+            .build()
+            .toUri();
     headers.setLocation(uri);
-    server.expect(requestTo(classicUrl + "/nbs/ManageTemplates.do?method=importTemplate&type=Import"))
+    server
+        .expect(requestTo(classicUrl + "/nbs/ManageTemplates.do?method=importTemplate&type=Import"))
         .andExpect(method(HttpMethod.POST))
         .andExpect(content().contentTypeCompatibleWith(MediaType.MULTIPART_FORM_DATA))
         .andRespond(withStatus(HttpStatus.FOUND).headers(headers));
@@ -110,10 +107,10 @@ public class ImportTemplateSteps {
     WaTemplate page = mother.one();
     server.verify();
 
-    response.active()
+    response
+        .active()
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(page.getId()))
         .andExpect(jsonPath("$.templateNm").value(page.getTemplateNm()));
   }
-
 }

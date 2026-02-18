@@ -6,10 +6,7 @@ import gov.cdc.nbs.patient.RequestContext;
 public class GenderDemographicPatientCommandMapper {
 
   public static PatientCommand.UpdateGender asUpdateGender(
-      final long patient,
-      final RequestContext context,
-      final GenderDemographic demographic
-  ) {
+      final long patient, final RequestContext context, final GenderDemographic demographic) {
 
     return new PatientCommand.UpdateGender(
         patient,
@@ -19,19 +16,13 @@ public class GenderDemographicPatientCommandMapper {
         demographic.transgenderInformation(),
         demographic.additionalGender(),
         context.requestedBy(),
-        context.requestedAt()
-    );
+        context.requestedAt());
   }
 
   public static PatientCommand.ClearGenderDemographics asClearGenderDemographics(
-      final long patient,
-      final RequestContext context
-  ) {
+      final long patient, final RequestContext context) {
     return new PatientCommand.ClearGenderDemographics(
-        patient,
-        context.requestedBy(),
-        context.requestedAt()
-    );
+        patient, context.requestedBy(), context.requestedAt());
   }
 
   private GenderDemographicPatientCommandMapper() {

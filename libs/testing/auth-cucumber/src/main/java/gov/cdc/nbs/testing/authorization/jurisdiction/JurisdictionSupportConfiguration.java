@@ -21,12 +21,7 @@ class JurisdictionSupportConfiguration {
     return new Available<>(defaultJurisdiction());
   }
 
-
   private static JurisdictionIdentifier defaultJurisdiction() {
-    return new JurisdictionIdentifier(
-        13002,
-        "999999",
-        "Out of System"
-    );
+    return new JurisdictionIdentifier(13002, "999999", "Out of System");
   }
 }

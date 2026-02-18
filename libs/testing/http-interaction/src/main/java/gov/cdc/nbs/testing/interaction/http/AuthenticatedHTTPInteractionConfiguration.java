@@ -9,5 +9,4 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 @EnableSequentialIdentityGeneration
 @EnableAuthenticationSupport
-class AuthenticatedHTTPInteractionConfiguration {
-}
+class AuthenticatedHTTPInteractionConfiguration {}

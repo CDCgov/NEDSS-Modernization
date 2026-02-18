@@ -1,15 +1,15 @@
 package gov.cdc.nbs.questionbank.page.component.tree;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import gov.cdc.nbs.questionbank.page.component.ComponentNode;
 import gov.cdc.nbs.questionbank.page.component.PageNode;
 import gov.cdc.nbs.questionbank.page.component.SectionNode;
 import gov.cdc.nbs.questionbank.page.component.SubSectionNode;
 import gov.cdc.nbs.questionbank.page.component.TabNode;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 class LayoutComponentResolverTest {
 
@@ -22,16 +22,15 @@ class LayoutComponentResolverTest {
 
     ComponentNode actual = resolver.resolve(flattened);
 
-    assertThat(actual).isInstanceOf(PageNode.class)
+    assertThat(actual)
+        .isInstanceOf(PageNode.class)
         .satisfies(
-            component -> assertAll(
-                () -> assertThat(component.identifier()).isEqualTo(2L),
-                () -> assertThat(component.definition().name()).isEqualTo("name-value"),
-                () -> assertThat(component.definition().visible()).isTrue(),
-                () -> assertThat(component.definition().order()).isEqualTo(1)
-
-            ));
-
+            component ->
+                assertAll(
+                    () -> assertThat(component.identifier()).isEqualTo(2L),
+                    () -> assertThat(component.definition().name()).isEqualTo("name-value"),
+                    () -> assertThat(component.definition().visible()).isTrue(),
+                    () -> assertThat(component.definition().order()).isEqualTo(1)));
   }
 
   @Test
@@ -43,15 +42,15 @@ class LayoutComponentResolverTest {
 
     ComponentNode actual = resolver.resolve(flattened);
 
-    assertThat(actual).isInstanceOf(TabNode.class)
+    assertThat(actual)
+        .isInstanceOf(TabNode.class)
         .satisfies(
-            component -> assertAll(
-                () -> assertThat(component.identifier()).isEqualTo(2L),
-                () -> assertThat(component.definition().name()).isEqualTo("name-value"),
-                () -> assertThat(component.definition().visible()).isTrue(),
-                () -> assertThat(component.definition().order()).isEqualTo(1)
-
-            ));
+            component ->
+                assertAll(
+                    () -> assertThat(component.identifier()).isEqualTo(2L),
+                    () -> assertThat(component.definition().name()).isEqualTo("name-value"),
+                    () -> assertThat(component.definition().visible()).isTrue(),
+                    () -> assertThat(component.definition().order()).isEqualTo(1)));
   }
 
   @Test
@@ -63,15 +62,15 @@ class LayoutComponentResolverTest {
 
     ComponentNode actual = resolver.resolve(flattened);
 
-    assertThat(actual).isInstanceOf(SectionNode.class)
+    assertThat(actual)
+        .isInstanceOf(SectionNode.class)
         .satisfies(
-            component -> assertAll(
-                () -> assertThat(component.identifier()).isEqualTo(2L),
-                () -> assertThat(component.definition().name()).isEqualTo("name-value"),
-                () -> assertThat(component.definition().visible()).isTrue(),
-                () -> assertThat(component.definition().order()).isEqualTo(1)
-
-            ));
+            component ->
+                assertAll(
+                    () -> assertThat(component.identifier()).isEqualTo(2L),
+                    () -> assertThat(component.definition().name()).isEqualTo("name-value"),
+                    () -> assertThat(component.definition().visible()).isTrue(),
+                    () -> assertThat(component.definition().order()).isEqualTo(1)));
   }
 
   @Test
@@ -83,27 +82,21 @@ class LayoutComponentResolverTest {
 
     ComponentNode actual = resolver.resolve(flattened);
 
-    assertThat(actual).isInstanceOf(SubSectionNode.class)
+    assertThat(actual)
+        .isInstanceOf(SubSectionNode.class)
         .satisfies(
-            component -> assertAll(
-                () -> assertThat(component.identifier()).isEqualTo(2L),
-                () -> assertThat(component.definition().name()).isEqualTo("name-value"),
-                () -> assertThat(component.definition().visible()).isTrue(),
-                () -> assertThat(component.definition().order()).isEqualTo(1)
-
-            ));
+            component ->
+                assertAll(
+                    () -> assertThat(component.identifier()).isEqualTo(2L),
+                    () -> assertThat(component.definition().name()).isEqualTo("name-value"),
+                    () -> assertThat(component.definition().visible()).isTrue(),
+                    () -> assertThat(component.definition().order()).isEqualTo(1)));
   }
 
   @Test
   void should_not_resolve_unknown_layout_component_type() {
 
-    FlattenedComponent flattened = new FlattenedComponent(
-        2L,
-        1022,
-        "invalid",
-        true,
-        1,
-        1);
+    FlattenedComponent flattened = new FlattenedComponent(2L, 1022, "invalid", true, 1, 1);
 
     LayoutComponentResolver resolver = new LayoutComponentResolver();
 

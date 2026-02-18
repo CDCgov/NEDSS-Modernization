@@ -13,7 +13,6 @@ public class UnitSteps {
 
   @ParameterType(name = "unit", value = ".*")
   public String educationLevel(final String value) {
-    return resolver.resolve(SET, value)
-        .orElse(value);
+    return resolver.resolve(SET, value).orElse(value);
   }
 }

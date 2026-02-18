@@ -8,14 +8,13 @@ import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.CodesetId;
 import gov.cdc.nbs.questionbank.valueset.repository.CodesetGroupMetadatumRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
@@ -35,8 +34,7 @@ public class ValueSetMother {
   ValueSetMother(
       final ValueSetRepository valueSetRepository,
       final CodeValueGeneralRepository conceptRepository,
-      final CodesetGroupMetadatumRepository codeSetGrpMetaRepository
-  ) {
+      final CodesetGroupMetadatumRepository codeSetGrpMetaRepository) {
     this.valueSetRepository = valueSetRepository;
     this.conceptRepository = conceptRepository;
     this.codeSetGrpMetaRepository = codeSetGrpMetaRepository;
@@ -159,12 +157,12 @@ public class ValueSetMother {
   }
 
   public Codeset createMetadataEntry(Codeset valueset) {
-    CodeSetGroupMetadatum codeGrp = new CodeSetGroupMetadatum(
-        getCodeSetGroupID(),
-        valueset.getCodeSetDescTxt(),
-        valueset.getValueSetNm(),
-        valueset.getValueSetNm()
-    );
+    CodeSetGroupMetadatum codeGrp =
+        new CodeSetGroupMetadatum(
+            getCodeSetGroupID(),
+            valueset.getCodeSetDescTxt(),
+            valueset.getValueSetNm(),
+            valueset.getValueSetNm());
 
     codeGrp.setLdfPicklistIndCd(valueset.getLdfPicklistIndCd());
     codeGrp = codeSetGrpMetaRepository.save(codeGrp);
@@ -197,5 +195,4 @@ public class ValueSetMother {
     concept.setAddUserId(99999999L);
     conceptRepository.save(concept);
   }
-
 }

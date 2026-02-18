@@ -4,8 +4,7 @@ import gov.cdc.nbs.questionbank.exception.BadRequestException;
 
 public class UpdateTabException extends BadRequestException {
 
-    public UpdateTabException(String message) {
-        super(message);
-    }
-
+  public UpdateTabException(String message) {
+    super(message);
+  }
 }

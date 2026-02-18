@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PageStateResponse {
-    private Long templateId;
-    private String message;
+  private Long templateId;
+  private String message;
 }

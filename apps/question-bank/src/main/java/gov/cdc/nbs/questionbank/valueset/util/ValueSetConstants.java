@@ -2,9 +2,7 @@ package gov.cdc.nbs.questionbank.valueset.util;
 
 public class ValueSetConstants {
 
-  private ValueSetConstants() {
-  }
-
+  private ValueSetConstants() {}
 
   // create value set messages
   public static final String VALUE_SET_NAME_EXISTS = "This Value Set Name Already Exists";
@@ -28,5 +26,4 @@ public class ValueSetConstants {
   public static final String CODE_SET_NOT_FOUND = "A value set not found for given codeSetNm";
   public static final String UPDATE_SUCCESS_MESSAGE = "ValueSet updated.";
   public static final String UPDATE_FAILURE_MESSAGE = "Was not able to update valueset";
-
 }

@@ -5,7 +5,6 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.race.ExistingPatientRaceException;
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,16 +32,15 @@ public class PatientRaceDemographics {
 
   @SuppressWarnings(
       //  The parent entity is needed to add races to
-      "javaarchitecture:S7027"
-  )
+      "javaarchitecture:S7027")
   @Transient
   private Person patient;
 
-  @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, orphanRemoval = true)
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+      orphanRemoval = true)
   private List<PatientRace> races;
 
   protected PatientRaceDemographics() {
@@ -72,13 +70,14 @@ public class PatientRaceDemographics {
     // Add a PersonRace for each detail
     added.detailed().stream()
         .map(
-            detail -> new PatientCommand.AddDetailedRace(
-                added.person(),
-                added.asOf(),
-                added.category(),
-                detail,
-                added.requester(),
-                added.requestedOn()))
+            detail ->
+                new PatientCommand.AddDetailedRace(
+                    added.person(),
+                    added.asOf(),
+                    added.category(),
+                    detail,
+                    added.requester(),
+                    added.requestedOn()))
         .forEach(detail -> add(patient, detail));
   }
 
@@ -102,25 +101,19 @@ public class PatientRaceDemographics {
     ensureRaces().add(new PatientRace(patient, added));
   }
 
-  public void update(
-      final Person patient,
-      final PatientCommand.UpdateRaceInfo changes
-  ) {
+  public void update(final Person patient, final PatientCommand.UpdateRaceInfo changes) {
 
     //  find all the races that are associated with the change
-    Collection<PatientRace> associated = ensureRaces().stream()
-        .filter(inCategory(changes.category()))
-        .toList();
+    Collection<PatientRace> associated =
+        ensureRaces().stream().filter(inCategory(changes.category())).toList();
 
     //  apply changes to the as of date for existing races
     associated.stream()
         .filter(existing -> !Objects.equals(changes.asOf(), existing.asOf()))
         .forEach(race -> race.update(changes));
 
-    Collection<String> existingDetails = associated.stream()
-        .filter(isDetail())
-        .map(PatientRace::detail)
-        .toList();
+    Collection<String> existingDetails =
+        associated.stream().filter(isDetail()).map(PatientRace::detail).toList();
 
     List<String> detailed = changes.detailed();
 
@@ -130,15 +123,15 @@ public class PatientRaceDemographics {
     //  add any new values
     added.stream()
         .map(
-            detail -> new PatientCommand.AddDetailedRace(
-                changes.person(),
-                changes.asOf(),
-                changes.category(),
-                detail,
-                changes.requester(),
-                changes.requestedOn()
-            )
-        ).forEach(detail -> add(patient, detail));
+            detail ->
+                new PatientCommand.AddDetailedRace(
+                    changes.person(),
+                    changes.asOf(),
+                    changes.category(),
+                    detail,
+                    changes.requester(),
+                    changes.requestedOn()))
+        .forEach(detail -> add(patient, detail));
 
     ArrayList<String> removed = new ArrayList<>(existingDetails);
     removed.removeAll(detailed);
@@ -148,7 +141,6 @@ public class PatientRaceDemographics {
         .map(PatientRaceDemographics::identifiedBy)
         .reduce(Predicate::or)
         .ifPresent(criteria -> ensureRaces().removeIf(criteria));
-
   }
 
   public void delete(final PatientCommand.DeleteRaceInfo info) {
@@ -164,13 +156,10 @@ public class PatientRaceDemographics {
   }
 
   public List<PatientRace> categories() {
-    return ensureRaces().stream()
-        .filter(isCategory())
-        .toList();
+    return ensureRaces().stream().filter(isCategory()).toList();
   }
 
   public List<PatientRace> details() {
     return this.races == null ? List.of() : List.copyOf(this.races);
   }
-
 }

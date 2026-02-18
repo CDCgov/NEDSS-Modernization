@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.demographics.mortality;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.function.Supplier;

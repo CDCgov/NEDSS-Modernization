@@ -8,11 +8,10 @@ import gov.cdc.nbs.questionbank.page.component.SectionNode;
 import gov.cdc.nbs.questionbank.page.component.SelectionNode;
 import gov.cdc.nbs.questionbank.page.component.SubSectionNode;
 import gov.cdc.nbs.questionbank.page.component.TabNode;
-import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
+import org.springframework.stereotype.Service;
 
 @Service
 class PagesResponseMapper {
@@ -34,9 +33,8 @@ class PagesResponseMapper {
       final Collection<PagesRule> rules,
       final ComponentNode component) {
 
-    Collection<PagesResponse.PagesTab> tabs = (component instanceof PageNode page)
-        ? mapAll(this::asTab, page.children())
-        : List.of();
+    Collection<PagesResponse.PagesTab> tabs =
+        (component instanceof PageNode page) ? mapAll(this::asTab, page.children()) : List.of();
 
     return new PagesResponse(
         detailed.identifier(),
@@ -175,12 +173,11 @@ class PagesResponseMapper {
   boolean isSubsectionGrouable(SubSectionNode subsectionNode) {
 
     for (ContentNode content : subsectionNode.children()) {
-      if (content.attributes().dataLocation() == null || !content.attributes().dataLocation().contains("ANSWER_TXT"))
-        return false;
-      if (content.attributes().isPublished())
-        return false;
-      if (content.attributes().nbsComponentId() == ROLLINGNOTE && subsectionNode.children().size() > 1)
-        return false;
+      if (content.attributes().dataLocation() == null
+          || !content.attributes().dataLocation().contains("ANSWER_TXT")) return false;
+      if (content.attributes().isPublished()) return false;
+      if (content.attributes().nbsComponentId() == ROLLINGNOTE
+          && subsectionNode.children().size() > 1) return false;
     }
     return true;
   }

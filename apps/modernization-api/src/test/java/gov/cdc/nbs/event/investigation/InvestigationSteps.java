@@ -11,9 +11,8 @@ import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.testing.support.concept.ConceptParameterResolver;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class InvestigationSteps {
@@ -35,8 +34,7 @@ public class InvestigationSteps {
       final Active<ProviderIdentifier> activeProvider,
       final Active<InvestigationIdentifier> activeInvestigation,
       final InvestigationMother mother,
-      final ConceptParameterResolver resolver
-  ) {
+      final ConceptParameterResolver resolver) {
     this.availablePatients = availablePatients;
     this.activePatient = activePatient;
     this.activeJurisdiction = activeJurisdiction;
@@ -49,40 +47,25 @@ public class InvestigationSteps {
 
   @Given("the patient is a subject of an investigation")
   public void subject() {
-    subject(
-        activeProgramArea.active(),
-        activeJurisdiction.active()
-    );
+    subject(activeProgramArea.active(), activeJurisdiction.active());
   }
 
   @Given("the patient is a subject of an investigation for {programArea} within {jurisdiction}")
   public void subject(
-      final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
-    activePatient.maybeActive().ifPresent(
-        patient -> mother.create(
-            patient,
-            jurisdiction,
-            programArea
-        )
-    );
+      final ProgramAreaIdentifier programArea, final JurisdictionIdentifier jurisdiction) {
+    activePatient
+        .maybeActive()
+        .ifPresent(patient -> mother.create(patient, jurisdiction, programArea));
   }
 
-  @Given("the previous patient is a subject of an investigation for {programArea} within {jurisdiction}")
+  @Given(
+      "the previous patient is a subject of an investigation for {programArea} within {jurisdiction}")
   public void previousSubject(
-      final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
-    availablePatients.maybePrevious().ifPresent(
-        patient -> mother.create(
-            patient,
-            jurisdiction,
-            programArea
-        )
-    );
+      final ProgramAreaIdentifier programArea, final JurisdictionIdentifier jurisdiction) {
+    availablePatients
+        .maybePrevious()
+        .ifPresent(patient -> mother.create(patient, jurisdiction, programArea));
   }
-
 
   @Given("the patient is a subject of {int} investigations")
   public void the_patient_is_a_subject_N_investigation(final int n) {
@@ -91,31 +74,23 @@ public class InvestigationSteps {
     ProgramAreaIdentifier programArea = this.activeProgramArea.active();
 
     for (int i = 0; i < n; i++) {
-      mother.create(
-          patient,
-          jurisdiction,
-          programArea
-      );
+      mother.create(patient, jurisdiction, programArea);
     }
   }
 
   @Given("the investigation is for {programArea} within {jurisdiction}")
   public void the_investigation_is_within(
-      final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
-    activeInvestigation.maybeActive().ifPresent(
-        investigation -> mother.within(
-            investigation,
-            programArea,
-            jurisdiction
-        )
-    );
+      final ProgramAreaIdentifier programArea, final JurisdictionIdentifier jurisdiction) {
+    activeInvestigation
+        .maybeActive()
+        .ifPresent(investigation -> mother.within(investigation, programArea, jurisdiction));
   }
 
   @Given("the investigation is for the {condition} condition")
   public void the_investigation_is_for_the_condition(final String condition) {
-    activeInvestigation.maybeActive().ifPresent(investigation -> mother.withCondition(investigation, condition));
+    activeInvestigation
+        .maybeActive()
+        .ifPresent(investigation -> mother.withCondition(investigation, condition));
   }
 
   @Given("the investigation is for a patient that is pregnant")
@@ -135,107 +110,107 @@ public class InvestigationSteps {
 
   @Given("the investigation was created by {user} on {localDate}")
   public void the_investigation_was_created_on(final ActiveUser user, final LocalDate date) {
-    activeInvestigation.maybeActive().ifPresent(investigation -> this.mother.created(investigation, user.id(), date));
+    activeInvestigation
+        .maybeActive()
+        .ifPresent(investigation -> this.mother.created(investigation, user.id(), date));
   }
 
   @Given("the investigation was updated by {user} on {localDate}")
   public void the_investigation_was_updated_on(final ActiveUser user, final LocalDate date) {
-    activeInvestigation.maybeActive().ifPresent(investigation -> this.mother.updated(investigation, user.id(), date));
+    activeInvestigation
+        .maybeActive()
+        .ifPresent(investigation -> this.mother.updated(investigation, user.id(), date));
   }
 
   @Given("the investigation has been closed")
   public void the_investigation_has_been_closed() {
-    this.activeInvestigation.maybeActive()
+    this.activeInvestigation
+        .maybeActive()
         .ifPresent(active -> mother.closed(active, LocalDate.now()));
   }
 
   @Given("the investigation was closed on {localDate}")
   public void the_investigation_was_closed_on(final LocalDate on) {
-    this.activeInvestigation.maybeActive()
-        .ifPresent(active -> mother.closed(active, on));
+    this.activeInvestigation.maybeActive().ifPresent(active -> mother.closed(active, on));
   }
 
   @Given("the investigation was started on {localDate}")
   public void the_investigation_started_on(final LocalDate on) {
-    this.activeInvestigation.maybeActive()
-        .ifPresent(active -> mother.started(active, on));
+    this.activeInvestigation.maybeActive().ifPresent(active -> mother.started(active, on));
   }
 
   @Given("the investigation was reported on {localDate}")
   public void the_investigation_reported_on(final LocalDate on) {
-    this.activeInvestigation.maybeActive()
-        .ifPresent(active -> mother.reported(active, on));
+    this.activeInvestigation.maybeActive().ifPresent(active -> mother.reported(active, on));
   }
 
   @Given("the investigation has a processing status of {processingStatus}")
   public void the_investigation_has_a_processing_status_of(final String status) {
-    this.activeInvestigation.maybeActive()
-        .ifPresent(active -> mother.processing(active, status));
+    this.activeInvestigation.maybeActive().ifPresent(active -> mother.processing(active, status));
   }
 
   @ParameterType(name = "processingStatus", value = ".*")
   public String processingStatus(final String status) {
-    return resolver.resolve("CM_PROCESS_STAGE", status)
-        .orElse(null);
+    return resolver.resolve("CM_PROCESS_STAGE", status).orElse(null);
   }
 
   @Given("the investigation has a case status of {caseStatus}")
   public void the_investigation_has_a_case_status_of(final String status) {
-    this.activeInvestigation.maybeActive()
-        .ifPresent(active -> mother.caseStatus(active, status));
+    this.activeInvestigation.maybeActive().ifPresent(active -> mother.caseStatus(active, status));
   }
 
   @ParameterType(name = "caseStatus", value = ".*")
   public String caseStatus(final String value) {
-    return resolver.resolve("PHC_CLASS", value)
-        .orElse(null);
+    return resolver.resolve("PHC_CLASS", value).orElse(null);
   }
 
   @Given("the investigation is related to State Case {string}")
   public void the_investigation_is_related_to_state_case(final String number) {
-    this.activeInvestigation.maybeActive()
+    this.activeInvestigation
+        .maybeActive()
         .ifPresent(active -> mother.relatedToStateCase(active, number));
   }
 
   @Given("the investigation is related to ABCs Case {string}")
   public void the_investigation_is_related_to_ABCS_case(final String number) {
-    this.activeInvestigation.maybeActive()
+    this.activeInvestigation
+        .maybeActive()
         .ifPresent(active -> mother.relatedToABCSCase(active, number));
   }
 
   @Given("the investigation is related to County Case {string}")
   public void the_investigation_is_related_to_county_case(final String number) {
-    this.activeInvestigation.maybeActive()
+    this.activeInvestigation
+        .maybeActive()
         .ifPresent(active -> mother.relatedToCountyCase(active, number));
   }
 
   @Given("the investigation was investigated by the provider")
   public void investigatedBy() {
-    this.activeInvestigation.maybeActive()
-        .ifPresent(
-            active -> mother.investigatedBy(
-                active,
-                activeProvider.active()));
+    this.activeInvestigation
+        .maybeActive()
+        .ifPresent(active -> mother.investigatedBy(active, activeProvider.active()));
   }
 
   @Given("the investigation was reported by the {organization} facility")
-  public void the_lab_report_was_ordered_by_the_organization(final OrganizationIdentifier organization) {
-    this.activeInvestigation.maybeActive()
+  public void the_lab_report_was_ordered_by_the_organization(
+      final OrganizationIdentifier organization) {
+    this.activeInvestigation
+        .maybeActive()
         .ifPresent(active -> mother.reportedBy(active, organization));
   }
 
   @Given("the investigation was reported by the provider")
   public void the_investigation_was_reported_by_the_provider() {
-    this.activeInvestigation.maybeActive()
-        .ifPresent(
-            active -> mother.reportedBy(
-                active,
-                activeProvider.active()));
+    this.activeInvestigation
+        .maybeActive()
+        .ifPresent(active -> mother.reportedBy(active, activeProvider.active()));
   }
 
   @Given("the investigation is related to the {outbreak} outbreak")
   public void the_investigation_is_related_to_the_outbreak(final String outbreak) {
-    this.activeInvestigation.maybeActive().ifPresent(
-        active -> mother.relatedToOutbreak(active, outbreak));
+    this.activeInvestigation
+        .maybeActive()
+        .ifPresent(active -> mother.relatedToOutbreak(active, outbreak));
   }
 }

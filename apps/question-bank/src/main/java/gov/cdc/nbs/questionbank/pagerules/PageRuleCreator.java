@@ -1,9 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import java.util.List;
-import jakarta.persistence.EntityManager;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
@@ -13,6 +9,10 @@ import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
+import jakarta.persistence.EntityManager;
+import java.util.List;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
@@ -71,23 +71,25 @@ public class PageRuleCreator {
     }
 
     long availableId = repository.findNextAvailableID();
-    PageContentCommand.AddRuleCommand command = switch (request.ruleFunction()) {
-      case DATE_COMPARE -> dateCommandCreator.create(availableId, request, page, userId);
-      case DISABLE, ENABLE -> enableDisableCommandCreator.create(availableId, request, page, userId);
-      case HIDE, UNHIDE -> hideUnhideCommandCreator.create(availableId, request, page, userId);
-      case REQUIRE_IF -> requireIfCommandCreator.create(availableId, request, page, userId);
-      default -> throw new RuleException("Unsupported function specified");
-    };
+    PageContentCommand.AddRuleCommand command =
+        switch (request.ruleFunction()) {
+          case DATE_COMPARE -> dateCommandCreator.create(availableId, request, page, userId);
+          case DISABLE, ENABLE ->
+              enableDisableCommandCreator.create(availableId, request, page, userId);
+          case HIDE, UNHIDE -> hideUnhideCommandCreator.create(availableId, request, page, userId);
+          case REQUIRE_IF -> requireIfCommandCreator.create(availableId, request, page, userId);
+          default -> throw new RuleException("Unsupported function specified");
+        };
 
     WaRuleMetadata ruleMetadata = repository.save(new WaRuleMetadata(command));
     return finder.findByRuleId(ruleMetadata.getId());
   }
 
   RuleRequest addSourceValues(RuleRequest request, long page) {
-    List<Concept> concepts = conceptFinder.findByQuestionIdentifier(request.sourceIdentifier(), page);
-    List<SourceValue> sourceValues = concepts.stream()
-        .map(c -> new SourceValue(c.localCode(), c.display()))
-        .toList();
+    List<Concept> concepts =
+        conceptFinder.findByQuestionIdentifier(request.sourceIdentifier(), page);
+    List<SourceValue> sourceValues =
+        concepts.stream().map(c -> new SourceValue(c.localCode(), c.display())).toList();
     return new RuleRequest(
         request.ruleFunction(),
         request.description(),

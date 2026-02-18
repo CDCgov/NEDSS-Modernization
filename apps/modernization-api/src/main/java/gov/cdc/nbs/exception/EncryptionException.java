@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class EncryptionException extends RuntimeException {
-    public EncryptionException(String message) {
-        super(message);
-    }
+  public EncryptionException(String message) {
+    super(message);
+  }
 }

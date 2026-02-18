@@ -1,14 +1,15 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import java.util.Arrays;
-import org.junit.jupiter.api.Test;
+
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.pagerules.Rule.Comparator;
 import gov.cdc.nbs.questionbank.pagerules.Rule.RuleFunction;
 import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
 import gov.cdc.nbs.questionbank.pagerules.Rule.TargetType;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
+import java.util.Arrays;
+import org.junit.jupiter.api.Test;
 
 class HideUnhideCommandCreatorTest {
 
@@ -17,9 +18,7 @@ class HideUnhideCommandCreatorTest {
   @Test
   void function_name() {
     String expected = "ruleHideUnhINV14411()";
-    String actual = creator.createJavascriptName(
-        "INV144",
-        11);
+    String actual = creator.createJavascriptName("INV144", 11);
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -27,13 +26,14 @@ class HideUnhideCommandCreatorTest {
   void error_message() {
     String expected =
         "Preceding COVID-like illness (NBS707) = must be ( Yes ) Date of COVID-like illness symptom onset";
-    String actual = creator.createErrorMessage(
-        "Preceding COVID-like illness",
-        "NBS707",
-        Arrays.asList(new SourceValue("1", "Yes")),
-        false,
-        Arrays.asList("Date of COVID-like illness symptom onset"),
-        "=");
+    String actual =
+        creator.createErrorMessage(
+            "Preceding COVID-like illness",
+            "NBS707",
+            Arrays.asList(new SourceValue("1", "Yes")),
+            false,
+            Arrays.asList("Date of COVID-like illness symptom onset"),
+            "=");
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -41,35 +41,32 @@ class HideUnhideCommandCreatorTest {
   void error_message_any_source() {
     String expected =
         "Preceding COVID-like illness = must be ( Any Source Value ) Date of COVID-like illness symptom onset";
-    String actual = creator.createErrorMessage(
-        "Preceding COVID-like illness",
-        "NBS707",
-        Arrays.asList(new SourceValue("1", "Yes")),
-        true,
-        Arrays.asList("Date of COVID-like illness symptom onset"),
-        "=");
+    String actual =
+        creator.createErrorMessage(
+            "Preceding COVID-like illness",
+            "NBS707",
+            Arrays.asList(new SourceValue("1", "Yes")),
+            true,
+            Arrays.asList("Date of COVID-like illness symptom onset"),
+            "=");
     assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   void source_values() {
     String expected = "text1, text2";
-    String actual = creator.createSourceValues(
-        false,
-        Arrays.asList(
-            new SourceValue("id1", "text1"),
-            new SourceValue("id2", "text2")));
+    String actual =
+        creator.createSourceValues(
+            false, Arrays.asList(new SourceValue("id1", "text1"), new SourceValue("id2", "text2")));
     assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   void any_source_values() {
     String expected = "Any Source Value";
-    String actual = creator.createSourceValues(
-        true,
-        Arrays.asList(
-            new SourceValue("id1", "text1"),
-            new SourceValue("id2", "text2")));
+    String actual =
+        creator.createSourceValues(
+            true, Arrays.asList(new SourceValue("id1", "text1"), new SourceValue("id2", "text2")));
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -100,20 +97,19 @@ class HideUnhideCommandCreatorTest {
             }
               """;
     String functionName = creator.createJavascriptName("INV144", 14);
-    RuleRequest request = new RuleRequest(
-        RuleFunction.HIDE,
-        "description",
-        "INV144",
-        true,
-        Arrays.asList(),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        Arrays.asList("INV163"),
-        "",
-        Arrays.asList());
-    String actual = creator.createJavascript(
-        functionName,
-        request);
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.HIDE,
+            "description",
+            "INV144",
+            true,
+            Arrays.asList(),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            Arrays.asList("INV163"),
+            "",
+            Arrays.asList());
+    String actual = creator.createJavascript(functionName, request);
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -144,20 +140,19 @@ class HideUnhideCommandCreatorTest {
             }
               """;
     String functionName = creator.createJavascriptName("INV150", 14);
-    RuleRequest request = new RuleRequest(
-        RuleFunction.HIDE,
-        "description",
-        "INV150",
-        true,
-        Arrays.asList(),
-        Comparator.NOT_EQUAL_TO,
-        TargetType.QUESTION,
-        Arrays.asList("INV163"),
-        "",
-        Arrays.asList());
-    String actual = creator.createJavascript(
-        functionName,
-        request);
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.HIDE,
+            "description",
+            "INV150",
+            true,
+            Arrays.asList(),
+            Comparator.NOT_EQUAL_TO,
+            TargetType.QUESTION,
+            Arrays.asList("INV163"),
+            "",
+            Arrays.asList());
+    String actual = creator.createJavascript(functionName, request);
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -188,23 +183,21 @@ class HideUnhideCommandCreatorTest {
             }
               """;
     String functionName = creator.createJavascriptName("INV144", 14);
-    RuleRequest request = new RuleRequest(
-        RuleFunction.UNHIDE,
-        "description",
-        "INV144",
-        true,
-        Arrays.asList(),
-        Comparator.NOT_EQUAL_TO,
-        TargetType.QUESTION,
-        Arrays.asList("INV163"),
-        "",
-        Arrays.asList());
-    String actual = creator.createJavascript(
-        functionName,
-        request);
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.UNHIDE,
+            "description",
+            "INV144",
+            true,
+            Arrays.asList(),
+            Comparator.NOT_EQUAL_TO,
+            TargetType.QUESTION,
+            Arrays.asList("INV163"),
+            "",
+            Arrays.asList());
+    String actual = creator.createJavascript(functionName, request);
     assertThat(actual).isEqualTo(expected);
   }
-
 
   @Test
   void unhide_specific_equals() {
@@ -235,20 +228,19 @@ class HideUnhideCommandCreatorTest {
             }
               """;
     String functionName = creator.createJavascriptName("INV144", 14);
-    RuleRequest request = new RuleRequest(
-        RuleFunction.UNHIDE,
-        "description",
-        "INV144",
-        false,
-        Arrays.asList(new SourceValue("D", "Days")),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        Arrays.asList("INV163"),
-        "",
-        Arrays.asList());
-    String actual = creator.createJavascript(
-        functionName,
-        request);
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.UNHIDE,
+            "description",
+            "INV144",
+            false,
+            Arrays.asList(new SourceValue("D", "Days")),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            Arrays.asList("INV163"),
+            "",
+            Arrays.asList());
+    String actual = creator.createJavascript(functionName, request);
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -281,20 +273,19 @@ class HideUnhideCommandCreatorTest {
             }
               """;
     String functionName = creator.createJavascriptName("INV144", 14);
-    RuleRequest request = new RuleRequest(
-        RuleFunction.UNHIDE,
-        "description",
-        "INV144",
-        false,
-        Arrays.asList(new SourceValue("D", "Days")),
-        Comparator.NOT_EQUAL_TO,
-        TargetType.QUESTION,
-        Arrays.asList("INV163"),
-        "",
-        Arrays.asList());
-    String actual = creator.createJavascript(
-        functionName,
-        request);
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.UNHIDE,
+            "description",
+            "INV144",
+            false,
+            Arrays.asList(new SourceValue("D", "Days")),
+            Comparator.NOT_EQUAL_TO,
+            TargetType.QUESTION,
+            Arrays.asList("INV163"),
+            "",
+            Arrays.asList());
+    String actual = creator.createJavascript(functionName, request);
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -331,22 +322,22 @@ class HideUnhideCommandCreatorTest {
             }
               """;
     String functionName = creator.createJavascriptName("INV154", 20);
-    RuleRequest request = new RuleRequest(
-        RuleFunction.HIDE,
-        "description",
-        "INV154",
-        false,
-        Arrays.asList(new SourceValue("D", "Days"),
-            new SourceValue("H", "Hours"),
-            new SourceValue("N", "Minutes")),
-        Comparator.NOT_EQUAL_TO,
-        TargetType.QUESTION,
-        Arrays.asList("DEM161", "DEM196"),
-        "",
-        Arrays.asList());
-    String actual = creator.createJavascript(
-        functionName,
-        request);
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.HIDE,
+            "description",
+            "INV154",
+            false,
+            Arrays.asList(
+                new SourceValue("D", "Days"),
+                new SourceValue("H", "Hours"),
+                new SourceValue("N", "Minutes")),
+            Comparator.NOT_EQUAL_TO,
+            TargetType.QUESTION,
+            Arrays.asList("DEM161", "DEM196"),
+            "",
+            Arrays.asList());
+    String actual = creator.createJavascript(functionName, request);
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -383,23 +374,22 @@ class HideUnhideCommandCreatorTest {
             }
               """;
     String functionName = creator.createJavascriptName("INV154", 20);
-    RuleRequest request = new RuleRequest(
-        RuleFunction.HIDE,
-        "description",
-        "INV154",
-        false,
-        Arrays.asList(
-            new SourceValue("D", "Days"),
-            new SourceValue("H", "Hours"),
-            new SourceValue("N", "Minutes")),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        Arrays.asList("DEM161", "DEM196"),
-        "",
-        Arrays.asList());
-    String actual = creator.createJavascript(
-        functionName,
-        request);
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.HIDE,
+            "description",
+            "INV154",
+            false,
+            Arrays.asList(
+                new SourceValue("D", "Days"),
+                new SourceValue("H", "Hours"),
+                new SourceValue("N", "Minutes")),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            Arrays.asList("DEM161", "DEM196"),
+            "",
+            Arrays.asList());
+    String actual = creator.createJavascript(functionName, request);
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -436,42 +426,42 @@ class HideUnhideCommandCreatorTest {
             }
               """;
     String functionName = creator.createJavascriptName("INV154", 20);
-    RuleRequest request = new RuleRequest(
-        RuleFunction.HIDE,
-        "description",
-        "INV154",
-        false,
-        Arrays.asList(
-            new SourceValue("D", "Days"),
-            new SourceValue("H", "Hours"),
-            new SourceValue("N", "Minutes")),
-        Comparator.EQUAL_TO,
-        TargetType.SUBSECTION,
-        Arrays.asList("DEM161", "DEM196"),
-        "",
-        Arrays.asList());
-    String actual = creator.createJavascript(
-        functionName,
-        request);
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.HIDE,
+            "description",
+            "INV154",
+            false,
+            Arrays.asList(
+                new SourceValue("D", "Days"),
+                new SourceValue("H", "Hours"),
+                new SourceValue("N", "Minutes")),
+            Comparator.EQUAL_TO,
+            TargetType.SUBSECTION,
+            Arrays.asList("DEM161", "DEM196"),
+            "",
+            Arrays.asList());
+    String actual = creator.createJavascript(functionName, request);
     assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   void creates_command() {
-    RuleRequest request = new RuleRequest(
-        RuleFunction.HIDE,
-        "description",
-        "INV154",
-        false,
-        Arrays.asList(
-            new SourceValue("D", "Days"),
-            new SourceValue("H", "Hours"),
-            new SourceValue("N", "Minutes")),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        Arrays.asList("DEM161", "DEM196"),
-        "source text",
-        Arrays.asList());
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.HIDE,
+            "description",
+            "INV154",
+            false,
+            Arrays.asList(
+                new SourceValue("D", "Days"),
+                new SourceValue("H", "Hours"),
+                new SourceValue("N", "Minutes")),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            Arrays.asList("DEM161", "DEM196"),
+            "source text",
+            Arrays.asList());
     PageContentCommand.AddRuleCommand command = creator.create(1887l, request, 3l, 9l);
     assertThat(command).isNotNull();
     assertThat(command.targetType()).isEqualTo("QUESTION");
@@ -486,20 +476,21 @@ class HideUnhideCommandCreatorTest {
 
   @Test
   void update_command() {
-    RuleRequest request = new RuleRequest(
-        RuleFunction.HIDE,
-        "description",
-        "INV154",
-        false,
-        Arrays.asList(
-            new SourceValue("D", "Days"),
-            new SourceValue("H", "Hours"),
-            new SourceValue("N", "Minutes")),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        Arrays.asList("DEM161", "DEM196"),
-        "source text",
-        Arrays.asList());
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.HIDE,
+            "description",
+            "INV154",
+            false,
+            Arrays.asList(
+                new SourceValue("D", "Days"),
+                new SourceValue("H", "Hours"),
+                new SourceValue("N", "Minutes")),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            Arrays.asList("DEM161", "DEM196"),
+            "source text",
+            Arrays.asList());
     PageContentCommand.UpdateRuleCommand command = creator.update(1887l, request, 3l);
     assertThat(command).isNotNull();
     assertThat(command.targetType()).isEqualTo("QUESTION");
@@ -512,39 +503,25 @@ class HideUnhideCommandCreatorTest {
   @Test
   void expression_unhide() {
     String expected = "INV144 (  )  ^ S ( DEM161 )";
-    String actual = creator.createExpression(
-        "INV144",
-        null,
-        true,
-        Arrays.asList("DEM161"),
-        "=",
-        false);
+    String actual =
+        creator.createExpression("INV144", null, true, Arrays.asList("DEM161"), "=", false);
     assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   void expression_hide() {
     String expected = "INV144 (  )  ^ H ( DEM161 )";
-    String actual = creator.createExpression(
-        "INV144",
-        null,
-        true,
-        Arrays.asList("DEM161"),
-        "=",
-        true);
+    String actual =
+        creator.createExpression("INV144", null, true, Arrays.asList("DEM161"), "=", true);
     assertThat(actual).isEqualTo(expected);
   }
 
   @Test
   void expression_hide_multi() {
     String expected = "INV144 (  )  ^ H ( DEM161 , DEM162 )";
-    String actual = creator.createExpression(
-        "INV144",
-        null,
-        true,
-        Arrays.asList("DEM161", "DEM162"),
-        "=",
-        true);
+    String actual =
+        creator.createExpression(
+            "INV144", null, true, Arrays.asList("DEM161", "DEM162"), "=", true);
     assertThat(actual).isEqualTo(expected);
   }
 }

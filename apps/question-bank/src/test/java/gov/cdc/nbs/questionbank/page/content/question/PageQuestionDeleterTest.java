@@ -2,6 +2,13 @@ package gov.cdc.nbs.questionbank.page.content.question;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.content.question.exception.DeletePageQuestionException;
+import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -14,27 +21,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.content.question.exception.DeletePageQuestionException;
-import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
-import jakarta.persistence.EntityManager;
 
 @ExtendWith(MockitoExtension.class)
 class PageQuestionDeleterTest {
 
-  @Mock
-  private EntityManager entityManager;
+  @Mock private EntityManager entityManager;
 
-  @Mock
-  private JdbcTemplate template;
+  @Mock private JdbcTemplate template;
 
-  @Mock
-  private WaTemplate waTemplate;
+  @Mock private WaTemplate waTemplate;
 
-  @InjectMocks
-  private PageQuestionDeleter deleter;
+  @InjectMocks private PageQuestionDeleter deleter;
 
   @Test
   void should_delete_question_from_page() {
@@ -57,9 +54,9 @@ class PageQuestionDeleterTest {
     waUiMetadataList.add(waUiMetadata);
     page.setUiMetadata(waUiMetadataList);
 
-    Assertions.assertEquals(1, page.getUiMetadata().size());// before delete
+    Assertions.assertEquals(1, page.getUiMetadata().size()); // before delete
     deleter.deleteQuestion(1L, 2L, 3L);
-    Assertions.assertEquals(0, page.getUiMetadata().size());// after delete
+    Assertions.assertEquals(0, page.getUiMetadata().size()); // after delete
   }
 
   @Test
@@ -78,9 +75,11 @@ class PageQuestionDeleterTest {
 
     page.setUiMetadata(new ArrayList<WaUiMetadata>());
 
-    PageContentModificationException exception = assertThrows(PageContentModificationException.class,
-        () -> deleter.deleteQuestion(1L, 2L, 3L));
-    Assertions.assertEquals("Unable to delete a question from a page, the page does not contain the question",
+    PageContentModificationException exception =
+        assertThrows(
+            PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
+    Assertions.assertEquals(
+        "Unable to delete a question from a page, the page does not contain the question",
         exception.getMessage());
   }
 
@@ -105,9 +104,11 @@ class PageQuestionDeleterTest {
     waUiMetadataList.add(waUiMetadata);
     page.setUiMetadata(waUiMetadataList);
 
-    PageContentModificationException exception = assertThrows(PageContentModificationException.class,
-        () -> deleter.deleteQuestion(1L, 2L, 3L));
-    Assertions.assertEquals("Unable to delete a question from a page, the page does not contain the question",
+    PageContentModificationException exception =
+        assertThrows(
+            PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
+    Assertions.assertEquals(
+        "Unable to delete a question from a page, the page does not contain the question",
         exception.getMessage());
   }
 
@@ -131,8 +132,9 @@ class PageQuestionDeleterTest {
     waUiMetadataList.add(waUiMetadata);
     page.setUiMetadata(waUiMetadataList);
 
-    PageContentModificationException exception = assertThrows(PageContentModificationException.class,
-        () -> deleter.deleteQuestion(1L, 2L, 3L));
+    PageContentModificationException exception =
+        assertThrows(
+            PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
     Assertions.assertEquals("Unable to delete standard question", exception.getMessage());
   }
 
@@ -170,9 +172,10 @@ class PageQuestionDeleterTest {
 
     List<String> identifiersFound = new ArrayList<>();
     identifiersFound.add("identifier1,identifier2");
-    when(template.query(Mockito.anyString(),
-        Mockito.any(PreparedStatementSetter.class),
-        Mockito.any(RowMapper.class)))
+    when(template.query(
+            Mockito.anyString(),
+            Mockito.any(PreparedStatementSetter.class),
+            Mockito.any(RowMapper.class)))
         .thenReturn(identifiersFound);
 
     // When a request is processed to delete a question ,

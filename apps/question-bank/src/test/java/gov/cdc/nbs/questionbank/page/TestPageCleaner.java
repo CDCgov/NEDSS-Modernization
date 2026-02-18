@@ -2,16 +2,13 @@ package gov.cdc.nbs.questionbank.page;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
-import org.springframework.stereotype.Component;
-
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Component;
 
 @Component
 class TestPageCleaner {
 
   private final EntityManager entityManager;
-
-
 
   TestPageCleaner(final EntityManager entityManager) {
     this.entityManager = entityManager;

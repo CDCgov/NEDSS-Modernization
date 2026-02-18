@@ -21,21 +21,19 @@ import lombok.Setter;
 @Table(name = "Auth_bus_op_type", catalog = "NBS_ODSE")
 @Builder
 public class AuthBusOpType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_bus_op_type_uid", nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "auth_bus_op_type_uid", nullable = false)
+  private Long id;
 
-    @Column(name = "bus_op_nm", length = 100)
-    private String busOpNm;
+  @Column(name = "bus_op_nm", length = 100)
+  private String busOpNm;
 
-    @Column(name = "bus_op_disp_nm", length = 1000)
-    private String busOpDispNm;
+  @Column(name = "bus_op_disp_nm", length = 1000)
+  private String busOpDispNm;
 
-    @Column(name = "operation_sequence", nullable = false)
-    private Integer operationSequence;
+  @Column(name = "operation_sequence", nullable = false)
+  private Integer operationSequence;
 
-    @Embedded
-    private AuthAudit audit;
-
+  @Embedded private AuthAudit audit;
 }

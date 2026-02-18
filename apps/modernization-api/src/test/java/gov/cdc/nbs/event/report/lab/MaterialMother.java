@@ -12,9 +12,10 @@ import org.springframework.stereotype.Component;
 @ScenarioScope
 class MaterialMother {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Entity (entity_uid, class_cd) values (:identifier, 'MAT');
-      
+
       insert into Material(
           material_uid,
           local_id,
@@ -34,7 +35,7 @@ class MaterialMother {
           :addedOn,
           :addedBy
       );
-      
+
       insert into Participation(
           act_uid,
           act_class_cd,
@@ -58,11 +59,12 @@ class MaterialMother {
       );
       """;
 
-  private static final String DELETE = """
+  private static final String DELETE =
+      """
       delete from Participation where subject_class_cd = 'MAT' and subject_entity_uid in (:identifiers);
-      
+
       delete from Material where material_uid in (:identifiers);
-      
+
       delete from Entity where class_cd = 'MAT' and entity_uid in (:identifiers);
       """;
 
@@ -74,8 +76,7 @@ class MaterialMother {
   MaterialMother(
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator,
-      final JdbcClient client
-  ) {
+      final JdbcClient client) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.client = client;
@@ -87,14 +88,12 @@ class MaterialMother {
     this.cleaner.clean();
   }
 
-  void create(
-      final LabReportIdentifier report,
-      final String source
-  ) {
+  void create(final LabReportIdentifier report, final String source) {
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal("MAT");
 
-    client.sql(CREATE)
+    client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("source", source)
         .param("local", local)
@@ -104,6 +103,5 @@ class MaterialMother {
         .update();
 
     this.cleaner.include(identifier);
-
   }
 }

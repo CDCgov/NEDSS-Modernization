@@ -5,23 +5,24 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
 class JurisdictionMother {
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete
       from NBS_SRTE.[dbo].Jurisdiction_code
       where nbs_uid in (:identifiers);
       """;
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into NBS_SRTE.[dbo].Jurisdiction_code(
         nbs_uid,
         code,
@@ -42,8 +43,7 @@ class JurisdictionMother {
       final SequentialIdentityGenerator idGenerator,
       final JdbcClient client,
       final Available<JurisdictionIdentifier> available,
-      final Active<JurisdictionIdentifier> active
-  ) {
+      final Active<JurisdictionIdentifier> active) {
     this.idGenerator = idGenerator;
     this.client = client;
     this.identifiers = new ArrayList<>();
@@ -56,9 +56,7 @@ class JurisdictionMother {
 
     if (!identifiers.isEmpty()) {
 
-      client.sql(DELETE_IN)
-          .param("identifiers", identifiers)
-          .update();
+      client.sql(DELETE_IN).param("identifiers", identifiers).update();
 
       this.identifiers.clear();
     }
@@ -69,7 +67,8 @@ class JurisdictionMother {
     long identifier = idGenerator.next();
     String code = String.valueOf(identifier);
 
-    client.sql(CREATE)
+    client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("code", code)
         .param("name", name)
@@ -82,5 +81,4 @@ class JurisdictionMother {
     this.available.available(created);
     this.active.active(created);
   }
-
 }

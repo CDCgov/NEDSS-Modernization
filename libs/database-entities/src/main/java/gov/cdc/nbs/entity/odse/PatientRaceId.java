@@ -4,18 +4,15 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-
 public class PatientRaceId implements Serializable {
 
-  @Serial
-  private static final long serialVersionUID = -8655697160777324427L;
+  @Serial private static final long serialVersionUID = -8655697160777324427L;
 
   private long patient;
 
   private String race;
 
-  protected PatientRaceId() {
-  }
+  protected PatientRaceId() {}
 
   public PatientRaceId(long patient, String race) {
     this.patient = patient;
@@ -42,9 +39,6 @@ public class PatientRaceId implements Serializable {
 
   @Override
   public String toString() {
-    return "PersonRaceId{" +
-        "patient=" + patient +
-        ", race='" + race + '\'' +
-        '}';
+    return "PersonRaceId{" + "patient=" + patient + ", race='" + race + '\'' + '}';
   }
 }

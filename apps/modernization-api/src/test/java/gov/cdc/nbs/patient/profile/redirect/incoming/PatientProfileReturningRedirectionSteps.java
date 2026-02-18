@@ -16,8 +16,7 @@ public class PatientProfileReturningRedirectionSteps {
   PatientProfileReturningRedirectionSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientProfileRedirectRequester requester,
-      final Active<ResultActions> activeResponse
-  ) {
+      final Active<ResultActions> activeResponse) {
     this.activePatient = activePatient;
     this.requester = requester;
     this.activeResponse = activeResponse;
@@ -25,16 +24,17 @@ public class PatientProfileReturningRedirectionSteps {
 
   @When("Returning to a Patient Profile")
   public void returning_to_a_patient_profile() {
-    activePatient.maybeActive()
+    activePatient
+        .maybeActive()
         .map(patient -> requester.returningTo(patient, "summary"))
         .ifPresent(activeResponse::active);
   }
 
   @When("Returning to a Patient Profile {patientProfileTab} tab")
   public void returning_to_a_patient_profile_tab(final String tab) {
-    activePatient.maybeActive()
+    activePatient
+        .maybeActive()
         .map(patient -> requester.returningTo(patient, tab))
         .ifPresent(activeResponse::active);
   }
-
 }

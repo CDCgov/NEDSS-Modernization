@@ -4,6 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,22 +19,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SubsectionUpdaterTest {
 
-  @Mock
-  private EntityManager entityManager;
+  @Mock private EntityManager entityManager;
 
-  @InjectMocks
-  private SubSectionUpdater updater;
-
+  @InjectMocks private SubSectionUpdater updater;
 
   @Test
   void should_update_subsection() {
@@ -39,7 +37,6 @@ class SubsectionUpdaterTest {
     ArgumentCaptor<PageContentCommand.UpdateSubsection> captor =
         ArgumentCaptor.forClass(PageContentCommand.UpdateSubsection.class);
     when(page.updateSubSection(captor.capture(), Mockito.any())).thenReturn(subSectionMock);
-
 
     // When a valid request is made to update the section
     UpdateSubSectionRequest request = new UpdateSubSectionRequest("New name", false);

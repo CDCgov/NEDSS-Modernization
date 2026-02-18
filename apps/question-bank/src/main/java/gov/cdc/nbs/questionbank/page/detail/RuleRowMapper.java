@@ -1,27 +1,17 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 class RuleRowMapper implements RowMapper<PagesRule> {
 
-  record Column(
-      int id,
-      int page,
-      int logic,
-      int values,
-      int function,
-      int source,
-      int target
-  ) {
+  record Column(int id, int page, int logic, int values, int function, int source, int target) {
     Column() {
       this(1, 2, 3, 4, 5, 6, 7);
     }
   }
-
 
   private final Column columns;
 
@@ -34,8 +24,7 @@ class RuleRowMapper implements RowMapper<PagesRule> {
   }
 
   @Override
-  @NonNull
-  public PagesRule mapRow(final ResultSet resultSet, int row) throws SQLException {
+  @NonNull public PagesRule mapRow(final ResultSet resultSet, int row) throws SQLException {
     long id = resultSet.getLong(this.columns.id());
     long page = resultSet.getLong(this.columns.page());
     String logic = resultSet.getString(this.columns.logic());
@@ -43,14 +32,6 @@ class RuleRowMapper implements RowMapper<PagesRule> {
     String function = resultSet.getString(this.columns.function());
     String source = resultSet.getString(this.columns.source());
     String target = resultSet.getString(this.columns.target());
-    return new PagesRule(
-        id,
-        page,
-        logic,
-        values,
-        function,
-        source,
-        target
-    );
+    return new PagesRule(id, page, logic, values, function, source, target);
   }
 }

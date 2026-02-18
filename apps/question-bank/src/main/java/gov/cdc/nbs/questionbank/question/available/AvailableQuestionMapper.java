@@ -46,5 +46,4 @@ public class AvailableQuestionMapper {
         // Admin
         tuple.get(tables.question().adminComment));
   }
-
 }

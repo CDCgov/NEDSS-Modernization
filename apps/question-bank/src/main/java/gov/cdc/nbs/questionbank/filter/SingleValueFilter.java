@@ -2,11 +2,8 @@ package gov.cdc.nbs.questionbank.filter;
 
 import java.util.Objects;
 
-public record SingleValueFilter(
-    String property,
-    Operator operator,
-    String value
-) implements ValueFilter {
+public record SingleValueFilter(String property, Operator operator, String value)
+    implements ValueFilter {
 
   public SingleValueFilter {
     Objects.requireNonNull(property, "a property is required");

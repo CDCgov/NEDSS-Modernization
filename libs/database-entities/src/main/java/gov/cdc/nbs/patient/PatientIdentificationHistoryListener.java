@@ -18,5 +18,4 @@ public class PatientIdentificationHistoryListener {
   void preUpdate(final Identifiable<EntityIdId> updated) {
     this.creator.snapshot(updated.identifier());
   }
-
 }

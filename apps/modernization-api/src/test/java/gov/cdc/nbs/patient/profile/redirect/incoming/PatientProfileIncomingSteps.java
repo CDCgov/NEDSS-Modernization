@@ -8,5 +8,4 @@ public class PatientProfileIncomingSteps {
   public String patientProfileTab(final String value) {
     return value.toLowerCase();
   }
-
 }

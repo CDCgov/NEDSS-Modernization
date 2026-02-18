@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 class ConditionOptionFinder extends SQLBasedOptionFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           condition_cd        as [value],
           condition_short_nm  as [name],
@@ -19,10 +20,7 @@ class ConditionOptionFinder extends SQLBasedOptionFinder {
           condition_short_nm
       """;
 
-
   ConditionOptionFinder(final JdbcTemplate template) {
     super(QUERY, template);
   }
-
-
 }

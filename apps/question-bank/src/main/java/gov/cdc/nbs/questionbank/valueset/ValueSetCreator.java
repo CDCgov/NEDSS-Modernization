@@ -1,18 +1,18 @@
 package gov.cdc.nbs.questionbank.valueset;
 
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import gov.cdc.nbs.questionbank.valueset.exception.CreateValuesetException;
 import gov.cdc.nbs.questionbank.valueset.model.Valueset;
 import gov.cdc.nbs.questionbank.valueset.request.CreateValuesetRequest;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 @Component
 @Transactional
@@ -22,20 +22,20 @@ public class ValueSetCreator {
   private final JdbcTemplate template;
   private final EntityManager entityManager;
 
-  public ValueSetCreator(
-      final EntityManager entityManager,
-      final JdbcTemplate template) {
+  public ValueSetCreator(final EntityManager entityManager, final JdbcTemplate template) {
     this.entityManager = entityManager;
     this.template = template;
   }
 
-  private static final String GET_ID_QUERY = """
+  private static final String GET_ID_QUERY =
+      """
       SELECT
       ISNULL(MAX(code_set_group_id + 10), 9910)
       FROM NBS_SRTE.dbo.Codeset_Group_Metadata
       """;
 
-  private static final String CODE_EXISTS_QUERY = """
+  private static final String CODE_EXISTS_QUERY =
+      """
       SELECT
         count(*)
       FROM
@@ -45,7 +45,8 @@ public class ValueSetCreator {
         AND codeSet.class_cd = 'code_value_general'
       """;
 
-  private static final String NAME_EXISTS_QUERY = """
+  private static final String NAME_EXISTS_QUERY =
+      """
       SELECT
         count(*)
       FROM
@@ -103,9 +104,7 @@ public class ValueSetCreator {
     return id != null ? id : 9910l;
   }
 
-  public ValueSetCommand.Add asAdd(
-      final CreateValuesetRequest request,
-      long userId) {
+  public ValueSetCommand.Add asAdd(final CreateValuesetRequest request, long userId) {
     return new ValueSetCommand.Add(
         request.type().toUpperCase(),
         request.name(),
@@ -114,6 +113,5 @@ public class ValueSetCreator {
         getNextCodesetId(),
         Instant.now(),
         userId);
-
   }
 }

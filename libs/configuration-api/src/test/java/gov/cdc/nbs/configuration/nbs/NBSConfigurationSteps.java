@@ -12,6 +12,6 @@ public class NBSConfigurationSteps {
 
   @Given("NBS is configured with a(n) {string} of {string}")
   public void nbs_is_configured_with_a(final String key, final String value) {
-    mother.set(key,value);
+    mother.set(key, value);
   }
 }

@@ -4,11 +4,10 @@ import gov.cdc.nbs.data.selectable.Selectable;
 import gov.cdc.nbs.data.selectable.SelectableRowMapper;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.sql.IntegerColumnMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientSexBirthDemographicRowMapper implements RowMapper<PatientSexBirthDemographic> {
 
@@ -27,13 +26,16 @@ class PatientSexBirthDemographicRowMapper implements RowMapper<PatientSexBirthDe
       SelectableRowMapper.Column current,
       SelectableRowMapper.Column unknownReason,
       SelectableRowMapper.Column transgenderInformation,
-      int additionalGender
-  ) {
+      int additionalGender) {
     Column() {
-      this(1, 2, 3,
+      this(
+          1,
+          2,
+          3,
           new SelectableRowMapper.Column(4, 5),
           new SelectableRowMapper.Column(6, 7),
-          8, 9,
+          8,
+          9,
           new SelectableRowMapper.Column(10, 11),
           new SelectableRowMapper.Column(12, 13),
           new SelectableRowMapper.Column(14, 15),
@@ -41,11 +43,9 @@ class PatientSexBirthDemographicRowMapper implements RowMapper<PatientSexBirthDe
           new SelectableRowMapper.Column(16, 17),
           new SelectableRowMapper.Column(18, 19),
           new SelectableRowMapper.Column(20, 21),
-          22
-      );
+          22);
     }
   }
-
 
   private final Column columns;
   private final SelectableRowMapper sexMapper;
@@ -76,7 +76,8 @@ class PatientSexBirthDemographicRowMapper implements RowMapper<PatientSexBirthDe
   }
 
   @Override
-  public PatientSexBirthDemographic mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
+  public PatientSexBirthDemographic mapRow(final ResultSet resultSet, int rowNum)
+      throws SQLException {
 
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
     LocalDate bornOn = LocalDateColumnMapper.map(resultSet, columns.bornOn());
@@ -109,8 +110,6 @@ class PatientSexBirthDemographicRowMapper implements RowMapper<PatientSexBirthDe
         current,
         unknownReason,
         transgenderInformation,
-        additionalGender
-    );
+        additionalGender);
   }
 }
-

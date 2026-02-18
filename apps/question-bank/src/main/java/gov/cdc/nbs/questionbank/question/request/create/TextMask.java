@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.question.request.create;
 
-
 public enum TextMask {
   TXT,
   CENSUS_TRACT,

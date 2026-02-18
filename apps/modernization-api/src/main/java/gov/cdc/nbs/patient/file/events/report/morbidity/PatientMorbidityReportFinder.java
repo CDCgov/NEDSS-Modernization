@@ -1,16 +1,16 @@
 package gov.cdc.nbs.patient.file.events.report.morbidity;
 
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
+import java.util.Collections;
+import java.util.List;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.List;
-
 @Component
 class PatientMorbidityReportFinder {
-  private static final String QUERY = """
-      
+  private static final String QUERY =
+      """
+
       with revisions (person_uid, mpr_id) as (
           select
               [patient].[person_uid],
@@ -38,64 +38,64 @@ class PatientMorbidityReportFinder {
           [reporting_provider_prefix].code_short_desc_txt as [reporting_provider_prefix],
           [reporting_provider].[first_nm]                 as [reporting_provider_first_name],
           [reporting_provider].[last_nm]                  as [reporting_provider_last_name]
-      
+
       from revisions
-      
+
           join [Participation] [subject_of_morbidity] on
                   [subject_of_morbidity].type_cd='SubjOfMorbReport'
               and [subject_of_morbidity].act_class_cd = 'OBS'
               and [subject_of_morbidity].subject_class_cd = 'PSN'
               and [subject_of_morbidity].subject_entity_uid = revisions.person_uid
               and [subject_of_morbidity].record_status_cd = 'ACTIVE'
-      
+
           join [Observation] [morbidity] with (nolock) on
                   [morbidity].observation_uid = [subject_of_morbidity].act_uid
               and [morbidity].ctrl_cd_display_form = 'MorbReport'
               and [morbidity].obs_domain_cd_st_1 = 'Order'
               and [morbidity].program_jurisdiction_oid in (:any)
-      
+
           join NBS_SRTE..Jurisdiction_code [jurisdiction] with (nolock) on
                   [jurisdiction].[code]  = [morbidity].[jurisdiction_cd]
-      
+
           join nbs_srte..Condition_code [condition] ON
                           [condition].condition_cd = [morbidity].cd
-      
+
           join Participation [reporting_facility_participation] with (nolock) on
                   [reporting_facility_participation].act_uid = [morbidity].observation_uid
               and [reporting_facility_participation].type_cd = 'ReporterOfMorbReport'
               and [reporting_facility_participation].subject_class_cd = 'ORG'
-      
+
           join Organization [reporting_facility] with (nolock) on
                   [reporting_facility].organization_uid = [reporting_facility_participation].[subject_entity_uid]
-      
+
           left join Participation [ordering_provider_participation] with (nolock) on
                   [ordering_provider_participation].act_uid = [morbidity].observation_uid
               and [ordering_provider_participation].type_cd = 'PhysicianOfMorb'
               and [ordering_provider_participation].subject_class_cd = 'PSN'
-      
+
           left join person_name [ordering_provider] with (nolock) on
                   [ordering_provider].person_uid = [ordering_provider_participation].[subject_entity_uid]
-      
+
           left join NBS_SRTE..Code_value_general [ordering_provider_prefix] with (nolock) on
                   [ordering_provider_prefix].[code_set_nm] = 'P_NM_PFX'
               and [ordering_provider_prefix].code = [ordering_provider].nm_prefix
-      
+
           left join Participation [reportying_provider_participation] with (nolock) on
                   [reportying_provider_participation].act_uid = [morbidity].observation_uid
               and [reportying_provider_participation].type_cd = 'ReporterOfMorbReport'
               and [reportying_provider_participation].subject_class_cd = 'PSN'
-      
+
           left join person_name [reporting_provider] with (nolock) on
                   [reporting_provider].person_uid = [reportying_provider_participation].[subject_entity_uid]
-      
+
           left join NBS_SRTE..Code_value_general [reporting_provider_prefix] with (nolock) on
                   [reporting_provider_prefix].[code_set_nm] = 'P_NM_PFX'
               and [reporting_provider_prefix].code = [reporting_provider].nm_prefix
-      
+
           left join NBS_SRTE..Code_value_general [processing_decision] with (nolock) on
                   [processing_decision].code_set_nm in ('NBS_NO_ACTION_RSN', 'STD_NBS_PROCESSING_DECISION_ALL')
               and [processing_decision].code = [morbidity].processing_decision_cd
-      
+
           order by
               [morbidity].[local_id] desc
       """;
@@ -112,7 +112,8 @@ class PatientMorbidityReportFinder {
     if (!scope.allowed()) {
       return Collections.emptyList();
     }
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param("patient", patient)
         .param("any", scope.any())
         .query(this.mapper)

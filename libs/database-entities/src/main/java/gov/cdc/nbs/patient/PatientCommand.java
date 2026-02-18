@@ -12,14 +12,8 @@ public sealed interface PatientCommand {
 
   LocalDateTime requestedOn();
 
-  record CreatePatient(
-      long person,
-      String localId,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
-
+  record CreatePatient(long person, String localId, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record AddRaceInfo(
       long person,
@@ -27,22 +21,12 @@ public sealed interface PatientCommand {
       String category,
       List<String> detailed,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-
-  }
-
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record AddRaceCategory(
-      long person,
-      LocalDate asOf,
-      String category,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-
-  }
-
+      long person, LocalDate asOf, String category, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record AddDetailedRace(
       long person,
@@ -50,11 +34,8 @@ public sealed interface PatientCommand {
       String category,
       String race,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-
-  }
-
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record UpdateRaceInfo(
       long person,
@@ -62,19 +43,11 @@ public sealed interface PatientCommand {
       String category,
       List<String> detailed,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
-
-  record DeleteRaceInfo(
-      long person,
-      String category,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
-
+  record DeleteRaceInfo(long person, String category, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record AddAddress(
       long person,
@@ -91,8 +64,8 @@ public sealed interface PatientCommand {
       String censusTract,
       String comments,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
+      LocalDateTime requestedOn)
+      implements PatientCommand {
 
     public AddAddress(
         long person,
@@ -106,8 +79,7 @@ public sealed interface PatientCommand {
         String country,
         String censusTract,
         long requester,
-        LocalDateTime requestedOn
-    ) {
+        LocalDateTime requestedOn) {
       this(
           person,
           asOf,
@@ -123,12 +95,9 @@ public sealed interface PatientCommand {
           censusTract,
           null,
           requester,
-          requestedOn
-      );
+          requestedOn);
     }
-
   }
-
 
   record UpdateAddress(
       long person,
@@ -146,18 +115,11 @@ public sealed interface PatientCommand {
       String censusTract,
       String comments,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
-
-  record DeleteAddress(
-      long person,
-      long id,
-      long requester,
-      LocalDateTime requestedOn) implements PatientCommand {
-  }
-
+  record DeleteAddress(long person, long id, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record AddPhone(
       long person,
@@ -171,11 +133,8 @@ public sealed interface PatientCommand {
       String url,
       String comment,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-
-  }
-
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record UpdatePhone(
       long person,
@@ -190,21 +149,11 @@ public sealed interface PatientCommand {
       String url,
       String comment,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
-  }
-
-
-  record DeletePhone(
-      long person,
-      long id,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-
-  }
-
+  record DeletePhone(long person, long id, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record UpdateMortality(
       long person,
@@ -216,63 +165,38 @@ public sealed interface PatientCommand {
       String county,
       String country,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
-
-  record ClearMoralityDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
-  }
-
+  record ClearMoralityDemographics(long person, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record UpdateEthnicityInfo(
       long person,
       LocalDate asOf,
       String ethnicGroup,
       String unknownReason,
-
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
-
-  record ClearEthnicityDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
-  }
-
+  record ClearEthnicityDemographics(long person, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record AddDetailedEthnicity(
-      long person,
-      String ethnicity,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
-
+      long person, String ethnicity, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record RemoveDetailedEthnicity(
-      long person,
-      String ethnicity,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
-
+      long person, String ethnicity, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record UpdateAdministrativeInfo(
-      long person,
-      LocalDate asOf,
-      String comment,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
-
+      long person, LocalDate asOf, String comment, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record ClearAdministrativeInformation(long person, long requester, LocalDateTime requestedOn)
-      implements PatientCommand {
-  }
-
+      implements PatientCommand {}
 
   record UpdateGeneralInfo(
       long person,
@@ -286,14 +210,11 @@ public sealed interface PatientCommand {
       String primaryLanguageCode,
       String speaksEnglishCode,
       long requester,
-      LocalDateTime requestedOn) implements PatientCommand {
-  }
-
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record ClearGeneralInformationDemographics(long person, long requester, LocalDateTime requestedOn)
-      implements PatientCommand {
-  }
-
+      implements PatientCommand {}
 
   record UpdateBirth(
       long person,
@@ -307,14 +228,11 @@ public sealed interface PatientCommand {
       String county,
       String country,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
-
-  record ClearBirthDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
-  }
-
+  record ClearBirthDemographics(long person, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record UpdateGender(
       long person,
@@ -324,21 +242,13 @@ public sealed interface PatientCommand {
       String preferred,
       String additional,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
+  record ClearGenderDemographics(long person, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
-  record ClearGenderDemographics(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {
-  }
-
-
-  record Delete(
-      long person,
-      long requester,
-      LocalDateTime requestedOn) implements PatientCommand {
-  }
-
+  record Delete(long person, long requester, LocalDateTime requestedOn) implements PatientCommand {}
 
   record AddIdentification(
       long person,
@@ -347,11 +257,8 @@ public sealed interface PatientCommand {
       String assigningAuthority,
       String identificationType,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-
-  }
-
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record UpdateIdentification(
       long person,
@@ -361,19 +268,11 @@ public sealed interface PatientCommand {
       String assigningAuthority,
       String identificationType,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
-
-  record DeleteIdentification(
-      long person,
-      int id,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
-
+  record DeleteIdentification(long person, int id, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record AddName(
       long person,
@@ -388,8 +287,8 @@ public sealed interface PatientCommand {
       String degree,
       String type,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
+      LocalDateTime requestedOn)
+      implements PatientCommand {
 
     public AddName(
         long person,
@@ -400,8 +299,7 @@ public sealed interface PatientCommand {
         String suffix,
         String type,
         long requester,
-        LocalDateTime requestedOn
-    ) {
+        LocalDateTime requestedOn) {
       this(
           person,
           asOf,
@@ -415,12 +313,9 @@ public sealed interface PatientCommand {
           null,
           type,
           requester,
-          requestedOn
-      );
+          requestedOn);
     }
-
   }
-
 
   record UpdateNameInfo(
       long person,
@@ -436,33 +331,16 @@ public sealed interface PatientCommand {
       String degree,
       String type,
       long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
+      LocalDateTime requestedOn)
+      implements PatientCommand {}
 
-
-  record DeleteNameInfo(
-      long person,
-      short sequence,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
-
+  record DeleteNameInfo(long person, short sequence, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
   record AssociateStateHIVCase(
-      long person,
-      String stateHIVCase,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
+      long person, String stateHIVCase, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 
-
-  record DisassociateStateHIVCase(
-      long person,
-      long requester,
-      LocalDateTime requestedOn
-  ) implements PatientCommand {
-  }
+  record DisassociateStateHIVCase(long person, long requester, LocalDateTime requestedOn)
+      implements PatientCommand {}
 }

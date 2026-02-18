@@ -5,9 +5,4 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ResultedTest(
-    @JsonProperty(required = true)
-    String name,
-    String result,
-    String reference
-) {
-}
+    @JsonProperty(required = true) String name, String result, String reference) {}

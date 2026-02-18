@@ -7,18 +7,13 @@ public record PageBuilder(boolean enabled, Page page) {
 
   public record Page(Library library, Management management) {
 
-    public record Library(boolean enabled) {
-    }
-
+    public record Library(boolean enabled) {}
 
     public record Management(Create create, Edit edit) {
 
-      public record Create(boolean enabled) {
-      }
+      public record Create(boolean enabled) {}
 
-
-      public record Edit(boolean enabled) {
-      }
+      public record Edit(boolean enabled) {}
     }
   }
 }

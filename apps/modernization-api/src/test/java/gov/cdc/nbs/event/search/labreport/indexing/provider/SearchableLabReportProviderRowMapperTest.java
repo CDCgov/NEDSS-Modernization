@@ -1,26 +1,20 @@
 package gov.cdc.nbs.event.search.labreport.indexing.provider;
 
-import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
-import org.junit.jupiter.api.Test;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.junit.jupiter.api.Test;
 
 class SearchableLabReportProviderRowMapperTest {
 
   @Test
   void should_map_from_result_set() throws SQLException {
-    SearchableLabReportProviderRowMapper.Column columns = new SearchableLabReportProviderRowMapper.Column(
-        2,
-        3,
-        5,
-        7,
-        11
-    );
+    SearchableLabReportProviderRowMapper.Column columns =
+        new SearchableLabReportProviderRowMapper.Column(2, 3, 5, 7, 11);
 
     ResultSet resultSet = mock(ResultSet.class);
 

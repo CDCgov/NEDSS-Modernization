@@ -20,5 +20,4 @@ class OrganizationSupportConfiguration {
   Available<OrganizationIdentifier> availableOrganization() {
     return new Available<>();
   }
-
 }

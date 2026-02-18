@@ -1,14 +1,13 @@
 package gov.cdc.nbs.patient.demographics.birth;
 
+import static gov.cdc.nbs.support.util.RandomUtil.maybeOneFrom;
+
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
+import java.time.LocalDate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-
-import static gov.cdc.nbs.support.util.RandomUtil.maybeOneFrom;
 
 @Component
 public class PatientBirthDemographicApplier {
@@ -20,16 +19,16 @@ public class PatientBirthDemographicApplier {
   private final AddressIdentifierGenerator addressIdentifierGenerator;
 
   PatientBirthDemographicApplier(
-      final JdbcClient client,
-      final AddressIdentifierGenerator addressIdentifierGenerator
-  ) {
+      final JdbcClient client, final AddressIdentifierGenerator addressIdentifierGenerator) {
     this.client = client;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
   }
 
   public void withBirthInformation(final PatientIdentifier identifier) {
 
-    client.sql("""
+    client
+        .sql(
+            """
             update Person set
               as_of_date_sex = :asOf,
               birth_time = :birthday,
@@ -45,86 +44,70 @@ public class PatientBirthDemographicApplier {
         .update();
   }
 
-  void withBirthday(
-      final PatientIdentifier identifier,
-      final LocalDate birthday
-  ) {
+  void withBirthday(final PatientIdentifier identifier, final LocalDate birthday) {
     withBirthday(identifier, RandomUtil.dateInPast(), birthday);
   }
 
   void withBirthday(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final LocalDate birthday
-  ) {
+      final PatientIdentifier identifier, final LocalDate asOf, final LocalDate birthday) {
 
-    client.sql(
+    client
+        .sql(
             """
                 update person set
                     as_of_date_sex = ?,
                     birth_time = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(asOf)
         .param(birthday)
         .param(identifier.id())
         .update();
-
   }
 
-  void withBornNth(
-      final PatientIdentifier identifier,
-      final int order
-  ) {
+  void withBornNth(final PatientIdentifier identifier, final int order) {
 
-    client.sql(
+    client
+        .sql(
             """
                 update person set
                     as_of_date_sex = coalesce(as_of_date_sex, getDate()),
                     birth_order_nbr = ?,
                     multiple_birth_ind = 'Y'
                 where person_uid = ?
-                """
-        )
+                """)
         .param(order)
         .param(identifier.id())
         .update();
   }
 
-  void withSingleBirth(
-      final PatientIdentifier identifier
-  ) {
+  void withSingleBirth(final PatientIdentifier identifier) {
 
-    client.sql(
+    client
+        .sql(
             """
                 update person set
                     as_of_date_sex = coalesce(as_of_date_sex, getDate()),
                     multiple_birth_ind = 'N'
                 where person_uid = ?
-                """
-        )
+                """)
         .param(identifier.id())
         .update();
   }
 
-  void withBornAs(
-      final PatientIdentifier identifier,
-      final String gender
-  ) {
+  void withBornAs(final PatientIdentifier identifier, final String gender) {
 
-    client.sql(
+    client
+        .sql(
             """
                 update person set
                     as_of_date_sex = coalesce(as_of_date_sex, getDate()),
                     birth_gender_cd = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(gender)
         .param(identifier.id())
         .update();
-
   }
 
   void withBirthLocation(
@@ -132,8 +115,7 @@ public class PatientBirthDemographicApplier {
       final String city,
       final String county,
       final String state,
-      final String country
-  ) {
+      final String country) {
     withBirthLocation(identifier, LocalDate.now(), city, county, state, country);
   }
 
@@ -143,17 +125,17 @@ public class PatientBirthDemographicApplier {
       final String city,
       final String county,
       final String state,
-      final String country
-  ) {
+      final String country) {
 
     long locator = this.addressIdentifierGenerator.generate();
-    client.sql(
+    client
+        .sql(
             """
                 -- Ensure that the birth as of date is present
                 update person set
                     as_of_date_sex = coalesce(as_of_date_sex, getDate())
                 where person_uid = :patient;
-                
+
                 --- Entity Participation
                 merge into Entity_locator_participation [participation]
                 using ( values (:patient)) as source (patient)
@@ -188,7 +170,7 @@ public class PatientBirthDemographicApplier {
                       'BIR',
                       'PST'
                   );
-                
+
                 --- Locator
                 merge into Postal_locator [locator]
                 using (
@@ -232,8 +214,7 @@ public class PatientBirthDemographicApplier {
                       'ACTIVE',
                       getDate()
                   );
-                """
-        )
+                """)
         .param("patient", identifier.id())
         .param("asOf", asOf)
         .param("locator", locator)
@@ -242,7 +223,5 @@ public class PatientBirthDemographicApplier {
         .param("state", state)
         .param("country", country)
         .update();
-
   }
-
 }

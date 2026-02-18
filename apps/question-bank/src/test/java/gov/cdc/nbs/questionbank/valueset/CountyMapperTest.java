@@ -1,17 +1,15 @@
 package gov.cdc.nbs.questionbank.valueset;
 
-
-import gov.cdc.nbs.questionbank.valueset.response.County;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.questionbank.valueset.response.County;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CountyMapperTest {
@@ -37,5 +35,4 @@ class CountyMapperTest {
     assertEquals("Wood County", response.longName());
     assertEquals("COUNTY_CCD", response.codeSetName());
   }
-
 }

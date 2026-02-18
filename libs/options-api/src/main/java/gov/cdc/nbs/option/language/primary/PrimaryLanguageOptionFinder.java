@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 class PrimaryLanguageOptionFinder extends SQLBasedOptionFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           code                                as [value],
           code_desc_txt                       as [name],
@@ -18,10 +19,7 @@ class PrimaryLanguageOptionFinder extends SQLBasedOptionFinder {
         code_desc_txt
       """;
 
-
   PrimaryLanguageOptionFinder(final JdbcTemplate template) {
     super(QUERY, template);
   }
-
-
 }

@@ -1,10 +1,9 @@
 package gov.cdc.nbs.patient.file.summary.drr;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.RowMapper;
 
 class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringReview> {
 
@@ -16,15 +15,12 @@ class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringR
       int sendingFacility,
       int condition,
       int local,
-      int updated
-  ) {
+      int updated) {
 
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7,8);
+      this(1, 2, 3, 4, 5, 6, 7, 8);
     }
-
   }
-
 
   private final Column columns;
 
@@ -62,8 +58,6 @@ class CaseReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringR
         null,
         null,
         sendingFacility,
-        condition
-    );
+        condition);
   }
-
 }

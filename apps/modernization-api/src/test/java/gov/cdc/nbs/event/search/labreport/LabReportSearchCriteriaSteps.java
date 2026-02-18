@@ -7,7 +7,6 @@ import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
@@ -34,59 +33,71 @@ public class LabReportSearchCriteriaSteps {
 
   @Given("I want to find lab reports created by {user}")
   public void i_want_to_find_lab_reports_created_by(final ActiveUser user) {
-    this.activeCriteria.maybeActive().ifPresent(
-        criteria -> criteria.setCreatedBy(user.id()));
+    this.activeCriteria.maybeActive().ifPresent(criteria -> criteria.setCreatedBy(user.id()));
   }
 
   @Given("I want to find lab reports created on {localDate}")
   public void i_want_to_find_lab_reports_created_on(final LocalDate on) {
-    this.activeCriteria.maybeActive().ifPresent(
-        criteria -> criteria.setEventDate(
-            eventDateSearch(
-                LabReportFilter.LabReportDateType.LAB_REPORT_CREATE_DATE,
-                on)));
+    this.activeCriteria
+        .maybeActive()
+        .ifPresent(
+            criteria ->
+                criteria.setEventDate(
+                    eventDateSearch(LabReportFilter.LabReportDateType.LAB_REPORT_CREATE_DATE, on)));
   }
 
   @Given("I want to find lab reports updated by {user}")
   public void i_want_to_find_lab_reports_updated_by(final ActiveUser user) {
-    this.activeCriteria.maybeActive().ifPresent(
-        criteria -> criteria.setLastUpdatedBy(user.id()));
+    this.activeCriteria.maybeActive().ifPresent(criteria -> criteria.setLastUpdatedBy(user.id()));
   }
 
   @Given("I want to find lab reports updated on {localDate}")
   public void i_want_to_find_lab_reports_updated_on(final LocalDate on) {
-    this.activeCriteria.maybeActive().ifPresent(
-        criteria -> criteria.setEventDate(
-            eventDateSearch(
-                LabReportFilter.LabReportDateType.LAST_UPDATE_DATE,
-                on)));
+    this.activeCriteria
+        .maybeActive()
+        .ifPresent(
+            criteria ->
+                criteria.setEventDate(
+                    eventDateSearch(LabReportFilter.LabReportDateType.LAST_UPDATE_DATE, on)));
   }
 
   @Given("I want to find new lab reports")
   public void i_want_to_find_new_lab_reports() {
-    this.activeCriteria.active(criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.NEW));
+    this.activeCriteria.active(
+        criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.NEW));
   }
 
   @Given("I want to find updated lab reports")
   public void i_want_to_find_updated_lab_reports() {
-    this.activeCriteria.active(criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.UPDATE));
+    this.activeCriteria.active(
+        criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.UPDATE));
   }
 
   @Given("I want to find lab reports ordered by the provider")
   public void i_want_to_find_lab_reports_ordered_by_the_provider() {
-    this.activeCriteria.maybeActive().ifPresent(
-        criteria -> this.activeProvider.maybeActive().ifPresent(
-            provider -> criteria.setProviderSearch(
-                providerSearch(
-                    LabReportFilter.ProviderType.ORDERING_PROVIDER,
-                    provider.identifier()))));
+    this.activeCriteria
+        .maybeActive()
+        .ifPresent(
+            criteria ->
+                this.activeProvider
+                    .maybeActive()
+                    .ifPresent(
+                        provider ->
+                            criteria.setProviderSearch(
+                                providerSearch(
+                                    LabReportFilter.ProviderType.ORDERING_PROVIDER,
+                                    provider.identifier()))));
   }
 
   @Given("I want to find lab reports ordered by the provider using the new api")
   public void i_want_to_find_lab_reports_ordered_by_the_provider_and_new_api() {
-    this.activeCriteria.maybeActive().ifPresent(
-        criteria -> this.activeProvider.maybeActive().ifPresent(
-            provider -> criteria.setOrderingProviderId(provider.identifier())));
+    this.activeCriteria
+        .maybeActive()
+        .ifPresent(
+            criteria ->
+                this.activeProvider
+                    .maybeActive()
+                    .ifPresent(provider -> criteria.setOrderingProviderId(provider.identifier())));
   }
 
   @Given("I want to find lab reports with test results for {string}")
@@ -104,60 +115,71 @@ public class LabReportSearchCriteriaSteps {
     this.activeCriteria.active(current -> applyCriteria(current, field));
   }
 
-  private LabReportFilter applyCriteria(
-      final LabReportFilter filter,
-      final String field) {
+  private LabReportFilter applyCriteria(final LabReportFilter filter, final String field) {
     if (field == null || field.isEmpty()) {
       return filter;
     }
     switch (field.toLowerCase()) {
-      case "program area" -> this.searchableLabReport.maybeActive()
-          .map(SearchableLabReport::programArea)
-          .map(List::of)
-          .ifPresent(filter::setProgramAreas);
+      case "program area" ->
+          this.searchableLabReport
+              .maybeActive()
+              .map(SearchableLabReport::programArea)
+              .map(List::of)
+              .ifPresent(filter::setProgramAreas);
 
-      case "jurisdiction" -> this.searchableLabReport.maybeActive()
-          .map(found -> Long.valueOf(found.jurisdiction()))
-          .map(List::of)
-          .ifPresent(filter::setJurisdictions);
+      case "jurisdiction" ->
+          this.searchableLabReport
+              .maybeActive()
+              .map(found -> Long.valueOf(found.jurisdiction()))
+              .map(List::of)
+              .ifPresent(filter::setJurisdictions);
 
-      case "pregnancy status" -> this.searchableLabReport.maybeActive()
-          .map(lab -> PregnancyStatus.resolve(lab.pregnancyStatus()))
-          .ifPresent(filter::setPregnancyStatus);
+      case "pregnancy status" ->
+          this.searchableLabReport
+              .maybeActive()
+              .map(lab -> PregnancyStatus.resolve(lab.pregnancyStatus()))
+              .ifPresent(filter::setPregnancyStatus);
 
-      case "accession number" -> accession()
-          .map(
-              filler -> eventId(
-                  LabReportFilter.LaboratoryEventIdType.ACCESSION_NUMBER,
-                  filler))
-          .ifPresent(filter::setEventId);
+      case "accession number" ->
+          accession()
+              .map(
+                  filler -> eventId(LabReportFilter.LaboratoryEventIdType.ACCESSION_NUMBER, filler))
+              .ifPresent(filter::setEventId);
 
-      case "lab id" -> this.searchableLabReport.maybeActive()
-          .map(lab -> eventId(
-              LabReportFilter.LaboratoryEventIdType.LAB_ID,
-              lab.local()))
-          .ifPresent(filter::setEventId);
+      case "lab id" ->
+          this.searchableLabReport
+              .maybeActive()
+              .map(lab -> eventId(LabReportFilter.LaboratoryEventIdType.LAB_ID, lab.local()))
+              .ifPresent(filter::setEventId);
 
-      case "date of report" -> this.searchableLabReport.maybeActive()
-          .map(
-              lab -> eventDateSearch(
-                  LabReportFilter.LabReportDateType.DATE_OF_REPORT,
-                  lab.reportedOn()))
-          .ifPresent(filter::setEventDate);
+      case "date of report" ->
+          this.searchableLabReport
+              .maybeActive()
+              .map(
+                  lab ->
+                      eventDateSearch(
+                          LabReportFilter.LabReportDateType.DATE_OF_REPORT, lab.reportedOn()))
+              .ifPresent(filter::setEventDate);
 
-      case "date received by public health" -> this.searchableLabReport.maybeActive()
-          .map(
-              lab -> eventDateSearch(
-                  LabReportFilter.LabReportDateType.DATE_RECEIVED_BY_PUBLIC_HEALTH,
-                  lab.receivedOn()))
-          .ifPresent(filter::setEventDate);
+      case "date received by public health" ->
+          this.searchableLabReport
+              .maybeActive()
+              .map(
+                  lab ->
+                      eventDateSearch(
+                          LabReportFilter.LabReportDateType.DATE_RECEIVED_BY_PUBLIC_HEALTH,
+                          lab.receivedOn()))
+              .ifPresent(filter::setEventDate);
 
-      case "date of specimen collection" -> this.searchableLabReport.maybeActive()
-          .map(
-              lab -> eventDateSearch(
-                  LabReportFilter.LabReportDateType.DATE_OF_SPECIMEN_COLLECTION,
-                  lab.collectedOn()))
-          .ifPresent(filter::setEventDate);
+      case "date of specimen collection" ->
+          this.searchableLabReport
+              .maybeActive()
+              .map(
+                  lab ->
+                      eventDateSearch(
+                          LabReportFilter.LabReportDateType.DATE_OF_SPECIMEN_COLLECTION,
+                          lab.collectedOn()))
+              .ifPresent(filter::setEventDate);
 
       case "entry method" -> {
         filter.setEntryMethods(List.of(LabReportFilter.EntryMethod.ELECTRONIC));
@@ -165,35 +187,35 @@ public class LabReportSearchCriteriaSteps {
       }
       case "entered by" -> filter.setEnteredBy(List.of(LabReportFilter.UserType.EXTERNAL));
 
-      case "processing status" -> processingStatus().map(List::of).ifPresent(filter::setProcessingStatus);
+      case "processing status" ->
+          processingStatus().map(List::of).ifPresent(filter::setProcessingStatus);
 
-      case "ordering facility" -> orderingFacility().map(
-              provider -> providerSearch(
-                  LabReportFilter.ProviderType.ORDERING_FACILITY,
-                  provider))
-          .ifPresent(filter::setProviderSearch);
+      case "ordering facility" ->
+          orderingFacility()
+              .map(
+                  provider ->
+                      providerSearch(LabReportFilter.ProviderType.ORDERING_FACILITY, provider))
+              .ifPresent(filter::setProviderSearch);
 
-      case "ordering facility new api" -> orderingFacility()
-          .ifPresent(filter::setOrderingLabId);
+      case "ordering facility new api" -> orderingFacility().ifPresent(filter::setOrderingLabId);
 
-      case "reporting facility" -> reportingFacility().map(
-              provider -> providerSearch(
-                  LabReportFilter.ProviderType.REPORTING_FACILITY,
-                  provider))
-          .ifPresent(filter::setProviderSearch);
+      case "reporting facility" ->
+          reportingFacility()
+              .map(
+                  provider ->
+                      providerSearch(LabReportFilter.ProviderType.REPORTING_FACILITY, provider))
+              .ifPresent(filter::setProviderSearch);
 
-      case "reporting facility new api" -> reportingFacility()
-          .ifPresent(filter::setReportingLabId);
+      case "reporting facility new api" -> reportingFacility().ifPresent(filter::setReportingLabId);
 
-      case "resulted test" -> tests().map(SearchableLabReport.LabTest::name)
-          .ifPresent(filter::setResultedTest);
+      case "resulted test" ->
+          tests().map(SearchableLabReport.LabTest::name).ifPresent(filter::setResultedTest);
 
-      case "coded result" -> tests().map(SearchableLabReport.LabTest::result)
-          .ifPresent(filter::setCodedResult);
+      case "coded result" ->
+          tests().map(SearchableLabReport.LabTest::result).ifPresent(filter::setCodedResult);
 
-      case "patient id" -> this.patient.maybeActive()
-          .map(PatientIdentifier::id)
-          .ifPresent(filter::setPatientId);
+      case "patient id" ->
+          this.patient.maybeActive().map(PatientIdentifier::id).ifPresent(filter::setPatientId);
 
       default -> throw new IllegalArgumentException("Unsupported field: " + field);
     }
@@ -202,26 +224,17 @@ public class LabReportSearchCriteriaSteps {
   }
 
   private LabReportFilter.LabReportEventId eventId(
-      final LabReportFilter.LaboratoryEventIdType type,
-      final String value) {
-    return new LabReportFilter.LabReportEventId(
-        type,
-        value);
+      final LabReportFilter.LaboratoryEventIdType type, final String value) {
+    return new LabReportFilter.LabReportEventId(type, value);
   }
 
   private LabReportFilter.LaboratoryEventDateSearch eventDateSearch(
-      final LabReportFilter.LabReportDateType type,
-      final LocalDate from) {
-    return new LabReportFilter.LaboratoryEventDateSearch(
-        type,
-        from.minusDays(5),
-        from.plusDays(2));
+      final LabReportFilter.LabReportDateType type, final LocalDate from) {
+    return new LabReportFilter.LaboratoryEventDateSearch(type, from.minusDays(5), from.plusDays(2));
   }
 
-
   private Optional<Long> orderingFacility() {
-    return this.searchableLabReport.maybeActive()
-        .stream()
+    return this.searchableLabReport.maybeActive().stream()
         .map(SearchableLabReport::organizations)
         .flatMap(Collection::stream)
         .filter(participation -> Objects.equals("ORD", participation.type()))
@@ -230,8 +243,7 @@ public class LabReportSearchCriteriaSteps {
   }
 
   private Optional<Long> reportingFacility() {
-    return this.searchableLabReport.maybeActive()
-        .stream()
+    return this.searchableLabReport.maybeActive().stream()
         .map(SearchableLabReport::organizations)
         .flatMap(Collection::stream)
         .filter(participation -> Objects.equals("AUT", participation.type()))
@@ -240,8 +252,7 @@ public class LabReportSearchCriteriaSteps {
   }
 
   private Optional<String> accession() {
-    return this.searchableLabReport.maybeActive()
-        .stream()
+    return this.searchableLabReport.maybeActive().stream()
         .map(SearchableLabReport::identifiers)
         .flatMap(Collection::stream)
         .filter(act -> Objects.equals("FN", act.type()))
@@ -250,15 +261,15 @@ public class LabReportSearchCriteriaSteps {
   }
 
   private Optional<SearchableLabReport.LabTest> tests() {
-    return this.searchableLabReport.maybeActive()
-        .stream()
+    return this.searchableLabReport.maybeActive().stream()
         .map(SearchableLabReport::tests)
         .flatMap(Collection::stream)
         .findFirst();
   }
 
   private Optional<LabReportFilter.ProcessingStatus> processingStatus() {
-    return this.searchableLabReport.maybeActive()
+    return this.searchableLabReport
+        .maybeActive()
         .map(SearchableLabReport::status)
         .map(this::resolveProcessingStatus);
   }
@@ -270,8 +281,7 @@ public class LabReportSearchCriteriaSteps {
   }
 
   private LabReportFilter.LabReportProviderSearch providerSearch(
-      final LabReportFilter.ProviderType type,
-      final long value) {
+      final LabReportFilter.ProviderType type, final long value) {
     return new LabReportFilter.LabReportProviderSearch(type, value);
   }
 }

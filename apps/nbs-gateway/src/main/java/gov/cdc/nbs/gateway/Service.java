@@ -1,8 +1,7 @@
 package gov.cdc.nbs.gateway;
 
-import org.springframework.web.util.UriComponentsBuilder;
-
 import java.net.URI;
+import org.springframework.web.util.UriComponentsBuilder;
 
 public class Service {
 
@@ -27,8 +26,6 @@ public class Service {
   }
 
   public String path(final String path) {
-    return UriComponentsBuilder.fromPath(base)
-        .path(path)
-        .toUriString();
+    return UriComponentsBuilder.fromPath(base).path(path).toUriString();
   }
 }

@@ -6,7 +6,6 @@ public class ProgramAreaOptionSteps {
 
   private final ProgramAreaMother mother;
 
-
   ProgramAreaOptionSteps(final ProgramAreaMother mother) {
     this.mother = mother;
   }
@@ -15,5 +14,4 @@ public class ProgramAreaOptionSteps {
   public void the_program_area_exists_in_the_value_set(final String name) {
     mother.create(name);
   }
-
 }

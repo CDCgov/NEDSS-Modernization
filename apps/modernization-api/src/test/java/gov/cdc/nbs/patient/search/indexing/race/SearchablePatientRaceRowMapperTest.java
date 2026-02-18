@@ -1,21 +1,21 @@
 package gov.cdc.nbs.patient.search.indexing.race;
 
-import gov.cdc.nbs.patient.search.SearchablePatient;
-import org.junit.jupiter.api.Test;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.patient.search.SearchablePatient;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.junit.jupiter.api.Test;
 
 class SearchablePatientRaceRowMapperTest {
 
   @Test
   void should_map_from_result_set() throws SQLException {
 
-    SearchablePatientRaceRowMapper.Column columns = new SearchablePatientRaceRowMapper.Column(61, 67);
+    SearchablePatientRaceRowMapper.Column columns =
+        new SearchablePatientRaceRowMapper.Column(61, 67);
 
     ResultSet resultSet = mock(ResultSet.class);
 

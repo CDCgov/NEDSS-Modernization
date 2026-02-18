@@ -1,10 +1,10 @@
 package gov.cdc.nbs.id;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class IdGeneratorService {
@@ -16,8 +16,8 @@ public class IdGeneratorService {
   }
 
   /**
-   * Returns the next valid Id for the given EntityType. Increments the Id seed for the EntityType in the
-   * Local_UID_generator table
+   * Returns the next valid Id for the given EntityType. Increments the Id seed for the EntityType
+   * in the Local_UID_generator table
    *
    * @param type
    * @return
@@ -32,17 +32,22 @@ public class IdGeneratorService {
     if (type.equals(EntityType.NBS)) {
       // The 'NBS' type has a varying class_name_cd depending on the jurisdiction,
       // but it has a consistent and unique type_cd
-      uidEntry = localUidGeneratorRepository.findByTypeCd(type.toString())
-          .orElseThrow(() -> new IdGenerationException(type));
+      uidEntry =
+          localUidGeneratorRepository
+              .findByTypeCd(type.toString())
+              .orElseThrow(() -> new IdGenerationException(type));
     } else {
-      uidEntry = localUidGeneratorRepository.findById(type.toString())
-          .orElseThrow(() -> new IdGenerationException(type));
+      uidEntry =
+          localUidGeneratorRepository
+              .findById(type.toString())
+              .orElseThrow(() -> new IdGenerationException(type));
     }
-    var id = GeneratedId.builder()
-        .id(uidEntry.getSeedValueNbr())
-        .prefix(uidEntry.getUidPrefixCd())
-        .suffix(uidEntry.getUidSuffixCd())
-        .build();
+    var id =
+        GeneratedId.builder()
+            .id(uidEntry.getSeedValueNbr())
+            .prefix(uidEntry.getUidPrefixCd())
+            .suffix(uidEntry.getUidSuffixCd())
+            .build();
 
     // Increment the Id in the database
     uidEntry.setSeedValueNbr(uidEntry.getSeedValueNbr() + 1);
@@ -68,10 +73,10 @@ public class IdGeneratorService {
     }
   }
 
-
   /**
-   * Matches the class_name_cd column of the Local_UID_generator table, other than the NBS entry. Which references the
-   * type_cd column as the class_name_cd for type NBS is dynamic based on the jurisdiction
+   * Matches the class_name_cd column of the Local_UID_generator table, other than the NBS entry.
+   * Which references the type_cd column as the class_name_cd for type NBS is dynamic based on the
+   * jurisdiction
    */
   public enum EntityType {
     NBS,
@@ -115,5 +120,4 @@ public class IdGeneratorService {
     TREATMENT,
     WORKUP
   }
-
 }

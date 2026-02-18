@@ -2,13 +2,11 @@ package gov.cdc.nbs.patient.demographics.address;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
-
 import java.time.LocalDate;
 
 public record AddressDemographic(
     Long identifier,
-    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
-    LocalDate asOf,
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
     String type,
     String use,
     String address1,
@@ -19,9 +17,8 @@ public record AddressDemographic(
     String county,
     String censusTract,
     String country,
-    String comment
-) {
-  
+    String comment) {
+
   public AddressDemographic(final LocalDate asOf) {
     this(null, asOf, null, null, null, null, null, null, null, null, null, null, null);
   }
@@ -40,8 +37,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withType(final String type) {
@@ -58,8 +54,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withUse(final String use) {
@@ -76,8 +71,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withAddress(final String address) {
@@ -94,8 +88,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withAddress2(final String address2) {
@@ -112,8 +105,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withCity(final String city) {
@@ -130,8 +122,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withState(final String state) {
@@ -148,8 +139,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withZipcode(final String zipcode) {
@@ -166,8 +156,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withCounty(final String county) {
@@ -184,8 +173,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withCensusTract(final String censusTract) {
@@ -202,8 +190,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withCountry(final String country) {
@@ -220,8 +207,7 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 
   public AddressDemographic withComment(final String comment) {
@@ -238,7 +224,6 @@ public record AddressDemographic(
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 }

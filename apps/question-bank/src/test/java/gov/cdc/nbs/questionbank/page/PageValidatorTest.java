@@ -3,13 +3,7 @@ package gov.cdc.nbs.questionbank.page;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
-import java.util.Arrays;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.questionbank.entity.QCodeValueGeneral;
@@ -17,18 +11,22 @@ import gov.cdc.nbs.questionbank.entity.QWaTemplate;
 import gov.cdc.nbs.questionbank.page.exception.PageCreateException;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.request.PageValidationRequest;
+import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class PageValidatorTest {
   private static final QWaTemplate pageTable = QWaTemplate.waTemplate;
   private static final QCodeValueGeneral codeValueGeneral = QCodeValueGeneral.codeValueGeneral;
 
-  @Mock
-  private JPAQueryFactory factory;
+  @Mock private JPAQueryFactory factory;
 
-  @InjectMocks
-  private PageValidator validator;
-
+  @InjectMocks private PageValidator validator;
 
   @Test
   @SuppressWarnings("unchecked")
@@ -84,8 +82,7 @@ class PageValidatorTest {
     JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
     when(factory.select(codeValueGeneral.id.code.count())).thenReturn(query);
     when(query.from(codeValueGeneral)).thenReturn(query);
-    when(query.where(codeValueGeneral.id.code.equalsIgnoreCase(code)))
-        .thenReturn(query);
+    when(query.where(codeValueGeneral.id.code.equalsIgnoreCase(code))).thenReturn(query);
     when(query.fetchFirst()).thenReturn(0l);
     assertThrows(PageCreateException.class, () -> validator.validateMmg(code));
   }
@@ -93,26 +90,16 @@ class PageValidatorTest {
   @Test
   void page_name_is_blank() {
     PageCreateRequest request =
-        new PageCreateRequest("INV",
-            Arrays.asList("1023"),
-            "",
-            10l,
-            "HEP_Case_Map_V1.0",
-            "unit test",
-            "dataMart");
+        new PageCreateRequest(
+            "INV", Arrays.asList("1023"), "", 10l, "HEP_Case_Map_V1.0", "unit test", "dataMart");
     assertThrows(PageCreateException.class, () -> validator.validate(request));
   }
 
   @Test
   void page_name_is_null() {
     PageCreateRequest request =
-        new PageCreateRequest("INV",
-            Arrays.asList("1023"),
-            null,
-            10l,
-            "HEP_Case_Map_V1.0",
-            "unit test",
-            "dataMart");
+        new PageCreateRequest(
+            "INV", Arrays.asList("1023"), null, 10l, "HEP_Case_Map_V1.0", "unit test", "dataMart");
     assertThrows(PageCreateException.class, () -> validator.validate(request));
   }
 
@@ -176,13 +163,7 @@ class PageValidatorTest {
   void mmg_is_blank() {
     PageCreateRequest request =
         new PageCreateRequest(
-            "INV",
-            Arrays.asList("1023"),
-            "page name",
-            10l,
-            "",
-            "unit test",
-            "dataMart");
+            "INV", Arrays.asList("1023"), "page name", 10l, "", "unit test", "dataMart");
     assertThrows(PageCreateException.class, () -> validator.validate(request));
   }
 
@@ -190,13 +171,7 @@ class PageValidatorTest {
   void mmg_is_null() {
     PageCreateRequest request =
         new PageCreateRequest(
-            "INV",
-            Arrays.asList("1023"),
-            "page name",
-            10l,
-            null,
-            "unit test",
-            "dataMart");
+            "INV", Arrays.asList("1023"), "page name", 10l, null, "unit test", "dataMart");
     assertThrows(PageCreateException.class, () -> validator.validate(request));
   }
 
@@ -207,18 +182,11 @@ class PageValidatorTest {
     String code = "mmgCode";
     PageCreateRequest request =
         new PageCreateRequest(
-            "INV",
-            Arrays.asList("1023"),
-            "page name",
-            10l,
-            code,
-            "unit test",
-            "dataMart");
+            "INV", Arrays.asList("1023"), "page name", 10l, code, "unit test", "dataMart");
     JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
     when(factory.select(codeValueGeneral.id.code.count())).thenReturn(query);
     when(query.from(codeValueGeneral)).thenReturn(query);
-    when(query.where(codeValueGeneral.id.code.equalsIgnoreCase(code)))
-        .thenReturn(query);
+    when(query.where(codeValueGeneral.id.code.equalsIgnoreCase(code))).thenReturn(query);
     when(query.fetchFirst()).thenReturn(0l);
 
     // and a valid name
@@ -285,8 +253,7 @@ class PageValidatorTest {
     JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
     when(factory.select(codeValueGeneral.id.code.count())).thenReturn(query);
     when(query.from(codeValueGeneral)).thenReturn(query);
-    when(query.where(codeValueGeneral.id.code.equalsIgnoreCase(code)))
-        .thenReturn(query);
+    when(query.where(codeValueGeneral.id.code.equalsIgnoreCase(code))).thenReturn(query);
     when(query.fetchFirst()).thenReturn(1l);
   }
 }

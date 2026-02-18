@@ -9,7 +9,6 @@ import java.time.ZoneOffset;
 
 public class InstantColumnMapper {
 
-
   public static Instant map(final ResultSet resultSet, final int column) throws SQLException {
 
     LocalDateTime localDateTime = resultSet.getObject(column, LocalDateTime.class);
@@ -17,12 +16,12 @@ public class InstantColumnMapper {
     if (localDateTime == null) {
       return null;
     } else {
-      return localDateTime.atZone(ZoneId.systemDefault()).withZoneSameLocal(ZoneOffset.UTC).toInstant();
+      return localDateTime
+          .atZone(ZoneId.systemDefault())
+          .withZoneSameLocal(ZoneOffset.UTC)
+          .toInstant();
     }
   }
 
-  private InstantColumnMapper() {
-
-  }
-
+  private InstantColumnMapper() {}
 }

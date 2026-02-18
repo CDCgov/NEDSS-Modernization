@@ -14,8 +14,7 @@ class ComponentResolver {
 
   ComponentResolver(
       final LayoutComponentResolver layoutResolver,
-      final ContentComponentResolver contentResolver
-  ) {
+      final ContentComponentResolver contentResolver) {
     this.layoutResolver = layoutResolver;
     this.contentResolver = contentResolver;
   }
@@ -25,10 +24,7 @@ class ComponentResolver {
     return resolve(type, flattened);
   }
 
-  ComponentNode resolve(
-      final ComponentNode.Type type,
-      final FlattenedComponent flattened
-  ) {
+  ComponentNode resolve(final ComponentNode.Type type, final FlattenedComponent flattened) {
 
     if (type instanceof LayoutNode.Type) {
       return this.layoutResolver.resolve(type, flattened);

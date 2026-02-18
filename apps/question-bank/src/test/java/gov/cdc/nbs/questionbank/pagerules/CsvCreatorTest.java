@@ -1,19 +1,19 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import java.util.Arrays;
-import java.util.List;
-import org.junit.jupiter.api.Test;
+
 import gov.cdc.nbs.questionbank.pagerules.Rule.Comparator;
 import gov.cdc.nbs.questionbank.pagerules.Rule.RuleFunction;
 import gov.cdc.nbs.questionbank.pagerules.Rule.SourceQuestion;
 import gov.cdc.nbs.questionbank.pagerules.Rule.Target;
 import gov.cdc.nbs.questionbank.pagerules.Rule.TargetType;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 class CsvCreatorTest {
 
   private final CsvCreator creator = new CsvCreator();
-
 
   @Test
   void should_generate() {
@@ -33,17 +33,18 @@ class CsvCreatorTest {
   }
 
   private List<Rule> rules() {
-    return Arrays.asList(new Rule(
-        1l,
-        2l,
-        RuleFunction.DATE_COMPARE,
-        "description",
-        new SourceQuestion("DEM115", "Date of Birth", "codeSetNm"),
-        false,
-        Arrays.asList("sv1", "sv2"),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        Arrays.asList(new Target("INV132", "Admission Date"))),
+    return Arrays.asList(
+        new Rule(
+            1l,
+            2l,
+            RuleFunction.DATE_COMPARE,
+            "description",
+            new SourceQuestion("DEM115", "Date of Birth", "codeSetNm"),
+            false,
+            Arrays.asList("sv1", "sv2"),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            Arrays.asList(new Target("INV132", "Admission Date"))),
         new Rule(
             2l,
             2l,

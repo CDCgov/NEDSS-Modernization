@@ -1,9 +1,8 @@
 package gov.cdc.nbs.patient.file.demographics.race.validation;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 class ExistingRaceCategoryResultSetMapper implements RowMapper<ExistingRaceCategory> {
 
@@ -11,7 +10,6 @@ class ExistingRaceCategoryResultSetMapper implements RowMapper<ExistingRaceCateg
     Column() {
       this(1, 2);
     }
-
   }
 
   private final Column columns;

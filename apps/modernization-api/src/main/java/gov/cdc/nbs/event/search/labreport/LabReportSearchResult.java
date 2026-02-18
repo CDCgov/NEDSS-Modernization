@@ -1,8 +1,8 @@
 package gov.cdc.nbs.event.search.labreport;
 
+import gov.cdc.nbs.patient.documentsrequiringreview.detail.LabTestSummary;
 import java.time.LocalDate;
 import java.util.List;
-import gov.cdc.nbs.patient.documentsrequiringreview.detail.LabTestSummary;
 
 record LabReportSearchResult(
     Double relevance,
@@ -24,25 +24,11 @@ record LabReportSearchResult(
       String lastName,
       String personCd,
       long personParentUid,
-      String local) {
-  }
+      String local) {}
 
-  record OrganizationParticipation(
-      String typeCd,
-      String name) {
+  record OrganizationParticipation(String typeCd, String name) {}
 
-  }
+  record Observation(String cdDescTxt, String altCd, String displayName) {}
 
-  record Observation(
-      String cdDescTxt,
-      String altCd,
-      String displayName) {
-
-  }
-
-  record AssociatedInvestigation(
-      String cdDescTxt,
-      String localId) {
-
-  }
+  record AssociatedInvestigation(String cdDescTxt, String localId) {}
 }

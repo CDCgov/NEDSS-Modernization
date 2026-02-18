@@ -6,6 +6,9 @@ import gov.cdc.nbs.authentication.entity.AuthProgAreaAdmin;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.authentication.entity.AuthUserRole;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,22 +17,15 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-
 @Component
 @Transactional
 public class UserMother {
 
-  @Autowired
-  private UserDetailsService userService;
+  @Autowired private UserDetailsService userService;
 
-  @Autowired
-  private AuthUserRepository userRepository;
+  @Autowired private AuthUserRepository userRepository;
 
-  @Autowired
-  private AuthPermSetRepository permSetRepository;
+  @Autowired private AuthPermSetRepository permSetRepository;
 
   public void adminUser() {
     var admin = userRepository.findByUserId("admin").orElseGet(this::createAdminUser);
@@ -65,8 +61,10 @@ public class UserMother {
     var audit = new AuthAudit(1L, now);
 
     // Test-db restore has SUPERUSER permission with id 22
-    var permissionSet = permSetRepository.findById(22L)
-        .orElseThrow(() -> new RuntimeException("Failed to find SUPERUSER permission set"));
+    var permissionSet =
+        permSetRepository
+            .findById(22L)
+            .orElseThrow(() -> new RuntimeException("Failed to find SUPERUSER permission set"));
 
     var user = new AuthUser();
 
@@ -76,12 +74,13 @@ public class UserMother {
     progAreaAdmin.setAuthUserUid(user);
     progAreaAdmin.setProgAreaCd("STD");
 
-    var role = new AuthUserRole(user, permissionSet)
-        .name("SUPERUSER")
-        .programArea("STD")
-        .jurisdiction("ALL")
-        .guest('F')
-        .audit(audit);
+    var role =
+        new AuthUserRole(user, permissionSet)
+            .name("SUPERUSER")
+            .programArea("STD")
+            .jurisdiction("ALL")
+            .guest('F')
+            .audit(audit);
 
     user.setUserId("admin");
     user.setUserType("internalUser");
@@ -98,12 +97,9 @@ public class UserMother {
 
   private void setSecurityContext(AuthUser user) {
     UserDetails userDetails = userService.loadUserByUsername(user.userId());
-    SecurityContextHolder.getContext().setAuthentication(
-        new PreAuthenticatedAuthenticationToken(
-            userDetails,
-            null,
-            userDetails.getAuthorities()
-        )
-    );
+    SecurityContextHolder.getContext()
+        .setAuthentication(
+            new PreAuthenticatedAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities()));
   }
 }

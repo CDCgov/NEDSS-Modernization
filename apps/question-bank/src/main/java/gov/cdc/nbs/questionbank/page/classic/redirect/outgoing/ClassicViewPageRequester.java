@@ -12,22 +12,20 @@ public class ClassicViewPageRequester {
 
   private final RestTemplate template;
 
-  public ClassicViewPageRequester(
-      @Qualifier("classicTemplate") final RestTemplate template) {
+  public ClassicViewPageRequester(@Qualifier("classicTemplate") final RestTemplate template) {
     this.template = template;
   }
 
   public void request(long page) {
-    String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("from", "L")
-        .queryParam("waTemplateUid", page)
-        .queryParam("method", "viewPageLoad")
-        .build()
-        .toUriString();
+    String pageLocation =
+        UriComponentsBuilder.fromPath(LOCATION)
+            .queryParam("from", "L")
+            .queryParam("waTemplateUid", page)
+            .queryParam("method", "viewPageLoad")
+            .build()
+            .toUriString();
 
-    RequestEntity<Void> viewPageRequest = RequestEntity
-        .get(pageLocation)
-        .build();
+    RequestEntity<Void> viewPageRequest = RequestEntity.get(pageLocation).build();
 
     this.template.exchange(viewPageRequest, Void.class);
   }

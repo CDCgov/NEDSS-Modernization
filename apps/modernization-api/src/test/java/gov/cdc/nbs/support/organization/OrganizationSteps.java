@@ -8,10 +8,7 @@ public class OrganizationSteps {
   private final OrganizationMother mother;
   private final OrganizationParameterResolver resolver;
 
-  OrganizationSteps(
-      final OrganizationMother mother,
-      final OrganizationParameterResolver resolver
-  ) {
+  OrganizationSteps(final OrganizationMother mother, final OrganizationParameterResolver resolver) {
     this.mother = mother;
     this.resolver = resolver;
   }
@@ -25,5 +22,4 @@ public class OrganizationSteps {
   public OrganizationIdentifier organization(final String value) {
     return resolver.resolve(value).orElse(null);
   }
-
 }

@@ -24,6 +24,5 @@ record InvestigationSearchResult(
       String lastName,
       String personCd,
       long personParentUid,
-      String local) {
-  }
+      String local) {}
 }

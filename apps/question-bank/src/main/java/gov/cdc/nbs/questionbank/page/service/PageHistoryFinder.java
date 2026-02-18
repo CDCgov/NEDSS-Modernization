@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page.service;
 
 import gov.cdc.nbs.questionbank.page.model.PageHistory;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,15 +12,14 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class PageHistoryFinder {
 
   private final JdbcTemplate jdbcTemplate;
 
-  private String pageHistoryQuery = """
+  private String pageHistoryQuery =
+      """
       with target as (
                        SELECT
                            template_nm as template_name
@@ -53,7 +53,8 @@ public class PageHistoryFinder {
       FETCH NEXT ? ROWS ONLY
         """;
 
-  private static final String ROWS_COUNT = """
+  private static final String ROWS_COUNT =
+      """
       with target as (
           SELECT
               template_nm as template_name
@@ -84,8 +85,6 @@ public class PageHistoryFinder {
           template_hist_data
         """;
 
-
-
   private static final int PAGE_ID = 1;
   private static final int OFFSET = 2;
   private static final int LIMIT = 3;
@@ -97,31 +96,31 @@ public class PageHistoryFinder {
     Sort sort = pageable.getSort();
     String query = pageHistoryQuery;
     if (sort.isSorted()) {
-      query = pageHistoryQuery.replace("publish_version_nbr ASC",
-          "publish_version_nbr ASC" + "," + sort.toString().replace(": ", " "));
+      query =
+          pageHistoryQuery.replace(
+              "publish_version_nbr ASC",
+              "publish_version_nbr ASC" + "," + sort.toString().replace(": ", " "));
     }
-    List<PageHistory> result = jdbcTemplate.query(query, setter -> {
-          setter.setLong(PAGE_ID, pageId);
-          setter.setLong(OFFSET, offset);
-          setter.setLong(LIMIT, limit);
-        }
-        , (rs, rowNum) -> new PageHistory(
-            rs.getString("publishVersionNbr"),
-            rs.getString("lastUpdatedDate"),
-            rs.getString("lastUpdatedBy"),
-            rs.getString("notes")
-        )
-    );
+    List<PageHistory> result =
+        jdbcTemplate.query(
+            query,
+            setter -> {
+              setter.setLong(PAGE_ID, pageId);
+              setter.setLong(OFFSET, offset);
+              setter.setLong(LIMIT, limit);
+            },
+            (rs, rowNum) ->
+                new PageHistory(
+                    rs.getString("publishVersionNbr"),
+                    rs.getString("lastUpdatedDate"),
+                    rs.getString("lastUpdatedBy"),
+                    rs.getString("notes")));
     return new PageImpl<>(result, pageable, getTotalRowsCount(pageId));
   }
 
   private int getTotalRowsCount(long pageId) {
-    return this.jdbcTemplate.query(
-        ROWS_COUNT,
-        setter -> setter.setLong(PAGE_ID, pageId)
-        , integerRowMapper
-    ).get(0);
+    return this.jdbcTemplate
+        .query(ROWS_COUNT, setter -> setter.setLong(PAGE_ID, pageId), integerRowMapper)
+        .get(0);
   }
-
 }
-

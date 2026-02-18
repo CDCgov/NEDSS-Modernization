@@ -1,5 +1,8 @@
 package gov.cdc.nbs.patient.file.delete;
 
+import static gov.cdc.nbs.web.response.Failures.failure;
+import static gov.cdc.nbs.web.response.Successes.accepted;
+
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.patient.PatientException;
 import gov.cdc.nbs.patient.RequestContext;
@@ -10,18 +13,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.Clock;
-import java.time.LocalDateTime;
-
-import static gov.cdc.nbs.web.response.Failures.failure;
-import static gov.cdc.nbs.web.response.Successes.accepted;
 
 @RestController
 class PatientDeleteController {
@@ -32,10 +31,7 @@ class PatientDeleteController {
   private final PatientIndexer indexer;
 
   PatientDeleteController(
-      final Clock clock,
-      final PatientDeletionService service,
-      final PatientIndexer indexer
-  ) {
+      final Clock clock, final PatientDeletionService service, final PatientIndexer indexer) {
     this.clock = clock;
     this.service = service;
     this.indexer = indexer;
@@ -46,33 +42,28 @@ class PatientDeleteController {
       summary = "Allows deleting of a patient.",
       tags = "PatientFile",
       responses = {
-          @ApiResponse(responseCode = "202", description = "The patient has been deleted", content = {
+        @ApiResponse(
+            responseCode = "202",
+            description = "The patient has been deleted",
+            content = {
               @Content(
                   mediaType = "application/json",
-                  schema =
-                  @Schema(implementation = StandardResponse.Success.class)
-
-              )
-          }),
-          @ApiResponse(
-              responseCode = "400",
-              description = "The patient could not be deleted.",
-              content = {
-                  @Content(
-                      mediaType = "application/json",
-                      schema =
-                      @Schema(implementation = StandardResponse.Failure.class)
-
-                  )
-              })
-      }
-  )
+                  schema = @Schema(implementation = StandardResponse.Success.class))
+            }),
+        @ApiResponse(
+            responseCode = "400",
+            description = "The patient could not be deleted.",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = StandardResponse.Failure.class))
+            })
+      })
   @PreAuthorize("hasAuthority('DELETE-PATIENT')")
   @DeleteMapping("/nbs/api/patients/{patient}")
   ResponseEntity<StandardResponse> delete(
       final @PathVariable("patient") long patient,
-      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails user
-  ) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails user) {
 
     RequestContext context = new RequestContext(user.getId(), LocalDateTime.now(this.clock));
 
@@ -87,9 +78,5 @@ class PatientDeleteController {
     } catch (PatientException exception) {
       return failure(exception);
     }
-
   }
-
-
-
 }

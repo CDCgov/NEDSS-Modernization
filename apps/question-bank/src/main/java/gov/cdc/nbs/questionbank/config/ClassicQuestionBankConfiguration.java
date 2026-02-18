@@ -5,5 +5,4 @@ import org.springframework.context.annotation.Configuration;
 
 @EnableClassicInteraction
 @Configuration
-class ClassicQuestionBankConfiguration {
-}
+class ClassicQuestionBankConfiguration {}

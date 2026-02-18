@@ -3,9 +3,11 @@ package gov.cdc.nbs.questionbank.page.classic.redirect.incoming;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import java.util.Optional;
+
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,17 +15,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-import gov.cdc.nbs.authentication.NbsUserDetails;
-
 
 @ExtendWith(MockitoExtension.class)
 class IncomingEditPageRedirectorTest {
 
-  @Mock
-  private RecentlyCreatedPageFinder finder;
+  @Mock private RecentlyCreatedPageFinder finder;
 
-  @InjectMocks
-  private IncomingEditPageRedirector redirector;
+  @InjectMocks private IncomingEditPageRedirector redirector;
 
   @Test
   void should_redirect_edit_page() {
@@ -35,7 +33,7 @@ class IncomingEditPageRedirectorTest {
     HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
     when(request.getCookies()).thenReturn(new Cookie[] {new Cookie("Return-Page", "1234")});
 
-    // When a request is processed return to the edit page 
+    // When a request is processed return to the edit page
     ResponseEntity<Void> response = redirector.returnToEdit(request, details);
 
     // Then a redirect is issued for the edit page
@@ -58,7 +56,7 @@ class IncomingEditPageRedirectorTest {
     // and no recently created pages
     when(finder.findRecentlyCreatedBy(1l)).thenReturn(Optional.empty());
 
-    // When a request is processed return to the edit page 
+    // When a request is processed return to the edit page
     ResponseEntity<Void> response = redirector.returnToEdit(request, details);
 
     // Then a redirect is issued for the library page
@@ -79,7 +77,7 @@ class IncomingEditPageRedirectorTest {
     // and a recently created pages
     when(finder.findRecentlyCreatedBy(1l)).thenReturn(Optional.of(2l));
 
-    // When a request is processed return to the edit page 
+    // When a request is processed return to the edit page
     ResponseEntity<Void> response = redirector.returnToEdit(request, details);
 
     // Then a redirect is issued for the edit page

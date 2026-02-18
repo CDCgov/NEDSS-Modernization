@@ -13,15 +13,11 @@ public class PhoneSteps {
 
   @ParameterType(name = "phoneType", value = ".*")
   public String phoneType(final String value) {
-    return resolver.resolve("EL_TYPE_TELE_PAT", value)
-        .orElse(null);
+    return resolver.resolve("EL_TYPE_TELE_PAT", value).orElse(null);
   }
 
   @ParameterType(name = "phoneUse", value = ".*")
   public String phoneUse(final String value) {
-    return resolver.resolve("EL_USE_TELE_PAT", value)
-        .orElse(null);
+    return resolver.resolve("EL_USE_TELE_PAT", value).orElse(null);
   }
-
-
 }

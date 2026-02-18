@@ -1,5 +1,3 @@
 package gov.cdc.nbs.encryption;
 
-record EncryptionResponse(String value) {
-
-}
+record EncryptionResponse(String value) {}

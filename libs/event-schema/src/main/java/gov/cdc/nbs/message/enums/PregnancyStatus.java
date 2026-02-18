@@ -9,11 +9,11 @@ public enum PregnancyStatus {
     return value == null
         ? null
         : switch (value) {
-      case "Y" -> PregnancyStatus.YES;
-      case "N" -> PregnancyStatus.NO;
-      case "UNK" -> PregnancyStatus.UNKNOWN;
-      default -> null;
-    };
+          case "Y" -> PregnancyStatus.YES;
+          case "N" -> PregnancyStatus.NO;
+          case "UNK" -> PregnancyStatus.UNKNOWN;
+          default -> null;
+        };
   }
 
   private final String value;

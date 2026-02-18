@@ -1,16 +1,15 @@
 package gov.cdc.nbs.patient.search.indexing;
 
-import gov.cdc.nbs.patient.search.SearchablePatient;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.patient.search.SearchablePatient;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Test;
 
 class SearchablePatientRowMapperTest {
 
@@ -18,7 +17,8 @@ class SearchablePatientRowMapperTest {
   void should_map_from_result_set() throws SQLException {
 
     SearchablePatientRowMapper.Column columns =
-        new SearchablePatientRowMapper.Column(2, 3, 4, 5, 7, 11, 13, 17, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+        new SearchablePatientRowMapper.Column(
+            2, 3, 4, 5, 7, 11, 13, 17, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
 
     ResultSet resultSet = mock(ResultSet.class);
 
@@ -26,10 +26,8 @@ class SearchablePatientRowMapperTest {
     when(resultSet.getString(columns.local())).thenReturn("local-value");
     when(resultSet.getString(columns.status())).thenReturn("status-value");
 
-    when(resultSet.getObject(columns.birthday(), LocalDateTime.class)).thenReturn(
-        LocalDateTime.of(
-            1943, Month.NOVEMBER, 3,
-            0, 0, 0));
+    when(resultSet.getObject(columns.birthday(), LocalDateTime.class))
+        .thenReturn(LocalDateTime.of(1943, Month.NOVEMBER, 3, 0, 0, 0));
 
     when(resultSet.getString(columns.deceased())).thenReturn("deceased-value");
     when(resultSet.getString(columns.gender())).thenReturn("gender-value");

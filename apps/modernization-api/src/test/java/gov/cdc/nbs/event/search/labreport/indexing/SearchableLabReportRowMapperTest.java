@@ -1,44 +1,25 @@
 package gov.cdc.nbs.event.search.labreport.indexing;
 
-import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Test;
 
 class SearchableLabReportRowMapperTest {
-
 
   @Test
   void should_map_from_result_set() throws SQLException {
 
-    SearchableLabReportRowMapper.Column columns = new SearchableLabReportRowMapper.Column(
-        2,
-        3,
-        5,
-        7,
-        11,
-        13,
-        17,
-        19,
-        23,
-        29,
-        31,
-        37,
-        41,
-        43,
-        47,
-        53,
-        59,
-        61
-    );
+    SearchableLabReportRowMapper.Column columns =
+        new SearchableLabReportRowMapper.Column(
+            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61);
 
     ResultSet resultSet = mock(ResultSet.class);
     when(resultSet.getLong(columns.identifier())).thenReturn(419L);

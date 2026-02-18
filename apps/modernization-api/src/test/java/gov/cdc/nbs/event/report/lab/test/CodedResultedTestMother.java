@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 @ScenarioScope
 class CodedResultedTestMother {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
        insert into Act (
          act_uid,
          class_cd,
@@ -22,7 +23,7 @@ class CodedResultedTestMother {
          'OBS',
          'EVN'
        );
-      
+
        insert into Observation(
          observation_uid,
          ctrl_cd_display_form,
@@ -43,7 +44,7 @@ class CodedResultedTestMother {
        from [NBS_SRTE]..[Lab_test]
        where lab_test_cd = :test
       ;
-      
+
         insert into Act_relationship(
          source_act_uid,
          source_class_cd,
@@ -57,7 +58,7 @@ class CodedResultedTestMother {
          'OBS',
          'COMP'
        );
-      
+
        insert into Obs_value_coded (
          observation_uid,
          code,
@@ -73,20 +74,21 @@ class CodedResultedTestMother {
       ;
       """;
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete from Participation where act_class_cd = 'OBS' and act_uid in (:identifiers);
-      
+
       delete from Obs_value_coded where observation_uid in (:identifiers);
-      
+
       delete from Observation
       where   obs_domain_cd_st_1 = 'Result'
           and observation_uid in (:identifiers);
-      
+
       delete from Act_relationship
       where   source_act_uid in (:identifiers)
           and source_class_cd = 'OBS'
           and type_cd = 'COMP';
-      
+
       delete from Act where class_cd = 'OBS' and act_uid in (:identifiers);
       """;
 
@@ -94,11 +96,7 @@ class CodedResultedTestMother {
   private final JdbcClient client;
   private final TestingDataCleaner<Long> cleaner;
 
-
-  CodedResultedTestMother(
-      final SequentialIdentityGenerator idGenerator,
-      final JdbcClient client
-  ) {
+  CodedResultedTestMother(final SequentialIdentityGenerator idGenerator, final JdbcClient client) {
     this.idGenerator = idGenerator;
     this.client = client;
     this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
@@ -112,7 +110,8 @@ class CodedResultedTestMother {
   void create(final LabReportIdentifier report, final String test, final String result) {
     long identifier = idGenerator.next();
 
-    this.client.sql(CREATE)
+    this.client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("observation", report.identifier())
         .param("test", test)
@@ -121,5 +120,4 @@ class CodedResultedTestMother {
 
     this.cleaner.include(identifier);
   }
-
 }

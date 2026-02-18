@@ -3,7 +3,6 @@ package gov.cdc.nbs.authentication.user;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
-
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 class GrantedAuthorityFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       SELECT
         grantedAuthority
       FROM
@@ -61,10 +61,7 @@ class GrantedAuthorityFinder {
   }
 
   Set<GrantedAuthority> find(final long user) {
-    return client.sql(QUERY)
-        .param("identifier", user)
-        .query(this::map)
-        .set();
+    return client.sql(QUERY).param("identifier", user).query(this::map).set();
   }
 
   private GrantedAuthority map(final ResultSet rs, final int row) throws SQLException {

@@ -1,15 +1,15 @@
 package gov.cdc.nbs.event.report.lab.test;
 
+import java.util.Optional;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 class LabTestParameterResolver {
 
   private static final int IDENTIFIER_COLUMN = 1;
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select top 1
         lab_test_cd
       from NBS_SRTE.[dbo].Lab_test
@@ -25,7 +25,8 @@ class LabTestParameterResolver {
 
   Optional<String> resolve(final String value) {
 
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param(value)
         .query((rs, row) -> rs.getString(IDENTIFIER_COLUMN))
         .optional();

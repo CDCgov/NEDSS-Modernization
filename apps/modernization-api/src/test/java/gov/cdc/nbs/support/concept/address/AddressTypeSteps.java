@@ -14,10 +14,6 @@ public class AddressTypeSteps {
   @ParameterType(name = "addressType", value = "\".*\"|.*")
   public String addressType(final String type) {
     String adjusted = type.replaceAll("\"", "");
-    return this.resolver.resolve(
-        "EL_TYPE_PST_PAT",
-        adjusted
-    ).orElse(adjusted);
+    return this.resolver.resolve("EL_TYPE_PST_PAT", adjusted).orElse(adjusted);
   }
-
 }

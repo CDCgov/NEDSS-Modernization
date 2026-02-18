@@ -6,7 +6,6 @@ public class JurisdictionOptionSteps {
 
   private final JurisdictionMother mother;
 
-
   JurisdictionOptionSteps(final JurisdictionMother mother) {
     this.mother = mother;
   }
@@ -15,5 +14,4 @@ public class JurisdictionOptionSteps {
   public void the_jurisdiction_exists_in_the_value_set(final String name) {
     mother.create(name);
   }
-
 }

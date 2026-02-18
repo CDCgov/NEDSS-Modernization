@@ -9,18 +9,18 @@ import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import jakarta.annotation.PreDestroy;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 class ContactRecordMother {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Act(act_uid, class_cd, mood_cd) values (:identifier, 'CT','EVN');
-      
+
       insert into CT_contact (
           ct_contact_uid,
           local_id,
@@ -56,7 +56,8 @@ class ContactRecordMother {
       )
       """;
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete from CT_contact where CT_Contact_uid in (:identifiers);
       delete from Act where class_cd = 'CT' and act_uid in (:identifiers);
       """;
@@ -71,8 +72,7 @@ class ContactRecordMother {
       final JdbcClient client,
       final Active<ContactRecordIdentifier> active,
       final MotherSettings settings,
-      final SequentialIdentityGenerator idGenerator
-  ) {
+      final SequentialIdentityGenerator idGenerator) {
     this.client = client;
     this.active = active;
     this.settings = settings;
@@ -85,10 +85,7 @@ class ContactRecordMother {
     this.cleaner.clean();
   }
 
-  void create(
-      final PatientIdentifier named,
-      final InvestigationIdentifier investigation
-  ) {
+  void create(final PatientIdentifier named, final InvestigationIdentifier investigation) {
 
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal("CON");
@@ -96,7 +93,8 @@ class ContactRecordMother {
     ProgramAreaIdentifier programArea = investigation.programArea();
     JurisdictionIdentifier jurisdiction = investigation.jurisdiction();
 
-    this.client.sql(CREATE)
+    this.client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("local", local)
         .param("addedOn", settings.createdOn())
@@ -118,49 +116,57 @@ class ContactRecordMother {
   }
 
   void createdOn(final ContactRecordIdentifier contact, final LocalDateTime on) {
-    this.client.sql("update ct_contact set add_time = ? where ct_contact_uid = ?")
+    this.client
+        .sql("update ct_contact set add_time = ? where ct_contact_uid = ?")
         .param(on)
         .param(contact.identifier())
         .update();
   }
 
   void namedOn(final ContactRecordIdentifier contact, final LocalDate on) {
-    this.client.sql("update ct_contact set named_On_Date = ? where ct_contact_uid = ?")
+    this.client
+        .sql("update ct_contact set named_On_Date = ? where ct_contact_uid = ?")
         .param(on)
         .param(contact.identifier())
         .update();
   }
 
   void priority(final ContactRecordIdentifier contact, final String value) {
-    this.client.sql("update ct_contact set priority_cd = ? where ct_contact_uid = ?")
+    this.client
+        .sql("update ct_contact set priority_cd = ? where ct_contact_uid = ?")
         .param(value)
         .param(contact.identifier())
         .update();
   }
 
   void disposition(final ContactRecordIdentifier contact, final String value) {
-    this.client.sql("update ct_contact set disposition_cd = ? where ct_contact_uid = ?")
+    this.client
+        .sql("update ct_contact set disposition_cd = ? where ct_contact_uid = ?")
         .param(value)
         .param(contact.identifier())
         .update();
   }
 
   void referralBasis(final ContactRecordIdentifier contact, final String value) {
-    this.client.sql("update ct_contact set contact_referral_basis_cd = ? where ct_contact_uid = ?")
+    this.client
+        .sql("update ct_contact set contact_referral_basis_cd = ? where ct_contact_uid = ?")
         .param(value)
         .param(contact.identifier())
         .update();
   }
 
   void processingDecision(final ContactRecordIdentifier contact, final String value) {
-    this.client.sql("update ct_contact set processing_decision_cd = ? where ct_contact_uid = ?")
+    this.client
+        .sql("update ct_contact set processing_decision_cd = ? where ct_contact_uid = ?")
         .param(value)
         .param(contact.identifier())
         .update();
   }
 
-  public void associated(final ContactRecordIdentifier contact, final InvestigationIdentifier investigation) {
-    this.client.sql("update ct_contact set contact_entity_phc_uid = ? where ct_contact_uid = ?")
+  public void associated(
+      final ContactRecordIdentifier contact, final InvestigationIdentifier investigation) {
+    this.client
+        .sql("update ct_contact set contact_entity_phc_uid = ? where ct_contact_uid = ?")
         .param(investigation.identifier())
         .param(contact.identifier())
         .update();

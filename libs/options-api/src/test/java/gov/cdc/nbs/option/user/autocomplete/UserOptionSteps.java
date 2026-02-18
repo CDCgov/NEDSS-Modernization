@@ -20,5 +20,4 @@ public class UserOptionSteps {
   public void there_is_a_condition(final String first, final String last) {
     mother.create(first, last);
   }
-
 }

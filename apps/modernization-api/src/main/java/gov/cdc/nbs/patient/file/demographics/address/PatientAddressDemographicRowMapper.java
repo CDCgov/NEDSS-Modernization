@@ -3,11 +3,10 @@ package gov.cdc.nbs.patient.file.demographics.address;
 import gov.cdc.nbs.data.selectable.Selectable;
 import gov.cdc.nbs.data.selectable.SelectableRowMapper;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientAddressDemographicRowMapper implements RowMapper<PatientAddressDemographic> {
 
@@ -24,8 +23,7 @@ class PatientAddressDemographicRowMapper implements RowMapper<PatientAddressDemo
       int zipcode,
       SelectableRowMapper.Column country,
       int censusTract,
-      int comment
-  ) {
+      int comment) {
     Column() {
       this(
           1,
@@ -40,11 +38,9 @@ class PatientAddressDemographicRowMapper implements RowMapper<PatientAddressDemo
           14,
           new SelectableRowMapper.Column(15, 16),
           17,
-          18
-      );
+          18);
     }
   }
-
 
   private final Column columns;
   private final SelectableRowMapper typeMapper;
@@ -67,7 +63,8 @@ class PatientAddressDemographicRowMapper implements RowMapper<PatientAddressDemo
   }
 
   @Override
-  public PatientAddressDemographic mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
+  public PatientAddressDemographic mapRow(final ResultSet resultSet, int rowNum)
+      throws SQLException {
     long identifier = resultSet.getLong(columns.identifier());
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
     Selectable type = typeMapper.mapRow(resultSet, rowNum);
@@ -97,7 +94,6 @@ class PatientAddressDemographicRowMapper implements RowMapper<PatientAddressDemo
         county,
         censusTract,
         country,
-        comment
-    );
+        comment);
   }
 }

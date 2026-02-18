@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.question;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
@@ -10,9 +11,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 
 public class ValidateQuestionSteps {
 
@@ -25,9 +23,7 @@ public class ValidateQuestionSteps {
   private QuestionValidationResponse validationResult;
 
   ValidateQuestionSteps(
-      final ExceptionHolder exceptionHolder,
-      final QuestionControllerHelper controllerHelper
-  ) {
+      final ExceptionHolder exceptionHolder, final QuestionControllerHelper controllerHelper) {
     this.exceptionHolder = exceptionHolder;
     this.controllerHelper = controllerHelper;
   }
@@ -37,7 +33,9 @@ public class ValidateQuestionSteps {
     try {
       request = prepareRequest(field);
       validationResult = controllerHelper.validate(request);
-    } catch (UniqueQuestionException | AuthenticationCredentialsNotFoundException | AccessDeniedException e) {
+    } catch (UniqueQuestionException
+        | AuthenticationCredentialsNotFoundException
+        | AccessDeniedException e) {
       exceptionHolder.setException(e);
     }
   }
@@ -51,7 +49,6 @@ public class ValidateQuestionSteps {
       exceptionHolder.setException(e);
     }
   }
-
 
   @Then("return valid")
   public void return_valid() {
@@ -79,7 +76,6 @@ public class ValidateQuestionSteps {
     if ("dataMartColumnName".equals(field))
       return new QuestionValidationRequest(Field.DATA_MART_COLUMN_NAME, "DATA_MRT_COL_NM");
     else // invalid unique field name
-      return new QuestionValidationRequest(null, "any value");
+    return new QuestionValidationRequest(null, "any value");
   }
-
 }

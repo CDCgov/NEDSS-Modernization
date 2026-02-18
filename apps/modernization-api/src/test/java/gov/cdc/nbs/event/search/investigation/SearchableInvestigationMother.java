@@ -7,11 +7,10 @@ import gov.cdc.nbs.search.support.ElasticsearchIndexCleaner;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PostConstruct;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
@@ -26,8 +25,7 @@ class SearchableInvestigationMother {
       final ElasticsearchIndexCleaner cleaner,
       final SearchableInvestigationResolver resolver,
       final SearchableInvestigationIndexer indexer,
-      final Available<SearchableInvestigation> available
-  ) {
+      final Available<SearchableInvestigation> available) {
     this.cleaner = cleaner;
     this.resolver = resolver;
     this.indexer = indexer;
@@ -40,21 +38,22 @@ class SearchableInvestigationMother {
   }
 
   void searchable(final InvestigationIdentifier identifier) {
-    this.resolver.resolve(identifier.identifier())
+    this.resolver
+        .resolve(identifier.identifier())
         .ifPresent(
             created -> {
               this.indexer.index(created);
               this.available.available(created);
-            }
-        );
+            });
   }
 
   void searchable(final Stream<InvestigationIdentifier> identifiers) {
 
-    List<SearchableInvestigation> reports = identifiers
-        .map(identifier -> this.resolver.resolve(identifier.identifier()))
-        .flatMap(Optional::stream)
-        .toList();
+    List<SearchableInvestigation> reports =
+        identifiers
+            .map(identifier -> this.resolver.resolve(identifier.identifier()))
+            .flatMap(Optional::stream)
+            .toList();
 
     this.indexer.index(reports);
     this.available.include(reports);

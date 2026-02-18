@@ -1,13 +1,12 @@
 package gov.cdc.nbs.patient.search.indexing.telecom;
 
 import gov.cdc.nbs.patient.search.SearchablePatient;
-import org.springframework.jdbc.core.RowCallbackHandler;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.springframework.jdbc.core.RowCallbackHandler;
 
 class SearchablePatientTelecomRowCallbackHandler implements RowCallbackHandler {
 
@@ -16,16 +15,13 @@ class SearchablePatientTelecomRowCallbackHandler implements RowCallbackHandler {
   private final SearchablePatientPhoneMapper phoneRowMapper;
   private final Collection<SearchablePatient.Phone> phones;
 
-
   SearchablePatientTelecomRowCallbackHandler(
       final SearchablePatientEmailMapper.Column email,
-      final SearchablePatientPhoneMapper.Column phone
-  ) {
+      final SearchablePatientPhoneMapper.Column phone) {
     this.emailRowMapper = new SearchablePatientEmailMapper(email);
     this.emails = new ArrayList<>();
     this.phoneRowMapper = new SearchablePatientPhoneMapper(phone);
     this.phones = new ArrayList<>();
-
   }
 
   @Override
@@ -35,10 +31,6 @@ class SearchablePatientTelecomRowCallbackHandler implements RowCallbackHandler {
   }
 
   SearchablePatientTelecom telecom() {
-    return new SearchablePatientTelecom(
-        List.copyOf(this.phones),
-        List.copyOf(this.emails)
-    );
+    return new SearchablePatientTelecom(List.copyOf(this.phones), List.copyOf(this.emails));
   }
-
 }

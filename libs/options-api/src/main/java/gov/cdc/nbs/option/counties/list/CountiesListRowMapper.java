@@ -1,10 +1,9 @@
 package gov.cdc.nbs.option.counties.list;
 
 import gov.cdc.nbs.option.Option;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 public class CountiesListRowMapper implements RowMapper<Option> {
   public record Columns(int value, int name) {
@@ -12,7 +11,6 @@ public class CountiesListRowMapper implements RowMapper<Option> {
       this(1, 2);
     }
   }
-
 
   private final Columns columns;
 
@@ -29,11 +27,6 @@ public class CountiesListRowMapper implements RowMapper<Option> {
     String value = resultSet.getString(columns.value());
     String name = resultSet.getString(columns.name());
 
-    return new Option(
-        value,
-        name,
-        name,
-        0
-    );
+    return new Option(value, name, name, 0);
   }
 }

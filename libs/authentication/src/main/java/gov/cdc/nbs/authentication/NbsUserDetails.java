@@ -1,10 +1,9 @@
 package gov.cdc.nbs.authentication;
 
 import gov.cdc.nbs.authorization.permission.Permission;
+import java.util.Set;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Set;
 
 public class NbsUserDetails implements UserDetails {
   private final Long id;
@@ -20,8 +19,7 @@ public class NbsUserDetails implements UserDetails {
       final String firstName,
       final String lastName,
       final Set<GrantedAuthority> authorities,
-      boolean isEnabled
-  ) {
+      boolean isEnabled) {
     this.id = id;
     this.username = username;
     this.firstName = firstName;
@@ -54,6 +52,7 @@ public class NbsUserDetails implements UserDetails {
   public boolean isEnabled() {
     return this.isEnabled;
   }
+
   @Override
   public String getPassword() {
     return null;
@@ -77,22 +76,18 @@ public class NbsUserDetails implements UserDetails {
   /**
    * Checks if user has the specified permission
    *
-   * @param object    The resource the action can be preformed on
+   * @param object The resource the action can be preformed on
    * @param operation The granted action
    * @return {@code true} if the operation can be performed on the object.
    */
-  private boolean hasPermission(
-      final String operation,
-      final String object
-  ) {
+  private boolean hasPermission(final String operation, final String object) {
     if (getAuthorities() == null) {
       return false;
     }
 
     String authority = operation + "-" + object;
 
-    return getAuthorities()
-        .stream()
+    return getAuthorities().stream()
         .anyMatch(found -> found.getAuthority().equalsIgnoreCase(authority));
   }
 
@@ -103,8 +98,6 @@ public class NbsUserDetails implements UserDetails {
    * @return {@code true} if the Permission has been granted.
    */
   public boolean hasPermission(final Permission permission) {
-    return permission != null
-        && hasPermission(permission.operation(), permission.object());
+    return permission != null && hasPermission(permission.operation(), permission.object());
   }
-
 }

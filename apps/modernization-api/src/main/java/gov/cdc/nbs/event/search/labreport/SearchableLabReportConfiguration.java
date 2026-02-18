@@ -11,10 +11,7 @@ class SearchableLabReportConfiguration {
   @Bean
   SimpleIndex labReportIndex(
       @Value("${nbs.search.lab-report.index.name}") final String index,
-      @Value("${nbs.search.lab-report.index.mapping}") final String location
-  ) {
+      @Value("${nbs.search.lab-report.index.mapping}") final String location) {
     return new SimpleIndex(index, location);
   }
-
-
 }

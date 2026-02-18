@@ -3,13 +3,12 @@ package gov.cdc.nbs.patient.file.events.report.laboratory;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleNameRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
   record Column(
@@ -26,16 +25,25 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
       DisplayableSimpleNameRowMapper.Columns orderingProvider,
       int dateCollected,
       int specimenSite,
-      int specimenSource
-  ) {
+      int specimenSource) {
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+      this(
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
           new DisplayableSimpleNameRowMapper.Columns(11, 12, 13),
-          14, 15, 16
-      );
+          14,
+          15,
+          16);
     }
   }
-
 
   private final Column columns;
   private final RowMapper<DisplayableSimpleName> providerMapper;
@@ -54,7 +62,8 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
     long patient = resultSet.getLong(this.columns.patient());
     long labIdentifier = resultSet.getLong(this.columns.identifier());
     String local = resultSet.getString(this.columns.local());
-    LocalDateTime dateReceived = resultSet.getObject(this.columns.dateReceived(), LocalDateTime.class);
+    LocalDateTime dateReceived =
+        resultSet.getObject(this.columns.dateReceived(), LocalDateTime.class);
     boolean electronic = resultSet.getBoolean(this.columns.electronic());
     String processingDecision = resultSet.getString(this.columns.processingDecision());
     LocalDate dateCollected = LocalDateColumnMapper.map(resultSet, this.columns.dateCollected());
@@ -81,8 +90,7 @@ class PatientLabReportsRowMapper implements RowMapper<PatientLabReport> {
         orderingProvider,
         orderingFacility,
         specimen,
-        Collections.emptyList()
-    );
+        Collections.emptyList());
   }
 
   private PatientLabReport.Specimen mapSpecimen(final ResultSet resultSet) throws SQLException {

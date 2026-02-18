@@ -15,18 +15,20 @@ public class SortCriteriaSteps {
 
   @Given("I want search results sorted by {string} {string}")
   public void i_want_search_results_sorted_by(final String sortBy, final String direction) {
-    Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+    Sort.Direction sortDirection =
+        direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-    String field = switch (sortBy.toLowerCase()) {
-      case "birthday" -> "birthTime";
-      case "legal name" -> "legalName";
-      case "first name" -> "firstNm";
-      case "last name" -> "lastNm";
-      case "phone" -> "phoneNumber";
-      case "startdate" -> "startDate";
-      case "investigationid" -> "investigationId";
-      default -> sortBy.toLowerCase();
-    };
+    String field =
+        switch (sortBy.toLowerCase()) {
+          case "birthday" -> "birthTime";
+          case "legal name" -> "legalName";
+          case "first name" -> "firstNm";
+          case "last name" -> "lastNm";
+          case "phone" -> "phoneNumber";
+          case "startdate" -> "startDate";
+          case "investigationid" -> "investigationId";
+          default -> sortBy.toLowerCase();
+        };
 
     this.sorting.active(new SortCriteria(sortDirection, field));
   }

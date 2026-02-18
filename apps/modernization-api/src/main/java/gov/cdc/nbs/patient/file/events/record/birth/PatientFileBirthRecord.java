@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.file.events.record.birth;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigation;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -19,8 +18,7 @@ record PatientFileBirthRecord(
     LocalDate collectedOn,
     String certificate,
     MotherInformation mother,
-    Collection<AssociatedInvestigation> associations
-) {
+    Collection<AssociatedInvestigation> associations) {
   PatientFileBirthRecord(
       long patient,
       long identifier,
@@ -29,19 +27,25 @@ record PatientFileBirthRecord(
       String facility,
       LocalDate collectedOn,
       String certificate,
-      MotherInformation mother
+      MotherInformation mother) {
 
-  ) {
-    this(patient, identifier, local, receivedOn, facility, collectedOn, certificate, mother, Collections.emptyList());
+    this(
+        patient,
+        identifier,
+        local,
+        receivedOn,
+        facility,
+        collectedOn,
+        certificate,
+        mother,
+        Collections.emptyList());
   }
 
   @JsonInclude(JsonInclude.Include.NON_NULL)
   record MotherInformation(Name name, Address address) {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    record Name(String first, String middle, String last, String suffix) {
-    }
-
+    record Name(String first, String middle, String last, String suffix) {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     record Address(
@@ -50,37 +54,16 @@ record PatientFileBirthRecord(
         String city,
         String state,
         String county,
-        String zipcode
-    ) {
-    }
-
+        String zipcode) {}
   }
 
   PatientFileBirthRecord withMother(final MotherInformation mother) {
     return new PatientFileBirthRecord(
-        patient,
-        id,
-        local,
-        receivedOn,
-        facility,
-        collectedOn,
-        certificate,
-        mother,
-        associations
-    );
+        patient, id, local, receivedOn, facility, collectedOn, certificate, mother, associations);
   }
 
   PatientFileBirthRecord withAssociations(final Collection<AssociatedInvestigation> associations) {
     return new PatientFileBirthRecord(
-        patient,
-        id,
-        local,
-        receivedOn,
-        facility,
-        collectedOn,
-        certificate,
-        mother,
-        associations
-    );
+        patient, id, local, receivedOn, facility, collectedOn, certificate, mother, associations);
   }
 }

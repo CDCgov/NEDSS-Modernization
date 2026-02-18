@@ -3,13 +3,12 @@ package gov.cdc.nbs.patient.file.demographics.ethnicity;
 import gov.cdc.nbs.data.selectable.Selectable;
 import gov.cdc.nbs.data.selectable.SelectableRowMapper;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicityDemographic> {
 
@@ -17,15 +16,13 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
       int asOf,
       SelectableRowMapper.Column category,
       SelectableRowMapper.Column unknownReason,
-      SelectableRowMapper.Column detail
-  ) {
+      SelectableRowMapper.Column detail) {
     Column() {
       this(
           1,
           new SelectableRowMapper.Column(2, 3),
           new SelectableRowMapper.Column(4, 5),
-          new SelectableRowMapper.Column(6, 7)
-      );
+          new SelectableRowMapper.Column(6, 7));
     }
   }
 
@@ -46,7 +43,8 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
   }
 
   @Override
-  public PatientEthnicityDemographic mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
+  public PatientEthnicityDemographic mapRow(final ResultSet resultSet, int rowNum)
+      throws SQLException {
 
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
     Selectable ethnicGroup = ethnicityMapper.mapRow(resultSet, rowNum);
@@ -54,19 +52,13 @@ class PatientEthnicityDemographicRowMapper implements RowMapper<PatientEthnicity
     Selectable detail = detailMapper.mapRow(resultSet, rowNum);
 
     String ethnicGroupValue = ethnicGroup != null ? ethnicGroup.value() : null;
-    List<Selectable> detailed = detail == null || Objects.equals(detail.value(), ethnicGroupValue)
-        ? List.of()
-        : List.of(detail);
+    List<Selectable> detailed =
+        detail == null || Objects.equals(detail.value(), ethnicGroupValue)
+            ? List.of()
+            : List.of(detail);
 
-    Selectable unknown = "UNK".equalsIgnoreCase(ethnicGroupValue)
-        ? unknownReason
-        : null;
+    Selectable unknown = "UNK".equalsIgnoreCase(ethnicGroupValue) ? unknownReason : null;
 
-    return new PatientEthnicityDemographic(
-        asOf,
-        ethnicGroup,
-        unknown,
-        detailed
-    );
+    return new PatientEthnicityDemographic(asOf, ethnicGroup, unknown, detailed);
   }
 }

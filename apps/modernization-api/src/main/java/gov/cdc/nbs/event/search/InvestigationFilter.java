@@ -1,18 +1,17 @@
 package gov.cdc.nbs.event.search;
 
 import gov.cdc.nbs.message.enums.PregnancyStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public final class InvestigationFilter  {
+public final class InvestigationFilter {
 
   private static final String UNASSIGNED = "UNASSIGNED";
 
@@ -44,7 +43,6 @@ public final class InvestigationFilter  {
     private LocalDate to;
   }
 
-
   @Data
   @AllArgsConstructor
   @NoArgsConstructor
@@ -52,7 +50,6 @@ public final class InvestigationFilter  {
     private IdType investigationEventType;
     private String id;
   }
-
 
   @Data
   @AllArgsConstructor
@@ -62,14 +59,12 @@ public final class InvestigationFilter  {
     private Long id;
   }
 
-
   public enum IdType {
-    ABCS_CASE_ID("ABCS_CASE_ID","ABC Case ID"),
-    CITY_COUNTY_CASE_ID("CITY_COUNTY_CASE_ID","City Case ID"),
-    INVESTIGATION_ID("INVESTIGATION_ID","Investigation ID"),
-    NOTIFICATION_ID("NOTIFICATION_ID","Notification ID"),
-    STATE_CASE_ID("STATE_CASE_ID","State Case ID")
-    ;
+    ABCS_CASE_ID("ABCS_CASE_ID", "ABC Case ID"),
+    CITY_COUNTY_CASE_ID("CITY_COUNTY_CASE_ID", "City Case ID"),
+    INVESTIGATION_ID("INVESTIGATION_ID", "Investigation ID"),
+    NOTIFICATION_ID("NOTIFICATION_ID", "Notification ID"),
+    STATE_CASE_ID("STATE_CASE_ID", "State Case ID");
 
     private final String value;
     private final String display;
@@ -88,12 +83,10 @@ public final class InvestigationFilter  {
     }
   }
 
-
   public enum ReportingEntityType {
     FACILITY,
     PROVIDER
   }
-
 
   public enum ProcessingStatus {
     UNASSIGNED(InvestigationFilter.UNASSIGNED),
@@ -115,7 +108,6 @@ public final class InvestigationFilter  {
     }
   }
 
-
   public enum NotificationStatus {
     UNASSIGNED(InvestigationFilter.UNASSIGNED),
     APPROVED("APPROVED"),
@@ -134,7 +126,6 @@ public final class InvestigationFilter  {
       return value;
     }
   }
-
 
   public enum CaseStatus {
     UNASSIGNED(InvestigationFilter.UNASSIGNED),
@@ -155,7 +146,6 @@ public final class InvestigationFilter  {
     }
   }
 
-
   public enum EventDateType {
     DATE_OF_REPORT,
     INVESTIGATION_CLOSED_DATE,
@@ -164,7 +154,6 @@ public final class InvestigationFilter  {
     LAST_UPDATE_DATE,
     NOTIFICATION_CREATE_DATE
   }
-
 
   public enum InvestigationStatus {
     OPEN("O"),
@@ -189,7 +178,6 @@ public final class InvestigationFilter  {
     this.outbreakNames.add(outbreak);
   }
 
-
   public void withProgramArea(final String programArea) {
     this.programAreas.add(programArea);
   }
@@ -209,7 +197,6 @@ public final class InvestigationFilter  {
   public void withNotificationStatus(final NotificationStatus status) {
     this.notificationStatuses.add(status);
   }
-
 
   public Optional<InvestigationEventId> abcsCase() {
     if (this.eventId != null
@@ -257,7 +244,8 @@ public final class InvestigationFilter  {
   }
 
   public Optional<EventDate> createdOn() {
-    return (this.eventDate != null && this.eventDate.type == EventDateType.INVESTIGATION_CREATE_DATE)
+    return (this.eventDate != null
+            && this.eventDate.type == EventDateType.INVESTIGATION_CREATE_DATE)
         ? Optional.of(this.eventDate)
         : Optional.empty();
   }
@@ -281,7 +269,8 @@ public final class InvestigationFilter  {
   }
 
   public Optional<EventDate> closedOn() {
-    return (this.eventDate != null && this.eventDate.type == EventDateType.INVESTIGATION_CLOSED_DATE)
+    return (this.eventDate != null
+            && this.eventDate.type == EventDateType.INVESTIGATION_CLOSED_DATE)
         ? Optional.of(this.eventDate)
         : Optional.empty();
   }
@@ -297,9 +286,9 @@ public final class InvestigationFilter  {
       return Optional.of(Long.parseLong(this.reportingFacilityId));
     }
     return (this.providerFacilitySearch != null
-        && this.providerFacilitySearch.getEntityType() == ReportingEntityType.FACILITY)
-            ? Optional.of(this.providerFacilitySearch.getId())
-            : Optional.empty();
+            && this.providerFacilitySearch.getEntityType() == ReportingEntityType.FACILITY)
+        ? Optional.of(this.providerFacilitySearch.getId())
+        : Optional.empty();
   }
 
   public Optional<Long> reportingProvider() {
@@ -307,8 +296,8 @@ public final class InvestigationFilter  {
       return Optional.of(Long.parseLong(this.reportingProviderId));
     }
     return (this.providerFacilitySearch != null
-        && this.providerFacilitySearch.getEntityType() == ReportingEntityType.PROVIDER)
-            ? Optional.of(this.providerFacilitySearch.getId())
-            : Optional.empty();
+            && this.providerFacilitySearch.getEntityType() == ReportingEntityType.PROVIDER)
+        ? Optional.of(this.providerFacilitySearch.getId())
+        : Optional.empty();
   }
 }

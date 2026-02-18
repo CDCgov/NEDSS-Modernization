@@ -7,8 +7,6 @@ class SelectableConditionMerger {
   SelectableCondition merge(final SelectableCondition current, final SelectableCondition next) {
 
     return new SelectableCondition(
-        current.value(),
-        current.name(),
-        current.published() || next.published());
+        current.value(), current.name(), current.published() || next.published());
   }
 }

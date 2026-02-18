@@ -5,7 +5,6 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -15,29 +14,24 @@ public class PatientSearchCriteriaSteps {
   private final Active<PatientSearchCriteria> activeCriteria;
 
   PatientSearchCriteriaSteps(
-      final Active<PatientIdentifier> patient,
-      final Active<PatientSearchCriteria> activeCriteria) {
+      final Active<PatientIdentifier> patient, final Active<PatientSearchCriteria> activeCriteria) {
     this.patient = patient;
     this.activeCriteria = activeCriteria;
   }
 
   @Given("I add the patient criteria for a(n) {string} equal to {string}")
   public void i_add_the_patient_criteria_for_a_field_that_is_value(
-      final String field,
-      final String value) {
+      final String field, final String value) {
 
     if (field == null || field.isEmpty()) {
       return;
     }
 
     this.activeCriteria.active(filter -> applyCriteria(field, value, filter));
-
   }
 
   private PatientSearchCriteria applyCriteria(
-      final String field,
-      final String value,
-      final PatientSearchCriteria criteria) {
+      final String field, final String value, final PatientSearchCriteria criteria) {
     switch (field.toLowerCase()) {
       case "patient id" -> criteria.setId(value);
       case "first name" -> criteria.setFirstName(value);
@@ -47,16 +41,19 @@ public class PatientSearchCriteriaSteps {
       case "email", "email address" -> criteria.setEmail(value);
       case "city" -> criteria.setCity(value);
       case "address" -> criteria.setAddress(value);
-      case "identification value" -> criteria.withIdentification(criteria.getIdentification().withValue(value));
-      default -> throw new IllegalStateException(
-          "Unexpected search criteria %s equal %s".formatted(field, value));
+      case "identification value" ->
+          criteria.withIdentification(criteria.getIdentification().withValue(value));
+      default ->
+          throw new IllegalStateException(
+              "Unexpected search criteria %s equal %s".formatted(field, value));
     }
     return criteria;
   }
 
   @Given("I add the patient criteria for an identification type equal to {identificationType}")
   public void i_add_the_patient_criteria_for_an_identification(final String type) {
-    this.activeCriteria.active(criteria -> criteria.withIdentification(criteria.getIdentification().withType(type)));
+    this.activeCriteria.active(
+        criteria -> criteria.withIdentification(criteria.getIdentification().withType(type)));
   }
 
   @Given("I add the patient criteria for a gender of {searchableGender}")
@@ -79,141 +76,198 @@ public class PatientSearchCriteriaSteps {
   @Given("I would like to search for a patient using a short ID")
   public void i_would_like_to_search_for_a_patient_using_a_short_ID() {
 
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withId(String.valueOf(found.shortId()))));
-
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(
+                    criteria -> criteria.withId(String.valueOf(found.shortId()))));
   }
 
   @Given("I would like to search for a patient using multiple short IDs")
   public void i_would_like_to_search_for_a_patient_using_multiple_short_IDs() {
 
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withId(String.valueOf("999;" + found.shortId() + ";" + found.shortId()))));
-
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(
+                    criteria ->
+                        criteria.withId(
+                            String.valueOf("999;" + found.shortId() + ";" + found.shortId()))));
   }
 
   @Given("I would like to search for a patient using a local ID")
   public void i_would_like_to_search_for_a_patient_using_a_local_ID() {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withId(found.local())));
+    this.patient
+        .maybeActive()
+        .ifPresent(found -> this.activeCriteria.active(criteria -> criteria.withId(found.local())));
   }
 
   @Given("I would like to filter search results with id {string}")
   public void i_would_like_to_filter_search_results_with_id(String id) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withIdFilter(id)));
+    this.patient
+        .maybeActive()
+        .ifPresent(found -> this.activeCriteria.active(criteria -> criteria.withIdFilter(id)));
   }
 
   @Given("I would like to search for a patient using a local ID and a good equals id filter")
-  public void i_would_like_to_search_for_a_patient_using_a_local_ID_and_good_id_filter_that_equals_the_id() {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withId(found.local()).withIdFilter(Long.toString(found.shortId()))));
+  public void
+      i_would_like_to_search_for_a_patient_using_a_local_ID_and_good_id_filter_that_equals_the_id() {
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(
+                    criteria ->
+                        criteria
+                            .withId(found.local())
+                            .withIdFilter(Long.toString(found.shortId()))));
   }
 
   @Given("I would like to search for a patient using a local ID and a good contains id filter")
-  public void i_would_like_to_search_for_a_patient_using_a_local_ID_and_good_id_filter_that_contains_the_id() {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(
-                criteria -> criteria.withId(found.local()).withIdFilter(Long.toString(found.shortId()).substring(1))));
+  public void
+      i_would_like_to_search_for_a_patient_using_a_local_ID_and_good_id_filter_that_contains_the_id() {
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(
+                    criteria ->
+                        criteria
+                            .withId(found.local())
+                            .withIdFilter(Long.toString(found.shortId()).substring(1))));
   }
 
   @Given("I would like to search for a patient using a local ID and a bad id filter")
-  public void i_would_like_to_search_for_a_patient_using_a_local_ID_and_id_filter_that_does_not_exist() {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withId(found.local()).withIdFilter("XXXXX")));
+  public void
+      i_would_like_to_search_for_a_patient_using_a_local_ID_and_id_filter_that_does_not_exist() {
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(
+                    criteria -> criteria.withId(found.local()).withIdFilter("XXXXX")));
   }
 
   @Given("I would like to filter search results with the patient's short ID")
   public void i_would_like_to_filter_search_results_with_the_patients_short_id() {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withId(found.local()).withIdFilter(Long.toString(found.shortId()))));
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(
+                    criteria ->
+                        criteria
+                            .withId(found.local())
+                            .withIdFilter(Long.toString(found.shortId()))));
   }
 
   @Given("I would like to filter search results with name {string}")
   public void i_would_like_to_filter_search_results_with_name(String name) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withNameFilter(name)));
+    this.patient
+        .maybeActive()
+        .ifPresent(found -> this.activeCriteria.active(criteria -> criteria.withNameFilter(name)));
   }
 
   @Given("I would like to filter search results with address {string}")
   public void i_would_like_to_filter_search_results_with_address(String address) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withAddressFilter(address)));
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found -> this.activeCriteria.active(criteria -> criteria.withAddressFilter(address)));
   }
 
   @Given("I would like to filter search results with email {string}")
   public void i_would_like_to_filter_search_results_with_email(String email) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withEmailFilter(email)));
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found -> this.activeCriteria.active(criteria -> criteria.withEmailFilter(email)));
   }
 
   @Given("I would like to filter search results with phone {string}")
   public void i_would_like_to_filter_search_results_with_phone(String phone) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withPhoneFilter(phone)));
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found -> this.activeCriteria.active(criteria -> criteria.withPhoneFilter(phone)));
   }
 
   @Given("I would like to filter search results with identification {string}")
   public void i_would_like_to_filter_search_results_with_identification(String identification) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withIdentificationFilter(identification)));
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(
+                    criteria -> criteria.withIdentificationFilter(identification)));
   }
 
   @Given("I would like to filter search results with age or dob {string}")
   public void i_would_like_to_filter_search_results_with_age_or_dob(String ageOrDateOfBirth) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withAgeOrDateOfBirthFilter(ageOrDateOfBirth)));
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(
+                    criteria -> criteria.withAgeOrDateOfBirthFilter(ageOrDateOfBirth)));
   }
 
   @Given("I would like to search for a patient using multiple local IDs")
   public void i_would_like_to_search_for_a_patient_using_multiple_local_IDs() {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withId("abcde," + found.local() + "," + found.local())));
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(
+                    criteria -> criteria.withId("abcde," + found.local() + "," + found.local())));
   }
 
   @Given("I would like to search for a patient using short and local IDs")
   public void i_would_like_to_search_for_a_patient_using_short_and_local_IDs() {
 
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria
-            .active(criteria -> criteria.withId(String.valueOf("abcde " + found.local() + " " + found.shortId()))));
-
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(
+                    criteria ->
+                        criteria.withId(
+                            String.valueOf("abcde " + found.local() + " " + found.shortId()))));
   }
 
   @Given("I add the patient criteria for patient's born on the {nth} day of the month")
-  public void i_would_like_to_search_for_a_patient_born_on_a_specific_day_of_the_month(final int value) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withBornOnDay(value)));
+  public void i_would_like_to_search_for_a_patient_born_on_a_specific_day_of_the_month(
+      final int value) {
+    this.patient
+        .maybeActive()
+        .ifPresent(found -> this.activeCriteria.active(criteria -> criteria.withBornOnDay(value)));
   }
 
   @Given("I add the patient criteria for patient's born in the month of {month}")
   public void i_would_like_to_search_for_a_patient_born_on_a_specific_month(final Month month) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withBornOnMonth(month.getValue())));
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found ->
+                this.activeCriteria.active(criteria -> criteria.withBornOnMonth(month.getValue())));
   }
 
   @Given("I add the patient criteria for patient's born in the year {int}")
   public void i_would_like_to_search_for_a_patient_born_on_a_specific_year(final int year) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withBornOnYear(year)));
+    this.patient
+        .maybeActive()
+        .ifPresent(found -> this.activeCriteria.active(criteria -> criteria.withBornOnYear(year)));
   }
 
   @Given("I add the patient criteria for patient's born between {localDate} and {localDate}")
-  public void i_would_like_to_search_for_a_patient_born_between(final LocalDate from, final LocalDate to) {
-    this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withBornBetween(from, to)));
+  public void i_would_like_to_search_for_a_patient_born_between(
+      final LocalDate from, final LocalDate to) {
+    this.patient
+        .maybeActive()
+        .ifPresent(
+            found -> this.activeCriteria.active(criteria -> criteria.withBornBetween(from, to)));
   }
 
   @Given("I add the patient criteria for a last name that equals {string}")
@@ -272,7 +326,8 @@ public class PatientSearchCriteriaSteps {
   }
 
   @Given("I add the patient criteria for a street address that does not equal {string}")
-  public void i_add_the_patient_criteria_for_a_street_address_that_does_not_equal(final String value) {
+  public void i_add_the_patient_criteria_for_a_street_address_that_does_not_equal(
+      final String value) {
     this.activeCriteria.active(criteria -> criteria.withStreet(TextCriteria.not(value)));
   }
 
@@ -287,7 +342,8 @@ public class PatientSearchCriteriaSteps {
   }
 
   @Given("I add the patient criteria for a city address that does not equal {string}")
-  public void i_add_the_patient_criteria_for_a_city_address_that_does_not_equal(final String value) {
+  public void i_add_the_patient_criteria_for_a_city_address_that_does_not_equal(
+      final String value) {
     this.activeCriteria.active(criteria -> criteria.withCity(TextCriteria.not(value)));
   }
 
@@ -295,5 +351,4 @@ public class PatientSearchCriteriaSteps {
   public void i_add_the_patient_criteria_for_a_city_address_that_contains(final String value) {
     this.activeCriteria.active(criteria -> criteria.withCity(TextCriteria.contains(value)));
   }
-
 }

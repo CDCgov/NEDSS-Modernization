@@ -1,9 +1,8 @@
 package gov.cdc.nbs.demographics.name;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 public class DisplayableSimpleNameRowMapper implements RowMapper<DisplayableSimpleName> {
 
@@ -13,7 +12,6 @@ public class DisplayableSimpleNameRowMapper implements RowMapper<DisplayableSimp
     }
   }
 
-
   private final Columns columns;
 
   public DisplayableSimpleNameRowMapper(final Columns columns) {
@@ -21,7 +19,8 @@ public class DisplayableSimpleNameRowMapper implements RowMapper<DisplayableSimp
   }
 
   @Override
-  public DisplayableSimpleName mapRow(final ResultSet resultSet, final int row) throws SQLException {
+  public DisplayableSimpleName mapRow(final ResultSet resultSet, final int row)
+      throws SQLException {
     String prefix = maybeMapPrefix(resultSet);
     String first = resultSet.getString(columns.first());
     String last = resultSet.getString(columns.last());
@@ -30,11 +29,7 @@ public class DisplayableSimpleNameRowMapper implements RowMapper<DisplayableSimp
       return null;
     }
 
-    return new DisplayableSimpleName(
-        prefix,
-        first,
-        last
-    );
+    return new DisplayableSimpleName(prefix, first, last);
   }
 
   private String maybeMapPrefix(final ResultSet resultSet) throws SQLException {

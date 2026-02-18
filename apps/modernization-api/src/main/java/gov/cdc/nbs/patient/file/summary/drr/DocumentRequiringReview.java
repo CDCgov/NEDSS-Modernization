@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -29,8 +28,7 @@ public record DocumentRequiringReview(
     Collection<String> treatments,
     Collection<ResultedTest> resultedTests) {
 
-  record Specimen(String site, String source) {
-  }
+  record Specimen(String site, String source) {}
 
   public DocumentRequiringReview(
       long patient,

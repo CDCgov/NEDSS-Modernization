@@ -20,7 +20,5 @@ class ApacheSoundexResolver implements SoundexResolver {
       //  contains a character that is not mapped.
       return null;
     }
-
-
   }
 }

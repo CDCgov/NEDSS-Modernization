@@ -9,11 +9,11 @@ public enum Gender {
     return value == null
         ? null
         : switch (value.toLowerCase()) {
-      case "f" -> Gender.F;
-      case "m" -> Gender.M;
-      case "u" -> Gender.U;
-      default -> null;
-    };
+          case "f" -> Gender.F;
+          case "m" -> Gender.M;
+          case "u" -> Gender.U;
+          default -> null;
+        };
   }
 
   private final String value;

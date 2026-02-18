@@ -1,5 +1,10 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
@@ -12,6 +17,8 @@ import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import jakarta.persistence.EntityManager;
+import java.time.Instant;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,36 +26,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Instant;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 class PageRuleUpdaterTest {
 
-  @Mock
-  private EntityManager entityManager;
-  @Mock
-  private ConceptFinder conceptFinder;
-  @Mock
-  private PageRuleFinder finder;
-  @Mock
-  private DateCompareCommandCreator dateCompareCreator;
-  @Mock
-  private EnableDisableCommandCreator enableDisableCreator;
-  @Mock
-  private HideUnhideCommandCreator hideUnhideCreator;
-  @Mock
-  private RequireIfCommandCreator requireIfCreator;
+  @Mock private EntityManager entityManager;
+  @Mock private ConceptFinder conceptFinder;
+  @Mock private PageRuleFinder finder;
+  @Mock private DateCompareCommandCreator dateCompareCreator;
+  @Mock private EnableDisableCommandCreator enableDisableCreator;
+  @Mock private HideUnhideCommandCreator hideUnhideCreator;
+  @Mock private RequireIfCommandCreator requireIfCreator;
 
-  @InjectMocks
-  private PageRuleUpdater updater;
-
-
+  @InjectMocks private PageRuleUpdater updater;
 
   @Test
   void should_fail_invalid_rule() {
@@ -74,7 +63,6 @@ class PageRuleUpdaterTest {
     when(mockRule.getWaTemplateUid()).thenReturn(78L);
     when(entityManager.find(WaRuleMetadata.class, 1L)).thenReturn(mockRule);
 
-
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Published");
     when(entityManager.find(WaTemplate.class, 78L)).thenReturn(template);
@@ -84,35 +72,29 @@ class PageRuleUpdaterTest {
 
   @Test
   void should_set_source_values() {
-    RuleRequest request = new RuleRequest(
-        RuleFunction.ENABLE,
-        "desc",
-        "source",
-        true,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null);
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.ENABLE, "desc", "source", true, null, null, null, null, null, null);
 
-    when(conceptFinder.findByQuestionIdentifier("source", 1L)).thenReturn(List.of(new Concept(
-        null,
-        "localCode",
-        null,
-        "display",
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null)));
+    when(conceptFinder.findByQuestionIdentifier("source", 1L))
+        .thenReturn(
+            List.of(
+                new Concept(
+                    null,
+                    "localCode",
+                    null,
+                    "display",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null)));
     RuleRequest updatedRequest = updater.addSourceValues(request, 1L);
     assertThat(updatedRequest.sourceValues()).isNotEmpty();
   }
-
 
   @Test
   void enable() {
@@ -128,17 +110,18 @@ class PageRuleUpdaterTest {
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
-    RuleRequest request = new RuleRequest(
-        RuleFunction.ENABLE,
-        "desc",
-        "source",
-        false,
-        List.of(new SourceValue("A", "B")),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        List.of("INV123"),
-        "Source question",
-        List.of("Target quest"));
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.ENABLE,
+            "desc",
+            "source",
+            false,
+            List.of(new SourceValue("A", "B")),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            List.of("INV123"),
+            "Source question",
+            List.of("Target quest"));
 
     when(enableDisableCreator.update(99L, request, 1L)).thenReturn(command());
     updater.updatePageRule(99L, request, 1L);
@@ -159,17 +142,18 @@ class PageRuleUpdaterTest {
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
-    RuleRequest request = new RuleRequest(
-        RuleFunction.DISABLE,
-        "desc",
-        "source",
-        false,
-        List.of(new SourceValue("A", "B")),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        List.of("INV123"),
-        "Source question",
-        List.of("Target quest"));
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.DISABLE,
+            "desc",
+            "source",
+            false,
+            List.of(new SourceValue("A", "B")),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            List.of("INV123"),
+            "Source question",
+            List.of("Target quest"));
     when(enableDisableCreator.update(99L, request, 1L)).thenReturn(command());
 
     updater.updatePageRule(99L, request, 1L);
@@ -190,17 +174,18 @@ class PageRuleUpdaterTest {
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
-    RuleRequest request = new RuleRequest(
-        RuleFunction.DATE_COMPARE,
-        "desc",
-        "source",
-        false,
-        List.of(new SourceValue("A", "B")),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        List.of("INV123"),
-        "Source question",
-        List.of("Target quest"));
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.DATE_COMPARE,
+            "desc",
+            "source",
+            false,
+            List.of(new SourceValue("A", "B")),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            List.of("INV123"),
+            "Source question",
+            List.of("Target quest"));
     when(dateCompareCreator.update(99L, request, 1L)).thenReturn(command());
 
     updater.updatePageRule(99L, request, 1L);
@@ -221,17 +206,18 @@ class PageRuleUpdaterTest {
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
-    RuleRequest request = new RuleRequest(
-        RuleFunction.HIDE,
-        "desc",
-        "source",
-        false,
-        List.of(new SourceValue("A", "B")),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        List.of("INV123"),
-        "Source question",
-        List.of("Target quest"));
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.HIDE,
+            "desc",
+            "source",
+            false,
+            List.of(new SourceValue("A", "B")),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            List.of("INV123"),
+            "Source question",
+            List.of("Target quest"));
     when(hideUnhideCreator.update(99L, request, 1L)).thenReturn(command());
 
     updater.updatePageRule(99L, request, 1L);
@@ -252,17 +238,18 @@ class PageRuleUpdaterTest {
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
-    RuleRequest request = new RuleRequest(
-        RuleFunction.UNHIDE,
-        "desc",
-        "source",
-        false,
-        List.of(new SourceValue("A", "B")),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        List.of("INV123"),
-        "Source question",
-        List.of("Target quest"));
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.UNHIDE,
+            "desc",
+            "source",
+            false,
+            List.of(new SourceValue("A", "B")),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            List.of("INV123"),
+            "Source question",
+            List.of("Target quest"));
     when(hideUnhideCreator.update(99L, request, 1L)).thenReturn(command());
 
     updater.updatePageRule(99L, request, 1L);
@@ -283,17 +270,18 @@ class PageRuleUpdaterTest {
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
-    RuleRequest request = new RuleRequest(
-        RuleFunction.REQUIRE_IF,
-        "desc",
-        "source",
-        false,
-        List.of(new SourceValue("A", "B")),
-        Comparator.EQUAL_TO,
-        TargetType.QUESTION,
-        List.of("INV123"),
-        "Source question",
-        List.of("Target quest"));
+    RuleRequest request =
+        new RuleRequest(
+            RuleFunction.REQUIRE_IF,
+            "desc",
+            "source",
+            false,
+            List.of(new SourceValue("A", "B")),
+            Comparator.EQUAL_TO,
+            TargetType.QUESTION,
+            List.of("INV123"),
+            "Source question",
+            List.of("Target quest"));
     when(requireIfCreator.update(99L, request, 1L)).thenReturn(command());
 
     updater.updatePageRule(99L, request, 1L);
@@ -315,5 +303,4 @@ class PageRuleUpdaterTest {
         1L,
         Instant.now());
   }
-
 }

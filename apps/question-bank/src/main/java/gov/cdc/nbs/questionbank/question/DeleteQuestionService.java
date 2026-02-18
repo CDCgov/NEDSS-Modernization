@@ -1,11 +1,8 @@
 package gov.cdc.nbs.questionbank.question;
 
-import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DeleteQuestionService {
-
-
-}
+public class DeleteQuestionService {}

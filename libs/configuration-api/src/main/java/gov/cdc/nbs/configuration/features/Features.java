@@ -7,14 +7,10 @@ import gov.cdc.nbs.configuration.features.patient.Patient;
 import gov.cdc.nbs.configuration.features.search.Search;
 import gov.cdc.nbs.configuration.features.system.SystemFeatures;
 
-
-
 public record Features(
     Search search,
     Address address,
     PageBuilder pageBuilder,
     Deduplication deduplication,
     Patient patient,
-    SystemFeatures system) {
-
-}
+    SystemFeatures system) {}

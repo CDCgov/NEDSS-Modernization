@@ -2,6 +2,11 @@ package gov.cdc.nbs.questionbank.page.classic.redirect.incoming;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import gov.cdc.nbs.questionbank.entity.QWaTemplate;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,22 +14,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.questionbank.entity.QWaTemplate;
 
 @ExtendWith(MockitoExtension.class)
 class RecentlyCreatedPageFinderTest {
 
-  @Mock
-  private JPAQueryFactory queryFactory;
+  @Mock private JPAQueryFactory queryFactory;
 
-  @InjectMocks
-  private RecentlyCreatedPageFinder finder;
+  @InjectMocks private RecentlyCreatedPageFinder finder;
 
   private static final QWaTemplate pageTable = QWaTemplate.waTemplate;
-
 
   @Test
   @SuppressWarnings("unchecked")
@@ -61,5 +59,4 @@ class RecentlyCreatedPageFinderTest {
     // Then null is returned
     assertThat(id).isEmpty();
   }
-
 }

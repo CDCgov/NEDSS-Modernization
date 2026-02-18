@@ -12,5 +12,4 @@ public record QuestionValidationRequest(
     RDB_COLUMN_NAME,
     DATA_MART_COLUMN_NAME
   }
-
 }

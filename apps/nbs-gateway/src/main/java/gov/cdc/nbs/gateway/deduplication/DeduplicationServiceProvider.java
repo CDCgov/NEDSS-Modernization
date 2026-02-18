@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class DeduplicationServiceProvider {
 
   @Bean
-  DeduplicationService deduplicationService(@Value("${nbs.gateway.deduplication.uri}") final String host)
-      throws URISyntaxException {
+  DeduplicationService deduplicationService(
+      @Value("${nbs.gateway.deduplication.uri}") final String host) throws URISyntaxException {
     URI uri = new URI(host);
     return new DeduplicationService(uri);
   }

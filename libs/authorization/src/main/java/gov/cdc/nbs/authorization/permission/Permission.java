@@ -6,8 +6,4 @@ package gov.cdc.nbs.authorization.permission;
  * @param operation The granted action
  * @param object The resource the action can be preformed on
  */
-public record Permission(String operation, String object) {
-
-
-
-}
+public record Permission(String operation, String object) {}

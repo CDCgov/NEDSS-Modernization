@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 class PatientEthnicityHistoryRecorder {
 
-  private static final String INSERT_SNAPSHOT = """
+  private static final String INSERT_SNAPSHOT =
+      """
           insert into Person_ethnic_group_hist (
               person_uid,
               ethnic_group_cd,
@@ -38,10 +39,10 @@ class PatientEthnicityHistoryRecorder {
               [ethnicity].record_status_time,
               [ethnicity].user_affiliation_txt
           from Person_ethnic_group [ethnicity]
-      
+
               join [Person] [patient] on
                   [patient].person_uid = [ethnicity].person_uid
-      
+
           where [ethnicity].person_uid = :patient
           and [ethnicity].ethnic_group_cd = :group
       """;
@@ -53,7 +54,8 @@ class PatientEthnicityHistoryRecorder {
   }
 
   public void snapshot(final PersonEthnicGroupId identifier) {
-    this.client.sql(INSERT_SNAPSHOT)
+    this.client
+        .sql(INSERT_SNAPSHOT)
         .param("patient", identifier.getPersonUid())
         .param("group", identifier.getEthnicGroupCd())
         .update();

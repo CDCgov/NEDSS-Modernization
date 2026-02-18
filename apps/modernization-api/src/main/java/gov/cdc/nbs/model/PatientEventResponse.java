@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatientEventResponse {
-    private Long patientId;
+  private Long patientId;
 }

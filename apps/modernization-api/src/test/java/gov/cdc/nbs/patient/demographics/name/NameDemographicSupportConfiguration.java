@@ -13,5 +13,4 @@ class NameDemographicSupportConfiguration {
   Available<NameDemographic> activeNameDemographic() {
     return new Available<>();
   }
-
 }

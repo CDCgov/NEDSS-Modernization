@@ -1,4 +1,3 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-public record SearchPageRuleRequest(String searchValue) {
-}
+public record SearchPageRuleRequest(String searchValue) {}

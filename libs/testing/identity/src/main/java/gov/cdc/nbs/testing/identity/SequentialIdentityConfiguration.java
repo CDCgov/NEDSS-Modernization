@@ -10,8 +10,7 @@ class SequentialIdentityConfiguration {
   @Bean
   SequentialIdentityGenerator.Options uniqueIdGeneratorOptions(
       @Value("${testing.id-generation.starting}") final long starting,
-      @Value("${testing.id-generation.suffix}") final String suffix
-  ) {
+      @Value("${testing.id-generation.suffix}") final String suffix) {
     return new SequentialIdentityGenerator.Options(starting, suffix);
   }
 
@@ -19,5 +18,4 @@ class SequentialIdentityConfiguration {
   SequentialIdentityGenerator uniqueIdGenerator(final SequentialIdentityGenerator.Options options) {
     return new SequentialIdentityGenerator(options);
   }
-
 }

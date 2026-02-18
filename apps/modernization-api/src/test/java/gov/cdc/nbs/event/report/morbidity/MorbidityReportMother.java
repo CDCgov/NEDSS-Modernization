@@ -15,19 +15,19 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
 public class MorbidityReportMother {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Act(act_uid, class_cd, mood_cd) values (:identifier, 'OBS','EVN');
-      
+
       insert into Observation(
         observation_uid,
         local_id,
@@ -63,13 +63,15 @@ public class MorbidityReportMother {
       );
       """;
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete from Participation where act_class_cd = 'OBS' and act_uid in (:identifiers);
       delete from Observation where observation_uid in (:identifiers);
       delete from Act where class_cd = 'OBS' and act_uid in (:identifiers);
       """;
 
-  private static final String ASSOCIATE_INVESTIGATION = """
+  private static final String ASSOCIATE_INVESTIGATION =
+      """
       insert into Act_relationship(
           source_act_uid,
           source_class_cd,
@@ -85,7 +87,8 @@ public class MorbidityReportMother {
       );
       """;
 
-  private static final String PARTICIPATE_IN = """
+  private static final String PARTICIPATE_IN =
+      """
       insert into Participation(
           act_uid,
           act_class_cd,
@@ -132,8 +135,7 @@ public class MorbidityReportMother {
       final JdbcClient client,
       final Available<MorbidityReportIdentifier> available,
       final Active<MorbidityReportIdentifier> active,
-      final RevisionMother revisionMother
-  ) {
+      final RevisionMother revisionMother) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.client = client;
@@ -158,13 +160,13 @@ public class MorbidityReportMother {
       final PatientIdentifier patient,
       final ProgramAreaIdentifier programArea,
       final JurisdictionIdentifier jurisdiction,
-      final OrganizationIdentifier organization
-  ) {
+      final OrganizationIdentifier organization) {
     PatientIdentifier revision = revisionMother.revise(patient);
     long identifier = idGenerator.next();
     String localId = idGenerator.nextLocal(MORBIDITY_CLASS_CODE);
 
-    this.client.sql(CREATE)
+    this.client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("local", localId)
         .param("addedOn", settings.createdBy())
@@ -179,8 +181,9 @@ public class MorbidityReportMother {
     forPatient(identifier, revision.id());
     reportedBy(identifier, organization.identifier());
 
-    include(new MorbidityReportIdentifier(identifier, localId, revision.id(), programArea, jurisdiction));
-
+    include(
+        new MorbidityReportIdentifier(
+            identifier, localId, revision.id(), programArea, jurisdiction));
   }
 
   private void include(final MorbidityReportIdentifier identifier) {
@@ -190,13 +193,15 @@ public class MorbidityReportMother {
   }
 
   void unprocessed(final MorbidityReportIdentifier report) {
-    this.client.sql("update Observation set record_status_cd = 'UNPROCESSED' where observation_uid = ?")
+    this.client
+        .sql("update Observation set record_status_cd = 'UNPROCESSED' where observation_uid = ?")
         .param(report.identifier())
         .update();
   }
 
   private void forPatient(final long identifier, final long patient) {
-    this.client.sql(PARTICIPATE_IN)
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", identifier)
         .param("type", SUBJECT_OF_MORBIDITY)
         .param("addedOn", settings.createdOn())
@@ -207,7 +212,8 @@ public class MorbidityReportMother {
   }
 
   private void reportedBy(final long identifier, final long organization) {
-    this.client.sql(PARTICIPATE_IN)
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", identifier)
         .param("type", REPORTER)
         .param("addedOn", settings.createdOn())
@@ -218,7 +224,8 @@ public class MorbidityReportMother {
   }
 
   void reportedBy(final MorbidityReportIdentifier identifier, final ProviderIdentifier provider) {
-    this.client.sql(PARTICIPATE_IN)
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", identifier.identifier())
         .param("type", REPORTER)
         .param("addedOn", settings.createdOn())
@@ -226,11 +233,11 @@ public class MorbidityReportMother {
         .param("subject", provider.identifier())
         .param("subjectClass", PERSON_CLASS)
         .update();
-
   }
 
   void orderedBy(final MorbidityReportIdentifier identifier, final ProviderIdentifier provider) {
-    this.client.sql(PARTICIPATE_IN)
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", identifier.identifier())
         .param("type", ORDERED_BY)
         .param("addedOn", settings.createdOn())
@@ -238,15 +245,14 @@ public class MorbidityReportMother {
         .param("subject", provider.identifier())
         .param("subjectClass", PERSON_CLASS)
         .update();
-
   }
 
   void within(
       final MorbidityReportIdentifier report,
       final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
-    this.client.sql(
+      final JurisdictionIdentifier jurisdiction) {
+    this.client
+        .sql(
             "update Observation set prog_area_cd = ?, jurisdiction_cd = ?, program_jurisdiction_oid = ? where observation_uid = ?")
         .param(programArea.code())
         .param(jurisdiction.code())
@@ -256,47 +262,50 @@ public class MorbidityReportMother {
   }
 
   void withCondition(final MorbidityReportIdentifier report, final String condition) {
-    this.client.sql("update Observation set cd = ? where observation_uid = ?")
+    this.client
+        .sql("update Observation set cd = ? where observation_uid = ?")
         .param(condition)
         .param(report.identifier())
         .update();
   }
 
   void addedOn(final MorbidityReportIdentifier report, final LocalDateTime of) {
-    this.client.sql("update Observation set add_time = ? where observation_uid = ?")
+    this.client
+        .sql("update Observation set add_time = ? where observation_uid = ?")
         .param(of)
         .param(report.identifier())
         .update();
   }
 
   void receivedOn(final MorbidityReportIdentifier report, final LocalDateTime of) {
-    this.client.sql("update Observation set rpt_to_state_time = ? where observation_uid = ?")
+    this.client
+        .sql("update Observation set rpt_to_state_time = ? where observation_uid = ?")
         .param(of)
         .param(report.identifier())
         .update();
   }
 
   void reportedOn(final MorbidityReportIdentifier report, final LocalDate on) {
-    this.client.sql("update Observation set activity_to_time = ? where observation_uid = ?")
+    this.client
+        .sql("update Observation set activity_to_time = ? where observation_uid = ?")
         .param(on)
         .param(report.identifier())
         .update();
   }
 
   void electronic(final MorbidityReportIdentifier report) {
-    this.client.sql("update Observation set electronic_ind = 'Y' where observation_uid = ?")
+    this.client
+        .sql("update Observation set electronic_ind = 'Y' where observation_uid = ?")
         .param(report.identifier())
         .update();
   }
 
   public void createAssociated(
-      final MorbidityReportIdentifier report,
-      final InvestigationIdentifier investigation
-  ) {
-    this.client.sql(ASSOCIATE_INVESTIGATION)
+      final MorbidityReportIdentifier report, final InvestigationIdentifier investigation) {
+    this.client
+        .sql(ASSOCIATE_INVESTIGATION)
         .param("identifier", report.identifier())
         .param("investigation", investigation.identifier())
         .update();
   }
-
 }

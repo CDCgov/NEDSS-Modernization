@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 class ProviderOptionResolver extends SQLBasedOptionResolver {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       with [user]([value], [name], [quickCode]) AS (
           select
               [provider].person_uid,

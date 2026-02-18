@@ -4,18 +4,15 @@ import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleNameRowMapper;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentRequiringReview;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.RowMapper;
 
 class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequiringReview> {
 
-
   public static final String DOCUMENT_TYPE = "Morbidity Report";
-
 
   record Column(
       int patient,
@@ -26,15 +23,12 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
       int condition,
       int local,
       int electronic,
-      DisplayableSimpleNameRowMapper.Columns orderedBy
-  ) {
+      DisplayableSimpleNameRowMapper.Columns orderedBy) {
 
     Column() {
       this(1, 2, 3, 4, 5, 6, 7, 8, new DisplayableSimpleNameRowMapper.Columns(9, 10, 11));
     }
-
   }
-
 
   private final Column columns;
   private final RowMapper<DisplayableSimpleName> providerMapper;
@@ -76,8 +70,6 @@ class MorbidityReportRequiringReviewRowMapper implements RowMapper<DocumentRequi
         null,
         orderingProvider,
         null,
-        condition
-    );
+        condition);
   }
-
 }

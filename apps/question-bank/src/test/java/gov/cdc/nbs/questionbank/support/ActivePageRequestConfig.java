@@ -1,9 +1,9 @@
 package gov.cdc.nbs.questionbank.support;
 
+import gov.cdc.nbs.testing.support.Active;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
-import gov.cdc.nbs.testing.support.Active;
 
 @Configuration
 public class ActivePageRequestConfig {
@@ -13,5 +13,3 @@ public class ActivePageRequestConfig {
     return new Active<PageRequest>();
   }
 }
-
-

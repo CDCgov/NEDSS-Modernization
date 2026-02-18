@@ -37,7 +37,8 @@ public class CodeSetGroupMetadatum {
 
   protected CodeSetGroupMetadatum() {}
 
-  public CodeSetGroupMetadatum(Long id, String codeSetDescTxt, String codeSetShortDescTxt, String codeSetName) {
+  public CodeSetGroupMetadatum(
+      Long id, String codeSetDescTxt, String codeSetShortDescTxt, String codeSetName) {
     this.id = id;
     this.codeSetDescTxt = codeSetDescTxt;
     this.codeSetShortDescTxt = codeSetShortDescTxt;

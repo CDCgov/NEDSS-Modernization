@@ -1,5 +1,9 @@
 package gov.cdc.nbs.questionbank.page.information.change;
 
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
@@ -8,12 +12,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 public class PageInformationChangeSteps {
-
 
   private final Active<PageIdentifier> page;
   private final Active<PageInformationChangeRequest> request;
@@ -21,8 +20,7 @@ public class PageInformationChangeSteps {
   private final Active<ResultActions> response;
 
   PageInformationChangeSteps(
-      final Active<PageIdentifier> page,
-      final PageInformationChangeRequester requester) {
+      final Active<PageIdentifier> page, final PageInformationChangeRequester requester) {
     this.page = page;
     this.requester = requester;
     this.request = new Active<>();
@@ -57,17 +55,14 @@ public class PageInformationChangeSteps {
 
   @When("I change the page information")
   public void i_change_the_page_information() {
-    this.response.active(
-        this.requester.request(
-            this.page.active().id(),
-            this.request.active()));
+    this.response.active(this.requester.request(this.page.active().id(), this.request.active()));
   }
 
   @Then("the page information cannot be changed because {string}")
   public void the_page_information_cannot_be_changed(final String error) throws Exception {
-    this.response.active()
+    this.response
+        .active()
         .andExpect(status().is4xxClientError())
         .andExpect(jsonPath("$.message", equalToIgnoringCase(error)));
   }
-
 }

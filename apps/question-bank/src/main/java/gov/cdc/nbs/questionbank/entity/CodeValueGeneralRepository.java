@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface CodeValueGeneralRepository extends JpaRepository<CodeValueGeneral, CodeValueGeneralId> {
+public interface CodeValueGeneralRepository
+    extends JpaRepository<CodeValueGeneral, CodeValueGeneralId> {
 
-  @Query("SELECT cvg FROM CodeValueGeneral cvg WHERE cvg.id.code=:code AND cvg.id.codeSetNm = 'CODE_SYSTEM'")
+  @Query(
+      "SELECT cvg FROM CodeValueGeneral cvg WHERE cvg.id.code=:code AND cvg.id.codeSetNm = 'CODE_SYSTEM'")
   Optional<CodeValueGeneral> findCodeSystemByCode(@Param("code") String code);
 
   Optional<CodeValueGeneral> findByIdCodeSetNmAndIdCode(String codesetName, String code);

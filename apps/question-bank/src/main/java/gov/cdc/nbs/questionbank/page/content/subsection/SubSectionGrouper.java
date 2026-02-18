@@ -1,14 +1,13 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
-import java.time.Instant;
-import jakarta.persistence.EntityManager;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
-
+import jakarta.persistence.EntityManager;
+import java.time.Instant;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Component
@@ -17,8 +16,8 @@ public class SubSectionGrouper {
   private final EntityManager entityManager;
   private final SubSectionValidator subSectionValidator;
 
-  public SubSectionGrouper(final EntityManager entityManager,
-      final SubSectionValidator subSectionValidator) {
+  public SubSectionGrouper(
+      final EntityManager entityManager, final SubSectionValidator subSectionValidator) {
     this.entityManager = entityManager;
     this.subSectionValidator = subSectionValidator;
   }
@@ -56,14 +55,13 @@ public class SubSectionGrouper {
       }
     }
     if (totalPercentage != 100) {
-      throw new UpdateSubSectionException("The total of batch TableColumnWidth must calculate to 100");
+      throw new UpdateSubSectionException(
+          "The total of batch TableColumnWidth must calculate to 100");
     }
   }
 
   private PageContentCommand.GroupSubsection asCommand(
-      long subsection,
-      GroupSubSectionRequest request,
-      long userId) {
+      long subsection, GroupSubSectionRequest request, long userId) {
     return new PageContentCommand.GroupSubsection(
         subsection,
         request.blockName(),
@@ -73,12 +71,7 @@ public class SubSectionGrouper {
         Instant.now());
   }
 
-  private PageContentCommand.UnGroupSubsection asCommand(
-      Long userId,
-      long subsectionId) {
-    return new PageContentCommand.UnGroupSubsection(
-        subsectionId,
-        userId,
-        Instant.now());
+  private PageContentCommand.UnGroupSubsection asCommand(Long userId, long subsectionId) {
+    return new PageContentCommand.UnGroupSubsection(subsectionId, userId, Instant.now());
   }
 }

@@ -12,8 +12,7 @@ class DefaultsConfiguration {
   @Scope("prototype")
   Defaults defaults(
       @Value("${nbs.ui.settings.defaults.sizing:medium}") final String sizing,
-      @Value("${nbs.ui.settings.defaults.country:840}") final String country
-  ) {
+      @Value("${nbs.ui.settings.defaults.country:840}") final String country) {
     return new Defaults(sizing, country);
   }
 }

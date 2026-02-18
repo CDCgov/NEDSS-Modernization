@@ -13,13 +13,11 @@ public class MessageMappingGuideSteps {
 
   @ParameterType(name = "messageMappingGuide", value = ".*")
   public String messageMappingGuide(final String value) {
-    return resolver.resolve("NBS_MSG_PROFILE", value)
-        .orElse(null);
+    return resolver.resolve("NBS_MSG_PROFILE", value).orElse(null);
   }
 
   @ParameterType(name = "mmg", value = ".*")
   public String mmg(final String value) {
-    return resolver.resolve("NBS_MSG_PROFILE", value)
-        .orElse(null);
+    return resolver.resolve("NBS_MSG_PROFILE", value).orElse(null);
   }
 }

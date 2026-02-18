@@ -1,13 +1,12 @@
 package gov.cdc.nbs.entity.odse;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class NBSEntityTest {
 
@@ -31,25 +30,23 @@ class NBSEntityTest {
             "county",
             "country",
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("F", PostalEntityLocatorParticipation::type)
-                        .returns("BIR", PostalEntityLocatorParticipation::use)
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .returns("city", PostalLocator::city)
-                        .returns("state", PostalLocator::state)
-                        .returns("county", PostalLocator::county)
-                        .returns("country", PostalLocator::country)
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("F", PostalEntityLocatorParticipation::type)
+                                .returns("BIR", PostalEntityLocatorParticipation::use)
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .returns("city", PostalLocator::city)
+                                .returns("state", PostalLocator::state)
+                                .returns("county", PostalLocator::county)
+                                .returns("country", PostalLocator::country)));
   }
 
   @Test
@@ -72,25 +69,23 @@ class NBSEntityTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("F", PostalEntityLocatorParticipation::type)
-                        .returns("BIR", PostalEntityLocatorParticipation::use)
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .returns("city-value", PostalLocator::city)
-                        .returns(null, PostalLocator::state)
-                        .returns(null, PostalLocator::county)
-                        .returns(null, PostalLocator::country)
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("F", PostalEntityLocatorParticipation::type)
+                                .returns("BIR", PostalEntityLocatorParticipation::use)
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .returns("city-value", PostalLocator::city)
+                                .returns(null, PostalLocator::state)
+                                .returns(null, PostalLocator::county)
+                                .returns(null, PostalLocator::country)));
   }
 
   @Test
@@ -113,40 +108,44 @@ class NBSEntityTest {
             "county-value",
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("F", PostalEntityLocatorParticipation::type)
-                        .returns("BIR", PostalEntityLocatorParticipation::use)
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .extracting(PostalEntityLocatorParticipation::status)
-                                .satisfies(StatusAssertions.active("2019-03-03T10:15:30"))
-                        )
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .extracting(PostalEntityLocatorParticipation::recordStatus)
-                                .satisfies(RecordStatusAssertions.active("2019-03-03T10:15:30"))
-                        )
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .extracting(PostalLocator::recordStatus)
-                                .satisfies(RecordStatusAssertions.active("2019-03-03T10:15:30"))
-                        )
-                        .returns(null, PostalLocator::city)
-                        .returns(null, PostalLocator::state)
-                        .returns("county-value", PostalLocator::county)
-                        .returns(null, PostalLocator::country)
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("F", PostalEntityLocatorParticipation::type)
+                                .returns("BIR", PostalEntityLocatorParticipation::use)
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .extracting(PostalEntityLocatorParticipation::status)
+                                            .satisfies(
+                                                StatusAssertions.active("2019-03-03T10:15:30")))
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .extracting(
+                                                PostalEntityLocatorParticipation::recordStatus)
+                                            .satisfies(
+                                                RecordStatusAssertions.active(
+                                                    "2019-03-03T10:15:30")))
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .extracting(PostalLocator::recordStatus)
+                                            .satisfies(
+                                                RecordStatusAssertions.active(
+                                                    "2019-03-03T10:15:30")))
+                                .returns(null, PostalLocator::city)
+                                .returns(null, PostalLocator::state)
+                                .returns("county-value", PostalLocator::county)
+                                .returns(null, PostalLocator::country)));
   }
 
   @Test
@@ -169,25 +168,23 @@ class NBSEntityTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("F", PostalEntityLocatorParticipation::type)
-                        .returns("BIR", PostalEntityLocatorParticipation::use)
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .returns(null, PostalLocator::city)
-                        .returns("state-value", PostalLocator::state)
-                        .returns(null, PostalLocator::county)
-                        .returns(null, PostalLocator::country)
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("F", PostalEntityLocatorParticipation::type)
+                                .returns("BIR", PostalEntityLocatorParticipation::use)
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .returns(null, PostalLocator::city)
+                                .returns("state-value", PostalLocator::state)
+                                .returns(null, PostalLocator::county)
+                                .returns(null, PostalLocator::country)));
   }
 
   @Test
@@ -210,25 +207,23 @@ class NBSEntityTest {
             null,
             "country-value",
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("F", PostalEntityLocatorParticipation::type)
-                        .returns("BIR", PostalEntityLocatorParticipation::use)
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .returns(null, PostalLocator::city)
-                        .returns(null, PostalLocator::state)
-                        .returns(null, PostalLocator::county)
-                        .returns("country-value", PostalLocator::country)
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("F", PostalEntityLocatorParticipation::type)
+                                .returns("BIR", PostalEntityLocatorParticipation::use)
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .returns(null, PostalLocator::city)
+                                .returns(null, PostalLocator::state)
+                                .returns(null, PostalLocator::county)
+                                .returns("country-value", PostalLocator::country)));
   }
 
   @Test
@@ -251,10 +246,8 @@ class NBSEntityTest {
             "county",
             "country",
             131L,
-            LocalDateTime.parse("2019-02-05T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-02-05T10:15:30")),
+        generator);
 
     entity.update(
         new PatientCommand.UpdateBirth(
@@ -269,39 +262,43 @@ class NBSEntityTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2023-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2023-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("F", PostalEntityLocatorParticipation::type)
-                        .returns("BIR", PostalEntityLocatorParticipation::use)
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .as("Participation status made inactive")
-                                .extracting(PostalEntityLocatorParticipation::status)
-                                .satisfies(StatusAssertions.inactive("2023-03-03T10:15:30"))
-                        )
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .as("Participation record status made inactive")
-                                .extracting(PostalEntityLocatorParticipation::recordStatus)
-                                .satisfies(RecordStatusAssertions.inactive("2023-03-03T10:15:30"))
-                        )
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .as("Locator record record status remains unchanged")
-                                .extracting(PostalLocator::recordStatus)
-                                .satisfies(RecordStatusAssertions.active("2019-02-05T10:15:30"))
-                        )
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("F", PostalEntityLocatorParticipation::type)
+                                .returns("BIR", PostalEntityLocatorParticipation::use)
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .as("Participation status made inactive")
+                                            .extracting(PostalEntityLocatorParticipation::status)
+                                            .satisfies(
+                                                StatusAssertions.inactive("2023-03-03T10:15:30")))
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .as("Participation record status made inactive")
+                                            .extracting(
+                                                PostalEntityLocatorParticipation::recordStatus)
+                                            .satisfies(
+                                                RecordStatusAssertions.inactive(
+                                                    "2023-03-03T10:15:30")))
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .as("Locator record record status remains unchanged")
+                                            .extracting(PostalLocator::recordStatus)
+                                            .satisfies(
+                                                RecordStatusAssertions.active(
+                                                    "2019-02-05T10:15:30")))));
   }
 
   //
@@ -324,25 +321,23 @@ class NBSEntityTest {
             "county",
             "country",
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("U", PostalEntityLocatorParticipation::type)
-                        .returns("DTH", PostalEntityLocatorParticipation::use)
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .returns("city", PostalLocator::city)
-                        .returns("state", PostalLocator::state)
-                        .returns("county", PostalLocator::county)
-                        .returns("country", PostalLocator::country)
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("U", PostalEntityLocatorParticipation::type)
+                                .returns("DTH", PostalEntityLocatorParticipation::use)
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .returns("city", PostalLocator::city)
+                                .returns("state", PostalLocator::state)
+                                .returns("county", PostalLocator::county)
+                                .returns("country", PostalLocator::country)));
   }
 
   @Test
@@ -363,25 +358,23 @@ class NBSEntityTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("U", PostalEntityLocatorParticipation::type)
-                        .returns("DTH", PostalEntityLocatorParticipation::use)
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .returns("city-value", PostalLocator::city)
-                        .returns(null, PostalLocator::state)
-                        .returns(null, PostalLocator::county)
-                        .returns(null, PostalLocator::country)
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("U", PostalEntityLocatorParticipation::type)
+                                .returns("DTH", PostalEntityLocatorParticipation::use)
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .returns("city-value", PostalLocator::city)
+                                .returns(null, PostalLocator::state)
+                                .returns(null, PostalLocator::county)
+                                .returns(null, PostalLocator::country)));
   }
 
   @Test
@@ -402,40 +395,44 @@ class NBSEntityTest {
             "county-value",
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("U", PostalEntityLocatorParticipation::type)
-                        .returns("DTH", PostalEntityLocatorParticipation::use)
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .extracting(PostalEntityLocatorParticipation::status)
-                                .satisfies(StatusAssertions.active("2019-03-03T10:15:30"))
-                        )
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .extracting(PostalEntityLocatorParticipation::recordStatus)
-                                .satisfies(RecordStatusAssertions.active("2019-03-03T10:15:30"))
-                        )
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .extracting(PostalLocator::recordStatus)
-                                .satisfies(RecordStatusAssertions.active("2019-03-03T10:15:30"))
-                        )
-                        .returns(null, PostalLocator::city)
-                        .returns(null, PostalLocator::state)
-                        .returns("county-value", PostalLocator::county)
-                        .returns(null, PostalLocator::country)
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("U", PostalEntityLocatorParticipation::type)
+                                .returns("DTH", PostalEntityLocatorParticipation::use)
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .extracting(PostalEntityLocatorParticipation::status)
+                                            .satisfies(
+                                                StatusAssertions.active("2019-03-03T10:15:30")))
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .extracting(
+                                                PostalEntityLocatorParticipation::recordStatus)
+                                            .satisfies(
+                                                RecordStatusAssertions.active(
+                                                    "2019-03-03T10:15:30")))
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .extracting(PostalLocator::recordStatus)
+                                            .satisfies(
+                                                RecordStatusAssertions.active(
+                                                    "2019-03-03T10:15:30")))
+                                .returns(null, PostalLocator::city)
+                                .returns(null, PostalLocator::state)
+                                .returns("county-value", PostalLocator::county)
+                                .returns(null, PostalLocator::country)));
   }
 
   @Test
@@ -456,25 +453,23 @@ class NBSEntityTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("U", PostalEntityLocatorParticipation::type)
-                        .returns("DTH", PostalEntityLocatorParticipation::use)
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .returns(null, PostalLocator::city)
-                        .returns("state-value", PostalLocator::state)
-                        .returns(null, PostalLocator::county)
-                        .returns(null, PostalLocator::country)
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("U", PostalEntityLocatorParticipation::type)
+                                .returns("DTH", PostalEntityLocatorParticipation::use)
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .returns(null, PostalLocator::city)
+                                .returns("state-value", PostalLocator::state)
+                                .returns(null, PostalLocator::county)
+                                .returns(null, PostalLocator::country)));
   }
 
   @Test
@@ -495,25 +490,23 @@ class NBSEntityTest {
             null,
             "country-value",
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("U", PostalEntityLocatorParticipation::type)
-                        .returns("DTH", PostalEntityLocatorParticipation::use)
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .returns(null, PostalLocator::city)
-                        .returns(null, PostalLocator::state)
-                        .returns(null, PostalLocator::county)
-                        .returns("country-value", PostalLocator::country)
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("U", PostalEntityLocatorParticipation::type)
+                                .returns("DTH", PostalEntityLocatorParticipation::use)
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .returns(null, PostalLocator::city)
+                                .returns(null, PostalLocator::state)
+                                .returns(null, PostalLocator::county)
+                                .returns("country-value", PostalLocator::country)));
   }
 
   @Test
@@ -534,10 +527,8 @@ class NBSEntityTest {
             "county",
             "country",
             131L,
-            LocalDateTime.parse("2019-02-05T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-02-05T10:15:30")),
+        generator);
 
     entity.update(
         new PatientCommand.UpdateMortality(
@@ -550,39 +541,43 @@ class NBSEntityTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2023-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2023-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("U", PostalEntityLocatorParticipation::type)
-                        .returns("DTH", PostalEntityLocatorParticipation::use)
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .as("Participation status made inactive")
-                                .extracting(PostalEntityLocatorParticipation::status)
-                                .satisfies(StatusAssertions.inactive("2023-03-03T10:15:30"))
-                        )
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .as("Participation record status made inactive")
-                                .extracting(PostalEntityLocatorParticipation::recordStatus)
-                                .satisfies(RecordStatusAssertions.inactive("2023-03-03T10:15:30"))
-                        )
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .as("Locator record record status remains unchanged")
-                                .extracting(PostalLocator::recordStatus)
-                                .satisfies(RecordStatusAssertions.active("2019-02-05T10:15:30"))
-                        )
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("U", PostalEntityLocatorParticipation::type)
+                                .returns("DTH", PostalEntityLocatorParticipation::use)
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .as("Participation status made inactive")
+                                            .extracting(PostalEntityLocatorParticipation::status)
+                                            .satisfies(
+                                                StatusAssertions.inactive("2023-03-03T10:15:30")))
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .as("Participation record status made inactive")
+                                            .extracting(
+                                                PostalEntityLocatorParticipation::recordStatus)
+                                            .satisfies(
+                                                RecordStatusAssertions.inactive(
+                                                    "2023-03-03T10:15:30")))
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .as("Locator record record status remains unchanged")
+                                            .extracting(PostalLocator::recordStatus)
+                                            .satisfies(
+                                                RecordStatusAssertions.active(
+                                                    "2019-02-05T10:15:30")))));
   }
 
   @Test
@@ -603,10 +598,8 @@ class NBSEntityTest {
             "county",
             "country",
             131L,
-            LocalDateTime.parse("2019-02-05T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2019-02-05T10:15:30")),
+        generator);
 
     entity.update(
         new PatientCommand.UpdateMortality(
@@ -619,38 +612,42 @@ class NBSEntityTest {
             "county",
             "country",
             131L,
-            LocalDateTime.parse("2023-03-03T10:15:30")
-        ),
-        generator
-    );
+            LocalDateTime.parse("2023-03-03T10:15:30")),
+        generator);
 
     assertThat(entity)
         .satisfies(
-            actual -> assertThat(actual.addresses())
-                .satisfiesExactly(
-                    address -> assertThat(address)
-                        .returns("U", PostalEntityLocatorParticipation::type)
-                        .returns("DTH", PostalEntityLocatorParticipation::use)
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .as("Participation status made inactive")
-                                .extracting(PostalEntityLocatorParticipation::status)
-                                .satisfies(StatusAssertions.inactive("2023-03-03T10:15:30"))
-                        )
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .as("Participation record status made inactive")
-                                .extracting(PostalEntityLocatorParticipation::recordStatus)
-                                .satisfies(RecordStatusAssertions.inactive("2023-03-03T10:15:30"))
-                        )
-                        .extracting(PostalEntityLocatorParticipation::locator)
-                        .satisfies(
-                            updated -> assertThat(updated)
-                                .as("Locator record record status remains unchanged")
-                                .extracting(PostalLocator::recordStatus)
-                                .satisfies(RecordStatusAssertions.active("2019-02-05T10:15:30"))
-                        )
-                )
-        );
+            actual ->
+                assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address ->
+                            assertThat(address)
+                                .returns("U", PostalEntityLocatorParticipation::type)
+                                .returns("DTH", PostalEntityLocatorParticipation::use)
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .as("Participation status made inactive")
+                                            .extracting(PostalEntityLocatorParticipation::status)
+                                            .satisfies(
+                                                StatusAssertions.inactive("2023-03-03T10:15:30")))
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .as("Participation record status made inactive")
+                                            .extracting(
+                                                PostalEntityLocatorParticipation::recordStatus)
+                                            .satisfies(
+                                                RecordStatusAssertions.inactive(
+                                                    "2023-03-03T10:15:30")))
+                                .extracting(PostalEntityLocatorParticipation::locator)
+                                .satisfies(
+                                    updated ->
+                                        assertThat(updated)
+                                            .as("Locator record record status remains unchanged")
+                                            .extracting(PostalLocator::recordStatus)
+                                            .satisfies(
+                                                RecordStatusAssertions.active(
+                                                    "2019-02-05T10:15:30")))));
   }
 }

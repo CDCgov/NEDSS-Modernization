@@ -27,34 +27,22 @@ class LayoutComponentResolver {
     } else {
       throw new IllegalStateException("Unresolvable Layout Component Type: " + type);
     }
-
   }
 
   private ComponentNode.Definition asDefinition(final FlattenedComponent component) {
-    return new ComponentNode.Definition(
-        component.name(),
-        component.visible(),
-        component.order());
+    return new ComponentNode.Definition(component.name(), component.visible(), component.order());
   }
 
   private PageNode asPage(final FlattenedComponent component) {
-    return new PageNode(
-        component.identifier(),
-        asDefinition(component)
-
-    );
+    return new PageNode(component.identifier(), asDefinition(component));
   }
 
   private TabNode asTab(final FlattenedComponent component) {
-    return new TabNode(
-        component.identifier(),
-        asDefinition(component));
+    return new TabNode(component.identifier(), asDefinition(component));
   }
 
   private SectionNode asSection(final FlattenedComponent component) {
-    return new SectionNode(
-        component.identifier(),
-        asDefinition(component));
+    return new SectionNode(component.identifier(), asDefinition(component));
   }
 
   private SubSectionNode asSubSection(final FlattenedComponent component) {

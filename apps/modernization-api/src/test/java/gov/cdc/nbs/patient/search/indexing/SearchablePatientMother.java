@@ -7,11 +7,10 @@ import gov.cdc.nbs.search.support.ElasticsearchIndexCleaner;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Component;
 
 @ScenarioScope
 @Component
@@ -28,8 +27,7 @@ public class SearchablePatientMother {
       final SearchablePatientResolver resolver,
       final SearchablePatientIndexer indexer,
       final ElasticsearchIndexCleaner cleaner,
-      final Available<SearchablePatient> available
-  ) {
+      final Available<SearchablePatient> available) {
     this.mother = mother;
     this.resolver = resolver;
     this.indexer = indexer;
@@ -56,18 +54,17 @@ public class SearchablePatientMother {
     this.mother.withMortality(created);
     this.mother.withEthnicity(created);
     this.mother.withEmail(created);
-
   }
 
   public void searchable(final Stream<PatientIdentifier> identifiers) {
 
-    List<SearchablePatient> patients = identifiers
-        .map(identifier -> this.resolver.resolve(identifier.id()))
-        .flatMap(Optional::stream)
-        .toList();
+    List<SearchablePatient> patients =
+        identifiers
+            .map(identifier -> this.resolver.resolve(identifier.id()))
+            .flatMap(Optional::stream)
+            .toList();
 
     this.indexer.index(patients);
     this.available.include(patients);
   }
-
 }

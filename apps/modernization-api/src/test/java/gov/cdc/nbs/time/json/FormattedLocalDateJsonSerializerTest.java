@@ -1,18 +1,17 @@
 package gov.cdc.nbs.time.json;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.time.LocalDate;
 import java.time.Month;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class FormattedLocalDateJsonSerializerTest {
 
@@ -23,16 +22,12 @@ class FormattedLocalDateJsonSerializerTest {
     JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
     SerializerProvider serializerProvider = new ObjectMapper().getSerializerProvider();
 
-    new FormattedLocalDateJsonSerializer().serialize(
-        LocalDate.of(2019, Month.MARCH, 17),
-        jsonGenerator,
-        serializerProvider
-    );
+    new FormattedLocalDateJsonSerializer()
+        .serialize(LocalDate.of(2019, Month.MARCH, 17), jsonGenerator, serializerProvider);
 
     jsonGenerator.flush();
 
     assertThat(jsonWriter.toString()).contains("03/17/2019");
-
   }
 
   @Test
@@ -42,16 +37,10 @@ class FormattedLocalDateJsonSerializerTest {
     JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
     SerializerProvider serializerProvider = new ObjectMapper().getSerializerProvider();
 
-    new FormattedLocalDateJsonSerializer().serialize(
-        null,
-        jsonGenerator,
-        serializerProvider
-    );
+    new FormattedLocalDateJsonSerializer().serialize(null, jsonGenerator, serializerProvider);
 
     jsonGenerator.flush();
 
     assertThat(jsonWriter.toString()).contains("null");
-
   }
-
 }

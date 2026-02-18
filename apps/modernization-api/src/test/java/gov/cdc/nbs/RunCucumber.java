@@ -23,14 +23,13 @@ import org.testcontainers.junit.jupiter.Container;
 @SelectClasspathResource("features")
 @ConfigurationParameter(
     key = Constants.PLUGIN_PROPERTY_NAME,
-    value = "html:build/reports/tests/test/cucumber-report.html"
-)
+    value = "html:build/reports/tests/test/cucumber-report.html")
 @ConfigurationParameter(key = Constants.GLUE_PROPERTY_NAME, value = "gov.cdc.nbs")
-@ConfigurationParameter(key = Constants.FEATURES_PROPERTY_NAME, value = "src/test/resources/features")
+@ConfigurationParameter(
+    key = Constants.FEATURES_PROPERTY_NAME,
+    value = "src/test/resources/features")
 @CucumberContextConfiguration
-@SpringBootTest(
-    classes = Application.class
-)
+@SpringBootTest(classes = Application.class)
 @Import(PatientLocalIdentifierGeneratorTestConfiguration.class)
 @ActiveProfiles({"default", "test", "local"})
 @AutoConfigureMockMvc
@@ -38,8 +37,7 @@ import org.testcontainers.junit.jupiter.Container;
 @EnableClassicMockRestServer
 public class RunCucumber {
 
-  @Container
-  public static final NbsElasticsearchContainer ELASTICSEARCH_CONTAINER;
+  @Container public static final NbsElasticsearchContainer ELASTICSEARCH_CONTAINER;
 
   static {
     // instantiate docker once for all tests and test the instance itself in
@@ -54,7 +52,7 @@ public class RunCucumber {
 
   @DynamicPropertySource
   public static void overrideProps(DynamicPropertyRegistry registry) {
-    registry.add("nbs.elasticsearch.url", () -> "http://" + ELASTICSEARCH_CONTAINER.getHttpHostAddress());
+    registry.add(
+        "nbs.elasticsearch.url", () -> "http://" + ELASTICSEARCH_CONTAINER.getHttpHostAddress());
   }
-
 }

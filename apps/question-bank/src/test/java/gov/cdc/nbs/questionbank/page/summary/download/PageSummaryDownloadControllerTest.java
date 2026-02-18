@@ -2,6 +2,9 @@ package gov.cdc.nbs.questionbank.page.summary.download;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.questionbank.page.PageMetaDataDownloader;
+import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryRequest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,20 +21,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
-import gov.cdc.nbs.questionbank.page.PageMetaDataDownloader;
-import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryRequest;
 
 @ExtendWith(MockitoExtension.class)
 class PageSummaryDownloadControllerTest {
 
-  @Mock
-  private PageSummaryDownloader summaryDownloader;
+  @Mock private PageSummaryDownloader summaryDownloader;
 
-  @Mock
-  private PageMetaDataDownloader metadataDownloader;
+  @Mock private PageMetaDataDownloader metadataDownloader;
 
-  @InjectMocks
-  private PageSummaryDownloadController controller;
+  @InjectMocks private PageSummaryDownloadController controller;
 
   @Test
   void proper_return_type_csv() {
@@ -45,10 +43,12 @@ class PageSummaryDownloadControllerTest {
     ResponseEntity<Resource> response = controller.csv(request, pageable);
 
     // Then the correct media type is returned
-    assertThat(response.getHeaders()).containsEntry("Content-Type", Collections.singletonList("application/csv"));
-    assertThat(response.getHeaders()).containsEntry("Content-Disposition",
-        Collections.singletonList("attachment; filename=\"PageLibrary.csv\""));
-
+    assertThat(response.getHeaders())
+        .containsEntry("Content-Type", Collections.singletonList("application/csv"));
+    assertThat(response.getHeaders())
+        .containsEntry(
+            "Content-Disposition",
+            Collections.singletonList("attachment; filename=\"PageLibrary.csv\""));
   }
 
   @Test
@@ -63,9 +63,12 @@ class PageSummaryDownloadControllerTest {
     ResponseEntity<byte[]> response = controller.pdf(request, pageable);
 
     // Then the correct media type is returned
-    assertThat(response.getHeaders()).containsEntry("Content-Type", Collections.singletonList("application/pdf"));
-    assertThat(response.getHeaders()).containsEntry("Content-Disposition",
-        Collections.singletonList("attachment; filename=\"PageLibrary.pdf\""));
+    assertThat(response.getHeaders())
+        .containsEntry("Content-Type", Collections.singletonList("application/pdf"));
+    assertThat(response.getHeaders())
+        .containsEntry(
+            "Content-Disposition",
+            Collections.singletonList("attachment; filename=\"PageLibrary.pdf\""));
   }
 
   @Test
@@ -79,9 +82,13 @@ class PageSummaryDownloadControllerTest {
 
     // Then the correct media type is returned
     assertThat(response.getHeaders())
-        .containsEntry("Content-Type",
-            Collections.singletonList("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+        .containsEntry(
+            "Content-Type",
+            Collections.singletonList(
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
     assertThat(response.getHeaders())
-        .containsEntry("Content-Disposition", Collections.singletonList("attachment; filename=\"PageMetadata.xlsx\""));
+        .containsEntry(
+            "Content-Disposition",
+            Collections.singletonList("attachment; filename=\"PageMetadata.xlsx\""));
   }
 }

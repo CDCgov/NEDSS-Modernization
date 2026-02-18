@@ -15,22 +15,15 @@ public class GraphQLExceptionHandlingConfigurer {
   private final RequestMatcher matcher;
 
   public GraphQLExceptionHandlingConfigurer(
-      final ObjectMapper mapper,
-      @Value("${spring.graphql.http.path}") final String endpoint
-  ) {
+      final ObjectMapper mapper, @Value("${spring.graphql.http.path}") final String endpoint) {
     this.mapper = mapper;
     this.matcher = PathPatternRequestMatcher.withDefaults().matcher(endpoint);
   }
 
   public void configure(final ExceptionHandlingConfigurer<HttpSecurity> exceptions) {
 
-    GraphQLSecurityExceptionAdapter adapter =
-        new GraphQLSecurityExceptionAdapter(mapper);
+    GraphQLSecurityExceptionAdapter adapter = new GraphQLSecurityExceptionAdapter(mapper);
 
-    exceptions.defaultAuthenticationEntryPointFor(
-        adapter.authenticationEntryPoint(),
-        matcher
-    );
+    exceptions.defaultAuthenticationEntryPointFor(adapter.authenticationEntryPoint(), matcher);
   }
-
 }

@@ -3,11 +3,10 @@ package gov.cdc.nbs.questionbank.page.content.rule;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.rule.exceptions.DeleteRuleException;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
@@ -19,7 +18,6 @@ public class PageRuleDeleter {
     this.entityManager = entityManager;
   }
 
-
   public void delete(Long page, Long ruleId, long userId) {
     WaTemplate template = entityManager.find(WaTemplate.class, page);
     if (template == null) {
@@ -27,6 +25,4 @@ public class PageRuleDeleter {
     }
     template.deleteRule(new PageContentCommand.DeleteRule(ruleId, userId, Instant.now()));
   }
-
-
 }

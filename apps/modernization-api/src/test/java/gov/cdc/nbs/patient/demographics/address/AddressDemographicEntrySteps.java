@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.demographics.address;
 
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
-
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -22,25 +21,25 @@ public class AddressDemographicEntrySteps {
     return () -> new AddressDemographic(LocalDate.now(clock));
   }
 
-  @Given("I am entering the {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
+  @Given(
+      "I am entering the {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
   public void create(
       final String type,
       final String use,
       final String address,
       final String city,
       final String zip,
-      final LocalDate asOf
-  ) {
+      final LocalDate asOf) {
     this.available.selected(
-        current -> current
-            .withAsOf(asOf)
-            .withType(type)
-            .withUse(use)
-            .withAddress(address)
-            .withCity(city)
-            .withZipcode(zip)
-        , initial()
-    );
+        current ->
+            current
+                .withAsOf(asOf)
+                .withType(type)
+                .withUse(use)
+                .withAddress(address)
+                .withCity(city)
+                .withZipcode(zip),
+        initial());
   }
 
   @Given("I enter the address as of {localDate}")
@@ -112,5 +111,4 @@ public class AddressDemographicEntrySteps {
   public void remove(final LocalDate asOf) {
     this.available.removeIf(item -> Objects.equals(item.asOf(), asOf));
   }
-
 }

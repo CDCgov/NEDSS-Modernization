@@ -3,15 +3,13 @@ package gov.cdc.nbs.graphql;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 
 class GraphQLSecurityExceptionAdapter {
 
@@ -22,20 +20,14 @@ class GraphQLSecurityExceptionAdapter {
   }
 
   AuthenticationEntryPoint authenticationEntryPoint() {
-    return (
-        final HttpServletRequest request,
+    return (final HttpServletRequest request,
         final HttpServletResponse response,
-        final AuthenticationException exception
-    ) -> failure(response, "Access denied. %s".formatted(exception.getMessage()));
-
+        final AuthenticationException exception) ->
+        failure(response, "Access denied. %s".formatted(exception.getMessage()));
   }
 
   private void failure(final HttpServletResponse response, final String reason) throws IOException {
-    GraphQLError error = GraphqlErrorBuilder
-        .newError()
-        .message(reason)
-        .build();
-
+    GraphQLError error = GraphqlErrorBuilder.newError().message(reason).build();
 
     response.setContentType(MediaType.APPLICATION_GRAPHQL_RESPONSE_VALUE);
     response.setStatus(HttpStatus.UNAUTHORIZED.value());

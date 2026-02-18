@@ -5,7 +5,6 @@ import gov.cdc.nbs.patient.search.SearchableGender;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.time.FlexibleLocalDateConverter;
-
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,23 +38,27 @@ class SimplePatientSearchCriteriaResolver {
         : TextCriteria.startsWith(value);
   }
 
-
   private String fromIdentifier(final Map<String, String> criteria, final String type) {
-    return maybe(criteria, TYPE).filter(type::equals).flatMap(s -> maybe(criteria, IDENTIFIER))
+    return maybe(criteria, TYPE)
+        .filter(type::equals)
+        .flatMap(s -> maybe(criteria, IDENTIFIER))
         .orElse(null);
   }
 
   Optional<SimplePatientSearchCriteria> resolve(final Map<String, String> criteria) {
     SimplePatientSearchNameCriteria name = resolveName(criteria).orElse(null);
 
-    DateCriteria bornOn = maybe(criteria, NBS_DATE_OF_BIRTH)
-        .map(FlexibleLocalDateConverter::fromString)
-        .map(DateCriteria::equals)
-        .orElse(null);
+    DateCriteria bornOn =
+        maybe(criteria, NBS_DATE_OF_BIRTH)
+            .map(FlexibleLocalDateConverter::fromString)
+            .map(DateCriteria::equals)
+            .orElse(null);
 
-    Option gender = maybe(criteria, NBS_SEX).map(SearchableGender::resolve)
-        .map(found -> new Option(found.value(), found.display()))
-        .orElse(null);
+    Option gender =
+        maybe(criteria, NBS_SEX)
+            .map(SearchableGender::resolve)
+            .map(found -> new Option(found.value(), found.display()))
+            .orElse(null);
 
     String id = maybe(criteria, NBS_ID).orElse(null);
 
@@ -71,10 +74,7 @@ class SimplePatientSearchCriteriaResolver {
     String treatment = fromIdentifier(criteria, TREATMENT_ID);
     String vaccination = fromIdentifier(criteria, VACCINATION_ID);
 
-    return anyExist(name, bornOn, gender, id, morbidity, document, stateCase, abcCase, cityCountyCase,
-        notification, labReport, accessionNumber, investigation, treatment, vaccination)
-        ? Optional.of(
-        new SimplePatientSearchCriteria(
+    return anyExist(
             name,
             bornOn,
             gender,
@@ -89,24 +89,42 @@ class SimplePatientSearchCriteriaResolver {
             accessionNumber,
             investigation,
             treatment,
-            vaccination))
+            vaccination)
+        ? Optional.of(
+            new SimplePatientSearchCriteria(
+                name,
+                bornOn,
+                gender,
+                id,
+                morbidity,
+                document,
+                stateCase,
+                abcCase,
+                cityCountyCase,
+                notification,
+                labReport,
+                accessionNumber,
+                investigation,
+                treatment,
+                vaccination))
         : Optional.empty();
   }
 
-  private Optional<SimplePatientSearchNameCriteria> resolveName(final Map<String, String> criteria) {
-    TextCriteria last = maybe(criteria, NBS_LAST_NAME)
-        .map(SimplePatientSearchCriteriaResolver::resolveCriteria)
-        .orElse(null);
+  private Optional<SimplePatientSearchNameCriteria> resolveName(
+      final Map<String, String> criteria) {
+    TextCriteria last =
+        maybe(criteria, NBS_LAST_NAME)
+            .map(SimplePatientSearchCriteriaResolver::resolveCriteria)
+            .orElse(null);
 
-    TextCriteria first = maybe(criteria, NBS_FIRST_NAME)
-        .map(SimplePatientSearchCriteriaResolver::resolveCriteria)
-        .orElse(null);
-
+    TextCriteria first =
+        maybe(criteria, NBS_FIRST_NAME)
+            .map(SimplePatientSearchCriteriaResolver::resolveCriteria)
+            .orElse(null);
 
     return anyExist(last, first)
         ? Optional.of(new SimplePatientSearchNameCriteria(first, last))
         : Optional.empty();
-
   }
 
   private static boolean anyExist(final Object first, Object... rest) {
@@ -125,8 +143,6 @@ class SimplePatientSearchCriteriaResolver {
   private Optional<String> maybe(final Map<String, String> map, final String key) {
     String value = map.get(key);
 
-    return (value != null && !value.isBlank())
-        ? Optional.of(value)
-        : Optional.empty();
+    return (value != null && !value.isBlank()) ? Optional.of(value) : Optional.empty();
   }
 }

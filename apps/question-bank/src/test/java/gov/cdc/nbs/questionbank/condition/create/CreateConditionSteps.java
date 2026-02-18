@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.condition.create;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import gov.cdc.nbs.questionbank.condition.ConditionController;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionCreateException;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
@@ -15,9 +17,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 
 public class CreateConditionSteps {
 
@@ -39,8 +38,7 @@ public class CreateConditionSteps {
       final ConditionController conditionController,
       final ExceptionHolder exceptionHolder,
       final ConditionMother conditionMother,
-      final ConditionHolder conditionHolder
-  ) {
+      final ConditionHolder conditionHolder) {
     this.userMother = userMother;
     this.conditionController = conditionController;
     this.exceptionHolder = exceptionHolder;
@@ -48,25 +46,18 @@ public class CreateConditionSteps {
     this.conditionHolder = conditionHolder;
   }
 
-
   @Given("ConditionCd already exists")
   public void a_conditioncd_already_exists() {
     try {
       userMother.adminUser();
       ConditionCode val = conditionMother.createCondition();
       conditionHolder.setConditionCode(val);
-      request = new CreateConditionRequest(
-          "T1234567",
-          "Test1234",
-          "Test1234",
-          "Test",
-          'Y',
-          'Y',
-          'Y',
-          'Y',
-          "Test",
-          "Test");
-    } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException | BadRequestException e) {
+      request =
+          new CreateConditionRequest(
+              "T1234567", "Test1234", "Test1234", "Test", 'Y', 'Y', 'Y', 'Y', "Test", "Test");
+    } catch (AccessDeniedException
+        | AuthenticationCredentialsNotFoundException
+        | BadRequestException e) {
       exceptionHolder.setException(e);
     }
   }
@@ -77,18 +68,12 @@ public class CreateConditionSteps {
       userMother.adminUser();
       ConditionCode val = conditionMother.createCondition();
       conditionHolder.setConditionCode(val);
-      request = new CreateConditionRequest(
-          "T1234567",
-          "Test1234",
-          "Sample Text",
-          "Test",
-          'Y',
-          'Y',
-          'Y',
-          'Y',
-          "Test",
-          "Test");
-    } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException | BadRequestException e) {
+      request =
+          new CreateConditionRequest(
+              "T1234567", "Test1234", "Sample Text", "Test", 'Y', 'Y', 'Y', 'Y', "Test", "Test");
+    } catch (AccessDeniedException
+        | AuthenticationCredentialsNotFoundException
+        | BadRequestException e) {
       exceptionHolder.setException(e);
     }
   }
@@ -97,17 +82,9 @@ public class CreateConditionSteps {
   public void i_am_an_admin_user_and_a_condition_does_not_exist() {
     userMother.adminUser();
     conditionHolder.setConditionCode(null);
-    request = new CreateConditionRequest(
-        "A1234567",
-        "Test1234",
-        "Sample",
-        "STD",
-        'Y',
-        'Y',
-        'Y',
-        'Y',
-        "Test",
-        "Test");
+    request =
+        new CreateConditionRequest(
+            "A1234567", "Test1234", "Sample", "STD", 'Y', 'Y', 'Y', 'Y', "Test", "Test");
   }
 
   @When("I send a create condition request")
@@ -115,7 +92,9 @@ public class CreateConditionSteps {
     try {
       response = conditionController.createCondition(request);
       conditionHolder.setCreateConditionResponse(response);
-    } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException | BadRequestException e) {
+    } catch (AccessDeniedException
+        | AuthenticationCredentialsNotFoundException
+        | BadRequestException e) {
       exceptionHolder.setException(e);
     }
   }

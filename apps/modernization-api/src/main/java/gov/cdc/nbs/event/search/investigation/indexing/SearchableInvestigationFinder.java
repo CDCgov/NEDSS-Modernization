@@ -1,15 +1,15 @@
 package gov.cdc.nbs.event.search.investigation.indexing;
 
 import gov.cdc.nbs.event.search.investigation.SearchableInvestigation;
+import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 class SearchableInvestigationFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [investigation].public_health_case_uid,
           act.class_cd,
@@ -105,42 +105,42 @@ class SearchableInvestigationFinder {
 
   SearchableInvestigationFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new SearchableInvestigationRowMapper(
-        new SearchableInvestigationRowMapper.Column(
-            IDENTIFIER_COLUMN,
-            CLASS_CODE_COLUMN,
-            MOOD_COLUMN,
-            PROGRAM_AREA_COLUMN,
-            JURISDICTION_COLUMN,
-            JURISDICTION_NAME_COLUMN,
-            OID_COLUMN,
-            CASE_CLASS_COLUMN,
-            CASE_TYPE_COLUMN,
-            OUTBREAK_COLUMN,
-            CONDITION_NAME_COLUMN,
-            CONDITION_COLUMN,
-            PREGNANCY_STATUS_COLUMN,
-            LOCAL_COLUMN,
-            CREATED_BY_COLUMN,
-            CREATED_ON_COLUMN,
-            UPDATED_BY_COLUMN,
-            UPDATED_ON_COLUMN,
-            REPORTED_ON_COLUMN,
-            STARTED_ON_COLUMN,
-            CLOSED_ON_COLUMN,
-            PROCESSING_COLUMN,
-            STATUS_COLUMN,
-            NOTIFICATION_COLUMN,
-            NOTIFIED_ON_COLUMN,
-            NOTIFICATION_STATUS_COLUMN,
-            INVESTIGATOR_LAST_NAME_COLUMN));
+    this.mapper =
+        new SearchableInvestigationRowMapper(
+            new SearchableInvestigationRowMapper.Column(
+                IDENTIFIER_COLUMN,
+                CLASS_CODE_COLUMN,
+                MOOD_COLUMN,
+                PROGRAM_AREA_COLUMN,
+                JURISDICTION_COLUMN,
+                JURISDICTION_NAME_COLUMN,
+                OID_COLUMN,
+                CASE_CLASS_COLUMN,
+                CASE_TYPE_COLUMN,
+                OUTBREAK_COLUMN,
+                CONDITION_NAME_COLUMN,
+                CONDITION_COLUMN,
+                PREGNANCY_STATUS_COLUMN,
+                LOCAL_COLUMN,
+                CREATED_BY_COLUMN,
+                CREATED_ON_COLUMN,
+                UPDATED_BY_COLUMN,
+                UPDATED_ON_COLUMN,
+                REPORTED_ON_COLUMN,
+                STARTED_ON_COLUMN,
+                CLOSED_ON_COLUMN,
+                PROCESSING_COLUMN,
+                STATUS_COLUMN,
+                NOTIFICATION_COLUMN,
+                NOTIFIED_ON_COLUMN,
+                NOTIFICATION_STATUS_COLUMN,
+                INVESTIGATOR_LAST_NAME_COLUMN));
   }
 
   Optional<SearchableInvestigation> find(final long identifier) {
-    return this.template.query(
-        QUERY,
-        statement -> statement.setLong(IDENTIFIER_PARAMETER, identifier),
-        this.mapper).stream()
+    return this.template
+        .query(QUERY, statement -> statement.setLong(IDENTIFIER_PARAMETER, identifier), this.mapper)
+        .stream()
         .findFirst();
   }
 }

@@ -13,6 +13,7 @@ class OIDCAuthenticationConfigurer implements AuthenticationConfigurer {
 
   @Override
   public HttpSecurity configure(final HttpSecurity http) throws Exception {
-    return http.oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt.jwtAuthenticationConverter(converter)));
+    return http.oauth2ResourceServer(
+        oauth -> oauth.jwt(jwt -> jwt.jwtAuthenticationConverter(converter)));
   }
 }

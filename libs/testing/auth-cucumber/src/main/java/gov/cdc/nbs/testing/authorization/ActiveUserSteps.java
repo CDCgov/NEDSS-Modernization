@@ -3,17 +3,13 @@ package gov.cdc.nbs.testing.authorization;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 
-
 public class ActiveUserSteps {
 
   private final ActiveUserMother mother;
 
   private final ActiveUserParameterResolver resolver;
 
-  ActiveUserSteps(
-      final ActiveUserMother mother,
-      final ActiveUserParameterResolver resolver
-  ) {
+  ActiveUserSteps(final ActiveUserMother mother, final ActiveUserParameterResolver resolver) {
     this.mother = mother;
     this.resolver = resolver;
   }

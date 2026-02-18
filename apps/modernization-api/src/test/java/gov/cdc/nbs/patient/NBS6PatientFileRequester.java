@@ -1,12 +1,12 @@
 package gov.cdc.nbs.patient;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @Component
 class NBS6PatientFileRequester {
@@ -22,15 +22,10 @@ class NBS6PatientFileRequester {
   ResultActions file(final PatientIdentifier patient) {
     try {
       return mvc.perform(
-          authenticated.withSession(
-              get(
-                  "/nbs/api/patient/{patient}/file/redirect",
-                  patient.id()
-              )
-          )
-      );
+          authenticated.withSession(get("/nbs/api/patient/{patient}/file/redirect", patient.id())));
     } catch (Exception e) {
-      throw new IllegalStateException("Unexpected error when requesting a redirect to the NBS6 patient file", e);
+      throw new IllegalStateException(
+          "Unexpected error when requesting a redirect to the NBS6 patient file", e);
     }
   }
 }

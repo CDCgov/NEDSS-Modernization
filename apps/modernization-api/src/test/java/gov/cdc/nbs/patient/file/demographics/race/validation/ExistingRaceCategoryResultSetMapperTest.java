@@ -1,19 +1,19 @@
 package gov.cdc.nbs.patient.file.demographics.race.validation;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Test;
 
 class ExistingRaceCategoryResultSetMapperTest {
 
   @Test
   void should_map_from_result_set() throws SQLException {
 
-    ExistingRaceCategoryResultSetMapper.Column columns = new ExistingRaceCategoryResultSetMapper.Column(3, 5);
+    ExistingRaceCategoryResultSetMapper.Column columns =
+        new ExistingRaceCategoryResultSetMapper.Column(3, 5);
 
     ExistingRaceCategoryResultSetMapper mapper = new ExistingRaceCategoryResultSetMapper(columns);
 

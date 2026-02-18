@@ -1,17 +1,17 @@
 package gov.cdc.nbs.questionbank.page.component.tree;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.*;
+
 import gov.cdc.nbs.questionbank.page.component.ComponentNode;
 import gov.cdc.nbs.questionbank.page.component.ContentNode;
 import gov.cdc.nbs.questionbank.page.component.InputNode;
 import gov.cdc.nbs.questionbank.page.component.LayoutNode;
 import gov.cdc.nbs.questionbank.page.component.PageNode;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.*;
 
 class ComponentResolverTest {
 
@@ -76,9 +76,5 @@ class ComponentResolverTest {
 
     assertThatThrownBy(() -> resolver.resolve(null, flattened))
         .hasMessageContaining("A Component type is required");
-
-
-
   }
-
 }

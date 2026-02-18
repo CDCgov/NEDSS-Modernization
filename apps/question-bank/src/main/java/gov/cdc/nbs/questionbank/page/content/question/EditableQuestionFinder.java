@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
-import org.springframework.stereotype.Component;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.questionbank.entity.QCodeValueGeneral;
@@ -12,6 +11,7 @@ import gov.cdc.nbs.questionbank.page.content.question.exception.FindEditableQues
 import gov.cdc.nbs.questionbank.page.content.question.model.EditableQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
+import org.springframework.stereotype.Component;
 
 @Component
 public class EditableQuestionFinder {
@@ -26,50 +26,57 @@ public class EditableQuestionFinder {
   }
 
   public EditableQuestion find(Long page, Long questionId) {
-    return factory.select(
-        // General fields
-        metadataTable.questionType, // PHIN / LOCAL
-        metadataTable.questionNm, // Unique name
-        metadataTable.questionIdentifier, // Unique Id
-        metadataTable.subGroupNm, // Subgroup Id
-        metadataTable.descTxt, // Description
-        metadataTable.questionLabel, // Label
-        metadataTable.questionToolTip, // Tooltip
-        metadataTable.nbsUiComponentUid, // Display type
-        metadataTable.displayInd, // Visible
-        metadataTable.enableInd, // Enabled
-        metadataTable.requiredInd, // Required
-        metadataTable.adminComment, // Admin comments
-        metadataTable.dataType, // TEXT | NUMERIC | CODED | DATE
-        // Question specific fields
-        metadataTable.defaultValue, // Default value
-        metadataTable.fieldSize, // Field length
-        metadataTable.mask, // Mask
-        metadataTable.futureDateIndCd, // Allow future dates
-        metadataTable.codeSetGroupId, // Valueset
-        metadataTable.minValue, // Min value
-        metadataTable.maxValue, // Max value
-        metadataTable.unitTypeCd, // LITERAL | CODED for related unit type
-        metadataTable.unitValue, // Related units literal or Related units value set
-        // Data mart
-        rdbTable.rptAdminColumnNm, // Default label in report
-        rdbTable.rdbTableNm, // Default RDB table name
-        rdbTable.rdbColumnNm, // RDB Column name
-        rdbTable.userDefinedColumnNm, // Data mart column name
-        // Messaging
-        nndTable.questionIdentifierNnd, // Message Id
-        nndTable.questionLabelNnd, // Message label
-        cvgTable.id.code, // Code system
-        nndTable.questionRequiredNnd, // Required in message
-        nndTable.questionDataTypeNnd, // HL7 data type
-        nndTable.hl7SegmentField, // HL7 segment
-        nndTable.orderGroupId // Group number
-    )
+    return factory
+        .select(
+            // General fields
+            metadataTable.questionType, // PHIN / LOCAL
+            metadataTable.questionNm, // Unique name
+            metadataTable.questionIdentifier, // Unique Id
+            metadataTable.subGroupNm, // Subgroup Id
+            metadataTable.descTxt, // Description
+            metadataTable.questionLabel, // Label
+            metadataTable.questionToolTip, // Tooltip
+            metadataTable.nbsUiComponentUid, // Display type
+            metadataTable.displayInd, // Visible
+            metadataTable.enableInd, // Enabled
+            metadataTable.requiredInd, // Required
+            metadataTable.adminComment, // Admin comments
+            metadataTable.dataType, // TEXT | NUMERIC | CODED | DATE
+            // Question specific fields
+            metadataTable.defaultValue, // Default value
+            metadataTable.fieldSize, // Field length
+            metadataTable.mask, // Mask
+            metadataTable.futureDateIndCd, // Allow future dates
+            metadataTable.codeSetGroupId, // Valueset
+            metadataTable.minValue, // Min value
+            metadataTable.maxValue, // Max value
+            metadataTable.unitTypeCd, // LITERAL | CODED for related unit type
+            metadataTable.unitValue, // Related units literal or Related units value set
+            // Data mart
+            rdbTable.rptAdminColumnNm, // Default label in report
+            rdbTable.rdbTableNm, // Default RDB table name
+            rdbTable.rdbColumnNm, // RDB Column name
+            rdbTable.userDefinedColumnNm, // Data mart column name
+            // Messaging
+            nndTable.questionIdentifierNnd, // Message Id
+            nndTable.questionLabelNnd, // Message label
+            cvgTable.id.code, // Code system
+            nndTable.questionRequiredNnd, // Required in message
+            nndTable.questionDataTypeNnd, // HL7 data type
+            nndTable.hl7SegmentField, // HL7 segment
+            nndTable.orderGroupId // Group number
+            )
         .from(metadataTable)
-        .leftJoin(rdbTable).on(metadataTable.id.eq(rdbTable.waUiMetadataUid.id))
-        .leftJoin(nndTable).on(metadataTable.id.eq(nndTable.waUiMetadataUid.id))
+        .leftJoin(rdbTable)
+        .on(metadataTable.id.eq(rdbTable.waUiMetadataUid.id))
+        .leftJoin(nndTable)
+        .on(metadataTable.id.eq(nndTable.waUiMetadataUid.id))
         .leftJoin(cvgTable)
-        .on(metadataTable.questionOid.eq(cvgTable.codeDescTxt).and(cvgTable.id.codeSetNm.eq("CODE_SYSTEM")))
+        .on(
+            metadataTable
+                .questionOid
+                .eq(cvgTable.codeDescTxt)
+                .and(cvgTable.id.codeSetNm.eq("CODE_SYSTEM")))
         .where(metadataTable.waTemplateUid.id.eq(page).and(metadataTable.id.eq(questionId)))
         .fetch()
         .stream()
@@ -100,8 +107,12 @@ public class EditableQuestionFinder {
         row.get(metadataTable.codeSetGroupId),
         row.get(metadataTable.minValue),
         row.get(metadataTable.maxValue),
-        "LITERAL".equals(row.get(metadataTable.unitTypeCd)) ? row.get(metadataTable.unitValue) : null,
-        "CODED".equals(row.get(metadataTable.unitTypeCd)) ? tryParseLong(row.get(metadataTable.unitValue)) : null,
+        "LITERAL".equals(row.get(metadataTable.unitTypeCd))
+            ? row.get(metadataTable.unitValue)
+            : null,
+        "CODED".equals(row.get(metadataTable.unitTypeCd))
+            ? tryParseLong(row.get(metadataTable.unitValue))
+            : null,
         toReportingInfo(row),
         toMessageInfo(row));
   }
@@ -139,9 +150,9 @@ public class EditableQuestionFinder {
           row.get(nndTable.questionIdentifierNnd),
           row.get(nndTable.questionLabelNnd),
           row.get(cvgTable.id.code),
-          Character.valueOf('R').equals(row.get(nndTable.questionRequiredNnd)), // O or R if required
+          Character.valueOf('R')
+              .equals(row.get(nndTable.questionRequiredNnd)), // O or R if required
           row.get(nndTable.questionDataTypeNnd));
     }
   }
-
 }

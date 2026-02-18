@@ -7,7 +7,6 @@ import gov.cdc.nbs.search.LocalDateWithTimeJsonDeserializer;
 import gov.cdc.nbs.search.LocalDateWithTimeJsonSerializer;
 import gov.cdc.nbs.search.WithoutHyphensJsonSerializer;
 import gov.cdc.nbs.search.WithoutSpecialCharactersJsonSerializer;
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -17,8 +16,10 @@ public record SearchablePatient(
     @JsonProperty("local_id") String local,
     @JsonProperty("short_id") String shortId,
     @JsonProperty("record_status_cd") String status,
-    @JsonProperty("birth_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
-        using = LocalDateWithTimeJsonDeserializer.class) LocalDate birthday,
+    @JsonProperty("birth_time")
+        @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class)
+        @JsonDeserialize(using = LocalDateWithTimeJsonDeserializer.class)
+        LocalDate birthday,
     @JsonProperty("deceased_ind_cd") String deceased,
     @JsonProperty("curr_sex_cd") String gender,
     @JsonProperty("ethnic_group_ind") String ethnicity,
@@ -91,28 +92,24 @@ public record SearchablePatient(
   }
 
   public record Sort(
-      String name,
-      String identification,
-      String email,
-      String phone,
-      String address) {
-  }
-
+      String name, String identification, String email, String phone, String address) {}
 
   public record Name(
       @JsonProperty("nm_use_cd") String use,
-      @JsonProperty("firstNm") @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
-          as = String.class) String first,
+      @JsonProperty("firstNm")
+          @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class)
+          String first,
       @JsonProperty("firstNmSndx") String firstSoundex,
-      @JsonProperty("middleNm") @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
-          as = String.class) String middle,
-      @JsonProperty("lastNm") @JsonSerialize(using = WithoutHyphensJsonSerializer.class, as = String.class) String last,
+      @JsonProperty("middleNm")
+          @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class)
+          String middle,
+      @JsonProperty("lastNm")
+          @JsonSerialize(using = WithoutHyphensJsonSerializer.class, as = String.class)
+          String last,
       @JsonProperty("lastNmSndx") String lastSoundex,
       @JsonProperty("nmPrefix") String prefix,
       @JsonProperty("nmSuffix") String suffix,
-      @JsonProperty("full") String full) {
-  }
-
+      @JsonProperty("full") String full) {}
 
   public record Address(
       @JsonProperty("streetAddr1") String address1,
@@ -125,38 +122,26 @@ public record SearchablePatient(
       @JsonProperty("cntyText") String countyText,
       @JsonProperty("stateText") String stateText,
       @JsonProperty("cntryText") String countryText,
-      @JsonProperty("full") String full) {
-  }
-
+      @JsonProperty("full") String full) {}
 
   public record Phone(
-      @JsonProperty("telephoneNbr") @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
-          as = String.class) String number,
+      @JsonProperty("telephoneNbr")
+          @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class)
+          String number,
       @JsonProperty("extensionTxt") String extension,
       @JsonProperty("typeCd") String type,
-      @JsonProperty("useCd") String use) {
+      @JsonProperty("useCd") String use) {}
 
-  }
-
-
-  public record Email(
-      @JsonProperty("emailAddress") String address) {
-
-  }
-
+  public record Email(@JsonProperty("emailAddress") String address) {}
 
   public record Identification(
       @JsonProperty("typeCd") String type,
-      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
-          as = String.class) @JsonProperty("rootExtensionTxt") String value) {
-  }
-
+      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class)
+          @JsonProperty("rootExtensionTxt")
+          String value) {}
 
   public record Race(
-      @JsonProperty("raceCd") String category,
-      @JsonProperty("raceCategoryCd") String detail) {
-
-  }
+      @JsonProperty("raceCd") String category, @JsonProperty("raceCategoryCd") String detail) {}
 
   @JsonProperty("cd")
   String type() {

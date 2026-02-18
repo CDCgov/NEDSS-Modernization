@@ -6,22 +6,20 @@ import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientEntityLocatorHistoryListener;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Predicate;
-
 
 @Entity
 @Table(name = "Entity_locator_participation")
 @SuppressWarnings(
     //  Bidirectional mappings require knowledge of each other
-    "javaarchitecture:S7027"
-)
+    "javaarchitecture:S7027")
 @EntityListeners(PatientEntityLocatorHistoryListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "class_cd", discriminatorType = DiscriminatorType.STRING)
-public abstract class EntityLocatorParticipation implements Identifiable<EntityLocatorParticipationId> {
+public abstract class EntityLocatorParticipation
+    implements Identifiable<EntityLocatorParticipationId> {
 
   public static <V extends EntityLocatorParticipation> Predicate<V> active() {
     return input -> input.recordStatus().isActive();
@@ -31,8 +29,7 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
     return participation -> Objects.equals(participation.use(), value);
   }
 
-  @EmbeddedId
-  private EntityLocatorParticipationId id;
+  @EmbeddedId private EntityLocatorParticipationId id;
 
   @MapsId("entityUid")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -76,23 +73,18 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
   @Column(name = "as_of_date")
   protected LocalDate asOf;
 
-  @Embedded
-  private Audit audit;
+  @Embedded private Audit audit;
 
-  @Embedded
-  protected RecordStatus recordStatus;
+  @Embedded protected RecordStatus recordStatus;
 
-  @Embedded
-  protected Status status;
+  @Embedded protected Status status;
 
-  protected EntityLocatorParticipation() {
-  }
+  protected EntityLocatorParticipation() {}
 
   protected EntityLocatorParticipation(
       final PatientCommand command,
       final NBSEntity nbs,
-      final EntityLocatorParticipationId identifier
-  ) {
+      final EntityLocatorParticipationId identifier) {
     this.id = identifier;
     this.nbsEntity = nbs;
 
@@ -148,5 +140,4 @@ public abstract class EntityLocatorParticipation implements Identifiable<EntityL
     this.recordStatus.inactivate(command.requestedOn());
     this.status.inactivate(command.requestedOn());
   }
-
 }

@@ -1,9 +1,9 @@
 package gov.cdc.nbs.testing.support;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
 
 class ActiveTest {
 
@@ -11,9 +11,7 @@ class ActiveTest {
   void should_throw_an_exception_when_nothing_is_active() {
     Active<Object> active = new Active<>();
 
-    assertThatThrownBy(active::active)
-        .hasMessageContaining("there is nothing active");
-
+    assertThatThrownBy(active::active).hasMessageContaining("there is nothing active");
   }
 
   @Test
@@ -21,7 +19,6 @@ class ActiveTest {
     Active<Object> active = new Active<>();
 
     assertThat(active.maybeActive()).isNotPresent();
-
   }
 
   @Test
@@ -34,7 +31,6 @@ class ActiveTest {
     active.active(item);
 
     assertThat(active.active()).isSameAs(item);
-
   }
 
   @Test
@@ -46,9 +42,7 @@ class ActiveTest {
 
     active.active(item);
 
-    assertThat(active.maybeActive())
-        .containsSame(item);
-
+    assertThat(active.maybeActive()).containsSame(item);
   }
 
   @Test
@@ -63,7 +57,6 @@ class ActiveTest {
     active.active(item);
 
     assertThat(active.active()).isSameAs(item);
-
   }
 
   @Test
@@ -77,9 +70,7 @@ class ActiveTest {
 
     active.active(item);
 
-    assertThat(active.maybeActive())
-        .containsSame(item);
-
+    assertThat(active.maybeActive()).containsSame(item);
   }
 
   @Test
@@ -90,9 +81,7 @@ class ActiveTest {
     active.active(new Object());
     active.reset();
 
-    assertThatThrownBy(active::active)
-        .hasMessageContaining("there is nothing active");
-
+    assertThatThrownBy(active::active).hasMessageContaining("there is nothing active");
   }
 
   @Test
@@ -104,6 +93,5 @@ class ActiveTest {
     active.reset();
 
     assertThat(active.maybeActive()).isNotPresent();
-
   }
 }

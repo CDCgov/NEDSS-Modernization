@@ -11,53 +11,52 @@ import java.time.temporal.ChronoField;
 import java.util.List;
 
 /**
- * Performs conversions between {@code Instant} and {@code String} to ensure consistency in how {@code Instant}
- * instances are persisted.  The conversion from {@link String} to {@link Instant} is flexible, accepting the following
- * formats;
+ * Performs conversions between {@code Instant} and {@code String} to ensure consistency in how
+ * {@code Instant} instances are persisted. The conversion from {@link String} to {@link Instant} is
+ * flexible, accepting the following formats;
  *
  * <ul>
- *   <li>M/d/uuuu</li>
- *   <li>M/d/uu</li>
- *   <li>uuuu-MM-dd HH:mm:ss</li>
- *   <li>uuuu-MM-dd HH:mm:ss.S</li>
- *   <li>uuuu-MM-dd HH:mm:ss.SS</li>
- *   <li>uuuu-MM-dd HH:mm:ss.SSS</li>
- *   <li>uuuu-MM-ddTHH:mm:ss</li>
- *   <li>uuuu-MM-ddTHH:mm:ss.SSS</li>
+ *   <li>M/d/uuuu
+ *   <li>M/d/uu
+ *   <li>uuuu-MM-dd HH:mm:ss
+ *   <li>uuuu-MM-dd HH:mm:ss.S
+ *   <li>uuuu-MM-dd HH:mm:ss.SS
+ *   <li>uuuu-MM-dd HH:mm:ss.SSS
+ *   <li>uuuu-MM-ddTHH:mm:ss
+ *   <li>uuuu-MM-ddTHH:mm:ss.SSS
  * </ul>
  *
- * The conversion from {@link Instant} to {@link String} will result in the {@code YYYY-MM-DD hh:mm:ss[.nnn]} format acceptable for MS SQL Server.
+ * The conversion from {@link Instant} to {@link String} will result in the {@code YYYY-MM-DD
+ * hh:mm:ss[.nnn]} format acceptable for MS SQL Server.
  */
 public class FlexibleInstantConverter {
 
-  private static final List<DateTimeFormatter> READERS = List.of(
-      new DateTimeFormatterBuilder()
-          .append(DateTimeFormatter.ofPattern("M/d/[uuuu][uu]"))
-          .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-          .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-          .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-          .toFormatter(),
-      new DateTimeFormatterBuilder()
-          .append(DateTimeFormatter.ISO_LOCAL_DATE)
-          .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-          .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-          .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-          .toFormatter(),
-      DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss[.[SSS][SS][S]]"),
-      DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss[.SSS]")
-  );
-  private static final DateTimeFormatter WRITER = DateTimeFormatter
-      .ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-      .withZone(ZoneOffset.UTC);
-
+  private static final List<DateTimeFormatter> READERS =
+      List.of(
+          new DateTimeFormatterBuilder()
+              .append(DateTimeFormatter.ofPattern("M/d/[uuuu][uu]"))
+              .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+              .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+              .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+              .toFormatter(),
+          new DateTimeFormatterBuilder()
+              .append(DateTimeFormatter.ISO_LOCAL_DATE)
+              .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+              .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+              .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+              .toFormatter(),
+          DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss[.[SSS][SS][S]]"),
+          DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss[.SSS]"));
+  private static final DateTimeFormatter WRITER =
+      DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneOffset.UTC);
 
   public static String toString(final Instant instant) {
     return instant == null ? null : WRITER.format(instant);
   }
 
   /**
-   * Converts a {@link LocalDate} into an {@link Instant} at the start of the day in the UTC Timezone.
-   *
+   * Converts a {@link LocalDate} into an {@link Instant} at the start of the day in the UTC
+   * Timezone.
    */
   public static String toString(final LocalDate date) {
     return date == null ? null : WRITER.format(date.atStartOfDay().toInstant(ZoneOffset.UTC));
@@ -78,7 +77,6 @@ public class FlexibleInstantConverter {
         // ignore exception until all formats have been tried
         occurred = e;
       }
-
     }
 
     if (occurred != null) {
@@ -88,6 +86,5 @@ public class FlexibleInstantConverter {
     return null;
   }
 
-  private FlexibleInstantConverter() {
-  }
+  private FlexibleInstantConverter() {}
 }

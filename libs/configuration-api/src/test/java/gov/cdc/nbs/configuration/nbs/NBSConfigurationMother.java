@@ -1,16 +1,16 @@
 package gov.cdc.nbs.configuration.nbs;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.util.Map;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
 class NBSConfigurationMother {
 
-  private static final String INSERT = """
+  private static final String INSERT =
+      """
       merge nbs_configuration using (
           values (:key, :value)
       ) as [configuration] ([key], [value])
@@ -50,13 +50,12 @@ class NBSConfigurationMother {
   }
 
   void set(final String key, final String value) {
-    Map<String, ? extends Serializable> parameters = Map.of(
-        "key", key,
-        "value", value,
-        "user", 9999L
-    );
+    Map<String, ? extends Serializable> parameters =
+        Map.of(
+            "key", key,
+            "value", value,
+            "user", 9999L);
 
     this.template.execute(INSERT, parameters, PreparedStatement::executeUpdate);
-
   }
 }

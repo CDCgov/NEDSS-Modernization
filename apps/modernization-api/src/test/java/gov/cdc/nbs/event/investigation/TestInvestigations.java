@@ -4,7 +4,4 @@ import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TestInvestigations extends Available<Long> {
-
-
-}
+public class TestInvestigations extends Available<Long> {}

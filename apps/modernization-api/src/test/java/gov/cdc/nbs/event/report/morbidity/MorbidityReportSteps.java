@@ -8,11 +8,10 @@ import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class MorbidityReportSteps {
@@ -35,8 +34,7 @@ public class MorbidityReportSteps {
       final Active<ProviderIdentifier> activeProvider,
       final Active<MorbidityReportIdentifier> activeReport,
       final Active<InvestigationIdentifier> activeInvestigation,
-      final MorbidityReportMother reportMother
-  ) {
+      final MorbidityReportMother reportMother) {
     this.activeJurisdiction = activeJurisdiction;
     this.activeProgramArea = activeProgramArea;
     this.activePatient = activePatient;
@@ -50,48 +48,41 @@ public class MorbidityReportSteps {
   @Given("^(?i)the patient has a morbidity report")
   @Given("^(?i)the patient has another morbidity report")
   public void create() {
-    activePatient.maybeActive()
+    activePatient
+        .maybeActive()
         .ifPresent(
-            patient -> reportMother.create(
-                patient,
-                this.activeProgramArea.active(),
-                this.activeJurisdiction.active(),
-                this.activeOrganization.active()
-            )
-        );
+            patient ->
+                reportMother.create(
+                    patient,
+                    this.activeProgramArea.active(),
+                    this.activeJurisdiction.active(),
+                    this.activeOrganization.active()));
   }
 
   @Given("(?i)the patient has a morbidity report reported by {organization}")
   public void create(final OrganizationIdentifier organization) {
-    activePatient.maybeActive()
+    activePatient
+        .maybeActive()
         .ifPresent(
-            patient -> reportMother.create(
-                patient,
-                this.activeProgramArea.active(),
-                this.activeJurisdiction.active(),
-                organization
-            )
-        );
+            patient ->
+                reportMother.create(
+                    patient,
+                    this.activeProgramArea.active(),
+                    this.activeJurisdiction.active(),
+                    organization));
   }
 
   @Given("the morbidity report is for {programArea} within {jurisdiction}")
   public void within(
-      final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
-    this.activeReport.maybeActive().ifPresent(
-        report -> reportMother.within(
-            report,
-            programArea,
-            jurisdiction
-        )
-    );
+      final ProgramAreaIdentifier programArea, final JurisdictionIdentifier jurisdiction) {
+    this.activeReport
+        .maybeActive()
+        .ifPresent(report -> reportMother.within(report, programArea, jurisdiction));
   }
 
   @Given("the morbidity report is electronic")
   public void electronic() {
-    activeReport.maybeActive()
-        .ifPresent(reportMother::electronic);
+    activeReport.maybeActive().ifPresent(reportMother::electronic);
   }
 
   @Given("^(?i)the morbidity report has not been processed")
@@ -101,47 +92,54 @@ public class MorbidityReportSteps {
 
   @Given("the morbidity report is for the condition {condition}")
   public void condition(final String condition) {
-    activeReport.maybeActive()
-        .ifPresent(report -> reportMother.withCondition(report, condition));
+    activeReport.maybeActive().ifPresent(report -> reportMother.withCondition(report, condition));
   }
 
   @Given("the morbidity report was added on {localDate} at {time}")
   public void addedOn(final LocalDate on, final LocalTime at) {
-    activeReport.maybeActive()
+    activeReport
+        .maybeActive()
         .ifPresent(report -> reportMother.addedOn(report, LocalDateTime.of(on, at)));
   }
 
   @Given("the morbidity report was received on {localDate} at {time}")
   public void receivedOn(final LocalDate on, final LocalTime at) {
-    activeReport.maybeActive()
+    activeReport
+        .maybeActive()
         .ifPresent(report -> reportMother.receivedOn(report, LocalDateTime.of(on, at)));
   }
 
   @Given("the morbidity report was reported on {localDate}")
   public void reportedOn(final LocalDate on) {
-    activeReport.maybeActive()
-        .ifPresent(report -> reportMother.reportedOn(report, on));
+    activeReport.maybeActive().ifPresent(report -> reportMother.reportedOn(report, on));
   }
 
   @Given("the morbidity report was ordered by the provider")
   public void orderedBy() {
-    activeReport.maybeActive()
-        .ifPresent(report -> this.activeProvider.maybeActive()
-            .ifPresent(provider -> reportMother.orderedBy(report, provider))
-        );
+    activeReport
+        .maybeActive()
+        .ifPresent(
+            report ->
+                this.activeProvider
+                    .maybeActive()
+                    .ifPresent(provider -> reportMother.orderedBy(report, provider)));
   }
 
   @Given("the morbidity report was reported by the provider")
   public void reportedBy() {
-    activeReport.maybeActive()
-        .ifPresent(report -> this.activeProvider.maybeActive()
-            .ifPresent(provider -> reportMother.reportedBy(report, provider))
-        );
+    activeReport
+        .maybeActive()
+        .ifPresent(
+            report ->
+                this.activeProvider
+                    .maybeActive()
+                    .ifPresent(provider -> reportMother.reportedBy(report, provider)));
   }
 
   @Given("the morbidity report is associated with the investigation")
   public void associatedWith() {
-    activeReport.maybeActive().ifPresent(report -> reportMother.createAssociated(report, activeInvestigation.active()));
+    activeReport
+        .maybeActive()
+        .ifPresent(report -> reportMother.createAssociated(report, activeInvestigation.active()));
   }
-
 }

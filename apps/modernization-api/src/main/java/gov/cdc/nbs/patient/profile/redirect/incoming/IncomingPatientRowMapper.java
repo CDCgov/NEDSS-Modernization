@@ -1,13 +1,12 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 @Component
 class IncomingPatientRowMapper implements RowMapper<Optional<IncomingPatient>> {
@@ -29,7 +28,5 @@ class IncomingPatientRowMapper implements RowMapper<Optional<IncomingPatient>> {
     } catch (NoSuchElementException exception) {
       return Optional.empty();
     }
-
   }
-
 }

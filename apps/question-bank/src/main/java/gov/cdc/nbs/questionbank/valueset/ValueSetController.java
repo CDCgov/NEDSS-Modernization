@@ -9,6 +9,7 @@ import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.response.County;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import io.swagger.v3.oas.annotations.Parameter;
+import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +24,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/valueset")
@@ -84,8 +83,7 @@ class ValueSetController {
 
   @PutMapping("{codeSetNm}")
   Valueset updateValueSet(
-      @PathVariable String codeSetNm,
-      @RequestBody UpdateValueSetRequest request) {
+      @PathVariable String codeSetNm, @RequestBody UpdateValueSetRequest request) {
     return updater.update(codeSetNm, request);
   }
 
@@ -100,5 +98,4 @@ class ValueSetController {
   List<County> findCountyByStateCode(@PathVariable String stateCode) {
     return countyFinder.findByStateCode(stateCode);
   }
-
 }

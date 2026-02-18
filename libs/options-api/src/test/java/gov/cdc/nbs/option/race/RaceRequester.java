@@ -1,10 +1,10 @@
 package gov.cdc.nbs.option.race;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @Component
 class RaceRequester {
@@ -16,8 +16,6 @@ class RaceRequester {
   }
 
   ResultActions request() throws Exception {
-    return mvc.perform(
-        get("/nbs/api/options/races")
-    );
+    return mvc.perform(get("/nbs/api/options/races"));
   }
 }

@@ -14,24 +14,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class ElasticsearchConfiguration {
 
-
   @Bean
-  RestClient elasticsearchRestClient(
-      @Value("${nbs.elasticsearch.url}") final String url
-  ) {
-    return RestClient.builder(HttpHost.create(url))
-        .build();
+  RestClient elasticsearchRestClient(@Value("${nbs.elasticsearch.url}") final String url) {
+    return RestClient.builder(HttpHost.create(url)).build();
   }
 
   @Bean
   ElasticsearchTransport elasticsearchTransport(
-      final RestClient restClient,
-      final ObjectMapper objectMapper
-  ) {
-    return new RestClientTransport(
-        restClient,
-        new JacksonJsonpMapper(objectMapper)
-    );
+      final RestClient restClient, final ObjectMapper objectMapper) {
+    return new RestClientTransport(restClient, new JacksonJsonpMapper(objectMapper));
   }
 
   @Bean

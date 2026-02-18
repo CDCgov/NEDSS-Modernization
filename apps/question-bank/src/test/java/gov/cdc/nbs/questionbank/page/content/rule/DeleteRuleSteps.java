@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.rule;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.content.rule.exceptions.DeleteRuleException;
@@ -11,11 +13,7 @@ import io.cucumber.java.en.Then;
 import jakarta.persistence.EntityManager;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-
 public class DeleteRuleSteps {
-
 
   private final EntityManager entityManager;
 
@@ -28,8 +26,7 @@ public class DeleteRuleSteps {
   DeleteRuleSteps(
       final EntityManager entityManager,
       final Active<PageIdentifier> activePage,
-      final PageRuleRequester requester
-  ) {
+      final PageRuleRequester requester) {
     this.entityManager = entityManager;
     this.activePage = activePage;
     this.requester = requester;
@@ -40,10 +37,10 @@ public class DeleteRuleSteps {
   public void i_send_a_delete_rule_request() {
     PageIdentifier identifier = this.activePage.active();
     WaTemplate page = this.entityManager.find(WaTemplate.class, identifier.id());
-    WaRuleMetadata lastRule = page.getWaRuleMetadata()
-        .stream()
-        .reduce((first, second) -> second)
-        .orElseThrow(() -> new DeleteRuleException("no Page rule found"));
+    WaRuleMetadata lastRule =
+        page.getWaRuleMetadata().stream()
+            .reduce((first, second) -> second)
+            .orElseThrow(() -> new DeleteRuleException("no Page rule found"));
     this.activeDeleted.active(lastRule);
     this.requester.deleteBusinessRule(this.activePage.active().id(), lastRule.getId());
   }

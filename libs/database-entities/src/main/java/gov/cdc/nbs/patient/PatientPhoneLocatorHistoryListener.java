@@ -18,5 +18,4 @@ public class PatientPhoneLocatorHistoryListener {
   void preUpdate(final Identifiable<EntityLocatorParticipationId> updated) {
     this.creator.snapshot(updated.identifier());
   }
-
 }

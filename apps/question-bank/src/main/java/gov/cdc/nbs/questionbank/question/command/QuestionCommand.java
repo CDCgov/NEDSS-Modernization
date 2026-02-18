@@ -1,11 +1,10 @@
 package gov.cdc.nbs.questionbank.question.command;
 
-import java.time.Instant;
-
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.question.request.create.DateMask;
 import gov.cdc.nbs.questionbank.question.request.create.NumericMask;
 import gov.cdc.nbs.questionbank.question.request.create.TextMask;
+import java.time.Instant;
 
 public sealed interface QuestionCommand {
   long userId();
@@ -20,10 +19,8 @@ public sealed interface QuestionCommand {
     MessagingData messagingData();
   }
 
-
   public record Update(
       UpdatableQuestionData questionData,
-
       String defaultValue,
       String mask,
       String fieldLength,
@@ -37,9 +34,7 @@ public sealed interface QuestionCommand {
       MessagingData messagingData,
       long userId,
       Instant requestedOn)
-      implements QuestionCommand {
-  }
-
+      implements QuestionCommand {}
 
   public record AddTextQuestion(
       // Text specific fields
@@ -58,9 +53,8 @@ public sealed interface QuestionCommand {
 
       // Audit info
       long userId,
-      Instant requestedOn) implements CreateQuestionCommand {
-  }
-
+      Instant requestedOn)
+      implements CreateQuestionCommand {}
 
   public record AddDateQuestion(
       // Date specific fields
@@ -78,9 +72,8 @@ public sealed interface QuestionCommand {
 
       // Audit info
       long userId,
-      Instant requestedOn) implements CreateQuestionCommand {
-  }
-
+      Instant requestedOn)
+      implements CreateQuestionCommand {}
 
   public record AddNumericQuestion(
       // Date specific fields
@@ -105,9 +98,8 @@ public sealed interface QuestionCommand {
 
       // Audit info
       long userId,
-      Instant requestedOn) implements CreateQuestionCommand {
-  }
-
+      Instant requestedOn)
+      implements CreateQuestionCommand {}
 
   public record AddCodedQuestion(
       // Coded specific fields
@@ -125,9 +117,8 @@ public sealed interface QuestionCommand {
 
       // Audit info
       long userId,
-      Instant requestedOn) implements CreateQuestionCommand {
-  }
-
+      Instant requestedOn)
+      implements CreateQuestionCommand {}
 
   record QuestionData(
       CodeSet codeSet,
@@ -139,9 +130,7 @@ public sealed interface QuestionCommand {
       String tooltip,
       Long displayControl,
       String adminComments,
-      QuestionOid questionOid) {
-  }
-
+      QuestionOid questionOid) {}
 
   record UpdatableQuestionData(
       boolean questionInUse,
@@ -151,17 +140,13 @@ public sealed interface QuestionCommand {
       String tooltip,
       Long displayControl,
       String adminComments,
-      QuestionOid questionOid) {
-  }
-
+      QuestionOid questionOid) {}
 
   record ReportingData(
       String reportLabel,
       String defaultRdbTableName,
       String rdbColumnName,
-      String dataMartColumnName) {
-  }
-
+      String dataMartColumnName) {}
 
   record MessagingData(
       boolean includedInMessage,
@@ -169,21 +154,10 @@ public sealed interface QuestionCommand {
       String labelInMessage,
       String codeSystem,
       boolean requiredInMessage,
-      String hl7DataType) {
-  }
+      String hl7DataType) {}
 
+  record QuestionOid(String oid, String system) {}
 
-  record QuestionOid(
-      String oid,
-      String system) {
-  }
-
-
-
-  public record SetStatus(
-      boolean active,
-      long userId,
-      Instant requestedOn) implements QuestionCommand {
-  }
-
+  public record SetStatus(boolean active, long userId, Instant requestedOn)
+      implements QuestionCommand {}
 }

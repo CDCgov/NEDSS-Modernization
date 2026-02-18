@@ -1,6 +1,11 @@
 package gov.cdc.nbs.event.search.labreport;
 
 import gov.cdc.nbs.event.search.labreport.model.ResultedTest;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,46 +14,41 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 @Component
 public class ResultedTestFinder {
   // used in the query to retrieve LOINC ResultedTests - NBS: ObservationProcessor.java #697
-  private static List<String> relatedClassCodes = Arrays.asList(
-      "ABXBACT",
-      "BC",
-      "CELLMARK",
-      "CHAL",
-      "CHALSKIN",
-      "CHEM",
-      "COAG",
-      "CYTO",
-      "DRUG",
-      "DRUG/TOX",
-      "HEM",
-      "HEM/BC",
-      "MICRO",
-      "MISC",
-      "PANEL.ABXBACT",
-      "PANEL.BC",
-      "PANEL.CHEM",
-      "PANEL.MICRO",
-      "PANEL.OBS",
-      "PANEL.SERO",
-      "PANEL.TOX",
-      "PANEL.UA",
-      "SERO",
-      "SPEC",
-      "TOX",
-      "UA",
-      "VACCIN");
+  private static List<String> relatedClassCodes =
+      Arrays.asList(
+          "ABXBACT",
+          "BC",
+          "CELLMARK",
+          "CHAL",
+          "CHALSKIN",
+          "CHEM",
+          "COAG",
+          "CYTO",
+          "DRUG",
+          "DRUG/TOX",
+          "HEM",
+          "HEM/BC",
+          "MICRO",
+          "MISC",
+          "PANEL.ABXBACT",
+          "PANEL.BC",
+          "PANEL.CHEM",
+          "PANEL.MICRO",
+          "PANEL.OBS",
+          "PANEL.SERO",
+          "PANEL.TOX",
+          "PANEL.UA",
+          "SERO",
+          "SPEC",
+          "TOX",
+          "UA",
+          "VACCIN");
 
-
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
           SELECT TOP (:maxPageSize) search.resulted_test
       FROM ( SELECT DISTINCT
               lt.lab_test_desc_txt resulted_test
@@ -75,8 +75,7 @@ public class ResultedTestFinder {
   private final NamedParameterJdbcTemplate namedTemplate;
 
   public ResultedTestFinder(
-      JdbcTemplate template,
-      @Value("${nbs.max-page-size: 50}") final Integer maxPageSize) {
+      JdbcTemplate template, @Value("${nbs.max-page-size: 50}") final Integer maxPageSize) {
     this.namedTemplate = new NamedParameterJdbcTemplate(template);
     this.maxPageSize = maxPageSize;
   }
@@ -88,18 +87,25 @@ public class ResultedTestFinder {
    * @return
    */
   public List<ResultedTest> findDistinctResultedTests(String searchText) {
-    SqlParameterSource namedParameters = new MapSqlParameterSource(
-        Map.of("maxPageSize", maxPageSize, "relatedClassCodes", relatedClassCodes, "searchText",
-            "%" + searchText + "%"));
+    SqlParameterSource namedParameters =
+        new MapSqlParameterSource(
+            Map.of(
+                "maxPageSize",
+                maxPageSize,
+                "relatedClassCodes",
+                relatedClassCodes,
+                "searchText",
+                "%" + searchText + "%"));
 
-    return namedTemplate.query(QUERY, namedParameters, new RowMapper<ResultedTest>() {
+    return namedTemplate.query(
+        QUERY,
+        namedParameters,
+        new RowMapper<ResultedTest>() {
 
-      @Override
-      public ResultedTest mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new ResultedTest(rs.getString(1));
-      }
-
-    });
+          @Override
+          public ResultedTest mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new ResultedTest(rs.getString(1));
+          }
+        });
   }
-
 }

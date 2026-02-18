@@ -13,5 +13,4 @@ class IdentificationDemographicSupportConfiguration {
   Available<IdentificationDemographic> availableIdentificationDemographic() {
     return new Available<>();
   }
-
 }

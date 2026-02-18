@@ -2,11 +2,10 @@ package gov.cdc.nbs.patient.search.indexing;
 
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.patient.search.SearchablePatient;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
 class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
 
@@ -29,9 +28,7 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
       int accessionIds,
       int investigationIds,
       int labReportIds,
-      int notificationIds) {
-  }
-
+      int notificationIds) {}
 
   private final Column columns;
 
@@ -60,7 +57,6 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
     String labReportIds = resultSet.getString(columns.labReportIds());
     String notificationIds = resultSet.getString(columns.notificationIds());
     String shortId = resultSet.getString(columns.shortId());
-
 
     return new SearchablePatient(
         identifier,

@@ -11,12 +11,10 @@ public class PatientFileNameDemographicSteps {
   private final PatientFileNameDemographicRequester requester;
   private final Active<ResultActions> response;
 
-
   PatientFileNameDemographicSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientFileNameDemographicRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;
@@ -24,10 +22,6 @@ public class PatientFileNameDemographicSteps {
 
   @When("I view the patient's name demographics")
   public void i_view_the_patient_names() {
-    this.activePatient.maybeActive()
-        .map(this.requester::request)
-        .ifPresent(this.response::active);
+    this.activePatient.maybeActive().map(this.requester::request).ifPresent(this.response::active);
   }
-
-
 }

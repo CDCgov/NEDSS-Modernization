@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.demographic;
 import gov.cdc.nbs.patient.PatientCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -19,7 +18,6 @@ public class PatientAdministrativeInformation {
   public void update(final PatientCommand.UpdateAdministrativeInfo info) {
     this.asOf = info.asOf();
     this.comments = info.comment();
-
   }
 
   public void clear() {
@@ -38,6 +36,4 @@ public class PatientAdministrativeInformation {
   public long signature() {
     return Objects.hash(asOf, comments);
   }
-
-
 }

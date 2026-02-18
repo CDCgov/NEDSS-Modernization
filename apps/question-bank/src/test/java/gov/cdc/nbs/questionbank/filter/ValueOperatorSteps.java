@@ -11,8 +11,9 @@ public class ValueOperatorSteps {
       case "not equal to" -> ValueFilter.Operator.NOT_EQUAL_TO;
       case "starts with" -> ValueFilter.Operator.STARTS_WITH;
       case "contains" -> ValueFilter.Operator.CONTAINS;
-      default -> throw new IllegalStateException("Unexpected Value Operator value: " + value.toLowerCase());
+      default ->
+          throw new IllegalStateException(
+              "Unexpected Value Operator value: " + value.toLowerCase());
     };
   }
-
 }

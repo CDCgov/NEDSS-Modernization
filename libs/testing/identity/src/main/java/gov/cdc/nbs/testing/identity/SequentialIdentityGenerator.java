@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class SequentialIdentityGenerator {
 
-  public record Options(long starting, String suffix){}
+  public record Options(long starting, String suffix) {}
 
   private final AtomicLong next;
   private final String suffix;
@@ -22,5 +22,4 @@ public class SequentialIdentityGenerator {
   public String nextLocal(final String type) {
     return type + next() + this.suffix;
   }
-
 }

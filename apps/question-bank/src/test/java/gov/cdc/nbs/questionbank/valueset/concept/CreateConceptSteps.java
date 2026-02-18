@@ -3,16 +3,17 @@ package gov.cdc.nbs.questionbank.valueset.concept;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Map;
-import org.springframework.test.web.servlet.ResultActions;
+
 import gov.cdc.nbs.questionbank.valueset.model.Concept.Status;
 import gov.cdc.nbs.questionbank.valueset.request.CreateConceptRequest;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Map;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class CreateConceptSteps {
 
@@ -21,8 +22,7 @@ public class CreateConceptSteps {
   private CreateConceptRequest request;
 
   public CreateConceptSteps(
-      final CreateConceptRequester requester,
-      final Active<ResultActions> response) {
+      final CreateConceptRequester requester, final Active<ResultActions> response) {
     this.requester = requester;
     this.response = response;
   }
@@ -39,7 +39,8 @@ public class CreateConceptSteps {
 
   @Then("the concept is created")
   public void the_concept_is_created() throws Exception {
-    response.active()
+    response
+        .active()
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.codeSetName", equalTo("test_value_set")))
         .andExpect(jsonPath("$.localCode", equalTo(request.localCode())))

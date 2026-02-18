@@ -1,20 +1,17 @@
 package gov.cdc.nbs.questionbank.filter.querydsl;
 
+import static gov.cdc.nbs.questionbank.filter.querydsl.LocalDateConverter.asInstant;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.TemporalExpression;
 import gov.cdc.nbs.questionbank.filter.DateFilter;
-
 import java.time.Instant;
 import java.time.LocalDate;
-
-import static gov.cdc.nbs.questionbank.filter.querydsl.LocalDateConverter.asInstant;
 
 class QueryDSLDateFilterApplier {
 
   @SuppressWarnings({"unchecked"})
-  static BooleanExpression apply(
-      final DateFilter filter,
-      final TemporalExpression<?> expression) {
+  static BooleanExpression apply(final DateFilter filter, final TemporalExpression<?> expression) {
 
     if (Instant.class.isAssignableFrom(expression.getType())) {
 
@@ -29,14 +26,10 @@ class QueryDSLDateFilterApplier {
         case LAST_30_DAYS -> instant.after(asInstant(from.minusDays(30L)));
         case MORE_THAN_30_DAYS -> instant.before(asInstant(from.minusDays(30L)));
       };
-
     }
 
     return null;
   }
 
-
-
   private QueryDSLDateFilterApplier() {}
-
 }

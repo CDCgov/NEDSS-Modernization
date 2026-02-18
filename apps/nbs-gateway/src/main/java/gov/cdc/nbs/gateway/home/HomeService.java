@@ -1,7 +1,6 @@
 package gov.cdc.nbs.gateway.home;
 
 import gov.cdc.nbs.gateway.Service;
-
 import java.net.URI;
 
 public class HomeService extends Service {

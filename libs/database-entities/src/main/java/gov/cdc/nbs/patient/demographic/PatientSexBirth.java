@@ -6,7 +6,6 @@ import gov.cdc.nbs.patient.PatientCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -70,7 +69,7 @@ public class PatientSexBirth {
     this.multipleBirth = null;
     this.birthOrder = null;
 
-    if(this.gender == null && this.preferredGender == null && this.additionalGender == null) {
+    if (this.gender == null && this.preferredGender == null && this.additionalGender == null) {
       this.asOf = null;
     }
   }
@@ -82,7 +81,6 @@ public class PatientSexBirth {
     this.genderUnknownReason = this.gender == Gender.U ? changes.unknownReason() : null;
     this.preferredGender = changes.preferred();
     this.additionalGender = changes.additional();
-
   }
 
   public void clearGenderDemographics() {
@@ -91,11 +89,13 @@ public class PatientSexBirth {
     this.preferredGender = null;
     this.additionalGender = null;
 
-    if(this.birthday == null && this.birthGender == null && this.multipleBirth == null && this.birthOrder == null) {
+    if (this.birthday == null
+        && this.birthGender == null
+        && this.multipleBirth == null
+        && this.birthOrder == null) {
       this.asOf = null;
     }
   }
-
 
   public LocalDate asOf() {
     return asOf;
@@ -143,7 +143,6 @@ public class PatientSexBirth {
         additionalGender,
         birthGender,
         multipleBirth,
-        birthOrder
-    );
+        birthOrder);
   }
 }

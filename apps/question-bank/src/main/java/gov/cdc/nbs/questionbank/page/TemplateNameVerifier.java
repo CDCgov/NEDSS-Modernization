@@ -4,5 +4,4 @@ package gov.cdc.nbs.questionbank.page;
 public interface TemplateNameVerifier {
 
   boolean isUnique(final String name);
-
 }

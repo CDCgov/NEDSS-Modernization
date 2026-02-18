@@ -13,22 +13,19 @@ class ClassicSaveAsTemplateLoadRequester {
 
   private final RestTemplate template;
 
-  ClassicSaveAsTemplateLoadRequester(
-      @Qualifier("classicTemplate") final RestTemplate template) {
+  ClassicSaveAsTemplateLoadRequester(@Qualifier("classicTemplate") final RestTemplate template) {
     this.template = template;
   }
 
   void request() {
-    String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("method", "saveAsTemplateLoad")
-        .build()
-        .toUriString();
+    String pageLocation =
+        UriComponentsBuilder.fromPath(LOCATION)
+            .queryParam("method", "saveAsTemplateLoad")
+            .build()
+            .toUriString();
 
-    RequestEntity<Void> viewPageRequest = RequestEntity
-        .get(pageLocation)
-        .build();
+    RequestEntity<Void> viewPageRequest = RequestEntity.get(pageLocation).build();
 
     this.template.exchange(viewPageRequest, Void.class);
-
   }
 }

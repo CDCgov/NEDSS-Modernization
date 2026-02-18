@@ -1,5 +1,7 @@
 package gov.cdc.nbs.redirect.outgoing;
 
+import java.io.IOException;
+import java.net.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
@@ -7,12 +9,9 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
-import java.io.IOException;
-import java.net.URI;
-
 /**
- * A {@link ClientHttpRequestInterceptor} that adds basic logging to any requests made to the classic NBS application to
- * the {@code nbs.classic.outgoing} Logger.
+ * A {@link ClientHttpRequestInterceptor} that adds basic logging to any requests made to the
+ * classic NBS application to the {@code nbs.classic.outgoing} Logger.
  */
 class ClassicOutgoingLoggingHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
@@ -20,10 +19,8 @@ class ClassicOutgoingLoggingHttpRequestInterceptor implements ClientHttpRequestI
 
   @Override
   public ClientHttpResponse intercept(
-      final HttpRequest request,
-      final byte[] body,
-      final ClientHttpRequestExecution execution
-  ) throws IOException {
+      final HttpRequest request, final byte[] body, final ClientHttpRequestExecution execution)
+      throws IOException {
 
     ClientHttpResponse response = execution.execute(request, body);
 
@@ -38,12 +35,9 @@ class ClassicOutgoingLoggingHttpRequestInterceptor implements ClientHttpRequestI
           request.getMethod().name(),
           path,
           response.getStatusCode(),
-          content
-      );
+          content);
     }
 
     return response;
   }
-
-
 }

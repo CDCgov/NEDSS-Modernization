@@ -7,10 +7,9 @@ import gov.cdc.nbs.patient.search.indexing.name.SearchablePatientNameFinder;
 import gov.cdc.nbs.patient.search.indexing.race.SearchablePatientRaceFinder;
 import gov.cdc.nbs.patient.search.indexing.telecom.SearchablePatientTelecom;
 import gov.cdc.nbs.patient.search.indexing.telecom.SearchablePatientTelecomFinder;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 class SearchablePatientResolver {
@@ -44,43 +43,52 @@ class SearchablePatientResolver {
   private SearchablePatient withDemographics(final SearchablePatient patient) {
 
     List<SearchablePatient.Name> names = this.nameFinder.find(patient.identifier());
-    String name = names.stream()
-        .map(SearchablePatient.Name::full)
-        .map(String::toUpperCase)
-        .findFirst().orElse(null);
+    String name =
+        names.stream()
+            .map(SearchablePatient.Name::full)
+            .map(String::toUpperCase)
+            .findFirst()
+            .orElse(null);
 
     List<SearchablePatient.Address> addresses = this.addressFinder.find(patient.identifier());
     List<SearchablePatient.Race> races = this.raceFinder.find(patient.identifier());
-    List<SearchablePatient.Identification> identifications = identificationFinder.find(patient.identifier());
-    String identification = identifications.stream()
-        .map(SearchablePatient.Identification::value)
-        .map(String::toUpperCase)
-        .findFirst()
-        .orElse(null);
+    List<SearchablePatient.Identification> identifications =
+        identificationFinder.find(patient.identifier());
+    String identification =
+        identifications.stream()
+            .map(SearchablePatient.Identification::value)
+            .map(String::toUpperCase)
+            .findFirst()
+            .orElse(null);
 
     SearchablePatientTelecom telecom = this.telecomFinder.find(patient.identifier());
 
     List<SearchablePatient.Phone> phones = telecom.phones();
-    String phone = phones.stream()
-        .map(SearchablePatient.Phone::number)
-        .map(String::toUpperCase)
-        .findFirst()
-        .orElse(null);
+    String phone =
+        phones.stream()
+            .map(SearchablePatient.Phone::number)
+            .map(String::toUpperCase)
+            .findFirst()
+            .orElse(null);
 
     List<SearchablePatient.Email> emails = telecom.emails();
 
-    String email = emails.stream()
-        .map(SearchablePatient.Email::address)
-        .map(String::toUpperCase)
-        .findFirst()
-        .orElse(null);
+    String email =
+        emails.stream()
+            .map(SearchablePatient.Email::address)
+            .map(String::toUpperCase)
+            .findFirst()
+            .orElse(null);
 
-    String address = addresses.stream()
-        .map(SearchablePatient.Address::full)
-        .map(String::toUpperCase)
-        .findFirst().orElse(null);
+    String address =
+        addresses.stream()
+            .map(SearchablePatient.Address::full)
+            .map(String::toUpperCase)
+            .findFirst()
+            .orElse(null);
 
-    SearchablePatient.Sort sort = new SearchablePatient.Sort(name, identification, email, phone, address);
+    SearchablePatient.Sort sort =
+        new SearchablePatient.Sort(name, identification, email, phone, address);
 
     return new SearchablePatient(
         patient.identifier(),

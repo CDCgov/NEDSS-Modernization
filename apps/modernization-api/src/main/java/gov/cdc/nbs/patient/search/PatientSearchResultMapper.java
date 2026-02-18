@@ -1,19 +1,16 @@
 package gov.cdc.nbs.patient.search;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientSearchResultMapper implements RowMapper<PatientSearchResult> {
 
-  record Columns(int patient, int local, int birthday, int gender, int status) {
-  }
-
+  record Columns(int patient, int local, int birthday, int gender, int status) {}
 
   private final Clock clock;
   private final Columns columns;
@@ -36,30 +33,18 @@ class PatientSearchResultMapper implements RowMapper<PatientSearchResult> {
     String gender = resultSet.getString(columns.gender());
     String status = resultSet.getString(columns.status());
 
-    return new PatientSearchResult(
-        patient,
-        local,
-        birthday,
-        age,
-        gender,
-        status
-    );
+    return new PatientSearchResult(patient, local, birthday, age, gender, status);
   }
 
   private LocalDate resolveBirthdate(final ResultSet resultSet) throws SQLException {
     Timestamp value = resultSet.getTimestamp(columns.birthday());
 
-    return value == null
-        ? null
-        : value.toLocalDateTime().toLocalDate();
-
+    return value == null ? null : value.toLocalDateTime().toLocalDate();
   }
 
   private Integer resolveAge(final LocalDate birthday) {
     LocalDate now = LocalDate.now(this.clock);
 
-    return birthday == null
-        ? null
-        : (int) ChronoUnit.YEARS.between(birthday, now);
+    return birthday == null ? null : (int) ChronoUnit.YEARS.between(birthday, now);
   }
 }

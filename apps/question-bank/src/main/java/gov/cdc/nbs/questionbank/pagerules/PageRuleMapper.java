@@ -1,33 +1,37 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 @Component
 class PageRuleMapper implements RowMapper<Rule> {
-  record Column(int ruleId, int template, int ruleFunction, int description, int sourceQuestion, int ruleExpression,
-                int sourceValues, int comparator, int targetType, int targetQuestions, int sourceQuestionLabel,
-                int sourceQuestionCodeSet, int targetQuestionsLabels, int targetQuestionsTypes, int totalCount) {
-
-  }
-
+  record Column(
+      int ruleId,
+      int template,
+      int ruleFunction,
+      int description,
+      int sourceQuestion,
+      int ruleExpression,
+      int sourceValues,
+      int comparator,
+      int targetType,
+      int targetQuestions,
+      int sourceQuestionLabel,
+      int sourceQuestionCodeSet,
+      int targetQuestionsLabels,
+      int targetQuestionsTypes,
+      int totalCount) {}
 
   private final Column columns;
 
-
   PageRuleMapper() {
-    this.columns = new PageRuleMapper.Column(1, 2, 3, 4,
-        5, 6, 7, 8, 9, 10,
-        11, 12, 13, 14, 15);
+    this.columns = new PageRuleMapper.Column(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
   }
 
   private Long totalRowsCount = 0l;
@@ -50,26 +54,41 @@ class PageRuleMapper implements RowMapper<Rule> {
     Rule.Comparator comparatorEnum = getComparatorEnum(comparator);
     Rule.TargetType targetTypeEnum = getTargetTypeEnum(targetType);
     Rule.SourceQuestion sourceQuestionInfo =
-        new Rule.SourceQuestion(sourceQuestionIdentifier, sourceQuestionLabel, sourceQuestionCodeSet);
+        new Rule.SourceQuestion(
+            sourceQuestionIdentifier, sourceQuestionLabel, sourceQuestionCodeSet);
     boolean anySource = ruleExpression.contains("(  )");
     List<String> sourceValuesList = null;
-    if (sourceValues != null)
-      sourceValuesList = Arrays.asList(sourceValues.split(","));
+    if (sourceValues != null) sourceValuesList = Arrays.asList(sourceValues.split(","));
 
-    List<Rule.Target> targets = getTargets(rs.getString(columns.targetQuestions()),
-        rs.getString(columns.targetQuestionsLabels()), rs.getString(columns.targetQuestionsTypes()));
+    List<Rule.Target> targets =
+        getTargets(
+            rs.getString(columns.targetQuestions()),
+            rs.getString(columns.targetQuestionsLabels()),
+            rs.getString(columns.targetQuestionsTypes()));
 
-    return new Rule(ruleId, template, functionEnum, description, sourceQuestionInfo, anySource,
-        sourceValuesList, comparatorEnum, targetTypeEnum, targets);
+    return new Rule(
+        ruleId,
+        template,
+        functionEnum,
+        description,
+        sourceQuestionInfo,
+        anySource,
+        sourceValuesList,
+        comparatorEnum,
+        targetTypeEnum,
+        targets);
   }
 
   private List<Rule.Target> getTargets(String identifiers, String labels, String types) {
-    List<String> targetQuestions = identifiers != null ? Arrays.stream(identifiers.split(",")).toList() : null;
-    List<String> targetQuestionsLabels = labels != null ? Arrays.stream(labels.split("##")).toList() : null;
-    List<String> targetQuestionsTypes = types != null ? Arrays.stream(types.split(",")).toList() : null;
+    List<String> targetQuestions =
+        identifiers != null ? Arrays.stream(identifiers.split(",")).toList() : null;
+    List<String> targetQuestionsLabels =
+        labels != null ? Arrays.stream(labels.split("##")).toList() : null;
+    List<String> targetQuestionsTypes =
+        types != null ? Arrays.stream(types.split(",")).toList() : null;
 
     List<Rule.Target> targets = new ArrayList<>();
-    if (targetQuestions != null && targetQuestionsTypes!=null) {
+    if (targetQuestions != null && targetQuestionsTypes != null) {
       int index = 0;
 
       while (index < targetQuestions.size()) {
@@ -88,30 +107,35 @@ class PageRuleMapper implements RowMapper<Rule> {
     return targets;
   }
 
-
   public Long getTotalRowsCount() {
     return totalRowsCount;
   }
 
   private Rule.RuleFunction getFunctionEnum(String value) {
     Optional<Rule.RuleFunction> functionEnum =
-        Arrays.stream(Rule.RuleFunction.values()).filter(f -> f.getValue().equalsIgnoreCase(value)).findFirst();
+        Arrays.stream(Rule.RuleFunction.values())
+            .filter(f -> f.getValue().equalsIgnoreCase(value))
+            .findFirst();
     return functionEnum.isPresent() ? functionEnum.get() : null;
   }
 
   private Rule.TargetType getTargetTypeEnum(String value) {
     Optional<Rule.TargetType> targetTypeEnum =
-        Arrays.stream(Rule.TargetType.values()).filter(f -> f.toString().equalsIgnoreCase(value)).findFirst();
+        Arrays.stream(Rule.TargetType.values())
+            .filter(f -> f.toString().equalsIgnoreCase(value))
+            .findFirst();
     return targetTypeEnum.isPresent() ? targetTypeEnum.get() : null;
   }
 
   private Rule.Comparator getComparatorEnum(String value) {
     Optional<Rule.Comparator> comparatorEnum =
-        Arrays.stream(Rule.Comparator.values()).filter(f -> f.getValue().equalsIgnoreCase(value)).findFirst();
+        Arrays.stream(Rule.Comparator.values())
+            .filter(f -> f.getValue().equalsIgnoreCase(value))
+            .findFirst();
     return comparatorEnum.isPresent() ? comparatorEnum.get() : null;
   }
 
-  private   String getComponentType( String type) {
+  private String getComponentType(String type) {
     return switch (Integer.parseInt(type)) {
       case 1003 -> "Hyperlink";
       case 1011 -> "Subheading (for display only)";

@@ -16,8 +16,7 @@ public class CodedResultedTestSteps {
       final Active<LabReportIdentifier> activeLab,
       final Active<MorbidityReportIdentifier> activeMorbidity,
       final CodedResultedTestMother testMother,
-      final MorbidityLabReportMother reportMother
-  ) {
+      final MorbidityLabReportMother reportMother) {
     this.activeLab = activeLab;
     this.activeMorbidity = activeMorbidity;
     this.testMother = testMother;
@@ -27,17 +26,14 @@ public class CodedResultedTestSteps {
   @Given("the laboratory report has a(n) {labTest} test with a coded result of {labResult}")
   @Given("the lab report has a(n) {labTest} test with a coded result of {labResult}")
   public void createForLab(final String test, final String result) {
-    this.activeLab.maybeActive().ifPresent(
-        found -> testMother.create(found, test, result)
-    );
+    this.activeLab.maybeActive().ifPresent(found -> testMother.create(found, test, result));
   }
 
   @Given("the morbidity report has a(n) {labTest} test with a coded result of {labResult}")
   public void createForMorbidity(final String test, final String result) {
-    this.activeMorbidity.maybeActive()
+    this.activeMorbidity
+        .maybeActive()
         .map(reportMother::create)
-        .ifPresent(
-            found -> testMother.create(found, test, result)
-        );
+        .ifPresent(found -> testMother.create(found, test, result));
   }
 }

@@ -1,18 +1,19 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 
 @Component
 public class DateCompareCommandCreator {
   // function name
   // source Identifier
   // source Identifier
-  private static final String JAVASCRIPT = """
+  private static final String JAVASCRIPT =
+      """
       function %s {
         var i = 0;
         var errorElts = new Array();
@@ -36,7 +37,8 @@ public class DateCompareCommandCreator {
   // target text all or first?
   // comparator
   // target identifier
-  private static final String JAVASCRIPT_TARGETS = """
+  private static final String JAVASCRIPT_TARGETS =
+      """
       targetStr =getElementByIdOrByName("%s") == null ? "" :getElementByIdOrByName("%s").value;
       if (targetStr!="") {
          targetDate = targetStr.substring(6,10) + targetStr.substring(0,2) + targetStr.substring(3,5);
@@ -53,25 +55,28 @@ public class DateCompareCommandCreator {
         }
            """;
 
-  private static final String JAVASCRIPT_CLOSE = " return {elements : errorElts, labels : errorMsgs}\n}\n";
+  private static final String JAVASCRIPT_CLOSE =
+      " return {elements : errorElts, labels : errorMsgs}\n}\n";
 
-  public PageContentCommand.UpdateRuleCommand update(long currentId, RuleRequest request, long userId) {
+  public PageContentCommand.UpdateRuleCommand update(
+      long currentId, RuleRequest request, long userId) {
     String functionName = createJavascriptName(request.sourceIdentifier(), currentId);
-    String errorMessage = createErrorMessage(
-        request.sourceText(),
-        request.targetValueText(),
-        request.comparator().getValue());
-    String javascript = createJavascript(
-        functionName,
-        request.sourceIdentifier(),
-        request.sourceText(),
-        request.targetIdentifiers(),
-        request.targetValueText(),
-        request.comparator().getValue());
-    String expression = createExpression(
-        request.sourceIdentifier(),
-        request.targetIdentifiers(),
-        request.comparator().getValue());
+    String errorMessage =
+        createErrorMessage(
+            request.sourceText(), request.targetValueText(), request.comparator().getValue());
+    String javascript =
+        createJavascript(
+            functionName,
+            request.sourceIdentifier(),
+            request.sourceText(),
+            request.targetIdentifiers(),
+            request.targetValueText(),
+            request.comparator().getValue());
+    String expression =
+        createExpression(
+            request.sourceIdentifier(),
+            request.targetIdentifiers(),
+            request.comparator().getValue());
 
     return new PageContentCommand.UpdateRuleCommand(
         null,
@@ -88,23 +93,25 @@ public class DateCompareCommandCreator {
         Instant.now());
   }
 
-  public PageContentCommand.AddRuleCommand create(long nextAvailableId, RuleRequest request, long page, long userId) {
+  public PageContentCommand.AddRuleCommand create(
+      long nextAvailableId, RuleRequest request, long page, long userId) {
     String functionName = createJavascriptName(request.sourceIdentifier(), nextAvailableId);
-    String errorMessage = createErrorMessage(
-        request.sourceText(),
-        request.targetValueText(),
-        request.comparator().getValue());
-    String javascript = createJavascript(
-        functionName,
-        request.sourceIdentifier(),
-        request.sourceText(),
-        request.targetIdentifiers(),
-        request.targetValueText(),
-        request.comparator().getValue());
-    String expression = createExpression(
-        request.sourceIdentifier(),
-        request.targetIdentifiers(),
-        request.comparator().getValue());
+    String errorMessage =
+        createErrorMessage(
+            request.sourceText(), request.targetValueText(), request.comparator().getValue());
+    String javascript =
+        createJavascript(
+            functionName,
+            request.sourceIdentifier(),
+            request.sourceText(),
+            request.targetIdentifiers(),
+            request.targetValueText(),
+            request.comparator().getValue());
+    String expression =
+        createExpression(
+            request.sourceIdentifier(),
+            request.targetIdentifiers(),
+            request.comparator().getValue());
 
     return new PageContentCommand.AddRuleCommand(
         nextAvailableId,
@@ -131,24 +138,22 @@ public class DateCompareCommandCreator {
       List<String> targetIdentifiers,
       List<String> targetLabels,
       String comparator) {
-    String first = JAVASCRIPT.formatted(
-        functionName,
-        sourceIdentifier,
-        sourceIdentifier);
+    String first = JAVASCRIPT.formatted(functionName, sourceIdentifier, sourceIdentifier);
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < targetIdentifiers.size(); i++) {
       String targetIdentifier = targetIdentifiers.get(i);
       String targetLabel = targetLabels.get(i);
-      sb.append(JAVASCRIPT_TARGETS.formatted(
-          targetIdentifier,
-          targetIdentifier,
-          comparator,
-          sourceIdentifier,
-          targetIdentifier,
-          sourceLabel,
-          targetLabel,
-          comparator,
-          targetIdentifier));
+      sb.append(
+          JAVASCRIPT_TARGETS.formatted(
+              targetIdentifier,
+              targetIdentifier,
+              comparator,
+              sourceIdentifier,
+              targetIdentifier,
+              sourceLabel,
+              targetLabel,
+              comparator,
+              targetIdentifier));
     }
 
     return first + sb + JAVASCRIPT_CLOSE;
@@ -158,7 +163,8 @@ public class DateCompareCommandCreator {
     return "ruleDComp" + sourceIdentifier + ruleId + "()";
   }
 
-  String createExpression(String sourceIdentifier, List<String> targetIdentifiers, String comparator) {
+  String createExpression(
+      String sourceIdentifier, List<String> targetIdentifiers, String comparator) {
     String targetIdentifier = String.join(" , ", targetIdentifiers);
     return "%s %s  ^ DT ( %s )".formatted(sourceIdentifier, comparator, targetIdentifier);
   }
@@ -168,5 +174,4 @@ public class DateCompareCommandCreator {
         .map(tl -> "%s  must be %s  %s".formatted(sourceLabel, comparator, tl))
         .collect(Collectors.joining(", "));
   }
-
 }

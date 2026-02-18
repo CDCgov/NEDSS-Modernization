@@ -11,11 +11,8 @@ class SearchablePatientConfiguration {
   @Bean
   SimpleIndex patientIndex(
       @Value("${nbs.search.patient.index.name}") final String index,
-      @Value("${nbs.search.patient.index.mapping}") final String location
-  ) {
+      @Value("${nbs.search.patient.index.mapping}") final String location) {
 
     return new SimpleIndex(index, location);
   }
-
-
 }

@@ -11,5 +11,4 @@ class ConceptOptionModuleConfiguration {
   ConceptOptionFinder conceptFinder(final JdbcClient client) {
     return new CodeValueGeneralConceptOptionFinder(client);
   }
-
 }

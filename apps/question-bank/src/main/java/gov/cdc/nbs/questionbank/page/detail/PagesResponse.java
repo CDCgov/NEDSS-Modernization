@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -21,14 +20,7 @@ public record PagesResponse(
       String description,
       long root,
       Collection<BusinessRule> rules) {
-    this(
-        id,
-        name,
-        status,
-        description,
-        root,
-        List.of(),
-        rules);
+    this(id, name, status, description, root, List.of(), rules);
   }
 
   public record PagesTab(
@@ -36,18 +28,15 @@ public record PagesResponse(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) int order,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean visible,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Collection<PagesSection> sections) {
-  }
-
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Collection<PagesSection> sections) {}
 
   public record PagesSection(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long id,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) int order,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean visible,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Collection<PagesSubSection> subSections) {
-  }
-
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+          Collection<PagesSubSection> subSections) {}
 
   public record PagesSubSection(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long id,
@@ -58,9 +47,7 @@ public record PagesResponse(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean isGroupable,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String questionIdentifier,
       String blockName,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Collection<PagesQuestion> questions) {
-  }
-
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Collection<PagesQuestion> questions) {}
 
   public record PagesQuestion(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long id,
@@ -98,9 +85,7 @@ public record PagesResponse(
       Integer batchWidth,
       String componentBehavior,
       String componentName,
-      String classCode) {
-  }
-
+      String classCode) {}
 
   public record BusinessRule(
       long id,
@@ -109,6 +94,5 @@ public record PagesResponse(
       String values,
       String function,
       String sourceField,
-      String targetField) {
-  }
+      String targetField) {}
 }

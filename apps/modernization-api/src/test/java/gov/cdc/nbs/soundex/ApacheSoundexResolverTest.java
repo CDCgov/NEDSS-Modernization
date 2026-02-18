@@ -1,11 +1,11 @@
 package gov.cdc.nbs.soundex;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 
 class ApacheSoundexResolverTest {
 
@@ -27,7 +27,6 @@ class ApacheSoundexResolverTest {
 
   @Test
   void should_fail_resolution_when_value_contains_unmapped_characters() {
-    assertThatCode(() -> new ApacheSoundexResolver().resolve("Šimková"))
-        .doesNotThrowAnyException();
+    assertThatCode(() -> new ApacheSoundexResolver().resolve("Šimková")).doesNotThrowAnyException();
   }
 }

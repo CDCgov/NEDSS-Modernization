@@ -1,18 +1,13 @@
 package gov.cdc.nbs.search.criteria.text;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.Optional;
-
 import static gov.cdc.nbs.search.AdjustStrings.maybeWithoutHyphens;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record TextCriteria(
-    String equals,
-    String not,
-    String startsWith,
-    String contains,
-    String soundsLike) {
+    String equals, String not, String startsWith, String contains, String soundsLike) {
 
   public static TextCriteria equals(final String value) {
     return new TextCriteria(value, null, null, null, null);
@@ -53,5 +48,4 @@ public record TextCriteria(
   public Optional<String> maybeSoundsLike() {
     return maybeWithoutHyphens(soundsLike);
   }
-
 }

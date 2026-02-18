@@ -3,15 +3,11 @@ package gov.cdc.nbs.search;
 public class WildCards {
 
   public static String startsWith(final String value) {
-    return isValid(value)
-        ? escape(value.toLowerCase().trim()) + "*"
-        : null;
+    return isValid(value) ? escape(value.toLowerCase().trim()) + "*" : null;
   }
 
   public static String contains(final String value) {
-    return isValid(value)
-        ? "*" + wrapAlphaNumericTokensInAsteriskTokenAsterisk(value) + "*"
-        : null;
+    return isValid(value) ? "*" + wrapAlphaNumericTokensInAsteriskTokenAsterisk(value) + "*" : null;
   }
 
   private static boolean isValid(final String value) {

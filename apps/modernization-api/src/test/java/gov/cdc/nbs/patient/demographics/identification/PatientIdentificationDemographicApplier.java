@@ -2,10 +2,9 @@ package gov.cdc.nbs.patient.demographics.identification;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
+import java.time.LocalDate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Component
 public class PatientIdentificationDemographicApplier {
@@ -18,24 +17,14 @@ public class PatientIdentificationDemographicApplier {
 
   public void withIdentification(final PatientIdentifier identifier) {
     withIdentification(
-        identifier,
-        RandomUtil.oneFrom("DL", "SS"),
-        RandomUtil.getRandomNumericString(8));
+        identifier, RandomUtil.oneFrom("DL", "SS"), RandomUtil.getRandomNumericString(8));
   }
 
   public void withIdentification(
-      final PatientIdentifier identifier,
-      final String type,
-      final String value) {
+      final PatientIdentifier identifier, final String type, final String value) {
 
     withIdentification(
-        identifier,
-        type,
-        RandomUtil.maybeOneFrom("OTH", "SSA"),
-        value,
-        RandomUtil.dateInPast()
-    );
-
+        identifier, type, RandomUtil.maybeOneFrom("OTH", "SSA"), value, RandomUtil.dateInPast());
   }
 
   public void withIdentification(
@@ -43,9 +32,10 @@ public class PatientIdentificationDemographicApplier {
       final String type,
       final String issuer,
       final String value,
-      final LocalDate asOf
-  ) {
-    this.client.sql("""
+      final LocalDate asOf) {
+    this.client
+        .sql(
+            """
             insert into Entity_id (
                 entity_uid,
                 entity_id_seq,

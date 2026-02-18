@@ -1,15 +1,15 @@
 package gov.cdc.nbs.patient.file.summary.drr;
 
+import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 class CaseReportRequiringReviewFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       with revisions (person_uid, mpr_id) as (
           select
               [patient].[person_uid],
@@ -40,16 +40,16 @@ class CaseReportRequiringReviewFinder {
               and [participation].act_class_cd = 'DOC'
               and [participation].type_cd = 'SubjOfDoc'
               and [participation].subject_entity_uid = [revisions].[person_uid]
-      
+
           join nbs_document [document] with (nolock) on
                   [document].nbs_document_uid = [participation].act_uid
               and [document].record_status_cd = 'UNPROCESSED'
               and [document].program_jurisdiction_oid in (:any)
-      
+
           join NBS_SRTE..Code_value_general [document_type] on
                   [document_type].[code_set_nm] = 'PUBLIC_HEALTH_EVENT'
               and [document_type].code = [document].doc_type_cd
-      
+
           left join nbs_srte..Condition_code [condition] on
                   [condition].condition_cd = [document].cd
       """;
@@ -66,7 +66,8 @@ class CaseReportRequiringReviewFinder {
   }
 
   List<DocumentRequiringReview> find(final DocumentsRequiringReviewCriteria criteria) {
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param(PATIENT_PARAMETER, criteria.patient())
         .param(ANY_PARAMETER, criteria.documentScope().any())
         .query(this.mapper)

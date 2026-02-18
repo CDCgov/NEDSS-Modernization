@@ -59,8 +59,7 @@ public class PageQuestionController {
 
   @GetMapping("questions/{questionId}/edit")
   public EditableQuestion getEditableQuestion(
-      @PathVariable Long page,
-      @PathVariable Long questionId) {
+      @PathVariable Long page, @PathVariable Long questionId) {
     return finder.find(page, questionId);
   }
 
@@ -75,9 +74,7 @@ public class PageQuestionController {
 
   @GetMapping("questions/{questionId}/datamart/validate")
   public ValidationResponse validateDatamart(
-      @PathVariable Long page,
-      @PathVariable Long questionId,
-      @RequestParam String datamart) {
+      @PathVariable Long page, @PathVariable Long questionId, @RequestParam String datamart) {
     return validator.validateDataMart(page, questionId, datamart);
   }
 

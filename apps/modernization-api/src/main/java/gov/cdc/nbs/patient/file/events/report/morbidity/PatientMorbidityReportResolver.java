@@ -8,12 +8,11 @@ import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigat
 import gov.cdc.nbs.patient.events.report.morbidity.MorbidityReportResultedTestResolver;
 import gov.cdc.nbs.patient.events.report.morbidity.MorbidityReportTreatmentFinder;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientMorbidityReportResolver {
@@ -33,8 +32,7 @@ class PatientMorbidityReportResolver {
       final PatientMorbidityReportFinder finder,
       final MorbidityReportTreatmentFinder treatmentFinder,
       final MorbidityReportResultedTestResolver resultedTestResolver,
-      final AssociatedInvestigationFinder associatedInvestigationFinder
-  ) {
+      final AssociatedInvestigationFinder associatedInvestigationFinder) {
     this.scopeResolver = scopeResolver;
     this.finder = finder;
     this.treatmentFinder = treatmentFinder;
@@ -57,7 +55,8 @@ class PatientMorbidityReportResolver {
 
         Map<Long, Collection<String>> treatments = treatments(identifiers, treatmentScope);
 
-        Map<Long, Collection<ResultedTest>> resultedTests = resultedTestResolver.resolve(identifiers);
+        Map<Long, Collection<ResultedTest>> resultedTests =
+            resultedTestResolver.resolve(identifiers);
 
         Map<Long, Collection<AssociatedInvestigation>> associations =
             associatedInvestigationFinder.find(identifiers, associationScope);
@@ -67,24 +66,24 @@ class PatientMorbidityReportResolver {
         }
 
         return reports.stream()
-            .map(report -> report.withTreatments(treatments.getOrDefault(report.id(), Collections.emptyList()))
-                .withResultedTests(resultedTests.getOrDefault(report.id(), Collections.emptyList()))
-                .withAssociations(associations.getOrDefault(report.id(), Collections.emptyList()))
-            )
+            .map(
+                report ->
+                    report
+                        .withTreatments(
+                            treatments.getOrDefault(report.id(), Collections.emptyList()))
+                        .withResultedTests(
+                            resultedTests.getOrDefault(report.id(), Collections.emptyList()))
+                        .withAssociations(
+                            associations.getOrDefault(report.id(), Collections.emptyList())))
             .toList();
       }
-
     }
 
     return Collections.emptyList();
   }
 
   private Map<Long, Collection<String>> treatments(
-      final Collection<Long> identifiers,
-      final PermissionScope scope
-  ) {
-    return scope.allowed()
-        ? this.treatmentFinder.find(identifiers)
-        : Collections.emptyMap();
+      final Collection<Long> identifiers, final PermissionScope scope) {
+    return scope.allowed() ? this.treatmentFinder.find(identifiers) : Collections.emptyMap();
   }
 }

@@ -1,10 +1,11 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
 import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
+
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +29,6 @@ public class DateQuestionEntity extends WaQuestion {
 
     this.mask = requireNonNull(command.mask().toString(), "Mask");
     this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
-
 
     // Audit
     created(command);
@@ -61,5 +61,4 @@ public class DateQuestionEntity extends WaQuestion {
     // Audit
     changed(command);
   }
-
 }

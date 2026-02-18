@@ -1,16 +1,16 @@
 package gov.cdc.nbs.patient.search.identification;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientSearchResultIdentificationFinder {
 
-  public static final String QUERY = """
+  public static final String QUERY =
+      """
       select distinct
           [identification].as_of_date         as [as_of],
           [type].code_short_desc_txt          as [type],
@@ -19,7 +19,7 @@ class PatientSearchResultIdentificationFinder {
           join NBS_SRTE..Code_value_general [type] on
                   [type].code_set_nm = 'EI_TYPE_PAT'
               and [type].code = [identification].[type_cd]
-      
+
       where   [identification].[entity_uid] = ?
           and [identification].[record_status_cd] = 'ACTIVE'
           and [identification].root_extension_txt is not null
@@ -39,13 +39,11 @@ class PatientSearchResultIdentificationFinder {
 
   Collection<PatientSearchResultIdentification> find(final long patient) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(PATIENT_PARAMETER, patient),
-        this::map
-    );
+        QUERY, statement -> statement.setLong(PATIENT_PARAMETER, patient), this::map);
   }
 
-  private PatientSearchResultIdentification map(final ResultSet resultSet, final int row) throws SQLException {
+  private PatientSearchResultIdentification map(final ResultSet resultSet, final int row)
+      throws SQLException {
     String type = resultSet.getString(TYPE_COLUMN);
     String value = resultSet.getString(VALUE_COLUMN);
     return new PatientSearchResultIdentification(type, value);

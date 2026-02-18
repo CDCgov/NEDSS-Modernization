@@ -1,18 +1,16 @@
 package gov.cdc.nbs.questionbank.question.request.create;
 
 import gov.cdc.nbs.questionbank.question.model.DisplayOption;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Arrays;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
 public class CreateDateQuestionRequest extends CreateQuestionRequest {
   private DateMask mask;
   private boolean allowFutureDates;
-
 
   public enum DateDisplayControl {
     USER_ENTERED(1008, "User entered text, number, or date"),

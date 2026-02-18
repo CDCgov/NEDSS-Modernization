@@ -1,14 +1,12 @@
 package gov.cdc.nbs.patient.file.events.contact;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 class NamedContactRowMapper implements RowMapper<NamedContact> {
 
-  record Columns(int patientId, int first, int middle, int last, int suffix) {
-  }
+  record Columns(int patientId, int first, int middle, int last, int suffix) {}
 
   private final Columns columns;
 
@@ -24,12 +22,6 @@ class NamedContactRowMapper implements RowMapper<NamedContact> {
     String last = resultSet.getString(columns.last());
     String suffix = resultSet.getString(columns.suffix());
 
-    return new NamedContact(
-        patientId,
-        first,
-        middle,
-        last,
-        suffix
-    );
+    return new NamedContact(patientId, first, middle, last, suffix);
   }
 }

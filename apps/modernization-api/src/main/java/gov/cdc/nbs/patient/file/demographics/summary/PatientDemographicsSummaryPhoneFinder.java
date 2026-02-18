@@ -2,17 +2,17 @@ package gov.cdc.nbs.patient.file.demographics.summary;
 
 import gov.cdc.nbs.demographics.phone.DisplayablePhone;
 import gov.cdc.nbs.demographics.phone.DisplayablePhoneRowMapper;
+import java.time.LocalDate;
+import java.util.Optional;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
 @Component
 class PatientDemographicsSummaryPhoneFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       with phones(patient, locator_uid, as_of_date, [type], [use], [phone]) as (
           select
               [locators].entity_uid,
@@ -22,12 +22,12 @@ class PatientDemographicsSummaryPhoneFinder {
               [locators].use_cd,
               [phone_number].phone_nbr_txt
           from Entity_locator_participation [locators]
-      
+
           join Tele_locator [phone_number] on
                   [phone_number].[tele_locator_uid] = [locators].[locator_uid]
               and [phone_number].record_status_cd   = [locators].[record_status_cd]
               and [phone_number].phone_nbr_txt is not null
-      
+
           where [locators].entity_uid = ?
           and [locators].[class_cd] = 'TELE'
           and [locators].record_status_cd = 'ACTIVE'
@@ -52,16 +52,16 @@ class PatientDemographicsSummaryPhoneFinder {
           end as [use],
           [phones].phone                   as [phone_number]
       from phones [phones]
-      
+
           left join  NBS_SRTE..Code_value_general [type] on
-      
+
                   [type].code_set_nm = 'EL_TYPE_TELE_PAT'
               and [type].code = [phones].[type]
-      
+
           left join NBS_SRTE..Code_value_general [use] on
                   [use].code_set_nm = 'EL_USE_TELE_PAT'
               and [use].code = [phones].[use]
-      
+
       where [phones].as_of_date = (
               select
                   max(eff_as_of.as_of_date)
@@ -87,11 +87,11 @@ class PatientDemographicsSummaryPhoneFinder {
   }
 
   Optional<DisplayablePhone> find(final long patient, final LocalDate asOf) {
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param(patient)
         .param(asOf.atTime(23, 59, 59))
         .query(this.mapper)
         .optional();
   }
-
 }

@@ -1,20 +1,19 @@
 package gov.cdc.nbs.time.json;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class FormattedLocalDateJsonDeserializerTest {
   private ObjectMapper mapper;
@@ -26,7 +25,8 @@ class FormattedLocalDateJsonDeserializerTest {
 
   @ParameterizedTest
   @MethodSource("dates")
-  void should_deserialize_from_various_date_formats(final String in, final String expected) throws IOException {
+  void should_deserialize_from_various_date_formats(final String in, final String expected)
+      throws IOException {
 
     String json = "\"%s\"".formatted(in);
     JsonParser parser = new JsonFactory().createParser(json);
@@ -46,9 +46,7 @@ class FormattedLocalDateJsonDeserializerTest {
     return Stream.of(
         Arguments.arguments(
             "2023-11-14", "2023-11-14",
-            "11/14/2023", "2023-11-14"
-        )
-    );
+            "11/14/2023", "2023-11-14"));
   }
 
   @Test
@@ -66,6 +64,5 @@ class FormattedLocalDateJsonDeserializerTest {
     LocalDate actual = deserializer.deserialize(parser, context);
 
     assertThat(actual).isNull();
-
   }
 }

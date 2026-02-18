@@ -1,16 +1,14 @@
 package gov.cdc.nbs.questionbank.support;
 
-import org.mockito.Mockito;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import org.mockito.Mockito;
 
 public class QuestionEntityMother {
 
-  private QuestionEntityMother() {
-
-  }
+  private QuestionEntityMother() {}
 
   public static TextQuestionEntity textQuestion() {
     var command = QuestionCommandMother.addTextQuestion();

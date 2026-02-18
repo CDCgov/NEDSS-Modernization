@@ -6,19 +6,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * This configuration provides {@link GatewayFilter} containing the necessary configuration to proxy requests to the
- * NBS Classic Service.
+ * This configuration provides {@link GatewayFilter} containing the necessary configuration to proxy
+ * requests to the NBS Classic Service.
  */
 @Configuration
 class NBSClassicDefaultGatewayFilter {
 
-    /**
-     * Provides a {@link GatewayFilter} that removes the {@code Referer} header from all requests.
-     */
-    @Bean("classic")
-    GatewayFilter classicDefaultGatewayFilter() {
-        return new RemoveRequestHeaderGatewayFilterFactory()
-                .apply(config -> config.setName("Referer"));
-    }
-
+  /** Provides a {@link GatewayFilter} that removes the {@code Referer} header from all requests. */
+  @Bean("classic")
+  GatewayFilter classicDefaultGatewayFilter() {
+    return new RemoveRequestHeaderGatewayFilterFactory().apply(config -> config.setName("Referer"));
+  }
 }

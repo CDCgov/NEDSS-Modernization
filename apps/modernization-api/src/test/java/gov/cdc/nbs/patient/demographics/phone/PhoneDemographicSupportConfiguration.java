@@ -13,5 +13,4 @@ class PhoneDemographicSupportConfiguration {
   Available<PhoneDemographic> availablePhoneDemographic() {
     return new Available<>();
   }
-
 }

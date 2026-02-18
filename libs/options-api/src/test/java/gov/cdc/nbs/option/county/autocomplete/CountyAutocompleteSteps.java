@@ -12,26 +12,20 @@ public class CountyAutocompleteSteps {
   private final Active<ResultActions> response;
 
   CountyAutocompleteSteps(
-      final AutocompleteRequester request,
-      final Active<ResultActions> response
-  ) {
+      final AutocompleteRequester request, final Active<ResultActions> response) {
     this.request = request;
     this.response = response;
   }
 
   @When("I am trying to find counties that start with {string} for {state} state")
-  public void i_am_trying_to_find_counties_for_state_that_start_with(final String criteria, final String state)
-      throws Exception {
+  public void i_am_trying_to_find_counties_for_state_that_start_with(
+      final String criteria, final String state) throws Exception {
     response.active(request.complete(NAME, criteria, state));
   }
 
   @When("I am trying to find at most {int} counties that start with {string} for {state} state")
   public void i_am_trying_to_find_n_counties_for_state_that_start_with(
-      final int limit,
-      final String criteria,
-      final String state
-  ) throws Exception {
+      final int limit, final String criteria, final String state) throws Exception {
     response.active(request.complete(NAME, criteria, state, limit));
   }
-
 }

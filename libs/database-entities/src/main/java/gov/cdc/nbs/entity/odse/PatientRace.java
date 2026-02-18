@@ -5,7 +5,6 @@ import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientRaceHistoryListener;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
@@ -13,8 +12,7 @@ import java.time.LocalDate;
 @IdClass(PatientRaceId.class)
 @SuppressWarnings(
     //  Bidirectional mappings require knowledge of each other
-    "javaarchitecture:S7027"
-)
+    "javaarchitecture:S7027")
 @EntityListeners(PatientRaceHistoryListener.class)
 public class PatientRace implements Identifiable<PatientRaceId> {
 
@@ -33,20 +31,13 @@ public class PatientRace implements Identifiable<PatientRaceId> {
   @Column(name = "as_of_date")
   private LocalDate asOfDate;
 
-  @Embedded
-  private Audit audit;
+  @Embedded private Audit audit;
 
-  @Embedded
-  private RecordStatus recordStatus;
+  @Embedded private RecordStatus recordStatus;
 
-  protected PatientRace() {
+  protected PatientRace() {}
 
-  }
-
-  public PatientRace(
-      final Person person,
-      final PatientCommand.AddRaceCategory added
-  ) {
+  public PatientRace(final Person person, final PatientCommand.AddRaceCategory added) {
     this.patient = person;
     this.asOfDate = added.asOf();
     this.category = added.category();
@@ -54,13 +45,9 @@ public class PatientRace implements Identifiable<PatientRaceId> {
 
     this.recordStatus = new RecordStatus(added.requestedOn());
     this.audit = new Audit(added.requester(), added.requestedOn());
-
   }
 
-  public PatientRace(
-      final Person person,
-      final PatientCommand.AddDetailedRace added
-  ) {
+  public PatientRace(final Person person, final PatientCommand.AddDetailedRace added) {
     this.patient = person;
     this.asOfDate = added.asOf();
     this.category = added.category();
@@ -68,7 +55,6 @@ public class PatientRace implements Identifiable<PatientRaceId> {
 
     this.recordStatus = new RecordStatus(added.requestedOn());
     this.audit = new Audit(added.requester(), added.requestedOn());
-
   }
 
   public PatientRace update(final PatientCommand.UpdateRaceInfo changed) {
@@ -116,10 +102,15 @@ public class PatientRace implements Identifiable<PatientRaceId> {
 
   @Override
   public String toString() {
-    return "PatientRace{" +
-        "asOfDate=" + asOfDate +
-        ", category='" + category + '\'' +
-        ", race='" + race + '\'' +
-        '}';
+    return "PatientRace{"
+        + "asOfDate="
+        + asOfDate
+        + ", category='"
+        + category
+        + '\''
+        + ", race='"
+        + race
+        + '\''
+        + '}';
   }
 }

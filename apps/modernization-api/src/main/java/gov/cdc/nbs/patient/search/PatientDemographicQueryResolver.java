@@ -1,5 +1,7 @@
 package gov.cdc.nbs.patient.search;
 
+import static gov.cdc.nbs.search.criteria.text.TextCriteriaNestedQueryResolver.contains;
+
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.Script;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
@@ -11,9 +13,6 @@ import gov.cdc.nbs.search.criteria.date.DateCriteria.Between;
 import gov.cdc.nbs.search.criteria.date.DateCriteria.Equals;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
-import org.apache.commons.codec.language.Soundex;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
-import static gov.cdc.nbs.search.criteria.text.TextCriteriaNestedQueryResolver.contains;
+import org.apache.commons.codec.language.Soundex;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientDemographicQueryResolver {
@@ -61,8 +60,7 @@ class PatientDemographicQueryResolver {
       final PatientSearchSettings settings,
       final PatientLocalIdentifierResolver resolver,
       final PatientNameDemographicQueryResolver nameQueryResolver,
-      final PatientLocationQueryResolver locationQueryResolver
-  ) {
+      final PatientLocationQueryResolver locationQueryResolver) {
     this.settings = settings;
     this.resolver = resolver;
     this.nameQueryResolver = nameQueryResolver;
@@ -73,11 +71,8 @@ class PatientDemographicQueryResolver {
   Stream<Query> resolve(final PatientSearchCriteria criteria) {
     return Stream.concat(
             Stream.concat(
-                resolveDemographicCriteria(criteria),
-                nameQueryResolver.resolve(criteria)
-            ),
-            locationQueryResolver.resolve(criteria)
-        )
+                resolveDemographicCriteria(criteria), nameQueryResolver.resolve(criteria)),
+            locationQueryResolver.resolve(criteria))
         .map(QueryVariant::_toQuery);
   }
 
@@ -105,7 +100,8 @@ class PatientDemographicQueryResolver {
         .flatMap(Optional::stream);
   }
 
-  private Optional<QueryVariant> applyPatientIdentifierCriteria(final PatientSearchCriteria criteria) {
+  private Optional<QueryVariant> applyPatientIdentifierCriteria(
+      final PatientSearchCriteria criteria) {
     if (criteria.getId() != null) {
       String shortOrLongIdStripped = criteria.getId().strip();
 
@@ -113,26 +109,28 @@ class PatientDemographicQueryResolver {
         return Optional.empty();
       }
 
-      List<String> shortOrLongIdStrippedIds = Arrays.asList(shortOrLongIdStripped.split("[\\s,;]+"));
+      List<String> shortOrLongIdStrippedIds =
+          Arrays.asList(shortOrLongIdStripped.split("[\\s,;]+"));
       if (shortOrLongIdStrippedIds.isEmpty()) {
         return Optional.empty();
       }
 
       List<String> localIds = new ArrayList<>();
-      shortOrLongIdStrippedIds.forEach(shortOrLongIdStrippedId -> {
-        if (Character.isDigit(shortOrLongIdStrippedId.charAt(0))) {
-          // This may be a short id, resolve the local id and then search for it
-          try {
-            long shortId = Long.parseLong(shortOrLongIdStrippedId);
-            String localId = resolver.resolve(shortId);
-            localIds.add(localId);
-          } catch (NumberFormatException exception) {
-            // skip these criteria. it's not a short id or long id
-          }
-        } else {
-          localIds.add(shortOrLongIdStrippedId);
-        }
-      });
+      shortOrLongIdStrippedIds.forEach(
+          shortOrLongIdStrippedId -> {
+            if (Character.isDigit(shortOrLongIdStrippedId.charAt(0))) {
+              // This may be a short id, resolve the local id and then search for it
+              try {
+                long shortId = Long.parseLong(shortOrLongIdStrippedId);
+                String localId = resolver.resolve(shortId);
+                localIds.add(localId);
+              } catch (NumberFormatException exception) {
+                // skip these criteria. it's not a short id or long id
+              }
+            } else {
+              localIds.add(shortOrLongIdStrippedId);
+            }
+          });
 
       return applyLocalIds(localIds);
     }
@@ -141,44 +139,37 @@ class PatientDemographicQueryResolver {
   }
 
   private Optional<QueryVariant> applyLocalIds(final List<String> localIds) {
-    TermsQueryField localIdTerms = new TermsQueryField.Builder()
-        .value(localIds.stream().map(FieldValue::of).toList())
-        .build();
+    TermsQueryField localIdTerms =
+        new TermsQueryField.Builder().value(localIds.stream().map(FieldValue::of).toList()).build();
 
-    return Optional.of(
-        TermsQuery.of(
-            query -> query.field(LOCAL_ID).terms(localIdTerms)));
+    return Optional.of(TermsQuery.of(query -> query.field(LOCAL_ID).terms(localIdTerms)));
   }
 
   private Optional<QueryVariant> applyFirstNameCriteria(final PatientSearchCriteria criteria) {
     return Optional.ofNullable(criteria.getFirstName())
         .filter(Predicate.not(String::isBlank))
-        .map(value ->
-            legalNameQuery(
-                FIRST_NAME_FIELD,
-                value,
-                FIRST_NAME_SOUNDEX_FIELD,
-                soundexEncoded(value, criteria.isDisableSoundex()),
-                settings.first()
-            )
-        );
+        .map(
+            value ->
+                legalNameQuery(
+                    FIRST_NAME_FIELD,
+                    value,
+                    FIRST_NAME_SOUNDEX_FIELD,
+                    soundexEncoded(value, criteria.isDisableSoundex()),
+                    settings.first()));
   }
-
-
 
   private Optional<QueryVariant> applyLastNameCriteria(final PatientSearchCriteria criteria) {
     return Optional.ofNullable(criteria.getLastName())
         .map(AdjustStrings::withoutHyphens)
         .filter(Predicate.not(String::isBlank))
-        .map(value ->
-            legalNameQuery(
-                LAST_NAME_FIELD,
-                value,
-                LAST_NAME_SOUNDEX_FIELD,
-                soundexEncoded(value, criteria.isDisableSoundex()),
-                settings.last()
-            )
-        );
+        .map(
+            value ->
+                legalNameQuery(
+                    LAST_NAME_FIELD,
+                    value,
+                    LAST_NAME_SOUNDEX_FIELD,
+                    soundexEncoded(value, criteria.isDisableSoundex()),
+                    settings.last()));
   }
 
   private String soundexEncoded(final String value, final boolean disabled) {
@@ -190,62 +181,67 @@ class PatientDemographicQueryResolver {
       final String value,
       final String encodedField,
       final String encodedValue,
-      final PatientSearchSettings.NameBoost boost
-  ) {
+      final PatientSearchSettings.NameBoost boost) {
     return BoolQuery.of(
-        bool -> bool.should(
-                should -> should.nested(
-                    nested -> nested.path(NAMES)
-                        .scoreMode(ChildScoreMode.Max)
-                        .query(
-                            query -> query.bool(
-                                legal -> legal.filter(
-                                        filter -> filter.term(
-                                            term -> term.field(NAME_USE_FIELD)
-                                                .value(LEGAL_NAME_CODE)
-                                        )
-                                    )
-                                    .must(
-                                        primary -> primary.match(
-                                            match -> match
-                                                .field(field)
-                                                .query(value)
-                                                .boost(boost.primary())
-                                        )
-                                    )
-                            )
-                        )
-                )
-            )
-            .should(
-                should -> should.nested(
-                    nested -> nested.path(NAMES)
-                        .scoreMode(ChildScoreMode.Avg)
-                        .query(
-                            query -> query.simpleQueryString(
-                                nonPrimary -> nonPrimary
-                                    .fields(field)
-                                    .query(WildCards.startsWith(value))
-                                    .boost(boost.nonPrimary())
-                            )
-                        )
-                )
-            )
-            .should(
-                should -> should.nested(
-                    nested -> nested.path(NAMES)
-                        .scoreMode(ChildScoreMode.Avg)
-                        .boost(boost.soundex())
-                        .query(
-                            query -> query.term(
-                                term -> term
-                                    .field(encodedField)
-                                    .value(encodedValue)
-                            )
-                        )
-                )
-            )
-    );
+        bool ->
+            bool.should(
+                    should ->
+                        should.nested(
+                            nested ->
+                                nested
+                                    .path(NAMES)
+                                    .scoreMode(ChildScoreMode.Max)
+                                    .query(
+                                        query ->
+                                            query.bool(
+                                                legal ->
+                                                    legal
+                                                        .filter(
+                                                            filter ->
+                                                                filter.term(
+                                                                    term ->
+                                                                        term.field(NAME_USE_FIELD)
+                                                                            .value(
+                                                                                LEGAL_NAME_CODE)))
+                                                        .must(
+                                                            primary ->
+                                                                primary.match(
+                                                                    match ->
+                                                                        match
+                                                                            .field(field)
+                                                                            .query(value)
+                                                                            .boost(
+                                                                                boost
+                                                                                    .primary())))))))
+                .should(
+                    should ->
+                        should.nested(
+                            nested ->
+                                nested
+                                    .path(NAMES)
+                                    .scoreMode(ChildScoreMode.Avg)
+                                    .query(
+                                        query ->
+                                            query.simpleQueryString(
+                                                nonPrimary ->
+                                                    nonPrimary
+                                                        .fields(field)
+                                                        .query(WildCards.startsWith(value))
+                                                        .boost(boost.nonPrimary())))))
+                .should(
+                    should ->
+                        should.nested(
+                            nested ->
+                                nested
+                                    .path(NAMES)
+                                    .scoreMode(ChildScoreMode.Avg)
+                                    .boost(boost.soundex())
+                                    .query(
+                                        query ->
+                                            query.term(
+                                                term ->
+                                                    term.field(encodedField)
+                                                        .value(encodedValue))))));
   }
 
   private Optional<QueryVariant> applyPhoneNumberCriteria(final PatientSearchCriteria criteria) {
@@ -256,13 +252,17 @@ class PatientDemographicQueryResolver {
 
       return Optional.of(
           NestedQuery.of(
-              nested -> nested.path(PHONES)
-                  .scoreMode(ChildScoreMode.Avg)
-                  .query(
-                      query -> query.wildcard(
-                          wildcard -> wildcard.field(PHONE_NUMBER_FIELD)
-                              .value(WildCards.contains(number))))));
-
+              nested ->
+                  nested
+                      .path(PHONES)
+                      .scoreMode(ChildScoreMode.Avg)
+                      .query(
+                          query ->
+                              query.wildcard(
+                                  wildcard ->
+                                      wildcard
+                                          .field(PHONE_NUMBER_FIELD)
+                                          .value(WildCards.contains(number))))));
     }
 
     return Optional.empty();
@@ -275,13 +275,18 @@ class PatientDemographicQueryResolver {
 
       return Optional.of(
           NestedQuery.of(
-              nested -> nested.path(EMAILS)
-                  .scoreMode(ChildScoreMode.Avg)
-                  .query(
-                      query -> query.simpleQueryString(
-                          queryString -> queryString.fields(EMAIL_ADDRESS)
-                              .defaultOperator(Operator.And)
-                              .query(email)))));
+              nested ->
+                  nested
+                      .path(EMAILS)
+                      .scoreMode(ChildScoreMode.Avg)
+                      .query(
+                          query ->
+                              query.simpleQueryString(
+                                  queryString ->
+                                      queryString
+                                          .fields(EMAIL_ADDRESS)
+                                          .defaultOperator(Operator.And)
+                                          .query(email)))));
     }
 
     return Optional.empty();
@@ -297,18 +302,29 @@ class PatientDemographicQueryResolver {
     if (type != null && (value != null && !value.isEmpty())) {
       return Optional.of(
           NestedQuery.of(
-              nested -> nested.path(IDENTIFICATIONS)
-                  .scoreMode(ChildScoreMode.Avg)
-                  .query(
-                      query -> query.bool(
-                          bool -> bool.filter(
-                                  filter -> filter.term(
-                                      term -> term.field("entity_id.typeCd.keyword")
-                                          .value(type)))
-                              .must(
-                                  must -> must.wildcard(
-                                      match -> match.field(IDENTIFICATION).caseInsensitive(true)
-                                          .value(WildCards.contains(value))))))));
+              nested ->
+                  nested
+                      .path(IDENTIFICATIONS)
+                      .scoreMode(ChildScoreMode.Avg)
+                      .query(
+                          query ->
+                              query.bool(
+                                  bool ->
+                                      bool.filter(
+                                              filter ->
+                                                  filter.term(
+                                                      term ->
+                                                          term.field("entity_id.typeCd.keyword")
+                                                              .value(type)))
+                                          .must(
+                                              must ->
+                                                  must.wildcard(
+                                                      match ->
+                                                          match
+                                                              .field(IDENTIFICATION)
+                                                              .caseInsensitive(true)
+                                                              .value(
+                                                                  WildCards.contains(value))))))));
     }
     return Optional.empty();
   }
@@ -322,38 +338,30 @@ class PatientDemographicQueryResolver {
       String value = FlexibleInstantConverter.toString(dateOfBirth);
 
       return switch (operator) {
-        case "before" -> Optional.of(
-            RangeQuery.of(
-                range -> range.term(
-                    term -> term.field(BIRTHDAY).lt(value))));
-        case "after" -> Optional.of(
-            RangeQuery.of(
-                range -> range.term(
-                    term -> term.field(BIRTHDAY).gt(value))));
-        default -> Optional.of(
-            MatchQuery.of(
-                match -> match.field(BIRTHDAY)
-                    .query(value)));
+        case "before" ->
+            Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).lt(value))));
+        case "after" ->
+            Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).gt(value))));
+        default -> Optional.of(MatchQuery.of(match -> match.field(BIRTHDAY).query(value)));
       };
     }
 
     DateCriteria dateCriteria = criteria.getBornOn();
-    if (dateCriteria != null && dateCriteria.equals() != null && dateCriteria.equals().isCompleteDate()) {
+    if (dateCriteria != null
+        && dateCriteria.equals() != null
+        && dateCriteria.equals().isCompleteDate()) {
       Equals equals = dateCriteria.equals();
-      String value = FlexibleInstantConverter.toString(LocalDate.of(equals.year(), equals.month(), equals.day()));
-      return Optional.of(
-          MatchQuery.of(
-              match -> match.field(BIRTHDAY)
-                  .query(value)));
-
+      String value =
+          FlexibleInstantConverter.toString(
+              LocalDate.of(equals.year(), equals.month(), equals.day()));
+      return Optional.of(MatchQuery.of(match -> match.field(BIRTHDAY).query(value)));
     }
 
     return Optional.empty();
   }
 
-
-
-  private Optional<QueryVariant> applyDateOfBirthLowRangeCriteria(final PatientSearchCriteria criteria) {
+  private Optional<QueryVariant> applyDateOfBirthLowRangeCriteria(
+      final PatientSearchCriteria criteria) {
     DateCriteria dateCriteria = criteria.getBornOn();
     if (dateCriteria == null) {
       return Optional.empty();
@@ -365,13 +373,11 @@ class PatientDemographicQueryResolver {
 
     String value = FlexibleInstantConverter.toString(betweenDate.from());
 
-    return Optional.of(
-        RangeQuery.of(
-            range -> range.term(term -> term.field(BIRTHDAY)
-                .gte(value))));
+    return Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).gte(value))));
   }
 
-  private Optional<QueryVariant> applyDateOfBirthHighRangeCriteria(final PatientSearchCriteria criteria) {
+  private Optional<QueryVariant> applyDateOfBirthHighRangeCriteria(
+      final PatientSearchCriteria criteria) {
     DateCriteria dateCriteria = criteria.getBornOn();
     if (dateCriteria == null) {
       return Optional.empty();
@@ -383,11 +389,7 @@ class PatientDemographicQueryResolver {
 
     String value = FlexibleInstantConverter.toString(betweenDate.to());
 
-    return Optional.of(
-        RangeQuery.of(
-            range -> range.term(
-                term -> term.field(BIRTHDAY)
-                    .lte(value))));
+    return Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).lte(value))));
   }
 
   private String resolveDateOperator(final String operator) {
@@ -403,13 +405,18 @@ class PatientDemographicQueryResolver {
 
       return Optional.of(
           NestedQuery.of(
-              nested -> nested.path(ADDRESSES)
-                  .scoreMode(ChildScoreMode.Avg)
-                  .query(
-                      query -> query.simpleQueryString(
-                          queryString -> queryString.fields(STREET)
-                              .defaultOperator(Operator.And)
-                              .query(WildCards.startsWith(result))))));
+              nested ->
+                  nested
+                      .path(ADDRESSES)
+                      .scoreMode(ChildScoreMode.Avg)
+                      .query(
+                          query ->
+                              query.simpleQueryString(
+                                  queryString ->
+                                      queryString
+                                          .fields(STREET)
+                                          .defaultOperator(Operator.And)
+                                          .query(WildCards.startsWith(result))))));
     }
 
     return Optional.empty();
@@ -422,13 +429,18 @@ class PatientDemographicQueryResolver {
 
       return Optional.of(
           NestedQuery.of(
-              nested -> nested.path(ADDRESSES)
-                  .scoreMode(ChildScoreMode.Avg)
-                  .query(
-                      query -> query.simpleQueryString(
-                          queryString -> queryString.fields(CITY)
-                              .defaultOperator(Operator.And)
-                              .query(WildCards.startsWith(city))))));
+              nested ->
+                  nested
+                      .path(ADDRESSES)
+                      .scoreMode(ChildScoreMode.Avg)
+                      .query(
+                          query ->
+                              query.simpleQueryString(
+                                  queryString ->
+                                      queryString
+                                          .fields(CITY)
+                                          .defaultOperator(Operator.And)
+                                          .query(WildCards.startsWith(city))))));
     }
 
     return Optional.empty();
@@ -439,19 +451,14 @@ class PatientDemographicQueryResolver {
     String zipcode = criteria.getZip();
     if (zipcode != null && !zipcode.isEmpty()) {
 
-      QueryVariant q = zipcode.length() < 5
-          ? PrefixQuery.of(
-          prefix -> prefix.field(ZIP_CODE)
-              .value(zipcode))
-          : MatchQuery.of(
-          match -> match.field(ZIP_CODE)
-              .query(zipcode));
+      QueryVariant q =
+          zipcode.length() < 5
+              ? PrefixQuery.of(prefix -> prefix.field(ZIP_CODE).value(zipcode))
+              : MatchQuery.of(match -> match.field(ZIP_CODE).query(zipcode));
 
       return Optional.of(
           NestedQuery.of(
-              nested -> nested.path(ADDRESSES)
-                  .scoreMode(ChildScoreMode.Avg)
-                  .query(q._toQuery())));
+              nested -> nested.path(ADDRESSES).scoreMode(ChildScoreMode.Avg).query(q._toQuery())));
     }
 
     return Optional.empty();
@@ -461,16 +468,17 @@ class PatientDemographicQueryResolver {
     return Optional.ofNullable(criteria.getFilter().id())
         .map(WildCards::contains)
         .map(
-            value -> BoolQuery.of(
-                bool -> bool.must(
-                    query -> query.queryString(
-                        simple -> simple.fields(SHORT_ID)
-                            .query(value)
-                            .defaultOperator(Operator.And)
-                    )
-                )
-            )
-        );
+            value ->
+                BoolQuery.of(
+                    bool ->
+                        bool.must(
+                            query ->
+                                query.queryString(
+                                    simple ->
+                                        simple
+                                            .fields(SHORT_ID)
+                                            .query(value)
+                                            .defaultOperator(Operator.And)))));
   }
 
   private Optional<QueryVariant> applyPatientNameFilter(final PatientSearchCriteria criteria) {
@@ -482,10 +490,13 @@ class PatientDemographicQueryResolver {
 
   private Script searchDateOfBirthScript(final String value) {
     return Script.of(
-        script -> script.source(
-                "doc['birth_time'].size()!=0 && (doc['birth_time'].value.toString().substring(5,10)+'-'+doc['birth_time'].value.toString().substring(0,4)).contains('"
-                    + value + "')")
-            .lang(PAINLESS));
+        script ->
+            script
+                .source(
+                    "doc['birth_time'].size()!=0 && (doc['birth_time'].value.toString().substring(5,10)+'-'+doc['birth_time'].value.toString().substring(0,4)).contains('"
+                        + value
+                        + "')")
+                .lang(PAINLESS));
   }
 
   Integer ageInYears(String value) {
@@ -496,7 +507,8 @@ class PatientDemographicQueryResolver {
     }
   }
 
-  private Optional<QueryVariant> applyPatientAgeOrDateOfBirthFilter(final PatientSearchCriteria criteria) {
+  private Optional<QueryVariant> applyPatientAgeOrDateOfBirthFilter(
+      final PatientSearchCriteria criteria) {
     String ageOrDateOfBirth = criteria.getFilter().ageOrDateOfBirth();
     if (ageOrDateOfBirth == null) {
       return Optional.empty();
@@ -505,20 +517,27 @@ class PatientDemographicQueryResolver {
     final String value = ageOrDateOfBirth.replace("/", "-");
     Integer age = ageInYears(value);
     if (value.contains("-") || age == null) {
-      return Optional.of(BoolQuery.of(
-          bool -> bool.should(
-              should -> should.script(s -> s.script(searchDateOfBirthScript(value))))));
+      return Optional.of(
+          BoolQuery.of(
+              bool ->
+                  bool.should(
+                      should -> should.script(s -> s.script(searchDateOfBirthScript(value))))));
     }
 
     return Optional.of(
         BoolQuery.of(
-            bool -> bool.should(
-                    should -> should.script(s -> s.script(searchDateOfBirthScript(value))))
-                .should(
-                    s -> s.range(RangeQuery.of(
-                        range -> range.term(term -> term.field(BIRTHDAY)
-                            .gt("now-" + (age + 1) + "y/d")
-                            .lt("now-" + age + "y/d")))))));
+            bool ->
+                bool.should(should -> should.script(s -> s.script(searchDateOfBirthScript(value))))
+                    .should(
+                        s ->
+                            s.range(
+                                RangeQuery.of(
+                                    range ->
+                                        range.term(
+                                            term ->
+                                                term.field(BIRTHDAY)
+                                                    .gt("now-" + (age + 1) + "y/d")
+                                                    .lt("now-" + age + "y/d")))))));
   }
 
   private Optional<QueryVariant> applyAddressFilter(final PatientSearchCriteria criteria) {
@@ -549,5 +568,4 @@ class PatientDemographicQueryResolver {
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(IDENTIFICATIONS, IDENTIFICATION, value));
   }
-
 }

@@ -1,14 +1,13 @@
 package gov.cdc.nbs.patient.events.tests;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Test;
 
 class ResultedTestRowMapperTest {
 
@@ -204,7 +203,6 @@ class ResultedTestRowMapperTest {
     assertThat(mapped.reference()).isEqualTo("(low-high) - (status)");
   }
 
-
   @Test
   void should_map_with_only_high_reference_range_from_result_set() throws SQLException {
 
@@ -253,6 +251,4 @@ class ResultedTestRowMapperTest {
     assertThat(mapped.name()).isEqualTo("name-value");
     assertThat(mapped.result()).isEqualTo("1:2");
   }
-
 }
-

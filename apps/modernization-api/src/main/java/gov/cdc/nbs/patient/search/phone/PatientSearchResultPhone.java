@@ -1,4 +1,3 @@
 package gov.cdc.nbs.patient.search.phone;
 
- record PatientSearchResultPhone(String type, String use, String number) {
-}
+record PatientSearchResultPhone(String type, String use, String number) {}

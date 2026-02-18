@@ -5,23 +5,24 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
 public class ProgramAreaMother {
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete
       from NBS_SRTE.[dbo].Program_area_code
       where nbs_uid in (:identifiers)
       """;
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into NBS_SRTE.[dbo].Program_area_code(
         nbs_uid,
         prog_area_cd,
@@ -40,8 +41,7 @@ public class ProgramAreaMother {
       final SequentialIdentityGenerator idGenerator,
       final JdbcClient client,
       final Available<ProgramAreaIdentifier> available,
-      final Active<ProgramAreaIdentifier> active
-  ) {
+      final Active<ProgramAreaIdentifier> active) {
     this.idGenerator = idGenerator;
     this.client = client;
     this.identifiers = new ArrayList<>();
@@ -52,9 +52,7 @@ public class ProgramAreaMother {
   @PreDestroy
   void reset() {
     if (!identifiers.isEmpty()) {
-      client.sql(DELETE_IN)
-          .param("identifiers", identifiers)
-          .update();
+      client.sql(DELETE_IN).param("identifiers", identifiers).update();
 
       this.identifiers.clear();
     }
@@ -65,7 +63,8 @@ public class ProgramAreaMother {
     long identifier = idGenerator.next();
     String code = String.valueOf(identifier);
 
-    client.sql(CREATE)
+    client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("code", code)
         .param("name", name)
@@ -78,5 +77,4 @@ public class ProgramAreaMother {
     this.available.available(created);
     this.active.active(created);
   }
-
 }

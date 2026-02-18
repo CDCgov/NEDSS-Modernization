@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.demographics.ethnicity;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.function.Supplier;
@@ -22,10 +21,7 @@ public class EthnicityDemographicEntrySteps {
   }
 
   @Given("I am entering the {ethnicity} ethnicity as of {localDate}")
-  public void entering(
-      final String ethnicity,
-      final LocalDate asOf
-  ) {
+  public void entering(final String ethnicity, final LocalDate asOf) {
     this.active.active(current -> current.withAsOf(asOf).withEthnicGroup(ethnicity), initial());
   }
 

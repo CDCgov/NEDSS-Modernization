@@ -20,5 +20,4 @@ class ContactRecordSupportConfiguration {
   Available<ContactRecordIdentifier> availableContactRecords() {
     return new Available<>();
   }
-
 }

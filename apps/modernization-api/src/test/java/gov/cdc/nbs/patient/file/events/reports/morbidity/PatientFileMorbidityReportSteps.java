@@ -14,8 +14,7 @@ public class PatientFileMorbidityReportSteps {
   PatientFileMorbidityReportSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientFileMorbidityReportRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;
@@ -23,8 +22,6 @@ public class PatientFileMorbidityReportSteps {
 
   @When("I view the morbidity reports for the patient")
   public void view() {
-    this.activePatient.maybeActive()
-        .map(requester::request)
-        .ifPresent(response::active);
+    this.activePatient.maybeActive().map(requester::request).ifPresent(response::active);
   }
 }

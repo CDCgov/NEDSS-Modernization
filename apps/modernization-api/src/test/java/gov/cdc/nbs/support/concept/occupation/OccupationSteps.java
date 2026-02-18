@@ -12,7 +12,6 @@ public class OccupationSteps {
 
   @ParameterType(name = "occupation", value = ".*")
   public String occupation(final String value) {
-    return resolver.resolve(value)
-        .orElse(null);
+    return resolver.resolve(value).orElse(null);
   }
 }

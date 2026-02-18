@@ -2,26 +2,26 @@ package gov.cdc.nbs.patient.file.demographics.summary;
 
 import gov.cdc.nbs.demographics.indentification.DisplayableIdentification;
 import gov.cdc.nbs.demographics.indentification.DisplayableIdentificationRowMapper;
+import java.time.LocalDate;
+import java.util.Collection;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.Collection;
-
 @Component
 class PatientDemographicsSummaryIdentificationFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [type].code_short_desc_txt              as [type],
           [identification].root_extension_txt     as [value]
       from [Entity_id] [identification]
-      
+
           join NBS_SRTE..Code_value_general [type] on
                   [type].code_set_nm = 'EI_TYPE_PAT'
               and [type].code = [identification].[type_cd]
-      
+
       where   [identification].[entity_uid] =  ?
           and [identification].[record_status_cd] = 'ACTIVE'
           and [identification].as_of_date = (
@@ -55,11 +55,11 @@ class PatientDemographicsSummaryIdentificationFinder {
   }
 
   Collection<DisplayableIdentification> find(final long patient, final LocalDate asOf) {
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param(patient)
         .param(asOf.atTime(23, 59, 59))
         .query(this.mapper)
         .list();
   }
-
 }

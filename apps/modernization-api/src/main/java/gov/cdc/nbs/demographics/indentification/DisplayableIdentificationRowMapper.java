@@ -1,17 +1,12 @@
 package gov.cdc.nbs.demographics.indentification;
 
-
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 public class DisplayableIdentificationRowMapper implements RowMapper<DisplayableIdentification> {
 
-
-  public record Columns(int type, int value) {
-  }
-
+  public record Columns(int type, int value) {}
 
   private final Columns columns;
 
@@ -24,12 +19,10 @@ public class DisplayableIdentificationRowMapper implements RowMapper<Displayable
   }
 
   @Override
-  public DisplayableIdentification mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public DisplayableIdentification mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     String type = resultSet.getString(columns.type());
     String value = resultSet.getString(columns.value());
     return new DisplayableIdentification(type, value);
   }
-
-
-
 }

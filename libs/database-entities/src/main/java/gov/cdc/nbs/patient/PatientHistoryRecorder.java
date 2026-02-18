@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PatientHistoryRecorder {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Person_hist (
           person_uid,
           version_ctrl_nbr,
@@ -231,8 +232,6 @@ public class PatientHistoryRecorder {
   }
 
   void snapshot(final long patient) {
-    this.client.sql(CREATE)
-        .param(patient)
-        .update();
+    this.client.sql(CREATE).param(patient).update();
   }
 }

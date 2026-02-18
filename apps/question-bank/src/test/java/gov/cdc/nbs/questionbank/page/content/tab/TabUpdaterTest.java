@@ -4,6 +4,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.content.tab.exceptions.UpdateTabException;
+import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,20 +19,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.content.tab.exceptions.UpdateTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
 
 @ExtendWith(MockitoExtension.class)
 class TabUpdaterTest {
-  @Mock
-  private EntityManager entityManager;
+  @Mock private EntityManager entityManager;
 
-  @InjectMocks
-  private TabUpdater updater;
+  @InjectMocks private TabUpdater updater;
 
   @Test
   void should_update_section() {
@@ -37,7 +36,6 @@ class TabUpdaterTest {
     ArgumentCaptor<PageContentCommand.UpdateTab> captor =
         ArgumentCaptor.forClass(PageContentCommand.UpdateTab.class);
     when(page.updateTab(captor.capture(), Mockito.any())).thenReturn(sectionMock);
-
 
     // When a valid request is made to update the tab
     UpdateTabRequest request = new UpdateTabRequest("New name", false);
@@ -135,5 +133,4 @@ class TabUpdaterTest {
     when(entityManager.find(WaUiMetadata.class, 1l)).thenReturn(tab);
     assertThrows(PageContentModificationException.class, () -> updater.findTab(1l, 2l));
   }
-
 }

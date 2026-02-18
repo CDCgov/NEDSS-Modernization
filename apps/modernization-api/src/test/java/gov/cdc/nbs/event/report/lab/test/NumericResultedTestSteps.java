@@ -16,8 +16,7 @@ public class NumericResultedTestSteps {
       final Active<LabReportIdentifier> activeLab,
       final NumericResultedTestMother mother,
       final Active<MorbidityReportIdentifier> activeMorbidity,
-      final MorbidityLabReportMother reportMother
-  ) {
+      final MorbidityLabReportMother reportMother) {
     this.activeLab = activeLab;
     this.mother = mother;
     this.activeMorbidity = activeMorbidity;
@@ -26,17 +25,14 @@ public class NumericResultedTestSteps {
 
   @Given("the lab(oratory) report has a(n) {labTest} test with a numeric result of {string} {unit}")
   public void createForLab(final String test, final String result, final String unit) {
-    this.activeLab.maybeActive().ifPresent(
-        found -> mother.create(found, test, result, unit)
-    );
+    this.activeLab.maybeActive().ifPresent(found -> mother.create(found, test, result, unit));
   }
 
   @Given("the morbidity report has a(n) {labTest} test with a numeric result of {string} {unit}")
   public void createForMorbidity(final String test, final String result, final String unit) {
-    this.activeMorbidity.maybeActive()
+    this.activeMorbidity
+        .maybeActive()
         .map(reportMother::create)
-        .ifPresent(
-        found -> mother.create(found, test, result, unit)
-    );
+        .ifPresent(found -> mother.create(found, test, result, unit));
   }
 }

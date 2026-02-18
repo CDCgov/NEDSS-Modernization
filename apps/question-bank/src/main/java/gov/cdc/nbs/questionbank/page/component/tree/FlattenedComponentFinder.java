@@ -1,14 +1,14 @@
 package gov.cdc.nbs.questionbank.page.component.tree;
 
+import java.util.Collection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
 
 @Component
 class FlattenedComponentFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [component].wa_ui_metadata_uid          as [identifier],
           [component].nbs_ui_component_uid        as [type],
@@ -74,10 +74,6 @@ class FlattenedComponentFinder {
 
   Collection<FlattenedComponent> find(final long page) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(PAGE_PARAMETER, page),
-        this.mapper
-
-    );
+        QUERY, statement -> statement.setLong(PAGE_PARAMETER, page), this.mapper);
   }
 }

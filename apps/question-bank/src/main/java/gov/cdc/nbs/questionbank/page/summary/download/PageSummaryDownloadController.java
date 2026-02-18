@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.summary.download;
 
+import gov.cdc.nbs.questionbank.page.PageMetaDataDownloader;
+import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryRequest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import org.springdoc.core.annotations.ParameterObject;
@@ -18,8 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.questionbank.page.PageMetaDataDownloader;
-import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryRequest;
 
 @RestController
 @RequestMapping("/api/v1/pages")
@@ -45,10 +45,7 @@ public class PageSummaryDownloadController {
     return ResponseEntity.ok()
         .header(
             HttpHeaders.CONTENT_DISPOSITION,
-            ContentDisposition.attachment()
-                .filename("PageLibrary.csv")
-                .build()
-                .toString())
+            ContentDisposition.attachment().filename("PageLibrary.csv").build().toString())
         .contentType(MediaType.parseMediaType("application/csv"))
         .body(file);
   }
@@ -61,27 +58,24 @@ public class PageSummaryDownloadController {
 
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_PDF)
-        .header(HttpHeaders.CONTENT_DISPOSITION,
-            ContentDisposition.attachment()
-                .filename("PageLibrary.pdf")
-                .build()
-                .toString())
+        .header(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment().filename("PageLibrary.pdf").build().toString())
         .body(pdf);
   }
 
   @GetMapping("{id}/metadata")
-  public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("id") Long page) throws IOException {
+  public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("id") Long page)
+      throws IOException {
     ByteArrayInputStream is = pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(page);
     InputStreamResource file = new InputStreamResource(is);
     return ResponseEntity.ok()
-        .header(HttpHeaders.CONTENT_DISPOSITION,
-            ContentDisposition.attachment()
-                .filename("PageMetadata.xlsx")
-                .build()
-                .toString())
+        .header(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment().filename("PageMetadata.xlsx").build().toString())
         .contentType(
-            MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+            MediaType.parseMediaType(
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
         .body(file);
   }
-
 }

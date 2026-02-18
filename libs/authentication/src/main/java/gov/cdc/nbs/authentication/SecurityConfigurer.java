@@ -13,9 +13,7 @@ public class SecurityConfigurer {
   private final AuthenticationConfigurer authenticationConfigurer;
 
   public SecurityConfigurer(
-      final IgnoredPaths ignoredPaths,
-      final AuthenticationConfigurer authenticationConfigurer
-  ) {
+      final IgnoredPaths ignoredPaths, final AuthenticationConfigurer authenticationConfigurer) {
     this.ignoredPaths = ignoredPaths;
     this.authenticationConfigurer = authenticationConfigurer;
   }
@@ -30,14 +28,14 @@ public class SecurityConfigurer {
         //  disabled until the frontend can be altered to work with csrf
         .csrf(AbstractHttpConfigurer::disable)
         //
-        .authorizeHttpRequests(requests -> requests.requestMatchers(ignoredPaths.paths()).permitAll())
+        .authorizeHttpRequests(
+            requests -> requests.requestMatchers(ignoredPaths.paths()).permitAll())
         .authorizeHttpRequests(requests -> requests.anyRequest().authenticated())
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .exceptionHandling(
-            exceptions -> exceptions.defaultAuthenticationEntryPointFor(
-                new NBSSessionAuthenticationEntryPoint(),
-                AnyRequestMatcher.INSTANCE
-            )
-        );
+            exceptions ->
+                exceptions.defaultAuthenticationEntryPointFor(
+                    new NBSSessionAuthenticationEntryPoint(), AnyRequestMatcher.INSTANCE));
   }
 }

@@ -8,7 +8,6 @@ public class ToggleSteps {
 
   @ParameterType(name = "toggle", value = "enabled|enable|disabled|disable")
   public boolean setting(final String value) {
-    return value.regionMatches(true, 0, PREFIX,0 , PREFIX.length());
+    return value.regionMatches(true, 0, PREFIX, 0, PREFIX.length());
   }
-
 }

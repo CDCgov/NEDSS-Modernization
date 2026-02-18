@@ -13,22 +13,20 @@ class ClassicPatientProfilePreparer {
 
   private final RestTemplate template;
 
-  ClassicPatientProfilePreparer(
-      @Qualifier("classicTemplate") final RestTemplate template) {
+  ClassicPatientProfilePreparer(@Qualifier("classicTemplate") final RestTemplate template) {
     this.template = template;
   }
 
   void prepare(final long patient) {
 
-    String profileLocation = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("ContextAction", "ViewFile")
-        .queryParam("uid", patient)
-        .build()
-        .toUriString();
+    String profileLocation =
+        UriComponentsBuilder.fromPath(LOCATION)
+            .queryParam("ContextAction", "ViewFile")
+            .queryParam("uid", patient)
+            .build()
+            .toUriString();
 
-    RequestEntity<Void> profileRequest = RequestEntity
-        .get(profileLocation)
-        .build();
+    RequestEntity<Void> profileRequest = RequestEntity.get(profileLocation).build();
 
     this.template.exchange(profileRequest, Void.class);
   }

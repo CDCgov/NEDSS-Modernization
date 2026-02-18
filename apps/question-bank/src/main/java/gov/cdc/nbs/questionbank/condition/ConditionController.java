@@ -1,19 +1,18 @@
 package gov.cdc.nbs.questionbank.condition;
 
+import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.condition.model.Condition;
+import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.condition.request.ReadConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.ConditionStatusResponse;
-
 import java.util.List;
 import java.util.Optional;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.*;
-import gov.cdc.nbs.authentication.UserDetailsProvider;
 import org.springframework.security.access.prepost.PreAuthorize;
-import gov.cdc.nbs.questionbank.condition.model.Condition;
-import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/conditions/")
@@ -55,12 +54,14 @@ public class ConditionController {
   }
 
   @GetMapping
-  public Page<Condition> findConditions(@ParameterObject @PageableDefault(size = 20) Pageable pageable) {
+  public Page<Condition> findConditions(
+      @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
     return conditionReader.findConditions(pageable);
   }
 
   @PostMapping("/search")
-  public Page<Condition> searchConditions(@RequestBody ReadConditionRequest search,
+  public Page<Condition> searchConditions(
+      @RequestBody ReadConditionRequest search,
       @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
     return searcher.search(search, pageable);
   }
@@ -76,6 +77,4 @@ public class ConditionController {
   public ConditionStatusResponse inactivateCondition(@PathVariable String id) {
     return conditionStatus.inactivateCondition(id);
   }
-
-
 }

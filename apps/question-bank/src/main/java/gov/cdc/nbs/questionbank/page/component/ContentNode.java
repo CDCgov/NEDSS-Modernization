@@ -2,9 +2,9 @@ package gov.cdc.nbs.questionbank.page.component;
 
 @SuppressWarnings(
     //  Sealed classes require the implementing classes be listed if not in the same file
-    "javaarchitecture:S7027"
-)
-public abstract sealed class ContentNode extends ComponentNode permits EntryNode, InputNode, SelectionNode, StaticNode {
+    "javaarchitecture:S7027")
+public abstract sealed class ContentNode extends ComponentNode
+    permits EntryNode, InputNode, SelectionNode, StaticNode {
 
   public record Attributes(
       boolean isStandardNnd,
@@ -37,12 +37,9 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       Integer batchWidth,
       String componentBehavior,
       String componentName,
-      String classCode) {
-  }
-
+      String classCode) {}
 
   private final Attributes attributes;
-
 
   protected ContentNode(
       final long identifier,
@@ -56,7 +53,4 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
   public Attributes attributes() {
     return attributes;
   }
-
 }
-
-

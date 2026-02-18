@@ -1,7 +1,6 @@
 package gov.cdc.nbs.support;
 
 import io.cucumber.java.ParameterType;
-
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -14,18 +13,16 @@ public class DateTimeSteps {
     return LocalTime.parse(value, DateTimeFormatter.ISO_LOCAL_TIME);
   }
 
-  @ParameterType(name = "localDate", value = "(?:[0]\\d|1[0-2])/(?:[0-2]\\d|3[01])/(?:(?:19|20)\\d{2})")
+  @ParameterType(
+      name = "localDate",
+      value = "(?:[0]\\d|1[0-2])/(?:[0-2]\\d|3[01])/(?:(?:19|20)\\d{2})")
   public LocalDate localDate(final String value) {
     return LocalDate.parse(value, DATE_FORMATTER);
   }
 
-
   @ParameterType(name = "date", value = "(?:[0]\\d|1[0-2])/(?:[0-2]\\d|3[01])/(?:(?:19|20)\\d{2})")
   public Instant date(final String value) {
-    return localDate(value)
-        .atStartOfDay()
-        .atZone(ZoneId.systemDefault())
-        .toInstant();
+    return localDate(value).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
   }
 
   @ParameterType(name = "month", value = ".*")

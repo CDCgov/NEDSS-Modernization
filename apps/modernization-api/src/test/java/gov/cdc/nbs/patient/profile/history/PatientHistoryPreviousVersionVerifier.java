@@ -1,22 +1,18 @@
 package gov.cdc.nbs.patient.profile.history;
 
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientHistoryPreviousVersionVerifier {
 
-  record PatientHistoryPreviousVersion(
-      long patient,
-      short version,
-      short previous
-  ){}
+  record PatientHistoryPreviousVersion(long patient, short version, short previous) {}
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
     select
         [patient].person_uid,
         [patient].version_ctrl_nbr,
@@ -29,7 +25,7 @@ class PatientHistoryPreviousVersionVerifier {
                 from Person_hist [eff_history]
                 where [eff_history].[person_uid] = [patient].[person_uid]
             )
-    
+
     where   [patient].cd = 'PAT'
         and [patient].person_uid = ?
     """;
@@ -41,22 +37,16 @@ class PatientHistoryPreviousVersionVerifier {
   }
 
   Optional<PatientHistoryPreviousVersion> verify(final long patient) {
-    return this.client.sql(QUERY)
-        .param(patient)
-        .query(this::map)
-        .optional();
+    return this.client.sql(QUERY).param(patient).query(this::map).optional();
   }
 
-  private PatientHistoryPreviousVersion map(final ResultSet resultSet, int row) throws SQLException {
+  private PatientHistoryPreviousVersion map(final ResultSet resultSet, int row)
+      throws SQLException {
 
     long patient = resultSet.getLong(1);
     short version = resultSet.getShort(2);
     short previous = resultSet.getShort(3);
 
-    return new PatientHistoryPreviousVersion(
-        patient,
-        version,
-        previous
-    );
+    return new PatientHistoryPreviousVersion(patient, version, previous);
   }
 }

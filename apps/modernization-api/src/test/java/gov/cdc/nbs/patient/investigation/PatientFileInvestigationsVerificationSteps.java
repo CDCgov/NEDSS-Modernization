@@ -1,26 +1,22 @@
 package gov.cdc.nbs.patient.investigation;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
+import java.time.LocalDate;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.LocalDate;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
 public class PatientFileInvestigationsVerificationSteps {
-
 
   private final Active<ResultActions> response;
   private final Active<ProviderIdentifier> activeProvider;
 
   PatientFileInvestigationsVerificationSteps(
-      final Active<ResultActions> response,
-      final Active<ProviderIdentifier> activeProvider
-  ) {
+      final Active<ResultActions> response, final Active<ProviderIdentifier> activeProvider) {
     this.response = response;
     this.activeProvider = activeProvider;
   }
@@ -41,25 +37,25 @@ public class PatientFileInvestigationsVerificationSteps {
   }
 
   private void nthHasStatus(final int position, final String status) throws Exception {
-    this.response.active()
-        .andExpect(jsonPath("$[%s].status", position - 1).value(status));
+    this.response.active().andExpect(jsonPath("$[%s].status", position - 1).value(status));
   }
 
   @Then("the {nth} investigation is within the {jurisdiction} jurisdiction")
   public void nthWithin(final int position, final JurisdictionIdentifier value) throws Exception {
-    this.response.active()
+    this.response
+        .active()
         .andExpect(jsonPath("$[%s].jurisdiction", position - 1).value(value.name()));
   }
 
   @Then("the {nth} investigation is for the {string} condition")
   public void nthHasCondition(final int position, final String value) throws Exception {
-    this.response.active()
-        .andExpect(jsonPath("$[%s].condition", position - 1).value(value));
+    this.response.active().andExpect(jsonPath("$[%s].condition", position - 1).value(value));
   }
 
   @Then("the {nth} investigation was started on {localDate}")
   public void nthWasStartedOn(final int position, final LocalDate value) throws Exception {
-    this.response.active()
+    this.response
+        .active()
         .andExpect(jsonPath("$[%s].startedOn", position - 1).value(value.toString()));
   }
 
@@ -68,7 +64,8 @@ public class PatientFileInvestigationsVerificationSteps {
 
     ProviderIdentifier.Name provider = this.activeProvider.active().name();
 
-    this.response.active()
+    this.response
+        .active()
         .andExpect(jsonPath("$[%s].investigator.first", position - 1).value(provider.first()))
         .andExpect(jsonPath("$[%s].investigator.last", position - 1).value(provider.last()));
   }

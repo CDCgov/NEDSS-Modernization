@@ -9,11 +9,6 @@ public class MotherSettingsConfiguration {
 
   @Bean
   MotherSettings motherSettings(final @Value("${testing.id-generation.starting}") long starting) {
-    return new MotherSettings(
-        starting,
-        "TEST",
-        9999L
-    );
+    return new MotherSettings(starting, "TEST", 9999L);
   }
-
 }

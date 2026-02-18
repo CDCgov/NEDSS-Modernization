@@ -1,22 +1,18 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
-import java.time.Instant;
-
 import gov.cdc.nbs.id.IdGeneratorService;
-
-import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
-import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
-import jakarta.persistence.EntityManager;
-
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
+import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
+import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
+import jakarta.persistence.EntityManager;
+import java.time.Instant;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
@@ -56,30 +52,28 @@ public class PageStaticCreator {
       throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
     }
 
-    WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
-        .orElseThrow(() -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
+    WaUiMetadata subSection =
+        uiMetadatumRepository
+            .findById(request.subSectionId())
+            .orElseThrow(
+                () -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
 
-    Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
+    Integer orderNum =
+        uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
 
     uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
 
-    WaUiMetadata staticElementEntry = new WaUiMetadata(
-        asAddLineSeparator(
-            template,
-            orderNum,
-            user,
-            request.adminComments()));
+    WaUiMetadata staticElementEntry =
+        new WaUiMetadata(asAddLineSeparator(template, orderNum, user, request.adminComments()));
     staticElementEntry.setQuestionIdentifier(getLocalId());
 
     return uiMetadatumRepository.save(staticElementEntry).getId();
   }
 
   private PageContentCommand.AddLineSeparator asAddLineSeparator(
-      WaTemplate page,
-      Integer orderNumber,
-      long userId,
-      String adminComments) {
-    return new PageContentCommand.AddLineSeparator(page, orderNumber, userId, adminComments, Instant.now());
+      WaTemplate page, Integer orderNumber, long userId, String adminComments) {
+    return new PageContentCommand.AddLineSeparator(
+        page, orderNumber, userId, adminComments, Instant.now());
   }
 
   public Long addHyperLink(Long pageId, StaticContentRequests.AddHyperlink request, Long userId) {
@@ -97,20 +91,26 @@ public class PageStaticCreator {
     }
 
     // Find max order number for the subsection
-    WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
-        .orElseThrow(() -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
+    WaUiMetadata subSection =
+        uiMetadatumRepository
+            .findById(request.subSectionId())
+            .orElseThrow(
+                () -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
 
-    Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
+    Integer orderNum =
+        uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
 
     uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
 
-    WaUiMetadata staticElementEntry = new WaUiMetadata(asAddHyperLink(
-        template,
-        orderNum,
-        userId,
-        request.adminComments(),
-        request.label(),
-        request.linkUrl()));
+    WaUiMetadata staticElementEntry =
+        new WaUiMetadata(
+            asAddHyperLink(
+                template,
+                orderNum,
+                userId,
+                request.adminComments(),
+                request.label(),
+                request.linkUrl()));
 
     staticElementEntry.setQuestionIdentifier(getLocalId());
 
@@ -124,11 +124,12 @@ public class PageStaticCreator {
       String adminComments,
       String label,
       String linkUrl) {
-    return new PageContentCommand.AddHyperLink(page, orderNumber, userId, adminComments, label, linkUrl, Instant.now());
+    return new PageContentCommand.AddHyperLink(
+        page, orderNumber, userId, adminComments, label, linkUrl, Instant.now());
   }
 
-  public Long addReadOnlyComments(Long pageId, StaticContentRequests.AddReadOnlyComments request,
-      Long userId) {
+  public Long addReadOnlyComments(
+      Long pageId, StaticContentRequests.AddReadOnlyComments request, Long userId) {
     if (pageId == null) {
       throw new AddStaticElementException(PAGE_REQUIRED_EXCEPTION_MESSAGE);
     }
@@ -143,19 +144,21 @@ public class PageStaticCreator {
     }
 
     // Find max order number for the subsection
-    WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
-        .orElseThrow(() -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
+    WaUiMetadata subSection =
+        uiMetadatumRepository
+            .findById(request.subSectionId())
+            .orElseThrow(
+                () -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
 
-    Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
+    Integer orderNum =
+        uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
 
     uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
 
-    WaUiMetadata staticElementEntry = new WaUiMetadata(asAddReadOnlyComments(
-        template,
-        orderNum,
-        userId,
-        request.commentsText(),
-        request.adminComments()));
+    WaUiMetadata staticElementEntry =
+        new WaUiMetadata(
+            asAddReadOnlyComments(
+                template, orderNum, userId, request.commentsText(), request.adminComments()));
 
     staticElementEntry.setQuestionIdentifier(getLocalId());
 
@@ -163,17 +166,13 @@ public class PageStaticCreator {
   }
 
   private PageContentCommand.AddReadOnlyComments asAddReadOnlyComments(
-      WaTemplate page,
-      Integer orderNumber,
-      long userId,
-      String comments,
-      String adminComments) {
-    return new PageContentCommand.AddReadOnlyComments(page, orderNumber, userId, comments, adminComments,
-        Instant.now());
+      WaTemplate page, Integer orderNumber, long userId, String comments, String adminComments) {
+    return new PageContentCommand.AddReadOnlyComments(
+        page, orderNumber, userId, comments, adminComments, Instant.now());
   }
 
-  public Long addReadOnlyParticipantsList(Long pageId, StaticContentRequests.AddDefault request,
-      Long userId) {
+  public Long addReadOnlyParticipantsList(
+      Long pageId, StaticContentRequests.AddDefault request, Long userId) {
     if (pageId == null) {
       throw new AddStaticElementException(PAGE_REQUIRED_EXCEPTION_MESSAGE);
     }
@@ -184,15 +183,20 @@ public class PageStaticCreator {
       throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
     }
 
-    WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
-        .orElseThrow(() -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
+    WaUiMetadata subSection =
+        uiMetadatumRepository
+            .findById(request.subSectionId())
+            .orElseThrow(
+                () -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
 
-    Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
+    Integer orderNum =
+        uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
 
     uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
 
-    WaUiMetadata staticElementEntry = new WaUiMetadata(
-        asAddReadOnlyParticipantsList(template, orderNum, userId, request.adminComments()));
+    WaUiMetadata staticElementEntry =
+        new WaUiMetadata(
+            asAddReadOnlyParticipantsList(template, orderNum, userId, request.adminComments()));
 
     staticElementEntry.setQuestionIdentifier(getLocalId());
 
@@ -200,15 +204,13 @@ public class PageStaticCreator {
   }
 
   private PageContentCommand.AddReadOnlyParticipantsList asAddReadOnlyParticipantsList(
-      WaTemplate page,
-      Integer orderNumber,
-      long userId,
-      String adminComments) {
-    return new PageContentCommand.AddReadOnlyParticipantsList(page, orderNumber, userId, adminComments, Instant.now());
+      WaTemplate page, Integer orderNumber, long userId, String adminComments) {
+    return new PageContentCommand.AddReadOnlyParticipantsList(
+        page, orderNumber, userId, adminComments, Instant.now());
   }
 
-  public Long addOriginalElectronicDocList(Long pageId, StaticContentRequests.AddDefault request,
-      Long userId) {
+  public Long addOriginalElectronicDocList(
+      Long pageId, StaticContentRequests.AddDefault request, Long userId) {
     if (pageId == null) {
       throw new AddStaticElementException(PAGE_REQUIRED_EXCEPTION_MESSAGE);
     }
@@ -219,15 +221,20 @@ public class PageStaticCreator {
       throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
     }
 
-    WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
-        .orElseThrow(() -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
+    WaUiMetadata subSection =
+        uiMetadatumRepository
+            .findById(request.subSectionId())
+            .orElseThrow(
+                () -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
 
-    Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
+    Integer orderNum =
+        uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
 
     uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
 
-    WaUiMetadata staticElementEntry = new WaUiMetadata(
-        asAddOriginalElectronicDocList(template, orderNum, userId, request.adminComments()));
+    WaUiMetadata staticElementEntry =
+        new WaUiMetadata(
+            asAddOriginalElectronicDocList(template, orderNum, userId, request.adminComments()));
 
     staticElementEntry.setQuestionIdentifier(getLocalId());
 
@@ -235,22 +242,21 @@ public class PageStaticCreator {
   }
 
   private PageContentCommand.AddOrignalElectronicDocList asAddOriginalElectronicDocList(
-      WaTemplate page,
-      Integer orderNumber,
-      long userId,
-      String adminComments) {
-    return new PageContentCommand.AddOrignalElectronicDocList(page, orderNumber, userId, adminComments, Instant.now());
+      WaTemplate page, Integer orderNumber, long userId, String adminComments) {
+    return new PageContentCommand.AddOrignalElectronicDocList(
+        page, orderNumber, userId, adminComments, Instant.now());
   }
 
   private String getLocalId() {
     String nbsClassCode = getNbsClassCode();
-    return nbsClassCode + idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS_QUESTION_ID_LDF).getId();
+    return nbsClassCode
+        + idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS_QUESTION_ID_LDF).getId();
   }
 
   private String getNbsClassCode() {
-    return configRepository.findById("NBS_CLASS_CODE")
+    return configRepository
+        .findById("NBS_CLASS_CODE")
         .orElseThrow(() -> new CreateQuestionException("Failed to lookup NBS_CLASS_CODE"))
         .getConfigValue();
   }
-
 }

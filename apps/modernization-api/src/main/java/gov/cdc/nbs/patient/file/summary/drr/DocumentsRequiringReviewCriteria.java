@@ -8,6 +8,4 @@ public record DocumentsRequiringReviewCriteria(
     PermissionScope labReportScope,
     PermissionScope morbidityReportScope,
     PermissionScope treatmentScope,
-    PermissionScope investigationScope
-) {
-}
+    PermissionScope investigationScope) {}

@@ -1,13 +1,13 @@
 package gov.cdc.nbs.patient.investigation;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
 class PatientFileInvestigationsRequester {
@@ -29,11 +29,9 @@ class PatientFileInvestigationsRequester {
     } catch (Exception exception) {
       throw new IllegalStateException(
           "An unexpected error occurred when viewing the investigations for the Patient file.",
-          exception
-      );
+          exception);
     }
   }
-
 
   ResultActions open(final PatientIdentifier patient) {
     try {
@@ -44,8 +42,7 @@ class PatientFileInvestigationsRequester {
     } catch (Exception exception) {
       throw new IllegalStateException(
           "An unexpected error occurred when viewing the open investigations for the Patient file.",
-          exception
-      );
+          exception);
     }
   }
 }

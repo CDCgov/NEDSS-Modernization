@@ -1,12 +1,11 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.patient.PatientCommand;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import gov.cdc.nbs.patient.PatientCommand;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class TeleEntityLocatorParticipationTest {
 
@@ -15,33 +14,27 @@ class TeleEntityLocatorParticipationTest {
 
     Person patient = new Person(117L, "local-id-value");
 
-    TeleEntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
-        patient.entity(),
-        new EntityLocatorParticipationId(patient.id(), 5347L),
-        new PatientCommand.AddPhone(
-            117L,
-            "type-value",
-            "use-value",
-            LocalDate.parse("2023-11-27"),
-            "country-code",
-            "number",
-            "extension",
-            "email",
-            "url",
-            "comment",
-            131L,
-            LocalDateTime.parse("2020-03-03T10:15:30")
-        )
-    );
+    TeleEntityLocatorParticipation participation =
+        new TeleEntityLocatorParticipation(
+            patient.entity(),
+            new EntityLocatorParticipationId(patient.id(), 5347L),
+            new PatientCommand.AddPhone(
+                117L,
+                "type-value",
+                "use-value",
+                LocalDate.parse("2023-11-27"),
+                "country-code",
+                "number",
+                "extension",
+                "email",
+                "url",
+                "comment",
+                131L,
+                LocalDateTime.parse("2020-03-03T10:15:30")));
 
     participation.delete(
         new PatientCommand.DeletePhone(
-            117L,
-            5347L,
-            293L,
-            LocalDateTime.parse("2023-03-10T10:15:30")
-        )
-    );
+            117L, 5347L, 293L, LocalDateTime.parse("2023-03-10T10:15:30")));
 
     assertThat(participation.audit())
         .describedAs("expected audit state")
@@ -51,8 +44,6 @@ class TeleEntityLocatorParticipationTest {
     assertThat(participation)
         .returns(5347L, p -> p.identifier().getLocatorUid())
         .extracting(EntityLocatorParticipation::recordStatus)
-        .satisfies(RecordStatusAssertions.inactive("2023-03-10T10:15:30"))
-
-    ;
+        .satisfies(RecordStatusAssertions.inactive("2023-03-10T10:15:30"));
   }
 }

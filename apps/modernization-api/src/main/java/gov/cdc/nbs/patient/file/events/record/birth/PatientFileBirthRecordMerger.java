@@ -2,22 +2,19 @@ package gov.cdc.nbs.patient.file.events.record.birth;
 
 class PatientFileBirthRecordMerger {
 
-  private PatientFileBirthRecordMerger() {
+  private PatientFileBirthRecordMerger() {}
 
-  }
-
-  static PatientFileBirthRecord merge(final PatientFileBirthRecord current, final PatientFileBirthRecord next) {
+  static PatientFileBirthRecord merge(
+      final PatientFileBirthRecord current, final PatientFileBirthRecord next) {
 
     PatientFileBirthRecord.MotherInformation mother = merge(current.mother(), next.mother());
 
     return current.withMother(mother);
   }
 
-
   static PatientFileBirthRecord.MotherInformation merge(
       final PatientFileBirthRecord.MotherInformation current,
-      final PatientFileBirthRecord.MotherInformation next
-  ) {
+      final PatientFileBirthRecord.MotherInformation next) {
     if (current == null) {
       return next;
     } else if (next == null) {
@@ -25,15 +22,15 @@ class PatientFileBirthRecordMerger {
     }
 
     PatientFileBirthRecord.MotherInformation.Name name = merge(current.name(), next.name());
-    PatientFileBirthRecord.MotherInformation.Address address = merge(current.address(), next.address());
+    PatientFileBirthRecord.MotherInformation.Address address =
+        merge(current.address(), next.address());
 
     return new PatientFileBirthRecord.MotherInformation(name, address);
   }
 
   private static PatientFileBirthRecord.MotherInformation.Name merge(
       final PatientFileBirthRecord.MotherInformation.Name current,
-      final PatientFileBirthRecord.MotherInformation.Name next
-  ) {
+      final PatientFileBirthRecord.MotherInformation.Name next) {
     if (current == null) {
       return next;
     } else if (next == null) {
@@ -50,8 +47,7 @@ class PatientFileBirthRecordMerger {
 
   private static PatientFileBirthRecord.MotherInformation.Address merge(
       final PatientFileBirthRecord.MotherInformation.Address current,
-      final PatientFileBirthRecord.MotherInformation.Address next
-  ) {
+      final PatientFileBirthRecord.MotherInformation.Address next) {
     if (current == null) {
       return next;
     } else if (next == null) {
@@ -66,15 +62,8 @@ class PatientFileBirthRecordMerger {
     String zipcode = coalesce(current.zipcode(), next.zipcode());
 
     return new PatientFileBirthRecord.MotherInformation.Address(
-        address,
-        address2,
-        city,
-        state,
-        county,
-        zipcode
-    );
+        address, address2, city, state, county, zipcode);
   }
-
 
   private static String coalesce(final String first, final String second) {
     return first != null ? first : second;

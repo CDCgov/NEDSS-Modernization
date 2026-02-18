@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 class PrimaryLanguageOptionResolver extends SQLBasedOptionResolver {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           code                                as [value],
           code_desc_txt                       as [name],

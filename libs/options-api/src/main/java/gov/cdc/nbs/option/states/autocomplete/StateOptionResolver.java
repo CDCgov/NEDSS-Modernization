@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 class StateOptionResolver extends SQLBasedOptionResolver {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           state_cd            as [value],
           code_desc_txt       as [name],

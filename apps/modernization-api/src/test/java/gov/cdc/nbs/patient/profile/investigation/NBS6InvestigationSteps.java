@@ -28,12 +28,14 @@ public class NBS6InvestigationSteps {
 
   @Given("I view a legacy investigation from the patient profile")
   public void i_view_a_legacy_investigation_from_the_patient_profile() {
-    this.activeContext.active(new NBS6InvestigationRequest("ViewInvestigation3.do", "ReturnToFileEvents"));
+    this.activeContext.active(
+        new NBS6InvestigationRequest("ViewInvestigation3.do", "ReturnToFileEvents"));
   }
 
   @Given("I view an open legacy investigation from the patient profile")
   public void i_view_an_open_legacy_investigation_from_the_patient_profile() {
-    this.activeContext.active(new NBS6InvestigationRequest("ViewInvestigation1.do", "ReturnToFileSummary"));
+    this.activeContext.active(
+        new NBS6InvestigationRequest("ViewInvestigation1.do", "ReturnToFileSummary"));
   }
 
   @Given("I view a legacy investigation from a queue")

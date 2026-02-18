@@ -9,29 +9,29 @@ import jakarta.persistence.*;
 @EntityListeners(PatientPhoneLocatorHistoryListener.class)
 @SuppressWarnings(
     //  Bidirectional mappings require knowledge of each other
-    "javaarchitecture:S7027"
-)
+    "javaarchitecture:S7027")
 public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
   static final String TELECOM_CLASS_CODE = "TELE";
 
   @MapsId("locatorUid")
-  @OneToOne(fetch = FetchType.LAZY, cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, optional = false)
-  @JoinColumn(referencedColumnName = "tele_locator_uid", name = "locator_uid", updatable = false, insertable = false)
+  @OneToOne(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+      optional = false)
+  @JoinColumn(
+      referencedColumnName = "tele_locator_uid",
+      name = "locator_uid",
+      updatable = false,
+      insertable = false)
   private TeleLocator locator;
 
-  protected TeleEntityLocatorParticipation() {
-  }
+  protected TeleEntityLocatorParticipation() {}
 
   public TeleEntityLocatorParticipation(
       final NBSEntity nbs,
       final EntityLocatorParticipationId identifier,
-      final PatientCommand.AddPhone phone
-  ) {
+      final PatientCommand.AddPhone phone) {
     super(phone, nbs, identifier);
 
     this.type = phone.type();
@@ -68,10 +68,15 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
   @Override
   public String toString() {
-    return "TeleEntityLocatorParticipation{" +
-        "locator=" + locator +
-        ", cd='" + type + '\'' +
-        ", use='" + use + '\'' +
-        '}';
+    return "TeleEntityLocatorParticipation{"
+        + "locator="
+        + locator
+        + ", cd='"
+        + type
+        + '\''
+        + ", use='"
+        + use
+        + '\''
+        + '}';
   }
 }

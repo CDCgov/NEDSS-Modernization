@@ -12,9 +12,5 @@ public class RelevanceResolver {
     }
   }
 
-  private RelevanceResolver() {
-
-  }
-
-
+  private RelevanceResolver() {}
 }

@@ -12,14 +12,14 @@ import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.search.SearchResolver;
 import gov.cdc.nbs.search.SearchResult;
 import gov.cdc.nbs.search.SearchResultResolver;
+import java.io.IOException;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.List;
-
 @Component
-class ElasticsearchLabReportSearchResolver implements SearchResolver<LabReportFilter, LabReportSearchResult> {
+class ElasticsearchLabReportSearchResolver
+    implements SearchResolver<LabReportFilter, LabReportSearchResult> {
 
   private static final Permission PERMISSION = new Permission("View", "ObservationLabReport");
   private final PermissionScopeResolver resolver;
@@ -49,8 +49,7 @@ class ElasticsearchLabReportSearchResolver implements SearchResolver<LabReportFi
 
   @Override
   public SearchResult<LabReportSearchResult> search(
-      final LabReportFilter criteria,
-      final Pageable pageable) {
+      final LabReportFilter criteria, final Pageable pageable) {
     PermissionScope scope = this.resolver.resolve(PERMISSION);
 
     Query filter = filterResolver.resolve(criteria, scope);
@@ -59,41 +58,42 @@ class ElasticsearchLabReportSearchResolver implements SearchResolver<LabReportFi
 
     try {
 
-      SearchResponse<SearchableLabReport> response = client.search(
-          search -> search.index("lab_report")
-              .postFilter(filter)
-              .query(query)
-              .sort(sorting)
-              .from((int) pageable.getOffset())
-              .size(pageable.getPageSize()),
-          SearchableLabReport.class);
+      SearchResponse<SearchableLabReport> response =
+          client.search(
+              search ->
+                  search
+                      .index("lab_report")
+                      .postFilter(filter)
+                      .query(query)
+                      .sort(sorting)
+                      .from((int) pageable.getOffset())
+                      .size(pageable.getPageSize()),
+              SearchableLabReport.class);
 
       HitsMetadata<SearchableLabReport> hits = response.hits();
 
       long total = hits.total().value();
 
-      return total > 0
-          ? paged(hits, pageable)
-          : this.resultResolver.empty(pageable);
+      return total > 0 ? paged(hits, pageable) : this.resultResolver.empty(pageable);
 
     } catch (RuntimeException | IOException exception) {
-      throw new IllegalStateException("An unexpected error occurred when searching for lab reports.", exception);
+      throw new IllegalStateException(
+          "An unexpected error occurred when searching for lab reports.", exception);
     }
-
   }
 
   private SearchResult<LabReportSearchResult> paged(
-      final HitsMetadata<SearchableLabReport> hits,
-      final Pageable pageable) {
+      final HitsMetadata<SearchableLabReport> hits, final Pageable pageable) {
 
-    List<LabReportSearchResult> results = hits.hits().stream()
-        .filter(hit -> hit.source() != null)
-        .map(hit -> LabReportSearchResultConverter.convert(hit.source(), hit.score(), labTestSummaryFinder))
-        .toList();
+    List<LabReportSearchResult> results =
+        hits.hits().stream()
+            .filter(hit -> hit.source() != null)
+            .map(
+                hit ->
+                    LabReportSearchResultConverter.convert(
+                        hit.source(), hit.score(), labTestSummaryFinder))
+            .toList();
 
-    return resultResolver.resolve(
-        results,
-        pageable,
-        hits.total().value());
+    return resultResolver.resolve(results, pageable, hits.total().value());
   }
 }

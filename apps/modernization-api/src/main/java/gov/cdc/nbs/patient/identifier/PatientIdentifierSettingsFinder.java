@@ -1,13 +1,13 @@
 package gov.cdc.nbs.patient.identifier;
 
-import org.springframework.jdbc.core.simple.JdbcClient;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.simple.JdbcClient;
 
 class PatientIdentifierSettingsFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
          [generator].UID_prefix_cd,
          [generator].UID_suffix_CD,
@@ -26,17 +26,15 @@ class PatientIdentifierSettingsFinder {
   }
 
   PatientIdentifierSettings find() {
-    return this.client.sql(QUERY)
-        .query(this::map)
-        .single();
+    return this.client.sql(QUERY).query(this::map).single();
   }
 
-  private PatientIdentifierSettings map(final ResultSet resultSet, final int row) throws SQLException {
+  private PatientIdentifierSettings map(final ResultSet resultSet, final int row)
+      throws SQLException {
     String prefix = resultSet.getString(1);
     String suffix = resultSet.getString(2);
     long initial = resultSet.getLong(3);
 
     return new PatientIdentifierSettings(prefix, initial, suffix);
   }
-
 }

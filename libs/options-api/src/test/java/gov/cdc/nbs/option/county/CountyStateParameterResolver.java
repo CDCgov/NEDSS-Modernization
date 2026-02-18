@@ -1,15 +1,15 @@
 package gov.cdc.nbs.option.county;
 
+import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class CountyStateParameterResolver {
 
   private static final int CODE_COLUMN = 1;
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
 
       select
           state_cd
@@ -25,11 +25,14 @@ public class CountyStateParameterResolver {
   }
 
   public Optional<String> resolve(final String value) {
-    return this.template.query(
-        QUERY,
-        statement -> {
-          statement.setString(DESCRIPTION_INDEX, value);
-        },
-        (rs, row) -> rs.getString(CODE_COLUMN)).stream().findFirst();
+    return this.template
+        .query(
+            QUERY,
+            statement -> {
+              statement.setString(DESCRIPTION_INDEX, value);
+            },
+            (rs, row) -> rs.getString(CODE_COLUMN))
+        .stream()
+        .findFirst();
   }
 }

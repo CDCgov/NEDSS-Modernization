@@ -1,15 +1,15 @@
 package gov.cdc.nbs.patient.file;
 
+import java.util.Optional;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class PatientFileFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       with id_settings([prefix], [suffix],[initial]) as   (
         select
           [generator].UID_prefix_cd     as [prefix],
@@ -41,11 +41,11 @@ public class PatientFileFinder {
           [patient].deceased_time                 as [deceased_on],
           [patient].version_ctrl_nbr              as [version]
       from id_settings, Person [patient]
-      
+
           left join NBS_SRTE..Code_value_general [current_gender] on
                   [current_gender].code_set_nm = 'SEX'
               and [current_gender].[code] = [patient].[curr_sex_cd]
-      
+
       where   [patient].cd = 'PAT'
           and [patient].person_uid = [patient].person_parent_uid
           and [patient].local_id = ?
@@ -56,9 +56,7 @@ public class PatientFileFinder {
 
   PatientFileFinder(final JdbcClient client) {
     this.client = client;
-    this.mapper = new PatientFileRowMapper(
-        new PatientFileRowMapper.Columns()
-    );
+    this.mapper = new PatientFileRowMapper(new PatientFileRowMapper.Columns());
   }
 
   Optional<PatientFile> find(final String local) {

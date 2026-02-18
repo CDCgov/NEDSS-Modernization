@@ -2,19 +2,21 @@ package gov.cdc.nbs.questionbank.entity;
 
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import jakarta.persistence.*;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import jakarta.persistence.*;
-import java.time.Instant;
 
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "WA_RDB_metadata", catalog = "NBS_ODSE")
-@SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7091"}) //  Bidirectional mappings require knowledge of each other
+@SuppressWarnings({
+  "javaarchitecture:S7027",
+  "javaarchitecture:S7091"
+}) //  Bidirectional mappings require knowledge of each other
 public class WaRdbMetadata {
   public static final String ACTIVE = "Active";
 
@@ -89,7 +91,8 @@ public class WaRdbMetadata {
     this.recordStatusCd = ACTIVE;
   }
 
-  public WaRdbMetadata(WaTemplate template, WaUiMetadata waUiMetadata, Instant addedOn, long addedBy) {
+  public WaRdbMetadata(
+      WaTemplate template, WaUiMetadata waUiMetadata, Instant addedOn, long addedBy) {
     this();
     this.waTemplateUid = template;
     this.waUiMetadataUid = waUiMetadata;
@@ -98,9 +101,8 @@ public class WaRdbMetadata {
     this.recordStatusTime = addedOn;
   }
 
-
-
-  public WaRdbMetadata(WaTemplate page, WaUiMetadata waUiMetadata, PageContentCommand.AddQuestion command) {
+  public WaRdbMetadata(
+      WaTemplate page, WaUiMetadata waUiMetadata, PageContentCommand.AddQuestion command) {
     WaQuestion question = command.question();
     this.setRdbColumnNm(question.getRdbColumnNm());
     this.setRdbTableNm(question.getRdbTableNm());
@@ -134,18 +136,15 @@ public class WaRdbMetadata {
   }
 
   public void update(
-      String defaultLabelInReport,
-      String dataMartColumnName,
-      long user,
-      Instant requestedOn) {
+      String defaultLabelInReport, String dataMartColumnName, long user, Instant requestedOn) {
     this.rptAdminColumnNm = defaultLabelInReport;
     this.userDefinedColumnNm = dataMartColumnName;
     this.lastChgTime = requestedOn;
     this.lastChgUserId = user;
   }
 
-
-  public static WaRdbMetadata clone(WaRdbMetadata original, WaTemplate template, WaUiMetadata metadata) {
+  public static WaRdbMetadata clone(
+      WaRdbMetadata original, WaTemplate template, WaUiMetadata metadata) {
     return new WaRdbMetadata(
         null,
         template,
@@ -164,6 +163,4 @@ public class WaRdbMetadata {
         original.questionIdentifier,
         original.blockPivotNbr);
   }
-
-
 }

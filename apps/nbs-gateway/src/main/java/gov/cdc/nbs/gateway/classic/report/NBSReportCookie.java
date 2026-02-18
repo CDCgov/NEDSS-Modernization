@@ -18,17 +18,17 @@ public record NBSReportCookie(String report) {
   }
 
   public ResponseCookie toResponseCookie() {
-    ResponseCookie.ResponseCookieBuilder builder = ResponseCookie.from(NAME, report())
-        .httpOnly(true)
-        .secure(true)
-        .path("/nbs")
-        .sameSite("Strict");
+    ResponseCookie.ResponseCookieBuilder builder =
+        ResponseCookie.from(NAME, report())
+            .httpOnly(true)
+            .secure(true)
+            .path("/nbs")
+            .sameSite("Strict");
 
     if (report().isEmpty()) {
       builder.maxAge(0);
     }
 
-    return builder
-        .build();
+    return builder.build();
   }
 }

@@ -2,13 +2,14 @@ package gov.cdc.nbs.questionbank.template;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.springframework.test.web.servlet.ResultActions;
+
 import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class FindTemplateSteps {
 
@@ -16,7 +17,6 @@ public class FindTemplateSteps {
   private final Active<ResultActions> response;
   private final PageMother mother;
   private final Active<PageIdentifier> page;
-
 
   FindTemplateSteps(
       final TemplateRequester requester,
@@ -46,10 +46,6 @@ public class FindTemplateSteps {
 
   @Then("templates are returned")
   public void templates_are_returned() throws Exception {
-    response.active()
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.[*].id").exists());
+    response.active().andExpect(status().isOk()).andExpect(jsonPath("$.[*].id").exists());
   }
-
 }
-

@@ -9,11 +9,10 @@ import gov.cdc.nbs.testing.authorization.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.testing.authorization.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class LabReportSteps {
@@ -35,8 +34,7 @@ public class LabReportSteps {
       final Active<ProviderIdentifier> activeProvider,
       final Active<LabReportIdentifier> activeReport,
       final LabReportMother reportMother,
-      final Active<InvestigationIdentifier> activeInvestigation
-  ) {
+      final Active<InvestigationIdentifier> activeInvestigation) {
     this.activePatient = activePatient;
     this.activeJurisdiction = activeJurisdiction;
     this.activeProgramArea = activeProgramArea;
@@ -51,47 +49,43 @@ public class LabReportSteps {
   @Given("the patient has a(nother) lab(oratory) Report")
   @Given("the patient has a(nother) lab(oratory) report")
   public void the_patient_has_a_lab_report() {
-    activePatient.maybeActive()
+    activePatient
+        .maybeActive()
         .ifPresent(
-            patient -> reportMother.create(
-                patient,
-                this.activeOrganization.active(),
-                this.activeJurisdiction.active(),
-                this.activeProgramArea.active()
-            )
-        );
+            patient ->
+                reportMother.create(
+                    patient,
+                    this.activeOrganization.active(),
+                    this.activeJurisdiction.active(),
+                    this.activeProgramArea.active()));
   }
 
   @Given("the patient has a lab(oratory) report reported by {organization}")
   public void patient_has_an_unprocessed_lab_report(final OrganizationIdentifier organization) {
-    activePatient.maybeActive()
+    activePatient
+        .maybeActive()
         .ifPresent(
-            patient -> reportMother.create(
-                patient,
-                organization,
-                this.activeJurisdiction.active(),
-                this.activeProgramArea.active()
-            )
-        );
+            patient ->
+                reportMother.create(
+                    patient,
+                    organization,
+                    this.activeJurisdiction.active(),
+                    this.activeProgramArea.active()));
   }
 
   @Given("the lab(oratory) report is for {programArea} within {jurisdiction}")
   public void patient_has_a_lab_report_within(
-      final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
-    activeReport.maybeActive().ifPresent(
-        lab -> reportMother.within(
-            lab,
-            programArea,
-            jurisdiction
-        )
-    );
+      final ProgramAreaIdentifier programArea, final JurisdictionIdentifier jurisdiction) {
+    activeReport
+        .maybeActive()
+        .ifPresent(lab -> reportMother.within(lab, programArea, jurisdiction));
   }
 
   @Given("the lab(oratory) report is associated with the investigation")
   public void the_lab_report_is_associated_with_the_investigation() {
-    activeReport.maybeActive().ifPresent(lab -> reportMother.createAssociated(lab, activeInvestigation.active()));
+    activeReport
+        .maybeActive()
+        .ifPresent(lab -> reportMother.createAssociated(lab, activeInvestigation.active()));
   }
 
   @Given("the lab(oratory) report has not been processed")
@@ -121,17 +115,20 @@ public class LabReportSteps {
   }
 
   @Given("the lab(oratory) report was ordered by the {organization} facility")
-  public void the_lab_report_was_ordered_by_the_organization(final OrganizationIdentifier organization) {
-    activeReport.maybeActive()
-        .ifPresent(lab -> reportMother.orderedBy(lab, organization));
+  public void the_lab_report_was_ordered_by_the_organization(
+      final OrganizationIdentifier organization) {
+    activeReport.maybeActive().ifPresent(lab -> reportMother.orderedBy(lab, organization));
   }
 
   @Given("the lab(oratory) report was ordered by the provider")
   public void the_lab_report_was_ordered_by_the_provider() {
-    activeReport.maybeActive()
-        .ifPresent(lab -> this.activeProvider.maybeActive()
-            .ifPresent(provider -> reportMother.orderedBy(lab, provider))
-        );
+    activeReport
+        .maybeActive()
+        .ifPresent(
+            lab ->
+                this.activeProvider
+                    .maybeActive()
+                    .ifPresent(provider -> reportMother.orderedBy(lab, provider)));
   }
 
   @Given("the lab(oratory) report was created by {user} on {localDate}")
@@ -146,24 +143,25 @@ public class LabReportSteps {
 
   @Given("the lab(oratory) report was received on {localDate}")
   public void receivedOn(final LocalDate on) {
-    activeReport.maybeActive().ifPresent(lab -> this.reportMother.receivedOn(lab, on.atStartOfDay()));
+    activeReport
+        .maybeActive()
+        .ifPresent(lab -> this.reportMother.receivedOn(lab, on.atStartOfDay()));
   }
 
   @Given("the lab(oratory) report was received on {localDate} at {time}")
   public void receivedOn(final LocalDate on, final LocalTime at) {
-    activeReport.maybeActive().ifPresent(lab -> this.reportMother.receivedOn(lab, LocalDateTime.of(on, at)));
+    activeReport
+        .maybeActive()
+        .ifPresent(lab -> this.reportMother.receivedOn(lab, LocalDateTime.of(on, at)));
   }
 
   @Given("the lab(oratory) report was reported on {localDate}")
   public void reportedOn(final LocalDate on) {
-    activeReport.maybeActive()
-        .ifPresent(report -> reportMother.reportedOn(report, on));
+    activeReport.maybeActive().ifPresent(report -> reportMother.reportedOn(report, on));
   }
 
   @Given("the lab(oratory) report was collected on {localDate}")
   public void collectedOn(final LocalDate on) {
-    activeReport.maybeActive()
-        .ifPresent(report -> reportMother.collectedOn(report, on));
+    activeReport.maybeActive().ifPresent(report -> reportMother.collectedOn(report, on));
   }
-
 }

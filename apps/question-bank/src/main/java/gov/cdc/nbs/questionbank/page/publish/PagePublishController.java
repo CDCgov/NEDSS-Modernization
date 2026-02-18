@@ -24,11 +24,11 @@ public class PagePublishController {
   }
 
   @PutMapping("{id}/publish")
-  public ResponseEntity<Void> publishPage(@PathVariable("id") Long pageId,
+  public ResponseEntity<Void> publishPage(
+      @PathVariable("id") Long pageId,
       @RequestBody PagePublishRequest request,
       @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     pagePublisher.publishPage(pageId, request);
     return ResponseEntity.ok().build();
   }
-
 }

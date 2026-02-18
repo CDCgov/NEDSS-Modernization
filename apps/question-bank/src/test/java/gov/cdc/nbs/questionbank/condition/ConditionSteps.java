@@ -14,5 +14,4 @@ public class ConditionSteps {
   public String condition(final String value) {
     return resolver.resolve(value).orElse(null);
   }
-
 }

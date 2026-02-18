@@ -1,11 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import gov.cdc.nbs.questionbank.page.PageCommand;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +11,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -48,11 +47,8 @@ public class PageCondMapping {
   @Column(name = "last_chg_user_id", nullable = false)
   private Long lastChgUserId;
 
-  public PageCondMapping(
-      final WaTemplate page,
-      final PageCommand.RelateCondition command
-  ) {
-    this.waTemplateUid =page;
+  public PageCondMapping(final WaTemplate page, final PageCommand.RelateCondition command) {
+    this.waTemplateUid = page;
     this.conditionCd = command.condition();
 
     this.addUserId = command.requester();
@@ -61,5 +57,4 @@ public class PageCondMapping {
     this.lastChgUserId = command.requester();
     this.lastChgTime = command.requestedOn();
   }
-
 }

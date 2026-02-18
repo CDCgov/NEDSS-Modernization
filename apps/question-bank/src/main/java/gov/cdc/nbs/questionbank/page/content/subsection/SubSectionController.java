@@ -91,5 +91,4 @@ class SubSectionController {
       @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     validator.validateIfCanBeGrouped(page, subSectionId);
   }
-
 }

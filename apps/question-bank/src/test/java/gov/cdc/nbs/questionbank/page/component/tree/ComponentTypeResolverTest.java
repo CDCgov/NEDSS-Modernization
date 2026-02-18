@@ -1,5 +1,8 @@
 package gov.cdc.nbs.questionbank.page.component.tree;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import gov.cdc.nbs.questionbank.page.component.ComponentNode;
 import gov.cdc.nbs.questionbank.page.component.EntryNode;
 import gov.cdc.nbs.questionbank.page.component.InputNode;
@@ -8,11 +11,7 @@ import gov.cdc.nbs.questionbank.page.component.SelectionNode;
 import gov.cdc.nbs.questionbank.page.component.StaticNode;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 class ComponentTypeResolverTest {
-
 
   @Test
   void should_resolve_page() {
@@ -236,6 +235,5 @@ class ComponentTypeResolverTest {
 
     assertThatThrownBy(() -> ComponentTypeResolver.resolve(1))
         .hasMessageContaining("Component Type: 1");
-
   }
 }

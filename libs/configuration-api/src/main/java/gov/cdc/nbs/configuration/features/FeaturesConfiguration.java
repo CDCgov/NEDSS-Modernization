@@ -22,13 +22,6 @@ class FeaturesConfiguration {
       Deduplication deduplication,
       Patient patient,
       SystemFeatures system) {
-    return () -> new Features(
-        search,
-        address,
-        pageBuilder,
-        deduplication,
-        patient,
-        system);
+    return () -> new Features(search, address, pageBuilder, deduplication, patient, system);
   }
-
 }

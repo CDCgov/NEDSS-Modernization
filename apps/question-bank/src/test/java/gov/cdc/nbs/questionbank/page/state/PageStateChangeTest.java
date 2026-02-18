@@ -1,5 +1,8 @@
 package gov.cdc.nbs.questionbank.page.state;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -14,6 +17,10 @@ import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,40 +28,22 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 class PageStateChangeTest {
 
-  @Mock
-  private WaTemplateRepository templateRepository;
+  @Mock private WaTemplateRepository templateRepository;
 
-  @Mock
-  private WaUiMetadataRepository waUiMetadataRepository;
+  @Mock private WaUiMetadataRepository waUiMetadataRepository;
 
-  @Mock
-  private WANNDMetadataRepository wanndMetadataRepository;
+  @Mock private WANNDMetadataRepository wanndMetadataRepository;
 
-  @Mock
-  private WARDBMetadataRepository wARDBMetadataRepository;
+  @Mock private WARDBMetadataRepository wARDBMetadataRepository;
 
-  @Mock
-  private WaRuleMetaDataRepository waRuleMetaDataRepository;
+  @Mock private WaRuleMetaDataRepository waRuleMetaDataRepository;
 
-  @Mock
-  private PageCondMappingRepository pageConMappingRepository;
+  @Mock private PageCondMappingRepository pageConMappingRepository;
 
-
-
-  @InjectMocks
-  PageStateChanger pageStateChanger;
-
+  @InjectMocks PageStateChanger pageStateChanger;
 
   @Test
   void pageStateUpdateTest() {
@@ -71,7 +60,8 @@ class PageStateChangeTest {
   void pageStateExceptionTest() {
     Long requestId = 1L;
     when(templateRepository.findById(Mockito.anyLong())).thenThrow(new IllegalArgumentException());
-    var exception = assertThrows(PageUpdateException.class, () -> pageStateChanger.savePageAsDraft(requestId));
+    var exception =
+        assertThrows(PageUpdateException.class, () -> pageStateChanger.savePageAsDraft(requestId));
     assertEquals(PageConstants.SAVE_DRAFT_FAIL, exception.getMessage());
   }
 
@@ -79,10 +69,10 @@ class PageStateChangeTest {
   void pageStateNotFoundTest() {
     Long requestId = 1L;
     when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-    var exception = assertThrows(PageUpdateException.class, () -> pageStateChanger.savePageAsDraft(requestId));
+    var exception =
+        assertThrows(PageUpdateException.class, () -> pageStateChanger.savePageAsDraft(requestId));
     assertEquals(PageConstants.SAVE_DRAFT_FAIL, exception.getMessage());
   }
-
 
   @Test
   void testCreateDraftCopy() {
@@ -103,7 +93,6 @@ class PageStateChangeTest {
     List<WaUiMetadata> result = pageStateChanger.copyWaTemplateUIMetaData(oldPage, newPage);
     assertNotNull(result);
     assertEquals(newPage.getId(), result.getFirst().getWaTemplateUid().getId());
-
   }
 
   @Test
@@ -116,7 +105,6 @@ class PageStateChangeTest {
     List<WaRuleMetadata> result = pageStateChanger.copyRules(oldPage.getId(), 11L);
     assertNotNull(result);
   }
-
 
   private WaUiMetadata getwaUiMetaDtum(WaTemplate aPage) {
     WaUiMetadata metadata = new WaUiMetadata();
@@ -151,5 +139,4 @@ class PageStateChangeTest {
 
     return template;
   }
-
 }
