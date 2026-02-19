@@ -16,6 +16,9 @@
   directs incoming requests to the appropriate backend services (such as Modernization UI, Modernization API, and
   Question bank), enabling seamless integration between both the modernized and pre-existing frontend, and multiple
   backend services.
+- [Report Execution API](apps/report-execution/README.md) - A Python-based FastAPI server that facilitates the 
+- management and execution of various reports, both standard and custom.  To be used as the eventual replacement for 
+- SAS-based reports.
 
 ### Libraries
 

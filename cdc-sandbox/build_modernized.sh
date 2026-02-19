@@ -32,7 +32,7 @@ echo "Elasticsearch is ready"
 
 # Start application services (without NiFi) to initialize Elasticsearch indices
 echo "Starting modernized application services"
-docker compose -f $BASE/docker-compose.yml up modernization-api pagebuilder-api nbs-gateway keycloak --build -d
+docker compose -f $BASE/docker-compose.yml up modernization-api pagebuilder-api nbs-gateway report-execution keycloak --build -d
 
 echo "Waiting for Elasticsearch indices to be created..."
 attempts=0

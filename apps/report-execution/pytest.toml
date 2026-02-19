@@ -1,0 +1,13 @@
+[pytest]
+pythonpath = ["."]
+testpaths = ["tests"]
+python_files = ["*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--strict-config",
+    "--showlocals",
+    "--import-mode=importlib"
+]
