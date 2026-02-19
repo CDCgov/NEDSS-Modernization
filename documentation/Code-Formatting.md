@@ -24,4 +24,4 @@ To fix the code formatting (also runs on build):
 
 ### Editor Setup
 
-While the spotless formatting is the source of truth for what is correct. You can set up your editor to directly use the [google-java-format](https://github.com/google/google-java-format?tab=readme-ov-file) so functions like format on save are available.
+While the spotless formatting is the source of truth for what is correct. You can set up your editor to directly use the [google-java-format](https://github.com/google/google-java-format?tab=readme-ov-file#third-party-integrations) so functions like format on save are available.
