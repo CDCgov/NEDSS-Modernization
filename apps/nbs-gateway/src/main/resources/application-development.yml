@@ -23,3 +23,6 @@ nbs:
             enabled: true
           edit:
             enabled: true
+    report:
+      execution:
+        enabled: true
