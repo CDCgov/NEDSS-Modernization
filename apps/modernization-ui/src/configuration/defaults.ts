@@ -63,6 +63,11 @@ const defaultFeatures: Features = {
         management: {
             enabled: false
         }
+    },
+    report: {
+        execution: {
+            enabled: false
+        }
     }
 };
 
