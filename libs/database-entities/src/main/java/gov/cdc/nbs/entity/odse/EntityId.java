@@ -32,8 +32,10 @@ public class EntityId implements Identifiable<EntityIdId> {
   )
   private NBSEntity nbsEntityUid;
 
+
+
   @Column(name = "assigning_authority_cd", length = 199)
-  private String assigningAuthorityCd;
+      private String assigningAuthorityCd;
 
   @Column(name = "root_extension_txt", length = 100)
   private String rootExtensionTxt;
