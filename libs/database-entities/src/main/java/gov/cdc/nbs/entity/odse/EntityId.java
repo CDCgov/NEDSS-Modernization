@@ -6,10 +6,8 @@ import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientIdentificationHistoryListener;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.function.Predicate;
-
 
 @Entity
 @Table(name = "Entity_id")
@@ -20,22 +18,18 @@ public class EntityId implements Identifiable<EntityIdId> {
     return input -> input.recordStatus.isActive();
   }
 
-  @EmbeddedId
-  private EntityIdId id;
+  @EmbeddedId private EntityIdId id;
 
   @MapsId("entityUid")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "entity_uid", nullable = false)
   @SuppressWarnings(
       //  Bidirectional mappings require knowledge of each other
-      "javaarchitecture:S7027"
-  )
+      "javaarchitecture:S7027")
   private NBSEntity nbsEntityUid;
 
-
-
   @Column(name = "assigning_authority_cd", length = 199)
-      private String assigningAuthorityCd;
+  private String assigningAuthorityCd;
 
   @Column(name = "root_extension_txt", length = 100)
   private String rootExtensionTxt;
@@ -46,24 +40,18 @@ public class EntityId implements Identifiable<EntityIdId> {
   @Column(name = "as_of_date")
   private LocalDate asOfDate;
 
-  @Embedded
-  private Audit audit;
+  @Embedded private Audit audit;
 
-  @Embedded
-  private RecordStatus recordStatus;
+  @Embedded private RecordStatus recordStatus;
 
-  @Embedded
-  private Status status;
+  @Embedded private Status status;
 
-  protected EntityId() {
-
-  }
+  protected EntityId() {}
 
   public EntityId(
       final NBSEntity nbs,
       final EntityIdId identifier,
-      final PatientCommand.AddIdentification added
-  ) {
+      final PatientCommand.AddIdentification added) {
     this.nbsEntityUid = nbs;
     this.id = identifier;
 
