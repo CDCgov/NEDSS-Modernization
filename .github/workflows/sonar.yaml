@@ -55,6 +55,17 @@ jobs:
       contents: read
 
     steps:
+      - name: Generate GitHub App Token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            NEDSSDB
+            NEDSSDev
+
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
@@ -83,14 +94,12 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ env.accountid }}:role/github-actions-nbs-deployment-role"
           aws-region: us-east-2
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Login to ECR docker registry
-        uses: docker/login-action@v2
+      - name: Login to GHCR
+        uses: docker/login-action@v3
         with:
-          registry: ${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and analyze
         working-directory: ./
@@ -101,7 +110,7 @@ jobs:
           DATABASE_PASSWORD: ${{ env.test_database_password }}
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
-        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:6.0.17.1
+        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/${{ github.repository_owner }}/nedssdb:6.0.17_base_with_templates_and_std-latest
 
       - name: Zip test report
         run: zip -r test-report.zip ./build/reports/*
