@@ -24,14 +24,6 @@ class FeaturesConfiguration {
       Patient patient,
       SystemFeatures system,
       Report report) {
-    return () -> new Features(
-        search,
-        address,
-        pageBuilder,
-        deduplication,
-        patient,
-        system,
-        report);
+    return () -> new Features(search, address, pageBuilder, deduplication, patient, system, report);
   }
-
 }
