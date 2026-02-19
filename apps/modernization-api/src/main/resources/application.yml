@@ -87,6 +87,13 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: false
+  liquibase:
+    user: ${nbs.datasource.username}
+    password: ${nbs.datasource.password}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    odse:
+      change-log: classpath:db/changelog/odse-changelog.yaml
+      url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};databaseName=nbs_odse;encrypt=true;trustServerCertificate=true;
 
   jpa:
     properties:
