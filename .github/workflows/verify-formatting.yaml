@@ -17,6 +17,9 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v6
+        with:
+            # need all of the branches to do the diff
+            fetch-depth: 0
 
       - name: Set up JDK 21
         uses: actions/setup-java@v5
