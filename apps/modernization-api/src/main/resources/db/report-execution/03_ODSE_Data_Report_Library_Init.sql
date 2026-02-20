@@ -4,27 +4,24 @@ from existing report documentation.
 */
 
 USE [NBS_ODSE]
-GO
 
 IF NOT EXISTS (SELECT * FROM [dbo].[Report_Library])
 BEGIN
 
     IF OBJECT_ID('tempdb..#TempSasPrograms') IS NOT NULL DROP TABLE #TempSasPrograms;
-    GO
 
     CREATE TABLE #TempSasPrograms(
         library_name varchar(50) NOT NULL,
-        desc_text varchar(300) NOT NULL,
+        desc_txt varchar(300) NOT NULL,
     );
-    GO
 
     INSERT INTO #TempSasPrograms
-    VALUES (
+    VALUES
         ('CA01_DIAGNOSIS.SAS', 'CA01: Chalk Talk Report: Case. This report includes information on the patients in the same Lot (Epi-linked group) for a specific disease (e.g., named, named by, interview date, exposure, treatments, signs/symptoms).'),
         ('CA02_LOT.SAS', 'CA02: Chalk Talk Report: Lot. This report includes information on the patients in the same Lot (Epi-linked group) for a specific disease (e.g., Patient summary, Case information, interview date, who was named, exposure with contact, contact’s dispositions, and patient’s signs/symptoms).'),
         ('CA03.SAS', 'CA03: Chalk Talk Report: Marginals. This report includes information on the patients in the same Lot (Epi-linked group) for a specific disease (e.g., Patient summary and case information and any marginals named).'),
-        ('CA04.SAS', 'CA04: Disease by Hangout Report: Detailed. This report gives a listing of social venues where infected patients claimed to meet sex partners or engage in sexual activities.  The listing also displays the number of cases by diagnosis, a listing of associated cases, and a listing of any cases found through screenings completed at the venue. This report also contains a listing of cohorts found through the screening efforts.  This report can assist in identifying potential screening sites or to evaluate cases found during screenings.'),
-        ('CA05.SAS', 'CA05: Disease by Hangout Report: Summary. This report gives a listing of social venues where infected patients claimed to meet sex partners or engage in sexual activities.  The listing also displays the number of cases by diagnosis'  ),
+        ('CA04.SAS', 'CA04: Disease by Hangout Report: Detailed. Gives a listing of social venues where infected patients claimed to meet sex partners or engage in sexual activities.'),
+        ('CA05.SAS', 'CA05: Disease by Hangout Report: Summary. Gives a listing of social venues where infected patients claimed to meet sex partners or engage in sexual activities.  The listing also displays the number of cases by diagnosis'  ),
         ('Case_Verification_Report.SAS', 'TB Case Verification Report - 2020'),
         ('RVCTNBSCUSTOM.SAS', 'Default library recommended for tabular. Formats the work query results and checks for result sizes and returns html if run, csv if exportNBSSR00001.SAS 2 Year Disease Count(year to date) with Percentage Change, by Geographic Area'),
         ('NBSSR00002.SAS', 'SR2: Counts of Reportable Diseases by County for Selected Time frame. Report demonstrates, in table form, the total number of Investigation(s) [both Individual and Summary] by County irrespective of Case Status.'),
@@ -64,57 +61,52 @@ BEGIN
         ('PA01_STD.SAS', 'PA01: Case Management Report - STD'),
         ('PA02_HIV.SAS', 'PA02: Field Investigation Outcomes - HIV'),
         ('PA02_STD.SAS', 'PA02: Field Investigation Outcomes - STD'),
-        ('PA03.SAS', 'PA03: Internet Partner Services Report. This report shows the number of cases, sexual contacts, social contacts, and associates with and without internet partner services follow-up initiated for a given time period and disease. Initiated partners and clusters (those initiated for Field Follow-up, secondary referral or record search closure) named by the patient are considered.  This report provides the contact and cluster indices for cases with and without internet partners.  For those cases where internet partner services are utilized, this report also lists the Internet Outcomes by partners, social contacts, and associates.'),
-        ('PA04_HIV.SAS', 'PA04: Program Indicator Report. The Program Indicator Report is intended to illustrate the success of an STD Program as a whole rather than by individual worker by outlining program indicator elements. Hence, information in this report is related to the success of interview (original and re-interview) and field efforts, not to the worker responsible for the activity. Indices are computed in the same fashion. All elements are respective of closed cases only.'),
-        ('PA04_STD.SAS', 'PA04: Program Indicator Report. The Program Indicator Report is intended to illustrate the success of an STD Program as a whole rather than by individual worker by outlining program indicator elements. Hence, information in this report is related to the success of interview (original and re-interview) and field efforts, not to the worker responsible for the activity. Indices are computed in the same fashion. All elements are respective of closed cases only.'),
+        ('PA03.SAS', 'PA03: Internet Partner Services Report. This report shows the number of cases, sexual contacts, social contacts, and associates with and without internet partner services follow-up initiated for a given time period and disease.'),
+        ('PA04_HIV.SAS', 'PA04: Program Indicator Report. The Program Indicator Report is intended to illustrate the success of an STD Program as a whole rather than by individual worker by outlining program indicator elements.'),
+        ('PA04_STD.SAS', 'PA04: Program Indicator Report. The Program Indicator Report is intended to illustrate the success of an STD Program as a whole rather than by individual worker by outlining program indicator elements.'),
         ('PA05.SAS', 'PA 5: Worker Interview Activity Report. The Worker Interview Activity Report details volume of interviews, as well as success and speed of interviewing activity.'),
         ('POTNTL_DUP_INV_SUM.SAS', 'Potential Duplicate Investigations. '),
         ('QA01.SAS', 'QA01: Interview Record Listing Report. This report generates a list, by name, of individuals interviewed during the specified time period.'),
         ('QA03.SAS', 'QA03: Case Listing. This report generates a list, by name, of individuals with cases within a designated time period.'),
         ('QA04.SAS', 'QA04: Cases Missing Lab or Treatment. This report generates a list, by name, of individuals with cases that are not linked to a positive lab test record (for this reported case) or to a treatment record.'),
-        ('QA05.SAS', 'QA05: Number of Records Entered by User ID. This report produces a table showing data entry user quick code by the number and type of records the user entered.  Types of records include Reactor Reports (Manual Lab Report and Morbidity Reports), Contact Records added to investigations, and OOJ Referrals (investigations created from patient file).'),
-        ('QA06.SAS', 'QA06: Patients with Multiple Cases. This report generates a list, by name, of individuals who have multiple occasions of cases within a time period. Any confirmed or probable patient that has 2 or more STD or HIV investigations during the time period specified is included in the report.'),
+        ('QA05.SAS', 'QA05: Number of Records Entered by User ID. This report produces a table showing data entry user quick code by the number and type of records the user entered.'),
+        ('QA06.SAS', 'QA06: Patients with Multiple Cases. This report generates a list, by name, of individuals who have multiple occasions of cases within a time period.'),
         ('QA07_30.SAS', 'QA07: Duplicate Cases - 30 Days'),
         ('QA07_60.SAS', 'QA07: Duplicate Cases - 60 Days'),
         ('QA07_90.SAS', 'QA07: Duplicate Cases - 90 Days'),
         ('QA07.SAS', 'QA07: Duplicate Cases'),
         ('QA10.SAS', 'QA10: Interviews - Pregnant/Recent Birth. This report generates a list, by name, of females interviewed that have a current or past year pregnancy status of Yes during the specified time period.'),
         ('TB_SUMMARY_COUNT_DATE.SAS', 'TB Record Count - Summary Report by Count Date - 2020 RVCT'),
-        ('TB_SUMMARY_COUNT.SAS', 'TB Record Count - Summary Report by Report Date - 2020 RVCT'),
-    );
-    GO
+        ('TB_SUMMARY_COUNT.SAS', 'TB Record Count - Summary Report by Report Date - 2020 RVCT')
+    ;
 
     INSERT INTO [dbo].[Report_Library] (
-    library_name,
-    desc_text,
-    runner,
-    is_builtin_ind,
-    add_time,
-    add_user_id,
-    last_chg_time,
-    last_chg_user_id 
+        library_name,
+        desc_txt,
+        runner,
+        is_builtin_ind,
+        add_time,
+        add_user_id,
+        last_chg_time,
+        last_chg_user_id
     ) SELECT
-        COALESCE(l.location, t.library_name),
-        COALESCE(t.desc_text, l.location),
+        COALESCE(l.location, tmp.library_name),
+        COALESCE(tmp.desc_txt, l.location),
         'sas',
-        IF t.desc_text IS NOT NULL THEN 'Y' ELSE 'N' END,
+        IIF(tmp.desc_txt IS NOT NULL, 'Y', 'N'),
         CURRENT_TIMESTAMP,
         99999999,
         CURRENT_TIMESTAMP,
         99999999
     FROM (SELECT distinct r.location from [dbo].[Report] r) l
     FULL JOIN #TempSasPrograms tmp on UPPER(l.location) = UPPER(tmp.library_name);
-    GO
 
-    UPDATE [dbo].[Report] r
+    UPDATE [dbo].[Report]
     SET 
         library_uid = rl.library_uid
     FROM [dbo].[Report_Library] rl
-    WHERE UPPER(rl.library_name) = UPPER(r.location);
-    GO
+    WHERE UPPER(rl.library_name) = UPPER(location);
 
     IF OBJECT_ID('tempdb..#TempSasPrograms') IS NOT NULL DROP TABLE #TempSasPrograms;
-    GO
 
 END
-GO

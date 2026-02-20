@@ -7,8 +7,5 @@ than in 01_ODSE_Strucutre_Report_Library_Create.sql because the initial
 
 USE [NBS_ODSE]
 
-GO
-
 ALTER TABLE [dbo].[Report]
     ALTER COLUMN library_uid bigint NOT NULL;
-GO
