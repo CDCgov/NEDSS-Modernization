@@ -110,7 +110,7 @@ jobs:
           DATABASE_PASSWORD: ${{ env.test_database_password }}
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
-        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/${{ github.repository_owner }}/nedssdb:6.0.17_base_with_templates_and_std-latest
+        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/${{ github.repository_owner }}/nedssdb:latest
 
       - name: Zip test report
         run: zip -r test-report.zip ./build/reports/*
