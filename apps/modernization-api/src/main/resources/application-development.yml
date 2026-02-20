@@ -75,4 +75,6 @@ nbs:
           enabled: true
           merge-history:
             enabled: false
-
+      report:
+        execution:
+          enabled: true

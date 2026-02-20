@@ -16,6 +16,11 @@ nbs:
     server: ${nbs.wildfly.host}:${nbs.wildfly.port}
     port: 7001
     url: http://${nbs.wildfly.server}
+  report:
+    execution:
+      host: localhost
+      port: 8001
+      url: http://${nbs.report.execution.host}:${nbs.report.execution.port}
   datasource:
     server: localhost
     port: 1433
