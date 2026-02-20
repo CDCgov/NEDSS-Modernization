@@ -102,9 +102,11 @@ jobs:
         run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/${{ github.repository_owner }}/nedssdb:latest
 
       - name: Zip test report
+        if: always()
         run: zip -r test-report.zip ./build/reports/*
 
       - name: Publish Testing Reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: testing
