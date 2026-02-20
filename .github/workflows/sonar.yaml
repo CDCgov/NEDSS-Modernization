@@ -76,6 +76,7 @@ jobs:
         run: |
           github_repo_name="$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)"        
           echo "github_repo_name=$github_repo_name" >> $GITHUB_ENV
+          echo "github_repo_owner=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -99,7 +100,7 @@ jobs:
           DATABASE_PASSWORD: ${{ env.test_database_password }}
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
-        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/${{ github.repository_owner }}/nedssdb:latest
+        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/${{ env.github_repo_owner }}/nedssdb:latest
 
       - name: Publish Testing Reports
         if: always()
