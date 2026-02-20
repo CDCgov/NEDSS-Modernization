@@ -6,25 +6,35 @@
 
 ### Application
 
-- [Modernization API](apps/modernization-api/README.md) - Provides backend services and endpoints to support the searching and management of patients, requests related to configuration, user information, value sets, and other core functionalities required by the frontend and other services.
+- [Modernization API](apps/modernization-api/README.md) - Provides backend services and endpoints to support the
+  searching and management of patients, requests related to configuration, user information, value sets, and other core
+  functionalities required by the frontend and other services.
 - [Modernization UI](apps/modernization-ui/README.md)
-- [Question Bank](apps/question-bank/README.md) - Provides the backend services and endpoints for to support modernized Page Builder.
-- [NBS Gateway](apps/nbs-gateway/README.md) - A reverse proxy and routing layer for the NEDSS Modernization project. It directs incoming requests to the appropriate backend services (such as Modernization UI, Modernization API, and Question bank), enabling seamless integration between both the modernized and pre-existing frontend, and multiple backend services.
-- [Report Execution API](apps/report-execution/README.md) - A Python-based FastAPI server that facilitates the management and execution of various reports, both standard and custom.  To be used as the eventual replacement for SAS-based reports.
+- [Question Bank](apps/question-bank/README.md) - Provides the backend services and endpoints for to support modernized
+  Page Builder.
+- [NBS Gateway](apps/nbs-gateway/README.md) - A reverse proxy and routing layer for the NEDSS Modernization project. It
+  directs incoming requests to the appropriate backend services (such as Modernization UI, Modernization API, and
+  Question bank), enabling seamless integration between both the modernized and pre-existing frontend, and multiple
+  backend services.
+- [Report Execution API](apps/report-execution/README.md) - A Python-based FastAPI server that facilitates the 
+- management and execution of various reports, both standard and custom.  To be used as the eventual replacement for 
+- SAS-based reports.
 
 ### Libraries
 
 Reusable code is organized into three main types:
 
 - **Feature libraries** provide modular endpoints or features that can be integrated into applications.
-- **Utility libraries** offer shared components for common tasks and standardized interactions with NBS database, and security model.
+- **Utility libraries** offer shared components for common tasks and standardized interactions with NBS database, and
+  security model.
 - **Testing libraries** supply tools and mock servers to support automated testing across modernization services.
 
 These categories help maintain a clear separation of concerns and promote code reuse throughout the project.
 
 #### Feature libraries
 
-Standalone modules that provide specific endpoints or features (e.g., configuration, user info, value sets, redirects) which can be packaged within other applications.
+Standalone modules that provide specific endpoints or features (e.g., configuration, user info, value sets, redirects)
+which can be packaged within other applications.
 
 - [Configuration](libs/configuration-api) - An endpoint to expose externalized configuration to the `modernization-ui`.
 - [Me-api](libs/me-api) - An endpoint that provides information about the currently logged-in user.
@@ -33,7 +43,8 @@ Standalone modules that provide specific endpoints or features (e.g., configurat
 
 #### Utility libraries
 
-Shared components that offer common utilities and standardized interactions with NBS data and the WildFly application, such as auditing, authentication, authorization, data flattening, and session propagation.
+Shared components that offer common utilities and standardized interactions with NBS data and the WildFly application,
+such as auditing, authentication, authorization, data flattening, and session propagation.
 
 - [Accumulation](libs/accumulation) - Flattening the results of select statements that join multiple tables into single
   objects or lists of objects grouped by a common identifier.
@@ -46,12 +57,14 @@ Shared components that offer common utilities and standardized interactions with
   between `wildfly` and `spring-boot` based services.
 - [Database-Entities](libs/database-entities/README.md)
 - [Event-Schema](libs/event-schema/README.md)
-- [Id Generator](libs/id-generator/README.md) - A Java implementation of the `getNextUid_sp` stored procedure used to create identifiers within NBS.
+- [Id Generator](libs/id-generator/README.md) - A Java implementation of the `getNextUid_sp` stored procedure used to
+  create identifiers within NBS.
 - [Web](libs/web) - Standardizes handling of Cookie management and provides a common `Response` pattern.
 
 #### Testing libraries
 
-Modules that implement reusable feature test steps and mock servers to support automated testing across modernization services, including user setup, database containers, HTTP response verification, and test data management.
+Modules that implement reusable feature test steps and mock servers to support automated testing across modernization
+services, including user setup, database containers, HTTP response verification, and test data management.
 
 - [Auth](libs/testing/auth) and [Auth Cucumber](libs/testing/auth-cucumber) - Enables feature test steps for
   establishing users and permissions.
@@ -79,26 +92,39 @@ The [CDC Sandbox](cdc-sandbox/README.md) provides containers to support local de
 
 Some containers within the `cdc-sandbox` directory require sensitive values be set prior to building.
 
-The `sample.env` has reasonable defaults for local development
+The project includes a `sample.env` file with reasonable defaults for local development. The `cdc-sandbox` directory
+has a script to create a new `.env` file and export those values.
 
 ```sh
-cp sample.env .env
+cd cdc-sandbox
+source ./check_env.sh
 ```
 
-| Environment variable             | Container          | Notes                                               |
-| -------------------------------- | ------------------ | --------------------------------------------------- |
-| DATABASE_PASSWORD                | nbs-mssql, nifi    | 8+ letters with upper, lower, special char          |
-| NIFI_PASSWORD                    | nifi               |                                                     |
-| KEYCLOAK_ADMIN_PASSWORD          | keycloak           |                                                     |
-| PARAMETER_SECRET                 | modernization-api  | generated by `openssl rand -base64 32 | cut -c1-32` |
-| TOKEN_SECRET                     | modernization-api  | generated by `openssl rand -base64 64`              |
+> **Note**: You must use `source` (or `.`) to ensure the variables persist in your current shell. Running the script as
+> `./check_env.sh` will not export the variables to your active session.
+>
+> **Windows Users**: Use Git Bash (included with Git for Windows) or WSL. Standard PowerShell or Command Prompt do not
+> support this syntax.
+
+| Environment variable    | Container         | Notes                                      |
+|-------------------------|-------------------|--------------------------------------------|
+| DATABASE_PASSWORD       | nbs-mssql, nifi   | 8+ letters with upper, lower, special char |
+| NIFI_PASSWORD           | nifi              |                                            |
+| KEYCLOAK_ADMIN_PASSWORD | keycloak          |                                            |
+| PARAMETER_SECRET        | modernization-api | generated by `openssl rand -base64 32      | cut -c1-32` |
+| TOKEN_SECRET            | modernization-api | generated by `openssl rand -base64 64`     |
+
+If you need to customize these values, edit the .env file created in the root directory and run `source ./check_env.sh`
+again to apply the changes.
 
 ### Running everything inside docker
 
 1. Gain access to the [NBS source code repository](https://github.com/cdcent/NEDSSDev) _this is required to build the
-   wildfly container_. The docker compose assumes the `NEDSSDev` repo is named as such and cloned as a sibling to this repo. If that is not the case, set the environment `NEDSSDEV_PATH` to the appropriate location.
+   wildfly container_. The docker compose assumes the `NEDSSDev` repo is named as such and cloned as a sibling to this
+   repo. If that is not the case, set the environment `NEDSSDEV_PATH` to the appropriate location.
 
-   Ensure `NEDSSDev` is checked out to the version you want to use and properly instantiated (including DB submodule - see its README for details)
+   Ensure `NEDSSDev` is checked out to the version you want to use and properly instantiated (including DB submodule -
+   see its README for details)
 
 2. Navigate to the `cdc-sandbox` directory
 
@@ -185,7 +211,7 @@ The `nbs-gateway` container is configured to route to the containerized services
 achieved by altering the configuration to point to the local instances.
 
 | Name                     | Default             | Description                                                     |
-| ------------------------ | ------------------- | --------------------------------------------------------------- |
+|--------------------------|---------------------|-----------------------------------------------------------------|
 | MODERNIZATION_UI_SERVER  | `modernization-ui`  | The host name of the server that provides the frontend UI.      |
 | MODERNIZATION_UI_PORT    | `80`                | The port the frontend UI is served from.                        |
 | MODERNIZATION_API_SERVER | `modernization-api` | The host name of the server that provides the backend API.      |

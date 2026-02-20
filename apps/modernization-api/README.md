@@ -1,88 +1,135 @@
 # National Electronic Disease Surveillance System (NEDSS) Modernization API
 
-## Running
+## Table of Contents
 
-### Prerequisites
+- [Prerequisites](#-prerequisites)
+- [Initial Setup](#-initial-setup)
+- [Development Workflow](#-development-workflow)
+- [Running the Application](#-running-the-application)
+- [Tests](#-tests)
+- [API Documentation](#-api-documentation-and-tools)
 
-1. Java 21
-2. Node / NPM
-3. nbs-mssql, elasticsearch, and nifi docker containers are running. See [CDC Sandbox](../../cdc-sandbox/README.md)
-4. `DATABASE_PASSWORD`, `TOKEN_SECRET` and `PARAMETER_SECRET` environment variables are set or relevant properties set
-   in an `application-local.yml`
+---
 
-### VSCode
+## Prerequisites
 
-1. In the ui directory run `npm install`
-2. In the modernization-api directory run `./gradlew build`
-    - Alternatively, from the root directory run `./gradlew :modernization-api:buildDependents`
-3. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
-4. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
+Ensure you have the following installed:
 
-## Tests
+* **Java 21**
+* **Node.js & NPM**
+* **Docker** (for mssql, elasticsearch, and nifi)
 
-Prior to running tests the `cdc-sandbox/test-db/` image must be built. To build this image run the following command in
-the `cdc-sandbox` directory.
+---
 
-```sh
-docker compose up test-db -d
-```
+## 🛠 Initial Setup
 
-To run all tests:
+### 1. Environment & Secrets
 
-```bash
-./gradlew :modernization-api:test
-```
-
-To execute specific tagged feature tests:
+This project uses a `.env` file for local configuration. The provided script initializes this file and exports
+variables to your current session.
 
 ```shell
-./gradlew -Dtest.single="RunCucumber" -Dcucumber.filter.tags="@patient_create" :modernization-api:test
+# Initialize and load environment variables
+source ./check_env.sh
 ```
 
-## Running
+> [!IMPORTANT] You must use the source command. Running `./check_env.sh` directly will fail to persist variables in your
+> active terminal.
+>
+> * Windows users should use Git shell or WSL.
 
-The Modernization API can be started from the root directory by executing:
+### 2. Infrastructure (Containers)
 
-```bash
+Build the necessary database and support images within the cdc-sandbox directory:
+
+```shell
+cd cdc-sandbox
+./build_all.sh
+```
+
+Note: Containers do not need to be running to execute tests, but the images must be built.
+
+### 3. Application Dependencies
+
+```shell
+# Install UI dependencies
+cd ui && npm install
+
+# Build the API (from root)
+./gradlew :modernization-api:buildDependents
+```
+
+## 💻 Development Workflow
+
+### VSCode Integration
+
+1. In the ui directory run npm install
+2. In the modernization-api directory run ./gradlew build
+    1. Alternatively, from the root directory run ./gradlew :modernization-api:buildDependents
+3. Press Cmd+Shift+P and run Java: Clean Language Server Workspace
+4. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
+
+### Debugging
+
+The `bootRun` task supports remote debugging on port `5005` allowing any Java Debugger to attach without having to
+restart the application.
+
+The debug port can be changed at runtime by setting the `debug.port` property. For example, the debug port can be set
+to 8181 by executing.
+
+```shell
+./gradlew -Pdebug.port=8181 :modernization-api:bootRun
+```
+
+## 🚀 Running the Application
+
+### Standard Start
+
+```shell
 ./gradlew :modernization-api:bootRun
 ```
 
-It assumes that Elasticsearch and MSSQL Server are running on `localhost`. Preconfigured containers are available in
-the [CDC Sandbox](../../cdc-sandbox/README.md), `cdc-sandbox/elasticsearch` and `cdc-sandbox/db`.
+It assumes that Elasticsearch and MSSQL Server are running on localhost. Preconfigured containers are available in the
+CDC Sandbox, cdc-sandbox/elasticsearch and cdc-sandbox/db.
 
-### Connecting to Kafka
+### With Kafka Enabled
 
-The Modernization API can connect to the Kafka instance defined in `cdc-sandbox/kafka` by starting the service
-with `kafka.enabled` set to true.
+The Modernization API can connect to the Kafka instance defined in cdc-sandbox/kafka by starting the service with
+kafka.enabled set to true.
 
 ```shell
 ./gradlew :modernization-api:bootRun --args='--kafka.enabled'
 ```
 
-### Debugging
+## 🧪 Tests
 
-The `bootRun` task is configured to allow remote debugging on port `5005` allowing any Java Debugger to attach without
-having to restart the application. The debug port can be changed at runtime by setting the `debug.port` property.
+### Run all tests:
 
-For example, the debug port can be set to `8181` by executing.
-
-```bash
-./gradlew -Pdebug.port=8181 :modernization-api:bootRun
+```shell
+./gradlew :modernization-api:test
 ```
 
-## Authentication
+### Run specific Cucumber features:
+
+```shell
+./gradlew -Dtest.single="RunCucumber" -Dcucumber.filter.tags="@patient_create" :modernization-api:test
+```
+
+## 📖 API Documentation and Tools
+
+### Authentication
 
 There are two modes of authentication; one to support the existing NBS 6 authentication and OpenID Connect (OIDC)
 authentication. NBS 6 authentication is enabled by default.
 
-### NBS 6 Authentication
+#### NBS 6 Authentication
 
 Uses the JSESSIONID created by the NBS 6 instance to validate if the user has been authenticated by searching for an
 entry in the `Security_Log` table. If a valid entry exists a token is generated.
 
 Enabled when `nbs.security.oidc.enabled` is `false` or not present.
 
-### OpenID Connect (OIDC)
+#### OpenID Connect (OIDC)
 
 The `modernization-api` service can be configured to act as an OIDC Resource Server by
 setting `nbs.security.oidc.enabled` to `true` and providing the `nbs.security.oidc.uri`. The JWT passed in
@@ -97,18 +144,18 @@ table.
 | nbs.security.oidc.base     | `/realms/nbs-users`                                                                  | The path to the OIDC endpoints                                              |
 | nbs.security.oidc.uri      | `${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}` | The URI for the OIDC issuer                                                 |
 
-## GraphQL
+### GraphQL
 
 The project utilizes GraphQL through
 the [spring-boot-starter-graphql](https://docs.spring.io/spring-graphql/docs/current/reference/html/) dependency. With
 the api running an interface is available at [/graphiql](http://localhost:8080/graphiql?path=/graphql#) for testing
 
-## Swagger
+### Swagger
 
 A swagger page is available
 at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
-## Configuration
+## ⚙️ Configuration
 
 Spring Config allows configuration values to be overwritten at deployment. Values can be set through Java System
 Variables,
