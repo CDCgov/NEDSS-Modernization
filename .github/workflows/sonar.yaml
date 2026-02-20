@@ -100,7 +100,12 @@ jobs:
           DATABASE_PASSWORD: ${{ env.test_database_password }}
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
-        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/$github_repo_owner/nedssdb:latest
+        run: |
+          # Pre-pull the image so Testcontainers finds it locally
+          docker pull ghcr.io/$github_repo_owner/nedssdb:latest
+          
+          # Run the build
+          ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/$github_repo_owner/nedssdb:latest
 
       - name: Publish Testing Reports
         if: always()
