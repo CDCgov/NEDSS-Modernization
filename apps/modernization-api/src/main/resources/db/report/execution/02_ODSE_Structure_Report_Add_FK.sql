@@ -1,9 +1,5 @@
 /*
-Create the `NBS_ODSE..Report_Library` table and add FK to it from `NBS_ODSE..Report`
-
-The Report_Library table contains metadata on all of the libraries available to NBS for running reports in application.
-The `location` column of the `Report` table currently tracks this as a SAS file name. The metadata enables better UX and checks
-that the reports can exist. It also enables running of NBS 6 and NBS 7 reporting modules in parallel.
+Add foreign key from `NBS_ODSE..Report` to `NBS_ODSE..Report_library`
 */
 
 USE [NBS_ODSE]

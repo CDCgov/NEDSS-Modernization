@@ -1,6 +1,6 @@
 /*
 Populate the new Report_Library table with data from the Report table in combination with descriptions gathered
-from existing report documentation.
+from existing library documentation.
 */
 
 USE [NBS_ODSE]
@@ -80,6 +80,8 @@ BEGIN
         ('TB_SUMMARY_COUNT.SAS', 'TB Record Count - Summary Report by Report Date - 2020 RVCT')
     ;
 
+    -- Create a row for all known libraries from the temp table and all libraries
+    -- actually used in the Report table today
     INSERT INTO [dbo].[Report_Library] (
         library_name,
         desc_txt,
@@ -101,6 +103,7 @@ BEGIN
     FROM (SELECT distinct r.location from [dbo].[Report] r) l
     FULL JOIN #TempSasPrograms tmp on UPPER(l.location) = UPPER(tmp.library_name);
 
+    -- Insert foreign keys from Report to Report_library based on inserted data
     UPDATE [dbo].[Report]
     SET 
         library_uid = rl.library_uid
