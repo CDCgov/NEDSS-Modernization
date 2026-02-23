@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnProperty(prefix = "spring.liquibase", name = "enabled", havingValue = "true")
 public class LiquibaseConfig {
 
   @Value("${spring.liquibase.driver-class-name}")
