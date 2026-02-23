@@ -95,8 +95,9 @@ spring:
   liquibase:
     enabled: false
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    report-execution:
-      change-log: classpath:db/changelog/report-execution-changelog.yml
+    report:
+      execution:
+        change-log: classpath:db/changelog/report-execution-changelog.yml
   jpa:
     properties:
       hibernate:

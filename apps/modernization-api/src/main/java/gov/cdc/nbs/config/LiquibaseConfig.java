@@ -28,7 +28,7 @@ public class LiquibaseConfig {
   private String dbUrl;
 
   @Bean
-  @ConfigurationProperties(prefix = "spring.liquibase.report-execution")
+  @ConfigurationProperties(prefix = "spring.liquibase.report.execution")
   @ConditionalOnProperty(
       prefix = "nbs.ui.features.report.execution",
       name = "enabled",
