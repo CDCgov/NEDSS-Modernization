@@ -33,11 +33,17 @@ jobs:
             NEDSSDB
             NEDSSDev
 
+      - name: Get GitHub App User ID
+        id: get-user-id
+        run: echo "user-id=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.CDCENT_GH_APP_ID }}
+          username: ${{ steps.get-user-id.outputs.user-id }}
           password: ${{ steps.app-token.outputs.token }}
       
       - name: Run containers
