@@ -1,0 +1,32 @@
+services:
+  nbs-mssql:
+    image: ${DB_IMAGE:-ghcr.io/cdcent/nedssdb:latest}
+    platform: linux/amd64
+    container_name: "${COMPOSE_PROJECT_NAME}-nbs-mssql"
+    ports:
+      - 1433:1433
+    environment:
+      - DATABASE_VERSION=${DB_VERSION:-6.0.18.1}
+      - RUN_SEEDING=true
+      - DATABASE_PASSWORD=${DB_PASSWORD:-PizzaIsGood33!}
+    volumes:
+      - nbs-mssql-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/db_ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  wildfly:
+    image: ${WILDFLY_IMAGE:-ghcr.io/cdcent/nedssdev:${DB_VERSION:-6.0.18.1}}
+    container_name: "${COMPOSE_PROJECT_NAME}-wildfly"
+    depends_on:
+      nbs-mssql:
+        condition: service_healthy
+    ports:
+      - 7001:7001
+      - 8787:8787
+      - 9990:9990
+
+volumes:
+  nbs-mssql-data:

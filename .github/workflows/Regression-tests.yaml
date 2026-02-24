@@ -1,8 +1,9 @@
 name: Regression tests
 on:
-  schedule:
-    # weekdays at 7am UTC -> 3am EST
-    - cron: "0 7 * * 1-5"
+  pull_request:
+  push:
+      branches:
+        - main
   workflow_dispatch:
     inputs:
       spec:
@@ -10,14 +11,9 @@ on:
         required: false
         type: string
         default: "cypress/**/*.feature"
-      environment:
-        description: "Target environment"
-        required: true
-        type: choice
-        options:
-          - int1
-          - test
-        default: "test"
+
+env:
+  NEDSSDEV_COMPOSE_PATH: docker-compose.ci.yml
 
 jobs:
   cypress-run:
@@ -26,6 +22,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       # Install npm dependencies, cache them, run tests
+      
+      # TODO - get containers running
+      - name: Run containers
+        working-directory: ./cdc-sandbox
+        run: ./build_all.sh
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         continue-on-error: true # perform next steps even on failure
@@ -33,11 +35,11 @@ jobs:
           working-directory: testing/regression/
           spec: ${{ inputs.spec }}
         env:
-          CYPRESS_BASE_URL: ${{ inputs.environment == 'test' && 'https://app.test.nbspreview.com/' || 'https://app.int1.nbspreview.com/' }}
-          CYPRESS_LOGIN_USERNAME: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_LOGIN_USERNAME || secrets.CYPRESS_INT_LOGIN_USERNAME }}
-          CYPRESS_LOGIN_PASSWORD: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_LOGIN_PASSWORD || secrets.CYPRESS_INT_LOGIN_PASSWORD }}
-          CYPRESS_DI_CLIENT_ID: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_DI_CLIENT || secrets.CYPRESS_INT_DI_CLIENT }}
-          CYPRESS_DI_SECRET: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_DI_SECRET || secrets.CYPRESS_INT_DI_SECRET }}
+          CYPRESS_BASE_URL: 'http://localhost:8000'
+          CYPRESS_LOGIN_USERNAME: 'superuser'
+          CYPRESS_LOGIN_PASSWORD: ''
+          CYPRESS_DI_CLIENT_ID: 'todo'
+          CYPRESS_DI_SECRET: 'todo'
       # Create cypress html report
       - name: Build report
         working-directory: testing/regression/
