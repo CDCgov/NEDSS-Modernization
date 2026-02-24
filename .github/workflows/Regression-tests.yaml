@@ -37,7 +37,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ secrets.CDCENT_GH_APP_ID }}
           password: ${{ steps.app-token.outputs.token }}
       
       - name: Run containers
