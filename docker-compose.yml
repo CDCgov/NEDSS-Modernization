@@ -5,7 +5,7 @@ services:
       dockerfile: ./apps/modernization-api/Dockerfile
     container_name: modernization-api
     environment:
-      - NBS_DATASOURCE_SERVER=${NBS_DATASOURCE_SERVER:-nbs-mssql}
+      - NBS_DATASOURCE_SERVER=${NBS_DATASOURCE_SERVER}
       - NBS_ELASTICSEARCH_SERVER=elasticsearch
       - NBS_WILDFLY_SERVER=${CLASSIC_SERVICE}
       - NBS_SECURITY_OIDC_ENABLED=${NBS_SECURITY_OIDC_ENABLED}
