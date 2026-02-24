@@ -16,7 +16,7 @@
         "classnames": "^2.5.1",
         "date-fns": "3.6.0",
         "globals": "^16.0.0",
-        "graphql": "^16.8.1",
+        "graphql": "^16.13.0",
         "lodash.debounce": "^4.0.8",
         "lodash.merge": "^4.0.8",
         "posthog-js": "^1.337.0",

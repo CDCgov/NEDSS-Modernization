@@ -38,8 +38,8 @@ subprojects {
     apply plugin: 'jacoco'
 
     // run spotless on build if git present (not in a docker container)
-    def gitFolder = new File( '.git' )
-    if (gitFolder.exists()) {
+    def gitDirectory = new File('.git')
+    if (gitDirectory.exists()) {
         apply plugin: 'com.diffplug.spotless'
 
         spotless {
@@ -55,7 +55,6 @@ subprojects {
             }
         }
 
-    
         tasks.named('compileJava') {
             dependsOn tasks.named('spotlessApply')
         }
