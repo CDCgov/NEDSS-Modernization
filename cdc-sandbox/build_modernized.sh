@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
