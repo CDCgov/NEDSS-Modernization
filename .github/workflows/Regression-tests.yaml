@@ -21,13 +21,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      # Install npm dependencies, cache them, run tests
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       
-      # TODO - get containers running
       - name: Run containers
         working-directory: ./cdc-sandbox
         run: ./build_all.sh
 
+      # Install npm dependencies, cache them, run tests
       - name: Cypress run
         uses: cypress-io/github-action@v6
         continue-on-error: true # perform next steps even on failure
