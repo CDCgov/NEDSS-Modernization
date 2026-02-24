@@ -4,7 +4,7 @@
 
 Java Code is formatted using the Google Java Style Guide. We use spotless to check and fix formatting on files changed by the branch. It will run on build and CI will check that it's been run. 
 
-We recommend adding the [pre-push hook](https://github.com/diffplug/spotless/blob/main/plugin-gradle/README.md#git-hook) to check formatting before pushing to GitHub.
+We recommend adding the [pre-push hook](spotlessInstallGitPrePushHook) to check formatting before pushing to GitHub.
 
 ```sh
 ./gradlew spotlessInstallGitPrePushHook
