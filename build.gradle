@@ -36,23 +36,27 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'jvm-test-suite'
     apply plugin: 'jacoco'
-    apply plugin: 'com.diffplug.spotless'
 
-    spotless {
-        // limit format enforcement to just the files changed by this feature branch
-        ratchetFrom 'origin/main'
+    def gitDirectory = new File('.git')
+    if (gitDirectory.exists()) {
+        apply plugin: 'com.diffplug.spotless'
 
-        java {
-            targetExclude '**/generated/**/*.java'
-            googleJavaFormat()
-            formatAnnotations()
-            trimTrailingWhitespace()
-            endWithNewline()
+        spotless {
+            // limit format enforcement to just the files changed by this feature branch
+            ratchetFrom 'origin/main'
+
+            java {
+                targetExclude '**/generated/**/*.java'
+                googleJavaFormat()
+                formatAnnotations()
+                trimTrailingWhitespace()
+                endWithNewline()
+            }
         }
-    }
 
-    tasks.named('compileJava') {
-        dependsOn tasks.named('spotlessApply')
+        tasks.named('compileJava') {
+            dependsOn tasks.named('spotlessApply')
+        }
     }
 
     java {
