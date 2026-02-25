@@ -40,7 +40,7 @@ jobs:
           working-directory: testing/regression/
           spec: ${{ inputs.spec }}
         env:
-          CYPRESS_BASE_URL: 'http://localhost:8000'
+          CYPRESS_BASE_URL: 'http://localhost:8000/'
           CYPRESS_LOGIN_USERNAME: 'superuser'
           CYPRESS_LOGIN_PASSWORD: ''
           CYPRESS_DI_CLIENT_ID: 'todo'
