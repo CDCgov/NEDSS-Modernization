@@ -78,3 +78,7 @@ nbs:
       report:
         execution:
           enabled: true
+          
+spring:
+  liquibase:
+    enabled: true

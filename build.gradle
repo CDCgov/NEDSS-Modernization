@@ -37,6 +37,7 @@ subprojects {
     apply plugin: 'jvm-test-suite'
     apply plugin: 'jacoco'
 
+    // run spotless on build if git present (not in a docker container)
     def gitDirectory = new File('.git')
     if (gitDirectory.exists()) {
         apply plugin: 'com.diffplug.spotless'

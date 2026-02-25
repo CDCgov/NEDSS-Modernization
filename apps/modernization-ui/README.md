@@ -46,3 +46,9 @@ The frontend application can be packaged as a Docker container by executing the 
 ```shell
 docker build .
 ```
+
+## Database Migrations
+
+Liquibase is used in development to manage database migrations. They can be found in `src/main/resources/db`. Only `sqlFile` migrations should be created to ensure it is always an option to manually apply migrations instead of via automatic tooling.
+
+In production, liquibase is not enabled by default. This is controlled by the `liquibase.enabled` property.
