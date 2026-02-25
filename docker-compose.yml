@@ -32,6 +32,7 @@ services:
       - PARAMETER_SECRET=${PARAMETER_SECRET}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - SPRING_PROFILES_ACTIVE='default,development,local'
 
   pagebuilder-api:
     build:
@@ -45,6 +46,7 @@ services:
       - TOKEN_SECRET=${TOKEN_SECRET}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - SPRING_PROFILES_ACTIVE='default,development,local'
 
   nbs-gateway:
     build:
@@ -70,6 +72,7 @@ services:
       - NBS_GATEWAY_PAGEBUILDER_PAGE_MANAGEMENT_CREATE_ENABLED=${PAGEBUILDER_ENABLED}
       - NBS_GATEWAY_PAGEBUILDER_PAGE_MANAGEMENT_EDIT_ENABLED=${PAGEBUILDER_ENABLED}
       - NBS_GATEWAY_PAGEBUILDER_SERVICE=${PAGEBUILDER_SERVICE}
+      - SPRING_PROFILES_ACTIVE='default,development,local'
     ports:
       - "8000:8000"
 
