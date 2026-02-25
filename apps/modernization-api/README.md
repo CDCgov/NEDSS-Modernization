@@ -8,7 +8,16 @@
 2. Node / NPM
 3. nbs-mssql, elasticsearch, and nifi docker containers are running. See [CDC Sandbox](../../cdc-sandbox/README.md)
 4. `DATABASE_PASSWORD`, `TOKEN_SECRET` and `PARAMETER_SECRET` environment variables are set or relevant properties set
-   in an `application-local.yml`
+   in `src/main/resources/application-local.yml`
+   
+```yml
+nbs:
+  security:
+    parameterSecret: result of `openssl rand -base64 32 | cut -c1-32`
+    tokenSecret: result of `openssl rand -base64 64`
+  datasource:
+    password: password used for sa user on db
+```
 
 ### VSCode
 

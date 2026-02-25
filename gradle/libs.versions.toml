@@ -18,7 +18,7 @@ springBoot-web = { module = 'org.springframework.boot:spring-boot-starter-web', 
 springBoot-actuator = {module='org.springframework.boot:spring-boot-starter-actuator', version.ref= 'springBoot'}
 graphql = { module = 'com.graphql-java:graphql-java', version = '24.2' }
 springBoot-graphql = { module = 'org.springframework.boot:spring-boot-starter-graphql', version.ref = 'springBoot' }
-elasticsearch-java = { module = 'co.elastic.clients:elasticsearch-java', version = '8.19.0' }
+elasticsearch-java = { module = 'co.elastic.clients:elasticsearch-java', version = '9.2.3' }
 parsson = { module = 'org.eclipse.parsson:parsson', version = '1.1.7' }
 spring-test = { module = 'org.springframework.boot:spring-boot-starter-test', version.ref = 'springBoot' }
 spring-security = { module = 'org.springframework.boot:spring-boot-starter-security', version.ref = 'springBoot' }
