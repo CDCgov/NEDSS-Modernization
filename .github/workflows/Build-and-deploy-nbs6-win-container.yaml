@@ -1,10 +1,13 @@
 name: Build NBS6 Windows Container Build
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "cdc-sandbox/nbs6-win-container/**"
+  workflow_dispatch:
+    inputs:
+      nbs6_version:
+        description: "NBS6 Version. This will be used to pull NBS ZIP from S3 Bucker in Shared Account and Tag Docker Image"
+        required: true
+        type: string
+        default: 6.0.16.2
+
 jobs:
   push-call-build-windows-container-workflow:
     permissions:
@@ -15,7 +18,7 @@ jobs:
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@main
     with:
       image_name: "nbs6"
-      nbs6_version: "6.0.15.1"
+      nbs6_version: ${{inputs.nbs6_version}}
       dockerfile_relative_path: "./cdc-sandbox/nbs6-win-container/" 
       quay_repository: "quay.io/us-cdcgov/cdc-nbs-modernization"
     secrets:
