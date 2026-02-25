@@ -1,3 +1,4 @@
+@skip-if-no-di-api
 Feature: Generate ELR HL7
 
   Background:

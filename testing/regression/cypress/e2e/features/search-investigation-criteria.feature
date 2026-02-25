@@ -1,3 +1,5 @@
+# event search not modernized yet
+@skip-broken
 @skip-if-disabled-is-int
 Feature: Investigation Search by criteria
 

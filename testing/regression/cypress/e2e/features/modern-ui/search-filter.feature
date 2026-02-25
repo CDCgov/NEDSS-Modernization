@@ -10,13 +10,13 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     And Click on Search in Patient Search pane
     Then I click search filter result icon
     Then I search filter column "text-filter-id" with "8917"
-    Then I verify unique search row contains "78917"
+    Then I verify unique search row contains "63000"
 
   Scenario: Search patient by exact filter with Patient ID    
     And Click on Search in Patient Search pane
     Then I click search filter result icon
-    Then I search filter column "text-filter-id" with "78917"
-    Then I verify unique search row contains "78917"
+    Then I search filter column "text-filter-id" with "63000"
+    Then I verify unique search row contains "63000"
 
   Scenario: Search patient by exact Patient Name    
     And Click on Search in Patient Search pane

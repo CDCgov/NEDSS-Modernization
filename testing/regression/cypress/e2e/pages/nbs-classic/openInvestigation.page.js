@@ -7,7 +7,6 @@ class OpenInvestigationPage {
     selectAllCheckbox = '.selectAll';
     confirmedOption = 'input[name="answerArray(CASESTATUS)"][value="C"]';
     probableOption = 'input[name="answerArray(CASESTATUS)"][value="P"]';
-    okButton = '#b1';
     cancelButton = '#b2';
     removeFiltersLink = 'font.hyperLink';
     sortedResult = '#parent > tbody > :nth-child(1) > :nth-child(7)';

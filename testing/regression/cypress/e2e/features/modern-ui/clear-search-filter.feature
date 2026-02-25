@@ -9,10 +9,10 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
     When I select input id "name.lastOperator" with type "Contains"
     And Click on Search in Patient Search pane
     Then I click search filter result icon
-    Then I search filter column "text-filter-id" with "78917"
-    Then I verify unique search row contains "78917"
+    Then I search filter column "text-filter-id" with "63000"
+    Then I verify unique search row contains "63000"
     Then Clear search filter "text-filter-id"
-    Then Verify top Search result is not "78917"
+    Then Verify top Search result is not "63000"
 
   Scenario: Clear and Search patient by Patient Name
     Then I fill input id "name.last" with text "rat"
