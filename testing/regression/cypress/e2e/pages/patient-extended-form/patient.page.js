@@ -15,7 +15,7 @@ class ClassicPatientSearchPage {
 
   selectPatientToEdit() {
     this.navigateToClassicPatientSearchPane()
-    this.enterLastNameInClassicSearchPatientPage('Simpson')
+    this.enterLastNameInClassicSearchPatientPage('Singh')
     this.clickSearchBtnInClassicPatientSearchPane()
     cy.get('table#searchResultsTable tbody tr td a').eq(0).click()
   }
@@ -55,7 +55,7 @@ class ClassicPatientSearchPage {
     const field = cy.get('input[id="administrative.asOf"]')
     field.invoke('val', date || "01/20/2024").trigger('change')
     field.click()
-    cy.contains("Administrative").eq(0).click()
+    cy.contains("a", "Administrative").eq(0).click()
   }
 
   errorMessageInformationAsOfField() {
@@ -120,40 +120,36 @@ class ClassicPatientSearchPage {
     cy.contains('The Race is required.')
   }
 
-  errorMessageSectionField(inputId, sectionId) {
-    cy.get("section#phoneEmails").contains(sectionId);
-  }
-
   clickAddIdentificationButton() {
     cy.contains('section[aria-labelledby="identifications"] button', 'Add identification').click();        
   }
 
   clickAddPhoneButton() {
-    cy.get("section#phoneEmails button").contains("Add phone & email").click();
+    cy.contains('section', 'email').contains("button", "Add phone").click();
   }
 
   selectPhoneType() {
-    cy.get("section#phoneEmails select#phone-type").select("Phone");
+    cy.contains('section', 'email').find("select#phone-type").select("Phone");
   }
 
   selectPhoneUse() {
-    cy.get("section#phoneEmails select#phone-use").select("Home");
+    cy.contains('section', 'email').find("select#phone-use").select("Home");
   }
 
   typeValidPhoneNumber() {
-    cy.get("section#phoneEmails input#phoneNumber").type("8888888888");
+    cy.contains('section', 'email').find("input#phoneNumber").type("8888888888");
   }
 
   errorSectionField(sectionId, text) {
-    cy.get(`section#${sectionId}`).contains(text);
+    cy.contains('section', sectionId).contains(text);
   }
 
   selectSectionField(sectionId, inputId, text) {
-    cy.get(`section#${sectionId} select#${inputId}`).select(text);
+    cy.contains('section', sectionId).find(`select#${inputId}`).select(text);
   }
 
   typeInputSectionField(sectionId, inputId, text) {
-    cy.get(`section#${sectionId} input#${inputId}`).type(text);
+    cy.contains('section', sectionId).find(`input#${inputId}`).type(text);
   }
 
   addNewPatient() {
@@ -175,7 +171,7 @@ class ClassicPatientSearchPage {
   }
 
   enterReportingFacility() {
-    cy.get('#NBS_LAB365Text').type('test')
+    cy.get('#NBS_LAB365Text').type('1')
     cy.get('#NBS_LAB365CodeLookupButton').eq(0).click()
   }
 
@@ -281,7 +277,7 @@ class ClassicPatientSearchPage {
    }
 
   selectSearchNameType(idName, type) {
-    cy.get(`select[id="${idName}"]`).select(type);
+    cy.get(`select[id="${idName}"]`).select(type)
   }
 
   findSearchResultByDataItemType(text, id) {

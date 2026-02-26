@@ -25,7 +25,7 @@ class NameEntryPage {
     cy.contains("button", "Add name").click({ force: true });
 
     // Verify that the error message is displayed
-    cy.get(".alert-message_title__UqoEz")
+    cy.get("div[role='alert']")
       .should("be.visible")
       .and("contain.text", "Please fix the following errors:");
   }

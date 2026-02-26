@@ -2,6 +2,7 @@ class ClassicManagePagesPage {
     
   navigateToPageLibrary() {
     cy.contains('System Management').click()    
+    cy.contains('Expand Subsections').click()
     cy.contains('Manage Pages').click()
   }
 
@@ -152,4 +153,3 @@ class ClassicManagePagesPage {
 
 }
 export default new ClassicManagePagesPage();
-

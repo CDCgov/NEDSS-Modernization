@@ -47,5 +47,12 @@ module.exports = defineConfig({
     //baseUrl: "https://app.int1.nbspreview.com/",
     chromeWebSecurity: false,
     video: false,
+    watchForFileChanges: false,
+  },
+  retries: {
+    // Configure retry attempts for `cypress run`
+    runMode: 1,
+    // Configure retry attempts for `cypress open`
+    openMode: 0,
   },
 });
