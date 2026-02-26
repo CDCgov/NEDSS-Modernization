@@ -35,7 +35,6 @@ jobs:
       # Install npm dependencies, cache them, run tests
       - name: Cypress run
         uses: cypress-io/github-action@v6
-        continue-on-error: true # perform next steps even on failure
         with:
           working-directory: testing/regression/
           spec: ${{ inputs.spec }}
@@ -46,16 +45,19 @@ jobs:
 
       # Create cypress html report
       - name: Build report
+        if: !cancelled()
         working-directory: testing/regression/
         run: npm run githubReport
 
       # Zip up report
       - name: Zip report
+        if: !cancelled()
         working-directory: testing/regression/
         run: zip -r cypress-report.zip reports/cucumber-report/*
 
       # Upload artifact
       - uses: actions/upload-artifact@v4
+        if: !cancelled()
         with:
           name: cypress-report
           path: testing/regression/cypress-report.zip
