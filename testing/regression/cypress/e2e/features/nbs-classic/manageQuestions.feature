@@ -19,4 +19,3 @@ Feature: Classic NBS - User can view and manage data in NBS Questions
     Then Navigate to Question Library
     And Click on a question in Question Library
     Then Click submit button to create question
-

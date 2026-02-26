@@ -7,6 +7,7 @@ class OpenInvestigationPage {
     selectAllCheckbox = '.selectAll';
     confirmedOption = 'input[name="answerArray(CASESTATUS)"][value="C"]';
     probableOption = 'input[name="answerArray(CASESTATUS)"][value="P"]';
+    // okButton = '#b1';
     cancelButton = '#b2';
     removeFiltersLink = 'font.hyperLink';
     sortedResult = '#parent > tbody > :nth-child(1) > :nth-child(7)';
@@ -15,6 +16,7 @@ class OpenInvestigationPage {
     investigationIdField = 'input#SearchText2';
     okButton = 'input#b2SearchText2';
     conditionNameLink = 'a[onclick*="InvestigationID"]';
+    patientNameLink = 'a[onclick*="MPRUid"]';
     manageAssociationsButton = 'input#manageAssociations';
     treatmentDateLink = 'a[href*="ViewTreatment"]';
     editButton = 'input#Edit';
@@ -92,7 +94,7 @@ class OpenInvestigationPage {
     }
   
     clickConditionName() {
-      cy.get(this.conditionNameLink).eq(1).click();
+      cy.get(this.conditionNameLink).eq(0).click();
     }
   
     clickManageAssociations() {
@@ -120,15 +122,15 @@ class OpenInvestigationPage {
     }
 
     clickPatientName() {
-        cy.get('#parent tbody tr td a').eq(2).click()
+        cy.get(this.patientNameLink).eq(0).click()
     }
 
     clickEventsTab() {
-        cy.contains('Events').eq(0).click()
+        cy.contains('Events').click()
     }
 
     clickAddInvestigationBtn() {
-        cy.contains('button', 'Add investigation').eq(0).click()
+      cy.get('input[name="Add"]').eq(0).click()
     }
 
     selectConditionFromDropdown() {
@@ -140,7 +142,16 @@ class OpenInvestigationPage {
     }
 
     clickSubmitBtnInSelectConditionPage() {
+        /**
+         * Waiting for the answers to load completely to ensure that any following steps 
+         * (i.e. selecting jurisdiction and case status) aren't interrupted from the rendering
+         * following the response.  Previously, tests would fail because the `Case Info` tab would
+         * be clicked prior to the response resolving; once the response did resolve, the user would
+         * be abruptly brought back to the default `Patient` tab. 
+         */
+        cy.intercept('POST', '/nbs/dwr/call/plaincall/JPageForm.getAllAnswer.dwr').as('answersResponse');
         cy.get('#Submit').eq(0).click()
+        cy.wait('@answersResponse', { timeout: 10000 })
     }
 
     clickCaseInfoTab() {

@@ -9,6 +9,9 @@
     "cy:api": "cypress run --spec cypress/api/**/*.feature",
     "report": "node cucumber-html-report.js",
     "githubReport": "node github-report.js",
+    "PublishAllPages": "docker compose -f '../../cdc-sandbox/docker-compose.yml' exec wildfly sh -c './nedssdomain/Nedss/BatchFiles/PublishAllPages.sh superuser'",
+    "PHCRImporter": "docker compose -f '../../cdc-sandbox/docker-compose.yml' exec wildfly sh -c './nedssdomain/Nedss/BatchFiles/PHCRImporter.sh superuser'",
+    "ELRImporter": "docker compose -f '../../cdc-sandbox/docker-compose.yml' exec wildfly sh -c './nedssdomain/Nedss/BatchFiles/ELRImporter.sh'",
     "lint": "eslint \"cypress/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint \"cypress/step_definitions/**/*.{ts,tsx,js,jsx}\" --fix"
   },

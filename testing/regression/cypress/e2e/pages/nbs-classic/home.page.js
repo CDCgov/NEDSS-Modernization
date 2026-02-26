@@ -1,4 +1,7 @@
 class ClassicHomePage {
+  runELRImporter() {
+    cy.exec("npm run ELRImporter")
+  }
 
   navigateToPatientSearchPane() {
     cy.get('#homePageAdvancedSearch').click()
@@ -43,24 +46,16 @@ class ClassicHomePage {
         cy.get('[id="name.last"]').type("Simpson");
         cy.get('[id="name.first"]').type("Martin");
         cy.wait(1000);
-        cy.contains('button', 'Search').eq(0).click()
+        cy.contains('button', 'Search').click()
         cy.wait(2000)
-        cy.contains('button', 'Add new').eq(0).click()
-        cy.contains('button', 'Add new patient').eq(0).click()
+        cy.contains('button', 'Add new patient').click()
         cy.wait(2000)
         cy.get('input[id="administrative.asOf"]').eq(0).clear()
         cy.get('input[id="administrative.asOf"]').eq(0).type('03/04/2024');
-        cy.contains('button', 'Save').eq(0).click()
+        cy.contains('button', 'Save').click()
         cy.wait(3000)
-        cy.get('body').then(($body) => {
-            if($body.find('a:contains("View patient")').length > 0) {
-                cy.contains('a', 'View patient').click()
-            } else {
-                cy.contains('a', 'Continue anyways').click()
-                cy.contains('a', 'View patient').click()
-            }
-        })
-        cy.contains('Home').eq(0).click()
+        cy.contains('button', 'View patient').click()
+        cy.contains('a', 'Home').click()
     }
     createPatient()
     cy.wait(3000)
@@ -135,7 +130,7 @@ class ClassicHomePage {
 
   verifyOpenInvestigations() {
     cy.get("a").contains("Open Investigations").eq(0).click();
-  } 
+  }
 
   clickSortTableOption(string) {
     cy.get(`button[aria-label="${string}"]`).click();
@@ -148,7 +143,7 @@ class ClassicHomePage {
   verifyNoTopAfterSortSearch(string) {
     cy.get("#patient-search-results tbody tr").eq(0).should('not.contain', string);
   }
-  
+
   searchArray(selector, values, field = "value") {
         if (Array.isArray(values)) {
             values.forEach(item => {
@@ -161,10 +156,10 @@ class ClassicHomePage {
     }
 
   patientVerifySearchTableInfo() {
-    const patientData = Cypress.env("patientSearchRowData");            
-    cy.get("div#patient-search-results").contains(patientData.dob);    
+    const patientData = Cypress.env("patientSearchRowData");
+    cy.get("div#patient-search-results").contains(patientData.dob);
     this.searchArray("div#patient-search-results", patientData.names);
-    this.searchArray("div#patient-search-results", patientData.ids, "value");    
+    this.searchArray("div#patient-search-results", patientData.ids, "value");
     this.searchArray("div#patient-search-results", patientData.addresses, "city");
     this.searchArray("div#patient-search-results", patientData.addresses, "state");
     this.searchArray("div#patient-search-results", patientData.addresses, "zipcode");
@@ -174,7 +169,7 @@ class ClassicHomePage {
     this.searchArray("p.patient-summary-item-value", patientData.ids, "value");
     this.searchArray("p.patient-summary-item-value", patientData.addresses, "city");
     this.searchArray("p.patient-summary-item-value", patientData.addresses, "state");
-    this.searchArray("p.patient-summary-item-value", patientData.addresses, "zipcode");    
+    this.searchArray("p.patient-summary-item-value", patientData.addresses, "zipcode");
     this.searchArray("p.patient-summary-item-value", patientData.phones);
     cy.get("a").contains("Demographics").click();
     this.searchArray("main", patientData.emails)    
@@ -182,7 +177,7 @@ class ClassicHomePage {
 
   copySearchRowInfo() {
     cy.wait(1000);
-    cy.get("body").then((body) => {            
+    cy.get("body").then((body) => {
       if (body.find("div#patient-search-results").length > 0) {
         cy.get('div#patient-search-results tbody tr td').then(($tds) => {
           const tdTexts = $tds.toArray().map(td => td.innerText.trim());
@@ -195,7 +190,7 @@ class ClassicHomePage {
               let currentValue = [];
 
               lines.forEach(line => {
-                  if (/^[A-Za-z\s]+$/.test(line) && line.length < 30) {                      
+                  if (/^[A-Za-z\s]+$/.test(line) && line.length < 30) {
                       if (currentType && currentValue.length > 0) {
                           categorized.push(formatAddress(currentType, currentValue));
                       }
@@ -205,7 +200,7 @@ class ClassicHomePage {
                       currentValue.push(line);
                   }
               });
-              
+
               if (currentType && currentValue.length > 0) {
                   categorized.push(formatAddress(currentType, currentValue));
               }
@@ -230,7 +225,7 @@ class ClassicHomePage {
                       zipcode: match[3],
                       fullAddress: addressLines.join(", ") + ", " + cityStateZip
                   };
-              } else {                  
+              } else {
                   return { type, fullAddress: addressLines.join(", ") + ", " + cityStateZip };
               }
           }
@@ -242,17 +237,17 @@ class ClassicHomePage {
               let currentValue = [];
 
               lines.forEach(line => {
-                if (/^[A-Za-z\s]+$/.test(line) && line.length < 30) {                      
-                    if (currentType && currentValue.length > 0) {                          
+                if (/^[A-Za-z\s]+$/.test(line) && line.length < 30) {
+                    if (currentType && currentValue.length > 0) {
                       categorized.push({ type: currentType, value: currentValue.join(", ") });
                     }
                     currentType = line.toLowerCase();
                     currentValue = [];
-                } else {                      
+                } else {
                     currentValue.push(line);
                 }
               });
-              
+
               if (currentType && currentValue.length > 0) {
                   categorized.push({ type: currentType, value: currentValue.join(", ") });
               }
@@ -263,8 +258,8 @@ class ClassicHomePage {
           const parsedDataTdTexts = {
             patientId: tdTexts[0],
             names: categorizeEntries(tdTexts[1]),
-            dob: tdTexts[2].split(/\n+/)[0], 
-            age: tdTexts[2].split(/\n+/)[1] || null, 
+            dob: tdTexts[2].split(/\n+/)[0],
+            age: tdTexts[2].split(/\n+/)[1] || null,
             gender: tdTexts[3],
             addresses: categorizeAddresses(tdTexts[4]),
             phones: categorizeEntries(tdTexts[5]),

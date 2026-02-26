@@ -1,6 +1,6 @@
 Feature: Visualizations on the Homepage
 
-Background: 
+  Background:
     Given I am logged in as secure user and stay on classic
 
   Scenario: Verify "Cases created - Last 7 Days" visualization on the homepage

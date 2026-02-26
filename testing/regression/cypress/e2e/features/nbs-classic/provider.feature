@@ -16,4 +16,3 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Providers
     Then Click New Provider Edit Radio Option
     Then Type new name for Edit Provider first name
     Then Click Submit button on provider add page
-    

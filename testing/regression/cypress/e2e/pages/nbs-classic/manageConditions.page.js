@@ -2,7 +2,10 @@ class ClassicManageConditionsPage {
 
   navigateToConditionsLibrary() {
     cy.contains('System Management').click()
-    cy.contains('Manage conditions').click()
+
+    // Expand the "Page Management" subsection
+    cy.get('table[id="systemAdmin5"]').find('a[class="toggleIconHref"]').eq(0).click();
+    cy.contains('Manage Conditions').click()
   }
 
   clickAddNewBtn() {
@@ -29,4 +32,3 @@ class ClassicManageConditionsPage {
   }
 }
 export default new ClassicManageConditionsPage();
-

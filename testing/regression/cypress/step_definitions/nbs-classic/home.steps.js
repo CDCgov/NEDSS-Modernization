@@ -1,5 +1,9 @@
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicHomePage from "cypress/e2e/pages/nbs-classic/home.page";
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import classicHomePage from "@pages/nbs-classic/home.page";
+
+When("I import ELR documents", () => {
+  classicHomePage.runELRImporter();
+})
 
 Then("Navigate to Patient Search pane", () => {
     classicHomePage.navigateToPatientSearchPane()
@@ -17,7 +21,7 @@ Then("Create two users with same firstname and last name", () => {
     classicHomePage.createTwoPatients()
 });
 
-Then("Click on Marge Patients tab on upper left side", () => {
+Then("Click on Merge Patients tab on upper left side", () => {
     classicHomePage.clickMergePatientTab()
 });
 
@@ -45,7 +49,7 @@ Then("Verify Merge Candidate List is displayed to user", () => {
     classicHomePage.verifyMergeCandidateListDisplayed()
 });
 
-Then("Classic Click on Reports tab on upper left side", () => {
+Then("Click on Reports tab on upper left side", () => {
     classicHomePage.clickReportsTab()
 });
 

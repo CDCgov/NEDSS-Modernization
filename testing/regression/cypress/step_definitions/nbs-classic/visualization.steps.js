@@ -1,4 +1,4 @@
-import { homePage } from 'cypress/e2e/pages/nbs-classic/homePage.page';
+import { homePage } from '@pages/nbs-classic/homePage.page';
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 // Step to select a visualization
