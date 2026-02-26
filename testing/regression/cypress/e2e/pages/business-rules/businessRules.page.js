@@ -2,7 +2,7 @@ class BusinessRulesPage {
     navigateToBusinessRulesPage () {
         cy.visit('/page-builder/pages');
         cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
-        cy.get('[data-testid="businessRulesBtn"]').eq(0).click();
+        cy.contains('button', 'Business rules').click();
     }
 
     viewsBusinessRulesPage() {
@@ -80,7 +80,7 @@ class BusinessRulesPage {
     }
 
     clickAddBusinessRuleBtn() {
-        cy.get('[data-testid="addBusinessRuleBtn"]').click();
+        cy.contains('buttton', 'Add new business rule').click();
     }
 
     addNewBusinessRulesModalDisplayed() {

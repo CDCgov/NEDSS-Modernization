@@ -100,7 +100,7 @@ Feature: Page Builder - User can view existing business rules logic here.
         When Submit button on Edit business rule screen is clicked
         Then Application will validate the values added, add the business rule to the selected page and then navigate to the Business Rule library with the changes made. A confirmation success message displays, The business rule is successfully updated. Please click the unique name to edit.
 
-    Scenario Outlined: Access the Filter pop-up window clicking the Filter button from Business Rules Library
+    Scenario Outline: Access the Filter pop-up window clicking the Filter button from Business Rules Library
         And User clicks the Filter button in business rules library page
         Then User view the Filter pop-up window displays to add one or more filters in business rules library page
         Then Filter pop-window in business rules page displays the initial basic elements "<name>"
@@ -123,4 +123,3 @@ Feature: Page Builder - User can view existing business rules logic here.
         Then The application will finish adding a filter, display the added filter, and display the “+ Add Filter” link for user to add more filter (if needed)
         When User clicks the Apply button
         Then Added filter(s) are applied and only the records matching the filter(s) are displayed in the Business Rules library list
-
