@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: liquibase
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: db/report/execution/01_ODSE_Structure_Report_Library_Create.sql
+            splitStatements: false
+            endDelimiter: ""
+        - sqlFile:
+            path: db/report/execution/02_ODSE_Structure_Report_Add_FK.sql
+            splitStatements: false
+            endDelimiter: ""
+        - sqlFile:
+            path: db/report/execution/03_ODSE_Data_Report_Library_Init.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/04_ODSE_Strcture_Require_Library_FK.sql
+            splitStatements: false
