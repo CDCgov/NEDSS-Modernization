@@ -21,7 +21,7 @@ jobs:
       PASSED_GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
       DATABASE_USER: ${{secrets.DATABASE_USER}}
-      DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+      DATABASE_PASSWORD: ${{secrets.DOCKER_IMAGE_DATABASE_PASSWORD}}
       PARAMETER_SECRET: ${{secrets.PARAMETER_SECRET}}
       TOKEN_SECRET: ${{secrets.TOKEN_SECRET}}
   call-build-microservice-container-workflow:
