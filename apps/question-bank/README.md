@@ -8,17 +8,19 @@ Contains REST APIs for managing Question Bank entities.
 
 1. Java 21
 2. `nbs-mssql` docker containers. See [CDC Sandbox](../../cdc-sandbox/README.md)
-3. `DATABASE_PASSWORD`, `TOKEN_SECRET` environment variables are set or relevant properties set in an `application-local.yml`
+3. `DATABASE_PASSWORD`, `TOKEN_SECRET` environment variables are set or relevant properties set in an
+   `application-local.yml`
 
 ## Tests
 
-Prior to running tests the `cdc-sandbox/nbs-mssql/` image must be built. To build this image run the following command
-in
-the `cdc-sandbox` directory.
+Prior to running tests the database image must be built. To build all images run the following command
+in the `cdc-sandbox` directory.
 
 ```sh
-docker compose build nbs-mssql
+./build_all.sh
 ```
+
+The containers do not need to be running to run the tests. The images just need to be built.
 
 To run all tests:
 
@@ -65,7 +67,8 @@ Enabled when `nbs.security.oidc.enabled` is `false` or not present.
 ### OpenID Connect (OIDC)
 
 The `question-bank` service can be configured to act as an OIDC Resource Server by setting `nbs.security.oidc.enabled`
-to `true` and providing the `nbs.security.oidc.uri`. The JWT passed in the `Authentication` header must have a `perferred_username` value that matches an active user in
+to `true` and providing the `nbs.security.oidc.uri`. The JWT passed in the `Authentication` header must have a
+`perferred_username` value that matches an active user in
 the NBS `Auth_User` table.
 
 | Name                       | Default                                                                              | Description                                                                 |
