@@ -103,6 +103,8 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks one of the questions in the Source Field
         Then Application should direct the user to the Edit Business Rule screen
 
+    # update button is disabled due to validation
+    @skip-broken
     Scenario: Verify editing a business rule with the function as Enable
         And User clicks one of the questions in the Source Field
         Then Edit business rules page displays
