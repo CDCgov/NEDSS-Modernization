@@ -89,6 +89,8 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
+          # TODO: Replace w/official GH PAT once it's been established
+          # who will be responsible for managing it
           password: ${{ secrets.TEMP_GHCR_TOKEN_DO_NOT_USE }}
 
       - name: Build and analyze
