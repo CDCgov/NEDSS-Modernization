@@ -7,10 +7,10 @@ Then("user submits {string} vaccination with a popup and deletes it", (string) =
   cy.get("td#tabs0head1").first().click({force: true});
   cy.get("#VAC101").select(string, {force: true});
   cy.get("input[name='Submit'").first().click();
-  cy.get("#successMessages").contains("Vaccination has been successfully saved in the system.");
+  cy.contains("#successMessages", "Vaccination has been successfully saved in the system.");
   cy.get("input[name='Delete'").first().click();
   cy.on("window:confirm", () =>  {
     return true;
   });
-  cy.get("#successMessages").contains("Vaccination has been successfully deleted in the system.");
+  cy.contains("#successMessages", "Vaccination has been successfully deleted in the system.");
 });

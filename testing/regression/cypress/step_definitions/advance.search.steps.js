@@ -112,10 +112,10 @@ Then("the user is taken to the top of the page", () => {
 
 Then("user clicks on a patient's profile {string} tab", (string) => {  
   
-  cy.wait(5000);
-  cy.get("button").contains(string).click();
+  cy.wait(2000);
+  cy.contains("button", string).click();
   // patientProfilePage.clickOnTab(string);
-  cy.wait(5000);
+  cy.wait(2000);
 });
 
 Then("I should see the following elements", (dataTable) => {
