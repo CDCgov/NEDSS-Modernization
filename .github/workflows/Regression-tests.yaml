@@ -45,19 +45,19 @@ jobs:
 
       # Create cypress html report
       - name: Build report
-        if: !cancelled()
+        if: ${{ !cancelled() }}
         working-directory: testing/regression/
         run: npm run githubReport
 
       # Zip up report
       - name: Zip report
-        if: !cancelled()
+        if: ${{ !cancelled() }}
         working-directory: testing/regression/
         run: zip -r cypress-report.zip reports/cucumber-report/*
 
       # Upload artifact
       - uses: actions/upload-artifact@v4
-        if: !cancelled()
+        if: ${{ !cancelled() }}
         with:
           name: cypress-report
           path: testing/regression/cypress-report.zip
