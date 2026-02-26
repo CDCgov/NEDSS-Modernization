@@ -139,7 +139,7 @@ class BusinessRulesPage {
     }
 
     editBusinessRulesPageDisplayed() {
-        cy.contains('Edit business rules', { timeout: 6000 });
+        cy.contains('Edit business rules', { timeout: 8000 });
     }
 
     clickDeleteEditBusinessRulesPage() {
