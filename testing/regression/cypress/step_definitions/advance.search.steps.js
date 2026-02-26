@@ -56,7 +56,7 @@ Then("I should see {string}", (string) => {
 });
 
 Then("I should see error message {string}", (string) => {
-  cy.get('span[data-testid="errorMessage"].usa-error-message').contains(string).should("be.visible")
+  cy.contains('span[role="alert"]', string).should("be.visible")
 
 });
 
