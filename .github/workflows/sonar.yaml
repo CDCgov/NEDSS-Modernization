@@ -98,7 +98,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.passed_github_token }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ env.sonar_token }}
-          DATABASE_USER: ${{env.test_database_user}}
+          DATABASE_USER: "sa"
           DATABASE_PASSWORD: ${{ env.test_database_password }}
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
