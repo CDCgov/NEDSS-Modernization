@@ -80,7 +80,7 @@ class BusinessRulesPage {
     }
 
     clickAddBusinessRuleBtn() {
-        cy.contains('buttton', 'Add new business rule').click();
+        cy.contains('button', 'Add new business rule').click();
     }
 
     addNewBusinessRulesModalDisplayed() {

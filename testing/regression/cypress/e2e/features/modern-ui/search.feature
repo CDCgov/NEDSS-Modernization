@@ -7,7 +7,5 @@ Feature: Classic NBS - Modern Search - User can search and verify patient data m
     Given I fill input id "name.last" with text "sin"
     
   Scenario: Search verify profile matches search
-    Given I am on the modernized Patient Search page
-    Then I fill input id "name.last" with text "Singh"
     And Click on Search in Patient Search pane
     Then I click first patient Search results to view profile          

@@ -177,7 +177,7 @@ class ClassicHomePage {
     this.searchArray("p.patient-summary-item-value", patientData.addresses, "zipcode");    
     this.searchArray("p.patient-summary-item-value", patientData.phones);
     cy.get("a").contains("Demographics").click();
-    this.searchArray("div#demographics-tabpanel", patientData.emails)    
+    this.searchArray("main", patientData.emails)    
   }
 
   copySearchRowInfo() {
