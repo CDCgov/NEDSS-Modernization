@@ -20,7 +20,7 @@ jobs:
       NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}
       PASSED_GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
-      DATABASE_USER: ${{secrets.DATABASE_USER}}
+      DATABASE_USER: "sa"
       DATABASE_PASSWORD: ${{secrets.DOCKER_IMAGE_DATABASE_PASSWORD}}
       PARAMETER_SECRET: ${{secrets.PARAMETER_SECRET}}
       TOKEN_SECRET: ${{secrets.TOKEN_SECRET}}
