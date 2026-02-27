@@ -55,7 +55,7 @@ class ClassicPatientSearchPage {
     const field = cy.get('input[id="administrative.asOf"]')
     field.invoke('val', date || "01/20/2024").trigger('change')
     field.click()
-    cy.contains("a", "Administrative").eq(0).click()
+    cy.contains("a", "Administrative").click()
   }
 
   errorMessageInformationAsOfField() {
@@ -141,7 +141,7 @@ class ClassicPatientSearchPage {
   }
 
   errorSectionField(sectionId, text) {
-    cy.contains('section', sectionId).contains(text);
+    cy.contains('section', sectionId).should('contain.text', text);
   }
 
   selectSectionField(sectionId, inputId, text) {

@@ -19,6 +19,7 @@ services:
 
   wildfly:
     image: ${WILDFLY_IMAGE:-ghcr.io/cdcent/nedssdev:${DB_VERSION:-6.0.18.1}}
+    platform: linux/amd64
     container_name: "${COMPOSE_PROJECT_NAME}-wildfly"
     depends_on:
       nbs-mssql:

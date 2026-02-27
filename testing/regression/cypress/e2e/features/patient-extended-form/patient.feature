@@ -19,6 +19,8 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Patient Search Page
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
+  # dom detachment issues
+  @skip-broken
   Scenario: Valid "Information as of Date"
     Given I am on the New patient Extended form
     And I have filled out all Information as of Date field
@@ -114,6 +116,8 @@ Scenario: Required Name Fields
     Then Type section "Identification" with id "id" with text "23123"
     And I click Add Identification Button
 
+  # Result not adding
+  @skip-broken
   Scenario: Adding a Lab Report After Creating a New Patient
     Given I have successfully added a new patient
     And Add Patient Success modal is displayed

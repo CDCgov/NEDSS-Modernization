@@ -2,8 +2,8 @@ name: Regression tests
 on:
   pull_request:
   push:
-      branches:
-        - main
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       spec:
@@ -12,22 +12,12 @@ on:
         type: string
         default: "cypress/**/*.feature"
 
-env:
-  NEDSSDEV_COMPOSE_PATH: docker-compose.ci.yml
-
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
-      # - name: Login to GitHub Container Registry
-      #   uses: docker/login-action@v3
-      #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.ACTOR }}
-      #     password: ${{ secrets.TEMP_GHCR_TOKEN_DO_NOT_USE }}
       
       - name: Run containers
         working-directory: ./cdc-sandbox
