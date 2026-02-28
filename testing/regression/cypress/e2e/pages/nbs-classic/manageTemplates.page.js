@@ -2,7 +2,10 @@ class ClassicManageTemplatePage {
 
   navigateToTemplateLibrary() {
     cy.contains('System Management').click()
-    cy.contains('Manage templates').click()
+
+    // Expand the "Page Management" subsection
+    cy.get('table[id="systemAdmin5"]').find('a[class="toggleIconHref"]').eq(0).click();
+    cy.contains('Manage Templates').click()
   }
 
   clickImportBtnTemplateLibrary() {
@@ -38,4 +41,3 @@ class ClassicManageTemplatePage {
   }
 }
 export default new ClassicManageTemplatePage();
-

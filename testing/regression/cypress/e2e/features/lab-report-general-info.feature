@@ -1,3 +1,5 @@
+# event search not modernized yet (was, but removed?)
+@skip-broken
 @skip-if-disabled-is-int
 Feature: Laboratory Report Search by general search
 

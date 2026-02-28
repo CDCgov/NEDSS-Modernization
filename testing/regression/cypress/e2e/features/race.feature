@@ -46,7 +46,7 @@ Feature: Patient Search by Race / Ethnicity
 
   Scenario: Race / Ethnicity – Search by Other Race
     When I navigate to race section
-    Then I search by ethnicity not selected and race "Other Race"
+    Then I search by ethnicity not selected and race "Other"
 
   Scenario: Race / Ethnicity – Search by American Refused to Answer Race
     When I navigate to race section

@@ -42,12 +42,12 @@ Then("I should see No Results found text", () => {
 });
 
 Then("I should see no result found text", () => {
-  cy.contains("No result found").should("be.visible");
+  cy.contains("No results found").should("be.visible");
 });
 
 
 Then("I should found result patient profile", () => {
-  cy.contains("No result found").should("be.visible");
+  cy.contains("No results found").should("be.visible");
 });
 
 When("I search by last name as {string}", (string) => {
@@ -212,9 +212,9 @@ Then("I select for Superseded patient", ()=>{
 })
 
 Then("I sort by {string}", (string) => {
-  cy.get('button[data-testid="button"]').eq(1).click();
+  cy.get(`button[aria-label="Sort ${string}"]`).eq(0).click({force: true});
   cy.wait(500)
-  cy.get('button[data-testid="button"]').eq(1).click();
+  cy.get(`button[aria-label="Sort ${string}"]`).eq(0).click({force: true});
   cy.wait(1000)
 })
 

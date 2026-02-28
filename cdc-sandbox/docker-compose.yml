@@ -1,5 +1,5 @@
 include:
-  - ${NEDSSDEV_PATH:-../../NEDSSDev}/docker-compose.yml
+  - ${NEDSSDEV_COMPOSE_PATH:-./docker-compose.nbs6.yml}
   - ../docker-compose.yml
 services:
   elasticsearch:

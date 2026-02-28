@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicManageTemplatePage from "cypress/e2e/pages/nbs-classic/manageTemplates.page";
+import classicManageTemplatePage from "@pages/nbs-classic/manageTemplates.page";
 
 Then("Navigate to Template Library", () => {
     classicManageTemplatePage.navigateToTemplateLibrary()
@@ -36,4 +36,3 @@ Then("Click View Rules button in Template view", () => {
 Then("Verify rules listed in the results page", () => {
     classicManageTemplatePage.verifyRulesListedInResultsPage()
 });
-

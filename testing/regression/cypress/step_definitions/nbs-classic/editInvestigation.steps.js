@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicEditOpenInvestigationPage from "cypress/e2e/pages/nbs-classic/editInvestigation.page";
+import classicEditOpenInvestigationPage from "@pages/nbs-classic/editInvestigation.page";
 
 When("Click on Open Investigation in the main menu bar", () => {
   classicEditOpenInvestigationPage.clickOpenInvestigation();

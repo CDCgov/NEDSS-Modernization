@@ -49,13 +49,13 @@ class PatientProfilePage {
 
   confirmDelete() {
     cy.wait(1000);
-    cy.get("button").contains("Delete")
+    cy.get("button").contains("Delete").click()
     // cy.get("dialog[class=usa-modal] button").eq(1).click();
   }
 
   cancelDelete() {
     cy.wait(1000);
-    cy.get("button").contains("Cancel")
+    cy.get("button").contains("Cancel").click()
     // cy.get("dialog[class=usa-modal] button").eq(0).click();
   }
 

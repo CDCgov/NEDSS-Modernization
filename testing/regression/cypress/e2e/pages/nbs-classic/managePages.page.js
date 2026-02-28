@@ -1,7 +1,10 @@
 class ClassicManagePagesPage {
     
   navigateToPageLibrary() {
-    cy.contains('System Management').click()    
+    cy.contains('System Management').click()
+
+    // Expand the "Page Management" subsection
+    cy.get('table[id="systemAdmin5"]').find('a[class="toggleIconHref"]').eq(0).click();
     cy.contains('Manage Pages').click()
   }
 
@@ -30,13 +33,14 @@ class ClassicManagePagesPage {
   }
 
   selectPageType(pageType) {
-    const pageTypes = {
-      Investigation: 3,
-      Interview: 2,
-      ["Contact Record"]: 1
-    }
-    cy.get('#busObjType').eq(0).select(pageTypes[pageType], { force: true })
-    cy.get('input[name="busObjType_textbox"]').eq(0).click()
+    //  Open `Event Type` dropdown
+    cy.get('table[id="subSection1"]').find('tr').eq(2).find('img[name="busObjType_button"]').eq(0).click()
+
+    // Select the page type
+    cy.get(`option`).contains(pageType).eq(0).click()
+
+    // Close `Event Type` dropdown
+    cy.get('table[id="subSection1"]').find('tr').eq(2).find('img[name="busObjType_button"]').eq(0).click()
   }
 
   selectTemplate() {
@@ -54,6 +58,11 @@ class ClassicManagePagesPage {
     cy.get('#uniquePageName').type(`Page name ${newName}`)
   }
 
+  addRelatedCondition() {
+    cy.get('select[id="availableConditions"]').eq(0).select(1, { force: true })
+    cy.get('input[value="Add >"]').eq(0).click()
+  }
+
   clickSubmitBtn() {
     cy.get('#submitButton').eq(0).click()
   }
@@ -64,6 +73,10 @@ class ClassicManagePagesPage {
 
   clickViewIcon() {
     cy.get('#parent tbody tr td a').eq(0).click()
+  }
+  
+  sortByLastUpdated() {
+    cy.get('table[id="parent"]').find('th').eq(6).find('a').contains('Last Updated').eq(0).click()
   }
 
   checkDisplayed(text) {
@@ -152,4 +165,3 @@ class ClassicManagePagesPage {
 
 }
 export default new ClassicManagePagesPage();
-

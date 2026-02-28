@@ -1,3 +1,4 @@
+@skip-if-no-di-api
 Feature: End to end testing of ELR processing
 
   Background:

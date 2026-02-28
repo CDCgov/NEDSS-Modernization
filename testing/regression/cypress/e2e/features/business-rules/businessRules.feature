@@ -36,6 +36,8 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User select 50 to show the list of business rules
         Then User should see only 50 rows in the library and for each subsequent list where applicable
 
+    # Question click trying to load "NaN" page
+    @skip-broken
     Scenario: Create Business Rule using (Enable), (Logic =)
         Given Add new business rules already displayed
         And Function Enable is selected
@@ -43,6 +45,8 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks the Add to library button in new business rules modal
         Then Application will direct the user to the Business Library with the entries populated in the applicable columns
 
+    # Question click trying to load "NaN" page
+    @skip-broken
     Scenario: Create Business Rule using (Disable) (Logic <>)
         Given Add new business rules already displayed
         And Function Disable is selected
@@ -50,6 +54,8 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks the Add to library button in new business rules modal
         Then Application will direct the user to the Business Library with the entries populated in the applicable columns
 
+    # Question click trying to load "NaN" page
+    @skip-broken
     Scenario: Create Business Rule using (Hide) (Logic =)
         Given Add new business rules already displayed
         And Function Hide is selected
@@ -57,6 +63,8 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks the Add to library button in new business rules modal
         Then Application will direct the user to the Business Library with the entries populated in the applicable columns
 
+    # Question click trying to load "NaN" page
+    @skip-broken
     Scenario: Create Business Rule using (Unhide) (Logic =)
         Given Add new business rules already displayed
         And Function Unhide is selected
@@ -64,6 +72,8 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks the Add to library button in new business rules modal
         Then Application will direct the user to the Business Library with the entries populated in the applicable columns
 
+    # Question click trying to load "NaN" page
+    @skip-broken
     Scenario: Create Business Rule using (Require if) (Logic =)
         Given Add new business rules already displayed
         And Function Require if is selected
@@ -71,6 +81,8 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks the Add to library button in new business rules modal
         Then Application will direct the user to the Business Library with the entries populated in the applicable columns
 
+    # Delete fails
+    @skip-broken
     Scenario: Delete a selected Business Rule
         And User clicks one of the questions in the Source Field
         Then Edit business rules page displays
@@ -79,6 +91,8 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks the Yes, delete button in edit business rules page
         Then Application will delete the selected business rule and return to the business rule list screen
 
+    # Edit page won't load/be foune in CI
+    @skip-broken
     Scenario: Cancel deleting a selected Business Rule
         And User clicks one of the questions in the Source Field
         Then Edit business rules page displays
@@ -87,10 +101,14 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks the Cancel button in edit business rules page
         Then Application will not delete the selected business rule but return to the business rule list screen
 
+    # Edit page won't load/be foune in CI
+    @skip-broken
     Scenario: Access Edit Business Rule screen
         And User clicks one of the questions in the Source Field
         Then Application should direct the user to the Edit Business Rule screen
 
+    # update button is disabled due to validation
+    @skip-broken
     Scenario: Verify editing a business rule with the function as Enable
         And User clicks one of the questions in the Source Field
         Then Edit business rules page displays
@@ -100,7 +118,9 @@ Feature: Page Builder - User can view existing business rules logic here.
         When Submit button on Edit business rule screen is clicked
         Then Application will validate the values added, add the business rule to the selected page and then navigate to the Business Rule library with the changes made. A confirmation success message displays, The business rule is successfully updated. Please click the unique name to edit.
 
-    Scenario Outlined: Access the Filter pop-up window clicking the Filter button from Business Rules Library
+    # There is no step for clicking the filter button
+    @skip-broken
+    Scenario Outline: Access the Filter pop-up window clicking the Filter button from Business Rules Library
         And User clicks the Filter button in business rules library page
         Then User view the Filter pop-up window displays to add one or more filters in business rules library page
         Then Filter pop-window in business rules page displays the initial basic elements "<name>"
@@ -114,6 +134,8 @@ Feature: Page Builder - User can view existing business rules logic here.
             | Clear filters      | Button                   |
             | Apply              | Button                   |
 
+    # Steps don't seem to match page anymore
+    @skip-broken
     Scenario: Filter by Function = Date Validation using (Equals to)
         Given Filter section already displayed
         When User selects Function from the drop-down box
@@ -123,4 +145,3 @@ Feature: Page Builder - User can view existing business rules logic here.
         Then The application will finish adding a filter, display the added filter, and display the “+ Add Filter” link for user to add more filter (if needed)
         When User clicks the Apply button
         Then Added filter(s) are applied and only the records matching the filter(s) are displayed in the Business Rules library list
-

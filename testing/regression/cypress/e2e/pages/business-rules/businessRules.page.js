@@ -2,7 +2,7 @@ class BusinessRulesPage {
     navigateToBusinessRulesPage () {
         cy.visit('/page-builder/pages');
         cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
-        cy.get('[data-testid="businessRulesBtn"]').eq(0).click();
+        cy.contains('button', 'Business rules').click();
     }
 
     viewsBusinessRulesPage() {
@@ -80,7 +80,7 @@ class BusinessRulesPage {
     }
 
     clickAddBusinessRuleBtn() {
-        cy.get('[data-testid="addBusinessRuleBtn"]').click();
+        cy.contains('button', 'Add new business rule').click();
     }
 
     addNewBusinessRulesModalDisplayed() {
@@ -139,7 +139,7 @@ class BusinessRulesPage {
     }
 
     editBusinessRulesPageDisplayed() {
-        cy.contains('Edit business rules');
+        cy.contains('Edit business rules', { timeout: 8000 });
     }
 
     clickDeleteEditBusinessRulesPage() {

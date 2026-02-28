@@ -269,7 +269,7 @@ class PreviewPagePage {
     }
 
     clickPublishBtn() {
-        cy.get('menu div button').eq(0).click();
+        cy.contains('button', 'Publish').click();
 
     }
 

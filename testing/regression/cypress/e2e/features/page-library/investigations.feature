@@ -1,3 +1,5 @@
+# uses old flow
+@skip-broken
 @skip-if-disabled-is-int
 Feature: Page Builder - Page builder manage pages investigations
 

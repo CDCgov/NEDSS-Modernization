@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicManageConditionsPage from "cypress/e2e/pages/nbs-classic/manageConditions.page";
+import classicManageConditionsPage from "@pages/nbs-classic/manageConditions.page";
 
 Then("Navigate to Condition Library", () => {
     classicManageConditionsPage.navigateToConditionsLibrary()
@@ -20,4 +20,3 @@ Then("Click submit button to create condition", () => {
 Then("Click a condition in Condition Library", () => {
     classicManageConditionsPage.clickConditionInConditionList()
 });
-

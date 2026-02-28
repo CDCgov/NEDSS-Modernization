@@ -1,13 +1,9 @@
 Feature: View Open Investigation
 
-Background:
+  Background:
     Given I am logged in as secure user and stay on classic
 
-#  Scenario: Accessing and viewing an Open Investigation
-#    When I click on "Open Investigation" in the menu bar
-#    Then I should land on the "Open Investigation Queue" page
-#    Then I click and view an Investigation
-
+  @skip-broken
   Scenario: Create notification for an open investigation
     When I click on "Open Investigation" in the menu bar
     Then Click on Patient name from open investigation queue

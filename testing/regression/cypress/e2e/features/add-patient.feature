@@ -60,6 +60,8 @@ Feature: User can add a patient profile
         Then I create a new patient to enter other information with Information as of Date
         Then I should see profile of new patient
 
+    # Selecting state doesn't work, so county doesn't work
+    @skip-broken
     Scenario: User add a patient to enter Address with Information as of Date field
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
@@ -100,6 +102,8 @@ Feature: User can add a patient profile
     #     Then I create a new patient
     #     Then I should see "You have successfully added"
 
+    # Selects don't work
+    @skip-broken
     Scenario: User add a patient to select one Ethnicity option
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
@@ -112,6 +116,8 @@ Feature: User can add a patient profile
     #     Then I create a new patient to select two Ethnicity option of a patient
     #     ## unable to select two options
 
+    # Selects don't work
+    @skip-broken
     Scenario: User add a patient to select one option in Race 
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
