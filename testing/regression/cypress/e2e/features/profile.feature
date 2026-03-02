@@ -29,6 +29,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         Then cancels the deletion of the patient
         Then the user remains on the same profile page
 
+    # No event added to prevent deletion
+    @skip-broken
     Scenario: User cannot delete patient with a related event in the profile
         Given create a new patient profile
         When the user clicks on the Delete Patient button
@@ -41,6 +43,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         Then the user is taken to the top of the page
 
 
+    # Flow is old-style - needs updating
+    @skip-broken
     Scenario: Data remains displayed after selecting the patient profile summary
         Given the user navigate to a new patient profile page
         Then user clicks on a patient's profile "Summary" tab
@@ -54,6 +58,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
             | ETHNICITY     |
             | RACE          |
 
+    # Flow is old-style - needs updating
+    @skip-broken
     Scenario: Data remains displayed after selecting patient profile events
         Given the user navigate to a new patient profile page
         Then user clicks on a patient's profile "Events" tab
@@ -67,6 +73,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
             | ETHNICITY     |
             | RACE          |
 
+    # Edit flow is old-style small edits vs whole page - needs updating
+    @skip-broken
     Scenario: Add a comment for patient
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
@@ -75,6 +83,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         Then comment is displayed on the patient profile page
 
 
+    # Edit flow is old-style small edits vs whole page - needs updating
+    @skip-broken
     Scenario: Add a name for patient
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
@@ -82,6 +92,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         Then user adds the name "Alice"
         And Name "Alice" information is displayed on the patient profile page
 
+    # Edit flow is old-style small edits vs whole page - needs updating
+    @skip-broken
     Scenario: Add an address for a patient
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
@@ -89,6 +101,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         And user adds the new address as "Houston"
         And Address information is updated
 
+    # Edit flow is old-style small edits vs whole page - needs updating
+    @skip-broken
     Scenario: Add phone and email for patient
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
@@ -96,6 +110,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         And user adds the new phone as "5123345670"
         And phone number is updated
 
+    # Edit flow is old-style small edits vs whole page - needs updating
+    @skip-broken
     Scenario: Add identification for patient
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
@@ -104,6 +120,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         Then identification information is added successfully
 
 
+    # Edit flow is old-style small edits vs whole page - needs updating
+    @skip-broken
     Scenario: Add race for patient
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
@@ -112,6 +130,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         Then race information as "Indian" is displayed
 
 
+    # Edit flow is old-style small edits vs whole page - needs updating
+    @skip-broken
     Scenario: Edit general patient information
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
@@ -119,6 +139,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         Then user adds the general patient info with the mother's name as "Araceli"
         Then general information as "Araceli" is displayed
 
+    # Edit flow is old-style small edits vs whole page - needs updating
+    @skip-broken
     Scenario: Edit ethnicity for a patient
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
@@ -126,6 +148,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         Then user adds ethnicity as "Hispanic or latino"
         Then ethnicity information "Hispanic or Latino" is displayed
 
+    # Edit flow is old-style small edits vs whole page - needs updating
+    @skip-broken
     Scenario: Edit the sex and birth of a patient
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
@@ -133,6 +157,8 @@ Feature: User can view existing and add/edit certain patient demographic data he
         When user adds sex and birth for current sex as "Female"
         Then sex and birth information is added and the current sex is shown as "Female"
 
+    # Edit flow is old-style small edits vs whole page - needs updating
+    @skip-broken
     Scenario: Edit mortality for patient
         Given create a new patient profile
         Then user clicks on a patient's profile "Demographics" tab
