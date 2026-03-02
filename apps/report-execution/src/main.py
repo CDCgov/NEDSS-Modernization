@@ -29,9 +29,7 @@ async def execute_report_api(report_spec: models.ReportSpec):
 
 
 @app.exception_handler(errors.BaseReportExecutionError)
-async def api_exception_handler(
-    request: Request, exc: errors.BaseReportExecutionError
-):
+async def api_exception_handler(request: Request, exc: errors.BaseReportExecutionError):
     return JSONResponse(
         status_code=exc.http_code,
         content={"message": exc.message},
