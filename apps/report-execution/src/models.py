@@ -1,14 +1,11 @@
 from typing import Annotated, Literal, Optional
-import io
 
 from pandas import DataFrame
 from pydantic import BaseModel, ConfigDict, PlainSerializer
 
 
-def serialize_dataframe(df: DataFrame):
-    str_io = io.StringIO()
-    df.to_csv(str_io)
-    return str_io.getvalue()
+def serialize_dataframe(df: DataFrame) -> str:
+    return df.to_csv(index=False)
 
 
 class TimeRange(BaseModel):

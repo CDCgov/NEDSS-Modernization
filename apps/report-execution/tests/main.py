@@ -1,8 +1,10 @@
 """Unit tests for the entrypoint of the Report Execution service."""
 
+import io
 import pytest
 from fastapi.testclient import TestClient
 from src.main import app
+import pandas as pd
 
 
 @pytest.fixture
@@ -43,7 +45,14 @@ class TestReportExecuteEndpoint:
         response = client.post("/report/execute", json=report_spec)
 
         assert response.status_code == 200
-        assert response.json()
+        result = response.json()
+        assert result
+        
+        # check we can round trip back to DF
+        str_io = io.StringIO(result['content'])
+        df = pd.read_csv(str_io)
+        assert df.shape == (4, 2)
+
 
     def test_execute_report_api_with_time_range(self, client):
         """Test executing a report with an optional time range."""
