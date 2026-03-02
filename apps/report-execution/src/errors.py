@@ -12,5 +12,4 @@ class MissingLibraryError(BaseReportExecutionError):
 
     def __init__(self, library_name: str, is_builtin: bool):
         message = f"Library `{library_name}` (is_builtin: {is_builtin}) not found"
-        # TODO (PR): Is this the right http code?
         super().__init__(message, 422)
