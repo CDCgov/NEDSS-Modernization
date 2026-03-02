@@ -47,4 +47,3 @@ class DecisionSupportPage {
   }
   
   export default new DecisionSupportPage();
-  

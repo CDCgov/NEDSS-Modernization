@@ -17,4 +17,3 @@ Feature: Classic NBS - User can view and manage data in NBS Templates
     And Click a template in template library
     Then Click View Rules button in Template view
     And Verify rules listed in the results page
-
