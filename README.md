@@ -124,7 +124,7 @@ docker compose down -v
 
 #### Running NBS 6 local containers instead
 
-The docker compose uses published packages of the NBS 6 application (`wildfly`) and DB (`nbs-mysql`) by default. To instead use your local copy, set the `NEDSSDEV_COMPOSE_PATH` to the appropriate location as rooted from `cdc-sandbox` (e.g. `../../NEDSSDev/docker-compose.yml` if it is a sibling to this repo).
+The docker compose uses published packages of the NBS 6 application (`wildfly`) and DB (`nbs-mssql`) by default. To instead use your local copy, set the `NEDSSDEV_COMPOSE_PATH` to the appropriate location as rooted from `cdc-sandbox` (e.g. `../../NEDSSDev/docker-compose.yml` if it is a sibling to this repo).
 
 Ensure `NEDSSDev` is checked out to the version you want to use and properly instantiated (including DB submodule - see its README for details)
 
