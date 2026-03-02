@@ -2,6 +2,7 @@ import pytest
 
 from src.execute_report import execute_report
 from src.models import ReportSpec
+from src.errors import MissingLibraryError
 
 
 class TestExecuteReport:
@@ -25,3 +26,24 @@ class TestExecuteReport:
         assert result.description == "Some hard coded data"
 
         assert result.content.shape == (4, 2)
+
+    @pytest.mark.asyncio
+    async def test_execute_report_missing_library(self):
+        report_spec = ReportSpec.model_validate(
+            {
+                "version": 1,
+                "is_export": True,
+                "is_builtin": True,
+                "report_title": "Test Report",
+                "library_name": "missing_library",
+                "data_source_name": "random_db_table_0",
+                "subset_query": "SELECT * FROM test",
+            }
+        )
+        with pytest.raises(MissingLibraryError) as excinfo:
+            await execute_report(report_spec)
+
+        assert (
+            excinfo.value.message
+            == "Library `missing_library` (is_builtin: True) not found"
+        )

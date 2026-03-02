@@ -47,12 +47,11 @@ class TestReportExecuteEndpoint:
         assert response.status_code == 200
         result = response.json()
         assert result
-        
+
         # check we can round trip back to DF
-        str_io = io.StringIO(result['content'])
+        str_io = io.StringIO(result["content"])
         df = pd.read_csv(str_io)
         assert df.shape == (4, 2)
-
 
     def test_execute_report_api_with_time_range(self, client):
         """Test executing a report with an optional time range."""
@@ -111,3 +110,21 @@ class TestReportExecuteEndpoint:
         response = client.post("/report/execute", json=invalid_spec)
 
         assert response.status_code == 422  # Unprocessable Entity
+
+    def test_execute_report_api_invalid_library_name(self, client):
+        """Test that invalid field types return a validation error."""
+        invalid_spec = {
+            "version": 1,
+            "is_export": True,
+            "is_builtin": True,
+            "report_title": "Test Report",
+            "library_name": "missing_library",
+            "data_source_name": "random_db_table_3",
+            "subset_query": "SELECT * FROM test",
+        }
+        response = client.post("/report/execute", json=invalid_spec)
+
+        assert response.status_code == 422  # Unprocessable Entity
+        assert response.json() == {
+            "message": "Library `missing_library` (is_builtin: True) not found"
+        }

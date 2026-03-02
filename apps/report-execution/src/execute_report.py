@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from importlib import import_module
 
 from . import models
+from . import errors
 
 
 async def execute_report(report_spec: models.ReportSpec):
@@ -31,10 +32,13 @@ def is_valid_result(report_result: models.ReportResult):
 
 
 def get_library(library_name: str, is_builtin: bool):
-    if is_builtin:
-        return import_module(f"src.libraries.{library_name}")
-    else:
-        raise "TODO: support custom libraries"
+    try:
+        if is_builtin:
+            return import_module(f"src.libraries.{library_name}")
+        else:
+            raise "TODO: support custom libraries"
+    except ModuleNotFoundError:
+        raise errors.MissingLibraryError(library_name, is_builtin)
 
 
 # TODO: make this actually async?
