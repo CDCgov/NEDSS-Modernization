@@ -1,8 +1,7 @@
-from contextlib import contextmanager
+from contextlib import asynccontextmanager
+from importlib import import_module
 
-import models
-
-import libraries
+from . import models
 
 
 async def execute_report(report_spec: models.ReportSpec):
@@ -11,8 +10,9 @@ async def execute_report(report_spec: models.ReportSpec):
         raise "TODO: validation handling"
 
     # TODO: set up database connection as read only and start a transaction
-    with db_transaction() as trx:
-        result = libraries[report_spec.library_name].execute(
+    async with db_transaction() as trx:
+        library = get_library(report_spec.library_name, report_spec.is_builtin)
+        result = await library.execute(
             trx, report_spec.data_source_name, report_spec.time_range
         )
 
@@ -30,7 +30,14 @@ def is_valid_result(report_result: models.ReportResult):
     return True
 
 
+def get_library(library_name: str, is_builtin: bool):
+    if is_builtin:
+        return import_module(f"src.libraries.{library_name}")
+    else:
+        raise "TODO: support custom libraries"
+
+
 # TODO: make this actually async?
-@contextmanager
+@asynccontextmanager
 async def db_transaction():
     yield "TODO"

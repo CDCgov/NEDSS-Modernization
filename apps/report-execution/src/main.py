@@ -1,5 +1,5 @@
-import models
-from execute_report import execute_report
+from . import models
+from .execute_report import execute_report
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -16,4 +16,4 @@ async def health_check():
 
 @app.post("/report/execute")
 async def execute_report_api(report_spec: models.ReportSpec):
-    return execute_report(report_spec)
+    return await execute_report(report_spec)

@@ -1,4 +1,4 @@
-from models import TimeRange, ReportResult
+from ..models import TimeRange, ReportResult
 import pandas as pd
 
 
@@ -9,4 +9,6 @@ async def execute(trx, data_source_name: str, time_range: TimeRange):
     }
     df = pd.DataFrame(data_dict)
 
-    return ReportResult(content_type="table", content=df, description='Some hard coded data')
+    return ReportResult(
+        content_type="table", content=df, description="Some hard coded data"
+    )

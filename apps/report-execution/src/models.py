@@ -1,7 +1,14 @@
-from typing import Literal, Optional
+from typing import Annotated, Literal, Optional
+import io
 
 from pandas import DataFrame
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, PlainSerializer
+
+
+def serialize_dataframe(df: DataFrame):
+    str_io = io.StringIO()
+    df.to_csv(str_io)
+    return str_io.getvalue()
 
 
 class TimeRange(BaseModel):
@@ -19,8 +26,11 @@ class ReportSpec(BaseModel):
     subset_query: str
     time_range: Optional[TimeRange] = None
 
-# TODO: add other types
+
+# TODO: add other return types
 class ReportResult(BaseModel):
-    content_type: Literal['table']
-    content: DataFrame
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    content_type: Literal["table"]
+    content: Annotated[DataFrame, PlainSerializer(serialize_dataframe)]
     description: Optional[str]

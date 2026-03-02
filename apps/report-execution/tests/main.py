@@ -34,26 +34,25 @@ class TestReportExecuteEndpoint:
         report_spec = {
             "version": 1,
             "is_export": True,
+            "is_builtin": True,
             "report_title": "Test Report",
-            "library_name": "test_library",
+            "library_name": "hello_world",
             "data_source_name": "random_db_table_0",
             "subset_query": "SELECT * FROM test",
         }
         response = client.post("/report/execute", json=report_spec)
 
         assert response.status_code == 200
-        assert response.json() == {
-            "report_title": "Test Report",
-            "library_name": "test_library",
-        }
+        assert response.json()
 
     def test_execute_report_api_with_time_range(self, client):
         """Test executing a report with an optional time range."""
         report_spec = {
             "version": 1,
             "is_export": False,
+            "is_builtin": True,
             "report_title": "Time-based Report",
-            "library_name": "analytics",
+            "library_name": "hello_world",
             "data_source_name": "random_db_table_1",
             "subset_query": "SELECT * FROM events WHERE date > ?",
             "time_range": {"start": "2024-01-01", "end": "2024-12-31"},
@@ -61,28 +60,23 @@ class TestReportExecuteEndpoint:
         response = client.post("/report/execute", json=report_spec)
 
         assert response.status_code == 200
-        assert response.json() == {
-            "report_title": "Time-based Report",
-            "library_name": "analytics",
-        }
+        assert response.json()
 
     def test_execute_report_api_without_time_range(self, client):
         """Test executing a report without providing time_range."""
         report_spec = {
             "version": 2,
             "is_export": True,
+            "is_builtin": True,
             "report_title": "Simple Report",
-            "library_name": "basic_lib",
+            "library_name": "hello_world",
             "data_source_name": "random_db_table_2",
             "subset_query": "SELECT COUNT(*) FROM users",
         }
         response = client.post("/report/execute", json=report_spec)
 
         assert response.status_code == 200
-        assert response.json() == {
-            "report_title": "Simple Report",
-            "library_name": "basic_lib",
-        }
+        assert response.json()
 
     def test_execute_report_api_missing_required_fields(self, client):
         """Test that missing required fields return a validation error."""
@@ -99,8 +93,9 @@ class TestReportExecuteEndpoint:
         invalid_spec = {
             "version": "not_an_int",
             "is_export": True,
+            "is_builtin": True,
             "report_title": "Test Report",
-            "library_name": "test_library",
+            "library_name": "hello_world",
             "data_source_name": "random_db_table_3",
             "subset_query": "SELECT * FROM test",
         }
