@@ -99,7 +99,7 @@ jobs:
           GITHUB_TOKEN: ${{ env.passed_github_token }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ env.sonar_token }}
           DATABASE_USER: "sa"
-          DATABASE_PASSWORD: ${{ env.test_database_password }}
+          DATABASE_PASSWORD: "PizzaIsGood33!"
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
         run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/cdcent/nedssdb:latest
