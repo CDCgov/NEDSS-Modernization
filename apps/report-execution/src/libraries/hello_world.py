@@ -1,3 +1,5 @@
+"""This is a fake/stub library just to start to get the interface/pipes hooked up"""
+
 from ..models import TimeRange, ReportResult
 import pandas as pd
 
