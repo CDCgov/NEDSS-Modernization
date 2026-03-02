@@ -12,7 +12,7 @@ class ClassicEditOpenInvestigationPage {
   }
 
   verifyInvestigation() {
-    cy.get("table#parent td>a").eq(3).click();
+    cy.get("table#parent td:eq(5)>a").click();
     cy.get("a").contains("View Investigation:");
   }
 
@@ -28,5 +28,5 @@ class ClassicEditOpenInvestigationPage {
     cy.get("#SubmitTop").click()
   }
 }
-export default new ClassicEditOpenInvestigationPage();
 
+export default new ClassicEditOpenInvestigationPage();

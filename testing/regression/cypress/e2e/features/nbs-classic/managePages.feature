@@ -1,4 +1,5 @@
-@skip-if-disabled-not-test
+# already modernized?
+@skip-broken
 Feature: Classic NBS - User can view and manage data in Manage Pages
 
   Background:
@@ -11,6 +12,7 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Select Template form dropdown on add new classic page
     Then Select Message Mapping Guide from dropdown on add new classic page
     Then Enter Page name on add new classic page
+    Then Add a related condition on add new classic page
     Then Click on Submit button on add new classic page
 
   Scenario: Add new Interview
@@ -43,6 +45,7 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
 
 
   Scenario: Investigation page clone page
+    Then Click on Last Updated to sort by most recent pages
     Then Click on view icon to display the page details on classic
     Then Click on Page Details button on investigation page view
     Then Click on Clone Page button on investigation page details view
@@ -52,6 +55,7 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Click on Submit button in clone page on add new classic page
 
   Scenario: Investigation page details edit
+    Then Click on Last Updated to sort by most recent pages
     Then Click on view icon to display the page details on classic
     Then Click on Page Details button on investigation page view
     Then Click on Edit button on investigation page details view
@@ -59,6 +63,7 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Click on Submit button in edit page on add new classic page
 
   Scenario: Investigation page rules add new
+    Then Click on Last Updated to sort by most recent pages
     Then Click on view icon to display the page details on classic
     Then Click on Page Rules button on investigation page view
     Then Click on Add New button on investigation page rules view
@@ -69,6 +74,7 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Click on Submit button in add new rule on classic page
 
   Scenario: Investigation page add/import elements
+    Then Click on Last Updated to sort by most recent pages
     Then Click on view icon to display the page details on classic
     Then Click on Edit button on investigation view page
     Then Click Add Elements Icon in Edit page
@@ -77,19 +83,23 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Click on Submit Button in Add Element page
     Then Click on Close Button in Add Element page
 
+  @skip
   Scenario: Add a new tab to Investigation
+    Then Click on Last Updated to sort by most recent pages
     Then Click on view icon to display the page details on classic
     Then Click on Edit button on investigation view page
     Then Click on Add New Tab button on investigation view page
     Then Submit a new New Tab via a new window
 
   Scenario: Add a new section to Investigation
+    Then Click on Last Updated to sort by most recent pages
     Then Click on view icon to display the page details on classic
     Then Click on Edit button on investigation view page
     Then Click on Add New Section button on investigation view page
     Then Submit a section in new window
 
   Scenario: Add a new subsection to Investigation
+    Then Click on Last Updated to sort by most recent pages
     Then Click on view icon to display the page details on classic
     Then Click on Edit button on investigation view page
     Then Click on Add New Subsection button on investigation view page

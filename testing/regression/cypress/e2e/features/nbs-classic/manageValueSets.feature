@@ -33,4 +33,3 @@ Feature: Classic NBS - User can view and manage data in NBS Valueset
   Scenario: Make inactive
     And Click on a Value set in Value Set library
     Then Click on Make Inactive button to inactive the value set
-

@@ -1,6 +1,6 @@
 Feature: Verify Decision Support Alert Management functionality
 
-Background: 
+  Background:
     Given I am logged in as secure user and stay on classic
 
   Scenario: Managing Decision Support Alerts

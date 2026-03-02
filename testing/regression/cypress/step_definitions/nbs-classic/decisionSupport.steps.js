@@ -1,4 +1,4 @@
-import DecisionSupportPage from 'cypress/e2e/pages/nbs-classic/decisionSupport.page';
+import DecisionSupportPage from '@pages/nbs-classic/decisionSupport.page';
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 When('I click on the "System Management" link in the menu', () => {
