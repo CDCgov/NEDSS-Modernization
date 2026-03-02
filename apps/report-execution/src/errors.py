@@ -20,7 +20,7 @@ class MissingLibraryError(BaseReportExecutionError):
 
 
 class InternalServerError(BaseReportExecutionError):
-    """The service is not correctly configured"""
+    """An error with the server setup or execution"""
 
     def __init__(self, message):
         logging.error(message)

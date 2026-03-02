@@ -8,3 +8,5 @@ def get_env_or_error(env_var: str):
         raise errors.InternalServerError(
             f"Missing required environment variable: `{env_var}`"
         )
+
+    return res
