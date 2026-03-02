@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicManageQuestionsPage from "cypress/e2e/pages/nbs-classic/manageQuestions.page";
+import classicManageQuestionsPage from "@pages/nbs-classic/manageQuestions.page";
 
 Then("Navigate to Question Library", () => {
     classicManageQuestionsPage.navigateToQuestionsLibrary()
@@ -20,4 +20,3 @@ Then("Click submit button to create question", () => {
 Then("Click on a question in Question Library", () => {
     classicManageQuestionsPage.clickQuestionInQuestionList()
 });
-
