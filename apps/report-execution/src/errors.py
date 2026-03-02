@@ -20,7 +20,8 @@ class MissingLibraryError(BaseReportExecutionError):
 
 
 class InternalServerError(BaseReportExecutionError):
-    """An error with the server setup or execution"""
+    """An error with the server setup or execution. The message is logged for sys admins,
+    but not passed to the end user"""
 
     def __init__(self, message):
         logging.error(message)

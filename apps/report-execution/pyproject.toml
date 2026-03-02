@@ -17,3 +17,19 @@ dev = [
     "pytest-mock>=3.15.1",
     "ruff>=0.15.0,<1.0.0",
 ]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]

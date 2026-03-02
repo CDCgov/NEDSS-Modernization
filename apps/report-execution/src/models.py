@@ -3,8 +3,13 @@ from typing import Annotated, Literal, Optional, List, Tuple, Any
 from pandas import DataFrame
 from pydantic import BaseModel, ConfigDict, PlainSerializer
 
+# column names and values
+Table = Tuple[List[str], List[Tuple[Any, ...]]]
 
-def serialize_table(table: Tuple[List[str], List[Tuple[Any, ...]]]) -> str:
+
+def serialize_table(table: Table) -> str:
+    # Short cut to valid CSV - can swap out later if performance dictates
+    # or serialize to CSV at a different location
     df = DataFrame.from_records(table[1], columns=table[0])
     return df.to_csv(index=False)
 
@@ -30,7 +35,5 @@ class ReportResult(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     content_type: Literal["table"]
-    content: Annotated[
-        Tuple[List[str], List[Tuple[Any, ...]]], PlainSerializer(serialize_table)
-    ]
+    content: Annotated[Table, PlainSerializer(serialize_table)]
     description: Optional[str]
