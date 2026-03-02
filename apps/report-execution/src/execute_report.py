@@ -1,8 +1,9 @@
-from contextlib import asynccontextmanager
+
 from importlib import import_module
 
 from . import models
 from . import errors
+from .db_transaction import db_transaction
 
 
 async def execute_report(report_spec: models.ReportSpec):
@@ -18,7 +19,7 @@ async def execute_report(report_spec: models.ReportSpec):
         raise "TODO: validation handling"
 
     # TODO: set up database connection as read only and start a transaction
-    async with db_transaction() as trx:
+    async with db_transaction("connection string TODO") as trx:
         result = await library.execute(
             trx, report_spec.data_source_name, report_spec.time_range
         )
@@ -54,11 +55,3 @@ def get_library(library_name: str, is_builtin: bool):
             raise "TODO: support custom libraries"
     except ModuleNotFoundError:
         raise errors.MissingLibraryError(library_name, is_builtin)
-
-
-# TODO: make this actually async?
-@asynccontextmanager
-async def db_transaction():
-    """Set up a read only database transaction and seed with the subset_sql as the
-    `#work` table"""
-    yield "TODO"
