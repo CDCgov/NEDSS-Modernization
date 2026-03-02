@@ -1,10 +1,11 @@
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Literal, Optional, List, Tuple, Any
 
 from pandas import DataFrame
 from pydantic import BaseModel, ConfigDict, PlainSerializer
 
 
-def serialize_dataframe(df: DataFrame) -> str:
+def serialize_table(table: Tuple[List[str], List[Tuple[Any, ...]]]) -> str:
+    df = DataFrame.from_records(table[1], columns=table[0])
     return df.to_csv(index=False)
 
 
@@ -29,5 +30,7 @@ class ReportResult(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     content_type: Literal["table"]
-    content: Annotated[DataFrame, PlainSerializer(serialize_dataframe)]
+    content: Annotated[
+        Tuple[List[str], List[Tuple[Any, ...]]], PlainSerializer(serialize_table)
+    ]
     description: Optional[str]

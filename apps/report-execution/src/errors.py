@@ -1,5 +1,6 @@
 import logging
 
+
 class BaseReportExecutionError(Exception):
     """Base exception for report execution errors. Builds in the correct HTTP code for the API"""
 
@@ -7,6 +8,7 @@ class BaseReportExecutionError(Exception):
         self.message = message
         self.http_code = http_code
         super().__init__(self.message)
+
 
 class MissingLibraryError(BaseReportExecutionError):
     """The requested library is missing or invalid"""
@@ -16,9 +18,10 @@ class MissingLibraryError(BaseReportExecutionError):
         # TODO (PR): Is this the right http code?
         super().__init__(message, 422)
 
+
 class InternalServerError(BaseReportExecutionError):
     """The service is not correctly configured"""
 
     def __init__(self, message):
         logging.error(message)
-        super().__init__("Inernal Server Error", 500)
+        super().__init__("Internal Server Error", 500)

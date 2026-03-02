@@ -1,19 +1,24 @@
-
-from typing import List, tuple, Any
+from typing import List, Tuple, Any
 import mssql_python
-from contextlib import asynccontextmanager
+from contextlib import contextmanager
 
 
 class Transaction:
     def __init__(self, cursor):
         self.cursor = cursor
 
-    def execute(self, query: str) -> List[tuple[Any, ...]]:
-        return self.cursor.execute(query).fetchall()
+    def execute(self, query: str) -> List[Tuple[Any, ...]]:
+        results = self.cursor.execute(query).fetchall()
+        columns = self.column_names()
+        return (columns, results)
+
+    def column_names(self) -> List[str]:
+        return [c[0] for c in self.cursor.description]
+
 
 # TODO: make this actually async?
-@asynccontextmanager
-async def db_transaction(connection_string, subset_sql):
+@contextmanager
+def db_transaction(connection_string, subset_sql):
     """Set up a database transaction and seed with the subset_sql as the
     `#work` table"""
     with mssql_python.connect(connection_string) as connection:

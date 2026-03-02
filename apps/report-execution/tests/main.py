@@ -31,7 +31,7 @@ class TestHealthCheckEndpoint:
 class TestReportExecuteEndpoint:
     """Tests for the report execution endpoint (/report/execute)."""
 
-    def test_execute_report_api_with_valid_spec(self, client):
+    def test_execute_report_api_with_valid_spec(self, client, mock_db_transaction):
         """Test executing a report with a valid ReportSpec."""
         report_spec = {
             "version": 1,
@@ -53,7 +53,7 @@ class TestReportExecuteEndpoint:
         df = pd.read_csv(str_io)
         assert df.shape == (4, 2)
 
-    def test_execute_report_api_with_time_range(self, client):
+    def test_execute_report_api_with_time_range(self, client, mock_db_transaction):
         """Test executing a report with an optional time range."""
         report_spec = {
             "version": 1,
@@ -70,7 +70,7 @@ class TestReportExecuteEndpoint:
         assert response.status_code == 200
         assert response.json()
 
-    def test_execute_report_api_without_time_range(self, client):
+    def test_execute_report_api_without_time_range(self, client, mock_db_transaction):
         """Test executing a report without providing time_range."""
         report_spec = {
             "version": 2,

@@ -8,8 +8,7 @@ from src.errors import MissingLibraryError
 class TestExecuteReport:
     """Tests for the execute_report function"""
 
-    @pytest.mark.asyncio
-    async def test_execute_report_hello_world(self):
+    def test_execute_report_hello_world(self, mock_db_transaction):
         report_spec = ReportSpec.model_validate(
             {
                 "version": 1,
@@ -21,14 +20,17 @@ class TestExecuteReport:
                 "subset_query": "SELECT * FROM test",
             }
         )
-        result = await execute_report(report_spec)
+        result = execute_report(report_spec)
         assert result.content_type == "table"
         assert result.description == "Some hard coded data"
+        columns = result.content[0]
+        assert columns == ["id", "name"]
 
-        assert result.content.shape == (4, 2)
+        data = result.content[1]
+        assert len(data) == 4
+        assert len(data[0]) == 2
 
-    @pytest.mark.asyncio
-    async def test_execute_report_missing_library(self):
+    def test_execute_report_missing_library(self):
         report_spec = ReportSpec.model_validate(
             {
                 "version": 1,
@@ -40,10 +42,10 @@ class TestExecuteReport:
                 "subset_query": "SELECT * FROM test",
             }
         )
-        with pytest.raises(MissingLibraryError) as excinfo:
-            await execute_report(report_spec)
+        with pytest.raises(MissingLibraryError) as exc_info:
+            execute_report(report_spec)
 
         assert (
-            excinfo.value.message
+            exc_info.value.message
             == "Library `missing_library` (is_builtin: True) not found"
         )

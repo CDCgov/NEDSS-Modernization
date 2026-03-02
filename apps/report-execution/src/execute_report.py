@@ -1,4 +1,3 @@
-
 from importlib import import_module
 
 from . import models
@@ -18,7 +17,6 @@ def execute_report(report_spec: models.ReportSpec):
     library = get_library(report_spec.library_name, report_spec.is_builtin)
     if not is_valid_library(library):
         raise "TODO: validation handling"
-
 
     # set up database connection as read only and start a transaction
     conn_string = utils.get_env_or_error("DATABASE_CONN_STRING")
