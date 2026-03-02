@@ -29,7 +29,7 @@ class AddSectionPage {
 
     checkAlertIsShowing() {
         cy.wait(1000)
-        cy.get(".usa-alert")
+        cy.get('[role="alert"]')
     }
 
     checkNewlyCreatedSectionShowing() {

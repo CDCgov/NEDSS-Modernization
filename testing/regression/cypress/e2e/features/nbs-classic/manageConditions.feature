@@ -13,4 +13,3 @@ Feature: Classic NBS - User can view and manage data in NBS Conditions
     Then Navigate to Condition Library
     And Click a condition in Condition Library
     Then Click submit button to create condition
-

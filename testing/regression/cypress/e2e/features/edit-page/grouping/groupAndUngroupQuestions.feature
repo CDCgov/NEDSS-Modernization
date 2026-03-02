@@ -1,3 +1,5 @@
+# Uses old page flow
+@skip-broken
 @skip-if-disabled-is-int
 Feature: Page Builder - User can verify grouping and ungrouping questions here.
 

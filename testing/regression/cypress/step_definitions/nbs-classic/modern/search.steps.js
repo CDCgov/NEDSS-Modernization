@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicHomePage from "cypress/e2e/pages/nbs-classic/home.page";
+import classicHomePage from "@pages/nbs-classic/home.page";
 
 Then("Enter Last Name text box input {string}", (text) => {
     classicHomePage.enterLastName(text)
