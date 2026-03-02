@@ -1,6 +1,6 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicManagePagesPage from "cypress/e2e/pages/nbs-classic/managePages.page";
-import classicOpener from "cypress/e2e/pages/nbs-classic/classicOpener.page";
+import classicManagePagesPage from "@pages/nbs-classic/managePages.page";
+import classicOpener from "@pages/nbs-classic/classicOpener.page";
 
 Then("Navigate to Page Library on classic", () => {
     classicManagePagesPage.navigateToPageLibrary()
@@ -50,8 +50,16 @@ Then("Enter Page name on add new classic page", () => {
     classicManagePagesPage.enterPageName()
 });
 
+Then("Add a related condition on add new classic page", () => {
+    classicManagePagesPage.addRelatedCondition()
+});
+
 Then("Click on Submit button on add new classic page", () => {
     classicManagePagesPage.clickSubmitBtn()
+});
+
+Then("Click on Last Updated to sort by most recent pages", () => {
+    classicManagePagesPage.sortByLastUpdated()
 });
 
 Then("Click on view icon to display the page details on classic", () => {

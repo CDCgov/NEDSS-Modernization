@@ -1,8 +1,11 @@
 class ClassicManageQuestionsPage {
 
   navigateToQuestionsLibrary() {
-    cy.contains('System Management').click()    
-    cy.contains('Manage questions').click()
+    cy.contains('System Management').click()  
+
+    // Expand the "Page Management" subsection
+    cy.get('table[id="systemAdmin5"]').find('a[class="toggleIconHref"]').eq(0).click();
+    cy.contains('Manage Questions').click()
   }
 
   clickAddNewBtn() {
@@ -42,4 +45,3 @@ class ClassicManageQuestionsPage {
   }
 }
 export default new ClassicManageQuestionsPage();
-
