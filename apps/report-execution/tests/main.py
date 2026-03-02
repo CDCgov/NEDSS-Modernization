@@ -112,7 +112,7 @@ class TestReportExecuteEndpoint:
         assert response.status_code == 422  # Unprocessable Entity
 
     def test_execute_report_api_invalid_library_name(self, client):
-        """Test that invalid field types return a validation error."""
+        """Test that invalid name returns a validation error."""
         invalid_spec = {
             "version": 1,
             "is_export": True,
