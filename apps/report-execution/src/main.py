@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -18,22 +16,22 @@ class ReportSpec(BaseModel):
     library_name: str
     data_source_name: str
     subset_query: str
-    time_range: Optional[TimeRange] = None
+    time_range: TimeRange | None = None
 
 
-@app.get("/status")
+@app.get('/status')
 async def health_check():
     """
     Check service health status.
 
     Returns: Status text
     """
-    return "Report Execution Service is up and running!"
+    return 'Report Execution Service is up and running!'
 
 
-@app.post("/report/execute")
+@app.post('/report/execute')
 async def execute_report(report_spec: ReportSpec):
     return {
-        "report_title": report_spec.report_title,
-        "library_name": report_spec.library_name,
+        'report_title': report_spec.report_title,
+        'library_name': report_spec.library_name,
     }
