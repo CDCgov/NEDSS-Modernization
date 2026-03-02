@@ -4,9 +4,10 @@ from importlib import import_module
 from . import models
 from . import errors
 from .db_transaction import db_transaction
+from . import utils
 
 
-async def execute_report(report_spec: models.ReportSpec):
+def execute_report(report_spec: models.ReportSpec):
     """Execute a report spec by validating inputs, loading library, handling DB connection
     and transaction,and validating/processing results"""
 
@@ -18,9 +19,11 @@ async def execute_report(report_spec: models.ReportSpec):
     if not is_valid_library(library):
         raise "TODO: validation handling"
 
-    # TODO: set up database connection as read only and start a transaction
-    async with db_transaction("connection string TODO") as trx:
-        result = await library.execute(
+
+    # set up database connection as read only and start a transaction
+    conn_string = utils.get_env_or_error("DATABASE_CONN_STRING")
+    with db_transaction(conn_string, report_spec.subset_query) as trx:
+        result = library.execute(
             trx, report_spec.data_source_name, report_spec.time_range
         )
 

@@ -22,7 +22,7 @@ async def health_check():
 
 @app.post("/report/execute")
 async def execute_report_api(report_spec: models.ReportSpec):
-    return await execute_report(report_spec)
+    return execute_report(report_spec)
 
 
 # ======= ERROR MAPPING ========
