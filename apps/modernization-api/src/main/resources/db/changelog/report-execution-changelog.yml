@@ -18,3 +18,6 @@ databaseChangeLog:
         - sqlFile:
             path: db/report/execution/04_ODSE_Strcture_Require_Library_FK.sql
             splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/nbs_custom.sql
+            splitStatements: false
