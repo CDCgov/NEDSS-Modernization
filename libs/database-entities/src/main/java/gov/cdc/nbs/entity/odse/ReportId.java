@@ -24,7 +24,6 @@ public class ReportId implements Serializable {
 
   @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "data_source_uid")
-  // TODO: Add DataSource
   private DataSource dataSourceUid;
 
   @Override

@@ -9,22 +9,26 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
-// @Table(name = "Report")
+@Table(name = "Report", catalog = "NBS_ODSE")
 public class Report {
-  @EmbeddedId private ReportId id;
+  @NonNull @EmbeddedId private ReportId id;
 
-  @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
+  @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibraryUid;
 
@@ -32,10 +36,10 @@ public class Report {
   private String descTxt;
 
   @Column(name = "effective_from_time")
-  private LocalDate effectiveFromTime;
+  private LocalDateTime effectiveFromTime;
 
   @Column(name = "effective_to_time")
-  private LocalDate effectiveToTime;
+  private LocalDateTime effectiveToTime;
 
   @Column(name = "filter_mode", length = 1)
   private Character filterMode;
@@ -69,10 +73,12 @@ public class Report {
   @Column(name = "category", length = 20)
   private String category;
 
-  @Column(name = "section_cd", length = 5, nullable = false)
+  @NonNull @Column(name = "section_cd", length = 5, nullable = false)
   private String sectionCd;
 
   @Embedded private Audit audit;
 
   @Embedded private Status status;
+
+  protected Report() {}
 }
