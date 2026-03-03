@@ -44,6 +44,7 @@ env:
   test_database_password: ${{secrets.DATABASE_PASSWORD}}
   token_secret: ${{secrets.TOKEN_SECRET}}
   parameter_secret: ${{secrets.PARAMETER_SECRET}}
+  db_version: ${{secrets.DB_VERSION}}
 
 jobs:
   pipeline:
@@ -89,11 +90,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.passed_github_token }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ env.sonar_token }}
-          DATABASE_USER: "sa"
-          DATABASE_PASSWORD: "PizzaIsGood33!"
+          DATABASE_USER: ${{ env.test_database_user }}
+          DATABASE_PASSWORD: ${{ env.test_database_password }}
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
-          DB_VERSION: "19.0.1"
+          DB_VERSION: ${{ env.db_version }}
         run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/cdcent/nedssdb:latest
 
       - name: Publish Testing Reports
