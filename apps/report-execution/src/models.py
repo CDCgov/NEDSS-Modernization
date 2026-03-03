@@ -27,6 +27,13 @@ class ReportSpec(BaseModel):
     time_range: TimeRange | None = None
 
 
+class LibraryMetadata(BaseModel):
+    version: int
+    name: str
+    description: str
+    owner_email: str | None = None
+
+
 # column names and values
 class Table(BaseModel):
     columns: list[str]
