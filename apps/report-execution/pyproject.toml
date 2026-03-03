@@ -11,6 +11,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pyrefly>=0.54.0",
     "pytest>=9.0.2,<10.0.0",
     "ruff>=0.15.0,<1.0.0",
 ]
@@ -35,3 +36,10 @@ select = [
 quote-style = "single"
 indent-style = "space"
 docstring-code-format = true
+
+[tool.pyrefly]
+project-includes = [
+    "**/*.py*",
+    "**/*.ipynb",
+]
+search-path = ["."]

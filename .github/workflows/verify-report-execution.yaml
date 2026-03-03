@@ -40,6 +40,10 @@ jobs:
       - name: Run linter
         working-directory: ./apps/report-execution
         run: uv run ruff check
+        
+      - name: Run type check
+        working-directory: ./apps/report-execution
+        run: uv run pyrefly check --output-format=github
 
       - name: Run tests
         working-directory: ./apps/report-execution

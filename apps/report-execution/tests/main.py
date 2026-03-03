@@ -3,7 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from src.main import app
+from src.main import app, does_not_exist
 
 
 @pytest.fixture
