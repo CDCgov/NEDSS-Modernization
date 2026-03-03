@@ -3,6 +3,7 @@ package gov.cdc.nbs.entity.odse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "Report_Library", catalog = "NBS_ODSE")
 public class ReportLibrary {
   @Id
   @Column(name = "library_uid")
