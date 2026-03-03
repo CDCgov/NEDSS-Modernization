@@ -1,12 +1,12 @@
 """This is a fake/stub library just to start to get the interface/pipes hooked up"""
 
 from ..db_transaction import Transaction
-from ..models import ReportResult, TimeRange, LibraryMetadata
+from ..models import LibraryMetadata, ReportResult, TimeRange
 
 library_metadata = LibraryMetadata(
-    version = 1,
-    name = "hello_world",
-    description = """Basic tabular report. Executes the described SQL by the data 
+    version=1,
+    name="hello_world",
+    description="""Basic tabular report. Executes the described SQL by the data 
     source and filters and returns the table.""",
 )
 
