@@ -2,7 +2,7 @@ import logging
 
 
 class BaseReportExecutionError(Exception):
-    """Base exception for report execution errors. Builds in the correct HTTP code 
+    """Base exception for report execution errors. Builds in the correct HTTP code
     for the API response"""
 
     def __init__(self, message: str, http_code: int):
@@ -21,7 +21,7 @@ class MissingLibraryError(BaseReportExecutionError):
 
 
 class InternalServerError(BaseReportExecutionError):
-    """An error with the server setup or execution. The message is logged for sys 
+    """An error with the server setup or execution. The message is logged for sys
     admins, but not passed to the end user"""
 
     def __init__(self, message, orig_exc=None):

@@ -5,7 +5,7 @@ from .db_transaction import db_transaction
 
 
 def execute_report(report_spec: models.ReportSpec):
-    """Execute a report spec by validating inputs, loading library, handling DB 
+    """Execute a report spec by validating inputs, loading library, handling DB
     connection and transaction,and validating/processing results"""
 
     if not is_valid_spec(report_spec):
