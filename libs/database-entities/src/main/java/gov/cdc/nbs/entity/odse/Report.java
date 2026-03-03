@@ -26,7 +26,6 @@ public class Report {
 
   @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "library_uid")
-  // TODO: Add ReportLibrary
   private ReportLibrary reportLibraryUid;
 
   @Column(name = "desc_txt", length = 300)
