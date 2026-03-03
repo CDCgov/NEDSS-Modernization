@@ -1,8 +1,8 @@
 import pytest
 
+from src.errors import MissingLibraryError
 from src.execute_report import execute_report
 from src.models import ReportSpec
-from src.errors import MissingLibraryError
 
 
 class TestExecuteReport:
@@ -22,13 +22,11 @@ class TestExecuteReport:
         )
         result = execute_report(report_spec)
         assert result.content_type == "table"
-        assert result.description == "Some hard coded data"
-        columns = result.content[0]
-        assert columns == ["id", "name"]
+        assert result.description == "Pass through query"
+        assert result.content.columns == ["id", "name"]
 
-        data = result.content[1]
-        assert len(data) == 4
-        assert len(data[0]) == 2
+        assert len(result.content.data) == 4
+        assert len(result.content.data[0]) == 2
 
     def test_execute_report_missing_library(self):
         report_spec = ReportSpec.model_validate(

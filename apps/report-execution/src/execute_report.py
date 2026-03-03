@@ -1,9 +1,7 @@
 from importlib import import_module
 
-from . import models
-from . import errors
+from . import errors, models, utils
 from .db_transaction import db_transaction
-from . import utils
 
 
 def execute_report(report_spec: models.ReportSpec):
@@ -20,9 +18,12 @@ def execute_report(report_spec: models.ReportSpec):
 
     # set up database connection as read only and start a transaction
     conn_string = utils.get_env_or_error("DATABASE_CONN_STRING")
-    with db_transaction(conn_string, report_spec.subset_query) as trx:
+    with db_transaction(conn_string) as trx:
         result = library.execute(
-            trx, report_spec.data_source_name, report_spec.time_range
+            trx,
+            subset_query=report_spec.subset_query,
+            data_source_name=report_spec.data_source_name,
+            time_range=report_spec.time_range,
         )
 
     if not is_valid_result(result):

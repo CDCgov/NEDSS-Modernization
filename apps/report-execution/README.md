@@ -16,7 +16,7 @@
     uv sync --frozen
     ```
 
-1. (Optional) Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development (particularly helpful if you're running outside of Docker).  _NOTE: You'll need to manually load the env (`export $(xargs <.env)`) or install and configure [direnv](https://direnv.net/) (or an equivalent shell extension) in order to make these environment variables available to the application._
+1. (Optional) Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development (particularly helpful if you're running outside of Docker).  _NOTE: You'll need to manually load the env (`export $(xargs <.env)`), add `--env-file .env` to `uv` commands, or install and configure [direnv](https://direnv.net/) (or an equivalent shell extension) in order to make these environment variables available to the applicatio._
 
 ```sh
 cp sample.env .env
@@ -39,12 +39,19 @@ The application will be available at:
 Unit testing for this project is currently handled with [pytest](https://docs.pytest.org/en/stable/#). To invoke the unit test suite, simply run the following:
 
 ```bash
-uv run pytest
+uv run pytest -m "not integration"
 ```
 
 Or something similar to the following, if you're looking to run a specific test suite:
 ```bash
 uv run pytest src/main_test.py
+```
+
+To run integration tests, ensure the `.env` is loaded or passed to `uv` and run
+```sh
+uv run pytest # all tests
+uv run pytest -m integration # just integration tests
+uv run --env-file .env pytest # pass env file to uv
 ```
 
 ## Code Linting and Formatting
