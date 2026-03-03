@@ -1,8 +1,8 @@
-from . import models
-from . import errors
-from .execute_report import execute_report
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+
+from . import errors, models
+from .execute_report import execute_report
 
 app = FastAPI()
 
@@ -19,8 +19,9 @@ async def health_check():
     return 'Report Execution Service is up and running!'
 
 
-@app.post("/report/execute")
+@app.post('/report/execute')
 async def execute_report_api(report_spec: models.ReportSpec):
+    """Primary api route for report execution."""
     return await execute_report(report_spec)
 
 
@@ -29,7 +30,8 @@ async def execute_report_api(report_spec: models.ReportSpec):
 
 @app.exception_handler(errors.BaseReportExecutionError)
 async def api_exception_handler(request: Request, exc: errors.BaseReportExecutionError):
+    """Handle application errors."""
     return JSONResponse(
         status_code=exc.http_code,
-        content={"message": exc.message},
+        content={'message': exc.message},
     )
