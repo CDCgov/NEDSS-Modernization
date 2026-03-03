@@ -1,8 +1,8 @@
-from . import models
-from . import errors
-from .execute_report import execute_report
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+
+from . import errors, models
+from .execute_report import execute_report
 
 app = FastAPI()
 

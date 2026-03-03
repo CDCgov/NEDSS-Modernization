@@ -1,10 +1,12 @@
 """Unit tests for the entrypoint of the Report Execution service."""
 
 import io
+
+import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
+
 from src.main import app
-import pandas as pd
 
 
 @pytest.fixture
