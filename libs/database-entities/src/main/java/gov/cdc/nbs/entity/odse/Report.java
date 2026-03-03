@@ -2,10 +2,14 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.Status;
-import gov.cdc.nbs.patient.demographic.*;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
-import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,15 +22,7 @@ import lombok.Setter;
 @Entity
 // @Table(name = "Report")
 public class Report {
-  @Id
-  @Column(name = "report_uid")
-  private Long id;
-
-  @Id
-  @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
-  @JoinColumn(name = "data_source_uid")
-  // TODO: Add DataSource
-  private DataSource dataSourceUid;
+  @EmbeddedId private ReportId id;
 
   @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "library_uid")
