@@ -28,6 +28,10 @@ select = [
     "B",
     # flake8-simplify
     "SIM",
+    # flake8-print
+    "T20",
+    # flake8-fixme
+    "FIX",
     # isort
     "I",
     # pydocstyle
