@@ -18,9 +18,20 @@
 
 1. (Optional) Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development (particularly helpful if you're running outside of Docker).  _NOTE: You'll need to manually load the env (`export $(xargs <.env)`), add `--env-file .env` to `uv` commands, or install and configure [direnv](https://direnv.net/) (or an equivalent shell extension) in order to make these environment variables available to the applicatio._
 
-```sh
-cp sample.env .env
-```
+    ```sh
+    cp sample.env .env
+    ```
+
+1. Have the NBS MSSQL database running and make sure the env vars in this workspace are correct for that DB (`sample.env` values should match). Using the `cdc-sandbox` docker compose is a good/opinionated way to do this
+
+    ```sh
+    # from a dedicated terminal at the repo root
+    cd cdc-sandbox
+    # create .env if it doesn't exist
+    ./check_env.sh
+    # run the database
+    docker compose up nbs-mssql
+    ```
 
 1. Start the FastAPI development server with [Uvicorn](https://uvicorn.dev/) (the default ASGI server program shipped with FastAPI):
 
