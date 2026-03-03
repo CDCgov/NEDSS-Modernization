@@ -8,7 +8,7 @@ class BaseReportExecutionError(Exception):
 
 
 class MissingLibraryError(BaseReportExecutionError):
-    """The requested library is missing or invalid"""
+    """The requested library is missing"""
 
     def __init__(self, library_name: str, is_builtin: bool):
         message = f"Library `{library_name}` (is_builtin: {is_builtin}) not found"
