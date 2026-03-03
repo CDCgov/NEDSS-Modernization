@@ -46,6 +46,10 @@ ignore = [
     # Requires documentation for every package/module
     "D104",
     "D100",
+    "D105",
+    "D107",
+    # Requires one line summary for doc string
+    "D205",
 ]
 
 [tool.ruff.lint.pydocstyle]
