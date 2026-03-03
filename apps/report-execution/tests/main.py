@@ -3,15 +3,15 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from src.main import app, does_not_exist
+from src.main import app
 
 
 @pytest.fixture
 def client():
     """Create a test client for the FastAPI application.
 
-    This fixture provides a TestClient instance that can be used
-    to make requests to the application without running a server.
+    This fixture provides a TestClient instance that can be used to make requests to
+    the application without running a server.
     """
     return TestClient(app)
 

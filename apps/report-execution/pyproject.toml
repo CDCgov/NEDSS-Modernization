@@ -30,7 +30,20 @@ select = [
     "SIM",
     # isort
     "I",
+    # pydocstyle
+    "D",
 ]
+
+ignore = [
+    # Requires documentation for every function parameter
+    "D417",
+    # Requires documentation for every package/module
+    "D104",
+    "D100",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.ruff.format]
 quote-style = "single"

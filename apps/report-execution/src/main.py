@@ -5,11 +5,15 @@ app = FastAPI()
 
 
 class TimeRange(BaseModel):
+    """Start and End time for a report."""
+
     start: str  # Date in ISO format
     end: str  # Date in ISO format
 
 
 class ReportSpec(BaseModel):
+    """Specification describing a report request."""
+
     version: int
     is_export: bool
     report_title: str
@@ -21,8 +25,7 @@ class ReportSpec(BaseModel):
 
 @app.get('/status')
 async def health_check():
-    """
-    Check service health status.
+    """Check service health status.
 
     Returns: Status text
     """
@@ -31,6 +34,7 @@ async def health_check():
 
 @app.post('/report/execute')
 async def execute_report(report_spec: ReportSpec):
+    """Main api end point for the service. Takes a spec and returns the report."""
     return {
         'report_title': report_spec.report_title,
         'library_name': report_spec.library_name,
