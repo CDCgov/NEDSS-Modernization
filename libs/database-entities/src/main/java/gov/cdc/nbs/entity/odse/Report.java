@@ -6,6 +6,10 @@ import gov.cdc.nbs.patient.demographic.*;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
