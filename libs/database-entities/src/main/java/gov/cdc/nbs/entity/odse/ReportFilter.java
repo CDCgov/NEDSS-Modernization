@@ -26,7 +26,7 @@ public class ReportFilter {
   @Column(name = "report_filter_uid", nullable = false)
   private Long id;
 
-  @NonNull private ReportId reportUid;
+  @NonNull private ReportId reportId;
 
   // TODO: Add FilterCode? not specified in design doc
   @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
