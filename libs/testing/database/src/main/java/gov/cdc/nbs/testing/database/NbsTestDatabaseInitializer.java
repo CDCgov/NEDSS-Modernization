@@ -26,6 +26,8 @@ class NbsTestDatabaseInitializer implements ApplicationContextInitializer<Config
         .withPassword(credential)
         .withImagePullPolicy(PullPolicy.defaultPolicy());
 
+    container.addEnv("DB_VERSION", "19.0.1");
+
     container.start();
 
     String url = container.getJdbcUrl();

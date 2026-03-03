@@ -93,6 +93,7 @@ jobs:
           DATABASE_PASSWORD: "PizzaIsGood33!"
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
+          DB_VERSION: "19.0.1"
         run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/cdcent/nedssdb:latest
 
       - name: Publish Testing Reports
