@@ -30,7 +30,7 @@ public class DisplayColumn {
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "column_uid", nullable = false)
-  private DataSourceColumn columnUid;
+  private DataSourceColumn dataSourceColumn;
 
   @NonNull private ReportId reportId;
 

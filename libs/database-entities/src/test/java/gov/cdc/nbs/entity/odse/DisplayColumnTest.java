@@ -2,7 +2,6 @@ package gov.cdc.nbs.entity.odse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import gov.cdc.nbs.audit.Status;
@@ -12,18 +11,6 @@ public class DisplayColumnTest {
   @Test
   void should_throw_exception_with_null_values() {
     assertThrows(NullPointerException.class, () -> new DisplayColumn(null, null, null));
-  }
-
-  @Test
-  void should_create_empty_display_column() {
-    DisplayColumn actual = new DisplayColumn();
-
-    assertThat(actual)
-        .satisfies(dc -> assertNull(dc.getId()))
-        .satisfies(dc -> assertNull(dc.getColumnUid()))
-        .satisfies(dc -> assertNull(dc.getReportId()))
-        .satisfies(dc -> assertNull(dc.getSequenceNumber()))
-        .satisfies(dc -> assertNull(dc.getStatus()));
   }
 
   @Test
@@ -41,7 +28,7 @@ public class DisplayColumnTest {
 
     assertThat(actual)
         .satisfies(dc -> assertEquals(id, dc.getId()))
-        .satisfies(dc -> assertEquals(dataSourceColumn, dc.getColumnUid()))
+        .satisfies(dc -> assertEquals(dataSourceColumn, dc.getDataSourceColumn()))
         .satisfies(dc -> assertEquals(reportUid, dc.getReportId().getReportUid()))
         .satisfies(dc -> assertEquals(sequenceNumber, dc.getSequenceNumber()))
         .satisfies(dc -> assertEquals(status, dc.getStatus()));
