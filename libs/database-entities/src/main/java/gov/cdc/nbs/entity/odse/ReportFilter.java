@@ -28,12 +28,10 @@ public class ReportFilter {
 
   @NonNull private ReportId reportId;
 
-  // TODO: Add FilterCode? not specified in design doc
   @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "filter_uid")
   private FilterCode filterUid;
 
-  // TODO: Add DataSourceColumn? not specified in design doc
   @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "column_uid")
   private DataSourceColumn columnUid;
