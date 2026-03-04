@@ -39,18 +39,10 @@ cd testing/regression
 ### 2. Install Project Dependencies
 
 ```bash
-npm install
+npm ci
 ```
 
-### 3. Install Cypress
-
-```bash
-./node_modules/cypress/bin/cypress install
-# or
-npm install cypress --save-dev
-```
-
-### 4. Create and Configure `cypress.env.json`
+### 3. Create and Configure `cypress.env.json`
 Create a new `cypress.env.json` file in the `testing/regression` directory.
 
 The following content will configure Cypress to connect to the INT1 environment.
@@ -79,7 +71,7 @@ The following content will configure Cypress to connect to the INT1 environment.
 
 > **Note**: `cypress.env.json` is ignored by git via `.gitignore` and should never be committed.
 
-### 5. Set `baseUrl` in `cypress.config.js`
+### 4. Set `baseUrl` in `cypress.config.js`
 The default values for `baseUrl` within `cypress.config.js` point to a local environment. To connect to the INT1 environment, set the `baseUrl` value as follows:
 ```js
 module.exports = defineConfig({
@@ -93,10 +85,10 @@ module.exports = defineConfig({
 });
 ```
 
-### 7. Open Cypress
+### 5. Open Cypress
 
 ```bash
-npx cypress open
+npm run cy:open
 ```
 
 > **Note**: An error will show if `baseUrl` has not been changed or the local dev server is not running.

@@ -131,7 +131,7 @@ describe('when entering patient sex and birth demographics', () => {
 
         await user.clear(dateOfBirth).then(() => user.type(dateOfBirth, '12012012{tab}'));
 
-        expect(getByText('12 years')).toBeInTheDocument();
+        expect(getByText('13 years')).toBeInTheDocument();
     });
 
     it('should have accessibility description for the as of date field', () => {

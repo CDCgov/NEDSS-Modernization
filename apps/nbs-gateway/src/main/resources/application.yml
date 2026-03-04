@@ -42,6 +42,9 @@ nbs:
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.deduplication.service}'
       merge:
         enabled: false
+    report:
+      execution:
+        enabled: false
 
 logging:
   level:

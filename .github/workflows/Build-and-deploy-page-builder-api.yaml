@@ -15,51 +15,32 @@ on:
       - "gradle/libs.versions.toml"
 
 jobs:
-  sonar_scan:
-    permissions:
-      id-token: write
-      contents: read
-    uses: ./.github/workflows/sonar.yaml
-    secrets:
-      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-      PASSED_GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
-      DATABASE_USER: ${{secrets.DATABASE_USER}}
-      DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
-      PARAMETER_SECRET: ${{secrets.PARAMETER_SECRET}}
-      TOKEN_SECRET: ${{secrets.TOKEN_SECRET}}
+# APP-145: turned off sonar scan for now until it is fixed (1/8/26)
+#  sonar_scan:
+#    permissions:
+#      id-token: write
+#      contents: read
+#    uses: ./.github/workflows/sonar.yaml
+#    secrets:
+#      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
+#      PASSED_GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+#      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+#      DATABASE_USER: ${{secrets.DATABASE_USER}}
+#      DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+#      PARAMETER_SECRET: ${{secrets.PARAMETER_SECRET}}
+#      TOKEN_SECRET: ${{secrets.TOKEN_SECRET}}
   call-build-microservice-container-workflow:
     permissions:
       id-token: write
       contents: read
       security-events: write
     name: Build Container
-    needs: sonar_scan
+#    needs: sonar_scan
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
     with:
-      microservice_name: page-builder-api
+      microservice_name: nbs7-page-builder-api
       # NOTE CHANGE THIS IF FOLDER RENAME
       dockerfile_relative_path: -f ./apps/question-bank/Dockerfile .
       environment_classifier: SNAPSHOT
     secrets:
-      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-      ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  call-update-helm:
-    permissions:
-      id-token: write
-      contents: write      
-      pull-requests: write
-    name: Request INT1 deployment
-    needs: call-build-microservice-container-workflow
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
-    with:
-      microservice_name: page-builder-api
-      values_file_with_path: charts/page-builder-api/values-int1.yaml
-      new_image_tag: ${{ needs.call-build-microservice-container-workflow.outputs.output_image_tag }}
-    secrets:
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+      NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}

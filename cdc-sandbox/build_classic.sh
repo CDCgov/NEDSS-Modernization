@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
@@ -11,10 +11,9 @@ then
     exit 1
 fi
 
-
-./db/build.sh "$@"
-
-./nbs-classic/build.sh
+# Start NBS 6 and DB
+echo "Starting NBS 6 DB and wildfly server"
+docker compose -f $BASE/docker-compose.yml up wildfly --build -d
 
 
 echo "**** Classic build complete ****"

@@ -1,63 +1,11 @@
 # Build
 
-NBS is a Java EE application which is distributed as a .ear (enterprise application archive) file.
-It is currently built using Maven and Java 8.
-Because it has typically been built using the tools on Windows OS, in order to gain the convenience
-of using Docker, it is necessary to make a few changes before it can
-be built in a linux environment.
-
-- The project code files are currently encoded with the ISO-8859-1 character set.
-  This causes problems if the java compiler is expecting UTF-8 which is it's default
-- One of the files referenced in the build.xml build script has incorrect matching
-  case with the actual file on the filesystem
-- The pom-jar.xml is missing an entry for a couple of `provided` dependencies. `Xalan` and `xerces`. 
-
-The builder docker in this project addresses these concerns automatically.
-
 ## Contents
 
-- [Build NBS with Docker](#build-nbs-with-docker)
-- [Build MSSQL Database Container Image](#build-mssql-database-container-image)
 - [Elasicsearch with Kibana](#elasicsearch-with-kibana)
 - [Traefik Reverse Proxy](#traefik-reverse-proxy)
 - [NiFi](#nifi)
 - [Kafka](#kafka)
-
-## Build NBS with Docker
-
-Building NBS with Docker is as easy as running the build script.
-For more information here are the steps in the build script outlined for manual execution if desired.
-
-#### Pulling the NBS source code
-
-The NBS source code must first be pulled and placed within the `nbs-classic/builder` directory.
-
-```shell
-cd nbs-classic/builder
-git clone -b NBS_6.0.15 git@github.com:cdcent/NEDSSDev.git
-```
-
-#### Building the NBS source and deploying it into a WildFly docker container
-
-From the `cdc-sanbox` directory, execute
-```shell
-docker compose up wildfly
-```
-
-The docker build will copy the output of `build.sh` (located in the dist folder) as well as the [pagemanagement](../../pagemanagement/) files into the container. In a normal windows installation the pagemanagement files are generated as follows:
-
-1. Database is restored from `NBS_ODSE.bak`
-1. NBS queries database for zip files from `NBS_ODSE.NBS_page.jsp_payload`
-1. NBS unzips pagemanagement files
-
-In docker however, the unzip step fails. For this reason we manually copy the files into the container
-
-
-## Build MSSQL Database Container Image
-
-```shell
-docker compose build nbs-mssql
-```
 
 ## Clean Docker Environment
 
