@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -34,6 +35,10 @@ public class DataSourceColumn {
   @Column(name = "column_type_code", length = 20)
   private String columnSourceTypeCode;
 
+  @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
+  @JoinColumn(name = "data_source_uid")
+  private DataSource dataSource;
+
   @Column(name = "desc_txt", length = 300)
   private String descTxt;
 
@@ -52,4 +57,6 @@ public class DataSourceColumn {
   private Character filterable;
 
   @Embedded private Status status;
+
+  protected DataSourceColumn() {}
 }
