@@ -37,7 +37,7 @@ public class FilterCode {
   private String filterCode;
 
   @Column(name = "filter_code_set_nm", length = 256)
-  private String filterCodeSentNumber;
+  private String filterCodeSetNumber;
 
   @Column(name = "filter_type", length = 20)
   private String filterType;

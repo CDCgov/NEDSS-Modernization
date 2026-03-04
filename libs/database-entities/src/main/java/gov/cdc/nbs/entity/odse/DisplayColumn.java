@@ -28,7 +28,6 @@ public class DisplayColumn {
   @Column(name = "display_column_uid", nullable = false)
   private Long id;
 
-  // TODO: Add DataSourceColumn? not specified in design doc
   @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "column_uid", nullable = false)
   private DataSourceColumn columnUid;
