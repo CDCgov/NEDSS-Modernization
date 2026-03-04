@@ -30,7 +30,7 @@ public class Report {
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "library_uid")
-  private ReportLibrary reportLibraryUid;
+  private ReportLibrary reportLibrary;
 
   @Column(name = "desc_txt", length = 300)
   private String descTxt;

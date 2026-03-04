@@ -20,13 +20,14 @@ public class ReportTest {
   void should_create_report() {
     Long reportId = 1L;
     DataSource dataSource = new DataSource();
-    ReportLibrary reportLibrary = new ReportLibrary();
     ReportId id = new ReportId(reportId, dataSource);
+    ReportLibrary reportLibrary = new ReportLibrary();
+    String sectionCd = "1000";
 
-    Report actual = new Report(id, reportLibrary, "1000");
+    Report actual = new Report(id, reportLibrary, sectionCd);
 
     assertThat(actual)
-        .satisfies(report -> assertEquals(1L, report.getId().getReportUid()))
+        .satisfies(report -> assertEquals(reportId, report.getId().getReportUid()))
         .satisfies(report -> assertNull(report.getDescTxt()))
         .satisfies(report -> assertNull(report.getEffectiveFromTime()))
         .satisfies(report -> assertNull(report.getEffectiveToTime()))
@@ -39,15 +40,30 @@ public class ReportTest {
         .satisfies(report -> assertNull(report.getReportTitle()))
         .satisfies(report -> assertNull(report.getReportTypeCode()))
         .satisfies(report -> assertNull(report.getShared()))
-        .satisfies(report -> assertEquals("1000", report.getSectionCd()));
+        .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
+        .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()));
   }
 
   @Test
   void should_create_complete_report() {
     Long reportId = 1L;
     DataSource dataSource = new DataSource();
-    ReportLibrary reportLibrary = new ReportLibrary();
     ReportId id = new ReportId(reportId, dataSource);
+    ReportLibrary reportLibrary = new ReportLibrary();
+    String descTxt = "Counts of Reportable Diseases by County for Selected Time Frame";
+    LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
+    LocalDateTime effectiveToTime = LocalDateTime.parse("2020-03-04T10:15:30");
+    Character filterMode = 'B';
+    Character isModifiableIndicator = 'N';
+    String location = "MOCKREPORT.SAS";
+    Integer ownerUid = 1;
+    String orgAccessPermission = "ORG_ACCESS_PERMISSION";
+    String progAreaAccessPermission = "PROG_AREA_ACCESS_PERMISSION";
+    String reportTitle = "SR2: Counts of Reportable Diseases by County for Selected Time Frame";
+    String reportTypeCode = "SAS_MOCK_CUSTOM";
+    Character shared = 'S';
+    String category = "Summary Report";
+    String sectionCd = "1000";
     Audit audit = new Audit();
     Status status = new Status();
 
@@ -55,46 +71,40 @@ public class ReportTest {
         new Report(
             id,
             reportLibrary,
-            "description",
-            LocalDateTime.parse("2020-03-03T10:15:30"),
-            LocalDateTime.parse("2020-03-04T10:15:30"),
-            'Y',
-            'N',
-            "MOCKREPORT.SAS",
-            1,
-            "ORG_ACCESS_PERMISSION",
-            "PROG_AREA_ACCESS_PERMISSION",
-            "New Report",
-            "SAS_MOCK_CUSTOM",
-            'S',
-            "Summary Report",
-            "1000",
+            descTxt,
+            effectiveFromTime,
+            effectiveToTime,
+            filterMode,
+            isModifiableIndicator,
+            location,
+            ownerUid,
+            orgAccessPermission,
+            progAreaAccessPermission,
+            reportTitle,
+            reportTypeCode,
+            shared,
+            category,
+            sectionCd,
             audit,
             status);
 
     assertThat(actual)
-        .satisfies(report -> assertEquals(1L, report.getId().getReportUid()))
-        .satisfies(report -> assertEquals("description", report.getDescTxt()))
+        .satisfies(report -> assertEquals(reportId, report.getId().getReportUid()))
+        .satisfies(report -> assertEquals(descTxt, report.getDescTxt()))
+        .satisfies(report -> assertEquals(effectiveFromTime, report.getEffectiveFromTime()))
+        .satisfies(report -> assertEquals(effectiveToTime, report.getEffectiveToTime()))
+        .satisfies(report -> assertEquals(filterMode, report.getFilterMode()))
+        .satisfies(report -> assertEquals(isModifiableIndicator, report.getIsModifiableIndicator()))
+        .satisfies(report -> assertEquals(location, report.getLocation()))
+        .satisfies(report -> assertEquals(ownerUid, report.getOwnerUid()))
+        .satisfies(report -> assertEquals(orgAccessPermission, report.getOrgAccessPermission()))
         .satisfies(
-            report ->
-                assertEquals(
-                    LocalDateTime.parse("2020-03-03T10:15:30"), report.getEffectiveFromTime()))
-        .satisfies(
-            report ->
-                assertEquals(
-                    LocalDateTime.parse("2020-03-04T10:15:30"), report.getEffectiveToTime()))
-        .satisfies(report -> assertEquals('Y', report.getFilterMode()))
-        .satisfies(report -> assertEquals('N', report.getIsModifiableIndicator()))
-        .satisfies(report -> assertEquals("MOCKREPORT.SAS", report.getLocation()))
-        .satisfies(report -> assertEquals(1, report.getOwnerUid()))
-        .satisfies(report -> assertEquals("ORG_ACCESS_PERMISSION", report.getOrgAccessPermission()))
-        .satisfies(
-            report ->
-                assertEquals("PROG_AREA_ACCESS_PERMISSION", report.getProgAreaAccessPermission()))
-        .satisfies(report -> assertEquals("New Report", report.getReportTitle()))
-        .satisfies(report -> assertEquals("SAS_MOCK_CUSTOM", report.getReportTypeCode()))
-        .satisfies(report -> assertEquals('S', report.getShared()))
-        .satisfies(report -> assertEquals("Summary Report", report.getCategory()))
-        .satisfies(report -> assertEquals("1000", report.getSectionCd()));
+            report -> assertEquals(progAreaAccessPermission, report.getProgAreaAccessPermission()))
+        .satisfies(report -> assertEquals(reportTitle, report.getReportTitle()))
+        .satisfies(report -> assertEquals(reportTypeCode, report.getReportTypeCode()))
+        .satisfies(report -> assertEquals(shared, report.getShared()))
+        .satisfies(report -> assertEquals(category, report.getCategory()))
+        .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
+        .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()));
   }
 }
