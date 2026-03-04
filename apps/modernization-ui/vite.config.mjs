@@ -62,7 +62,6 @@ export default defineConfig(({ mode }) => {
         },
         server: {
             port: 3000,
-            open: true,
             proxy: {
                 '/nbs/api/deduplication': { target: `http://localhost:${DEDUPLICATION_PORT}`, changeOrigin: true },
                 '/nbs/api': { target: `http://localhost:${NBS_API_PORT}`, changeOrigin: true },
@@ -72,6 +71,6 @@ export default defineConfig(({ mode }) => {
                 '/login': { target: `http://localhost:${NBS_API_PORT}`, changeOrigin: true }
             }
         },
-        build: { outDir: 'build', rollupOptions: { input: 'public/index.html' } }
+        build: { outDir: 'build' }
     };
 });

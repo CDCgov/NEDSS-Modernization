@@ -5,7 +5,7 @@ WORKDIR /usr/modernization-ui
 COPY apps/modernization-ui/package.json package.json
 COPY apps/modernization-ui/package-lock.json package-lock.json
 
-RUN npm install
+RUN npm ci
 
 # Copy required sources
 COPY apps/modernization-ui .
