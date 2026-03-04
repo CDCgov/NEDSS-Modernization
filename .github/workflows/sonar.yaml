@@ -44,7 +44,7 @@ env:
   test_database_password: ${{secrets.DATABASE_PASSWORD}}
   token_secret: ${{secrets.TOKEN_SECRET}}
   parameter_secret: ${{secrets.PARAMETER_SECRET}}
-  db_version: ${{secrets.DB_VERSION}}
+  db_version: "19.0.1"
 
 jobs:
   pipeline:
