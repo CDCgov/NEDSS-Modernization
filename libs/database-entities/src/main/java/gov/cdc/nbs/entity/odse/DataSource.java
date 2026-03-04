@@ -5,7 +5,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+
 import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,5 +63,6 @@ public class DataSource {
   @Column(name = "prog_area_access_permis", length = 2000)
   private String progAreaAccessPermission;
 
-  @Embedded private Status status;
+  @Embedded
+  private Status status;
 }
