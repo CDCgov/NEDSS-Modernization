@@ -2,9 +2,7 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Status;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,6 +45,5 @@ public class FilterCode {
   @Column(name = "filter_name", length = 50)
   private String filterName;
 
-  @Embedded
-  private Status status;
+  @Embedded private Status status;
 }

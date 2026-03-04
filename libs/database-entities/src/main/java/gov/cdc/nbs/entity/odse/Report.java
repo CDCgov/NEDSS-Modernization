@@ -10,9 +10,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
 import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,12 +26,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "Report", catalog = "NBS_ODSE")
 public class Report {
-  @NonNull
-  @EmbeddedId
-  private ReportId id;
+  @NonNull @EmbeddedId private ReportId id;
 
-  @NonNull
-  @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
+  @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibraryUid;
 
@@ -78,16 +73,12 @@ public class Report {
   @Column(name = "category", length = 20)
   private String category;
 
-  @NonNull
-  @Column(name = "section_cd", length = 5, nullable = false)
+  @NonNull @Column(name = "section_cd", length = 5, nullable = false)
   private String sectionCd;
 
-  @Embedded
-  private Audit audit;
+  @Embedded private Audit audit;
 
-  @Embedded
-  private Status status;
+  @Embedded private Status status;
 
-  protected Report() {
-  }
+  protected Report() {}
 }
