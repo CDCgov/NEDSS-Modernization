@@ -186,7 +186,7 @@ describe('DeleteAction', () => {
         const confirmButton = getByText('Delete', { selector: 'button' });
         await user.click(confirmButton);
 
-        // eslint-disable-next-line prettier/prettier
+         
         expect(mockShowSuccess).toHaveBeenCalledWith(
             <span>
                 You have successfully deleted <strong>Doe, John (Patient ID: 91000)</strong>.

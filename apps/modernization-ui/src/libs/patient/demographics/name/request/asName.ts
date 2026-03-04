@@ -1,4 +1,3 @@
-/* eslint-disable no-redeclare */
 import { asValue } from 'options';
 import { exists, orUndefined } from 'utils';
 import { NameDemographic } from '../names';
