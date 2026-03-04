@@ -28,5 +28,7 @@ def get_int_env_or_default(env_var: str, default: int):
     try:
         return int(res)
     except ValueError:
-        logging.warning(f'Failed to use `{env_var}` as it is not an integer')
+        logging.warning(
+            f'Failed to use `{env_var}` as it is not an integer. Received `{res}`'
+        )
         return default

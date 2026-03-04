@@ -47,7 +47,7 @@ def check_valid_result(report_result: models.ReportResult, is_export: bool):
     row_limit = (
         utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_EXPORT', 100000)
         if is_export
-        else utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_EXPORT', 10000)
+        else utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_RUN', 10000)
     )
     num_rows = len(report_result.content.data)
     if num_rows > row_limit:
