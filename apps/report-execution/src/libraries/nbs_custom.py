@@ -16,10 +16,12 @@ def execute(
     time_range: TimeRange | None = None,
     **kwargs,
 ):
-    """Return the executed subset query."""
+    """Basic tabular report. Executes the query described by the data
+    source and filters (executing subset_sql) and returns the table.
+    """
     content = trx.execute(subset_query)
 
-    description = f'Custom Report For Table: f{data_source_name}'
+    description = f'Custom Report For Table: {data_source_name}'
     if time_range is not None:
         description += f'\n{time_range.start} - {time_range.end}'
 
