@@ -34,7 +34,7 @@ public class DisplayColumn {
 
   @NonNull private ReportId reportId;
 
-  @Column(name = "sequence_nbr")
+  @NonNull @Column(name = "sequence_nbr")
   private Integer sequenceNumber;
 
   @Embedded private Status status;
