@@ -2,13 +2,14 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Status;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
