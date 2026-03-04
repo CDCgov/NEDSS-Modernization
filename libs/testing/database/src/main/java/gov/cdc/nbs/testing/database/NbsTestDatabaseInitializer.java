@@ -11,8 +11,8 @@ class NbsTestDatabaseInitializer
 
   @Override
   @SuppressWarnings({
-      // We don't want to close the container until after tests have completed
-      "resource"
+    // We don't want to close the container until after tests have completed
+    "resource"
   })
   public void initialize(final ConfigurableApplicationContext context) {
     String image =
