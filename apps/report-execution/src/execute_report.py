@@ -56,5 +56,5 @@ def get_library(library_name: str, is_builtin: bool):
         else:
             raise errors.ToDoError('support custom libraries')
     except ModuleNotFoundError:
-        # cause isn't relevant for debugging this excepption
+        # Initial error not helpful for debugging
         raise errors.MissingLibraryError(library_name, is_builtin) from None

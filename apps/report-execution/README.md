@@ -16,7 +16,7 @@
     uv sync --frozen
     ```
 
-1. (Optional) Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development (particularly helpful if you're running outside of Docker).  _NOTE: You'll need to manually load the env (`export $(xargs <.env)`), add `--env-file .env` to `uv` commands, or install and configure [direnv](https://direnv.net/) (or an equivalent shell extension) in order to make these environment variables available to the applicatio._
+1. (Optional) Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development (particularly helpful if you're running outside of Docker).  _NOTE: You'll need to manually load the env (`export $(xargs <.env)`), add `--env-file .env` to `uv` commands, or install and configure [direnv](https://direnv.net/) (or an equivalent shell extension) in order to make these environment variables available to the application._
 
     ```sh
     cp sample.env .env
@@ -79,7 +79,7 @@ uv run --env-file .env pytest # pass env file to uv
 
 ## Code Linting and Formatting
 
-Additionally, this project uses [Ruff](https://docs.astral.sh/ruff/) (also created by Astral, the makers of uv) for linting and formatting.
+Additionally, this project uses [Ruff](https://docs.astral.sh/ruff/) (also created by Astral, the makers of uv) for linting and formatting and [Pyrefly](https://pyrefly.org/) for type checking.
 
 In order to check for existing linter issues, run:
 ```bash
@@ -94,6 +94,11 @@ uv run ruff check --fix
 Run the formatter with the following:
 ```bash
 uv run ruff format
+```
+
+Run the type checker with the following:
+```bash
+uv run pyrefly check
 ```
 
 ## Additional Resources

@@ -13,7 +13,7 @@ def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
-    time_range: TimeRange = None,
+    time_range: TimeRange | None = None,
     **kwargs,
 ):
     """This is a fake/stub library just to start to get the interface hooked up."""
