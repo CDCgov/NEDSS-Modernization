@@ -26,6 +26,13 @@ class TestUtils:
             res = utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_RUN', 100)
             assert res == 10
 
+    def test_get_int_env_or_default_valid_w_whitespace(self, monkeypatch):
+        with monkeypatch.context() as m:
+            m.setenv('REPORT_MAX_ROW_LIMIT_RUN', '10 ')
+
+            res = utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_RUN', 100)
+            assert res == 10
+
     def test_get_int_env_or_default_invalid(self, monkeypatch, caplog):
         with monkeypatch.context() as m:
             m.setenv('REPORT_MAX_ROW_LIMIT_RUN', '1a')
