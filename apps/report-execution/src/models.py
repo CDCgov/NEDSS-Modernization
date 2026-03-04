@@ -24,15 +24,6 @@ class ReportSpec(BaseModel):
     time_range: TimeRange | None = None
 
 
-class LibraryMetadata(BaseModel):
-    """Metadata for a library program."""
-
-    version: int
-    name: str
-    description: str
-    owner_email: str | None = None
-
-
 # column names and values
 class Table(BaseModel):
     """Basic tabular data format."""

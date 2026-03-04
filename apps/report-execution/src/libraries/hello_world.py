@@ -1,12 +1,5 @@
 from ..db_transaction import Transaction
-from ..models import LibraryMetadata, ReportResult, TimeRange
-
-library_metadata = LibraryMetadata(
-    version=1,
-    name='hello_world',
-    description="""Basic tabular report. Executes the described SQL by the data 
-    source and filters and returns the table.""",
-)
+from ..models import ReportResult, TimeRange
 
 
 def execute(
