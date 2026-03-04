@@ -6,21 +6,24 @@ from .models import Table
 
 
 class Transaction:
+    """A database transaction abstraction for use in libraries."""
+
     def __init__(self, cursor):
         self.cursor = cursor
 
     def execute(self, query: str) -> Table:
+        """Execute a query and have the data returned as a Table."""
         data = self.cursor.execute(query).fetchall()
-        columns = self.column_names()
+        columns = self._column_names()
         return Table(columns=columns, data=data)
 
-    def column_names(self) -> list[str]:
+    def _column_names(self) -> list[str]:
         return [c[0] for c in self.cursor.description]
 
 
 @contextmanager
 def db_transaction(connection_string):
-    """Set up a database transaction"""
+    """Set up a database transaction."""
     with mssql_python.connect(connection_string) as connection:
         # Turn off auto commit, so all of the queries are in one transaction
         connection.setautocommit(False)

@@ -10,18 +10,18 @@ app = FastAPI()
 # ======= ROUTES ========
 
 
-@app.get("/status")
+@app.get('/status')
 async def health_check():
-    """
-    Check service health status.
+    """Check service health status.
 
     Returns: Status text
     """
-    return "Report Execution Service is up and running!"
+    return 'Report Execution Service is up and running!'
 
 
-@app.post("/report/execute")
-async def execute_report_api(report_spec: models.ReportSpec):
+@app.post('/report/execute')
+def execute_report_api(report_spec: models.ReportSpec):
+    """Primary api route for report execution."""
     return execute_report(report_spec)
 
 
@@ -29,10 +29,9 @@ async def execute_report_api(report_spec: models.ReportSpec):
 
 
 @app.exception_handler(errors.BaseReportExecutionError)
-async def library_exception_handler(
-    request: Request, exc: errors.BaseReportExecutionError
-):
+async def api_exception_handler(request: Request, exc: errors.BaseReportExecutionError):
+    """Handle application errors."""
     return JSONResponse(
         status_code=exc.http_code,
-        content={"message": exc.message},
+        content={'message': exc.message},
     )

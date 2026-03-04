@@ -13,6 +13,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pyrefly>=0.54.0",
     "pytest>=9.0.2,<10.0.0",
     "pytest-mock>=3.15.1",
     "ruff>=0.15.0,<1.0.0",
@@ -31,6 +32,43 @@ select = [
     "B",
     # flake8-simplify
     "SIM",
+    # flake8-print
+    "T20",
+    # flake8-fixme
+    "FIX",
     # isort
     "I",
+    # pydocstyle
+    "D",
 ]
+
+ignore = [
+    # Requires documentation for every function parameter
+    "D417",
+    # Requires documentation for every package/module
+    "D104",
+    "D100",
+    "D105",
+    "D107",
+    # Requires one line summary for doc string
+    "D205",
+]
+
+[tool.ruff.lint.extend-per-file-ignores]
+# Don't require doc strings on every test
+"tests/**/*.py" = ["D102"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.pyrefly]
+project-includes = [
+    "**/*.py*",
+    "**/*.ipynb",
+]
+search-path = ["."]
