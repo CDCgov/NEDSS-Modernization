@@ -86,7 +86,7 @@ jobs:
 
       - name: Publish Testing Reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: all-test-reports
           # The '**' tells GitHub to look in every sub-folder for reports
