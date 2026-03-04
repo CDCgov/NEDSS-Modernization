@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -21,7 +22,7 @@ public class FilterCode {
   @Column(name = "filter_uid", nullable = false)
   private Long id;
 
-  @Column(name = "code_table", length = 50)
+  @NonNull @Column(name = "code_table", length = 50)
   private String codeTable;
 
   @Column(name = "desc_txt", length = 300)
@@ -37,7 +38,7 @@ public class FilterCode {
   private String filterCode;
 
   @Column(name = "filter_code_set_nm", length = 256)
-  private String filterCodeSetNumber;
+  private String filterCodeSetName;
 
   @Column(name = "filter_type", length = 20)
   private String filterType;
@@ -46,4 +47,6 @@ public class FilterCode {
   private String filterName;
 
   @Embedded private Status status;
+
+  protected FilterCode() {}
 }
