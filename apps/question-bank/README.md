@@ -17,7 +17,7 @@ Prior to running tests the database image must be built. To build all images run
 in the `cdc-sandbox` directory.
 
 ```sh
-./build_all.sh
+./build_classic.sh
 ```
 
 The containers do not need to be running to run the tests. The images just need to be built.

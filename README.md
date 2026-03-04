@@ -16,8 +16,8 @@
   directs incoming requests to the appropriate backend services (such as Modernization UI, Modernization API, and
   Question bank), enabling seamless integration between both the modernized and pre-existing frontend, and multiple
   backend services.
-- [Report Execution API](apps/report-execution/README.md) - A Python-based FastAPI server that facilitates the 
-- management and execution of various reports, both standard and custom.  To be used as the eventual replacement for 
+- [Report Execution API](apps/report-execution/README.md) - A Python-based FastAPI server that facilitates the
+- management and execution of various reports, both standard and custom. To be used as the eventual replacement for
 - SAS-based reports.
 
 ### Libraries
@@ -119,33 +119,26 @@ again to apply the changes.
 
 ### Running everything inside docker
 
-1. Gain access to the [NBS source code repository](https://github.com/cdcent/NEDSSDev) _this is required to build the
-   wildfly container_. The docker compose assumes the `NEDSSDev` repo is named as such and cloned as a sibling to this
-   repo. If that is not the case, set the environment `NEDSSDEV_PATH` to the appropriate location.
-
-   Ensure `NEDSSDev` is checked out to the version you want to use and properly instantiated (including DB submodule -
-   see its README for details)
-
-2. Navigate to the `cdc-sandbox` directory
+1. Navigate to the `cdc-sandbox` directory
 
    ```sh
    cd cdc-sandbox
    ```
 
-3. Run the `build_all.sh` script
+2. Run the `build_all.sh` script
 
    ```sh
    ./build_all.sh
    ```
 
-4. Visit the [NBS Login page](http://localhost:8000/nbs/login)
+3. Visit the [NBS Login page](http://localhost:8000/nbs/login)
 
    ```
    username: superuser
    password:
    ```
 
-5. To stop the containers, use docker compose
+4. To stop the containers, use docker compose
 
 ```sh
 docker compose down
@@ -155,9 +148,12 @@ docker compose down -v
 
 #### Running NBS 6 local containers instead
 
-The docker compose uses published packages of the NBS 6 application (`wildfly`) and DB (`nbs-mssql`) by default. To instead use your local copy, set the `NEDSSDEV_COMPOSE_PATH` to the appropriate location as rooted from `cdc-sandbox` (e.g. `../../NEDSSDev/docker-compose.yml` if it is a sibling to this repo).
+The docker compose uses published packages of the NBS 6 application (`wildfly`) and DB (`nbs-mssql`) by default. To
+instead use your local copy, set the `NEDSSDEV_COMPOSE_PATH` to the appropriate location as rooted from `cdc-sandbox` (
+e.g. `../../NEDSSDev/docker-compose.yml` if it is a sibling to this repo).
 
-Ensure `NEDSSDev` is checked out to the version you want to use and properly instantiated (including DB submodule - see its README for details)
+Ensure `NEDSSDev` is checked out to the version you want to use and properly instantiated (including DB submodule - see
+its README for details)
 
 To learn more about the build process view the cdc-sandbox [README](cdc-sandbox/README.md)
 

@@ -11,8 +11,8 @@ class NbsTestDatabaseInitializer
 
   @Override
   @SuppressWarnings({
-    // We don't want to close the container until after tests have completed
-    "resource"
+      // We don't want to close the container until after tests have completed
+      "resource"
   })
   public void initialize(final ConfigurableApplicationContext context) {
     String image =
@@ -26,7 +26,7 @@ class NbsTestDatabaseInitializer
             .withPassword(credential)
             .withImagePullPolicy(PullPolicy.defaultPolicy());
 
-    container.addEnv("DB_VERSION", "19.0.1");
+    container.addEnv("DB_VERSION", "6.0.19.0");
 
     container.start();
 

@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-- [Prerequisites](#-prerequisites)
+- [Prerequisites](#prerequisites)
 - [Initial Setup](#-initial-setup)
 - [Development Workflow](#-development-workflow)
 - [Running the Application](#-running-the-application)
@@ -29,6 +29,11 @@ This project uses a `.env` file for local configuration. The provided script ini
 variables to your current session.
 
 ```shell
+# From repo root
+cd cdc-sandbox
+```
+
+```shell
 # Initialize and load environment variables
 source ./check_env.sh
 ```
@@ -52,8 +57,8 @@ Note: Containers do not need to be running to execute tests, but the images must
 ### 3. Application Dependencies
 
 ```shell
-# Install UI dependencies
-cd ui && npm install
+# Install dependencies
+cd apps/modernization-ui && npm ci
 
 # Build the API (from root)
 ./gradlew :modernization-api:buildDependents
@@ -63,9 +68,8 @@ cd ui && npm install
 
 ### VSCode Integration
 
-1. In the ui directory run npm install
-2. In the modernization-api directory run ./gradlew build
-    1. Alternatively, from the root directory run ./gradlew :modernization-api:buildDependents
+1. In the modernization-ui directory run npm install
+2. From the root directory run ./gradlew :modernization-api:buildDependents
 3. Press Cmd+Shift+P and run Java: Clean Language Server Workspace
 4. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
 
@@ -89,13 +93,13 @@ to 8181 by executing.
 ./gradlew :modernization-api:bootRun
 ```
 
-It assumes that Elasticsearch and MSSQL Server are running on localhost. Preconfigured containers are available in the
-CDC Sandbox, cdc-sandbox/elasticsearch and cdc-sandbox/db.
+It assumes that Elasticsearch and MSSQL Server are running on `localhost`. Preconfigured containers are available in the
+`cdc-sandbox`.
 
 ### With Kafka Enabled
 
-The Modernization API can connect to the Kafka instance defined in cdc-sandbox/kafka by starting the service with
-kafka.enabled set to true.
+The Modernization API can connect to the Kafka instance defined in `cdc-sandbox/kafka` by starting the service with
+`kafka.enabled` set to `true`.
 
 ```shell
 ./gradlew :modernization-api:bootRun --args='--kafka.enabled'
