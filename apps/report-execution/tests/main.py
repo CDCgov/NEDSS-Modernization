@@ -1,5 +1,8 @@
 """Unit tests for the entrypoint of the Report Execution service."""
 
+import io
+
+import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 
@@ -30,31 +33,36 @@ class TestHealthCheckEndpoint:
 class TestReportExecuteEndpoint:
     """Tests for the report execution endpoint (/report/execute)."""
 
-    def test_execute_report_with_valid_spec(self, client):
+    def test_execute_report_api_with_valid_spec(self, client):
         """Test executing a report with a valid ReportSpec."""
         report_spec = {
             'version': 1,
             'is_export': True,
+            'is_builtin': True,
             'report_title': 'Test Report',
-            'library_name': 'test_library',
+            'library_name': 'hello_world',
             'data_source_name': 'random_db_table_0',
             'subset_query': 'SELECT * FROM test',
         }
         response = client.post('/report/execute', json=report_spec)
 
         assert response.status_code == 200
-        assert response.json() == {
-            'report_title': 'Test Report',
-            'library_name': 'test_library',
-        }
+        result = response.json()
+        assert result
 
-    def test_execute_report_with_time_range(self, client):
+        # check we can round trip back to DF
+        str_io = io.StringIO(result['content'])
+        df = pd.read_csv(str_io)
+        assert df.shape == (4, 2)
+
+    def test_execute_report_api_with_time_range(self, client):
         """Test executing a report with an optional time range."""
         report_spec = {
             'version': 1,
             'is_export': False,
+            'is_builtin': True,
             'report_title': 'Time-based Report',
-            'library_name': 'analytics',
+            'library_name': 'hello_world',
             'data_source_name': 'random_db_table_1',
             'subset_query': 'SELECT * FROM events WHERE date > ?',
             'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
@@ -62,30 +70,25 @@ class TestReportExecuteEndpoint:
         response = client.post('/report/execute', json=report_spec)
 
         assert response.status_code == 200
-        assert response.json() == {
-            'report_title': 'Time-based Report',
-            'library_name': 'analytics',
-        }
+        assert response.json()
 
-    def test_execute_report_without_time_range(self, client):
+    def test_execute_report_api_without_time_range(self, client):
         """Test executing a report without providing time_range."""
         report_spec = {
             'version': 2,
             'is_export': True,
+            'is_builtin': True,
             'report_title': 'Simple Report',
-            'library_name': 'basic_lib',
+            'library_name': 'hello_world',
             'data_source_name': 'random_db_table_2',
             'subset_query': 'SELECT COUNT(*) FROM users',
         }
         response = client.post('/report/execute', json=report_spec)
 
         assert response.status_code == 200
-        assert response.json() == {
-            'report_title': 'Simple Report',
-            'library_name': 'basic_lib',
-        }
+        assert response.json()
 
-    def test_execute_report_missing_required_fields(self, client):
+    def test_execute_report_api_missing_required_fields(self, client):
         """Test that missing required fields return a validation error."""
         incomplete_spec = {
             'version': 1,
@@ -95,16 +98,35 @@ class TestReportExecuteEndpoint:
 
         assert response.status_code == 422  # Unprocessable Entity
 
-    def test_execute_report_invalid_field_types(self, client):
+    def test_execute_report_api_invalid_field_types(self, client):
         """Test that invalid field types return a validation error."""
         invalid_spec = {
             'version': 'not_an_int',
             'is_export': True,
+            'is_builtin': True,
             'report_title': 'Test Report',
-            'library_name': 'test_library',
+            'library_name': 'hello_world',
             'data_source_name': 'random_db_table_3',
             'subset_query': 'SELECT * FROM test',
         }
         response = client.post('/report/execute', json=invalid_spec)
 
         assert response.status_code == 422  # Unprocessable Entity
+
+    def test_execute_report_api_invalid_library_name(self, client):
+        """Test that invalid name returns a validation error."""
+        invalid_spec = {
+            'version': 1,
+            'is_export': True,
+            'is_builtin': True,
+            'report_title': 'Test Report',
+            'library_name': 'missing_library',
+            'data_source_name': 'random_db_table_3',
+            'subset_query': 'SELECT * FROM test',
+        }
+        response = client.post('/report/execute', json=invalid_spec)
+
+        assert response.status_code == 422  # Unprocessable Entity
+        assert response.json() == {
+            'message': 'Library `missing_library` (is_builtin: True) not found'
+        }
