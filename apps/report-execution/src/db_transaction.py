@@ -11,9 +11,18 @@ class Transaction:
     def __init__(self, cursor):
         self.cursor = cursor
 
-    def execute(self, query: str) -> Table:
-        """Execute a query and have the data returned as a Table."""
-        data = self.cursor.execute(query).fetchall()
+    def execute(self, query: str, parameters: tuple = ()) -> Table:
+        """Execute a query and have the data returned as a Table.
+
+        DO NOT EXECUTE ANY PERMANENT CREATE, UPDATE, OR DELETE STATEMENTS
+
+        Positional `?` placeholders can be used in the query and values passed as
+        parameters in a tuple.
+
+        If the query inserts or updates a temporary table, then the returned table
+        will be empty.
+        """
+        data = self.cursor.execute(query, parameters).fetchall()
         columns = self._column_names()
         return Table(columns=columns, data=data)
 
