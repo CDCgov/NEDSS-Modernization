@@ -9,18 +9,18 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Builder
 @Getter
 @Setter
 @Entity
 @Table(name = "Report_Sort_Column", catalog = "NBS_ODSE")
 public class ReportSortColumn {
+  // TODO: Add @NonNull here?
   @Id
   @Column(name = "report_sort_column_uid", nullable = false)
   private Long id;
@@ -31,12 +31,10 @@ public class ReportSortColumn {
   @Column(name = "report_sort_sequence_nu")
   private Integer sequenceNumber;
 
-  @NonNull private ReportId reportUid;
+  private ReportId reportUid;
 
   @Column(name = "column_uid", nullable = false)
   private Long columnUid;
 
   @Embedded private Status status;
-
-  protected ReportSortColumn() {}
 }
