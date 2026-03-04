@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict, PlainSerializer
 
 
 def serialize_table(table: Table) -> str:
+    """Turn a Table into a CSV for returning to the user."""
     # Short cut to valid CSV - can swap out later if performance dictates
     # or serialize to CSV at a different location
     df = DataFrame.from_records(table.data, columns=table.columns)
@@ -12,11 +13,15 @@ def serialize_table(table: Table) -> str:
 
 
 class TimeRange(BaseModel):
+    """Start and end time for a report."""
+
     start: str  # Date in ISO format
     end: str  # Date in ISO format
 
 
 class ReportSpec(BaseModel):
+    """Report request specification."""
+
     version: int
     is_export: bool
     is_builtin: bool
@@ -44,6 +49,6 @@ class Table(BaseModel):
 class ReportResult(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    content_type: Literal["table"]
+    content_type: Literal['table']
     content: Annotated[Table, PlainSerializer(serialize_table)]
     description: str | None

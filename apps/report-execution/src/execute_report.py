@@ -6,8 +6,8 @@ from .db_transaction import db_transaction
 
 def execute_report(report_spec: models.ReportSpec):
     """Execute a report spec by validating inputs, loading library, handling DB
-    connection and transaction,and validating/processing results"""
-
+    connection and transaction,and validating/processing results.
+    """
     if not is_valid_spec(report_spec):
         raise errors.ToDoError("validation handling")
 
@@ -33,23 +33,23 @@ def execute_report(report_spec: models.ReportSpec):
 
 
 def is_valid_spec(report_spec: models.ReportSpec):
-    """Check if the report spec is valid"""
+    """Check if the report spec is valid."""
     return True
 
 
-# TODO: what is the type that should go here? Part of spike
+# TODO: what is the type that should go here? Part of spike  # noqa: FIX002
 def is_valid_library(library):
-    """Check if the library is valid"""
+    """Check if the library is valid."""
     return True
 
 
 def is_valid_result(report_result: models.ReportResult):
-    """Check if the returned result is valid"""
+    """Check if the returned result is valid."""
     return True
 
 
 def get_library(library_name: str, is_builtin: bool):
-    """Given a library name and whether it is builtin, fetch the library module"""
+    """Given a library name and whether it is builtin, fetch the library module."""
     try:
         if is_builtin:
             return import_module(f"src.libraries.{library_name}")
