@@ -30,11 +30,11 @@ public class ReportFilter {
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "filter_uid")
-  private FilterCode filterUid;
+  private FilterCode filterCode;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
   @JoinColumn(name = "column_uid")
-  private DataSourceColumn columnUid;
+  private DataSourceColumn dataSourceColumn;
 
   @Column(name = "max_value_cnt")
   private Integer maxValueCnt;

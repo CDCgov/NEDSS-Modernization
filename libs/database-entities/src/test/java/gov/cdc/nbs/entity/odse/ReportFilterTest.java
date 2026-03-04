@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import gov.cdc.nbs.audit.Status;
 import org.junit.jupiter.api.Test;
 
 public class ReportFilterTest {
@@ -23,9 +22,6 @@ public class ReportFilterTest {
     Integer minValueCnt = 1;
     DataSource dataSource = new DataSource();
 
-    Long columnId = 3L;
-    Status status = new Status();
-
     ReportFilter actual =
         new ReportFilter(
             reportFilterId,
@@ -38,8 +34,8 @@ public class ReportFilterTest {
     assertThat(actual)
         .satisfies(rf -> assertEquals(reportFilterId, rf.getId()))
         .satisfies(rf -> assertEquals(reportUid, rf.getReportId().getReportUid()))
-        .satisfies(rf -> assertEquals(filterCode, rf.getFilterUid()))
-        .satisfies(rf -> assertEquals(dataSourceColumn, rf.getColumnUid()))
+        .satisfies(rf -> assertEquals(filterCode, rf.getFilterCode()))
+        .satisfies(rf -> assertEquals(dataSourceColumn, rf.getDataSourceColumn()))
         .satisfies(rf -> assertEquals(maxValueCnt, rf.getMaxValueCnt()))
         .satisfies(rf -> assertEquals(minValueCnt, rf.getMinValueCnt()));
   }
