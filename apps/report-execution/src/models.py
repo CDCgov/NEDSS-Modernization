@@ -33,6 +33,8 @@ class ReportSpec(BaseModel):
 
 
 class LibraryMetadata(BaseModel):
+    """Metadata for a library program."""
+
     version: int
     name: str
     description: str
@@ -41,12 +43,16 @@ class LibraryMetadata(BaseModel):
 
 # column names and values
 class Table(BaseModel):
+    """Basic tabular data format."""
+
     columns: list[str]
     data: list[tuple[Any, ...]]
 
 
-# TODO: add other return types
+# TODO: add other return types  # noqa: FIX002
 class ReportResult(BaseModel):
+    """Report result object for API return."""
+
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     content_type: Literal['table']

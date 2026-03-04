@@ -54,6 +54,10 @@ ignore = [
     "D205",
 ]
 
+[tool.ruff.lint.extend-per-file-ignores]
+# Don't require doc strings on every test
+"tests/**/*.py" = ["D102"]
+
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 

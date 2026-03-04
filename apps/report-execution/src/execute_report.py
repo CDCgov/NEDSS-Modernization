@@ -9,15 +9,15 @@ def execute_report(report_spec: models.ReportSpec):
     connection and transaction,and validating/processing results.
     """
     if not is_valid_spec(report_spec):
-        raise errors.ToDoError("validation handling")
+        raise errors.ToDoError('validation handling')
 
     # get the library defined in the spec as a python module
     library = get_library(report_spec.library_name, report_spec.is_builtin)
     if not is_valid_library(library):
-        raise errors.ToDoError("validation handling")
+        raise errors.ToDoError('validation handling')
 
     # set up database connection as read only and start a transaction
-    conn_string = utils.get_env_or_error("DATABASE_CONN_STRING")
+    conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
     with db_transaction(conn_string) as trx:
         result = library.execute(
             trx,
@@ -27,7 +27,7 @@ def execute_report(report_spec: models.ReportSpec):
         )
 
     if not is_valid_result(result):
-        raise errors.ToDoError("validation handling")
+        raise errors.ToDoError('validation handling')
 
     return result
 
@@ -52,9 +52,9 @@ def get_library(library_name: str, is_builtin: bool):
     """Given a library name and whether it is builtin, fetch the library module."""
     try:
         if is_builtin:
-            return import_module(f"src.libraries.{library_name}")
+            return import_module(f'src.libraries.{library_name}')
         else:
-            raise errors.ToDoError("support custom libraries")
+            raise errors.ToDoError('support custom libraries')
     except ModuleNotFoundError:
         # cause isn't relevant for debugging this excepption
         raise errors.MissingLibraryError(library_name, is_builtin) from None
