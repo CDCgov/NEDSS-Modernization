@@ -2,13 +2,12 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Status;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -52,6 +51,5 @@ public class DataSourceColumn {
   @Column(name = "filterable", length = 1)
   private Character filterable;
 
-  @Embedded
-  private Status status;
+  @Embedded private Status status;
 }
