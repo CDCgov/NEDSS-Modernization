@@ -33,7 +33,7 @@ class CreateNewConditionPage {
     }
 
     clickCreateAndAddToPageBtn() {
-        cy.wait(5000)
+        cy.wait(2000)
         cy.get('.cancel-btn').eq(0).click({ force: true });
     }
 
@@ -57,7 +57,7 @@ class CreateNewConditionPage {
     }
 
     navigateToClassicDesign () {
-        cy.wait(5000)
+        cy.wait(2000)
         cy.contains('New Test Page');
     }
 }
