@@ -69,6 +69,9 @@ dependencies {
     implementation "commons-codec:commons-codec:1.15"
 
     implementation libs.bundles.jackson
+    
+    // liquibase
+    implementation 'org.liquibase:liquibase-core:5.0.1'
 
 }
 

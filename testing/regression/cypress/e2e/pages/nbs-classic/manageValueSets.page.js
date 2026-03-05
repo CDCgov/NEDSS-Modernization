@@ -2,7 +2,10 @@ class ClassicManageValueSetsPage {
 
   navigateToValueSetsLibrary() {
     cy.contains('System Management').click()
-    cy.contains('Manage value sets').click()
+
+    // Expand the "Page Management" subsection
+    cy.get('table[id="systemAdmin5"]').find('a[class="toggleIconHref"]').eq(0).click();
+    cy.contains('Manage Value Sets').click()
   }
 
   clickAddNewBtn() {
@@ -92,4 +95,3 @@ class ClassicManageValueSetsPage {
   }
 }
 export default new ClassicManageValueSetsPage();
-

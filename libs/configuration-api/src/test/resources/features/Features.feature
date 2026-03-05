@@ -45,3 +45,5 @@ Feature: Frontend Feature Configuration
       | patient file merge history | disabled |
       | system management          | enabled  |
       | system management          | disabled |
+      | report execution           | enabled  |
+      | report execution           | disabled |

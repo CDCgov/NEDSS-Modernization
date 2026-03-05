@@ -87,6 +87,11 @@ type Features = {
             enabled: boolean;
         };
     };
+    report: {
+        execution: {
+            enabled: boolean;
+        };
+    };
 };
 
 type Properties = {

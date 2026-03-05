@@ -42,6 +42,7 @@ The `features` property in the `/nbs/api/configuration` response contains [featu
 | nbs.ui.features.patient.search.filters.enabled      | false   | Enables access to modernized Patient search filters                |
 | nbs.ui.features.patient.file.enabled                | false   | Enables access to modernized Patient file                          |
 | nbs.ui.features.patient.file.merge-history.enabled  | false   | Enables access to merge history within the modernized Patient file |
+| nbs.ui.features.report.execution.enabled            | false   | Enables access to report execution and manaement                   |
 
 ---
 
