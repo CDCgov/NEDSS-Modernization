@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { RepeatingBlock, RepeatingBlockProps } from './RepeatingBlock';
-import { axe } from 'vitest-axe';
+import { axe } from 'jest-axe';
 
 type TestType = {
     firstInput: string;

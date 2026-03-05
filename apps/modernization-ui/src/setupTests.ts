@@ -1,8 +1,8 @@
 import { vi } from 'vitest';
 import '@testing-library/jest-dom/vitest';
-import * as matchers from 'vitest-axe/matchers';
+import { toHaveNoViolations } from 'jest-axe';
 
-expect.extend(matchers);
+expect.extend(toHaveNoViolations);
 
 // All tests will create dates in the EST Timezone. UTC-5 or UTC-4 during DST
 // eslint-disable-next-line no-undef

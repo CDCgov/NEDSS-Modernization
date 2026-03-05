@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { Tag } from './Tag';
-import { axe } from 'vitest-axe';
+import { axe } from 'jest-axe';
 
 describe('Tag', () => {
     test('should render with no accessibility violations', async () => {

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { Column } from 'design-system/table';
-import { axe } from 'vitest-axe';
+import { axe } from 'jest-axe';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 import { TableCard, TableCardProps } from './TableCard';

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { axe } from 'vitest-axe';
+import { axe } from 'jest-axe';
 import { ExactDateField } from './ExactDateField';
 
 describe('ExactDateField Component', () => {
