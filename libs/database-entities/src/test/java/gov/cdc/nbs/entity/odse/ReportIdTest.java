@@ -1,36 +1,30 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.audit.Status;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.junit.jupiter.api.Test;
+
 public class ReportIdTest {
-    @Test
-    void should_create_empty_report_id() {
-        ReportId actual = new ReportId();
+  @Test
+  void should_create_empty_report_id() {
+    ReportId actual = new ReportId();
 
-        assertThat(actual)
-                .satisfies(ri -> assertNull(ri.getReportUid()))
-                .satisfies(ri -> assertNull(ri.getDataSourceUid()));
-    }
+    assertThat(actual)
+        .satisfies(ri -> assertNull(ri.getReportUid()))
+        .satisfies(ri -> assertNull(ri.getDataSourceUid()));
+  }
 
-    @Test
-    void should_create_complete_report_id() {
-        Long id = 1L;
-        DataSource dataSource = new DataSource();
+  @Test
+  void should_create_complete_report_id() {
+    Long id = 1L;
+    DataSource dataSource = new DataSource();
 
-        ReportId actual =
-                new ReportId(
-                        id,
-                        dataSource);
+    ReportId actual = new ReportId(id, dataSource);
 
-        assertThat(actual)
-                .satisfies(ri -> assertEquals(id, ri.getReportUid()))
-                .satisfies(ds -> assertEquals(dataSource, ds.getDataSourceUid()));
-    }
+    assertThat(actual)
+        .satisfies(ri -> assertEquals(id, ri.getReportUid()))
+        .satisfies(ds -> assertEquals(dataSource, ds.getDataSourceUid()));
+  }
 }
