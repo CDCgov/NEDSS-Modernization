@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { ReactNode, act } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { SearchResultSettings, useSearchResults } from './useSearchResults';

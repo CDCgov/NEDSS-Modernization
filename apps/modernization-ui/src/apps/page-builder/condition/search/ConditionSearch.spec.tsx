@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { render } from '@testing-library/react';
 import { ConditionSearch } from './ConditionSearch';
 import { MemoryRouter } from 'react-router';
@@ -35,9 +35,9 @@ vi.mock('./useConditionSearch', async () => {
 });
 
 describe('ConditionSearch', () => {
-    const onConditionSelect = jest.fn();
-    const onCancel = jest.fn();
-    const onCreateNew = jest.fn();
+    const onConditionSelect = vi.fn();
+    const onCancel = vi.fn();
+    const onCreateNew = vi.fn();
 
     it('should have a modal heading', () => {
         const { getByText } = render(

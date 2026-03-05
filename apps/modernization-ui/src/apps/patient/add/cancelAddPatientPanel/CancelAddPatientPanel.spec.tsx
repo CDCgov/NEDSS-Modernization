@@ -1,9 +1,9 @@
-import { vi } from 'vitest';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CancelAddPatientPanel } from './CancelAddPatientPanel';
 
-const mockSave = jest.fn();
+const mockSave = vi.fn();
 
 vi.mock('./useShowCancelModal', () => ({
     useShowCancelModal: () => ({ value: false, save: mockSave })
@@ -20,7 +20,7 @@ describe('CancelAddPatientPanel', () => {
     });
 
     it('should invoke the onClose when cancel button is clicked', async () => {
-        const onClose = jest.fn();
+        const onClose = vi.fn();
         const { getByRole } = render(<CancelAddPatientPanel onClose={onClose} />);
 
         const closer = getByRole('button', { name: 'No, back to form' });
@@ -33,7 +33,7 @@ describe('CancelAddPatientPanel', () => {
     });
 
     it('should call onConfirm when confirm button is clicked', async () => {
-        const onConfirm = jest.fn();
+        const onConfirm = vi.fn();
         const { getByRole } = render(<CancelAddPatientPanel onConfirm={onConfirm} />);
 
         const confirmButton = getByRole('button', { name: 'Yes, cancel' });

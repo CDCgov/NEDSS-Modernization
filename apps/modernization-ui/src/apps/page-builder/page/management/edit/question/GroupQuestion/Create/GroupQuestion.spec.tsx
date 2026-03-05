@@ -67,7 +67,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
     });
 
     return (
-        <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+        <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
             <AlertProvider>
                 <FormProvider {...methods}>{children}</FormProvider>
             </AlertProvider>
@@ -78,7 +78,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 const setup = () => {
     return render(
         <Wrapper>
-            <GroupQuestion page={1} subsection={subSections} onSuccess={jest.fn()} onCancel={jest.fn()} />
+            <GroupQuestion page={1} subsection={subSections} onSuccess={vi.fn()} onCancel={vi.fn()} />
         </Wrapper>
     );
 };

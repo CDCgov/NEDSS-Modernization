@@ -22,7 +22,7 @@ const patientData: Partial<MergeCandidate> = {
         }
     ]
 };
-const onViewRace = jest.fn();
+const onViewRace = vi.fn();
 const Fixture = () => {
     const form = useForm();
     return (

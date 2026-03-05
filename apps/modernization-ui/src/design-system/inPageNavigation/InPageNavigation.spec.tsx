@@ -9,9 +9,9 @@ const mockSections: NavSection[] = [
 ];
 
 class MockIntersectionObserver {
-    observe = jest.fn();
-    unobserve = jest.fn();
-    disconnect = jest.fn();
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
     constructor(callback: (entries: IntersectionObserverEntry[]) => void) {
         callback([{ isIntersecting: true, target: { id: 'section1' } } as IntersectionObserverEntry]);
     }
@@ -33,7 +33,7 @@ const Fixture = () => {
 
 describe('AddPatientExtendedNav', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('renders the nav title and section links', () => {
@@ -55,9 +55,9 @@ describe('AddPatientExtendedNav', () => {
     });
 
     it('calls scrollIntoView when a link is clicked', () => {
-        const scrollIntoViewMock = jest.fn();
+        const scrollIntoViewMock = vi.fn();
         const mockElement = { scrollIntoView: scrollIntoViewMock };
-        jest.spyOn(document, 'getElementById').mockReturnValue(mockElement as any);
+        vi.spyOn(document, 'getElementById').mockReturnValue(mockElement as any);
 
         const { getByText } = render(<Fixture />);
 

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { PatientDescriptor } from './PatientDescriptor';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
 vi.mock('design-system/date/clock', () => ({
     now: () => mockNow()

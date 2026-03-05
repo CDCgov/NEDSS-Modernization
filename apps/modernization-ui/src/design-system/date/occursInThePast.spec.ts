@@ -2,7 +2,7 @@ import { add, isFuture } from 'date-fns';
 import { occursInThePast } from './occursInThePast';
 import { internalizeDate } from 'date';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
 vi.mock('./clock', () => ({
     now: () => mockNow()

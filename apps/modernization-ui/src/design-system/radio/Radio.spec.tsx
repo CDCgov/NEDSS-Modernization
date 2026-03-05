@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Radio } from './Radio';
 
-const mockOnChange = jest.fn();
+const mockOnChange = vi.fn();
 
 describe('Radio Component', () => {
     it('should render the radio button with the correct label', () => {

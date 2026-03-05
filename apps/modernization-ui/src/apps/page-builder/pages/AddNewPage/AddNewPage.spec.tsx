@@ -20,19 +20,19 @@ import {
 import userEvent from '@testing-library/user-event';
 
 beforeEach(() => {
-    jest.spyOn(ConditionControllerService, 'findConditionsNotInUse').mockReturnValue(
+    vi.spyOn(ConditionControllerService, 'findConditionsNotInUse').mockReturnValue(
         Promise.resolve([{ id: '1' }] as Condition[]) as CancelablePromise<Condition[]>
     );
-    jest.spyOn(ConceptControllerService, 'findConcepts').mockReturnValue(
+    vi.spyOn(ConceptControllerService, 'findConcepts').mockReturnValue(
         Promise.resolve([{ conceptCode: 'concept' }] as Concept[]) as CancelablePromise<Concept[]>
     );
-    jest.spyOn(TemplateControllerService, 'findAllTemplates').mockReturnValue(
+    vi.spyOn(TemplateControllerService, 'findAllTemplates').mockReturnValue(
         Promise.resolve([{ id: 2 }]) as CancelablePromise<Template[]>
     );
-    jest.spyOn(ConditionControllerService, 'searchConditions').mockReturnValue(
+    vi.spyOn(ConditionControllerService, 'searchConditions').mockReturnValue(
         Promise.resolve({}) as CancelablePromise<PageCondition>
     );
-    jest.spyOn(ProgramAreaControllerService, 'getProgramAreas').mockReturnValue(
+    vi.spyOn(ProgramAreaControllerService, 'getProgramAreas').mockReturnValue(
         Promise.resolve([] as ProgramArea[]) as CancelablePromise<ProgramArea[]>
     );
 });
@@ -101,13 +101,13 @@ describe('Add New Page', () => {
     });
 
     it.skip('should redirect to classic on create page when non investigation is selected', async () => {
-        const savePage = jest.spyOn(PageControllerService, 'createPage');
+        const savePage = vi.spyOn(PageControllerService, 'createPage');
         savePage.mockImplementation(
             (_) => Promise.resolve({} as PageCreateResponse) as CancelablePromise<PageCreateResponse>
         );
 
         const { location } = window;
-        const setHrefSpy = jest.fn((href) => href);
+        const setHrefSpy = vi.fn((href) => href);
         const mockLocation = { ...location };
         Object.defineProperty(mockLocation, 'href', {
             set: setHrefSpy

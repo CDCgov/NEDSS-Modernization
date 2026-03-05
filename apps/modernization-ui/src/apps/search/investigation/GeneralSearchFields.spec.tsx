@@ -31,7 +31,7 @@ const InvestigationFormWithFields = () => {
 
 describe('GeneralSearchFields', () => {
     beforeEach(() => {
-        const options = jest.fn();
+        const options = vi.fn();
 
         options.mockImplementation(() => Promise.resolve([]));
 

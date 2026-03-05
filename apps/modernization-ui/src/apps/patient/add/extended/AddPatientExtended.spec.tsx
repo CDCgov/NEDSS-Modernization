@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { render, screen } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
 import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
@@ -62,7 +62,7 @@ const mockDetailedRaces: Selectable[] = [
 
 vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
-    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: jest.fn })
+    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn })
 }));
 
 vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({

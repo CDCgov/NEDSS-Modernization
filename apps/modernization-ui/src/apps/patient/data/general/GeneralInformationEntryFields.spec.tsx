@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';

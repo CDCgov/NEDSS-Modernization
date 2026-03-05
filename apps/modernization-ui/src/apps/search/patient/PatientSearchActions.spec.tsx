@@ -5,7 +5,7 @@ import { PatientSearchActions } from './PatientSearchActions';
 
 vi.mock('./add/useAddPatientFromSearch', () => ({
     useAddPatientFromSearch: () => ({
-        add: jest.fn()
+        add: vi.fn()
     })
 }));
 

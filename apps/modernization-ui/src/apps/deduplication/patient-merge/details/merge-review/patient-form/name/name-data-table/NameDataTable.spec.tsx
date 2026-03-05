@@ -24,7 +24,7 @@ const patientData: Partial<MergeCandidate> = {
         }
     ]
 };
-const onSelectName = jest.fn();
+const onSelectName = vi.fn();
 const Fixture = () => {
     const form = useForm();
     return (

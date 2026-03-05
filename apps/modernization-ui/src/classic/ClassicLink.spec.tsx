@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ClassicLink } from './ClassicLink';
@@ -10,13 +10,13 @@ const mockUseRedirect = useRedirect as vi.MockedFunction<typeof useRedirect>;
 
 describe('A ClassicLink component', () => {
     it('should redirect when clicked', async () => {
-        const redirect = jest.fn();
+        const redirect = vi.fn();
 
         mockUseRedirect.mockImplementation(() => ({
             redirecting: false,
             location: 'location-value',
             redirect,
-            reset: jest.fn()
+            reset: vi.fn()
         }));
 
         const { findByText } = render(<ClassicLink url="redirect-url">Link text</ClassicLink>);

@@ -5,25 +5,25 @@ import { useSearchCriteria } from './useSearchCriteria';
 import { decrypt, encrypt } from 'cryptography';
 
 vi.mock('react-router', () => ({
-    useSearchParams: jest.fn()
+    useSearchParams: vi.fn()
 }));
 
 vi.mock('cryptography', () => ({
-    decrypt: jest.fn(),
-    encrypt: jest.fn()
+    decrypt: vi.fn(),
+    encrypt: vi.fn()
 }));
 
 describe('useSearchCriteria', () => {
-    const setSearchParams = jest.fn();
+    const setSearchParams = vi.fn();
 
     beforeEach(() => {
-        (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams(), setSearchParams]);
-        (decrypt as jest.Mock).mockResolvedValue({});
-        (encrypt as jest.Mock).mockResolvedValue({ value: 'encryptedValue' });
+        (useSearchParams as vi.Mock).mockReturnValue([new URLSearchParams(), setSearchParams]);
+        (decrypt as vi.Mock).mockResolvedValue({});
+        (encrypt as vi.Mock).mockResolvedValue({ value: 'encryptedValue' });
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('should initialize with no criteria', () => {
@@ -35,8 +35,8 @@ describe('useSearchCriteria', () => {
     it('should evaluate found criteria', async () => {
         const { result, rerender } = renderHook(() => useSearchCriteria({}));
 
-        (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
-        (decrypt as jest.Mock).mockResolvedValue({ key: 'value' });
+        (useSearchParams as vi.Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
+        (decrypt as vi.Mock).mockResolvedValue({ key: 'value' });
 
         rerender();
 
@@ -70,11 +70,11 @@ describe('useSearchCriteria', () => {
     });
 
     it('should handle default values as a function', async () => {
-        const defaultValuesFunc = jest.fn();
+        const defaultValuesFunc = vi.fn();
         const { result, rerender } = renderHook(() => useSearchCriteria({ defaultValues: defaultValuesFunc }));
 
-        (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
-        (decrypt as jest.Mock).mockResolvedValue({ key: 'value' });
+        (useSearchParams as vi.Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
+        (decrypt as vi.Mock).mockResolvedValue({ key: 'value' });
 
         defaultValuesFunc.mockReturnValue({ defaultKey: 'defaultValue' });
 

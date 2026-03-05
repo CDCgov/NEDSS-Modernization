@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { render } from '@testing-library/react';
 import {
     BasicIdentificationRepeatingBlock,
@@ -17,9 +17,9 @@ vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => (
 
 const Fixture = ({
     values,
-    onChange = jest.fn(),
-    isDirty = jest.fn(),
-    isValid = jest.fn()
+    onChange = vi.fn(),
+    isDirty = vi.fn(),
+    isValid = vi.fn()
 }: Partial<BasicIdentificationRepeatingBlockProps>) => (
     <BasicIdentificationRepeatingBlock
         id="identifications"

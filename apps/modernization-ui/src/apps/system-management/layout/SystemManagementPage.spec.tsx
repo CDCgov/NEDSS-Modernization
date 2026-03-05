@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import SystemManagementPage from './SystemManagementPage';
 import { MemoryRouter } from 'react-router';
-import { vi } from 'vitest';
+
 
 const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'SRTADMIN-SYSTEM', 'ALERTADMIN-SYSTEM'];
 const mockAllows = (permission: string) => mockPermissions.includes(permission);
-const mockAllowFn = jest.fn(mockAllows);
+const mockAllowFn = vi.fn(mockAllows);
 
 vi.mock('libs/permission/usePermissions', () => ({
     usePermissions: () => ({ permissions: mockPermissions, allows: mockAllowFn })

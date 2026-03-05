@@ -16,7 +16,7 @@ vi.mock('../../../../libs/permission/usePermissions', () => ({
 
 describe('CaseReportLaboratorySection', () => {
     const setup = (filter = '') => {
-        const setAlert = jest.fn();
+        const setAlert = vi.fn();
         render(<CaseReportLaboratorySection filter={filter} setAlert={setAlert} />);
         return { setAlert };
     };
@@ -32,7 +32,7 @@ describe('CaseReportLaboratorySection', () => {
 
     it('does not render component if no matching links', () => {
         const { container } = render(
-            <CaseReportLaboratorySection filter="xyz" setAlert={jest.fn()} />
+            <CaseReportLaboratorySection filter="xyz" setAlert={vi.fn()} />
         );
         expect(container).toBeEmptyDOMElement();
     });
@@ -49,9 +49,9 @@ describe('CaseReportLaboratorySection', () => {
         const user = userEvent.setup();
         const { setAlert } = setup();
 
-        global.fetch = jest.fn(() =>
+        global.fetch = vi.fn(() =>
             Promise.resolve({ ok: true })
-        ) as jest.Mock;
+        ) as vi.Mock;
 
         await user.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
         await user.click(screen.getByRole('button', { name: /yes, reset/i }));
@@ -69,7 +69,7 @@ describe('CaseReportLaboratorySection', () => {
         const user = userEvent.setup();
         const { setAlert } = setup();
 
-        global.fetch = jest.fn(() => Promise.reject()) as jest.Mock;
+        global.fetch = vi.fn(() => Promise.reject()) as vi.Mock;
 
         await user.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
         await user.click(screen.getByRole('button', { name: /yes, reset/i }));

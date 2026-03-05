@@ -3,7 +3,7 @@ import { PageManagementProvider } from '../../usePageManagement';
 import { PublishPage } from './PublishPage';
 import { render } from '@testing-library/react';
 import { PagesResponse } from 'apps/page-builder/generated';
-import { vi } from 'vitest';
+
 
 // Mock the PagePublishControllerService and PageInformationService to prevent fetch/network calls
 vi.mock('apps/page-builder/generated', () => ({
@@ -48,7 +48,7 @@ describe('When PublishPage renders', () => {
     };
     it('should display textarea', () => {
         const { container } = render(
-            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
+            <PageManagementProvider page={content} fetch={vi.fn()} refresh={vi.fn()} loading={false}>
                 <AlertProvider>
                     <PublishPage modalRef={modalRef} />
                 </AlertProvider>
@@ -59,7 +59,7 @@ describe('When PublishPage renders', () => {
     });
     it('should display label', () => {
         const { container } = render(
-            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
+            <PageManagementProvider page={content} fetch={vi.fn()} refresh={vi.fn()} loading={false}>
                 <AlertProvider>
                     <PublishPage modalRef={modalRef} />
                 </AlertProvider>

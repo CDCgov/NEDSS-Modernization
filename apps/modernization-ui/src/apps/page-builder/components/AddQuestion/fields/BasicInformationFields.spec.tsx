@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { FormProvider, useForm } from 'react-hook-form';
 import { render, renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -12,8 +12,8 @@ const { result } = renderHook(() =>
     })
 );
 
-const setError = jest.fn();
-const validate = jest.fn();
+const setError = vi.fn();
+const validate = vi.fn();
 const mockUseQuestionValidation = {
     validate,
     isValid: false,

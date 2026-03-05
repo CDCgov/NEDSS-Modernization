@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { PatientFileHeader } from './PatientFileHeader';
 import { Patient } from './patient';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
 vi.mock('design-system/date/clock', () => ({
     now: () => mockNow()

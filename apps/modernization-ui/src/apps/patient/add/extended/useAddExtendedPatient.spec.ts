@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { act } from 'react';
 import { renderHook } from '@testing-library/react';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
@@ -8,7 +8,7 @@ const setup = () => {
     return renderHook(() => useAddExtendedPatient());
 };
 
-const mockCreate = jest.fn();
+const mockCreate = vi.fn();
 vi.mock('../useAddPatient', () => ({
     useAddPatient: () => {
         return {
@@ -20,7 +20,7 @@ vi.mock('../useAddPatient', () => ({
 
 describe('when adding patients with extended data', () => {
     beforeAll(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('should validate when attempting to create', async () => {

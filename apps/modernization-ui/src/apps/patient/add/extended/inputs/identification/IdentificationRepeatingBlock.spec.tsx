@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
 import { IdentificationRepeatingBlock, IdentificationRepeatingBlockProps } from './IdentificationRepeatingBlock';
@@ -10,7 +10,7 @@ vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => (
     })
 }));
 
-const Fixture = ({ values, onChange = jest.fn(), isDirty = jest.fn() }: Partial<IdentificationRepeatingBlockProps>) => (
+const Fixture = ({ values, onChange = vi.fn(), isDirty = vi.fn() }: Partial<IdentificationRepeatingBlockProps>) => (
     <IdentificationRepeatingBlock id="identifications" values={values} onChange={onChange} isDirty={isDirty} />
 );
 

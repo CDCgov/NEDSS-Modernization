@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { ClassicModalProvider } from './ClassicModalContext';
 import { Status } from './useClassicModal';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
+
 
 const openMock = vi.fn();
 const resetMock = vi.fn();

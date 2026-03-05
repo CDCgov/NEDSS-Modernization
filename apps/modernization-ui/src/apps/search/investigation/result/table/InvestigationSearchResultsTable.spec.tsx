@@ -12,7 +12,7 @@ vi.mock('design-system/table/preferences', () => ({
 describe('When InvestigationSearchResultsTable renders', () => {
     const Wrapper = ({
         results,
-        notificationStatusResolver = jest.fn()
+        notificationStatusResolver = vi.fn()
     }: {
         results: Investigation[];
         notificationStatusResolver?: SelectableResolver;
@@ -251,7 +251,7 @@ describe('When InvestigationSearchResultsTable renders', () => {
     });
 
     it('should display Notification status using resolver', () => {
-        const notificationStatusResolver = jest.fn();
+        const notificationStatusResolver = vi.fn();
 
         const results: Investigation[] = [
             {

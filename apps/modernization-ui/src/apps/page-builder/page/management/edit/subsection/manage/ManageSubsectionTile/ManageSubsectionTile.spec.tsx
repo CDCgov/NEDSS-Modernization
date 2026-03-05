@@ -87,12 +87,12 @@ describe('when ReorderSubsection renders', () => {
                         <div {...provided.droppableProps} ref={provided.innerRef} className="test__subsections">
                             <ManageSubsectionTile
                                 subsection={subsection}
-                                setOnAction={jest.fn()}
+                                setOnAction={vi.fn()}
                                 action={true}
-                                onDelete={jest.fn()}
+                                onDelete={vi.fn()}
                                 index={1}
-                                setEdit={jest.fn()}
-                                onChangeVisibility={jest.fn()}
+                                setEdit={vi.fn()}
+                                onChangeVisibility={vi.fn()}
                             />
                         </div>
                     )}

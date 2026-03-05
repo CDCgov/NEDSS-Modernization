@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { FormProvider, useForm } from 'react-hook-form';
 import { render, screen, within } from '@testing-library/react';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
@@ -29,7 +29,7 @@ const mockDetailedRaces: Selectable[] = [
 
 vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
-    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: jest.fn })
+    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn })
 }));
 
 type Props = {
@@ -47,7 +47,7 @@ const Fixture = ({ asOf, validationErrors }: Props) => {
 
     return (
         <FormProvider {...form}>
-            <AddPatientExtendedForm setSubFormState={jest.fn()} validationErrors={validationErrors} />
+            <AddPatientExtendedForm setSubFormState={vi.fn()} validationErrors={validationErrors} />
         </FormProvider>
     );
 };

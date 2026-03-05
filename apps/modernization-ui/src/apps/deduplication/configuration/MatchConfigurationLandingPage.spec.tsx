@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { render } from '@testing-library/react';
 import { MatchConfigurationLandingPage } from './MatchConfigurationLandingPage';
 import { MemoryRouter } from 'react-router';

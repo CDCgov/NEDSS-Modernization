@@ -1,11 +1,11 @@
-import { vi } from 'vitest';
+
 import { render } from '@testing-library/react';
 import { usePage } from 'page';
 import { NavBar } from './NavBar';
 import { permissions } from 'libs/permission';
 
 let mockPermissions: string[] = [];
-const mockAllowFn = jest.fn((permission: string) => mockPermissions.includes(permission));
+const mockAllowFn = vi.fn((permission: string) => mockPermissions.includes(permission));
 
 vi.mock('page', () => ({
     usePage: vi.fn()
@@ -30,7 +30,7 @@ const renderNavBarWithPermissions = (permissions: string[]) => {
 describe('NavBar component tests', () => {
     beforeEach(() => {
         mockAllowFn.mockClear();
-        (usePage as jest.Mock).mockReturnValue({ title: 'Test page' });
+        (usePage as vi.Mock).mockReturnValue({ title: 'Test page' });
     });
 
     it('should render navigation bar', () => {

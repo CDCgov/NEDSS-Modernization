@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -24,7 +24,7 @@ vi.mock('apps/search', () => ({
 }));
 
 vi.mock('./useDeletePatient', () => ({
-    useDeletePatient: jest.fn()
+    useDeletePatient: vi.fn()
 }));
 
 vi.mock('libs/permission', () => ({
@@ -38,9 +38,9 @@ vi.mock('libs/permission', () => ({
 
 describe('DeleteAction', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
 
-        (Permitted as jest.Mock).mockImplementation(({ children }: { children: ReactNode }) => <>{children}</>);
+        (Permitted as vi.Mock).mockImplementation(({ children }: { children: ReactNode }) => <>{children}</>);
     });
 
     it('should handle the deletion flow', async () => {
@@ -66,7 +66,7 @@ describe('DeleteAction', () => {
     });
 
     it('should not show the delete button when user does not have permissions', () => {
-        (Permitted as jest.Mock).mockImplementation(() => <></>);
+        (Permitted as vi.Mock).mockImplementation(() => <></>);
         const { queryByRole } = render(
             <DeleteAction
                 patient={{
@@ -133,8 +133,8 @@ describe('DeleteAction', () => {
     });
 
     it('should call deletePatient function when deleted confirmation button is clicked', async () => {
-        const mockDeletePatient = jest.fn(() => Promise.resolve({ success: true }));
-        (useDeletePatient as jest.Mock).mockReturnValue(mockDeletePatient);
+        const mockDeletePatient = vi.fn(() => Promise.resolve({ success: true }));
+        (useDeletePatient as vi.Mock).mockReturnValue(mockDeletePatient);
         const user = userEvent.setup();
 
         const { getByRole, getByText } = render(
@@ -161,7 +161,7 @@ describe('DeleteAction', () => {
     });
 
     it('should show success message when patient successfully deleted', async () => {
-        (useDeletePatient as jest.Mock).mockImplementation((onComplete) => () => onComplete({ success: true }));
+        (useDeletePatient as vi.Mock).mockImplementation((onComplete) => () => onComplete({ success: true }));
 
         const user = userEvent.setup();
         const { getByRole, getByText } = render(
@@ -196,7 +196,7 @@ describe('DeleteAction', () => {
     });
 
     it('should show error message when patient failed to delete', async () => {
-        (useDeletePatient as jest.Mock).mockImplementation(
+        (useDeletePatient as vi.Mock).mockImplementation(
             (onComplete) => () => onComplete({ success: false, message: 'Error in delete' })
         );
         const user = userEvent.setup();

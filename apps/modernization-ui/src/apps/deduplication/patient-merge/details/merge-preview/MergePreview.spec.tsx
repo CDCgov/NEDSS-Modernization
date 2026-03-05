@@ -14,8 +14,8 @@ import { PreviewRace } from './components/race/PreviewRace';
 import { MergePreview } from './MergePreview';
 
 describe('MergePreview', () => {
-    const mockOnBack = jest.fn();
-    const onMerge = jest.fn();
+    const mockOnBack = vi.fn();
+    const onMerge = vi.fn();
 
     const mockMergeFormData: PatientMergeForm = {
         survivingRecord: '1',
@@ -82,7 +82,7 @@ describe('MergePreview', () => {
                 <MergePreview
                     mergeFormData={mockMergeFormData}
                     mergeCandidates={mockMergeCandidates}
-                    onBack={props.onBack ?? jest.fn()}
+                    onBack={props.onBack ?? vi.fn()}
                     onMerge={onMerge}
                 />
                 <PatientSummary mergeFormData={mockMergeFormData} mergeCandidates={mockMergeCandidates} />

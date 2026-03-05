@@ -3,22 +3,22 @@ import userEvent from '@testing-library/user-event';
 import { FilterInteraction, FilterType } from 'design-system/filter';
 import { HeaderFilterField } from './HeaderFilterField';
 
-const mockValueOf = jest.fn();
-const mockApply = jest.fn();
-const mockAdd = jest.fn();
-const mockClear = jest.fn();
+const mockValueOf = vi.fn();
+const mockApply = vi.fn();
+const mockAdd = vi.fn();
+const mockClear = vi.fn();
 
 const mockInteraction: FilterInteraction = {
     active: false,
     filter: undefined,
-    show: jest.fn(),
-    hide: jest.fn(),
-    toggle: jest.fn(),
+    show: vi.fn(),
+    hide: vi.fn(),
+    toggle: vi.fn(),
     valueOf: mockValueOf,
     apply: mockApply,
     clear: mockClear,
-    clearAll: jest.fn(),
-    reset: jest.fn(),
+    clearAll: vi.fn(),
+    reset: vi.fn(),
     add: mockAdd,
     pendingFilter: { 'applying-value': 't' }
 };

@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';
 import CriteriaSearchFields from './CriteriaSearchFields';
-import { vi } from 'vitest';
+
 
 vi.mock('options/concepts/useConceptOptions', () => ({
     useConceptOptions: () => ({ options: [] })

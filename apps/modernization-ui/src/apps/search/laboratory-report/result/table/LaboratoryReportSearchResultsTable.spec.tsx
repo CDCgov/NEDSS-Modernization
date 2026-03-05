@@ -11,7 +11,7 @@ vi.mock('design-system/table/preferences', () => ({
 
 const Wrapper = ({
     results,
-    jurisdictionResolver = jest.fn()
+    jurisdictionResolver = vi.fn()
 }: {
     results: LabReport[];
     jurisdictionResolver?: (value: string) => Selectable | undefined;
@@ -120,7 +120,7 @@ describe('When a Laboratory Report search result is viewed in a table', () => {
             }
         ];
 
-        const jurisdictionResolver = jest.fn();
+        const jurisdictionResolver = vi.fn();
 
         jurisdictionResolver.mockReturnValue({ name: 'Gwinnett County' });
 

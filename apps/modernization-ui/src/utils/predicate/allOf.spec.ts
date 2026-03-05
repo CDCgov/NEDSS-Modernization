@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { allOf } from './allOf';
 
 describe('allOf', () => {

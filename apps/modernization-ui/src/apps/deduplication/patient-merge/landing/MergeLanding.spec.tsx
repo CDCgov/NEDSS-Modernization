@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { render, within } from '@testing-library/react';
 import { MergeLanding } from './MergeLanding';
 import { MemoryRouter, useSearchParams } from 'react-router';

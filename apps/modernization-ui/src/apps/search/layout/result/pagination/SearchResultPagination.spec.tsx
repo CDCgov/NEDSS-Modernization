@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SearchResultPagination } from './SearchResultPagination';
 
-const mockRequest = jest.fn();
+const mockRequest = vi.fn();
 
 let mockTotal: number;
 let mockPageSize: number;

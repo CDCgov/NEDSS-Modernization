@@ -1,27 +1,10 @@
 import { vi } from 'vitest';
 import '@testing-library/jest-dom/vitest';
-import { toHaveNoViolations } from 'jest-axe';
-
-expect.extend(toHaveNoViolations);
+import 'jest-axe/extend-expect';
 
 // All tests will create dates in the EST Timezone. UTC-5 or UTC-4 during DST
 // eslint-disable-next-line no-undef
 process.env.TZ = 'America/New_York';
-
-// Provide a minimal jest mock for compatibility with most common usages
-// Only assign the functions that are actually used in your codebase
-globalThis.jest = {
-    fn: vi.fn,
-    mock: vi.mock,
-    clearAllMocks: vi.clearAllMocks,
-    restoreAllMocks: vi.restoreAllMocks,
-    resetAllMocks: vi.resetAllMocks,
-    spyOn: vi.spyOn,
-    clearAllTimers: vi.clearAllTimers,
-    useFakeTimers: vi.useFakeTimers,
-    advanceTimersByTime: vi.advanceTimersByTime
-    // Add more mappings if needed
-} as any;
 
 // Global fetch mock to prevent live network calls in all tests
 globalThis.fetch = vi.fn(() =>

@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RaceEntry } from './entry';
 import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
-import { vi } from 'vitest';
+
 
 const mockDetailResolver = vi.fn();
 
@@ -153,7 +153,7 @@ describe('Race entry fields', () => {
     });
 
     it('should require race category to pass validation', async () => {
-        const validator = jest.fn();
+        const validator = vi.fn();
         validator.mockResolvedValue('category not valid');
 
         const { getByRole, getByText } = render(

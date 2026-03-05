@@ -2,7 +2,7 @@ import { internalizeDate } from 'date';
 import { add } from 'date-fns';
 import { validateDate } from './validateDate';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
 vi.mock('./clock', () => ({
     now: () => mockNow()

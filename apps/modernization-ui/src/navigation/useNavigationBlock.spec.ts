@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+
 import { act } from 'react';
 import { renderHook } from '@testing-library/react';
 import { useNavigationBlock } from './useNavigationBlock';
