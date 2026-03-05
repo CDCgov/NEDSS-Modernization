@@ -11,7 +11,7 @@ class DataSourceTest {
 
   @Test
   void should_throw_exception_with_null_values() {
-    Throwable exception = assertThrows(NullPointerException.class, DataSource::new);
+    Throwable exception = assertThrows(NullPointerException.class, () -> new DataSource(null));
 
     assertEquals("statusCd is marked non-null but is null", exception.getMessage());
   }

@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 import lombok.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
@@ -62,4 +63,6 @@ public class DataSource {
 
   @Column(name = "status_time")
   private LocalDateTime statusTime;
+
+  protected DataSource() {}
 }

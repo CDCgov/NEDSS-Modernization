@@ -1,8 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,7 +10,8 @@ import org.junit.jupiter.api.Test;
 class DataSourceColumnTest {
   @Test
   void should_throw_exception_with_null_values() {
-    Throwable exception = assertThrows(NullPointerException.class, DataSourceColumn::new);
+    Throwable exception =
+        assertThrows(NullPointerException.class, () -> new DataSourceColumn(null, null));
 
     assertEquals("dataSource is marked non-null but is null", exception.getMessage());
   }
