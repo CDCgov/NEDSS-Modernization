@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => {
     // note: Will load ports from .env file in root (of the project)
@@ -14,6 +15,14 @@ export default defineConfig(({ mode }) => {
         appType: 'spa',
         plugins: [react(), tsconfigPaths()],
         publicDir: 'public',
+        // Only needed for scss imports
+        resolve: {
+            alias: {
+                styles: resolve('src/styles'),
+                mixins: resolve('src/mixins'),
+                'design-system': resolve('src/design-system'),
+            }
+        },
         server: {
             port: 3000,
             proxy: {

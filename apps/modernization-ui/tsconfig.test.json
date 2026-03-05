@@ -24,7 +24,6 @@
     "noUncheckedSideEffectImports": true,
 
       /* nbs additions */
-    "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "baseUrl": "src",
     "types": ["vitest/globals"]
   },
