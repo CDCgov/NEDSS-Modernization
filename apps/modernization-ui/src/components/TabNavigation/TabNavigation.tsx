@@ -12,7 +12,6 @@ type NavigationProps = {
 
 const TabNavigationEntry = ({ children, path }: NavigationProps) => {
     const { pathname } = useLocation();
-    console.log('TabNavigationEntry', path, pathname);
 
     return (
         <div className={classNames(style.tab, { [style.active]: isActive(path, pathname) })}>

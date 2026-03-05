@@ -20,6 +20,7 @@ export const SaveTemplates = ({ modalRef }: any) => {
 
     const handleSubmit = () => {
         const { name, desc } = details;
+        // This file appears to be dead code
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const request = { name, desc };
     };

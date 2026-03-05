@@ -34,8 +34,6 @@ vi.mock(import('pagination'), async (importOriginal) => {
     };
 });
 
-// const { Status: PageStatus } = (await vi.importActual('pagination')) as any;
-
 const mockPage: Page = {
     status: PageStatus.Ready,
     pageSize: 5,
@@ -49,18 +47,6 @@ const mockRequest = vi.fn();
 const mockReady = vi.fn();
 const mockResize = vi.fn();
 const mockPageReset = vi.fn();
-
-// vi.mock('pagination', () => ({
-//     usePagination: () => ({
-//         page: mockPage,
-//         firstPage: mockFirstPage,
-//         reload: mockReload,
-//         request: mockRequest,
-//         ready: mockReady,
-//         resize: mockResize,
-//         reset: mockPageReset
-//     })
-// }));
 
 const { Direction } = (await vi.importActual('libs/sorting')) as any;
 
