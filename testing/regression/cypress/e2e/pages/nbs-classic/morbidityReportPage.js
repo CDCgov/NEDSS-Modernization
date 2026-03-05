@@ -80,7 +80,7 @@ class MorbidityReportPage {
   verifyValidationErrors() {
     // Check for visible error messages on the Report Information tab
     cy.get(this.reportInformationTab).contains("Report Information").click();
-    cy.wait(500);
+    
     // Check that error text contains required field messaging
     cy.contains(/required|must be|cannot be empty|not valid/i, {
       timeout: 5000,
@@ -109,7 +109,7 @@ class MorbidityReportPage {
     // 1. ObservationMorbDataEntry1 (to enter another report) OR
     // 2. MyTaskList1 (home page/task list)
     // Both indicate successful submission
-    cy.wait(2000);
+    
 
     // Verify the URL changed to one of the expected destinations
     cy.url().should("satisfy", (url) => {

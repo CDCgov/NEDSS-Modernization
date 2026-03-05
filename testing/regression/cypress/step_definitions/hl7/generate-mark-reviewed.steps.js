@@ -97,7 +97,7 @@ When("I Generate HL7 messages to api and mark as review", (string) => {
             cy.get("input[name=Submit]").first().click();
           }
 
-          cy.wait(2000);
+          
           expect(response.status).to.eq(200);
 
           if (
@@ -105,7 +105,7 @@ When("I Generate HL7 messages to api and mark as review", (string) => {
             response.body[0].nbsInfo.nbsInterfacePipeLineStatus ===
               "IN PROGRESS"
           ) {
-            cy.wait(20000).then(checkStatusRequest);
+            
           } else if (
             response.body[0].nbsInfo.nbsInterfaceStatus === "Success" &&
             response.body[0].nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED"

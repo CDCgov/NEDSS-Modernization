@@ -36,7 +36,7 @@ class PaginationPage {
     }
 
     get openInvestigationTable() {
-        cy.wait(1500);
+        
         return cy.get(this.table).eq(0);
     }
 

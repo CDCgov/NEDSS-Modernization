@@ -45,20 +45,20 @@ class ClassicHomePage {
         cy.get('#homePageAdvancedSearch').click()
         cy.get('[id="name.last"]').type("Simpson");
         cy.get('[id="name.first"]').type("Martin");
-        cy.wait(1000);
+        
         cy.contains('button', 'Search').click()
-        cy.wait(2000)
+        
         cy.contains('button', 'Add new patient').click()
-        cy.wait(2000)
+        
         cy.get('input[id="administrative.asOf"]').eq(0).clear()
         cy.get('input[id="administrative.asOf"]').eq(0).type('03/04/2024');
         cy.contains('button', 'Save').click()
-        cy.wait(3000)
+        
         cy.contains('button', 'View patient').click()
         cy.contains('a', 'Home').click()
     }
     createPatient()
-    cy.wait(3000)
+    
     createPatient()
   }
 
@@ -75,7 +75,7 @@ class ClassicHomePage {
   }
 
   searchUser() {
-    cy.wait(2000)
+    
     cy.get('#DEM102').type('Simpson')
     cy.get('#DEM104').type('Martin')
     cy.get('input[type="button"][value="Submit"]').eq(0).click()
@@ -177,7 +177,7 @@ class ClassicHomePage {
   }
 
   copySearchRowInfo() {
-    cy.wait(1000);
+    
     cy.get("body").then((body) => {
       if (body.find("div#patient-search-results").length > 0) {
         cy.get('div#patient-search-results tbody tr td').then(($tds) => {

@@ -9,7 +9,7 @@ class SearchResultsPage {
 
   naviageToAddNewPatient() {
     cy.visit('/patient/add');
-    cy.wait(500);
+    
   }
 }
 

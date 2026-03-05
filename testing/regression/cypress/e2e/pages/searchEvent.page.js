@@ -1,24 +1,24 @@
 class SearchEventPage {
   clickEventInvestigation() {
     cy.get('a[href*="search/investigations"]').click();
-    cy.wait(500);
+    
   }
 
   expandInvestigationCriteria() {
     cy.get('svg[aria-label="Collapse General search"]').first().click()
     cy.get('svg[aria-label="Expand Investigation criteria"]').first().click()
-    cy.wait(500);
+    
   }
 
   expandLabReportCriteria() {
     cy.get('svg[aria-label="Collapse General search"]').first().click()
     cy.get('svg[aria-label="Expand Lab report criteria"]').first().click()
-    cy.wait(500);
+    
   }
 
   clickEventLabReport() {
     cy.get('a[href*="search/lab-reports"]').click();
-    cy.wait(500);
+    
   }
 
   selectEventInvestigationCondition() {    
@@ -59,14 +59,14 @@ class SearchEventPage {
 
   selectInvestigationEventDate() {
     let elm = cy.get('select[name="eventDate.type"]').select("Last update date");
-    cy.wait(500)
+    
     let elm2 = cy.get('input[id="eventDate.from"]').type("090920022");
     let elm3 = cy.get('input[id="eventDate.to"]').type("08142024");
   }
   
   selectLabReportEventDate() {
     let elm = cy.get('select[name="eventDate.type"]').select("Last Update Date");
-    cy.wait(500)
+    
     let elm2 = cy.get('input[data-testid="date-picker-external-input"]').first().type("090920022");
     let elm3 = cy.get('input[data-testid="date-picker-external-input"]').last().type("08142024");
   }
@@ -101,7 +101,7 @@ class SearchEventPage {
 
   search() {
     cy.get('button').contains("Search").click();
-    cy.wait(100);
+    
     cy.get('header button').eq(2).click();
   }
 

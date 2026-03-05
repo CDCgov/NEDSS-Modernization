@@ -68,7 +68,7 @@ class PageBuilderPage {
 
       clickSubmitButtonPublish() {
         cy.get('input[name="Submit"][value="Submit"]').eq(0).click();
-        cy.wait(1000);
+        
       }
 
       verifySuccessMessageContains() {

@@ -106,7 +106,7 @@ When("I Generate HL7 {string} messages to api", (string) => {
             clientsecret: clientsecret,
           },
         }).then((response) => {
-          cy.wait(2000);
+          
           expect(response.status).to.eq(200);
 
           const nbsInfo = response.body[0].nbsInfo;
@@ -114,7 +114,7 @@ When("I Generate HL7 {string} messages to api", (string) => {
 
           if (["QUEUED", "IN PROGRESS"].includes(nbsInfo.nbsInterfaceStatus) || 
               nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS") {
-            cy.wait(20000).then(checkStatusRequest);
+            
           } else if (nbsInfo.nbsInterfaceStatus === "Success" && 
                      nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED") {
             UtilityFunctions.checkELRActivityLog(fakeRandomData);

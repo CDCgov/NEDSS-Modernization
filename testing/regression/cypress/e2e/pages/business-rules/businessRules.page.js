@@ -97,13 +97,13 @@ class BusinessRulesPage {
         cy.get('[data-testid="listedSubsections"]').eq(0).click({ force: true });
         cy.get('[for="sourceId0"]').click({ force: true });
         cy.get('[data-testid="sourceQuestionModalContinueBtn"]').eq(0).click({ force: true });
-        cy.wait(1000);
+        
         cy.get('[data-testid="LogicSelectDropdown"]').eq(0).select('NOT_EQUAL_TO');
         cy.get('.multi-select__input-container').eq(0).click();
         cy.get('#react-select-3-option-0').click();
         cy.get('.multi-select__input-container').eq(0).click();
         cy.get('[data-testid="searchTargetQuestionBtn"]').eq(0).click();
-        cy.wait(2000);
+        
         cy.get('[data-testid="listedSectionsTarget"]').eq(0).click({ force: true });
         cy.get('[data-testid="listedSubsectionsTarget"]').eq(0).click({ force: true });
         cy.get('[for="hots1"]').click({ force: true });
@@ -163,7 +163,7 @@ class BusinessRulesPage {
     }
 
     selectLogicFromDropdown() {
-        cy.wait(1000);
+        
         cy.get('[data-testid="LogicSelectDropdown"]')
             .invoke('prop', 'selectedIndex')
             .then((selectedIndex) => {
@@ -177,7 +177,7 @@ class BusinessRulesPage {
 
     selectTargetQuestion() {
         cy.get('[data-testid="targetQuestionEditBtn"]').eq(0).click();
-        cy.wait(2000);
+        
         cy.get('[data-testid="listedSectionsTarget"]').eq(0).click({ force: true });
         cy.get('[data-testid="listedSubsectionsTarget"]').eq(0).click({ force: true });
         cy.get('[for="hots1"]').click({ force: true });

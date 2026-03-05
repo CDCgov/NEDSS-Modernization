@@ -4,9 +4,9 @@ class RowSelectionPage {
     }
 
     openSearchModal() {
-        cy.wait(1000);
+        
         cy.get('#eventType').eq(0).select('INV');
-        cy.wait(1000);
+        
         cy.get('[data-testid="advancedConditionSearchBtn"]').eq(0).click();
     }
 

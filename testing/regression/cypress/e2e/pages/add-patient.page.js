@@ -55,9 +55,9 @@ class AddPatientPage {
 
   addPatientSingleDetail() {
     this.clickSumbitSaveButton();
-    cy.wait(500)
+    
     this.clickViewPatientLink();
-    cy.wait(500)
+    
   }
 
   addPatientSingleDeteNextYear() {

@@ -15,7 +15,7 @@ class PatientProfilePage {
   }
 
   print() {
-    cy.wait(1000);
+    
     cy.get('button[aria-label="Delete"]').click({ force: true })
     // cy.get("button").contains("Delete patient").invoke("removeAttr", "target").click({ force: true });
     
@@ -32,10 +32,10 @@ class PatientProfilePage {
 
 
   isDemographicPageDisplayed() {
-    cy.wait(1000);
+    
 
     // cy.window().then((win) => {
-    //   cy.wait(1000);
+    //   
     //   cy.window({ timeout: 10000 }).should((newWin) => {
     //     expect(newWin).to.not.equal(win);
     //     win = newWin;
@@ -48,13 +48,13 @@ class PatientProfilePage {
   }
 
   confirmDelete() {
-    cy.wait(1000);
+    
     cy.get("button").contains("Delete").click()
     // cy.get("dialog[class=usa-modal] button").eq(1).click();
   }
 
   cancelDelete() {
-    cy.wait(1000);
+    
     cy.get("button").contains("Cancel").click()
     // cy.get("dialog[class=usa-modal] button").eq(0).click();
   }
@@ -72,7 +72,7 @@ class PatientProfilePage {
   clickOnTab(tabName) {
     cy.intercept("POST", "/graphql").as("graphqlRequest");
     cy.contains("button", tabName).click();
-    // cy.wait("@graphqlRequest");
+    // 
   }
 
   clickOnButton(buttonName) {
@@ -89,7 +89,7 @@ class PatientProfilePage {
 
   addName(fName) {
     addNameModule.date().type().first(fName).last().add();
-    // cy.wait("@graphqlRequest");
+    // 
   }
 
   isNameAdded(fName) {
@@ -170,7 +170,7 @@ class PatientProfilePage {
         break;
     }
     cy.contains(section).scrollIntoView();
-    // cy.wait("@graphqlRequest");
+    // 
     cy.get("button.usa-button.grid-row").eq(len).click();
   }
 

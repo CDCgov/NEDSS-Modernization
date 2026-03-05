@@ -1,6 +1,6 @@
  class AddLabReportInvestigation {
   addLabReport() {  	
-  	cy.wait(1000)
+  	
 	  cy.get("#NBS_LAB365Text").type("1");
 	  cy.get("#NBS_LAB365CodeLookupButton").click();
 	  cy.get("input[name=INV108_textbox]").type("A");
@@ -14,7 +14,7 @@
 	  cy.get("input[name=LAB115_textbox]").type("(arb_u)");
 	  cy.get("textarea[id=NBS_LAB208]").type("postive");
 	  cy.get("tr#AddButtonToggleRESULTED_TEST_CONTAINER input").click();
-	  cy.wait(500);
+	  
 	  cy.get("input[name=SubmitAndCreateInvestiation]").first().click();
 	  cy.get("img[name=ccd_button]").click();  
 	  cy.get("option[value=11065]").click();
@@ -67,7 +67,7 @@
 	  cy.get('body').each(($selectedElement) => {
 	  	labReportGlobal = investigationInfo;	  	
 	  })
-	  cy.wait(500);
+	  
   }
 }
 

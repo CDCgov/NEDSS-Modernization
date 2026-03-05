@@ -20,7 +20,7 @@ class SummaryTabPage {
 
   returnToSummary() {
     this.returnToSummaryLink.click();
-    cy.wait(1000);
+    
   }
 
   openLinkInDocumentTable(linkText) {

@@ -8,7 +8,7 @@ class PageElementsPage {
     }
 
     selectEventType() {
-        cy.wait(1000)
+        
         cy.get("#eventType").select("INV")
     }
 
@@ -60,12 +60,12 @@ class PageElementsPage {
     }
 
     clickEventTypeField() {
-        cy.wait(1000)
+        
         cy.get('#eventType').select('', {force: true})
     }
 
     eventTypeFieldFocused() {
-        cy.wait(1000)
+        
         cy.get('#eventType').select('', {force: true})
         cy.get('#eventType').should('be.focused')
     }
@@ -76,7 +76,7 @@ class PageElementsPage {
 
     clickTemplateField() {
         this.selectEventType()
-        cy.wait(500)
+        
         cy.get('#templateId').select('')
     }
 
@@ -100,7 +100,7 @@ class PageElementsPage {
 
     clickMMGField() {
         this.selectEventType()
-        cy.wait(500)
+        
         cy.get('#messageMappingGuide').select('')
     }
 

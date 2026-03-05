@@ -213,9 +213,9 @@ Then("I select for Superseded patient", ()=>{
 
 Then("I sort by {string}", (string) => {
   cy.get(`button[aria-label="Sort ${string}"]`).eq(0).click({force: true});
-  cy.wait(500)
+  
   cy.get(`button[aria-label="Sort ${string}"]`).eq(0).click({force: true});
-  cy.wait(1000)
+  
 })
 
 Then("I verify the sort of patient name", () => {

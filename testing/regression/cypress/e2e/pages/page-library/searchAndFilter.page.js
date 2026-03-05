@@ -6,7 +6,7 @@ class SearchAndFilterPage {
 
     clickOnSearchButton() {
         cy.get('#searchButton').click()
-        cy.wait(1000)
+        
     }
 
     checkMatchedSearchResult(searchedKeyword, columnName) {
@@ -102,7 +102,7 @@ class SearchAndFilterPage {
     }
 
     get openInvestigationTable() {
-        cy.wait(1500);
+        
         return cy.get(this.table).eq(0);
     }
 }

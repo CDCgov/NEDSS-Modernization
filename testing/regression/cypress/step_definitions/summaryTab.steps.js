@@ -26,7 +26,7 @@ Then(
   "user clicks the {string} link, the user is returned to Patient profile summary page",
   (string) => {
     cy.contains("a", string).click();
-    cy.wait(1000);
+    
   }
 );
 

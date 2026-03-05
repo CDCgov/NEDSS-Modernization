@@ -90,7 +90,7 @@ Then("confirms the deletion of the patient", () => {
 });
 
 Then("the user is directed to the Home screen", () => {
-  cy.wait(1500);
+  
   cy.url().should("include", "/search/patients");
 });
 
@@ -112,10 +112,10 @@ Then("the user is taken to the top of the page", () => {
 
 Then("user clicks on a patient's profile {string} tab", (string) => {  
   
-  cy.wait(2000);
+  
   cy.contains("button", string).click();
   // patientProfilePage.clickOnTab(string);
-  cy.wait(2000);
+  
 });
 
 Then("I should see the following elements", (dataTable) => {
@@ -128,7 +128,7 @@ Then("I should see the following elements", (dataTable) => {
 
 When("user clicks on the {string} button", (string) => {
   patientProfilePage.clickOnButton(string);
-  cy.wait(1000);
+  
 });
 
 Then("user adds the comments", () => {

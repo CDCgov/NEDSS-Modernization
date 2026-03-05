@@ -26,31 +26,31 @@ class GroupAndUngroupQuestions {
                 cy.get('.addNewSectionBtn').eq(0).click({ force: true });
                 cy.get('.sectionName').eq(0).type("test new section");
                 cy.get('.addSectionBtn').eq(0).click();
-                cy.wait(2000)
+                
                 cy.get('.manageSectionsCloseBtn').eq(0).click();
-                cy.wait(5000)
+                
 
                 // subsection
                 cy.get('[data-testid="addNewSubsection"]').eq(0).click();
                 const newSubsectionName = Math.random().toString(36).substring(2, 8);
                 cy.get('[data-testid="subsectionName"]').eq(0).type(`New subsection name ${newSubsectionName}`);
                 cy.get('[data-testid="addOrEditSubsectionBtn"]').eq(0).click();
-                cy.wait(5000)
+                
 
                 // questions
                 cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
-                cy.wait(5000)
+                
                 cy.get('label[for="selection-0"]').click({ force: true });
-                cy.wait(1000)
+                
                 cy.contains('Apply to page').click();
-                cy.wait(5000)
+                
 
                 cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
-                cy.wait(5000)
+                
                 cy.get('label[for="selection-0"]').click({ force: true });
-                cy.wait(1000)
+                
                 cy.contains('Apply to page').click();
-                cy.wait(5000)
+                
 
                 // grouping
                 cy.get(".subsectionOptionsWithGrouped-").eq(0).click();
@@ -60,7 +60,7 @@ class GroupAndUngroupQuestions {
                 this.fillTableColumnWidths()
                 cy.get('[data-testid="group-questions-submit-btn"]')
                             .filter(':visible').eq(0).click();
-                cy.wait(5000)
+                
                 cy.get('[data-testid="questionGroupIndicator"]').eq(0);
             }
         })
@@ -76,7 +76,7 @@ class GroupAndUngroupQuestions {
 
     shouldSee(text1, text2, delay) {
         if(delay) {
-            cy.wait(4000);
+            
         }
         cy.contains(text1);
         if(text2) {
@@ -159,7 +159,7 @@ class GroupAndUngroupQuestions {
     }
 
     clickGroupQuestionOption() {
-        cy.wait(2000)
+        
         cy.get('.subsectionOptionsWithGrouped-ungrouped').eq(1)
         .get('[data-testid="groupQuestionsOption"]').eq(0).click();
     }
@@ -202,9 +202,9 @@ class GroupAndUngroupQuestions {
 
     navigateToPreviewPageWithStatusInitialDraft() {
         cy.visit('/page-builder/pages');
-        cy.wait(2000);
+        
         cy.get('#range-toggle').select('100')
-        cy.wait(5000);
+        
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Initial Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();

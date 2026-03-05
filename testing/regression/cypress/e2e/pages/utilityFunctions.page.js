@@ -84,7 +84,7 @@ class UtilityFunctions {
       expect(response.status).to.eq(200);
       let status = response.body.transportStatus;
       if(status === null) {
-        cy.wait(35000);
+        
         cy.log(counter);
         if(counterApi === 4) {
           cy.log("Status null, retry");
@@ -132,7 +132,7 @@ class UtilityFunctions {
                 this.checkTransportRequestAPI(localId);                
               } else if(status === null) {
                 cy.log("Status null, retry");
-                cy.wait(35000);
+                
                 this.checkTransportRequest();
               }
             });
@@ -154,7 +154,7 @@ class UtilityFunctions {
     cy.contains(fakeRandomData.randomLastName).should("be.visible");
     cy.contains("Successfully Create Notification").should("be.visible");
     cy.get(".dtTable td a").eq(0).click();
-    cy.wait(1000);
+    
     this.checkTransportRequest();
   }
 

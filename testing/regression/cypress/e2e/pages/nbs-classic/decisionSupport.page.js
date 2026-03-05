@@ -29,7 +29,7 @@ class DecisionSupportPage {
   
     selectSeverity(severity) {
       cy.get('img[name="aSevCd_button"]').click();
-      cy.wait(1000)
+      
       cy.contains(severity).click();
     }
   

@@ -43,7 +43,7 @@ class OpenInvestigationPage {
     openSortMenu() {
        cy.get(this.sortMenu).eq(5).click();
        cy.get('.multiSelectOptions').should('be.visible');
-       cy.wait(1000)
+       
     }      
     
     clickSelectAll() {
@@ -135,7 +135,7 @@ class OpenInvestigationPage {
 
     selectConditionFromDropdown() {
         cy.get('img[name="ccd_button"]').eq(0).click()
-        cy.wait(1000)
+        
         cy.get('#ccd').select(1, { force: true })
         cy.get('input[name="ccd_textbox"]').eq(0).click()
         cy.get('#ccd').select(1, { force: true })
@@ -151,7 +151,7 @@ class OpenInvestigationPage {
          */
         cy.intercept('POST', '/nbs/dwr/call/plaincall/JPageForm.getAllAnswer.dwr').as('answersResponse');
         cy.get('#Submit').eq(0).click()
-        cy.wait('@answersResponse', { timeout: 10000 })
+        
     }
 
     clickCaseInfoTab() {

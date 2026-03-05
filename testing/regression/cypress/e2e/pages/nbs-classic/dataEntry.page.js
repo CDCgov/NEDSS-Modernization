@@ -23,7 +23,7 @@ class LabReportPage {
   }
 
   clickLabReportTab() {
-    cy.wait(500);
+    
     cy.get(this.labReportTab).first().click();
   }
 

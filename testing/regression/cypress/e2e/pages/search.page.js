@@ -49,15 +49,15 @@ class SearchPage {
   }
 
   selectName() {
-    cy.wait(500);
+    
     let name = "label[for='lastName']";
     cy.get(name).click();
-    cy.wait(1000);
+    
   }
 
   selectRace() {
     cy.get("svg").eq(5).click();
-    cy.wait(500);    
+    
   }
 
   enterEthnicity(type) {
@@ -74,7 +74,7 @@ class SearchPage {
 
   search() {
     cy.get('button').contains("Search").click();    
-    cy.wait(100);
+    
     cy.get('header button').eq(2).click();
   }
 
@@ -87,24 +87,24 @@ class SearchPage {
   }
 
   // selectState() {
-  //   cy.wait(500);
+  //   
   //   let elemt = "div[id='2'] select[placeholder='-Select-']";
   //   cy.get(elemt).scrollIntoView();
   //   elemt = "option[value='15']";
   //   cy.get(elemt).click();
-  //   cy.wait(1000);
+  //   
   // }
 
   selectState(string) {
     // cy.get('div[aria-label="Address"]').click({ force: true });
     cy.get("select[name='state']").select(string);    
-    cy.wait(500);
+    
   }
 
   selectGender(gender) {
     cy.get("#gender");
     cy.get("#gender").select(gender);
-    cy.wait(500);
+    
   }
 
   selectDob() {
@@ -138,7 +138,7 @@ class SearchPage {
   }
 
   clickAddressTab() {    
-    cy.wait(500)
+    
     cy.get("svg").eq(2).click();            
   }
 

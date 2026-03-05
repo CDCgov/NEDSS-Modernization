@@ -87,7 +87,7 @@ class CreateNewQuestionPage {
 
     toggleMessagingIncluded() {
         cy.get('label[for="messagingInfo.includedInMessage"]').click()
-        cy.wait(1000)
+        
     }
 
     enterMessageVariableId() {
@@ -128,7 +128,7 @@ class CreateNewQuestionPage {
     }
 
     checkConfirmationMessage() {
-        cy.wait(4000);
+        
         cy.contains('Successfully added');
     }
 
@@ -150,9 +150,9 @@ class CreateNewQuestionPage {
 
     navigateToPreviewPageWithStatusInitialDraft() {
         cy.visit('/page-builder/pages');
-        cy.wait(2000);
+        
         cy.get('#range-toggle').select('100')
-        cy.wait(5000);
+        
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Initial Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();

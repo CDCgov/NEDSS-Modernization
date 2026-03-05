@@ -45,12 +45,12 @@ class ClassicManageValueSetsPage {
   }
 
   clickCollapseSubsectionsInValueSetList() {
-    cy.wait(2000)
+    
     cy.contains('Collapse Subsections').click()
   }
 
   clickExpandSubsectionsInValueSetList() {
-    cy.wait(2000)
+    
     cy.contains('Expand Subsections').click()
   }
 
@@ -77,7 +77,7 @@ class ClassicManageValueSetsPage {
 
   clickSubmitBtnInValueSetConceptForm() {
     cy.get('#submitA').click()
-    cy.wait(2000)
+    
     cy.visit('/nbs/ManageCodeSet.do?method=ViewValueSetLib&initLoad=true')
     this.clickValueSetInValueSetList()
   }

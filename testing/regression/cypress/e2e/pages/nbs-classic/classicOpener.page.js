@@ -20,7 +20,7 @@ class ClassicOpenerPage {
       win.opener = opener;
       cy.get('input[name="SubmitForm"]').eq(0).click();
       cy.visit("/nbs/ManagePage.do?method=editPageContentsLoad&fromWhere=V");
-      cy.wait(500);
+      
       cy.get('body').then(($body) => {
         if ($body.find('img[title="Add New Tab"]').length > 0) {
           cy.get('img[title="Add New Tab"]').eq(0).click().then(() => {

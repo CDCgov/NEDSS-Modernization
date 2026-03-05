@@ -10,7 +10,7 @@ class CreateNewPagePage {
     }
 
     selectEventType(type) {
-        cy.wait(2000)
+        
         if(type) {
             cy.get("#eventType").select(type)
         } else {
@@ -46,7 +46,7 @@ class CreateNewPagePage {
     }
     selectTemplate() {
         this.selectEventType()
-        cy.wait(500)
+        
         cy.get('#templateId').find('option').eq(2).then((option) => {
             cy.get('#templateId').select(option.attr('value'))
         })
@@ -54,14 +54,14 @@ class CreateNewPagePage {
 
     selectReportingMechanism() {
         this.selectEventType()
-        cy.wait(500)
+        
         cy.get('#messageMappingGuide').find('option').eq(1).then((option) => {
             cy.get('#messageMappingGuide').select(option.attr('value'))
         })
     }
     enterPageDescription() {
         this.selectEventType()
-        cy.wait(500)
+        
         cy.get("#pageDescription").type("This page is for diagnosis")
     }
     navigateToLibrary () {

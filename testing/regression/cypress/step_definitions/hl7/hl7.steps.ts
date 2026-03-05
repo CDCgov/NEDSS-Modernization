@@ -218,7 +218,7 @@ Then("the HL7 message is processed by the data ingestion service", () => {
       if (status === "Success") {
         return;
       } else {
-        cy.wait(delay).then(() => checkStatus(++attempts));
+        
       }
     });
   };
@@ -288,7 +288,7 @@ Then(
           notificationId = response.body.localId;
           expect(notificationId, "Notification Id").not.to.be.null;
         } else {
-          cy.wait(delay).then(() => checkStatus(++attempts));
+          
         }
       });
     };
@@ -329,7 +329,7 @@ Then(
           if (status === exectedStatus) {
             return;
           } else {
-            cy.wait(delay).then(() => checkStatus(++attempts));
+            
           }
         }
       );

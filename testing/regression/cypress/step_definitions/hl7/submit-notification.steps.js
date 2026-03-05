@@ -163,25 +163,25 @@ When(
                       }
                     });
                 } else {
-                  cy.wait(20000).then(ClickAdvancedSearch);
+                  
                 }
               });
             }
 
-            cy.wait(2000);
+            
             expect(response.status).to.eq(200);
 
             if (
               response.body[0].nbsInfo.nbsInterfaceStatus === "QUEUED" ||
               response.body[0].nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS"
             ) {
-              cy.wait(20000).then(checkStatusRequest);
+              
             } else if (
               response.body[0].nbsInfo.nbsInterfaceStatus === "Success" &&
               response.body[0].nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED"
             ) {
               navigateAndSearchDocuments();
-              cy.wait(2000);
+              
               cy.get("body").then(($body) => {
                 if ($body.find("#legalName").length > 0) {
                   cy.get("a")
@@ -201,7 +201,7 @@ When(
                       }
                     });
                 } else {
-                  cy.wait(20000).then(ClickAdvancedSearch);
+                  
                 }
               });
             }

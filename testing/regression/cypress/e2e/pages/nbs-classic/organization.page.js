@@ -7,7 +7,7 @@ class ClassicPatientSearchPage {
 
   enterNameInClassicSearchOrganizationPage(text) {
     cy.get('input[id="organizationSearch.nmTxt"]').type(text).should('have.value', text)
-    cy.wait(1000)
+    
   }
 
   clickSearchBtnInClassicOrganizationSearchPane() {

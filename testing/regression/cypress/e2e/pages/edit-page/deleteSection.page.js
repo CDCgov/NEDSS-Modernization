@@ -41,7 +41,7 @@ class DeleteSectionPage {
                 cy.get('.addSection').eq(0).click();
                 cy.get('.sectionName').eq(0).type("test new section");
                 cy.get('.addSectionBtn').eq(0).click();
-                cy.wait(5000)
+                
                 cy.get(".moreOptionsSection-no").eq(0).click();
             }
         })
@@ -63,15 +63,15 @@ class DeleteSectionPage {
     }
 
     verifyMessageSectionDeleted(text) {
-        cy.wait(1000)
+        
         cy.contains(text);
     }
 
     navigateToPreviewPageWithStatusInitialDraft() {
         cy.visit('/page-builder/pages');
-        cy.wait(2000);
+        
         cy.get('#range-toggle').select('100')
-        cy.wait(5000);
+        
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Initial Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();

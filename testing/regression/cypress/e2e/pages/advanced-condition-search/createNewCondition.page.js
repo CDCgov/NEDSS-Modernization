@@ -4,9 +4,9 @@ class CreateNewConditionPage {
     }
 
     selectEventTypeInvestigation() {
-        cy.wait(1000);
+        
         cy.get('#eventType').eq(0).select('INV');
-        cy.wait(1000);
+        
     }
 
     additionalFieldsDisplayed() {
@@ -33,7 +33,7 @@ class CreateNewConditionPage {
     }
 
     clickCreateAndAddToPageBtn() {
-        cy.wait(5000)
+        
         cy.get('.cancel-btn').eq(0).click({ force: true });
     }
 
@@ -57,7 +57,7 @@ class CreateNewConditionPage {
     }
 
     navigateToClassicDesign () {
-        cy.wait(5000)
+        
         cy.contains('New Test Page');
     }
 }

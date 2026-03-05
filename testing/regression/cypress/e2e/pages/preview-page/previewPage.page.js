@@ -19,9 +19,9 @@ class PreviewPagePage {
 
     navigateToPreviewPageWithStatusInitialDraft() {
         cy.visit('/page-builder/pages');
-        cy.wait(2000);
+        
         cy.get('#range-toggle').select('100')
-        cy.wait(5000);
+        
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Initial Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
@@ -32,10 +32,10 @@ class PreviewPagePage {
 
     navigateToPreviewPageWithStatusPublished() {
         cy.visit('/page-builder/pages');
-        cy.wait(2000);
+        
         function search () {
             cy.get('#range-toggle').select('100')
-            cy.wait(5000);
+            
             let isExist = false;
             cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
                 if($tr.find("td").eq(3).text() === "Published") {
@@ -55,9 +55,9 @@ class PreviewPagePage {
 
     navigateToPreviewPageWithStatusPublishedWithDraft() {
         cy.visit('/page-builder/pages');
-        cy.wait(2000);
+        
         cy.get('#range-toggle').select('100')
-        cy.wait(5000);
+        
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Published with Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
@@ -75,7 +75,7 @@ class PreviewPagePage {
     }
 
     checkConditionsField() {
-        cy.wait(3000)
+        
         cy.get('.multi-select__input-container').eq(0).click({ force: true })
     }
 
@@ -161,7 +161,7 @@ class PreviewPagePage {
     }
 
     checkSuccessMessage() {
-        cy.wait(5000)
+        
     }
 
     checkChangesOnPreviewPageStatusType() {
@@ -220,7 +220,7 @@ class PreviewPagePage {
     }
 
     selectEventType(type) {
-        cy.wait(2000)
+        
         if(type) {
             cy.get("#eventType").select(type)
         } else {
@@ -261,7 +261,7 @@ class PreviewPagePage {
 
     clickCreatePageButton() {
         cy.get('.createPage').eq(0).click()
-        cy.wait(4000)
+        
     }
 
     clickPreviewAfterNewlyCreatedPage() {
@@ -274,13 +274,13 @@ class PreviewPagePage {
     }
 
     clickPublishBtnOnPublishPage() {
-        cy.wait(2000)
+        
         cy.get('#notes').type('Version note test', { force: true });
         cy.get('form button[type="submit"]').eq(0).click({ force: true });
     }
 
     viewTextOnPageForStatus(text) {
-        cy.wait(2000)
+        
         cy.contains(text)
     }
 
