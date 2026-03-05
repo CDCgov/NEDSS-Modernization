@@ -11,7 +11,14 @@ import org.junit.jupiter.api.Test;
 public class DataSourceColumnTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThrows(NullPointerException.class, () -> new DataSourceColumn(null));
+    Throwable exception =
+        assertThrows(
+            NullPointerException.class,
+            () -> {
+              new DataSourceColumn(null);
+            });
+
+    assertEquals("dataSource is marked non-null but is null", exception.getMessage());
   }
 
   @Test

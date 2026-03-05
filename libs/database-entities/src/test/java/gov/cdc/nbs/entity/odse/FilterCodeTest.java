@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 public class FilterCodeTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThrows(NullPointerException.class, () -> new FilterCode(null));
+    Throwable exception = assertThrows(NullPointerException.class, () -> new FilterCode(null));
+
+    assertEquals("codeTable is marked non-null but is null", exception.getMessage());
   }
 
   @Test

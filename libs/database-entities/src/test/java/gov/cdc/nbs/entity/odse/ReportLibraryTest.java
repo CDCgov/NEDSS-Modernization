@@ -10,9 +10,12 @@ import org.junit.jupiter.api.Test;
 public class ReportLibraryTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThrows(
-        NullPointerException.class,
-        () -> new ReportLibrary(null, null, null, null, null, null, null, null));
+    Throwable exception =
+        assertThrows(
+            NullPointerException.class,
+            () -> new ReportLibrary(null, null, null, null, null, null, null, null));
+
+    assertEquals("libraryName is marked non-null but is null", exception.getMessage());
   }
 
   @Test

@@ -9,7 +9,10 @@ import org.junit.jupiter.api.Test;
 public class ReportFilterTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThrows(NullPointerException.class, () -> new ReportFilter(null, null, null));
+    Throwable exception =
+        assertThrows(NullPointerException.class, () -> new ReportFilter(null, null, null));
+
+    assertEquals("reportId is marked non-null but is null", exception.getMessage());
   }
 
   @Test
