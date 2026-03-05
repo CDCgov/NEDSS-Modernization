@@ -5,9 +5,6 @@ name: "Sonar Scanner"
 on:
   workflow_call:
     secrets:
-      NBS_ACCOUNTID:
-        description: "Secret named NBS_ACCOUNTID where ECR resides."
-        required: true
       PASSED_GITHUB_TOKEN:
         description: "Secret named GITHUB_TOKEN that references the github token for this repository."
         required: true
@@ -37,7 +34,6 @@ on:
       - ".github/workflows/sonar.yaml"
 env:
   deployment_env: dev
-  accountid: ${{secrets.NBS_ACCOUNTID}}
   passed_github_token: ${{secrets.PASSED_GITHUB_TOKEN}}
   sonar_token: ${{secrets.SONAR_TOKEN}}
   test_database_user: ${{secrets.DATABASE_USER}}
