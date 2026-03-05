@@ -1,33 +1,19 @@
 package gov.cdc.nbs.entity.odse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-import gov.cdc.nbs.audit.Status;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-public class DataSourceTest {
-  @Test
-  void should_create_empty_data_source() {
-    DataSource actual = new DataSource();
+class DataSourceTest {
 
-    assertThat(actual)
-        .satisfies(ds -> assertNull(ds.getId()))
-        .satisfies(ds -> assertNull(ds.getColumnMaxLen()))
-        .satisfies(ds -> assertNull(ds.getConditionSecurity()))
-        .satisfies(ds -> assertNull(ds.getJurisdictionSecurity()))
-        .satisfies(ds -> assertNull(ds.getReportingFacilitySecurity()))
-        .satisfies(ds -> assertNull(ds.getDataSourceName()))
-        .satisfies(ds -> assertNull(ds.getDataSourceTitle()))
-        .satisfies(ds -> assertNull(ds.getDataSourceTypeCode()))
-        .satisfies(ds -> assertNull(ds.getDescTxt()))
-        .satisfies(ds -> assertNull(ds.getEffectiveFromTime()))
-        .satisfies(ds -> assertNull(ds.getEffectiveToTime()))
-        .satisfies(ds -> assertNull(ds.getOrgAccessPermission()))
-        .satisfies(ds -> assertNull(ds.getProgAreaAccessPermission()))
-        .satisfies(ds -> assertNull(ds.getStatus()));
+  @Test
+  void should_throw_exception_with_null_values() {
+    Throwable exception = assertThrows(NullPointerException.class, DataSource::new);
+
+    assertEquals("statusCd is marked non-null but is null", exception.getMessage());
   }
 
   @Test
@@ -45,7 +31,8 @@ public class DataSourceTest {
     LocalDate effectiveToTime = LocalDate.parse("2020-03-04");
     String orgAccessPermission = "N";
     String progAreaAccessPermission = "N";
-    Status status = new Status();
+    Character statusCd = 'Y';
+    LocalDateTime statusTime = LocalDateTime.parse("2020-03-03T10:15:30");
 
     DataSource actual =
         new DataSource(
@@ -62,7 +49,8 @@ public class DataSourceTest {
             effectiveToTime,
             orgAccessPermission,
             progAreaAccessPermission,
-            status);
+            statusCd,
+            statusTime);
 
     assertThat(actual)
         .satisfies(ds -> assertEquals(id, ds.getId()))
@@ -77,6 +65,7 @@ public class DataSourceTest {
         .satisfies(ds -> assertEquals(effectiveToTime, ds.getEffectiveToTime()))
         .satisfies(ds -> assertEquals(orgAccessPermission, ds.getOrgAccessPermission()))
         .satisfies(ds -> assertEquals(progAreaAccessPermission, ds.getProgAreaAccessPermission()))
-        .satisfies(ds -> assertEquals(status, ds.getStatus()));
+        .satisfies(ds -> assertEquals(statusCd, ds.getStatusCd()))
+        .satisfies(ds -> assertEquals(statusTime, ds.getStatusTime()));
   }
 }

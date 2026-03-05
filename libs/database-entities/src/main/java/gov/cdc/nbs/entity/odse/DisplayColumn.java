@@ -1,14 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.audit.Status;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,16 +21,21 @@ public class DisplayColumn {
   @Column(name = "display_column_uid", nullable = false)
   private Long id;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "column_uid", nullable = false)
   private DataSourceColumn dataSourceColumn;
 
-  @NonNull private ReportId reportId;
+  @NonNull @Embedded private ReportId reportId;
 
   @NonNull @Column(name = "sequence_nbr")
   private Integer sequenceNumber;
 
-  @Embedded private Status status;
+  //  TODO: add a converter? Or Separate Status class?
+  @NonNull @Column(name = "status_cd", nullable = false)
+  private Character statusCd;
+
+  @Column(name = "status_time")
+  private LocalDateTime statusTime;
 
   protected DisplayColumn() {}
 }

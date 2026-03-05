@@ -18,7 +18,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "Report_Library", catalog = "NBS_ODSE")
 public class ReportLibrary {
-  // TODO: Add @NonNull here?
+
   @Id
   @Column(name = "library_uid")
   private Long id;

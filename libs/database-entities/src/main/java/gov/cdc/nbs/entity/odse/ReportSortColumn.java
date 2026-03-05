@@ -31,7 +31,7 @@ public class ReportSortColumn {
   @Column(name = "report_sort_sequence_nu")
   private Integer sequenceNumber;
 
-  private ReportId reportUid;
+  @Embedded private ReportId reportUid;
 
   @Column(name = "column_uid", nullable = false)
   private Long columnUid;

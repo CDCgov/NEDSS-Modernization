@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-public class ReportIdTest {
+class ReportIdTest {
   @Test
   void should_create_empty_report_id() {
     ReportId actual = new ReportId();
@@ -19,7 +19,7 @@ public class ReportIdTest {
   @Test
   void should_create_complete_report_id() {
     Long id = 1L;
-    DataSource dataSource = new DataSource();
+    Long dataSource = 2L;
 
     ReportId actual = new ReportId(id, dataSource);
 

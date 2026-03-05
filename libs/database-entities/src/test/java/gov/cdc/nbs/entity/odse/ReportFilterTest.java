@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-public class ReportFilterTest {
+class ReportFilterTest {
   @Test
   void should_throw_exception_with_null_values() {
     Throwable exception =
@@ -23,7 +23,7 @@ public class ReportFilterTest {
     DataSourceColumn dataSourceColumn = new DataSourceColumn();
     Integer maxValueCnt = 10;
     Integer minValueCnt = 1;
-    DataSource dataSource = new DataSource();
+    Long dataSource = 3L;
 
     ReportFilter actual =
         new ReportFilter(
@@ -37,6 +37,7 @@ public class ReportFilterTest {
     assertThat(actual)
         .satisfies(rf -> assertEquals(reportFilterId, rf.getId()))
         .satisfies(rf -> assertEquals(reportUid, rf.getReportId().getReportUid()))
+        .satisfies(rf -> assertEquals(dataSource, rf.getReportId().getDataSourceUid()))
         .satisfies(rf -> assertEquals(filterCode, rf.getFilterCode()))
         .satisfies(rf -> assertEquals(dataSourceColumn, rf.getDataSourceColumn()))
         .satisfies(rf -> assertEquals(maxValueCnt, rf.getMaxValueCnt()))

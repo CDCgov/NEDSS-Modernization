@@ -1,8 +1,8 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.audit.Status;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,7 +35,7 @@ public class DataSourceColumn {
   @Column(name = "column_type_code", length = 20)
   private String columnSourceTypeCode;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "data_source_uid")
   private DataSource dataSource;
 
@@ -56,7 +56,12 @@ public class DataSourceColumn {
   @Column(name = "filterable", length = 1)
   private Character filterable;
 
-  @Embedded private Status status;
+  //  TODO: add a converter? Or Separate Status class?
+  @NonNull @Column(name = "status_cd", nullable = false)
+  private Character statusCd;
+
+  @Column(name = "status_time")
+  private LocalDateTime statusTime;
 
   protected DataSourceColumn() {}
 }

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import gov.cdc.nbs.audit.Status;
 import org.junit.jupiter.api.Test;
 
-public class ReportSortColumnTest {
+class ReportSortColumnTest {
   @Test
   void should_create_empty_report_sort_column() {
     ReportSortColumn actual = new ReportSortColumn();
@@ -26,7 +26,7 @@ public class ReportSortColumnTest {
     Long reportSortColId = 1L;
     String orderCode = "orderCode";
     Integer sequenceNumber = 1;
-    DataSource dataSource = new DataSource();
+    Long dataSource = 1L;
     Long reportUid = 2L;
     ReportId reportId = new ReportId(reportUid, dataSource);
     Long columnId = 3L;
@@ -41,6 +41,7 @@ public class ReportSortColumnTest {
         .satisfies(col -> assertEquals(orderCode, col.getOrderCode()))
         .satisfies(col -> assertEquals(sequenceNumber, col.getSequenceNumber()))
         .satisfies(col -> assertEquals(reportUid, col.getReportUid().getReportUid()))
+        .satisfies(col -> assertEquals(dataSource, col.getReportUid().getDataSourceUid()))
         .satisfies(col -> assertEquals(columnId, col.getColumnUid()))
         .satisfies(col -> assertEquals(status, col.getStatus()));
   }

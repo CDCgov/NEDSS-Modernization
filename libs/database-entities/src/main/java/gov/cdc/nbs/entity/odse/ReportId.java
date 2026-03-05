@@ -2,9 +2,6 @@ package gov.cdc.nbs.entity.odse;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
@@ -22,9 +19,8 @@ public class ReportId implements Serializable {
   @Column(name = "report_uid", nullable = false)
   private Long reportUid;
 
-  @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
-  @JoinColumn(name = "data_source_uid")
-  private DataSource dataSourceUid;
+  @Column(name = "data_source_uid", nullable = false)
+  private Long dataSourceUid;
 
   @Override
   public boolean equals(Object o) {

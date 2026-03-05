@@ -1,12 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,13 +20,13 @@ public class ReportFilter {
   @Column(name = "report_filter_uid", nullable = false)
   private Long id;
 
-  @NonNull private ReportId reportId;
+  @NonNull @Embedded private ReportId reportId;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "filter_uid")
   private FilterCode filterCode;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "column_uid")
   private DataSourceColumn dataSourceColumn;
 

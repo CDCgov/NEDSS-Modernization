@@ -28,7 +28,11 @@ import lombok.Setter;
 public class Report {
   @NonNull @EmbeddedId private ReportId id;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY) // TODO: leave as-is or default to EAGER?
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "data_source_uid")
+  private DataSource dataSourceUid;
+
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibrary;
 

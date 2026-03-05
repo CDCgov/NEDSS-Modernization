@@ -8,7 +8,7 @@ import gov.cdc.nbs.audit.Status;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-public class FilterCodeTest {
+class FilterCodeTest {
   @Test
   void should_throw_exception_with_null_values() {
     Throwable exception = assertThrows(NullPointerException.class, () -> new FilterCode(null));

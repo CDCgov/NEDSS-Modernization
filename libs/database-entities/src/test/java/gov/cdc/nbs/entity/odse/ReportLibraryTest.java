@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-public class ReportLibraryTest {
+class ReportLibraryTest {
   @Test
   void should_throw_exception_with_null_values() {
     Throwable exception =

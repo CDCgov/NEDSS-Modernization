@@ -10,7 +10,7 @@ import gov.cdc.nbs.audit.Status;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-public class ReportTest {
+class ReportTest {
   @Test
   void should_throw_exception_with_null_values() {
     Throwable exception =
@@ -22,7 +22,7 @@ public class ReportTest {
   @Test
   void should_create_report() {
     Long reportId = 1L;
-    DataSource dataSource = new DataSource();
+    Long dataSource = 2L;
     ReportId id = new ReportId(reportId, dataSource);
     ReportLibrary reportLibrary = new ReportLibrary();
     String sectionCd = "1000";
@@ -31,6 +31,7 @@ public class ReportTest {
 
     assertThat(actual)
         .satisfies(report -> assertEquals(reportId, report.getId().getReportUid()))
+        .satisfies(report -> assertEquals(dataSource, report.getId().getDataSourceUid()))
         .satisfies(report -> assertNull(report.getDescTxt()))
         .satisfies(report -> assertNull(report.getEffectiveFromTime()))
         .satisfies(report -> assertNull(report.getEffectiveToTime()))
@@ -50,8 +51,9 @@ public class ReportTest {
   @Test
   void should_create_complete_report() {
     Long reportId = 1L;
-    DataSource dataSource = new DataSource();
+    Long dataSource = 1L;
     ReportId id = new ReportId(reportId, dataSource);
+    DataSource dataSourceObj = new DataSource();
     ReportLibrary reportLibrary = new ReportLibrary();
     String descTxt = "Counts of Reportable Diseases by County for Selected Time Frame";
     LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
@@ -73,6 +75,7 @@ public class ReportTest {
     Report actual =
         new Report(
             id,
+            dataSourceObj,
             reportLibrary,
             descTxt,
             effectiveFromTime,
@@ -93,6 +96,7 @@ public class ReportTest {
 
     assertThat(actual)
         .satisfies(report -> assertEquals(reportId, report.getId().getReportUid()))
+        .satisfies(report -> assertEquals(reportId, report.getId().getDataSourceUid()))
         .satisfies(report -> assertEquals(descTxt, report.getDescTxt()))
         .satisfies(report -> assertEquals(effectiveFromTime, report.getEffectiveFromTime()))
         .satisfies(report -> assertEquals(effectiveToTime, report.getEffectiveToTime()))
@@ -108,6 +112,8 @@ public class ReportTest {
         .satisfies(report -> assertEquals(shared, report.getShared()))
         .satisfies(report -> assertEquals(category, report.getCategory()))
         .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
-        .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()));
+        .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()))
+        .satisfies(report -> assertEquals(status, report.getStatus()))
+        .satisfies(report -> assertEquals(dataSourceObj, report.getDataSourceUid()));
   }
 }
