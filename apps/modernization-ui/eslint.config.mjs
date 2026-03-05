@@ -55,7 +55,7 @@ export default defineConfig([
             'jsdoc/require-returns': 'off',
             'max-len': ['warn', { code: 120 }],
             'no-unused-vars': 'off',
-            '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'none' }],
+            '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'none', destructuredArrayIgnorePattern: '^_'  }],
             'react/react-in-jsx-scope': 'off',
             'react/no-unescaped-entities': 'off',
             'react-hooks/rules-of-hooks': 'off',
