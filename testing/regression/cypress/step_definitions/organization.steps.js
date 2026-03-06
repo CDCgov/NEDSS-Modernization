@@ -1,8 +1,8 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicOrganizationPage from "../../e2e/pages/nbs-classic/organization.page";
-import editOrganizationPage from "../../e2e/pages/nbs-classic/editOrganization.page";
+import classicOrganizationPage from "../e2e/pages/nbs-classic/organization.page";
+import editOrganizationPage from "../e2e/pages/nbs-classic/editOrganization.page";
 import { maps } from "./organizationValueMaps";
-import { clickSubmitButton, clickAddButton } from "../../e2e/pages/nbs-classic/utils";
+import { clickSubmitButton, clickAddButton } from "../e2e/pages/nbs-classic/utils";
 
 // Navigation and search steps
 When("I navigate to classic organization Search pane", () => {
