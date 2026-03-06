@@ -2,6 +2,7 @@ package gov.cdc.nbs.entity.odse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
@@ -26,5 +27,25 @@ class ReportIdTest {
     assertThat(actual)
         .satisfies(ri -> assertEquals(id, ri.getReportUid()))
         .satisfies(ds -> assertEquals(dataSource, ds.getDataSourceUid()));
+  }
+
+  @Test
+  void reportIds_do_not_match() {
+    Long id = 1L;
+    Long dataSource = 2L;
+    ReportId reportId = new ReportId(id, dataSource);
+
+    Long dataSourceOther = 3L;
+    ReportId notEqaualsReportId = new ReportId(id, dataSourceOther);
+
+    assertFalse(reportId.equals(notEqaualsReportId));
+  }
+
+  @Test
+  void reportIds_should_match_hash_codes() {
+    ReportId reportId = new ReportId(1L, 2L);
+    ReportId identicalReportId = new ReportId(1L, 2L);
+
+    assertThat(reportId).hasSameHashCodeAs(identicalReportId);
   }
 }

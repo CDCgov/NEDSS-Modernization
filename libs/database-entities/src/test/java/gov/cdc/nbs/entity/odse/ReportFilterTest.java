@@ -1,18 +1,17 @@
 package gov.cdc.nbs.entity.odse;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
 class ReportFilterTest {
   @Test
   void should_throw_exception_with_null_values() {
-    Throwable exception =
-        assertThrows(NullPointerException.class, () -> new ReportFilter(null, null, null));
-
-    assertEquals("reportId is marked non-null but is null", exception.getMessage());
+    assertThatThrownBy(() -> new ReportFilter(null, null, null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("reportId is marked non-null but is null");
   }
 
   @Test
@@ -42,5 +41,15 @@ class ReportFilterTest {
         .satisfies(rf -> assertEquals(dataSourceColumn, rf.getDataSourceColumn()))
         .satisfies(rf -> assertEquals(maxValueCnt, rf.getMaxValueCnt()))
         .satisfies(rf -> assertEquals(minValueCnt, rf.getMinValueCnt()));
+  }
+
+  @Test
+  void should_instantiate_via_protected_constructor() {
+    ReportFilter actual = new ReportFilter();
+
+    assertThat(actual)
+        .isNotNull()
+        .extracting("id", "reportId", "maxValueCnt") // Extracts fields directly, bypassing getters
+        .containsOnlyNulls();
   }
 }

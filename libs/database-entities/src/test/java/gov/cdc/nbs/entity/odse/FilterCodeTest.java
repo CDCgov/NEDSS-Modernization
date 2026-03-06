@@ -1,8 +1,8 @@
 package gov.cdc.nbs.entity.odse;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import gov.cdc.nbs.audit.Status;
 import java.time.LocalDateTime;
@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 class FilterCodeTest {
   @Test
   void should_throw_exception_with_null_values() {
-    Throwable exception = assertThrows(NullPointerException.class, () -> new FilterCode(null));
-
-    assertEquals("codeTable is marked non-null but is null", exception.getMessage());
+    assertThatThrownBy(() -> new FilterCode(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("codeTable is marked non-null but is null");
   }
 
   @Test

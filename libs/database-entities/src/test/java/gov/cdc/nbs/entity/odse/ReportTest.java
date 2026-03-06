@@ -1,9 +1,9 @@
 package gov.cdc.nbs.entity.odse;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.Status;
@@ -13,10 +13,9 @@ import org.junit.jupiter.api.Test;
 class ReportTest {
   @Test
   void should_throw_exception_with_null_values() {
-    Throwable exception =
-        assertThrows(NullPointerException.class, () -> new Report(null, null, null));
-
-    assertEquals("id is marked non-null but is null", exception.getMessage());
+    assertThatThrownBy(() -> new Report(null, null, null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("id is marked non-null but is null");
   }
 
   @Test
@@ -115,5 +114,16 @@ class ReportTest {
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()))
         .satisfies(report -> assertEquals(status, report.getStatus()))
         .satisfies(report -> assertEquals(dataSourceObj, report.getDataSourceUid()));
+  }
+
+  @Test
+  void should_instantiate_via_protected_constructor() {
+    Report actual = new Report();
+
+    assertThat(actual)
+        .isNotNull()
+        .extracting(
+            "id", "reportLibrary", "sectionCd") // Extracts fields directly, bypassing getters
+        .containsOnlyNulls();
   }
 }

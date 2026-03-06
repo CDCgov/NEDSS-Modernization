@@ -1,8 +1,8 @@
 package gov.cdc.nbs.entity.odse;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -10,12 +10,9 @@ import org.junit.jupiter.api.Test;
 class ReportLibraryTest {
   @Test
   void should_throw_exception_with_null_values() {
-    Throwable exception =
-        assertThrows(
-            NullPointerException.class,
-            () -> new ReportLibrary(null, null, null, null, null, null, null, null));
-
-    assertEquals("libraryName is marked non-null but is null", exception.getMessage());
+    assertThatThrownBy(() -> new ReportLibrary(null, null, null, null, null, null, null, null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("libraryName is marked non-null but is null");
   }
 
   @Test

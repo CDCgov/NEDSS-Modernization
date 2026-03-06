@@ -1,6 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
@@ -11,9 +12,9 @@ class DataSourceTest {
 
   @Test
   void should_throw_exception_with_null_values() {
-    Throwable exception = assertThrows(NullPointerException.class, () -> new DataSource(null));
-
-    assertEquals("statusCd is marked non-null but is null", exception.getMessage());
+    assertThatThrownBy(() -> new DataSource(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("statusCd is marked non-null but is null");
   }
 
   @Test
