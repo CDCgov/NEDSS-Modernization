@@ -3,9 +3,7 @@ package gov.cdc.nbs.entity.odse;
 import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.Status;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,75 +19,68 @@ import lombok.Setter;
 @Entity
 @Table(name = "Report", catalog = "NBS_ODSE")
 public class Report {
-    @NonNull
-    @EmbeddedId
-    private ReportId id;
+  @NonNull @EmbeddedId private ReportId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(
-                    name = "data_source_uid",
-                    referencedColumnName = "data_source_uid",
-                    insertable = false,
-                    updatable = false)
-    })
-    private DataSource dataSourceUid;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumns({
+    @JoinColumn(
+        name = "data_source_uid",
+        referencedColumnName = "data_source_uid",
+        insertable = false,
+        updatable = false)
+  })
+  private DataSource dataSourceUid;
 
-    @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "library_uid")
-    private ReportLibrary reportLibrary;
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "library_uid")
+  private ReportLibrary reportLibrary;
 
-    @Column(name = "desc_txt", length = 300)
-    private String descTxt;
+  @Column(name = "desc_txt", length = 300)
+  private String descTxt;
 
-    @Column(name = "effective_from_time")
-    private LocalDateTime effectiveFromTime;
+  @Column(name = "effective_from_time")
+  private LocalDateTime effectiveFromTime;
 
-    @Column(name = "effective_to_time")
-    private LocalDateTime effectiveToTime;
+  @Column(name = "effective_to_time")
+  private LocalDateTime effectiveToTime;
 
-    @Column(name = "filter_mode", length = 1)
-    private Character filterMode;
+  @Column(name = "filter_mode", length = 1)
+  private Character filterMode;
 
-    @Column(name = "is_modifiable_ind", length = 1)
-    private Character isModifiableIndicator;
+  @Column(name = "is_modifiable_ind", length = 1)
+  private Character isModifiableIndicator;
 
-    @Column(name = "location", length = 300)
-    private String location;
+  @Column(name = "location", length = 300)
+  private String location;
 
-    @Column(name = "owner_uid")
-    private Integer ownerUid;
+  @Column(name = "owner_uid")
+  private Integer ownerUid;
 
-    @Column(name = "org_access_permis", length = 2000)
-    private String orgAccessPermission;
+  @Column(name = "org_access_permis", length = 2000)
+  private String orgAccessPermission;
 
-    @Column(name = "prog_area_access_permis", length = 2000)
-    private String progAreaAccessPermission;
+  @Column(name = "prog_area_access_permis", length = 2000)
+  private String progAreaAccessPermission;
 
-    @Column(name = "report_title", length = 100)
-    private String reportTitle;
+  @Column(name = "report_title", length = 100)
+  private String reportTitle;
 
-    @Column(name = "report_type_code", length = 20)
-    private String reportTypeCode;
+  @Column(name = "report_type_code", length = 20)
+  private String reportTypeCode;
 
-    // TODO: add convertor? // NOSONAR
-    @Column(name = "shared", length = 1)
-    private Character shared;
+  // TODO: add convertor? // NOSONAR
+  @Column(name = "shared", length = 1)
+  private Character shared;
 
-    @Column(name = "category", length = 20)
-    private String category;
+  @Column(name = "category", length = 20)
+  private String category;
 
-    @NonNull
-    @Column(name = "section_cd", length = 5, nullable = false)
-    private String sectionCd;
+  @NonNull @Column(name = "section_cd", length = 5, nullable = false)
+  private String sectionCd;
 
-    @Embedded
-    private Audit audit;
+  @Embedded private Audit audit;
 
-    @Embedded
-    private Status status;
+  @Embedded private Status status;
 
-    protected Report() {
-    }
+  protected Report() {}
 }

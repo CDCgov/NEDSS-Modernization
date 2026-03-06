@@ -21,22 +21,20 @@ import lombok.Setter;
 @Table(name = "Report_Sort_Column", catalog = "NBS_ODSE")
 public class ReportSortColumn {
 
-    @Id
-    @Column(name = "report_sort_column_uid", nullable = false)
-    private Long id;
+  @Id
+  @Column(name = "report_sort_column_uid", nullable = false)
+  private Long id;
 
-    @Column(name = "report_sort_order_code", length = 4)
-    private String orderCode;
+  @Column(name = "report_sort_order_code", length = 4)
+  private String orderCode;
 
-    @Column(name = "report_sort_sequence_nu")
-    private Integer sequenceNumber;
+  @Column(name = "report_sort_sequence_nu")
+  private Integer sequenceNumber;
 
-    @Embedded
-    private ReportId reportUid;
+  @Embedded private ReportId reportUid;
 
-    @Column(name = "column_uid", nullable = false)
-    private Long columnUid;
+  @Column(name = "column_uid", nullable = false)
+  private Long columnUid;
 
-    @Embedded
-    private Status status;
+  @Embedded private Status status;
 }
