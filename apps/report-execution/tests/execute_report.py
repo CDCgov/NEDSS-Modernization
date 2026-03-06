@@ -8,9 +8,7 @@ from src.models import ReportSpec
 class TestExecuteReport:
     """Tests for the execute_report function."""
 
-    @pytest.mark.asyncio
-    async def test_execute_report_hello_world(self):
-        """Check valid report runs."""
+    def test_execute_report_hello_world(self, mock_db_transaction):
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -22,15 +20,15 @@ class TestExecuteReport:
                 'subset_query': 'SELECT * FROM test',
             }
         )
-        result = await execute_report(report_spec)
+        result = execute_report(report_spec)
         assert result.content_type == 'table'
-        assert result.description == 'Some hard coded data'
+        assert result.description == 'Pass through query'
+        assert result.content.columns == ['id', 'name']
 
-        assert result.content.shape == (4, 2)
+        assert len(result.content.data) == 4
+        assert len(result.content.data[0]) == 2
 
-    @pytest.mark.asyncio
-    async def test_execute_report_missing_library(self):
-        """Check missing library throws error."""
+    def test_execute_report_missing_library(self):
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -42,10 +40,10 @@ class TestExecuteReport:
                 'subset_query': 'SELECT * FROM test',
             }
         )
-        with pytest.raises(MissingLibraryError) as excinfo:
-            await execute_report(report_spec)
+        with pytest.raises(MissingLibraryError) as exc_info:
+            execute_report(report_spec)
 
         assert (
-            excinfo.value.message
+            exc_info.value.message
             == 'Library `missing_library` (is_builtin: True) not found'
         )
