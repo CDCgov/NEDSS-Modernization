@@ -51,7 +51,7 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
             <Controller
                 control={control}
                 name="name.middle"
-                rules={validateExtendedNameRule('Middle name')}
+                rules={{ ...validateExtendedNameRule('Middle name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Middle"

@@ -1,6 +1,18 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
 import { NameRepeatingBlock, NameRepeatingBlockProps } from './NameRepeatingBlock';
+
+const mockNameCodedValues = {
+    types: [{ name: 'Adopted name', value: 'AN' }],
+    prefixes: [{ name: 'Miss', value: 'MS' }],
+    suffixes: [{ name: 'Sr.', value: 'SR' }],
+    degrees: [{ name: 'BA', value: 'BA' }]
+};
+
+vi.mock('apps/patient/data/name/useNameCodedValues', () => ({
+    useNameCodedValues: () => mockNameCodedValues
+}));
 
 const Fixture = ({ values, onChange = jest.fn(), isDirty = jest.fn() }: Partial<NameRepeatingBlockProps>) => (
     <NameRepeatingBlock id="names" values={values} onChange={onChange} isDirty={isDirty} />

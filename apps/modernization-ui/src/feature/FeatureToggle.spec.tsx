@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { FeatureToggle } from './FeatureToggle';
 
-jest.mock('configuration', () => ({
+vi.mock('configuration', () => ({
     useConfiguration: () => ({ ready: false, loading: false, load: jest.fn() })
 }));
 

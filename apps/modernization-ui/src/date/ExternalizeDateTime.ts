@@ -6,7 +6,8 @@ const externalized = (input: Date) => input.toISOString();
 export const externalizeDateTime = (input: string | Date | null | undefined) => {
     if (input) {
         if (typeof input === 'string') {
-            return externalized(parse(new Date(), INTERNAL_DATE_FORMAT)(input));
+            const asDate = parse(input ? new Date(input) : new Date(), INTERNAL_DATE_FORMAT);
+            return externalized(asDate(input));
         } else if (input instanceof Date) {
             return externalized(input);
         }

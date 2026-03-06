@@ -5,7 +5,7 @@ import { Column } from 'design-system/table';
 import { InvestigationSearchResultsTable } from './InvestigationSearchResultsTable';
 import { SelectableResolver } from 'options';
 
-jest.mock('design-system/table/preferences', () => ({
+vi.mock('design-system/table/preferences', () => ({
     useColumnPreferences: () => ({ apply: (columns: Column<Investigation>[]) => columns })
 }));
 

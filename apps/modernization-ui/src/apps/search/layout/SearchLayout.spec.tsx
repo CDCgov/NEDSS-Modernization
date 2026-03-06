@@ -7,7 +7,7 @@ import { FilterProvider } from 'design-system/filter/useFilter';
 import userEvent from '@testing-library/user-event';
 import { ReactNode } from 'react';
 
-jest.mock('pagination', () => ({
+vi.mock('pagination', () => ({
     usePagination: () => ({
         page: {
             status: 0,
@@ -24,7 +24,7 @@ jest.mock('pagination', () => ({
     })
 }));
 
-jest.mock('libs/sorting', () => ({
+vi.mock('libs/sorting', () => ({
     useSorting: () => ({
         reset: jest.fn(),
         sortBy: jest.fn(),
@@ -32,7 +32,7 @@ jest.mock('libs/sorting', () => ({
     })
 }));
 
-jest.mock('apps/search', () => ({
+vi.mock('apps/search', () => ({
     useSearchResultDisplay: () => ({
         view: 'list'
     }),

@@ -1,8 +1,19 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import {
     BasicIdentificationRepeatingBlock,
     BasicIdentificationRepeatingBlockProps
 } from './BasicIdentificationRepeatingBlock';
+import { IdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
+
+const mockPatientIdentificationCodedValues: IdentificationCodedValues = {
+    types: [{ name: 'Account number', value: 'AN' }],
+    authorities: [{ name: 'Assigning auth', value: 'AA' }]
+};
+
+vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
+    useIdentificationCodedValues: () => mockPatientIdentificationCodedValues
+}));
 
 const Fixture = ({
     values,
