@@ -38,7 +38,9 @@ class ReportIdTest {
     Long dataSourceOther = 3L;
     ReportId notEqaualsReportId = new ReportId(id, dataSourceOther);
 
-    assertFalse(reportId.equals(notEqaualsReportId));
+    assertFalse(
+        reportId.equals(
+            notEqaualsReportId)); // NOSONAR - Explicitly testing the overriden.equals() method
   }
 
   @Test
