@@ -36,7 +36,7 @@ services:
           - 'kafka-local'
 
   schema:
-    image: confluentinc/cp-schema-registry@sha256:ba3353d723c3f0b5c5d84d63b5dfd864e2b6b271dd34d569aae7f6e7beaf84c7
+    image: confluentinc/cp-schema-registry@sha256:9d6e55e7e141274695c730eb880cc86cf0d38936295337d2d0ef0856b4e85b75
     container_name: schema
     hostname: schema
     ports:
