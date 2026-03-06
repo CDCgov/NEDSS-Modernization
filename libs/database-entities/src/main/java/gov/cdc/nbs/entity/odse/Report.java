@@ -22,13 +22,11 @@ public class Report {
   @NonNull @EmbeddedId private ReportId id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumns({
-    @JoinColumn(
-        name = "data_source_uid",
-        referencedColumnName = "data_source_uid",
-        insertable = false,
-        updatable = false)
-  })
+  @JoinColumn(
+      name = "data_source_uid",
+      referencedColumnName = "data_source_uid",
+      insertable = false,
+      updatable = false)
   private DataSource dataSourceUid;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
