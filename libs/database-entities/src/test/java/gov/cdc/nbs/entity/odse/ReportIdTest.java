@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,9 +39,22 @@ class ReportIdTest {
     Long dataSourceOther = 3L;
     ReportId notEqaualsReportId = new ReportId(id, dataSourceOther);
 
-    assertFalse(
-        reportId.equals(
-            notEqaualsReportId)); // NOSONAR - Explicitly testing the overriden.equals() method
+    // Explicitly testing the overridden .equals() method
+    assertFalse(reportId.equals(notEqaualsReportId)); // NOSONAR
+  }
+
+  @Test
+  void reportIds_do_match() {
+    Long id = 1L;
+    Long dataSource = 2L;
+    ReportId reportId = new ReportId(id, dataSource);
+
+    Long idOther = 1L;
+    Long dataSourceOther = 2L;
+    ReportId eqaualsReportId = new ReportId(idOther, dataSourceOther);
+
+    // Explicitly testing the overridden .equals() method
+    assertTrue(reportId.equals(eqaualsReportId)); // NOSONAR
   }
 
   @Test
