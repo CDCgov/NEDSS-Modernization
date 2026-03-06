@@ -14,8 +14,8 @@ on:
       - ".github/workflows/verify-report-execution.yaml"
 
 jobs:
-  test:
-    name: Lint & Test
+  unit_test:
+    name: Lint & Unit Test
     runs-on: ubuntu-latest
 
     steps:
@@ -47,4 +47,27 @@ jobs:
 
       - name: Run tests
         working-directory: ./apps/report-execution
-        run: uv run pytest
+        run: uv run pytest -m "not integration"
+
+  integration_test:
+    name: Integration Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        working-directory: ./apps/report-execution
+        run: uv sync --frozen
+
+      - name: Run tests
+        working-directory: ./apps/report-execution
+        run: uv run --env-file sample.env pytest -m integration
