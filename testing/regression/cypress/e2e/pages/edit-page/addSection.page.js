@@ -40,7 +40,7 @@ class AddSectionPage {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
         cy.get('#range-toggle').select('100')
-        cy.wait(5000);
+        cy.wait(2000);
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Initial Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
