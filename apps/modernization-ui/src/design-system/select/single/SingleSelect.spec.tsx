@@ -75,7 +75,7 @@ describe('when one of the options is clicked', () => {
                     { name: 'name-four', value: 'value-four', label: 'label-four' }
                 ]}
                 value={{ name: 'name-four', value: 'value-four', label: 'label-four' }}
-                onChange={jest.fn()}
+                onChange={vi.fn()}
             />
         );
         const select = getByRole('combobox', { name: 'Test Label' });

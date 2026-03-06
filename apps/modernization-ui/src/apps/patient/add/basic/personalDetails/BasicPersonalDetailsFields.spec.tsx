@@ -4,19 +4,19 @@ import userEvent from '@testing-library/user-event';
 import { BasicPersonalDetailsFields } from './BasicPersonalDetailsFields';
 import { BasicPersonalDetailsEntry } from '../entry';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
+vi.mock('user', () => ({
     useUser: () => ({ state: { user: { permissions: mockPermissions } } })
 }));
 
-jest.mock('design-system/date/clock', () => ({
+vi.mock('design-system/date/clock', () => ({
     now: () => mockNow()
 }));
 
-jest.mock('options/concepts', () => ({
+vi.mock('options/concepts', () => ({
     useConceptOptions: () => ({ options: [{ name: 'Married', value: 'M' }] })
 }));
 

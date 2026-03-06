@@ -7,8 +7,8 @@ const previewedAlgorithm: AlgorithmExport = {
     dataElements: {},
     algorithm: { passes: [] }
 };
-const onAccept = jest.fn();
-const onCancel = jest.fn();
+const onAccept = vi.fn();
+const onCancel = vi.fn();
 const Fixture = () => {
     return <ImportPreview previewedAlgorithm={previewedAlgorithm} onAccept={onAccept} onCancel={onCancel} />;
 };

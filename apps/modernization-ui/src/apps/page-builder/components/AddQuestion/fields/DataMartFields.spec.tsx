@@ -13,8 +13,8 @@ const { result } = renderHook(() =>
     })
 );
 
-const setError = jest.fn();
-const validate = jest.fn();
+const setError = vi.fn();
+const validate = vi.fn();
 const mockUseQuestionValidation = {
     validate,
     isValid: false,
@@ -22,11 +22,11 @@ const mockUseQuestionValidation = {
     isLoading: false
 };
 
-jest.mock('apps/page-builder/hooks/api/useQuestionValidation', () => ({
+vi.mock('apps/page-builder/hooks/api/useQuestionValidation', () => ({
     useQuestionValidation: () => mockUseQuestionValidation
 }));
 
-jest.mock('apps/page-builder/hooks/api/useOptions', () => ({
+vi.mock('apps/page-builder/hooks/api/useOptions', () => ({
     useOptions: () => {
         return { options: [] };
     }

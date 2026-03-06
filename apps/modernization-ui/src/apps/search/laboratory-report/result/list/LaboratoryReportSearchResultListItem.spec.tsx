@@ -28,7 +28,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={jest.fn()} />
+                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={vi.fn()} />
             </MemoryRouter>
         );
 
@@ -59,7 +59,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={jest.fn()} />
+                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={vi.fn()} />
             </MemoryRouter>
         );
         expect(getByText('05/07/1995')).toBeInTheDocument();
@@ -89,7 +89,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={jest.fn()} />
+                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={vi.fn()} />
             </MemoryRouter>
         );
         expect(getByText('Male')).toBeInTheDocument();
@@ -120,7 +120,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={jest.fn()} />
+                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={vi.fn()} />
             </MemoryRouter>
         );
         expect(getByText('1051')).toBeInTheDocument();
@@ -142,7 +142,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={jest.fn()} />
+                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={vi.fn()} />
             </MemoryRouter>
         );
         expect(getByText('Lab report')).toBeInTheDocument();
@@ -164,7 +164,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={jest.fn()} />
+                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={vi.fn()} />
             </MemoryRouter>
         );
         expect(getByText('09/23/2021')).toBeInTheDocument();
@@ -192,7 +192,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={jest.fn()} />
+                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={vi.fn()} />
             </MemoryRouter>
         );
         expect(getByText('some resulted test:')).toBeInTheDocument();
@@ -200,7 +200,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
     });
 
     it('should render the jurisdiction', () => {
-        const resolver = jest.fn();
+        const resolver = vi.fn();
 
         const result: LabReport = {
             addTime: '2021-09-17',
@@ -242,7 +242,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={jest.fn()} />
+                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={vi.fn()} />
             </MemoryRouter>
         );
         expect(getByText('Associated to')).toBeInTheDocument();

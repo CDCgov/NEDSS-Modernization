@@ -92,7 +92,7 @@ describe('CheckboxGroup', () => {
     });
 
     it('should emit onChange when clicked', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByLabelText } = render(
             <CheckboxGroup

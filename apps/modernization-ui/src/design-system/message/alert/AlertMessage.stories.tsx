@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { AlertMessage } from './AlertMessage';
+import { useState } from 'react';
 
 const meta = {
     title: 'Design System/AlertMessage',

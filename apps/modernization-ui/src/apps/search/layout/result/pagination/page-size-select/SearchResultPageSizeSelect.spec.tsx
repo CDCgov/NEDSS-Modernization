@@ -10,7 +10,7 @@ describe('when changing the number of results per page', () => {
                 id={'testing'}
                 value={20}
                 selections={[20, 30, 50, 100]}
-                onPageSizeChanged={jest.fn()}
+                onPageSizeChanged={vi.fn()}
             />
         );
 
@@ -19,7 +19,7 @@ describe('when changing the number of results per page', () => {
 
     it('should default to the minimum size', () => {
         const { getByLabelText } = render(
-            <SearchResultPageSizeSelect id={'testing'} selections={[100, 50, 30, 20]} onPageSizeChanged={jest.fn()} />
+            <SearchResultPageSizeSelect id={'testing'} selections={[100, 50, 30, 20]} onPageSizeChanged={vi.fn()} />
         );
 
         const toggle = getByLabelText('Results per page');
@@ -30,7 +30,7 @@ describe('when changing the number of results per page', () => {
     });
 
     it('should invoke onPageSizeChanged when page size changed', async () => {
-        const mockOnPageSizeChanged = jest.fn();
+        const mockOnPageSizeChanged = vi.fn();
 
         const { getByLabelText } = render(
             <SearchResultPageSizeSelect

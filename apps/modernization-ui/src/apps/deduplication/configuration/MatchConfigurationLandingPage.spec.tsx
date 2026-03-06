@@ -5,12 +5,12 @@ import { AlertProvider } from 'alert';
 import { DataElements } from '../api/model/DataElement';
 
 let mockReturnValue: DataElements | undefined = { firstName: { active: true } };
-jest.mock('apps/deduplication/api/useDataElements', () => ({
+vi.mock('apps/deduplication/api/useDataElements', () => ({
     useDataElements: () => {
         return { dataElements: mockReturnValue };
     }
 }));
-jest.mock('apps/deduplication/api/useMatchConfiguration', () => ({
+vi.mock('apps/deduplication/api/useMatchConfiguration', () => ({
     useMatchConfiguration: () => {
         return { passes: [] };
     }

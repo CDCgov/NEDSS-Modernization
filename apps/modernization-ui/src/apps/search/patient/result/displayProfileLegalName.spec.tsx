@@ -8,7 +8,7 @@ import { PatientSearchResult } from 'generated/graphql/schema';
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
+vi.mock('user', () => ({
     useUser: () => ({ state: { user: { permissions: mockPermissions } } })
 }));
 
@@ -26,8 +26,8 @@ const withModernizedPatientProfile = (enabled: boolean) => ({
     }
 });
 
-jest.mock('configuration', () => ({
-    useConfiguration: () => ({ ready: false, loading: false, load: jest.fn(), features: mockFeatures })
+vi.mock('configuration', () => ({
+    useConfiguration: () => ({ ready: false, loading: false, load: vi.fn(), features: mockFeatures })
 }));
 
 describe('when navigating to the patient profile from a list view search result', () => {

@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { PassEntry } from './PassEntry';
 
-const selectPass = jest.fn();
-const editName = jest.fn();
+const selectPass = vi.fn();
+const editName = vi.fn();
 const pass: Pass = {
     id: 1,
     name: 'Pass name',

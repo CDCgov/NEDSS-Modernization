@@ -2,8 +2,8 @@ import { render } from '@testing-library/react';
 import { ImportModal } from './ImportModal';
 import userEvent from '@testing-library/user-event';
 
-const onCancel = jest.fn();
-const onImport = jest.fn();
+const onCancel = vi.fn();
+const onImport = vi.fn();
 
 type Props = {
     visible?: boolean;

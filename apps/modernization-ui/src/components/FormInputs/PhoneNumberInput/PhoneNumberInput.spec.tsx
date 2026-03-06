@@ -5,7 +5,7 @@ describe('PhoneNumberInput component tests', () => {
     describe('When phone number is valid and formatted', () => {
         it('should return true', () => {
             const { queryByRole } = render(
-                <PhoneNumberInput label="test-phone-input" defaultValue="555-555-5555" onChange={jest.fn()} />
+                <PhoneNumberInput label="test-phone-input" defaultValue="555-555-5555" onChange={vi.fn()} />
             );
             expect(queryByRole('alert')).not.toBeInTheDocument();
         });
@@ -18,7 +18,7 @@ describe('PhoneNumberInput component tests', () => {
                     label="test-phone-input-false"
                     defaultValue="&X}5"
                     error="Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9)."
-                    onChange={jest.fn()}
+                    onChange={vi.fn()}
                 />
             );
             expect(getByRole('alert')).toHaveTextContent(

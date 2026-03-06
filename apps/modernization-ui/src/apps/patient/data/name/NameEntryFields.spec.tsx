@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NameEntry } from './entry';
 import { NameEntryFields } from './NameEntryFields';
@@ -11,7 +11,7 @@ const mockNameCodedValues = {
     degrees: [{ name: 'BA', value: 'BA' }]
 };
 
-jest.mock('./useNameCodedValues', () => ({
+vi.mock('./useNameCodedValues', () => ({
     useNameCodedValues: () => mockNameCodedValues
 }));
 

@@ -5,13 +5,13 @@ import { ExactDateField } from './ExactDateField';
 
 describe('ExactDateField Component', () => {
     it('should render with no accessibility violations', async () => {
-        const { container } = render(<ExactDateField id="testing-exact-date-entry" onChange={jest.fn()} />);
+        const { container } = render(<ExactDateField id="testing-exact-date-entry" onChange={vi.fn()} />);
 
         expect(await axe(container)).toHaveNoViolations();
     });
 
     it('should render inputs with correct default month', () => {
-        render(<ExactDateField id="test-id" value={{ equals: { month: 1 } }} onChange={jest.fn()} />);
+        render(<ExactDateField id="test-id" value={{ equals: { month: 1 } }} onChange={vi.fn()} />);
         const monthInput = screen.getByRole('spinbutton', { name: 'Month' });
 
         expect(monthInput).toHaveValue(1);
@@ -19,7 +19,7 @@ describe('ExactDateField Component', () => {
 
     it('should render inputs with correct default values', () => {
         const { getByRole } = render(
-            <ExactDateField id="test-id" value={{ equals: { month: 1, day: 1, year: 1995 } }} onChange={jest.fn()} />
+            <ExactDateField id="test-id" value={{ equals: { month: 1, day: 1, year: 1995 } }} onChange={vi.fn()} />
         );
         const monthInput = getByRole('spinbutton', { name: 'Month' });
         const dayInput = getByRole('spinbutton', { name: 'Day' });
@@ -31,7 +31,7 @@ describe('ExactDateField Component', () => {
     });
 
     it('should call onChange when day value is changed', async () => {
-        const mockOnChange = jest.fn();
+        const mockOnChange = vi.fn();
 
         const { getByRole } = render(<ExactDateField id="test-day" onChange={mockOnChange} />);
 
@@ -45,7 +45,7 @@ describe('ExactDateField Component', () => {
     });
 
     it('should call onChange when month value is changed', async () => {
-        const mockOnChange = jest.fn();
+        const mockOnChange = vi.fn();
 
         const { getByRole } = render(<ExactDateField id="test-month" onChange={mockOnChange} />);
 
@@ -59,7 +59,7 @@ describe('ExactDateField Component', () => {
     });
 
     it('should call onChange when year value is changed', async () => {
-        const mockOnChange = jest.fn();
+        const mockOnChange = vi.fn();
 
         const { getByRole } = render(<ExactDateField id="test-year" onChange={mockOnChange} />);
         const user = userEvent.setup();

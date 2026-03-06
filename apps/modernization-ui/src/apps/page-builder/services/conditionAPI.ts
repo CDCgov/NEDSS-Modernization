@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {
     Condition,
     ConditionControllerService,

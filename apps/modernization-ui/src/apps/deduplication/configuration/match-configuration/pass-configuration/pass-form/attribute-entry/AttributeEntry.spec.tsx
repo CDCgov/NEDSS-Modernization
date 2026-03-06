@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AttributeEntry } from './AttributeEntry';
 
-const onChange = jest.fn();
+const onChange = vi.fn();
 
 describe('AttributeEntry', () => {
     it('should display label', () => {

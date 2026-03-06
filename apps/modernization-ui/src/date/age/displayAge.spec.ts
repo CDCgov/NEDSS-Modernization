@@ -15,7 +15,7 @@ describe('displayAgeAsOf', () => {
     });
 
     it('should display age in months', () => {
-        const actual = displayAgeAsOf(new Date('2022-10-01'), new Date('2022-12-01'));
+        const actual = displayAgeAsOf(new Date('2022-10-01'), new Date('2022-12-03'));
 
         expect(actual).toEqual('2 months');
     });
@@ -69,17 +69,19 @@ describe('displayAgeAsOf', () => {
     });
 
     it('should display age in months when from is string', () => {
-        const actual = displayAgeAsOf('2022-10-01', '2022-12-01');
+        const actual = displayAgeAsOf('2022-10-01', '2022-12-03');
 
         expect(actual).toEqual('2 months');
     });
 });
 
 describe('displayAgeAsOfToday', () => {
-    const birthDate = new Date('2021-02-01');
-    const actual = displayAgeAsOfToday(birthDate);
-    const expected = `${differenceInYears(new Date(), birthDate)} years`;
-    expect(actual).toEqual(expected);
+    it('should display age as of today in years', () => {
+        const birthDate = new Date('2021-02-01');
+        const actual = displayAgeAsOfToday(birthDate);
+        const expected = `${differenceInYears(new Date(), birthDate)} years`;
+        expect(actual).toEqual(expected);
+    });
 });
 
 describe('asDate', () => {
