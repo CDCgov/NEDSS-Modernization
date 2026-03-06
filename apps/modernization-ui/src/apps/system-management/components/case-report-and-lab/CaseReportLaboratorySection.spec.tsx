@@ -1,3 +1,4 @@
+import { Mock } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CaseReportLaboratorySection } from './CaseReportLaboratorySection';
@@ -51,7 +52,7 @@ describe('CaseReportLaboratorySection', () => {
 
         global.fetch = vi.fn(() =>
             Promise.resolve({ ok: true })
-        ) as vi.Mock;
+        ) as Mock;
 
         await user.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
         await user.click(screen.getByRole('button', { name: /yes, reset/i }));
@@ -69,7 +70,7 @@ describe('CaseReportLaboratorySection', () => {
         const user = userEvent.setup();
         const { setAlert } = setup();
 
-        global.fetch = vi.fn(() => Promise.reject()) as vi.Mock;
+        global.fetch = vi.fn(() => Promise.reject()) as Mock;
 
         await user.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
         await user.click(screen.getByRole('button', { name: /yes, reset/i }));
