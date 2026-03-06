@@ -1,39 +1,37 @@
-from typing import Optional
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
-from fastapi import FastAPI
-from pydantic import BaseModel
+from . import errors, models
+from .execute_report import execute_report
 
 app = FastAPI()
 
 
-class TimeRange(BaseModel):
-    start: str  # Date in ISO format
-    end: str  # Date in ISO format
+# ======= ROUTES ========
 
 
-class ReportSpec(BaseModel):
-    version: int
-    is_export: bool
-    report_title: str
-    library_name: str
-    data_source_name: str
-    subset_query: str
-    time_range: Optional[TimeRange] = None
-
-
-@app.get("/status")
+@app.get('/status')
 async def health_check():
-    """
-    Check service health status.
+    """Check service health status.
 
     Returns: Status text
     """
-    return "Report Execution Service is up and running!"
+    return 'Report Execution Service is up and running!'
 
 
-@app.post("/report/execute")
-async def execute_report(report_spec: ReportSpec):
-    return {
-        "report_title": report_spec.report_title,
-        "library_name": report_spec.library_name,
-    }
+@app.post('/report/execute')
+def execute_report_api(report_spec: models.ReportSpec):
+    """Primary api route for report execution."""
+    return execute_report(report_spec)
+
+
+# ======= ERROR MAPPING ========
+
+
+@app.exception_handler(errors.BaseReportExecutionError)
+async def api_exception_handler(request: Request, exc: errors.BaseReportExecutionError):
+    """Handle application errors."""
+    return JSONResponse(
+        status_code=exc.http_code,
+        content={'message': exc.message},
+    )

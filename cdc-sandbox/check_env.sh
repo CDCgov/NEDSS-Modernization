@@ -10,7 +10,10 @@ if [ ! -f $ROOT/.env ]; then
   cp $ROOT/sample.env $ROOT/.env
 fi
 
-echo "Reading from "$ROOT/.env" file..."    
+echo "Reading from "$ROOT/.env" file..."
 set -a
 source "$ROOT/.env"
 set +a
+
+# Add this to the end of check_env.sh
+echo "✅ Environment variables loaded successfully."
