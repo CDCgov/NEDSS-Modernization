@@ -2,14 +2,7 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.Status;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +22,13 @@ public class Report {
   @NonNull @EmbeddedId private ReportId id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "data_source_uid")
+  @JoinColumns({
+    @JoinColumn(
+        name = "data_source_uid",
+        referencedColumnName = "data_source_uid",
+        insertable = false,
+        updatable = false)
+  })
   private DataSource dataSourceUid;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
