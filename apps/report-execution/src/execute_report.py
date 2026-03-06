@@ -1,10 +1,10 @@
-from contextlib import asynccontextmanager
 from importlib import import_module
 
-from . import errors, models
+from . import errors, models, utils
+from .db_transaction import db_transaction
 
 
-async def execute_report(report_spec: models.ReportSpec):
+def execute_report(report_spec: models.ReportSpec):
     """Execute a report spec by validating inputs, loading library, handling DB
     connection and transaction,and validating/processing results.
     """
@@ -16,10 +16,14 @@ async def execute_report(report_spec: models.ReportSpec):
     if not is_valid_library(library):
         raise errors.ToDoError('validation handling')
 
-    # TODO: set up db connection as read only and start a transaction  # noqa: FIX002
-    async with db_transaction() as trx:
-        result = await library.execute(
-            trx, report_spec.data_source_name, report_spec.time_range
+    # set up database connection as read only and start a transaction
+    conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+    with db_transaction(conn_string) as trx:
+        result = library.execute(
+            trx,
+            subset_query=report_spec.subset_query,
+            data_source_name=report_spec.data_source_name,
+            time_range=report_spec.time_range,
         )
 
     if not is_valid_result(result):
@@ -54,9 +58,3 @@ def get_library(library_name: str, is_builtin: bool):
     except ModuleNotFoundError:
         # Initial error not helpful for debugging
         raise errors.MissingLibraryError(library_name, is_builtin) from None
-
-
-@asynccontextmanager
-async def db_transaction():
-    """Set up a read only database transaction."""
-    yield 'TODO'
