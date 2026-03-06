@@ -20,21 +20,23 @@ import lombok.Setter;
 @Entity
 @Table(name = "Report_Sort_Column", catalog = "NBS_ODSE")
 public class ReportSortColumn {
-  // TODO: Add @NonNull here?
-  @Id
-  @Column(name = "report_sort_column_uid", nullable = false)
-  private Long id;
 
-  @Column(name = "report_sort_order_code", length = 4)
-  private String orderCode;
+    @Id
+    @Column(name = "report_sort_column_uid", nullable = false)
+    private Long id;
 
-  @Column(name = "report_sort_sequence_nu")
-  private Integer sequenceNumber;
+    @Column(name = "report_sort_order_code", length = 4)
+    private String orderCode;
 
-  @Embedded private ReportId reportUid;
+    @Column(name = "report_sort_sequence_nu")
+    private Integer sequenceNumber;
 
-  @Column(name = "column_uid", nullable = false)
-  private Long columnUid;
+    @Embedded
+    private ReportId reportUid;
 
-  @Embedded private Status status;
+    @Column(name = "column_uid", nullable = false)
+    private Long columnUid;
+
+    @Embedded
+    private Status status;
 }
