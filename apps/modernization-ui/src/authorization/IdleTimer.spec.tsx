@@ -1,5 +1,5 @@
 import { Mock } from 'vitest';
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import IdleTimer, { IdleTimerProps } from './IdleTimer';
 
 const default_timeout = 5000;
@@ -16,6 +16,8 @@ describe('IdleTimer Component', () => {
 
         vi.useFakeTimers();
         vi.clearAllTimers();
+        vi.clearAllMocks();
+        vi.resetAllMocks();
     });
 
     it('should render without crashing', () => {
@@ -57,17 +59,17 @@ describe('IdleTimer Component', () => {
     });
 
     it('should call onIdle after warning timeout', async () => {
-        render(<Fixture onIdle={onIdle} warningTimeout={290} />);
+        render(<Fixture onIdle={onIdle} timeout={17} warningTimeout={29} />);
 
         // advance time by the timeout plus warning, then a little extra to ensure the task
         // completes.  Time advancement should be wrapped in an act due to state changes that
-        // occur within the component after the timeout and warningTimeout durations
-        act(() => vi.advanceTimersByTime(default_timeout + 290 + 1000));
+        // occur within the component after the timeout and warningTimeout durations. The
+        // warning timer's callback is async, so we need to use the async act + advancer
+        await act(async () => await vi.advanceTimersByTimeAsync(default_timeout + 29 + 100));
 
         expect(global.fetch).toHaveBeenCalledWith('/nbs/logout', { credentials: 'include' });
 
-        // onIdle isn't called right away, wait for it to be called
-        await waitFor(() => expect(onIdle).toHaveBeenCalled());
+        expect(onIdle).toHaveBeenCalled()
     });
 
     it('should reset timers on continue', () => {

@@ -16,6 +16,7 @@ globalThis.fetch = vi.fn(() =>
         // Add more methods if needed
     } as unknown as Response)
 );
+
 // Mock the global Request object for unit tests
 type MockRequestInit = {
     method?: string;
