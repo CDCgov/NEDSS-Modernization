@@ -1,3 +1,4 @@
+import { Mock } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NavigationGuard } from './NavigationGuard';
@@ -26,12 +27,12 @@ const Fixture = ({
     cancelText?: string;
     save?: (value?: boolean) => void;
 } = {}) => {
-    (navigation.useFormNavigationBlock as vi.Mock).mockReturnValue({
+    (navigation.useFormNavigationBlock as Mock).mockReturnValue({
         blocked,
         unblock: mockUnblock,
         reset: mockReset
     });
-    (storage.useLocalStorage as vi.Mock).mockReturnValue({ value, save });
+    (storage.useLocalStorage as Mock).mockReturnValue({ value, save });
     const form = {} as any; // Mock form object, adjust as needed
 
     return <NavigationGuard id="nav" form={form} activated={activated} allowed={allowed} cancelText={cancelText} />;

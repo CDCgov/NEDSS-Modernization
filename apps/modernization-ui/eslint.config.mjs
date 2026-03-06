@@ -17,7 +17,6 @@ export default defineConfig([
             'build/**',
             'node_modules/**',
             '**/generated/**',
-            'src/setupTests.js',
             'src/setupProxy.js',
             'src/codegen.ts'
         ],

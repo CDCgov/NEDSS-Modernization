@@ -1,3 +1,4 @@
+import { Mock } from 'vitest';
 import { act } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { useSearchParams } from 'react-router';
@@ -17,9 +18,9 @@ describe('useSearchCriteria', () => {
     const setSearchParams = vi.fn();
 
     beforeEach(() => {
-        (useSearchParams as vi.Mock).mockReturnValue([new URLSearchParams(), setSearchParams]);
-        (decrypt as vi.Mock).mockResolvedValue({});
-        (encrypt as vi.Mock).mockResolvedValue({ value: 'encryptedValue' });
+        (useSearchParams as Mock).mockReturnValue([new URLSearchParams(), setSearchParams]);
+        (decrypt as Mock).mockResolvedValue({});
+        (encrypt as Mock).mockResolvedValue({ value: 'encryptedValue' });
     });
 
     afterEach(() => {
@@ -35,8 +36,8 @@ describe('useSearchCriteria', () => {
     it('should evaluate found criteria', async () => {
         const { result, rerender } = renderHook(() => useSearchCriteria({}));
 
-        (useSearchParams as vi.Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
-        (decrypt as vi.Mock).mockResolvedValue({ key: 'value' });
+        (useSearchParams as Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
+        (decrypt as Mock).mockResolvedValue({ key: 'value' });
 
         rerender();
 
@@ -73,8 +74,8 @@ describe('useSearchCriteria', () => {
         const defaultValuesFunc = vi.fn();
         const { result, rerender } = renderHook(() => useSearchCriteria({ defaultValues: defaultValuesFunc }));
 
-        (useSearchParams as vi.Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
-        (decrypt as vi.Mock).mockResolvedValue({ key: 'value' });
+        (useSearchParams as Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
+        (decrypt as Mock).mockResolvedValue({ key: 'value' });
 
         defaultValuesFunc.mockReturnValue({ defaultKey: 'defaultValue' });
 

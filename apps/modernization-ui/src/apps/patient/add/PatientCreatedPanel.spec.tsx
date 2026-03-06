@@ -1,4 +1,3 @@
-
 import { render } from '@testing-library/react';
 import { CreatedPatient } from './api';
 import { PatientCreatedPanel } from './PatientCreatedPanel';

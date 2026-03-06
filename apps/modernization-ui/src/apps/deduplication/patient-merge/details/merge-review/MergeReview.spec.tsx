@@ -1,4 +1,4 @@
-
+import { Mock } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
@@ -156,7 +156,7 @@ describe('MergeReview', () => {
 
     it('should navigate to patient summary if fromPatientFileSummary is true when "Back" is clicked', async () => {
         const mockNav = vi.fn();
-        (useNavigate as vi.Mock).mockReturnValue(mockNav);
+        (useNavigate as Mock).mockReturnValue(mockNav);
 
         const data: Partial<MergeCandidate>[] = [
             {
@@ -208,7 +208,7 @@ describe('MergeReview', () => {
 
     it('should go back normally when fromPatientFileSummary is false', async () => {
         const mockNav = vi.fn();
-        (useNavigate as vi.Mock).mockReturnValue(mockNav);
+        (useNavigate as Mock).mockReturnValue(mockNav);
 
         const Wrapper = () => {
             const form = useForm<PatientMergeForm>();

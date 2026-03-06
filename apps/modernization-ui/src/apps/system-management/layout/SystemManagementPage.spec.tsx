@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import SystemManagementPage from './SystemManagementPage';
 import { MemoryRouter } from 'react-router';
 
-
 const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'SRTADMIN-SYSTEM', 'ALERTADMIN-SYSTEM'];
 const mockAllows = (permission: string) => mockPermissions.includes(permission);
 const mockAllowFn = vi.fn(mockAllows);
@@ -22,7 +21,7 @@ vi.mock('./VisibleWrapper', () => {
                 onVisibilityChange(true);
             }, []);
             return <div>{children}</div>;
-        }
+        },
     };
 });
 

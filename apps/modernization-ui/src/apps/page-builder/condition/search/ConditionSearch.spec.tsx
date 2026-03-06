@@ -1,4 +1,3 @@
-
 import { render } from '@testing-library/react';
 import { ConditionSearch } from './ConditionSearch';
 import { MemoryRouter } from 'react-router';

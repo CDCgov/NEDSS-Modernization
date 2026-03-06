@@ -1,4 +1,3 @@
-
 import { allOf } from './allOf';
 
 describe('allOf', () => {

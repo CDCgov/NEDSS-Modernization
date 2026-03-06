@@ -1,4 +1,3 @@
-
 import { anyOf } from './anyOf';
 
 describe('anyOf', () => {

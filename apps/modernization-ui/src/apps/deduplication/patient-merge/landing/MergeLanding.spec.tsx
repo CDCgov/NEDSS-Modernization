@@ -1,4 +1,4 @@
-
+import { Mock } from 'vitest';
 import { render, within } from '@testing-library/react';
 import { MergeLanding } from './MergeLanding';
 import { MemoryRouter, useSearchParams } from 'react-router';
@@ -46,12 +46,12 @@ beforeEach(() => {
     mockExportMatchesCSV.mockClear();
     mockExportMatchesPDF.mockClear();
 
-    (useExportMatches as ReturnType<typeof vi.fn>).mockReturnValue({
+    (useExportMatches as Mock).mockReturnValue({
         exportCSV: mockExportMatchesCSV,
         exportPDF: mockExportMatchesPDF
     });
 
-    (useSearchParams as ReturnType<typeof vi.fn>).mockReturnValue([new URLSearchParams(), vi.fn()]);
+    (useSearchParams as Mock).mockReturnValue([new URLSearchParams(), vi.fn()]);
 });
 
 const Fixture = () => (

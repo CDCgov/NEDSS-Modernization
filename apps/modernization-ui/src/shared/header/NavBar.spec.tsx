@@ -1,4 +1,4 @@
-
+import { Mock } from 'vitest';
 import { render } from '@testing-library/react';
 import { usePage } from 'page';
 import { NavBar } from './NavBar';
@@ -30,7 +30,7 @@ const renderNavBarWithPermissions = (permissions: string[]) => {
 describe('NavBar component tests', () => {
     beforeEach(() => {
         mockAllowFn.mockClear();
-        (usePage as vi.Mock).mockReturnValue({ title: 'Test page' });
+        (usePage as Mock).mockReturnValue({ title: 'Test page' });
     });
 
     it('should render navigation bar', () => {

@@ -34,4 +34,4 @@ jobs:
 
       - name: Build
         working-directory: ./apps/modernization-ui
-        run: npm run build:only
+        run: npm run build

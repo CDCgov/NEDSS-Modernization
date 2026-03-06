@@ -4,7 +4,6 @@ import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';
 import CriteriaSearchFields from './CriteriaSearchFields';
 
-
 vi.mock('options/concepts/useConceptOptions', () => ({
     useConceptOptions: () => ({ options: [] })
 }));

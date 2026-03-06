@@ -1,4 +1,3 @@
-
 import { render } from '@testing-library/react';
 import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
 import { AddPatientLayout } from './AddPatientLayout';

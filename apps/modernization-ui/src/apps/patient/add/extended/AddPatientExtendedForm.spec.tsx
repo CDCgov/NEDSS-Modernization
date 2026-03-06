@@ -1,4 +1,3 @@
-
 import { FormProvider, useForm } from 'react-hook-form';
 import { render, screen, within } from '@testing-library/react';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';

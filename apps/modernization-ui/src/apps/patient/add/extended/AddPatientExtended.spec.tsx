@@ -1,4 +1,4 @@
-
+import { Mock } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
 import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
@@ -118,8 +118,8 @@ const renderWithRouter = () => {
 
 describe('AddPatientExtended', () => {
     beforeEach(() => {
-        (useShowCancelModal as vi.Mock).mockReturnValue({ value: false });
-        (useNavigate as vi.Mock).mockReturnValue(vi.fn());
+        (useShowCancelModal as Mock).mockReturnValue({ value: false });
+        (useNavigate as Mock).mockReturnValue(vi.fn());
     });
 
     it('should have a heading', () => {
@@ -156,7 +156,7 @@ describe('AddPatientExtended', () => {
     });
 
     it('should not show modal when local storage flag is set', () => {
-        (useShowCancelModal as vi.Mock).mockReturnValue({ value: true });
+        (useShowCancelModal as Mock).mockReturnValue({ value: true });
         const { queryByRole } = renderWithRouter();
 
         const modal = queryByRole('dialog', { name: 'Warning' });

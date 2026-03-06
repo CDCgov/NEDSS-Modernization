@@ -1,3 +1,4 @@
+import { Mock } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SearchTerms } from './SearchTerms';
@@ -22,9 +23,9 @@ const terms: Term[] = [
 
 describe('SearchTerms', () => {
     beforeEach(() => {
-        (useSkipLink as vi.Mock).mockReturnValue({ skipTo: mockSkipTo, remove: mockRemove });
-        (focusedTarget as vi.Mock).mockImplementation(mockFocusedTarget);
-        (useSearchInteraction as vi.Mock).mockReturnValue({ without: mockWithout });
+        (useSkipLink as Mock).mockReturnValue({ skipTo: mockSkipTo, remove: mockRemove });
+        (focusedTarget as Mock).mockImplementation(mockFocusedTarget);
+        (useSearchInteraction as Mock).mockReturnValue({ without: mockWithout });
     });
 
     afterEach(() => {
