@@ -24,7 +24,6 @@ public class ReportId implements Serializable {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
     if (!(o instanceof ReportId reportId)) return false;
     return Objects.equals(reportUid, reportId.reportUid)
         && Objects.equals(dataSourceUid, reportId.dataSourceUid);

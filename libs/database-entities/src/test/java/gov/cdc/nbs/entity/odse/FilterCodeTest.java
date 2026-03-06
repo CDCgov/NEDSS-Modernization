@@ -48,7 +48,7 @@ class FilterCodeTest {
         .satisfies(fc -> assertEquals(descText, fc.getDescTxt()))
         .satisfies(fc -> assertEquals(effectiveFromTime, fc.getEffectiveFromTime()))
         .satisfies(fc -> assertEquals(effectiveToTime, fc.getEffectiveToTime()))
-        .satisfies(fc -> assertEquals(filterCode, fc.getFilterCode()))
+        .satisfies(fc -> assertEquals(filterCode, fc.getCode()))
         .satisfies(fc -> assertEquals(filterCodeSetName, fc.getFilterCodeSetName()))
         .satisfies(fc -> assertEquals(filterType, fc.getFilterType()))
         .satisfies(fc -> assertEquals(filterName, fc.getFilterName()))

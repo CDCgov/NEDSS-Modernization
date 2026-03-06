@@ -34,9 +34,8 @@ public class FilterCode {
   @Column(name = "effective_to_time")
   private LocalDateTime effectiveToTime;
 
-  @SuppressWarnings("java:S1700")
   @Column(name = "filter_code", length = 20)
-  private String filterCode;
+  private String code;
 
   @Column(name = "filter_code_set_nm", length = 256)
   private String filterCodeSetName;

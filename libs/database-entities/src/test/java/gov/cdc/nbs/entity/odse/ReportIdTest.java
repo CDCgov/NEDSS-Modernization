@@ -58,6 +58,16 @@ class ReportIdTest {
   }
 
   @Test
+  void reportId_does_not_match_non_ReportId_type() {
+    Long id = 1L;
+    Long dataSource = 2L;
+    ReportId reportId = new ReportId(id, dataSource);
+
+    // Explicitly testing the overridden .equals() method
+    assertFalse(reportId.equals("text")); // NOSONAR
+  }
+
+  @Test
   void reportIds_should_match_hash_codes() {
     ReportId reportId = new ReportId(1L, 2L);
     ReportId identicalReportId = new ReportId(1L, 2L);

@@ -113,7 +113,7 @@ class ReportTest {
         .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()))
         .satisfies(report -> assertEquals(status, report.getStatus()))
-        .satisfies(report -> assertEquals(dataSourceObj, report.getDataSourceUid()));
+        .satisfies(report -> assertEquals(dataSourceObj, report.getDataSource()));
   }
 
   @Test
