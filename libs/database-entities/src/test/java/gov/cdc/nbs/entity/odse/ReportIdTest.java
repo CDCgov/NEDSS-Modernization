@@ -31,16 +31,29 @@ class ReportIdTest {
   }
 
   @Test
-  void reportIds_do_not_match() {
+  void reportId_does_not_match() {
+    Long id = 1L;
+    Long dataSource = 2L;
+    ReportId reportId = new ReportId(id, dataSource);
+
+    Long idOther = 2L;
+    ReportId notEqualsReportId = new ReportId(idOther, dataSource);
+
+    // Explicitly testing the overridden .equals() method
+    assertFalse(reportId.equals(notEqualsReportId)); // NOSONAR
+  }
+
+  @Test
+  void dataSource_does_not_match() {
     Long id = 1L;
     Long dataSource = 2L;
     ReportId reportId = new ReportId(id, dataSource);
 
     Long dataSourceOther = 3L;
-    ReportId notEqaualsReportId = new ReportId(id, dataSourceOther);
+    ReportId notEqualsDatasource = new ReportId(id, dataSourceOther);
 
     // Explicitly testing the overridden .equals() method
-    assertFalse(reportId.equals(notEqaualsReportId)); // NOSONAR
+    assertFalse(reportId.equals(notEqualsDatasource)); // NOSONAR
   }
 
   @Test
