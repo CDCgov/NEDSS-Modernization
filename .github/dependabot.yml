@@ -17,7 +17,11 @@ updates:
 
   # Enable version updates for Gradle
   - package-ecosystem: "gradle"
-    directory: "/gradle"
+    directories:
+      - "/"
+      - "/gradle"
+      - "/apps/**"
+      - "/libs/**"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 2
