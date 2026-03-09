@@ -18,7 +18,7 @@ describe('SelectableAutocomplete', () => {
         id: 'test-autocomplete',
         label: 'Test Autocomplete',
         resolver: mockResolver,
-        onBlur: jest.fn()
+        onBlur: vi.fn()
     };
 
     it('renders with label and input', () => {
@@ -43,7 +43,7 @@ describe('SelectableAutocomplete', () => {
     });
 
     it('calls onChange when a suggestion is selected', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         const { getByRole, findByText } = render(
             <SelectableAutocomplete
                 asValue={(value) => value}

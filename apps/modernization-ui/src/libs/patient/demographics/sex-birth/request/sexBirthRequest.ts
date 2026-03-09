@@ -1,5 +1,4 @@
 import { EffectiveDated } from 'utils';
-import { Location } from 'libs/location';
 
 type SexDemographicRequest = EffectiveDated & {
     current?: string;

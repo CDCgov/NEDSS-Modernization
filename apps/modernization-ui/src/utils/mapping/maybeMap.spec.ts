@@ -2,7 +2,7 @@ import { maybeMap } from './maybeMap';
 
 describe('maybeMap', () => {
     it.each(['value', 0, true, false])('should call the mapping function when %s is given', (value) => {
-        const mapping = jest.fn();
+        const mapping = vi.fn();
 
         maybeMap(mapping)(value);
 
@@ -10,7 +10,7 @@ describe('maybeMap', () => {
     });
 
     it.each([undefined, [], null])('should not call the mapping function when %s is given', (value) => {
-        const mapping = jest.fn();
+        const mapping = vi.fn();
 
         maybeMap(mapping)(value);
 

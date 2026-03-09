@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';

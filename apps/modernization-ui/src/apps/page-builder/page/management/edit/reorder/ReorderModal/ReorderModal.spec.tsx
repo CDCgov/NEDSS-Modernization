@@ -35,11 +35,11 @@ describe('when ReorderModal renders', () => {
         ]
     };
     const fetch = () => {
-        jest.fn();
+        vi.fn();
     };
 
     const refresh = () => {
-        jest.fn();
+        vi.fn();
     };
     const props = {
         modalRef: { current: null },

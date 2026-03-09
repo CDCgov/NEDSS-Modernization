@@ -1,34 +1,34 @@
+import { Mock } from 'vitest';
 import { ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Permitted } from 'libs/permission';
 import { DeleteAction } from './DeleteAction';
 import { useDeletePatient } from './useDeletePatient';
-import { AlertProvider } from 'libs/alert';
 
-const mockShowSuccess = jest.fn();
-const mockShowError = jest.fn();
-const mockGo = jest.fn();
+const mockShowSuccess = vi.fn();
+const mockShowError = vi.fn();
+const mockGo = vi.fn();
 
-jest.mock('libs/alert', () => ({
+vi.mock('libs/alert', () => ({
     useAlert: () => ({
         showSuccess: mockShowSuccess,
         showError: mockShowError
     })
 }));
 
-jest.mock('apps/search', () => ({
+vi.mock('apps/search', () => ({
     useSearchNavigation: () => ({
         go: mockGo
     })
 }));
 
-jest.mock('./useDeletePatient', () => ({
-    useDeletePatient: jest.fn()
+vi.mock('./useDeletePatient', () => ({
+    useDeletePatient: vi.fn()
 }));
 
-jest.mock('libs/permission', () => ({
-    Permitted: jest.fn(({ children }: { children: ReactNode }) => <>{children}</>),
+vi.mock('libs/permission', () => ({
+    Permitted: vi.fn(({ children }: { children: ReactNode }) => <>{children}</>),
     permissions: {
         patient: {
             delete: 'DELETE-PATIENT'
@@ -38,9 +38,9 @@ jest.mock('libs/permission', () => ({
 
 describe('DeleteAction', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
 
-        (Permitted as jest.Mock).mockImplementation(({ children }: { children: ReactNode }) => <>{children}</>);
+        (Permitted as Mock).mockImplementation(({ children }: { children: ReactNode }) => <>{children}</>);
     });
 
     it('should handle the deletion flow', async () => {
@@ -66,7 +66,7 @@ describe('DeleteAction', () => {
     });
 
     it('should not show the delete button when user does not have permissions', () => {
-        (Permitted as jest.Mock).mockImplementation(() => <></>);
+        (Permitted as Mock).mockImplementation(() => <></>);
         const { queryByRole } = render(
             <DeleteAction
                 patient={{
@@ -133,8 +133,8 @@ describe('DeleteAction', () => {
     });
 
     it('should call deletePatient function when deleted confirmation button is clicked', async () => {
-        const mockDeletePatient = jest.fn(() => Promise.resolve({ success: true }));
-        (useDeletePatient as jest.Mock).mockReturnValue(mockDeletePatient);
+        const mockDeletePatient = vi.fn(() => Promise.resolve({ success: true }));
+        (useDeletePatient as Mock).mockReturnValue(mockDeletePatient);
         const user = userEvent.setup();
 
         const { getByRole, getByText } = render(
@@ -161,7 +161,7 @@ describe('DeleteAction', () => {
     });
 
     it('should show success message when patient successfully deleted', async () => {
-        (useDeletePatient as jest.Mock).mockImplementation((onComplete) => () => onComplete({ success: true }));
+        (useDeletePatient as Mock).mockImplementation((onComplete) => () => onComplete({ success: true }));
 
         const user = userEvent.setup();
         const { getByRole, getByText } = render(
@@ -186,7 +186,6 @@ describe('DeleteAction', () => {
         const confirmButton = getByText('Delete', { selector: 'button' });
         await user.click(confirmButton);
 
-        // eslint-disable-next-line prettier/prettier
         expect(mockShowSuccess).toHaveBeenCalledWith(
             <span>
                 You have successfully deleted <strong>Doe, John (Patient ID: 91000)</strong>.
@@ -196,7 +195,7 @@ describe('DeleteAction', () => {
     });
 
     it('should show error message when patient failed to delete', async () => {
-        (useDeletePatient as jest.Mock).mockImplementation(
+        (useDeletePatient as Mock).mockImplementation(
             (onComplete) => () => onComplete({ success: false, message: 'Error in delete' })
         );
         const user = userEvent.setup();

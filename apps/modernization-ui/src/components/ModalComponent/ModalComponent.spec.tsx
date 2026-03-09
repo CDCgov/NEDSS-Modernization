@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-redeclare
 import { render, screen } from '@testing-library/react';
 import { ModalComponent } from './ModalComponent';
 

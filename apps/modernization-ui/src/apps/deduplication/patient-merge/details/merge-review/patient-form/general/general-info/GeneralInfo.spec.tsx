@@ -5,7 +5,7 @@ import { GeneralInfo } from './GeneralInfo';
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
+vi.mock('user', () => ({
     useUser: () => ({ state: { user: { permissions: mockPermissions } } })
 }));
 

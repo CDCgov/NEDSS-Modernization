@@ -23,7 +23,7 @@ describe('Select Component', () => {
     });
 
     test('calls onChange with selected option', () => {
-        const handleChange = jest.fn();
+        const handleChange = vi.fn();
         const { getByRole } = render(
             <Select
                 id="test-select"

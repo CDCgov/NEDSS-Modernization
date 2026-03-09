@@ -4,7 +4,7 @@ import { OperatorSelect, OperatorSelectProps } from './OperatorSelect';
 import { textOperators, defaultTextOperator, textAlphaOperators } from 'options/operator';
 
 describe('OperatorSelect', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
 
     const defaultProps: OperatorSelectProps = {
         id: 'operator-select',

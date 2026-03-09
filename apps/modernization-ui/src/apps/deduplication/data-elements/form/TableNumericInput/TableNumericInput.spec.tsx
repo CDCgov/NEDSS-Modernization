@@ -54,7 +54,7 @@ describe('TableNumericInput', () => {
     });
 
     it('should call onBlur when the input loses focus', () => {
-        const onBlurMock = jest.fn();
+        const onBlurMock = vi.fn();
         render(
             <TableNumericInput
                 name="testInput"

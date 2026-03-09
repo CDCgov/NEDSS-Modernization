@@ -40,7 +40,7 @@ describe('when a success is displayed', () => {
     });
 
     it('should invoke onClose when the "Go back" button is clicked', async () => {
-        const onClose = jest.fn();
+        const onClose = vi.fn();
 
         const { getByRole } = render(<Success onClose={onClose}>success message</Success>);
 
@@ -55,7 +55,7 @@ describe('when a success is displayed', () => {
     });
 
     it('should invoke onClose when the close icon is clicked', async () => {
-        const onClose = jest.fn();
+        const onClose = vi.fn();
 
         const { getByRole } = render(<Success onClose={onClose}>success message</Success>);
 

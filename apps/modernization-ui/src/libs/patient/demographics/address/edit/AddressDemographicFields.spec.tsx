@@ -6,7 +6,7 @@ import { AddressDemographicFields } from './AddressDemographicFields';
 import { AddressOptions } from './useAddressOptions';
 import { LocationOptions } from 'options/location';
 
-const mockState = jest.fn();
+const mockState = vi.fn();
 
 const location: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],

@@ -67,9 +67,7 @@ const routing: RouteObject[] = [
                                         lazy: {
                                             Component: async () =>
                                                 (
-                                                    await import(
-                                                        './pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule'
-                                                    )
+                                                    await import('./pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule')
                                                 ).ViewBusinessRule
                                         }
                                     },

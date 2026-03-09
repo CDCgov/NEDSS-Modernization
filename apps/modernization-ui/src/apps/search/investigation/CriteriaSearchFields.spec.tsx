@@ -4,7 +4,7 @@ import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';
 import CriteriaSearchFields from './CriteriaSearchFields';
 
-jest.mock('options/concepts/useConceptOptions', () => ({
+vi.mock('options/concepts/useConceptOptions', () => ({
     useConceptOptions: () => ({ options: [] })
 }));
 

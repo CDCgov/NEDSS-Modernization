@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { Contact } from './Contact';
 import { PatientCriteriaEntry } from '../criteria';
 
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 
 const Fixture = () => {
     const form = useForm<PatientCriteriaEntry>({
