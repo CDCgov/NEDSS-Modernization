@@ -6,7 +6,8 @@
  */
 
 const isEmptyObject = (value: unknown): boolean => {
-    // Checks if the value is an object (using typeof), is not null (since the javascript typeof null is 'object'), is not an array, and has no own enumerable properties
+    // Checks if the value is an object (using typeof), is not null (since the javascript typeof null is 'object'), is not an array,
+    // and has no own enumerable properties
     return typeof value === 'object' && value !== null && !Array.isArray(value) && Object.keys(value).length === 0;
 };
 

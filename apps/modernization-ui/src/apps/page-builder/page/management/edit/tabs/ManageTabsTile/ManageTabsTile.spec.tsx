@@ -37,13 +37,13 @@ const content: PagesResponse = {
 const props = {
     tab: content.tabs![0],
     index: 0,
-    setSelectedForEdit: jest.fn(),
-    setDeleteTab: jest.fn(),
+    setSelectedForEdit: vi.fn(),
+    setDeleteTab: vi.fn(),
     selectedForDelete: content.tabs![0],
-    setSelectedForDelete: jest.fn(),
-    deleteTab: jest.fn(),
-    reset: jest.fn(),
-    onChangeVisibility: jest.fn()
+    setSelectedForDelete: vi.fn(),
+    deleteTab: vi.fn(),
+    reset: vi.fn(),
+    onChangeVisibility: vi.fn()
 };
 
 const { getByTestId } = render(

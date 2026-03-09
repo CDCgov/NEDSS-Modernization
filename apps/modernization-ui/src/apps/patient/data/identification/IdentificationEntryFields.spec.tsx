@@ -10,7 +10,7 @@ const mockIdentificationCodedValues: IdentificationCodedValues = {
     authorities: [{ name: 'Assigning auth', value: 'AA' }]
 };
 
-jest.mock('./useIdentificationCodedValues', () => ({
+vi.mock('./useIdentificationCodedValues', () => ({
     useIdentificationCodedValues: () => mockIdentificationCodedValues
 }));
 

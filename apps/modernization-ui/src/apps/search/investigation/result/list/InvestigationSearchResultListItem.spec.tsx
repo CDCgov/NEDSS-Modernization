@@ -18,7 +18,7 @@ describe('when showing an investigation search results', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <InvestigationSearchResultListItem result={result} notificationStatusResolver={jest.fn()} />
+                <InvestigationSearchResultListItem result={result} notificationStatusResolver={vi.fn()} />
             </MemoryRouter>
         );
 
@@ -43,7 +43,7 @@ describe('when showing an investigation search results', () => {
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -67,7 +67,7 @@ describe('when showing an investigation search results', () => {
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -91,7 +91,7 @@ describe('when showing an investigation search results', () => {
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -112,7 +112,7 @@ describe('when showing an investigation search results', () => {
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -132,7 +132,7 @@ describe('when showing an investigation search results', () => {
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -151,7 +151,7 @@ describe('when showing an investigation search results', () => {
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -176,7 +176,7 @@ describe('when showing an investigation search results', () => {
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -195,7 +195,7 @@ describe('when showing an investigation search results', () => {
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -214,7 +214,7 @@ describe('when showing an investigation search results', () => {
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -229,7 +229,7 @@ describe('when showing an investigation search results', () => {
             personParticipations: []
         };
 
-        const notificationStatusResolver = jest.fn();
+        const notificationStatusResolver = vi.fn();
         notificationStatusResolver.mockReturnValue({
             value: 'notification-status',
             name: 'notification-status-display',
@@ -261,7 +261,7 @@ describe('when showing an investigation search results', () => {
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 

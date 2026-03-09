@@ -3,11 +3,11 @@ import { FacilityOptionsService, ProviderOptionsService, UserOptionsService } fr
 import { GeneralFields } from './GeneralFields';
 import { LabratorySearchCriteriaFormWrapper } from './LabratorySearchCriteriaFormWrapper';
 
-jest.mock('options/jurisdictions', () => ({
+vi.mock('options/jurisdictions', () => ({
     useJurisdictionOptions: () => ({ all: [], resolve: () => {} })
 }));
 
-jest.mock('options/program-areas', () => ({
+vi.mock('options/program-areas', () => ({
     useProgramAreaOptions: () => ({ all: [], resolve: () => {} })
 }));
 
@@ -21,7 +21,7 @@ const GeneralFieldsWithForm = () => {
 
 describe('GeneralFields component ', () => {
     beforeEach(() => {
-        const options = jest.fn();
+        const options = vi.fn();
 
         options.mockImplementation(() => Promise.resolve([]));
 

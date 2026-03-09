@@ -18,7 +18,7 @@ describe('TextAutocomplete', () => {
         id: 'test-autocomplete',
         label: 'Test Autocomplete',
         resolver: mockResolver,
-        onBlur: jest.fn()
+        onBlur: vi.fn()
     };
 
     it('renders with label and input', () => {
@@ -39,7 +39,7 @@ describe('TextAutocomplete', () => {
     });
 
     it('calls onChange when a suggestion is selected', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         const { getByRole, findByText } = render(<TextAutocomplete {...defaultProps} onChange={onChange} />);
 
         const input = getByRole('textbox');
@@ -66,7 +66,7 @@ describe('TextAutocomplete', () => {
     });
 
     it('calls onChange when input loses focus', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         const { getByRole } = render(<TextAutocomplete {...defaultProps} onChange={onChange} />);
 
         const input = getByRole('textbox');

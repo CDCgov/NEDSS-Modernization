@@ -5,7 +5,7 @@ import { PatientMergeForm } from '../../model/PatientMergeForm';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-const onRemove = jest.fn();
+const onRemove = vi.fn();
 const Fixture = () => {
     const form = useForm<PatientMergeForm>();
     const data: Partial<MergeCandidate>[] = [

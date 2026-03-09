@@ -14,8 +14,8 @@ const mockCondition: Condition = {
     status: 'A'
 };
 
-const search = jest.fn();
-const reset = jest.fn();
+const search = vi.fn();
+const reset = vi.fn();
 
 const mockUsConditionSearch = {
     search: search,
@@ -25,15 +25,18 @@ const mockUsConditionSearch = {
     reset
 };
 
-jest.mock('./useConditionSearch', () => ({
-    ...jest.requireActual('./useConditionSearch'),
-    useConditionSearch: () => mockUsConditionSearch
-}));
+vi.mock('./useConditionSearch', async () => {
+    const actual = await vi.importActual<any>('./useConditionSearch');
+    return {
+        ...actual,
+        useConditionSearch: () => mockUsConditionSearch
+    };
+});
 
 describe('ConditionSearch', () => {
-    const onConditionSelect = jest.fn();
-    const onCancel = jest.fn();
-    const onCreateNew = jest.fn();
+    const onConditionSelect = vi.fn();
+    const onCancel = vi.fn();
+    const onCreateNew = vi.fn();
 
     it('should have a modal heading', () => {
         const { getByText } = render(

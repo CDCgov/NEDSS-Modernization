@@ -13,18 +13,18 @@ describe('when SuccessModal renders', () => {
                 <Button
                     type="button"
                     outline
-                    onClick={() => jest.fn()}>
+                    onClick={() => vi.fn()}>
                     Test 1
                 </Button>
                 <Button
                     type="button"
                     outline
-                    onClick={() => jest.fn()}>
+                    onClick={() => vi.fn()}>
                     Test 2
                 </Button>
                 <Button
                     type="button"
-                    onClick={() => jest.fn()}>
+                    onClick={() => vi.fn()}>
                     Test 3
                 </Button>
             </>

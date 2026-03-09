@@ -13,7 +13,7 @@ describe('SexBirthDemographicView', () => {
     });
 
     it('should display "Date of birth" with calculated "Current age" when present', () => {
-        const ageResolver = jest.fn().mockReturnValue('calculated-age');
+        const ageResolver = vi.fn().mockReturnValue('calculated-age');
 
         render(
             <SexBirthDemographicView

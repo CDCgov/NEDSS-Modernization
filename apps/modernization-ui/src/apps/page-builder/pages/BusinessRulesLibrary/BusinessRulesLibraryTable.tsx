@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { Rule } from 'apps/page-builder/generated';
 import { BusinessRuleSort, RuleSortField } from 'apps/page-builder/hooks/api/useFetchPageRules';

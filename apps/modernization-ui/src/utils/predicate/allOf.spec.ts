@@ -8,10 +8,10 @@ describe('allOf', () => {
     });
 
     it('should return true if all predicates pass', () => {
-        const first = jest.fn().mockReturnValue(true);
-        const second = jest.fn().mockReturnValue(true);
-        const third = jest.fn().mockReturnValue(true);
-        const fourth = jest.fn().mockReturnValue(true);
+        const first = vi.fn().mockReturnValue(true);
+        const second = vi.fn().mockReturnValue(true);
+        const third = vi.fn().mockReturnValue(true);
+        const fourth = vi.fn().mockReturnValue(true);
 
         const actual = allOf<number>(first, second, third, fourth, () => true)(6);
 
@@ -24,10 +24,10 @@ describe('allOf', () => {
     });
 
     it('should return false, failing fast,  if any predicates fails', () => {
-        const first = jest.fn().mockReturnValue(true);
-        const second = jest.fn().mockReturnValue(false);
-        const third = jest.fn().mockReturnValue(true);
-        const fourth = jest.fn().mockReturnValue(true);
+        const first = vi.fn().mockReturnValue(true);
+        const second = vi.fn().mockReturnValue(false);
+        const third = vi.fn().mockReturnValue(true);
+        const fourth = vi.fn().mockReturnValue(true);
 
         const actual = allOf<number>(first, second, third, fourth, () => true)(6);
 

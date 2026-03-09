@@ -19,7 +19,7 @@ describe('Toggle testing', () => {
     it('should emit onChange event when label clicked', async () => {
         const user = userEvent.setup();
 
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByText } = render(<Toggle name={'test'} label={'test'} value={false} onChange={onChange} />);
 

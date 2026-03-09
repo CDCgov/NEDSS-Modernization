@@ -3,9 +3,9 @@ import { Permitted } from './Permitted';
 
 const mockPermissions: string[] = ['permitted', 'other-permitted'];
 const mockAllows = (p: string) => mockPermissions.includes(p);
-const mockAllowFn = jest.fn(mockAllows);
+const mockAllowFn = vi.fn(mockAllows);
 
-jest.mock('./usePermissions', () => ({
+vi.mock('./usePermissions', () => ({
     usePermissions: () => ({ permissions: mockPermissions, allows: mockAllowFn })
 }));
 

@@ -2,7 +2,7 @@ import { not } from './not';
 
 describe('not', () => {
     it('should return false when the given predicate returns true', () => {
-        const predicate = jest.fn(() => true);
+        const predicate = vi.fn(() => true);
 
         const actual = not(predicate)(7);
 
@@ -12,7 +12,7 @@ describe('not', () => {
     });
 
     it('should return true when the given predicate returns false', () => {
-        const predicate = jest.fn(() => false);
+        const predicate = vi.fn(() => false);
 
         const actual = not(predicate)(7);
 

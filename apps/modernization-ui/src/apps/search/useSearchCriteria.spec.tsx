@@ -1,29 +1,30 @@
+import { Mock } from 'vitest';
 import { act } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { useSearchParams } from 'react-router';
 import { useSearchCriteria } from './useSearchCriteria';
 import { decrypt, encrypt } from 'cryptography';
 
-jest.mock('react-router', () => ({
-    useSearchParams: jest.fn()
+vi.mock('react-router', () => ({
+    useSearchParams: vi.fn()
 }));
 
-jest.mock('cryptography', () => ({
-    decrypt: jest.fn(),
-    encrypt: jest.fn()
+vi.mock('cryptography', () => ({
+    decrypt: vi.fn(),
+    encrypt: vi.fn()
 }));
 
 describe('useSearchCriteria', () => {
-    const setSearchParams = jest.fn();
+    const setSearchParams = vi.fn();
 
     beforeEach(() => {
-        (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams(), setSearchParams]);
-        (decrypt as jest.Mock).mockResolvedValue({});
-        (encrypt as jest.Mock).mockResolvedValue({ value: 'encryptedValue' });
+        (useSearchParams as Mock).mockReturnValue([new URLSearchParams(), setSearchParams]);
+        (decrypt as Mock).mockResolvedValue({});
+        (encrypt as Mock).mockResolvedValue({ value: 'encryptedValue' });
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('should initialize with no criteria', () => {
@@ -35,8 +36,8 @@ describe('useSearchCriteria', () => {
     it('should evaluate found criteria', async () => {
         const { result, rerender } = renderHook(() => useSearchCriteria({}));
 
-        (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
-        (decrypt as jest.Mock).mockResolvedValue({ key: 'value' });
+        (useSearchParams as Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
+        (decrypt as Mock).mockResolvedValue({ key: 'value' });
 
         rerender();
 
@@ -70,11 +71,11 @@ describe('useSearchCriteria', () => {
     });
 
     it('should handle default values as a function', async () => {
-        const defaultValuesFunc = jest.fn();
+        const defaultValuesFunc = vi.fn();
         const { result, rerender } = renderHook(() => useSearchCriteria({ defaultValues: defaultValuesFunc }));
 
-        (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
-        (decrypt as jest.Mock).mockResolvedValue({ key: 'value' });
+        (useSearchParams as Mock).mockReturnValue([new URLSearchParams('q=foundCriteria'), setSearchParams]);
+        (decrypt as Mock).mockResolvedValue({ key: 'value' });
 
         defaultValuesFunc.mockReturnValue({ defaultKey: 'defaultValue' });
 

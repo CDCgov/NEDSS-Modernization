@@ -49,7 +49,7 @@ describe('Checkbox testing', () => {
 
     it('should emit onChange event when label clicked', async () => {
         const user = userEvent.setup();
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByText } = render(<Checkbox id="test" label="Test Label" onChange={onChange} />);
 

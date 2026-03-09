@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { SelectableCheckbox } from './SelectableCheckbox';
 import { Selectable } from 'options';
 
-const onChange = jest.fn();
+const onChange = vi.fn();
 const option: Selectable = { value: 'value', label: 'label', name: 'name' };
 
 describe('Checkbox testing', () => {
@@ -56,7 +56,7 @@ describe('Checkbox testing', () => {
     it('should emit onChange event when checkbox clicked', async () => {
         const user = userEvent.setup();
 
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         const { getByRole } = render(<SelectableCheckbox onChange={onChange} selectable={option} selected={false} />);
 
         const checkbox = getByRole('checkbox');
@@ -69,7 +69,7 @@ describe('Checkbox testing', () => {
     it('should emit onChange event when label clicked', async () => {
         const user = userEvent.setup();
 
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByText } = render(<SelectableCheckbox onChange={onChange} selectable={option} selected={false} />);
 

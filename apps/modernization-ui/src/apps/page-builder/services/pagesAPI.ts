@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { PageControllerService, PagePageSummary, PageSummaryService, PagesService } from 'apps/page-builder/generated';
 
 export const fetchPageSummaries = (

@@ -5,14 +5,14 @@ import { Column } from 'design-system/table';
 import { InvestigationSearchResultsTable } from './InvestigationSearchResultsTable';
 import { SelectableResolver } from 'options';
 
-jest.mock('design-system/table/preferences', () => ({
+vi.mock('design-system/table/preferences', () => ({
     useColumnPreferences: () => ({ apply: (columns: Column<Investigation>[]) => columns })
 }));
 
 describe('When InvestigationSearchResultsTable renders', () => {
     const Wrapper = ({
         results,
-        notificationStatusResolver = jest.fn()
+        notificationStatusResolver = vi.fn()
     }: {
         results: Investigation[];
         notificationStatusResolver?: SelectableResolver;
@@ -251,7 +251,7 @@ describe('When InvestigationSearchResultsTable renders', () => {
     });
 
     it('should display Notification status using resolver', () => {
-        const notificationStatusResolver = jest.fn();
+        const notificationStatusResolver = vi.fn();
 
         const results: Investigation[] = [
             {
