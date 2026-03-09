@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class ReportFilterTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThatThrownBy(() -> new ReportFilter(null, null, null))
+    assertThatThrownBy(() -> new ReportFilter(null, null, null, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("reportId is marked non-null but is null");
   }
@@ -17,18 +17,19 @@ class ReportFilterTest {
   @Test
   void should_create_report_filter() {
     Long reportFilterId = 1L;
-    Long reportUid = 2L;
+    Report report = new Report();
+    DataSource dataSource = new DataSource();
     FilterCode filterCode = new FilterCode();
     DataSourceColumn dataSourceColumn = new DataSourceColumn();
     Character statusCd = 'A';
     Integer maxValueCnt = 10;
     Integer minValueCnt = 1;
-    Long dataSource = 3L;
 
     ReportFilter actual =
         new ReportFilter(
             reportFilterId,
-            new ReportId(reportUid, dataSource),
+            report,
+            dataSource,
             filterCode,
             dataSourceColumn,
             statusCd,
@@ -37,8 +38,8 @@ class ReportFilterTest {
 
     assertThat(actual)
         .satisfies(rf -> assertEquals(reportFilterId, rf.getId()))
-        .satisfies(rf -> assertEquals(reportUid, rf.getReportId().getReportUid()))
-        .satisfies(rf -> assertEquals(dataSource, rf.getReportId().getDataSourceUid()))
+        .satisfies(rf -> assertEquals(report, rf.getReportUid()))
+        .satisfies(rf -> assertEquals(dataSource, rf.getDataSource()))
         .satisfies(rf -> assertEquals(filterCode, rf.getFilterCode()))
         .satisfies(rf -> assertEquals(dataSourceColumn, rf.getDataSourceColumn()))
         .satisfies(rf -> assertEquals(statusCd, rf.getStatusCd()))

@@ -20,7 +20,13 @@ public class ReportFilter {
   @Column(name = "report_filter_uid", nullable = false)
   private Long id;
 
-  @NonNull @Embedded private ReportId reportId;
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "report_uid", nullable = false)
+  private Report reportUid;
+
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "data_source_uid", nullable = false)
+  private DataSource dataSource;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "filter_uid")

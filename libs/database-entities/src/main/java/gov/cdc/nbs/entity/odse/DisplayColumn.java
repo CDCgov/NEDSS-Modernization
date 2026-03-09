@@ -1,6 +1,12 @@
 package gov.cdc.nbs.entity.odse;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +31,13 @@ public class DisplayColumn {
   @JoinColumn(name = "column_uid", nullable = false)
   private DataSourceColumn dataSourceColumn;
 
-  @NonNull @Embedded private ReportId reportId;
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "report_uid", nullable = false)
+  private Report reportUid;
+
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "data_source_uid", nullable = false)
+  private DataSource dataSource;
 
   @NonNull @Column(name = "sequence_nbr")
   private Integer sequenceNumber;
