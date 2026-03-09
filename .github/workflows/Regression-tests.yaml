@@ -52,3 +52,11 @@ jobs:
         with:
           name: cypress-report
           path: testing/regression/cypress-report.zip
+          
+      # Upload cypress screenshots
+      - name: Upload cypress screenshots
+        uses: actions/upload-artifact@v3
+        if: ${{ !cancelled() }}
+        with:
+          name: cypress-screenshots
+          path: testing/regression/cypress/screenshots/
