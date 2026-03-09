@@ -20,6 +20,7 @@ class ReportFilterTest {
     Long reportUid = 2L;
     FilterCode filterCode = new FilterCode();
     DataSourceColumn dataSourceColumn = new DataSourceColumn();
+    Character statusCd = 'A';
     Integer maxValueCnt = 10;
     Integer minValueCnt = 1;
     Long dataSource = 3L;
@@ -30,6 +31,7 @@ class ReportFilterTest {
             new ReportId(reportUid, dataSource),
             filterCode,
             dataSourceColumn,
+            statusCd,
             maxValueCnt,
             minValueCnt);
 
@@ -39,6 +41,7 @@ class ReportFilterTest {
         .satisfies(rf -> assertEquals(dataSource, rf.getReportId().getDataSourceUid()))
         .satisfies(rf -> assertEquals(filterCode, rf.getFilterCode()))
         .satisfies(rf -> assertEquals(dataSourceColumn, rf.getDataSourceColumn()))
+        .satisfies(rf -> assertEquals(statusCd, rf.getStatusCd()))
         .satisfies(rf -> assertEquals(maxValueCnt, rf.getMaxValueCnt()))
         .satisfies(rf -> assertEquals(minValueCnt, rf.getMinValueCnt()));
   }

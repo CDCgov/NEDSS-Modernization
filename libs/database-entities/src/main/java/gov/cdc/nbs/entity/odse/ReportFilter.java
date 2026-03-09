@@ -30,6 +30,9 @@ public class ReportFilter {
   @JoinColumn(name = "column_uid")
   private DataSourceColumn dataSourceColumn;
 
+  @Column(name = "status_cd")
+  private Character statusCd;
+
   @Column(name = "max_value_cnt")
   private Integer maxValueCnt;
 
