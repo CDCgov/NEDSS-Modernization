@@ -38,7 +38,7 @@
         "@graphql-codegen/fragment-matcher": "^5.0.0",
         "@graphql-codegen/typescript": "^4.0.1",
         "@graphql-codegen/typescript-operations": "^4.0.1",
-        "@graphql-codegen/typescript-react-apollo": "^4.3.1",
+        "@graphql-codegen/typescript-react-apollo": "^4.4.1",
         "@storybook/addon-docs": "^9.1.19",
         "@storybook/addon-onboarding": "^9.1.19",
         "@storybook/react-vite": "^9.1.19",
