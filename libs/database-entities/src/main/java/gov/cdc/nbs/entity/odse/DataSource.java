@@ -18,7 +18,7 @@ public class DataSource {
   @Column(name = "data_source_uid", nullable = false, updatable = false)
   private Long id;
 
-  @Column(name = "column_max_le")
+  @Column(name = "column_max_len")
   private Integer columnMaxLen;
 
   //  TODO: add a converter? // NOSONAR
