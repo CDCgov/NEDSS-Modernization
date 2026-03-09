@@ -1,6 +1,5 @@
 package gov.cdc.nbs.entity.odse;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,41 +22,36 @@ import lombok.Setter;
 @Entity
 @Table(name = "Report_Filter", catalog = "NBS_ODSE")
 public class ReportFilter {
-    @Id
-    @Column(name = "report_filter_uid", nullable = false)
-    private Long id;
+  @Id
+  @Column(name = "report_filter_uid", nullable = false)
+  private Long id;
 
-    @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    // Report has a composite primary key
-    @JoinColumn(name = "report_uid", nullable = false)
-    @JoinColumn(name = "data_source_uid", nullable = false)
-    private Report report;
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  // Report has a composite primary key
+  @JoinColumn(name = "report_uid", nullable = false)
+  @JoinColumn(name = "data_source_uid", nullable = false)
+  private Report report;
 
-    @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "data_source_uid", nullable = false, insertable = false, updatable = false)
-    private DataSource dataSource;
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "data_source_uid", nullable = false, insertable = false, updatable = false)
+  private DataSource dataSource;
 
-    @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "filter_uid")
-    private FilterCode filterCode;
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "filter_uid")
+  private FilterCode filterCode;
 
-    @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "column_uid")
-    private DataSourceColumn dataSourceColumn;
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "column_uid")
+  private DataSourceColumn dataSourceColumn;
 
-    @Column(name = "status_cd")
-    private Character statusCd;
+  @Column(name = "status_cd")
+  private Character statusCd;
 
-    @Column(name = "max_value_cnt")
-    private Integer maxValueCnt;
+  @Column(name = "max_value_cnt")
+  private Integer maxValueCnt;
 
-    @Column(name = "min_value_cnt")
-    private Integer minValueCnt;
+  @Column(name = "min_value_cnt")
+  private Integer minValueCnt;
 
-    protected ReportFilter() {
-    }
+  protected ReportFilter() {}
 }
