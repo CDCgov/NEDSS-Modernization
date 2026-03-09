@@ -29,7 +29,7 @@ jobs:
           node-version: 22.x
 
       # Check graphql types are up to date
-      - name: Check Graphql generated types
+      - name: Check Graphql generated types are still correct
         working-directory: apps/modernization-ui
         run: npm ci && npm run generate && git diff --exit-code
 
