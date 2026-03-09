@@ -23,7 +23,7 @@ describe('when entering text values', () => {
 
     it('should alert when value changed', async () => {
         const user = userEvent.setup();
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole } = render(<Fixture onChange={onChange} />);
 
@@ -35,7 +35,7 @@ describe('when entering text values', () => {
     });
 
     it('should allow pasting of text values', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         const user = userEvent.setup();
         const { getByRole } = render(<Fixture onChange={onChange} />);
 
@@ -58,8 +58,8 @@ describe('when entering text values', () => {
     });
 
     it('should clear input, call onClear and onChange when icon is clicked', async () => {
-        const onChange = jest.fn();
-        const onClear = jest.fn();
+        const onChange = vi.fn();
+        const onClear = vi.fn();
 
         const { getByRole } = render(<Fixture value={'given value'} clearable onChange={onChange} onClear={onClear} />);
 

@@ -4,9 +4,9 @@ import { Pass } from 'apps/deduplication/api/model/Pass';
 import { PassList } from './PassList';
 import { AlertProvider } from 'alert';
 
-const selectPass = jest.fn();
-const addPass = jest.fn();
-const onRenamePass = jest.fn();
+const selectPass = vi.fn();
+const addPass = vi.fn();
+const onRenamePass = vi.fn();
 const passes: Pass[] = [
     {
         name: 'Pass name 1',

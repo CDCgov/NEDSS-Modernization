@@ -37,11 +37,11 @@ const lineSeparatorElement: PagesQuestion = {
 };
 
 const fetch = () => {
-    jest.fn();
+    vi.fn();
 };
 
 const refresh = () => {
-    jest.fn();
+    vi.fn();
 };
 
 describe('When modal loads with hyperlink element', () => {

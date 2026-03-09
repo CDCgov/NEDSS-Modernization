@@ -219,7 +219,7 @@ describe('DataTable', () => {
             }
         ];
 
-        const onEmpty = jest.fn();
+        const onEmpty = vi.fn();
         render(<DataTable id="test-table" columns={columns} data={[]} onEmpty={onEmpty} />);
 
         expect(onEmpty).toHaveBeenCalledWith(3);

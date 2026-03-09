@@ -1,6 +1,6 @@
 [versions]
 springBoot = '3.5.6'
-spring-security = '6.5.5'
+spring-security = '6.5.7'
 jackson = '2.19.0'
 queryDSL = '5.1.0'
 
@@ -16,7 +16,7 @@ springBoot-jdbc = { module = 'org.springframework.boot:spring-boot-starter-jdbc'
 springBoot-jpa = { module = 'org.springframework.boot:spring-boot-starter-data-jpa', version.ref = 'springBoot' }
 springBoot-web = { module = 'org.springframework.boot:spring-boot-starter-web', version.ref = 'springBoot' }
 springBoot-actuator = {module='org.springframework.boot:spring-boot-starter-actuator', version.ref= 'springBoot'}
-graphql = { module = 'com.graphql-java:graphql-java', version = '24.2' }
+graphql = { module = 'com.graphql-java:graphql-java', version = '25.0' } 
 springBoot-graphql = { module = 'org.springframework.boot:spring-boot-starter-graphql', version.ref = 'springBoot' }
 elasticsearch-java = { module = 'co.elastic.clients:elasticsearch-java', version = '8.19.0' }
 parsson = { module = 'org.eclipse.parsson:parsson', version = '1.1.7' }

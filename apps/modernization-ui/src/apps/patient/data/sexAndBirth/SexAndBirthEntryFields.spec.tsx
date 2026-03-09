@@ -5,9 +5,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { SexAndBirthEntryFields } from './SexAndBirthEntryFields';
 import { SexBirthCodedValues } from './useSexBirthCodedValues';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
-jest.mock('design-system/date/clock', () => ({
+vi.mock('design-system/date/clock', () => ({
     now: () => mockNow()
 }));
 
@@ -22,7 +22,7 @@ const mockSexBirthCodedValues: SexBirthCodedValues = {
     multipleBirth: [{ name: 'Yes', value: 'Y' }]
 };
 
-jest.mock('./useSexBirthCodedValues', () => ({
+vi.mock('./useSexBirthCodedValues', () => ({
     useSexBirthCodedValues: () => mockSexBirthCodedValues
 }));
 
@@ -30,10 +30,10 @@ const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: jest.fn()
+    state: vi.fn()
 };
 
-jest.mock('options/location', () => ({
+vi.mock('options/location', () => ({
     useLocationOptions: () => mockLocationOptions
 }));
 

@@ -15,19 +15,23 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '22.x'
 
       - name: Install dependencies
         working-directory: ./apps/modernization-ui
         run: npm install
 
-      - name: Verify
+      - name: Lint
+        working-directory: ./apps/modernization-ui
+        run: npm run lint
+
+      - name: Unit Test
         working-directory: ./apps/modernization-ui
         run: npm run test:all
 
-      - name: Ensure
+      - name: Build
         working-directory: ./apps/modernization-ui
         run: npm run build

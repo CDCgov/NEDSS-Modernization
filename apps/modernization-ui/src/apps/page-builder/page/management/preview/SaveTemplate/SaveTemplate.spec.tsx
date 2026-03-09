@@ -37,7 +37,7 @@ describe('When SaveTemplate renders', () => {
     };
     it('should display inputs', () => {
         const { container } = render(
-            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
+            <PageManagementProvider page={content} fetch={vi.fn()} refresh={vi.fn()} loading={false}>
                 <AlertProvider>
                     <SaveTemplate modalRef={modalRef} />
                 </AlertProvider>
@@ -48,7 +48,7 @@ describe('When SaveTemplate renders', () => {
     });
     it('should display input labels', () => {
         const { container } = render(
-            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
+            <PageManagementProvider page={content} fetch={vi.fn()} refresh={vi.fn()} loading={false}>
                 <AlertProvider>
                     <SaveTemplate modalRef={modalRef} />
                 </AlertProvider>

@@ -64,7 +64,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 const setup = () => {
     return render(
         <Wrapper>
-            <RepeatingBlock questions={subSections.questions} valid={true} setValid={jest.fn()} />
+            <RepeatingBlock questions={subSections.questions} valid={true} setValid={vi.fn()} />
         </Wrapper>
     );
 };

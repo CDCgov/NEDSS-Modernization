@@ -10,7 +10,7 @@ import { genders } from 'options/gender';
 import { indicators } from 'options/indicator';
 import { LocationOptions } from 'options/location';
 
-const mockState = jest.fn();
+const mockState = vi.fn();
 
 const location: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],

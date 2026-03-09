@@ -6,7 +6,7 @@ import {
     evaluateSexBirth
 } from './evaluated';
 
-jest.mock('design-system/date/clock', () => ({
+vi.mock('design-system/date/clock', () => ({
     now: () => '2013-09-17T00:00:00'
 }));
 

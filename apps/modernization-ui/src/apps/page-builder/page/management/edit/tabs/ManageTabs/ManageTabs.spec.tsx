@@ -49,7 +49,7 @@ const content: PagesResponse = {
 
 const { getByTestId } = render(
     <DragDropProvider pageData={content}>
-        <ManageTabs pageId={0} onAddSuccess={jest.fn()} tabs={content.tabs!} />
+        <ManageTabs pageId={0} onAddSuccess={vi.fn()} tabs={content.tabs!} />
     </DragDropProvider>
 );
 

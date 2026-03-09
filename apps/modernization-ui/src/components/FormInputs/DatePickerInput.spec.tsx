@@ -54,7 +54,7 @@ describe('DatePickerInput component tests', () => {
 
     describe('when a valid date value is entered', () => {
         it('should alert value changes in the ISO-8601 instant format when a date is typed', async () => {
-            const onChange = jest.fn();
+            const onChange = vi.fn();
 
             const { getByTestId } = render(
                 <DatePickerInput
@@ -75,7 +75,7 @@ describe('DatePickerInput component tests', () => {
         });
 
         it('should alert value changes when a date is selected', async () => {
-            const onChange = jest.fn();
+            const onChange = vi.fn();
 
             const { getByTestId, getByText } = render(
                 <DatePickerInput

@@ -14,13 +14,13 @@ const mockDetailedRaces: Selectable[] = [
     { value: '3', name: 'detailed race2' }
 ];
 
-jest.mock('options/race', () => ({
+vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
-    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: jest.fn })
+    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn() })
 }));
 
-const onChange = jest.fn();
-const isDirty = jest.fn();
+const onChange = vi.fn();
+const isDirty = vi.fn();
 
 describe('RaceRepeatingBlock', () => {
     it('should display correct table headers', async () => {

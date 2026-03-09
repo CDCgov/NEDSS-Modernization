@@ -5,7 +5,7 @@ import { AppliedFilters } from './AppliedFilters';
 
 describe('when there are applied filters', () => {
     it('should display a single value filter when applied', () => {
-        const { getByText } = render(<AppliedFilters label={'Testing'} filters={[]} onRemove={jest.fn} />);
+        const { getByText } = render(<AppliedFilters label={'Testing'} filters={[]} onRemove={vi.fn} />);
 
         const title = getByText('All Testing');
 
@@ -28,7 +28,7 @@ describe('when there are applied filters', () => {
             }
         ];
 
-        const onRemove = jest.fn();
+        const onRemove = vi.fn();
 
         const { getAllByRole } = render(<AppliedFilters label={'Testing'} filters={filters} onRemove={onRemove} />);
 
@@ -51,7 +51,7 @@ describe('when there are applied filters', () => {
             value: 'prefix-value'
         };
 
-        const { getByText } = render(<AppliedFilters label={'Testing'} filters={[filter]} onRemove={jest.fn} />);
+        const { getByText } = render(<AppliedFilters label={'Testing'} filters={[filter]} onRemove={vi.fn} />);
 
         expect(getByText('Single Value Starts with prefix-value')).toBeInTheDocument();
     });
@@ -64,7 +64,7 @@ describe('when there are applied filters', () => {
             values: ['value-one', 'value-two']
         };
 
-        const { getByText } = render(<AppliedFilters label={'Testing'} filters={[filter]} onRemove={jest.fn} />);
+        const { getByText } = render(<AppliedFilters label={'Testing'} filters={[filter]} onRemove={vi.fn} />);
 
         expect(getByText('Multi Value equals value-one OR value-two')).toBeInTheDocument();
     });
@@ -76,7 +76,7 @@ describe('when there are applied filters', () => {
             operator: { name: 'today', value: 'TODAY' }
         };
 
-        const { getByText } = render(<AppliedFilters label={'Testing'} filters={[filter]} onRemove={jest.fn} />);
+        const { getByText } = render(<AppliedFilters label={'Testing'} filters={[filter]} onRemove={vi.fn} />);
 
         expect(getByText('Date Period today')).toBeInTheDocument();
     });
@@ -90,7 +90,7 @@ describe('when there are applied filters', () => {
             before: '12/29/2023'
         };
 
-        const { getByText } = render(<AppliedFilters label={'Testing'} filters={[filter]} onRemove={jest.fn} />);
+        const { getByText } = render(<AppliedFilters label={'Testing'} filters={[filter]} onRemove={vi.fn} />);
 
         expect(getByText('Date Range between 12/01/2023 and 12/29/2023'));
     });
