@@ -26,7 +26,7 @@ jobs:
       # Check graphql types are up to date
       - name: Check Graphql generated types
         working-directory: apps/modernization-ui
-        run: npm run generate && git diff --exit-code
+        run: npm ci && npm run generate && git diff --exit-code
 
       # Install npm dependencies, cache them, run tests
       - name: Cypress run
