@@ -23,13 +23,13 @@ public class DataSourceColumn {
   @Column(name = "column_uid", nullable = false)
   private Long id;
 
-  @Column(name = "column_max_length")
+  @Column(name = "column_max_len")
   private Integer columnMaxLength;
 
   @Column(name = "column_name", length = 50)
   private String columnName;
 
-  @Column(name = "column_title", length = 50)
+  @Column(name = "column_title", length = 60)
   private String columnTitle;
 
   @Column(name = "column_type_code", length = 20)
