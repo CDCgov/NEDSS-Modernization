@@ -37,10 +37,6 @@ public class DisplayColumn {
   @JoinColumn(name = "data_source_uid", nullable = false)
   private Report report;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "data_source_uid", nullable = false, insertable = false, updatable = false)
-  private DataSource dataSource;
-
   @NonNull @Column(name = "sequence_nbr")
   private Integer sequenceNumber;
 
