@@ -11,7 +11,7 @@ class ReportFilterTest {
   void should_throw_exception_with_null_values() {
     assertThatThrownBy(() -> new ReportFilter(null, null, null, null))
         .isInstanceOf(NullPointerException.class)
-        .hasMessageContaining("reportUid is marked non-null but is null");
+        .hasMessageContaining("report is marked non-null but is null");
   }
 
   @Test
@@ -53,7 +53,7 @@ class ReportFilterTest {
 
     assertThat(actual)
         .isNotNull()
-        .extracting("id", "reportUid", "maxValueCnt") // Extracts fields directly, bypassing getters
+        .extracting("id", "report", "maxValueCnt") // Extracts fields directly, bypassing getters
         .containsOnlyNulls();
   }
 }
