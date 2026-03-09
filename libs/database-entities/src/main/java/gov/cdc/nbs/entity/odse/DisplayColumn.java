@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -33,15 +32,9 @@ public class DisplayColumn {
   private DataSourceColumn dataSourceColumn;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
-
-  // use @JoinColumns to indicate multiple
-  // join columns are needed in the examples table
-  @JoinColumns({
-    // define the first join column
-    @JoinColumn(name = "report_uid", nullable = false),
-    // define the second join column.
-    @JoinColumn(name = "data_source_uid", nullable = false)
-  })
+  // Report has a composite primary key
+  @JoinColumn(name = "report_uid", nullable = false)
+  @JoinColumn(name = "data_source_uid", nullable = false)
   private Report report;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
