@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalDate;
+import gov.cdc.nbs.time.EffectiveTime;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
@@ -28,8 +28,9 @@ class DataSourceTest {
     String dataSourceTitle = "Disease Counts by County";
     String dataSourceTypeCode = "N220";
     String descTxt = "Disease Counts by County sumarized to the Case Level";
-    LocalDate effectiveFromTime = LocalDate.parse("2020-03-03");
-    LocalDate effectiveToTime = LocalDate.parse("2020-03-04");
+    LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
+    LocalDateTime effectiveToTime = LocalDateTime.parse("2020-03-04T10:15:30");
+    EffectiveTime effectiveTime = new EffectiveTime(effectiveFromTime, effectiveToTime);
     String orgAccessPermission = "N";
     String progAreaAccessPermission = "N";
     Character statusCd = 'Y';
@@ -46,8 +47,7 @@ class DataSourceTest {
             dataSourceTitle,
             dataSourceTypeCode,
             descTxt,
-            effectiveFromTime,
-            effectiveToTime,
+            effectiveTime,
             orgAccessPermission,
             progAreaAccessPermission,
             statusCd,
@@ -62,8 +62,9 @@ class DataSourceTest {
         .satisfies(ds -> assertEquals(dataSourceName, ds.getDataSourceName()))
         .satisfies(ds -> assertEquals(dataSourceTypeCode, ds.getDataSourceTypeCode()))
         .satisfies(ds -> assertEquals(descTxt, ds.getDescTxt()))
-        .satisfies(ds -> assertEquals(effectiveFromTime, ds.getEffectiveFromTime()))
-        .satisfies(ds -> assertEquals(effectiveToTime, ds.getEffectiveToTime()))
+        .satisfies(
+            ds -> assertEquals(effectiveFromTime, ds.getEffectiveTime().getEffectiveFromTime()))
+        .satisfies(ds -> assertEquals(effectiveToTime, ds.getEffectiveTime().getEffectiveToTime()))
         .satisfies(ds -> assertEquals(orgAccessPermission, ds.getOrgAccessPermission()))
         .satisfies(ds -> assertEquals(progAreaAccessPermission, ds.getProgAreaAccessPermission()))
         .satisfies(ds -> assertEquals(statusCd, ds.getStatusCd()))

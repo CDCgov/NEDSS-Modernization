@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import gov.cdc.nbs.audit.Added;
 import gov.cdc.nbs.audit.Status;
+import gov.cdc.nbs.time.EffectiveTime;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
@@ -32,8 +33,7 @@ class ReportTest {
         .satisfies(report -> assertEquals(reportId, report.getId().getReportUid()))
         .satisfies(report -> assertEquals(dataSource, report.getId().getDataSourceUid()))
         .satisfies(report -> assertNull(report.getDescTxt()))
-        .satisfies(report -> assertNull(report.getEffectiveFromTime()))
-        .satisfies(report -> assertNull(report.getEffectiveToTime()))
+        .satisfies(report -> assertNull(report.getEffectiveTime()))
         .satisfies(report -> assertNull(report.getFilterMode()))
         .satisfies(report -> assertNull(report.getIsModifiableIndicator()))
         .satisfies(report -> assertNull(report.getLocation()))
@@ -58,6 +58,7 @@ class ReportTest {
     String descTxt = "Counts of Reportable Diseases by County for Selected Time Frame";
     LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
     LocalDateTime effectiveToTime = LocalDateTime.parse("2020-03-04T10:15:30");
+    EffectiveTime effectiveTime = new EffectiveTime(effectiveFromTime, effectiveToTime);
     Character filterMode = 'B';
     Character isModifiableIndicator = 'N';
     String location = "MOCKREPORT.SAS";
@@ -78,8 +79,7 @@ class ReportTest {
             dataSourceObj,
             reportLibrary,
             descTxt,
-            effectiveFromTime,
-            effectiveToTime,
+            effectiveTime,
             filterMode,
             isModifiableIndicator,
             location,
@@ -98,8 +98,11 @@ class ReportTest {
         .satisfies(report -> assertEquals(reportId, report.getId().getReportUid()))
         .satisfies(report -> assertEquals(reportId, report.getId().getDataSourceUid()))
         .satisfies(report -> assertEquals(descTxt, report.getDescTxt()))
-        .satisfies(report -> assertEquals(effectiveFromTime, report.getEffectiveFromTime()))
-        .satisfies(report -> assertEquals(effectiveToTime, report.getEffectiveToTime()))
+        .satisfies(
+            report ->
+                assertEquals(effectiveFromTime, report.getEffectiveTime().getEffectiveFromTime()))
+        .satisfies(
+            report -> assertEquals(effectiveToTime, report.getEffectiveTime().getEffectiveToTime()))
         .satisfies(report -> assertEquals(filterMode, report.getFilterMode()))
         .satisfies(report -> assertEquals(isModifiableIndicator, report.getIsModifiableIndicator()))
         .satisfies(report -> assertEquals(location, report.getLocation()))

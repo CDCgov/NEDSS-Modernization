@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalDate;
+import gov.cdc.nbs.time.EffectiveTime;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
@@ -26,8 +26,9 @@ class DataSourceColumnTest {
     DataSource dataSource = new DataSource();
     String descTxt = "Investigation ID";
     Character displayable = 'Y';
-    LocalDate effectiveFromTime = LocalDate.parse("2020-03-03");
-    LocalDate effectiveToTime = LocalDate.parse("2020-03-04");
+    LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
+    LocalDateTime effectiveToTime = LocalDateTime.parse("2020-03-04T10:15:30");
+    EffectiveTime effectiveTime = new EffectiveTime(effectiveFromTime, effectiveToTime);
     Character filterable = 'Y';
     Character statusCd = 'Y';
     LocalDateTime statusTime = LocalDateTime.parse("2020-03-03T10:15:30");
@@ -42,8 +43,7 @@ class DataSourceColumnTest {
             dataSource,
             descTxt,
             displayable,
-            effectiveFromTime,
-            effectiveToTime,
+            effectiveTime,
             filterable,
             statusCd,
             statusTime);
@@ -57,8 +57,9 @@ class DataSourceColumnTest {
         .satisfies(dc -> assertEquals(dataSource, dc.getDataSource()))
         .satisfies(dc -> assertEquals(descTxt, dc.getDescTxt()))
         .satisfies(dc -> assertEquals(displayable, dc.getDisplayable()))
-        .satisfies(dc -> assertEquals(effectiveFromTime, dc.getEffectiveFromTime()))
-        .satisfies(dc -> assertEquals(effectiveToTime, dc.getEffectiveToTime()))
+        .satisfies(
+            dc -> assertEquals(effectiveFromTime, dc.getEffectiveTime().getEffectiveFromTime()))
+        .satisfies(dc -> assertEquals(effectiveToTime, dc.getEffectiveTime().getEffectiveToTime()))
         .satisfies(dc -> assertEquals(filterable, dc.getFilterable()))
         .satisfies(dc -> assertEquals(statusCd, dc.getStatusCd()))
         .satisfies(dc -> assertEquals(statusTime, dc.getStatusTime()));

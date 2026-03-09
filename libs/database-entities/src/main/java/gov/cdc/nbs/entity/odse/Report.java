@@ -2,6 +2,7 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Added;
 import gov.cdc.nbs.audit.Status;
+import gov.cdc.nbs.time.EffectiveTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
@@ -10,7 +11,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,11 +43,7 @@ public class Report {
   @Column(name = "desc_txt", length = 300)
   private String descTxt;
 
-  @Column(name = "effective_from_time")
-  private LocalDateTime effectiveFromTime;
-
-  @Column(name = "effective_to_time")
-  private LocalDateTime effectiveToTime;
+  @Embedded private EffectiveTime effectiveTime;
 
   @Column(name = "filter_mode", length = 1)
   private Character filterMode;

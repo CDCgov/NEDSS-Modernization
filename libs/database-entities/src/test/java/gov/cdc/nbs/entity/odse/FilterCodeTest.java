@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import gov.cdc.nbs.audit.Status;
+import gov.cdc.nbs.time.EffectiveTime;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +24,7 @@ class FilterCodeTest {
     String descText = "Basic Condition Filter";
     LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
     LocalDateTime effectiveToTime = LocalDateTime.parse("2020-03-04T10:15:30");
+    EffectiveTime effectiveTime = new EffectiveTime(effectiveFromTime, effectiveToTime);
     String filterCode = "C_D01";
     String filterCodeSetName = "PHC_TYPE";
     String filterType = "BAS_CON_LIST";
@@ -34,8 +36,7 @@ class FilterCodeTest {
             filterCodeId,
             codeTable,
             descText,
-            effectiveFromTime,
-            effectiveToTime,
+            effectiveTime,
             filterCode,
             filterCodeSetName,
             filterType,
@@ -46,8 +47,9 @@ class FilterCodeTest {
         .satisfies(fc -> assertEquals(filterCodeId, fc.getId()))
         .satisfies(fc -> assertEquals(codeTable, fc.getCodeTable()))
         .satisfies(fc -> assertEquals(descText, fc.getDescTxt()))
-        .satisfies(fc -> assertEquals(effectiveFromTime, fc.getEffectiveFromTime()))
-        .satisfies(fc -> assertEquals(effectiveToTime, fc.getEffectiveToTime()))
+        .satisfies(
+            fc -> assertEquals(effectiveFromTime, fc.getEffectiveTime().getEffectiveFromTime()))
+        .satisfies(fc -> assertEquals(effectiveToTime, fc.getEffectiveTime().getEffectiveToTime()))
         .satisfies(fc -> assertEquals(filterCode, fc.getCode()))
         .satisfies(fc -> assertEquals(filterCodeSetName, fc.getFilterCodeSetName()))
         .satisfies(fc -> assertEquals(filterType, fc.getFilterType()))
