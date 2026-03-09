@@ -1,9 +1,18 @@
 package gov.cdc.nbs.entity.odse;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
+import gov.cdc.nbs.time.EffectiveTime;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -45,11 +54,7 @@ public class DataSource {
   @Column(name = "desc_txt", length = 300)
   private String descTxt;
 
-  @Column(name = "effective_from_time")
-  private LocalDate effectiveFromTime;
-
-  @Column(name = "effective_to_time")
-  private LocalDate effectiveToTime;
+  @Embedded private EffectiveTime effectiveTime;
 
   @Column(name = "org_access_permis", length = 2000)
   private String orgAccessPermission;

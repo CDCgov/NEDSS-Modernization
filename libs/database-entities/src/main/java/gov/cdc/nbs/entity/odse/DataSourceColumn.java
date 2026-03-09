@@ -1,7 +1,14 @@
 package gov.cdc.nbs.entity.odse;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
+import gov.cdc.nbs.time.EffectiveTime;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,11 +53,7 @@ public class DataSourceColumn {
   @Column(name = "displayable", length = 1)
   private Character displayable;
 
-  @Column(name = "effective_from_time")
-  private LocalDate effectiveFromTime;
-
-  @Column(name = "effective_to_time")
-  private LocalDate effectiveToTime;
+  @Embedded private EffectiveTime effectiveTime;
 
   //  TODO: add a converter? // NOSONAR
   @Column(name = "filterable", length = 1)
