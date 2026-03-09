@@ -59,7 +59,7 @@ public class Report {
   private String location;
 
   @Column(name = "owner_uid")
-  private Integer ownerUid;
+  private Long ownerUid;
 
   @Column(name = "org_access_permis", length = 2000)
   private String orgAccessPermission;

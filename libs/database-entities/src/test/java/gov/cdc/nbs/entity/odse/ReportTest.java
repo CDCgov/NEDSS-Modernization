@@ -61,7 +61,7 @@ class ReportTest {
     Character filterMode = 'B';
     Character isModifiableIndicator = 'N';
     String location = "MOCKREPORT.SAS";
-    Integer ownerUid = 1;
+    Long ownerUid = 1L;
     String orgAccessPermission = "ORG_ACCESS_PERMISSION";
     String progAreaAccessPermission = "PROG_AREA_ACCESS_PERMISSION";
     String reportTitle = "SR2: Counts of Reportable Diseases by County for Selected Time Frame";
