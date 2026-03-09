@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.audit.Added;
 import gov.cdc.nbs.audit.Status;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -43,6 +43,7 @@ class ReportTest {
         .satisfies(report -> assertNull(report.getReportTitle()))
         .satisfies(report -> assertNull(report.getReportTypeCode()))
         .satisfies(report -> assertNull(report.getShared()))
+        .satisfies(report -> assertNull(report.getAdded()))
         .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()));
   }
@@ -68,7 +69,7 @@ class ReportTest {
     Character shared = 'S';
     String category = "Summary Report";
     String sectionCd = "1000";
-    Audit audit = new Audit();
+    Added added = new Added(9L, effectiveFromTime, "new report");
     Status status = new Status();
 
     Report actual =
@@ -90,7 +91,7 @@ class ReportTest {
             shared,
             category,
             sectionCd,
-            audit,
+            added,
             status);
 
     assertThat(actual)
@@ -112,6 +113,7 @@ class ReportTest {
         .satisfies(report -> assertEquals(category, report.getCategory()))
         .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()))
+        .satisfies(report -> assertEquals(added, report.getAdded()))
         .satisfies(report -> assertEquals(status, report.getStatus()))
         .satisfies(report -> assertEquals(dataSourceObj, report.getDataSource()));
   }

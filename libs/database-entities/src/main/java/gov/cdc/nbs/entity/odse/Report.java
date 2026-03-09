@@ -1,6 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.audit.Added;
 import gov.cdc.nbs.audit.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -83,7 +83,7 @@ public class Report {
   @NonNull @Column(name = "section_cd", length = 5, nullable = false)
   private String sectionCd;
 
-  @Embedded private Audit audit;
+  @Embedded private Added added;
 
   @Embedded private Status status;
 
