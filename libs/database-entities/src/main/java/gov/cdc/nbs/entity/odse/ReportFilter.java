@@ -21,11 +21,18 @@ public class ReportFilter {
   private Long id;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "report_uid", nullable = false)
-  private Report reportUid;
+  // use @JoinColumns to indicate multiple
+  // join columns are needed in the examples table
+  @JoinColumns({
+    // define the first join column
+    @JoinColumn(name = "report_uid", nullable = false),
+    // define the second join column.
+    @JoinColumn(name = "data_source_uid", nullable = false)
+  })
+  private Report report;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "data_source_uid", nullable = false)
+  @JoinColumn(name = "data_source_uid", nullable = false, insertable = false, updatable = false)
   private DataSource dataSource;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)

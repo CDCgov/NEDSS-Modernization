@@ -32,7 +32,7 @@ class DisplayColumnTest {
     assertThat(actual)
         .satisfies(dc -> assertEquals(id, dc.getId()))
         .satisfies(dc -> assertEquals(dataSourceColumn, dc.getDataSourceColumn()))
-        .satisfies(dc -> assertEquals(report, dc.getReportUid()))
+        .satisfies(dc -> assertEquals(report, dc.getReport()))
         .satisfies(dc -> assertEquals(dataSource, dc.getDataSource()))
         .satisfies(dc -> assertEquals(sequenceNumber, dc.getSequenceNumber()))
         .satisfies(dc -> assertEquals(statusCd, dc.getStatusCd()))

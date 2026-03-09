@@ -38,7 +38,7 @@ class ReportFilterTest {
 
     assertThat(actual)
         .satisfies(rf -> assertEquals(reportFilterId, rf.getId()))
-        .satisfies(rf -> assertEquals(report, rf.getReportUid()))
+        .satisfies(rf -> assertEquals(report, rf.getReport()))
         .satisfies(rf -> assertEquals(dataSource, rf.getDataSource()))
         .satisfies(rf -> assertEquals(filterCode, rf.getFilterCode()))
         .satisfies(rf -> assertEquals(dataSourceColumn, rf.getDataSourceColumn()))
