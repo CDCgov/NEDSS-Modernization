@@ -175,13 +175,13 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Organization Search Pa
 
   Scenario: Inactivate an existing organization
     When I navigate to classic organization Search pane
-    And I enter organization name in input text field "Northside Hospital"
+    And I enter the the same organization name in the Search Pane
     And I click on the Submit button
-    Then the search results should include "Northside Hospital"
+    Then the organization should appear in search results
     When I click View on the search results
     And I click the Inactivate button
     When I confirm the inactivation
     And I navigate to classic organization Search pane
-    And I enter organization name in input text field "Northside Hospital"
+    And I enter the the same organization name in the Search Pane
     And I click on the Submit button
     Then I should see a message that no matching organizations were found
