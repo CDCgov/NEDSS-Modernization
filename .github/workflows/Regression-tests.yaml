@@ -18,6 +18,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Clean up old containers and volumes
+        working-directory: ./cdc-sandbox
+        run: docker compose down -v
       
       - name: Run containers
         working-directory: ./cdc-sandbox
