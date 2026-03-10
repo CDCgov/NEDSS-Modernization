@@ -1,7 +1,6 @@
 import js from '@eslint/js';
 import react from 'eslint-plugin-react';
 import tseslint from '@typescript-eslint/eslint-plugin';
-import prettier from 'eslint-plugin-prettier';
 import reactHooks from 'eslint-plugin-react-hooks';
 import storybook from 'eslint-plugin-storybook';
 import jsdoc from 'eslint-plugin-jsdoc';
@@ -30,7 +29,6 @@ export default defineConfig([
         plugins: {
             react,
             '@typescript-eslint': tseslint,
-            prettier,
             'react-hooks': reactHooks,
             storybook,
             jsdoc,
@@ -39,7 +37,6 @@ export default defineConfig([
         rules: {
             ...js.configs.recommended.rules,
             ...jsdoc.configs['flat/requirements-typescript'].rules,
-            'prettier/prettier': 'error',
             'no-console': 'warn',
             'require-jsdoc': 'off',
             'jsdoc/require-jsdoc': 'off',
@@ -79,7 +76,6 @@ export default defineConfig([
             '@typescript-eslint/no-unused-vars': 'off',
             'no-undef': 'off',
             'no-unused-vars': 'off',
-            'prettier/prettier': 'off',
         },
     },
 ]);
