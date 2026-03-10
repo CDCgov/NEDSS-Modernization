@@ -27,6 +27,7 @@ on:
     paths:
       - "apps/**"
       - "!apps/modernization-ui/**"
+      - "!apps/report-execution/**"
       - "libs/**"
       - "build.gradle"
       - "settings.gradle"
