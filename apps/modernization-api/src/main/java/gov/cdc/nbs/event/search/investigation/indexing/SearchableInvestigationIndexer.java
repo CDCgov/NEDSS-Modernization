@@ -3,10 +3,8 @@ package gov.cdc.nbs.event.search.investigation.indexing;
 import gov.cdc.nbs.event.search.investigation.SearchableInvestigation;
 import gov.cdc.nbs.search.ElasticsearchSimpleDocumentIndexer;
 import gov.cdc.nbs.search.SimpleDocument;
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
-
+import org.springframework.stereotype.Component;
 
 @Component
 public class SearchableInvestigationIndexer {
@@ -28,10 +26,6 @@ public class SearchableInvestigationIndexer {
 
   private static SimpleDocument convert(final SearchableInvestigation searchable) {
     String identifier = String.valueOf(searchable.identifier());
-    return new SimpleDocument(
-        identifier,
-        searchable
-    );
+    return new SimpleDocument(identifier, searchable);
   }
-
 }

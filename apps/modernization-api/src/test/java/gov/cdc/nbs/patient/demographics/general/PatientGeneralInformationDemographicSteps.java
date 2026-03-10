@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.demographics.general;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.LocalDate;
 
 public class PatientGeneralInformationDemographicSteps {
@@ -13,8 +12,7 @@ public class PatientGeneralInformationDemographicSteps {
 
   PatientGeneralInformationDemographicSteps(
       final Active<PatientIdentifier> active,
-      final PatientGeneralInformationDemographicApplier applier
-  ) {
+      final PatientGeneralInformationDemographicApplier applier) {
     this.active = active;
     this.applier = applier;
   }
@@ -47,7 +45,9 @@ public class PatientGeneralInformationDemographicSteps {
 
   @Given("the patient lives with {int} children")
   public void childrenInResidence(final int value) {
-    active.maybeActive().ifPresent(patient -> applier.withChildrenInResidence(patient, null, value));
+    active
+        .maybeActive()
+        .ifPresent(patient -> applier.withChildrenInResidence(patient, null, value));
   }
 
   @Given("the patient's primary occupation is {occupation}")
@@ -74,5 +74,4 @@ public class PatientGeneralInformationDemographicSteps {
   public void stateHIVCase(final String value) {
     active.maybeActive().ifPresent(patient -> applier.withStateHIVCase(patient, value));
   }
-
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigation;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -19,8 +18,7 @@ record PatientVaccination(
     DisplayableSimpleName provider,
     LocalDate administeredOn,
     String administered,
-    Collection<AssociatedInvestigation> associations
-) {
+    Collection<AssociatedInvestigation> associations) {
   PatientVaccination withAssociations(final Collection<AssociatedInvestigation> associations) {
     return new PatientVaccination(
         patient,
@@ -31,7 +29,6 @@ record PatientVaccination(
         provider,
         administeredOn,
         administered,
-        associations
-    );
+        associations);
   }
 }

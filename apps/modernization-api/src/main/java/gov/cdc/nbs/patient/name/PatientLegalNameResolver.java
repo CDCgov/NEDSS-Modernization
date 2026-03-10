@@ -1,11 +1,10 @@
 package gov.cdc.nbs.patient.name;
 
 import gov.cdc.nbs.demographics.name.DisplayableName;
-import org.springframework.stereotype.Component;
-
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PatientLegalNameResolver {
@@ -13,11 +12,7 @@ public class PatientLegalNameResolver {
   private final Clock clock;
   private final PatientLegalNameFinder finder;
 
-
-  PatientLegalNameResolver(
-      final Clock clock,
-      final PatientLegalNameFinder finder
-  ) {
+  PatientLegalNameResolver(final Clock clock, final PatientLegalNameFinder finder) {
     this.clock = clock;
     this.finder = finder;
   }

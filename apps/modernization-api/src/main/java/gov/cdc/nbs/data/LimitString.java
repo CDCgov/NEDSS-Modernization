@@ -10,8 +10,5 @@ public class LimitString {
     return input.length() > maxLength ? input.substring(0, maxLength) : input;
   }
 
-  private LimitString() {
-
-  }
-
+  private LimitString() {}
 }

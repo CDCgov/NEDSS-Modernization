@@ -3,18 +3,18 @@ package gov.cdc.nbs.patient.file.history;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
 class PatientMergeMother {
 
-  private static final String INSERT = """
+  private static final String INSERT =
+      """
       INSERT INTO person_merge (
           superced_person_uid,
           superceded_version_ctrl_nbr,
@@ -41,7 +41,8 @@ class PatientMergeMother {
       )
       """;
 
-  private static final String DELETE = """
+  private static final String DELETE =
+      """
       DELETE FROM person_merge
       WHERE surviving_person_uid IN (:survivors)
       """;
@@ -62,9 +63,9 @@ class PatientMergeMother {
       int supersededVersion,
       Long supersededParent,
       long userId,
-      LocalDateTime mergedAt
-  ) {
-    client.sql(INSERT)
+      LocalDateTime mergedAt) {
+    client
+        .sql(INSERT)
         .param("supersededId", supersededId)
         .param("supersededVersion", supersededVersion)
         .param("supersededParent", supersededParent)
@@ -81,18 +82,14 @@ class PatientMergeMother {
   }
 
   void remove(long survivingId) {
-    client.sql(DELETE)
-        .param("survivors", List.of(survivingId))
-        .update();
+    client.sql(DELETE).param("survivors", List.of(survivingId)).update();
   }
 
   @PreDestroy
   void reset() {
     var survivors = available.all().toList();
     if (!survivors.isEmpty()) {
-      client.sql(DELETE)
-          .param("survivors", survivors)
-          .update();
+      client.sql(DELETE).param("survivors", survivors).update();
       available.reset();
     }
   }

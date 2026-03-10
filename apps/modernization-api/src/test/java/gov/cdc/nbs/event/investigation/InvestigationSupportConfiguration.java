@@ -38,5 +38,4 @@ class InvestigationSupportConfiguration {
   Active<CityCountyCaseIdentifier> activeCityCountyCaseId() {
     return new Active<>();
   }
-
 }
