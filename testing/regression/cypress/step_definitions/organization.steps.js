@@ -21,6 +21,10 @@ When("I enter the same organization name in the Search Pane", () => {
   classicOrganizationPage.enterSameOrganizationNameInSearchPane();
 });
 
+When("I save the number of search results", () => {
+  classicOrganizationPage.saveSearchResultsCount();
+});
+
 When("I enter organization address in input text field {string}", (text) => {
   classicOrganizationPage.enterOrganizationAddressInSearch(text)
 });
@@ -160,8 +164,8 @@ Then("the search results should include {string}", (expectedText) => {
   classicOrganizationPage.verifySearchResultsContain(expectedText)
 });
 
-Then("there should be {int} search result(s)", (expectedCount) => {
-  classicOrganizationPage.verifySearchResultsCount(expectedCount);
+Then("there should be {int} more search result than before", (additionalResultCount) => {
+  classicOrganizationPage.verifySearchResultsCountIncreasedBy(additionalResultCount);
 });
 
 Then("one of the search results should have the generated quick code", () => {

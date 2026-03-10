@@ -99,6 +99,7 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Organization Search Pa
     And I enter organization name in input text field "CHOA - Scottish Rite"
     And I click on the Submit button
     And I click View on the search results
+    And I save the number of search results
     And I click the Edit button
     And I select "A change to existing information for non typographical reasons" as the reason for edit
     And I enter a unique quick code
@@ -111,7 +112,7 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Organization Search Pa
     And I navigate to classic organization Search pane
     And I enter organization name in input text field "CHOA - Scottish Rite"
     And I click on the Submit button
-    Then there should be 2 search results
+    Then there should be 1 more search result than before
     And one of the search results should have the generated quick code
     And the search results should include address "456 Main Street"
 
@@ -174,14 +175,21 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Organization Search Pa
     And the search results should include ID Type "Organization identifier" with ID Value "CLIA5678"
 
   Scenario: Inactivate an existing organization
+
     When I navigate to classic organization Search pane
-    And I enter the the same organization name in the Search Pane
+    And I enter a unique organization name in the name field
     And I click on the Submit button
-    Then the organization should appear in search results
-    When I click View on the search results
-    And I click the Inactivate button
-    When I confirm the inactivation
+    And I click the Add button
+    And I select the role "Allergy clinic"
+    And I click on the Submit button 
+    And I click the Add button
     And I navigate to classic organization Search pane
-    And I enter the the same organization name in the Search Pane
+    And I enter the same organization name in the Search Pane
+    And I click on the Submit button 
+    And I click View on the search results
+    And I click the Inactivate button
+    And I confirm the inactivation
+    And I navigate to classic organization Search pane
+    And I enter the same organization name in the Search Pane
     And I click on the Submit button
     Then I should see a message that no matching organizations were found

@@ -35,6 +35,26 @@ class ClassicOrganizationPage {
         .type(orgName);
     });
   }
+
+  saveSearchResultsCount() {
+    cy.log('Saving search results count');
+    
+    // Get the text from the red result message
+    cy.get('div.boldTenDkRed', { timeout: 10000 })
+      .should('be.visible')
+      .invoke('text')
+      .then((text) => {
+        // Extract the number from text like "resulted in 3 possible matches"
+        const match = text.match(/resulted in (\d+) possible matches/);
+        const count = match ? parseInt(match[1]) : 0;
+        
+        cy.log(`Found ${count} search results`);
+        
+        // Save to alias for later use
+        cy.wrap(count).as('searchResultsCount');
+      });
+  }
+
   // Add/Edit methods
 
   clickEditButton() {
@@ -65,13 +85,26 @@ class ClassicOrganizationPage {
     cy.contains('View').eq(0).click();
   }
 
-  verifySearchResultsCount(expectedCount) {
-    cy.log(`Verifying search results message shows ${expectedCount} possible matches`);
-    
-    // Check the red text div for the expected count
-    cy.get('div.boldTenDkRed', { timeout: 10000 })
-      .should('be.visible')
-      .and('contain', `resulted in ${expectedCount} possible matches`);
+  verifySearchResultsCountIncreasedBy(additionalCount) {
+    cy.log(`Verifying search results count increased by ${additionalCount}`);
+    // Get the previously saved count
+    cy.get('@searchResultsCount').then((savedCount) => {
+      const expectedCount = savedCount + additionalCount;
+      
+      cy.log(`Saved count: ${savedCount}, Expected: ${expectedCount} (${additionalCount > 0 ? '+' : ''}${additionalCount})`);
+      
+      // Check the current count from the red text
+      cy.get('div.boldTenDkRed', { timeout: 10000 })
+        .should('be.visible')
+        .invoke('text')
+        .then((text) => {
+          const match = text.match(/resulted in (\d+) possible matches/);
+          const currentCount = match ? parseInt(match[1]) : 0;
+          
+          cy.log(`Current count: ${currentCount}`);
+          expect(currentCount).to.equal(expectedCount);
+        });
+    });
   }
   
   // Verification methods
