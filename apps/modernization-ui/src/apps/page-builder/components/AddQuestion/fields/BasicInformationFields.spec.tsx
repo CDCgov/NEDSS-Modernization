@@ -7,7 +7,7 @@ import { CreateQuestionForm } from '../QuestionForm';
 const { result } = renderHook(() =>
     useForm<CreateQuestionForm>({
         mode: 'onBlur',
-        defaultValues: { uniqueId: 'duplicateUniqueId', uniqueName: 'duplicateUniqueName' }
+        defaultValues: { uniqueId: 'duplicateUniqueId', uniqueName: 'duplicateUniqueName' },
     })
 );
 
@@ -17,22 +17,22 @@ const mockUseQuestionValidation = {
     validate,
     isValid: false,
     error: undefined,
-    isLoading: false
+    isLoading: false,
 };
 
 vi.mock('apps/page-builder/hooks/api/useQuestionValidation', () => ({
-    useQuestionValidation: () => mockUseQuestionValidation
+    useQuestionValidation: () => mockUseQuestionValidation,
 }));
 
 vi.mock('apps/page-builder/hooks/api/useOptions', () => ({
     useOptions: () => {
         return { options: [] };
-    }
+    },
 }));
 
 const Fixture = () => {
     const form = useForm<CreateQuestionForm>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (

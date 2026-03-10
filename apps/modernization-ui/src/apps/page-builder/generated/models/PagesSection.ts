@@ -10,4 +10,3 @@ export type PagesSection = {
     visible: boolean;
     subSections: Array<PagesSubSection>;
 };
-

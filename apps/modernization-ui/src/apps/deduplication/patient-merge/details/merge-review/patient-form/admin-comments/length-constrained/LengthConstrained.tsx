@@ -31,7 +31,8 @@ export const LengthConstrained = ({ content, limit }: Props) => {
                         <Button tertiary sizing="small" onClick={() => setConstrained(true)}>
                             [show less]
                         </Button>
-                    }>
+                    }
+                >
                     <Button tertiary sizing="small" onClick={() => setConstrained(false)}>
                         [show more]
                     </Button>

@@ -3,29 +3,29 @@ import {
     CreateDateQuestionRequest,
     CreateNumericQuestionRequest,
     CreateTextQuestionRequest,
-    QuestionControllerService
+    QuestionControllerService,
 } from '../generated';
 
 export const createTextQuestion = async (token: string, request: CreateTextQuestionRequest) => {
     return await QuestionControllerService.createTextQuestion({
-        requestBody: request
+        requestBody: request,
     });
 };
 
 export const createNumericQuestion = async (token: string, request: CreateNumericQuestionRequest) => {
     return await QuestionControllerService.createNumericQuestion({
-        requestBody: request
+        requestBody: request,
     });
 };
 
 export const createDateQuestion = async (token: string, request: CreateDateQuestionRequest) => {
     return await QuestionControllerService.createDateQuestion({
-        requestBody: request
+        requestBody: request,
     });
 };
 
 export const createCodedQuestion = async (token: string, request: CreateCodedQuestionRequest) => {
     return await QuestionControllerService.createCodedQuestion({
-        requestBody: request
+        requestBody: request,
     });
 };

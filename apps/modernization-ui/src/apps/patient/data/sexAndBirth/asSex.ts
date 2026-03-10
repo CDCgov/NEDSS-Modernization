@@ -14,7 +14,7 @@ const asSex = (entry: SexEntry): Sex | undefined => {
             current: asValue(current),
             unknownReason: asValue(unknownReason),
             transgenderInformation: asValue(transgenderInformation),
-            additionalGender: orUndefined(additionalGender)
+            additionalGender: orUndefined(additionalGender),
         };
     }
 };

@@ -31,8 +31,9 @@ const Collapsible = ({ id, open = true, children }: CollapsibleProps) => {
             id={id}
             style={{ height }}
             className={classNames(styles.collapsible, {
-                [styles.collapsed]: !open
-            })}>
+                [styles.collapsed]: !open,
+            })}
+        >
             <div ref={contentRef}>{children}</div>
         </div>
     );

@@ -5,7 +5,7 @@ import { fetchProgramAreaOptions } from 'apps/page-builder/services/programAreaA
 import {
     fetchCodingSystemOptions,
     fetchFamilyOptions,
-    fetchGroupOptions
+    fetchGroupOptions,
 } from 'apps/page-builder/services/valueSetAPI';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -26,7 +26,7 @@ const codingSystemDefault = 'CONDITION_LIST_CDC';
 export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const { handleSubmit, control, reset, resetField, formState } = useForm<CreateConditionRequest>({
         mode: 'onBlur',
-        defaultValues: { codeSystemDescTxt: codingSystemDefault }
+        defaultValues: { codeSystemDescTxt: codingSystemDefault },
     });
     const formWatch = useWatch({ control });
     const { showAlert } = useAlert();
@@ -97,9 +97,9 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         rules={{
                             pattern: {
                                 value: /^[A-Za-z0-9_+():*-=;,./]+$/,
-                                message: 'Valid characters are A-Z, a-z, 0-9, or * ( ) _ + - = ; : / . ,'
+                                message: 'Valid characters are A-Z, a-z, 0-9, or * ( ) _ + - = ; : / . ,',
                             },
-                            required: { value: true, message: 'Condition name is required' }
+                            required: { value: true, message: 'Condition name is required' },
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <Input
@@ -129,7 +129,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 options={systemOptions.map((option) => {
                                     return {
                                         name: option.preferredConceptName ?? '',
-                                        value: option.localCode ?? ''
+                                        value: option.localCode ?? '',
                                     };
                                 })}
                                 error={error?.message}
@@ -144,8 +144,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                             required: { value: true, message: 'Condition Code required' },
                             pattern: {
                                 value: /^\w*$/,
-                                message: 'Valid characters are A-Z, a-z, 0-9, or _'
-                            }
+                                message: 'Valid characters are A-Z, a-z, 0-9, or _',
+                            },
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
@@ -172,7 +172,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 options={programAreaOptions.map((option) => {
                                     return {
                                         name: option.display!,
-                                        value: option.value!
+                                        value: option.value!,
                                     };
                                 })}
                                 error={error?.message}
@@ -191,7 +191,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 options={familyOptions.map((option) => {
                                     return {
                                         name: option.display,
-                                        value: option.localCode
+                                        value: option.localCode,
                                     };
                                 })}
                             />
@@ -209,7 +209,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 options={groupOptions.map((option) => {
                                     return {
                                         name: option.display,
-                                        value: option.localCode
+                                        value: option.localCode,
                                     };
                                 })}
                             />

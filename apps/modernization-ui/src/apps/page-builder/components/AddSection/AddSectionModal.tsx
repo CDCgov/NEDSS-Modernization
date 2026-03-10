@@ -39,13 +39,13 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
             if (isSubSection) {
                 await SubSectionControllerService.createSubsection({
                     page: parseInt(pageId),
-                    requestBody: { name: sectionName, sectionId, visible }
+                    requestBody: { name: sectionName, sectionId, visible },
                 });
                 onAddSection();
             } else {
                 await SectionControllerService.createSection({
                     page: parseInt(pageId),
-                    requestBody: { name: sectionName, tabId, visible }
+                    requestBody: { name: sectionName, tabId, visible },
                 });
                 onAddSection();
             }
@@ -103,13 +103,15 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
                                 modalRef={modalRef}
                                 closer
                                 data-testid="section-add-btn"
-                                onClick={handleSubmit}>
+                                onClick={handleSubmit}
+                            >
                                 Add Section
                             </ModalToggleButton>
                         </ButtonGroup>
                     </ModalFooter>
                 </>
-            }></ModalComponent>
+            }
+        ></ModalComponent>
     );
 };
 

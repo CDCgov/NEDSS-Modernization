@@ -43,7 +43,7 @@ const initial: State = {
     status: 'idle',
     filters: [],
     pages: [],
-    keyword: ''
+    keyword: '',
 };
 
 const usePageSummarySearch = () => {
@@ -83,16 +83,16 @@ const usePageSummarySearch = () => {
             PageSummaryService.search({
                 requestBody: {
                     search: state.keyword,
-                    filters: state.filters
+                    filters: state.filters,
                 },
                 page: page.current - 1,
                 size: page.pageSize,
-                sort: sorting ? [sorting] : undefined
+                sort: sorting ? [sorting] : undefined,
             })
                 .then((response) => ({
                     content: response.content ?? [],
                     total: response.totalElements ?? 0,
-                    current: response.number ?? 0
+                    current: response.number ?? 0,
                 }))
                 .then((result) => {
                     dispatch({ type: 'found', result: result.content });
@@ -106,7 +106,7 @@ const usePageSummarySearch = () => {
         pages: state.pages,
         search: (keyword?: string, filters?: Filter[]) =>
             dispatch({ type: 'search', keyword, filters: externalize(filters ?? []) as APIFilter[] }),
-        keyword: state.keyword
+        keyword: state.keyword,
     };
 };
 

@@ -65,23 +65,23 @@ export type {
     BasicWorkPhone,
     BasicPhoneEmail,
     BasicEthnicityRace,
-    BasicIdentificationEntry
+    BasicIdentificationEntry,
 };
 
 const initial = (asOf: string = today()): BasicNewPatientEntry => ({
     administrative: {
-        asOf: asOf
+        asOf: asOf,
     },
     address: {
         country: {
             value: '840',
-            name: 'United States'
-        }
+            name: 'United States',
+        },
     },
     identifications: [],
     ethnicityRace: {
-        races: []
-    }
+        races: [],
+    },
 });
 
 export { initial };

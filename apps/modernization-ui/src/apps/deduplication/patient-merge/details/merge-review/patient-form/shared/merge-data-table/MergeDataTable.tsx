@@ -37,7 +37,7 @@ export const MergeDataTable = <V,>({
     isSelected,
     onSelect,
     isViewed,
-    onView
+    onView,
 }: Props<V>): ReactNode => {
     const displayedColumns: Column<V>[] = [
         {
@@ -53,7 +53,7 @@ export const MergeDataTable = <V,>({
                         selected={isSelected(v)}
                     />
                 </div>
-            )
+            ),
         },
         ...columns,
         {
@@ -71,8 +71,8 @@ export const MergeDataTable = <V,>({
                         onClick={() => onView(v)}
                     />
                 </div>
-            )
-        }
+            ),
+        },
     ];
 
     return (

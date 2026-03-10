@@ -66,8 +66,8 @@ export const Address = ({ sizing, orientation }: EntryFieldsProps) => {
                     pattern: {
                         value: /^\d{1,5}(?:[-\s]\d{1,4})?$/,
                         message:
-                            'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
-                    }
+                            'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).',
+                    },
                 }}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <Input

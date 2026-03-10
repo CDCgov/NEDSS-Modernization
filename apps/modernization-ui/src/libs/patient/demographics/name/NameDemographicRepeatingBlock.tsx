@@ -14,7 +14,7 @@ const columns: Column<NameDemographic>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (v) => v.asOf,
-        render: (v) => internalizeDate(v.asOf)
+        render: (v) => internalizeDate(v.asOf),
     },
     { id: 'name-type', name: 'Type', className: styles['coded-header'], sortable: true, value: (v) => v.type?.name },
     {
@@ -22,7 +22,7 @@ const columns: Column<NameDemographic>[] = [
         name: labels.prefix,
         className: styles['coded-header'],
         sortable: true,
-        value: (v) => v.prefix?.name
+        value: (v) => v.prefix?.name,
     },
     { id: 'name-last', name: labels.last, sortable: true, value: (v) => v.last },
     { id: 'name-first', name: labels.first, sortable: true, value: (v) => v.first },
@@ -32,15 +32,15 @@ const columns: Column<NameDemographic>[] = [
         name: labels.suffix,
         className: styles['coded-header'],
         sortable: true,
-        value: (v) => v.suffix?.name
+        value: (v) => v.suffix?.name,
     },
     {
         id: 'name-degree',
         name: labels.degree,
         className: styles['coded-header'],
         sortable: true,
-        value: (v) => v.degree?.name
-    }
+        value: (v) => v.degree?.name,
+    },
 ];
 
 type NameDemographicRepeatingBlockProps = {

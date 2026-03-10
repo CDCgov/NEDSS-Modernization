@@ -6,4 +6,3 @@ export type Target = {
     targetIdentifier?: string;
     label?: string;
 };
-

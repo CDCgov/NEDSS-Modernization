@@ -4,7 +4,7 @@ import { asSelectable, Selectable } from 'options';
 
 const meta = {
     title: 'Design System/Autocomplete/TextAutocomplete',
-    component: TextAutocomplete
+    component: TextAutocomplete,
 } satisfies Meta<typeof TextAutocomplete>;
 
 export default meta;
@@ -16,7 +16,7 @@ const options: Selectable[] = [
     asSelectable('banana', 'Banana'),
     asSelectable('mango', 'Mango'),
     asSelectable('orange', 'Orange'),
-    asSelectable('watermelon', 'Watermelon')
+    asSelectable('watermelon', 'Watermelon'),
 ];
 
 const resolver = (searchText: string) => {
@@ -29,6 +29,6 @@ export const Default: Story = {
         name: 'selectautocomplete-default',
         label: 'Default',
         resolver: resolver,
-        placeholder: 'Type text'
-    }
+        placeholder: 'Type text',
+    },
 };

@@ -6,7 +6,7 @@ import {
     validZipCodeRule,
     ZipCodeInputField,
     CensusTractInputField,
-    validCensusTractRule
+    validCensusTractRule,
 } from 'libs/demographics/location';
 import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input';
@@ -22,7 +22,7 @@ const AddressDemographicFields = ({
     orientation = 'horizontal',
     sizing = 'medium',
     options,
-    entry
+    entry,
 }: AddressDemographicFieldsProps) => {
     const { control, setValue } = useFormContext<AddressDemographic>();
 

@@ -48,7 +48,7 @@ const PageManagementProvider = ({ page, children, fetch, refresh, loading }: Pag
             refresh,
             select,
             displayStaticTab,
-            selectStaticTab
+            selectStaticTab,
         };
     }, [JSON.stringify(page), selected, displayStaticTab]);
 

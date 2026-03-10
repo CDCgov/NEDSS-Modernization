@@ -17,7 +17,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
     const { control, setValue } = useFormContext<GroupRequest & { batches: Batch[] }>();
     const { fields } = useFieldArray({
         control,
-        name: 'batches'
+        name: 'batches',
     });
 
     const batches = useWatch({ control: control, name: 'batches' });
@@ -86,7 +86,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                             defaultValue={value ? 'Y' : 'N'}
                                             options={[
                                                 { name: 'Yes', value: 'Y' },
-                                                { name: 'No', value: 'N' }
+                                                { name: 'No', value: 'N' },
                                             ]}
                                             required
                                             error={error?.message}
@@ -99,7 +99,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                     control={control}
                                     name={`batches.${index}.label`}
                                     rules={{
-                                        required: { value: batches[index].appearsInTable, message: 'Enter label' }
+                                        required: { value: batches[index].appearsInTable, message: 'Enter label' },
                                     }}
                                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                                         <Input
@@ -118,7 +118,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                     control={control}
                                     name={`batches.${index}.width`}
                                     rules={{
-                                        required: { value: batches[index].appearsInTable, message: 'Define width' }
+                                        required: { value: batches[index].appearsInTable, message: 'Define width' },
                                     }}
                                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                                         <Input

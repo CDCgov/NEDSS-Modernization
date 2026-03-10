@@ -34,7 +34,7 @@ export const useListConcepts = (codesetName?: string) => {
     useEffect(() => {
         if (state.status === 'fetching') {
             ConceptControllerService.findConcepts({
-                codeSetNm: state.codesetName
+                codeSetNm: state.codesetName,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => dispatch({ type: 'complete', concepts: response ?? [] }));
@@ -45,7 +45,7 @@ export const useListConcepts = (codesetName?: string) => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'fetching',
         concepts: state.status === 'complete' ? state.concepts : [],
-        fetch: (codesetName: string) => dispatch({ type: 'fetch', codesetName })
+        fetch: (codesetName: string) => dispatch({ type: 'fetch', codesetName }),
     };
 
     return value;

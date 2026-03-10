@@ -18,7 +18,7 @@ const useRaceOptions = (): RaceOptions => {
     return {
         categories,
         details,
-        selected
+        selected,
     };
 };
 

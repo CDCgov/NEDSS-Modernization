@@ -33,7 +33,7 @@ const defaultDataElements: DataElements = {
     zip: { active: true, logOdds: 23, oddsRatio: 120 },
     email: { active: true, logOdds: 23, oddsRatio: 120 },
     telephone: { active: true, logOdds: 23, oddsRatio: 120 },
-    identifier: { active: true, logOdds: 23, oddsRatio: 120 }
+    identifier: { active: true, logOdds: 23, oddsRatio: 120 },
 };
 type Props = {
     visible?: boolean;
@@ -45,8 +45,8 @@ const Fixture = ({ visible = true, dataElements = defaultDataElements }: Props) 
             name: 'Pass name',
             description: 'This is my description for this pass',
             blockingCriteria: [BlockingAttribute.FIRST_NAME],
-            active: true
-        }
+            active: true,
+        },
     });
     return (
         <FormProvider {...form}>

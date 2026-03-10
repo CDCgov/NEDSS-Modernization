@@ -12,4 +12,3 @@ export type Condition = {
     page?: string;
     status: string;
 };
-

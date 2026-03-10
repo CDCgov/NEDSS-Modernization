@@ -20,7 +20,7 @@ const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues,
         mode: 'onBlur',
-        reValidateMode: 'onBlur'
+        reValidateMode: 'onBlur',
     });
 
     const interaction = usePatientSearch({ form });
@@ -33,8 +33,9 @@ const PatientSearch = () => {
                 available={sorting}
                 defaultSort={{
                     property: 'patientname',
-                    direction: Direction.Ascending
-                }}>
+                    direction: Direction.Ascending,
+                }}
+            >
                 <PaginationPreferenceProvider id="search.patients.preferences.pagination">
                     <SearchInteractionProvider interaction={interaction}>
                         <FormProvider {...form}>

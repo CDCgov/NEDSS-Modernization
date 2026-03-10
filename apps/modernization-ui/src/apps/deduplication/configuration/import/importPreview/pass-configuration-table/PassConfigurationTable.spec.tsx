@@ -11,7 +11,7 @@ const algorithm: { passes: Pass[] } = {
             blockingCriteria: [BlockingAttribute.ADDRESS],
             matchingCriteria: [{ attribute: MatchingAttribute.FIRST_NAME, method: MatchMethod.JAROWINKLER }],
             lowerBound: 0.25,
-            upperBound: 0.88
+            upperBound: 0.88,
         },
         {
             name: 'Test pass2',
@@ -20,12 +20,12 @@ const algorithm: { passes: Pass[] } = {
             blockingCriteria: [BlockingAttribute.IDENTIFIER],
             matchingCriteria: [
                 { attribute: MatchingAttribute.SEX, method: MatchMethod.EXACT },
-                { attribute: MatchingAttribute.WIC_IDENTIFIER, method: MatchMethod.EXACT }
+                { attribute: MatchingAttribute.WIC_IDENTIFIER, method: MatchMethod.EXACT },
             ],
             lowerBound: 0.55,
-            upperBound: 0.9
-        }
-    ]
+            upperBound: 0.9,
+        },
+    ],
 };
 const Fixture = () => {
     return <PassConfigurationTable algorithm={algorithm} />;

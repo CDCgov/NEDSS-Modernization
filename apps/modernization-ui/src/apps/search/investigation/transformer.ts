@@ -8,7 +8,7 @@ import {
     InvestigationStatus,
     NotificationStatus,
     PregnancyStatus,
-    ProcessingStatus
+    ProcessingStatus,
 } from 'generated/graphql/schema';
 import { EventDate, Identification, InvestigationFilterEntry } from './InvestigationFormTypes';
 import { asNumericValues, asValue, asValues } from 'options/selectable';
@@ -35,7 +35,7 @@ export const transformObject = (data: InvestigationFilterEntry): InvestigationFi
         processingStatuses:
             remaining.processingStatuses && (asValues(remaining.processingStatuses) as ProcessingStatus[]),
         notificationStatuses:
-            remaining.notificationStatuses && (asValues(remaining.notificationStatuses) as NotificationStatus[])
+            remaining.notificationStatuses && (asValues(remaining.notificationStatuses) as NotificationStatus[]),
     };
 };
 
@@ -44,7 +44,7 @@ const resolveEventDate = (date?: EventDate): InvestigationEventDateSearch | unde
         return {
             type: date.type.value as InvestigationEventDateType,
             from: date.from,
-            to: date.to
+            to: date.to,
         };
     }
 
@@ -55,7 +55,7 @@ const resolveEventId = (identification?: Identification): EventId | undefined =>
     if (identification && identification.type && identification.type.value) {
         return {
             id: identification.value,
-            investigationEventType: identification.type.value as InvestigationEventIdType
+            investigationEventType: identification.type.value as InvestigationEventIdType,
         };
     }
     return undefined;

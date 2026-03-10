@@ -101,14 +101,14 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
         if (response) {
             showAlert({
                 type: 'success',
-                message: `Successfully added questions to page.`
+                message: `Successfully added questions to page.`,
             });
             refresh();
         }
         if (error) {
             showAlert({
                 type: 'error',
-                message: `Failed to add question(s) to page.`
+                message: `Failed to add question(s) to page.`,
             });
         }
     }, [response, error]);

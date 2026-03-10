@@ -114,7 +114,7 @@ const useNavigationBlock = ({ activated = true, allowed }: NavigationBlockSettin
         allow,
         block,
         unblock,
-        reset
+        reset,
     };
 };
 

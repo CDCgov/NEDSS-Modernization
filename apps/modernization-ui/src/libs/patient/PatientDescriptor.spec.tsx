@@ -4,7 +4,7 @@ import { PatientDescriptor } from './PatientDescriptor';
 const mockNow = vi.fn();
 
 vi.mock('design-system/date/clock', () => ({
-    now: () => mockNow()
+    now: () => mockNow(),
 }));
 
 describe('when displaying the demographics summary of a patient', () => {
@@ -16,7 +16,7 @@ describe('when displaying the demographics summary of a patient', () => {
         const patient = {
             id: 17,
             patientId: 397,
-            status: 'ACTIVE'
+            status: 'ACTIVE',
         };
 
         render(<PatientDescriptor patient={patient} headingLevel={1} />);
@@ -29,7 +29,7 @@ describe('when displaying the demographics summary of a patient', () => {
         const patient = {
             id: 17,
             patientId: 397,
-            status: 'status value'
+            status: 'status value',
         };
 
         render(<PatientDescriptor patient={patient} headingLevel={1} />);
@@ -42,7 +42,7 @@ describe('when displaying the demographics summary of a patient', () => {
             id: 17,
             patientId: 397,
             status: 'status value',
-            sex: 'gender-value'
+            sex: 'gender-value',
         };
 
         render(<PatientDescriptor patient={patient} headingLevel={1} />);
@@ -54,7 +54,7 @@ describe('when displaying the demographics summary of a patient', () => {
         const patient = {
             id: 17,
             patientId: 397,
-            status: 'INACTIVE'
+            status: 'INACTIVE',
         };
 
         render(<PatientDescriptor patient={patient} headingLevel={1} />);
@@ -72,15 +72,15 @@ describe('when displaying the demographics summary of a patient', () => {
                     first: 'first-name-value',
                     middle: 'middle-name-value',
                     last: 'last-name-value',
-                    suffix: 'suffix-value'
-                }
+                    suffix: 'suffix-value',
+                },
             };
 
             render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(
                 screen.getByRole('heading', {
-                    name: 'last-name-value, first-name-value middle-name-value, suffix-value'
+                    name: 'last-name-value, first-name-value middle-name-value, suffix-value',
                 })
             ).toBeInTheDocument();
         });
@@ -91,15 +91,15 @@ describe('when displaying the demographics summary of a patient', () => {
                 patientId: 397,
                 status: 'status value',
                 name: {
-                    first: 'first-name-value'
-                }
+                    first: 'first-name-value',
+                },
             };
 
             render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(
                 screen.getByRole('heading', {
-                    name: '--, first-name-value'
+                    name: '--, first-name-value',
                 })
             ).toBeInTheDocument();
         });
@@ -110,15 +110,15 @@ describe('when displaying the demographics summary of a patient', () => {
                 patientId: 397,
                 status: 'status value',
                 name: {
-                    middle: 'middle-name-value'
-                }
+                    middle: 'middle-name-value',
+                },
             };
 
             render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(
                 screen.getByRole('heading', {
-                    name: '--, -- middle-name-value'
+                    name: '--, -- middle-name-value',
                 })
             ).toBeInTheDocument();
         });
@@ -129,15 +129,15 @@ describe('when displaying the demographics summary of a patient', () => {
                 patientId: 397,
                 status: 'status value',
                 name: {
-                    last: 'last-name-value'
-                }
+                    last: 'last-name-value',
+                },
             };
 
             render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(
                 screen.getByRole('heading', {
-                    name: 'last-name-value, --'
+                    name: 'last-name-value, --',
                 })
             ).toBeInTheDocument();
         });
@@ -148,15 +148,15 @@ describe('when displaying the demographics summary of a patient', () => {
                 patientId: 397,
                 status: 'status value',
                 name: {
-                    suffix: 'suffix-value'
-                }
+                    suffix: 'suffix-value',
+                },
             };
 
             render(<PatientDescriptor patient={patient} headingLevel={1} />);
 
             expect(
                 screen.getByRole('heading', {
-                    name: '--, --, suffix-value'
+                    name: '--, --, suffix-value',
                 })
             ).toBeInTheDocument();
         });
@@ -170,7 +170,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 id: 17,
                 patientId: 397,
                 status: 'status value',
-                birthday: '08/09/1979'
+                birthday: '08/09/1979',
             };
 
             render(<PatientDescriptor patient={patient} headingLevel={1} />);
@@ -186,7 +186,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 patientId: 397,
                 status: 'status value',
                 birthday: '08/09/1979',
-                deceasedOn: '11/18/2010'
+                deceasedOn: '11/18/2010',
             };
 
             render(<PatientDescriptor patient={patient} headingLevel={1} />);

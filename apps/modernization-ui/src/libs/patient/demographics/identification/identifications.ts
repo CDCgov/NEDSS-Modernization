@@ -19,7 +19,7 @@ const initial = (asOf: Supplier<string>): IdentificationDemographic => ({
     asOf: asOf(),
     type: null,
     issuer: null,
-    value: null
+    value: null,
 });
 
 export { initial };
@@ -28,7 +28,7 @@ const labels = {
     asOf: 'As of',
     type: 'Type',
     issuer: 'Assigning authority',
-    value: 'ID value'
+    value: 'ID value',
 };
 
 export { labels };

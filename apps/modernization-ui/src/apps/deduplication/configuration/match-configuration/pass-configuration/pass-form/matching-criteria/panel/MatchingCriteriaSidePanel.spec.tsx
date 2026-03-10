@@ -47,7 +47,7 @@ const defaultDataElements: DataElements = {
     patientInternalIdentifier: { active: true, logOdds: 23, oddsRatio: 120 },
     personNumber: { active: true, logOdds: 23, oddsRatio: 120 },
     visaPassport: { active: true, logOdds: 23, oddsRatio: 120 },
-    wicIdentifier: { active: true, logOdds: 23, oddsRatio: 120 }
+    wicIdentifier: { active: true, logOdds: 23, oddsRatio: 120 },
 };
 
 type Props = {
@@ -61,8 +61,8 @@ const Fixture = ({ visible = true, dataElements = defaultDataElements }: Props) 
             description: 'This is my description for this pass',
             blockingCriteria: [BlockingAttribute.FIRST_NAME],
             matchingCriteria: [],
-            active: true
-        }
+            active: true,
+        },
     });
 
     return (

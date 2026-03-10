@@ -22,7 +22,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
 
     const validatePageName = async (val: string) => {
         const response = await PageControllerService.validatePageRequest({
-            requestBody: { name: val }
+            requestBody: { name: val },
         });
         if (!response) {
             form.setError('name', { message: 'Name is already in use' });
@@ -45,7 +45,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         options={props.conditions.map((m) => {
                             return {
                                 name: m.name ?? '',
-                                value: m.id
+                                value: m.id,
                             };
                         })}
                     />
@@ -66,7 +66,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 name="name"
                 rules={{
                     required: { value: true, message: 'Name is required.' },
-                    ...validPageNameRule
+                    ...validPageNameRule,
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
@@ -92,7 +92,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 control={form.control}
                 name="templateId"
                 rules={{
-                    required: { value: true, message: 'Template is required.' }
+                    required: { value: true, message: 'Template is required.' },
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SelectInput
@@ -107,11 +107,12 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         options={props.templates.map((template) => {
                             return {
                                 name: template.templateNm ?? '',
-                                value: template.id?.toString() ?? ''
+                                value: template.id?.toString() ?? '',
                             };
                         })}
                         error={error?.message}
-                        required></SelectInput>
+                        required
+                    ></SelectInput>
                 )}
             />
             <p>

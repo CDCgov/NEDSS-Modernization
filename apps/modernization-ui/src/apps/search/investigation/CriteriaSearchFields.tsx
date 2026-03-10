@@ -4,7 +4,7 @@ import {
     caseStatusOptions,
     investigationStatusOptions,
     notificationStatusOptions,
-    processingStatusOptions
+    processingStatusOptions,
 } from './InvestigationFormTypes';
 import { SingleSelect, MultiSelect } from 'design-system/select';
 import { ConceptMultiSelect } from 'options/concepts/ConceptMultiSelect';

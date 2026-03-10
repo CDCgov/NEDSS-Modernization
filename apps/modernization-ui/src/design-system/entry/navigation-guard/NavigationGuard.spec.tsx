@@ -18,7 +18,7 @@ const Fixture = ({
     value = false,
     allowed,
     cancelText,
-    save = vi.fn()
+    save = vi.fn(),
 }: {
     blocked?: boolean;
     activated?: boolean;
@@ -30,7 +30,7 @@ const Fixture = ({
     (navigation.useFormNavigationBlock as Mock).mockReturnValue({
         blocked,
         unblock: mockUnblock,
-        reset: mockReset
+        reset: mockReset,
     });
     (storage.useLocalStorage as Mock).mockReturnValue({ value, save });
     const form = {} as any; // Mock form object, adjust as needed

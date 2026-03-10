@@ -9,5 +9,5 @@ describe('MediaBlockBody component tests', () => {
             </MediaBlockBody>
         );
         expect(container.firstChild).toHaveClass('usa-media-block__body custom-class');
-    })
+    });
 });

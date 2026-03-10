@@ -44,7 +44,7 @@ export const useValueset = (name?: string) => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'fetching',
         valueset: state.status === 'complete' ? state.valueset : undefined,
-        fetch: (name: string) => dispatch({ type: 'fetch', name })
+        fetch: (name: string) => dispatch({ type: 'fetch', name }),
     };
 
     return value;

@@ -14,21 +14,21 @@ const columns: Column<RaceDemographic>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (v) => v.asOf,
-        render: (v) => internalizeDate(v.asOf)
+        render: (v) => internalizeDate(v.asOf),
     },
     {
         id: 'race-category',
         name: labels.race,
         className: styles['category-header'],
         sortable: true,
-        value: (v) => v.race?.name
+        value: (v) => v.race?.name,
     },
     {
         id: 'race-detailed',
         name: labels.detailed,
         sortable: true,
-        value: (v) => v.detailed.map((detail) => detail.name).join(', ')
-    }
+        value: (v) => v.detailed.map((detail) => detail.name).join(', '),
+    },
 ];
 
 type RaceDemographicRepeatingBlockProps = {

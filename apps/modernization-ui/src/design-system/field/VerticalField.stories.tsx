@@ -3,7 +3,7 @@ import { Field } from './Field';
 
 const meta = {
     title: 'Design System/Field/Top down',
-    component: Field
+    component: Field,
 } satisfies Meta<typeof Field>;
 
 export default meta;
@@ -15,34 +15,34 @@ export const Default: Story = {
         label: 'Label',
         children: <span>Field</span>,
         orientation: 'vertical',
-        htmlFor: 'story-vertical-field'
-    }
+        htmlFor: 'story-vertical-field',
+    },
 };
 
 export const Required: Story = {
     args: {
         ...Default.args,
-        required: true
-    }
+        required: true,
+    },
 };
 
 export const HelperText: Story = {
     args: {
         ...Default.args,
-        helperText: 'Helper text'
-    }
+        helperText: 'Helper text',
+    },
 };
 
 export const Error: Story = {
     args: {
         ...Default.args,
-        error: 'Helpful error message'
-    }
+        error: 'Helpful error message',
+    },
 };
 
 export const Warning: Story = {
     args: {
         ...Default.args,
-        warning: 'Helpful warning message'
-    }
+        warning: 'Helpful warning message',
+    },
 };

@@ -17,8 +17,8 @@ describe('DateRangeField Component', () => {
                 value={{
                     between: {
                         from: '02/17/1990',
-                        to: '02/17/2000'
-                    }
+                        to: '02/17/2000',
+                    },
                 }}
                 onChange={vi.fn()}
             />
@@ -50,8 +50,8 @@ describe('DateRangeField Component', () => {
                 id="testing-date-range-from-change"
                 value={{
                     between: {
-                        from: '02/17/1990'
-                    }
+                        from: '02/17/1990',
+                    },
                 }}
                 onChange={mockOnChange}
             />
@@ -87,8 +87,8 @@ describe('DateRangeField Component', () => {
                 value={{
                     between: {
                         from: '02/17/1990',
-                        to: '02/17/2000'
-                    }
+                        to: '02/17/2000',
+                    },
                 }}
                 onChange={mockOnChange}
             />

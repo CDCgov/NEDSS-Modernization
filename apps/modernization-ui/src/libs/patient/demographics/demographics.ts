@@ -46,7 +46,7 @@ const initial = (defaults: PatientDemographicsDefaults): PatientDemographicsEntr
         addresses: [],
         phoneEmails: [],
         identifications: [],
-        races: []
+        races: [],
     };
 };
 

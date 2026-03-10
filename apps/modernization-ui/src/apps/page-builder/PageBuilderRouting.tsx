@@ -7,7 +7,7 @@ const routing: RouteObject[] = [
         children: [
             {
                 index: true,
-                element: <Navigate to="pages" />
+                element: <Navigate to="pages" />,
             },
             {
                 path: 'pages',
@@ -15,14 +15,14 @@ const routing: RouteObject[] = [
                     {
                         index: true,
                         lazy: {
-                            Component: async () => (await import('./page/library')).GuardedPageLibrary
-                        }
+                            Component: async () => (await import('./page/library')).GuardedPageLibrary,
+                        },
                     },
                     {
                         path: 'add',
                         lazy: {
-                            Component: async () => (await import('./pages/AddNewPage')).GuardedAddNewPage
-                        }
+                            Component: async () => (await import('./pages/AddNewPage')).GuardedAddNewPage,
+                        },
                     },
                     {
                         path: ':pageId',
@@ -35,21 +35,21 @@ const routing: RouteObject[] = [
                             {
                                 index: true,
                                 lazy: {
-                                    Component: async () => (await import('./page/management/preview')).PreviewPage
-                                }
+                                    Component: async () => (await import('./page/management/preview')).PreviewPage,
+                                },
                             },
                             {
                                 path: 'edit',
                                 lazy: {
-                                    Component: async () => (await import('./page/management/edit/Edit')).Edit
-                                }
+                                    Component: async () => (await import('./page/management/edit/Edit')).Edit,
+                                },
                             },
                             {
                                 path: 'details',
                                 lazy: {
                                     Component: async () =>
-                                        (await import('./page/management/preview/PageDetails/PageDetails')).PageDetails
-                                }
+                                        (await import('./page/management/preview/PageDetails/PageDetails')).PageDetails,
+                                },
                             },
                             {
                                 path: 'business-rules',
@@ -59,8 +59,8 @@ const routing: RouteObject[] = [
                                         lazy: {
                                             Component: async () =>
                                                 (await import('./pages/BusinessRulesLibrary/BusinessRulesLibrary'))
-                                                    .BusinessRulesLibrary
-                                        }
+                                                    .BusinessRulesLibrary,
+                                        },
                                     },
                                     {
                                         path: ':ruleId',
@@ -68,33 +68,33 @@ const routing: RouteObject[] = [
                                             Component: async () =>
                                                 (
                                                     await import('./pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule')
-                                                ).ViewBusinessRule
-                                        }
+                                                ).ViewBusinessRule,
+                                        },
                                     },
                                     {
                                         path: 'add',
                                         lazy: {
                                             Component: async () =>
                                                 (await import('./pages/BusinessRulesLibrary/Add/AddBusinessRules'))
-                                                    .AddBusinessRule
-                                        }
+                                                    .AddBusinessRule,
+                                        },
                                     },
                                     {
                                         path: 'edit/:ruleId',
                                         lazy: {
                                             Component: async () =>
                                                 (await import('./pages/BusinessRulesLibrary/Edit/EditBusinessRules'))
-                                                    .EditBusinessRule
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
+                                                    .EditBusinessRule,
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
 ];
 
 export { routing };

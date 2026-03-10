@@ -6,12 +6,12 @@ import { useSearchCriteria } from './useSearchCriteria';
 import { decrypt, encrypt } from 'cryptography';
 
 vi.mock('react-router', () => ({
-    useSearchParams: vi.fn()
+    useSearchParams: vi.fn(),
 }));
 
 vi.mock('cryptography', () => ({
     decrypt: vi.fn(),
-    encrypt: vi.fn()
+    encrypt: vi.fn(),
 }));
 
 describe('useSearchCriteria', () => {

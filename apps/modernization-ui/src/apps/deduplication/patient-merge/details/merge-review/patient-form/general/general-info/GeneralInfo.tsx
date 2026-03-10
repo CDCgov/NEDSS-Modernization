@@ -24,7 +24,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -40,7 +40,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -56,7 +56,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -72,7 +72,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -88,7 +88,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -104,7 +104,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -120,7 +120,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -136,7 +136,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -152,7 +152,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -169,7 +169,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             selectable={{
                                 id: `${field.name}-${personUid}`,
                                 formValue: personUid,
-                                ...field
+                                ...field,
                             }}
                         />
                     )}

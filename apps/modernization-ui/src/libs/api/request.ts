@@ -2,7 +2,7 @@ import { maybeMap } from 'utils/mapping';
 
 const maybeAsJsonPayload = maybeMap((body: object | string | number) => ({
     body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json' },
 }));
 
 /**
@@ -15,7 +15,7 @@ const get = (url: string) => {
     return new Request(url, {
         method: 'GET',
         headers: { Accept: 'application/json' },
-        credentials: 'same-origin'
+        credentials: 'same-origin',
     });
 };
 
@@ -31,7 +31,7 @@ const post = (url: string, body?: object) => {
     return new Request(url, {
         method: 'POST',
         credentials: 'same-origin',
-        ...payload
+        ...payload,
     });
 };
 
@@ -46,7 +46,7 @@ const put = (url: string, body?: object) => {
     const payload = maybeAsJsonPayload(body);
     return new Request(url, {
         method: 'PUT',
-        ...payload
+        ...payload,
     });
 };
 

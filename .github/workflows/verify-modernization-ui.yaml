@@ -28,6 +28,10 @@ jobs:
         working-directory: ./apps/modernization-ui
         run: npm run lint
 
+      - name: Check formatting
+        working-directory: ./apps/modernization-ui
+        run: npm run format:check
+
       - name: Unit Test
         working-directory: ./apps/modernization-ui
         run: npm run test:all

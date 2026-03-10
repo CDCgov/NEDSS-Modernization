@@ -76,7 +76,8 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                 <Card
                     title="Administrative"
                     id="administrative"
-                    info={<span className="required-before">Required</span>}>
+                    info={<span className="required-before">Required</span>}
+                >
                     <AdministrativeEntryFields sizing={sizing} />
                 </Card>
                 <Controller
@@ -172,7 +173,8 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                 <Card
                     id="generalInformation"
                     title="General patient information"
-                    info={<span className="required-before">Required</span>}>
+                    info={<span className="required-before">Required</span>}
+                >
                     <GeneralInformationEntryFields sizing={sizing} />
                 </Card>
             </div>

@@ -11,10 +11,10 @@ export const RaceDetails = ({ race }: Props) => {
             details={[
                 {
                     label: 'As of date',
-                    value: toDateDisplay(race.asOf)
+                    value: toDateDisplay(race.asOf),
                 },
                 { label: 'Race', value: race.race },
-                { label: 'Detailed race', value: race.detailedRaces }
+                { label: 'Detailed race', value: race.detailedRaces },
             ]}
         />
     );

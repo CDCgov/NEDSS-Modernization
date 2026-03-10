@@ -25,16 +25,16 @@ export class PageStaticControllerService {
         id,
         requestBody,
     }: {
-        page: number,
-        id: number,
-        requestBody: UpdateReadOnlyComments,
+        page: number;
+        id: number;
+        requestBody: UpdateReadOnlyComments;
     }): CancelablePromise<UpdateStaticResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/content/static/{id}/read-only-comments',
             path: {
-                'page': page,
-                'id': id,
+                page: page,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -49,16 +49,16 @@ export class PageStaticControllerService {
         id,
         requestBody,
     }: {
-        page: number,
-        id: number,
-        requestBody: UpdateDefault,
+        page: number;
+        id: number;
+        requestBody: UpdateDefault;
     }): CancelablePromise<UpdateStaticResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/content/static/{id}/line-separator',
             path: {
-                'page': page,
-                'id': id,
+                page: page,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -73,16 +73,16 @@ export class PageStaticControllerService {
         id,
         requestBody,
     }: {
-        page: number,
-        id: number,
-        requestBody: UpdateDefault,
+        page: number;
+        id: number;
+        requestBody: UpdateDefault;
     }): CancelablePromise<UpdateStaticResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/content/static/{id}/participants-list',
             path: {
-                'page': page,
-                'id': id,
+                page: page,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -97,16 +97,16 @@ export class PageStaticControllerService {
         id,
         requestBody,
     }: {
-        page: number,
-        id: number,
-        requestBody: UpdateDefault,
+        page: number;
+        id: number;
+        requestBody: UpdateDefault;
     }): CancelablePromise<UpdateStaticResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/content/static/{id}/elec-doc-list',
             path: {
-                'page': page,
-                'id': id,
+                page: page,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -121,16 +121,16 @@ export class PageStaticControllerService {
         id,
         requestBody,
     }: {
-        page: number,
-        id: number,
-        requestBody: UpdateHyperlink,
+        page: number;
+        id: number;
+        requestBody: UpdateHyperlink;
     }): CancelablePromise<UpdateStaticResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/content/static/{id}/hyperlink',
             path: {
-                'page': page,
-                'id': id,
+                page: page,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -144,14 +144,14 @@ export class PageStaticControllerService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: AddDefault,
+        page: number;
+        requestBody: AddDefault;
     }): CancelablePromise<AddStaticResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/content/static/read-only-participants-list',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -165,14 +165,14 @@ export class PageStaticControllerService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: AddReadOnlyComments,
+        page: number;
+        requestBody: AddReadOnlyComments;
     }): CancelablePromise<AddStaticResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/content/static/read-only-comments',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -186,14 +186,14 @@ export class PageStaticControllerService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: AddDefault,
+        page: number;
+        requestBody: AddDefault;
     }): CancelablePromise<AddStaticResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/content/static/original-elec-doc-list',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -207,14 +207,14 @@ export class PageStaticControllerService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: AddDefault,
+        page: number;
+        requestBody: AddDefault;
     }): CancelablePromise<AddStaticResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/content/static/line-separator',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -228,14 +228,14 @@ export class PageStaticControllerService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: AddHyperlink,
+        page: number;
+        requestBody: AddHyperlink;
     }): CancelablePromise<AddStaticResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/content/static/hyperlink',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -249,14 +249,14 @@ export class PageStaticControllerService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: DeleteElementRequest,
+        page: number;
+        requestBody: DeleteElementRequest;
     }): CancelablePromise<DeleteStaticResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/v1/pages/{page}/content/static/delete-static-element',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',
