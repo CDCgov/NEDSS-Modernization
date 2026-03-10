@@ -1,4 +1,5 @@
-from importlib import import_module
+import logging
+from importlib import import_module, invalidate_caches
 
 from . import errors, models, utils
 from .db_transaction import db_transaction
@@ -54,7 +55,9 @@ def get_library(library_name: str, is_builtin: bool):
         if is_builtin:
             return import_module(f'src.libraries.{library_name}')
         else:
-            raise errors.ToDoError('support custom libraries')
-    except ModuleNotFoundError:
+            invalidate_caches()
+            return import_module(f'src.libraries.custom.{library_name}')
+    except ModuleNotFoundError as e:
+        logging.error(e)
         # Initial error not helpful for debugging
         raise errors.MissingLibraryError(library_name, is_builtin) from None

@@ -1,3 +1,4 @@
+import logging
 import os
 
 from . import errors
@@ -8,6 +9,8 @@ def get_env_or_error(env_var: str):
     internal service error.
     """
     res = os.getenv(env_var)
+    for name, value in os.environ.items():
+        logging.warning(f"{name}: {value}")
     if res is None:
         raise errors.InternalServerError(
             f'Missing required environment variable: `{env_var}`'

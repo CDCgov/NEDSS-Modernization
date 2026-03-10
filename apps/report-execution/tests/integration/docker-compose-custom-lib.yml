@@ -1,0 +1,9 @@
+# Add volume mount for custom containers to base docker compose
+services:
+  report-execution:
+    network_mode: host
+    volumes:
+      - type: bind
+        source: ../apps/report-execution/tests/integration/assets/custom_library.py
+        target: /usr/report-execution/src/libraries/custom/custom_library.py
+        read_only: true
