@@ -1,15 +1,15 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
+import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 class PageDescriptionFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [template].wa_template_uid  as [identifier],
           [template].template_nm            as [name],
@@ -30,12 +30,9 @@ class PageDescriptionFinder {
   }
 
   Optional<PageDescription> find(final long identifier) {
-    return this.template.query(
-            QUERY,
-            statement -> statement.setLong(IDENTIFIER_PARAMETER, identifier),
-            this.mapper
-        ).stream()
+    return this.template
+        .query(QUERY, statement -> statement.setLong(IDENTIFIER_PARAMETER, identifier), this.mapper)
+        .stream()
         .findFirst();
   }
-
 }

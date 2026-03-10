@@ -1,13 +1,12 @@
 package gov.cdc.nbs.questionbank.option.page.name;
 
 import gov.cdc.nbs.questionbank.option.PageBuilderOption;
+import java.util.Collection;
+import java.util.Map;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.Map;
 
 @Component
 class PageNameAutocompleteOptionFinder {
@@ -16,7 +15,8 @@ class PageNameAutocompleteOptionFinder {
   private static final String LIMIT_PARAMETER = "limit";
   private static final String SQL_WILDCARD = "%";
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           template_nm
       from WA_Template [page]
@@ -37,16 +37,10 @@ class PageNameAutocompleteOptionFinder {
   }
 
   Collection<PageBuilderOption> resolve(final String term, final int limit) {
-    Map<String, Object> parameters = Map.of(
-        CRITERIA_PARAMETER, withWildcard(term),
-        LIMIT_PARAMETER, limit
-    );
+    Map<String, Object> parameters =
+        Map.of(CRITERIA_PARAMETER, withWildcard(term), LIMIT_PARAMETER, limit);
 
-    return this.template.query(
-        QUERY,
-        new MapSqlParameterSource(parameters),
-        this.mapper
-    );
+    return this.template.query(QUERY, new MapSqlParameterSource(parameters), this.mapper);
   }
 
   private String withWildcard(final String value) {

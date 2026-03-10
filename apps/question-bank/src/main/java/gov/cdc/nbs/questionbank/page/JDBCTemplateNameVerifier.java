@@ -4,9 +4,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-class JDBCTemplateNameVerifier implements TemplateNameVerifier{
+class JDBCTemplateNameVerifier implements TemplateNameVerifier {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
       count(*)
       from WA_template
@@ -22,11 +23,9 @@ class JDBCTemplateNameVerifier implements TemplateNameVerifier{
 
   @Override
   public boolean isUnique(final String name) {
-    return this.template.query(
-            QUERY,
-            statement -> statement.setString(1, name),
-            (rs, row) -> rs.getLong(1)
-        ).stream()
+    return this.template
+        .query(QUERY, statement -> statement.setString(1, name), (rs, row) -> rs.getLong(1))
+        .stream()
         .filter(found -> found > 0)
         .findFirst()
         .isEmpty();

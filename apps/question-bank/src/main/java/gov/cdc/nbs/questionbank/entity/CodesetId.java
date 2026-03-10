@@ -1,8 +1,8 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,12 +17,11 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class CodesetId implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Column(name = "class_cd", nullable = false, length = 30)
-    private String classCd;
+  @Column(name = "class_cd", nullable = false, length = 30)
+  private String classCd;
 
-    @Column(name = "code_set_nm", nullable = false, length = 256)
-    private String codeSetNm;
-
+  @Column(name = "code_set_nm", nullable = false, length = 256)
+  private String codeSetNm;
 }

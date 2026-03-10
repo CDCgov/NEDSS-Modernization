@@ -10,12 +10,8 @@ public sealed interface ValueSetCommand {
       String description,
       long codesetId,
       Instant addTime,
-      long addUserId) implements ValueSetCommand {
-  }
+      long addUserId)
+      implements ValueSetCommand {}
 
-  record Update(
-      String name,
-      String description) implements ValueSetCommand {
-  }
-
+  record Update(String name, String description) implements ValueSetCommand {}
 }
