@@ -98,8 +98,8 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Organization Search Pa
     When I navigate to classic organization Search pane
     And I enter organization name in input text field "CHOA - Scottish Rite"
     And I click on the Submit button
-    And I click View on the search results
     And I save the number of search results
+    And I click View on the search results
     And I click the Edit button
     And I select "A change to existing information for non typographical reasons" as the reason for edit
     And I enter a unique quick code
