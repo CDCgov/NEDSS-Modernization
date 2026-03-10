@@ -9,7 +9,7 @@ def execute(
     time_range: TimeRange | None = None,
     **kwargs,
 ):
-    """This is a fake/stub custom library just to start to get the interface hooked up."""
+    """This is a stub custom library just to start to get the interface hooked up."""
     content = trx.execute(subset_query)
 
     return ReportResult(
