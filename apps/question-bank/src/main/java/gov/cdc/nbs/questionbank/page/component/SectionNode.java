@@ -21,5 +21,4 @@ public final class SectionNode extends LayoutNode {
     this.children.add(child);
     return this;
   }
-
 }

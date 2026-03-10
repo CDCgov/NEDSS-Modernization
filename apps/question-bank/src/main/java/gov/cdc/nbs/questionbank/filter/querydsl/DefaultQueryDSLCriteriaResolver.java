@@ -9,7 +9,6 @@ import gov.cdc.nbs.questionbank.filter.DateRangeFilter;
 import gov.cdc.nbs.questionbank.filter.Filter;
 import gov.cdc.nbs.questionbank.filter.MultiValueFilter;
 import gov.cdc.nbs.questionbank.filter.SingleValueFilter;
-
 import java.util.stream.Stream;
 
 public class DefaultQueryDSLCriteriaResolver implements QueryDSLFilterApplier.CriteriaResolver {

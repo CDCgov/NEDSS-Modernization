@@ -20,15 +20,13 @@ class ContentComponentResolver {
       case EntryNode.Type entry -> asEntry(entry, flattened);
       case SelectionNode.Type selection -> asSelection(selection, flattened);
       case StaticNode.Type staticNode -> asStatic(staticNode, flattened);
-      case null, default -> throw new IllegalStateException("Unresolvable Content Component Type: " + type);
+      case null, default ->
+          throw new IllegalStateException("Unresolvable Content Component Type: " + type);
     };
   }
 
   private ComponentNode.Definition asDefinition(final FlattenedComponent component) {
-    return new ComponentNode.Definition(
-        component.name(),
-        component.visible(),
-        component.order());
+    return new ComponentNode.Definition(component.name(), component.visible(), component.order());
   }
 
   private ContentNode.Attributes asAttributes(final FlattenedComponent component) {
@@ -77,13 +75,11 @@ class ContentComponentResolver {
 
   private EntryNode asEntry(final EntryNode.Type type, final FlattenedComponent flattened) {
     return new EntryNode(
-        flattened.identifier(),
-        type,
-        asDefinition(flattened),
-        asAttributes(flattened));
+        flattened.identifier(), type, asDefinition(flattened), asAttributes(flattened));
   }
 
-  private SelectionNode asSelection(final SelectionNode.Type type, final FlattenedComponent flattened) {
+  private SelectionNode asSelection(
+      final SelectionNode.Type type, final FlattenedComponent flattened) {
     return new SelectionNode(
         flattened.identifier(),
         type,
@@ -94,10 +90,6 @@ class ContentComponentResolver {
 
   private StaticNode asStatic(final StaticNode.Type type, final FlattenedComponent flattened) {
     return new StaticNode(
-        flattened.identifier(),
-        type,
-        asDefinition(flattened),
-        asAttributes(flattened));
+        flattened.identifier(), type, asDefinition(flattened), asAttributes(flattened));
   }
-
 }

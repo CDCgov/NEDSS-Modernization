@@ -1,12 +1,12 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
+import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
-import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 
 @Component
 public class RequireIfCommandCreator {
@@ -16,7 +16,8 @@ public class RequireIfCommandCreator {
   // if - ($j.inArray('D',foo) > -1) || ($j.inArray('H',foo) > -1)
   // pgRequireElement
   // pgRequireNotElement
-  private static final String SPECIFIC_SOURCE_VALUE = """
+  private static final String SPECIFIC_SOURCE_VALUE =
+      """
       function %s
       {
        var foo = [];
@@ -37,7 +38,8 @@ public class RequireIfCommandCreator {
   // source id
   // pgRequireElement
   // pgRequireNotElement
-  private static final String ANY_SOURCE_VALUE = """
+  private static final String ANY_SOURCE_VALUE =
+      """
       function %s
       {
        var foo = [];
@@ -52,28 +54,32 @@ public class RequireIfCommandCreator {
       }
         """;
 
-  public PageContentCommand.AddRuleCommand create(long nextAvailableId, RuleRequest request, long page, long userId) {
+  public PageContentCommand.AddRuleCommand create(
+      long nextAvailableId, RuleRequest request, long page, long userId) {
     String functionName = createJavascriptName(request.sourceIdentifier(), nextAvailableId);
     String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
-    String errorMessage = createErrorMessage(
-        request.sourceText(),
-        request.sourceValues(),
-        request.anySourceValue(),
-        request.targetValueText(),
-        request.comparator().getValue());
-    String javascript = createJavascript(
-        functionName,
-        request.sourceIdentifier(),
-        request.anySourceValue(),
-        request.targetIdentifiers(),
-        request.sourceValues(),
-        request.comparator().getValue());
-    String expression = createExpression(
-        request.sourceIdentifier(),
-        request.sourceValues(),
-        request.anySourceValue(),
-        request.targetIdentifiers(),
-        request.comparator().getValue());
+    String errorMessage =
+        createErrorMessage(
+            request.sourceText(),
+            request.sourceValues(),
+            request.anySourceValue(),
+            request.targetValueText(),
+            request.comparator().getValue());
+    String javascript =
+        createJavascript(
+            functionName,
+            request.sourceIdentifier(),
+            request.anySourceValue(),
+            request.targetIdentifiers(),
+            request.sourceValues(),
+            request.comparator().getValue());
+    String expression =
+        createExpression(
+            request.sourceIdentifier(),
+            request.sourceValues(),
+            request.anySourceValue(),
+            request.targetIdentifiers(),
+            request.comparator().getValue());
 
     return new PageContentCommand.AddRuleCommand(
         nextAvailableId,
@@ -93,29 +99,32 @@ public class RequireIfCommandCreator {
         Instant.now());
   }
 
-
-  public PageContentCommand.UpdateRuleCommand update(long currentId, RuleRequest request, long userId) {
+  public PageContentCommand.UpdateRuleCommand update(
+      long currentId, RuleRequest request, long userId) {
     String functionName = createJavascriptName(request.sourceIdentifier(), currentId);
     String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
-    String errorMessage = createErrorMessage(
-        request.sourceText(),
-        request.sourceValues(),
-        request.anySourceValue(),
-        request.targetValueText(),
-        request.comparator().getValue());
-    String javascript = createJavascript(
-        functionName,
-        request.sourceIdentifier(),
-        request.anySourceValue(),
-        request.targetIdentifiers(),
-        request.sourceValues(),
-        request.comparator().getValue());
-    String expression = createExpression(
-        request.sourceIdentifier(),
-        request.sourceValues(),
-        request.anySourceValue(),
-        request.targetIdentifiers(),
-        request.comparator().getValue());
+    String errorMessage =
+        createErrorMessage(
+            request.sourceText(),
+            request.sourceValues(),
+            request.anySourceValue(),
+            request.targetValueText(),
+            request.comparator().getValue());
+    String javascript =
+        createJavascript(
+            functionName,
+            request.sourceIdentifier(),
+            request.anySourceValue(),
+            request.targetIdentifiers(),
+            request.sourceValues(),
+            request.comparator().getValue());
+    String expression =
+        createExpression(
+            request.sourceIdentifier(),
+            request.sourceValues(),
+            request.anySourceValue(),
+            request.targetIdentifiers(),
+            request.comparator().getValue());
 
     return new PageContentCommand.UpdateRuleCommand(
         request.targetType().toString(),
@@ -150,15 +159,12 @@ public class RequireIfCommandCreator {
       boolean anySourceValue,
       List<String> targetLabels,
       String comparator) {
-    String sourceValue = anySourceValue ? "Any Source Value"
-        : sourceValues.stream()
-            .map(SourceValue::text)
-            .collect(Collectors.joining(", "));
-    return "%s %s must be ( %s ) %s".formatted(
-        sourceLabel,
-        comparator,
-        sourceValue,
-        String.join(", ", targetLabels));
+    String sourceValue =
+        anySourceValue
+            ? "Any Source Value"
+            : sourceValues.stream().map(SourceValue::text).collect(Collectors.joining(", "));
+    return "%s %s must be ( %s ) %s"
+        .formatted(sourceLabel, comparator, sourceValue, String.join(", ", targetLabels));
   }
 
   String createExpression(
@@ -167,14 +173,14 @@ public class RequireIfCommandCreator {
       boolean anySourceValue,
       List<String> targetIdentifiers,
       String comparator) {
-    String values = anySourceValue ? "" : sourceValues.stream().map(SourceValue::id).collect(Collectors.joining(" , "));
+    String values =
+        anySourceValue
+            ? ""
+            : sourceValues.stream().map(SourceValue::id).collect(Collectors.joining(" , "));
     String comparatorValue = anySourceValue ? "" : comparator;
     String targetIdentifier = String.join(" , ", targetIdentifiers);
-    return "%s ( %s ) %s ^ R ( %s )".formatted(
-        sourceIdentifier,
-        values,
-        comparatorValue,
-        targetIdentifier);
+    return "%s ( %s ) %s ^ R ( %s )"
+        .formatted(sourceIdentifier, values, comparatorValue, targetIdentifier);
   }
 
   String createJavascript(
@@ -186,18 +192,10 @@ public class RequireIfCommandCreator {
       String comparator) {
     if (anySourceValue) {
       comparator = "=";
-      return formatAnySourceValue(
-          functionName,
-          sourceIdentifier,
-          comparator,
-          targetIdentifiers);
+      return formatAnySourceValue(functionName, sourceIdentifier, comparator, targetIdentifiers);
     } else {
       return formatSpecificSourceValue(
-          functionName,
-          sourceIdentifier,
-          comparator,
-          targetIdentifiers,
-          sourceValues);
+          functionName, sourceIdentifier, comparator, targetIdentifiers, sourceValues);
     }
   }
 
@@ -207,12 +205,10 @@ public class RequireIfCommandCreator {
       String comparator,
       List<String> targetIdentifiers,
       List<SourceValue> sourceValues) {
-    String requireCalls = targetIdentifiers.stream()
-        .map(this::require)
-        .collect(Collectors.joining("\n"));
-    String requireNotCalls = targetIdentifiers.stream()
-        .map(this::requireNot)
-        .collect(Collectors.joining("\n"));
+    String requireCalls =
+        targetIdentifiers.stream().map(this::require).collect(Collectors.joining("\n"));
+    String requireNotCalls =
+        targetIdentifiers.stream().map(this::requireNot).collect(Collectors.joining("\n"));
 
     return SPECIFIC_SOURCE_VALUE.formatted(
         functionName,
@@ -227,12 +223,10 @@ public class RequireIfCommandCreator {
       String sourceIdentifier,
       String comparator,
       List<String> targetIdentifiers) {
-    String requireCalls = targetIdentifiers.stream()
-        .map(this::require)
-        .collect(Collectors.joining("\n"));
-    String requireNotCalls = targetIdentifiers.stream()
-        .map(this::requireNot)
-        .collect(Collectors.joining("\n"));
+    String requireCalls =
+        targetIdentifiers.stream().map(this::require).collect(Collectors.joining("\n"));
+    String requireNotCalls =
+        targetIdentifiers.stream().map(this::requireNot).collect(Collectors.joining("\n"));
 
     return ANY_SOURCE_VALUE.formatted(
         functionName,

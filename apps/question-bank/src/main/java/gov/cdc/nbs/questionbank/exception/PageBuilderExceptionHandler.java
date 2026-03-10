@@ -21,23 +21,20 @@ public class PageBuilderExceptionHandler {
 
   @ExceptionHandler({InternalServerException.class})
   public ResponseEntity<ExceptionMessage> handleInternalException(Exception e) {
-    return new ResponseEntity<>(new ExceptionMessage(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(
+        new ExceptionMessage(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler({AccessDeniedException.class})
   public ResponseEntity<ExceptionMessage> handleAccessDenied(Exception e) {
-    return new ResponseEntity<>(
-        new ExceptionMessage("Access denied"),
-        HttpStatus.FORBIDDEN);
+    return new ResponseEntity<>(new ExceptionMessage("Access denied"), HttpStatus.FORBIDDEN);
   }
 
   @ExceptionHandler({RuntimeException.class})
   public ResponseEntity<ExceptionMessage> handleRuntimeException(Exception e) {
     return new ResponseEntity<>(
-        new ExceptionMessage("An unexpected error has occurred"),
-        HttpStatus.INTERNAL_SERVER_ERROR);
+        new ExceptionMessage("An unexpected error has occurred"), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  record ExceptionMessage(String message) {
-  }
+  record ExceptionMessage(String message) {}
 }

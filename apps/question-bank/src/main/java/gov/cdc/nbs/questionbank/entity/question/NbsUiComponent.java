@@ -32,5 +32,4 @@ public class NbsUiComponent {
 
   @Column(name = "component_behavior", length = 20)
   private String componentBehavior;
-
 }

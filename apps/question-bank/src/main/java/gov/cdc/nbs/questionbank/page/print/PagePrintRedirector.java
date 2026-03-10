@@ -1,12 +1,11 @@
 package gov.cdc.nbs.questionbank.page.print;
 
 import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicManagePagesRequester;
+import java.net.URI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
 
 @Component
 class PagePrintRedirector {
@@ -23,12 +22,13 @@ class PagePrintRedirector {
 
     prepare();
 
-    URI location = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("method", "viewPageLoad")
-        .queryParam("mode", "print")
-        .queryParam("waTemplateUid", page)
-        .build()
-        .toUri();
+    URI location =
+        UriComponentsBuilder.fromPath(LOCATION)
+            .queryParam("method", "viewPageLoad")
+            .queryParam("mode", "print")
+            .queryParam("waTemplateUid", page)
+            .build()
+            .toUri();
 
     return redirect(location);
   }
@@ -38,9 +38,6 @@ class PagePrintRedirector {
   }
 
   ResponseEntity<Void> redirect(final URI location) {
-    return ResponseEntity
-        .status(HttpStatus.TEMPORARY_REDIRECT)
-        .location(location)
-        .build();
+    return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).location(location).build();
   }
 }

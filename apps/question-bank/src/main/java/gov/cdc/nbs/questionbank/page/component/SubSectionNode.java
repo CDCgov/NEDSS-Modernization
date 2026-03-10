@@ -51,5 +51,4 @@ public final class SubSectionNode extends LayoutNode {
     this.children.add(child);
     return this;
   }
-
 }

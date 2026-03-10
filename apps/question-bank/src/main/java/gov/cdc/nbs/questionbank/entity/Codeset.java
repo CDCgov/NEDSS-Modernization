@@ -9,13 +9,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,8 +24,7 @@ import java.time.Instant;
 @Builder
 @Table(catalog = "NBS_SRTE", name = "codeset")
 public class Codeset {
-  @EmbeddedId
-  private CodesetId id;
+  @EmbeddedId private CodesetId id;
 
   @Column(name = "assigning_authority_cd", length = 199)
   private String assigningAuthorityCd;
@@ -63,13 +61,10 @@ public class Codeset {
 
   @SuppressWarnings(
       //  Bidirectional mappings require knowledge of each other
-      "javaarchitecture:S7027"
-  )
-  @ManyToOne(fetch = FetchType.LAZY, cascade = {
-      CascadeType.MERGE,
-      CascadeType.REMOVE,
-      CascadeType.PERSIST
-  })
+      "javaarchitecture:S7027")
+  @ManyToOne(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST})
   @JoinColumn(name = "code_set_group_id")
   private CodeSetGroupMetadatum codeSetGroup;
 
@@ -106,7 +101,6 @@ public class Codeset {
   @Column(name = "add_user_id")
   private Long addUserId;
 
-
   public Codeset(final ValueSetCommand.Add request) {
     String valueSetCodeUpper = request.code().toUpperCase();
     this.valueSetCode = valueSetCodeUpper;
@@ -114,11 +108,9 @@ public class Codeset {
     this.valueSetNm = request.name();
     this.codeSetDescTxt = request.description();
     this.id = new CodesetId("code_value_general", valueSetCodeUpper);
-    this.codeSetGroup = new CodeSetGroupMetadatum(
-        request.codesetId(),
-        request.description(),
-        request.name(),
-        valueSetCodeUpper);
+    this.codeSetGroup =
+        new CodeSetGroupMetadatum(
+            request.codesetId(), request.description(), request.name(), valueSetCodeUpper);
     created(request.addUserId(), request.addTime());
   }
 
@@ -129,7 +121,6 @@ public class Codeset {
     this.codeSetGroup.update(command);
     return this;
   }
-
 
   private void created(long user, Instant time) {
     this.ldfPicklistIndCd = 'Y';
@@ -143,5 +134,4 @@ public class Codeset {
     this.effectiveFromTime = time;
     this.effectiveToTime = time;
   }
-
 }

@@ -10,9 +10,7 @@ public class PageNameAutocompleteOptionsSteps {
   private final Active<ResultActions> response;
 
   PageNameAutocompleteOptionsSteps(
-      final PageNameAutocompleteOptionRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final PageNameAutocompleteOptionRequester requester, final Active<ResultActions> response) {
     this.requester = requester;
     this.response = response;
   }
@@ -24,9 +22,7 @@ public class PageNameAutocompleteOptionsSteps {
 
   @When("I am trying to find at most {int} selectable page names that start with {string}")
   public void i_am_trying_to_find_at_most_n_selectable_page_names_that_start_with(
-      final int limit,
-      final String criteria
-  ) {
+      final int limit, final String criteria) {
     this.response.active(this.requester.complete(criteria, limit));
   }
 }

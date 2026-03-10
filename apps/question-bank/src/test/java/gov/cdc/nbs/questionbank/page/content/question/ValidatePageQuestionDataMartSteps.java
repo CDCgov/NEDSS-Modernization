@@ -3,14 +3,15 @@ package gov.cdc.nbs.questionbank.page.content.question;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.util.List;
-import org.springframework.test.web.servlet.ResultActions;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import java.util.List;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class ValidatePageQuestionDataMartSteps {
 
@@ -41,12 +42,16 @@ public class ValidatePageQuestionDataMartSteps {
     List<WaUiMetadata> pageContent = pageMother.pageContent();
     WaUiMetadata question = pageContent.get(pageContent.size() - 1);
     response.active(
-        requester.send(page.getId(), question.getId() + 1, question.getWaRdbMetadatum().getUserDefinedColumnNm()));
+        requester.send(
+            page.getId(),
+            question.getId() + 1,
+            question.getWaRdbMetadatum().getUserDefinedColumnNm()));
   }
 
   @Then("The validation {string}")
   public void the_validation_passes_fails(String passFail) throws Exception {
-    response.active()
+    response
+        .active()
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.isValid", equalTo(passFail.contains("pass") ? true : false)));
   }

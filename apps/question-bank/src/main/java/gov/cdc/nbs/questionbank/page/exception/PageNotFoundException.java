@@ -11,5 +11,4 @@ public class PageNotFoundException extends NotFoundException {
   public PageNotFoundException(final long identifier) {
     super("A Page identified by %d cannot be found".formatted(identifier));
   }
-
 }

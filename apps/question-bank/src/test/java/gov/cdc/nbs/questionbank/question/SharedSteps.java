@@ -2,13 +2,14 @@ package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.questionbank.support.UserMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
 public class SharedSteps {
 
@@ -43,7 +44,8 @@ public class SharedSteps {
   @Then("a no credentials found exception is thrown")
   public void a_not_authorized_exception_is_thrown() {
     assertNotNull(exceptionHolder.getException());
-    assertTrue(exceptionHolder.getException() instanceof AuthenticationCredentialsNotFoundException);
+    assertTrue(
+        exceptionHolder.getException() instanceof AuthenticationCredentialsNotFoundException);
   }
 
   @Then("an accessdenied exception is thrown")
@@ -51,5 +53,4 @@ public class SharedSteps {
     assertNotNull(exceptionHolder.getException());
     assertTrue(exceptionHolder.getException() instanceof AccessDeniedException);
   }
-
 }

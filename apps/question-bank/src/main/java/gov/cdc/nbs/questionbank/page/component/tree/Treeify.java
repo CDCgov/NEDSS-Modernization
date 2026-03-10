@@ -6,7 +6,6 @@ import gov.cdc.nbs.questionbank.page.component.PageNode;
 import gov.cdc.nbs.questionbank.page.component.SectionNode;
 import gov.cdc.nbs.questionbank.page.component.SubSectionNode;
 import gov.cdc.nbs.questionbank.page.component.TabNode;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Optional;
@@ -17,17 +16,11 @@ class Treeify {
 
   static Collector<FlattenedComponent, ComponentTree, Optional<ComponentNode>> asTree() {
     return Collectors.collectingAndThen(
-        Collector.of(
-            ComponentTree::new,
-            ComponentTree::accept,
-            ComponentTree::merge
-        ),
-        ComponentTree::root
-    );
+        Collector.of(ComponentTree::new, ComponentTree::accept, ComponentTree::merge),
+        ComponentTree::root);
   }
 
-  private Treeify() {
-  }
+  private Treeify() {}
 
   private static class ComponentTree {
 
@@ -69,10 +62,12 @@ class Treeify {
       } else if (next instanceof SectionNode section && current instanceof TabNode tab) {
         tab.add(section);
         this.stack.push(next);
-      } else if (next instanceof SubSectionNode subSection && current instanceof SectionNode section) {
+      } else if (next instanceof SubSectionNode subSection
+          && current instanceof SectionNode section) {
         section.add(subSection);
         this.stack.push(next);
-      } else if (next instanceof ContentNode content && current instanceof SubSectionNode subSection) {
+      } else if (next instanceof ContentNode content
+          && current instanceof SubSectionNode subSection) {
         subSection.add(content);
         this.stack.push(next);
       } else {
@@ -88,7 +83,6 @@ class Treeify {
       //  get the next parent container
       ComponentNode current = this.stack.peek();
       include(current, next);
-
     }
 
     private ComponentTree merge(final ComponentTree other) {
@@ -96,9 +90,7 @@ class Treeify {
     }
 
     private Optional<ComponentNode> root() {
-      return this.root == null
-          ? Optional.empty()
-          : Optional.of(this.root);
+      return this.root == null ? Optional.empty() : Optional.of(this.root);
     }
   }
 }

@@ -11,13 +11,10 @@ import lombok.Setter;
 public abstract class UpdateQuestionRequest extends QuestionRequest {
   DataType type; // editable if not in use
 
-
-
   public enum DataType {
     TEXT,
     NUMERIC,
     DATE,
     CODED
   }
-
 }

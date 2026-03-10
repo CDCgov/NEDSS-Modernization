@@ -6,5 +6,4 @@ public class DeletePageQuestionException extends BadRequestException {
   public DeletePageQuestionException(String message) {
     super(message);
   }
-
 }
