@@ -53,4 +53,16 @@ export class ConceptOptionsService {
             },
         });
     }
+    /**
+     * Concept Options by Value Set
+     * Provides address type options from the NBS Entity Locator Use Postal for Patients value set.
+     * @returns ConceptOptionsResponse OK
+     * @throws ApiError
+     */
+    public static addressUses(): CancelablePromise<ConceptOptionsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/options/concepts/EL_USE_PST_PAT',
+        });
+    }
 }
