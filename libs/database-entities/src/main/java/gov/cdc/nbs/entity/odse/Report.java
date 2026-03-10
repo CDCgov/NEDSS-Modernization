@@ -1,6 +1,5 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.audit.Added;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.time.EffectiveTime;
 import jakarta.persistence.Column;
@@ -11,6 +10,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -79,7 +79,14 @@ public class Report {
   @NonNull @Column(name = "section_cd", length = 5, nullable = false)
   private String sectionCd;
 
-  @Embedded private Added added;
+  @Column(name = "add_reason_cd", length = 20)
+  private String addReasonCd;
+
+  @Column(name = "add_time")
+  private LocalDateTime addTime;
+
+  @Column(name = "add_user_uid")
+  private Long addUserUid;
 
   @Embedded private Status status;
 

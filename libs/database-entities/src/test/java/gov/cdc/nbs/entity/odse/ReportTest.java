@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import gov.cdc.nbs.audit.Added;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.time.EffectiveTime;
 import java.time.LocalDateTime;
@@ -43,7 +42,9 @@ class ReportTest {
         .satisfies(report -> assertNull(report.getReportTitle()))
         .satisfies(report -> assertNull(report.getReportTypeCode()))
         .satisfies(report -> assertNull(report.getShared()))
-        .satisfies(report -> assertNull(report.getAdded()))
+        .satisfies(report -> assertNull(report.getAddReasonCd()))
+        .satisfies(report -> assertNull(report.getAddTime()))
+        .satisfies(report -> assertNull(report.getAddUserUid()))
         .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()));
   }
@@ -70,7 +71,9 @@ class ReportTest {
     Character shared = 'S';
     String category = "Summary Report";
     String sectionCd = "1000";
-    Added added = new Added(9L, effectiveFromTime, "new report");
+    String addReasonCd = "new report";
+    Long addUserUid = 9L;
+    LocalDateTime addTime = LocalDateTime.parse("2020-03-04T10:15:30");
     Status status = new Status();
 
     Report actual =
@@ -91,7 +94,9 @@ class ReportTest {
             shared,
             category,
             sectionCd,
-            added,
+            addReasonCd,
+            addTime,
+            addUserUid,
             status);
 
     assertThat(actual)
@@ -116,7 +121,9 @@ class ReportTest {
         .satisfies(report -> assertEquals(category, report.getCategory()))
         .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()))
-        .satisfies(report -> assertEquals(added, report.getAdded()))
+        .satisfies(report -> assertEquals(addReasonCd, report.getAddReasonCd()))
+        .satisfies(report -> assertEquals(addTime, report.getAddTime()))
+        .satisfies(report -> assertEquals(addUserUid, report.getAddUserUid()))
         .satisfies(report -> assertEquals(status, report.getStatus()))
         .satisfies(report -> assertEquals(dataSourceObj, report.getDataSource()));
   }
