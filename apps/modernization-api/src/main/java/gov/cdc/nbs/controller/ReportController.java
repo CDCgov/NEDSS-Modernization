@@ -1,23 +1,25 @@
 package gov.cdc.nbs.controller;
 
 import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.repository.ReportRepository;
-import java.util.Optional;
-import org.springframework.stereotype.Controller;
+import gov.cdc.nbs.service.ReportService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping("/nbs/api/report/")
 public class ReportController {
 
-  private final ReportRepository reportRepository;
+    private final ReportService reportService;
 
-  public ReportController(final ReportRepository reportRepository) {
-    this.reportRepository = reportRepository;
-  }
+    public ReportController(ReportService reportService) {
+        this.reportService = reportService;
+    }
 
-  @GetMapping
-  public Optional<Report> findReport(ReportId reportId) {
-    return reportRepository.findById(reportId);
-  }
+    @GetMapping("configuration/{reportUid}/{dataSourceUid}")
+//    @PreAuthorize("hasAuthority('VIEWREPORTPRIVATE-REPORTING')")
+    public Report findReport(@PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
+        return reportService.getReport(reportUid, dataSourceUid);
+    }
 }
