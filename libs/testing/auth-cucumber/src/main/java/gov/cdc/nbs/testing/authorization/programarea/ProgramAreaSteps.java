@@ -8,10 +8,7 @@ public class ProgramAreaSteps {
   private final ProgramAreaMother mother;
   private final ProgramAreaParameterResolver resolver;
 
-  ProgramAreaSteps(
-      final ProgramAreaMother mother,
-      final ProgramAreaParameterResolver resolver
-  ) {
+  ProgramAreaSteps(final ProgramAreaMother mother, final ProgramAreaParameterResolver resolver) {
     this.mother = mother;
     this.resolver = resolver;
   }
@@ -25,5 +22,4 @@ public class ProgramAreaSteps {
   public ProgramAreaIdentifier programArea(final String value) {
     return resolver.resolve(value).orElse(null);
   }
-
 }

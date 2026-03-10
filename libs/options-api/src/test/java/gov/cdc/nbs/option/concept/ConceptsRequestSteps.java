@@ -19,5 +19,4 @@ public class ConceptsRequestSteps {
   public void i_request_all_concepts_for_the_named_value_set(final String set) throws Exception {
     response.active(request.request(set));
   }
-
 }

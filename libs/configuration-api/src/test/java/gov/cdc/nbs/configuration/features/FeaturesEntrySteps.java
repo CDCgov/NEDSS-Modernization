@@ -1,12 +1,11 @@
 package gov.cdc.nbs.configuration.features;
 
 import io.cucumber.java.en.Given;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class FeaturesEntrySteps {
 
@@ -29,10 +28,10 @@ public class FeaturesEntrySteps {
     if (sources.get(FEATURE_PROPERTY_SOURCE) instanceof MapPropertySource source) {
       return source.getSource();
     } else {
-      MapPropertySource properties = new MapPropertySource(FEATURE_PROPERTY_SOURCE, new HashMap<>());
+      MapPropertySource properties =
+          new MapPropertySource(FEATURE_PROPERTY_SOURCE, new HashMap<>());
       sources.addFirst(properties);
       return properties.getSource();
     }
   }
-
 }

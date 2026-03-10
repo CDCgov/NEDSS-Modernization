@@ -2,11 +2,11 @@ package gov.cdc.nbs.option.jdbc.autocomplete;
 
 import gov.cdc.nbs.option.Option;
 import gov.cdc.nbs.option.jdbc.OptionRowMapper;
+import java.util.Collection;
+import java.util.Map;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import java.util.Collection;
-import java.util.Map;
 
 public class SQLBasedOptionResolver {
   private static final String CRITERIA_PARAMETER = "criteria";
@@ -27,16 +27,14 @@ public class SQLBasedOptionResolver {
   }
 
   public Collection<Option> resolve(final String keyword, final String root, final int limit) {
-    Map<String, Object> parameters = Map.of(
-        CRITERIA_PARAMETER, withWildcard(keyword),
-        PREFIX_CRITERIA_PARAMETER, withPrefixWildcard(keyword),
-        QUICK_CODE, keyword,
-        ROOT, root,
-        LIMIT_PARAMETER, limit);
-    return this.template.query(
-        this.query,
-        new MapSqlParameterSource(parameters),
-        this.mapper);
+    Map<String, Object> parameters =
+        Map.of(
+            CRITERIA_PARAMETER, withWildcard(keyword),
+            PREFIX_CRITERIA_PARAMETER, withPrefixWildcard(keyword),
+            QUICK_CODE, keyword,
+            ROOT, root,
+            LIMIT_PARAMETER, limit);
+    return this.template.query(this.query, new MapSqlParameterSource(parameters), this.mapper);
   }
 
   public Collection<Option> resolve(final String keyword, final int limit) {

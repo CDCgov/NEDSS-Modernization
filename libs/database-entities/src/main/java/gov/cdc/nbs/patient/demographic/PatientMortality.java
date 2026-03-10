@@ -6,7 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -23,9 +22,7 @@ public class PatientMortality {
   @Column(name = "deceased_time")
   private LocalDate deceasedOn;
 
-  public void update(
-      final PatientCommand.UpdateMortality info
-  ) {
+  public void update(final PatientCommand.UpdateMortality info) {
     this.asOf = info.asOf();
     this.deceased = Deceased.resolve(info.deceased());
 

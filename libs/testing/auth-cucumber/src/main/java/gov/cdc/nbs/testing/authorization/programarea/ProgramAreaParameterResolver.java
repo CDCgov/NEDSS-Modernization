@@ -1,17 +1,16 @@
 package gov.cdc.nbs.testing.authorization.programarea;
 
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 class ProgramAreaParameterResolver {
 
-
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           nbs_uid,
           prog_area_cd,
@@ -31,10 +30,7 @@ class ProgramAreaParameterResolver {
   }
 
   Optional<ProgramAreaIdentifier> resolve(final String value) {
-    return client.sql(QUERY)
-        .param(value)
-        .query(this::map)
-        .optional();
+    return client.sql(QUERY).param(value).query(this::map).optional();
   }
 
   private ProgramAreaIdentifier map(final ResultSet resultSet, final int row) throws SQLException {
