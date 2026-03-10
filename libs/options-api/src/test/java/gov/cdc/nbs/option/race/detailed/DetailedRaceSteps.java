@@ -14,5 +14,4 @@ public class DetailedRaceSteps {
   public void the_concept_is_a_race_concept(final String concept) {
     mother.create(concept);
   }
-
 }

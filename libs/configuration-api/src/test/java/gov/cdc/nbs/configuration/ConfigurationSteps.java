@@ -9,10 +9,7 @@ public class ConfigurationSteps {
   private final ConfigurationRequester requester;
   private final Active<ResultActions> response;
 
-  ConfigurationSteps(
-      final ConfigurationRequester requester,
-      final Active<ResultActions> response
-  ) {
+  ConfigurationSteps(final ConfigurationRequester requester, final Active<ResultActions> response) {
     this.requester = requester;
     this.response = response;
   }

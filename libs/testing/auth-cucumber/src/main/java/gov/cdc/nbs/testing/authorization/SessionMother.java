@@ -6,17 +6,17 @@ import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
 class SessionMother {
 
-  private static final String INSERT = """
+  private static final String INSERT =
+      """
       insert into Security_log(
           security_log_uid,
           user_id,
@@ -39,7 +39,8 @@ class SessionMother {
       FROM security_log [log]
       """;
 
-  private static final String DELETE = """
+  private static final String DELETE =
+      """
       delete from security_log
       where session_id in (:identifiers)
       """;
@@ -65,22 +66,17 @@ class SessionMother {
   }
 
   private SessionCookie login(final ActiveUser user) {
-    String sessionId = UUID.randomUUID()
-        .toString()
-        .replace("-", "");
+    String sessionId = UUID.randomUUID().toString().replace("-", "");
 
     log(user, sessionId, SecurityEventType.LOGIN_SUCCESS);
 
     return new SessionCookie(sessionId);
   }
 
-  private void log(
-      final ActiveUser user,
-      final String session,
-      final SecurityEventType type
-  ) {
+  private void log(final ActiveUser user, final String session, final SecurityEventType type) {
     // insert security_log event with sessionId
-    this.client.sql(INSERT)
+    this.client
+        .sql(INSERT)
         .param("user", user.username())
         .param("type", type.name())
         .param("time", LocalDateTime.now())

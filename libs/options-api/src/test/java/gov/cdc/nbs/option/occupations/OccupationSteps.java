@@ -6,7 +6,6 @@ public class OccupationSteps {
 
   private final OccupationMother mother;
 
-
   OccupationSteps(final OccupationMother mother) {
     this.mother = mother;
   }
@@ -15,7 +14,4 @@ public class OccupationSteps {
   public void the_occupation_exists(final String name) {
     mother.create(name);
   }
-
-
-
 }

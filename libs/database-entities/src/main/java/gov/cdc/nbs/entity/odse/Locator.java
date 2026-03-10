@@ -9,15 +9,11 @@ import jakarta.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class Locator {
 
-  @Embedded
-  private Audit audit;
+  @Embedded private Audit audit;
 
-  @Embedded
-  private RecordStatus recordStatus;
+  @Embedded private RecordStatus recordStatus;
 
-  protected Locator() {
-
-  }
+  protected Locator() {}
 
   protected Locator(final PatientCommand command) {
     this.audit = new Audit(command.requester(), command.requestedOn());
@@ -25,7 +21,7 @@ public abstract class Locator {
   }
 
   protected void changed(final PatientCommand command) {
-    if(this.audit == null) {
+    if (this.audit == null) {
       this.audit = new Audit(command.requester(), command.requestedOn());
     }
 
@@ -39,5 +35,4 @@ public abstract class Locator {
   public RecordStatus recordStatus() {
     return recordStatus;
   }
-
 }
