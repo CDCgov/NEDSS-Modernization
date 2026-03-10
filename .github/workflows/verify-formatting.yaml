@@ -3,6 +3,15 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - "apps/**"
+      - "!apps/modernization-ui/**"
+      - "!apps/report-execution/**"
+      - "libs/**"
+      - "build.gradle"
+      - "settings.gradle"
+      - "gradle/**"
+      - ".github/workflows/verify-formatting.yaml"
   push:
     branches:
       - main
