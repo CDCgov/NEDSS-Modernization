@@ -92,7 +92,7 @@
         "test:coverageSearch": "vitest --coverage --include=src/apps/search/**/*.{js,jsx,ts,tsx}",
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
-        "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+        "format": "prettier --write .",
         "generate": "npm run consolidate-graphqls && npm run graphql:gql && npm run graphql:codegen && npm run openapi:codegen",
         "consolidate-graphqls": "rm -f src/generated/schema.graphqls && for f in ../modernization-api/src/main/resources/graphql/*.graphqls; do cat $f >> src/generated/schema.graphqls; done",
         "graphql:gql": "npx gqlg --schemaFilePath src/generated/schema.graphqls --destDirPath ./src/generated/gql",
