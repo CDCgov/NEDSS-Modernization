@@ -51,7 +51,8 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                         type="submit"
                         onClick={handleSubmit}
                         className={styles.searchButton}
-                        data-testid="businessRulesSearchBtn">
+                        data-testid="businessRulesSearchBtn"
+                    >
                         <Icon.Search size={5} className={styles.searchIcon} />
                     </Button>
                 </div>
@@ -61,7 +62,8 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                     onClick={onDownloadPdf}
                     className={styles.downloadButton}
                     outline
-                    data-tooltip-position="top">
+                    data-tooltip-position="top"
+                >
                     <Icon.Print size={3} data-testid="print-icon" />
                 </Button>
                 <Button
@@ -71,7 +73,8 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                     outline
                     onClick={onDownloadCsv}
                     data-testid="file-download"
-                    data-tooltip-position="top">
+                    data-tooltip-position="top"
+                >
                     <Icon.FileDownload size={3} />
                 </Button>
             </div>

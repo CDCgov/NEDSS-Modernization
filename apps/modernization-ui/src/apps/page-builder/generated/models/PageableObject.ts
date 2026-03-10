@@ -11,4 +11,3 @@ export type PageableObject = {
     paged?: boolean;
     unpaged?: boolean;
 };
-

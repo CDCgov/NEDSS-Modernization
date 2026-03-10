@@ -13,7 +13,7 @@ export const HyperlinkFields = () => {
                 name="label"
                 rules={{
                     required: { value: true, message: 'Label is required' },
-                    ...maxLengthRule(50)
+                    ...maxLengthRule(50),
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Input
@@ -34,7 +34,7 @@ export const HyperlinkFields = () => {
                 name="linkUrl"
                 rules={{
                     required: { value: true, message: 'Link is required' },
-                    ...maxLengthRule(300)
+                    ...maxLengthRule(300),
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Input

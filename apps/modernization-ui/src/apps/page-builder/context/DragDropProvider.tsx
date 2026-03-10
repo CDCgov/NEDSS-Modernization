@@ -313,8 +313,9 @@ const DragDropProvider: React.FC<{
                 handleDragStart,
                 handleDragUpdate,
                 closeId,
-                dragTarget
-            }}>
+                dragTarget,
+            }}
+        >
             {children}
         </DragDropContext.Provider>
     );

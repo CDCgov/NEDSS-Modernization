@@ -5,7 +5,7 @@ import { CancelablePromise, OpenAPI } from 'generated';
 const fetchConfig = (): CancelablePromise<Configuration> => {
     return request(OpenAPI, {
         method: 'GET',
-        url: '/nbs/api/configuration'
+        url: '/nbs/api/configuration',
     });
 };
 

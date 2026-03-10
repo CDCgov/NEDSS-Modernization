@@ -18,22 +18,22 @@ const routing = [
             { index: true, element: <Navigate to="patients" /> },
             {
                 path: 'patients',
-                element: <PatientSearch />
+                element: <PatientSearch />,
             },
             {
                 path: 'lab-reports',
-                element: <LaboratoryReportSearch />
+                element: <LaboratoryReportSearch />,
             },
             {
                 path: 'investigations',
-                element: <InvestigationSearch />
+                element: <InvestigationSearch />,
             },
             {
                 path: 'simple/:type/:criteria',
-                element: <SimpleSearch />
-            }
-        ]
-    }
+                element: <SimpleSearch />,
+            },
+        ],
+    },
 ];
 
 export { routing };

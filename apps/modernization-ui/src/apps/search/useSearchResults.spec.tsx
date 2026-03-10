@@ -13,8 +13,8 @@ vi.mock('./useSearchCriteria', () => ({
     useSearchCriteria: () => ({
         criteria: mockCriteria,
         clear: mockClearCriteria,
-        change: mockChangeCriteria
-    })
+        change: mockChangeCriteria,
+    }),
 }));
 
 vi.mock(import('pagination'), async (importOriginal) => {
@@ -28,8 +28,8 @@ vi.mock(import('pagination'), async (importOriginal) => {
             request: mockRequest,
             ready: mockReady,
             resize: mockResize,
-            reset: mockPageReset
-        })
+            reset: mockPageReset,
+        }),
     };
 });
 
@@ -37,7 +37,7 @@ const mockPage: Page = {
     status: PageStatus.Ready,
     pageSize: 5,
     total: 7,
-    current: 11
+    current: 11,
 };
 
 const mockFirstPage = vi.fn();
@@ -61,8 +61,8 @@ vi.mock('libs/sorting', () => ({
         direction: mockSortDirection,
         reset: mockSortReset,
         sortBy: mockSortBy,
-        toggle: mockToggle
-    })
+        toggle: mockToggle,
+    }),
 }));
 
 let mockFilterActive: boolean = false;
@@ -81,8 +81,8 @@ vi.mock('design-system/filter', () => ({
         clearAll: vi.fn(),
         reset: vi.fn(),
         add: vi.fn(),
-        pendingFilter: undefined
-    })
+        pendingFilter: undefined,
+    }),
 }));
 
 type Criteria = { name: string; filteredName?: string };
@@ -97,7 +97,7 @@ const setup = (props?: Partial<SearchResultSettings<Criteria, APIParameters, Res
     const defaultTransformer = (criteria: Criteria) => ({ search: criteria.name });
     const defaultResultResolver = () => Promise.resolve({ total: 0, content: [], page: 0, size: 7 });
     const defaultTermResolver = () => [
-        { source: 'default-source', title: 'title-value', name: 'name-value', value: 'value-value', partial: false }
+        { source: 'default-source', title: 'title-value', name: 'name-value', value: 'value-value', partial: false },
     ];
     //
     const transformer = props?.transformer ?? defaultTransformer;
@@ -107,7 +107,7 @@ const setup = (props?: Partial<SearchResultSettings<Criteria, APIParameters, Res
     return renderHook(
         () => useSearchResults<Criteria, APIParameters, Result>({ transformer, resultResolver, termResolver }),
         {
-            wrapper
+            wrapper,
         }
     );
 };
@@ -179,7 +179,7 @@ describe('when searching using useSearchResults', () => {
 
     it('should change to status to error when search produces an error', async () => {
         const { result } = setup({
-            resultResolver: () => Promise.reject(new Error('there has been an error'))
+            resultResolver: () => Promise.reject(new Error('there has been an error')),
         });
 
         mockCriteria = { name: 'name-value' };
@@ -209,7 +209,7 @@ describe('when searching using useSearchResults', () => {
         const transformer = vi.fn(() => ({ search: 'name-value' }));
 
         const terms = [
-            { source: 'mock-source', title: 'Mocked Title', name: 'Mocked Name', value: 'mock', partial: false }
+            { source: 'mock-source', title: 'Mocked Title', name: 'Mocked Name', value: 'mock', partial: false },
         ];
 
         const termResolver = vi.fn(() => terms);
@@ -319,7 +319,7 @@ describe('when searching using useSearchResults', () => {
                     filteredTotal: undefined,
                     content: [],
                     page: 1,
-                    size: 10
+                    size: 10,
                 })
             );
         });
@@ -345,7 +345,7 @@ describe('when searching using useSearchResults', () => {
                     filteredTotal: 9,
                     content: [],
                     page: 1,
-                    size: 10
+                    size: 10,
                 })
             );
         });

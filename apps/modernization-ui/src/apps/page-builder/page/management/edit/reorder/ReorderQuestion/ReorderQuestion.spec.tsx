@@ -21,18 +21,18 @@ describe('when ReorderQuestion renders', () => {
                         name: 'Section1',
                         visible: true,
                         order: 1,
-                        subSections: []
+                        subSections: [],
                     },
                     {
                         id: 5678,
                         name: 'Section2',
                         visible: true,
                         order: 2,
-                        subSections: []
-                    }
-                ]
-            }
-        ]
+                        subSections: [],
+                    },
+                ],
+            },
+        ],
     };
     const question: PagesQuestion = {
         id: 123,
@@ -49,7 +49,7 @@ describe('when ReorderQuestion renders', () => {
         tooltip: 'asdf',
         standard: 'asdf',
         required: false,
-        subGroup: 'asdf'
+        subGroup: 'asdf',
     };
     const { getByText } = render(
         <DragDropProvider pageData={content}>

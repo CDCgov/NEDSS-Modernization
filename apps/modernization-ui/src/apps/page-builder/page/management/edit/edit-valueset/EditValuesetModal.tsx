@@ -43,7 +43,8 @@ export const EditValuesetModal = ({ modal, valuesetName, onValuesetChanged }: Pr
             className="edit-valueset-modal"
             id="edit-valueset-modal"
             aria-labelledby="edit-valueset-modal"
-            aria-describedby="edit-valueset-modal">
+            aria-describedby="edit-valueset-modal"
+        >
             <div className={styles.modal}>
                 {valueset ? (
                     <EditValueset

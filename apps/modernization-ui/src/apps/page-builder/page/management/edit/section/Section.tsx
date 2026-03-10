@@ -35,7 +35,7 @@ export const Section = ({
     onEditValueset,
     onChangeValueset,
     onGroupQuestion,
-    onEditGroupedSubsection
+    onEditGroupedSubsection,
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
@@ -122,11 +122,11 @@ export const Section = ({
         }
         SubSectionControllerService.deleteSubSection({
             page: page.id,
-            subSectionId: selectedSubsectionToDelete.id
+            subSectionId: selectedSubsectionToDelete.id,
         }).then(() => {
             showAlert({
                 message: `You've successfully deleted "${selectedSubsectionToDelete.name}"`,
-                type: `success`
+                type: `success`,
             });
             refresh();
         });
@@ -185,7 +185,8 @@ export const Section = ({
                 ref={addSubsectionModalRef}
                 className={'add-section-modal'}
                 isLarge
-                forceAction>
+                forceAction
+            >
                 <AddSubSection
                     sectionId={section.id}
                     pageId={page.id}
@@ -203,7 +204,8 @@ export const Section = ({
                 ref={editSubsectionModalRef}
                 className={'add-section-modal'}
                 isLarge
-                forceAction>
+                forceAction
+            >
                 <AddSubSection
                     sectionId={section.id}
                     pageId={page.id}
@@ -223,7 +225,8 @@ export const Section = ({
                 ref={manageSubsectionModalRef}
                 className={'manage-section-modal'}
                 forceAction
-                isLarge>
+                isLarge
+            >
                 <DragDropProvider pageData={page} successCallBack={handleReorderSubsection}>
                     <ManageSubsection
                         section={section}

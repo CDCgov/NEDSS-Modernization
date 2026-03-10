@@ -19,18 +19,18 @@ export const DataElementsTable = ({ dataElements }: Props) => {
         {
             id: 'data-element-field',
             name: 'Field',
-            render: (entry) => entry.field
+            render: (entry) => entry.field,
         },
         {
             id: 'data-element-odds-ratio',
             name: 'Odds ratio',
-            render: (entry) => entry.oddsRatio
+            render: (entry) => entry.oddsRatio,
         },
         {
             id: 'data-element-log-odss',
             name: 'Log odds',
-            render: (entry) => entry.logOdds
-        }
+            render: (entry) => entry.logOdds,
+        },
     ];
 
     useEffect(() => {
@@ -39,7 +39,7 @@ export const DataElementsTable = ({ dataElements }: Props) => {
             .map(([key, value]) => {
                 return {
                     field: MatchingAttributeLabels[DataElementToMatchingAttribute[key as keyof DataElements]].label,
-                    ...value
+                    ...value,
                 };
             });
         setData(data);

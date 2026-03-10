@@ -31,9 +31,10 @@ const MergeAlertContent = ({ patientId }: MergeAlertProps) => {
                     onClick={(e) => {
                         e.preventDefault();
                         nav(`/deduplication/merge/${mergeGroup}`, {
-                            state: { fromPatientFileSummary: true, patientId }
+                            state: { fromPatientFileSummary: true, patientId },
                         });
-                    }}>
+                    }}
+                >
                     Review Matches
                 </a>
             </AlertMessage>

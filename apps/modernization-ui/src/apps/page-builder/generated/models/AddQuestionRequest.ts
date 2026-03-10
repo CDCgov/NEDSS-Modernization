@@ -5,4 +5,3 @@
 export type AddQuestionRequest = {
     questionIds?: Array<number>;
 };
-

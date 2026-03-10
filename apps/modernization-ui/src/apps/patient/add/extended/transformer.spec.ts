@@ -4,7 +4,7 @@ import { transformer } from './transformer';
 describe('when transforming entered extended patient data', () => {
     it('should transform administrative to a format accepted by the API', () => {
         const entry: ExtendedNewPatientEntry = {
-            administrative: { asOf: '04/13/2017', comment: 'entered-value' }
+            administrative: { asOf: '04/13/2017', comment: 'entered-value' },
         };
 
         const actual = transformer(entry);
@@ -20,16 +20,16 @@ describe('when transforming entered extended patient data', () => {
             names: [
                 {
                     asOf: '04/13/2017',
-                    type: { value: 'name-type-value', name: 'name-type-name' }
-                }
-            ]
+                    type: { value: 'name-type-value', name: 'name-type-name' },
+                },
+            ],
         };
 
         const actual = transformer(entry);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                names: expect.arrayContaining([expect.objectContaining({ type: 'name-type-value' })])
+                names: expect.arrayContaining([expect.objectContaining({ type: 'name-type-value' })]),
             })
         );
     });
@@ -41,9 +41,9 @@ describe('when transforming entered extended patient data', () => {
                 {
                     asOf: '04/13/2017',
                     type: { value: 'address-type-value', name: 'address-type-name' },
-                    use: { value: 'address-use-value', name: 'address-use-name' }
-                }
-            ]
+                    use: { value: 'address-use-value', name: 'address-use-name' },
+                },
+            ],
         };
 
         const actual = transformer(entry);
@@ -51,8 +51,8 @@ describe('when transforming entered extended patient data', () => {
         expect(actual).toEqual(
             expect.objectContaining({
                 addresses: expect.arrayContaining([
-                    expect.objectContaining({ type: 'address-type-value', use: 'address-use-value' })
-                ])
+                    expect.objectContaining({ type: 'address-type-value', use: 'address-use-value' }),
+                ]),
             })
         );
     });
@@ -64,9 +64,9 @@ describe('when transforming entered extended patient data', () => {
                 {
                     asOf: '04/13/2017',
                     type: { value: 'phone-email-type-value', name: 'phone-email-type-name' },
-                    use: { value: 'phone-email-use-value', name: 'phone-email-use-name' }
-                }
-            ]
+                    use: { value: 'phone-email-use-value', name: 'phone-email-use-name' },
+                },
+            ],
         };
 
         const actual = transformer(entry);
@@ -74,8 +74,8 @@ describe('when transforming entered extended patient data', () => {
         expect(actual).toEqual(
             expect.objectContaining({
                 phoneEmails: expect.arrayContaining([
-                    expect.objectContaining({ type: 'phone-email-type-value', use: 'phone-email-use-value' })
-                ])
+                    expect.objectContaining({ type: 'phone-email-type-value', use: 'phone-email-use-value' }),
+                ]),
             })
         );
     });
@@ -87,9 +87,9 @@ describe('when transforming entered extended patient data', () => {
                 {
                     asOf: '04/13/2017',
                     type: { value: 'identification-type-value', name: 'identification-type-name' },
-                    id: 'id-value'
-                }
-            ]
+                    id: 'id-value',
+                },
+            ],
         };
 
         const actual = transformer(entry);
@@ -97,8 +97,8 @@ describe('when transforming entered extended patient data', () => {
         expect(actual).toEqual(
             expect.objectContaining({
                 identifications: expect.arrayContaining([
-                    expect.objectContaining({ type: 'identification-type-value' })
-                ])
+                    expect.objectContaining({ type: 'identification-type-value' }),
+                ]),
             })
         );
     });
@@ -111,16 +111,16 @@ describe('when transforming entered extended patient data', () => {
                     id: 331,
                     asOf: '04/13/2017',
                     race: { value: 'race-value', name: 'race-name' },
-                    detailed: []
-                }
-            ]
+                    detailed: [],
+                },
+            ],
         };
 
         const actual = transformer(entry);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                races: expect.arrayContaining([expect.objectContaining({ race: 'race-value' })])
+                races: expect.arrayContaining([expect.objectContaining({ race: 'race-value' })]),
             })
         );
     });
@@ -131,15 +131,15 @@ describe('when transforming entered extended patient data', () => {
             ethnicity: {
                 asOf: '04/13/2017',
                 ethnicGroup: { value: 'ethnicity-value', name: 'ethnicity-name' },
-                detailed: []
-            }
+                detailed: [],
+            },
         };
 
         const actual = transformer(entry);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                ethnicity: expect.objectContaining({ ethnicGroup: 'ethnicity-value' })
+                ethnicity: expect.objectContaining({ ethnicGroup: 'ethnicity-value' }),
             })
         );
     });
@@ -149,15 +149,15 @@ describe('when transforming entered extended patient data', () => {
             administrative: { asOf: '04/13/2017' },
             birthAndSex: {
                 asOf: '04/13/2017',
-                current: { value: 'current-sex-value', name: 'current-sex-name' }
-            }
+                current: { value: 'current-sex-value', name: 'current-sex-name' },
+            },
         };
 
         const actual = transformer(entry);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                gender: expect.objectContaining({ current: 'current-sex-value' })
+                gender: expect.objectContaining({ current: 'current-sex-value' }),
             })
         );
     });
@@ -167,15 +167,15 @@ describe('when transforming entered extended patient data', () => {
             administrative: { asOf: '04/13/2017' },
             birthAndSex: {
                 asOf: '04/13/2017',
-                bornOn: '06/17/2003'
-            }
+                bornOn: '06/17/2003',
+            },
         };
 
         const actual = transformer(entry);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                birth: expect.objectContaining({ bornOn: '06/17/2003' })
+                birth: expect.objectContaining({ bornOn: '06/17/2003' }),
             })
         );
     });
@@ -185,15 +185,15 @@ describe('when transforming entered extended patient data', () => {
             administrative: { asOf: '04/13/2017' },
             mortality: {
                 asOf: '04/13/2017',
-                deceasedOn: '09/07/1976'
-            }
+                deceasedOn: '09/07/1976',
+            },
         };
 
         const actual = transformer(entry);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                mortality: expect.objectContaining({ deceasedOn: '09/07/1976' })
+                mortality: expect.objectContaining({ deceasedOn: '09/07/1976' }),
             })
         );
     });
@@ -203,15 +203,15 @@ describe('when transforming entered extended patient data', () => {
             administrative: { asOf: '04/13/2017' },
             general: {
                 asOf: '04/13/2017',
-                maternalMaidenName: 'general-information'
-            }
+                maternalMaidenName: 'general-information',
+            },
         };
 
         const actual = transformer(entry);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                general: expect.objectContaining({ maternalMaidenName: 'general-information' })
+                general: expect.objectContaining({ maternalMaidenName: 'general-information' }),
             })
         );
     });

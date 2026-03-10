@@ -15,7 +15,7 @@ export const IdentificationDataTable = ({ patientData, selectedIdentification, o
     const form = useFormContext<PatientMergeForm>();
     const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: 'identifications'
+        name: 'identifications',
     });
 
     const handleIdentificationSelection = (identification: MergeIdentification) => {
@@ -34,19 +34,19 @@ export const IdentificationDataTable = ({ patientData, selectedIdentification, o
             id: 'as-of',
             name: 'As of',
             className: styles['date-header'],
-            render: (i) => toDateDisplay(i.asOf)
+            render: (i) => toDateDisplay(i.asOf),
         },
         {
             id: 'type',
             name: 'Type',
             className: styles['text-header'],
-            render: (i) => i.type
+            render: (i) => i.type,
         },
         {
             id: 'value',
             name: 'ID value',
-            render: (i) => i.value
-        }
+            render: (i) => i.value,
+        },
     ];
     return (
         <MergeDataTable<MergeIdentification>

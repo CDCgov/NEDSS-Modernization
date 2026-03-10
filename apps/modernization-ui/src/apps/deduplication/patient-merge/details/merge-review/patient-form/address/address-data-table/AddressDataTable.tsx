@@ -16,7 +16,7 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
     const form = useFormContext<PatientMergeForm>();
     const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: 'addresses'
+        name: 'addresses',
     });
 
     const handleAddressSelection = (address: MergeAddress) => {
@@ -33,19 +33,19 @@ export const AddressDataTable = ({ patientData, selectedAddress, onViewAddress }
             id: 'as-of',
             name: 'As of',
             className: styles['date-header'],
-            render: (n) => toDateDisplay(n.asOf)
+            render: (n) => toDateDisplay(n.asOf),
         },
         {
             id: 'type',
             name: 'Type',
             className: styles['text-header'],
-            render: (n) => `${n.type}/${n.use}`
+            render: (n) => `${n.type}/${n.use}`,
         },
         {
             id: 'address',
             name: 'Address',
-            render: (n) => displayAddressText(n)
-        }
+            render: (n) => displayAddressText(n),
+        },
     ];
     return (
         <MergeDataTable<MergeAddress>

@@ -48,7 +48,7 @@ const useRedirect = ({ destination = 'current' }: Props) => {
         redirecting: state.status === 'redirecting',
         location: state.status === 'redirected' && state.location,
         redirect: (url: string) => dispatch({ type: 'redirect', url }),
-        reset: () => dispatch({ type: 'reset' })
+        reset: () => dispatch({ type: 'reset' }),
     };
 };
 

@@ -27,14 +27,15 @@ const HorizontalField = ({
     required,
     error,
     warning,
-    children
+    children,
 }: Props) => (
     <div
         className={classNames(styles.horizontal, className, {
             [styles.small]: sizing === 'small',
             [styles.medium]: sizing === 'medium',
-            [styles.large]: sizing === 'large'
-        })}>
+            [styles.large]: sizing === 'large',
+        })}
+    >
         <div className={styles.left}>
             <label className={classNames({ [styles.required]: required })} htmlFor={htmlFor}>
                 {label}

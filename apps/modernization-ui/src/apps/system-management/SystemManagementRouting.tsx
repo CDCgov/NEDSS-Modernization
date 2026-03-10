@@ -11,8 +11,8 @@ const routing = [
                     <SystemManagementPage />
                 </PageTitle>
             </FeatureGuard>
-        )
-    }
+        ),
+    },
 ];
 
 export { routing };

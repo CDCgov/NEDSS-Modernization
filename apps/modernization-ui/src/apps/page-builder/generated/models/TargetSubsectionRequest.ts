@@ -6,4 +6,3 @@ export type TargetSubsectionRequest = {
     orderNbr?: number;
     targetSubsections?: Array<string>;
 };
-

@@ -13,8 +13,8 @@ const columns: Column<RaceEntry>[] = [
     {
         id: 'race-detailed',
         name: 'Detailed race',
-        render: (v) => v.detailed?.map((v) => v.name).join(', ')
-    }
+        render: (v) => v.detailed?.map((v) => v.name).join(', '),
+    },
 ];
 
 type Props = {

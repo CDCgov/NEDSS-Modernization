@@ -17,7 +17,7 @@ export enum ConditionSortField {
     COINFECTION_GROUP = 'coinfection_grp_cd',
     NND = 'nndInd',
     INVESTIGATION_PAGE = 'investigationFormCd',
-    STATUS = 'statusCd'
+    STATUS = 'statusCd',
 }
 export type ConditionSort = {
     field: ConditionSortField;
@@ -76,11 +76,11 @@ export const useConditionSearch = () => {
             ConditionControllerService.searchConditions({
                 requestBody: {
                     searchText: state.search.searchText ?? '',
-                    excludeInUse: true
+                    excludeInUse: true,
                 },
                 page: state.search.page,
                 size: state.search.pageSize,
-                sort: sortString ? [sortString] : undefined
+                sort: sortString ? [sortString] : undefined,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
@@ -99,7 +99,7 @@ export const useConditionSearch = () => {
         response: state.status === 'complete' ? state.response : undefined,
         search: (search: ConditionSearch) => dispatch({ type: 'search', search }),
         keyword: state.status === 'complete' || state.status === 'searching' ? state.search.searchText : '',
-        reset: () => dispatch({ type: 'reset' })
+        reset: () => dispatch({ type: 'reset' }),
     };
 
     return value;

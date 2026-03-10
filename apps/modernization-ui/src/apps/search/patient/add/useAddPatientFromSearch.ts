@@ -20,7 +20,7 @@ const useAddPatientFromSearch = (): Interaction => {
     }, [getValues, found, navigate]);
 
     return {
-        add
+        add,
     };
 };
 

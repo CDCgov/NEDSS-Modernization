@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { FilterJSON } from './FilterJSON';
-export type Date = (FilterJSON & {
+export type Date = FilterJSON & {
     property?: string;
     operator?: Date.operator;
 } & {
     property: string;
     operator: Date.operator;
-});
+};
 export namespace Date {
     export enum operator {
         TODAY = 'TODAY',
@@ -19,4 +19,3 @@ export namespace Date {
         MORE_THAN_30_DAYS = 'MORE_THAN_30_DAYS',
     }
 }
-

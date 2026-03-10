@@ -14,7 +14,7 @@ const defaultName: MergeName = {
     middle: 'Joe',
     secondMiddle: 'Bob',
     suffix: 'Esquire',
-    degree: 'PHD'
+    degree: 'PHD',
 };
 
 const Fixture = ({ name = defaultName }: { name?: MergeName }) => {
@@ -42,7 +42,7 @@ describe('NameDetails', () => {
             personUid: '1',
             sequence: '1',
             asOf: '2022-06-07T14:24:44.970',
-            type: 'Legal'
+            type: 'Legal',
         };
         const { getByText } = render(<Fixture name={sparseName} />);
 

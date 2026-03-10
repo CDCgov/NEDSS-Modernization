@@ -23,7 +23,7 @@ export const Question = ({
     onEditQuestion,
     onDeleteQuestion,
     onEditValueset,
-    onChangeValueset
+    onChangeValueset,
 }: Props) => {
     const modal = useRef<ModalRef>(null);
     const [confirmModal, setConfirmModal] = useState(false);

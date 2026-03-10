@@ -25,7 +25,7 @@ const initialize = (initial: ColumnPreference[]): State => step(structuredClone(
 
 const step = (initial: ColumnPreference[], next: ColumnPreference[]): State => ({
     initial,
-    preferences: structuredClone(next)
+    preferences: structuredClone(next),
 });
 
 type Action =
@@ -80,7 +80,7 @@ const ColumnPreferenceProvider = ({ id, children, defaults = [] }: Props) => {
             preferences: state.preferences,
             save: (preferences: ColumnPreference[]) => dispatch({ type: 'save', preferences }),
             reset: () => dispatch({ type: 'reset' }),
-            apply: applyPreferences(state.preferences)
+            apply: applyPreferences(state.preferences),
         }),
         [dispatch, state.preferences]
     );

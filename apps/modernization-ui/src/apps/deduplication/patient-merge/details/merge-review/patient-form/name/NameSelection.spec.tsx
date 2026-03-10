@@ -12,7 +12,7 @@ const mergeCandidates: Partial<MergeCandidate>[] = [
                 asOf: '2022-06-07T14:24:44.970',
                 type: 'Legal',
                 first: 'John',
-                last: 'Doe'
+                last: 'Doe',
             },
             {
                 personUid: '1',
@@ -20,10 +20,10 @@ const mergeCandidates: Partial<MergeCandidate>[] = [
                 asOf: '2020-01-01T14:24:44.970',
                 type: 'Alias',
                 first: 'Johnathan',
-                last: 'Doer'
-            }
-        ]
-    }
+                last: 'Doer',
+            },
+        ],
+    },
 ];
 const Fixture = () => {
     const form = useForm();

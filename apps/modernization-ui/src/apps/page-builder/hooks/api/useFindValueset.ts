@@ -14,7 +14,7 @@ export enum SortField {
     TYPE = 'type',
     NAME = 'name',
     DESCRIPTION = 'description',
-    CODE = 'code'
+    CODE = 'code',
 }
 export type ValuesetSort = {
     field: SortField;
@@ -60,7 +60,7 @@ export const useFindValuesets = () => {
                 requestBody: { query: state.search.query ?? '' },
                 page: state.search.page,
                 size: state.search.pageSize,
-                sort: sortString ? [sortString] : undefined
+                sort: sortString ? [sortString] : undefined,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
@@ -77,7 +77,7 @@ export const useFindValuesets = () => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'searching',
         response: state.status === 'complete' ? state.valuesets : undefined,
-        search: (search: ValuesetSearch) => dispatch({ type: 'search', search })
+        search: (search: ValuesetSearch) => dispatch({ type: 'search', search }),
     };
 
     return value;

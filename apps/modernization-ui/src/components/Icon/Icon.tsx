@@ -28,7 +28,7 @@ const IconList = [
     'textarea',
     'textbox',
     'ungroup',
-    'table'
+    'table',
 ];
 
 export const Icon = ({ name, size, color, alt = '' }: IconProps) => {

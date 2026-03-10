@@ -32,7 +32,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -48,7 +48,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                     />
                 )}
@@ -69,7 +69,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                     />
                 )}
@@ -85,7 +85,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -101,7 +101,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -117,7 +117,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -133,7 +133,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                     />
                 )}
@@ -149,7 +149,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                         underlined
                     />
@@ -165,7 +165,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                     />
                 )}
@@ -181,7 +181,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                         selectable={{
                             id: `${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                     />
                 )}

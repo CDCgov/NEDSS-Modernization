@@ -31,7 +31,7 @@ export const PreviewAddress = ({ selectedAddresses, mergeCandidates }: AddressPr
         .toSorted((a, b) => (parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1))
         .map((a) => ({
             ...a,
-            asOf: format(parseISO(a.asOf), 'MM/dd/yyyy')
+            asOf: format(parseISO(a.asOf), 'MM/dd/yyyy'),
         }));
 
     const columns: Column<AddressEntry>[] = [
@@ -39,39 +39,39 @@ export const PreviewAddress = ({ selectedAddresses, mergeCandidates }: AddressPr
             id: 'asOf',
             name: 'As of',
             value: (entry) => entry.asOf ?? '---',
-            sortable: true
+            sortable: true,
         },
         {
             id: 'typeUse',
             name: 'Type',
             value: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '',
             render: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '---',
-            sortable: true
+            sortable: true,
         },
         {
             id: 'address',
             name: 'Address',
             value: (entry) => entry.address ?? '---',
-            sortable: true
+            sortable: true,
         },
         {
             id: 'city',
             name: 'City',
             value: (entry) => entry.city ?? '---',
-            sortable: true
+            sortable: true,
         },
         {
             id: 'state',
             name: 'State',
             value: (entry) => entry.state ?? '---',
-            sortable: true
+            sortable: true,
         },
         {
             id: 'zipcode',
             name: 'Zip',
             value: (entry) => entry.zipcode ?? '---',
-            sortable: true
-        }
+            sortable: true,
+        },
     ];
 
     return <MergePreviewTableCard<AddressEntry> id="address" title="Address" columns={columns} data={addresses} />;

@@ -43,7 +43,7 @@ export const SkipLinkProvider = ({ children }: SkipLinkProviderProps) => {
     const contextValue: SkipLinkContextType = {
         skipTo,
         remove,
-        currentFocusTargets
+        currentFocusTargets,
     };
 
     const currentTarget =

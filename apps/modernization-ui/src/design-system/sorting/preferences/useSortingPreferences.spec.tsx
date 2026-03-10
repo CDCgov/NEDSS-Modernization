@@ -13,8 +13,8 @@ vi.mock('libs/sorting', () => ({
         property: mockProperty,
         direction: mockDirection,
         reset: mockReset,
-        sortBy: mockSortBy
-    })
+        sortBy: mockSortBy,
+    }),
 }));
 
 let mockValue: ActiveSorting | undefined = undefined;
@@ -25,8 +25,8 @@ vi.mock('storage', () => ({
     useLocalStorage: ({ key, initial }: { key: string; initial?: any }) => ({
         value: mockValue,
         save: mockSave,
-        remove: mockRemove
-    })
+        remove: mockRemove,
+    }),
 }));
 
 const wrapper = ({ children }: { children: ReactNode }) => (

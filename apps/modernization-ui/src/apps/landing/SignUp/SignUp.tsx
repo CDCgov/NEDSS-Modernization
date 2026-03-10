@@ -15,7 +15,7 @@ const SignUp = () => {
     const {
         handleSubmit,
         control,
-        formState: { isValid }
+        formState: { isValid },
     } = useForm<SignUpEntry, Partial<SignUpEntry>>({ mode: 'onBlur' });
 
     const { signUp } = useSignUp();
@@ -39,7 +39,7 @@ const SignUp = () => {
                         name="email"
                         rules={{
                             required: { value: true, message: 'An email address is required.' },
-                            ...validEmailRule(255)
+                            ...validEmailRule(255),
                         }}
                         render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                             <Input

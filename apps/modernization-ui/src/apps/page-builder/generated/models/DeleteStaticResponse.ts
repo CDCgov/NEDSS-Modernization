@@ -5,4 +5,3 @@
 export type DeleteStaticResponse = {
     result?: string;
 };
-

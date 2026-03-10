@@ -42,7 +42,8 @@ export const PassList = ({ passes, selectedPass, onSetSelectedPass, onAddPass, o
                 </div>
                 <Shown
                     when={passes !== undefined && passes.length > 0}
-                    fallback={<div className={styles.noPassesText}>No pass configurations have been created.</div>}>
+                    fallback={<div className={styles.noPassesText}>No pass configurations have been created.</div>}
+                >
                     {passes.map((pass, k) => (
                         <PassEntry
                             key={k}
@@ -59,7 +60,8 @@ export const PassList = ({ passes, selectedPass, onSetSelectedPass, onAddPass, o
                     tertiary
                     onClick={onAddPass}
                     disabled={selectedPass !== undefined && selectedPass?.id === undefined}
-                    className={styles.addPassButton}>
+                    className={styles.addPassButton}
+                >
                     Add pass configuration
                 </Button>
             </aside>

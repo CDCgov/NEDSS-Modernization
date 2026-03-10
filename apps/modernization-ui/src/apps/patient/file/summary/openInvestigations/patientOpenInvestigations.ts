@@ -4,7 +4,7 @@ import { PatientFileOpenInvestigation } from './openInvestigation';
 
 const transformer = (value: PatientInvestigationResponse): PatientFileOpenInvestigation => ({
     ...value,
-    startedOn: maybeDate(value.startedOn)
+    startedOn: maybeDate(value.startedOn),
 });
 
 const patientOpenInvestigations = (patient: number) =>

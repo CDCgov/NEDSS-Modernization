@@ -52,7 +52,8 @@ export const ManageSectionModal = ({ addSecModalRef, manageSecModalRef }: Manage
                 className={'manage-section-modal'}
                 ref={manageSectionModalRef}
                 forceAction
-                isLarge>
+                isLarge
+            >
                 <DragDropProvider pageData={page} successCallBack={onReorderSuccess}>
                     <ManageSection
                         pageId={page.id}

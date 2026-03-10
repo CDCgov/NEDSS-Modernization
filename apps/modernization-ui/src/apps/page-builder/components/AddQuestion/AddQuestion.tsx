@@ -27,8 +27,8 @@ export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
         mode: 'onBlur',
         defaultValues: {
             codeSet: 'LOCAL',
-            messagingInfo: { includedInMessage: false, requiredInMessage: false }
-        }
+            messagingInfo: { includedInMessage: false, requiredInMessage: false },
+        },
     });
 
     const handleSubmit = () => {
@@ -115,7 +115,8 @@ const AddQuestionContent = ({ onBack, onClose, onSubmit, onFindValueSet }: AddQu
                     disabled={!form.formState.isValid}
                     onClick={onSubmit}
                     className="createAndDeployToPageBtn"
-                    type="button">
+                    type="button"
+                >
                     Create and apply to page
                 </Button>
             </ButtonBar>

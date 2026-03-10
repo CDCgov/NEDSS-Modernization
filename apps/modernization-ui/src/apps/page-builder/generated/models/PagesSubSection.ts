@@ -14,4 +14,3 @@ export type PagesSubSection = {
     blockName?: string;
     questions: Array<PagesQuestion>;
 };
-

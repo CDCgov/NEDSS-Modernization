@@ -18,7 +18,7 @@ export const PreviewEthnicity = ({ mergeFormData, mergeCandidates }: PreviewEthn
         { label: 'As of', text: formattedAsOf, lined: true },
         { label: 'Ethnicity', text: ethnicityData?.ethnicity ?? '---', lined: true },
         { label: 'Spanish Origin', text: ethnicityData?.spanishOrigin ?? '---', lined: true },
-        { label: 'Reason unknown', text: ethnicityData?.reasonUnknown ?? '---', lined: false }
+        { label: 'Reason unknown', text: ethnicityData?.reasonUnknown ?? '---', lined: false },
     ];
 
     return <LinedMergePreviewCard id="ethnicity" title="Ethnicity" items={items} />;

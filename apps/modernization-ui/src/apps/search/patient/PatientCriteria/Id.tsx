@@ -33,7 +33,7 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
                     control={control}
                     name="identification"
                     rules={{
-                        required: { value: true, message: 'ID number is required' }
+                        required: { value: true, message: 'ID number is required' },
                     }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <TextInputField

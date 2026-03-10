@@ -27,7 +27,7 @@ export const SubsectionDetails = () => {
                         control={control}
                         name="name"
                         rules={{
-                            required: { value: true, message: 'Subsection name required.' }
+                            required: { value: true, message: 'Subsection name required.' },
                         }}
                         render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                             <Input
@@ -84,7 +84,7 @@ export const SubsectionDetails = () => {
                         name="blockName"
                         rules={{
                             required: { value: true, message: 'Block name required.' },
-                            pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, 0-9, or _' }
+                            pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, 0-9, or _' },
                         }}
                         render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                             <Input
@@ -112,7 +112,7 @@ export const SubsectionDetails = () => {
                         rules={{
                             required: { value: true, message: 'Repeat number required.' },
                             max: { value: 5, message: 'Must be between 0 and 5' },
-                            min: { value: 0, message: 'Must be between 0 and 5' }
+                            min: { value: 0, message: 'Must be between 0 and 5' },
                         }}
                         render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <Input

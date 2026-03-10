@@ -22,7 +22,7 @@ export const SectionHeader = ({
     handleEditSection,
     handleDeleteSection,
     handleManageSubsection,
-    isExpanded
+    isExpanded,
 }: Props) => {
     const [close, setClose] = useState(false);
     const handleDeleteSectionClick = () => {
@@ -48,13 +48,15 @@ export const SectionHeader = ({
                     onClick={handleManageSubsection}
                     outline
                     data-testid={`manageSubsectionGearIcon-${subsectionCount ? 'yes' : 'no'}`}
-                    className={styles.settingBtn}>
+                    className={styles.settingBtn}
+                >
                     <Icon.Settings size={3} />
                 </Button>
                 <MoreOptions
                     header={<Icon.MoreVert size={4} onClick={() => setClose(false)} />}
                     close={close}
-                    className={`moreOptionsSection-${subsectionCount ? 'yes' : 'no'}`}>
+                    className={`moreOptionsSection-${subsectionCount ? 'yes' : 'no'}`}
+                >
                     <Button type="button" onClick={handleEditSection}>
                         <Icon.Edit size={3} /> Edit section
                     </Button>

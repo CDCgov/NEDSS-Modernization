@@ -12,14 +12,14 @@ const enum Header {
     TYPE = 'Type',
     NAME = 'Value set name',
     CODE = 'Code',
-    DESCRIPTION = 'Value set description'
+    DESCRIPTION = 'Value set description',
 }
 
 const tableHeaders = [
     { name: Header.TYPE, sortable: true },
     { name: Header.CODE, sortable: true },
     { name: Header.NAME, sortable: true },
-    { name: Header.DESCRIPTION, sortable: true }
+    { name: Header.DESCRIPTION, sortable: true },
 ];
 
 type Props = {
@@ -38,7 +38,7 @@ export const ValuesetSearchTable = ({
     onQuerySubmit,
     onSelectionChange,
     onSortChange,
-    onCreateNew
+    onCreateNew,
 }: Props) => {
     const { page, request } = usePagination();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
@@ -60,15 +60,15 @@ export const ValuesetSearchTable = ({
             tableDetails: [
                 {
                     id: 1,
-                    title: valueset.type
+                    title: valueset.type,
                 },
                 { id: 2, title: valueset.id },
                 { id: 2, title: valueset.name },
                 {
                     id: 3,
-                    title: valueset.description
-                }
-            ]
+                    title: valueset.description,
+                },
+            ],
         };
     };
 
@@ -114,7 +114,8 @@ export const ValuesetSearchTable = ({
                             <Button
                                 className={styles.clearSearchButton}
                                 type="button"
-                                onClick={() => onQuerySubmit?.('')}>
+                                onClick={() => onQuerySubmit?.('')}
+                            >
                                 <Icon.Close />
                             </Button>
                         </div>
