@@ -65,14 +65,6 @@ class ClassicOrganizationPage {
     cy.contains('View').eq(0).click();
   }
 
-  verifySearchResultsCount(expectedCount) {
-    cy.log(`Verifying search results message shows ${expectedCount} possible matches`);
-    
-    // Check the red text div for the expected count
-    cy.get('div.boldTenDkRed', { timeout: 10000 })
-      .should('be.visible')
-      .and('contain', `resulted in ${expectedCount} possible matches`);
-  }
   
   // Verification methods
   verifySearchResultsContain(expectedText) {
