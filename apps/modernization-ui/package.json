@@ -67,7 +67,7 @@
         "gql-generator": "^2.0.0",
         "http-proxy-middleware": "^2.0.9",
         "jest-axe": "^10.0.0",
-        "jsdom": "^26.1.0",
+        "jsdom": "^28.1.0",
         "openapi-typescript-codegen": "^0.29.0",
         "prettier": "^3.2.5",
         "prop-types": "^15.8.1",
