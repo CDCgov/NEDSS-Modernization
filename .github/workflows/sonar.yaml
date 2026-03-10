@@ -44,7 +44,7 @@ env:
 
 jobs:
   pipeline:
-    name: Build and analyze
+    name: Build and analyze Java
     runs-on: ubuntu-latest
 
     permissions:

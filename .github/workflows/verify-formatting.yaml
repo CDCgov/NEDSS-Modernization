@@ -18,7 +18,7 @@ on:
 
 jobs:
   pipeline:
-    name: Build and analyze
+    name: Java
     runs-on: ubuntu-latest
 
     permissions:
