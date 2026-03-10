@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/nbs/api/report/")
 public class ReportController {
 
-    private final ReportService reportService;
+  private final ReportService reportService;
 
-    public ReportController(ReportService reportService) {
-        this.reportService = reportService;
-    }
+  public ReportController(ReportService reportService) {
+    this.reportService = reportService;
+  }
 
-    @GetMapping("configuration/{reportUid}/{dataSourceUid}")
-//    @PreAuthorize("hasAuthority('VIEWREPORTPRIVATE-REPORTING')")
-    public Report findReport(@PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
-        return reportService.getReport(reportUid, dataSourceUid);
-    }
+  @GetMapping("configuration/{reportUid}/{dataSourceUid}")
+  //    @PreAuthorize("hasAuthority('VIEWREPORTPRIVATE-REPORTING')")
+  public Report findReport(@PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
+    return reportService.getReport(reportUid, dataSourceUid);
+  }
 }
