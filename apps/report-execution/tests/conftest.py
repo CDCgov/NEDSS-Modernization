@@ -81,11 +81,16 @@ def setup_containers(request):
     """Set up DB and report execution containers."""
     logging.info('Setting up containers tests...')
     compose_path = os.path.join(os.path.dirname(__file__), '../../../cdc-sandbox')
-    compose_file_name = 'docker-compose.yml'
+    compose_file_names = [
+        'docker-compose.yml',
+        '../apps/report-execution/tests/integration/docker-compose.yml',
+    ]
     containers = DockerCompose(
         compose_path,
-        compose_file_name=compose_file_name,
+        compose_file_name=compose_file_names,
         services=['report-execution', 'nbs-mssql'],
+        build=True,
+        env_file=['../sample.env', '../apps/report-execution/sample.env'],
     )
     report_exec_url = 'http://0.0.0.0:8001/status'
 

@@ -82,5 +82,7 @@ services:
     build:
       context: ./apps/report-execution
     container_name: report-execution
+    environment:
+      - DATABASE_CONN_STRING=${DATABASE_CONN_STRING}
     ports:
       - "8001:8001"
