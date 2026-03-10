@@ -5,15 +5,15 @@ import userEvent from '@testing-library/user-event';
 import GeneralSearchFields from './GeneralSearchFields';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 
-jest.mock('options/jurisdictions', () => ({
+vi.mock('options/jurisdictions', () => ({
     useJurisdictionOptions: () => ({ all: [] })
 }));
 
-jest.mock('options/program-areas', () => ({
+vi.mock('options/program-areas', () => ({
     useProgramAreaOptions: () => ({ all: [] })
 }));
 
-jest.mock('options/condition', () => ({
+vi.mock('options/condition', () => ({
     useConditionOptions: () => ({ options: [] })
 }));
 
@@ -31,7 +31,7 @@ const InvestigationFormWithFields = () => {
 
 describe('GeneralSearchFields', () => {
     beforeEach(() => {
-        const options = jest.fn();
+        const options = vi.fn();
 
         options.mockImplementation(() => Promise.resolve([]));
 

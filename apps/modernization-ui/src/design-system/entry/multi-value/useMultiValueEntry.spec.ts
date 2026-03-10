@@ -41,7 +41,7 @@ describe('useMultiValueEntry', () => {
     });
 
     it('should select an item for viewing', () => {
-        const identifierGenerator = jest
+        const identifierGenerator = vi
             .fn()
             .mockImplementationOnce(() => '557')
             .mockImplementationOnce(() => '601');
@@ -98,7 +98,7 @@ describe('useMultiValueEntry', () => {
     });
 
     it('should select an item for editing', () => {
-        const identifierGenerator = jest
+        const identifierGenerator = vi
             .fn()
             .mockImplementationOnce(() => '557')
             .mockImplementationOnce(() => '601');
@@ -127,7 +127,7 @@ describe('useMultiValueEntry', () => {
     });
 
     it('should update the selected value', () => {
-        const identifierGenerator = jest
+        const identifierGenerator = vi
             .fn()
             .mockImplementationOnce(() => '557')
             .mockImplementationOnce(() => '601');
@@ -156,7 +156,7 @@ describe('useMultiValueEntry', () => {
     });
 
     it('should remove an existing value', () => {
-        const identifierGenerator = jest
+        const identifierGenerator = vi
             .fn()
             .mockImplementationOnce(() => '557')
             .mockImplementationOnce(() => '601');
@@ -179,7 +179,7 @@ describe('useMultiValueEntry', () => {
     });
 
     it('should reset when removing the selected value', () => {
-        const identifierGenerator = jest
+        const identifierGenerator = vi
             .fn()
             .mockImplementationOnce(() => '557')
             .mockImplementationOnce(() => '601');

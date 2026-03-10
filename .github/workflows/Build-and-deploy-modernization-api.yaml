@@ -17,11 +17,10 @@ jobs:
       contents: read
     uses: ./.github/workflows/sonar.yaml
     secrets:
-      NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}
       PASSED_GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
-      DATABASE_USER: ${{secrets.DATABSE_USER}}
-      DATABASE_PASSWORD: ${{secrets.DATABSE_PASSWORD}}
+      DATABASE_USER: ${{secrets.DATABASE_USER}}
+      DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
       PARAMETER_SECRET: ${{secrets.PARAMETER_SECRET}}
       TOKEN_SECRET: ${{secrets.TOKEN_SECRET}}
   call-build-microservice-container-workflow:

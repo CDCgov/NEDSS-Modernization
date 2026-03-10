@@ -5,11 +5,11 @@ import { PageManagementProvider } from '../../usePageManagement';
 import { AlertProvider } from 'alert';
 import userEvent from '@testing-library/user-event';
 
-const onAdd = jest.fn();
-const handleExpanded = jest.fn();
-const onDelete = jest.fn();
-const onEdit = jest.fn();
-const onGroup = jest.fn();
+const onAdd = vi.fn();
+const handleExpanded = vi.fn();
+const onDelete = vi.fn();
+const onEdit = vi.fn();
+const onGroup = vi.fn();
 
 const unGroupedSubsection: PagesSubSection = {
     id: 1,
@@ -44,7 +44,7 @@ describe('Subsection header', () => {
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={unGroupedSubsection}
                         onAddQuestion={onAdd}
@@ -71,7 +71,7 @@ describe('Subsection header', () => {
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={unGroupedSubsection}
                         onAddQuestion={onAdd}
@@ -97,7 +97,7 @@ describe('Subsection header', () => {
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={unGroupedSubsection}
                         onAddQuestion={onAdd}
@@ -135,7 +135,7 @@ describe('Subsection header', () => {
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={subsectionWithPublishedQuestion}
                         onAddQuestion={onAdd}
@@ -161,7 +161,7 @@ describe('Subsection header', () => {
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={groupedSubsection}
                         onAddQuestion={onAdd}
@@ -187,7 +187,7 @@ describe('Subsection header', () => {
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={groupedSubsection}
                         onAddQuestion={onAdd}
@@ -213,7 +213,7 @@ describe('Subsection header', () => {
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={groupedSubsection}
                         onAddQuestion={onAdd}
@@ -251,7 +251,7 @@ describe('Subsection header', () => {
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={subsectionWithPublishedQuestion}
                         onAddQuestion={onAdd}

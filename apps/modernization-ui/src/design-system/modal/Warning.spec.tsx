@@ -40,7 +40,7 @@ describe('when a warning is displayed', () => {
     });
 
     it('should invoke onClose when the "Go back" button is clicked', async () => {
-        const onClose = jest.fn();
+        const onClose = vi.fn();
 
         const { getByRole } = render(<Warning onClose={onClose}>warning message</Warning>);
 
@@ -55,7 +55,7 @@ describe('when a warning is displayed', () => {
     });
 
     it('should invoke onClose when the close icon is clicked', async () => {
-        const onClose = jest.fn();
+        const onClose = vi.fn();
 
         const { getByRole } = render(<Warning onClose={onClose}>warning message</Warning>);
 

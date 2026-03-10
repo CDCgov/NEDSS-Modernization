@@ -6,8 +6,8 @@ import { NewPatient } from './api';
 type Example = {};
 
 const setup = (settings?: Partial<AddPatientSettings<Example>>) => {
-    const transformer = settings?.transformer ?? jest.fn();
-    const creator = settings?.creator ?? jest.fn();
+    const transformer = settings?.transformer ?? vi.fn();
+    const creator = settings?.creator ?? vi.fn();
 
     return renderHook(() => useAddPatient({ transformer, creator }));
 };
@@ -22,11 +22,11 @@ describe('when adding patients with extended data', () => {
     it('should transition to created when creation is completed', async () => {
         const input: NewPatient = { administrative: { asOf: '04/13/2017', comment: 'transformed' } };
 
-        const transformer = jest.fn();
+        const transformer = vi.fn();
 
         transformer.mockReturnValue(input);
 
-        const creator = jest.fn();
+        const creator = vi.fn();
 
         creator.mockResolvedValue({ id: 101, shortId: 691 });
 

@@ -5,8 +5,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { BlockingCriteriaSidePanel } from './BlockingCriteriaSidePanel';
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 
-const onAccept = jest.fn();
-const onCancel = jest.fn();
+const onAccept = vi.fn();
+const onCancel = vi.fn();
 
 class ResizeObserver {
     observe() {

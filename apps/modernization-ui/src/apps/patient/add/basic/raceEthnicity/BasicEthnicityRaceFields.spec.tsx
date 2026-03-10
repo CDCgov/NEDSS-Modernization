@@ -14,11 +14,11 @@ const mockEthnicityValues = {
     ]
 };
 
-jest.mock('apps/patient/data/ethnicity/useEthnicityCodedValues', () => ({
+vi.mock('apps/patient/data/ethnicity/useEthnicityCodedValues', () => ({
     useEthnicityCodedValues: () => mockEthnicityValues
 }));
 
-jest.mock('options/race', () => ({
+vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories
 }));
 

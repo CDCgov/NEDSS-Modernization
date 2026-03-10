@@ -2,7 +2,14 @@ import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
 import { IdentificationRepeatingBlock, IdentificationRepeatingBlockProps } from './IdentificationRepeatingBlock';
 
-const Fixture = ({ values, onChange = jest.fn(), isDirty = jest.fn() }: Partial<IdentificationRepeatingBlockProps>) => (
+vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
+    useIdentificationCodedValues: () => ({
+        types: [{ value: 'type-value', name: 'type-name' }],
+        authorities: [{ value: 'authority-value', name: 'authority-name' }]
+    })
+}));
+
+const Fixture = ({ values, onChange = vi.fn(), isDirty = vi.fn() }: Partial<IdentificationRepeatingBlockProps>) => (
     <IdentificationRepeatingBlock id="identifications" values={values} onChange={onChange} isDirty={isDirty} />
 );
 

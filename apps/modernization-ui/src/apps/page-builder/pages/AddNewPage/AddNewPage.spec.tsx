@@ -20,19 +20,19 @@ import {
 import userEvent from '@testing-library/user-event';
 
 beforeEach(() => {
-    jest.spyOn(ConditionControllerService, 'findConditionsNotInUse').mockReturnValue(
+    vi.spyOn(ConditionControllerService, 'findConditionsNotInUse').mockReturnValue(
         Promise.resolve([{ id: '1' }] as Condition[]) as CancelablePromise<Condition[]>
     );
-    jest.spyOn(ConceptControllerService, 'findConcepts').mockReturnValue(
+    vi.spyOn(ConceptControllerService, 'findConcepts').mockReturnValue(
         Promise.resolve([{ conceptCode: 'concept' }] as Concept[]) as CancelablePromise<Concept[]>
     );
-    jest.spyOn(TemplateControllerService, 'findAllTemplates').mockReturnValue(
+    vi.spyOn(TemplateControllerService, 'findAllTemplates').mockReturnValue(
         Promise.resolve([{ id: 2 }]) as CancelablePromise<Template[]>
     );
-    jest.spyOn(ConditionControllerService, 'searchConditions').mockReturnValue(
+    vi.spyOn(ConditionControllerService, 'searchConditions').mockReturnValue(
         Promise.resolve({}) as CancelablePromise<PageCondition>
     );
-    jest.spyOn(ProgramAreaControllerService, 'getProgramAreas').mockReturnValue(
+    vi.spyOn(ProgramAreaControllerService, 'getProgramAreas').mockReturnValue(
         Promise.resolve([] as ProgramArea[]) as CancelablePromise<ProgramArea[]>
     );
 });
@@ -86,7 +86,7 @@ describe('Add New Page', () => {
     });
 
     //  The complexity of the AddNePage component makes testing it very difficult.  There are multiple modals being rendered that make API calls and the selection of the "Event Type" is not triggering changes.
-    xit('should display warning when non Investigation type is selected', async () => {
+    it.skip('should display warning when non Investigation type is selected', async () => {
         const { getByTestId, getByRole } = render(<Fixture />);
 
         const select = getByRole('combobox', { name: 'Event type' });
@@ -100,14 +100,14 @@ describe('Add New Page', () => {
         expect(warning).toBeInTheDocument();
     });
 
-    xit('should redirect to classic on create page when non investigation is selected', async () => {
-        const savePage = jest.spyOn(PageControllerService, 'createPage');
+    it.skip('should redirect to classic on create page when non investigation is selected', async () => {
+        const savePage = vi.spyOn(PageControllerService, 'createPage');
         savePage.mockImplementation(
             (_) => Promise.resolve({} as PageCreateResponse) as CancelablePromise<PageCreateResponse>
         );
 
         const { location } = window;
-        const setHrefSpy = jest.fn((href) => href);
+        const setHrefSpy = vi.fn((href) => href);
         const mockLocation = { ...location };
         Object.defineProperty(mockLocation, 'href', {
             set: setHrefSpy
@@ -136,7 +136,7 @@ describe('Add New Page', () => {
         expect(savePage).not.toBeCalled();
     });
 
-    xit('should display form when Investigation type is selected', async () => {
+    it.skip('should display form when Investigation type is selected', async () => {
         const { queryByText, getByText, getByRole } = render(<Fixture />);
 
         const select = getByRole('combobox', { name: 'Event type' });

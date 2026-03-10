@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Modal } from './Modal';
 import { Confirmation } from './Confirmation';
 import { Success } from './Success';

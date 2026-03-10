@@ -8,10 +8,10 @@ const props = {
     modalRef: { current: null },
     tabId: 5,
     pageId: '10056',
-    onAddSection: jest.fn()
+    onAddSection: vi.fn()
 };
 
-const mockAddSectionUsingPost = jest.spyOn(SectionControllerService, 'createSection');
+const mockAddSectionUsingPost = vi.spyOn(SectionControllerService, 'createSection');
 
 describe('AddSectionModal', () => {
     it('should render successfully', () => {

@@ -8,7 +8,7 @@ import { SortingProvider } from 'libs/sorting';
 
 let mockReturnValue: MatchRequiringReviewResponse;
 beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockReturnValue = {
         matches: [
             {
@@ -26,10 +26,11 @@ beforeEach(() => {
     };
 });
 
-jest.mock('pagination', () => {
-    const original = jest.requireActual('pagination');
+vi.mock('pagination', async () => {
+    const original = await vi.importActual<any>('pagination');
     return {
         ...original,
+        PaginationProvider: original.PaginationProvider, // Ensure PaginationProvider is exported
         usePagination: () => ({
             page: {
                 current: 1,
@@ -37,16 +38,16 @@ jest.mock('pagination', () => {
                 status: 'Requested',
                 total: 1
             },
-            ready: jest.fn(),
-            request: jest.fn(),
-            resize: jest.fn(),
-            firstPage: jest.fn()
+            ready: vi.fn(),
+            request: vi.fn(),
+            resize: vi.fn(),
+            firstPage: vi.fn()
         })
     };
 });
 
-const mockFetch = jest.fn();
-jest.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
+const mockFetch = vi.fn();
+vi.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
     useMatchesRequiringReview: () => ({
         response: mockReturnValue,
         fetchMatchesRequiringReview: mockFetch

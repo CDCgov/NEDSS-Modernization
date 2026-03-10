@@ -26,7 +26,7 @@ describe('MultiSelect', () => {
     });
 
     it('should allow selecting multiple options', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         const { getByText, getByRole } = render(
             <MultiSelect
                 id="test-multi-select"

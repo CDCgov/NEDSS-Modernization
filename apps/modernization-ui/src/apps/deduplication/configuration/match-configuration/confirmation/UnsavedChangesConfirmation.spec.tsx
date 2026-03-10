@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 import { UnsavedChangesConfirmation } from './UnsavedChangesConfirmation';
 
-const onAccept = jest.fn();
-const onCancel = jest.fn();
+const onAccept = vi.fn();
+const onCancel = vi.fn();
 describe('UnsavedChangesConfirmation', () => {
     it('should have the proper heading', () => {
         const { getByRole } = render(

@@ -31,7 +31,7 @@ const patientData: Partial<MergeCandidate> = {
         }
     ]
 };
-const onViewPhoneEmail = jest.fn();
+const onViewPhoneEmail = vi.fn();
 const Fixture = () => {
     const form = useForm();
     return (

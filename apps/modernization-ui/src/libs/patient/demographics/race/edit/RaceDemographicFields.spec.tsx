@@ -5,7 +5,7 @@ import { RaceDemographic } from '../race';
 import { RaceDemographicFields, RaceDemographicFieldsProps } from './RaceDemographicFields';
 import { RaceOptions } from './useRaceOptions';
 
-const mockSelected = jest.fn();
+const mockSelected = vi.fn();
 
 type Props = Partial<RaceDemographicFieldsProps> & { entry?: RaceDemographic } & Partial<RaceOptions>;
 
@@ -13,7 +13,7 @@ const Fixture = ({
     categories = [],
     details = [],
     selected = mockSelected,
-    categoryValidator = jest.fn().mockResolvedValue('true'),
+    categoryValidator = vi.fn().mockResolvedValue('true'),
     entry
 }: Props) => {
     const form = useForm<RaceDemographic>({
@@ -155,7 +155,7 @@ describe('Race entry fields', () => {
     });
 
     it('should require race category to pass validation', async () => {
-        const validator = jest.fn();
+        const validator = vi.fn();
         validator.mockResolvedValue('category not valid');
 
         const { getByRole, getByText } = render(

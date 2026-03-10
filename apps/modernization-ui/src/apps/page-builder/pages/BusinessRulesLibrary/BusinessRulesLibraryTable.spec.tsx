@@ -29,10 +29,10 @@ describe('BusinessRulesLibraryTable', () => {
                         <BusinessRulesLibraryTable
                             rules={summaries}
                             qtnModalRef={modalRef}
-                            onSortChange={jest.fn()}
-                            onQueryChange={jest.fn()}
-                            onDownloadCsv={jest.fn()}
-                            onDownloadPdf={jest.fn()}
+                            onSortChange={vi.fn()}
+                            onQueryChange={vi.fn()}
+                            onDownloadCsv={vi.fn()}
+                            onDownloadPdf={vi.fn()}
                         />
                     </PaginationProvider>
                 </BrowserRouter>
@@ -73,10 +73,10 @@ describe('BusinessRulesLibraryTable', () => {
                         <BusinessRulesLibraryTable
                             rules={summaries}
                             qtnModalRef={modalRef}
-                            onSortChange={jest.fn()}
-                            onQueryChange={jest.fn()}
-                            onDownloadCsv={jest.fn()}
-                            onDownloadPdf={jest.fn()}
+                            onSortChange={vi.fn()}
+                            onQueryChange={vi.fn()}
+                            onDownloadCsv={vi.fn()}
+                            onDownloadPdf={vi.fn()}
                         />
                     </PaginationProvider>
                 </BrowserRouter>

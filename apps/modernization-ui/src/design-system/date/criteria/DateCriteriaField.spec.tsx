@@ -9,7 +9,7 @@ describe('DateCriteriaField Component', () => {
         id: 'test-date-entry',
         value: { equals: { day: 1, month: 1, year: 1995 } } as DateEqualsCriteria,
         label: 'Test Date Entry',
-        onChange: jest.fn()
+        onChange: vi.fn()
     };
 
     it('should render with no accessibility violations', async () => {

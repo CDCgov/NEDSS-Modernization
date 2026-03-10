@@ -5,8 +5,8 @@ import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { MatchingCriteriaSidePanel } from './MatchingCriteriaSidePanel';
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 
-const onAccept = jest.fn();
-const onCancel = jest.fn();
+const onAccept = vi.fn();
+const onCancel = vi.fn();
 
 class ResizeObserver {
     observe() {

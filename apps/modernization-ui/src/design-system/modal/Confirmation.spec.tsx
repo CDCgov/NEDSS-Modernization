@@ -76,8 +76,8 @@ describe('when a confirmation is displayed', () => {
     });
 
     it('should invoke onCancel when the "No, go back" button is clicked', async () => {
-        const onConfirm = jest.fn();
-        const onCancel = jest.fn();
+        const onConfirm = vi.fn();
+        const onCancel = vi.fn();
 
         const { getByRole } = render(
             <Confirmation onCancel={onCancel} onConfirm={() => {}}>
@@ -97,8 +97,8 @@ describe('when a confirmation is displayed', () => {
     });
 
     it('should invoke onCancel when the close icon is clicked', async () => {
-        const onConfirm = jest.fn();
-        const onCancel = jest.fn();
+        const onConfirm = vi.fn();
+        const onCancel = vi.fn();
 
         const { getByRole } = render(
             <Confirmation onCancel={onCancel} onConfirm={() => {}}>
@@ -142,8 +142,8 @@ describe('when a confirmation is displayed', () => {
     });
 
     it('should invoke onConfirm when the "Confirm" button is clicked', async () => {
-        const onConfirm = jest.fn();
-        const onCancel = jest.fn();
+        const onConfirm = vi.fn();
+        const onCancel = vi.fn();
 
         const { getByRole } = render(
             <Confirmation onCancel={onCancel} onConfirm={onConfirm}>

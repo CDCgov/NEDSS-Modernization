@@ -6,7 +6,7 @@ describe('Chip', () => {
     const mockProps = {
         name: 'Test',
         value: 'Value',
-        handleClose: jest.fn()
+        handleClose: vi.fn()
     };
 
     it('renders with correct name and value', () => {
