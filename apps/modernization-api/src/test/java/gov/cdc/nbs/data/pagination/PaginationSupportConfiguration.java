@@ -10,9 +10,7 @@ import org.springframework.data.domain.Pageable;
 class PaginationSupportConfiguration {
 
   @Bean
-  Active<Pageable> activePageable(
-      @Value("${nbs.search.max-page-size}") final int size
-  ) {
+  Active<Pageable> activePageable(@Value("${nbs.search.max-page-size}") final int size) {
     return new Active<>(() -> Pageable.ofSize(size));
   }
 }

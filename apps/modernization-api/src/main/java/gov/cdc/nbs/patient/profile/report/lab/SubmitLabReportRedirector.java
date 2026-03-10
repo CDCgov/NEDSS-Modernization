@@ -33,8 +33,7 @@ class SubmitLabReportRedirector {
       path = "/nbs/redirect/patient/report/lab/submit",
       consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
   ResponseEntity<Void> submitted(
-      final HttpServletRequest request,
-      @RequestParam final MultiValueMap<String, String> data) {
+      final HttpServletRequest request, @RequestParam final MultiValueMap<String, String> data) {
 
     createLabReport(data);
 
@@ -42,10 +41,8 @@ class SubmitLabReportRedirector {
   }
 
   private void createLabReport(final MultiValueMap<String, String> data) {
-    RequestEntity<MultiValueMap<String, String>> request = RequestEntity
-        .post(LOCATION)
-        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-        .body(data);
+    RequestEntity<MultiValueMap<String, String>> request =
+        RequestEntity.post(LOCATION).contentType(MediaType.APPLICATION_FORM_URLENCODED).body(data);
 
     this.template.exchange(request, Void.class);
   }

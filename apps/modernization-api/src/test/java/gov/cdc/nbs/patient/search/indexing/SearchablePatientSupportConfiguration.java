@@ -21,5 +21,4 @@ class SearchablePatientSupportConfiguration {
   Available<SearchablePatient> availableSearchablePatient() {
     return new Available<>();
   }
-
 }

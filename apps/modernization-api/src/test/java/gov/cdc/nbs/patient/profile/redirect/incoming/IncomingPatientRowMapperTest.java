@@ -1,17 +1,16 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
-import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
+import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.OptionalLong;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 
 class IncomingPatientRowMapperTest {
 
@@ -30,10 +29,10 @@ class IncomingPatientRowMapperTest {
 
     Optional<IncomingPatient> actual = mapper.mapRow(resultSet, 0);
 
-    assertThat(actual).hasValueSatisfying(incoming -> assertThat(incoming.identifier()).isEqualTo(5317L));
+    assertThat(actual)
+        .hasValueSatisfying(incoming -> assertThat(incoming.identifier()).isEqualTo(5317L));
 
     verify(resolver).resolve("local-id-value");
-    
   }
 
   @Test

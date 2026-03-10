@@ -3,12 +3,11 @@ package gov.cdc.nbs.patient.file.events.contact;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigation;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigationRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.PatientFileContact> {
 
@@ -24,9 +23,7 @@ class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.Patie
       NamedContactRowMapper.Columns named,
       int priority,
       int disposition,
-      AssociatedInvestigationRowMapper.Column associated
-  ) {
-  }
+      AssociatedInvestigationRowMapper.Column associated) {}
 
   private final Column columns;
   private final RowMapper<NamedContact> namedContactRowMapper;
@@ -39,10 +36,8 @@ class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.Patie
   }
 
   @Override
-  public PatientFileContacts.PatientFileContact mapRow(
-      final ResultSet resultSet,
-      final int rowNum
-  ) throws SQLException {
+  public PatientFileContacts.PatientFileContact mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     String condition = resultSet.getString(columns.condition);
     long patient = resultSet.getLong(this.columns.patient());
     long identifier = resultSet.getLong(this.columns.identifier());
@@ -68,7 +63,6 @@ class PatientFileContactRowMapper implements RowMapper<PatientFileContacts.Patie
         named,
         priority,
         disposition,
-        associated
-    );
+        associated);
   }
 }

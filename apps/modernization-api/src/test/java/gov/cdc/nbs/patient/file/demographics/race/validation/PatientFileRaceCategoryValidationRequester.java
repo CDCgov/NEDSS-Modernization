@@ -1,23 +1,20 @@
 package gov.cdc.nbs.patient.file.demographics.race.validation;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
 @Component
 class PatientFileRaceCategoryValidationRequester {
   private final Authenticated authenticated;
   private final MockMvc mvc;
 
-  PatientFileRaceCategoryValidationRequester(
-      final Authenticated authenticated,
-      final MockMvc mvc
-  ) {
+  PatientFileRaceCategoryValidationRequester(final Authenticated authenticated, final MockMvc mvc) {
     this.authenticated = authenticated;
     this.mvc = mvc;
   }
@@ -29,14 +26,11 @@ class PatientFileRaceCategoryValidationRequester {
                   post(
                       "/nbs/api/patients/{patient}/demographics/races/{category}/validate",
                       patient.id(),
-                      category
-                  )
-              )
-          )
+                      category)))
           .andDo(print());
     } catch (Exception exception) {
-      throw new IllegalStateException("Unable to execute Patient Profile Race Category Validation request", exception);
+      throw new IllegalStateException(
+          "Unable to execute Patient Profile Race Category Validation request", exception);
     }
-
   }
 }

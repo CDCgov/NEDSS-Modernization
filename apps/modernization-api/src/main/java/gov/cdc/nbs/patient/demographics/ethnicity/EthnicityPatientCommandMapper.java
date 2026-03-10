@@ -6,10 +6,7 @@ import gov.cdc.nbs.patient.RequestContext;
 public class EthnicityPatientCommandMapper {
 
   public static PatientCommand.UpdateEthnicityInfo asUpdateEthnicityInfo(
-      final long patient,
-      final RequestContext context,
-      final EthnicityDemographic ethnicity
-  ) {
+      final long patient, final RequestContext context, final EthnicityDemographic ethnicity) {
     return new PatientCommand.UpdateEthnicityInfo(
         patient,
         ethnicity.asOf(),
@@ -20,27 +17,15 @@ public class EthnicityPatientCommandMapper {
   }
 
   public static PatientCommand.AddDetailedEthnicity asAddDetailedEthnicity(
-      final long patient,
-      final RequestContext context,
-      final String detail
-  ) {
+      final long patient, final RequestContext context, final String detail) {
     return new PatientCommand.AddDetailedEthnicity(
-        patient,
-        detail,
-        context.requestedBy(),
-        context.requestedAt()
-    );
+        patient, detail, context.requestedBy(), context.requestedAt());
   }
 
   public static PatientCommand.ClearEthnicityDemographics asClearEthnicityDemographics(
-      final long patient,
-      final RequestContext context
-  ) {
+      final long patient, final RequestContext context) {
     return new PatientCommand.ClearEthnicityDemographics(
-        patient,
-        context.requestedBy(),
-        context.requestedAt()
-    );
+        patient, context.requestedBy(), context.requestedAt());
   }
 
   private EthnicityPatientCommandMapper() {

@@ -12,9 +12,7 @@ public class PaginationSteps {
   private final Active<Pageable> activePageable;
 
   PaginationSteps(
-      @Value("${nbs.max-page-size}") final int maxPageSize,
-      final Active<Pageable> activePageable
-  ) {
+      @Value("${nbs.max-page-size}") final int maxPageSize, final Active<Pageable> activePageable) {
     this.maxPageSize = maxPageSize;
     this.activePageable = activePageable;
   }
@@ -37,5 +35,4 @@ public class PaginationSteps {
   private Pageable defaultPage() {
     return Pageable.ofSize(this.maxPageSize);
   }
-
 }
