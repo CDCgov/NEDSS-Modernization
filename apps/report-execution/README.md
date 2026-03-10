@@ -51,7 +51,7 @@ curl -X POST 'http://localhost:8001/report/execute' -H "accept: application/json
             "is_export": true,
             "is_builtin": true,
             "report_title": "Test Report",
-            "library_name": "hello_world",
+            "library_name": "nbs_custom",
             "data_source_name": "random_db_table_0",
             "subset_query": "SELECT * FROM test"
 }'
