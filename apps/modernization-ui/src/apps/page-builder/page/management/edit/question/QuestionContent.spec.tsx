@@ -12,11 +12,11 @@ const page: PagesResponse = {
 };
 
 const fetch = () => {
-    jest.fn();
+    vi.fn();
 };
 
 const refresh = () => {
-    jest.fn();
+    vi.fn();
 };
 
 const dateQuestion: PagesQuestion = {

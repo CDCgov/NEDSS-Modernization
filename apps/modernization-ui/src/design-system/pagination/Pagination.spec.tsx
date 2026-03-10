@@ -6,7 +6,7 @@ import { Pagination } from './Pagination';
 describe('when paginating a large set of data', () => {
     it('should render with no accessibility violations', async () => {
         const { container } = render(
-            <Pagination total={5} current={3} onNext={jest.fn()} onPrevious={jest.fn()} onSelectPage={jest.fn()} />
+            <Pagination total={5} current={3} onNext={vi.fn()} onPrevious={vi.fn()} onSelectPage={vi.fn()} />
         );
 
         expect(await axe(container)).toHaveNoViolations();
@@ -14,7 +14,7 @@ describe('when paginating a large set of data', () => {
 
     it('should display the given number of pages', () => {
         const { queryByLabelText } = render(
-            <Pagination total={4} current={1} onNext={jest.fn()} onPrevious={jest.fn()} onSelectPage={jest.fn()} />
+            <Pagination total={4} current={1} onNext={vi.fn()} onPrevious={vi.fn()} onSelectPage={vi.fn()} />
         );
 
         expect(queryByLabelText('Page 1')).toBeInTheDocument();
@@ -30,9 +30,9 @@ describe('when paginating a large set of data', () => {
                 total={11}
                 maxPagesShown={7}
                 current={1}
-                onNext={jest.fn()}
-                onPrevious={jest.fn()}
-                onSelectPage={jest.fn()}
+                onNext={vi.fn()}
+                onPrevious={vi.fn()}
+                onSelectPage={vi.fn()}
             />
         );
 
@@ -57,9 +57,9 @@ describe('when paginating a large set of data', () => {
                 total={11}
                 maxPagesShown={7}
                 current={5}
-                onNext={jest.fn()}
-                onPrevious={jest.fn()}
-                onSelectPage={jest.fn()}
+                onNext={vi.fn()}
+                onPrevious={vi.fn()}
+                onSelectPage={vi.fn()}
             />
         );
 
@@ -81,7 +81,7 @@ describe('when paginating a large set of data', () => {
 
     it('should specify the current page with aria-current', () => {
         const { getByLabelText } = render(
-            <Pagination total={4} current={2} onNext={jest.fn()} onPrevious={jest.fn()} onSelectPage={jest.fn()} />
+            <Pagination total={4} current={2} onNext={vi.fn()} onPrevious={vi.fn()} onSelectPage={vi.fn()} />
         );
 
         const page = getByLabelText('Page 2');
@@ -90,9 +90,9 @@ describe('when paginating a large set of data', () => {
     });
 
     it('should request the previous page when the "Previous page" button is clicked', async () => {
-        const mockOnNext = jest.fn();
-        const mockOnPrevious = jest.fn();
-        const mockOnSelectPage = jest.fn();
+        const mockOnNext = vi.fn();
+        const mockOnPrevious = vi.fn();
+        const mockOnSelectPage = vi.fn();
 
         const { getByLabelText } = render(
             <Pagination
@@ -114,9 +114,9 @@ describe('when paginating a large set of data', () => {
     });
 
     it('should request the selected page when a page is clicked', async () => {
-        const mockOnNext = jest.fn();
-        const mockOnPrevious = jest.fn();
-        const mockOnSelectPage = jest.fn();
+        const mockOnNext = vi.fn();
+        const mockOnPrevious = vi.fn();
+        const mockOnSelectPage = vi.fn();
 
         const { getByLabelText } = render(
             <Pagination
@@ -138,9 +138,9 @@ describe('when paginating a large set of data', () => {
     });
 
     it('should request the next page when the "Next page" button is clicked', async () => {
-        const mockOnNext = jest.fn();
-        const mockOnPrevious = jest.fn();
-        const mockOnSelectPage = jest.fn();
+        const mockOnNext = vi.fn();
+        const mockOnPrevious = vi.fn();
+        const mockOnSelectPage = vi.fn();
 
         const { getByLabelText } = render(
             <Pagination

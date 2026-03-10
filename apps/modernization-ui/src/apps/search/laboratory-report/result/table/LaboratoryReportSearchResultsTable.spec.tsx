@@ -5,13 +5,13 @@ import { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResu
 import { Selectable } from 'options';
 import { Column } from 'design-system/table';
 
-jest.mock('design-system/table/preferences', () => ({
+vi.mock('design-system/table/preferences', () => ({
     useColumnPreferences: () => ({ apply: (columns: Column<LabReport>[]) => columns })
 }));
 
 const Wrapper = ({
     results,
-    jurisdictionResolver = jest.fn()
+    jurisdictionResolver = vi.fn()
 }: {
     results: LabReport[];
     jurisdictionResolver?: (value: string) => Selectable | undefined;
@@ -120,7 +120,7 @@ describe('When a Laboratory Report search result is viewed in a table', () => {
             }
         ];
 
-        const jurisdictionResolver = jest.fn();
+        const jurisdictionResolver = vi.fn();
 
         jurisdictionResolver.mockReturnValue({ name: 'Gwinnett County' });
 

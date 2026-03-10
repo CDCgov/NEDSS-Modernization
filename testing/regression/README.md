@@ -45,6 +45,16 @@ npm ci
 ### 3. Create and Configure `cypress.env.json`
 Create a new `cypress.env.json` file in the `testing/regression` directory.
 
+
+The following content will configure Cypress to connect to a local environment set up from `cdc-sandbox`
+
+```json
+{
+  "LOGIN_USERNAME": "superuser",
+  "LOGIN_PASSWORD": ""
+}
+```
+
 The following content will configure Cypress to connect to the INT1 environment.
 
 ```json

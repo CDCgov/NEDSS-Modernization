@@ -4,7 +4,7 @@ import { BackToTopButton } from './BackToTopButton';
 
 describe('BackToTopButton', () => {
     beforeEach(() => {
-        window.scrollTo = jest.fn();
+        window.scrollTo = vi.fn();
     });
 
     it('renders the button with the correct text and icon', () => {

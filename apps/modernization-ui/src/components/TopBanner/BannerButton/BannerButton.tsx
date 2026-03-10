@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { ReactElement } from 'react';
 import classNames from 'classnames';
 

@@ -5,17 +5,21 @@ import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 import { TableCard, TableCardProps } from './TableCard';
 
-const mockApply = jest.fn();
+const mockApply = vi.fn();
 
-global.structuredClone = (val) => val;
-
-jest.mock('design-system/table/preferences/useColumnPreferences', () => ({
+vi.mock('design-system/table/preferences/useColumnPreferences', () => ({
     useColumnPreferences: () => ({
         apply: mockApply
     }),
     ColumnPreferenceProvider: ({ children }: { children: (a: { apply: () => TestData[] }) => ReactNode }) =>
         children({ apply: mockApply })
 }));
+
+vi.mock('design-system/table/preferences/withColumnPreferences', () => ({
+    withColumnPreferences: (Component: any) => (props: any) => <Component {...props} />
+}));
+
+global.structuredClone = (val) => val;
 
 type TestData = {
     id: number;
@@ -71,7 +75,7 @@ const Fixture = (props: Partial<TableCardProps<TestData>>) => {
 
 describe('TableCard', () => {
     beforeEach(() => {
-        jest.resetAllMocks();
+        vi.resetAllMocks();
         mockApply.mockReturnValue(columns);
     });
 

@@ -23,7 +23,7 @@ const patientData: Partial<MergeCandidate> = {
         }
     ]
 };
-const onViewIdentification = jest.fn();
+const onViewIdentification = vi.fn();
 const Fixture = () => {
     const form = useForm();
     return (

@@ -350,7 +350,7 @@ describe('Icon', () => {
         expect(icon.querySelector('use')?.getAttribute('xlink:href')).toContain(`/icons/${name}.svg`);
     });
     it('should trigger onKeyDown when Enter key is pressed', async () => {
-        const onKeyDown = jest.fn();
+        const onKeyDown = vi.fn();
         const user = userEvent.setup();
 
         render(<Icon name="close" onKeyDown={onKeyDown} tabIndex={0} />);
@@ -362,7 +362,7 @@ describe('Icon', () => {
     });
 
     it('should trigger onKeyDown when Space key is pressed', async () => {
-        const onKeyDown = jest.fn();
+        const onKeyDown = vi.fn();
         const user = userEvent.setup();
 
         render(<Icon name="close" onKeyDown={onKeyDown} tabIndex={0} />);

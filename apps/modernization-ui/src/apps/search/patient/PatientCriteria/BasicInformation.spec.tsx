@@ -6,9 +6,9 @@ import { PatientCriteriaEntry } from '../criteria';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { error } from 'console';
 
-const mockAllows = jest.fn();
+const mockAllows = vi.fn();
 
-jest.mock('libs/permission/usePermissions', () => ({
+vi.mock('libs/permission/usePermissions', () => ({
     usePermissions: () => ({ permissions: [], allows: mockAllows })
 }));
 

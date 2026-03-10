@@ -67,7 +67,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
     });
 
     return (
-        <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+        <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
             <AlertProvider>
                 <FormProvider {...methods}>{children}</FormProvider>
             </AlertProvider>
@@ -78,7 +78,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 const setup = () => {
     return render(
         <Wrapper>
-            <GroupQuestion page={1} subsection={subSections} onSuccess={jest.fn()} onCancel={jest.fn()} />
+            <GroupQuestion page={1} subsection={subSections} onSuccess={vi.fn()} onCancel={vi.fn()} />
         </Wrapper>
     );
 };
@@ -89,7 +89,7 @@ describe('when GroupQuestion renders', () => {
         const inputs = container.getElementsByTagName('input');
         expect(inputs.length).toBe(9);
     });
-    xit('should display input labels', () => {
+    it.skip('should display input labels', () => {
         //  disabling this test as the component being tested contains field labels that are label elements.
         const { container } = setup();
         const labels = container.getElementsByTagName('label');

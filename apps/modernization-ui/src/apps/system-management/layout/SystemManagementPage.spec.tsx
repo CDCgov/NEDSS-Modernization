@@ -4,13 +4,13 @@ import { MemoryRouter } from 'react-router';
 
 const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'SRTADMIN-SYSTEM', 'ALERTADMIN-SYSTEM'];
 const mockAllows = (permission: string) => mockPermissions.includes(permission);
-const mockAllowFn = jest.fn(mockAllows);
+const mockAllowFn = vi.fn(mockAllows);
 
-jest.mock('libs/permission/usePermissions', () => ({
-    usePermissions: () => ({ permissions: mockPermissions, allows: mockAllowFn }),
+vi.mock('libs/permission/usePermissions', () => ({
+    usePermissions: () => ({ permissions: mockPermissions, allows: mockAllowFn })
 }));
 
-jest.mock('./VisibleWrapper', () => {
+vi.mock('./VisibleWrapper', () => {
     const React = require('react');
     const { useEffect } = require('react');
 
@@ -28,7 +28,7 @@ jest.mock('./VisibleWrapper', () => {
 describe('SystemManagementPage', () => {
     beforeEach(() => {
         mockAllowFn.mockImplementation(mockAllows);
-        jest.resetModules();
+        vi.resetModules();
     });
 
     it('renders heading and search bar', () => {

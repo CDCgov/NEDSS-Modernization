@@ -2,8 +2,8 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import { CancelablePromise, Template, TemplateControllerService } from 'apps/page-builder/generated';
 import { BrowserRouter } from 'react-router';
 import { ImportTemplate } from './ImportTemplate';
-const onCancel = jest.fn();
-const onCreated = jest.fn();
+const onCancel = vi.fn();
+const onCreated = vi.fn();
 
 describe('General information component tests', () => {
     it('should display Import template form', () => {
@@ -85,7 +85,7 @@ describe('when a file is dropped', () => {
 
 describe('When a file is successfully imported', () => {
     it('should excecute the onTemplateCreated callback', async () => {
-        const mockImport = jest.spyOn(TemplateControllerService, 'import');
+        const mockImport = vi.spyOn(TemplateControllerService, 'import');
         mockImport.mockImplementation(() => Promise.resolve({ id: 1 } as Template) as CancelablePromise<Template>);
 
         const { container } = render(
@@ -114,7 +114,7 @@ describe('When a file is successfully imported', () => {
 
 describe('when canceled', () => {
     it('should trigger onCancel', async () => {
-        const mockImport = jest.spyOn(TemplateControllerService, 'import');
+        const mockImport = vi.spyOn(TemplateControllerService, 'import');
         mockImport.mockImplementation(() => Promise.resolve({ id: 1 } as Template) as CancelablePromise<Template>);
 
         const { container } = render(

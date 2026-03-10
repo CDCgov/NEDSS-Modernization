@@ -4,9 +4,9 @@ import { AddPatientLayout } from './AddPatientLayout';
 import { MemoryRouter } from 'react-router';
 import { PageProvider } from 'page';
 
-jest.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
+vi.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
     __esModule: true,
-    default: jest.fn()
+    default: vi.fn()
 }));
 
 describe('AddPatientLayout', () => {
