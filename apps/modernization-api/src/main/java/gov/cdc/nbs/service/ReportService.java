@@ -11,7 +11,6 @@ import jakarta.json.JsonObject;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -64,13 +63,7 @@ public class ReportService {
                 .add("subset_query", "SELECT * FROM [NBS_ODSE].[dbo].[Report]")
                 .build();
 
-        return client
-            .reportExecutionClient
-            .post()
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(json)
-            .retrieve()
-            .toEntity(String.class);
+        return client.executeReport(json);
         // request to report execution service
       }
     }
