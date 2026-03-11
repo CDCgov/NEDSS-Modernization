@@ -1,10 +1,24 @@
 package gov.cdc.nbs.questionbank.question;
 
+import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.question.model.Question;
+import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
+import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
+import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
+import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
+import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.update.UpdateCodedQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.update.UpdateDateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.update.UpdateNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.update.UpdateTextQuestionRequest;
+import gov.cdc.nbs.questionbank.question.response.GetQuestionResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,20 +33,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.question.model.Question;
-import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
-import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
-import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
-import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
-import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
-import gov.cdc.nbs.questionbank.question.response.GetQuestionResponse;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
@@ -46,9 +46,9 @@ public class QuestionController {
   private final QuestionUpdater updater;
   private final QuestionFinder finder;
 
-
   @GetMapping
-  public Page<Question> findAllQuestions(@ParameterObject @PageableDefault(size = 25) Pageable pageable) {
+  public Page<Question> findAllQuestions(
+      @ParameterObject @PageableDefault(size = 25) Pageable pageable) {
     log.debug("Received find all question request");
     Page<Question> results = finder.find(pageable);
     log.debug("Completed find all question request");
@@ -94,26 +94,29 @@ public class QuestionController {
   }
 
   @PutMapping("text/{id}")
-  public Question updateTextQuestion(@PathVariable Long id, @RequestBody UpdateTextQuestionRequest request) {
+  public Question updateTextQuestion(
+      @PathVariable Long id, @RequestBody UpdateTextQuestionRequest request) {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     return updater.update(userId, id, request);
   }
 
   @PutMapping("numeric/{id}")
-  public Question updateNumericQuestion(@PathVariable Long id,
-      @RequestBody UpdateNumericQuestionRequest request) {
+  public Question updateNumericQuestion(
+      @PathVariable Long id, @RequestBody UpdateNumericQuestionRequest request) {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     return updater.update(userId, id, request);
   }
 
   @PutMapping("coded/{id}")
-  public Question updateCodedQuestion(@PathVariable Long id, @RequestBody UpdateCodedQuestionRequest request) {
+  public Question updateCodedQuestion(
+      @PathVariable Long id, @RequestBody UpdateCodedQuestionRequest request) {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     return updater.update(userId, id, request);
   }
 
   @PutMapping("date/{id}")
-  public Question updateDateQuestion(@PathVariable Long id, @RequestBody UpdateDateQuestionRequest request) {
+  public Question updateDateQuestion(
+      @PathVariable Long id, @RequestBody UpdateDateQuestionRequest request) {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     return updater.update(userId, id, request);
   }
@@ -127,13 +130,12 @@ public class QuestionController {
   }
 
   @PutMapping("{id}/status")
-  public Question setQuestionStatus(@PathVariable Long id, @RequestBody QuestionStatusRequest request) {
+  public Question setQuestionStatus(
+      @PathVariable Long id, @RequestBody QuestionStatusRequest request) {
     log.debug("Received update question status request");
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     Question question = updater.setStatus(userId, id, request.active());
     log.debug("Successfully updated question status");
     return question;
   }
-
-
 }

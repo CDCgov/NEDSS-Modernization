@@ -8,9 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class AddressIdentifierGeneratorConfiguration {
 
-    @Bean
-    AddressIdentifierGenerator addressIdentifierGenerator(final IdGeneratorService service) {
-        return () -> service.getNextValidId(IdGeneratorService.EntityType.NBS).getId();
-    }
-
+  @Bean
+  AddressIdentifierGenerator addressIdentifierGenerator(final IdGeneratorService service) {
+    return () -> service.getNextValidId(IdGeneratorService.EntityType.NBS).getId();
+  }
 }

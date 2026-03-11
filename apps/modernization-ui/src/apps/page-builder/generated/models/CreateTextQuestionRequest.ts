@@ -38,4 +38,3 @@ export namespace CreateTextQuestionRequest {
         TXT_ZIP = 'TXT_ZIP',
     }
 }
-

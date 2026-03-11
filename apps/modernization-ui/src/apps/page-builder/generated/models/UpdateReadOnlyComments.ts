@@ -6,4 +6,3 @@ export type UpdateReadOnlyComments = {
     commentsText?: string;
     adminComments?: string;
 };
-

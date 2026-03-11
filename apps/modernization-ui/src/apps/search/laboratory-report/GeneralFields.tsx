@@ -18,7 +18,7 @@ import {
     identificationTypes,
     LabReportFilterEntry,
     pregnancyStatus,
-    processingStatusTypes
+    processingStatusTypes,
 } from './labReportFormTypes';
 
 export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
@@ -102,7 +102,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                     control={form.control}
                     name="identification.value"
                     rules={{
-                        required: { value: true, message: 'Event Id is required' }
+                        required: { value: true, message: 'Event Id is required' },
                     }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
@@ -145,7 +145,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                         name="eventDate.from"
                         shouldUnregister
                         rules={{
-                            required: { value: true, message: 'From date is required' }
+                            required: { value: true, message: 'From date is required' },
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
@@ -166,7 +166,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                         name="eventDate.to"
                         shouldUnregister
                         rules={{
-                            required: { value: true, message: 'To date is required' }
+                            required: { value: true, message: 'To date is required' },
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput

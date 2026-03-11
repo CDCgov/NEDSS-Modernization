@@ -6,4 +6,3 @@ export type SelectableMessageMappingGuide = {
     value?: string;
     name?: string;
 };
-

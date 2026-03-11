@@ -18,26 +18,26 @@ const columns: Column<Person>[] = [
         name: 'Name',
         value: (person) => person.name,
         sortable: true,
-        sortIconType: 'alpha'
+        sortIconType: 'alpha',
     },
     {
         id: 'age',
         name: 'Age',
         value: (person) => person.age,
         sortable: true,
-        sortIconType: 'numeric'
-    }
+        sortIconType: 'numeric',
+    },
 ];
 
 const data: Person[] = [
     { id: 1, name: 'Jane Doe', age: 32 },
     { id: 2, name: 'John Smith', age: 28 },
-    { id: 3, name: 'Alice Johnson', age: 45 }
+    { id: 3, name: 'Alice Johnson', age: 45 },
 ];
 
 const meta: Meta<typeof Section> = {
     title: 'Design System/Cards/Section',
-    component: Section
+    component: Section,
 };
 
 export default meta;
@@ -47,16 +47,16 @@ type Story = StoryObj<typeof Section>;
 export const Basic: Story = {
     args: {
         id: 'basic-header',
-        title: 'Basic Header'
-    }
+        title: 'Basic Header',
+    },
 };
 
 export const WithSubtext: Story = {
     args: {
         id: 'with-subtext',
         title: 'Title Header',
-        subtext: 'subtext'
-    }
+        subtext: 'subtext',
+    },
 };
 
 export const WithSubtextAndTooltip: Story = {
@@ -67,8 +67,8 @@ export const WithSubtextAndTooltip: Story = {
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 subtext <Hint id="tooltip-text">Additional context or explanation about the section goes here.</Hint>
             </div>
-        )
-    }
+        ),
+    },
 };
 
 export const WithSubtextAndTooltipAndCounter: Story = {
@@ -80,8 +80,8 @@ export const WithSubtextAndTooltipAndCounter: Story = {
                 subtext <Hint id="tooltip-text">Additional context or explanation about the section goes here.</Hint>
             </div>
         ),
-        flair: <Tag>999</Tag>
-    }
+        flair: <Tag>999</Tag>,
+    },
 };
 
 export const WithCounterAndContent: Story = {
@@ -95,14 +95,14 @@ export const WithCounterAndContent: Story = {
                 <p>This is some content inside the collapsible section.</p>
                 <Button secondary>Action</Button>
             </div>
-        )
-    }
+        ),
+    },
 };
 
 export const WithChildrenTableAndCount: StoryObj<typeof Section> = {
     args: {
         title: 'People Table',
         subtext: data.length + ' persons',
-        children: <DataTable id="people-table" columns={columns} data={data} />
-    }
+        children: <DataTable id="people-table" columns={columns} data={data} />,
+    },
 };

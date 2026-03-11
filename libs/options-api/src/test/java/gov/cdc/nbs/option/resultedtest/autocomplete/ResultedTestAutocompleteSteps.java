@@ -11,8 +11,7 @@ public class ResultedTestAutocompleteSteps {
   private final Active<ResultActions> response;
 
   ResultedTestAutocompleteSteps(
-      final ResultedTestAutocompleteRequester request,
-      final Active<ResultActions> response) {
+      final ResultedTestAutocompleteRequester request, final Active<ResultActions> response) {
     this.request = request;
     this.response = response;
   }
@@ -23,15 +22,14 @@ public class ResultedTestAutocompleteSteps {
   }
 
   @When("I am trying to find resulted tests that start with {string}")
-  public void i_am_trying_to_find_resulted_tests_that_start_with(final String criteria) throws Exception {
+  public void i_am_trying_to_find_resulted_tests_that_start_with(final String criteria)
+      throws Exception {
     response.active(request.complete(criteria));
   }
 
   @When("I am trying to find at most {int} resulted tests(s) that start with {string}")
   public void i_am_trying_to_find_n_resulted_tests_that_start_with(
-      final int limit,
-      final String criteria) throws Exception {
+      final int limit, final String criteria) throws Exception {
     response.active(request.complete(criteria, limit));
   }
-
 }

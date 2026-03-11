@@ -1,17 +1,16 @@
 package gov.cdc.nbs.patient.search;
 
+import static gov.cdc.nbs.search.SearchSorting.asHandlingNullSortOption;
+import static gov.cdc.nbs.search.SearchSorting.asSortOption;
+import static gov.cdc.nbs.search.SearchSorting.asSortOrder;
+
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
+import java.util.List;
+import java.util.stream.Stream;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Stream;
-
-import static gov.cdc.nbs.search.SearchSorting.asSortOption;
-import static gov.cdc.nbs.search.SearchSorting.asHandlingNullSortOption;
-import static gov.cdc.nbs.search.SearchSorting.asSortOrder;
 
 @Component
 class PatientSearchCriteriaSortResolver {
@@ -19,10 +18,7 @@ class PatientSearchCriteriaSortResolver {
   private static final String NAME = "name";
 
   List<SortOptions> resolve(final Pageable pageable) {
-    return pageable.getSort()
-        .stream()
-        .flatMap(this::asOption)
-        .toList();
+    return pageable.getSort().stream().flatMap(this::asOption).toList();
   }
 
   private Stream<SortOptions> asOption(final Sort.Order sorting) {
@@ -30,13 +26,14 @@ class PatientSearchCriteriaSortResolver {
 
     return switch (sorting.getProperty().toLowerCase()) {
       case "patientid" -> Stream.of(asSortOption("local_id", order));
-      case "patientname" -> Stream.of(
-          asSortOption(NAME, "name.lastNm.keyword", order),
-          asSortOption(NAME, "name.firstNm.keyword", order),
-          asSortOption(NAME, "name.middleNm.keyword", order),
-          asSortOption(NAME, "name.nmSuffix.keyword", order),
-          asHandlingNullSortOption("birth_time", order),
-          asHandlingNullSortOption("local_id", order));
+      case "patientname" ->
+          Stream.of(
+              asSortOption(NAME, "name.lastNm.keyword", order),
+              asSortOption(NAME, "name.firstNm.keyword", order),
+              asSortOption(NAME, "name.middleNm.keyword", order),
+              asSortOption(NAME, "name.nmSuffix.keyword", order),
+              asHandlingNullSortOption("birth_time", order),
+              asHandlingNullSortOption("local_id", order));
       case "lastnm" -> Stream.of(asSortOption(NAME, "name.lastNm.keyword", order));
       case "firstnm" -> Stream.of(asSortOption(NAME, "name.firstNm.keyword", order));
       case ADDRESS -> Stream.of(asHandlingNullSortOption("sort.address", order));

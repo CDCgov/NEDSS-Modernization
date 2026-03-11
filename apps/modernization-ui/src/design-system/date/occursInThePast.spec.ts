@@ -5,7 +5,7 @@ import { internalizeDate } from 'date';
 const mockNow = vi.fn();
 
 vi.mock('./clock', () => ({
-    now: () => mockNow()
+    now: () => mockNow(),
 }));
 
 describe('when validating that a DateEntry occurs in the past', () => {
@@ -17,7 +17,7 @@ describe('when validating that a DateEntry occurs in the past', () => {
         const actual = occursInThePast('Date field name')({
             year: 1990,
             month: 12,
-            day: 19
+            day: 19,
         });
 
         expect(actual).toBe(true);
@@ -30,7 +30,7 @@ describe('when validating that a DateEntry occurs in the past', () => {
 
         const actual = occursInThePast('Date field name')({
             month: 12,
-            day: 19
+            day: 19,
         });
 
         expect(actual).toBe(true);
@@ -46,7 +46,7 @@ describe('when validating that a DateEntry occurs in the past', () => {
         const actual = occursInThePast('Date field name')({
             year: tomorrow.getFullYear(),
             month: tomorrow.getMonth() + 1,
-            day: tomorrow.getDate()
+            day: tomorrow.getDate(),
         });
 
         expect(actual).toContain(`The Date field name cannot be after ${internalizeDate(today)}`);
@@ -61,7 +61,7 @@ describe('when validating that a DateEntry occurs in the past', () => {
 
         const actual = occursInThePast('Date field name')({
             year: tomorrow.getFullYear(),
-            month: tomorrow.getMonth() + 1
+            month: tomorrow.getMonth() + 1,
         });
 
         expect(actual).toContain(`The Date field name cannot be after ${internalizeDate(today)}`);

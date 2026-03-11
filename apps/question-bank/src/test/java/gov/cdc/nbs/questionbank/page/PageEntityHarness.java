@@ -2,11 +2,10 @@ package gov.cdc.nbs.questionbank.page;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import jakarta.persistence.EntityManager;
 import java.util.function.Consumer;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class PageEntityHarness {
@@ -34,7 +33,5 @@ public class PageEntityHarness {
       consumer.accept(this.entity);
       return this;
     }
-
   }
-
 }

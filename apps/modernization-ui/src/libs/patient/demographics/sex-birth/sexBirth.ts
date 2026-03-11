@@ -42,7 +42,7 @@ const initial = (asOf: Supplier<string>): SexBirthDemographic => ({
     country: null,
     sex: null,
     multiple: null,
-    order: null
+    order: null,
 });
 
 export { initial };
@@ -61,7 +61,7 @@ const labels = {
     city: 'Birth city',
     state: 'Birth state',
     county: 'Birth county',
-    country: 'Birth country'
+    country: 'Birth country',
 };
 
 export { labels };

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClockProvider {
 
-    @Bean
-    public Clock clock() {
-        return Clock.systemDefaultZone();
-    }
+  @Bean
+  public Clock clock() {
+    return Clock.systemDefaultZone();
+  }
 }

@@ -10,8 +10,7 @@ class NBS6InvestigationContextActionSupportConfiguration {
 
   @Bean
   @ScenarioScope
-  Active<NBS6InvestigationRequest> activeNbs6InvestigationContextAction() {//    PageAction.do
+  Active<NBS6InvestigationRequest> activeNbs6InvestigationContextAction() { //    PageAction.do
     return new Active<>();
   }
-
 }

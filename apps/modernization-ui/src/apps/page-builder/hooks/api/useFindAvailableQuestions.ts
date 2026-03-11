@@ -6,7 +6,7 @@ import {
     DateQuestion,
     NumericQuestion,
     PageAvailableQuestion,
-    TextQuestion
+    TextQuestion,
 } from 'apps/page-builder/generated';
 import { Direction } from 'libs/sorting';
 
@@ -25,7 +25,7 @@ export enum SortField {
     TYPE = 'type',
     UNIQUE_ID = 'uniqueId',
     LABEL = 'label',
-    SUBGROUP = 'subgroup'
+    SUBGROUP = 'subgroup',
 }
 export type AddableQuestionSort = {
     field: SortField;
@@ -70,11 +70,11 @@ export const useFindAddableQuestions = () => {
             AvailableQuestionControllerService.findAvailableQuestions({
                 pageId: state.search.pageId,
                 requestBody: {
-                    query: state.search.searchText ?? ''
+                    query: state.search.searchText ?? '',
                 },
                 page: state.search.page,
                 size: state.search.pageSize,
-                sort: sortString ? [sortString] : undefined
+                sort: sortString ? [sortString] : undefined,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
@@ -91,7 +91,7 @@ export const useFindAddableQuestions = () => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'searching',
         response: state.status === 'complete' ? state.questions : undefined,
-        search: (search: QuestionSearch) => dispatch({ type: 'search', search })
+        search: (search: QuestionSearch) => dispatch({ type: 'search', search }),
     };
 
     return value;

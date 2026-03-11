@@ -4,7 +4,7 @@ import { asSelectable, Selectable } from 'options';
 
 const meta = {
     title: 'Design System/Autocomplete/AutocompleteMulti',
-    component: AutocompleteMulti
+    component: AutocompleteMulti,
 } satisfies Meta<typeof AutocompleteMulti>;
 
 export default meta;
@@ -16,7 +16,7 @@ const options: Selectable[] = [
     asSelectable('banana', 'Banana'),
     asSelectable('mango', 'Mango'),
     asSelectable('orange', 'Orange'),
-    asSelectable('watermelon', 'Watermelon')
+    asSelectable('watermelon', 'Watermelon'),
 ];
 const [, banana, mango] = options;
 
@@ -31,8 +31,8 @@ export const Default: Story = {
         label: 'Default',
         options: [...options],
         resolver: resolver,
-        placeholder: 'Select options'
-    }
+        placeholder: 'Select options',
+    },
 };
 
 export const PreselectedOptions: Story = {
@@ -43,6 +43,6 @@ export const PreselectedOptions: Story = {
         options: [...options],
         value: [banana, mango],
         resolver: resolver,
-        placeholder: 'Select options'
-    }
+        placeholder: 'Select options',
+    },
 };

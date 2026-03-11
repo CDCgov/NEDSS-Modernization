@@ -1,10 +1,9 @@
 package gov.cdc.nbs.patient.search.indexing.address;
 
 import gov.cdc.nbs.patient.search.SearchablePatient;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 class SearchablePatientAddressRowMapper implements RowMapper<SearchablePatient.Address> {
 
@@ -19,9 +18,7 @@ class SearchablePatientAddressRowMapper implements RowMapper<SearchablePatient.A
       int countyText,
       int stateText,
       int countryText,
-      int full) {
-  }
-
+      int full) {}
 
   private final Column columns;
 
@@ -30,7 +27,8 @@ class SearchablePatientAddressRowMapper implements RowMapper<SearchablePatient.A
   }
 
   @Override
-  public SearchablePatient.Address mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public SearchablePatient.Address mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     String address1 = resultSet.getString(this.columns.address1());
     String address2 = resultSet.getString(this.columns.address2());
     String city = resultSet.getString(this.columns.city());

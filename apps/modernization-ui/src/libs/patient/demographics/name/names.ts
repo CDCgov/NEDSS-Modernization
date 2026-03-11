@@ -31,7 +31,7 @@ const initial = (asOf: Supplier<string>): NameDemographic => ({
     last: null,
     secondLast: null,
     suffix: null,
-    degree: null
+    degree: null,
 });
 
 export { initial };
@@ -46,7 +46,7 @@ const labels = {
     last: 'Last',
     secondLast: 'Second last',
     suffix: 'Suffix',
-    degree: 'Degree'
+    degree: 'Degree',
 };
 
 export { labels };

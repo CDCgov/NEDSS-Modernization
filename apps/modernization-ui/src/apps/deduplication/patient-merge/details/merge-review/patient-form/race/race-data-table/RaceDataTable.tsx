@@ -15,7 +15,7 @@ export const RaceDataTable = ({ patientData, selectedRace, onViewRace }: Props) 
     const form = useFormContext<PatientMergeForm>();
     const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: 'races'
+        name: 'races',
     });
 
     const handleRaceSelection = (race: MergeRace) => {
@@ -32,19 +32,19 @@ export const RaceDataTable = ({ patientData, selectedRace, onViewRace }: Props) 
             id: 'as-of',
             name: 'As of',
             className: styles['date-header'],
-            render: (r) => toDateDisplay(r.asOf)
+            render: (r) => toDateDisplay(r.asOf),
         },
         {
             id: 'race',
             name: 'Race',
             className: styles['text-header'],
-            render: (r) => r.race
+            render: (r) => r.race,
         },
         {
             id: 'detailed-race',
             name: 'Detailed race',
-            render: (r) => r.detailedRaces
-        }
+            render: (r) => r.detailedRaces,
+        },
     ];
     return (
         <MergeDataTable<MergeRace>

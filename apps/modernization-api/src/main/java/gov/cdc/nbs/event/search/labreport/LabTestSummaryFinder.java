@@ -2,17 +2,18 @@ package gov.cdc.nbs.event.search.labreport;
 
 import gov.cdc.nbs.patient.documentsrequiringreview.detail.LabTestSummary;
 import gov.cdc.nbs.patient.documentsrequiringreview.detail.LabTestSummaryRowMapper;
+import java.util.List;
+import java.util.Map;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
-import java.util.List;
-import java.util.Map;
 
 @Component
 public class LabTestSummaryFinder {
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
         lt.lab_test_desc_txt    as name,
         cvg.code_short_desc_txt as status,
@@ -42,16 +43,9 @@ public class LabTestSummaryFinder {
   private final NamedParameterJdbcTemplate namedTemplate;
   private final RowMapper<LabTestSummary> mapper;
 
-  public LabTestSummaryFinder(
-      final NamedParameterJdbcTemplate template) {
-    this.mapper = new LabTestSummaryRowMapper(new LabTestSummaryRowMapper.Column(
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7));
+  public LabTestSummaryFinder(final NamedParameterJdbcTemplate template) {
+    this.mapper =
+        new LabTestSummaryRowMapper(new LabTestSummaryRowMapper.Column(1, 2, 3, 4, 5, 6, 7));
     this.namedTemplate = template;
   }
 
@@ -60,11 +54,9 @@ public class LabTestSummaryFinder {
    * @return
    */
   public List<LabTestSummary> find(long observationUid) {
-    SqlParameterSource namedParameters = new MapSqlParameterSource(
-        Map.of("observationUid", observationUid));
+    SqlParameterSource namedParameters =
+        new MapSqlParameterSource(Map.of("observationUid", observationUid));
 
     return namedTemplate.query(QUERY, namedParameters, mapper);
   }
-
 }
-

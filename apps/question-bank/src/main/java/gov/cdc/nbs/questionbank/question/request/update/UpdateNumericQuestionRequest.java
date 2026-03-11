@@ -14,5 +14,4 @@ public class UpdateNumericQuestionRequest extends UpdateQuestionRequest {
   private Long maxValue;
   private String relatedUnitsLiteral;
   private Long relatedUnitsValueSet;
-
 }

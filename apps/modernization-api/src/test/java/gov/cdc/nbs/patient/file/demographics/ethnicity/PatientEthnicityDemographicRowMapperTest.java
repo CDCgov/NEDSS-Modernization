@@ -3,18 +3,17 @@ package gov.cdc.nbs.patient.file.demographics.ethnicity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.data.selectable.Selectable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import gov.cdc.nbs.data.selectable.Selectable;
-
 class PatientEthnicityDemographicRowMapperTest {
 
-  private final PatientEthnicityDemographicRowMapper mapper = new PatientEthnicityDemographicRowMapper();
+  private final PatientEthnicityDemographicRowMapper mapper =
+      new PatientEthnicityDemographicRowMapper();
 
   @Test
   void should_map_row() throws SQLException {

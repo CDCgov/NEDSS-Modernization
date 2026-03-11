@@ -23,7 +23,8 @@ export const PassEntry = ({ pass, onSelectPass, onEditName, isSelected = false }
             type="button"
             className={classNames(styles.passEntry, isSelected && styles.selected)}
             aria-label={`Select ${pass.name}`}
-            onClick={() => onSelectPass(pass)}>
+            onClick={() => onSelectPass(pass)}
+        >
             <div className={styles.border} />
             <div className={styles.content}>
                 <div className={styles.passNameRow}>
@@ -35,7 +36,8 @@ export const PassEntry = ({ pass, onSelectPass, onEditName, isSelected = false }
                             onClick={handleEditClick}
                             aria-label={`Edit name`}
                             data-tooltip-position="top"
-                            data-tooltip-offset="left">
+                            data-tooltip-offset="left"
+                        >
                             <Icon name="edit" />
                         </button>
                     </Shown>

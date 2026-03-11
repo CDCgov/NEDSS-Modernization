@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.demographics.gender;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.LocalDate;
 
 public class PatientGenderDemographicSteps {
@@ -12,9 +11,7 @@ public class PatientGenderDemographicSteps {
   private final PatientGenderApplier applier;
 
   PatientGenderDemographicSteps(
-      final Active<PatientIdentifier> active,
-      final PatientGenderApplier applier
-  ) {
+      final Active<PatientIdentifier> active, final PatientGenderApplier applier) {
     this.active = active;
     this.applier = applier;
   }
@@ -30,14 +27,17 @@ public class PatientGenderDemographicSteps {
     this.active.maybeActive().ifPresent(patient -> applier.withGender(patient, gender));
   }
 
-  @Given("the patient's current gender is unknown with the reason being {sexUnknown} as of {localDate}")
+  @Given(
+      "the patient's current gender is unknown with the reason being {sexUnknown} as of {localDate}")
   public void unknown(final String reason, final LocalDate asOf) {
     this.active.maybeActive().ifPresent(patient -> applier.withUnknown(patient, reason, asOf));
   }
 
   @Given("the patient's current gender is unknown with the reason being {sexUnknown}")
   public void unknown(final String reason) {
-    this.active.maybeActive().ifPresent(patient -> applier.withUnknown(patient, reason, LocalDate.now()));
+    this.active
+        .maybeActive()
+        .ifPresent(patient -> applier.withUnknown(patient, reason, LocalDate.now()));
   }
 
   @Given("the patient has the transgender of {transgender}")

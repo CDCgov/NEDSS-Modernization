@@ -7,11 +7,11 @@ import { BasicIdentificationFields } from './BasicIdentificationFields';
 
 const mockIdentificationCodedValues: IdentificationCodedValues = {
     types: [{ name: 'Account number', value: 'AN' }],
-    authorities: [{ name: 'Assigning auth', value: 'AA' }]
+    authorities: [{ name: 'Assigning auth', value: 'AA' }],
 };
 
 vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
-    useIdentificationCodedValues: () => mockIdentificationCodedValues
+    useIdentificationCodedValues: () => mockIdentificationCodedValues,
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
@@ -20,8 +20,8 @@ const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
         defaultValues: {
             type: undefined,
             issuer: undefined,
-            id: ''
-        }
+            id: '',
+        },
     });
     return (
         <FormProvider {...form}>

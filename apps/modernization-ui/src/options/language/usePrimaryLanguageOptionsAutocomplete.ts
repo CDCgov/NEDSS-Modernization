@@ -13,13 +13,13 @@ const usePrimaryLanguageOptionsAutocomplete = (
     const resolver: AutocompleteOptionsResolver = (criteria: string, limit?: number) =>
         PrimaryLanguageOptionsService.primaryLanguageComplete({
             criteria,
-            limit
+            limit,
         });
 
     const { criteria, options, suggest, complete, reset } = useSelectableAutocomplete({
         resolver,
         criteria: settings.initialCriteria,
-        limit: settings.limit
+        limit: settings.limit,
     });
 
     return {
@@ -27,7 +27,7 @@ const usePrimaryLanguageOptionsAutocomplete = (
         options,
         suggest,
         complete,
-        reset
+        reset,
     };
 };
 

@@ -10,16 +10,16 @@ let mockRaceCategories: Selectable[] = [];
 const mockEthnicityValues = {
     ethnicGroups: [
         { value: 'hispanic', name: 'Hispanic or Latino' },
-        { value: 'not-hispanic', name: 'Not Hispanic or Latino' }
-    ]
+        { value: 'not-hispanic', name: 'Not Hispanic or Latino' },
+    ],
 };
 
 vi.mock('apps/patient/data/ethnicity/useEthnicityCodedValues', () => ({
-    useEthnicityCodedValues: () => mockEthnicityValues
+    useEthnicityCodedValues: () => mockEthnicityValues,
 }));
 
 vi.mock('options/race', () => ({
-    useRaceCategoryOptions: () => mockRaceCategories
+    useRaceCategoryOptions: () => mockRaceCategories,
 }));
 
 const FormWrapper = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
@@ -27,8 +27,8 @@ const FormWrapper = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
         mode: 'onBlur',
         defaultValues: {
             ethnicity: undefined,
-            races: undefined
-        }
+            races: undefined,
+        },
     });
     return (
         <FormProvider {...form}>
@@ -58,7 +58,7 @@ describe('BasicRaceEthnicityFields', () => {
         mockRaceCategories = [
             { value: 'asian', name: 'Asian' },
             { value: 'white', name: 'White' },
-            { value: 'black', name: 'Black or African American' }
+            { value: 'black', name: 'Black or African American' },
         ];
 
         const { getByLabelText } = render(<FormWrapper />);

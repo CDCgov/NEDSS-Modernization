@@ -16,7 +16,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
     const { page, refresh } = usePageManagement();
     const publishForm = useForm({
         mode: 'onBlur',
-        defaultValues: { notes: undefined }
+        defaultValues: { notes: undefined },
     });
     const { handleSubmit, control } = publishForm;
     const { showAlert } = useAlert();
@@ -25,7 +25,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
     useEffect(() => {
         if (page) {
             PageInformationService.find({
-                page: page.id
+                page: page.id,
             }).then((response) => {
                 setConditions(response?.conditions);
             });
@@ -46,21 +46,21 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                 showAlert({
                     type: 'error',
                     title: 'error',
-                    message: error.message
+                    message: error.message,
                 });
             } else {
                 console.error(error);
                 showAlert({
                     type: 'error',
                     title: 'error',
-                    message: 'An unknown error occurred'
+                    message: 'An unknown error occurred',
                 });
             }
         };
         try {
             PagePublishControllerService.publishPage({
                 id: page.id,
-                requestBody: { versionNotes: data.notes }
+                requestBody: { versionNotes: data.notes },
             })
                 .then(() => {
                     if (onPublishing) {
@@ -70,7 +70,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                     showAlert({
                         type: 'success',
                         title: 'Success',
-                        message: `${page.name} was successfully published.`
+                        message: `${page.name} was successfully published.`,
                     });
                     refresh();
                 })
@@ -138,7 +138,8 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                     disabled={
                         !publishForm.formState.isValid ||
                         !(conditions?.length && conditions.filter((c) => c.name).length)
-                    }>
+                    }
+                >
                     Publish
                 </Button>
             </div>

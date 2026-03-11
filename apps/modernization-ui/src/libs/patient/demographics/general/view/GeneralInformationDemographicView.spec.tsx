@@ -17,8 +17,8 @@ describe('GeneralInformationDemographicView', () => {
                     asOf: '2020-03-17',
                     maritalStatus: {
                         name: 'marital status name',
-                        value: 'marital-status-value'
-                    }
+                        value: 'marital-status-value',
+                    },
                 }}
             />
         );
@@ -33,7 +33,7 @@ describe('GeneralInformationDemographicView', () => {
             <GeneralInformationDemographicView
                 demographic={{
                     asOf: '2020-03-17',
-                    maternalMaidenName: 'maternal maiden name value'
+                    maternalMaidenName: 'maternal maiden name value',
                 }}
             />
         );
@@ -48,7 +48,7 @@ describe('GeneralInformationDemographicView', () => {
             <GeneralInformationDemographicView
                 demographic={{
                     asOf: '2020-03-17',
-                    adultsInResidence: 1049
+                    adultsInResidence: 1049,
                 }}
             />
         );
@@ -63,7 +63,7 @@ describe('GeneralInformationDemographicView', () => {
             <GeneralInformationDemographicView
                 demographic={{
                     asOf: '2020-03-17',
-                    childrenInResidence: 1063
+                    childrenInResidence: 1063,
                 }}
             />
         );
@@ -80,8 +80,8 @@ describe('GeneralInformationDemographicView', () => {
                     asOf: '2020-03-17',
                     primaryOccupation: {
                         name: 'primary occupation name',
-                        value: 'primary-occupation-value'
-                    }
+                        value: 'primary-occupation-value',
+                    },
                 }}
             />
         );
@@ -98,8 +98,8 @@ describe('GeneralInformationDemographicView', () => {
                     asOf: '2020-03-17',
                     educationLevel: {
                         name: 'education level name',
-                        value: 'education-level-value'
-                    }
+                        value: 'education-level-value',
+                    },
                 }}
             />
         );
@@ -116,8 +116,8 @@ describe('GeneralInformationDemographicView', () => {
                     asOf: '2020-03-17',
                     primaryLanguage: {
                         name: 'primary language name',
-                        value: 'primary-language-value'
-                    }
+                        value: 'primary-language-value',
+                    },
                 }}
             />
         );
@@ -134,8 +134,8 @@ describe('GeneralInformationDemographicView', () => {
                     asOf: '2020-03-17',
                     speaksEnglish: {
                         name: 'speaks english name',
-                        value: 'speaks-english-value'
-                    }
+                        value: 'speaks-english-value',
+                    },
                 }}
             />
         );
@@ -151,8 +151,8 @@ describe('GeneralInformationDemographicView', () => {
                 demographic={{
                     asOf: '2020-03-17',
                     stateHIVCase: {
-                        value: 'state-HIV-case-value'
-                    }
+                        value: 'state-HIV-case-value',
+                    },
                 }}
             />
         );
@@ -168,8 +168,8 @@ describe('GeneralInformationDemographicView', () => {
                 demographic={{
                     asOf: '2020-03-17',
                     stateHIVCase: {
-                        reason: 'restricted'
-                    }
+                        reason: 'restricted',
+                    },
                 }}
             />
         );

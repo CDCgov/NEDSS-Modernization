@@ -15,7 +15,7 @@ const passes: Pass[] = [
         matchingCriteria: [],
         lowerBound: 0.25,
         upperBound: 1,
-        active: true
+        active: true,
     },
     {
         name: 'Pass name 2',
@@ -24,8 +24,8 @@ const passes: Pass[] = [
         matchingCriteria: [],
         lowerBound: 0.25,
         upperBound: 1,
-        active: false
-    }
+        active: false,
+    },
 ];
 const Fixture = ({ passList = passes }) => {
     return (

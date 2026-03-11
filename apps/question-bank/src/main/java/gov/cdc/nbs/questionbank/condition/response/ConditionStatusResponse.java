@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ConditionStatusResponse {
-    private String id;
-    private Character statusCd;
-
+  private String id;
+  private Character statusCd;
 }

@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.file.events.contact;
 import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
-
 import java.util.List;
 
 class BasePatientFileContactResolver {
@@ -15,9 +14,7 @@ class BasePatientFileContactResolver {
   private final PatientFileContactFinder finder;
 
   BasePatientFileContactResolver(
-      final PermissionScopeResolver resolver,
-      final PatientFileContactFinder finder
-  ) {
+      final PermissionScopeResolver resolver, final PatientFileContactFinder finder) {
     this.resolver = resolver;
     this.finder = finder;
   }
@@ -27,7 +24,5 @@ class BasePatientFileContactResolver {
     PermissionScope associatedScope = resolver.resolve(ASSOCIATION);
 
     return finder.find(patient, scope, associatedScope);
-
   }
-
 }

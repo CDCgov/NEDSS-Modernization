@@ -7,5 +7,4 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile("oidc")
 @ComponentScan({"gov.cdc.nbs.security.oidc"})
-class OIDCConfiguration {
-}
+class OIDCConfiguration {}

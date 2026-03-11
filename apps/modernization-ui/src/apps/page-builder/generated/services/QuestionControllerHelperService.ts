@@ -16,7 +16,7 @@ export class QuestionControllerHelperService {
     public static validate({
         requestBody,
     }: {
-        requestBody: QuestionValidationRequest,
+        requestBody: QuestionValidationRequest;
     }): CancelablePromise<QuestionValidationResponse> {
         return __request(OpenAPI, {
             method: 'POST',

@@ -1,10 +1,9 @@
 package gov.cdc.nbs.patient.demographics.general;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import java.time.LocalDate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Component
 class PatientGeneralInformationDemographicApplier {
@@ -15,20 +14,16 @@ class PatientGeneralInformationDemographicApplier {
     this.client = client;
   }
 
-
   void withMaritalStatus(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String value
-  ) {
-    client.sql(
+      final PatientIdentifier identifier, final LocalDate asOf, final String value) {
+    client
+        .sql(
             """
                 update person set
                     as_of_date_general = coalesce(?, as_of_date_general, getDate()),
                     marital_status_cd = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(asOf)
         .param(value)
         .param(identifier.id())
@@ -36,18 +31,15 @@ class PatientGeneralInformationDemographicApplier {
   }
 
   void withMaidenName(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String value
-  ) {
-    client.sql(
+      final PatientIdentifier identifier, final LocalDate asOf, final String value) {
+    client
+        .sql(
             """
                 update person set
                     as_of_date_general = coalesce(?, as_of_date_general, getDate()),
                     mothers_maiden_nm = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(asOf)
         .param(value)
         .param(identifier.id())
@@ -55,18 +47,15 @@ class PatientGeneralInformationDemographicApplier {
   }
 
   void withAdultsInResidence(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final int value
-  ) {
-    client.sql(
+      final PatientIdentifier identifier, final LocalDate asOf, final int value) {
+    client
+        .sql(
             """
                 update person set
                     as_of_date_general = coalesce(?, as_of_date_general, getDate()),
                     adults_in_house_nbr = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(asOf)
         .param(value)
         .param(identifier.id())
@@ -74,18 +63,15 @@ class PatientGeneralInformationDemographicApplier {
   }
 
   void withChildrenInResidence(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final int value
-  ) {
-    client.sql(
+      final PatientIdentifier identifier, final LocalDate asOf, final int value) {
+    client
+        .sql(
             """
                 update person set
                     as_of_date_general = coalesce(?, as_of_date_general, getDate()),
                     children_in_house_nbr = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(asOf)
         .param(value)
         .param(identifier.id())
@@ -93,18 +79,15 @@ class PatientGeneralInformationDemographicApplier {
   }
 
   void withPrimaryOccupation(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String value
-  ) {
-    client.sql(
+      final PatientIdentifier identifier, final LocalDate asOf, final String value) {
+    client
+        .sql(
             """
                 update person set
                     as_of_date_general = coalesce(?, as_of_date_general, getDate()),
                     occupation_cd = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(asOf)
         .param(value)
         .param(identifier.id())
@@ -112,18 +95,15 @@ class PatientGeneralInformationDemographicApplier {
   }
 
   void withEducationLevel(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String value
-  ) {
-    client.sql(
+      final PatientIdentifier identifier, final LocalDate asOf, final String value) {
+    client
+        .sql(
             """
                 update person set
                     as_of_date_general = coalesce(?, as_of_date_general, getDate()),
                     education_level_cd = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(asOf)
         .param(value)
         .param(identifier.id())
@@ -131,18 +111,15 @@ class PatientGeneralInformationDemographicApplier {
   }
 
   void withPrimaryLanguage(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String value
-  ) {
-    client.sql(
+      final PatientIdentifier identifier, final LocalDate asOf, final String value) {
+    client
+        .sql(
             """
                 update person set
                     as_of_date_general = coalesce(?, as_of_date_general, getDate()),
                     prim_lang_cd = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(asOf)
         .param(value)
         .param(identifier.id())
@@ -150,18 +127,15 @@ class PatientGeneralInformationDemographicApplier {
   }
 
   void withSpeaksEnglish(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String value
-  ) {
-    client.sql(
+      final PatientIdentifier identifier, final LocalDate asOf, final String value) {
+    client
+        .sql(
             """
                 update person set
                     as_of_date_general = coalesce(?, as_of_date_general, getDate()),
                     speaks_english_cd = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(asOf)
         .param(value)
         .param(identifier.id())
@@ -169,7 +143,9 @@ class PatientGeneralInformationDemographicApplier {
   }
 
   void withStateHIVCase(final PatientIdentifier identifier, final String value) {
-    client.sql("""
+    client
+        .sql(
+            """
             update person set
                 as_of_date_general = coalesce(as_of_date_general, getDate()),
                 ehars_id = ?
@@ -177,6 +153,5 @@ class PatientGeneralInformationDemographicApplier {
             """)
         .params(value, identifier.id())
         .update();
-
   }
 }

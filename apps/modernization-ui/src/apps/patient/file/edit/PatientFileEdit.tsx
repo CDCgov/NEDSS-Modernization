@@ -13,7 +13,7 @@ import { exists } from 'utils/exists';
 import {
     PatientDemographicsEntry,
     PatientDemographicsForm,
-    usePatientDemographicDefaults
+    usePatientDemographicDefaults,
 } from 'libs/patient/demographics';
 import { usePendingFormEntry } from 'design-system/entry/pending';
 import { Patient } from '../patient';
@@ -92,7 +92,7 @@ const ReadyPatientFileEdit = ({ patient, entry }: ReadyPatientFileEditProps) => 
     const form = useForm<PatientDemographicsEntry>({
         mode: 'onBlur',
         reValidateMode: 'onBlur',
-        defaultValues: entry
+        defaultValues: entry,
     });
 
     const pending = usePendingFormEntry({ form });
@@ -126,7 +126,8 @@ const ReadyPatientFileEdit = ({ patient, entry }: ReadyPatientFileEditProps) => 
                     </Button>
                 </>
             )}
-            navigation={EditNavigation}>
+            navigation={EditNavigation}
+        >
             <PatientDemographicsForm
                 pending={pending}
                 defaults={defaults}

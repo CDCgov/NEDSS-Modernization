@@ -1,15 +1,15 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.pagerules.Rule.RuleFunction;
 import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
 import gov.cdc.nbs.questionbank.pagerules.Rule.TargetType;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class HideUnhideCommandCreator {
@@ -66,26 +66,27 @@ public class HideUnhideCommandCreator {
           }
             """;
 
-  public PageContentCommand.AddRuleCommand create(long nextAvailableId, RuleRequest request, long page, long userId) {
+  public PageContentCommand.AddRuleCommand create(
+      long nextAvailableId, RuleRequest request, long page, long userId) {
     String functionName = createJavascriptName(request.sourceIdentifier(), nextAvailableId);
     String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
-    String errorMessage = createErrorMessage(
-        request.sourceText(),
-        request.sourceIdentifier(),
-        request.sourceValues(),
-        request.anySourceValue(),
-        request.targetValueText(),
-        request.comparator().getValue());
-    String javascript = createJavascript(
-        functionName,
-        request);
-    String expression = createExpression(
-        request.sourceIdentifier(),
-        request.sourceValues(),
-        request.anySourceValue(),
-        request.targetIdentifiers(),
-        request.comparator().getValue(),
-        RuleFunction.ENABLE.equals(request.ruleFunction()));
+    String errorMessage =
+        createErrorMessage(
+            request.sourceText(),
+            request.sourceIdentifier(),
+            request.sourceValues(),
+            request.anySourceValue(),
+            request.targetValueText(),
+            request.comparator().getValue());
+    String javascript = createJavascript(functionName, request);
+    String expression =
+        createExpression(
+            request.sourceIdentifier(),
+            request.sourceValues(),
+            request.anySourceValue(),
+            request.targetIdentifiers(),
+            request.comparator().getValue(),
+            RuleFunction.ENABLE.equals(request.ruleFunction()));
 
     return new PageContentCommand.AddRuleCommand(
         nextAvailableId,
@@ -105,26 +106,27 @@ public class HideUnhideCommandCreator {
         Instant.now());
   }
 
-  public PageContentCommand.UpdateRuleCommand update(long currentId, RuleRequest request, long userId) {
+  public PageContentCommand.UpdateRuleCommand update(
+      long currentId, RuleRequest request, long userId) {
     String functionName = createJavascriptName(request.sourceIdentifier(), currentId);
     String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
-    String errorMessage = createErrorMessage(
-        request.sourceText(),
-        request.sourceIdentifier(),
-        request.sourceValues(),
-        request.anySourceValue(),
-        request.targetValueText(),
-        request.comparator().getValue());
-    String javascript = createJavascript(
-        functionName,
-        request);
-    String expression = createExpression(
-        request.sourceIdentifier(),
-        request.sourceValues(),
-        request.anySourceValue(),
-        request.targetIdentifiers(),
-        request.comparator().getValue(),
-        RuleFunction.ENABLE.equals(request.ruleFunction()));
+    String errorMessage =
+        createErrorMessage(
+            request.sourceText(),
+            request.sourceIdentifier(),
+            request.sourceValues(),
+            request.anySourceValue(),
+            request.targetValueText(),
+            request.comparator().getValue());
+    String javascript = createJavascript(functionName, request);
+    String expression =
+        createExpression(
+            request.sourceIdentifier(),
+            request.sourceValues(),
+            request.anySourceValue(),
+            request.targetIdentifiers(),
+            request.comparator().getValue(),
+            RuleFunction.ENABLE.equals(request.ruleFunction()));
 
     return new PageContentCommand.UpdateRuleCommand(
         request.targetType().toString(),
@@ -161,20 +163,16 @@ public class HideUnhideCommandCreator {
       List<String> targetLabels,
       String comparator) {
     if (anySourceValue) {
-      return "%s %s must be ( %s ) %s".formatted(
-          sourceLabel,
-          comparator,
-          "Any Source Value",
-          String.join(", ", targetLabels));
+      return "%s %s must be ( %s ) %s"
+          .formatted(sourceLabel, comparator, "Any Source Value", String.join(", ", targetLabels));
     } else {
-      return "%s (%s) %s must be ( %s ) %s".formatted(
-          sourceLabel,
-          sourceIdentifier,
-          comparator,
-          sourceValues.stream()
-              .map(SourceValue::text)
-              .collect(Collectors.joining(" , ")),
-          String.join(", ", targetLabels));
+      return "%s (%s) %s must be ( %s ) %s"
+          .formatted(
+              sourceLabel,
+              sourceIdentifier,
+              comparator,
+              sourceValues.stream().map(SourceValue::text).collect(Collectors.joining(" , ")),
+              String.join(", ", targetLabels));
     }
   }
 
@@ -186,20 +184,17 @@ public class HideUnhideCommandCreator {
       String comparator,
       boolean isHide) {
     String indicator = isHide ? "H" : "S";
-    String values = anySourceValue ? "" : sourceValues.stream().map(SourceValue::id).collect(Collectors.joining(" , "));
+    String values =
+        anySourceValue
+            ? ""
+            : sourceValues.stream().map(SourceValue::id).collect(Collectors.joining(" , "));
     String comparatorValue = anySourceValue ? "" : comparator;
     String targetIdentifier = String.join(" , ", targetIdentifiers);
-    return "%s ( %s ) %s ^ %s ( %s )".formatted(
-        sourceIdentifier,
-        values,
-        comparatorValue,
-        indicator,
-        targetIdentifier);
+    return "%s ( %s ) %s ^ %s ( %s )"
+        .formatted(sourceIdentifier, values, comparatorValue, indicator, targetIdentifier);
   }
 
-  String createJavascript(
-      String functionName,
-      RuleRequest request) {
+  String createJavascript(String functionName, RuleRequest request) {
     if (request.anySourceValue()) {
       String comparator = "=";
       return formatAnySourceValue(
@@ -229,18 +224,22 @@ public class HideUnhideCommandCreator {
       List<String> targetIdentifiers,
       List<SourceValue> sourceValues,
       TargetType targetType) {
-    String unHideCalls = targetIdentifiers.stream()
-        .map(t -> pgUnhide(t, targetType))
-        .collect(Collectors.joining("\n"));
-    String hideCalls = targetIdentifiers.stream()
-        .map(t -> pgHide(t, targetType))
-        .collect(Collectors.joining("\n"));
-    String unHideCalls2 = targetIdentifiers.stream()
-        .map(t -> pgUnhide2(t, targetType))
-        .collect(Collectors.joining("\n"));
-    String hideCalls2 = targetIdentifiers.stream()
-        .map(t -> pgHide2(t, targetType))
-        .collect(Collectors.joining("\n"));
+    String unHideCalls =
+        targetIdentifiers.stream()
+            .map(t -> pgUnhide(t, targetType))
+            .collect(Collectors.joining("\n"));
+    String hideCalls =
+        targetIdentifiers.stream()
+            .map(t -> pgHide(t, targetType))
+            .collect(Collectors.joining("\n"));
+    String unHideCalls2 =
+        targetIdentifiers.stream()
+            .map(t -> pgUnhide2(t, targetType))
+            .collect(Collectors.joining("\n"));
+    String hideCalls2 =
+        targetIdentifiers.stream()
+            .map(t -> pgHide2(t, targetType))
+            .collect(Collectors.joining("\n"));
     return SPECIFIC_SOURCE_VALUES.formatted(
         functionName,
         sourceIdentifier,
@@ -264,18 +263,22 @@ public class HideUnhideCommandCreator {
       String comparator,
       List<String> targetIdentifiers,
       TargetType targetType) {
-    String unHideCalls = targetIdentifiers.stream()
-        .map(t -> pgUnhide(t, targetType))
-        .collect(Collectors.joining("\n"));
-    String hideCalls = targetIdentifiers.stream()
-        .map(t -> pgHide(t, targetType))
-        .collect(Collectors.joining("\n"));
-    String unHideCalls2 = targetIdentifiers.stream()
-        .map(t -> pgUnhide2(t, targetType))
-        .collect(Collectors.joining("\n"));
-    String hideCalls2 = targetIdentifiers.stream()
-        .map(t -> pgHide2(t, targetType))
-        .collect(Collectors.joining("\n"));
+    String unHideCalls =
+        targetIdentifiers.stream()
+            .map(t -> pgUnhide(t, targetType))
+            .collect(Collectors.joining("\n"));
+    String hideCalls =
+        targetIdentifiers.stream()
+            .map(t -> pgHide(t, targetType))
+            .collect(Collectors.joining("\n"));
+    String unHideCalls2 =
+        targetIdentifiers.stream()
+            .map(t -> pgUnhide2(t, targetType))
+            .collect(Collectors.joining("\n"));
+    String hideCalls2 =
+        targetIdentifiers.stream()
+            .map(t -> pgHide2(t, targetType))
+            .collect(Collectors.joining("\n"));
     return ANY_SOURCE_VALUE.formatted(
         functionName,
         sourceIdentifier,
@@ -299,7 +302,8 @@ public class HideUnhideCommandCreator {
   }
 
   String pgUnhide(String targetIdentifier, TargetType targetType) {
-    String method = TargetType.QUESTION.equals(targetType) ? "pgUnhideElement" : "pgSubSectionShown";
+    String method =
+        TargetType.QUESTION.equals(targetType) ? "pgUnhideElement" : "pgSubSectionShown";
     return "%s('%s');".formatted(method, targetIdentifier);
   }
 
@@ -309,7 +313,8 @@ public class HideUnhideCommandCreator {
   }
 
   String pgUnhide2(String targetIdentifier, TargetType targetType) {
-    String method = TargetType.QUESTION.equals(targetType) ? "pgUnhideElement" : "pgSubSectionShown";
+    String method =
+        TargetType.QUESTION.equals(targetType) ? "pgUnhideElement" : "pgSubSectionShown";
     return "%s('%s_2');".formatted(method, targetIdentifier);
   }
 
@@ -341,8 +346,8 @@ public class HideUnhideCommandCreator {
   }
 
   String labelIfClause(String label) {
-    return "($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo) > -1 || indexOfArray(foo,'%s')==true)".formatted(
-        label, label);
+    return "($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo) > -1 || indexOfArray(foo,'%s')==true)"
+        .formatted(label, label);
   }
 
   String identifierIfClause2(String value) {
@@ -350,8 +355,7 @@ public class HideUnhideCommandCreator {
   }
 
   String labelIfClause2(String label) {
-    return "($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo_2) > -1 || indexOfArray(foo,'%s')==true)".formatted(
-        label, label);
+    return "($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo_2) > -1 || indexOfArray(foo,'%s')==true)"
+        .formatted(label, label);
   }
-
 }

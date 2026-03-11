@@ -5,7 +5,7 @@ import { PatientFileVaccinations } from '.';
 const transformer = (response: PatientVaccination): PatientFileVaccinations => ({
     ...response,
     createdOn: maybeDate(response.createdOn),
-    administeredOn: maybeDate(response.administeredOn)
+    administeredOn: maybeDate(response.administeredOn),
 });
 
 export { transformer };

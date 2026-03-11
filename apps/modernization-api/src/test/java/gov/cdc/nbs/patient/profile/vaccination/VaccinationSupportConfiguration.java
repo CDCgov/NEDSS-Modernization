@@ -1,8 +1,8 @@
 package gov.cdc.nbs.patient.profile.vaccination;
 
+import gov.cdc.nbs.testing.support.Active;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import gov.cdc.nbs.testing.support.Active;
 
 @Configuration
 class VaccinationSupportConfiguration {

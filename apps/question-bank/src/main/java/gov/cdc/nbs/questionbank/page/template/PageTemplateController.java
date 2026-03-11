@@ -4,6 +4,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.RequestContext;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import java.time.Instant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.Instant;
 
 @RestController
 @RequestMapping("/api/v1/pages/{page}/template")
@@ -26,7 +25,11 @@ class PageTemplateController {
     this.creator = creator;
   }
 
-  @Operation(operationId = "createTemplate", summary = "Creates a Template from the Page that can be used as a starting point for new Pages.", tags = "Pages")
+  @Operation(
+      operationId = "createTemplate",
+      summary =
+          "Creates a Template from the Page that can be used as a starting point for new Pages.",
+      tags = "Pages")
   @PostMapping
   ResponseEntity<Void> create(
       @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details,
@@ -36,8 +39,6 @@ class PageTemplateController {
 
     this.creator.create(context, page, request);
 
-    return ResponseEntity.accepted()
-        .build();
+    return ResponseEntity.accepted().build();
   }
-
 }

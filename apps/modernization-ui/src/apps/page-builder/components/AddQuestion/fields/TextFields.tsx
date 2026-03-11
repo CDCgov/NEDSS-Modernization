@@ -67,9 +67,9 @@ export const TextFields = ({ maskOptions, editing = false, published = false }: 
                 rules={{
                     required: {
                         value: !published && mask === CreateTextQuestionRequest.mask.TXT,
-                        message: 'Field length is required'
+                        message: 'Field length is required',
                     },
-                    ...maxLengthRule(4)
+                    ...maxLengthRule(4),
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input

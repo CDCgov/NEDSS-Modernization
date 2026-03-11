@@ -11,17 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ReorderController {
 
-    private final Reorderer reorderer;
+  private final Reorderer reorderer;
 
-    public ReorderController(final Reorderer reorderer) {
-        this.reorderer = reorderer;
-    }
+  public ReorderController(final Reorderer reorderer) {
+    this.reorderer = reorderer;
+  }
 
-    @PutMapping("/after/{after}")
-    public void orderComponentAfter(
-            @PathVariable("page") Long pageId,
-            @PathVariable Long component,
-            @PathVariable Long after) {
-        reorderer.apply(pageId, component, after);
-    }
+  @PutMapping("/after/{after}")
+  public void orderComponentAfter(
+      @PathVariable("page") Long pageId, @PathVariable Long component, @PathVariable Long after) {
+    reorderer.apply(pageId, component, after);
+  }
 }

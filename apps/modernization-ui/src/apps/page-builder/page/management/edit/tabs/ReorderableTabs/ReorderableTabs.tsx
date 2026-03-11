@@ -56,8 +56,9 @@ export const ReorderableTabs = ({ page, tabs, onEdit, onTabChanged, onDeleteErro
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                         style={{
-                            backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white'
-                        }}>
+                            backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white',
+                        }}
+                    >
                         {tabs.map((tab, i) => {
                             return (
                                 <ManageTabsTile

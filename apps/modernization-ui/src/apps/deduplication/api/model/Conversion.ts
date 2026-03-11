@@ -27,5 +27,5 @@ export const DataElementToMatchingAttribute: Record<keyof DataElements, Matching
     patientInternalIdentifier: MatchingAttribute.PATIENT_INTERNAL_IDENTIFIER,
     personNumber: MatchingAttribute.PERSON_NUMBER,
     visaPassport: MatchingAttribute.VISA_PASSPORT,
-    wicIdentifier: MatchingAttribute.WIC_IDENTIFIER
+    wicIdentifier: MatchingAttribute.WIC_IDENTIFIER,
 };

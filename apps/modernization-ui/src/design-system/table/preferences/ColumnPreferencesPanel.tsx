@@ -85,7 +85,8 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                         Save columns
                     </Button>
                 </div>
-            )}>
+            )}
+        >
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="preferences">
                     {(droppable) => (
@@ -98,14 +99,16 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                                     disableInteractiveElementBlocking
                                     isDragDisabled={
                                         isLabeled(preference) || (isNamed(preference) && !preference.moveable)
-                                    }>
+                                    }
+                                >
                                     {(draggable: DraggableProvided) => (
                                         <div ref={draggable.innerRef} {...draggable.draggableProps}>
                                             {isNamed(preference) && (
                                                 <PreferenceOption
                                                     sizing={sizing}
                                                     draggable={draggable}
-                                                    onVisibilityChange={handleVisibilityChange(preference)}>
+                                                    onVisibilityChange={handleVisibilityChange(preference)}
+                                                >
                                                     {preference}
                                                 </PreferenceOption>
                                             )}

@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -15,8 +17,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @Transactional
 public class ReadOnlyCommentsSteps {
@@ -50,26 +50,27 @@ public class ReadOnlyCommentsSteps {
     updateRequest.active(new UpdateStaticRequests.UpdateReadOnlyComments(null, null));
   }
 
-
   @Given("I create a read only comments element request with {string}")
   public void i_create_a_read_only_comments_element_request(String comments) {
     WaTemplate temp = mother.one();
-    WaUiMetadata subsection = temp.getUiMetadata().stream()
-        .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
-        .findFirst()
-        .orElseThrow();
+    WaUiMetadata subsection =
+        temp.getUiMetadata().stream()
+            .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
+            .findFirst()
+            .orElseThrow();
 
     currPage.active(temp);
 
-    jsonRequestBody.active(new StaticContentRequests.AddReadOnlyComments(comments, null, subsection.getId()));
+    jsonRequestBody.active(
+        new StaticContentRequests.AddReadOnlyComments(comments, null, subsection.getId()));
   }
-
 
   @When("I send a read only comments element request")
   public void i_send_a_read_only_comments_element_request() {
     try {
       this.response.active(
-          request.readOnlyCommentsRequest(this.currPage.active().getId(), this.jsonRequestBody.active()));
+          request.readOnlyCommentsRequest(
+              this.currPage.active().getId(), this.jsonRequestBody.active()));
     } catch (Exception e) {
       exceptionHolder.setException(e);
     }
@@ -78,10 +79,13 @@ public class ReadOnlyCommentsSteps {
   @When("I update a read only comments with {string} of {string}")
   public void i_update_a_read_only_comments_of(String key, String value) {
     switch (key) {
-      case ("commentsText") -> this.updateRequest
-          .active(UpdateStaticRequestHelper.withComments(updateRequest.active(), value));
-      case ("adminComments") -> this.updateRequest.active(
-          UpdateStaticRequestHelper.withReadOnlyCommentsAdminComments(updateRequest.active(), value));
+      case ("commentsText") ->
+          this.updateRequest.active(
+              UpdateStaticRequestHelper.withComments(updateRequest.active(), value));
+      case ("adminComments") ->
+          this.updateRequest.active(
+              UpdateStaticRequestHelper.withReadOnlyCommentsAdminComments(
+                  updateRequest.active(), value));
       default -> throw new IllegalArgumentException("Unsupported key for step");
     }
   }
@@ -92,15 +96,17 @@ public class ReadOnlyCommentsSteps {
     AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
 
     this.updateResponse.active(
-        request.updateReadOnlyCommentsRequest(updateRequest.active(), currPage.active().getId(),
-            staticResponse.componentId()));
+        request.updateReadOnlyCommentsRequest(
+            updateRequest.active(), currPage.active().getId(), staticResponse.componentId()));
   }
 
   @Then("the read only comments should have {string} of {string}")
   public void the_read_only_comments_should_have(String key, String value) throws Exception {
     switch (key) {
-      case "commentsText" -> this.updateResponse.active().andExpect(jsonPath("$.commentsText").value(value));
-      case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").value(value));
+      case "commentsText" ->
+          this.updateResponse.active().andExpect(jsonPath("$.commentsText").value(value));
+      case "adminComments" ->
+          this.updateResponse.active().andExpect(jsonPath("$.adminComments").value(value));
       default -> throw new IllegalArgumentException("Unknown comment property: " + key);
     }
   }
@@ -108,8 +114,7 @@ public class ReadOnlyCommentsSteps {
   @Then("a read only comments element is created")
   public void a_read_only_comments_element_is_created() {
     try {
-      this.response.active()
-          .andExpect(jsonPath("$.componentId").isNumber());
+      this.response.active().andExpect(jsonPath("$.componentId").isNumber());
     } catch (Exception e) {
       exceptionHolder.setException(e);
     }

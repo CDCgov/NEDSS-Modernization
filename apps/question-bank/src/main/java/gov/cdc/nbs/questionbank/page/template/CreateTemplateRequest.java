@@ -11,14 +11,10 @@ record CreateTemplateRequest(
   }
 
   CreateTemplateRequest withName(final String name) {
-    return new CreateTemplateRequest(
-        name,
-        description());
+    return new CreateTemplateRequest(name, description());
   }
 
   CreateTemplateRequest withDescription(final String description) {
-    return new CreateTemplateRequest(
-        name(),
-        description);
+    return new CreateTemplateRequest(name(), description);
   }
 }

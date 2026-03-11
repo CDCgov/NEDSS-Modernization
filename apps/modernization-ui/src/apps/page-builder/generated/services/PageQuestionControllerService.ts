@@ -25,16 +25,16 @@ export class PageQuestionControllerService {
         questionId,
         requestBody,
     }: {
-        page: number,
-        questionId: number,
-        requestBody: UpdatePageQuestionRequiredRequest,
+        page: number;
+        questionId: number;
+        requestBody: UpdatePageQuestionRequiredRequest;
     }): CancelablePromise<EditableQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/questions/{questionId}/required',
             path: {
-                'page': page,
-                'questionId': questionId,
+                page: page,
+                questionId: questionId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -49,16 +49,16 @@ export class PageQuestionControllerService {
         questionId,
         requestBody,
     }: {
-        page: number,
-        questionId: number,
-        requestBody: UpdatePageTextQuestionRequest,
+        page: number;
+        questionId: number;
+        requestBody: UpdatePageTextQuestionRequest;
     }): CancelablePromise<EditableQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/questions/text/{questionId}',
             path: {
-                'page': page,
-                'questionId': questionId,
+                page: page,
+                questionId: questionId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -73,16 +73,16 @@ export class PageQuestionControllerService {
         questionId,
         requestBody,
     }: {
-        page: number,
-        questionId: number,
-        requestBody: UpdatePageNumericQuestionRequest,
+        page: number;
+        questionId: number;
+        requestBody: UpdatePageNumericQuestionRequest;
     }): CancelablePromise<EditableQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/questions/numeric/{questionId}',
             path: {
-                'page': page,
-                'questionId': questionId,
+                page: page,
+                questionId: questionId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -97,16 +97,16 @@ export class PageQuestionControllerService {
         questionId,
         requestBody,
     }: {
-        page: number,
-        questionId: number,
-        requestBody: UpdatePageDateQuestionRequest,
+        page: number;
+        questionId: number;
+        requestBody: UpdatePageDateQuestionRequest;
     }): CancelablePromise<EditableQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/questions/date/{questionId}',
             path: {
-                'page': page,
-                'questionId': questionId,
+                page: page,
+                questionId: questionId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -121,16 +121,16 @@ export class PageQuestionControllerService {
         questionId,
         requestBody,
     }: {
-        page: number,
-        questionId: number,
-        requestBody: UpdatePageCodedQuestionRequest,
+        page: number;
+        questionId: number;
+        requestBody: UpdatePageCodedQuestionRequest;
     }): CancelablePromise<EditableQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/questions/coded/{questionId}',
             path: {
-                'page': page,
-                'questionId': questionId,
+                page: page,
+                questionId: questionId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -145,16 +145,16 @@ export class PageQuestionControllerService {
         questionId,
         requestBody,
     }: {
-        page: number,
-        questionId: number,
-        requestBody: UpdatePageCodedQuestionValuesetRequest,
+        page: number;
+        questionId: number;
+        requestBody: UpdatePageCodedQuestionValuesetRequest;
     }): CancelablePromise<EditableQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/questions/coded/{questionId}/valueset',
             path: {
-                'page': page,
-                'questionId': questionId,
+                page: page,
+                questionId: questionId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -169,16 +169,16 @@ export class PageQuestionControllerService {
         subsection,
         requestBody,
     }: {
-        page: number,
-        subsection: number,
-        requestBody: AddQuestionRequest,
+        page: number;
+        subsection: number;
+        requestBody: AddQuestionRequest;
     }): CancelablePromise<AddQuestionResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/subsection/{subsection}/questions',
             path: {
-                'page': page,
-                'subsection': subsection,
+                page: page,
+                subsection: subsection,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -192,15 +192,15 @@ export class PageQuestionControllerService {
         page,
         questionId,
     }: {
-        page: number,
-        questionId: number,
+        page: number;
+        questionId: number;
     }): CancelablePromise<EditableQuestion> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/pages/{page}/questions/{questionId}/edit',
             path: {
-                'page': page,
-                'questionId': questionId,
+                page: page,
+                questionId: questionId,
             },
         });
     }
@@ -213,19 +213,19 @@ export class PageQuestionControllerService {
         questionId,
         datamart,
     }: {
-        page: number,
-        questionId: number,
-        datamart: string,
+        page: number;
+        questionId: number;
+        datamart: string;
     }): CancelablePromise<ValidationResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/pages/{page}/questions/{questionId}/datamart/validate',
             path: {
-                'page': page,
-                'questionId': questionId,
+                page: page,
+                questionId: questionId,
             },
             query: {
-                'datamart': datamart,
+                datamart: datamart,
             },
         });
     }
@@ -233,19 +233,13 @@ export class PageQuestionControllerService {
      * @returns any OK
      * @throws ApiError
      */
-    public static deleteQuestion({
-        page,
-        questionId,
-    }: {
-        page: number,
-        questionId: number,
-    }): CancelablePromise<any> {
+    public static deleteQuestion({ page, questionId }: { page: number; questionId: number }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/v1/pages/{page}/questions/{questionId}',
             path: {
-                'page': page,
-                'questionId': questionId,
+                page: page,
+                questionId: questionId,
             },
         });
     }

@@ -49,7 +49,7 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMer
                     You have chosen to keep the following patients separate: <strong>{patientIds}</strong>. They have
                     been removed from the matches requiring review.
                 </span>
-            )
+            ),
         });
 
         if (fromPatientFileSummary) {
@@ -74,7 +74,8 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMer
                             fromPatientFileSummary
                                 ? nav(`/patient/${fromPatientId}/summary`)
                                 : nav('/deduplication/merge')
-                        }>
+                        }
+                    >
                         Back
                     </Button>
                     <Button secondary onClick={onPreview}>

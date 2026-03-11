@@ -6,7 +6,7 @@ describe('Chip', () => {
     const mockProps = {
         name: 'Test',
         value: 'Value',
-        handleClose: vi.fn()
+        handleClose: vi.fn(),
     };
 
     it('renders with correct name and value', () => {
@@ -47,7 +47,7 @@ describe('Chip', () => {
         await user.keyboard('{Enter}');
 
         expect(handleClose).toHaveBeenCalled();
-    })
+    });
     it('calls handleClose when Space key is pressed', async () => {
         const user = userEvent.setup();
         const { handleClose } = mockProps;
@@ -60,5 +60,5 @@ describe('Chip', () => {
         await user.keyboard(' ');
 
         expect(handleClose).toHaveBeenCalled();
-    })
+    });
 });

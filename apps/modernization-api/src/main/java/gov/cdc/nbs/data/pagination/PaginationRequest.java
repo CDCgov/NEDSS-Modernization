@@ -15,10 +15,5 @@ public record PaginationRequest(Integer pageSize, Integer pageNumber, Sort sort)
 
   public record Sort(
       String property,
-      @JsonDeserialize(using = FlexibleDirectionJsonDeserializer.class)
-      Direction direction
-  ) {
-  }
-
-
+      @JsonDeserialize(using = FlexibleDirectionJsonDeserializer.class) Direction direction) {}
 }

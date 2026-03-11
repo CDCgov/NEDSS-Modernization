@@ -16,7 +16,7 @@ const initial = (asOf: string = today()): Partial<RaceEntry> => ({
     id: new Date().getTime(),
     asOf,
     race: undefined,
-    detailed: []
+    detailed: [],
 });
 
 export { initial };

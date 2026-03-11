@@ -11,7 +11,4 @@ public abstract class CreateQuestionRequest extends QuestionRequest {
   private CodeSet codeSet;
   private String uniqueId;
   private String subgroup;
-
-
-
 }

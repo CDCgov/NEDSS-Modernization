@@ -5,7 +5,7 @@ import {
     displayEmails,
     displayAddresses,
     displayOtherNames,
-    displayIdentifications
+    displayIdentifications,
 } from './patientSearchResult';
 
 describe('patientSearchResult functions', () => {
@@ -18,24 +18,24 @@ describe('patientSearchResult functions', () => {
         shortId: 84001,
         legalName: {
             first: 'John',
-            last: 'Doe'
+            last: 'Doe',
         },
         names: [
             {
                 first: 'Johnny',
                 last: 'TestnullTest',
-                type: 'Alias'
-            }
+                type: 'Alias',
+            },
         ],
         identification: [
             {
                 type: 'SSN',
-                value: '123-45-6789'
+                value: '123-45-6789',
             },
             {
                 type: 'MRN',
-                value: '123456'
-            }
+                value: '123456',
+            },
         ],
         addresses: [
             {
@@ -43,7 +43,7 @@ describe('patientSearchResult functions', () => {
                 address: '2222 Test Valley Rd',
                 city: 'OWENSBORO',
                 state: 'KY',
-                zipcode: '42303'
+                zipcode: '42303',
             },
             {
                 use: 'Business',
@@ -51,15 +51,15 @@ describe('patientSearchResult functions', () => {
                 city: 'OWENSBORO',
                 county: 'Appling County',
                 state: 'KY',
-                zipcode: '30309'
+                zipcode: '30309',
             },
             {
                 use: 'Alternate',
                 address: '3333 Test Valley Rd',
                 city: 'OWENSBORO',
                 state: 'KY',
-                zipcode: '30309'
-            }
+                zipcode: '30309',
+            },
         ],
         phones: ['270-685-4067'],
         emails: ['emily.reynolds@owensborohealth.org'],
@@ -67,9 +67,9 @@ describe('patientSearchResult functions', () => {
             {
                 use: 'phone-use-value',
                 type: 'phone-type-value',
-                number: '270-685-4067'
-            }
-        ]
+                number: '270-685-4067',
+            },
+        ],
     };
 
     it('should displayPhones returns correct string', () => {

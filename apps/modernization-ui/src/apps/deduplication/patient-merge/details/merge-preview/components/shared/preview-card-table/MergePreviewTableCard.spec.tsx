@@ -11,7 +11,7 @@ type TestData = {
 
 const mockData: TestData[] = [
     { id: 1, name: 'Alice', email: 'alice@example.com' },
-    { id: 2, name: 'Bob', email: 'bob@example.com' }
+    { id: 2, name: 'Bob', email: 'bob@example.com' },
 ];
 
 const mockColumns: Column<TestData>[] = [
@@ -19,14 +19,14 @@ const mockColumns: Column<TestData>[] = [
         id: 'name',
         name: 'Name',
         sortable: true,
-        value: (row) => row.name
+        value: (row) => row.name,
     },
     {
         id: 'email',
         name: 'Email',
         sortable: true,
-        value: (row) => row.email
-    }
+        value: (row) => row.email,
+    },
 ];
 
 describe('SortableTableCard', () => {

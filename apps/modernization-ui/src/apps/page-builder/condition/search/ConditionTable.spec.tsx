@@ -13,8 +13,8 @@ const conditions: Condition[] = [
         page: 'investigation',
         nndInd: 'nnd',
         programArea: 'prog area',
-        status: 'A'
-    }
+        status: 'A',
+    },
 ];
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
@@ -97,8 +97,8 @@ describe('when a search is performed', () => {
                 page: 'investigation',
                 nndInd: 'nnd',
                 programArea: 'prog area',
-                status: 'A'
-            }
+                status: 'A',
+            },
         ];
         rerender(
             <WithinTableProvider>

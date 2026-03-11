@@ -16,12 +16,10 @@ class NBSAuthenticationConfiguration {
   @ConditionalOnProperty(
       name = "nbs.security.oidc.enabled",
       havingValue = "false",
-      matchIfMissing = true
-  )
+      matchIfMissing = true)
   AuthenticationConfigurer nbsAuthenticationConfigurer(
       final IgnoredPaths ignoredPaths,
-      final NBSAuthenticationFilterFactory nbsAuthenticationFilterFactory
-  ) {
+      final NBSAuthenticationFilterFactory nbsAuthenticationFilterFactory) {
     return new NBSAuthenticationConfigurer(ignoredPaths, nbsAuthenticationFilterFactory);
   }
 
@@ -38,12 +36,6 @@ class NBSAuthenticationConfiguration {
 
   @Bean
   JWTVerifier jwtVerifier(final Algorithm algorithm, final SecurityProperties properties) {
-    return JWT.require(algorithm)
-        .withIssuer(properties.tokenIssuer())
-        .build();
+    return JWT.require(algorithm).withIssuer(properties.tokenIssuer()).build();
   }
 }
-
-
-
-
