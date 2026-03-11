@@ -9,6 +9,8 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /usr/report-execution
 
+RUN apt-get update && apt-get install -y libltdl7 libkrb5-3 libgssapi-krb5-2
+
 # Copy relevant application code
 COPY pyproject.toml pyproject.toml
 COPY pytest.toml  pytest.toml

@@ -84,3 +84,5 @@ services:
     container_name: report-execution
     ports:
       - "8001:8001"
+    environment:
+      - DATABASE_CONN_STRING=${DATABASE_CONN_STRING}

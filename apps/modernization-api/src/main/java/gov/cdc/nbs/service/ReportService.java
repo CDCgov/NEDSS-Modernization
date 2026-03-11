@@ -6,18 +6,24 @@ import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.model.ReportConfigurationResponse;
 import gov.cdc.nbs.model.ReportExecutionRequest;
 import gov.cdc.nbs.repository.ReportRepository;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReportService {
 
   private final ReportRepository reportRepository;
+  private final ReportExecutionClient client;
 
-  public ReportService(final ReportRepository reportRepository) {
+  public ReportService(final ReportRepository reportRepository, ReportExecutionClient client) {
     this.reportRepository = reportRepository;
+    this.client = client;
   }
 
   public ReportConfigurationResponse getReport(Long reportUid, Long dataSourceUid) {
@@ -41,20 +47,35 @@ public class ReportService {
         fetchedReport.getReportLibrary().getRunner());
   }
 
-  public boolean executeReport(ReportExecutionRequest request) {
+  public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
     ReportConfigurationResponse reportConfigRes =
         getReport(request.reportUid(), request.dataSourceUid());
 
     if (reportConfigRes != null) {
       if (Objects.equals(reportConfigRes.runner(), "python")) {
+        JsonObject json =
+            Json.createObjectBuilder()
+                .add("version", "1")
+                .add("is_export", true)
+                .add("is_builtin", true)
+                .add("report_title", "Test report")
+                .add("library_name", "nbs_custom")
+                .add("data_source_name", "[NBS_ODSE].[dbo].[Report]")
+                .add("subset_query", "SELECT * FROM [NBS_ODSE].[dbo].[Report]")
+                .build();
+
+        return client
+            .reportExecutionClient
+            .post()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(json)
+            .retrieve()
+            .toEntity(String.class);
         // request to report execution service
-        return true;
-      } else {
-        // throw 501
-        return false;
       }
     }
-    return false;
+    // return 501
+    throw new NotFoundException("not found");
   }
 
   private HashMap<String, Long> createReportId(Long reportUid, Long dataSourceUid) {
