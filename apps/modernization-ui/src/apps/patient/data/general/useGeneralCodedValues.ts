@@ -23,7 +23,7 @@ const useGeneralCodedValues = (): GeneralCodedValues => {
         educationLevels: educationLevels.options,
         primaryLanguages: primaryLanguages.options,
         primaryOccupations: primaryOccupations.options,
-        speaksEnglish: indicators.all
+        speaksEnglish: indicators.all,
     };
 };
 

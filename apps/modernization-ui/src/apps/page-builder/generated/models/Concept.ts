@@ -22,4 +22,3 @@ export namespace Concept {
         INACTIVE = 'INACTIVE',
     }
 }
-

@@ -19,7 +19,7 @@ export enum Column {
     Values = 'Values',
     Function = 'Function',
     TargetQuestions = 'Target(s)',
-    ID = 'ID'
+    ID = 'ID',
 }
 
 // Sorting temporarily disabled until API is ready
@@ -29,7 +29,7 @@ const tableColumns = [
     { name: Column.Values, sortable: true },
     { name: Column.Function, sortable: true },
     { name: Column.TargetQuestions, sortable: false },
-    { name: Column.ID, sortable: true }
+    { name: Column.ID, sortable: true },
 ];
 
 type Props = {
@@ -49,7 +49,7 @@ export const BusinessRulesLibraryTable = ({
     onQueryChange,
     isLoading,
     onDownloadCsv,
-    onDownloadPdf
+    onDownloadPdf,
 }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Rule[]>([]);
@@ -83,7 +83,7 @@ export const BusinessRulesLibraryTable = ({
                         <Link to={url}>
                             {rule.sourceQuestion.label} ({rule.sourceQuestion.questionIdentifier})
                         </Link>
-                    )
+                    ),
                 },
                 { id: 2, title: <div className="event-text">{mapComparatorToString(rule.comparator)}</div> },
                 {
@@ -101,11 +101,11 @@ export const BusinessRulesLibraryTable = ({
                                 <div>Any source value</div>
                             )}
                         </div>
-                    )
+                    ),
                 },
                 {
                     id: 4,
-                    title: <div>{mapRuleFunctionToString(rule.ruleFunction)}</div>
+                    title: <div>{mapRuleFunctionToString(rule.ruleFunction)}</div>,
                 },
                 {
                     id: 5,
@@ -135,13 +135,13 @@ export const BusinessRulesLibraryTable = ({
                                 }
                             })}
                         </div>
-                    )
+                    ),
                 },
                 {
                     id: 6,
-                    title: <div>{rule.id}</div>
-                }
-            ]
+                    title: <div>{rule.id}</div>,
+                },
+            ],
         };
     };
 
@@ -191,7 +191,8 @@ export const BusinessRulesLibraryTable = ({
                 className="cancel-btn"
                 type="button"
                 modalRef={qtnModalRef}
-                onClick={() => setSelectedQuestion([])}>
+                onClick={() => setSelectedQuestion([])}
+            >
                 Cancel
             </ModalToggleButton>
             <ModalToggleButton
@@ -199,7 +200,8 @@ export const BusinessRulesLibraryTable = ({
                 modalRef={qtnModalRef}
                 type="button"
                 onClick={() => {}}
-                disabled={!Object.keys(selectedQuestion).length}>
+                disabled={!Object.keys(selectedQuestion).length}
+            >
                 Add to page
             </ModalToggleButton>
         </div>

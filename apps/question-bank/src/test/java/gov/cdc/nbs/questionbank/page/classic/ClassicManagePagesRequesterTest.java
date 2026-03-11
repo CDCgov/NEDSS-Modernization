@@ -4,11 +4,12 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.queryParam;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
+import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicManagePagesRequester;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
-import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicManagePagesRequester;
 
 class ClassicManagePagesRequesterTest {
 
@@ -19,10 +20,10 @@ class ClassicManagePagesRequesterTest {
 
     ClassicManagePagesRequester request = new ClassicManagePagesRequester(template);
 
-    MockRestServiceServer server = MockRestServiceServer.bindTo(template)
-        .build();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(template).build();
 
-    server.expect(requestTo("/ManagePage.do?method=list&initLoad=true"))
+    server
+        .expect(requestTo("/ManagePage.do?method=list&initLoad=true"))
         .andExpect(method(HttpMethod.GET))
         .andExpect(queryParam("method", "list"))
         .andExpect(queryParam("initLoad", "true"))
@@ -31,6 +32,5 @@ class ClassicManagePagesRequesterTest {
     request.request();
 
     server.verify();
-
   }
 }

@@ -13,7 +13,7 @@ export enum Column {
     DISPLAY = 'UI display name',
     CONCEPT_CODE = 'Concept code',
     EFFECTIVE_DATE = 'Effective date',
-    EDIT_ICON = ''
+    EDIT_ICON = '',
 }
 
 const tableHeaders = [
@@ -21,7 +21,7 @@ const tableHeaders = [
     { name: Column.DISPLAY, sortable: true },
     { name: Column.CONCEPT_CODE, sortable: true },
     { name: Column.EFFECTIVE_DATE, sortable: true },
-    { name: Column.EDIT_ICON, sortable: false }
+    { name: Column.EDIT_ICON, sortable: false },
 ];
 type Props = {
     concepts: Concept[];
@@ -40,13 +40,13 @@ export const ConceptTable = ({ concepts, loading, onSort, onEditConcept }: Props
             tableDetails: [
                 {
                     id: 1,
-                    title: concept.localCode
+                    title: concept.localCode,
                 },
                 { id: 2, title: concept.display },
                 { id: 2, title: concept.conceptCode },
                 {
                     id: 3,
-                    title: internalizeDate(concept.effectiveFromTime)
+                    title: internalizeDate(concept.effectiveFromTime),
                 },
                 {
                     id: 4,
@@ -56,12 +56,13 @@ export const ConceptTable = ({ concepts, loading, onSort, onEditConcept }: Props
                             outline
                             className={styles.editConceptButton}
                             aria-label={`edit concept: ${concept.localCode}`}
-                            onClick={() => onEditConcept(concept)}>
+                            onClick={() => onEditConcept(concept)}
+                        >
                             <Icon.Edit size={3} />
                         </Button>
-                    )
-                }
-            ]
+                    ),
+                },
+            ],
         };
     };
 

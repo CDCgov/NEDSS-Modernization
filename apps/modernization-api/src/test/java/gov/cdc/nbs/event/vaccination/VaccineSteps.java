@@ -13,7 +13,6 @@ public class VaccineSteps {
 
   @ParameterType(name = "vaccine", value = ".*")
   public String vaccine(final String value) {
-    return resolver.resolve(SET, value)
-        .orElse(value);
+    return resolver.resolve(SET, value).orElse(value);
   }
 }

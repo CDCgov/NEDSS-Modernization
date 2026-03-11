@@ -15,5 +15,4 @@ public class EventTypeSteps {
   public String eventType(final String value) {
     return resolver.resolve("BUS_OBJ_TYPE", value).orElse(null);
   }
-
 }

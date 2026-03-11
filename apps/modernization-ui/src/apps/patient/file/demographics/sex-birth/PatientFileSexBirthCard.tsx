@@ -16,7 +16,8 @@ const PatientFileSexBirthCard = ({ provider, ...remaining }: PatientFileSexBirth
                 <LoadingOverlay>
                     <SexBirthDemographicCard ageResolver={() => undefined} {...remaining} />
                 </LoadingOverlay>
-            }>
+            }
+        >
             <Await resolve={provider.get()}>
                 {(resolved) => (
                     <SexBirthDemographicCard

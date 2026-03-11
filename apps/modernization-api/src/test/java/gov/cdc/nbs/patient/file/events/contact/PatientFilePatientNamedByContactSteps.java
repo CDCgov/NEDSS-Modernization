@@ -14,8 +14,7 @@ public class PatientFilePatientNamedByContactSteps {
   PatientFilePatientNamedByContactSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientFilePatientNamedByContactRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;
@@ -23,8 +22,6 @@ public class PatientFilePatientNamedByContactSteps {
 
   @When("I view the contacts that named the patient")
   public void view() {
-    this.activePatient.maybeActive()
-        .map(requester::request)
-        .ifPresent(response::active);
+    this.activePatient.maybeActive().map(requester::request).ifPresent(response::active);
   }
 }

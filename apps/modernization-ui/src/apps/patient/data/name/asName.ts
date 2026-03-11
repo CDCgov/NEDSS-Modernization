@@ -17,7 +17,7 @@ const asName = (entry: NameEntry): Name | undefined => {
             last: orUndefined(last),
             secondLast: orUndefined(secondLast),
             suffix: asValue(suffix),
-            degree: asValue(degree)
+            degree: asValue(degree),
         };
     }
 };

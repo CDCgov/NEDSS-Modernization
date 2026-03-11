@@ -32,7 +32,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     rules={{
                         required: { value: !isEditing, message: 'Local code is required' },
                         pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' },
-                        ...maxLengthRule(50)
+                        ...maxLengthRule(50),
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input
@@ -59,7 +59,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     name="longName"
                     rules={{
                         required: { value: true, message: 'Long display name is required' },
-                        ...maxLengthRule(50)
+                        ...maxLengthRule(50),
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input
@@ -85,7 +85,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     name="display"
                     rules={{
                         required: { value: true, message: 'UI display name is required' },
-                        ...maxLengthRule(50)
+                        ...maxLengthRule(50),
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input
@@ -111,7 +111,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         control={form.control}
                         name="effectiveFromTime"
                         rules={{
-                            required: { value: true, message: 'Effective from time is required' }
+                            required: { value: true, message: 'Effective from time is required' },
                         }}
                         render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                             <DatePickerInput
@@ -152,7 +152,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                                 onChange={() => {
                                     form.setValue('status', CreateConceptRequest.status.ACTIVE, {
                                         shouldDirty: true,
-                                        shouldValidate: true
+                                        shouldValidate: true,
                                     });
                                 }}
                                 checked={value === CreateConceptRequest.status.ACTIVE}
@@ -165,7 +165,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                                 onChange={() => {
                                     form.setValue('status', CreateConceptRequest.status.INACTIVE, {
                                         shouldDirty: true,
-                                        shouldValidate: true
+                                        shouldValidate: true,
                                     });
                                 }}
                                 checked={value === CreateConceptRequest.status.INACTIVE}
@@ -177,7 +177,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     control={form.control}
                     name="adminComments"
                     rules={{
-                        ...maxLengthRule(2000)
+                        ...maxLengthRule(2000),
                     }}
                     render={({ field: { onChange, value, onBlur, name } }) => (
                         <>
@@ -200,7 +200,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     name="conceptCode"
                     rules={{
                         required: { value: true, message: 'Concept code is required' },
-                        ...maxLengthRule(50)
+                        ...maxLengthRule(50),
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input
@@ -223,7 +223,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     name="conceptName"
                     rules={{
                         required: { value: true, message: 'Concept name is required' },
-                        ...maxLengthRule(50)
+                        ...maxLengthRule(50),
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input
@@ -246,7 +246,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     name="preferredConceptName"
                     rules={{
                         required: { value: true, message: 'Preferred concept name is required' },
-                        ...maxLengthRule(50)
+                        ...maxLengthRule(50),
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input

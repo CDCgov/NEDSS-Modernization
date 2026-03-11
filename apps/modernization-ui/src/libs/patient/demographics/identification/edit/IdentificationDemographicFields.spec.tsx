@@ -6,14 +6,14 @@ import { IdentificationDemographicFields } from './IdentificationDemographicFiel
 
 const Fixture = () => {
     const form = useForm<IdentificationDemographic>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
     return (
         <FormProvider {...form}>
             <IdentificationDemographicFields
                 options={{
                     types: [{ name: 'Account number', value: 'AN' }],
-                    authorities: [{ name: 'Assigning auth', value: 'AA' }]
+                    authorities: [{ name: 'Assigning auth', value: 'AA' }],
                 }}
             />
         </FormProvider>

@@ -17,7 +17,7 @@ import {
     Mortality,
     Name,
     PhoneEmail,
-    Sex
+    Sex,
 } from 'apps/patient/data/api';
 
 import { asAdministrative } from 'apps/patient/data';
@@ -29,7 +29,7 @@ import {
     BasicNewPatientEntry,
     BasicPhoneEmail,
     NameInformationEntry,
-    BasicPersonalDetailsEntry
+    BasicPersonalDetailsEntry,
 } from './entry';
 
 const maybeMapEach =
@@ -85,7 +85,7 @@ const transformer = (entry: BasicNewPatientEntry): NewPatient => {
         ethnicity,
         races,
         phoneEmails,
-        identifications
+        identifications,
     };
 };
 
@@ -100,7 +100,7 @@ const asName =
                 first: orUndefined(first),
                 middle: orUndefined(middle),
                 last: orUndefined(last),
-                suffix: asValue(suffix)
+                suffix: asValue(suffix),
             };
         }
     };
@@ -114,7 +114,7 @@ const asBirth =
             return {
                 asOf,
                 bornOn,
-                sex: asValue(birthSex)
+                sex: asValue(birthSex),
             };
         }
     };
@@ -127,7 +127,7 @@ const asGender =
         if (currentSex) {
             return {
                 asOf,
-                current: asValue(currentSex)
+                current: asValue(currentSex),
             };
         }
     };
@@ -141,7 +141,7 @@ const asMortality =
             return {
                 asOf,
                 deceasedOn,
-                deceased: asValue(deceased)
+                deceased: asValue(deceased),
             };
         }
     };
@@ -154,7 +154,7 @@ const asGeneral =
             return {
                 asOf,
                 stateHIVCase,
-                maritalStatus: asValue(maritalStatus)
+                maritalStatus: asValue(maritalStatus),
             };
         }
     };
@@ -176,7 +176,7 @@ const asAddress =
                 address2: orUndefined(address2),
                 city: orUndefined(city),
                 zipcode: orUndefined(zipcode),
-                censusTract: orUndefined(censusTract)
+                censusTract: orUndefined(censusTract),
             };
         }
     };
@@ -190,7 +190,7 @@ const asEthnicity =
             return {
                 asOf,
                 ethnicGroup: asValue(ethnicity),
-                detailed: []
+                detailed: [],
             };
         }
     };
@@ -202,7 +202,7 @@ const asRace =
             return {
                 asOf,
                 race: asValue(entry),
-                detailed: []
+                detailed: [],
             };
         }
     };
@@ -217,7 +217,7 @@ const asHomePhone =
                 asOf,
                 type: PHONE.value,
                 use: HOME_PHONE.value,
-                phoneNumber: home
+                phoneNumber: home,
             };
         }
     };
@@ -233,7 +233,7 @@ const asWorkPone =
                 type: PHONE.value,
                 use: PRIMARY_WORKPLACE.value,
                 phoneNumber: work?.phone,
-                extension: work?.extension
+                extension: work?.extension,
             };
         }
     };
@@ -248,7 +248,7 @@ const asCellPhone =
                 asOf,
                 type: CELL_PHONE.value,
                 use: MOBILE_CONTACT.value,
-                phoneNumber: cell
+                phoneNumber: cell,
             };
         }
     };
@@ -263,7 +263,7 @@ const asEmail =
                 asOf,
                 type: EMAIL.value,
                 use: HOME_PHONE.value,
-                email
+                email,
             };
         }
     };
@@ -278,7 +278,7 @@ const asIdentification =
                 asOf,
                 type: asValue(type),
                 value: id,
-                issuer: asValue(issuer)
+                issuer: asValue(issuer),
             };
         }
     };

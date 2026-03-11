@@ -10,7 +10,7 @@ const sections: NavSection[] = [
     { id: 'ethnicity', label: 'Ethnicity' },
     { id: 'sex-birth', label: 'Sex & birth' },
     { id: 'mortality', label: 'Mortality' },
-    { id: 'general-information', label: 'General patient information' }
+    { id: 'general-information', label: 'General patient information' },
 ];
 
 export { sections };

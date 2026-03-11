@@ -118,7 +118,7 @@ const useSearchCriteria = <C extends object>({ defaultValues }: Options<C>): Int
     return {
         criteria,
         clear,
-        change
+        change,
     };
 };
 

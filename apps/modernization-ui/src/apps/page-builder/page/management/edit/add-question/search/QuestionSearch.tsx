@@ -32,7 +32,7 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
                 pageId: pageId,
                 page: page.current - 1,
                 pageSize: page.pageSize,
-                sort
+                sort,
             });
         }
     }, [page.status]);
@@ -106,7 +106,8 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
                 <Button
                     onClick={handleAccept}
                     type="button"
-                    disabled={selectedQuestions == undefined || selectedQuestions.length === 0}>
+                    disabled={selectedQuestions == undefined || selectedQuestions.length === 0}
+                >
                     Apply to page
                 </Button>
             </ButtonBar>

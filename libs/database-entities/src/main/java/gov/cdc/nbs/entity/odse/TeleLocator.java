@@ -32,10 +32,10 @@ public class TeleLocator extends Locator {
   @Column(name = "user_affiliation_txt", length = 20)
   private String userAffiliationTxt;
 
-  protected TeleLocator() {
-  }
+  protected TeleLocator() {}
 
-  public TeleLocator(final PatientCommand.AddPhone phone, final EntityLocatorParticipationId identifier) {
+  public TeleLocator(
+      final PatientCommand.AddPhone phone, final EntityLocatorParticipationId identifier) {
     super(phone);
     this.id = identifier.getLocatorUid();
     this.cntryCd = phone.countryCode();
@@ -81,11 +81,18 @@ public class TeleLocator extends Locator {
 
   @Override
   public String toString() {
-    return "TeleLocator{" +
-        "id=" + id +
-        ", emailAddress='" + emailAddress + '\'' +
-        ", extensionTxt='" + extensionTxt + '\'' +
-        ", phoneNbrTxt='" + phoneNbrTxt + '\'' +
-        '}';
+    return "TeleLocator{"
+        + "id="
+        + id
+        + ", emailAddress='"
+        + emailAddress
+        + '\''
+        + ", extensionTxt='"
+        + extensionTxt
+        + '\''
+        + ", phoneNbrTxt='"
+        + phoneNbrTxt
+        + '\''
+        + '}';
   }
 }

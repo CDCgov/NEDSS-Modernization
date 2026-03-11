@@ -1,7 +1,6 @@
 import js from '@eslint/js';
 import react from 'eslint-plugin-react';
 import tseslint from '@typescript-eslint/eslint-plugin';
-import prettier from 'eslint-plugin-prettier';
 import reactHooks from 'eslint-plugin-react-hooks';
 import storybook from 'eslint-plugin-storybook';
 import jsdoc from 'eslint-plugin-jsdoc';
@@ -13,39 +12,31 @@ export default defineConfig([
     // Main config
     {
         files: ['**/*.{js,jsx,ts,tsx}'],
-        ignores: [
-            'build/**',
-            'node_modules/**',
-            '**/generated/**',
-            'src/setupProxy.js',
-            'src/codegen.ts'
-        ],
+        ignores: ['build/**', 'node_modules/**', '**/generated/**', 'src/setupProxy.js', 'src/codegen.ts'],
         languageOptions: {
             parser: tsParser,
             ecmaVersion: 'latest',
             sourceType: 'module',
             parserOptions: {
-                ecmaFeatures: { jsx: true }
+                ecmaFeatures: { jsx: true },
             },
             globals: {
                 ...globals.browser,
                 ...globals.jest,
-                JSX: 'readonly'
-            }
+                JSX: 'readonly',
+            },
         },
         plugins: {
             react,
             '@typescript-eslint': tseslint,
-            prettier,
             'react-hooks': reactHooks,
             storybook,
-            jsdoc
+            jsdoc,
         },
         /* extends: ['jsdoc/recommended'],*/
         rules: {
             ...js.configs.recommended.rules,
             ...jsdoc.configs['flat/requirements-typescript'].rules,
-            'prettier/prettier': 'error',
             'no-console': 'warn',
             'require-jsdoc': 'off',
             'jsdoc/require-jsdoc': 'off',
@@ -54,35 +45,37 @@ export default defineConfig([
             'jsdoc/require-returns': 'off',
             'max-len': ['warn', { code: 120 }],
             'no-unused-vars': 'off',
-            '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'none', destructuredArrayIgnorePattern: '^_'  }],
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                { caughtErrors: 'none', destructuredArrayIgnorePattern: '^_' },
+            ],
             'react/react-in-jsx-scope': 'off',
             'react/no-unescaped-entities': 'off',
             'react-hooks/rules-of-hooks': 'off',
             'react-hooks/exhaustive-deps': 'off',
-            'storybook/hierarchy-separator': 'off'
+            'storybook/hierarchy-separator': 'off',
         },
         settings: {
             react: { version: 'detect' },
             jsdoc: {
                 tagNamePreference: {
-                    return: 'return'
-                }
-            }
-        }
+                    return: 'return',
+                },
+            },
+        },
     },
     // Test files overrides
     {
         files: ['**/*.spec.{js,jsx,ts,tsx}', '**/*.test.{js,jsx,ts,tsx}'],
         languageOptions: {
             globals: {
-                vi: 'readonly'
-            }
+                vi: 'readonly',
+            },
         },
         rules: {
             '@typescript-eslint/no-unused-vars': 'off',
             'no-undef': 'off',
             'no-unused-vars': 'off',
-            'prettier/prettier': 'off'
-        }
-    }
+        },
+    },
 ]);

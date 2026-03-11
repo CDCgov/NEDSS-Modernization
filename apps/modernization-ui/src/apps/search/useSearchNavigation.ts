@@ -9,7 +9,7 @@ type Interaction = {
 
 const useSearchNavigation = (): Interaction => {
     const {
-        features: { search }
+        features: { search },
     } = useConfiguration();
 
     const [path, setPath] = useState('/advanced-search');
@@ -26,7 +26,7 @@ const useSearchNavigation = (): Interaction => {
 
     return {
         path,
-        go
+        go,
     };
 };
 

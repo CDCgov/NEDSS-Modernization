@@ -58,7 +58,8 @@ export const Input = ({
             orientation={flexBox ? 'horizontal' : orientation}
             sizing={sizing}
             required={required}
-            error={error}>
+            error={error}
+        >
             {!multiline ? (
                 mask ? (
                     <TextInputMask

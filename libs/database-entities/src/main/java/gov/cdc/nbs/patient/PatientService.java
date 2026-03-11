@@ -2,10 +2,9 @@ package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.entity.odse.Person;
 import jakarta.persistence.EntityManager;
+import java.util.function.Consumer;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.function.Consumer;
 
 @Component
 public class PatientService {
@@ -13,19 +12,17 @@ public class PatientService {
   private final EntityManager entityManager;
   private final PatientHistoryRecorder historyCreator;
 
-  PatientService(
-      final EntityManager entityManager,
-      final PatientHistoryRecorder historyCreator
-  ) {
+  PatientService(final EntityManager entityManager, final PatientHistoryRecorder historyCreator) {
     this.entityManager = entityManager;
     this.historyCreator = historyCreator;
   }
 
   /**
-   * Runs the {@code consumer} if an entity can be uniquely identified by the given {@code identifier}.
+   * Runs the {@code consumer} if an entity can be uniquely identified by the given {@code
+   * identifier}.
    *
    * @param identifier The unique identifier of the Page
-   * @param consumer   A consumer that will run on the found Page
+   * @param consumer A consumer that will run on the found Page
    */
   @Transactional
   public void using(final long identifier, final Consumer<Person> consumer) {
@@ -46,7 +43,8 @@ public class PatientService {
       throw exception;
     } catch (RuntimeException throwable) {
       //  report any unexpected changes as a PatientException
-      throw new PatientException(patient.id(), "Unable to apply changes to patient %d".formatted(patient.id()));
+      throw new PatientException(
+          patient.id(), "Unable to apply changes to patient %d".formatted(patient.id()));
     }
   }
 
@@ -61,5 +59,4 @@ public class PatientService {
       this.historyCreator.snapshot(patient.id());
     }
   }
-
 }

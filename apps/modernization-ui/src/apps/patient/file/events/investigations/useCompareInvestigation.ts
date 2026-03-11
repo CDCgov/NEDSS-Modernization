@@ -41,13 +41,13 @@ const including = (existing: ComparisonState, investigation: PatientFileInvestig
         return {
             status: 'selecting',
             condition: investigation.condition,
-            selected: investigation.identifier
+            selected: investigation.identifier,
         };
     } else if (existing.status === 'selecting' && investigation.condition === existing.condition) {
         return {
             ...existing,
             status: 'comparable',
-            comparedTo: investigation.identifier
+            comparedTo: investigation.identifier,
         };
     } else {
         return existing;
@@ -63,14 +63,14 @@ const removing = (existing: ComparisonState, investigation: PatientFileInvestiga
         return {
             status: 'selecting',
             condition: existing.condition,
-            selected: existing.comparedTo
+            selected: existing.comparedTo,
         };
     } else if (existing.status === 'comparable' && existing.comparedTo === investigation.identifier) {
         // removing the comparison, revert to selecting
         return {
             status: 'selecting',
             condition: existing.condition,
-            selected: existing.selected
+            selected: existing.selected,
         };
     } else {
         return existing;
@@ -126,7 +126,7 @@ const useCompareInvestigation = (): CompareInvestigationInteraction => {
         select,
         deselect,
         isComparable,
-        isSelected
+        isSelected,
     };
 };
 

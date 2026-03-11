@@ -9,7 +9,7 @@ type Violation<V> = {
 
 type VerificationOptions<
     Values extends FieldValues = FieldValues,
-    Name extends FieldPath<Values> = FieldPath<Values>
+    Name extends FieldPath<Values> = FieldPath<Values>,
 > = {
     name: Name;
     control: Control<Values>;
@@ -33,7 +33,7 @@ type VerificationInteraction<Value> = {
 const useVerification = <V extends FieldValues = FieldValues, N extends FieldPath<V> = FieldPath<V>>({
     name,
     control,
-    constraint
+    constraint,
 }: VerificationOptions<V, N>): VerificationInteraction<V> => {
     const [violation, setViolation] = useState<Violation<FieldPathValue<V, N>>>();
 
@@ -55,7 +55,7 @@ const useVerification = <V extends FieldValues = FieldValues, N extends FieldPat
 
     return {
         verify,
-        violation
+        violation,
     };
 };
 

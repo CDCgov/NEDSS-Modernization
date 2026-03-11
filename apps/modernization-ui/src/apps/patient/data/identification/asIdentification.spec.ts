@@ -5,7 +5,7 @@ describe('when mapping an identification entry to a format accepted by the API',
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            id: 'id-value'
+            id: 'id-value',
         };
 
         const actual = asIdentification(entry);
@@ -17,7 +17,7 @@ describe('when mapping an identification entry to a format accepted by the API',
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            id: 'id-value'
+            id: 'id-value',
         };
 
         const actual = asIdentification(entry);
@@ -29,7 +29,7 @@ describe('when mapping an identification entry to a format accepted by the API',
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            id: 'id-value'
+            id: 'id-value',
         };
 
         const actual = asIdentification(entry);
@@ -42,7 +42,7 @@ describe('when mapping an identification entry to a format accepted by the API',
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             id: 'id-value',
-            issuer: { value: 'issuer-value', name: 'issuer-type' }
+            issuer: { value: 'issuer-value', name: 'issuer-type' },
         };
 
         const actual = asIdentification(entry);
@@ -54,7 +54,7 @@ describe('when mapping an identification entry to a format accepted by the API',
         const entry = {
             asOf: '04/13/2017',
             type: null,
-            id: 'id-value'
+            id: 'id-value',
         };
 
         const actual = asIdentification(entry);

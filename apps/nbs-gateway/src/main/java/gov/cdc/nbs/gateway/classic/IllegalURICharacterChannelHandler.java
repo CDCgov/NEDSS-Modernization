@@ -5,8 +5,9 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 
 /**
- * A {@link io.netty.channel.ChannelHandler} that will encode the pipe ({@code |}) character to the safer {@code %7C}
- * value on the uri of the request.  The pipe character is considered unsafe to be included in URIs.
+ * A {@link io.netty.channel.ChannelHandler} that will encode the pipe ({@code |}) character to the
+ * safer {@code %7C} value on the uri of the request. The pipe character is considered unsafe to be
+ * included in URIs.
  */
 class IllegalURICharacterChannelHandler extends ChannelInboundHandlerAdapter {
 
@@ -22,5 +23,4 @@ class IllegalURICharacterChannelHandler extends ChannelInboundHandlerAdapter {
 
     super.channelRead(ctx, msg);
   }
-
 }

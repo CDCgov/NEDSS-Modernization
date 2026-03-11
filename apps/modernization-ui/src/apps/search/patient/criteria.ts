@@ -7,7 +7,7 @@ const ACTIVE = asSelectable('ACTIVE', 'Active');
 const statusOptions: Selectable[] = [
     ACTIVE,
     asSelectable('LOG_DEL', 'Deleted'),
-    asSelectable('SUPERCEDED', 'Superseded')
+    asSelectable('SUPERCEDED', 'Superseded'),
 ];
 
 export { statusOptions };
@@ -77,7 +77,7 @@ type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity
 export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact, NameCriteria, Filter };
 
 const initial: PatientCriteriaEntry = {
-    status: [ACTIVE]
+    status: [ACTIVE],
 };
 
 export { initial };

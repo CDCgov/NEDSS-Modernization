@@ -33,7 +33,7 @@ export const useGetAllPageRules = () => {
     useEffect(() => {
         if (state.status === 'fetching' && pageId) {
             PageRuleControllerService.getAllRules({
-                id: Number(pageId)
+                id: Number(pageId),
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => dispatch({ type: 'complete', rules: response }));
@@ -44,7 +44,7 @@ export const useGetAllPageRules = () => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'fetching',
         rules: state.status === 'complete' ? state.rules : undefined,
-        fetch: () => dispatch({ type: 'fetch' })
+        fetch: () => dispatch({ type: 'fetch' }),
     };
     return value;
 };

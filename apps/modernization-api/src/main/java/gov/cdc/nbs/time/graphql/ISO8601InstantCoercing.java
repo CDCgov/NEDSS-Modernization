@@ -9,15 +9,12 @@ import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import jakarta.annotation.Nonnull;
-
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
-/**
- * Parses and serializes {@code Instant} values using the ISO-8601 standard.
- */
+/** Parses and serializes {@code Instant} values using the ISO-8601 standard. */
 public class ISO8601InstantCoercing implements Coercing<Instant, String> {
 
   @Override
@@ -25,8 +22,7 @@ public class ISO8601InstantCoercing implements Coercing<Instant, String> {
   public String serialize(
       final @Nonnull Object dataFetcherResult,
       final @Nonnull GraphQLContext context,
-      final @Nonnull Locale locale
-  ) {
+      final @Nonnull Locale locale) {
     if (dataFetcherResult instanceof Instant instant) {
       return DateTimeFormatter.ISO_INSTANT.format(instant);
     } else {
@@ -39,8 +35,7 @@ public class ISO8601InstantCoercing implements Coercing<Instant, String> {
   public Instant parseValue(
       final @Nonnull Object input,
       final @Nonnull GraphQLContext context,
-      final @Nonnull Locale locale
-  ) {
+      final @Nonnull Locale locale) {
     try {
       if (input instanceof String value) {
         return Instant.parse(value);
@@ -58,8 +53,7 @@ public class ISO8601InstantCoercing implements Coercing<Instant, String> {
       @Nonnull final Value<?> input,
       @Nonnull final CoercedVariables variables,
       @Nonnull final GraphQLContext context,
-      @Nonnull final Locale locale
-  ) {
+      @Nonnull final Locale locale) {
     if (input instanceof StringValue value) {
       return parseValue(value.getValue(), context, locale);
     } else {

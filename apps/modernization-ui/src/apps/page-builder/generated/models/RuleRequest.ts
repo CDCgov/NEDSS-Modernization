@@ -37,4 +37,3 @@ export namespace RuleRequest {
         SUBSECTION = 'SUBSECTION',
     }
 }
-

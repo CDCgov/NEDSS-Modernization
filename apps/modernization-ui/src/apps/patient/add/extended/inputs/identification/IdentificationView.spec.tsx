@@ -6,7 +6,7 @@ const entry: IdentificationEntry = {
     asOf: '12/25/2020',
     type: { name: 'Account number', value: 'AN' },
     issuer: { name: 'Texas', value: 'TX' },
-    id: '1122'
+    id: '1122',
 };
 
 describe('IdentificationView', () => {

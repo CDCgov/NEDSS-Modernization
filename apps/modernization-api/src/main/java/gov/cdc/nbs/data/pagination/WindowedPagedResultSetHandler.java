@@ -1,30 +1,26 @@
 package gov.cdc.nbs.data.pagination;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * A {@link RowCallbackHandler} that can be used with queries made with a {@link java.sql.JDBCType} that include the
- * total number of rows in the result set.  This is usually accomplished using window functions (i.e.
- * {@code count () over ()}) to compute the total.
+ * A {@link RowCallbackHandler} that can be used with queries made with a {@link java.sql.JDBCType}
+ * that include the total number of rows in the result set. This is usually accomplished using
+ * window functions (i.e. {@code count () over ()}) to compute the total.
  *
  * @param <T> The type being paged
  */
 public class WindowedPagedResultSetHandler<T> implements RowCallbackHandler {
   private HandlerState state;
 
-  public WindowedPagedResultSetHandler(
-      final int totalColumnIndex,
-      final RowMapper<T> mapper
-  ) {
+  public WindowedPagedResultSetHandler(final int totalColumnIndex, final RowMapper<T> mapper) {
     this.state = new EmptyState(totalColumnIndex, mapper);
   }
 
@@ -45,7 +41,6 @@ public class WindowedPagedResultSetHandler<T> implements RowCallbackHandler {
     }
   }
 
-
   private class EmptyState extends HandlerState {
     private final int totalColumnIndex;
     private final RowMapper<T> mapper;
@@ -60,16 +55,13 @@ public class WindowedPagedResultSetHandler<T> implements RowCallbackHandler {
 
       return new PageProcessor(this.mapper, total).accept(resultSet);
     }
-
   }
-
 
   private class PageProcessor extends HandlerState {
 
     private final RowMapper<T> mapper;
     private final long total;
     private final List<T> items;
-
 
     PageProcessor(final RowMapper<T> mapper, long total) {
       this.mapper = mapper;

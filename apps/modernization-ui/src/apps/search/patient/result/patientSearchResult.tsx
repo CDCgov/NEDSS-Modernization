@@ -77,5 +77,5 @@ export {
     displayPhones,
     displayAddresses,
     displayEmails,
-    displayIdentifications
+    displayIdentifications,
 };

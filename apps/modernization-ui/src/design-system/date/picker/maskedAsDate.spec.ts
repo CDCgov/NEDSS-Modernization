@@ -30,7 +30,7 @@ describe('when masking text as a date', () => {
             ['11/13', '11/13'],
             ['11/1', '11/1'],
             ['11', '11'],
-            ['1', '1']
+            ['1', '1'],
         ])('should mask %s into %s', (value, expected) => {
             const actual = maskedAsDate(value);
 

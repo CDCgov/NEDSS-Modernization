@@ -72,7 +72,8 @@ const FilterPanel = ({ label, properties, filters, onApply, close }: FilterPanel
                     className={styles.clearButton}
                     type="button"
                     outline
-                    onClick={handleClear}>
+                    onClick={handleClear}
+                >
                     Clear filters
                 </Button>
                 <Button type="button" id="apply-button" onClick={handleApply}>

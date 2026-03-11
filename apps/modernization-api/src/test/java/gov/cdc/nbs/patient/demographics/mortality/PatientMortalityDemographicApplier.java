@@ -1,14 +1,13 @@
 package gov.cdc.nbs.patient.demographics.mortality;
 
+import static gov.cdc.nbs.support.util.RandomUtil.oneFrom;
+
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
+import java.time.LocalDate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-
-import static gov.cdc.nbs.support.util.RandomUtil.oneFrom;
 
 @Component
 public class PatientMortalityDemographicApplier {
@@ -19,9 +18,7 @@ public class PatientMortalityDemographicApplier {
   private final AddressIdentifierGenerator addressIdentifierGenerator;
 
   PatientMortalityDemographicApplier(
-      final JdbcClient client,
-      final AddressIdentifierGenerator addressIdentifierGenerator
-  ) {
+      final JdbcClient client, final AddressIdentifierGenerator addressIdentifierGenerator) {
     this.client = client;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
   }
@@ -32,52 +29,45 @@ public class PatientMortalityDemographicApplier {
 
     LocalDate deceasedOn = "Y".equals(indicator) ? RandomUtil.dateInPast() : null;
 
-    this.client.sql("update Person set deceased_time = ?, deceased_ind_cd = ? where person_uid = ?")
+    this.client
+        .sql("update Person set deceased_time = ?, deceased_ind_cd = ? where person_uid = ?")
         .param(deceasedOn)
         .param(indicator)
         .param(identifier.id())
         .update();
   }
 
-
-  void withDeceasedOn(
-      final PatientIdentifier identifier,
-      final LocalDate on
-  ) {
+  void withDeceasedOn(final PatientIdentifier identifier, final LocalDate on) {
     withDeceasedOn(identifier, RandomUtil.dateInPast(), on);
   }
 
   void withDeceasedOn(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final LocalDate on
-  ) {
+      final PatientIdentifier identifier, final LocalDate asOf, final LocalDate on) {
 
-    client.sql(
+    client
+        .sql(
             """
                 update person set
                     as_of_date_morbidity = coalesce(?, getDate()),
                     deceased_ind_cd = 'Y',
                     deceased_time = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(asOf)
         .param(on)
         .param(identifier.id())
         .update();
-
   }
 
   void withDeceased(final PatientIdentifier identifier, final String value) {
-    client.sql(
+    client
+        .sql(
             """
                 update person set
                     as_of_date_morbidity = coalesce(as_of_date_morbidity, getDate()),
                     deceased_ind_cd = ?
                 where person_uid = ?
-                """
-        )
+                """)
         .param(value)
         .param(identifier.id())
         .update();
@@ -88,17 +78,17 @@ public class PatientMortalityDemographicApplier {
       final String city,
       final String county,
       final String state,
-      final String country
-  ) {
+      final String country) {
 
     long locator = this.addressIdentifierGenerator.generate();
-    client.sql(
+    client
+        .sql(
             """
                 -- Ensure that the birth as of date is present
                 update person set
                     as_of_date_morbidity = coalesce(as_of_date_morbidity, getDate())
                 where person_uid = :patient;
-                
+
                 --- Entity Participation
                 merge into Entity_locator_participation [participation]
                 using ( values (:patient)) as source (patient)
@@ -133,7 +123,7 @@ public class PatientMortalityDemographicApplier {
                     'DTH',
                     'PST'
                 );
-                
+
                 --- Locator
                 merge into Postal_locator [locator]
                 using (
@@ -177,8 +167,7 @@ public class PatientMortalityDemographicApplier {
                       'ACTIVE',
                       getDate()
                   );
-                """
-        )
+                """)
         .param("patient", identifier.id())
         .param("locator", locator)
         .param("city", city)
@@ -186,7 +175,5 @@ public class PatientMortalityDemographicApplier {
         .param("state", state)
         .param("country", country)
         .update();
-
   }
-
 }

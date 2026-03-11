@@ -8,7 +8,7 @@ describe('when using the useMultiSelection hook', () => {
         const available: Selectable[] = [
             { name: 'One Name', label: 'One Label', value: 'ONE' },
             { name: 'Two Name', label: 'Two Label', value: 'TWO' },
-            { name: 'Three Name', label: 'Three Label', value: 'THREE' }
+            { name: 'Three Name', label: 'Three Label', value: 'THREE' },
         ];
 
         const { result } = renderHook(() => useMultiSelection({ available }));
@@ -19,7 +19,7 @@ describe('when using the useMultiSelection hook', () => {
             expect.arrayContaining([
                 expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'ONE' }) }),
                 expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'TWO' }) }),
-                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) })
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) }),
             ])
         );
     });
@@ -28,12 +28,12 @@ describe('when using the useMultiSelection hook', () => {
         const available: Selectable[] = [
             { name: 'One Name', label: 'One Label', value: 'ONE' },
             { name: 'Two Name', label: 'Two Label', value: 'TWO' },
-            { name: 'Three Name', label: 'Three Label', value: 'THREE' }
+            { name: 'Three Name', label: 'Three Label', value: 'THREE' },
         ];
 
         const selected: Selectable[] = [
             { name: 'Three Name', label: 'Three Label', value: 'THREE' },
-            { name: 'One Name', label: 'One Label', value: 'ONE' }
+            { name: 'One Name', label: 'One Label', value: 'ONE' },
         ];
 
         const { result } = renderHook(() => useMultiSelection({ available, selected }));
@@ -41,7 +41,7 @@ describe('when using the useMultiSelection hook', () => {
         expect(result.current.selected).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({ value: 'THREE' }),
-                expect.objectContaining({ value: 'ONE' })
+                expect.objectContaining({ value: 'ONE' }),
             ])
         );
 
@@ -49,7 +49,7 @@ describe('when using the useMultiSelection hook', () => {
             expect.arrayContaining([
                 expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'ONE' }) }),
                 expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'TWO' }) }),
-                expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'THREE' }) })
+                expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'THREE' }) }),
             ])
         );
     });
@@ -58,7 +58,7 @@ describe('when using the useMultiSelection hook', () => {
         const available: Selectable[] = [
             { name: 'One Name', label: 'One Label', value: 'ONE' },
             { name: 'Two Name', label: 'Two Label', value: 'TWO' },
-            { name: 'Three Name', label: 'Three Label', value: 'THREE' }
+            { name: 'Three Name', label: 'Three Label', value: 'THREE' },
         ];
 
         const { result } = renderHook(() => useMultiSelection({ available }));
@@ -72,7 +72,7 @@ describe('when using the useMultiSelection hook', () => {
             expect.arrayContaining([
                 expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'ONE' }) }),
                 expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'TWO' }) }),
-                expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'THREE' }) })
+                expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'THREE' }) }),
             ])
         );
     });
@@ -81,12 +81,12 @@ describe('when using the useMultiSelection hook', () => {
         const available: Selectable[] = [
             { name: 'One Name', label: 'One Label', value: 'ONE' },
             { name: 'Two Name', label: 'Two Label', value: 'TWO' },
-            { name: 'Three Name', label: 'Three Label', value: 'THREE' }
+            { name: 'Three Name', label: 'Three Label', value: 'THREE' },
         ];
 
         const selected: Selectable[] = [
             { name: 'Three Name', label: 'Three Label', value: 'THREE' },
-            { name: 'One Name', label: 'One Label', value: 'ONE' }
+            { name: 'One Name', label: 'One Label', value: 'ONE' },
         ];
 
         const { result } = renderHook(() => useMultiSelection({ available, selected }));
@@ -101,7 +101,7 @@ describe('when using the useMultiSelection hook', () => {
             expect.arrayContaining([
                 expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'ONE' }) }),
                 expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'TWO' }) }),
-                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) })
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) }),
             ])
         );
     });
@@ -110,12 +110,12 @@ describe('when using the useMultiSelection hook', () => {
         const available: Selectable[] = [
             { name: 'One Name', label: 'One Label', value: 'ONE' },
             { name: 'Two Name', label: 'Two Label', value: 'TWO' },
-            { name: 'Three Name', label: 'Three Label', value: 'THREE' }
+            { name: 'Three Name', label: 'Three Label', value: 'THREE' },
         ];
 
         const selected: Selectable[] = [
             { name: 'Three Name', label: 'Three Label', value: 'THREE' },
-            { name: 'One Name', label: 'One Label', value: 'ONE' }
+            { name: 'One Name', label: 'One Label', value: 'ONE' },
         ];
 
         const { result } = renderHook(() => useMultiSelection({ available, selected }));
@@ -130,7 +130,7 @@ describe('when using the useMultiSelection hook', () => {
             expect.arrayContaining([
                 expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'ONE' }) }),
                 expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'TWO' }) }),
-                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) })
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) }),
             ])
         );
     });
@@ -139,12 +139,12 @@ describe('when using the useMultiSelection hook', () => {
         const available: Selectable[] = [
             { name: 'One Name', label: 'One Label', value: 'ONE' },
             { name: 'Two Name', label: 'Two Label', value: 'TWO' },
-            { name: 'Three Name', label: 'Three Label', value: 'THREE' }
+            { name: 'Three Name', label: 'Three Label', value: 'THREE' },
         ];
 
         const selected: Selectable[] = [
             { name: 'Three Name', label: 'Three Label', value: 'THREE' },
-            { name: 'One Name', label: 'One Label', value: 'ONE' }
+            { name: 'One Name', label: 'One Label', value: 'ONE' },
         ];
 
         const { result } = renderHook(() => useMultiSelection({ available, selected }));
@@ -159,7 +159,7 @@ describe('when using the useMultiSelection hook', () => {
             expect.arrayContaining([
                 expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'ONE' }) }),
                 expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'TWO' }) }),
-                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) })
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) }),
             ])
         );
     });

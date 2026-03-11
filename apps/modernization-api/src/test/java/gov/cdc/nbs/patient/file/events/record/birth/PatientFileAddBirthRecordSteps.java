@@ -1,5 +1,11 @@
 package gov.cdc.nbs.patient.file.events.record.birth;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.AuthenticatedMvcRequester;
 import gov.cdc.nbs.testing.support.Active;
@@ -14,12 +20,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-
 public class PatientFileAddBirthRecordSteps {
 
   private final String classicUrl;
@@ -33,8 +33,7 @@ public class PatientFileAddBirthRecordSteps {
       final Active<PatientIdentifier> activePatient,
       final AuthenticatedMvcRequester authenticated,
       final Active<ResultActions> activeResponse,
-      @Qualifier("classicRestService") final MockRestServiceServer server
-  ) {
+      @Qualifier("classicRestService") final MockRestServiceServer server) {
     this.classicUrl = classicUrl;
     this.activePatient = activePatient;
     this.authenticated = authenticated;
@@ -51,15 +50,17 @@ public class PatientFileAddBirthRecordSteps {
   public void added() {
     long patient = activePatient.active().id();
 
-    server.expect(
-            requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+    server
+        .expect(requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
+    server
+        .expect(
+            requestTo(
+                classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
-
 
     activeResponse.active(
         authenticated.request(
@@ -76,17 +77,17 @@ public class PatientFileAddBirthRecordSteps {
   public void addRedirected() throws Exception {
     long patient = activePatient.active().id();
 
-    activeResponse.active()
-        .andExpect(MockMvcResultMatchers.header().string(
-                "Location",
-                allOf(
-                    containsString("method=createGenericLoad"),
-                    containsString("mode=Create"),
-                    containsString("Action=DSFilePath"),
-                    containsString("businessObjectType=BIR")
-                )
-            )
-        )
+    activeResponse
+        .active()
+        .andExpect(
+            MockMvcResultMatchers.header()
+                .string(
+                    "Location",
+                    allOf(
+                        containsString("method=createGenericLoad"),
+                        containsString("mode=Create"),
+                        containsString("Action=DSFilePath"),
+                        containsString("businessObjectType=BIR"))))
         .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
         .andExpect(MockMvcResultMatchers.cookie().value("Return-Patient", String.valueOf(patient)));
   }

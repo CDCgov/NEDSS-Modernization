@@ -23,7 +23,7 @@ export const Ethnicity = ({ personUid, ethnicity }: Props) => {
                         selectable={{
                             id: `ethnicity-${field.name}-${personUid}`,
                             formValue: personUid,
-                            ...field
+                            ...field,
                         }}
                     />
                 )}

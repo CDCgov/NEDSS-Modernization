@@ -10,16 +10,14 @@ public class RaceConceptSteps {
 
   RaceConceptSteps(
       final ConceptParameterResolver categoryResolver,
-      final DetailedRaceParameterResolver detailedResolver
-  ) {
+      final DetailedRaceParameterResolver detailedResolver) {
     this.categoryResolver = categoryResolver;
     this.detailedResolver = detailedResolver;
   }
 
   @ParameterType(name = "raceCategory", value = ".*")
   public String raceCategory(final String value) {
-    return categoryResolver.resolve("RACE_CALCULATED", value)
-        .orElse(null);
+    return categoryResolver.resolve("RACE_CALCULATED", value).orElse(null);
   }
 
   @ParameterType(name = "raceDetail", value = ".*")

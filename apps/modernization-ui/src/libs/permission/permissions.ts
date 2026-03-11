@@ -3,61 +3,61 @@
  */
 export const permissions = {
     global: {
-        hivQuestion: 'HIVQUESTIONS-GLOBAL'
+        hivQuestion: 'HIVQUESTIONS-GLOBAL',
     },
     investigation: {
         add: 'ADD-INVESTIGATION',
         delete: 'DELETE-INVESTIGATION',
         edit: 'EDIT-INVESTIGATION',
         compare: 'MERGEINVESTIGATION-INVESTIGATION',
-        view: 'VIEW-INVESTIGATION'
+        view: 'VIEW-INVESTIGATION',
     },
     labReport: {
         add: 'ADD-OBSERVATIONLABREPORT',
         delete: 'DELETE-OBSERVATIONLABREPORT',
         edit: 'EDIT-OBSERVATIONLABREPORT',
-        view: 'VIEW-OBSERVATIONLABREPORT'
+        view: 'VIEW-OBSERVATIONLABREPORT',
     },
     morbidityReport: {
         add: 'ADD-OBSERVATIONMORBIDITYREPORT',
         delete: 'DELETE-OBSERVATIONMORBIDITYREPORT',
         edit: 'EDIT-OBSERVATIONMORBIDITYREPORT',
-        view: 'VIEW-OBSERVATIONMORBIDITYREPORT'
+        view: 'VIEW-OBSERVATIONMORBIDITYREPORT',
     },
     birthRecord: {
         add: 'Add-BirthRecord',
-        view: 'View-BirthRecord'
+        view: 'View-BirthRecord',
     },
     reports: {
         template: {
-            view: 'VIEWREPORTTEMPLATE-REPORTING'
+            view: 'VIEWREPORTTEMPLATE-REPORTING',
         },
         public: {
-            view: 'VIEWREPORTPUBLIC-REPORTING'
+            view: 'VIEWREPORTPUBLIC-REPORTING',
         },
         private: {
-            view: 'VIEWREPORTPRIVATE-REPORTING'
+            view: 'VIEWREPORTPRIVATE-REPORTING',
         },
         reportingFacility: {
-            view: 'VIEWREPORTREPORTINGFACILITY-REPORTING'
-        }
+            view: 'VIEWREPORTREPORTINGFACILITY-REPORTING',
+        },
     },
     summaryReports: {
         view: 'VIEW-SUMMARYREPORT',
-        delete: 'DELETE-SUMMARYREPORT'
+        delete: 'DELETE-SUMMARYREPORT',
     },
     vaccination: {
         add: 'ADD-INTERVENTIONVACCINERECORD',
-        view: 'VIEW-INTERVENTIONVACCINERECORD'
+        view: 'VIEW-INTERVENTIONVACCINERECORD',
     },
     place: {
-        manage: 'MANAGE-PLACE'
+        manage: 'MANAGE-PLACE',
     },
     provider: {
-        manage: 'MANAGE-PROVIDER'
+        manage: 'MANAGE-PROVIDER',
     },
     organization: {
-        manage: 'MANAGE-ORGANIZATION'
+        manage: 'MANAGE-ORGANIZATION',
     },
     patient: {
         add: 'ADD-PATIENT',
@@ -67,7 +67,7 @@ export const permissions = {
         update: 'EDIT-PATIENT',
         view: 'VIEW-PATIENT',
         file: 'VIEWWORKUP-PATIENT',
-        merge: 'MERGE-PATIENT'
+        merge: 'MERGE-PATIENT',
     },
     system: {
         caseReport: 'SRTADMIN-SYSTEM',
@@ -76,11 +76,11 @@ export const permissions = {
         messagingManagement: [
             'VIEWELRACTIVITY-OBSERVATIONLABREPORT',
             'VIEWPHCRACTIVITY-CASEREPORTING',
-            'IMPORTEXPORTADMIN-SYSTEM'
+            'IMPORTEXPORTADMIN-SYSTEM',
         ],
         page: 'LDFADMINISTRATION-SYSTEM',
         personMatch: 'MERGE-PATIENT',
         report: 'REPORTADMIN-SYSTEM',
-        security: ['ADMISTRATE-SYSTEM', 'ADMINISTRATE-SECURITY']
-    }
+        security: ['ADMISTRATE-SYSTEM', 'ADMINISTRATE-SECURITY'],
+    },
 };

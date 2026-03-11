@@ -1,17 +1,15 @@
 package gov.cdc.nbs.questionbank.page.component.tree;
 
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.lang.NonNull;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.NonNull;
 
 class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
 
   private static final String TRUE_VALUE = "T";
   private static final String BATCH_TRUE_VALUE = "Y";
-
 
   record Column(
       int identifier,
@@ -52,46 +50,11 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
       int componentName,
       int classCode) {
     Column() {
-      this(1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10,
-          11,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          18,
-          19,
-          20,
-          21,
-          22,
-          23,
-          24,
-          25,
-          26,
-          27,
-          28,
-          29,
-          30,
-          31,
-          32,
-          33,
-          34,
-          35,
-          36,
-          37);
+      this(
+          1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+          26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37);
     }
   }
-
 
   private final Column columns;
 
@@ -100,8 +63,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
   }
 
   @Override
-  @NonNull
-  public FlattenedComponent mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  @NonNull public FlattenedComponent mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     long identifier = resultSet.getLong(this.columns.identifier());
     int type = resultSet.getInt(this.columns.type());
     String name = resultSet.getString(this.columns.name());
@@ -184,11 +147,11 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         classCode);
   }
 
-  private boolean resolveBatchBoolean(final int column, final ResultSet resultSet) throws SQLException {
+  private boolean resolveBatchBoolean(final int column, final ResultSet resultSet)
+      throws SQLException {
     String value = resultSet.getString(column);
     return Objects.equals(BATCH_TRUE_VALUE, value);
   }
-
 
   private boolean resolveBoolean(final int column, final ResultSet resultSet) throws SQLException {
     String value = resultSet.getString(column);

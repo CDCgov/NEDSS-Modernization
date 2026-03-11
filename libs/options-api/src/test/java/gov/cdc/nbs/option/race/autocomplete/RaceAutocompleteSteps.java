@@ -10,9 +10,7 @@ public class RaceAutocompleteSteps {
   private final Active<ResultActions> response;
 
   RaceAutocompleteSteps(
-      final RaceAutocompleteRequester request,
-      final Active<ResultActions> response
-  ) {
+      final RaceAutocompleteRequester request, final Active<ResultActions> response) {
     this.request = request;
     this.response = response;
   }
@@ -23,11 +21,8 @@ public class RaceAutocompleteSteps {
   }
 
   @When("I am trying to find at most {int} race(s) that start with {string}")
-  public void i_am_trying_to_find_n_races_that_start_with(
-      final int limit,
-      final String criteria
-  ) throws Exception {
+  public void i_am_trying_to_find_n_races_that_start_with(final int limit, final String criteria)
+      throws Exception {
     response.active(request.complete(criteria, limit));
   }
-
 }

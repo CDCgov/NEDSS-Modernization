@@ -3,15 +3,13 @@ package gov.cdc.nbs.patient.file.events.investigation;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleNameRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientInvestigationsRowMapper implements RowMapper<PatientInvestigation> {
   private static final String PAGE_BUILDER_PREFIX = "PG_";
-
 
   record Column(
       int patient,
@@ -25,10 +23,7 @@ class PatientInvestigationsRowMapper implements RowMapper<PatientInvestigation> 
       int jurisdiction,
       int coinfection,
       DisplayableSimpleNameRowMapper.Columns investigator,
-      int investigationFormCode
-  ) {
-  }
-
+      int investigationFormCode) {}
 
   private final Column columns;
   private final RowMapper<DisplayableSimpleName> investigatorMapper;
@@ -39,7 +34,8 @@ class PatientInvestigationsRowMapper implements RowMapper<PatientInvestigation> 
   }
 
   @Override
-  public PatientInvestigation mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public PatientInvestigation mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     long patient = resultSet.getLong(this.columns.patient());
     long identifier = resultSet.getLong(this.columns.identifier());
     String local = resultSet.getString(this.columns.local());
@@ -68,7 +64,6 @@ class PatientInvestigationsRowMapper implements RowMapper<PatientInvestigation> 
         jurisdiction,
         coinfection,
         investigator,
-        comparable
-    );
+        comparable);
   }
 }

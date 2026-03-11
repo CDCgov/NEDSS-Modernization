@@ -5,8 +5,8 @@ const config: StorybookConfig = {
     addons: ['@storybook/addon-onboarding', '@chromatic-com/storybook', '@storybook/addon-docs'],
     framework: {
         name: '@storybook/react-vite',
-        options: {}
+        options: {},
     },
-    staticDirs: ['../public']
+    staticDirs: ['../public'],
 };
 export default config;

@@ -10,8 +10,8 @@ const Fixture = () => {
             name: 'Pass name',
             description: 'This is my description for this pass',
             blockingCriteria: [],
-            active: true
-        }
+            active: true,
+        },
     });
     return (
         <FormProvider {...form}>

@@ -1,21 +1,18 @@
 package gov.cdc.nbs.patient.demographics.name;
 
+import gov.cdc.nbs.testing.support.Available;
+import io.cucumber.java.en.Given;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Supplier;
-
-import gov.cdc.nbs.testing.support.Available;
-import io.cucumber.java.en.Given;
 
 public class NameDemographicEntrySteps {
 
   private final Available<NameDemographic> availableNames;
   private final Clock clock;
 
-  NameDemographicEntrySteps(
-      final Available<NameDemographic> availableNames,
-      final Clock clock) {
+  NameDemographicEntrySteps(final Available<NameDemographic> availableNames, final Clock clock) {
     this.availableNames = availableNames;
     this.clock = clock;
   }
@@ -30,7 +27,8 @@ public class NameDemographicEntrySteps {
 
   @Given("I am entering a {nameUse} name as of {localDate}")
   public void i_am_entering_a_name_as_of(final String use, final LocalDate asOf) {
-    this.availableNames.selected(current -> current.withAsOf(asOf).withType(use), initial(asOf, use));
+    this.availableNames.selected(
+        current -> current.withAsOf(asOf).withType(use), initial(asOf, use));
   }
 
   @Given("I enter the prefix {namePrefix} on the current name")
@@ -82,5 +80,4 @@ public class NameDemographicEntrySteps {
   public void remove(final LocalDate asOf) {
     this.availableNames.removeIf(item -> Objects.equals(item.asOf(), asOf));
   }
-
 }

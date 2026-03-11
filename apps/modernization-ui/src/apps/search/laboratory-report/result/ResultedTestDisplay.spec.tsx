@@ -6,7 +6,7 @@ describe('ResultedTestDisplay', () => {
     it('displays numeric result with unit', () => {
         const summary: LabTestSummary = {
             numeric: 1144,
-            unit: 'someUnit'
+            unit: 'someUnit',
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
@@ -15,7 +15,7 @@ describe('ResultedTestDisplay', () => {
 
     it('displays numeric result without unit', () => {
         const summary: LabTestSummary = {
-            numeric: 1144
+            numeric: 1144,
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
@@ -25,7 +25,7 @@ describe('ResultedTestDisplay', () => {
     it('displays reference range with high and low', () => {
         const summary: LabTestSummary = {
             high: '200',
-            low: '10'
+            low: '10',
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
@@ -35,7 +35,7 @@ describe('ResultedTestDisplay', () => {
 
     it('displays reference range with high', () => {
         const summary: LabTestSummary = {
-            high: '200'
+            high: '200',
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
@@ -45,7 +45,7 @@ describe('ResultedTestDisplay', () => {
 
     it('displays reference range with low', () => {
         const summary: LabTestSummary = {
-            low: '10'
+            low: '10',
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
@@ -57,7 +57,7 @@ describe('ResultedTestDisplay', () => {
         const summary: LabTestSummary = {
             high: '200',
             low: '10',
-            status: 'FINAL'
+            status: 'FINAL',
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
@@ -68,7 +68,7 @@ describe('ResultedTestDisplay', () => {
     it('displays reference range with high and status', () => {
         const summary: LabTestSummary = {
             high: '200',
-            status: 'FINAL'
+            status: 'FINAL',
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
@@ -79,7 +79,7 @@ describe('ResultedTestDisplay', () => {
     it('displays reference range with low and status', () => {
         const summary: LabTestSummary = {
             low: '10',
-            status: 'FINAL'
+            status: 'FINAL',
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
@@ -89,7 +89,7 @@ describe('ResultedTestDisplay', () => {
 
     it('displays coded result', () => {
         const summary: LabTestSummary = {
-            coded: 'abnormal'
+            coded: 'abnormal',
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);

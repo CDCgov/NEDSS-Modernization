@@ -1,19 +1,16 @@
 package gov.cdc.nbs.patient.demographic;
 
-
-
-import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
-import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
-import gov.cdc.nbs.patient.PatientCommand;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
+import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
+import gov.cdc.nbs.patient.PatientCommand;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import org.junit.jupiter.api.Test;
 
 class GeneralInformationTest {
 
@@ -35,9 +32,7 @@ class GeneralInformationTest {
             "prim language",
             "speaks english",
             12L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     assertThat(actual)
         .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf)
@@ -69,9 +64,7 @@ class GeneralInformationTest {
             "prim language",
             "speaks english",
             12L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     actual.clear();
 
@@ -111,24 +104,16 @@ class GeneralInformationTest {
             "prim language",
             "speaks english",
             12L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     actual.associate(
         resolver,
         new PatientCommand.AssociateStateHIVCase(
-            263L,
-            "case-number",
-            12L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            263L, "case-number", 12L, LocalDateTime.parse("2019-03-03T10:15:30")));
 
     actual.clear();
 
-    assertThat(actual)
-        .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
+    assertThat(actual).returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
   }
 
   @Test
@@ -145,12 +130,7 @@ class GeneralInformationTest {
     actual.associate(
         resolver,
         new PatientCommand.AssociateStateHIVCase(
-            263L,
-            "case-number",
-            12L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            263L, "case-number", 12L, LocalDateTime.parse("2019-03-03T10:15:30")));
 
     assertThat(actual.stateHIVCase()).isEqualTo("case-number");
   }
@@ -169,12 +149,7 @@ class GeneralInformationTest {
     actual.associate(
         resolver,
         new PatientCommand.AssociateStateHIVCase(
-            263L,
-            "case-number",
-            12L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            263L, "case-number", 12L, LocalDateTime.parse("2019-03-03T10:15:30")));
 
     actual.disassociate(resolver);
 
@@ -195,15 +170,9 @@ class GeneralInformationTest {
     actual.associate(
         resolver,
         new PatientCommand.AssociateStateHIVCase(
-            263L,
-            "case-number",
-            12L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            263L, "case-number", 12L, LocalDateTime.parse("2019-03-03T10:15:30")));
 
     assertThat(actual.stateHIVCase()).isNull();
-
   }
 
   @Test
@@ -220,12 +189,7 @@ class GeneralInformationTest {
     actual.associate(
         resolver,
         new PatientCommand.AssociateStateHIVCase(
-            263L,
-            "case-number",
-            12L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            263L, "case-number", 12L, LocalDateTime.parse("2019-03-03T10:15:30")));
 
     PermissionScope notAllowed = mock(PermissionScope.class);
     when(notAllowed.allowed()).thenReturn(false);
@@ -234,7 +198,6 @@ class GeneralInformationTest {
     when(resolver.resolve(any())).thenReturn(allowed);
 
     assertThat(actual.stateHIVCase()).isEqualTo("case-number");
-
   }
 
   @Test
@@ -261,14 +224,11 @@ class GeneralInformationTest {
             null,
             null,
             12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+            LocalDateTime.parse("2023-07-11T23:29:31")));
 
     actual.disassociate(resolver);
 
-    assertThat(actual)
-        .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
+    assertThat(actual).returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
   }
 
   @Test
@@ -295,14 +255,11 @@ class GeneralInformationTest {
             null,
             null,
             12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+            LocalDateTime.parse("2023-07-11T23:29:31")));
 
     actual.disassociate(resolver);
 
-    assertThat(actual)
-        .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
+    assertThat(actual).returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
   }
 
   @Test
@@ -329,14 +286,11 @@ class GeneralInformationTest {
             null,
             null,
             12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+            LocalDateTime.parse("2023-07-11T23:29:31")));
 
     actual.disassociate(resolver);
 
-    assertThat(actual)
-        .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
+    assertThat(actual).returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
   }
 
   @Test
@@ -363,14 +317,11 @@ class GeneralInformationTest {
             null,
             null,
             12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+            LocalDateTime.parse("2023-07-11T23:29:31")));
 
     actual.disassociate(resolver);
 
-    assertThat(actual)
-        .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
+    assertThat(actual).returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
   }
 
   @Test
@@ -397,14 +348,11 @@ class GeneralInformationTest {
             null,
             null,
             12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+            LocalDateTime.parse("2023-07-11T23:29:31")));
 
     actual.disassociate(resolver);
 
-    assertThat(actual)
-        .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
+    assertThat(actual).returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
   }
 
   @Test
@@ -431,14 +379,11 @@ class GeneralInformationTest {
             null,
             null,
             12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+            LocalDateTime.parse("2023-07-11T23:29:31")));
 
     actual.disassociate(resolver);
 
-    assertThat(actual)
-        .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
+    assertThat(actual).returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
   }
 
   @Test
@@ -465,14 +410,11 @@ class GeneralInformationTest {
             "primary language",
             null,
             12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+            LocalDateTime.parse("2023-07-11T23:29:31")));
 
     actual.disassociate(resolver);
 
-    assertThat(actual)
-        .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
+    assertThat(actual).returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
   }
 
   @Test
@@ -499,13 +441,10 @@ class GeneralInformationTest {
             null,
             "speaks english",
             12L,
-            LocalDateTime.parse("2023-07-11T23:29:31")
-        )
-    );
+            LocalDateTime.parse("2023-07-11T23:29:31")));
 
     actual.disassociate(resolver);
 
-    assertThat(actual)
-        .returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
+    assertThat(actual).returns(LocalDate.parse("2010-03-03"), GeneralInformation::asOf);
   }
 }

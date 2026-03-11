@@ -7,5 +7,4 @@ public class CreateValuesetException extends BadRequestException {
   public CreateValuesetException(String message) {
     super(message);
   }
-
 }

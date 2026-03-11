@@ -1,10 +1,5 @@
 package gov.cdc.nbs.questionbank.question;
 
-import java.time.Instant;
-
-
-import gov.cdc.nbs.questionbank.question.request.QuestionRequest;
-import org.springframework.stereotype.Component;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.EntityType;
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
@@ -24,11 +19,14 @@ import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.create.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
+import java.time.Instant;
+import org.springframework.stereotype.Component;
 
 @Component
 class QuestionCreator {
@@ -100,9 +98,7 @@ class QuestionCreator {
         request.getRelatedUnitsLiteral(),
         request.getRelatedUnitsValueSet(),
         asQuestionData(request),
-        asReportingData(
-            request.getDataMartInfo(),
-            request.getSubgroup()),
+        asReportingData(request.getDataMartInfo(), request.getSubgroup()),
         asMessagingData(request.getMessagingInfo()),
         userId,
         Instant.now());
@@ -113,9 +109,7 @@ class QuestionCreator {
         request.getMask(),
         request.isAllowFutureDates(),
         asQuestionData(request),
-        asReportingData(
-            request.getDataMartInfo(),
-            request.getSubgroup()),
+        asReportingData(request.getDataMartInfo(), request.getSubgroup()),
         asMessagingData(request.getMessagingInfo()),
         userId,
         Instant.now());
@@ -127,9 +121,7 @@ class QuestionCreator {
         request.getFieldLength(),
         request.getDefaultValue(),
         asQuestionData(request),
-        asReportingData(
-            request.getDataMartInfo(),
-            request.getSubgroup()),
+        asReportingData(request.getDataMartInfo(), request.getSubgroup()),
         asMessagingData(request.getMessagingInfo()),
         userId,
         Instant.now());
@@ -140,9 +132,7 @@ class QuestionCreator {
         request.getValueSet(),
         request.getDefaultValue(),
         asQuestionData(request),
-        asReportingData(
-            request.getDataMartInfo(),
-            request.getSubgroup()),
+        asReportingData(request.getDataMartInfo(), request.getSubgroup()),
         asMessagingData(request.getMessagingInfo()),
         userId,
         Instant.now());
@@ -161,12 +151,11 @@ class QuestionCreator {
         request.getDisplayControl(),
         request.getAdminComments(),
         managementUtil.getQuestionOid(
-            messagingInfo.includedInMessage(),
-            messagingInfo.codeSystem(),
-            request.getCodeSet()));
+            messagingInfo.includedInMessage(), messagingInfo.codeSystem(), request.getCodeSet()));
   }
 
-  QuestionCommand.ReportingData asReportingData(QuestionRequest.ReportingInfo dataMartInfo, String subgroup) {
+  QuestionCommand.ReportingData asReportingData(
+      QuestionRequest.ReportingInfo dataMartInfo, String subgroup) {
     return new QuestionCommand.ReportingData(
         dataMartInfo.reportLabel(),
         dataMartInfo.defaultRdbTableName(),
@@ -185,10 +174,9 @@ class QuestionCreator {
         messagingInfo.hl7DataType());
   }
 
-
   /**
-   * If the request is of 'LOCAL' type and no Id is specified, generate the next available Id from the database. Else,
-   * return the specified request.uniqueId
+   * If the request is of 'LOCAL' type and no Id is specified, generate the next available Id from
+   * the database. Else, return the specified request.uniqueId
    *
    * @param request
    * @return
@@ -207,11 +195,9 @@ class QuestionCreator {
   }
 
   String getNbsClassCode() {
-    return configRepository.findById("NBS_CLASS_CODE")
+    return configRepository
+        .findById("NBS_CLASS_CODE")
         .orElseThrow(() -> new CreateQuestionException("Failed to lookup NBS_CLASS_CODE"))
         .getConfigValue();
   }
-
-
-
 }

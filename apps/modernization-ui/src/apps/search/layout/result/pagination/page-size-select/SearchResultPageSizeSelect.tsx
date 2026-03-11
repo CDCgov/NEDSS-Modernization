@@ -14,7 +14,7 @@ const SearchResultPageSizeSelect = ({
     id,
     selections = [],
     value,
-    onPageSizeChanged
+    onPageSizeChanged,
 }: SearchResultPageSizeSelectProps) => {
     const current = value ?? Math.min(...selections);
 

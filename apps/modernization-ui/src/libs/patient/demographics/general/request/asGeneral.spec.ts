@@ -4,7 +4,7 @@ describe('when mapping a general information demographic to a format accepted by
     it('should include the as of date', () => {
         const demographic = {
             asOf: '04/13/2017',
-            adultsInResidence: 17
+            adultsInResidence: 17,
         };
 
         const actual = asGeneral(demographic);
@@ -15,7 +15,7 @@ describe('when mapping a general information demographic to a format accepted by
     it('should include the marital status', () => {
         const demographic = {
             asOf: '04/13/2017',
-            maritalStatus: { value: 'marital-status-value', name: 'marital-status-name' }
+            maritalStatus: { value: 'marital-status-value', name: 'marital-status-name' },
         };
 
         const actual = asGeneral(demographic);
@@ -26,7 +26,7 @@ describe('when mapping a general information demographic to a format accepted by
     it('should include the maternal maiden name', () => {
         const demographic = {
             asOf: '04/13/2017',
-            maternalMaidenName: 'maternal-maiden-name-value'
+            maternalMaidenName: 'maternal-maiden-name-value',
         };
 
         const actual = asGeneral(demographic);
@@ -37,7 +37,7 @@ describe('when mapping a general information demographic to a format accepted by
     it('should include the adults in residence', () => {
         const demographic = {
             asOf: '04/13/2017',
-            adultsInResidence: 17
+            adultsInResidence: 17,
         };
 
         const actual = asGeneral(demographic);
@@ -48,7 +48,7 @@ describe('when mapping a general information demographic to a format accepted by
     it('should include the children in residence', () => {
         const demographic = {
             asOf: '04/13/2017',
-            childrenInResidence: 39
+            childrenInResidence: 39,
         };
 
         const actual = asGeneral(demographic);
@@ -59,7 +59,7 @@ describe('when mapping a general information demographic to a format accepted by
     it('should include the primary occupation', () => {
         const demographic = {
             asOf: '04/13/2017',
-            primaryOccupation: { value: 'primary-occupation-value', name: 'primary-occupation-name' }
+            primaryOccupation: { value: 'primary-occupation-value', name: 'primary-occupation-name' },
         };
 
         const actual = asGeneral(demographic);
@@ -70,7 +70,7 @@ describe('when mapping a general information demographic to a format accepted by
     it('should include the education level', () => {
         const demographic = {
             asOf: '04/13/2017',
-            educationLevel: { value: 'education-level-value', name: 'education-level-name' }
+            educationLevel: { value: 'education-level-value', name: 'education-level-name' },
         };
 
         const actual = asGeneral(demographic);
@@ -81,7 +81,7 @@ describe('when mapping a general information demographic to a format accepted by
     it('should include patient primary language', () => {
         const demographic = {
             asOf: '04/13/2017',
-            primaryLanguage: { value: 'W', name: 'Welsh' }
+            primaryLanguage: { value: 'W', name: 'Welsh' },
         };
 
         const actual = asGeneral(demographic);
@@ -92,7 +92,7 @@ describe('when mapping a general information demographic to a format accepted by
     it('should include wether the patient speaks english', () => {
         const demographic = {
             asOf: '04/13/2017',
-            speaksEnglish: { value: 'speaks-english-value', name: 'speaks-english-name' }
+            speaksEnglish: { value: 'speaks-english-value', name: 'speaks-english-name' },
         };
 
         const actual = asGeneral(demographic);
@@ -103,7 +103,7 @@ describe('when mapping a general information demographic to a format accepted by
     it('should include the state HIV case', () => {
         const demographic = {
             asOf: '04/13/2017',
-            stateHIVCase: { value: 'state-hiv-case-value' }
+            stateHIVCase: { value: 'state-hiv-case-value' },
         };
 
         const actual = asGeneral(demographic);
@@ -113,7 +113,7 @@ describe('when mapping a general information demographic to a format accepted by
 
     it('should not map when only as of is present', () => {
         const demographic = {
-            asOf: '04/13/2017'
+            asOf: '04/13/2017',
         };
 
         const actual = asGeneral(demographic);

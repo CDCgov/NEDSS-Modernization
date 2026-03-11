@@ -13,7 +13,7 @@ const entry: NameDemographic = {
     last: 'test last',
     secondLast: 'second last',
     suffix: asSelectable('SR', 'test 2'),
-    degree: asSelectable('BA', 'test ba')
+    degree: asSelectable('BA', 'test ba'),
 };
 
 describe('NameDemographicView', () => {
@@ -40,7 +40,7 @@ describe('NameDemographicView', () => {
             <NameDemographicView
                 entry={{
                     asOf: '2024-10-07',
-                    type: asSelectable('type')
+                    type: asSelectable('type'),
                 }}
             />
         );
@@ -68,7 +68,7 @@ describe('NameDemographicView', () => {
                 entry={{
                     asOf: '2024-10-07',
                     type: asSelectable('type'),
-                    prefix: { name: 'prefix name', value: 'prefix value' }
+                    prefix: { name: 'prefix name', value: 'prefix value' },
                 }}
             />
         );
@@ -82,7 +82,7 @@ describe('NameDemographicView', () => {
                 entry={{
                     asOf: '2024-10-07',
                     type: asSelectable('type'),
-                    first: 'First name value'
+                    first: 'First name value',
                 }}
             />
         );
@@ -96,7 +96,7 @@ describe('NameDemographicView', () => {
                 entry={{
                     asOf: '2024-10-07',
                     type: asSelectable('type'),
-                    middle: 'Middle name value'
+                    middle: 'Middle name value',
                 }}
             />
         );
@@ -110,7 +110,7 @@ describe('NameDemographicView', () => {
                 entry={{
                     asOf: '2024-10-07',
                     type: asSelectable('type'),
-                    secondMiddle: 'Second middle name value'
+                    secondMiddle: 'Second middle name value',
                 }}
             />
         );
@@ -124,7 +124,7 @@ describe('NameDemographicView', () => {
                 entry={{
                     asOf: '2024-10-07',
                     type: asSelectable('type'),
-                    last: 'Last name value'
+                    last: 'Last name value',
                 }}
             />
         );
@@ -138,7 +138,7 @@ describe('NameDemographicView', () => {
                 entry={{
                     asOf: '2024-10-07',
                     type: asSelectable('type'),
-                    secondLast: 'Second last name value'
+                    secondLast: 'Second last name value',
                 }}
             />
         );
@@ -152,7 +152,7 @@ describe('NameDemographicView', () => {
                 entry={{
                     asOf: '2024-10-07',
                     type: asSelectable('type'),
-                    suffix: { name: 'suffix name', value: 'suffix value' }
+                    suffix: { name: 'suffix name', value: 'suffix value' },
                 }}
             />
         );
@@ -166,7 +166,7 @@ describe('NameDemographicView', () => {
                 entry={{
                     asOf: '2024-10-07',
                     type: asSelectable('type'),
-                    degree: { name: 'degree name', value: 'degree value' }
+                    degree: { name: 'degree name', value: 'degree value' },
                 }}
             />
         );

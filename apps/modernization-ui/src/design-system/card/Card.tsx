@@ -43,7 +43,8 @@ const Card = ({
             role="group"
             aria-labelledby={id}
             className={classNames(styles.card, className)}
-            {...remaining}>
+            {...remaining}
+        >
             <CardHeader
                 id={id}
                 title={title}

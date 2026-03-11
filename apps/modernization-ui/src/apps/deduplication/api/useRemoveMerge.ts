@@ -5,8 +5,8 @@ export const useRemoveMerge = () => {
         fetch(`${Config.deduplicationUrl}/merge/${groupId}`, {
             method: 'DELETE',
             headers: {
-                Accept: 'application/json'
-            }
+                Accept: 'application/json',
+            },
         })
             .then((response) => {
                 if (response.ok) {
@@ -25,8 +25,8 @@ export const useRemoveMerge = () => {
         fetch(`${Config.deduplicationUrl}/merge/${groupId}/${personUid}`, {
             method: 'DELETE',
             headers: {
-                Accept: 'application/json'
-            }
+                Accept: 'application/json',
+            },
         })
             .then((response) => {
                 if (response.ok) {
@@ -43,6 +43,6 @@ export const useRemoveMerge = () => {
 
     return {
         removePatient,
-        keepAllSeparate
+        keepAllSeparate,
     };
 };

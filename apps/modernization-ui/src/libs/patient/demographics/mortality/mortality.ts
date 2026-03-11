@@ -24,7 +24,7 @@ const initial = (asOf: Supplier<string>): MortalityDemographic => ({
     city: null,
     state: null,
     county: null,
-    country: null
+    country: null,
 });
 
 export { initial };
@@ -36,7 +36,7 @@ const labels = {
     city: 'Death city',
     state: 'Death state',
     county: 'Death county',
-    country: 'Death country'
+    country: 'Death country',
 };
 
 export { labels };

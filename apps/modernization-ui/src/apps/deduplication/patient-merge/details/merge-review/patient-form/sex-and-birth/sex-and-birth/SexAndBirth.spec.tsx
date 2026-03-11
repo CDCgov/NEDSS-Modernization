@@ -16,7 +16,7 @@ const data: MergeSexAndBirth = {
     birthCity: 'Some city',
     birthState: 'Tennessee',
     birthCounty: 'Some county',
-    birthCountry: 'United States'
+    birthCountry: 'United States',
 };
 const Fixture = ({ sexAndBirth = data }: { sexAndBirth?: MergeSexAndBirth }) => {
     const form = useForm();

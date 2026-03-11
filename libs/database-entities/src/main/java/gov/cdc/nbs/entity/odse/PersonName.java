@@ -7,7 +7,6 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientNameHistoryListener;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -17,8 +16,7 @@ import java.util.function.Predicate;
 @EntityListeners(PatientNameHistoryListener.class)
 @SuppressWarnings(
     //  Bidirectional mappings require knowledge of each other
-    "javaarchitecture:S7027"
-)
+    "javaarchitecture:S7027")
 public class PersonName implements Identifiable<PersonNameId> {
 
   public static Predicate<PersonName> active() {
@@ -29,8 +27,7 @@ public class PersonName implements Identifiable<PersonNameId> {
     return input -> Objects.equals(input.type(), use);
   }
 
-  @EmbeddedId
-  private PersonNameId id;
+  @EmbeddedId private PersonNameId id;
 
   @MapsId("personUid")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -76,25 +73,19 @@ public class PersonName implements Identifiable<PersonNameId> {
   @Column(name = "as_of_date")
   private LocalDate asOfDate;
 
-  @Embedded
-  private Audit audit;
+  @Embedded private Audit audit;
 
-  @Embedded
-  private RecordStatus recordStatus;
+  @Embedded private RecordStatus recordStatus;
 
-  @Embedded
-  private Status status;
+  @Embedded private Status status;
 
-  protected PersonName() {
-
-  }
+  protected PersonName() {}
 
   public PersonName(
       final PersonNameId identifier,
       final Person person,
       final SoundexResolver resolver,
-      final PatientCommand.AddName added
-  ) {
+      final PatientCommand.AddName added) {
     this.asOfDate = added.asOf();
 
     this.id = identifier;
@@ -130,7 +121,8 @@ public class PersonName implements Identifiable<PersonNameId> {
     this.secondLastNameSoundex = resolver.resolve(value);
   }
 
-  public PersonName update(final SoundexResolver resolver, final PatientCommand.UpdateNameInfo info) {
+  public PersonName update(
+      final SoundexResolver resolver, final PatientCommand.UpdateNameInfo info) {
     this.asOfDate = info.asOf();
     this.nmPrefix = info.prefix();
     applyFirstName(info.first(), resolver);

@@ -4,7 +4,7 @@ import { columnSortResolver } from 'design-system/table';
 import {
     AddressDemographicRepeatingBlock,
     AddressDemographicRepeatingBlockProps,
-    columns
+    columns,
 } from './AddressDemographicRepeatingBlock';
 
 const sortResolver = columnSortResolver(columns);

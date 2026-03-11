@@ -1,15 +1,14 @@
 package gov.cdc.nbs.patient.search.indexing.telecom;
 
-import gov.cdc.nbs.patient.search.SearchablePatient;
-import org.junit.jupiter.api.Test;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.patient.search.SearchablePatient;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
 
 class SearchablePatientEmailMapperTest {
 
@@ -42,9 +41,8 @@ class SearchablePatientEmailMapperTest {
 
     Optional<SearchablePatient.Email> mapped = mapper.maybeMap(resultSet);
 
-    assertThat(mapped).hasValueSatisfying(
-        actual -> assertThat(actual.address()).isEqualTo("address-value")
-    );
+    assertThat(mapped)
+        .hasValueSatisfying(actual -> assertThat(actual.address()).isEqualTo("address-value"));
   }
 
   @Test
@@ -53,7 +51,6 @@ class SearchablePatientEmailMapperTest {
     SearchablePatientEmailMapper.Column columns = new SearchablePatientEmailMapper.Column(67);
 
     ResultSet resultSet = mock(ResultSet.class);
-
 
     SearchablePatientEmailMapper mapper = new SearchablePatientEmailMapper(columns);
 

@@ -7,7 +7,8 @@ const GuardedPatientFile = () => (
     <Guarded
         feature={(features) => features.patient.file.enabled}
         permission={permissions.patient.file}
-        fallback={<RedirectHome />}>
+        fallback={<RedirectHome />}
+    >
         <PatientFile />
     </Guarded>
 );

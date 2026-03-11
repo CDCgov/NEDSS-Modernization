@@ -20,8 +20,7 @@ public class PatientSearchSteps {
       final Active<PatientSearchCriteria> criteria,
       final Active<Pageable> paging,
       final Active<SortCriteria> sorting,
-      final Active<ResultActions> results
-  ) {
+      final Active<ResultActions> results) {
     this.request = request;
     this.criteria = criteria;
     this.paging = paging;
@@ -32,13 +31,6 @@ public class PatientSearchSteps {
   @When("I search for patients")
   public void i_search_for_patients_() {
     results.active(
-        this.request.search(
-            this.criteria.active(),
-            this.paging.active(),
-            this.sorting.active()
-        )
-    );
-
+        this.request.search(this.criteria.active(), this.paging.active(), this.sorting.active()));
   }
-
 }

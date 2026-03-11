@@ -42,11 +42,13 @@ const PatientCreatedPanel = ({ created }: Props) => (
                         <LinkButton target="_self" href={`/nbs/api/patient/${created.id}/file/redirect`}>
                             View patient
                         </LinkButton>
-                    }>
+                    }
+                >
                     <NavLinkButton to={`/patient/${created.shortId}`}>View patient</NavLinkButton>
                 </FeatureToggle>
             </>
-        )}>
+        )}
+    >
         <Message type="success">
             <Heading level={2}>You have successfully added a new patient</Heading>
             <p>

@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 const page: PagesResponse = {
     id: 12039120,
     name: 'test page',
-    status: 'Draft'
+    status: 'Draft',
 };
 
 const fetch = () => {

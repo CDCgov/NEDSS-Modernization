@@ -25,7 +25,7 @@ export const QuestionSearchTable = ({
     onSortChange,
     onQuerySubmit,
     onSelectionChange,
-    onCreateNew
+    onCreateNew,
 }: Props) => {
     const { page, request } = usePagination();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
@@ -48,7 +48,7 @@ export const QuestionSearchTable = ({
         { name: 'Unique ID', sortable: true },
         { name: 'Label', sortable: true },
         { name: 'Subgroup', sortable: true },
-        { name: 'More info', sortable: false }
+        { name: 'More info', sortable: false },
     ];
 
     const toTableRow = (question: AvailableQuestion): TableBody => {
@@ -63,16 +63,16 @@ export const QuestionSearchTable = ({
             tableDetails: [
                 {
                     id: 1,
-                    title: question?.type
+                    title: question?.type,
                 },
                 { id: 2, title: question?.uniqueId },
                 {
                     id: 3,
-                    title: question?.label
+                    title: question?.label,
                 },
                 {
                     id: 4,
-                    title: question?.subgroupName
+                    title: question?.subgroupName,
                 },
                 {
                     id: 5,
@@ -89,9 +89,9 @@ export const QuestionSearchTable = ({
                                 onClick={() => setExpanded(question.id)}
                                 size={4}
                             />
-                        )
-                }
-            ]
+                        ),
+                },
+            ],
         };
     };
 
@@ -139,7 +139,8 @@ export const QuestionSearchTable = ({
                             <Button
                                 className={styles.clearSearchButton}
                                 type="button"
-                                onClick={() => onQuerySubmit?.('')}>
+                                onClick={() => onQuerySubmit?.('')}
+                            >
                                 <Icon.Close />
                             </Button>
                         </div>
@@ -157,7 +158,8 @@ export const QuestionSearchTable = ({
                         type="button"
                         className={`${styles.createNewButton} addQuestionCreateNewBtn`}
                         outline
-                        onClick={onCreateNew}>
+                        onClick={onCreateNew}
+                    >
                         Create new
                     </Button>
                 </div>

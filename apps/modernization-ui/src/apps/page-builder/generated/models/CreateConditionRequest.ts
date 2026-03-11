@@ -14,4 +14,3 @@ export type CreateConditionRequest = {
     familyCd?: string;
     coinfectionGrpCd?: string;
 };
-

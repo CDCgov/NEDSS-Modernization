@@ -1,16 +1,5 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.LongFunction;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
 import gov.cdc.nbs.questionbank.page.PageCommand;
@@ -34,22 +23,36 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.LongFunction;
 import lombok.Getter;
 import lombok.Setter;
-
 
 @Getter
 @Setter
 @Entity
 @Table(name = "WA_template", catalog = "NBS_ODSE")
-@SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7091"}) //  Bidirectional mappings require knowledge of each other
+@SuppressWarnings({
+  "javaarchitecture:S7027",
+  "javaarchitecture:S7091"
+}) //  Bidirectional mappings require knowledge of each other
 public class WaTemplate {
   private static final String DRAFT = "Draft";
   private static final long TAB = 1010L;
   private static final long SECTION = 1015L;
   private static final long SUB_SECTION = 1016L;
   private static final List<Long> containers = Arrays.asList(TAB, SECTION, SUB_SECTION);
-  private static final String FAILED_TO_FIND_SUBSECTION_WITH_ID = "Failed to find subsection with id: ";
+  private static final String FAILED_TO_FIND_SUBSECTION_WITH_ID =
+      "Failed to find subsection with id: ";
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -124,43 +127,40 @@ public class WaTemplate {
   @Column(name = "version_note", length = 2000)
   private String versionNote;
 
-  @OneToMany(fetch = FetchType.LAZY,
+  @OneToMany(
+      fetch = FetchType.LAZY,
       mappedBy = "waTemplateUid",
-      cascade = {
-          CascadeType.MERGE,
-          CascadeType.REMOVE,
-          CascadeType.PERSIST
-      },
+      cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST},
       orphanRemoval = true)
   private Set<PageCondMapping> conditionMappings;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, orphanRemoval = true)
+  @OneToMany(
+      fetch = FetchType.LAZY,
+      mappedBy = "waTemplateUid",
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+      orphanRemoval = true)
   @OrderBy("orderNbr")
   private List<WaUiMetadata> uiMetadata;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, orphanRemoval = true)
+  @OneToMany(
+      fetch = FetchType.LAZY,
+      mappedBy = "waTemplateUid",
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+      orphanRemoval = true)
   private List<WaNndMetadatum> nndMetadatums;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, orphanRemoval = true)
+  @OneToMany(
+      fetch = FetchType.LAZY,
+      mappedBy = "waTemplateUid",
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+      orphanRemoval = true)
   private List<WaRdbMetadata> waRdbMetadatums;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, orphanRemoval = true)
+  @OneToMany(
+      fetch = FetchType.LAZY,
+      mappedBy = "waTemplateUid",
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+      orphanRemoval = true)
   private List<WaRuleMetadata> waRuleMetadata;
 
   public WaTemplate() {
@@ -193,17 +193,11 @@ public class WaTemplate {
     this.recordStatusTime = createdOn;
 
     this.uiMetadata = initializeComponents();
-
   }
 
   private List<WaUiMetadata> initializeComponents() {
-    WaUiMetadata root = new WaUiMetadata(
-        this,
-        1002,
-        this.templateNm,
-        1,
-        this.addUserId,
-        this.addTime);
+    WaUiMetadata root =
+        new WaUiMetadata(this, 1002, this.templateNm, 1, this.addUserId, this.addTime);
 
     root.setAddUserId(this.addUserId);
     root.setAddTime(this.addTime);
@@ -221,8 +215,7 @@ public class WaTemplate {
   }
 
   public WaUiMetadata updateRequired(
-      PageContentCommand.SetQuestionRequired command,
-      LongFunction<WaUiMetadata> findQuestion) {
+      PageContentCommand.SetQuestionRequired command, LongFunction<WaUiMetadata> findQuestion) {
     // Can only modify Draft pages
     verifyDraftType();
 
@@ -259,7 +252,8 @@ public class WaTemplate {
     return question;
   }
 
-  public WaUiMetadata updateQuestionValueset(PageContentCommand.UpdateCodedQuestionValueset command) {
+  public WaUiMetadata updateQuestionValueset(
+      PageContentCommand.UpdateCodedQuestionValueset command) {
     // Can only modify Draft pages
     verifyDraftType();
 
@@ -273,8 +267,7 @@ public class WaTemplate {
   }
 
   public WaUiMetadata updateTab(
-      PageContentCommand.UpdateTab command,
-      LongFunction<WaUiMetadata> findTab) {
+      PageContentCommand.UpdateTab command, LongFunction<WaUiMetadata> findTab) {
     // Can only modify Draft pages
     verifyDraftType();
 
@@ -290,11 +283,14 @@ public class WaTemplate {
     verifyDraftType();
 
     // Find the tab to delete
-    WaUiMetadata tab = uiMetadata.stream()
-        .filter(e -> e.getId() == command.tabId() && e.getNbsUiComponentUid() == TAB)
-        .findFirst()
-        .orElseThrow(
-            () -> new PageContentModificationException("Failed to find tab with id: " + command.tabId()));
+    WaUiMetadata tab =
+        uiMetadata.stream()
+            .filter(e -> e.getId() == command.tabId() && e.getNbsUiComponentUid() == TAB)
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new PageContentModificationException(
+                        "Failed to find tab with id: " + command.tabId()));
 
     // If element after section is null or another Tab then we can delete the tab
     if (!isElementAtOrderNullOrOneOf(Arrays.asList(TAB), tab.getOrderNbr() + 1)) {
@@ -312,10 +308,8 @@ public class WaTemplate {
     verifyDraftType();
 
     // Tabs are always inserted at the end, so find the max or 1
-    Integer orderNumber = uiMetadata.stream()
-        .mapToInt(WaUiMetadata::getOrderNbr)
-        .max()
-        .orElse(1) + 1;
+    Integer orderNumber =
+        uiMetadata.stream().mapToInt(WaUiMetadata::getOrderNbr).max().orElse(1) + 1;
 
     // create tab
     WaUiMetadata tab = new WaUiMetadata(this, command, orderNumber);
@@ -336,17 +330,9 @@ public class WaTemplate {
   }
 
   public void addSection(
-      final String name,
-      final int at,
-      final long addedBy,
-      final Instant addedOn) {
-    WaUiMetadata component = new WaUiMetadata(
-        this,
-        PageConstants.SECTION_COMPONENT,
-        name,
-        at,
-        addedBy,
-        addedOn);
+      final String name, final int at, final long addedBy, final Instant addedOn) {
+    WaUiMetadata component =
+        new WaUiMetadata(this, PageConstants.SECTION_COMPONENT, name, at, addedBy, addedOn);
 
     including(component);
   }
@@ -360,10 +346,14 @@ public class WaTemplate {
     verifyDraftType();
 
     // Find the container to insert section into
-    WaUiMetadata tab = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.tab())
-        .findFirst()
-        .orElseThrow(() -> new PageContentModificationException("Failed to find tab to insert section into"));
+    WaUiMetadata tab =
+        uiMetadata.stream()
+            .filter(ui -> ui.getId() == command.tab())
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new PageContentModificationException(
+                        "Failed to find tab to insert section into"));
 
     // create section
     WaUiMetadata section = new WaUiMetadata(this, command, tab.getOrderNbr() + 1);
@@ -382,16 +372,16 @@ public class WaTemplate {
   }
 
   private void incrementAllFrom(Integer start) {
-    this.uiMetadata.forEach(ui -> {
-      if (ui.getOrderNbr() >= start) {
-        ui.setOrderNbr(ui.getOrderNbr() + 1);
-      }
-    });
+    this.uiMetadata.forEach(
+        ui -> {
+          if (ui.getOrderNbr() >= start) {
+            ui.setOrderNbr(ui.getOrderNbr() + 1);
+          }
+        });
   }
 
   public WaUiMetadata updateSection(
-      PageContentCommand.UpdateSection command,
-      LongFunction<WaUiMetadata> findSection) {
+      PageContentCommand.UpdateSection command, LongFunction<WaUiMetadata> findSection) {
     // Can only modify Draft pages
     verifyDraftType();
 
@@ -411,10 +401,14 @@ public class WaTemplate {
     verifyDraftType();
 
     // Find the container to insert subsection into
-    WaUiMetadata section = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.section() && ui.getNbsUiComponentUid() == SECTION)
-        .findFirst()
-        .orElseThrow(() -> new PageContentModificationException("Failed to find tab to insert section into"));
+    WaUiMetadata section =
+        uiMetadata.stream()
+            .filter(ui -> ui.getId() == command.section() && ui.getNbsUiComponentUid() == SECTION)
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new PageContentModificationException(
+                        "Failed to find tab to insert section into"));
 
     // create subsection
     WaUiMetadata subsection = new WaUiMetadata(this, command, section.getOrderNbr() + 1);
@@ -433,8 +427,7 @@ public class WaTemplate {
   }
 
   public WaUiMetadata updateSubSection(
-      PageContentCommand.UpdateSubsection command,
-      LongFunction<WaUiMetadata> findSubsection) {
+      PageContentCommand.UpdateSubsection command, LongFunction<WaUiMetadata> findSubsection) {
     // Can only modify Draft pages
     verifyDraftType();
 
@@ -446,17 +439,9 @@ public class WaTemplate {
   }
 
   public void addSubSection(
-      final String name,
-      final int at,
-      final long addedBy,
-      final Instant addedOn) {
-    WaUiMetadata component = new WaUiMetadata(
-        this,
-        PageConstants.SUB_SECTION_COMPONENT,
-        name,
-        at,
-        addedBy,
-        addedOn);
+      final String name, final int at, final long addedBy, final Instant addedOn) {
+    WaUiMetadata component =
+        new WaUiMetadata(this, PageConstants.SUB_SECTION_COMPONENT, name, at, addedBy, addedOn);
 
     including(component);
   }
@@ -469,13 +454,7 @@ public class WaTemplate {
       final Instant addedOn,
       final String identifier,
       final String dataType) {
-    WaUiMetadata component = new WaUiMetadata(
-        this,
-        type,
-        name,
-        at,
-        addedBy,
-        addedOn);
+    WaUiMetadata component = new WaUiMetadata(this, type, name, at, addedBy, addedOn);
     if (type == 1008l) {
       component.setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
       component.setPublishIndCd('F');
@@ -501,12 +480,14 @@ public class WaTemplate {
     verifyDraftType();
 
     // Find the section to delete
-    WaUiMetadata section = uiMetadata.stream()
-        .filter(e -> e.getId() == command.setionId() && e.getNbsUiComponentUid() == SECTION)
-        .findFirst()
-        .orElseThrow(
-            () -> new PageContentModificationException(
-                "Failed to find section with id: " + command.setionId()));
+    WaUiMetadata section =
+        uiMetadata.stream()
+            .filter(e -> e.getId() == command.setionId() && e.getNbsUiComponentUid() == SECTION)
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new PageContentModificationException(
+                        "Failed to find section with id: " + command.setionId()));
 
     // If element after section is null, another section, or Tab then we can delete the section
     if (!isElementAtOrderNullOrOneOf(Arrays.asList(SECTION, TAB), section.getOrderNbr() + 1)) {
@@ -524,15 +505,20 @@ public class WaTemplate {
     verifyDraftType();
 
     // Find the subsection to delete
-    WaUiMetadata section = uiMetadata.stream()
-        .filter(e -> e.getId() == command.subsectionId() && e.getNbsUiComponentUid() == SUB_SECTION)
-        .findFirst()
-        .orElseThrow(
-            () -> new PageContentModificationException(
-                FAILED_TO_FIND_SUBSECTION_WITH_ID + command.subsectionId()));
+    WaUiMetadata section =
+        uiMetadata.stream()
+            .filter(
+                e -> e.getId() == command.subsectionId() && e.getNbsUiComponentUid() == SUB_SECTION)
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new PageContentModificationException(
+                        FAILED_TO_FIND_SUBSECTION_WITH_ID + command.subsectionId()));
 
-    // If element after section is null, another subsection, section, or Tab then we can delete the subsection
-    if (!isElementAtOrderNullOrOneOf(Arrays.asList(SUB_SECTION, SECTION, TAB), section.getOrderNbr() + 1)) {
+    // If element after section is null, another subsection, section, or Tab then we can delete the
+    // subsection
+    if (!isElementAtOrderNullOrOneOf(
+        Arrays.asList(SUB_SECTION, SECTION, TAB), section.getOrderNbr() + 1)) {
       throw new PageContentModificationException("Unable to delete a subsection with content");
     }
 
@@ -547,41 +533,52 @@ public class WaTemplate {
     verifyDraftType();
 
     // ensure page doesn't already contain question
-    Optional<WaUiMetadata> existing = uiMetadata.stream()
-        .filter(e -> e.getQuestionIdentifier() != null
-            && e.getQuestionIdentifier().equals(command.question().getQuestionIdentifier()))
-        .findFirst();
+    Optional<WaUiMetadata> existing =
+        uiMetadata.stream()
+            .filter(
+                e ->
+                    e.getQuestionIdentifier() != null
+                        && e.getQuestionIdentifier()
+                            .equals(command.question().getQuestionIdentifier()))
+            .findFirst();
 
     if (existing.isPresent()) {
-      throw new PageContentModificationException("Unable to add a question to a page multiple times");
+      throw new PageContentModificationException(
+          "Unable to add a question to a page multiple times");
     }
 
     // Find the SubSection to add question to
-    WaUiMetadata subsection = uiMetadata.stream()
-        .filter(e -> e.getId() == command.subsection() && e.getNbsUiComponentUid() == SUB_SECTION)
-        .findFirst()
-        .orElseThrow(
-            () -> new PageContentModificationException(
-                FAILED_TO_FIND_SUBSECTION_WITH_ID + command.subsection()));
+    WaUiMetadata subsection =
+        uiMetadata.stream()
+            .filter(
+                e -> e.getId() == command.subsection() && e.getNbsUiComponentUid() == SUB_SECTION)
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new PageContentModificationException(
+                        FAILED_TO_FIND_SUBSECTION_WITH_ID + command.subsection()));
 
-    // Questions are inserted at the END of a subsection, so find the next container (or null if subsection is at end)
-    Optional<WaUiMetadata> nextContainer = findNextElementOfComponent(
-        subsection.getOrderNbr() + 1,
-        Arrays.asList(SUB_SECTION, SECTION, TAB));
+    // Questions are inserted at the END of a subsection, so find the next container (or null if
+    // subsection is at end)
+    Optional<WaUiMetadata> nextContainer =
+        findNextElementOfComponent(
+            subsection.getOrderNbr() + 1, Arrays.asList(SUB_SECTION, SECTION, TAB));
     Integer newOrderNumber;
     if (nextContainer.isEmpty()) {
-      newOrderNumber = uiMetadata.stream()
-          .mapToInt(WaUiMetadata::getOrderNbr)
-          .max()
-          .orElseThrow(() -> new PageContentModificationException("Invalid state"))
-          + 1;
+      newOrderNumber =
+          uiMetadata.stream()
+                  .mapToInt(WaUiMetadata::getOrderNbr)
+                  .max()
+                  .orElseThrow(() -> new PageContentModificationException("Invalid state"))
+              + 1;
     } else {
       newOrderNumber = nextContainer.get().getOrderNbr();
     }
 
     // If subsection is grouped, limit number of questions within the subsection to 20
     if (subsection.getBlockNm() != null && newOrderNumber - subsection.getOrderNbr() >= 21) {
-      throw new PageContentModificationException("Unable to add more than 20 questions to a grouped subsection");
+      throw new PageContentModificationException(
+          "Unable to add more than 20 questions to a grouped subsection");
     }
 
     // Make room for new question
@@ -593,7 +590,8 @@ public class WaTemplate {
     // If subsection is grouped, set appropriate fields
     if (subsection.getBlockNm() != null) {
       Integer pivotNumber = findPivotNumberInSubsection(subsection, newOrderNumber);
-      questionEntry.addToExistingGroup(subsection.getBlockNm(), subsection.getQuestionGroupSeqNbr(), pivotNumber);
+      questionEntry.addToExistingGroup(
+          subsection.getBlockNm(), subsection.getQuestionGroupSeqNbr(), pivotNumber);
     }
     this.uiMetadata.add(questionEntry);
 
@@ -607,14 +605,16 @@ public class WaTemplate {
     verifyDraftType();
 
     // ensure page already contain question
-    WaUiMetadata question = uiMetadata.stream()
-        .filter(e -> e.getId() != null
-            && e.getId().equals(command.question()))
-        .findFirst()
-        .orElseThrow(() -> new PageContentModificationException(
-            "Unable to delete a question from a page, the page does not contain the question"));
+    WaUiMetadata question =
+        uiMetadata.stream()
+            .filter(e -> e.getId() != null && e.getId().equals(command.question()))
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new PageContentModificationException(
+                        "Unable to delete a question from a page, the page does not contain the question"));
 
-    //can not delete standard questions
+    // can not delete standard questions
     if (question.getStandardQuestionIndCd() == 'T') {
       throw new PageContentModificationException("Unable to delete standard question");
     }
@@ -625,7 +625,8 @@ public class WaTemplate {
     changed(command);
   }
 
-  private Optional<WaUiMetadata> findNextElementOfComponent(Integer start, List<Long> componentTypes) {
+  private Optional<WaUiMetadata> findNextElementOfComponent(
+      Integer start, List<Long> componentTypes) {
     return uiMetadata.stream()
         .filter(ui -> ui.getOrderNbr() >= start)
         .filter(ui -> componentTypes.contains(ui.getNbsUiComponentUid()))
@@ -644,10 +645,8 @@ public class WaTemplate {
   }
 
   private boolean isElementAtOrderNullOrOneOf(List<Long> validComponents, int orderNumber) {
-    WaUiMetadata next = uiMetadata.stream()
-        .filter(e -> e.getOrderNbr() == orderNumber)
-        .findFirst()
-        .orElse(null);
+    WaUiMetadata next =
+        uiMetadata.stream().filter(e -> e.getOrderNbr() == orderNumber).findFirst().orElse(null);
     return next == null || validComponents.contains(next.getNbsUiComponentUid());
   }
 
@@ -664,7 +663,6 @@ public class WaTemplate {
         .sorted(
             Comparator.comparing(WaUiMetadata::getOrderNbr)
                 .thenComparing(WaUiMetadata::getLastChgTime, Comparator.reverseOrder()))
-
         .forEach(c -> c.setOrderNbr(current.getAndIncrement()));
   }
 
@@ -674,9 +672,7 @@ public class WaTemplate {
     }
   }
 
-  public void changeName(
-      final PageNameVerifier verifier,
-      final PageCommand.ChangeName command) {
+  public void changeName(final PageNameVerifier verifier, final PageCommand.ChangeName command) {
     checkChangesAllowed();
     if (!Objects.equals(this.templateNm, command.name())) {
       checkUniqueName(command.name(), verifier);
@@ -692,8 +688,7 @@ public class WaTemplate {
   }
 
   public void changeDatamart(
-      final DatamartNameVerifier verifier,
-      final PageCommand.ChangeDatamart command) {
+      final DatamartNameVerifier verifier, final PageCommand.ChangeDatamart command) {
     checkDatamartChangesAllowed();
     if (!Objects.equals(this.templateNm, command.datamart())) {
       checkUniqueDatamart(command.datamart(), verifier);
@@ -705,15 +700,15 @@ public class WaTemplate {
   private void checkDatamartChangesAllowed() {
     checkChangesAllowed();
     if (hasBeenPublished()) {
-      throw new PageUpdateException("The datamart cannot be changed if the Page had ever been Published");
+      throw new PageUpdateException(
+          "The datamart cannot be changed if the Page had ever been Published");
     }
   }
 
-  private void checkUniqueDatamart(
-      final String datamart,
-      final DatamartNameVerifier verifier) {
+  private void checkUniqueDatamart(final String datamart, final DatamartNameVerifier verifier) {
     if (!verifier.isUnique(datamart)) {
-      throw new PageUpdateException("Another Page is using the datamart named %s".formatted(datamart));
+      throw new PageUpdateException(
+          "Another Page is using the datamart named %s".formatted(datamart));
     }
   }
 
@@ -730,7 +725,8 @@ public class WaTemplate {
 
   public WaTemplate dissociate(final PageCommand.DissociateCondition dissociate) {
     checkConditionDisassociationAllowed();
-    this.conditionMappings.removeIf(condition -> Objects.equals(condition.getConditionCd(), dissociate.condition()));
+    this.conditionMappings.removeIf(
+        condition -> Objects.equals(condition.getConditionCd(), dissociate.condition()));
     changed(dissociate);
     return this;
   }
@@ -738,7 +734,8 @@ public class WaTemplate {
   private void checkConditionDisassociationAllowed() {
     checkChangesAllowed();
     if (hasBeenPublished()) {
-      throw new PageUpdateException("The related conditions cannot be changed if the Page had ever been Published");
+      throw new PageUpdateException(
+          "The related conditions cannot be changed if the Page had ever been Published");
     }
   }
 
@@ -778,20 +775,20 @@ public class WaTemplate {
   }
 
   public void createTemplate(
-      final TemplateNameVerifier verifier,
-      final PageCommand.CreateTemplate create) {
+      final TemplateNameVerifier verifier, final PageCommand.CreateTemplate create) {
 
-    //  This method should return a new Template object however, the creation of templates is being delegated to classic
-    //  NBS because of the complexity surrounding the XML payload.  For now, it is just verifying the template name is
-    //  unique.  Why is this method here?  To ensure that the business logic of a Page is in one place and not spread all
+    //  This method should return a new Template object however, the creation of templates is being
+    // delegated to classic
+    //  NBS because of the complexity surrounding the XML payload.  For now, it is just verifying
+    // the template name is
+    //  unique.  Why is this method here?  To ensure that the business logic of a Page is in one
+    // place and not spread all
     //  over the code base.
     checkTemplateCreation(verifier, create);
-
   }
 
   private void checkTemplateCreation(
-      final TemplateNameVerifier verifier,
-      final PageCommand.CreateTemplate create) {
+      final TemplateNameVerifier verifier, final PageCommand.CreateTemplate create) {
 
     String name = create.name();
 
@@ -817,7 +814,6 @@ public class WaTemplate {
     }
   }
 
-
   public void groupSubSection(PageContentCommand.GroupSubsection command) {
     verifyDraftType();
     int max = 0;
@@ -830,32 +826,40 @@ public class WaTemplate {
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
 
     List<WaUiMetadata> content = findSubsectionContent(command.subsection());
-    content.forEach(c -> {
-      if (!batchIds.contains(c.getId())) {
-        throw new PageContentModificationException("Unable to group question outside of targeted subsection");
-      }
-      c.updateQuestionBatch(command, finalMax);
-    });
+    content.forEach(
+        c -> {
+          if (!batchIds.contains(c.getId())) {
+            throw new PageContentModificationException(
+                "Unable to group question outside of targeted subsection");
+          }
+          c.updateQuestionBatch(command, finalMax);
+        });
 
-    WaUiMetadata subsection = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
-        .findFirst()
-        .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
+    WaUiMetadata subsection =
+        uiMetadata.stream()
+            .filter(
+                ui ->
+                    ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
+            .findFirst()
+            .orElseThrow(
+                () -> new PageContentModificationException("Failed to find subsection to group"));
     subsection.update(command, finalMax);
     changed(command);
-
   }
-
 
   public void unGroupSubSection(PageContentCommand.UnGroupSubsection command) {
     verifyDraftType();
     List<WaUiMetadata> questions = findSubsectionContent(command.subsection());
     questions.forEach(question -> question.ungroup(command));
 
-    WaUiMetadata subsection = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
-        .findFirst()
-        .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to ungroup"));
+    WaUiMetadata subsection =
+        uiMetadata.stream()
+            .filter(
+                ui ->
+                    ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
+            .findFirst()
+            .orElseThrow(
+                () -> new PageContentModificationException("Failed to find subsection to ungroup"));
 
     subsection.update(command);
     changed(command);
@@ -873,36 +877,43 @@ public class WaTemplate {
 
   public void deleteRule(PageContentCommand.DeleteRule command) {
     verifyDraftType();
-    WaRuleMetadata rule = waRuleMetadata.stream().filter(e -> e.getId() == command.ruleId()).findFirst()
-        .orElseThrow(
-            () -> new PageContentModificationException("Failed to find Page Rule with id: " + command.ruleId()));
+    WaRuleMetadata rule =
+        waRuleMetadata.stream()
+            .filter(e -> e.getId() == command.ruleId())
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new PageContentModificationException(
+                        "Failed to find Page Rule with id: " + command.ruleId()));
     waRuleMetadata.remove(rule);
     changed(command);
   }
 
   private WaUiMetadata findQuestion(long id) {
     return uiMetadata.stream()
-        .filter(e -> e.getId() != null
-            && e.getId().equals(id))
+        .filter(e -> e.getId() != null && e.getId().equals(id))
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find question"));
   }
 
   private List<WaUiMetadata> findSubsectionContent(long subsectionId) {
     List<WaUiMetadata> metadata = getUiMetadata();
-    WaUiMetadata subsection = metadata.stream()
-        .filter(w -> w.getId() == subsectionId && w.getNbsUiComponentUid().equals(SUB_SECTION))
-        .findFirst()
-        .orElseThrow(() -> new PageContentModificationException(FAILED_TO_FIND_SUBSECTION_WITH_ID + subsectionId));
+    WaUiMetadata subsection =
+        metadata.stream()
+            .filter(w -> w.getId() == subsectionId && w.getNbsUiComponentUid().equals(SUB_SECTION))
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new PageContentModificationException(
+                        FAILED_TO_FIND_SUBSECTION_WITH_ID + subsectionId));
 
     List<WaUiMetadata> content = new ArrayList<>();
     for (WaUiMetadata w : metadata) {
-      if (w.getOrderNbr() > subsection.getOrderNbr() && containers.contains(w.getNbsUiComponentUid())) {
+      if (w.getOrderNbr() > subsection.getOrderNbr()
+          && containers.contains(w.getNbsUiComponentUid())) {
         break;
-      } else if (w.getOrderNbr() > subsection.getOrderNbr())
-        content.add(w);
+      } else if (w.getOrderNbr() > subsection.getOrderNbr()) content.add(w);
     }
     return content;
   }
-
 }

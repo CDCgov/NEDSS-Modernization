@@ -24,7 +24,7 @@ const DataRangeEntryForm = () => {
                 shouldUnregister
                 rules={{
                     required: { value: !before, message: 'From date is required when To is not picked.' },
-                    validate: isBefore(before)
+                    validate: isBefore(before),
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
@@ -46,8 +46,8 @@ const DataRangeEntryForm = () => {
                 rules={{
                     required: {
                         value: !after,
-                        message: 'To date is required when From is not picked.'
-                    }
+                        message: 'To date is required when From is not picked.',
+                    },
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput

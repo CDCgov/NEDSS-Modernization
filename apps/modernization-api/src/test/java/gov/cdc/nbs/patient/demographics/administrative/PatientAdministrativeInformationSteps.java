@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.demographics.administrative;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.LocalDate;
 
 public class PatientAdministrativeInformationSteps {
@@ -13,8 +12,7 @@ public class PatientAdministrativeInformationSteps {
 
   PatientAdministrativeInformationSteps(
       final Active<PatientIdentifier> activePatient,
-      final PatientAdministrativeInformationApplier applier
-  ) {
+      final PatientAdministrativeInformationApplier applier) {
     this.activePatient = activePatient;
     this.applier = applier;
   }

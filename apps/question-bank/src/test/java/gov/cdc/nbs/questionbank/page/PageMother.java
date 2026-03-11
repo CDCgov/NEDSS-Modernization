@@ -9,14 +9,13 @@ import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.questionbank.support.TestDataSettings;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
@@ -45,8 +44,7 @@ public class PageMother {
       final TestPageCleaner cleaner,
       final PageEntityHarness harness,
       final Available<PageIdentifier> available,
-      final Active<PageIdentifier> active
-  ) {
+      final Active<PageIdentifier> active) {
     this.waUiMetadatumRepository = waUiMetadatumRepository;
     this.entityManager = entityManager;
     this.settings = settings;
@@ -62,7 +60,8 @@ public class PageMother {
   }
 
   public WaTemplate one() {
-    return available.maybeOne()
+    return available
+        .maybeOne()
         .map(this::managed)
         .orElseThrow(() -> new IllegalStateException("No pages exist"));
   }
@@ -76,21 +75,25 @@ public class PageMother {
   }
 
   public WaTemplate brucellosis() {
-    return available.all()
+    return available
+        .all()
         .map(this::managed)
-        .filter(t -> t.getConditionMappings()
-            .stream()
-            .anyMatch(c -> c.getConditionCd().equals(BRUCELLOSIS_ID)))
+        .filter(
+            t ->
+                t.getConditionMappings().stream()
+                    .anyMatch(c -> c.getConditionCd().equals(BRUCELLOSIS_ID)))
         .findFirst()
         .orElseGet(this::createBrucellosisPage);
   }
 
   public void asepticMeningitis() {
-    available.all()
+    available
+        .all()
         .map(this::managed)
-        .filter(t -> t.getConditionMappings()
-            .stream()
-            .anyMatch(c -> c.getConditionCd().equals(ASEPTIC_MENINGITIS_ID)))
+        .filter(
+            t ->
+                t.getConditionMappings().stream()
+                    .anyMatch(c -> c.getConditionCd().equals(ASEPTIC_MENINGITIS_ID)))
         .findFirst()
         .orElseGet(this::createAsepticMeningitisPage);
   }
@@ -112,9 +115,7 @@ public class PageMother {
 
     page.relate(
         new PageCommand.RelateCondition(
-            BRUCELLOSIS_ID,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+            BRUCELLOSIS_ID, this.settings.createdBy(), this.settings.createdOn()));
 
     WaUiMetadata pageType = new WaUiMetadata();
     pageType.setWaTemplateUid(page);
@@ -189,15 +190,7 @@ public class PageMother {
 
     page.setUiMetadata(
         Arrays.asList(
-            pageType,
-            tab,
-            section,
-            subsection,
-            question,
-            tab2,
-            section2,
-            subsection2,
-            question2));
+            pageType, tab, section, subsection, question, tab2, section2, subsection2, question2));
     include(page);
     return page;
   }
@@ -219,9 +212,7 @@ public class PageMother {
 
     page.relate(
         new PageCommand.RelateCondition(
-            ASEPTIC_MENINGITIS_ID,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+            ASEPTIC_MENINGITIS_ID, this.settings.createdBy(), this.settings.createdOn()));
 
     include(page);
 
@@ -258,20 +249,14 @@ public class PageMother {
 
     page.relate(
         new PageCommand.RelateCondition(
-            ASEPTIC_MENINGITIS_ID,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+            ASEPTIC_MENINGITIS_ID, this.settings.createdBy(), this.settings.createdOn()));
 
     include(page);
 
     // add page detail mappings
     page.addTab(
         new PageContentCommand.AddTab(
-            "tab",
-            true,
-            "TAB_",
-            this.settings.createdBy(),
-            Instant.now()));
+            "tab", true, "TAB_", this.settings.createdBy(), Instant.now()));
 
     WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
     WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
@@ -280,7 +265,6 @@ public class PageMother {
     waUiMetadatumRepository.save(section);
     waUiMetadatumRepository.save(subSection);
     waUiMetadatumRepository.save(question);
-
   }
 
   public WaTemplate createPagePublishedWithDraft(WaTemplate pageIn) {
@@ -305,7 +289,8 @@ public class PageMother {
     return page;
   }
 
-  private WaUiMetadata getwaUiMetaDtum(WaTemplate aPage, Long nbsUiComponentUid, Integer orderNumber) {
+  private WaUiMetadata getwaUiMetaDtum(
+      WaTemplate aPage, Long nbsUiComponentUid, Integer orderNumber) {
     WaUiMetadata metadata = new WaUiMetadata();
     metadata.setWaTemplateUid(aPage);
     metadata.setNbsUiComponentUid(nbsUiComponentUid);
@@ -314,17 +299,11 @@ public class PageMother {
     return metadata;
   }
 
-  public void create(
-      final String eventType,
-      final String name,
-      final String mappingGuide) {
+  public void create(final String eventType, final String name, final String mappingGuide) {
 
-    WaTemplate page = new WaTemplate(
-        eventType,
-        mappingGuide,
-        name,
-        this.settings.createdBy(),
-        this.settings.createdOn());
+    WaTemplate page =
+        new WaTemplate(
+            eventType, mappingGuide, name, this.settings.createdBy(), this.settings.createdOn());
 
     include(page);
   }
@@ -342,14 +321,12 @@ public class PageMother {
     withName(page, value, this.settings.createdBy(), this.settings.createdOn());
   }
 
-  public void withName(final PageIdentifier page, final String value, final long user, final Instant when) {
-    harness.with(page).use(
-        found -> found.changeName(
-            name -> true,
-            new PageCommand.ChangeName(
-                value,
-                user,
-                when)));
+  public void withName(
+      final PageIdentifier page, final String value, final long user, final Instant when) {
+    harness
+        .with(page)
+        .use(
+            found -> found.changeName(name -> true, new PageCommand.ChangeName(value, user, when)));
   }
 
   public void withDatamart(final PageIdentifier page, final String value) {
@@ -361,50 +338,60 @@ public class PageMother {
   }
 
   public void draft(final PageIdentifier page) {
-    harness.with(page).use(
-        //  this should be replaced by the command when it is created.  It should result in the creation of a new Page
-        //  with that becoming the Active page
-        found -> {
-          found.setTemplateType("Draft");
-          found.setPublishIndCd('F');
-        });
+    harness
+        .with(page)
+        .use(
+            //  this should be replaced by the command when it is created.  It should result in the
+            // creation of a new Page
+            //  with that becoming the Active page
+            found -> {
+              found.setTemplateType("Draft");
+              found.setPublishIndCd('F');
+            });
   }
 
   public void template(final PageIdentifier page) {
-    harness.with(page).use(
-        found -> {
-          //  this should be replaced by the command when it is created.  It should result in the creation of a new Page
-          //  with that becoming the Active page
-          found.setTemplateType("Template");
-          found.setPublishIndCd('F');
-        });
+    harness
+        .with(page)
+        .use(
+            found -> {
+              //  this should be replaced by the command when it is created.  It should result in
+              // the creation of a new Page
+              //  with that becoming the Active page
+              found.setTemplateType("Template");
+              found.setPublishIndCd('F');
+            });
   }
 
   public void legacy(final PageIdentifier page) {
-    harness.with(page).use(
-        found -> {
-          //  this should be replaced by the command when it is created.  It should result in the creation of a new Page
-          //  with that becoming the Active page
-          found.setTemplateType("LEGACY");
-          found.setPublishIndCd('F');
-        });
+    harness
+        .with(page)
+        .use(
+            found -> {
+              //  this should be replaced by the command when it is created.  It should result in
+              // the creation of a new Page
+              //  with that becoming the Active page
+              found.setTemplateType("LEGACY");
+              found.setPublishIndCd('F');
+            });
   }
 
   public void published(final PageIdentifier page) {
-    harness.with(page).use(
-        found -> found.publish(
-            new PageCommand.Publish(
-                this.settings.createdBy(),
-                this.settings.createdOn())));
+    harness
+        .with(page)
+        .use(
+            found ->
+                found.publish(
+                    new PageCommand.Publish(this.settings.createdBy(), this.settings.createdOn())));
   }
 
   public void withCondition(final PageIdentifier page, final String condition) {
-    harness.with(page).use(
-        found -> found.relate(
-            new PageCommand.RelateCondition(
-                condition,
-                this.settings.createdBy(),
-                this.settings.createdOn())));
+    harness
+        .with(page)
+        .use(
+            found ->
+                found.relate(
+                    new PageCommand.RelateCondition(
+                        condition, this.settings.createdBy(), this.settings.createdOn())));
   }
-
 }

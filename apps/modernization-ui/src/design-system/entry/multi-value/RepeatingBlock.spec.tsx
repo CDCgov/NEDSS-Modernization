@@ -63,13 +63,13 @@ const columns = [
     {
         id: 'first',
         name: 'First column name',
-        render: (entry: TestType) => entry.firstInput
+        render: (entry: TestType) => entry.firstInput,
     },
     {
         id: 'second',
         name: 'Second column name',
-        render: (entry: TestType) => entry.secondInput
-    }
+        render: (entry: TestType) => entry.secondInput,
+    },
 ];
 
 const Fixture = ({
@@ -79,7 +79,7 @@ const Fixture = ({
     sizing,
     onChange = vi.fn(),
     isDirty = vi.fn(),
-    isValid
+    isValid,
 }: Partial<RepeatingBlockProps<TestType>>) => (
     <RepeatingBlock<TestType>
         id="testing"
@@ -117,7 +117,7 @@ describe('RepeatingBlock', () => {
             <Fixture
                 defaultValues={{
                     firstInput: 'first value',
-                    secondInput: 'second value'
+                    secondInput: 'second value',
                 }}
             />
         );
@@ -204,7 +204,7 @@ describe('RepeatingBlock', () => {
         const { getByRole, getByLabelText } = render(
             <Fixture
                 defaultValues={{
-                    firstInput: 'first value'
+                    firstInput: 'first value',
                 }}
             />
         );
@@ -284,8 +284,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -307,8 +307,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -329,8 +329,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -359,8 +359,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -383,8 +383,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -403,7 +403,7 @@ describe('RepeatingBlock', () => {
         // change event fires, form resets to default
         expect(onChange).toHaveBeenCalledWith(
             expect.arrayContaining([
-                expect.objectContaining({ firstInput: 'first-value-changed', secondInput: 'second-value' })
+                expect.objectContaining({ firstInput: 'first-value-changed', secondInput: 'second-value' }),
             ])
         );
 
@@ -422,8 +422,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );

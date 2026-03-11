@@ -1,10 +1,9 @@
 package gov.cdc.nbs.audit;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class RecordStatusTest {
 
@@ -15,6 +14,5 @@ class RecordStatusTest {
 
     assertThat(actual.status()).isEqualTo("ACTIVE");
     assertThat(actual.appliedOn()).isEqualTo("2021-01-17T01:45:30");
-
   }
 }

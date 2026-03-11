@@ -1,7 +1,5 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
-
-
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,13 +21,13 @@ class PagesController {
   @Operation(
       summary = "Pages",
       description = "Provides the details of a Page including the components and the rules",
-      tags = "Pages"
-  )
+      tags = "Pages")
   @GetMapping
   @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
   ResponseEntity<PagesResponse> details(@PathVariable("id") long page) {
-    return resolver.resolve(page).map(ResponseEntity::ok)
+    return resolver
+        .resolve(page)
+        .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
-
 }

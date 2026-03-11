@@ -9,18 +9,16 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 class SystemFeatureConfiguration {
 
-    @Bean
-    @Scope("prototype")
-    SystemManagement systemManagement(
-            @Value("${nbs.ui.features.system.management.enabled:false}") final boolean enabled
-    ) {
-        return new SystemManagement(enabled);
-    }
+  @Bean
+  @Scope("prototype")
+  SystemManagement systemManagement(
+      @Value("${nbs.ui.features.system.management.enabled:false}") final boolean enabled) {
+    return new SystemManagement(enabled);
+  }
 
-    @Bean
-    @Scope("prototype")
-    SystemFeatures systemFeatures(final SystemManagement management) {
-        return new SystemFeatures(management);
-    }
+  @Bean
+  @Scope("prototype")
+  SystemFeatures systemFeatures(final SystemManagement management) {
+    return new SystemFeatures(management);
+  }
 }
-

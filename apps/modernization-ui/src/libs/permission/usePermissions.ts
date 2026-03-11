@@ -10,7 +10,7 @@ type Interaction = {
 
 const usePermissions = (): Interaction => {
     const {
-        state: { user }
+        state: { user },
     } = useUser();
 
     const permissions = useMemo(() => user?.permissions ?? [], [user?.identifier]);

@@ -45,11 +45,12 @@ const AlertMessage = ({
                     [styles.success]: type == 'success',
                     [styles.warning]: type == 'warning',
                     [styles.error]: type == 'error',
-                    [styles.slim]: slim
+                    [styles.slim]: slim,
                 },
                 className
             )}
-            {...props}>
+            {...props}
+        >
             {icon && <Icon name={icon} sizing={slim ? 'small' : 'medium'} />}
             <div className={styles.content}>
                 {title && <Heading level={2}>{title}</Heading>}

@@ -5,10 +5,9 @@ import gov.cdc.nbs.event.search.labreport.indexing.identifier.SearchableLabRepor
 import gov.cdc.nbs.event.search.labreport.indexing.investigation.SearchableLabReportInvestigationFinder;
 import gov.cdc.nbs.event.search.labreport.indexing.organization.SearchableLabReportOrganizationFinder;
 import gov.cdc.nbs.event.search.labreport.indexing.test.SearchableLabReportTestFinder;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class SearchableLabReportResolver {
@@ -26,8 +25,7 @@ public class SearchableLabReportResolver {
       final SearchableLabReportIdentifierFinder identifierFinder,
       final SearchableLabReportInvestigationFinder investigationFinder,
       final SearchableLabReportOrganizationFinder organizationFinder,
-      final SearchableLabReportTestFinder testFinder
-  ) {
+      final SearchableLabReportTestFinder testFinder) {
     this.finder = finder;
     this.personFinder = personFinder;
     this.identifierFinder = identifierFinder;
@@ -43,10 +41,12 @@ public class SearchableLabReportResolver {
   private SearchableLabReport withLinkedInformation(final SearchableLabReport lab) {
 
     List<SearchableLabReport.Person> people = this.personFinder.find(lab.identifier());
-    List<SearchableLabReport.Organization> organizations = this.organizationFinder.find(lab.identifier());
+    List<SearchableLabReport.Organization> organizations =
+        this.organizationFinder.find(lab.identifier());
     List<SearchableLabReport.LabTest> tests = this.testFinder.find(lab.identifier());
     List<SearchableLabReport.Identifier> identifiers = this.identifierFinder.find(lab.identifier());
-    List<SearchableLabReport.Investigation> associated = this.investigationFinder.find(lab.identifier());
+    List<SearchableLabReport.Investigation> associated =
+        this.investigationFinder.find(lab.identifier());
 
     return new SearchableLabReport(
         lab.identifier(),
@@ -71,8 +71,6 @@ public class SearchableLabReportResolver {
         organizations,
         tests,
         identifiers,
-        associated
-    );
+        associated);
   }
-
 }

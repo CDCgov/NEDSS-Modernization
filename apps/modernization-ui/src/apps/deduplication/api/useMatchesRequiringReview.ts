@@ -18,8 +18,8 @@ export const useMatchesRequiringReview = () => {
         fetch(`${Config.deduplicationUrl}/merge?page=${page}&size=${pageSize}${sortString}`, {
             method: 'GET',
             headers: {
-                Accept: 'application/json'
-            }
+                Accept: 'application/json',
+            },
         })
             .then((response) => {
                 response
@@ -42,6 +42,6 @@ export const useMatchesRequiringReview = () => {
         loading,
         error,
         response,
-        fetchMatchesRequiringReview
+        fetchMatchesRequiringReview,
     };
 };
