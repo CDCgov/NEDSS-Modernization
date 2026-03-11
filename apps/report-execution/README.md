@@ -40,13 +40,13 @@
     ```
 
 The application will be available at:
-- API: http://localhost:8001
-- Interactive API docs (Swagger UI): http://localhost:8001/docs
-- Alternative API docs (ReDoc): http://localhost:8001/redoc
+- API: http://localhost:8000
+- Interactive API docs (Swagger UI): http://localhost:8000/docs
+- Alternative API docs (ReDoc): http://localhost:8000/redoc
 
 Sample curl:
 ```sh
-curl -X POST 'http://localhost:8001/report/execute' -H "accept: application/json" -H "Content-Type: application/json" -d '{
+curl -X POST 'http://localhost:8000/report/execute' -H "accept: application/json" -H "Content-Type: application/json" -d '{
             "version": 1,
             "is_export": true,
             "is_builtin": true,
