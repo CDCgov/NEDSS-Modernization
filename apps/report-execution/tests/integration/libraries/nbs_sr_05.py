@@ -1,10 +1,16 @@
+import logging
+
 import pytest
 
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
+db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
+db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
+faker_schema = 'phc_demographic.yaml'
 
-@pytest.mark.usefixtures('setup_containers')
+
+@pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationNbsSr05Library:
     """Integration tests for the nbs_custom library."""
@@ -26,10 +32,10 @@ class TestIntegrationNbsSr05Library:
 
         result = execute_report(report_spec)
         assert result.description == (
-            'SR5: Cases of Reportable Diseases by State\n'
-            + '2024-01-01 - 2024-12-31'
+            'SR5: Cases of Reportable Diseases by State\n' + '2024-01-01 - 2024-12-31'
         )
         assert result.content_type == 'table'
+        logging.info(result.content.data)
 
         assert len(result.content.data) >= 1
         assert len(result.content.data[0]) == 4

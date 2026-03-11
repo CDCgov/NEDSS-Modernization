@@ -16,7 +16,7 @@ def execute(
     * Lifted the size check to a global check and refined the env var names
     * Date formatting still needs to be figured out
     """
-    content = trx.execute(subset_query)
+    content = trx.query(subset_query)
 
     description = f'Custom Report For Table: {data_source_name}'
     if time_range is not None:
