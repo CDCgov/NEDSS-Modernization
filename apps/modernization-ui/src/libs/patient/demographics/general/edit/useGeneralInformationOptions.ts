@@ -23,7 +23,7 @@ const useGeneralInformationOptions = (): GeneralInformationOptions => {
         educationLevels: educationLevels.options,
         primaryLanguages: primaryLanguages.options,
         primaryOccupations: primaryOccupations.options,
-        speaksEnglish: indicators
+        speaksEnglish: indicators,
     };
 };
 

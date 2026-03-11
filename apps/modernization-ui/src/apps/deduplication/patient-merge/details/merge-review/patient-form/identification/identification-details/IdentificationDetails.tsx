@@ -11,11 +11,11 @@ export const IdentificationDetails = ({ identification }: Props) => {
             details={[
                 {
                     label: 'As of date',
-                    value: toDateDisplay(identification.asOf)
+                    value: toDateDisplay(identification.asOf),
                 },
                 { label: 'Type', value: identification.type },
                 { label: 'Assigning authority', value: identification.assigningAuthority },
-                { label: 'ID value', value: identification.value }
+                { label: 'ID value', value: identification.value },
             ]}
         />
     );

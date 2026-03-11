@@ -39,4 +39,3 @@ export namespace UpdateNumericQuestionRequest {
         NUM_TEMP = 'NUM_TEMP',
     }
 }
-

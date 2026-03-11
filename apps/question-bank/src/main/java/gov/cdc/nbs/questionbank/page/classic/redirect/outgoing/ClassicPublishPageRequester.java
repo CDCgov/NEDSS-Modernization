@@ -16,8 +16,7 @@ public class ClassicPublishPageRequester {
 
   private final RestTemplate template;
 
-  public ClassicPublishPageRequester(
-      @Qualifier("classicTemplate") final RestTemplate template) {
+  public ClassicPublishPageRequester(@Qualifier("classicTemplate") final RestTemplate template) {
     this.template = template;
   }
 
@@ -26,17 +25,17 @@ public class ClassicPublishPageRequester {
     MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
     data.add("selection.versionNote", versionNotes);
 
-    String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("method", "publishPage")
-        .build()
-        .toUriString();
+    String pageLocation =
+        UriComponentsBuilder.fromPath(LOCATION)
+            .queryParam("method", "publishPage")
+            .build()
+            .toUriString();
 
-    RequestEntity<MultiValueMap<String, String>> publishPageRequest = RequestEntity
-        .post(pageLocation)
-        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-        .body(data);
+    RequestEntity<MultiValueMap<String, String>> publishPageRequest =
+        RequestEntity.post(pageLocation)
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .body(data);
 
     this.template.exchange(publishPageRequest, Void.class);
-
   }
 }

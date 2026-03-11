@@ -4,7 +4,6 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonEthnicGroup;
 import gov.cdc.nbs.patient.PatientCommand;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +17,18 @@ public class PatientEthnicity {
 
   @Column(name = "as_of_date_ethnicity")
   private LocalDate asOfDateEthnicity;
+
   @Column(name = "ethnic_group_ind", length = 20)
   private String ethnicGroupInd;
 
   @Column(name = "ethnic_unk_reason_cd", length = 20)
   private String ethnicUnkReasonCd;
 
-  @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, orphanRemoval = true)
+  @OneToMany(
+      mappedBy = "personUid",
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+      orphanRemoval = true)
   private List<PersonEthnicGroup> ethnicities;
 
   public LocalDate asOf() {
@@ -60,14 +60,10 @@ public class PatientEthnicity {
   }
 
   public Optional<PersonEthnicGroup> add(
-      final Person patient,
-      final PatientCommand.AddDetailedEthnicity add
-  ) {
+      final Person patient, final PatientCommand.AddDetailedEthnicity add) {
 
     if (this.ethnicGroupInd != null && !Objects.equals(this.ethnicGroupInd, UNKNOWN)) {
-      PersonEthnicGroup added = new PersonEthnicGroup(
-          patient,
-          add);
+      PersonEthnicGroup added = new PersonEthnicGroup(patient, add);
 
       ensureEthnicities().add(added);
 
@@ -85,23 +81,18 @@ public class PatientEthnicity {
   }
 
   public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
-    this.ethnicities.removeIf(detail -> Objects.equals(detail.getId().getEthnicGroupCd(), remove.ethnicity()));
+    this.ethnicities.removeIf(
+        detail -> Objects.equals(detail.getId().getEthnicGroupCd(), remove.ethnicity()));
   }
 
   public void clear() {
     this.asOfDateEthnicity = null;
-    this.ethnicGroupInd  = null;
+    this.ethnicGroupInd = null;
     this.ethnicUnkReasonCd = null;
     this.ethnicities.clear();
   }
 
   public long signature() {
-    return Objects.hash(
-        asOfDateEthnicity,
-        ethnicGroupInd,
-        ethnicUnkReasonCd
-    );
+    return Objects.hash(asOfDateEthnicity, ethnicGroupInd, ethnicUnkReasonCd);
   }
-
-
 }

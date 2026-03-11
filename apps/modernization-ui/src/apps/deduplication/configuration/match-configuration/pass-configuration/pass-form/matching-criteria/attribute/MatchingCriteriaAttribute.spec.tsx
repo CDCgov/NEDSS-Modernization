@@ -12,10 +12,10 @@ const Fixture = () => {
             description: 'This is my description for this pass',
             blockingCriteria: [BlockingAttribute.LAST_NAME],
             matchingCriteria: [
-                { attribute: MatchingAttribute.FIRST_NAME, method: MatchMethod.JAROWINKLER, threshold: 0.5 }
+                { attribute: MatchingAttribute.FIRST_NAME, method: MatchMethod.JAROWINKLER, threshold: 0.5 },
             ],
-            active: true
-        }
+            active: true,
+        },
     });
     return (
         <FormProvider {...form}>

@@ -5,7 +5,7 @@ describe('when mapping an identification demographic to a format accepted by the
         const demographic = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            value: 'id-value'
+            value: 'id-value',
         };
 
         const actual = asIdentification(demographic);
@@ -17,7 +17,7 @@ describe('when mapping an identification demographic to a format accepted by the
         const demographic = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            value: 'id-value'
+            value: 'id-value',
         };
 
         const actual = asIdentification(demographic);
@@ -29,7 +29,7 @@ describe('when mapping an identification demographic to a format accepted by the
         const demographic = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            value: 'id-value'
+            value: 'id-value',
         };
 
         const actual = asIdentification(demographic);
@@ -42,7 +42,7 @@ describe('when mapping an identification demographic to a format accepted by the
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             value: 'id-value',
-            issuer: { value: 'issuer-value', name: 'issuer-type' }
+            issuer: { value: 'issuer-value', name: 'issuer-type' },
         };
 
         const actual = asIdentification(demographic);
@@ -53,7 +53,7 @@ describe('when mapping an identification demographic to a format accepted by the
     it('should not map when type is null', () => {
         const demographic = {
             asOf: '04/13/2017',
-            value: 'id-value'
+            value: 'id-value',
         };
 
         const actual = asIdentification(demographic);

@@ -11,7 +11,7 @@ import {
     displayEmails,
     displayAddresses,
     displayIdentifications,
-    PatientFileLink
+    PatientFileLink,
 } from 'apps/search/patient/result';
 
 import styles from './patient-search-result-table.module.scss';
@@ -36,7 +36,7 @@ const columns: Column<PatientSearchResult>[] = [
         className: styles['col-patientid'],
         render: (result) => <PatientFileLink identifier={result.patient} patientId={result.shortId} />,
         filter: { id: 'id', type: 'text' },
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...PATIENT_NAME,
@@ -44,7 +44,7 @@ const columns: Column<PatientSearchResult>[] = [
         className: styles['col-patientname'],
         render: displayPatientName,
         filter: { id: 'name', type: 'text' },
-        sortIconType: 'alpha'
+        sortIconType: 'alpha',
     },
     {
         ...DATE_OF_BIRTH,
@@ -52,7 +52,7 @@ const columns: Column<PatientSearchResult>[] = [
         className: styles['col-dob'],
         render: (result) => result.birthday && displayPatientAge(result, 'multiline'),
         filter: { id: 'ageOrDateOfBirth', type: 'text' },
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...SEX,
@@ -60,7 +60,7 @@ const columns: Column<PatientSearchResult>[] = [
         className: styles['col-sex'],
         render: (result) => result.gender,
         filter: { id: 'sex', type: 'text' },
-        sortIconType: 'alpha'
+        sortIconType: 'alpha',
     },
     {
         ...ADDRESS,
@@ -68,7 +68,7 @@ const columns: Column<PatientSearchResult>[] = [
         render: displayAddresses,
         filter: { id: 'address', type: 'text' },
         sortable: true,
-        sortIconType: 'alpha'
+        sortIconType: 'alpha',
     },
     {
         ...PHONE,
@@ -76,7 +76,7 @@ const columns: Column<PatientSearchResult>[] = [
         render: displayPhones,
         filter: { id: 'phone', type: 'text' },
         sortable: true,
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...IDENTIFICATIONS,
@@ -84,7 +84,7 @@ const columns: Column<PatientSearchResult>[] = [
         render: displayIdentifications,
         filter: { id: 'identification', type: 'text' },
         sortable: true,
-        sortIconType: 'alpha'
+        sortIconType: 'alpha',
     },
     {
         ...EMAIL,
@@ -92,8 +92,8 @@ const columns: Column<PatientSearchResult>[] = [
         render: displayEmails,
         sortable: true,
         filter: { id: 'email', type: 'text' },
-        sortIconType: 'alpha'
-    }
+        sortIconType: 'alpha',
+    },
 ];
 
 // column preferences
@@ -105,7 +105,7 @@ const preferences: ColumnPreference[] = [
     { ...ADDRESS, moveable: true, toggleable: true },
     { ...PHONE, moveable: true, toggleable: true },
     { ...IDENTIFICATIONS, moveable: true, toggleable: true },
-    { ...EMAIL, moveable: true, toggleable: true }
+    { ...EMAIL, moveable: true, toggleable: true },
 ];
 
 type Props = { results: PatientSearchResult[]; sizing?: Sizing };

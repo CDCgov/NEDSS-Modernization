@@ -8,4 +8,3 @@ export type AddHyperlink = {
     adminComments?: string;
     subSectionId?: number;
 };
-

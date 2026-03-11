@@ -10,7 +10,7 @@ describe('equals', () => {
     it.each([
         [2, 3],
         ['string', 'other'],
-        [false, true]
+        [false, true],
     ])('should return false when the values are not equal', (criteria, value) => {
         const actual = equals(criteria)(value);
 

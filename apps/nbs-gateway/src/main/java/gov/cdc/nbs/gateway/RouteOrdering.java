@@ -1,7 +1,6 @@
 package gov.cdc.nbs.gateway;
 
 public enum RouteOrdering {
-
   MODERNIZATION_API(-1000),
   PATIENT_FILE(0),
   NBS_6(1000);

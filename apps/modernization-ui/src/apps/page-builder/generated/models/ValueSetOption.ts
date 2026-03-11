@@ -10,4 +10,3 @@ export type ValueSetOption = {
     description?: string;
     type: string;
 };
-

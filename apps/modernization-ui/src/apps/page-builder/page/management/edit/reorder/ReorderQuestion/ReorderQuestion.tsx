@@ -18,7 +18,8 @@ export const ReorderQuestion = ({ question, index, visible }: Props) => {
                         snapshot.isDragging ? styles.dragging : ''
                     }`}
                     ref={prov.innerRef}
-                    {...prov.draggableProps}>
+                    {...prov.draggableProps}
+                >
                     <div className={styles.tile}>
                         <div className={styles.handle} {...prov.dragHandleProps}>
                             <Icon name={'drag'} size={'m'} />

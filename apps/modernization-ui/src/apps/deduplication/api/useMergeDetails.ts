@@ -13,8 +13,8 @@ export const useMergeDetails = () => {
         fetch(`${Config.deduplicationUrl}/merge/${matchId}`, {
             method: 'GET',
             headers: {
-                Accept: 'application/json'
-            }
+                Accept: 'application/json',
+            },
         })
             .then((response) => {
                 response
@@ -37,6 +37,6 @@ export const useMergeDetails = () => {
         loading,
         error,
         response,
-        fetchPatientMergeDetails
+        fetchPatientMergeDetails,
     };
 };

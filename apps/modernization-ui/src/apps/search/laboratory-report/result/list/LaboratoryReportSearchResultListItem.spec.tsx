@@ -19,11 +19,11 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     personCd: 'PAT',
                     firstName: 'First',
                     lastName: 'Last',
-                    typeCd: 'PATSBJ'
-                }
+                    typeCd: 'PATSBJ',
+                },
             ],
             tests: [],
-            relevance: 5
+            relevance: 5,
         };
 
         const { getByText } = render(
@@ -50,11 +50,11 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     personCd: 'PAT',
                     birthTime: '1995-05-07',
                     currSexCd: 'M',
-                    typeCd: 'PATSBJ'
-                }
+                    typeCd: 'PATSBJ',
+                },
             ],
             tests: [],
-            relevance: 5
+            relevance: 5,
         };
 
         const { getByText } = render(
@@ -80,11 +80,11 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     personCd: 'PAT',
                     birthTime: '1995-05-07',
                     currSexCd: 'M',
-                    typeCd: 'PATSBJ'
-                }
+                    typeCd: 'PATSBJ',
+                },
             ],
             tests: [],
-            relevance: 5
+            relevance: 5,
         };
 
         const { getByText } = render(
@@ -111,11 +111,11 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     personCd: 'PAT',
                     firstName: 'First',
                     lastName: 'Last',
-                    typeCd: 'PATSBJ'
-                }
+                    typeCd: 'PATSBJ',
+                },
             ],
             tests: [],
-            relevance: 5
+            relevance: 5,
         };
 
         const { getByText } = render(
@@ -137,7 +137,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             organizationParticipations: [],
             personParticipations: [],
             tests: [],
-            relevance: 5
+            relevance: 5,
         };
 
         const { getByText } = render(
@@ -159,7 +159,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             organizationParticipations: [],
             personParticipations: [],
             tests: [],
-            relevance: 5
+            relevance: 5,
         };
 
         const { getByText } = render(
@@ -184,10 +184,10 @@ describe('LaboratoryReportSearchResultListItem', () => {
                 {
                     name: 'some resulted test',
                     high: '20',
-                    low: '10'
-                }
+                    low: '10',
+                },
             ],
-            relevance: 5
+            relevance: 5,
         };
 
         const { getByText } = render(
@@ -212,7 +212,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             organizationParticipations: [],
             personParticipations: [],
             tests: [],
-            relevance: 5
+            relevance: 5,
         };
 
         render(
@@ -228,7 +228,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
         const result: LabReport = {
             addTime: '2015-09-22',
             associatedInvestigations: [
-                { cdDescTxt: 'associated-investigation-description', localId: 'associated-investigation-local' }
+                { cdDescTxt: 'associated-investigation-description', localId: 'associated-investigation-local' },
             ],
             id: '100234',
             jurisdictionCd: 567,
@@ -237,7 +237,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             organizationParticipations: [],
             personParticipations: [],
             tests: [],
-            relevance: 5
+            relevance: 5,
         };
 
         const { getByText } = render(

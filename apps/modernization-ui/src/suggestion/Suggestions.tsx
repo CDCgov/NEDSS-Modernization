@@ -19,7 +19,7 @@ const Suggestions = <T,>({
     suggestions,
     renderSuggestion = defaultRenderer,
     onSelection = () => {},
-    onCancel = () => {}
+    onCancel = () => {},
 }: Props<T>) => {
     const [isShown, shown] = useState(false);
 
@@ -80,17 +80,19 @@ const Suggestions = <T,>({
             hidden={!isShown}
             onFocus={() => setActive(0)}
             onKeyDown={handleKeyDown}
-            onMouseLeave={() => setActive(-1)}>
+            onMouseLeave={() => setActive(-1)}
+        >
             {suggestions.map((suggestion, idx) => (
                 <li
                     key={idx}
                     role="option"
                     className={classNames('usa-combo-box__list-option', {
-                        'usa-combo-box__list-option--focused': idx == active
+                        'usa-combo-box__list-option--focused': idx == active,
                     })}
                     aria-posinset={idx + 1}
                     onClick={() => handleClick(suggestion)}
-                    onMouseEnter={() => setActive(idx)}>
+                    onMouseEnter={() => setActive(idx)}
+                >
                     {renderSuggestion(suggestion)}
                 </li>
             ))}

@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.filter.querydsl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import gov.cdc.nbs.questionbank.filter.DateFilter;
@@ -8,13 +10,10 @@ import gov.cdc.nbs.questionbank.filter.Filter;
 import gov.cdc.nbs.questionbank.filter.MultiValueFilter;
 import gov.cdc.nbs.questionbank.filter.SingleValueFilter;
 import gov.cdc.nbs.questionbank.filter.ValueFilter;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class DefaultQueryDSLCriteriaResolverTest {
 
@@ -33,7 +32,8 @@ class DefaultQueryDSLCriteriaResolverTest {
   @Test
   void should_not_apply_multi_value_filter_without_a_StringExpression() {
 
-    Filter filter = new MultiValueFilter("property", ValueFilter.Operator.NOT_EQUAL_TO, List.of("a", "3", "d"));
+    Filter filter =
+        new MultiValueFilter("property", ValueFilter.Operator.NOT_EQUAL_TO, List.of("a", "3", "d"));
 
     DefaultQueryDSLCriteriaResolver resolver = new DefaultQueryDSLCriteriaResolver();
 

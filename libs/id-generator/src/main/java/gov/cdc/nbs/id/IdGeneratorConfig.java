@@ -9,6 +9,4 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories({"gov.cdc.nbs.id"})
 @EntityScan({"gov.cdc.nbs.id"})
 @Configuration
-public class IdGeneratorConfig {
-
-}
+public class IdGeneratorConfig {}

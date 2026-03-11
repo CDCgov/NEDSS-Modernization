@@ -13,5 +13,4 @@ class RaceDemographicSupportConfiguration {
   Available<RaceDemographic> availableRaceDemographic() {
     return new Available<>();
   }
-
 }

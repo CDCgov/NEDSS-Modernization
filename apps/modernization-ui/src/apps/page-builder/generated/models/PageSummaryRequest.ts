@@ -8,6 +8,5 @@ import type { MultiValue } from './MultiValue';
 import type { SingleValue } from './SingleValue';
 export type PageSummaryRequest = {
     search?: string;
-    filters?: Array<(Date | DateRange | MultiValue | SingleValue)>;
+    filters?: Array<Date | DateRange | MultiValue | SingleValue>;
 };
-

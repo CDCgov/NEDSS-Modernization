@@ -3,13 +3,12 @@ package gov.cdc.nbs.patient.file.events.report.morbidity;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleNameRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientMorbidityReportRowMapper implements RowMapper<PatientMorbidityReport> {
   record Column(
@@ -24,16 +23,23 @@ class PatientMorbidityReportRowMapper implements RowMapper<PatientMorbidityRepor
       int processingDecision,
       int reportingFacility,
       DisplayableSimpleNameRowMapper.Columns orderingProvider,
-      DisplayableSimpleNameRowMapper.Columns reportingProvider
-  ) {
+      DisplayableSimpleNameRowMapper.Columns reportingProvider) {
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+      this(
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
           new DisplayableSimpleNameRowMapper.Columns(11, 12, 13),
-          new DisplayableSimpleNameRowMapper.Columns(14, 15, 16)
-      );
+          new DisplayableSimpleNameRowMapper.Columns(14, 15, 16));
     }
   }
-
 
   private final Column columns;
   private final RowMapper<DisplayableSimpleName> orderingProviderMapper;
@@ -50,7 +56,8 @@ class PatientMorbidityReportRowMapper implements RowMapper<PatientMorbidityRepor
   }
 
   @Override
-  public PatientMorbidityReport mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public PatientMorbidityReport mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     long patient = resultSet.getLong(this.columns.patient());
     long identifier = resultSet.getLong(this.columns.identifier());
     String local = resultSet.getString(this.columns.local());
@@ -63,7 +70,8 @@ class PatientMorbidityReportRowMapper implements RowMapper<PatientMorbidityRepor
 
     String reportingFacility = resultSet.getString(this.columns.reportingFacility());
     DisplayableSimpleName orderingProvider = this.orderingProviderMapper.mapRow(resultSet, rowNum);
-    DisplayableSimpleName reportingProvider = this.reportingProviderMapper.mapRow(resultSet, rowNum);
+    DisplayableSimpleName reportingProvider =
+        this.reportingProviderMapper.mapRow(resultSet, rowNum);
 
     return new PatientMorbidityReport(
         patient,
@@ -80,8 +88,6 @@ class PatientMorbidityReportRowMapper implements RowMapper<PatientMorbidityRepor
         reportingProvider,
         Collections.emptyList(),
         Collections.emptyList(),
-        Collections.emptyList()
-    );
+        Collections.emptyList());
   }
-
 }

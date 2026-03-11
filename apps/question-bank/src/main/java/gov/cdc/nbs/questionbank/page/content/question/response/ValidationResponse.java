@@ -1,5 +1,3 @@
 package gov.cdc.nbs.questionbank.page.content.question.response;
 
-public record ValidationResponse(boolean isValid) {
-
-}
+public record ValidationResponse(boolean isValid) {}

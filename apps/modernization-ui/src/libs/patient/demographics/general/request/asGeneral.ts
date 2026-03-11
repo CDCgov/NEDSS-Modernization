@@ -26,7 +26,7 @@ const asGeneral = (
             maternalMaidenName,
             adultsInResidence,
             childrenInResidence,
-            stateHIVCase
+            stateHIVCase,
         } = remaining;
 
         return {
@@ -39,7 +39,7 @@ const asGeneral = (
             maternalMaidenName: orUndefined(maternalMaidenName),
             adultsInResidence: orUndefined(adultsInResidence),
             childrenInResidence: orUndefined(childrenInResidence),
-            stateHIVCase: asValueIfAllowed(stateHIVCase)
+            stateHIVCase: asValueIfAllowed(stateHIVCase),
         };
     }
 };

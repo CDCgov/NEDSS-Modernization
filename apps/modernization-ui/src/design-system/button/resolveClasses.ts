@@ -15,7 +15,7 @@ const resolveClasses = (props: StandardButtonProps) => {
             [styles.tertiary]: props.tertiary,
             [styles.icon]: !labeled,
             [styles['icon-last']]: labeled && props.labelPosition === 'left',
-            [styles.small]: props.sizing === 'small'
+            [styles.small]: props.sizing === 'small',
         },
         props.className
     );

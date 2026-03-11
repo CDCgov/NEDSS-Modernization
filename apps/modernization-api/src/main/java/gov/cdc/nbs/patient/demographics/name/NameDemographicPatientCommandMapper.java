@@ -6,9 +6,7 @@ import gov.cdc.nbs.patient.RequestContext;
 public class NameDemographicPatientCommandMapper {
 
   public static PatientCommand.AddName asAddName(
-      final long patient,
-      final RequestContext context,
-      final NameDemographic demographic) {
+      final long patient, final RequestContext context, final NameDemographic demographic) {
 
     return new PatientCommand.AddName(
         patient,
@@ -27,9 +25,7 @@ public class NameDemographicPatientCommandMapper {
   }
 
   public static PatientCommand.UpdateNameInfo asUpdateName(
-      final long patient,
-      final RequestContext context,
-      final NameDemographic demographic) {
+      final long patient, final RequestContext context, final NameDemographic demographic) {
 
     return new PatientCommand.UpdateNameInfo(
         patient,
@@ -49,18 +45,12 @@ public class NameDemographicPatientCommandMapper {
   }
 
   public static PatientCommand.DeleteNameInfo asDeleteName(
-      final long patient,
-      final short sequence,
-      final RequestContext context) {
+      final long patient, final short sequence, final RequestContext context) {
     return new PatientCommand.DeleteNameInfo(
-        patient,
-        sequence,
-        context.requestedBy(),
-        context.requestedAt());
+        patient, sequence, context.requestedBy(), context.requestedAt());
   }
 
   private NameDemographicPatientCommandMapper() {
     // static
   }
-
 }

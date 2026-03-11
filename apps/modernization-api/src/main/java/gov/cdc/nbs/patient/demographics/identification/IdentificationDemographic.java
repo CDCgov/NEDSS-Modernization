@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.demographics.identification;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
-
 import java.time.LocalDate;
 
 public record IdentificationDemographic(
@@ -13,39 +12,18 @@ public record IdentificationDemographic(
     Short sequence) {
 
   public IdentificationDemographic withIssuer(final String issuer) {
-    return new IdentificationDemographic(
-        asOf(),
-        type(),
-        issuer,
-        value(),
-        sequence());
+    return new IdentificationDemographic(asOf(), type(), issuer, value(), sequence());
   }
 
   public IdentificationDemographic withAsOf(final LocalDate asOf) {
-    return new IdentificationDemographic(
-        asOf,
-        type(),
-        issuer(),
-        value(),
-        sequence());
+    return new IdentificationDemographic(asOf, type(), issuer(), value(), sequence());
   }
 
   public IdentificationDemographic withType(final String type) {
-    return new IdentificationDemographic(
-        asOf(),
-        type,
-        issuer(),
-        value(),
-        sequence());
+    return new IdentificationDemographic(asOf(), type, issuer(), value(), sequence());
   }
 
   public IdentificationDemographic withValue(final String value) {
-    return new IdentificationDemographic(
-        asOf(),
-        type(),
-        issuer(),
-        value,
-        sequence());
+    return new IdentificationDemographic(asOf(), type(), issuer(), value, sequence());
   }
-
 }

@@ -13,7 +13,7 @@ const columns: Column<NameEntry>[] = [
     { id: 'nameLast', name: 'Last', render: (v) => v.last },
     { id: 'nameFirst', name: 'First', render: (v) => v.first },
     { id: 'nameMiddle', name: 'Middle', render: (v) => v.middle },
-    { id: 'nameSuffix', name: 'Suffix', render: (v) => v.suffix?.name }
+    { id: 'nameSuffix', name: 'Suffix', render: (v) => v.suffix?.name },
 ];
 
 type NameRepeatingBlockProps = {

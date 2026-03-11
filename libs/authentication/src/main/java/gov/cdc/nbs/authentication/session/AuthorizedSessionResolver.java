@@ -2,9 +2,8 @@ package gov.cdc.nbs.authentication.session;
 
 import gov.cdc.nbs.authentication.AuthorizedUserResolver;
 import gov.cdc.nbs.authentication.SessionCookie;
-import org.springframework.stereotype.Component;
-
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 
 @Component
 class AuthorizedSessionResolver {
@@ -16,9 +15,7 @@ class AuthorizedSessionResolver {
 
   SessionAuthorization resolve(final HttpServletRequest incoming) {
     return SessionCookie.resolve(incoming.getCookies())
-        .flatMap(
-            session -> resolver.resolve(session.identifier())
-                .map(this::authorized))
+        .flatMap(session -> resolver.resolve(session.identifier()).map(this::authorized))
         .orElse(new SessionAuthorization.Unauthorized());
   }
 

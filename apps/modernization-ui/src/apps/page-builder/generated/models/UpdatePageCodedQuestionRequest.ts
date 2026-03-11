@@ -17,4 +17,3 @@ export type UpdatePageCodedQuestionRequest = {
     messagingInfo: MessagingInfo;
     adminComments?: string;
 };
-

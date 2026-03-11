@@ -9,7 +9,7 @@ const DEFAULT_TERM = {
     title: 'title-value',
     name: 'name-value',
     value: 'current-value',
-    partial: false
+    partial: false,
 };
 
 describe('when removing search terms', () => {

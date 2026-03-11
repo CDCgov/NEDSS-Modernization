@@ -25,19 +25,19 @@ const mockMergeCandidates: MergeCandidate[] = [
         races: [],
         ethnicity: {},
         sexAndBirth: {
-            asOf: "2025-06-12",
-            dateOfBirth: "1987-11-23",
-            currentSex: "Female",
-            sexUnknown: "No",
-            transgender: "Not Transgender",
-            additionalGender: "None",
-            birthGender: "Female",
-            multipleBirth: "Yes",
-            birthOrder: "2",
-            birthCity: "Cincinnati",
-            birthState: "Ohio",
-            birthCounty: "Hamilton",
-            birthCountry: "United States"
+            asOf: '2025-06-12',
+            dateOfBirth: '1987-11-23',
+            currentSex: 'Female',
+            sexUnknown: 'No',
+            transgender: 'Not Transgender',
+            additionalGender: 'None',
+            birthGender: 'Female',
+            multipleBirth: 'Yes',
+            birthOrder: '2',
+            birthCity: 'Cincinnati',
+            birthState: 'Ohio',
+            birthCounty: 'Hamilton',
+            birthCountry: 'United States',
         },
         mortality: {
             asOf: '2023-01-02',
@@ -46,7 +46,7 @@ const mockMergeCandidates: MergeCandidate[] = [
             deathCity: '',
             deathState: '',
             deathCounty: '',
-            deathCountry: ''
+            deathCountry: '',
         },
         general: {},
         investigations: [],
@@ -63,19 +63,19 @@ const mockMergeCandidates: MergeCandidate[] = [
         races: [],
         ethnicity: {},
         sexAndBirth: {
-            asOf: "2025-06-12",
-            dateOfBirth: "1987-11-23",
-            currentSex: "Unknown",
-            sexUnknown: "No",
-            transgender: "Not Transgender",
-            additionalGender: "None",
-            birthGender: "Female",
-            multipleBirth: "Yes",
-            birthOrder: "2",
-            birthCity: "Cincinnati",
-            birthState: "Ohio",
-            birthCounty: "Hamilton",
-            birthCountry: "United States"
+            asOf: '2025-06-12',
+            dateOfBirth: '1987-11-23',
+            currentSex: 'Unknown',
+            sexUnknown: 'No',
+            transgender: 'Not Transgender',
+            additionalGender: 'None',
+            birthGender: 'Female',
+            multipleBirth: 'Yes',
+            birthOrder: '2',
+            birthCity: 'Cincinnati',
+            birthState: 'Ohio',
+            birthCounty: 'Hamilton',
+            birthCountry: 'United States',
         },
         mortality: {},
         general: {
@@ -88,10 +88,10 @@ const mockMergeCandidates: MergeCandidate[] = [
             educationLevel: '',
             primaryLanguage: 'Latin',
             speaksEnglish: '',
-            stateHivCaseId: '1234-HIV'
+            stateHivCaseId: '1234-HIV',
         },
         investigations: [],
-    }
+    },
 ];
 
 const mergeFormData: PatientMergeForm = {
@@ -101,7 +101,7 @@ const mergeFormData: PatientMergeForm = {
     mortality: {},
     generalInfo: {
         stateHivCaseId: '1',
-        primaryLanguage: '2'
+        primaryLanguage: '2',
     },
     names: [
         {
@@ -118,7 +118,7 @@ const mergeFormData: PatientMergeForm = {
     sexAndBirth: {
         currentSex: '1',
         dateOfBirth: '2',
-        birthCity: '2'
+        birthCity: '2',
     },
 } as any;
 

@@ -46,7 +46,7 @@ export const MatchConfigurationLandingPage = () => {
                             You have successfully imported the configuration file{' '}
                             <strong>{previewedAlgorithm.fileName}</strong>
                         </span>
-                    )
+                    ),
                 });
                 fetchDataElements();
                 setPreviewedAlgorithm(undefined);
@@ -64,7 +64,8 @@ export const MatchConfigurationLandingPage = () => {
                         onAccept={handleAlgorithmUpload}
                         onCancel={() => setPreviewedAlgorithm(undefined)}
                     />
-                }>
+                }
+            >
                 <MatchConfiguration
                     dataElements={dataElements}
                     loading={loading}

@@ -12,7 +12,7 @@ globalThis.fetch = vi.fn(() =>
         ok: true,
         status: 200,
         json: async () => ({}),
-        text: async () => ''
+        text: async () => '',
         // Add more methods if needed
     } as unknown as Response)
 );

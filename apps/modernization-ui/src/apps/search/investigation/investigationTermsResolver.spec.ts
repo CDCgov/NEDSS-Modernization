@@ -5,8 +5,8 @@ describe('when an Investigation Seach contains General search criteria', () => {
         const input = {
             conditions: [
                 { name: 'Condition One Name', label: 'Condition One Label', value: 'condition-one' },
-                { name: 'Condition Two Name', label: 'Condition Two Label', value: 'condition-two' }
-            ]
+                { name: 'Condition Two Name', label: 'Condition Two Label', value: 'condition-two' },
+            ],
         };
 
         const actual = investigationTermsResolver(input);
@@ -14,7 +14,7 @@ describe('when an Investigation Seach contains General search criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 { source: 'conditions', title: 'CONDITION', name: 'Condition One Name', value: 'condition-one' },
-                { source: 'conditions', title: 'CONDITION', name: 'Condition Two Name', value: 'condition-two' }
+                { source: 'conditions', title: 'CONDITION', name: 'Condition Two Name', value: 'condition-two' },
             ])
         );
     });
@@ -23,8 +23,8 @@ describe('when an Investigation Seach contains General search criteria', () => {
         const input = {
             programAreas: [
                 { name: 'Area One Name', label: 'Area One Label', value: 'area-one' },
-                { name: 'Area Two Name', label: 'Area Two Label', value: 'area-two' }
-            ]
+                { name: 'Area Two Name', label: 'Area Two Label', value: 'area-two' },
+            ],
         };
 
         const actual = investigationTermsResolver(input);
@@ -32,7 +32,7 @@ describe('when an Investigation Seach contains General search criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 { source: 'programAreas', title: 'PROGRAM AREA', name: 'Area One Name', value: 'area-one' },
-                { source: 'programAreas', title: 'PROGRAM AREA', name: 'Area Two Name', value: 'area-two' }
+                { source: 'programAreas', title: 'PROGRAM AREA', name: 'Area Two Name', value: 'area-two' },
             ])
         );
     });
@@ -41,8 +41,8 @@ describe('when an Investigation Seach contains General search criteria', () => {
         const input = {
             jurisdictions: [
                 { name: 'Jurisdiction One Name', label: 'Jurisdiction One Label', value: 'jurisdiction-one' },
-                { name: 'Jurisdiction Two Name', label: 'Jurisdiction Two Label', value: 'jurisdiction-two' }
-            ]
+                { name: 'Jurisdiction Two Name', label: 'Jurisdiction Two Label', value: 'jurisdiction-two' },
+            ],
         };
 
         const actual = investigationTermsResolver(input);
@@ -53,21 +53,21 @@ describe('when an Investigation Seach contains General search criteria', () => {
                     source: 'jurisdictions',
                     title: 'JURISDICTION',
                     name: 'Jurisdiction One Name',
-                    value: 'jurisdiction-one'
+                    value: 'jurisdiction-one',
                 },
                 {
                     source: 'jurisdictions',
                     title: 'JURISDICTION',
                     name: 'Jurisdiction Two Name',
-                    value: 'jurisdiction-two'
-                }
+                    value: 'jurisdiction-two',
+                },
             ])
         );
     });
 
     it('should resolve terms with Pregnancy test', () => {
         const input = {
-            pregnancyStatus: { name: 'Pregnancy Name', label: 'Pregnancy Label', value: 'pregnancy-value' }
+            pregnancyStatus: { name: 'Pregnancy Name', label: 'Pregnancy Label', value: 'pregnancy-value' },
         };
 
         const actual = investigationTermsResolver(input);
@@ -78,8 +78,8 @@ describe('when an Investigation Seach contains General search criteria', () => {
                     source: 'pregnancyStatus',
                     title: 'PREGNANCY STATUS',
                     name: 'Pregnancy Name',
-                    value: 'pregnancy-value'
-                }
+                    value: 'pregnancy-value',
+                },
             ])
         );
     });
@@ -88,8 +88,8 @@ describe('when an Investigation Seach contains General search criteria', () => {
         const input = {
             identification: {
                 type: { name: 'ID Type Name', label: 'ID Type Label', value: 'id-type-value' },
-                value: 'identification-value'
-            }
+                value: 'identification-value',
+            },
         };
 
         const actual = investigationTermsResolver(input);
@@ -100,14 +100,14 @@ describe('when an Investigation Seach contains General search criteria', () => {
                     source: 'identification.type',
                     title: 'EVENT ID TYPE',
                     name: 'ID Type Name',
-                    value: 'id-type-value'
+                    value: 'id-type-value',
                 },
                 {
                     source: 'identification.value',
                     title: 'EVENT ID',
                     name: 'identification-value',
-                    value: 'identification-value'
-                }
+                    value: 'identification-value',
+                },
             ])
         );
     });
@@ -117,8 +117,8 @@ describe('when an Investigation Seach contains General search criteria', () => {
             eventDate: {
                 type: { name: 'Date Type Name', label: 'Date Type Label', value: 'date-type-value' },
                 from: 'from-date',
-                to: 'to-date'
-            }
+                to: 'to-date',
+            },
         };
 
         const actual = investigationTermsResolver(input);
@@ -129,45 +129,45 @@ describe('when an Investigation Seach contains General search criteria', () => {
                     source: 'eventDate.type',
                     title: 'EVENT DATE TYPE',
                     name: 'Date Type Name',
-                    value: 'date-type-value'
+                    value: 'date-type-value',
                 },
                 { source: 'eventDate.from', title: 'FROM', name: 'from-date', value: 'from-date' },
-                { source: 'eventDate.to', title: 'TO', name: 'to-date', value: 'to-date' }
+                { source: 'eventDate.to', title: 'TO', name: 'to-date', value: 'to-date' },
             ])
         );
     });
 
     it('should resolve terms with Created by', () => {
         const input = {
-            createdBy: { name: 'Created Name', label: 'Created Label', value: 'created-value' }
+            createdBy: { name: 'Created Name', label: 'Created Label', value: 'created-value' },
         };
 
         const actual = investigationTermsResolver(input);
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'createdBy', title: 'CREATED BY', name: 'Created Name', value: 'created-value' }
+                { source: 'createdBy', title: 'CREATED BY', name: 'Created Name', value: 'created-value' },
             ])
         );
     });
 
     it('should resolve terms with Last updated by', () => {
         const input = {
-            updatedBy: { name: 'Updated Name', label: 'Updated Label', value: 'updated-value' }
+            updatedBy: { name: 'Updated Name', label: 'Updated Label', value: 'updated-value' },
         };
 
         const actual = investigationTermsResolver(input);
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'updatedBy', title: 'LAST UPDATED BY', name: 'Updated Name', value: 'updated-value' }
+                { source: 'updatedBy', title: 'LAST UPDATED BY', name: 'Updated Name', value: 'updated-value' },
             ])
         );
     });
 
     it('should resolve terms with Reporting facility', () => {
         const input = {
-            reportingFacilityId: { name: 'st. joseph hospital', label: 'st. joseph hospital', value: '2341234' }
+            reportingFacilityId: { name: 'st. joseph hospital', label: 'st. joseph hospital', value: '2341234' },
         };
 
         const actual = investigationTermsResolver(input);
@@ -178,15 +178,15 @@ describe('when an Investigation Seach contains General search criteria', () => {
                     source: 'reportingFacilityId',
                     title: 'REPORTING FACILITY',
                     name: 'st. joseph hospital',
-                    value: '2341234'
-                }
+                    value: '2341234',
+                },
             ])
         );
     });
 
     it('should resolve terms with Reporting provider', () => {
         const input = {
-            reportingProviderId: { name: 'st. joseph hospital', label: 'st. joseph hospital', value: '2341234' }
+            reportingProviderId: { name: 'st. joseph hospital', label: 'st. joseph hospital', value: '2341234' },
         };
 
         const actual = investigationTermsResolver(input);
@@ -197,8 +197,8 @@ describe('when an Investigation Seach contains General search criteria', () => {
                     source: 'reportingProviderId',
                     title: 'REPORTING PROVIDER',
                     name: 'st. joseph hospital',
-                    value: '2341234'
-                }
+                    value: '2341234',
+                },
             ])
         );
     });
@@ -210,8 +210,8 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
             investigationStatus: {
                 name: 'Investigation status Name',
                 label: 'Investigation status Label',
-                value: 'investigation-status-value'
-            }
+                value: 'investigation-status-value',
+            },
         };
 
         const actual = investigationTermsResolver(input);
@@ -222,8 +222,8 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
                     source: 'investigationStatus',
                     title: 'INVESTIGATION STATUS',
                     name: 'Investigation status Name',
-                    value: 'investigation-status-value'
-                }
+                    value: 'investigation-status-value',
+                },
             ])
         );
     });
@@ -233,8 +233,8 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
             investigator: {
                 name: 'Investigator Name',
                 label: 'Investigator Label',
-                value: 'investigator-value'
-            }
+                value: 'investigator-value',
+            },
         };
 
         const actual = investigationTermsResolver(input);
@@ -245,8 +245,8 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
                     source: 'investigator',
                     title: 'INVESTIGATOR',
                     name: 'Investigator Name',
-                    value: 'investigator-value'
-                }
+                    value: 'investigator-value',
+                },
             ])
         );
     });
@@ -255,8 +255,8 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
         const input = {
             outbreaks: [
                 { name: 'Outbreak One Name', label: 'Outbreak One Label', value: 'outbreak-one' },
-                { name: 'Outbreak Two Name', label: 'Outbreak Two Label', value: 'outbreak-two' }
-            ]
+                { name: 'Outbreak Two Name', label: 'Outbreak Two Label', value: 'outbreak-two' },
+            ],
         };
 
         const actual = investigationTermsResolver(input);
@@ -267,14 +267,14 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
                     source: 'outbreaks',
                     title: 'OUTBREAK NAME',
                     name: 'Outbreak One Name',
-                    value: 'outbreak-one'
+                    value: 'outbreak-one',
                 },
                 {
                     source: 'outbreaks',
                     title: 'OUTBREAK NAME',
                     name: 'Outbreak Two Name',
-                    value: 'outbreak-two'
-                }
+                    value: 'outbreak-two',
+                },
             ])
         );
     });
@@ -283,8 +283,8 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
         const input = {
             caseStatuses: [
                 { name: 'Case Status One Name', label: 'Case Status One Label', value: 'case-status-one' },
-                { name: 'Case Status Two Name', label: 'Case Status Two Label', value: 'case-status-two' }
-            ]
+                { name: 'Case Status Two Name', label: 'Case Status Two Label', value: 'case-status-two' },
+            ],
         };
 
         const actual = investigationTermsResolver(input);
@@ -295,14 +295,14 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
                     source: 'caseStatuses',
                     title: 'CASE STATUS',
                     name: 'Case Status One Name',
-                    value: 'case-status-one'
+                    value: 'case-status-one',
                 },
                 {
                     source: 'caseStatuses',
                     title: 'CASE STATUS',
                     name: 'Case Status Two Name',
-                    value: 'case-status-two'
-                }
+                    value: 'case-status-two',
+                },
             ])
         );
     });
@@ -313,14 +313,14 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
                 {
                     name: 'Processing Status One Name',
                     label: 'Processing Status One Label',
-                    value: 'processing-status-one'
+                    value: 'processing-status-one',
                 },
                 {
                     name: 'Processing Status Two Name',
                     label: 'Processing Status Two Label',
-                    value: 'processing-status-two'
-                }
-            ]
+                    value: 'processing-status-two',
+                },
+            ],
         };
 
         const actual = investigationTermsResolver(input);
@@ -331,14 +331,14 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
                     source: 'processingStatuses',
                     title: 'PROCESSING STATUS',
                     name: 'Processing Status One Name',
-                    value: 'processing-status-one'
+                    value: 'processing-status-one',
                 },
                 {
                     source: 'processingStatuses',
                     title: 'PROCESSING STATUS',
                     name: 'Processing Status Two Name',
-                    value: 'processing-status-two'
-                }
+                    value: 'processing-status-two',
+                },
             ])
         );
     });
@@ -349,14 +349,14 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
                 {
                     name: 'Notification Status One Name',
                     label: 'Notification Status One Label',
-                    value: 'notification-status-one'
+                    value: 'notification-status-one',
                 },
                 {
                     name: 'Notification Status Two Name',
                     label: 'Processing Status Two Label',
-                    value: 'notification-status-two'
-                }
-            ]
+                    value: 'notification-status-two',
+                },
+            ],
         };
 
         const actual = investigationTermsResolver(input);
@@ -367,14 +367,14 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
                     source: 'notificationStatuses',
                     title: 'NOTIFICATION STATUS',
                     name: 'Notification Status One Name',
-                    value: 'notification-status-one'
+                    value: 'notification-status-one',
                 },
                 {
                     source: 'notificationStatuses',
                     title: 'NOTIFICATION STATUS',
                     name: 'Notification Status Two Name',
-                    value: 'notification-status-two'
-                }
+                    value: 'notification-status-two',
+                },
             ])
         );
     });

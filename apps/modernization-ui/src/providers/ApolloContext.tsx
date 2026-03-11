@@ -10,7 +10,7 @@ const ApolloWrapper = ({ children }: ApolloWrapperProps) => {
     const cache = new InMemoryCache();
     const client = new ApolloClient({
         link,
-        cache
+        cache,
     });
     return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

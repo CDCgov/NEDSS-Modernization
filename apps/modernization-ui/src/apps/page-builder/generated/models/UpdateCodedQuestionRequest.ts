@@ -25,4 +25,3 @@ export namespace UpdateCodedQuestionRequest {
         CODED = 'CODED',
     }
 }
-

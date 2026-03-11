@@ -9,7 +9,7 @@ describe('when displaying search results totals', () => {
             status: 0,
             pageSize: 20,
             total: 27,
-            current: 1
+            current: 1,
         };
 
         const { container } = render(<SearchResultsShowing page={page} />);
@@ -22,7 +22,7 @@ describe('when displaying search results totals', () => {
             status: 0,
             pageSize: 20,
             total: 27,
-            current: 1
+            current: 1,
         };
 
         const { getByText } = render(<SearchResultsShowing page={page} />);
@@ -35,7 +35,7 @@ describe('when displaying search results totals', () => {
             status: 0,
             pageSize: 20,
             total: 47,
-            current: 2
+            current: 2,
         };
 
         const { getByText } = render(<SearchResultsShowing page={page} />);
@@ -48,7 +48,7 @@ describe('when displaying search results totals', () => {
             status: 0,
             pageSize: 20,
             total: 7,
-            current: 1
+            current: 1,
         };
 
         const { getByText } = render(<SearchResultsShowing page={page} />);

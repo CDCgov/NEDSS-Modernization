@@ -71,7 +71,8 @@ export const DatePickerInput = (props: DatePickerProps) => {
             helperText={props.helperText}
             htmlFor={props.name || ''}
             required={props.required}
-            error={_error}>
+            error={_error}
+        >
             {props.defaultValue && (
                 <InternalDatePicker {...props} error={_error} onBlur={checkValidity} defaultValue={intialDefault} />
             )}
@@ -89,7 +90,7 @@ const InternalDatePicker = ({
     disabled = false,
     disableFutureDates = false,
     label,
-    error
+    error,
 }: DatePickerProps) => {
     const toggleCalendar = label ? `${label} toggle calendar` : EN_US.toggleCalendar;
     const getCurrentLocalDate = () => {
@@ -139,7 +140,7 @@ const handleKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
         'ArrowRight',
         'Delete',
         'Tab',
-        'Shift'
+        'Shift',
     ];
 
     const key = event.key;

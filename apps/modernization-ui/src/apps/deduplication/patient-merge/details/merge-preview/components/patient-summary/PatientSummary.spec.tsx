@@ -24,7 +24,7 @@ describe('PatientSummary', () => {
                         first: 'John',
                         middle: 'Q',
                         last: 'Public',
-                        suffix: 'Jr.'
+                        suffix: 'Jr.',
                     },
                     {
                         personUid: '123',
@@ -34,8 +34,8 @@ describe('PatientSummary', () => {
                         first: 'Johnny',
                         middle: 'R',
                         last: 'Citizen',
-                        suffix: ''
-                    }
+                        suffix: '',
+                    },
                 ],
                 addresses: [],
                 phoneEmails: [],
@@ -44,17 +44,17 @@ describe('PatientSummary', () => {
                 ethnicity: {},
                 sexAndBirth: {
                     currentSex: 'Male',
-                    dateOfBirth: '2003-11-10T12:00:00Z'
+                    dateOfBirth: '2003-11-10T12:00:00Z',
                 },
-                mortality: {}
-            }
+                mortality: {},
+            },
         ];
 
         const mergeFormData: PatientMergeForm = {
             survivingRecord: '123',
             names: [
                 { personUid: '123', sequence: '1' },
-                { personUid: '123', sequence: '2' }
+                { personUid: '123', sequence: '2' },
             ],
             addresses: [],
             phoneEmails: [],
@@ -63,7 +63,7 @@ describe('PatientSummary', () => {
             ethnicity: '',
             sexAndBirth: {
                 currentSex: '123',
-                dateOfBirth: '123'
+                dateOfBirth: '123',
             },
             mortality: {},
             generalInfo: {
@@ -76,9 +76,9 @@ describe('PatientSummary', () => {
                 educationLevel: '',
                 primaryLanguage: '',
                 speaksEnglish: '',
-                stateHivCaseId: ''
+                stateHivCaseId: '',
             },
-            adminComments: ''
+            adminComments: '',
         };
 
         render(<PatientSummary mergeCandidates={mergeCandidates} mergeFormData={mergeFormData} />);
@@ -87,7 +87,7 @@ describe('PatientSummary', () => {
         expect(
             screen.getByRole('heading', {
                 level: 2,
-                name: (_content, element) => element?.textContent === 'Citizen, Johnny R'
+                name: (_content, element) => element?.textContent === 'Citizen, Johnny R',
             })
         ).toBeInTheDocument();
 

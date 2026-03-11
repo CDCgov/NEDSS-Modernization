@@ -10,7 +10,7 @@ expect.extend(toHaveNoViolations);
 const mockScrollTo = vi.fn();
 Object.defineProperty(window, 'scrollTo', {
     value: mockScrollTo,
-    writable: true
+    writable: true,
 });
 
 const renderWithRouter = (component: React.ReactElement, initialEntries = ['/']) => {

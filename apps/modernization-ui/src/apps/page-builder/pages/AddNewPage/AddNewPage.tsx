@@ -24,7 +24,7 @@ const eventType = [
     { value: 'ISO', name: 'Lab Isolate Tracking' },
     { value: 'LAB', name: 'Lab Report' },
     { value: 'SUS', name: 'Lab Susceptibility' },
-    { value: 'VAC', name: 'Vaccination' }
+    { value: 'VAC', name: 'Vaccination' },
 ];
 
 export const AddNewPage = () => {
@@ -46,8 +46,8 @@ export const AddNewPage = () => {
             messageMappingGuide: '',
             name: '',
             pageDescription: '',
-            templateId: undefined
-        }
+            templateId: undefined,
+        },
     });
     const watch = useWatch({ control: form.control });
     const config = useConfiguration();
@@ -72,7 +72,7 @@ export const AddNewPage = () => {
 
     const onSubmit = form.handleSubmit((data) => {
         PageControllerService.createPage({
-            requestBody: data
+            requestBody: data,
         })
             .then((response) => {
                 if (config.features.pageBuilder.page.management.edit.enabled) {
@@ -195,7 +195,8 @@ export const AddNewPage = () => {
                         type="button"
                         className="createPage"
                         onClick={handleSubmit}
-                        disabled={!form.formState.isValid}>
+                        disabled={!form.formState.isValid}
+                    >
                         Create page
                     </Button>
                 </div>
@@ -218,7 +219,8 @@ export const AddNewPage = () => {
                 id="condition-lookup-modal"
                 className="add-condition-modal"
                 isLarge
-                ref={conditionLookupModal}>
+                ref={conditionLookupModal}
+            >
                 <ConditionSearch
                     onCancel={() => conditionLookupModal.current?.toggleModal()}
                     onConditionSelect={handleAddConditions}

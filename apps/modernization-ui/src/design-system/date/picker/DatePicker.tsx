@@ -138,11 +138,12 @@ const DatePicker = ({
                 [styles.sized]: sizing,
                 [styles.small]: sizing === 'small',
                 [styles.medium]: sizing === 'medium',
-                [styles.large]: sizing === 'large'
+                [styles.large]: sizing === 'large',
             })}
             data-default-value={date}
             data-max-date={adjustedMaxValue}
-            data-min-date={adjustedMinValue}>
+            data-min-date={adjustedMinValue}
+        >
             <input autoComplete="off" id={id} className="usa-input" type="text" defaultValue={current} {...remaining} />
         </div>
     );

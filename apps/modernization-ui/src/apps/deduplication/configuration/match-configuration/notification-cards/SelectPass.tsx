@@ -13,7 +13,8 @@ export const SelectPass = ({ passCount }: Props) => {
                     heading="Select a pass configuration"
                     body='To get started, select a pass configuration from the left to edit or click "Add pass configuration" to create a new pass.'
                 />
-            }>
+            }
+        >
             <NotificationCard
                 heading="No pass configurations have been created"
                 body={

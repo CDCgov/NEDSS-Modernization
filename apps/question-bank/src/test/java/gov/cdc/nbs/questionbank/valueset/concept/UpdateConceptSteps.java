@@ -3,10 +3,7 @@ package gov.cdc.nbs.questionbank.valueset.concept;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Map;
-import org.springframework.test.web.servlet.ResultActions;
+
 import gov.cdc.nbs.questionbank.valueset.model.Concept.Status;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 import gov.cdc.nbs.testing.support.Active;
@@ -14,6 +11,10 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Map;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class UpdateConceptSteps {
 
@@ -23,12 +24,10 @@ public class UpdateConceptSteps {
   private final Active<ResultActions> response;
 
   public UpdateConceptSteps(
-      final UpdateConceptRequester requester,
-      final Active<ResultActions> response) {
+      final UpdateConceptRequester requester, final Active<ResultActions> response) {
     this.requester = requester;
     this.response = response;
   }
-
 
   @Given("I have the following update concept request:")
   public void i_have_the_update_concept_request(DataTable dataTable) {
@@ -42,7 +41,8 @@ public class UpdateConceptSteps {
 
   @Then("the concept is updated")
   public void concept_is_updated() throws Exception {
-    response.active()
+    response
+        .active()
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.codeSetName", equalTo("test_value_set")))
         .andExpect(jsonPath("$.display", equalTo(request.display())))
@@ -70,6 +70,4 @@ public class UpdateConceptSteps {
         map.get("preferredConceptName"),
         map.get("codeSystem"));
   }
-
-
 }

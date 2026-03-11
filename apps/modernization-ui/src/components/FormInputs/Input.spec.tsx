@@ -64,14 +64,7 @@ describe('Input component tests', () => {
         it('should set required attribute when required is true', () => {
             const onChange = () => {};
             const { getByLabelText } = render(
-                <Input
-                    id="test"
-                    name="test"
-                    label="Test Input Label"
-                    type="text"
-                    onChange={onChange}
-                    required
-                />
+                <Input id="test" name="test" label="Test Input Label" type="text" onChange={onChange} required />
             );
             const input = getByLabelText('Test Input Label');
             expect(input).toHaveAttribute('required');

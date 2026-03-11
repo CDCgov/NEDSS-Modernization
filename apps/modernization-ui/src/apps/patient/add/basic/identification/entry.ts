@@ -3,7 +3,7 @@ import { BasicIdentificationEntry } from '../entry';
 const initial = (): Partial<BasicIdentificationEntry> => ({
     type: undefined,
     issuer: undefined,
-    id: ''
+    id: '',
 });
 
 export { initial };

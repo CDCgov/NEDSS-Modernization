@@ -13,5 +13,4 @@ class AddressDemographicSupportConfiguration {
   Available<AddressDemographic> availableAddressDemographic() {
     return new Available<>();
   }
-
 }

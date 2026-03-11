@@ -12,7 +12,7 @@ export const PhoneEmailDetails = ({ phoneEmail }: Props) => {
             details={[
                 {
                     label: 'As of date',
-                    value: toDateDisplay(phoneEmail.asOf)
+                    value: toDateDisplay(phoneEmail.asOf),
                 },
                 { label: 'Type', value: phoneEmail.type },
                 { label: 'Use', value: phoneEmail.use },
@@ -21,7 +21,7 @@ export const PhoneEmailDetails = ({ phoneEmail }: Props) => {
                 { label: 'Extension', value: phoneEmail.extension },
                 { label: 'Email', value: phoneEmail.email },
                 { label: 'URL', value: phoneEmail.url },
-                { label: 'Phone & email comments', value: phoneEmail.comments }
+                { label: 'Phone & email comments', value: phoneEmail.comments },
             ]}
         />
     );

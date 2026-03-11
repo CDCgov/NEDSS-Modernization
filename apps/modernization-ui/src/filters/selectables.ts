@@ -4,7 +4,7 @@ import {
     isExactValueProperty,
     isPartialValueProperty,
     ExactValueOperator,
-    PartialValueOperator
+    PartialValueOperator,
 } from './operators';
 import { Property, ValueProperty } from './properties';
 
@@ -15,12 +15,12 @@ type SelectableValueOperator = SelectableSinlgeValueOperator | SelectableExactVa
 
 const partialValueOperators: SelectableSinlgeValueOperator[] = [
     { name: 'starts with', value: 'STARTS_WITH' },
-    { name: 'contains', value: 'CONTAINS' }
+    { name: 'contains', value: 'CONTAINS' },
 ];
 
 const exactValueOperators: SelectableExactValueOperator[] = [
     { name: 'equals', value: 'EQUALS' },
-    { name: 'not equal to', value: 'NOT_EQUAL_TO' }
+    { name: 'not equal to', value: 'NOT_EQUAL_TO' },
 ];
 
 const valueOperators: SelectableValueOperator[] = [...partialValueOperators, ...exactValueOperators];
@@ -35,7 +35,7 @@ const dateOperators: SelectableDateOperator[] = [
     { name: 'last 7 days', value: 'LAST_7_DAYS' },
     { name: 'last 14 days', value: 'LAST_14_DAYS' },
     { name: 'last 30 days', value: 'LAST_30_DAYS' },
-    { name: 'more than 30 days', value: 'MORE_THAN_30_DAYS' }
+    { name: 'more than 30 days', value: 'MORE_THAN_30_DAYS' },
 ];
 
 type OperatorOption = SelectableValueOperator | SelectableDateOperator;
@@ -47,7 +47,7 @@ export type {
     SelectableDateOperator,
     SelectableDatePeriodOperator,
     SelectableDateRangeOperator,
-    OperatorOption
+    OperatorOption,
 };
 
 const operators: (property?: Property) => OperatorOption[] = (property) => {
@@ -73,5 +73,5 @@ export {
     withValue,
     operators,
     isExactValueOption,
-    isPartialValueOption
+    isPartialValueOption,
 };

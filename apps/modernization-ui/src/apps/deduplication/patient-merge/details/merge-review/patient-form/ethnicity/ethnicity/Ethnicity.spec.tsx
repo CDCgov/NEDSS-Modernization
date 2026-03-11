@@ -7,7 +7,7 @@ const defaultData: MergeEthnicity = {
     asOf: '2014-03-11T00:00:00.000',
     ethnicity: 'Hispanic or Latino',
     spanishOrigin: 'Cuban',
-    reasonUnknown: 'Did not ask'
+    reasonUnknown: 'Did not ask',
 };
 const Fixture = ({ data = defaultData }: { data?: MergeEthnicity }) => {
     const form = useForm();

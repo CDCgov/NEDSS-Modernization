@@ -24,11 +24,11 @@ const MortalityDemographicFields = ({
     sizing = 'medium',
     form,
     options,
-    entry
+    entry,
 }: MortalityDemographicFieldsProps) => {
     const selectedDeceased = useWatch({
         control: form.control,
-        name: 'mortality.deceased'
+        name: 'mortality.deceased',
     });
 
     useEffect(() => {

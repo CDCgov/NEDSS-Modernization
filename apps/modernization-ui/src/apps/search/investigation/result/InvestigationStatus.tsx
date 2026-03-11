@@ -9,8 +9,9 @@ const InvestigationStatus = ({ status }: Props) => (
     <span
         className={classNames(styles.status, {
             [styles.open]: status === 'open',
-            [styles.closed]: status === 'closed'
-        })}>
+            [styles.closed]: status === 'closed',
+        })}
+    >
         {status}
     </span>
 );

@@ -26,7 +26,8 @@ export const Accordion = ({ title, children, open = false }: Props) => {
                     className={styles.accordionTrigger}
                     aria-controls={panelId}
                     id={accordionId}
-                    onClick={handleToggle}>
+                    onClick={handleToggle}
+                >
                     <span className={styles.accordionTitle}>
                         {title}
                         <Icon name={isExpanded ? 'expand_less' : 'expand_more'} />
@@ -39,7 +40,8 @@ export const Accordion = ({ title, children, open = false }: Props) => {
                 aria-label={title}
                 aria-labelledby={accordionId}
                 className={styles.accordionPanel}
-                hidden={!isExpanded}>
+                hidden={!isExpanded}
+            >
                 <div>{children}</div>
             </div>
         </div>

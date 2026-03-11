@@ -12,7 +12,6 @@ public class LanguageSteps {
 
   @ParameterType(name = "language", value = ".*")
   public String language(final String value) {
-    return resolver.resolve(value)
-        .orElse(null);
+    return resolver.resolve(value).orElse(null);
   }
 }

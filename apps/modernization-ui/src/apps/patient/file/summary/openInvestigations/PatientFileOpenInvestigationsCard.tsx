@@ -28,7 +28,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...NOTIFICATION, moveable: true, toggleable: true },
     { ...JURISDICTION, moveable: true, toggleable: true },
     { ...INVESTIGATOR, moveable: true, toggleable: true },
-    { ...CO_INFECTION_ID, moveable: true, toggleable: true }
+    { ...CO_INFECTION_ID, moveable: true, toggleable: true },
 ];
 
 const columns: Column<PatientFileOpenInvestigation>[] = [
@@ -39,50 +39,50 @@ const columns: Column<PatientFileOpenInvestigation>[] = [
         value: (row) => row.local,
         render: (value) => (
             <a href={`/nbs/api/profile/${value.patient}/investigation/${value.identifier}`}>{value.local}</a>
-        )
+        ),
     },
     {
         ...START_DATE,
         className: styles['date-header'],
         sortable: true,
         value: (value) => value.startedOn,
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...CONDITION,
         sortable: true,
         value: (row) => row.condition,
-        render: (value) => <b>{value.condition}</b>
+        render: (value) => <b>{value.condition}</b>,
     },
     {
         ...CASE_STATUS,
         className: styles['status-header'],
         sortable: true,
-        value: (value) => value.caseStatus
+        value: (value) => value.caseStatus,
     },
     {
         ...NOTIFICATION,
         className: styles['status-header'],
         sortable: true,
         value: (value) => value.notification,
-        render: (row) => displayNotificationStatus(row.notification)
+        render: (row) => displayNotificationStatus(row.notification),
     },
     {
         ...JURISDICTION,
         sortable: true,
-        value: (value) => value.jurisdiction
+        value: (value) => value.jurisdiction,
     },
     {
         ...INVESTIGATOR,
         sortable: true,
-        value: (value) => displayInvestigator(value.investigator)
+        value: (value) => displayInvestigator(value.investigator),
     },
     {
         ...CO_INFECTION_ID,
         className: styles['co-infection-header'],
         sortable: true,
-        value: (value) => value.coInfection
-    }
+        value: (value) => value.coInfection,
+    },
 ];
 
 type InternalCardProps = {
@@ -115,7 +115,8 @@ const PatientFileOpenInvestigationsCard = ({ provider, ...remaining }: PatientFi
             <LoadingOverlay>
                 <InternalCard {...remaining} />
             </LoadingOverlay>
-        }>
+        }
+    >
         <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
     </Suspense>
 );

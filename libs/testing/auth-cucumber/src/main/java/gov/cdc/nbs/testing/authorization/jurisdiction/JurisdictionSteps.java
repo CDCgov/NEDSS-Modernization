@@ -8,10 +8,7 @@ public class JurisdictionSteps {
   private final JurisdictionMother mother;
   private final JurisdictionParameterResolver resolver;
 
-  JurisdictionSteps(
-      final JurisdictionMother mother,
-      final JurisdictionParameterResolver resolver
-  ) {
+  JurisdictionSteps(final JurisdictionMother mother, final JurisdictionParameterResolver resolver) {
     this.mother = mother;
     this.resolver = resolver;
   }
@@ -25,5 +22,4 @@ public class JurisdictionSteps {
   public JurisdictionIdentifier jurisdiction(final String value) {
     return resolver.resolve(value).orElse(null);
   }
-
 }

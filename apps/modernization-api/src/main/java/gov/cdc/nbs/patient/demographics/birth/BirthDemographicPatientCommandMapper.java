@@ -6,10 +6,7 @@ import gov.cdc.nbs.patient.RequestContext;
 public class BirthDemographicPatientCommandMapper {
 
   public static PatientCommand.UpdateBirth asUpdateBirth(
-      final long patient,
-      final RequestContext context,
-      final BirthDemographic demographic
-  ) {
+      final long patient, final RequestContext context, final BirthDemographic demographic) {
 
     return new PatientCommand.UpdateBirth(
         patient,
@@ -23,19 +20,13 @@ public class BirthDemographicPatientCommandMapper {
         demographic.county(),
         demographic.country(),
         context.requestedBy(),
-        context.requestedAt()
-    );
+        context.requestedAt());
   }
 
   public static PatientCommand.ClearBirthDemographics asClearBirthDemographics(
-      final long patient,
-      final RequestContext context
-  ) {
+      final long patient, final RequestContext context) {
     return new PatientCommand.ClearBirthDemographics(
-        patient,
-        context.requestedBy(),
-        context.requestedAt()
-    );
+        patient, context.requestedBy(), context.requestedAt());
   }
 
   private BirthDemographicPatientCommandMapper() {

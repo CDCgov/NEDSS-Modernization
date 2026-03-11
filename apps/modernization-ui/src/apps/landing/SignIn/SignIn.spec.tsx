@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { SignIn } from './SignIn';
 
 vi.mock('SkipLink/SkipLinkContext', () => ({
-    useSkipLink: () => ({ skipTo: vi.fn() })
+    useSkipLink: () => ({ skipTo: vi.fn() }),
 }));
 
 describe('SignIn', () => {

@@ -5,4 +5,3 @@
 export type PagePublishRequest = {
     versionNotes?: string;
 };
-

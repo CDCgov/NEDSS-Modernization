@@ -6,4 +6,3 @@ export type FindQuestionRequest = {
     search?: string;
     questionType?: string;
 };
-

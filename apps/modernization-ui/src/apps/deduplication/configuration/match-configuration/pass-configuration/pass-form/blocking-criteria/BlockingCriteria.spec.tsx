@@ -20,8 +20,8 @@ const WithContent = () => {
             name: 'Pass name',
             description: 'This is my description for this pass',
             blockingCriteria: [BlockingAttribute.FIRST_NAME],
-            active: true
-        }
+            active: true,
+        },
     });
     return (
         <FormProvider {...form}>

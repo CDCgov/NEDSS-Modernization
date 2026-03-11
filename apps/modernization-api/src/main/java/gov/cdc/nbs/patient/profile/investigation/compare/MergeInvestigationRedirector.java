@@ -19,7 +19,6 @@ class MergeInvestigationRedirector {
 
   private static final String LOCATION = "/PageAction.do";
 
-
   private final RestTemplate template;
   private final ModernizedPatientProfileRedirectResolver resolver;
 
@@ -34,8 +33,7 @@ class MergeInvestigationRedirector {
       path = "/nbs/redirect/patient/investigation/merge",
       consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
   ResponseEntity<Void> merge(
-      final HttpServletRequest request,
-      @RequestParam final MultiValueMap<String, String> data) {
+      final HttpServletRequest request, @RequestParam final MultiValueMap<String, String> data) {
 
     mergeInvestigation(data);
 
@@ -43,10 +41,8 @@ class MergeInvestigationRedirector {
   }
 
   private void mergeInvestigation(final MultiValueMap<String, String> data) {
-    RequestEntity<MultiValueMap<String, String>> request = RequestEntity
-        .post(LOCATION)
-        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-        .body(data);
+    RequestEntity<MultiValueMap<String, String>> request =
+        RequestEntity.post(LOCATION).contentType(MediaType.APPLICATION_FORM_URLENCODED).body(data);
 
     this.template.exchange(request, Void.class);
   }

@@ -5,7 +5,7 @@ describe('when mapping a ethnicity entry to a format accepted by the API', () =>
         const entry = {
             asOf: '04/13/2017',
             ethnicGroup: { value: 'ethnicity-value', name: 'ethnicity-name' },
-            detailed: []
+            detailed: [],
         };
 
         const actual = asEthnicity(entry);
@@ -17,7 +17,7 @@ describe('when mapping a ethnicity entry to a format accepted by the API', () =>
         const entry = {
             asOf: '04/13/2017',
             ethnicGroup: { value: 'ethnicity-value', name: 'ethnicity-name' },
-            detailed: []
+            detailed: [],
         };
 
         const actual = asEthnicity(entry);
@@ -30,7 +30,7 @@ describe('when mapping a ethnicity entry to a format accepted by the API', () =>
             asOf: '04/13/2017',
             ethnicGroup: { value: 'ethnicity-value', name: 'ethnicity-name' },
             detailed: [],
-            unknownReason: { value: 'reason-value', name: 'reason-name' }
+            unknownReason: { value: 'reason-value', name: 'reason-name' },
         };
 
         const actual = asEthnicity(entry);
@@ -44,8 +44,8 @@ describe('when mapping a ethnicity entry to a format accepted by the API', () =>
             ethnicGroup: { value: 'ethnicity-value', name: 'ethnicity-name' },
             detailed: [
                 { value: 'detail-one-value', name: 'detail-one-name' },
-                { value: 'detail-two-value', name: 'detail-two-name' }
-            ]
+                { value: 'detail-two-value', name: 'detail-two-name' },
+            ],
         };
 
         const actual = asEthnicity(entry);
@@ -61,8 +61,8 @@ describe('when mapping a ethnicity entry to a format accepted by the API', () =>
             ethnicGroup: undefined,
             detailed: [
                 { value: 'detail-one-value', name: 'detail-one-name' },
-                { value: 'detail-two-value', name: 'detail-two-name' }
-            ]
+                { value: 'detail-two-value', name: 'detail-two-name' },
+            ],
         };
 
         const actual = asEthnicity(entry);
@@ -76,8 +76,8 @@ describe('when mapping a ethnicity entry to a format accepted by the API', () =>
             ethnicGroup: null,
             detailed: [
                 { value: 'detail-one-value', name: 'detail-one-name' },
-                { value: 'detail-two-value', name: 'detail-two-name' }
-            ]
+                { value: 'detail-two-value', name: 'detail-two-name' },
+            ],
         };
 
         const actual = asEthnicity(entry);

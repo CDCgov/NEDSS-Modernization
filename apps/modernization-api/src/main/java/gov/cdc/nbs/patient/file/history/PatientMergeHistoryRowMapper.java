@@ -1,12 +1,10 @@
 package gov.cdc.nbs.patient.file.history;
 
-import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
 import java.util.function.Function;
-
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientMergeHistoryRowMapper implements RowMapper<PatientMergeHistory> {
 
@@ -22,18 +20,11 @@ class PatientMergeHistoryRowMapper implements RowMapper<PatientMergeHistory> {
     String mergedByUser = resultSet.getString("mergedBy");
 
     Timestamp mergeTimestamp = resultSet.getTimestamp("mergeTime");
-    String mergeTime = mergeTimestamp != null
-        ? mergeTimestamp.toLocalDateTime().toString()
-        : null;
+    String mergeTime = mergeTimestamp != null ? mergeTimestamp.toLocalDateTime().toString() : null;
 
     PatientIdAndName localIdAndName = personNameFetcher.apply(supersededPersonId);
 
     return new PatientMergeHistory(
-        localIdAndName.personLocalId(),
-        localIdAndName.name(),
-        mergeTime,
-        mergedByUser
-    );
+        localIdAndName.personLocalId(), localIdAndName.name(), mergeTime, mergedByUser);
   }
 }
-

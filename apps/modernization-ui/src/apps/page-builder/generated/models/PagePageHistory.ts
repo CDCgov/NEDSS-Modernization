@@ -18,4 +18,3 @@ export type PagePageHistory = {
     numberOfElements?: number;
     empty?: boolean;
 };
-

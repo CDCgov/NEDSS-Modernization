@@ -10,7 +10,7 @@ import styles from './save-tempate.module.scss';
 
 const initSave = {
     name: undefined,
-    description: undefined
+    description: undefined,
 };
 
 type Props = {
@@ -21,7 +21,7 @@ export const SaveTemplate = ({ modalRef }: Props) => {
     const { page } = usePageManagement();
     const saveForm = useForm({
         mode: 'onBlur',
-        defaultValues: { ...initSave }
+        defaultValues: { ...initSave },
     });
     const { handleSubmit, control } = saveForm;
     const { showAlert } = useAlert();
@@ -30,18 +30,18 @@ export const SaveTemplate = ({ modalRef }: Props) => {
         if (data.name && data.description) {
             const request: CreateTemplateRequest = {
                 name: data.name,
-                description: data.description
+                description: data.description,
             };
             try {
                 PagesService.createTemplate({
                     page: page.id,
-                    requestBody: request
+                    requestBody: request,
                 }).then(() => {
                     modalRef.current?.toggleModal();
                     showAlert({
                         type: 'success',
                         title: 'Success',
-                        message: `${data.name} was saved successfully`
+                        message: `${data.name} was saved successfully`,
                     });
                 });
             } catch (error: unknown) {
@@ -51,14 +51,14 @@ export const SaveTemplate = ({ modalRef }: Props) => {
                     showAlert({
                         type: 'error',
                         title: 'error',
-                        message: error.message
+                        message: error.message,
                     });
                 } else {
                     console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
-                        message: 'An unknown error occurred'
+                        message: 'An unknown error occurred',
                     });
                 }
             }

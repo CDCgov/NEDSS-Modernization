@@ -36,7 +36,8 @@ export const PatientIdSelection = ({ mergeCandidates, onRemovePatient }: Props) 
                                     secondary
                                     destructive
                                     sizing="small"
-                                    onClick={() => onRemovePatient(p.personUid)}>
+                                    onClick={() => onRemovePatient(p.personUid)}
+                                >
                                     Remove
                                 </Button>
                             </Shown>

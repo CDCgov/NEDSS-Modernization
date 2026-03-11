@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.demographics.ethnicity;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.LocalDate;
 
 public class PatientEthnicityDemographicsSteps {
@@ -12,9 +11,7 @@ public class PatientEthnicityDemographicsSteps {
   private final PatientEthnicityDemographicApplier applier;
 
   PatientEthnicityDemographicsSteps(
-      final Active<PatientIdentifier> patient,
-      final PatientEthnicityDemographicApplier applier
-  ) {
+      final Active<PatientIdentifier> patient, final PatientEthnicityDemographicApplier applier) {
     this.patient = patient;
     this.applier = applier;
   }
@@ -34,7 +31,8 @@ public class PatientEthnicityDemographicsSteps {
     unknown(reason, LocalDate.now());
   }
 
-  @Given("the patient's ethnicity is unknown with the reason being {ethnicityUnknownReason} as of {localDate}")
+  @Given(
+      "the patient's ethnicity is unknown with the reason being {ethnicityUnknownReason} as of {localDate}")
   public void unknown(final String reason, final LocalDate asOf) {
     patient.maybeActive().ifPresent(current -> applier.withUnknownEthnicity(current, reason, asOf));
   }
@@ -43,5 +41,4 @@ public class PatientEthnicityDemographicsSteps {
   public void the_patient_ethnicity_includes(final String detail) {
     patient.maybeActive().ifPresent(current -> applier.withSpecificEthnicity(current, detail));
   }
-
 }

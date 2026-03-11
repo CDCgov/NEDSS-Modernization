@@ -1,9 +1,8 @@
 package gov.cdc.nbs.testing.data;
 
-import org.springframework.jdbc.core.simple.JdbcClient;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import org.springframework.jdbc.core.simple.JdbcClient;
 
 public class TestingDataCleaner<I> {
 
@@ -12,11 +11,7 @@ public class TestingDataCleaner<I> {
   private final String parameter;
   private final Collection<I> identifiers;
 
-  public TestingDataCleaner(
-      final JdbcClient client,
-      final String sql,
-      final String parameter
-  ) {
+  public TestingDataCleaner(final JdbcClient client, final String sql, final String parameter) {
     this.client = client;
     this.sql = sql;
     this.parameter = parameter;
@@ -29,9 +24,7 @@ public class TestingDataCleaner<I> {
 
   public void clean() {
     if (!identifiers.isEmpty()) {
-      this.client.sql(sql)
-          .param(parameter, identifiers)
-          .update();
+      this.client.sql(sql).param(parameter, identifiers).update();
     }
   }
 }

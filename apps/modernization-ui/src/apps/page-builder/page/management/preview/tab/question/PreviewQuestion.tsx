@@ -28,7 +28,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
     useEffect(() => {
         if (valueSet) {
             ConceptOptionsService.concepts({
-                name: valueSet
+                name: valueSet,
             }).then((resp: ConceptOptionsResponse) => {
                 setConceptState(resp.options);
             });
@@ -82,7 +82,8 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                             className={styles.searchBtn}
                             outline
                             onClick={() => {}}
-                            disabled={!question.enabled}>
+                            disabled={!question.enabled}
+                        >
                             Search
                         </Button>
                         <span className={styles.dividerText}>Or</span>
@@ -98,7 +99,8 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                             className={styles.quickCodeLookupBtn}
                             outline
                             onClick={() => {}}
-                            disabled={!question.enabled}>
+                            disabled={!question.enabled}
+                        >
                             Quick code lookup
                         </Button>
                     </div>

@@ -34,7 +34,7 @@ export const useGetTargetSubsections = () => {
         if (state.status === 'fetching') {
             PageRuleControllerService.getTargetSubsections({
                 id: state.id,
-                requestBody: state.request
+                requestBody: state.request,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) =>
@@ -48,7 +48,7 @@ export const useGetTargetSubsections = () => {
     const value = {
         error: state.status === 'error' ? state.error : undefined,
         response: state.status === 'complete' ? state.subsections : undefined,
-        fetch: (id: number, request: TargetSubsectionRequest) => dispatch({ type: 'fetch', id, request })
+        fetch: (id: number, request: TargetSubsectionRequest) => dispatch({ type: 'fetch', id, request }),
     };
 
     return value;

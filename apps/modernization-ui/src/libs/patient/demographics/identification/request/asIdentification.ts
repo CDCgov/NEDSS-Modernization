@@ -14,7 +14,7 @@ const asIdentification = (
             asOf,
             type: asValue(type),
             value,
-            issuer: asValue(issuer)
+            issuer: asValue(issuer),
         };
     }
 };

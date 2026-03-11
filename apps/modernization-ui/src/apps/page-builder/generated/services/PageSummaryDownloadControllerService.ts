@@ -17,27 +17,27 @@ export class PageSummaryDownloadControllerService {
         size = 10,
         sort,
     }: {
-        requestBody: PageSummaryRequest,
+        requestBody: PageSummaryRequest;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<Array<string>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/pdf',
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -53,27 +53,27 @@ export class PageSummaryDownloadControllerService {
         size = 10,
         sort,
     }: {
-        requestBody: PageSummaryRequest,
+        requestBody: PageSummaryRequest;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<Blob> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/csv',
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -83,16 +83,12 @@ export class PageSummaryDownloadControllerService {
      * @returns binary OK
      * @throws ApiError
      */
-    public static downloadPageMetadata({
-        id,
-    }: {
-        id: number,
-    }): CancelablePromise<Blob> {
+    public static downloadPageMetadata({ id }: { id: number }): CancelablePromise<Blob> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/pages/{id}/metadata',
             path: {
-                'id': id,
+                id: id,
             },
         });
     }

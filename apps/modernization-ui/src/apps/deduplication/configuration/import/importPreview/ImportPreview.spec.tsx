@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 const previewedAlgorithm: AlgorithmExport = {
     dataElements: {},
-    algorithm: { passes: [] }
+    algorithm: { passes: [] },
 };
 const onAccept = vi.fn();
 const onCancel = vi.fn();

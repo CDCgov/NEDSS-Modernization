@@ -1,5 +1,8 @@
 package gov.cdc.nbs.time.graphql;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import graphql.GraphQLContext;
 import graphql.execution.CoercedVariables;
 import graphql.language.NullValue;
@@ -7,14 +10,10 @@ import graphql.language.StringValue;
 import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Locale;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.Test;
 
 class DateCoercingTest {
 
@@ -25,11 +24,7 @@ class DateCoercingTest {
     GraphQLContext context = GraphQLContext.getDefault();
     Locale locale = Locale.getDefault();
 
-    String actual = coercing.serialize(
-        LocalDate.of(2013, Month.SEPTEMBER, 27),
-        context,
-        locale
-    );
+    String actual = coercing.serialize(LocalDate.of(2013, Month.SEPTEMBER, 27), context, locale);
 
     assertThat(actual).isEqualTo("2013-09-27");
   }
@@ -41,16 +36,9 @@ class DateCoercingTest {
     GraphQLContext context = GraphQLContext.getDefault();
     Locale locale = Locale.getDefault();
 
-    assertThatThrownBy(
-        () -> coercing.serialize(
-            null,
-            context,
-            locale
-        )
-    )
+    assertThatThrownBy(() -> coercing.serialize(null, context, locale))
         .isInstanceOf(CoercingSerializeException.class)
         .hasMessage("Expected a LocalDate object.");
-
   }
 
   @Test
@@ -61,14 +49,9 @@ class DateCoercingTest {
     GraphQLContext context = GraphQLContext.getDefault();
     Locale locale = Locale.getDefault();
 
-    LocalDate actual = coercing.parseValue(
-        "2013-09-27",
-        context,
-        locale
-    );
+    LocalDate actual = coercing.parseValue("2013-09-27", context, locale);
 
     assertThat(actual).isEqualTo("2013-09-27");
-
   }
 
   @Test
@@ -78,11 +61,7 @@ class DateCoercingTest {
     GraphQLContext context = GraphQLContext.getDefault();
     Locale locale = Locale.getDefault();
 
-    LocalDate actual = coercing.parseValue(
-        "9/27/2013",
-        context,
-        locale
-    );
+    LocalDate actual = coercing.parseValue("9/27/2013", context, locale);
 
     assertThat(actual).isEqualTo("2013-09-27");
   }
@@ -94,13 +73,7 @@ class DateCoercingTest {
     GraphQLContext context = GraphQLContext.getDefault();
     Locale locale = Locale.getDefault();
 
-    assertThatThrownBy(
-        () -> coercing.parseValue(
-            "not a date",
-            context,
-            locale
-        )
-    )
+    assertThatThrownBy(() -> coercing.parseValue("not a date", context, locale))
         .isInstanceOf(CoercingParseValueException.class)
         .hasMessageContaining("Not a valid date: 'not a date'");
   }
@@ -112,13 +85,7 @@ class DateCoercingTest {
     GraphQLContext context = GraphQLContext.getDefault();
     Locale locale = Locale.getDefault();
 
-    assertThatThrownBy(
-        () -> coercing.parseValue(
-            839,
-            context,
-            locale
-        )
-    )
+    assertThatThrownBy(() -> coercing.parseValue(839, context, locale))
         .isInstanceOf(CoercingParseValueException.class)
         .hasMessageContaining("Expected a String");
   }
@@ -132,15 +99,10 @@ class DateCoercingTest {
     Locale locale = Locale.getDefault();
     CoercedVariables variables = CoercedVariables.emptyVariables();
 
-    LocalDate actual = coercing.parseLiteral(
-        new StringValue("2013-09-27"),
-        variables,
-        context,
-        locale
-    );
+    LocalDate actual =
+        coercing.parseLiteral(new StringValue("2013-09-27"), variables, context, locale);
 
     assertThat(actual).isEqualTo("2013-09-27");
-
   }
 
   @Test
@@ -154,18 +116,8 @@ class DateCoercingTest {
 
     NullValue value = NullValue.of();
 
-    assertThatThrownBy(
-        () -> coercing.parseLiteral(
-            value,
-            variables,
-            context,
-            locale
-        )
-    )
+    assertThatThrownBy(() -> coercing.parseLiteral(value, variables, context, locale))
         .isInstanceOf(CoercingParseLiteralException.class)
         .hasMessageContaining("Expected a StringValue.");
-
-
   }
-
 }

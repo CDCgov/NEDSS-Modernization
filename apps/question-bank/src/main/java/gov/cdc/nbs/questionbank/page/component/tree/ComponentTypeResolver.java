@@ -47,6 +47,5 @@ public class ComponentTypeResolver {
     };
   }
 
-  private ComponentTypeResolver() {
-  }
+  private ComponentTypeResolver() {}
 }

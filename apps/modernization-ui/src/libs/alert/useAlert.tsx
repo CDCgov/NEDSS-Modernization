@@ -56,7 +56,7 @@ const AlertProvider = ({ duration = 5000, children }: Props) => {
             showInfo: (message: Message, options?: AlertOptions) =>
                 showAlert({ type: 'information', title: 'Info', message, options }),
             showWarning: (message: Message, options?: AlertOptions) =>
-                showAlert({ type: 'warning', title: 'Warning', message, options })
+                showAlert({ type: 'warning', title: 'Warning', message, options }),
         };
     }, [setActive]);
 

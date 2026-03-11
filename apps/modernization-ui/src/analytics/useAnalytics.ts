@@ -20,13 +20,13 @@ const useAnalyticsSettings = (): AnalyticsSettings => {
 
             const options = {
                 api_host: host,
-                capture_pageview: false
+                capture_pageview: false,
             };
 
             setAnalyticsSettings({
                 enabled: Boolean(key && host),
                 key,
-                options
+                options,
             });
         }
     }, [ready, settings]);

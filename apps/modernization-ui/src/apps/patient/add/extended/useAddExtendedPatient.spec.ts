@@ -12,9 +12,9 @@ vi.mock('../useAddPatient', () => ({
     useAddPatient: () => {
         return {
             status: 'waiting',
-            create: mockCreate
+            create: mockCreate,
         };
-    }
+    },
 }));
 
 describe('when adding patients with extended data', () => {
@@ -26,7 +26,7 @@ describe('when adding patients with extended data', () => {
         const { result } = setup();
 
         const entry: ExtendedNewPatientEntry = {
-            administrative: { asOf: '04/13/2017', comment: 'entered' }
+            administrative: { asOf: '04/13/2017', comment: 'entered' },
         };
 
         await act(async () => {
@@ -40,7 +40,7 @@ describe('when adding patients with extended data', () => {
         const { result } = setup();
 
         const entry: ExtendedNewPatientEntry = {
-            administrative: { asOf: '04/13/2017', comment: 'entered' }
+            administrative: { asOf: '04/13/2017', comment: 'entered' },
         };
 
         await act(async () => {
@@ -64,7 +64,7 @@ describe('when adding patients with extended data', () => {
         const { result } = setup();
 
         const entry: ExtendedNewPatientEntry = {
-            administrative: { asOf: '04/13/2017', comment: 'entered' }
+            administrative: { asOf: '04/13/2017', comment: 'entered' },
         };
 
         await act(async () => {
@@ -87,7 +87,7 @@ describe('when adding patients with extended data', () => {
         const { result } = setup();
 
         const entry: ExtendedNewPatientEntry = {
-            administrative: { asOf: '04/13/2017', comment: 'entered' }
+            administrative: { asOf: '04/13/2017', comment: 'entered' },
         };
 
         await act(async () => {
@@ -110,7 +110,7 @@ describe('when adding patients with extended data', () => {
         const { result } = setup();
 
         const entry: ExtendedNewPatientEntry = {
-            administrative: { asOf: '04/13/2017', comment: 'entered' }
+            administrative: { asOf: '04/13/2017', comment: 'entered' },
         };
 
         await act(async () => {
@@ -134,7 +134,7 @@ describe('when adding patients with extended data', () => {
         const { result } = setup();
 
         const entry: ExtendedNewPatientEntry = {
-            administrative: { asOf: '04/13/2017', comment: 'entered' }
+            administrative: { asOf: '04/13/2017', comment: 'entered' },
         };
 
         await act(async () => {
@@ -158,7 +158,7 @@ describe('when adding patients with extended data', () => {
         const { result } = setup();
 
         const entry: ExtendedNewPatientEntry = {
-            administrative: { asOf: '04/13/2017', comment: 'entered' }
+            administrative: { asOf: '04/13/2017', comment: 'entered' },
         };
 
         await act(async () => {

@@ -37,19 +37,15 @@ public class IdentificationDemographicPatientCommandMapper {
   }
 
   public static PatientCommand.DeleteIdentification asDeleteIdentification(
-      final long patient,
-      final RequestContext context,
-      final EntityId existing) {
+      final long patient, final RequestContext context, final EntityId existing) {
     return new PatientCommand.DeleteIdentification(
         patient,
         existing.identifier().getEntityIdSeq(),
         context.requestedBy(),
-        context.requestedAt()
-    );
+        context.requestedAt());
   }
 
   private IdentificationDemographicPatientCommandMapper() {
     // static
   }
-
 }

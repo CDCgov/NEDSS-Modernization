@@ -19,16 +19,16 @@ export class SubSectionControllerService {
         subSectionId,
         requestBody,
     }: {
-        page: number,
-        subSectionId: number,
-        requestBody: UpdateSubSectionRequest,
+        page: number;
+        subSectionId: number;
+        requestBody: UpdateSubSectionRequest;
     }): CancelablePromise<SubSection> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/subsections/{subSectionId}',
             path: {
-                'page': page,
-                'subSectionId': subSectionId,
+                page: page,
+                subSectionId: subSectionId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -42,15 +42,15 @@ export class SubSectionControllerService {
         page,
         subSectionId,
     }: {
-        page: number,
-        subSectionId: number,
+        page: number;
+        subSectionId: number;
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/v1/pages/{page}/subsections/{subSectionId}',
             path: {
-                'page': page,
-                'subSectionId': subSectionId,
+                page: page,
+                subSectionId: subSectionId,
             },
         });
     }
@@ -63,16 +63,16 @@ export class SubSectionControllerService {
         subsection,
         requestBody,
     }: {
-        page: number,
-        subsection: number,
-        requestBody: GroupSubSectionRequest,
+        page: number;
+        subsection: number;
+        requestBody: GroupSubSectionRequest;
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/subsections/{subsection}/group',
             path: {
-                'page': page,
-                'subsection': subsection,
+                page: page,
+                subsection: subsection,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -86,14 +86,14 @@ export class SubSectionControllerService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: CreateSubSectionRequest,
+        page: number;
+        requestBody: CreateSubSectionRequest;
     }): CancelablePromise<SubSection> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/subsections/',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -107,15 +107,15 @@ export class SubSectionControllerService {
         page,
         subSectionId,
     }: {
-        page: number,
-        subSectionId: number,
+        page: number;
+        subSectionId: number;
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/pages/{page}/subsections/{subSectionId}/validate',
             path: {
-                'page': page,
-                'subSectionId': subSectionId,
+                page: page,
+                subSectionId: subSectionId,
             },
         });
     }
@@ -127,15 +127,15 @@ export class SubSectionControllerService {
         page,
         subSectionId,
     }: {
-        page: number,
-        subSectionId: number,
+        page: number;
+        subSectionId: number;
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/pages/{page}/subsections/{subSectionId}/un-group',
             path: {
-                'page': page,
-                'subSectionId': subSectionId,
+                page: page,
+                subSectionId: subSectionId,
             },
         });
     }

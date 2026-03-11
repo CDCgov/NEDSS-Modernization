@@ -11,13 +11,13 @@ const useOccupationOptionsAutocomplete = (settings: Settings = { initialCriteria
     const resolver: AutocompleteOptionsResolver = (criteria: string, limit?: number) =>
         OccupationOptionsService.occupationComplete({
             criteria,
-            limit
+            limit,
         });
 
     const { criteria, options, suggest, complete, reset } = useSelectableAutocomplete({
         resolver,
         criteria: settings.initialCriteria,
-        limit: settings.limit
+        limit: settings.limit,
     });
 
     return {
@@ -25,7 +25,7 @@ const useOccupationOptionsAutocomplete = (settings: Settings = { initialCriteria
         options,
         suggest,
         complete,
-        reset
+        reset,
     };
 };
 

@@ -3,7 +3,7 @@ import { columnSortResolver } from 'design-system/table';
 import {
     columns,
     IdentificationDemographicRepeatingBlock,
-    IdentificationDemographicRepeatingBlockProps
+    IdentificationDemographicRepeatingBlockProps,
 } from './IdentificationDemographicRepeatingBlock';
 
 const sortResolver = columnSortResolver(columns);

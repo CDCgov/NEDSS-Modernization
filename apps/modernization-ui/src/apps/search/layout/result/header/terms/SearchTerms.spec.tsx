@@ -18,7 +18,7 @@ vi.mock('utils/focusedTarget');
 
 const terms: Term[] = [
     { title: 'Term1', name: 'term1', source: 'term1', value: '1' },
-    { title: 'Term2', name: 'term2', source: 'term2', value: '2' }
+    { title: 'Term2', name: 'term2', source: 'term2', value: '2' },
 ];
 
 describe('SearchTerms', () => {
