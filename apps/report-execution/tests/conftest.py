@@ -133,11 +133,20 @@ def get_faker_sql(schema_name: str) -> str:
         result = f.read()
 
     os.remove(target_file_path)
+    
+    # KLUDGE: NULL writing is not always correct
+    result = result.replace(' nan,', ' NULL,')
+    result = result.replace(' nan)', ' NULL)')
+    result = result.replace(' <NA>,', ' NULL,')
+    result = result.replace(' <NA>)', ' NULL)')
     return result
 
 
 def temp_name(table_name: str) -> str:
-    """Assumes `[schema].[dbo].[table name]` format."""
+    """Assumes `[schema].[dbo].[table name]` format.
+
+    Not using temp tables as the usage spans connections.
+    """
     return table_name[0:-1] + '_temp]'
 
 
@@ -150,7 +159,11 @@ def fake_db_table(request):
     faker_sql = get_faker_sql(faker_schema)
 
     conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+
+    # swap out original data for fake data
     with db_transaction(conn_string) as trx:
+        # Tables with foreign keys pointing to the table we want to replace need to
+        # be backed up and cleared out to avoid FK constraint violations
         for fk_table in fk_tables:
             temp_fk_table = temp_name(fk_table)
             trx.execute(
@@ -169,13 +182,13 @@ def fake_db_table(request):
         trx.execute(f'DELETE {db_table}')
         logging.info(f'cleared table: {db_table}')
         trx.execute(faker_sql)
-        logging.info('Inserted fake data')
+        logging.info(f'Inserted fake data: {db_table}')
 
     # avoid connection inside connection
     yield
 
+    # restore the original data
     with db_transaction(conn_string) as trx:
-        logging.info('back')
         trx.execute(f'DELETE {db_table}')
         trx.execute(f'INSERT INTO {db_table} SELECT * FROM {temp_db_table}')
         logging.info(f'Restored table: {db_table}')

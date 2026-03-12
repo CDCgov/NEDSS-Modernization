@@ -38,11 +38,12 @@ tables:
         null_percentage: 0.05
       - column_name: group_case_cnt
         data: fake.random_int(1, 90)
+        null_percentage: 0.05
 
       # Location
       - column_name: state
         type: string
-        data: random.choice(["Georgia", "Tennessee"])
+        data: random.choice(["Georgia", "Tennessee"]) if random.random() < .95 else None
       - column_name: state_cd
         type: string
         data: |
