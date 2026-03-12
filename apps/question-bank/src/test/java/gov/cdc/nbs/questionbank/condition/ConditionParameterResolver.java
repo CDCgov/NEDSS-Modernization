@@ -1,14 +1,14 @@
 package gov.cdc.nbs.questionbank.condition;
 
+import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 class ConditionParameterResolver {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           condition_cd
       from NBS_SRTE..Condition_code
@@ -22,11 +22,9 @@ class ConditionParameterResolver {
   }
 
   Optional<String> resolve(final String value) {
-    return this.template.query(
-        QUERY,
-        statement -> statement.setString(1, value),
-        (rs, row) -> rs.getString(1)
-    ).stream().findFirst();
+    return this.template
+        .query(QUERY, statement -> statement.setString(1, value), (rs, row) -> rs.getString(1))
+        .stream()
+        .findFirst();
   }
-
 }

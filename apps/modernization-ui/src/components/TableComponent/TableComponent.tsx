@@ -18,7 +18,7 @@ export const TableComponent = ({
     isPagination = false,
     totalResults = 20,
     currentPage = 1,
-    handleNext
+    handleNext,
 }: TableContentProps) => {
     return (
         <div className="">
@@ -36,7 +36,8 @@ export const TableComponent = ({
                                         <Button
                                             className="usa-button--unstyled"
                                             type={'button'}
-                                            disabled={tableBody.length <= 1}>
+                                            disabled={tableBody.length <= 1}
+                                        >
                                             <Icon.SortArrow color="black" />
                                         </Button>
                                     )}

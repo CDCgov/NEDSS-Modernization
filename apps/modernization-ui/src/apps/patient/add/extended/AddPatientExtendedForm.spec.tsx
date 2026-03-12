@@ -10,11 +10,11 @@ const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: vi.fn()
+    state: vi.fn(),
 };
 
 vi.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+    useLocationOptions: () => mockLocationOptions,
 }));
 
 window.HTMLElement.prototype.scrollIntoView = vi.fn();
@@ -23,12 +23,12 @@ const mockRaceCategories: Selectable[] = [{ value: '1', name: 'race name' }];
 
 const mockDetailedRaces: Selectable[] = [
     { value: '2', name: 'detailed race1' },
-    { value: '3', name: 'detailed race2' }
+    { value: '3', name: 'detailed race2' },
 ];
 
 vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
-    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn })
+    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn }),
 }));
 
 type Props = {
@@ -41,7 +41,7 @@ const Fixture = ({ asOf, validationErrors }: Props) => {
 
     const form = useForm<ExtendedNewPatientEntry>({
         defaultValues,
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (
@@ -126,7 +126,7 @@ describe('AddPatientExtendedForm', () => {
         const { getAllByText, getAllByRole } = render(
             <Fixture
                 validationErrors={{
-                    dirtySections: { name: true, phone: true, address: true, identification: true, race: true }
+                    dirtySections: { name: true, phone: true, address: true, identification: true, race: true },
                 }}
             />
         );

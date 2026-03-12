@@ -2,7 +2,7 @@ import { ConceptOptionsService } from 'generated';
 import { AutocompleteOptionsResolver } from './useSelectableAutocomplete';
 import {
     SelectableAutocomplete,
-    SelectableAutocompleteSingleProps
+    SelectableAutocompleteSingleProps,
 } from 'design-system/autocomplete/single/selectable';
 
 const resolver =
@@ -11,7 +11,7 @@ const resolver =
         ConceptOptionsService.conceptSearch({
             name: valueSet,
             criteria: criteria,
-            limit: limit
+            limit: limit,
         }).then((response) => response.options);
 
 type Props = {

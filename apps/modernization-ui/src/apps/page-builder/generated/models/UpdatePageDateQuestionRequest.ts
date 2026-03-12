@@ -22,4 +22,3 @@ export namespace UpdatePageDateQuestionRequest {
         DATE = 'DATE',
     }
 }
-

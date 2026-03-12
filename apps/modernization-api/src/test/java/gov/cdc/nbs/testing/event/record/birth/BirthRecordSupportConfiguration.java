@@ -13,5 +13,4 @@ class BirthRecordSupportConfiguration {
   Active<BirthRecordIdentifier> activeBirthRecords() {
     return new Active<>();
   }
-
 }

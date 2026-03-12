@@ -34,7 +34,7 @@ export const useGetSourceQuestion = () => {
         if (state.status === 'fetching') {
             PageRuleControllerService.getSourceQuestions({
                 id: state.id,
-                requestBody: state.request
+                requestBody: state.request,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) =>
@@ -48,7 +48,7 @@ export const useGetSourceQuestion = () => {
     const value = {
         error: state.status === 'error' ? state.error : undefined,
         response: state.status === 'complete' ? state.page : undefined,
-        fetch: (id: number, request: SourceQuestionRequest) => dispatch({ type: 'fetch', id, request })
+        fetch: (id: number, request: SourceQuestionRequest) => dispatch({ type: 'fetch', id, request }),
     };
 
     return value;

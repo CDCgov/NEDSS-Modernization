@@ -13,12 +13,12 @@ const mockGeneralCodedValues: GeneralInformationOptions = {
     educationLevels: [{ name: '1 or more years of college', value: '1' }],
     primaryOccupations: [{ name: 'Tester', value: 'T' }],
     primaryLanguages: [{ name: 'Welsh', value: 'W' }],
-    speaksEnglish: indicators
+    speaksEnglish: indicators,
 };
 
 const Fixture = () => {
     const form = useForm<PatientDemographics>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return <GeneralInformationDemographicFields form={form} options={mockGeneralCodedValues} />;

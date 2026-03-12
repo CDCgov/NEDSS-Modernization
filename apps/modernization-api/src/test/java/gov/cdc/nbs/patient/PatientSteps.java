@@ -8,14 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PatientSteps {
 
-
   private final Active<PatientIdentifier> patient;
   private final PatientMother mother;
 
-  PatientSteps(
-      final Active<PatientIdentifier> patient,
-      final PatientMother mother
-  ) {
+  PatientSteps(final Active<PatientIdentifier> patient, final PatientMother mother) {
     this.patient = patient;
     this.mother = mother;
   }
@@ -37,102 +33,43 @@ public class PatientSteps {
   }
 
   @Given("the patient has a(n) {string} of {string}")
-  public void the_patient_has_a_field_with_a_value_of(
-      final String field,
-      final String value) {
+  public void the_patient_has_a_field_with_a_value_of(final String field, final String value) {
 
     PatientIdentifier identifier = this.patient.active();
 
     switch (field.toLowerCase()) {
-      case "first name" -> mother.withName(
-          identifier,
-          "L",
-          value,
-          null);
+      case "first name" -> mother.withName(identifier, "L", value, null);
 
-      case "last name" -> mother.withName(
-          identifier,
-          "L",
-          null,
-          value);
+      case "last name" -> mother.withName(identifier, "L", null, value);
 
-      case "race" -> mother.withRace(
-          identifier,
-          resolveRace(value));
+      case "race" -> mother.withRace(identifier, resolveRace(value));
 
       case "local id" -> mother.withLocalId(identifier, value);
 
-      case "phone number" -> mother.withPhone(
-          identifier,
-          value);
+      case "phone number" -> mother.withPhone(identifier, value);
 
-      case "country code" -> mother.withPhone(
-          identifier,
-          value,
-          null,
-          null);
+      case "country code" -> mother.withPhone(identifier, value, null, null);
 
-      case "extension" -> mother.withPhone(
-          identifier,
-          null,
-          null,
-          value);
+      case "extension" -> mother.withPhone(identifier, null, null, value);
 
-      case "email", "email address" -> mother.withEmail(
-          identifier,
-          value);
+      case "email", "email address" -> mother.withEmail(identifier, value);
 
-      case "address" -> mother.withAddress(
-          identifier,
-          value,
-          null,
-          null,
-          null,
-          null);
+      case "address" -> mother.withAddress(identifier, value, null, null, null, null);
 
-      case "zip" -> mother.withAddress(
-          identifier,
-          null,
-          null,
-          null,
-          null,
-          value);
+      case "zip" -> mother.withAddress(identifier, null, null, null, null, value);
 
-      case "city" -> mother.withAddress(
-          identifier,
-          null,
-          value,
-          null,
-          null,
-          null);
+      case "city" -> mother.withAddress(identifier, null, value, null, null, null);
 
-      case "county" -> mother.withAddress(
-          identifier,
-          null,
-          null,
-          value,
-          null,
-          null);
+      case "county" -> mother.withAddress(identifier, null, null, value, null, null);
 
-      case "country" -> mother.withAddress(
-          identifier,
-          null,
-          null,
-          null,
-          null,
-          null);
+      case "country" -> mother.withAddress(identifier, null, null, null, null, null);
 
-      case "state" -> mother.withAddress(
-          identifier,
-          null,
-          null,
-          null,
-          value,
-          null);
+      case "state" -> mother.withAddress(identifier, null, null, null, value, null);
 
-      default -> throw new IllegalStateException("Unexpected patient demographic data: " + field + ":" + value);
+      default ->
+          throw new IllegalStateException(
+              "Unexpected patient demographic data: " + field + ":" + value);
     }
-
   }
 
   private String resolveRace(final String value) {
@@ -140,7 +77,8 @@ public class PatientSteps {
       case "american indian or alaska native", "american indian", "alaska native" -> "1002-5";
       case "asian" -> "2028-9";
       case "black or african american", "black", "african american" -> "2054-5";
-      case "native hawaiian or other pacific islander", "native hawaiian", "pacific islander" -> "2076-8";
+      case "native hawaiian or other pacific islander", "native hawaiian", "pacific islander" ->
+          "2076-8";
       case "white" -> "2106-3";
       case "other race", "other" -> "2131-1";
       case "not asked" -> "NASK";
@@ -149,6 +87,4 @@ public class PatientSteps {
       default -> "U";
     };
   }
-
-
 }

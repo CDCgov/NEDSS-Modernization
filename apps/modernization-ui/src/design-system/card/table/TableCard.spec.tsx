@@ -9,14 +9,14 @@ const mockApply = vi.fn();
 
 vi.mock('design-system/table/preferences/useColumnPreferences', () => ({
     useColumnPreferences: () => ({
-        apply: mockApply
+        apply: mockApply,
     }),
     ColumnPreferenceProvider: ({ children }: { children: (a: { apply: () => TestData[] }) => ReactNode }) =>
-        children({ apply: mockApply })
+        children({ apply: mockApply }),
 }));
 
 vi.mock('design-system/table/preferences/withColumnPreferences', () => ({
-    withColumnPreferences: (Component: any) => (props: any) => <Component {...props} />
+    withColumnPreferences: (Component: any) => (props: any) => <Component {...props} />,
 }));
 
 global.structuredClone = (val) => val;
@@ -31,30 +31,30 @@ const columns: Column<TestData>[] = [
         id: 'id',
         name: 'ID',
         className: 'id-header',
-        render: (value) => value.id
+        render: (value) => value.id,
     },
     {
         id: 'name',
         name: 'Name',
         className: 'name-header',
-        render: (value) => value.name
-    }
+        render: (value) => value.name,
+    },
 ];
 
 const preferences = [
     {
         id: 'id',
-        name: 'ID'
+        name: 'ID',
     },
     {
         id: 'name',
-        name: 'Name'
-    }
+        name: 'Name',
+    },
 ];
 
 const data: TestData[] = [
     { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Smith' }
+    { id: 2, name: 'Jane Smith' },
 ];
 
 const Fixture = (props: Partial<TableCardProps<TestData>>) => {

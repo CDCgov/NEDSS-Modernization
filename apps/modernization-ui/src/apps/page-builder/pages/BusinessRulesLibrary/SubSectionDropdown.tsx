@@ -34,7 +34,7 @@ const SubSectionsDropdown = ({ onSelect, sourceQuestion }: Props) => {
             if (form.watch('targetIdentifiers')) {
                 fetch(page.id ?? 0, {
                     orderNbr: sourceQuestion?.order,
-                    targetSubsections: form.watch('targetIdentifiers')
+                    targetSubsections: form.watch('targetIdentifiers'),
                 });
             } else {
                 fetch(page.id ?? 0, { orderNbr: sourceQuestion?.order });

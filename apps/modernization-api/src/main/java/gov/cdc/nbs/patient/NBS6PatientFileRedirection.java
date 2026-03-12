@@ -20,5 +20,4 @@ class NBS6PatientFileRedirection {
   ResponseEntity<Void> profile(@PathVariable final long patient) {
     return resolver.resolve(patient);
   }
-
 }

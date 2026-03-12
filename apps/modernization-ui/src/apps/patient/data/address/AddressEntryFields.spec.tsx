@@ -8,11 +8,11 @@ import { AddressCodedValues } from './useAddressCodedValues';
 
 const mockAddressCodedValues: AddressCodedValues = {
     types: [{ name: 'House', value: 'H' }],
-    uses: [{ name: 'Home', value: 'HM' }]
+    uses: [{ name: 'Home', value: 'HM' }],
 };
 
 vi.mock('./useAddressCodedValues', () => ({
-    useAddressCodedValues: () => mockAddressCodedValues
+    useAddressCodedValues: () => mockAddressCodedValues,
 }));
 
 const mockState = vi.fn();
@@ -21,11 +21,11 @@ const mockLocationOptions: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: mockState
+    state: mockState,
 };
 
 vi.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+    useLocationOptions: () => mockLocationOptions,
 }));
 
 const Fixture = () => {
@@ -43,8 +43,8 @@ const Fixture = () => {
             county: undefined,
             country: undefined,
             censusTract: '',
-            comment: ''
-        }
+            comment: '',
+        },
     });
     return (
         <FormProvider {...form}>
@@ -151,7 +151,7 @@ describe('when entering patient address demographics', () => {
         { value: '0000', valid: false },
         { value: '9999.00', valid: false },
         { value: '0001.99', valid: false },
-        { value: '1234.56', valid: true }
+        { value: '1234.56', valid: true },
     ])('should validate Census Tract format for value: $value', async ({ value, valid }) => {
         const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);
@@ -179,7 +179,7 @@ describe('when entering patient address demographics', () => {
         { value: '12345 6789', valid: true },
         { value: '12345-678', valid: false },
         { value: '12345 678', valid: false },
-        { value: '1234-5678', valid: false }
+        { value: '1234-5678', valid: false },
     ])('should validate ZIP code format for value: $value', async ({ value, valid }) => {
         const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);

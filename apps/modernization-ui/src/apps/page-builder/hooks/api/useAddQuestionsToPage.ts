@@ -35,7 +35,7 @@ export const useAddQuestionsToPage = () => {
             PageQuestionControllerService.addQuestionToPage({
                 requestBody: { questionIds: state.request.questions },
                 page: state.request.page,
-                subsection: state.request.subsection
+                subsection: state.request.subsection,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => dispatch({ type: 'complete', response: response as AddQuestionResponse }));
@@ -47,7 +47,7 @@ export const useAddQuestionsToPage = () => {
         isLoading: state.status === 'adding',
         response: state.status === 'complete' ? state.response : undefined,
         addQuestionsToPage: (questions: number[], subsection: number, page: number) =>
-            dispatch({ type: 'add', add: { questions, subsection, page } })
+            dispatch({ type: 'add', add: { questions, subsection, page } }),
     };
 
     return value;

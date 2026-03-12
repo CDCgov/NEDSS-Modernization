@@ -9,4 +9,3 @@ export type SortObject = {
     property?: string;
     ignoreCase?: boolean;
 };
-

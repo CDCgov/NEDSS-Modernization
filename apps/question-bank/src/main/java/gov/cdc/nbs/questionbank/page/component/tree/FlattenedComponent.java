@@ -41,12 +41,7 @@ record FlattenedComponent(
     String classCode) {
 
   FlattenedComponent(
-      long identifier,
-      int type,
-      String name,
-      boolean visible,
-      int order,
-      int questionGroupSeq) {
+      long identifier, int type, String name, boolean visible, int order, int questionGroupSeq) {
     this(
         identifier,
         type,

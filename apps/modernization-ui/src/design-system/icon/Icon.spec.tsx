@@ -295,7 +295,7 @@ describe('Icon', () => {
         'youtube',
         'zoom_in',
         'zoom_out',
-        'zoom_out_map'
+        'zoom_out_map',
     ] as Icons[])('should display USWDS icon: %s', (name: Icons) => {
         const { getByRole } = render(<Icon name={name} />);
 
@@ -314,7 +314,7 @@ describe('Icon', () => {
         'sort_asc_numeric',
         'sort_des_numeric',
         'sort_asc_default',
-        'sort_des_default'
+        'sort_des_default',
     ] as Icons[])('should display icons added in the design system: %s', (name: Icons) => {
         const { getByRole } = render(<Icon name={name} />);
 
@@ -341,7 +341,7 @@ describe('Icon', () => {
         'subsection',
         'textarea',
         'textbox',
-        'ungroup'
+        'ungroup',
     ] as Icons[])('should display %s icon added in the design system as an individual asset', (name: Icons) => {
         const { getByRole } = render(<Icon name={name} />);
 

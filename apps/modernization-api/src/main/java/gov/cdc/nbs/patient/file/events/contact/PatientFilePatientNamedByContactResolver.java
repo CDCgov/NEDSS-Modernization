@@ -7,11 +7,7 @@ import org.springframework.stereotype.Component;
 class PatientFilePatientNamedByContactResolver extends BasePatientFileContactResolver {
 
   PatientFilePatientNamedByContactResolver(
-      final PermissionScopeResolver resolver,
-      final PatientFilePatientNamedByContactFinder finder
-  ) {
+      final PermissionScopeResolver resolver, final PatientFilePatientNamedByContactFinder finder) {
     super(resolver, finder);
   }
-
-
 }

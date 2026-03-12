@@ -3,7 +3,6 @@ package gov.cdc.nbs.entity.odse;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientPostalLocatorHistoryListener;
 import jakarta.persistence.*;
-
 import java.util.Objects;
 
 @Entity
@@ -11,29 +10,29 @@ import java.util.Objects;
 @EntityListeners(PatientPostalLocatorHistoryListener.class)
 @SuppressWarnings(
     //  Bidirectional mappings require knowledge of each other
-    "javaarchitecture:S7027"
-)
+    "javaarchitecture:S7027")
 public class PostalEntityLocatorParticipation extends EntityLocatorParticipation {
 
   static final String POSTAL_CLASS_CODE = "PST";
 
   @MapsId("locatorUid")
-  @OneToOne(fetch = FetchType.LAZY, cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE,
-      CascadeType.REMOVE
-  }, optional = false)
-  @JoinColumn(referencedColumnName = "postal_locator_uid", name = "locator_uid", updatable = false, insertable = false)
+  @OneToOne(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+      optional = false)
+  @JoinColumn(
+      referencedColumnName = "postal_locator_uid",
+      name = "locator_uid",
+      updatable = false,
+      insertable = false)
   private PostalLocator locator;
 
-  protected PostalEntityLocatorParticipation() {
-  }
+  protected PostalEntityLocatorParticipation() {}
 
   public PostalEntityLocatorParticipation(
       final NBSEntity nbs,
       final EntityLocatorParticipationId identifier,
-      final PatientCommand.AddAddress address
-  ) {
+      final PatientCommand.AddAddress address) {
 
     super(address, nbs, identifier);
 
@@ -48,8 +47,7 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
   public PostalEntityLocatorParticipation(
       final NBSEntity nbs,
       final EntityLocatorParticipationId identifier,
-      final PatientCommand.UpdateBirth birth
-  ) {
+      final PatientCommand.UpdateBirth birth) {
     super(birth, nbs, identifier);
     this.type = "F";
     this.use = "BIR";
@@ -61,8 +59,7 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
   public PostalEntityLocatorParticipation(
       final NBSEntity nbs,
       final EntityLocatorParticipationId identifier,
-      final PatientCommand.UpdateMortality mortality
-  ) {
+      final PatientCommand.UpdateMortality mortality) {
     super(mortality, nbs, identifier);
     this.type = "U";
     this.use = "DTH";
@@ -123,11 +120,15 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
 
   @Override
   public String toString() {
-    return "PostalEntityLocatorParticipation{" +
-        "locator=" + locator +
-        ", cd='" + type + '\'' +
-        ", use='" + use + '\'' +
-        '}';
+    return "PostalEntityLocatorParticipation{"
+        + "locator="
+        + locator
+        + ", cd='"
+        + type
+        + '\''
+        + ", use='"
+        + use
+        + '\''
+        + '}';
   }
-
 }

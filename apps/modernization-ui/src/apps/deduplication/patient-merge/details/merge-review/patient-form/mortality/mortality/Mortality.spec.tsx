@@ -10,11 +10,11 @@ const data: MergeMortality = {
     deathCity: 'Atlanta',
     deathState: 'Georgia',
     deathCounty: 'Fulton County',
-    deathCountry: 'United States'
+    deathCountry: 'United States',
 };
 const Fixture = ({
     mortality = data,
-    allowSelections = true
+    allowSelections = true,
 }: {
     mortality?: MergeMortality;
     allowSelections?: boolean;
@@ -113,7 +113,7 @@ describe('Mortality', () => {
             deathCity: 'Atlanta',
             deathState: 'Georgia',
             deathCounty: 'Fulton County',
-            deathCountry: 'United States'
+            deathCountry: 'United States',
         };
         const { getAllByRole } = render(<Fixture allowSelections={true} mortality={data} />);
 

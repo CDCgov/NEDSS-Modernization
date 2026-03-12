@@ -38,7 +38,7 @@ const reducer = (current: State, action: Action): State => {
                       {
                           changed: new Date(),
                           status: 'sorted',
-                          active: { property: action.property, direction: action.direction }
+                          active: { property: action.property, direction: action.direction },
                       }
                     : //  reset the preference to match the active sorting
                       { changed: new Date(), status: 'unsorted' };
@@ -113,7 +113,7 @@ const SortingPreferenceProvider = ({ id, children, available = [], defaultSort }
     const interaction = {
         available,
         active: state.active,
-        sortOn
+        sortOn,
     };
 
     return <SortingPreferencesContext.Provider value={interaction}>{children}</SortingPreferencesContext.Provider>;

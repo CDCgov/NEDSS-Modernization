@@ -15,7 +15,7 @@ const genders: Genders = {
     female: FEMALE,
     male: MALE,
     unknown: UNKNOWN,
-    all: [FEMALE, MALE, UNKNOWN]
+    all: [FEMALE, MALE, UNKNOWN],
 };
 
 const asSelectableGender = (value: string | null | undefined) =>

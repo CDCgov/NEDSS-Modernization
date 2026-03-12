@@ -8,7 +8,7 @@ const mockUseNavigate = vi.fn();
 
 vi.mock('react-router', () => ({
     useBlocker: vi.fn(),
-    useNavigate: () => mockUseNavigate
+    useNavigate: () => mockUseNavigate,
 }));
 
 /*
@@ -20,7 +20,7 @@ activated is enabled by default
 const defaultBlockerResult = {
     state: 'unblocked',
     proceed: vi.fn(),
-    reset: vi.fn()
+    reset: vi.fn(),
 };
 
 describe('useNavigationBlock', () => {
@@ -114,7 +114,7 @@ describe('useNavigationBlock', () => {
         (useBlocker as Mock).mockImplementation((fn) => {
             blockerResult = fn({
                 currentLocation: { pathname: '/current' },
-                nextLocation: { pathname: '/allowed-next' }
+                nextLocation: { pathname: '/allowed-next' },
             });
             return { ...defaultBlockerResult };
         });
@@ -132,7 +132,7 @@ describe('useNavigationBlock', () => {
         (useBlocker as Mock).mockImplementation((fn) => {
             blockerResult = fn({
                 currentLocation: { pathname: '/current' },
-                nextLocation: { pathname: '/allowed-next' }
+                nextLocation: { pathname: '/allowed-next' },
             });
             return { ...defaultBlockerResult };
         });

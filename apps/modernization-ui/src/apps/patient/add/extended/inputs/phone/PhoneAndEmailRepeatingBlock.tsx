@@ -21,7 +21,7 @@ export const PhoneAndEmailRepeatingBlock = ({
     errors,
     onChange,
     isDirty,
-    sizing
+    sizing,
 }: PhoneAndEmailRepeatingBlockProps) => {
     const renderForm = () => <PhoneEmailEntryFields sizing={sizing} />;
     const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} sizing={sizing} />;
@@ -31,7 +31,7 @@ export const PhoneAndEmailRepeatingBlock = ({
         { id: 'phoneEmailType', name: 'Type', render: (v) => v.type?.name + '/' + v.use?.name },
         { id: 'phoneNumber', name: 'Phone number', render: (v) => v.phoneNumber },
         { id: 'email', name: 'Email address', render: (v) => v.email },
-        { id: 'comments', name: 'Comments', render: (v) => v.comment }
+        { id: 'comments', name: 'Comments', render: (v) => v.comment },
     ];
 
     return (

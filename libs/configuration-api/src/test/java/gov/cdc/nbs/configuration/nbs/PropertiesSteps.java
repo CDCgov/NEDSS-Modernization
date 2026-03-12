@@ -1,13 +1,13 @@
 package gov.cdc.nbs.configuration.nbs;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PropertiesSteps {
 
@@ -28,14 +28,14 @@ public class PropertiesSteps {
   }
 
   @Then("the properties include a(n) {property} of {string}")
-  public void the_properties_include_a_property_of(final String path, final String value) throws Exception {
-    this.response.active()
-        .andExpect(jsonPath("$.%s", path).value(value));
+  public void the_properties_include_a_property_of(final String path, final String value)
+      throws Exception {
+    this.response.active().andExpect(jsonPath("$.%s", path).value(value));
   }
 
   @Then("the properties include a(n) {property} with {string}")
-  public void the_properties_include_a_property_with(final String path, final String value) throws Exception {
-    this.response.active()
-        .andExpect(jsonPath("$.%s", path).value(hasItem(equalTo(value))));
+  public void the_properties_include_a_property_with(final String path, final String value)
+      throws Exception {
+    this.response.active().andExpect(jsonPath("$.%s", path).value(hasItem(equalTo(value))));
   }
 }

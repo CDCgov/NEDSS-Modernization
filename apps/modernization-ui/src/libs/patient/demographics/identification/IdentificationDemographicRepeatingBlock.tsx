@@ -14,29 +14,29 @@ const columns: Column<IdentificationDemographic>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (v) => v.asOf,
-        render: (v) => internalizeDate(v.asOf)
+        render: (v) => internalizeDate(v.asOf),
     },
     {
         id: 'identification-type',
         name: labels.type,
         className: styles.typeWidth,
         sortable: true,
-        value: (v) => v.type?.name
+        value: (v) => v.type?.name,
     },
     {
         id: 'identification-issuer',
         name: labels.issuer,
         className: styles['text-header'],
         sortable: true,
-        value: (v) => v.issuer?.name
+        value: (v) => v.issuer?.name,
     },
     {
         id: 'identification-value',
         name: labels.value,
         className: styles.valueWidth,
         sortable: true,
-        value: (v) => v.value
-    }
+        value: (v) => v.value,
+    },
 ];
 
 type IdentificationDemographicRepeatingBlockProps = {

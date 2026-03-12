@@ -19,8 +19,7 @@ class InvestigationSearchResultResolver {
 
   InvestigationSearchResultResolver(
       final SearchResolver<InvestigationFilter, InvestigationSearchResult> resolver,
-      final SearchPageableMapper mapper
-  ) {
+      final SearchPageableMapper mapper) {
     this.resolver = resolver;
     this.mapper = mapper;
   }
@@ -28,15 +27,9 @@ class InvestigationSearchResultResolver {
   @QueryMapping("findInvestigationsByFilter")
   @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-INVESTIGATION')")
   SearchResult<InvestigationSearchResult> search(
-      @Argument InvestigationFilter filter,
-      @Argument("page") PaginationRequest paginated
-  ) {
+      @Argument InvestigationFilter filter, @Argument("page") PaginationRequest paginated) {
     Pageable pageable = mapper.from(paginated);
 
-    return resolver.search(
-        filter,
-        pageable
-    );
+    return resolver.search(filter, pageable);
   }
-
 }

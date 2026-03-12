@@ -33,7 +33,7 @@ const NavigationGuard = <V extends FieldValues, C, D extends FieldValues | undef
     form,
     activated = true,
     cancelText = 'If you cancel, any data you entered will be lost. Are you sure you want to continue?',
-    allowed
+    allowed,
 }: NavigationGuardProps<V, C, D>) => {
     const { value, save } = useLocalStorage({ key: id, initial: false });
 
@@ -54,7 +54,8 @@ const NavigationGuard = <V extends FieldValues, C, D extends FieldValues | undef
                 cancelText="No, back to form"
                 forceAction
                 onConfirm={handleConfirm}
-                onCancel={blocker.reset}>
+                onCancel={blocker.reset}
+            >
                 {cancelText}
                 <Checkbox label="Don't show again" id={id} onChange={setPermanent} />
             </Confirmation>

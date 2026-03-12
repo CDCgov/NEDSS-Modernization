@@ -93,16 +93,13 @@ describe('SearchBar', () => {
 
     it('calls onSearch when the search button is clicked', () => {
         const handleSearch = vi.fn();
-        const { getByLabelText } = render(
-            <SearchBar value="Seashells" onSearch={handleSearch} />
-        );
+        const { getByLabelText } = render(<SearchBar value="Seashells" onSearch={handleSearch} />);
 
         const searchButton = getByLabelText('Search');
         fireEvent.click(searchButton);
 
         expect(handleSearch).toHaveBeenCalledWith('Seashells');
     });
-
 
     it('calls onSearch when Enter is pressed in the input', () => {
         const handleSearch = vi.fn();

@@ -15,17 +15,11 @@ public class ClassicPatientSearchPreparer {
     this.template = classic;
   }
 
-  /**
-   * Issues a request to the NBS6 home page search on behalf of the current user.
-   */
+  /** Issues a request to the NBS6 home page search on behalf of the current user. */
   public void prepare() {
 
-    RequestEntity<Void> request = RequestEntity
-        .get(LOCATION)
-        .build();
+    RequestEntity<Void> request = RequestEntity.get(LOCATION).build();
 
     this.template.exchange(request, Void.class);
-
   }
-
 }

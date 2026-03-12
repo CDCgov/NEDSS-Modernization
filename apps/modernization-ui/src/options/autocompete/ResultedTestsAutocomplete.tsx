@@ -7,7 +7,7 @@ const renderSuggestion = (suggestion: Selectable) => `${suggestion.name} [${sugg
 const resolver = (criteria: string, limit?: number) =>
     ResultedTestOptionsService.resultedtestAutocomplete({
         criteria: criteria,
-        limit: limit
+        limit: limit,
     }).then((response) => response as Selectable[]);
 
 const ResultedTestsAutocomplete = (props: TextAutocompleteSingleProps) => (

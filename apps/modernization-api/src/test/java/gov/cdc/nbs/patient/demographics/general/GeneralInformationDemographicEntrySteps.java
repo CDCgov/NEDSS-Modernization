@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.demographics.general;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.function.Supplier;
@@ -12,7 +11,8 @@ public class GeneralInformationDemographicEntrySteps {
   private final Clock clock;
   private final Active<GeneralInformationDemographic> input;
 
-  GeneralInformationDemographicEntrySteps(final Clock clock, final Active<GeneralInformationDemographic> input) {
+  GeneralInformationDemographicEntrySteps(
+      final Clock clock, final Active<GeneralInformationDemographic> input) {
     this.clock = clock;
     this.input = input;
   }
@@ -70,5 +70,4 @@ public class GeneralInformationDemographicEntrySteps {
   public void i_enter_the_general_state_HIV_case(final String value) {
     this.input.active(current -> current.withStateHIVCase(value), initial());
   }
-
 }

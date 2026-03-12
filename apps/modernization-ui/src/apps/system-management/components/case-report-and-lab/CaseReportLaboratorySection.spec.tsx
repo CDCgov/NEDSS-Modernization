@@ -32,9 +32,7 @@ describe('CaseReportLaboratorySection', () => {
     });
 
     it('does not render component if no matching links', () => {
-        const { container } = render(
-            <CaseReportLaboratorySection filter="xyz" setAlert={vi.fn()} />
-        );
+        const { container } = render(<CaseReportLaboratorySection filter="xyz" setAlert={vi.fn()} />);
         expect(container).toBeEmptyDOMElement();
     });
 
@@ -50,9 +48,7 @@ describe('CaseReportLaboratorySection', () => {
         const user = userEvent.setup();
         const { setAlert } = setup();
 
-        global.fetch = vi.fn(() =>
-            Promise.resolve({ ok: true })
-        ) as Mock;
+        global.fetch = vi.fn(() => Promise.resolve({ ok: true })) as Mock;
 
         await user.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
         await user.click(screen.getByRole('button', { name: /yes, reset/i }));
@@ -61,7 +57,7 @@ describe('CaseReportLaboratorySection', () => {
             expect(setAlert).toHaveBeenCalledWith({
                 type: 'success',
                 message:
-                    'Labtest program area mapping cache has been successfully reset. Please restart Wildfly to reflect the changes.'
+                    'Labtest program area mapping cache has been successfully reset. Please restart Wildfly to reflect the changes.',
             })
         );
     });
@@ -78,7 +74,7 @@ describe('CaseReportLaboratorySection', () => {
         await waitFor(() =>
             expect(setAlert).toHaveBeenCalledWith({
                 type: 'error',
-                message: 'Failed to reset Lab Mapping Cache. Please try again later.'
+                message: 'Failed to reset Lab Mapping Cache. Please try again later.',
             })
         );
     });

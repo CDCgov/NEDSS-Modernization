@@ -6,7 +6,7 @@ import { PatientSearchResult } from 'generated/graphql/schema';
 const mockNow = vi.fn();
 
 vi.mock('design-system/date/clock', () => ({
-    now: () => mockNow()
+    now: () => mockNow(),
 }));
 
 describe('PatientSearchResultListItem', () => {
@@ -21,14 +21,14 @@ describe('PatientSearchResultListItem', () => {
             status: 'status-value',
             legalName: {
                 first: 'Legal',
-                last: 'Name'
+                last: 'Name',
             },
             addresses: [],
             phones: [],
             emails: [],
             names: [],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [],
         };
 
         const { getByText } = render(
@@ -51,7 +51,7 @@ describe('PatientSearchResultListItem', () => {
             emails: [],
             names: [],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [],
         };
 
         const { getByText } = render(
@@ -73,7 +73,7 @@ describe('PatientSearchResultListItem', () => {
             emails: [],
             names: [],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [],
         };
         const { getByText } = render(
             <MemoryRouter>
@@ -93,7 +93,7 @@ describe('PatientSearchResultListItem', () => {
             emails: [],
             names: [],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [],
         };
 
         const { getByText } = render(
@@ -116,14 +116,14 @@ describe('PatientSearchResultListItem', () => {
                     city: 'Faketown',
                     state: 'FS',
                     use: 'HOME',
-                    zipcode: '12345'
-                }
+                    zipcode: '12345',
+                },
             ],
             phones: [],
             emails: [],
             names: [],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [],
         };
 
         const { getByText } = render(
@@ -150,9 +150,9 @@ describe('PatientSearchResultListItem', () => {
                 {
                     number: 'phone-number-value',
                     type: '',
-                    use: ''
-                }
-            ]
+                    use: '',
+                },
+            ],
         };
 
         const { getByText } = render(
@@ -173,7 +173,7 @@ describe('PatientSearchResultListItem', () => {
             emails: ['email-address-value'],
             names: [],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [],
         };
 
         const { getByText } = render(
@@ -194,7 +194,7 @@ describe('PatientSearchResultListItem', () => {
             emails: [],
             names: [{ first: 'Jane', last: 'Doe' }],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [],
         };
 
         const { getByText } = render(
@@ -216,7 +216,7 @@ describe('PatientSearchResultListItem', () => {
             emails: [],
             names: [],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [],
         };
 
         const { queryAllByText, getByText } = render(
@@ -240,9 +240,9 @@ describe('PatientSearchResultListItem', () => {
             names: [],
             identification: [
                 { type: 'identification-one-type', value: 'identification-one-value' },
-                { type: 'identification-two-type', value: 'identification-two-value' }
+                { type: 'identification-two-type', value: 'identification-two-value' },
             ],
-            detailedPhones: []
+            detailedPhones: [],
         };
 
         const { getByText } = render(
@@ -267,7 +267,7 @@ describe('PatientSearchResultListItem', () => {
             emails: [],
             names: [],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [],
         };
 
         const { getByText } = render(

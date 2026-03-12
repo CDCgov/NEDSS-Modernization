@@ -36,7 +36,7 @@ const mockMergeCandidates: MergeCandidate[] = [
             educationLevel: '',
             primaryLanguage: '',
             speaksEnglish: '',
-            stateHivCaseId: '1234-HIV'
+            stateHivCaseId: '1234-HIV',
         },
         investigations: [],
     },
@@ -63,10 +63,10 @@ const mockMergeCandidates: MergeCandidate[] = [
             educationLevel: '',
             primaryLanguage: 'Latin',
             speaksEnglish: '',
-            stateHivCaseId: '1234-HIV'
+            stateHivCaseId: '1234-HIV',
         },
         investigations: [],
-    }
+    },
 ];
 
 const mergeFormData: PatientMergeForm = {
@@ -75,7 +75,7 @@ const mergeFormData: PatientMergeForm = {
     ethnicity: '1',
     generalInfo: {
         stateHivCaseId: '1',
-        primaryLanguage: '2'
+        primaryLanguage: '2',
     },
     names: [
         {

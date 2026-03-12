@@ -1,12 +1,11 @@
 package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientSearchPreparer;
+import java.net.URI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
 
 @Component
 public class NBS6PatientFileRedirectResolver {
@@ -25,14 +24,13 @@ public class NBS6PatientFileRedirectResolver {
    */
   public ResponseEntity<Void> resolve(final long patient) {
 
-    //  Issues the appropriate requests to put the NBS6 session in a state that allows a user to access a Patient File.
+    //  Issues the appropriate requests to put the NBS6 session in a state that allows a user to
+    // access a Patient File.
     preparer.prepare();
 
     URI location = patientFilePath(patient);
 
-    return ResponseEntity.status(HttpStatus.SEE_OTHER)
-        .location(location)
-        .build();
+    return ResponseEntity.status(HttpStatus.SEE_OTHER).location(location).build();
   }
 
   private URI patientFilePath(final long patient) {
@@ -43,5 +41,4 @@ public class NBS6PatientFileRedirectResolver {
         .build()
         .toUri();
   }
-
 }

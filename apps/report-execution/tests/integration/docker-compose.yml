@@ -1,0 +1,5 @@
+# Integration test-specific docker compose overrides
+services:
+  report-execution:
+    # allows using localhost db conn for easy access to db container directly or via report-execution container
+    network_mode: host

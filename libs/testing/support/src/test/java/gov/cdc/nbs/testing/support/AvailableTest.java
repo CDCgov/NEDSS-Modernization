@@ -1,11 +1,10 @@
 package gov.cdc.nbs.testing.support;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.NoSuchElementException;
 import java.util.function.UnaryOperator;
-
-import static org.assertj.core.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class AvailableTest {
 
@@ -13,9 +12,7 @@ class AvailableTest {
   void should_throw_an_exception_when_nothing_is_available() {
     Available<Object> available = new Available<>();
 
-    assertThatThrownBy(available::one)
-        .hasMessageContaining("there are none available");
-
+    assertThatThrownBy(available::one).hasMessageContaining("there are none available");
   }
 
   @Test
@@ -28,7 +25,6 @@ class AvailableTest {
     available.available(item);
 
     assertThat(available.one()).isSameAs(item);
-
   }
 
   @Test
@@ -42,7 +38,6 @@ class AvailableTest {
     available.available(new Object());
 
     assertThat(available.one()).isSameAs(item);
-
   }
 
   @Test
@@ -61,7 +56,6 @@ class AvailableTest {
     available.select(item -> item == two);
 
     assertThat(available.one()).isSameAs(two);
-
   }
 
   @Test
@@ -81,7 +75,6 @@ class AvailableTest {
     available.selected(current -> changed, Object::new);
 
     assertThat(available.one()).isSameAs(changed);
-
   }
 
   @Test
@@ -101,7 +94,6 @@ class AvailableTest {
     available.selected(current -> changed);
 
     assertThat(available.one()).isSameAs(changed);
-
   }
 
   @Test
@@ -114,7 +106,6 @@ class AvailableTest {
     available.selected(UnaryOperator.identity(), () -> initialized);
 
     assertThat(available.one()).isSameAs(initialized);
-
   }
 
   @Test
@@ -143,9 +134,7 @@ class AvailableTest {
 
     available.reset();
 
-    assertThatThrownBy(available::one)
-        .hasMessageContaining("there are none available");
-
+    assertThatThrownBy(available::one).hasMessageContaining("there are none available");
   }
 
   @Test
@@ -157,7 +146,6 @@ class AvailableTest {
     available.available(item);
 
     assertThat(available.maybeOne()).containsSame(item);
-
   }
 
   @Test
@@ -170,7 +158,6 @@ class AvailableTest {
     available.available(new Object());
 
     assertThat(available.maybeOne()).containsSame(item);
-
   }
 
   @Test
@@ -178,7 +165,6 @@ class AvailableTest {
     Available<Object> available = new Available<>();
 
     assertThat(available.maybeOne()).isNotPresent();
-
   }
 
   @Test
@@ -186,7 +172,6 @@ class AvailableTest {
     Available<Object> available = new Available<>();
 
     assertThat(available.all()).isEmpty();
-
   }
 
   @Test
@@ -199,7 +184,6 @@ class AvailableTest {
     available.available(item);
 
     assertThat(available.all()).contains(item);
-
   }
 
   @Test
@@ -213,7 +197,6 @@ class AvailableTest {
     available.reset();
 
     assertThat(available.all()).isEmpty();
-
   }
 
   @Test
@@ -234,7 +217,6 @@ class AvailableTest {
     available.reset();
 
     assertThat(available.indexed()).isEmpty();
-
   }
 
   @Test
@@ -251,29 +233,18 @@ class AvailableTest {
 
     assertThat(available.indexed())
         .satisfiesExactly(
-            indexed -> assertThat(indexed)
-                .satisfies(
-                    index -> assertThat(index.index()).isZero()
-                )
-                .satisfies(
-                    index -> assertThat(index.item()).isSameAs(one)
-                ),
-            indexed -> assertThat(indexed)
-                .satisfies(
-                    index -> assertThat(index.index()).isEqualTo(1)
-                )
-                .satisfies(
-                    index -> assertThat(index.item()).isSameAs(two)
-                ),
-            indexed -> assertThat(indexed)
-                .satisfies(
-                    index -> assertThat(index.index()).isEqualTo(2)
-                )
-                .satisfies(
-                    index -> assertThat(index.item()).isSameAs(three)
-                )
-        );
-
+            indexed ->
+                assertThat(indexed)
+                    .satisfies(index -> assertThat(index.index()).isZero())
+                    .satisfies(index -> assertThat(index.item()).isSameAs(one)),
+            indexed ->
+                assertThat(indexed)
+                    .satisfies(index -> assertThat(index.index()).isEqualTo(1))
+                    .satisfies(index -> assertThat(index.item()).isSameAs(two)),
+            indexed ->
+                assertThat(indexed)
+                    .satisfies(index -> assertThat(index.index()).isEqualTo(2))
+                    .satisfies(index -> assertThat(index.item()).isSameAs(three)));
   }
 
   @Test
@@ -288,7 +259,8 @@ class AvailableTest {
     available.available(two);
     available.available(three);
 
-    assertThat(available.random()).hasValueSatisfying(item -> assertThat(item).isIn(one, two, three));
+    assertThat(available.random())
+        .hasValueSatisfying(item -> assertThat(item).isIn(one, two, three));
   }
 
   @Test
@@ -296,7 +268,6 @@ class AvailableTest {
     Available<Object> available = new Available<>();
 
     assertThat(available.random()).isNotPresent();
-
   }
 
   @Test
@@ -311,7 +282,8 @@ class AvailableTest {
     available.available(two);
     available.available(three);
 
-    assertThat(available.maybePrevious()).hasValueSatisfying(item -> assertThat(item).isSameAs(two));
+    assertThat(available.maybePrevious())
+        .hasValueSatisfying(item -> assertThat(item).isSameAs(two));
 
     assertThat(available.previous()).isSameAs(two);
   }

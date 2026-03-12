@@ -68,7 +68,7 @@ export { asName };
 const asSelectable = (value: string, name?: string, label?: string): Selectable => ({
     value,
     name: name ?? value,
-    label
+    label,
 });
 
 export { asSelectable };

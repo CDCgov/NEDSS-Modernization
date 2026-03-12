@@ -7,4 +7,3 @@ export type Section = {
     name?: string;
     visible?: boolean;
 };
-

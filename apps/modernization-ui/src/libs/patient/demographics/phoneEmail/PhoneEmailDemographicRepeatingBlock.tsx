@@ -14,14 +14,14 @@ const columns: Column<PhoneEmailDemographic>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (v) => v.asOf,
-        render: (v) => internalizeDate(v.asOf)
+        render: (v) => internalizeDate(v.asOf),
     },
     {
         id: 'phone-email-type',
         name: 'Type',
         className: styles.typeWidth,
         sortable: true,
-        value: (v) => `${v.type?.name} / ${v.use?.name}`
+        value: (v) => `${v.type?.name} / ${v.use?.name}`,
     },
     {
         id: 'phone-email-number',
@@ -29,22 +29,22 @@ const columns: Column<PhoneEmailDemographic>[] = [
         className: styles.numberWidth,
         sortable: true,
         sortIconType: 'numeric',
-        value: (v) => v.phoneNumber
+        value: (v) => v.phoneNumber,
     },
     {
         id: 'phone-email-email-address',
         name: 'Email address',
         className: styles['text-header'],
         sortable: true,
-        value: (v) => v.email
+        value: (v) => v.email,
     },
     {
         id: 'phone-email-comments',
         name: 'Comments',
         className: styles['text-header'],
         sortable: true,
-        value: (v) => v.comment
-    }
+        value: (v) => v.comment,
+    },
 ];
 
 type PhoneEmailDemographicRepeatingBlockProps = {

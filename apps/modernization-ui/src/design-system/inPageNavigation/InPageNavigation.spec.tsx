@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router';
 
 const mockSections: NavSection[] = [
     { id: 'section1', label: 'Section 1' },
-    { id: 'section2', label: 'Section 2' }
+    { id: 'section2', label: 'Section 2' },
 ];
 
 class MockIntersectionObserver {
@@ -20,7 +20,7 @@ class MockIntersectionObserver {
 Object.defineProperty(window, 'IntersectionObserver', {
     writable: true,
     configurable: true,
-    value: MockIntersectionObserver
+    value: MockIntersectionObserver,
 });
 
 const Fixture = () => {

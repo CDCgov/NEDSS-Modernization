@@ -16,16 +16,12 @@ export class PageControllerService {
      * @returns PageStateResponse OK
      * @throws ApiError
      */
-    public static savePageDraft({
-        id,
-    }: {
-        id: number,
-    }): CancelablePromise<PageStateResponse> {
+    public static savePageDraft({ id }: { id: number }): CancelablePromise<PageStateResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{id}/draft',
             path: {
-                'id': id,
+                id: id,
             },
         });
     }
@@ -36,7 +32,7 @@ export class PageControllerService {
     public static createPage({
         requestBody,
     }: {
-        requestBody: PageCreateRequest,
+        requestBody: PageCreateRequest;
     }): CancelablePromise<PageCreateResponse> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -52,7 +48,7 @@ export class PageControllerService {
     public static validatePageRequest({
         requestBody,
     }: {
-        requestBody: PageValidationRequest,
+        requestBody: PageValidationRequest;
     }): CancelablePromise<boolean> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -71,30 +67,30 @@ export class PageControllerService {
         size = 25,
         sort,
     }: {
-        id: number,
+        id: number;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<PagePageHistory> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/pages/{id}/page-history',
             path: {
-                'id': id,
+                id: id,
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
         });
     }
@@ -102,16 +98,12 @@ export class PageControllerService {
      * @returns PageDeleteResponse OK
      * @throws ApiError
      */
-    public static deletePageDraft({
-        id,
-    }: {
-        id: number,
-    }): CancelablePromise<PageDeleteResponse> {
+    public static deletePageDraft({ id }: { id: number }): CancelablePromise<PageDeleteResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/v1/pages/{id}/delete-draft',
             path: {
-                'id': id,
+                id: id,
             },
         });
     }

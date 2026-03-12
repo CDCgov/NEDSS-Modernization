@@ -4,7 +4,7 @@ import { PatientDemographicsDefaults } from '../../demographics';
 import { HasIdentificationDemographics, IdentificationDemographic, initial } from '../identifications';
 import {
     IdentificationDemographicRepeatingBlock,
-    IdentificationDemographicRepeatingBlockProps
+    IdentificationDemographicRepeatingBlockProps,
 } from '../IdentificationDemographicRepeatingBlock';
 import { IdentificationDemographicFields } from './IdentificationDemographicFields';
 import { useIdentificationOptions } from './useIdentificationOptions';

@@ -13,13 +13,13 @@ const Fixture = () => {
             matchingCriteria: [
                 {
                     attribute: MatchingAttribute.FIRST_NAME,
-                    method: MatchMethod.EXACT
-                }
+                    method: MatchMethod.EXACT,
+                },
             ],
             lowerBound: undefined,
             upperBound: undefined,
-            active: true
-        }
+            active: true,
+        },
     });
     return (
         <FormProvider {...form}>

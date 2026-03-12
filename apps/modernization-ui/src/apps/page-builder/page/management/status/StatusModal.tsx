@@ -19,7 +19,7 @@ export const StatusModal = ({
     messageHeader,
     confirmText = 'Close',
     onConfirm,
-    id = 'status'
+    id = 'status',
 }: Props) => {
     return (
         <Modal forceAction ref={modal} className={styles.modal} id={id}>

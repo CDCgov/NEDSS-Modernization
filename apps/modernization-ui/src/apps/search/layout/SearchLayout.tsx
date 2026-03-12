@@ -40,11 +40,11 @@ const SearchLayout = <R,>({
     searchEnabled = true,
     onClear,
     noInput = () => <NoInput />,
-    noResults = () => <NoResults />
+    noResults = () => <NoResults />,
 }: Props) => {
     const {
         status,
-        results: { total, filteredTotal, terms }
+        results: { total, filteredTotal, terms },
     } = useSearchInteraction<R>();
 
     const { view } = useSearchResultDisplay();
@@ -59,7 +59,8 @@ const SearchLayout = <R,>({
         <section className={styles.search} onKeyDown={handleKey}>
             <FeatureToggle
                 guard={(features) => features?.search?.events?.enabled}
-                fallback={<SearchNavigation className={styles.navigation} actions={actions} />}>
+                fallback={<SearchNavigation className={styles.navigation} actions={actions} />}
+            >
                 <PatientSearchHeader className={styles.navigation} />
             </FeatureToggle>
 
@@ -67,7 +68,8 @@ const SearchLayout = <R,>({
                 <CollapsiblePanel
                     className={styles.panel}
                     contentClassName={styles.criteria}
-                    ariaLabel="Search criteria">
+                    ariaLabel="Search criteria"
+                >
                     <div className={styles.inputs}>{criteria()}</div>
                     <div className={styles.actions}>
                         <Button type="button" onClick={onSearch} disabled={!searchEnabled} sizing={sizing}>
@@ -93,7 +95,8 @@ const SearchLayout = <R,>({
                             total={total}
                             filteredTotal={filteredTotal}
                             terms={terms}
-                            loading={status === 'reloading'}>
+                            loading={status === 'reloading'}
+                        >
                             {view === 'list' && total > 0 && resultsAsList()}
                             {view === 'table' && resultsAsTable()}
                             {total === 0 && noResults()}
@@ -105,7 +108,8 @@ const SearchLayout = <R,>({
                             view={view}
                             total={total}
                             filteredTotal={filteredTotal}
-                            terms={terms}>
+                            terms={terms}
+                        >
                             {noInput()}
                         </SearchResults>
                     </Shown>

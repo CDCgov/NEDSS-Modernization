@@ -108,14 +108,14 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         className: styles['local-header'],
         sortable: true,
         value: (value) => value.local,
-        render: renderEventId
+        render: renderEventId,
     },
     {
         ...DOCUMENT_TYPE,
         className: styles['text-header'],
         sortable: true,
         value: (value) => value.type,
-        render: (value) => renderType(value)
+        render: (value) => renderType(value),
     },
     {
         ...DATE_RECEIVED,
@@ -123,7 +123,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.dateReceived,
-        render: (value) => renderDateReceived(value.dateReceived)
+        render: (value) => renderDateReceived(value.dateReceived),
     },
     {
         ...REPORTING,
@@ -138,7 +138,7 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
                 value.orderingProvider,
                 value.sendingFacility,
                 value.orderingFacility
-            )
+            ),
     },
     {
         ...EVENT_DATE,
@@ -146,14 +146,14 @@ const columns: Column<PatientFileDocumentRequiringReview>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.eventDate,
-        render: (value) => renderEventDate(value)
+        render: (value) => renderEventDate(value),
     },
     {
         ...DESCRIPTION,
         sortable: true,
         value: (value) => value.condition ?? value.resultedTests?.at(0)?.name,
-        render: renderDescription
-    }
+        render: renderDescription,
+    },
 ];
 
 const columnPreferences: ColumnPreference[] = [
@@ -162,7 +162,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...DATE_RECEIVED, toggleable: true },
     { ...REPORTING, toggleable: true },
     { ...EVENT_DATE, toggleable: true },
-    { ...DESCRIPTION, toggleable: true }
+    { ...DESCRIPTION, toggleable: true },
 ];
 
 type InternalCardProps = {
@@ -195,7 +195,8 @@ const PatientDocumentRequiringReviewCard = ({ provider, ...remaining }: PatientD
             <LoadingOverlay>
                 <InternalCard {...remaining} />
             </LoadingOverlay>
-        }>
+        }
+    >
         <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
     </Suspense>
 );

@@ -2,10 +2,8 @@ package gov.cdc.nbs.patient.search.indexing;
 
 import gov.cdc.nbs.patient.search.SearchablePatient;
 import gov.cdc.nbs.search.ElasticsearchSimpleDocumentIndexer;
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
-
+import org.springframework.stereotype.Component;
 
 @Component
 class SearchablePatientIndexer {
@@ -22,9 +20,7 @@ class SearchablePatientIndexer {
   }
 
   void index(final Collection<SearchablePatient> patients) {
-    this.indexer.index(INDEX, patients.stream().map(SearchablePatientSimpleDocumentConverter::convert));
+    this.indexer.index(
+        INDEX, patients.stream().map(SearchablePatientSimpleDocumentConverter::convert));
   }
-
-
-
 }

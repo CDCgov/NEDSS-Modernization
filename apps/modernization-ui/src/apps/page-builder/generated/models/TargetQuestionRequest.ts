@@ -18,4 +18,3 @@ export namespace TargetQuestionRequest {
         UNHIDE = 'UNHIDE',
     }
 }
-

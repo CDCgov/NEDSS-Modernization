@@ -4,7 +4,7 @@ import { ItemGroup } from './ItemGroup';
 
 const meta = {
     title: 'Design System/ItemGroup',
-    component: ItemGroup
+    component: ItemGroup,
 } satisfies Meta<typeof ItemGroup>;
 
 export default meta;
@@ -15,14 +15,14 @@ export const Address: Story = {
     args: {
         type: 'address',
         label: 'Home',
-        children: '123 Happy St\nSeattle, WA 98101'
-    }
+        children: '123 Happy St\nSeattle, WA 98101',
+    },
 };
 
 export const Name: Story = {
     args: {
         type: 'name',
         label: 'Alias',
-        children: 'John Doe'
-    }
+        children: 'John Doe',
+    },
 };

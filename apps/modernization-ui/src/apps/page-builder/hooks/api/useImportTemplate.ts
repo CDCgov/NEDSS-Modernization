@@ -37,7 +37,7 @@ export const useImportTemplate = () => {
     useEffect(() => {
         if (state.status === 'importing') {
             TemplateControllerService.import({
-                formData: { file: state.file }
+                formData: { file: state.file },
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((template) => {
@@ -55,7 +55,7 @@ export const useImportTemplate = () => {
         isLoading: state.status === 'importing',
         imported: state.status === 'imported' ? state.template : undefined,
         reset: () => dispatch({ type: 'reset' }),
-        importTemplate: (file: File) => dispatch({ type: 'import', file })
+        importTemplate: (file: File) => dispatch({ type: 'import', file }),
     };
 
     return value;

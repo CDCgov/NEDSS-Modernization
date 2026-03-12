@@ -18,7 +18,7 @@ const asBirth = (entry: Partial<BirthDemographic>): BirthDemographicRequest | un
             city: orUndefined(city),
             county: asValue(county),
             state: asValue(state),
-            country: asValue(country)
+            country: asValue(country),
         };
     }
 };

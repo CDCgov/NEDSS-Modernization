@@ -11,4 +11,3 @@ export type BusinessRule = {
     sourceField?: string;
     targetField?: string;
 };
-

@@ -3,13 +3,12 @@ package gov.cdc.nbs.patient.file.events.vaccination;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleNameRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientVaccinationRowMapper implements RowMapper<PatientVaccination> {
   record Column(
@@ -20,17 +19,11 @@ class PatientVaccinationRowMapper implements RowMapper<PatientVaccination> {
       int organization,
       DisplayableSimpleNameRowMapper.Columns provider,
       int administeredOn,
-      int administered
-  ) {
+      int administered) {
     Column() {
-      this(
-          1, 2, 3, 4, 5,
-          new DisplayableSimpleNameRowMapper.Columns(6, 7, 8),
-          9, 10
-      );
+      this(1, 2, 3, 4, 5, new DisplayableSimpleNameRowMapper.Columns(6, 7, 8), 9, 10);
     }
   }
-
 
   private final Column columns;
   private final RowMapper<DisplayableSimpleName> providerMapper;
@@ -45,7 +38,8 @@ class PatientVaccinationRowMapper implements RowMapper<PatientVaccination> {
   }
 
   @Override
-  public PatientVaccination mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public PatientVaccination mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     long patient = resultSet.getLong(this.columns.patient());
     long identifier = resultSet.getLong(this.columns.identifier());
     String local = resultSet.getString(this.columns.local());
@@ -64,8 +58,6 @@ class PatientVaccinationRowMapper implements RowMapper<PatientVaccination> {
         provider,
         administeredOn,
         administered,
-        Collections.emptyList()
-    );
+        Collections.emptyList());
   }
-
 }

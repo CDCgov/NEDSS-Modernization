@@ -41,7 +41,7 @@ const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel, onValueset
                 codeSetNm: valueset.code,
                 page: page.current - 1,
                 pageSize: page.pageSize,
-                sort
+                sort,
             });
         }
     }, [page.status]);

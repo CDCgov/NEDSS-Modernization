@@ -1,22 +1,20 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.junit.jupiter.api.Test;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 @ExtendWith(MockitoExtension.class)
 class PageRuleMapperTest {
 
-  @InjectMocks
-  private PageRuleMapper pageRuleMapper;
+  @InjectMocks private PageRuleMapper pageRuleMapper;
 
   @Test
   void testMapRow() throws SQLException {
@@ -59,7 +57,6 @@ class PageRuleMapperTest {
     assertEquals("test456_label", response.targets().get(0).label());
   }
 
-
   @Test
   void testMapRow_null_values() throws SQLException {
     ResultSet resultSet = mock(ResultSet.class);
@@ -89,11 +86,12 @@ class PageRuleMapperTest {
 
   @Test
   void testGetComponentType() throws SQLException {
-    String targetIdentifiers = "test1,test1,test3,test4,test5,test6,test7,test8,test9,test10,test11,test12," +
-        "test13,test14,test15,test16,test17,test18,test19,test20,test21,test22,test23,test24,test25,test26,test27";
+    String targetIdentifiers =
+        "test1,test1,test3,test4,test5,test6,test7,test8,test9,test10,test11,test12,"
+            + "test13,test14,test15,test16,test17,test18,test19,test20,test21,test22,test23,test24,test25,test26,test27";
     String targetTypes =
-        "1003,1011,1012,1022,1023,1007,1013,1001,1006,1024,1025,1027,1028,1008,1026,1029,1014,1000,1009" +
-            ",1017,1019,1030,1032,1033,1034,1035,1036";
+        "1003,1011,1012,1022,1023,1007,1013,1001,1006,1024,1025,1027,1028,1008,1026,1029,1014,1000,1009"
+            + ",1017,1019,1030,1032,1033,1034,1035,1036";
 
     ResultSet resultSet = mock(ResultSet.class);
     when(resultSet.getLong(1)).thenReturn(100l);
@@ -117,7 +115,4 @@ class PageRuleMapperTest {
       assertNotNull(target.label());
     }
   }
-
-
-
 }

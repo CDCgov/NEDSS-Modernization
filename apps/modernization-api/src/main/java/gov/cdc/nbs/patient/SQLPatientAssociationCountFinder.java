@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 class SQLPatientAssociationCountFinder implements PatientAssociationCountFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           count(*)
       from Person [revision]
@@ -25,10 +26,6 @@ class SQLPatientAssociationCountFinder implements PatientAssociationCountFinder 
 
   @Override
   public long count(long patient) {
-    return client.sql(QUERY)
-        .param(patient)
-        .query(Long.class)
-        .optional()
-        .orElse(0L);
+    return client.sql(QUERY).param(patient).query(Long.class).optional().orElse(0L);
   }
 }

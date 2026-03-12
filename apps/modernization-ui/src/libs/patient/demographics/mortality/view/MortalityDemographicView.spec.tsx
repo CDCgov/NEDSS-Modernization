@@ -19,8 +19,8 @@ describe('MortalityDemographicView', () => {
                     asOf: '2020-03-17',
                     deceased: {
                         name: 'deceased name',
-                        value: 'deceased-value'
-                    }
+                        value: 'deceased-value',
+                    },
                 }}
             />
         );
@@ -43,7 +43,7 @@ describe('MortalityDemographicView', () => {
             <MortalityDemographicView
                 demographic={{
                     asOf: '2020-03-17',
-                    city: 'death city value'
+                    city: 'death city value',
                 }}
             />
         );
@@ -60,8 +60,8 @@ describe('MortalityDemographicView', () => {
                     asOf: '2020-03-17',
                     state: {
                         name: 'death state name',
-                        value: 'death-state-value'
-                    }
+                        value: 'death-state-value',
+                    },
                 }}
             />
         );
@@ -78,8 +78,8 @@ describe('MortalityDemographicView', () => {
                     asOf: '2020-03-17',
                     county: {
                         name: 'death county name',
-                        value: 'death-county-value'
-                    }
+                        value: 'death-county-value',
+                    },
                 }}
             />
         );
@@ -96,8 +96,8 @@ describe('MortalityDemographicView', () => {
                     asOf: '2020-03-17',
                     country: {
                         name: 'death country name',
-                        value: 'death-country-value'
-                    }
+                        value: 'death-country-value',
+                    },
                 }}
             />
         );

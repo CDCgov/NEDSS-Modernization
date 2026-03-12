@@ -4,7 +4,7 @@ import { transformer } from './transformer';
 describe('when transforming entered basic patient data', () => {
     it('should transform general information to a format accepted by the API', () => {
         const entry: BasicNewPatientEntry = {
-            administrative: { asOf: '04/13/2017', comment: 'entered-value' }
+            administrative: { asOf: '04/13/2017', comment: 'entered-value' },
         };
 
         const actual = transformer(entry);
@@ -19,8 +19,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '11/07/2019' },
                 name: {
-                    last: 'last-value'
-                }
+                    last: 'last-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -31,9 +31,9 @@ describe('when transforming entered basic patient data', () => {
                         {
                             asOf: '11/07/2019',
                             type: 'L',
-                            last: 'last-value'
-                        }
-                    ])
+                            last: 'last-value',
+                        },
+                    ]),
                 })
             );
         });
@@ -42,8 +42,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '11/07/2019' },
                 name: {
-                    first: 'first-value'
-                }
+                    first: 'first-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -54,9 +54,9 @@ describe('when transforming entered basic patient data', () => {
                         {
                             asOf: '11/07/2019',
                             type: 'L',
-                            first: 'first-value'
-                        }
-                    ])
+                            first: 'first-value',
+                        },
+                    ]),
                 })
             );
         });
@@ -65,8 +65,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '11/07/2019' },
                 name: {
-                    middle: 'middle-value'
-                }
+                    middle: 'middle-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -77,9 +77,9 @@ describe('when transforming entered basic patient data', () => {
                         {
                             asOf: '11/07/2019',
                             type: 'L',
-                            middle: 'middle-value'
-                        }
-                    ])
+                            middle: 'middle-value',
+                        },
+                    ]),
                 })
             );
         });
@@ -88,8 +88,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '11/07/2019' },
                 name: {
-                    suffix: { value: 'suffix-value', name: 'suffix-name' }
-                }
+                    suffix: { value: 'suffix-value', name: 'suffix-name' },
+                },
             };
 
             const actual = transformer(entry);
@@ -100,9 +100,9 @@ describe('when transforming entered basic patient data', () => {
                         {
                             asOf: '11/07/2019',
                             type: 'L',
-                            suffix: 'suffix-value'
-                        }
-                    ])
+                            suffix: 'suffix-value',
+                        },
+                    ]),
                 })
             );
         });
@@ -114,15 +114,19 @@ describe('when transforming entered basic patient data', () => {
                 administrative: { asOf: '04/13/2017' },
                 personalDetails: {
                     bornOn: '08/05/1990',
-                    birthSex: { value: 'birth-sex-value', name: 'birth-sex-name' }
-                }
+                    birthSex: { value: 'birth-sex-value', name: 'birth-sex-name' },
+                },
             };
 
             const actual = transformer(entry);
 
             expect(actual).toEqual(
                 expect.objectContaining({
-                    birth: expect.objectContaining({ asOf: '04/13/2017', bornOn: '08/05/1990', sex: 'birth-sex-value' })
+                    birth: expect.objectContaining({
+                        asOf: '04/13/2017',
+                        bornOn: '08/05/1990',
+                        sex: 'birth-sex-value',
+                    }),
                 })
             );
         });
@@ -131,15 +135,15 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 personalDetails: {
-                    currentSex: { value: 'current-sex-value', name: 'current-sex-name' }
-                }
+                    currentSex: { value: 'current-sex-value', name: 'current-sex-name' },
+                },
             };
 
             const actual = transformer(entry);
 
             expect(actual).toEqual(
                 expect.objectContaining({
-                    gender: expect.objectContaining({ asOf: '04/13/2017', current: 'current-sex-value' })
+                    gender: expect.objectContaining({ asOf: '04/13/2017', current: 'current-sex-value' }),
                 })
             );
         });
@@ -149,8 +153,8 @@ describe('when transforming entered basic patient data', () => {
                 administrative: { asOf: '04/13/2017' },
                 personalDetails: {
                     deceased: { value: 'deceased-value', name: 'deceased-name' },
-                    deceasedOn: '05/08/1790'
-                }
+                    deceasedOn: '05/08/1790',
+                },
             };
 
             const actual = transformer(entry);
@@ -160,8 +164,8 @@ describe('when transforming entered basic patient data', () => {
                     mortality: expect.objectContaining({
                         asOf: '04/13/2017',
                         deceasedOn: '05/08/1790',
-                        deceased: 'deceased-value'
-                    })
+                        deceased: 'deceased-value',
+                    }),
                 })
             );
         });
@@ -171,8 +175,8 @@ describe('when transforming entered basic patient data', () => {
                 administrative: { asOf: '04/13/2017' },
                 personalDetails: {
                     maritalStatus: { value: 'marital-status-value', name: 'marital-status-name' },
-                    stateHIVCase: 'state-hiv-case-value'
-                }
+                    stateHIVCase: 'state-hiv-case-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -182,8 +186,8 @@ describe('when transforming entered basic patient data', () => {
                     general: expect.objectContaining({
                         asOf: '04/13/2017',
                         maritalStatus: 'marital-status-value',
-                        stateHIVCase: 'state-hiv-case-value'
-                    })
+                        stateHIVCase: 'state-hiv-case-value',
+                    }),
                 })
             );
         });
@@ -194,8 +198,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 address: {
-                    address1: 'address-1-value'
-                }
+                    address1: 'address-1-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -207,9 +211,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '04/13/2017',
                             type: 'H',
                             use: 'H',
-                            address1: 'address-1-value'
-                        })
-                    ])
+                            address1: 'address-1-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -218,8 +222,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 address: {
-                    address2: 'address-2-value'
-                }
+                    address2: 'address-2-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -232,9 +236,9 @@ describe('when transforming entered basic patient data', () => {
                             type: 'H',
                             use: 'H',
 
-                            address2: 'address-2-value'
-                        })
-                    ])
+                            address2: 'address-2-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -243,8 +247,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 address: {
-                    city: 'city-value'
-                }
+                    city: 'city-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -256,9 +260,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '04/13/2017',
                             type: 'H',
                             use: 'H',
-                            city: 'city-value'
-                        })
-                    ])
+                            city: 'city-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -267,8 +271,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 address: {
-                    county: { value: 'county-value', name: 'county-name' }
-                }
+                    county: { value: 'county-value', name: 'county-name' },
+                },
             };
 
             const actual = transformer(entry);
@@ -280,9 +284,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '04/13/2017',
                             type: 'H',
                             use: 'H',
-                            county: 'county-value'
-                        })
-                    ])
+                            county: 'county-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -291,8 +295,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 address: {
-                    zipcode: 'zipcode-value'
-                }
+                    zipcode: 'zipcode-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -304,9 +308,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '04/13/2017',
                             type: 'H',
                             use: 'H',
-                            zipcode: 'zipcode-value'
-                        })
-                    ])
+                            zipcode: 'zipcode-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -315,8 +319,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 address: {
-                    state: { value: 'state-value', name: 'state-name' }
-                }
+                    state: { value: 'state-value', name: 'state-name' },
+                },
             };
 
             const actual = transformer(entry);
@@ -328,9 +332,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '04/13/2017',
                             type: 'H',
                             use: 'H',
-                            state: 'state-value'
-                        })
-                    ])
+                            state: 'state-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -339,8 +343,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 address: {
-                    country: { value: 'country-value', name: 'country-name' }
-                }
+                    country: { value: 'country-value', name: 'country-name' },
+                },
             };
 
             const actual = transformer(entry);
@@ -352,9 +356,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '04/13/2017',
                             type: 'H',
                             use: 'H',
-                            country: 'country-value'
-                        })
-                    ])
+                            country: 'country-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -363,8 +367,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 address: {
-                    censusTract: 'census-tract-value'
-                }
+                    censusTract: 'census-tract-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -376,9 +380,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '04/13/2017',
                             type: 'H',
                             use: 'H',
-                            censusTract: 'census-tract-value'
-                        })
-                    ])
+                            censusTract: 'census-tract-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -389,8 +393,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 phoneEmail: {
-                    home: 'home-value'
-                }
+                    home: 'home-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -402,9 +406,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '04/13/2017',
                             type: 'PH',
                             use: 'H',
-                            phoneNumber: 'home-value'
-                        })
-                    ])
+                            phoneNumber: 'home-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -413,32 +417,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 phoneEmail: {
-                    work: { phone: 'work-phone-value' }
-                }
-            };
-
-            const actual = transformer(entry);
-
-            expect(actual).toEqual(
-                expect.objectContaining({
-                    phoneEmails: expect.arrayContaining([
-                        expect.objectContaining({
-                            asOf: '04/13/2017',
-                            type: 'PH',
-                            use: 'WP',
-                            phoneNumber: 'work-phone-value'
-                        })
-                    ])
-                })
-            );
-        });
-
-        it('should transform work phone with extension to a format accepted by the API', () => {
-            const entry: BasicNewPatientEntry = {
-                administrative: { asOf: '04/13/2017' },
-                phoneEmail: {
-                    work: { phone: 'work-phone-value', extension: 'extension-value' }
-                }
+                    work: { phone: 'work-phone-value' },
+                },
             };
 
             const actual = transformer(entry);
@@ -451,9 +431,33 @@ describe('when transforming entered basic patient data', () => {
                             type: 'PH',
                             use: 'WP',
                             phoneNumber: 'work-phone-value',
-                            extension: 'extension-value'
-                        })
-                    ])
+                        }),
+                    ]),
+                })
+            );
+        });
+
+        it('should transform work phone with extension to a format accepted by the API', () => {
+            const entry: BasicNewPatientEntry = {
+                administrative: { asOf: '04/13/2017' },
+                phoneEmail: {
+                    work: { phone: 'work-phone-value', extension: 'extension-value' },
+                },
+            };
+
+            const actual = transformer(entry);
+
+            expect(actual).toEqual(
+                expect.objectContaining({
+                    phoneEmails: expect.arrayContaining([
+                        expect.objectContaining({
+                            asOf: '04/13/2017',
+                            type: 'PH',
+                            use: 'WP',
+                            phoneNumber: 'work-phone-value',
+                            extension: 'extension-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -462,8 +466,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 phoneEmail: {
-                    cell: 'cell-value'
-                }
+                    cell: 'cell-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -475,9 +479,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '04/13/2017',
                             type: 'CP',
                             use: 'MC',
-                            phoneNumber: 'cell-value'
-                        })
-                    ])
+                            phoneNumber: 'cell-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -486,8 +490,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 phoneEmail: {
-                    email: 'email-value'
-                }
+                    email: 'email-value',
+                },
             };
 
             const actual = transformer(entry);
@@ -499,9 +503,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '04/13/2017',
                             type: 'NET',
                             use: 'H',
-                            email: 'email-value'
-                        })
-                    ])
+                            email: 'email-value',
+                        }),
+                    ]),
                 })
             );
         });
@@ -512,8 +516,8 @@ describe('when transforming entered basic patient data', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
                 ethnicityRace: {
-                    ethnicity: { value: 'ethnicity-value', name: 'ethnicity-name' }
-                }
+                    ethnicity: { value: 'ethnicity-value', name: 'ethnicity-name' },
+                },
             };
 
             const actual = transformer(entry);
@@ -523,8 +527,8 @@ describe('when transforming entered basic patient data', () => {
                     ethnicity: {
                         asOf: '04/13/2017',
                         ethnicGroup: 'ethnicity-value',
-                        detailed: []
-                    }
+                        detailed: [],
+                    },
                 })
             );
         });
@@ -535,9 +539,9 @@ describe('when transforming entered basic patient data', () => {
                 ethnicityRace: {
                     races: [
                         { value: 'race-one-value', name: 'race-one-name' },
-                        { value: 'race-two-value', name: 'race-two-name' }
-                    ]
-                }
+                        { value: 'race-two-value', name: 'race-two-name' },
+                    ],
+                },
             };
 
             const actual = transformer(entry);
@@ -546,8 +550,8 @@ describe('when transforming entered basic patient data', () => {
                 expect.objectContaining({
                     races: expect.arrayContaining([
                         { asOf: '04/13/2017', race: 'race-one-value', detailed: [] },
-                        { asOf: '04/13/2017', race: 'race-two-value', detailed: [] }
-                    ])
+                        { asOf: '04/13/2017', race: 'race-two-value', detailed: [] },
+                    ]),
                 })
             );
         });
@@ -561,9 +565,9 @@ describe('when transforming entered basic patient data', () => {
                     {
                         id: 'id-value',
                         type: { value: 'identification-type-value', name: 'identification-type-name' },
-                        issuer: { value: 'issuer-value', name: 'issuer-name' }
-                    }
-                ]
+                        issuer: { value: 'issuer-value', name: 'issuer-name' },
+                    },
+                ],
             };
 
             const actual = transformer(entry);
@@ -575,9 +579,9 @@ describe('when transforming entered basic patient data', () => {
                             asOf: '11/07/2019',
                             value: 'id-value',
                             type: 'identification-type-value',
-                            issuer: 'issuer-value'
-                        })
-                    ])
+                            issuer: 'issuer-value',
+                        }),
+                    ]),
                 })
             );
         });

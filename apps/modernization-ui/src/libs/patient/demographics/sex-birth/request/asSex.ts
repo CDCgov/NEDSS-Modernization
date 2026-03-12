@@ -14,7 +14,7 @@ const asSex = (demographic: Partial<SexDemographic>): SexDemographicRequest | un
             current: asValue(current),
             unknownReason: asValue(unknownReason),
             transgenderInformation: asValue(transgenderInformation),
-            additionalGender: orUndefined(additionalGender)
+            additionalGender: orUndefined(additionalGender),
         };
     }
 };
