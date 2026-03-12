@@ -25,7 +25,7 @@ def execute(
     content = trx.query(
         # State filtering is assumed to happen in the filters
         f'WITH subset as ({subset_query})\n'
-
+        # base_data CTE
         ', base_data as ('
         'SELECT phc_code_short_desc, MONTH(event_date) as month, '
         'YEAR(event_date) as year, sum(group_case_cnt) as cases\n'
@@ -36,18 +36,18 @@ def execute(
         'AND YEAR(event_date) >= (YEAR(CURRENT_TIMESTAMP) - 5)\n'
         'GROUP BY phc_code_short_desc, MONTH(event_date), YEAR(event_date)\n'
         ')\n'
-
+        # diseases CTE
         ', diseases as (\n'
         'SELECT DISTINCT phc_code_short_desc\n'
         'FROM base_data\n'
         ')\n'
-
+        # year_data CTE
         ', year_data as (\n'
         'SELECT phc_code_short_desc, year, SUM(cases) as cases\n'
         'FROM base_data\n'
         'GROUP BY phc_code_short_desc, year'
         ')\n'
-
+        # this_month CTE
         ', this_month as (\n'
         'SELECT phc_code_short_desc, SUM(cases) as curr_month\n'
         'FROM base_data\n'
@@ -55,27 +55,27 @@ def execute(
         'AND year = YEAR(CURRENT_TIMESTAMP)\n'
         'GROUP BY phc_code_short_desc'
         ')\n'
-
+        # this_year CTE
         ', this_year as (\n'
         'SELECT phc_code_short_desc, SUM(cases) as curr_ytd\n'
         'FROM year_data\n'
         'WHERE year = YEAR(CURRENT_TIMESTAMP)\n'
         'GROUP BY phc_code_short_desc'
         ')\n'
-
+        # last_year CTE
         ', last_year as (\n'
         'SELECT phc_code_short_desc, SUM(cases) as last_ytd\n'
         'FROM year_data\n'
         'WHERE year = (YEAR(CURRENT_TIMESTAMP) - 1)\n'
         'GROUP BY phc_code_short_desc'
         ')\n'
-
+        # median_year CTE
         ', median_year as (\n'
         'SELECT DISTINCT phc_code_short_desc, PERCENTILE_CONT(0.5) WITHIN GROUP '
         '(ORDER BY cases) OVER (PARTITION BY phc_code_short_desc) as median_ytd\n'
         'FROM year_data\n'
         ')\n'
-        
+        # Result select
         'SELECT d.phc_code_short_desc, COALESCE(curr_month, 0) as curr_month, \n'
         'COALESCE(curr_ytd, 0) as curr_ytd, COALESCE(last_ytd, 0) as last_ytd, \n'
         'COALESCE(median_ytd, 0) as median_ytd, \n'
@@ -90,8 +90,8 @@ def execute(
         'LEFT JOIN median_year my on my.phc_code_short_desc = d.phc_code_short_desc\n'
         'ORDER BY d.phc_code_short_desc asc'
     )
-    
-    # TODO:
+
+    # TODO:  # noqa: FIX002
     # column header names
     # sub header
 
