@@ -22,7 +22,9 @@ class TestExecuteReport:
         )
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-        assert result.description == 'Custom Report For Table: random_db_table_0'
+        assert result.header == 'Custom Report For Table: random_db_table_0'
+        assert result.subheader is None
+        assert result.description is None
         assert result.content.columns == ['id', 'name']
 
         assert len(result.content.data) == 4

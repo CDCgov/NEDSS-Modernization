@@ -18,11 +18,14 @@ def execute(
     """
     content = trx.query(subset_query)
 
-    description = f'Custom Report For Table: {data_source_name}'
+    header = f'Custom Report For Table: {data_source_name}'
+    subheader = None
     if time_range is not None:
-        description += f'\n{time_range.start} - {time_range.end}'
+        subheader = f'{time_range.start} - {time_range.end}'
 
     # TODO: datetimes are formatted '%0m/%0d/%Y %0H:%0M:%0S' in sas. # noqa: FIX002
     # Should this be a util/post processing/sql step in python land?
 
-    return ReportResult(content_type='table', content=content, description=description)
+    return ReportResult(
+        content_type='table', content=content, header=header, subheader=subheader
+    )

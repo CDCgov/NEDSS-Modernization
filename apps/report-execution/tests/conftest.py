@@ -84,12 +84,17 @@ def setup_containers(request):
     """Set up DB and report execution containers."""
     logging.info('Setting up containers tests...')
     compose_path = os.path.join(os.path.dirname(__file__), '../../../cdc-sandbox')
-    compose_file_name = 'docker-compose.yml'
     services = ['report-execution', 'nbs-mssql']
+    compose_file_names = [
+        'docker-compose.yml',
+        '../apps/report-execution/tests/integration/docker-compose.yml',
+    ]
     containers = DockerCompose(
         compose_path,
-        compose_file_name=compose_file_name,
+        compose_file_name=compose_file_names,
         services=services,
+        env_file=['../sample.env', '../apps/report-execution/sample.env'],
+        build=True,
     )
     report_exec_url = 'http://0.0.0.0:8001/status'
 
@@ -133,7 +138,7 @@ def get_faker_sql(schema_name: str) -> str:
         result = f.read()
 
     os.remove(target_file_path)
-    
+
     # KLUDGE: NULL writing is not always correct
     result = result.replace(' nan,', ' NULL,')
     result = result.replace(' nan)', ' NULL)')
