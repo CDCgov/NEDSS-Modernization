@@ -1,27 +1,30 @@
 package gov.cdc.nbs.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.model.ReportConfigurationResponse;
 import gov.cdc.nbs.model.ReportExecutionRequest;
 import gov.cdc.nbs.repository.ReportRepository;
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 @Service
 public class ReportService {
 
   private final ReportRepository reportRepository;
-  private final ReportExecutionClient client;
+  private final RestClient reportExecutionClient;
 
-  public ReportService(final ReportRepository reportRepository, ReportExecutionClient client) {
+  public ReportService(final ReportRepository reportRepository, RestClient reportExecutionClient) {
     this.reportRepository = reportRepository;
-    this.client = client;
+    this.reportExecutionClient = reportExecutionClient;
   }
 
   public ReportConfigurationResponse getReport(Long reportUid, Long dataSourceUid) {
@@ -45,25 +48,32 @@ public class ReportService {
         fetchedReport.getReportLibrary().getRunner());
   }
 
-  public String executeReport(ReportExecutionRequest request) {
+  public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
     ReportConfigurationResponse reportConfigRes =
         getReport(request.reportUid(), request.dataSourceUid());
 
     if (reportConfigRes != null) {
       if (Objects.equals(reportConfigRes.runner(), "python")) {
-        JsonObject json =
-            Json.createObjectBuilder()
-                .add("version", 1)
-                .add("is_export", true)
-                .add("is_builtin", true)
-                .add("report_title", "Test report")
-                .add("library_name", "nbs_custom")
-                .add("data_source_name", "[NBS_ODSE].[dbo].[Report]")
-                .add("subset_query", "SELECT * FROM [NBS_ODSE].[dbo].[Report]")
-                .build();
 
-        return client.executeReport(json);
-        // request to report execution service
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode json = mapper.createObjectNode();
+
+        json.put("version", 1);
+        json.put("is_export", true);
+        json.put("is_builtin", true);
+        json.put("report_title", "Test report");
+        json.put("library_name", "nbs_custom");
+        json.put("data_source_name", "[NBS_ODSE].[dbo].[Report]");
+        json.put("subset_query", "SELECT * FROM [NBS_ODSE].[dbo].[Report]");
+        json.putNull("time_range");
+
+        return reportExecutionClient
+            .post()
+            .uri("/report/execute")
+            .contentType(MediaType.valueOf("application/json;charset=UTF-8"))
+            .body(json)
+            .retrieve()
+            .toEntity(String.class);
       }
     }
     // return 501

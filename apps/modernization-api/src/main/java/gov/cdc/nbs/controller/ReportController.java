@@ -35,7 +35,7 @@ public class ReportController {
 
   @PostMapping("/execute")
   // TODO: preauthorize
-  public String executeReport(@RequestBody ReportExecutionRequest request) {
+  public ResponseEntity<String> executeReport(@RequestBody ReportExecutionRequest request) {
     // TODO: validate request
     return reportService.executeReport(request);
   }
