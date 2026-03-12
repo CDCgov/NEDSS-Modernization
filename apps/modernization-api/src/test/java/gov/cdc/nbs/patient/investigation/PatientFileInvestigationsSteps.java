@@ -14,8 +14,7 @@ public class PatientFileInvestigationsSteps {
   PatientFileInvestigationsSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientFileInvestigationsRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;
@@ -23,16 +22,11 @@ public class PatientFileInvestigationsSteps {
 
   @When("I view the investigations for a patient")
   public void all() {
-    this.activePatient.maybeActive()
-        .map(this.requester::all)
-        .ifPresent(this.response::active);
+    this.activePatient.maybeActive().map(this.requester::all).ifPresent(this.response::active);
   }
 
   @When("I view the open investigations for a patient")
   public void open() {
-    this.activePatient.maybeActive()
-        .map(this.requester::open)
-        .ifPresent(this.response::active);
+    this.activePatient.maybeActive().map(this.requester::open).ifPresent(this.response::active);
   }
-
 }

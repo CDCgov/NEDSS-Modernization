@@ -1,10 +1,10 @@
 package gov.cdc.nbs.option.concept.autocomplete;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @Component
 class ConceptAutocompleteRequest {
@@ -17,16 +17,14 @@ class ConceptAutocompleteRequest {
 
   ResultActions complete(final String name, final String criteria) throws Exception {
     return mvc.perform(
-        get("/nbs/api/options/concepts/{name}/search", name)
-            .param("criteria", criteria)
-    );
+        get("/nbs/api/options/concepts/{name}/search", name).param("criteria", criteria));
   }
 
-  ResultActions complete(final String name, final String criteria, final int limit) throws Exception {
+  ResultActions complete(final String name, final String criteria, final int limit)
+      throws Exception {
     return mvc.perform(
         get("/nbs/api/options/concepts/{name}/search", name)
             .param("criteria", criteria)
-            .param("limit", String.valueOf(limit))
-    );
+            .param("limit", String.valueOf(limit)));
   }
 }

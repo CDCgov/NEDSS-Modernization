@@ -5,8 +5,8 @@ import { GeneralInfo } from './GeneralInfo';
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
-    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+vi.mock('user', () => ({
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } }),
 }));
 
 const data: MergeGeneralInfo = {
@@ -19,7 +19,7 @@ const data: MergeGeneralInfo = {
     educationLevel: '10th grade',
     primaryLanguage: 'Eastern Frisian',
     speaksEnglish: 'Yes',
-    stateHivCaseId: '123'
+    stateHivCaseId: '123',
 };
 const Fixture = ({ generalInfo = data }: { generalInfo?: MergeGeneralInfo }) => {
     const form = useForm();

@@ -6,10 +6,10 @@ import { MemoizedSupplier } from 'libs/supplying';
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
+vi.mock('user', () => ({
     useUser: () => ({
-        state: { user: { permissions: mockPermissions } }
-    })
+        state: { user: { permissions: mockPermissions } },
+    }),
 }));
 
 const mockData: PatientFileMergeHistory[] = [
@@ -17,8 +17,8 @@ const mockData: PatientFileMergeHistory[] = [
         supersededPersonLocalId: '12345',
         supersededPersonLegalName: 'John Doe',
         mergeTimestamp: '2023-01-01T12:00:00Z',
-        mergedByUser: 'admin'
-    }
+        mergedByUser: 'admin',
+    },
 ];
 
 const provider = new MemoizedSupplier(() => Promise.resolve(mockData));

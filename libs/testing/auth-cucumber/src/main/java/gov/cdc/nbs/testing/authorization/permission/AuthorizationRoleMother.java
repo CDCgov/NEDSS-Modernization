@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthorizationRoleMother {
 
-  private static final String ASSIGN = """
+  private static final String ASSIGN =
+      """
       insert into auth_user_role(
         auth_user_uid,
         auth_perm_set_uid,
@@ -39,21 +40,17 @@ public class AuthorizationRoleMother {
   private final AuthenticationSupportSettings settings;
   private final JdbcClient client;
 
-
-  AuthorizationRoleMother(
-      final AuthenticationSupportSettings settings,
-      final JdbcClient client
-  ) {
+  AuthorizationRoleMother(final AuthenticationSupportSettings settings, final JdbcClient client) {
     this.settings = settings;
     this.client = client;
-
   }
 
   public void allowAny(final ActiveUser user, final long set) {
     allow(user, set, 'F', "STD", "all");
   }
 
-  public void allowAny(final ActiveUser user, final long set, final String programArea, final String jurisdiction) {
+  public void allowAny(
+      final ActiveUser user, final long set, final String programArea, final String jurisdiction) {
     allow(user, set, 'F', programArea, jurisdiction);
   }
 
@@ -61,18 +58,21 @@ public class AuthorizationRoleMother {
     allow(user, set, 'T', "STD", "all");
   }
 
-  public void allowShared(final ActiveUser user, final long set, final String programArea, final String jurisdiction) {
+  public void allowShared(
+      final ActiveUser user, final long set, final String programArea, final String jurisdiction) {
     allow(user, set, 'T', programArea.toUpperCase(), jurisdiction.toUpperCase());
   }
 
   public void systemAdmin(final ActiveUser user) {
-    this.client.sql("update dbo.Auth_user set master_sec_admin_ind = 'T' where auth_user_uid = ?")
+    this.client
+        .sql("update dbo.Auth_user set master_sec_admin_ind = 'T' where auth_user_uid = ?")
         .param(user.id())
         .update();
   }
 
   public void securityAdmin(final ActiveUser user) {
-    this.client.sql("update dbo.Auth_user set prog_area_admin_ind = 'T' where auth_user_uid = ?")
+    this.client
+        .sql("update dbo.Auth_user set prog_area_admin_ind = 'T' where auth_user_uid = ?")
         .param(user.id())
         .update();
   }
@@ -82,10 +82,10 @@ public class AuthorizationRoleMother {
       final long set,
       final char guest,
       final String programArea,
-      final String jurisdiction
-  ) {
+      final String jurisdiction) {
 
-    this.client.sql(ASSIGN)
+    this.client
+        .sql(ASSIGN)
         .param("user", user.id())
         .param("set", set)
         .param("programArea", programArea)
@@ -95,5 +95,4 @@ public class AuthorizationRoleMother {
         .param("addedBy", this.settings.createdBy())
         .update();
   }
-
 }

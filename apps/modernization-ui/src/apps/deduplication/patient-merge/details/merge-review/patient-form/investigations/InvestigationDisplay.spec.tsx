@@ -5,8 +5,8 @@ import { render } from '@testing-library/react';
 
 const mergeCandidates: Partial<MergeCandidate>[] = [
     {
-        investigations: []
-    }
+        investigations: [],
+    },
 ];
 const Fixture = () => {
     const form = useForm();

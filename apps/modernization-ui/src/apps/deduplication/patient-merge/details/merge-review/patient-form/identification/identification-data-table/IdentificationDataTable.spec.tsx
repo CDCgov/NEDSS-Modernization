@@ -12,18 +12,18 @@ const patientData: Partial<MergeCandidate> = {
             asOf: '2014-03-11T00:00:00.000',
             type: "Driver's license",
             assigningAuthority: 'TX',
-            value: '10001'
+            value: '10001',
         },
         {
             personUid: '1',
             sequence: '2',
             asOf: '2024-03-21T00:00:00.000',
             type: 'Account number',
-            value: '313'
-        }
-    ]
+            value: '313',
+        },
+    ],
 };
-const onViewIdentification = jest.fn();
+const onViewIdentification = vi.fn();
 const Fixture = () => {
     const form = useForm();
     return (

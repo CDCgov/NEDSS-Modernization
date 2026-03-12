@@ -13,14 +13,14 @@ const conditions: Condition[] = [
         page: 'investigation',
         nndInd: 'nnd',
         programArea: 'prog area',
-        status: 'A'
-    }
+        status: 'A',
+    },
 ];
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const { getAllByRole } = render(
             <WithinTableProvider>
-                <ConditionTable isLoading={false} conditions={[]} onSelectionChange={jest.fn()} onSort={jest.fn()} />
+                <ConditionTable isLoading={false} conditions={[]} onSelectionChange={vi.fn()} onSort={vi.fn()} />
             </WithinTableProvider>
         );
 
@@ -44,8 +44,8 @@ describe('when at least one condition is available', () => {
                 <ConditionTable
                     isLoading={false}
                     conditions={conditions}
-                    onSelectionChange={jest.fn()}
-                    onSort={jest.fn()}
+                    onSelectionChange={vi.fn()}
+                    onSort={vi.fn()}
                 />
             </WithinTableProvider>
         );
@@ -68,7 +68,7 @@ describe('when at least one condition is available', () => {
 
 describe('when a search is performed', () => {
     it('should clear the selected rows when new data is provided', async () => {
-        const mockOnSelectionChange = jest.fn();
+        const mockOnSelectionChange = vi.fn();
 
         const { findAllByRole, rerender } = render(
             <WithinTableProvider>
@@ -76,7 +76,7 @@ describe('when a search is performed', () => {
                     isLoading={false}
                     conditions={conditions}
                     onSelectionChange={mockOnSelectionChange}
-                    onSort={jest.fn()}
+                    onSort={vi.fn()}
                 />
             </WithinTableProvider>
         );
@@ -97,8 +97,8 @@ describe('when a search is performed', () => {
                 page: 'investigation',
                 nndInd: 'nnd',
                 programArea: 'prog area',
-                status: 'A'
-            }
+                status: 'A',
+            },
         ];
         rerender(
             <WithinTableProvider>
@@ -106,7 +106,7 @@ describe('when a search is performed', () => {
                     isLoading={false}
                     conditions={newConditions}
                     onSelectionChange={mockOnSelectionChange}
-                    onSort={jest.fn()}
+                    onSort={vi.fn()}
                 />
             </WithinTableProvider>
         );

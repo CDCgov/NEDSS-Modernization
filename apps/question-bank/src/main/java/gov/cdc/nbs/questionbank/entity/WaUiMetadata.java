@@ -25,18 +25,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.Instant;
 
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "WA_UI_metadata", catalog = "NBS_ODSE")
-@SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7091"}) //  Bidirectional mappings require knowledge of each other
+@SuppressWarnings({
+  "javaarchitecture:S7027",
+  "javaarchitecture:S7091"
+}) //  Bidirectional mappings require knowledge of each other
 public class WaUiMetadata {
   public static final String ACTIVE = "Active";
   public static final String INACTIVE = "Inactive";
@@ -225,28 +227,19 @@ public class WaUiMetadata {
   @OneToOne(
       fetch = FetchType.LAZY,
       mappedBy = "waUiMetadataUid",
-      cascade = {
-          CascadeType.PERSIST,
-          CascadeType.REMOVE
-      },
+      cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
       orphanRemoval = true)
   private WaRdbMetadata waRdbMetadatum;
 
   @OneToOne(
       fetch = FetchType.LAZY,
       mappedBy = "waUiMetadataUid",
-      cascade = {
-          CascadeType.PERSIST,
-          CascadeType.REMOVE
-      },
-      orphanRemoval = true
-  )
+      cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+      orphanRemoval = true)
   @SuppressWarnings(
       //  Bidirectional mappings require knowledge of each other
-      "javaarchitecture:S7027"
-  )
+      "javaarchitecture:S7027")
   private WaNndMetadatum waNndMetadatum;
-
 
   public WaUiMetadata() {
     this.standardNndIndCd = 'F';
@@ -277,7 +270,6 @@ public class WaUiMetadata {
     this.lastChgTime = createdOn;
 
     this.recordStatusTime = createdOn;
-
   }
 
   public WaUiMetadata(PageContentCommand.AddReadOnlyComments command) {
@@ -292,7 +284,6 @@ public class WaUiMetadata {
     this.adminComment = command.adminComments();
     this.questionLabel = command.comments();
     this.nbsUiComponentUid = READ_ONLY_COMMENTS_ID;
-
 
     this.added(command);
   }
@@ -334,7 +325,8 @@ public class WaUiMetadata {
       if (command.relatedUnitsValueSet() != null) {
         this.unitTypeCd = UnitType.CODED.toString();
         this.unitValue = command.relatedUnitsValueSet().toString();
-      } else if (command.relatedUnitsLiteral() != null && !command.relatedUnitsLiteral().isBlank()) {
+      } else if (command.relatedUnitsLiteral() != null
+          && !command.relatedUnitsLiteral().isBlank()) {
         this.unitTypeCd = UnitType.LITERAL.toString();
         this.unitValue = command.relatedUnitsLiteral();
       }
@@ -377,7 +369,6 @@ public class WaUiMetadata {
     updated(command);
   }
 
-
   public void update(UpdateCodedQuestionValueset command) {
     if (!"CODED".equals(dataType)) {
       throw new PageContentModificationException("Targeted question is not a CODED question");
@@ -385,7 +376,8 @@ public class WaUiMetadata {
 
     // updatable if not published
     if (Character.valueOf('T').equals(publishIndCd)) {
-      throw new PageContentModificationException("Unable to change valueset for published question");
+      throw new PageContentModificationException(
+          "Unable to change valueset for published question");
     }
 
     this.codeSetGroupId = command.valueset();
@@ -439,14 +431,15 @@ public class WaUiMetadata {
       this.questionOidSystemTxt = command.codeSystemName();
       this.questionOid = command.codeSystemOid();
       if (waNndMetadatum == null) {
-        waNndMetadatum = new WaNndMetadatum(
-            this,
-            command.messageVariableId(),
-            command.labelInMessage(),
-            command.requiredInMessage(),
-            command.hl7DataType(),
-            command.userId(),
-            command.requestedOn());
+        waNndMetadatum =
+            new WaNndMetadatum(
+                this,
+                command.messageVariableId(),
+                command.labelInMessage(),
+                command.requiredInMessage(),
+                command.hl7DataType(),
+                command.userId(),
+                command.requestedOn());
       } else {
         waNndMetadatum.update(
             command.messageVariableId(),
@@ -480,7 +473,6 @@ public class WaUiMetadata {
     this.defaultValue = command.linkUrl();
     this.nbsUiComponentUid = HYPERLINK_ID;
 
-
     this.added(command);
   }
 
@@ -505,13 +497,11 @@ public class WaUiMetadata {
     this.publishIndCd = null;
     this.entryMethod = null;
 
-
     // User specified
     this.waTemplateUid = command.page();
     this.orderNbr = command.orderNumber();
     this.adminComment = command.adminComments();
     this.nbsUiComponentUid = LINE_SEPARATOR_ID;
-
 
     this.added(command);
   }
@@ -523,13 +513,11 @@ public class WaUiMetadata {
     this.publishIndCd = null;
     this.entryMethod = null;
 
-
     // User specified
     this.waTemplateUid = command.page();
     this.orderNbr = command.orderNumber();
     this.adminComment = command.adminComments();
     this.nbsUiComponentUid = ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID;
-
 
     this.added(command);
   }
@@ -541,18 +529,17 @@ public class WaUiMetadata {
     this.publishIndCd = null;
     this.entryMethod = null;
 
-
     // User specified
     this.waTemplateUid = command.page();
     this.orderNbr = command.orderNumber();
     this.adminComment = command.adminComments();
     this.nbsUiComponentUid = READ_ONLY_PARTICIPANTS_LIST_ID;
 
-
     this.added(command);
   }
 
-  public WaUiMetadata(WaTemplate page, PageContentCommand.AddQuestion command, Integer orderNumber) {
+  public WaUiMetadata(
+      WaTemplate page, PageContentCommand.AddQuestion command, Integer orderNumber) {
     this();
     // Defaults
     this.standardNndIndCd = 'F';
@@ -607,19 +594,19 @@ public class WaUiMetadata {
 
     // If question is 'included in message', create WaNNDMetadata entry
     if (Character.valueOf('T').equals(command.question().getNndMsgInd())) {
-      this.waNndMetadatum = new WaNndMetadatum(
-          this,
-          command.question().getQuestionIdentifierNnd(),
-          command.question().getQuestionLabelNnd(),
-          Character.valueOf('R').equals(command.question().getQuestionRequiredNnd()),
-          command.question().getQuestionDataTypeNnd(),
-          command.userId(),
-          command.requestedOn());
+      this.waNndMetadatum =
+          new WaNndMetadatum(
+              this,
+              command.question().getQuestionIdentifierNnd(),
+              command.question().getQuestionLabelNnd(),
+              Character.valueOf('R').equals(command.question().getQuestionRequiredNnd()),
+              command.question().getQuestionDataTypeNnd(),
+              command.userId(),
+              command.requestedOn());
     }
 
     // Audit info
     this.added(command);
-
   }
 
   public WaUiMetadata(WaTemplate page, PageContentCommand.AddTab command, Integer orderNumber) {
@@ -660,7 +647,8 @@ public class WaUiMetadata {
     added(command);
   }
 
-  public WaUiMetadata(WaTemplate page, PageContentCommand.AddSubsection command, Integer orderNumber) {
+  public WaUiMetadata(
+      WaTemplate page, PageContentCommand.AddSubsection command, Integer orderNumber) {
     this();
     this.nbsUiComponentUid = 1016L;
     this.waTemplateUid = page;
@@ -706,67 +694,67 @@ public class WaUiMetadata {
 
   public static WaUiMetadata clone(WaUiMetadata original, WaTemplate page) {
 
-    WaUiMetadata cloned = new WaUiMetadata(
-        null,
-        page,
-        original.getNbsUiComponentUid(),
-        original.getParentUid(),
-        original.getQuestionLabel(),
-        original.getQuestionToolTip(),
-        original.getEnableInd(),
-        original.getDefaultValue(),
-        original.getDisplayInd(),
-        original.getOrderNbr(),
-        original.getRequiredInd(),
-        original.getAddTime(),
-        original.getAddUserId(),
-        original.getLastChgTime(),
-        original.getLastChgUserId(),
-        original.getRecordStatusCd(),
-        original.getRecordStatusTime(),
-        original.getMaxLength(),
-        original.getAdminComment(),
-        original.getVersionCtrlNbr(),
-        original.getFieldSize(),
-        original.getFutureDateIndCd(),
-        original.getLocalId(),
-        original.getCodeSetGroupId(),
-        original.getDataCd(),
-        original.getDataLocation(),
-        original.getDataType(),
-        original.getDataUseCd(),
-        original.getLegacyDataLocation(),
-        original.getPartTypeCd(),
-        original.getQuestionGroupSeqNbr(),
-        original.getQuestionIdentifier(),
-        original.getQuestionOid(),
-        original.getQuestionOidSystemTxt(),
-        original.getQuestionUnitIdentifier(),
-        original.getRepeatsIndCd(),
-        original.getUnitParentIdentifier(),
-        original.getGroupNm(),
-        original.getSubGroupNm(),
-        original.getDescTxt(),
-        original.getMask(),
-        original.getEntryMethod(),
-        original.getQuestionType(),
-        original.getPublishIndCd(),
-        original.getMinValue(),
-        original.getMaxValue(),
-        original.getStandardQuestionIndCd(),
-        original.getStandardNndIndCd(),
-        original.getQuestionNm(),
-        original.getUnitTypeCd(),
-        original.getUnitValue(),
-        original.getOtherValueIndCd(),
-        original.getBatchTableAppearIndCd(),
-        original.getBatchTableHeader(),
-        original.getBatchTableColumnWidth(),
-        original.getCoinfectionIndCd(),
-        original.getBlockNm(),
-        null,
-        null);
-
+    WaUiMetadata cloned =
+        new WaUiMetadata(
+            null,
+            page,
+            original.getNbsUiComponentUid(),
+            original.getParentUid(),
+            original.getQuestionLabel(),
+            original.getQuestionToolTip(),
+            original.getEnableInd(),
+            original.getDefaultValue(),
+            original.getDisplayInd(),
+            original.getOrderNbr(),
+            original.getRequiredInd(),
+            original.getAddTime(),
+            original.getAddUserId(),
+            original.getLastChgTime(),
+            original.getLastChgUserId(),
+            original.getRecordStatusCd(),
+            original.getRecordStatusTime(),
+            original.getMaxLength(),
+            original.getAdminComment(),
+            original.getVersionCtrlNbr(),
+            original.getFieldSize(),
+            original.getFutureDateIndCd(),
+            original.getLocalId(),
+            original.getCodeSetGroupId(),
+            original.getDataCd(),
+            original.getDataLocation(),
+            original.getDataType(),
+            original.getDataUseCd(),
+            original.getLegacyDataLocation(),
+            original.getPartTypeCd(),
+            original.getQuestionGroupSeqNbr(),
+            original.getQuestionIdentifier(),
+            original.getQuestionOid(),
+            original.getQuestionOidSystemTxt(),
+            original.getQuestionUnitIdentifier(),
+            original.getRepeatsIndCd(),
+            original.getUnitParentIdentifier(),
+            original.getGroupNm(),
+            original.getSubGroupNm(),
+            original.getDescTxt(),
+            original.getMask(),
+            original.getEntryMethod(),
+            original.getQuestionType(),
+            original.getPublishIndCd(),
+            original.getMinValue(),
+            original.getMaxValue(),
+            original.getStandardQuestionIndCd(),
+            original.getStandardNndIndCd(),
+            original.getQuestionNm(),
+            original.getUnitTypeCd(),
+            original.getUnitValue(),
+            original.getOtherValueIndCd(),
+            original.getBatchTableAppearIndCd(),
+            original.getBatchTableHeader(),
+            original.getBatchTableColumnWidth(),
+            original.getCoinfectionIndCd(),
+            original.getBlockNm(),
+            null,
+            null);
 
     if (original.getWaRdbMetadatum() != null) {
       WaRdbMetadata rdbMetadata = WaRdbMetadata.clone(original.getWaRdbMetadatum(), page, cloned);
@@ -795,8 +783,12 @@ public class WaUiMetadata {
   }
 
   public void updateQuestionBatch(PageContentCommand.GroupSubsection command, int groupSeqNbr) {
-    GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst()
-        .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
+    GroupSubSectionRequest.Batch batch =
+        command.batches().stream()
+            .filter(b -> b.id() == this.id)
+            .findFirst()
+            .orElseThrow(
+                () -> new PageContentModificationException("Failed to find batch to update"));
 
     this.blockNm = command.blockName().toUpperCase();
     this.batchTableAppearIndCd = batch.appearsInTable() ? 'Y' : 'N';
@@ -845,11 +837,16 @@ public class WaUiMetadata {
 
   @Override
   public String toString() {
-    return "WaUiMetadata{" +
-        "id=" + id +
-        ", type=" + nbsUiComponentUid +
-        ", name='" + questionLabel + '\'' +
-        ", order=" + orderNbr +
-        '}';
+    return "WaUiMetadata{"
+        + "id="
+        + id
+        + ", type="
+        + nbsUiComponentUid
+        + ", name='"
+        + questionLabel
+        + '\''
+        + ", order="
+        + orderNbr
+        + '}';
   }
 }

@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { RepeatingBlock } from './RepeatingBlock';
 import { Controller, useFormContext } from 'react-hook-form';
 import { SingleSelect } from 'design-system/select';
 import { asSelectable, Selectable } from 'options';
 import { Orientation, Sizing } from 'design-system/field';
 import { TextInputField } from 'design-system/input/text';
-import { RepeatingBlock } from './RepeatingBlock';
 import { DetailValue, DetailView } from './view/DetailView';
 
 type SampleType = {
@@ -15,7 +15,7 @@ type SampleType = {
 
 const meta = {
     title: 'Design System/Multi-value/RepeatingBlock',
-    component: RepeatingBlock<SampleType>
+    component: RepeatingBlock<SampleType>,
 } satisfies Meta<typeof RepeatingBlock<SampleType>>;
 
 export default meta;
@@ -27,7 +27,7 @@ const options: Selectable[] = [
     asSelectable('eggplant', 'Eggplant'),
     asSelectable('onion', 'Onion'),
     asSelectable('potato', 'Potato'),
-    asSelectable('tomato', 'Tomato')
+    asSelectable('tomato', 'Tomato'),
 ];
 
 const SampleForm = ({ sizing, orientation = 'horizontal' }: { sizing?: Sizing; orientation?: Orientation }) => {
@@ -105,24 +105,24 @@ const columns = [
     {
         id: 'firstName',
         name: 'First name',
-        value: (entry: SampleType) => entry.firstName
+        value: (entry: SampleType) => entry.firstName,
     },
     {
         id: 'lastName',
         name: 'Last name',
-        value: (entry: SampleType) => entry.lastName
+        value: (entry: SampleType) => entry.lastName,
     },
     {
         id: 'veggie',
         name: 'Favorite veggie',
-        value: (entry: SampleType) => entry.veggie?.name
-    }
+        value: (entry: SampleType) => entry.veggie?.name,
+    },
 ];
 
 const defaultValue: Partial<SampleType> = {
     firstName: undefined,
     lastName: undefined,
-    veggie: undefined
+    veggie: undefined,
 };
 
 const handleChange = (values: SampleType[]) => {
@@ -137,28 +137,28 @@ export const Default: Story = {
         columns,
         data: [
             { firstName: 'test', lastName: 'test', veggie: asSelectable('carrot', 'Carrot') },
-            { firstName: 'test1', lastName: 'test1', veggie: asSelectable('eggplant', 'Eggplant') }
+            { firstName: 'test1', lastName: 'test1', veggie: asSelectable('eggplant', 'Eggplant') },
         ],
         formRenderer: (_entry, sizing) => <SampleForm sizing={sizing} />,
         viewRenderer: (entry) => <SampleView entry={entry} />,
         onChange: handleChange,
         isDirty: () => {},
-        isValid: () => {}
-    }
+        isValid: () => {},
+    },
 };
 
 export const ViewOnly: Story = {
     args: {
         ...Default.args,
         viewable: true,
-        editable: false
-    }
+        editable: false,
+    },
 };
 
 export const EditableOnly: Story = {
     args: {
         ...Default.args,
         viewable: false,
-        editable: true
-    }
+        editable: true,
+    },
 };

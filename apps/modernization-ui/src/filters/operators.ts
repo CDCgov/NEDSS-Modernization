@@ -12,7 +12,7 @@ export type {
     DatePeriodOperator,
     DateRangeOperator,
     PartialValueOperator,
-    ExactValueOperator
+    ExactValueOperator,
 };
 
 const isPartialValueProperty = (operator?: ValueOperator) =>

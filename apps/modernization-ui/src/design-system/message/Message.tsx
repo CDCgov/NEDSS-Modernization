@@ -22,8 +22,9 @@ const Message = ({ type, children, ...remaining }: MessageProps) => {
                     [styles.information]: type == 'information',
                     [styles.success]: type == 'success',
                     [styles.warning]: type == 'warning',
-                    [styles.error]: type == 'error'
-                })}>
+                    [styles.error]: type == 'error',
+                })}
+            >
                 {icon && <Icon name={icon} sizing="large" />}
             </div>
             <div className={styles.content} id={id}>

@@ -22,7 +22,7 @@ describe('Hint', () => {
         const { container } = render(<Fixture />);
 
         const icon = container.querySelector('svg use');
-        expect(icon).toHaveAttribute('xlink:href', 'undefined#info_outline');
+        expect(icon?.getAttribute('xlink:href')).toContain('sprite.svg#info_outline');
     });
 
     it('should display the custom target instead of the icon when provided', () => {

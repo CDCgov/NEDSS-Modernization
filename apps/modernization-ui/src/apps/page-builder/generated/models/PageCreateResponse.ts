@@ -7,4 +7,3 @@ export type PageCreateResponse = {
     pageName?: string;
     message?: string;
 };
-

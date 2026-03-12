@@ -22,14 +22,14 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
         setShowConfirm(false);
         fetch('/nbs/ResetCache.do?method=resetLabMappingCache', {
             method: 'GET',
-            credentials: 'include'
+            credentials: 'include',
         })
             .then((res) => {
                 if (!res.ok) throw new Error('Non-200 response');
                 setAlert({
                     type: 'success',
                     message:
-                        'Labtest program area mapping cache has been successfully reset. Please restart Wildfly to reflect the changes.'
+                        'Labtest program area mapping cache has been successfully reset. Please restart Wildfly to reflect the changes.',
                 });
             })
             .catch(() => {
@@ -74,7 +74,8 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
                 title="Case report & laboratory"
                 level={2}
                 collapsible={true}
-                className={styles.card}>
+                className={styles.card}
+            >
                 <div className={styles.sectionContent}>
                     {/* Render ungrouped links first */}
                     {grouped.length > 0 && grouped[0].title === undefined && (
@@ -115,7 +116,8 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
                             title="Reset Lab Mapping Cache"
                             confirmText="Yes, reset"
                             onConfirm={handleConfirm}
-                            onCancel={handleCancel}>
+                            onCancel={handleCancel}
+                        >
                             Are you sure you want to reset lab mapping cache?
                         </Confirmation>
                     )}

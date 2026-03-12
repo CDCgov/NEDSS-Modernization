@@ -18,6 +18,30 @@ class MissingLibraryError(BaseReportExecutionError):
         super().__init__(message, 422)
 
 
+class ResultTooBigError(BaseReportExecutionError):
+    """The returned results are larger than allowed by configuration."""
+
+    def __init__(self, is_export: bool, row_limit: int, num_rows: int):
+        message = (
+            f'Report request resulted in {num_rows} rows.'
+            + f' The limit for {"exporting" if is_export else "running"} reports is'
+            + f' {row_limit} rows. Please refine your filter criteria.'
+        )
+        super().__init__(message, 422)
+
+
+class InternalServerError(BaseReportExecutionError):
+    """An error with the server setup or execution. The message is logged for sys
+    admins, but not passed to the end user.
+    """
+
+    def __init__(self, message, orig_exc=None):
+        logging.error(message)
+        if orig_exc is not None:
+            logging.error(orig_exc)
+        super().__init__('Internal Server Error', 500)
+
+
 class ToDoError(BaseReportExecutionError):
     """An error for a feature that hasn't been implemented yet."""
 

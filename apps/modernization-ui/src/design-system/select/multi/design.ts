@@ -4,7 +4,7 @@ import { CSSObjectWithLabel } from 'react-select';
 const theme = (existing: Theme) => ({
     ...existing,
     borderRadius: 2,
-    colors: { ...existing.colors, primary: '#d9e8f6' }
+    colors: { ...existing.colors, primary: '#d9e8f6' },
 });
 
 const styles = {
@@ -13,8 +13,8 @@ const styles = {
         borderStyle: 'none',
         boxShadow: 'none',
         minHeight: 'unset',
-        height: 'unset'
-    })
+        height: 'unset',
+    }),
 };
 
 export { theme, styles };

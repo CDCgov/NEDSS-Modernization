@@ -1,10 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.page.detail.PagesResolver;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesQuestion;
@@ -13,6 +8,11 @@ import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesSubSection;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesTab;
 import gov.cdc.nbs.questionbank.pagerules.Rule.RuleFunction;
 import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class SourceQuestionFinder {
@@ -20,18 +20,19 @@ public class SourceQuestionFinder {
 
   private static final String COMPONENT_BEHAVIOR_DATA = "_data";
 
-
   SourceQuestionFinder(final PagesResolver pageResolver) {
     this.pageResolver = pageResolver;
   }
 
   public PagesResponse filterQuestions(Long id, SourceQuestionRequest request) {
-    return request.ruleFunction() == RuleFunction.DATE_COMPARE ? filterDateQuestions(id)
+    return request.ruleFunction() == RuleFunction.DATE_COMPARE
+        ? filterDateQuestions(id)
         : filterOtherQuestions(id);
   }
 
   private void processQuestions(PagesQuestion question, Collection<PagesQuestion> questionsResult) {
-    if ("CODED".equals(question.dataType()) && !question.isStandardNnd()
+    if ("CODED".equals(question.dataType())
+        && !question.isStandardNnd()
         && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)
         && ("INV169".equals(question.question())
             || ("CODE_VALUE_GENERAL".equalsIgnoreCase(question.classCode())))) {
@@ -39,16 +40,24 @@ public class SourceQuestionFinder {
     }
   }
 
-  private void processSubsections(PagesSubSection subsection, Collection<PagesSubSection> resultSubSections) {
+  private void processSubsections(
+      PagesSubSection subsection, Collection<PagesSubSection> resultSubSections) {
     Collection<PagesQuestion> questionsResult = new ArrayList<>();
     for (PagesQuestion question : subsection.questions()) {
       processQuestions(question, questionsResult);
     }
 
-    PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
-        subsection.order(),
-        subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
-        subsection.blockName(), questionsResult);
+    PagesSubSection resultSubsection =
+        new PagesSubSection(
+            subsection.id(),
+            subsection.name(),
+            subsection.order(),
+            subsection.visible(),
+            subsection.isGrouped(),
+            subsection.isGroupable(),
+            subsection.questionIdentifier(),
+            subsection.blockName(),
+            questionsResult);
 
     if (!questionsResult.isEmpty()) {
       resultSubSections.add(resultSubsection);
@@ -59,11 +68,11 @@ public class SourceQuestionFinder {
     List<PagesSubSection> resultSubSections = new ArrayList<>();
     for (PagesSubSection subsection : section.subSections()) {
       processSubsections(subsection, resultSubSections);
-
     }
 
     PagesSection resultSection =
-        new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
+        new PagesSection(
+            section.id(), section.name(), section.order(), section.visible(), resultSubSections);
 
     if (!resultSubSections.isEmpty()) {
       resultSections.add(resultSection);
@@ -76,7 +85,8 @@ public class SourceQuestionFinder {
       processSections(section, resultSections);
     }
 
-    PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
+    PagesTab resultTab =
+        new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
 
     if (!resultSections.isEmpty()) {
       resultTabs.add(resultTab);
@@ -96,33 +106,49 @@ public class SourceQuestionFinder {
       }
 
       if (!resultTabs.isEmpty()) {
-        result = new PagesResponse(page.get().id(), page.get().name(), page.get().status(),
-            page.get().description(), page.get().root(), resultTabs, page.get().rules());
+        result =
+            new PagesResponse(
+                page.get().id(),
+                page.get().name(),
+                page.get().status(),
+                page.get().description(),
+                page.get().root(),
+                resultTabs,
+                page.get().rules());
       }
     }
 
     return result;
-
   }
 
-  private void processDateQuestions(PagesQuestion question, Collection<PagesQuestion> questionsResult) {
-    if (("DATE".equals(question.dataType())
-        || "DATETIME".equals(question.dataType())) && !question.isStandardNnd() && question.visible()
+  private void processDateQuestions(
+      PagesQuestion question, Collection<PagesQuestion> questionsResult) {
+    if (("DATE".equals(question.dataType()) || "DATETIME".equals(question.dataType()))
+        && !question.isStandardNnd()
+        && question.visible()
         && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
       questionsResult.add(question);
     }
   }
 
-  private void processDateSubsections(PagesSubSection subsection, Collection<PagesSubSection> resultSubSections) {
+  private void processDateSubsections(
+      PagesSubSection subsection, Collection<PagesSubSection> resultSubSections) {
     Collection<PagesQuestion> questionsResult = new ArrayList<>();
     for (PagesQuestion question : subsection.questions()) {
       processDateQuestions(question, questionsResult);
     }
 
-    PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
-        subsection.order(),
-        subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
-        subsection.blockName(), questionsResult);
+    PagesSubSection resultSubsection =
+        new PagesSubSection(
+            subsection.id(),
+            subsection.name(),
+            subsection.order(),
+            subsection.visible(),
+            subsection.isGrouped(),
+            subsection.isGroupable(),
+            subsection.questionIdentifier(),
+            subsection.blockName(),
+            questionsResult);
 
     if (!questionsResult.isEmpty()) {
       resultSubSections.add(resultSubsection);
@@ -136,7 +162,8 @@ public class SourceQuestionFinder {
     }
 
     PagesSection resultSection =
-        new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
+        new PagesSection(
+            section.id(), section.name(), section.order(), section.visible(), resultSubSections);
 
     if (!resultSubSections.isEmpty()) {
       resultSections.add(resultSection);
@@ -149,7 +176,8 @@ public class SourceQuestionFinder {
       processDateSections(section, resultSections);
     }
 
-    PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
+    PagesTab resultTab =
+        new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
 
     if (!resultSections.isEmpty()) {
       resultTabs.add(resultTab);
@@ -169,8 +197,15 @@ public class SourceQuestionFinder {
       }
 
       if (!resultTabs.isEmpty()) {
-        result = new PagesResponse(page.get().id(), page.get().name(), page.get().status(),
-            page.get().description(), page.get().root(), resultTabs, page.get().rules());
+        result =
+            new PagesResponse(
+                page.get().id(),
+                page.get().name(),
+                page.get().status(),
+                page.get().description(),
+                page.get().root(),
+                resultTabs,
+                page.get().rules());
       }
     }
 

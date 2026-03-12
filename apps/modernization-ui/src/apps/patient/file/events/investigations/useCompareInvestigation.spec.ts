@@ -15,7 +15,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             ).toBe(true);
         });
@@ -31,7 +31,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: false
+                    comparable: false,
                 })
             ).toBe(false);
         });
@@ -47,7 +47,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -59,7 +59,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             ).toBe(true);
         });
@@ -77,7 +77,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -89,7 +89,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -101,7 +101,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             ).toBe(true);
 
@@ -113,7 +113,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             ).toBe(true);
 
@@ -121,8 +121,8 @@ describe('useCompareInvestigation', () => {
                 expect.objectContaining({
                     comparison: expect.objectContaining({
                         selected: 73,
-                        comparedTo: 179
-                    })
+                        comparedTo: 179,
+                    }),
                 })
             );
         });
@@ -138,7 +138,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -149,7 +149,7 @@ describe('useCompareInvestigation', () => {
                 status: 'status-value',
                 jurisdiction: 'jurisdiction-value',
                 local: 'event-value',
-                comparable: true
+                comparable: true,
             });
 
             expect(actual).toBe(true);
@@ -166,7 +166,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -177,7 +177,7 @@ describe('useCompareInvestigation', () => {
                 status: 'status-value',
                 jurisdiction: 'jurisdiction-value',
                 local: 'event-value',
-                comparable: true
+                comparable: true,
             });
 
             expect(actual).toBe(false);
@@ -194,7 +194,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -205,7 +205,7 @@ describe('useCompareInvestigation', () => {
                 status: 'status-value',
                 jurisdiction: 'jurisdiction-value',
                 local: 'event-value',
-                comparable: false
+                comparable: false,
             });
 
             expect(actual).toBe(false);
@@ -222,7 +222,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -234,7 +234,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -245,7 +245,7 @@ describe('useCompareInvestigation', () => {
                 status: 'status-value',
                 jurisdiction: 'jurisdiction-value',
                 local: 'event-value',
-                comparable: true
+                comparable: true,
             });
 
             expect(actual).toBe(false);
@@ -264,7 +264,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -276,7 +276,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -288,7 +288,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             ).toBe(false);
         });
@@ -304,7 +304,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -316,7 +316,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -328,7 +328,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -340,7 +340,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             ).toBe(false);
 
@@ -358,7 +358,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -370,7 +370,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -382,7 +382,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             );
 
@@ -394,7 +394,7 @@ describe('useCompareInvestigation', () => {
                     status: 'status-value',
                     jurisdiction: 'jurisdiction-value',
                     local: 'event-value',
-                    comparable: true
+                    comparable: true,
                 })
             ).toBe(false);
 

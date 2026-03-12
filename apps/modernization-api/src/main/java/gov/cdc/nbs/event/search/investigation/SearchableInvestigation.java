@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import gov.cdc.nbs.search.LocalDateWithTimeJsonDeserializer;
 import gov.cdc.nbs.search.LocalDateWithTimeJsonSerializer;
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -28,24 +27,34 @@ public record SearchableInvestigation(
     @JsonProperty("pregnant_ind_cd") String pregnancyStatus,
     @JsonProperty("local_id") String local,
     @JsonProperty("add_user_id") long createdBy,
-    @JsonProperty("add_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
-        using = LocalDateWithTimeJsonDeserializer.class) LocalDate createdOn,
+    @JsonProperty("add_time")
+        @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class)
+        @JsonDeserialize(using = LocalDateWithTimeJsonDeserializer.class)
+        LocalDate createdOn,
     @JsonProperty("last_chg_user_id") long updatedBy,
-    @JsonProperty("public_health_case_last_chg_time") @JsonSerialize(
-        using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
-            using = LocalDateWithTimeJsonDeserializer.class) LocalDate updatedOn,
-    @JsonProperty("rpt_form_cmplt_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
-        using = LocalDateWithTimeJsonDeserializer.class) LocalDate reportedOn,
-    @JsonProperty("activity_from_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
-        using = LocalDateWithTimeJsonDeserializer.class) LocalDate startedOn,
-    @JsonProperty("activity_to_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
-        using = LocalDateWithTimeJsonDeserializer.class) LocalDate closedOn,
+    @JsonProperty("public_health_case_last_chg_time")
+        @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class)
+        @JsonDeserialize(using = LocalDateWithTimeJsonDeserializer.class)
+        LocalDate updatedOn,
+    @JsonProperty("rpt_form_cmplt_time")
+        @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class)
+        @JsonDeserialize(using = LocalDateWithTimeJsonDeserializer.class)
+        LocalDate reportedOn,
+    @JsonProperty("activity_from_time")
+        @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class)
+        @JsonDeserialize(using = LocalDateWithTimeJsonDeserializer.class)
+        LocalDate startedOn,
+    @JsonProperty("activity_to_time")
+        @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class)
+        @JsonDeserialize(using = LocalDateWithTimeJsonDeserializer.class)
+        LocalDate closedOn,
     @JsonProperty("curr_process_state_cd") String processing,
     @JsonProperty("investigation_status_cd") String status,
     @JsonProperty("notification_local_id") String notification,
-    @JsonProperty("notification_add_time") @JsonSerialize(
-        using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
-            using = LocalDateWithTimeJsonDeserializer.class) LocalDate notifiedOn,
+    @JsonProperty("notification_add_time")
+        @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class)
+        @JsonDeserialize(using = LocalDateWithTimeJsonDeserializer.class)
+        LocalDate notifiedOn,
     @JsonProperty("notification_record_status_cd") String notificationStatus,
     @JsonProperty("investigator_last_nm") String investigatorLastName,
     @JsonProperty("person_participations") List<Person> people,
@@ -127,10 +136,13 @@ public record SearchableInvestigation(
         Collections.emptyList());
   }
 
-  @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "person_cd")
+  @JsonTypeInfo(
+      use = JsonTypeInfo.Id.NAME,
+      include = JsonTypeInfo.As.EXISTING_PROPERTY,
+      property = "person_cd")
   @JsonSubTypes({
-      @JsonSubTypes.Type(value = SearchableInvestigation.Person.Patient.class, name = "PAT"),
-      @JsonSubTypes.Type(value = SearchableInvestigation.Person.Provider.class, name = "PRV")
+    @JsonSubTypes.Type(value = SearchableInvestigation.Person.Patient.class, name = "PAT"),
+    @JsonSubTypes.Type(value = SearchableInvestigation.Person.Provider.class, name = "PRV")
   })
   public sealed interface Person {
 
@@ -138,7 +150,6 @@ public record SearchableInvestigation(
     String code();
 
     record Patient(
-
         @JsonProperty("person_parent_uid") long identifier,
         @JsonProperty("local_id") String local,
         @JsonProperty("type_cd") String type,
@@ -146,8 +157,10 @@ public record SearchableInvestigation(
         @JsonProperty("first_name") String firstName,
         @JsonProperty("last_name") String lastName,
         @JsonProperty("curr_sex_cd") String gender,
-        @JsonProperty("birth_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
-            using = LocalDateWithTimeJsonDeserializer.class) LocalDate birthday)
+        @JsonProperty("birth_time")
+            @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class)
+            @JsonDeserialize(using = LocalDateWithTimeJsonDeserializer.class)
+            LocalDate birthday)
         implements Person {
       @Override
       public String code() {
@@ -155,12 +168,12 @@ public record SearchableInvestigation(
       }
     }
 
-
     record Provider(
         @JsonProperty("entity_id") long identifier,
         @JsonProperty("type_cd") String type,
         @JsonProperty("first_name") String firstName,
-        @JsonProperty("last_name") String lastName) implements Person {
+        @JsonProperty("last_name") String lastName)
+        implements Person {
       @Override
       public String code() {
         return "PRV";
@@ -168,16 +181,11 @@ public record SearchableInvestigation(
     }
   }
 
-
   public record Organization(
-      @JsonProperty("entity_id") long identifier,
-      @JsonProperty("type_cd") String type) {
-  }
-
+      @JsonProperty("entity_id") long identifier, @JsonProperty("type_cd") String type) {}
 
   public record Identifier(
       @JsonProperty("act_id_seq") int sequence,
       @JsonProperty("type_cd") String type,
-      @JsonProperty("root_extension_txt") String value) {
-  }
+      @JsonProperty("root_extension_txt") String value) {}
 }

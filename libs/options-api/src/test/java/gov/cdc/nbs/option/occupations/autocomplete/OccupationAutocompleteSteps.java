@@ -10,9 +10,7 @@ public class OccupationAutocompleteSteps {
   private final Active<ResultActions> response;
 
   OccupationAutocompleteSteps(
-      final OccupationOptionAutocompleteRequester request,
-      final Active<ResultActions> response
-  ) {
+      final OccupationOptionAutocompleteRequester request, final Active<ResultActions> response) {
     this.request = request;
     this.response = response;
   }
@@ -23,11 +21,8 @@ public class OccupationAutocompleteSteps {
   }
 
   @When("I am trying to find at most {int} occupation(s) that start with {string}")
-  public void i_am_trying_to_find_n_options_that_start_with(
-      final int limit,
-      final String criteria
-  ) throws Exception {
+  public void i_am_trying_to_find_n_options_that_start_with(final int limit, final String criteria)
+      throws Exception {
     response.active(request.complete(criteria, limit));
   }
-
 }

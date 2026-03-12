@@ -37,7 +37,7 @@ const PatientDataEntryMethodProvider = ({ children }: Props) => {
 
     const value: PatientDataEntryMethodInteraction = {
         toExtended,
-        toBasic
+        toBasic,
     };
 
     return <PatientDataEntryMethodContext.Provider value={value}>{children}</PatientDataEntryMethodContext.Provider>;

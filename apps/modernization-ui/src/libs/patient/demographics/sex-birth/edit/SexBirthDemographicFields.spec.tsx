@@ -10,13 +10,13 @@ import { genders } from 'options/gender';
 import { indicators } from 'options/indicator';
 import { LocationOptions } from 'options/location';
 
-const mockState = jest.fn();
+const mockState = vi.fn();
 
 const location: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: mockState
+    state: mockState,
 };
 
 const mockSexBirthCodedValues: SexBirthOptions = {
@@ -24,12 +24,12 @@ const mockSexBirthCodedValues: SexBirthOptions = {
     preferredGenders: [{ name: 'FTM', value: 'FTM' }],
     genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
     multipleBirth: indicators,
-    location
+    location,
 };
 
 const Fixture = () => {
     const form = useForm<PatientDemographics>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     const deceasedOn = useWatch({ control: form.control, name: 'mortality.deceasedOn' });

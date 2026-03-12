@@ -1,37 +1,30 @@
-import { render } from "@testing-library/react"
-import { SuccessModal } from "./SuccessModal"
-import { Button } from "@trussworks/react-uswds";
+import { render } from '@testing-library/react';
+import { SuccessModal } from './SuccessModal';
+import { Button } from '@trussworks/react-uswds';
 
 describe('when SuccessModal renders', () => {
     const modal = { current: null };
     const { container } = render(
         <SuccessModal
-        modal={modal}
-        title="Test heading"
-        actions={
-            <>
-                <Button
-                    type="button"
-                    outline
-                    onClick={() => jest.fn()}>
-                    Test 1
-                </Button>
-                <Button
-                    type="button"
-                    outline
-                    onClick={() => jest.fn()}>
-                    Test 2
-                </Button>
-                <Button
-                    type="button"
-                    onClick={() => jest.fn()}>
-                    Test 3
-                </Button>
-            </>
-        }>
-        <h3>Test subheader</h3>
-        <p>Test descrption.</p>
-    </SuccessModal>
+            modal={modal}
+            title="Test heading"
+            actions={
+                <>
+                    <Button type="button" outline onClick={() => vi.fn()}>
+                        Test 1
+                    </Button>
+                    <Button type="button" outline onClick={() => vi.fn()}>
+                        Test 2
+                    </Button>
+                    <Button type="button" onClick={() => vi.fn()}>
+                        Test 3
+                    </Button>
+                </>
+            }
+        >
+            <h3>Test subheader</h3>
+            <p>Test descrption.</p>
+        </SuccessModal>
     );
 
     it('should display heading title', () => {
@@ -47,5 +40,5 @@ describe('when SuccessModal renders', () => {
     it('should display action buttons', () => {
         const actions = container.getElementsByTagName('button');
         expect(actions).toBeTruthy();
-    })
-})
+    });
+});

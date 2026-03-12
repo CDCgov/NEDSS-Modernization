@@ -59,8 +59,6 @@ public class Active<I> {
   }
 
   public I active() {
-    return maybeActive()
-        .orElseThrow(() -> new IllegalStateException("there is nothing active"));
+    return maybeActive().orElseThrow(() -> new IllegalStateException("there is nothing active"));
   }
-
 }

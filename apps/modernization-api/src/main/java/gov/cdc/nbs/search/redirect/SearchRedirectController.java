@@ -9,17 +9,13 @@ import org.springframework.web.servlet.view.RedirectView;
 class SearchRedirectController {
   private final SearchRedirect searchRedirect;
 
-
-
   SearchRedirectController(final SearchRedirect searchRedirect) {
     this.searchRedirect = searchRedirect;
   }
 
-
-
   /**
-   * Intercepts legacy advanced search page requests, pulls out the current user from the JSESSIONID, and forwards the
-   * request to the modernization search page
+   * Intercepts legacy advanced search page requests, pulls out the current user from the
+   * JSESSIONID, and forwards the request to the modernization search page
    */
   @Hidden
   @GetMapping("/nbs/redirect/advancedSearch")

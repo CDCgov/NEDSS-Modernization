@@ -42,7 +42,7 @@ const HeaderFilterField = ({ descriptor, label, filtering, sizing }: HeaderFilte
                 className={classNames(styles.filter, {
                     [styles.small]: sizing === 'small',
                     [styles.medium]: sizing === 'medium',
-                    [styles.large]: sizing === 'large'
+                    [styles.large]: sizing === 'large',
                 })}
                 id={`text-filter-${descriptor.id}`}
                 name={label}

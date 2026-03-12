@@ -1,5 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
+import static java.util.function.Predicate.not;
+
 import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.RecordStatus;
 import gov.cdc.nbs.audit.Status;
@@ -12,20 +14,19 @@ import gov.cdc.nbs.patient.demographic.name.PatientLegalNameResolver;
 import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Predicate;
-
-import static java.util.function.Predicate.not;
-
 
 @Entity
 @SuppressWarnings({"javaarchitecture:S7027", "javaarchitecture:S7027", "javaarchitecture:S7091"})
 //  Bidirectional mappings require knowledge of each other
 public class Person {
-  public static final Predicate<EntityLocatorParticipation> BIRTH_PLACE = EntityLocatorParticipation.withUse("BIR");
-  public static final Predicate<EntityLocatorParticipation> DEATH_PLACE = EntityLocatorParticipation.withUse("DTH");
+  public static final Predicate<EntityLocatorParticipation> BIRTH_PLACE =
+      EntityLocatorParticipation.withUse("BIR");
+  public static final Predicate<EntityLocatorParticipation> DEATH_PLACE =
+      EntityLocatorParticipation.withUse("DTH");
+
   @Id
   @Column(name = "person_uid")
   private Long id;
@@ -53,33 +54,25 @@ public class Person {
   @MapsId
   @OneToOne(
       fetch = FetchType.EAGER,
-      cascade = {
-          CascadeType.PERSIST,
-          CascadeType.MERGE,
-          CascadeType.REMOVE
-      }, optional = false)
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+      optional = false)
   @JoinColumn(name = "person_uid", nullable = false)
   private NBSEntity nbsEntity;
 
   // administrative
-  @Embedded
-  private PatientAdministrativeInformation administrative;
+  @Embedded private PatientAdministrativeInformation administrative;
 
   // general information
-  @Embedded
-  private GeneralInformation generalInformation;
+  @Embedded private GeneralInformation generalInformation;
 
   // Mortality
-  @Embedded
-  private PatientMortality mortality;
+  @Embedded private PatientMortality mortality;
 
   // Ethnicity
-  @Embedded
-  private PatientEthnicity ethnicity;
+  @Embedded private PatientEthnicity ethnicity;
 
   // Sex & birth
-  @Embedded
-  private PatientSexBirth sexBirth;
+  @Embedded private PatientSexBirth sexBirth;
 
   // Names
   // The name fields on Person are redundant, a patient's name is resolved from
@@ -102,24 +95,17 @@ public class Person {
   @OneToMany(
       mappedBy = "personUid",
       fetch = FetchType.EAGER,
-      cascade = {
-          CascadeType.PERSIST,
-          CascadeType.MERGE,
-          CascadeType.REMOVE
-      }, orphanRemoval = true)
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+      orphanRemoval = true)
   private List<PersonName> names;
 
-  @Embedded
-  private PatientRaceDemographics race;
+  @Embedded private PatientRaceDemographics race;
 
-  @Embedded
-  private Audit audit;
+  @Embedded private Audit audit;
 
-  @Embedded
-  private RecordStatus recordStatus;
+  @Embedded private RecordStatus recordStatus;
 
-  @Embedded
-  private Status status;
+  @Embedded private Status status;
 
   protected Person() {
     this.audit = new Audit();
@@ -139,7 +125,6 @@ public class Person {
     this.cd = "PAT";
     this.electronicInd = 'N';
     this.edxInd = "Y";
-
   }
 
   public Person(final PatientCommand.CreatePatient patient) {
@@ -156,12 +141,7 @@ public class Person {
 
     PersonNameId identifier = PersonNameId.from(this.id, existing.size() + 1);
 
-    PersonName personName = new PersonName(
-        identifier,
-        this,
-        resolver,
-        added
-    );
+    PersonName personName = new PersonName(identifier, this, resolver, added);
 
     existing.add(personName);
 
@@ -203,7 +183,9 @@ public class Person {
   }
 
   public List<PersonName> names() {
-    return this.names == null ? List.of() : this.names.stream().filter(PersonName.active()).toList();
+    return this.names == null
+        ? List.of()
+        : this.names.stream().filter(PersonName.active()).toList();
   }
 
   public Optional<PersonName> legalName(final LocalDate asOf) {
@@ -243,9 +225,7 @@ public class Person {
   }
 
   public EntityLocatorParticipation add(
-      final PatientCommand.AddAddress address,
-      final AddressIdentifierGenerator generator
-  ) {
+      final PatientCommand.AddAddress address, final AddressIdentifierGenerator generator) {
     changed(address);
     return this.nbsEntity.add(address, generator);
   }
@@ -281,9 +261,7 @@ public class Person {
   }
 
   public EntityLocatorParticipation add(
-      final PatientCommand.AddPhone phone,
-      final PhoneIdentifierGenerator generator
-  ) {
+      final PatientCommand.AddPhone phone, final PhoneIdentifierGenerator generator) {
     changed(phone);
     return this.nbsEntity.add(phone, generator);
   }
@@ -319,15 +297,13 @@ public class Person {
 
   public void associate(
       final PermissionScopeResolver resolver,
-      final PatientCommand.AssociateStateHIVCase associate
-  ) {
+      final PatientCommand.AssociateStateHIVCase associate) {
     ensureGeneralInformation().associate(resolver, associate);
   }
 
   public void disassociate(
       final PermissionScopeResolver resolver,
-      final PatientCommand.DisassociateStateHIVCase disassociate
-  ) {
+      final PatientCommand.DisassociateStateHIVCase disassociate) {
     if (this.generalInformation != null) {
       this.generalInformation.disassociate(resolver);
       changed(disassociate);
@@ -367,13 +343,11 @@ public class Person {
       this.nbsEntity.clear(command);
       changed(command);
     }
-
   }
 
   public void update(
       final PatientCommand.UpdateBirth birth,
-      final AddressIdentifierGenerator identifierGenerator
-  ) {
+      final AddressIdentifierGenerator identifierGenerator) {
 
     ensurePatientSexBirth().update(birth);
     this.nbsEntity.update(birth, identifierGenerator);
@@ -396,8 +370,7 @@ public class Person {
 
   public void update(
       final PatientCommand.UpdateMortality info,
-      final AddressIdentifierGenerator identifierGenerator
-  ) {
+      final AddressIdentifierGenerator identifierGenerator) {
     if (this.mortality == null) {
       this.mortality = new PatientMortality();
     }
@@ -414,13 +387,10 @@ public class Person {
       this.nbsEntity.clear(command);
       changed(command);
     }
-
   }
 
-  public void delete(
-      final PatientCommand.Delete delete,
-      final PatientAssociationCountFinder finder
-  ) throws PatientHasAssociatedEventsException {
+  public void delete(final PatientCommand.Delete delete, final PatientAssociationCountFinder finder)
+      throws PatientHasAssociatedEventsException {
 
     long associations = finder.count(this.id);
 
@@ -525,7 +495,6 @@ public class Person {
         generalInformation == null ? 0 : generalInformation.signature(),
         mortality == null ? 0 : mortality.signature(),
         ethnicity == null ? 0 : ethnicity.signature(),
-        sexBirth == null ? 0 : sexBirth.signature()
-    );
+        sexBirth == null ? 0 : sexBirth.signature());
   }
 }

@@ -7,7 +7,7 @@ const defaultRace: MergeRace = {
     raceCode: '2106-3',
     asOf: '2014-03-12T00:00:00.000',
     race: 'White',
-    detailedRaces: 'European'
+    detailedRaces: 'European',
 };
 
 const Fixture = ({ race = defaultRace }: { race?: MergeRace }) => {
@@ -28,7 +28,7 @@ describe('RaceDetails', () => {
             personUid: '1',
             raceCode: '2106-3',
             asOf: '2014-03-11T00:00:00.000',
-            race: 'White'
+            race: 'White',
         };
         const { getByText } = render(<Fixture race={sparseRace} />);
         expect(within(getByText('Detailed race').parentElement!).getByText('---')).toBeInTheDocument();

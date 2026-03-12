@@ -17,11 +17,9 @@ import lombok.Setter;
 @EntityListeners(PatientEthnicityHistoryListener.class)
 @SuppressWarnings(
     //  Bidirectional mappings require knowledge of each other
-    "javaarchitecture:S7027"
-)
+    "javaarchitecture:S7027")
 public class PersonEthnicGroup implements Identifiable<PersonEthnicGroupId> {
-  @EmbeddedId
-  private PersonEthnicGroupId id;
+  @EmbeddedId private PersonEthnicGroupId id;
 
   @MapsId("personUid")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -34,25 +32,16 @@ public class PersonEthnicGroup implements Identifiable<PersonEthnicGroupId> {
   @Column(name = "user_affiliation_txt", length = 20)
   private String userAffiliationTxt;
 
-  @Embedded
-  private Audit audit;
+  @Embedded private Audit audit;
 
-  @Embedded
-  private RecordStatus recordStatus;
+  @Embedded private RecordStatus recordStatus;
 
-  protected PersonEthnicGroup() {
+  protected PersonEthnicGroup() {}
 
-  }
-
-  public PersonEthnicGroup(
-      final Person person,
-      final PatientCommand.AddDetailedEthnicity added) {
-    this.id = new PersonEthnicGroupId(
-        person.id(),
-        added.ethnicity());
+  public PersonEthnicGroup(final Person person, final PatientCommand.AddDetailedEthnicity added) {
+    this.id = new PersonEthnicGroupId(person.id(), added.ethnicity());
 
     this.personUid = person;
-
 
     this.recordStatus = new RecordStatus(added.requestedOn());
     this.audit = new Audit(added.requester(), added.requestedOn());
@@ -73,8 +62,6 @@ public class PersonEthnicGroup implements Identifiable<PersonEthnicGroupId> {
 
   @Override
   public String toString() {
-    return "PersonEthnicGroup{" +
-        "id=" + id +
-        '}';
+    return "PersonEthnicGroup{" + "id=" + id + '}';
   }
 }

@@ -7,7 +7,7 @@ describe('when searching for selectables by value', () => {
             { name: 'name-one', value: 'value-one', label: 'label-one' },
             { name: 'name-two', value: 'value-two', label: 'label-two' },
             { name: 'name-three', value: 'value-three', label: 'label-three' },
-            { name: 'name-four', value: 'value-four', label: 'label-four' }
+            { name: 'name-four', value: 'value-four', label: 'label-four' },
         ];
 
         const actual = findByValue(selectables)('value-three');
@@ -20,7 +20,7 @@ describe('when searching for selectables by value', () => {
             { name: 'name-one', value: 'value-one', label: 'label-one' },
             { name: 'name-two', value: 'value-two', label: 'label-two' },
             { name: 'name-three', value: 'value-three', label: 'label-three' },
-            { name: 'name-four', value: 'value-four', label: 'label-four' }
+            { name: 'name-four', value: 'value-four', label: 'label-four' },
         ];
 
         const actual = findByValue(selectables)('value-unknown');
@@ -33,7 +33,7 @@ describe('when searching for selectables by value', () => {
             { name: 'name-one', value: 'value-one', label: 'label-one' },
             { name: 'name-two', value: 'value-two', label: 'label-two' },
             { name: 'name-three', value: 'value-three', label: 'label-three' },
-            { name: 'name-four', value: 'value-four', label: 'label-four' }
+            { name: 'name-four', value: 'value-four', label: 'label-four' },
         ];
 
         const actual = findByValue(selectables, asSelectable('DEFAULT'))('value-unknown');

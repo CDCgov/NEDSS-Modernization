@@ -14,7 +14,7 @@ function internalizeDateTime(input: string | Date | null | undefined) {
 ${input.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
-    hour12: true
+    hour12: true,
 })}`;
     }
 

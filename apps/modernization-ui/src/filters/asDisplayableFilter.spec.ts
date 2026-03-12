@@ -4,8 +4,8 @@ import { asFilter } from './asDisplayableFilter';
 
 Object.defineProperty(globalThis, 'crypto', {
     value: {
-        randomUUID: () => '69b09298-08e5-43f5-a15d-a37810448b3d'
-    }
+        randomUUID: () => '69b09298-08e5-43f5-a15d-a37810448b3d',
+    },
 });
 
 describe('when a filter is submitted', () => {
@@ -15,7 +15,7 @@ describe('when a filter is submitted', () => {
         const entry: PartialValueEntry = {
             property: 'single-value',
             operator: 'STARTS_WITH',
-            value: 'prefix-value'
+            value: 'prefix-value',
         };
 
         const filter = asFilter(properties)(entry);
@@ -24,7 +24,7 @@ describe('when a filter is submitted', () => {
             expect.objectContaining({
                 id: '69b09298-08e5-43f5-a15d-a37810448b3d',
                 operator: expect.objectContaining({ value: 'STARTS_WITH' }),
-                value: 'prefix-value'
+                value: 'prefix-value',
             })
         );
     });
@@ -35,7 +35,7 @@ describe('when a filter is submitted', () => {
         const entry: ExactValueEntry = {
             property: 'multi-value',
             operator: 'EQUALS',
-            values: ['value-one', 'value-two']
+            values: ['value-one', 'value-two'],
         };
 
         const filter = asFilter(properties)(entry);
@@ -44,7 +44,7 @@ describe('when a filter is submitted', () => {
             expect.objectContaining({
                 id: '69b09298-08e5-43f5-a15d-a37810448b3d',
                 operator: expect.objectContaining({ value: 'EQUALS' }),
-                values: expect.arrayContaining(['value-one', 'value-two'])
+                values: expect.arrayContaining(['value-one', 'value-two']),
             })
         );
     });
@@ -54,7 +54,7 @@ describe('when a filter is submitted', () => {
 
         const entry: DatePeriodFilterEntry = {
             property: 'date',
-            operator: 'TODAY'
+            operator: 'TODAY',
         };
 
         const filter = asFilter(properties)(entry);
@@ -62,7 +62,7 @@ describe('when a filter is submitted', () => {
         expect(filter).toEqual(
             expect.objectContaining({
                 id: '69b09298-08e5-43f5-a15d-a37810448b3d',
-                operator: expect.objectContaining({ value: 'TODAY' })
+                operator: expect.objectContaining({ value: 'TODAY' }),
             })
         );
     });
@@ -74,7 +74,7 @@ describe('when a filter is submitted', () => {
             property: 'date-range',
             operator: 'BETWEEN',
             after: '11/01/2023',
-            before: '11/30/2023'
+            before: '11/30/2023',
         };
 
         const filter = asFilter(properties)(entry);
@@ -84,7 +84,7 @@ describe('when a filter is submitted', () => {
                 id: '69b09298-08e5-43f5-a15d-a37810448b3d',
                 operator: expect.objectContaining({ value: 'BETWEEN' }),
                 after: '11/01/2023',
-                before: '11/30/2023'
+                before: '11/30/2023',
             })
         );
     });

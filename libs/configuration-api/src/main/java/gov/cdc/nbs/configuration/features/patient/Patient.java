@@ -4,14 +4,10 @@ public record Patient(Search search, Profile profile, File file) {
 
   public record Search(Filters filters) {
 
-    public record Filters(boolean enabled) {
-
-    }
-
+    public record Filters(boolean enabled) {}
   }
 
-  public record Profile(Boolean enabled) {
-  }
+  public record Profile(Boolean enabled) {}
 
   public record File(Boolean enabled, MergeHistory mergeHistory) {
     public record MergeHistory(boolean enabled) {}

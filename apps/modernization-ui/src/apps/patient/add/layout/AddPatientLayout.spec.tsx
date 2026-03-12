@@ -4,9 +4,9 @@ import { AddPatientLayout } from './AddPatientLayout';
 import { MemoryRouter } from 'react-router';
 import { PageProvider } from 'page';
 
-jest.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
+vi.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
     __esModule: true,
-    default: jest.fn()
+    default: vi.fn(),
 }));
 
 describe('AddPatientLayout', () => {
@@ -14,7 +14,7 @@ describe('AddPatientLayout', () => {
     const headerTitle = 'Add Patient';
     const sections: NavSection[] = [
         { id: 'section1', label: 'Section 1' },
-        { id: 'section2', label: 'Section 2' }
+        { id: 'section2', label: 'Section 2' },
     ];
     const children = <div>Child Content</div>;
 
@@ -37,10 +37,10 @@ describe('AddPatientLayout', () => {
         const { getByText } = render(
             <MemoryRouter>
                 <PageProvider>
-            <AddPatientLayout actions={headerActions} title={headerTitle} sections={sections}>
-                {children}
-            </AddPatientLayout>
-            </PageProvider>
+                    <AddPatientLayout actions={headerActions} title={headerTitle} sections={sections}>
+                        {children}
+                    </AddPatientLayout>
+                </PageProvider>
             </MemoryRouter>
         );
 

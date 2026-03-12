@@ -1,11 +1,10 @@
 package gov.cdc.nbs.patient.search.email;
 
 import gov.cdc.nbs.patient.search.PatientSearchResult;
+import java.util.Collection;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-
-import java.util.Collection;
 
 @Controller
 class PatientSearchResultEmailResolver {

@@ -50,7 +50,7 @@ const transformer = (demographics: PatientDemographicsEntry): PatientDemographic
         gender,
         birth,
         mortality,
-        general
+        general,
     };
 };
 

@@ -28,8 +28,9 @@ const AdministrativeInformationCard = ({
                 className={classNames(styles.content, {
                     [styles.small]: sizing === 'small',
                     [styles.medium]: sizing === 'medium',
-                    [styles.large]: sizing === 'large'
-                })}>
+                    [styles.large]: sizing === 'large',
+                })}
+            >
                 {orElseNoData(data?.comment)}
             </div>
         </Card>

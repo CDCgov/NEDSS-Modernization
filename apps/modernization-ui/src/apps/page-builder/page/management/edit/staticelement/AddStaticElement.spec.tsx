@@ -8,15 +8,15 @@ import userEvent from '@testing-library/user-event';
 const page: PagesResponse = {
     id: 12039120,
     name: 'test page',
-    status: 'Draft'
+    status: 'Draft',
 };
 
 const fetch = () => {
-    jest.fn();
+    vi.fn();
 };
 
 const refresh = () => {
-    jest.fn();
+    vi.fn();
 };
 
 const Fixture = () => (

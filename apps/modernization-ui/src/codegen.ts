@@ -1,18 +1,12 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-    schema: [
-        {
-            'http://localhost:8080/graphql': {
-                headers: { Authorization: 'Bearer ' + process.env.API_TOKEN }
-            }
-        }
-    ],
+    schema: './src/generated/schema.graphqls',
     documents: './src/generated/**/*.{gql,graphql,graphqls}',
     generates: {
         './src/generated/graphql/schema.ts': {
-            plugins: ['typescript', 'typescript-operations', 'typescript-react-apollo']
-        }
-    }
+            plugins: ['typescript', 'typescript-operations', 'typescript-react-apollo'],
+        },
+    },
 };
 export default config;

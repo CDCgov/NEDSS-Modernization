@@ -16,10 +16,10 @@ const mergeCandidates: Partial<MergeCandidate>[] = [
                 extension: '12',
                 email: 'email@email.com',
                 url: 'url@url.com',
-                comments: 'phone comment'
-            }
-        ]
-    }
+                comments: 'phone comment',
+            },
+        ],
+    },
 ];
 const Fixture = () => {
     const form = useForm();

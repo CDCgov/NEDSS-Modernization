@@ -7,10 +7,10 @@ import { ScrollToTop } from './ScrollToTop';
 
 expect.extend(toHaveNoViolations);
 
-const mockScrollTo = jest.fn();
+const mockScrollTo = vi.fn();
 Object.defineProperty(window, 'scrollTo', {
     value: mockScrollTo,
-    writable: true
+    writable: true,
 });
 
 const renderWithRouter = (component: React.ReactElement, initialEntries = ['/']) => {

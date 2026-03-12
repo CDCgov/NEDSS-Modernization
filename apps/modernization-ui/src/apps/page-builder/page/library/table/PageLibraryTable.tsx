@@ -15,7 +15,7 @@ export enum Column {
     RelatedConditions = 'Related condition(s)',
     Status = 'Status',
     LastUpdate = 'Last updated',
-    LastUpdatedBy = 'Last updated by'
+    LastUpdatedBy = 'Last updated by',
 }
 
 const headers = [
@@ -24,7 +24,7 @@ const headers = [
     { name: Column.RelatedConditions, sortable: false },
     { name: Column.Status, sortable: true },
     { name: Column.LastUpdate, sortable: true },
-    { name: Column.LastUpdatedBy, sortable: true }
+    { name: Column.LastUpdatedBy, sortable: true },
 ];
 
 const asTableRow = (page: PageSummary, enableEdit: boolean): TableBody => ({
@@ -37,20 +37,20 @@ const asTableRow = (page: PageSummary, enableEdit: boolean): TableBody => ({
                     <Link to={`/page-builder/pages/${page.id}`}>{page?.name}</Link>
                 ) : (
                     <a href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}>{page?.name}</a>
-                )
+                ),
         },
         { id: 2, title: page.eventType?.name },
         {
             id: 3,
-            title: <ConditionsDisplay conditions={page.conditions ?? []} />
+            title: <ConditionsDisplay conditions={page.conditions ?? []} />,
         },
         { id: 4, title: page?.status },
         {
             id: 5,
-            title: internalizeDate(page?.lastUpdate)
+            title: internalizeDate(page?.lastUpdate),
         },
-        { id: 6, title: page?.lastUpdateBy }
-    ]
+        { id: 6, title: page?.lastUpdateBy },
+    ],
 });
 
 const asTableRows = (pages: PageSummary[], enableEdit: boolean): TableBody[] =>
@@ -67,7 +67,7 @@ export const PageLibraryTable = ({ enableEdit, summaries, searching = false, onS
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const {
         page: { pageSize, total, current },
-        request
+        request,
     } = usePagination();
 
     useEffect(() => {

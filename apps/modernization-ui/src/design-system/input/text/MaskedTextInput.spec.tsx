@@ -4,7 +4,7 @@ import { MaskedTextInput, MaskedTextInputProps } from './MaskedTextInput';
 
 const Fixture = ({
     id = 'clearable-input',
-    onChange = jest.fn(),
+    onChange = vi.fn(),
     mask = '_',
     ...remaining
 }: Partial<MaskedTextInputProps>) => {

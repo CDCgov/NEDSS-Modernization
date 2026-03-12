@@ -5,13 +5,13 @@ import { PatientMergeForm } from '../../model/PatientMergeForm';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-const onRemove = jest.fn();
+const onRemove = vi.fn();
 const Fixture = () => {
     const form = useForm<PatientMergeForm>();
     const data: Partial<MergeCandidate>[] = [
         { personUid: '100', personLocalId: '001' },
         { personUid: '200', personLocalId: '002' },
-        { personUid: '300', personLocalId: '003' }
+        { personUid: '300', personLocalId: '003' },
     ];
     return (
         <FormProvider {...form}>

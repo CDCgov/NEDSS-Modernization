@@ -24,7 +24,7 @@ export const useMatchConfiguration = (lazy = false) => {
             name: 'New pass configuration',
             blockingCriteria: [],
             matchingCriteria: [],
-            active: false
+            active: false,
         };
         setPasses([newPass, ...passes.filter((p) => p.id !== undefined)]);
         setSelectedPass(newPass);
@@ -36,8 +36,8 @@ export const useMatchConfiguration = (lazy = false) => {
         fetch(`${Config.deduplicationUrl}/configuration`, {
             method: 'GET',
             headers: {
-                Accept: 'application/json'
-            }
+                Accept: 'application/json',
+            },
         })
             .then((response) => {
                 if (!response.ok) {
@@ -70,8 +70,8 @@ export const useMatchConfiguration = (lazy = false) => {
             fetch(`${Config.deduplicationUrl}/configuration/pass/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    Accept: 'application/json'
-                }
+                    Accept: 'application/json',
+                },
             })
                 .then((response) => {
                     if (!response.ok) {
@@ -131,9 +131,9 @@ export const useMatchConfiguration = (lazy = false) => {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
             },
-            body: JSON.stringify(pass)
+            body: JSON.stringify(pass),
         })
             .then((response) => {
                 if (!response.ok) {
@@ -166,9 +166,9 @@ export const useMatchConfiguration = (lazy = false) => {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
             },
-            body: JSON.stringify(pass)
+            body: JSON.stringify(pass),
         })
             .then((response) => {
                 if (!response.ok) {
@@ -191,8 +191,8 @@ export const useMatchConfiguration = (lazy = false) => {
         fetch(`${Config.deduplicationUrl}/configuration/export`, {
             method: 'GET',
             headers: {
-                Accept: 'application/json'
-            }
+                Accept: 'application/json',
+            },
         }).then((response) => {
             response.blob().then((blob) => {
                 const url = window.URL.createObjectURL(blob);
@@ -212,9 +212,9 @@ export const useMatchConfiguration = (lazy = false) => {
         fetch(`${Config.deduplicationUrl}/configuration/import`, {
             method: 'POST',
             headers: {
-                Accept: 'application/json'
+                Accept: 'application/json',
             },
-            body: formData
+            body: formData,
         })
             .then((response) => {
                 if (!response.ok) {
@@ -247,6 +247,6 @@ export const useMatchConfiguration = (lazy = false) => {
         selectPass,
         addPass,
         exportAlgorithm,
-        importAlgorithm
+        importAlgorithm,
     };
 };

@@ -28,6 +28,5 @@ class ClassicClonePagePreparer {
     this.previewPageRequester.request(page);
     //  simulates navigating to Page Details
     this.pageDetailsRequester.request();
-
   }
 }

@@ -1,15 +1,14 @@
 package gov.cdc.nbs.option.concept;
 
+import java.util.Arrays;
+import java.util.Collection;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-
 class CodeValueGeneralConceptOptionFinder implements ConceptOptionFinder {
 
-  private static final String ALL = """
+  private static final String ALL =
+      """
       select
           code                as [value],
           code_short_desc_txt as [name],
@@ -21,7 +20,8 @@ class CodeValueGeneralConceptOptionFinder implements ConceptOptionFinder {
           code_short_desc_txt
       """;
 
-  private static final String EXCLUDING = """
+  private static final String EXCLUDING =
+      """
       select
           code                as [value],
           code_short_desc_txt as [name],
@@ -48,18 +48,15 @@ class CodeValueGeneralConceptOptionFinder implements ConceptOptionFinder {
   }
 
   private Collection<ConceptOption> all(final String valueSet) {
-    return this.client.sql(ALL)
-        .param("name", valueSet)
-        .query(this.mapper)
-        .list();
+    return this.client.sql(ALL).param("name", valueSet).query(this.mapper).list();
   }
 
   private Collection<ConceptOption> excluding(final String valueSet, final String... excluding) {
-    return this.client.sql(EXCLUDING)
+    return this.client
+        .sql(EXCLUDING)
         .param("name", valueSet)
         .param("excluding", Arrays.asList(excluding))
         .query(this.mapper)
         .list();
   }
-
 }

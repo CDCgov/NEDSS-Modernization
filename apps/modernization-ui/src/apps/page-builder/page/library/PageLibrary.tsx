@@ -12,7 +12,7 @@ import {
     Date,
     DateRange,
     MultiValue,
-    SingleValue
+    SingleValue,
 } from 'apps/page-builder/generated';
 import { PageBuilder } from 'apps/page-builder/pages/PageBuilder/PageBuilder';
 import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
@@ -56,9 +56,9 @@ const PageLibraryContent = () => {
         PageSummaryDownloadControllerService.csv({
             requestBody: {
                 search: keyword,
-                filters: externalize(filters) as ApiFilter
+                filters: externalize(filters) as ApiFilter,
             },
-            sort: sorting ? [sorting] : ['id,asc']
+            sort: sorting ? [sorting] : ['id,asc'],
         }).then((file) => download({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' }));
     };
 

@@ -2,8 +2,8 @@ import { render } from '@testing-library/react';
 import { PersonMatchHeader } from './PersonMatchHeader';
 import userEvent from '@testing-library/user-event';
 
-const onImportClick = jest.fn();
-const onNavClick = jest.fn();
+const onImportClick = vi.fn();
+const onNavClick = vi.fn();
 
 describe('PersonMatchHeader', () => {
     it('should not render buttons by default', () => {

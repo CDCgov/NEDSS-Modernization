@@ -6,4 +6,3 @@ export type UpdateValueSetRequest = {
     name?: string;
     description?: string;
 };
-

@@ -3,11 +3,11 @@ import {
     evaluateEthnicity,
     evaluateGeneralInformation,
     evaluateMortality,
-    evaluateSexBirth
+    evaluateSexBirth,
 } from './evaluated';
 
-jest.mock('design-system/date/clock', () => ({
-    now: () => '2013-09-17T00:00:00'
+vi.mock('design-system/date/clock', () => ({
+    now: () => '2013-09-17T00:00:00',
 }));
 
 describe('when evaluating PatientDemographicEntry', () => {

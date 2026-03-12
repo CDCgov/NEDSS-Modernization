@@ -30,7 +30,6 @@ type HintProps = {
  * An accompanying `aria-describedby` should be set on the described element.
  * Ex: `<div aria-describedby='my-hint'>Something confusing</div><Hint id='my-hint'>More info</Hint>`
  * @return {Hint}
-
  */
 const Hint = ({ id, enabled = true, children, target, position }: HintProps) => {
     const [visible, setVisible] = useState(false);
@@ -43,7 +42,7 @@ const Hint = ({ id, enabled = true, children, target, position }: HintProps) => 
 
                 setPlacement({
                     top: top + height + 1,
-                    left: left + width / 2
+                    left: left + width / 2,
                 });
             }
         },
@@ -57,9 +56,8 @@ const Hint = ({ id, enabled = true, children, target, position }: HintProps) => 
             <div ref={targeted}>
                 <Shown
                     when={hasTarget}
-                    fallback={
-                        <Icon name="info_outline" sizing="small" className={styles.info} aria-describedby={id} />
-                    }>
+                    fallback={<Icon name="info_outline" sizing="small" className={styles.info} aria-describedby={id} />}
+                >
                     {renderTarget(id, target)}
                 </Shown>
             </div>
@@ -70,8 +68,9 @@ const Hint = ({ id, enabled = true, children, target, position }: HintProps) => 
                             className={classNames(styles.container, {
                                 [styles.visible]: visible,
                                 [styles.left]: position === 'left',
-                                [styles.center]: position === 'center'
-                            })}>
+                                [styles.center]: position === 'center',
+                            })}
+                        >
                             <HintPanel id={id}>{children}</HintPanel>
                         </div>
                     </div>,

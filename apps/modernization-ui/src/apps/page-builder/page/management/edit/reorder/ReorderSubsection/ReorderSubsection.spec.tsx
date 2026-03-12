@@ -21,18 +21,18 @@ describe('when ReorderSubsection renders', () => {
                         name: 'Section1',
                         order: 1,
                         subSections: [],
-                        visible: true
+                        visible: true,
                     },
                     {
                         id: 5678,
                         name: 'Section2',
                         order: 2,
                         subSections: [],
-                        visible: true
-                    }
-                ]
-            }
-        ]
+                        visible: true,
+                    },
+                ],
+            },
+        ],
     };
     const subsection: PagesSubSection = {
         id: 123456,
@@ -57,7 +57,7 @@ describe('when ReorderSubsection renders', () => {
                 standard: 'asdf',
                 required: true,
                 subGroup: 'asdf',
-                order: 1
+                order: 1,
             },
             {
                 allowFutureDates: true,
@@ -74,10 +74,10 @@ describe('when ReorderSubsection renders', () => {
                 standard: 'asdf',
                 required: false,
                 subGroup: 'asdf',
-                order: 2
-            }
+                order: 2,
+            },
         ],
-        visible: true
+        visible: true,
     };
     const { container } = render(
         <DragDropProvider pageData={content}>

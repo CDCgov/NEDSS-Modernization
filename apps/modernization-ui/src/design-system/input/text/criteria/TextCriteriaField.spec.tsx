@@ -8,8 +8,8 @@ const renderComponent = (props: Partial<TextCriteriaFieldProps> = {}) => {
     const combinedProps: TextCriteriaFieldProps = {
         id: 'test-operator-input',
         label: 'test-operator-input',
-        onChange: jest.fn(),
-        ...props
+        onChange: vi.fn(),
+        ...props,
     };
     return render(<TextCriteriaField {...combinedProps} />);
 };
@@ -81,7 +81,7 @@ describe('TextCriteriaField', () => {
     it('fires onChange event with input text changed', async () => {
         const user = userEvent.setup();
 
-        const handleChange = jest.fn();
+        const handleChange = vi.fn();
         const initialValue: TextCriteria = { equals: 'hello' };
         const { getByLabelText } = renderComponent({ value: initialValue, onChange: handleChange });
 
@@ -95,7 +95,7 @@ describe('TextCriteriaField', () => {
     it('fires onChange event with selection changed', async () => {
         const user = userEvent.setup();
 
-        const handleChange = jest.fn();
+        const handleChange = vi.fn();
         const initialValue: TextCriteria = { equals: 'hello' };
         const { getByRole } = renderComponent({ value: initialValue, onChange: handleChange });
 

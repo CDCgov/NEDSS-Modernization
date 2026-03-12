@@ -7,7 +7,7 @@ import {
     validZipCodeRule,
     ZipCodeInputField,
     validCensusTractRule,
-    CensusTractInputField
+    CensusTractInputField,
 } from 'libs/demographics/location';
 import { useLocationOptions } from 'options/location';
 import { maxLengthRule } from 'validation/entry';

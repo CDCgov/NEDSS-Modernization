@@ -5,7 +5,7 @@ import { RaceDemographic } from '../race';
 import { RaceDemographicFields, RaceDemographicFieldsProps } from './RaceDemographicFields';
 import { RaceOptions } from './useRaceOptions';
 
-const mockSelected = jest.fn();
+const mockSelected = vi.fn();
 
 type Props = Partial<RaceDemographicFieldsProps> & { entry?: RaceDemographic } & Partial<RaceOptions>;
 
@@ -13,12 +13,12 @@ const Fixture = ({
     categories = [],
     details = [],
     selected = mockSelected,
-    categoryValidator = jest.fn().mockResolvedValue('true'),
-    entry
+    categoryValidator = vi.fn().mockResolvedValue('true'),
+    entry,
 }: Props) => {
     const form = useForm<RaceDemographic>({
         mode: 'onBlur',
-        defaultValues: entry
+        defaultValues: entry,
     });
 
     const options = { categories, details, selected };
@@ -57,7 +57,7 @@ describe('Race entry fields', () => {
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
                 details={[{ value: 'detailed', name: 'detailed race' }]}
             />
@@ -75,7 +75,7 @@ describe('Race entry fields', () => {
             id: 389,
             asOf: '05/08/2013',
             race: { value: 'selected', name: 'selected name' },
-            detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }]
+            detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }],
         };
 
         const user = userEvent.setup();
@@ -85,7 +85,7 @@ describe('Race entry fields', () => {
                 entry={entry}
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );
@@ -99,7 +99,7 @@ describe('Race entry fields', () => {
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
                 details={[{ value: 'other-detailed', name: 'other detailed' }]}
             />
@@ -116,7 +116,7 @@ describe('Race entry fields', () => {
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );
@@ -155,7 +155,7 @@ describe('Race entry fields', () => {
     });
 
     it('should require race category to pass validation', async () => {
-        const validator = jest.fn();
+        const validator = vi.fn();
         validator.mockResolvedValue('category not valid');
 
         const { getByRole, getByText } = render(
@@ -164,12 +164,12 @@ describe('Race entry fields', () => {
                     id: 19,
                     asOf: '04/11/2022',
                     race: { name: 'Selected Name', value: 'selected-value' },
-                    detailed: []
+                    detailed: [],
                 }}
                 categoryValidator={validator}
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );

@@ -21,7 +21,8 @@ export const MergeDataDisplay = ({ label, display, groupType, selectable, underl
                     <div className={styles.groupLine}>
                         <GroupLine groupType={groupType} />
                     </div>
-                }>
+                }
+            >
                 {selectable && (
                     <div className={styles.radioButton}>
                         <Radio

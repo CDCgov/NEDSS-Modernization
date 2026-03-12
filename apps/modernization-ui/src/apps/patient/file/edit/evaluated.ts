@@ -26,7 +26,7 @@ const initial = () => ({
     phoneEmails: [],
     identifications: [],
     races: [],
-    pending: []
+    pending: [],
 });
 
 /**
@@ -46,7 +46,7 @@ const evaluated = (data: PatientDemographicsData): Promise<PatientDemographicsEn
         data.ethnicity.get().then(evaluateEthnicity),
         data.sexBirth.get().then((resolved) => evaluateSexBirth(resolved.demographic)),
         data.mortality.get().then(evaluateMortality),
-        data.general.get().then(evaluateGeneralInformation)
+        data.general.get().then(evaluateGeneralInformation),
     ]).then(
         (resolved) =>
             resolved.reduce((current, next) => ({ ...current, ...next }), initial()) as Required<PatientDemographics>
@@ -56,7 +56,7 @@ export { evaluated };
 
 const asAdministrative = (demographic: Partial<AdministrativeInformation>) => ({
     ...demographic,
-    asOf: orElseToday(demographic.asOf)
+    asOf: orElseToday(demographic.asOf),
 });
 
 const asOfToday =
@@ -68,7 +68,7 @@ const evaluateAdministrative = into('administrative', mapOr(asAdministrative, as
 
 const asEthnicity = (demographic: Partial<EthnicityDemographic>) => ({
     ...demographic,
-    asOf: orElseToday(demographic.asOf)
+    asOf: orElseToday(demographic.asOf),
 });
 
 const evaluateEthnicity = into('ethnicity', mapOr(asEthnicity, asOfToday(initialEthnicity)));
@@ -76,7 +76,7 @@ const evaluateEthnicity = into('ethnicity', mapOr(asEthnicity, asOfToday(initial
 const asSexBirth = (demographic: Partial<SexBirthDemographic>) => ({
     ...demographic,
     asOf: orElseToday(demographic.asOf),
-    bornOn: internalizeDate(demographic.bornOn)
+    bornOn: internalizeDate(demographic.bornOn),
 });
 
 const evaluateSexBirth = into('sexBirth', mapOr(asSexBirth, asOfToday(initialSexBirth)));
@@ -84,14 +84,14 @@ const evaluateSexBirth = into('sexBirth', mapOr(asSexBirth, asOfToday(initialSex
 const asMortality = (demographic: Partial<MortalityDemographic>) => ({
     ...demographic,
     asOf: orElseToday(demographic.asOf),
-    deceasedOn: internalizeDate(demographic.deceasedOn)
+    deceasedOn: internalizeDate(demographic.deceasedOn),
 });
 
 const evaluateMortality = into('mortality', mapOr(asMortality, asOfToday(initialMortality)));
 
 const asGeneralInformation = (demographic: Partial<GeneralInformationDemographic>) => ({
     ...demographic,
-    asOf: internalizeDate(demographic.asOf)
+    asOf: internalizeDate(demographic.asOf),
 });
 
 const evaluateGeneralInformation = into('general', mapOr(asGeneralInformation, asOfToday(initialGeneral)));

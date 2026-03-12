@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Checkbox, CheckboxProps } from './Checkbox';
 
 const meta = {
     title: 'Design System/Checkbox',
-    component: Checkbox
+    component: Checkbox,
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
@@ -28,24 +28,24 @@ const render = (args: CheckboxProps) => (
 export const Default: Story = {
     args: {
         id: 'checkbox-default',
-        label: 'Label'
+        label: 'Label',
     },
-    render
+    render,
 };
 
 export const Disabled: Story = {
     args: {
         ...Default.args,
-        disabled: true
+        disabled: true,
     },
-    render
+    render,
 };
 
 export const Unlabeled: Story = {
     args: {
         ...Default.args,
         label: undefined,
-        'aria-label': 'Label'
+        'aria-label': 'Label',
     },
-    render
+    render,
 };

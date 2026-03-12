@@ -15,12 +15,13 @@ const PageSelector = ({ page, selected, onSelectPage }: PaginationPageProps) => 
             <Button
                 tertiary
                 className={classnames('usa-pagination__button', styles.page, {
-                    'usa-current': selected
+                    'usa-current': selected,
                 })}
                 active={selected}
                 aria-label={`Page ${page}`}
                 aria-current={selected ? 'page' : undefined}
-                onClick={() => onSelectPage(page)}>
+                onClick={() => onSelectPage(page)}
+            >
                 {page}
             </Button>
         </li>
@@ -30,7 +31,8 @@ const PageSelector = ({ page, selected, onSelectPage }: PaginationPageProps) => 
 const PaginationOverflow = () => (
     <li
         className={classnames('usa-pagination__item', 'usa-pagination__overflow', styles.overflow)}
-        aria-label="ellipsis indicating non-visible pages">
+        aria-label="ellipsis indicating non-visible pages"
+    >
         <span>…</span>
     </li>
 );
@@ -79,7 +81,8 @@ const Pagination = ({
                             aria-label="Previous page"
                             tertiary
                             icon="navigate_before"
-                            onClick={onPrevious}>
+                            onClick={onPrevious}
+                        >
                             <span className="usa-pagination__link-text">Previous</span>
                         </Button>
                     </li>
@@ -106,7 +109,8 @@ const Pagination = ({
                             tertiary
                             icon="navigate_next"
                             labelPosition="left"
-                            onClick={onNext}>
+                            onClick={onNext}
+                        >
                             <span className="usa-pagination__link-text">Next</span>
                         </Button>
                     </li>

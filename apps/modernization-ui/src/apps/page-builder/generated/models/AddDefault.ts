@@ -6,4 +6,3 @@ export type AddDefault = {
     adminComments?: string;
     subSectionId?: number;
 };
-

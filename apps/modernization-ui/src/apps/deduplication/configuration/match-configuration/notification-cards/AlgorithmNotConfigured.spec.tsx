@@ -3,7 +3,7 @@ import { AlgorithmNotConfigured } from './AlgorithmNotConfigured';
 import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
 
-const onImportClick = jest.fn();
+const onImportClick = vi.fn();
 
 const Fixture = () => (
     <MemoryRouter>

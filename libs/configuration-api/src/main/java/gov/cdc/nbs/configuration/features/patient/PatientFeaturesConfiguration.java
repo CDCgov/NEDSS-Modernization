@@ -11,9 +11,7 @@ class PatientFeaturesConfiguration {
   @Bean
   @Scope("prototype")
   Patient patientFeatures(
-      final Patient.Search search,
-      final Patient.Profile profile,
-      final Patient.File file) {
+      final Patient.Search search, final Patient.Profile profile, final Patient.File file) {
     return new Patient(search, profile, file);
   }
 
@@ -21,8 +19,7 @@ class PatientFeaturesConfiguration {
   @Scope("prototype")
   Patient.Search patientSearch(
       @Value("${nbs.ui.features.patient.search.filters.enabled:false}") final boolean enabled) {
-    return new Patient.Search(
-        new Patient.Search.Filters(enabled));
+    return new Patient.Search(new Patient.Search.Filters(enabled));
   }
 
   @Bean
@@ -35,8 +32,9 @@ class PatientFeaturesConfiguration {
   @Bean
   @Scope("prototype")
   Patient.File patientFileFeatures(
-          @Value("${nbs.ui.features.patient.file.enabled:false}") final boolean enabled,
-          @Value("${nbs.ui.features.patient.file.merge-history.enabled:false}") final boolean mergeHistoryEnabled) {
+      @Value("${nbs.ui.features.patient.file.enabled:false}") final boolean enabled,
+      @Value("${nbs.ui.features.patient.file.merge-history.enabled:false}")
+          final boolean mergeHistoryEnabled) {
     return new Patient.File(enabled, new Patient.File.MergeHistory(mergeHistoryEnabled));
   }
 }

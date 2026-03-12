@@ -1,11 +1,5 @@
 package gov.cdc.nbs.questionbank.page;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -17,6 +11,12 @@ import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -42,7 +42,9 @@ public class PageStateChanger {
     PageStateResponse response = new PageStateResponse();
     try {
       WaTemplate page =
-          templateRepository.findById(id).orElseThrow(() -> new PageUpdateException(PageConstants.SAVE_DRAFT_FAIL));
+          templateRepository
+              .findById(id)
+              .orElseThrow(() -> new PageUpdateException(PageConstants.SAVE_DRAFT_FAIL));
       if (page.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT)) {
         throw new PageUpdateException(PageConstants.SAVE_DRAFT_NOCHANGE);
       }
@@ -117,16 +119,15 @@ public class PageStateChanger {
     draftCopy.setSourceNm(oldPage.getSourceNm());
     draftCopy.setVersionNote(oldPage.getVersionNote());
     draftCopy.setXmlPayload(oldPage.getXmlPayload());
-    draftCopy.setConditionMappings(copyConditionMappings(oldPage.getConditionMappings(), draftCopy));
-
+    draftCopy.setConditionMappings(
+        copyConditionMappings(oldPage.getConditionMappings(), draftCopy));
 
     return draftCopy;
-
   }
 
-  private Set<PageCondMapping> copyConditionMappings(Set<PageCondMapping> original, WaTemplate page) {
-    if (original == null)
-      return original;
+  private Set<PageCondMapping> copyConditionMappings(
+      Set<PageCondMapping> original, WaTemplate page) {
+    if (original == null) return original;
     Set<PageCondMapping> copy = new HashSet<>();
     for (PageCondMapping con : original) {
       PageCondMapping aCopy = new PageCondMapping();
@@ -137,9 +138,7 @@ public class PageStateChanger {
       aCopy.setLastChgUserId(con.getLastChgUserId());
       aCopy.setWaTemplateUid(page);
       copy.add(aCopy);
-
     }
     return copy;
   }
-
 }

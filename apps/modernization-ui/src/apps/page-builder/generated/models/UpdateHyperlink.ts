@@ -7,4 +7,3 @@ export type UpdateHyperlink = {
     linkUrl?: string;
     adminComments?: string;
 };
-

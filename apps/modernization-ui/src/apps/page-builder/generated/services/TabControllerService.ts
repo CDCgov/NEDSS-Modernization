@@ -18,16 +18,16 @@ export class TabControllerService {
         tabId,
         requestBody,
     }: {
-        page: number,
-        tabId: number,
-        requestBody: UpdateTabRequest,
+        page: number;
+        tabId: number;
+        requestBody: UpdateTabRequest;
     }): CancelablePromise<Tab> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/tabs/{tabId}',
             path: {
-                'page': page,
-                'tabId': tabId,
+                page: page,
+                tabId: tabId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -37,19 +37,13 @@ export class TabControllerService {
      * @returns any OK
      * @throws ApiError
      */
-    public static deleteTab({
-        page,
-        tabId,
-    }: {
-        page: number,
-        tabId: number,
-    }): CancelablePromise<any> {
+    public static deleteTab({ page, tabId }: { page: number; tabId: number }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/v1/pages/{page}/tabs/{tabId}',
             path: {
-                'page': page,
-                'tabId': tabId,
+                page: page,
+                tabId: tabId,
             },
         });
     }
@@ -61,14 +55,14 @@ export class TabControllerService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: CreateTabRequest,
+        page: number;
+        requestBody: CreateTabRequest;
     }): CancelablePromise<Tab> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/tabs',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',

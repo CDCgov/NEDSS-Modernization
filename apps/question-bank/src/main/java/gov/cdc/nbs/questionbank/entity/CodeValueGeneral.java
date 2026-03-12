@@ -1,12 +1,11 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import java.time.Instant;
+import gov.cdc.nbs.questionbank.valueset.command.ConceptCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-
-import gov.cdc.nbs.questionbank.valueset.command.ConceptCommand;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,8 +18,7 @@ import lombok.Setter;
 @Builder
 @Table(catalog = "NBS_SRTE", name = "Code_value_general")
 public class CodeValueGeneral {
-  @EmbeddedId
-  private CodeValueGeneralId id;
+  @EmbeddedId private CodeValueGeneralId id;
 
   @Column(name = "code_desc_txt", length = 300)
   private String codeDescTxt;
@@ -141,7 +139,8 @@ public class CodeValueGeneral {
     this.codeSystemCd = command.codeSystemId();
     this.conceptTypeCd = command.conceptTypeCd();
 
-    this.effectiveFromTime = command.effectiveFromTime() != null ? command.effectiveFromTime() : Instant.now();
+    this.effectiveFromTime =
+        command.effectiveFromTime() != null ? command.effectiveFromTime() : Instant.now();
     this.effectiveToTime = command.effectiveToTime();
 
     added(command);
@@ -151,7 +150,4 @@ public class CodeValueGeneral {
     this.addTime = command.requestedOn();
     this.addUserId = command.userId();
   }
-
-
-
 }

@@ -4,7 +4,7 @@ import { TabNavigation, TabNavigationEntry, TabNavigationProps } from './TabNavi
 
 const meta = {
     title: 'Design System/TabNavigation',
-    component: TabNavigation
+    component: TabNavigation,
 } satisfies Meta<typeof TabNavigation>;
 
 export default meta;
@@ -23,7 +23,7 @@ const renderTabs = (args: TabNavigationProps) => (
 
 export const Default: Story = {
     args: {
-        sizing: 'large'
+        sizing: 'large',
     },
-    render: renderTabs
+    render: renderTabs,
 };

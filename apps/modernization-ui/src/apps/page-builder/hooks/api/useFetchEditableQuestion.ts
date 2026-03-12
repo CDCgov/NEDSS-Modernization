@@ -35,7 +35,7 @@ export const useFetchEditableQuestion = () => {
         if (state.status === 'fetching') {
             PageQuestionControllerService.getEditableQuestion({
                 page: state.page,
-                questionId: state.questionId
+                questionId: state.questionId,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) =>
@@ -50,7 +50,7 @@ export const useFetchEditableQuestion = () => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'fetching',
         response: state.status === 'complete' ? state.question : undefined,
-        fetch: (page: number, questionId: number) => dispatch({ type: 'fetch', page, questionId })
+        fetch: (page: number, questionId: number) => dispatch({ type: 'fetch', page, questionId }),
     };
 
     return value;

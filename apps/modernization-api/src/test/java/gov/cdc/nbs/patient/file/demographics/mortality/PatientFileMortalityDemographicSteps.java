@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.file.demographics.mortality;
 
-
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
@@ -16,8 +15,7 @@ public class PatientFileMortalityDemographicSteps {
   PatientFileMortalityDemographicSteps(
       final PatientFileMortalityDemographicRequester requester,
       final Active<PatientIdentifier> activePatient,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.requester = requester;
     this.activePatient = activePatient;
     this.response = response;
@@ -25,9 +23,6 @@ public class PatientFileMortalityDemographicSteps {
 
   @Then("I view the patient's mortality demographics")
   public void mortality() {
-    this.activePatient.maybeActive()
-        .map(requester::request)
-        .ifPresent(this.response::active);
+    this.activePatient.maybeActive().map(requester::request).ifPresent(this.response::active);
   }
-
 }

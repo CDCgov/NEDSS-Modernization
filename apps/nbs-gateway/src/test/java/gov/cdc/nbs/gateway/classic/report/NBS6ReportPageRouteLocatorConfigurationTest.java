@@ -1,5 +1,9 @@
 package gov.cdc.nbs.gateway.classic.report;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.hamcrest.Matchers.equalTo;
+
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -9,25 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static org.hamcrest.Matchers.equalTo;
-
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = {
-        "nbs.gateway.classic=http://localhost:10000"
-    }
-)
+    properties = {"nbs.gateway.classic=http://localhost:10000"})
 class NBS6ReportPageRouteLocatorConfigurationTest {
 
   @RegisterExtension
-  static WireMockExtension classic = WireMockExtension.newInstance()
-      .options(wireMockConfig().port(10000))
-      .build();
+  static WireMockExtension classic =
+      WireMockExtension.newInstance().options(wireMockConfig().port(10000)).build();
 
-  @Autowired
-  WebTestClient webClient;
+  @Autowired WebTestClient webClient;
 
   @ParameterizedTest
   @ValueSource(strings = {"reports", "basic", "advanced", "column", "run", "save", "error"})
@@ -35,11 +30,8 @@ class NBS6ReportPageRouteLocatorConfigurationTest {
     classic.stubFor(get(urlEqualTo("/nbs/report/" + page)).willReturn(ok()));
 
     webClient
-        .get().uri(
-            builder -> builder
-                .path("/nbs/report/" + page)
-                .build()
-        )
+        .get()
+        .uri(builder -> builder.path("/nbs/report/" + page).build())
         .exchange()
         .expectCookie()
         .value("NBS-Report", equalTo(page))
@@ -50,8 +42,7 @@ class NBS6ReportPageRouteLocatorConfigurationTest {
         .expectCookie()
         .secure("NBS-Report", true)
         .expectCookie()
-        .sameSite("NBS-Report", "Strict")
-    ;
+        .sameSite("NBS-Report", "Strict");
   }
 
   @Test
@@ -59,11 +50,8 @@ class NBS6ReportPageRouteLocatorConfigurationTest {
     classic.stubFor(get(urlEqualTo("/nbs/report/proxy")).willReturn(ok()));
 
     webClient
-        .get().uri(
-            builder -> builder
-                .path("/nbs/report/proxy")
-                .build()
-        )
+        .get()
+        .uri(builder -> builder.path("/nbs/report/proxy").build())
         .exchange()
         .expectCookie()
         .doesNotExist("NBS-Report");
@@ -74,11 +62,8 @@ class NBS6ReportPageRouteLocatorConfigurationTest {
     classic.stubFor(get(urlEqualTo("/nbs/report/asset.gif")).willReturn(ok()));
 
     webClient
-        .get().uri(
-            builder -> builder
-                .path("/nbs/report/asset.gif")
-                .build()
-        )
+        .get()
+        .uri(builder -> builder.path("/nbs/report/asset.gif").build())
         .exchange()
         .expectCookie()
         .doesNotExist("NBS-Report");
@@ -89,11 +74,8 @@ class NBS6ReportPageRouteLocatorConfigurationTest {
     classic.stubFor(get(urlEqualTo("/nbs/report/basic/asset.gif")).willReturn(ok()));
 
     webClient
-        .get().uri(
-            builder -> builder
-                .path("/nbs/report/basic/asset.gif")
-                .build()
-        )
+        .get()
+        .uri(builder -> builder.path("/nbs/report/basic/asset.gif").build())
         .exchange()
         .expectCookie()
         .doesNotExist("NBS-Report");

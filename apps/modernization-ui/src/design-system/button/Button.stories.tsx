@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, ButtonProps } from './Button';
 
 const meta = {
     title: 'Design System/Button',
-    component: Button
+    component: Button,
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -12,8 +12,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        children: 'Button'
-    }
+        children: 'Button',
+    },
 };
 
 const render = (props: ButtonProps) => {
@@ -25,8 +25,9 @@ const render = (props: ButtonProps) => {
                 flexDirection: 'column',
                 gap: '1rem',
                 padding: '1rem',
-                backgroundColor: '#f0f7fd'
-            }}>
+                backgroundColor: '#f0f7fd',
+            }}
+        >
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', backgroundColor: '' }}>
                 <Button {...props}>{content}</Button>
                 <Button {...props} icon="check_circle" labelPosition="right">
@@ -73,96 +74,96 @@ const render = (props: ButtonProps) => {
 
 export const Primary: Story = {
     args: {
-        ...Default.args
+        ...Default.args,
     },
-    render
+    render,
 };
 
 export const PrimarySmall: Story = {
     args: {
         ...Default.args,
-        sizing: 'small'
+        sizing: 'small',
     },
-    render
+    render,
 };
 
 export const Secondary: Story = {
     args: {
         ...Default.args,
-        secondary: true
+        secondary: true,
     },
-    render
+    render,
 };
 
 export const SecondarySmall: Story = {
     args: {
         ...Secondary.args,
-        sizing: 'small'
+        sizing: 'small',
     },
-    render
+    render,
 };
 
 export const PrimaryDestructive: Story = {
     args: {
         ...Default.args,
-        destructive: true
+        destructive: true,
     },
-    render
+    render,
 };
 
 export const PrimaryDestructiveSmall: Story = {
     args: {
         ...PrimaryDestructive.args,
-        sizing: 'small'
+        sizing: 'small',
     },
-    render
+    render,
 };
 
 export const SecondaryDestructive: Story = {
     args: {
         ...Default.args,
         secondary: true,
-        destructive: true
+        destructive: true,
     },
-    render
+    render,
 };
 
 export const SecondaryDestructiveSmall: Story = {
     args: {
         ...SecondaryDestructive.args,
-        sizing: 'small'
+        sizing: 'small',
     },
-    render
+    render,
 };
 
 export const Tertiary: Story = {
     args: {
         ...Default.args,
-        tertiary: true
+        tertiary: true,
     },
-    render
+    render,
 };
 
 export const TertiarySmall: Story = {
     args: {
         ...Tertiary.args,
-        sizing: 'small'
+        sizing: 'small',
     },
-    render
+    render,
 };
 
 export const TertiaryDestructive: Story = {
     args: {
         ...Tertiary.args,
-        destructive: true
+        destructive: true,
     },
-    render
+    render,
 };
 
 export const TertiaryDestructiveSmall: Story = {
     args: {
         ...TertiaryDestructive.args,
-        sizing: 'small'
+        sizing: 'small',
     },
-    render
+    render,
 };

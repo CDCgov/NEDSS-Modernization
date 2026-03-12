@@ -35,7 +35,7 @@ export const PatientSummary = ({ mergeCandidates, mergeFormData }: PatientSummar
         name: mostRecentLegalName,
         status: 'active', // placeholder
         sex,
-        birthday
+        birthday,
     };
 
     return (

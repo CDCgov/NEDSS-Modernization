@@ -7,7 +7,7 @@ import {
     validZipCodeRule,
     ZipCodeInputField,
     CensusTractInputField,
-    validCensusTractRule
+    validCensusTractRule,
 } from 'libs/demographics/location';
 import { AddressEntry } from './entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';

@@ -47,7 +47,8 @@ const TableCard = <V,>({
                             {actions}
                             <ColumnPreferencesAction sizing={sizing} />
                         </>
-                    }>
+                    }
+                >
                     <SortableDataTable {...props} id={`${id}-table`} sizing={sizing} columns={apply(columns)} />
                 </Card>
             )}

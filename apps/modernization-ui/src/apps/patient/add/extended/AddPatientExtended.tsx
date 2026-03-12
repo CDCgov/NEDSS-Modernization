@@ -22,7 +22,7 @@ const sections: NavSection[] = [
     { id: 'ethnicity', label: 'Ethnicity' },
     { id: 'sexAndBirth', label: 'Sex & birth' },
     { id: 'mortality', label: 'Mortality' },
-    { id: 'generalInformation', label: 'General patient information' }
+    { id: 'generalInformation', label: 'General patient information' },
 ];
 
 export const AddPatientExtended = () => {
@@ -33,7 +33,7 @@ export const AddPatientExtended = () => {
     const form = useForm<ExtendedNewPatientEntry>({
         defaultValues: initialize(),
         mode: 'onBlur',
-        reValidateMode: 'onBlur'
+        reValidateMode: 'onBlur',
     });
 
     const working = !form.formState.isValid || interaction.status !== 'waiting';
@@ -62,7 +62,8 @@ export const AddPatientExtended = () => {
                                     Save
                                 </Button>
                             </>
-                        )}>
+                        )}
+                    >
                         <AddPatientExtendedForm
                             validationErrors={
                                 interaction.status === 'invalid' ? interaction.validationErrors : undefined

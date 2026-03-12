@@ -12,7 +12,6 @@ public class ConditionSteps {
 
   @ParameterType(name = "condition", value = ".*")
   public String raceCategory(final String value) {
-    return resolver.resolve(value)
-        .orElse(value);
+    return resolver.resolve(value).orElse(value);
   }
 }

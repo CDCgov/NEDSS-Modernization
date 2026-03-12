@@ -9,14 +9,14 @@ const CodedResultsAutocomplete = ({
     required,
     onBlur,
     value,
-    sizing
+    sizing,
 }: TextAutocompleteSingleProps) => {
     const renderSuggestion = (suggestion: Selectable) => `${suggestion.name} [${suggestion.value}]`;
 
     const resolver = (criteria: string, limit?: number) =>
         CodedResultOptionsService.codedResultAutocomplete({
             criteria: criteria,
-            limit: limit
+            limit: limit,
         }).then((response) => response as Selectable[]);
 
     return (

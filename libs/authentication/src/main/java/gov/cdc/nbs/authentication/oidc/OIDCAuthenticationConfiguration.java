@@ -11,9 +11,7 @@ class OIDCAuthenticationConfiguration {
 
   @Bean
   AuthenticationConfigurer oidcAuthenticationConfigurer(
-      final OIDCAuthenticationConverter converter
-  ) {
+      final OIDCAuthenticationConverter converter) {
     return new OIDCAuthenticationConfigurer(converter);
   }
-
 }

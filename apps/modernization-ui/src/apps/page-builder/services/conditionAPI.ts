@@ -1,10 +1,9 @@
-/* eslint-disable camelcase */
 import {
     Condition,
     ConditionControllerService,
     CreateConditionRequest,
     PageCondition,
-    ReadConditionRequest
+    ReadConditionRequest,
 } from '../generated';
 
 export const fetchConditions = async (): Promise<Array<Condition>> => {
@@ -16,7 +15,7 @@ export const findConditions = async (page: number, size: number, sort: string) =
     const response = await ConditionControllerService.findConditions({
         page,
         size,
-        sort: sort ? [sort] : undefined
+        sort: sort ? [sort] : undefined,
     });
     return response;
 };
@@ -32,14 +31,14 @@ export const searchConditions = async (
         requestBody: search,
         page,
         size,
-        sort: sort ? [sort] : undefined
+        sort: sort ? [sort] : undefined,
     });
     return response;
 };
 
 export const createCondition = (request: CreateConditionRequest) => {
     return ConditionControllerService.createCondition({
-        requestBody: request
+        requestBody: request,
     }).then((response) => {
         return response;
     });

@@ -10,7 +10,7 @@ import {
     getOrderingProviderName,
     getReportingFacility,
     getDescription,
-    getAssociatedInvestigations
+    getAssociatedInvestigations,
 } from 'apps/search/laboratory-report/result';
 
 const LEGAL_NAME = { id: 'lastNm', name: 'Legal name' };
@@ -39,7 +39,7 @@ const preferences: ColumnPreference[] = [
     { ...ORDERING_PROVIDER, moveable: true, toggleable: true },
     { ...JURISDICTION, moveable: true, toggleable: true },
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
-    { ...LOCAL_ID, moveable: true, toggleable: true }
+    { ...LOCAL_ID, moveable: true, toggleable: true },
 ];
 
 type Props = {
@@ -54,61 +54,62 @@ const LaboratoryReportSearchResultsTable = ({ results, jurisdictionResolver }: P
             ...LEGAL_NAME,
             fixed: true,
             sortable: true,
-            render: withPatient(getPatient, displayProfileLink)
+            render: withPatient(getPatient, displayProfileLink),
         },
         {
             ...DATE_OF_BIRTH,
             sortable: true,
-            render: (row) => internalizeDate(getPatient(row)?.birthTime)
+            render: (row) => internalizeDate(getPatient(row)?.birthTime),
         },
         {
             ...SEX,
             sortable: true,
-            render: withPatient(getPatient, displayGender)
+            render: withPatient(getPatient, displayGender),
         },
         {
             ...PATIENT_ID,
             sortable: true,
-            render: (row) => getPatient(row)?.shortId
+            render: (row) => getPatient(row)?.shortId,
         },
         {
             ...DOCUMENT_TYPE,
             render: (row) => (
                 <ClassicLink
                     id="condition"
-                    url={`/nbs/api/profile/${getPatient(row)?.personParentUid}/report/lab/${row.id}`}>
+                    url={`/nbs/api/profile/${getPatient(row)?.personParentUid}/report/lab/${row.id}`}
+                >
                     Lab report
                 </ClassicLink>
-            )
+            ),
         },
         {
             ...DATE_RECEIVED,
-            render: (row) => internalizeDate(row.addTime)
+            render: (row) => internalizeDate(row.addTime),
         },
         {
             ...DESCRIPTION,
-            render: getDescription
+            render: getDescription,
         },
         {
             ...REPORTING_FACILITY,
-            render: getReportingFacility
+            render: getReportingFacility,
         },
         {
             ...ORDERING_PROVIDER,
-            render: getOrderingProviderName
+            render: getOrderingProviderName,
         },
         {
             ...JURISDICTION,
-            render: (row) => jurisdictionResolver(String(row.jurisdictionCd))?.name
+            render: (row) => jurisdictionResolver(String(row.jurisdictionCd))?.name,
         },
         {
             ...ASSOCIATED_WITH,
-            render: getAssociatedInvestigations
+            render: getAssociatedInvestigations,
         },
         {
             ...LOCAL_ID,
-            render: (row) => row.localId
-        }
+            render: (row) => row.localId,
+        },
     ];
 
     return (

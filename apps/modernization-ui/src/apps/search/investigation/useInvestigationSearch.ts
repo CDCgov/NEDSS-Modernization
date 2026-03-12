@@ -20,10 +20,10 @@ const useInvestigationSearch = ({ form }: Settings): SearchInteraction<Investiga
                 page: {
                     pageNumber: request.page.number - 1,
                     pageSize: request.page.size,
-                    sort: request.sort
-                }
+                    sort: request.sort,
+                },
             },
-            notifyOnNetworkStatusChange: true
+            notifyOnNetworkStatusChange: true,
         }).then((response) => {
             if (response.error) {
                 throw new Error(response.error.message);

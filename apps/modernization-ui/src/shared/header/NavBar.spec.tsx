@@ -1,20 +1,25 @@
+import { Mock } from 'vitest';
+import { render } from '@testing-library/react';
 import { usePage } from 'page';
 import { NavBar } from './NavBar';
-import { render } from '@testing-library/react';
-import { permissions} from 'libs/permission';
+import { permissions } from 'libs/permission';
 
 let mockPermissions: string[] = [];
-const mockAllowFn = jest.fn((permission: string) => mockPermissions.includes(permission));
+const mockAllowFn = vi.fn((permission: string) => mockPermissions.includes(permission));
 
-jest.mock('../../libs/permission/usePermissions', () => ({
+vi.mock('page', () => ({
+    usePage: vi.fn(),
+}));
+
+vi.mock('react-router', () => ({
+    useLocation: vi.fn(),
+}));
+
+vi.mock('../../libs/permission/usePermissions', () => ({
     usePermissions: () => ({
         permissions: mockPermissions,
         allows: mockAllowFn,
     }),
-}));
-
-jest.mock('page', () => ({
-    usePage: jest.fn(),
 }));
 
 const renderNavBarWithPermissions = (permissions: string[]) => {
@@ -25,7 +30,7 @@ const renderNavBarWithPermissions = (permissions: string[]) => {
 describe('NavBar component tests', () => {
     beforeEach(() => {
         mockAllowFn.mockClear();
-        (usePage as jest.Mock).mockReturnValue({ title: 'Test page' });
+        (usePage as Mock).mockReturnValue({ title: 'Test page' });
     });
 
     it('should render navigation bar', () => {
@@ -40,12 +45,12 @@ describe('NavBar component tests', () => {
         });
     });
 
-    describe('Data Entry section', ()=>{
+    describe('Data Entry section', () => {
         it.each([
             [permissions.morbidityReport.add],
             [permissions.labReport.add],
             [permissions.summaryReports.view],
-            [permissions.patient.search]
+            [permissions.patient.search],
         ])('should show Data Entry with permission: %s', (permission) => {
             const { getByText } = renderNavBarWithPermissions([permission]);
             expect(getByText('Data Entry')).toBeInTheDocument();
@@ -57,10 +62,8 @@ describe('NavBar component tests', () => {
         });
     });
 
-    describe('Merge Patients Section', ()=> {
-        it.each([
-            [permissions.patient.merge]
-        ])('should show Merge Patients with permission: %s', (permission) => {
+    describe('Merge Patients Section', () => {
+        it.each([[permissions.patient.merge]])('should show Merge Patients with permission: %s', (permission) => {
             const { getByText } = renderNavBarWithPermissions([permission]);
             expect(getByText('Merge Patients')).toBeInTheDocument();
         });

@@ -11,8 +11,8 @@ const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
             home: undefined,
             work: undefined,
             cell: undefined,
-            email: undefined
-        }
+            email: undefined,
+        },
     });
     return (
         <FormProvider {...form}>
@@ -61,7 +61,7 @@ describe('PhoneEmailEntryFields', () => {
         { value: '1', valid: true },
         { value: '12', valid: true },
         { value: '123', valid: true },
-        { value: '1234', valid: true }
+        { value: '1234', valid: true },
     ])('should validate extension format for value: $value', async ({ value, valid }) => {
         const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);

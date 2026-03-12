@@ -1,16 +1,13 @@
 package gov.cdc.nbs.patient.search.indexing.telecom;
 
 import gov.cdc.nbs.patient.search.SearchablePatient;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
 class SearchablePatientEmailMapper {
 
-  record Column(int address) {
-  }
-
+  record Column(int address) {}
 
   private final Column columns;
 

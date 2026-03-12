@@ -13,7 +13,5 @@ public class FlexibleDirectionConverter {
     }
   }
 
-  private FlexibleDirectionConverter() {
-
-  }
+  private FlexibleDirectionConverter() {}
 }

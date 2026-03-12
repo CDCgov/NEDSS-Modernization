@@ -21,7 +21,8 @@ const Icon = ({ name, sizing, role = 'img', className, ...props }: IconProps) =>
             className={classNames(styles.icon, className, sizing && styles[sizing])}
             role={role}
             aria-hidden={true}
-            {...props}>
+            {...props}
+        >
             <use xlinkHref={location} />
         </svg>
     );

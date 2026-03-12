@@ -12,9 +12,9 @@ export const usePatientMerge = () => {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(mergeForm)
+            body: JSON.stringify(mergeForm),
         })
             .then((response) => {
                 if (response.ok) {

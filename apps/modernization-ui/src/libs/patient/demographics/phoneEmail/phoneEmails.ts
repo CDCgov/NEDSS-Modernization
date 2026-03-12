@@ -29,7 +29,7 @@ const initial = (asOf: Supplier<string>): PhoneEmailDemographic => ({
     extension: null,
     email: null,
     url: null,
-    comment: null
+    comment: null,
 });
 
 export { initial };
@@ -43,7 +43,7 @@ const labels = {
     extension: 'Extension',
     email: 'Email',
     url: 'URL',
-    comment: 'Comments'
+    comment: 'Comments',
 };
 
 export { labels };

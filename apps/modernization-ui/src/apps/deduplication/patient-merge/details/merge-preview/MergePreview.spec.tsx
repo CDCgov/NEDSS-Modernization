@@ -14,8 +14,8 @@ import { PreviewRace } from './components/race/PreviewRace';
 import { MergePreview } from './MergePreview';
 
 describe('MergePreview', () => {
-    const mockOnBack = jest.fn();
-    const onMerge = jest.fn();
+    const mockOnBack = vi.fn();
+    const onMerge = vi.fn();
 
     const mockMergeFormData: PatientMergeForm = {
         survivingRecord: '1',
@@ -38,8 +38,8 @@ describe('MergePreview', () => {
             educationLevel: '',
             primaryLanguage: '',
             speaksEnglish: '',
-            stateHivCaseId: ''
-        }
+            stateHivCaseId: '',
+        },
     };
 
     const mockMergeCandidates: MergeCandidate[] = [
@@ -49,12 +49,12 @@ describe('MergePreview', () => {
             addTime: '2024-01-01',
             adminComments: { date: '2024-01-01', comment: 'Note' },
             names: [
-                { personUid: '123', sequence: '1', asOf: '2023-01-01', type: 'Legal', first: 'Johnathan', last: 'Doe' }
+                { personUid: '123', sequence: '1', asOf: '2023-01-01', type: 'Legal', first: 'Johnathan', last: 'Doe' },
             ],
             addresses: [{ id: 'a1', asOf: '2023-01-01', type: 'Home', use: 'Primary', city: 'Boston', state: 'MA' }],
             phoneEmails: [{ id: 'p1', asOf: '2023-01-01', type: 'Phone', use: 'Mobile', phoneNumber: '1234567890' }],
             identifications: [
-                { personUid: '123', sequence: '1', asOf: '2023-01-01', type: 'SSN', value: '123-45-6789' }
+                { personUid: '123', sequence: '1', asOf: '2023-01-01', type: 'SSN', value: '123-45-6789' },
             ],
             races: [{ personUid: '123', raceCode: '2106-3', asOf: '2023-01-01', race: 'White' }],
             ethnicity: { ethnicity: 'Not Hispanic' },
@@ -70,10 +70,10 @@ describe('MergePreview', () => {
                 educationLevel: 'Bachelor',
                 primaryLanguage: 'English',
                 speaksEnglish: 'Yes',
-                stateHivCaseId: 'HIV123'
+                stateHivCaseId: 'HIV123',
             },
-            investigations: []
-        }
+            investigations: [],
+        },
     ];
 
     const Fixture = (props: { onBack?: () => void }) => (
@@ -82,7 +82,7 @@ describe('MergePreview', () => {
                 <MergePreview
                     mergeFormData={mockMergeFormData}
                     mergeCandidates={mockMergeCandidates}
-                    onBack={props.onBack ?? jest.fn()}
+                    onBack={props.onBack ?? vi.fn()}
                     onMerge={onMerge}
                 />
                 <PatientSummary mergeFormData={mockMergeFormData} mergeCandidates={mockMergeCandidates} />
@@ -103,7 +103,7 @@ describe('MergePreview', () => {
                     mergeCandidates={mockMergeCandidates}
                     selectedIdentifications={mockMergeFormData.identifications.map(({ personUid, sequence }) => ({
                         personUid,
-                        sequence
+                        sequence,
                     }))}
                 />
                 <PreviewRace

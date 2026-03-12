@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
 
-const onAddAttributes = jest.fn();
+const onAddAttributes = vi.fn();
 const Fixture = () => {
     const form = useForm<Pass>({
         defaultValues: {
@@ -12,8 +12,8 @@ const Fixture = () => {
             description: 'This is my description for this pass',
             blockingCriteria: [],
             matchingCriteria: [],
-            active: true
-        }
+            active: true,
+        },
     });
     return (
         <FormProvider {...form}>
@@ -29,8 +29,8 @@ const WithContent = () => {
             description: 'This is my description for this pass',
             blockingCriteria: [BlockingAttribute.FIRST_NAME],
             matchingCriteria: [{ attribute: MatchingAttribute.LAST_NAME, method: MatchMethod.NONE }],
-            active: true
-        }
+            active: true,
+        },
     });
     return (
         <FormProvider {...form}>

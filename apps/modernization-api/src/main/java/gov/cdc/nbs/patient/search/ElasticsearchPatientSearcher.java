@@ -10,15 +10,15 @@ import gov.cdc.nbs.search.SearchResolver;
 import gov.cdc.nbs.search.SearchResult;
 import gov.cdc.nbs.search.SearchResultResolver;
 import graphql.com.google.common.collect.Ordering;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
 @Component
-class ElasticsearchPatientSearcher implements SearchResolver<PatientSearchCriteria, PatientSearchResult> {
+class ElasticsearchPatientSearcher
+    implements SearchResolver<PatientSearchCriteria, PatientSearchResult> {
 
   public static final String PATIENT_INDEX_NAME = "person";
 
@@ -35,8 +35,7 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientSearchCriter
       final PatientSearchCriteriaFilterResolver filterResolver,
       final PatientSearchCriteriaQueryResolver queryResolver,
       final PatientSearchCriteriaSortResolver sortResolver,
-      final SearchResultResolver resultResolver
-  ) {
+      final SearchResultResolver resultResolver) {
     this.client = client;
     this.finder = finder;
     this.filterResolver = filterResolver;
@@ -47,9 +46,7 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientSearchCriter
 
   @Override
   public SearchResult<PatientSearchResult> search(
-      final PatientSearchCriteria criteria,
-      final Pageable pageable
-  ) {
+      final PatientSearchCriteria criteria, final Pageable pageable) {
     try {
       Query filter = filterResolver.resolve(criteria);
       Query query = queryResolver.resolve(criteria);
@@ -66,57 +63,45 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientSearchCriter
       final Pageable pageable,
       final Query filter,
       final Query query,
-      final List<SortOptions> sorting
-  ) {
+      final List<SortOptions> sorting) {
     try {
-      SearchResponse<SearchablePatient> response = client.search(
-          search -> search.index(PATIENT_INDEX_NAME)
-              //  we don't want to return the documents, just the identifiers
-              .source(source -> source.fetch(false))
-              .postFilter(filter)
-              .query(query)
-              .sort(sorting)
-              .from((int) pageable.getOffset())
-              .size(pageable.getPageSize()
-              ),
-          SearchablePatient.class
-      );
+      SearchResponse<SearchablePatient> response =
+          client.search(
+              search ->
+                  search
+                      .index(PATIENT_INDEX_NAME)
+                      //  we don't want to return the documents, just the identifiers
+                      .source(source -> source.fetch(false))
+                      .postFilter(filter)
+                      .query(query)
+                      .sort(sorting)
+                      .from((int) pageable.getOffset())
+                      .size(pageable.getPageSize()),
+              SearchablePatient.class);
 
       HitsMetadata<SearchablePatient> hits = response.hits();
 
       long total = total(hits);
 
-      return total > 0
-          ? paged(hits, pageable, total)
-          : resultResolver.empty(pageable);
+      return total > 0 ? paged(hits, pageable, total) : resultResolver.empty(pageable);
 
     } catch (RuntimeException | IOException exception) {
-      throw new IllegalStateException("An unexpected error occurred when searching for patients.", exception);
+      throw new IllegalStateException(
+          "An unexpected error occurred when searching for patients.", exception);
     }
   }
 
   private SearchResult<PatientSearchResult> paged(
-      final HitsMetadata<SearchablePatient> hits,
-      final Pageable pageable,
-      final long total
-  ) {
-    List<Long> ids = hits.hits()
-        .stream()
-        .map(Hit::id)
-        .filter(Objects::nonNull)
-        .map(Long::parseLong)
-        .toList();
+      final HitsMetadata<SearchablePatient> hits, final Pageable pageable, final long total) {
+    List<Long> ids =
+        hits.hits().stream().map(Hit::id).filter(Objects::nonNull).map(Long::parseLong).toList();
 
-    List<PatientSearchResult> results = finder.find(ids)
-        .stream()
-        .sorted(Ordering.explicit(ids).onResultOf(PatientSearchResult::patient))
-        .toList();
+    List<PatientSearchResult> results =
+        finder.find(ids).stream()
+            .sorted(Ordering.explicit(ids).onResultOf(PatientSearchResult::patient))
+            .toList();
 
-    return resultResolver.resolve(
-        results,
-        pageable,
-        total
-    );
+    return resultResolver.resolve(results, pageable, total);
   }
 
   private long total(final HitsMetadata<SearchablePatient> hits) {

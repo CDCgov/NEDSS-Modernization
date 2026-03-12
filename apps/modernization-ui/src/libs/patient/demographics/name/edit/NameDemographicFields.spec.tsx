@@ -6,7 +6,7 @@ import { HasNameDemographics } from '../names';
 
 const Fixture = () => {
     const form = useForm<HasNameDemographics>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (
@@ -16,7 +16,7 @@ const Fixture = () => {
                     types: [{ name: 'Adopted name', value: 'AN' }],
                     prefixes: [{ name: 'Miss', value: 'MS' }],
                     suffixes: [{ name: 'Sr.', value: 'SR' }],
-                    degrees: [{ name: 'BA', value: 'BA' }]
+                    degrees: [{ name: 'BA', value: 'BA' }],
                 }}
             />
         </FormProvider>

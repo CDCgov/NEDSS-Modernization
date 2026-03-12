@@ -7,7 +7,7 @@ const patientSexBirth = (patient: number): Promise<PatientFileSexBirthDemographi
         .then(maybeJson)
         .then((response) => ({
             demographic: response,
-            ageResolver: asOfAgeResolver(response?.deceasedOn)
+            ageResolver: asOfAgeResolver(response?.deceasedOn),
         }));
 
 export { patientSexBirth };

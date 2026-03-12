@@ -1,20 +1,20 @@
 package gov.cdc.nbs.patient.search;
 
-import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
-import org.junit.jupiter.api.Test;
-
-import java.util.OptionalLong;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
+import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
+import java.util.OptionalLong;
+import org.junit.jupiter.api.Test;
 
 class PatientSearchShortIdentifierResolverTest {
 
   @Test
   void should_return_short_identifier_from_resolver() {
 
-    PatientShortIdentifierResolver shortIdentifierResolver = mock(PatientShortIdentifierResolver.class);
+    PatientShortIdentifierResolver shortIdentifierResolver =
+        mock(PatientShortIdentifierResolver.class);
 
     when(shortIdentifierResolver.resolve(any())).thenReturn(OptionalLong.of(241L));
 
@@ -30,5 +30,4 @@ class PatientSearchShortIdentifierResolverTest {
 
     verify(shortIdentifierResolver).resolve("local");
   }
-
 }

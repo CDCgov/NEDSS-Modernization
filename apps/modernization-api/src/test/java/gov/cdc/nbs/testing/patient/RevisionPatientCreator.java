@@ -9,9 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 class RevisionPatientCreator {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       declare @legal table (patient bigint not null, first_nm varchar(50), middle_nm varchar(50), last_nm varchar(50));
-      
+
       insert into @legal (
           patient,
           first_nm,
@@ -46,9 +47,9 @@ class RevisionPatientCreator {
                   and [seq_name].[as_of_date] = [name].as_of_date
           )
       ;
-      
+
       insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
-      
+
       insert into Person (
         person_parent_uid,
         person_uid,
@@ -87,9 +88,9 @@ class RevisionPatientCreator {
       from Person [mpr]
           left join @legal [legal] on
                   [legal].patient = [mpr].person_uid
-      
+
       where [mpr].person_uid = :mpr;
-      
+
       insert into Person_name (
           person_uid,
           person_name_seq,
@@ -129,8 +130,7 @@ class RevisionPatientCreator {
   RevisionPatientCreator(
       final JdbcClient client,
       final MotherSettings settings,
-      final SequentialIdentityGenerator idGenerator
-  ) {
+      final SequentialIdentityGenerator idGenerator) {
     this.client = client;
     this.settings = settings;
     this.idGenerator = idGenerator;
@@ -140,7 +140,8 @@ class RevisionPatientCreator {
 
     long id = idGenerator.next();
 
-    this.client.sql(QUERY)
+    this.client
+        .sql(QUERY)
         .param("mpr", patient.id())
         .param("identifier", id)
         .param("by", this.settings.createdBy())

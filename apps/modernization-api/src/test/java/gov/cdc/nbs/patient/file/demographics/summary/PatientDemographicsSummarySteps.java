@@ -14,8 +14,7 @@ public class PatientDemographicsSummarySteps {
   PatientDemographicsSummarySteps(
       final Active<PatientIdentifier> patient,
       final Active<ResultActions> response,
-      final PatientDemographicsSummaryRequester requester
-  ) {
+      final PatientDemographicsSummaryRequester requester) {
     this.patient = patient;
     this.response = response;
     this.requester = requester;
@@ -23,7 +22,9 @@ public class PatientDemographicsSummarySteps {
 
   @When("I view the demographics summary of the patient")
   public void i_view_the_demographics_summary_of_the_patient() {
-    patient.maybeActive().map(PatientIdentifier::id)
+    patient
+        .maybeActive()
+        .map(PatientIdentifier::id)
         .map(requester::request)
         .ifPresent(response::active);
   }
@@ -32,6 +33,4 @@ public class PatientDemographicsSummarySteps {
   public void i_view_the_demographics_summary_for(final long patient) {
     this.response.active(requester.request(patient));
   }
-
-
 }

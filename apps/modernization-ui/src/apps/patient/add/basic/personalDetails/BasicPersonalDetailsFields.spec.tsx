@@ -4,25 +4,25 @@ import userEvent from '@testing-library/user-event';
 import { BasicPersonalDetailsFields } from './BasicPersonalDetailsFields';
 import { BasicPersonalDetailsEntry } from '../entry';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
-    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+vi.mock('user', () => ({
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } }),
 }));
 
-jest.mock('design-system/date/clock', () => ({
-    now: () => mockNow()
+vi.mock('design-system/date/clock', () => ({
+    now: () => mockNow(),
 }));
 
-jest.mock('options/concepts', () => ({
-    useConceptOptions: () => ({ options: [{ name: 'Married', value: 'M' }] })
+vi.mock('options/concepts', () => ({
+    useConceptOptions: () => ({ options: [{ name: 'Married', value: 'M' }] }),
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const form = useForm<BasicPersonalDetailsEntry>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (

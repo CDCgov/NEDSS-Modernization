@@ -47,7 +47,7 @@ describe('SearchBar', () => {
     });
 
     it('calls onChange when controlled', () => {
-        const handleChange = jest.fn();
+        const handleChange = vi.fn();
         render(<SearchBar value="orange" onChange={handleChange} />);
         const input = screen.getByDisplayValue('orange');
 
@@ -56,13 +56,13 @@ describe('SearchBar', () => {
     });
 
     it('renders clear button when value is present (controlled)', () => {
-        render(<SearchBar value="banana" onChange={jest.fn()} />);
+        render(<SearchBar value="banana" onChange={vi.fn()} />);
         const clearButton = screen.getByRole('button', { name: /clear/i });
         expect(clearButton).toBeInTheDocument();
     });
 
     it('clears value when clear button is clicked (controlled)', () => {
-        const handleChange = jest.fn();
+        const handleChange = vi.fn();
         render(<SearchBar value="kiwi" onChange={handleChange} />);
         const clearButton = screen.getByRole('button', { name: /clear/i });
 
@@ -92,10 +92,8 @@ describe('SearchBar', () => {
     });
 
     it('calls onSearch when the search button is clicked', () => {
-        const handleSearch = jest.fn();
-        const { getByLabelText } = render(
-            <SearchBar value="Seashells" onSearch={handleSearch} />
-        );
+        const handleSearch = vi.fn();
+        const { getByLabelText } = render(<SearchBar value="Seashells" onSearch={handleSearch} />);
 
         const searchButton = getByLabelText('Search');
         fireEvent.click(searchButton);
@@ -103,9 +101,8 @@ describe('SearchBar', () => {
         expect(handleSearch).toHaveBeenCalledWith('Seashells');
     });
 
-
     it('calls onSearch when Enter is pressed in the input', () => {
-        const handleSearch = jest.fn();
+        const handleSearch = vi.fn();
         const { getByPlaceholderText } = render(
             <SearchBar value="Seashore" onSearch={handleSearch} placeholder="Search..." />
         );

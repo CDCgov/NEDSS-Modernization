@@ -24,7 +24,7 @@ const initial = (asOf: string = today()): Partial<PhoneEmailEntry> => ({
     extension: undefined,
     email: undefined,
     url: undefined,
-    comment: undefined
+    comment: undefined,
 });
 
 export { initial };

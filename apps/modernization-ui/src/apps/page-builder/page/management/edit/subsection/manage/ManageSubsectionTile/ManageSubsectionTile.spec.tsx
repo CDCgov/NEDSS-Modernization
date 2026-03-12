@@ -21,18 +21,18 @@ describe('when ReorderSubsection renders', () => {
                         name: 'Section1',
                         order: 1,
                         subSections: [],
-                        visible: true
+                        visible: true,
                     },
                     {
                         id: 5678,
                         name: 'Section2',
                         order: 2,
                         subSections: [],
-                        visible: true
-                    }
-                ]
-            }
-        ]
+                        visible: true,
+                    },
+                ],
+            },
+        ],
     };
     const subsection: PagesSubSection = {
         id: 123456,
@@ -57,7 +57,7 @@ describe('when ReorderSubsection renders', () => {
                 standard: 'asdf',
                 required: true,
                 subGroup: 'asdf',
-                order: 1
+                order: 1,
             },
             {
                 allowFutureDates: true,
@@ -74,10 +74,10 @@ describe('when ReorderSubsection renders', () => {
                 standard: 'asdf',
                 required: false,
                 subGroup: 'asdf',
-                order: 2
-            }
+                order: 2,
+            },
         ],
-        visible: true
+        visible: true,
     };
     const { getByTestId } = render(
         <DragDropProvider pageData={content}>
@@ -87,12 +87,12 @@ describe('when ReorderSubsection renders', () => {
                         <div {...provided.droppableProps} ref={provided.innerRef} className="test__subsections">
                             <ManageSubsectionTile
                                 subsection={subsection}
-                                setOnAction={jest.fn()}
+                                setOnAction={vi.fn()}
                                 action={true}
-                                onDelete={jest.fn()}
+                                onDelete={vi.fn()}
                                 index={1}
-                                setEdit={jest.fn()}
-                                onChangeVisibility={jest.fn()}
+                                setEdit={vi.fn()}
+                                onChangeVisibility={vi.fn()}
                             />
                         </div>
                     )}

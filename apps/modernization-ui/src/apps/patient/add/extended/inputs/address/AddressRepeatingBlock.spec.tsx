@@ -4,21 +4,21 @@ import { AddressRepeatingBlock } from './AddressRepeatingBlock';
 import { AddressEntry } from 'apps/patient/data';
 import { LocationOptions } from 'options/location';
 
-const mockState = jest.fn();
+const mockState = vi.fn();
 
 const mockLocationOptions: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: mockState
+    state: mockState,
 };
 
-jest.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+vi.mock('options/location', () => ({
+    useLocationOptions: () => mockLocationOptions,
 }));
 
-const onChange = jest.fn();
-const isDirty = jest.fn();
+const onChange = vi.fn();
+const isDirty = vi.fn();
 
 type FixtureProps = {
     values?: AddressEntry[];
@@ -36,8 +36,8 @@ describe('when entering multiple address demographics', () => {
                     {
                         asOf: '07/11/1997',
                         type: { name: 'type-name', value: 'type-value' },
-                        use: { name: 'use-name', value: 'use-value' }
-                    }
+                        use: { name: 'use-name', value: 'use-value' },
+                    },
                 ]}
             />
         );

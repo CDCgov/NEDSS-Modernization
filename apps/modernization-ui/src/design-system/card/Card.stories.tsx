@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Card } from './Card';
 import { Button } from 'design-system/button';
 
 const meta = {
     title: 'Design System/Cards/Card',
-    component: Card
+    component: Card,
 } satisfies Meta<typeof Card>;
 
 export default meta;
@@ -38,30 +38,30 @@ export const Default: Story = {
                     facilisi. Aliquam a purus vulputate, pretium augue vitae, ultrices purus.
                 </p>
             </div>
-        )
-    }
+        ),
+    },
 };
 
 export const Subtext: Story = {
     args: {
         ...Default.args,
-        subtext: 'subtext'
-    }
+        subtext: 'subtext',
+    },
 };
 
 export const Info: Story = {
     args: {
         ...Default.args,
-        info: 'Info'
-    }
+        info: 'Info',
+    },
 };
 
 export const Collapsible: Story = {
     args: {
         ...Default.args,
         subtext: 'subtext',
-        collapsible: true
-    }
+        collapsible: true,
+    },
 };
 
 export const CollapsibleWithActions: Story = {
@@ -77,6 +77,6 @@ export const CollapsibleWithActions: Story = {
                 </Button>
                 <Button sizing="small">Primary</Button>
             </>
-        )
-    }
+        ),
+    },
 };

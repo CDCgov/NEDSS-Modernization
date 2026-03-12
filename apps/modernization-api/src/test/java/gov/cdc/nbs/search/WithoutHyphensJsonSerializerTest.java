@@ -1,23 +1,21 @@
 package gov.cdc.nbs.search;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class WithoutHyphensJsonSerializerTest {
-
 
   static Stream<Arguments> values() {
     return Stream.of(
@@ -35,15 +33,10 @@ class WithoutHyphensJsonSerializerTest {
     JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
     SerializerProvider serializerProvider = new ObjectMapper().getSerializerProvider();
 
-    new WithoutHyphensJsonSerializer().serialize(
-        in,
-        jsonGenerator,
-        serializerProvider);
+    new WithoutHyphensJsonSerializer().serialize(in, jsonGenerator, serializerProvider);
 
     jsonGenerator.flush();
 
     assertThat(jsonWriter.toString()).contains(expected);
-
   }
-
 }

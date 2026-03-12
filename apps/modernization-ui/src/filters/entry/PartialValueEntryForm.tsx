@@ -11,7 +11,7 @@ const PartialValueEntryForm = () => {
             name="value"
             shouldUnregister
             rules={{
-                required: { value: true, message: 'A value is required.' }
+                required: { value: true, message: 'A value is required.' },
             }}
             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                 <Input

@@ -41,8 +41,8 @@ const events = (patient: number): PatientFileEventData => ({
     birthRecords: new MemoizedSupplier(() => patientBirthRecords(patient)),
     reports: {
         laboratory: new MemoizedSupplier(() => patientLaboratoryReports(patient)),
-        morbidity: new MemoizedSupplier(() => patientMorbidityReports(patient))
-    }
+        morbidity: new MemoizedSupplier(() => patientMorbidityReports(patient)),
+    },
 });
 
 export { events };

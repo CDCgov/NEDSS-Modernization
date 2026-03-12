@@ -2,8 +2,8 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SignIn } from './SignIn';
 
-jest.mock('SkipLink/SkipLinkContext', () => ({
-    useSkipLink: () => ({ skipTo: jest.fn() })
+vi.mock('SkipLink/SkipLinkContext', () => ({
+    useSkipLink: () => ({ skipTo: vi.fn() }),
 }));
 
 describe('SignIn', () => {
@@ -24,7 +24,7 @@ describe('SignIn', () => {
     it('calls handleWelcomeEvent when Sign up button is clicked', async () => {
         const user = userEvent.setup();
 
-        const handleWelcomeEventMock = jest.fn();
+        const handleWelcomeEventMock = vi.fn();
         const { getByRole } = render(<SignIn handleWelcomeEvent={handleWelcomeEventMock} />);
 
         const signUpButton = getByRole('button', { name: 'Sign up for demo access' });

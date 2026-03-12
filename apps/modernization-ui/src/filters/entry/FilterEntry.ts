@@ -32,5 +32,5 @@ export type {
     ExactValueEntry,
     DateFilterEntry,
     DatePeriodFilterEntry,
-    DateRangeFilterEntry
+    DateRangeFilterEntry,
 };

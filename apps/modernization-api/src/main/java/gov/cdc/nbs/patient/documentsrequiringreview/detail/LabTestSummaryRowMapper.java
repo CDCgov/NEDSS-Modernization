@@ -7,16 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class LabTestSummaryRowMapper implements RowMapper<LabTestSummary> {
 
-  public record Column(
-      int name,
-      int status,
-      int coded,
-      int numeric,
-      int high,
-      int low,
-      int unit) {
-  }
-
+  public record Column(int name, int status, int coded, int numeric, int high, int low, int unit) {}
 
   private final Column columns;
 
@@ -34,13 +25,6 @@ public class LabTestSummaryRowMapper implements RowMapper<LabTestSummary> {
     String low = resultSet.getString(columns.low());
     String unit = resultSet.getString(columns.unit);
 
-    return new LabTestSummary(
-        name,
-        status,
-        coded,
-        numeric,
-        high,
-        low,
-        unit);
+    return new LabTestSummary(name, status, coded, numeric, high, low, unit);
   }
 }

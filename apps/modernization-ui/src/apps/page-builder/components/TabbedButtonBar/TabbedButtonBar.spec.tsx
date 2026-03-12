@@ -11,7 +11,7 @@ describe('Tabbed button bar', () => {
     });
 
     it('should emit onChange events', async () => {
-        const mockFn = jest.fn();
+        const mockFn = vi.fn();
         const { getAllByRole } = render(<TabbedButtonBar entries={['1', '2']} onChange={mockFn} />);
         const buttons = getAllByRole('button');
         await waitFor(() => {

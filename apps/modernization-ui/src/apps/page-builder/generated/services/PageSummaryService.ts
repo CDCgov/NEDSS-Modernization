@@ -19,27 +19,27 @@ export class PageSummaryService {
         size = 25,
         sort,
     }: {
-        requestBody: PageSummaryRequest,
+        requestBody: PageSummaryRequest;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<PagePageSummary> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/search',
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
             body: requestBody,
             mediaType: 'application/json',

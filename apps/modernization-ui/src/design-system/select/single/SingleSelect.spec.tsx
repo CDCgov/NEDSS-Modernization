@@ -13,7 +13,7 @@ describe('when selecting a single item from a specific set of items', () => {
                     { name: 'name-one', value: 'value-one', label: 'label-one' },
                     { name: 'name-two', value: 'value-two', label: 'label-two' },
                     { name: 'name-three', value: 'value-three', label: 'label-three' },
-                    { name: 'name-four', value: 'value-four', label: 'label-four' }
+                    { name: 'name-four', value: 'value-four', label: 'label-four' },
                 ]}
             />
         );
@@ -30,7 +30,7 @@ describe('when selecting a single item from a specific set of items', () => {
                     { name: 'name-one', value: 'value-one', label: 'label-one' },
                     { name: 'name-two', value: 'value-two', label: 'label-two' },
                     { name: 'name-three', value: 'value-three', label: 'label-three' },
-                    { name: 'name-four', value: 'value-four', label: 'label-four' }
+                    { name: 'name-four', value: 'value-four', label: 'label-four' },
                 ]}
                 placeholder="place-holder-value"
             />
@@ -50,7 +50,7 @@ describe('when selecting a single item from a specific set of items', () => {
                     { name: 'name-one', value: 'value-one' },
                     { name: 'name-two', value: 'value-two' },
                     { name: 'name-three', value: 'value-three' },
-                    { name: 'name-four', value: 'value-four' }
+                    { name: 'name-four', value: 'value-four' },
                 ]}
                 value={{ name: 'name-three', value: 'value-three', label: 'label-three' }}
             />
@@ -72,10 +72,10 @@ describe('when one of the options is clicked', () => {
                     { name: 'name-one', value: 'value-one', label: 'label-one' },
                     { name: 'name-two', value: 'value-two', label: 'label-two' },
                     { name: 'name-three', value: 'value-three', label: 'label-three' },
-                    { name: 'name-four', value: 'value-four', label: 'label-four' }
+                    { name: 'name-four', value: 'value-four', label: 'label-four' },
                 ]}
                 value={{ name: 'name-four', value: 'value-four', label: 'label-four' }}
-                onChange={jest.fn()}
+                onChange={vi.fn()}
             />
         );
         const select = getByRole('combobox', { name: 'Test Label' });

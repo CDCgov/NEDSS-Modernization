@@ -4,25 +4,28 @@ import { ClassicModalProvider } from './ClassicModalContext';
 import { Status } from './useClassicModal';
 import userEvent from '@testing-library/user-event';
 
-const openMock = jest.fn();
-const resetMock = jest.fn();
+const openMock = vi.fn();
+const resetMock = vi.fn();
 
 const mockUseClassicModal = {
     state: { status: Status.Idle },
     open: openMock,
-    reset: resetMock
+    reset: resetMock,
 };
 
-jest.mock('./useClassicModal', () => ({
-    ...jest.requireActual('./useClassicModal'),
-    useClassicModal: () => mockUseClassicModal
-}));
+vi.mock('./useClassicModal', async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+        ...actual,
+        useClassicModal: () => mockUseClassicModal,
+    };
+});
 
 describe('A ClassicModalButton component', () => {
     it('should open url when clicked', async () => {
         render(
             <ClassicModalProvider>
-                <ClassicModalButton url="url" onClose={jest.fn()}>
+                <ClassicModalButton url="url" onClose={vi.fn()}>
                     Button text
                 </ClassicModalButton>
             </ClassicModalProvider>

@@ -19,13 +19,11 @@ class PatientProfileIncomingRedirection {
   }
 
   /**
-   * Receives proxied View Patient Profile requests from Classic NBS. POST
-   * requests from Patient Profile typically
-   * include the patient identifier in tas a query parameter.
+   * Receives proxied View Patient Profile requests from Classic NBS. POST requests from Patient
+   * Profile typically include the patient identifier in tas a query parameter.
    *
    * @param request The {@link HttpServletRequest} from Classic NBS
-   * @return A {@link ResponseEntity} redirecting to the Modernized Patient
-   *         Profile
+   * @return A {@link ResponseEntity} redirecting to the Modernized Patient Profile
    */
   @GetMapping("/nbs/redirect/patient/file")
   ResponseEntity<Void> redirectedPatientProfileGET(final HttpServletRequest request) {
@@ -33,13 +31,11 @@ class PatientProfileIncomingRedirection {
   }
 
   /**
-   * Receives proxied View Patient Profile requests from Classic NBS. GET requests
-   * from Patient Profile typically
-   * include the patient identifier in tas a query parameter.
+   * Receives proxied View Patient Profile requests from Classic NBS. GET requests from Patient
+   * Profile typically include the patient identifier in tas a query parameter.
    *
    * @param request The {@link HttpServletRequest} from Classic NBS
-   * @return A {@link ResponseEntity} redirecting to the Modernized Patient
-   *         Profile
+   * @return A {@link ResponseEntity} redirecting to the Modernized Patient Profile
    */
   @PostMapping("/nbs/redirect/patient/file")
   ResponseEntity<Void> redirectedPatientProfilePOST(final HttpServletRequest request) {
@@ -48,16 +44,13 @@ class PatientProfileIncomingRedirection {
 
   @GetMapping("/nbs/redirect/patient/file/{tab}/return")
   ResponseEntity<Void> redirectPatientProfileReturnGET(
-      final HttpServletRequest request,
-      @PathVariable(required = false) final String tab) {
+      final HttpServletRequest request, @PathVariable(required = false) final String tab) {
     return resolver.fromReturnPatient(request, tab);
   }
 
   @PostMapping("/nbs/redirect/patient/file/{tab}/return")
   ResponseEntity<Void> redirectPatientProfileReturnPOST(
-      final HttpServletRequest request,
-      @PathVariable(required = false) final String tab) {
+      final HttpServletRequest request, @PathVariable(required = false) final String tab) {
     return resolver.fromReturnPatient(request, tab);
   }
-
 }

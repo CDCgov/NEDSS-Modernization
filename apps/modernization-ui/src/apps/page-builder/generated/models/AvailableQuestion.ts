@@ -31,4 +31,3 @@ export type AvailableQuestion = {
     hl7Segment?: string;
     adminComments?: string;
 };
-

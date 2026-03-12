@@ -29,7 +29,7 @@ describe('when ManageSection renders', () => {
                                 order: 1,
                                 isGroupable: true,
                                 questionIdentifier: 'identifier',
-                                questions: []
+                                questions: [],
                             },
                             {
                                 id: 456,
@@ -39,13 +39,13 @@ describe('when ManageSection renders', () => {
                                 order: 2,
                                 isGroupable: true,
                                 questionIdentifier: 'identifier',
-                                questions: []
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                questions: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     };
 
     const tabData: PagesTab = {
@@ -53,13 +53,13 @@ describe('when ManageSection renders', () => {
         name: 'tab-name',
         order: 1,
         visible: true,
-        sections: []
+        sections: [],
     };
 
     it('should show the heading', () => {
         const { getByTestId } = render(
             <DragDropProvider pageData={content}>
-                <ManageSection pageId={1} tab={tabData} key={1} onContentChange={jest.fn()} onCancel={jest.fn()} />
+                <ManageSection pageId={1} tab={tabData} key={1} onContentChange={vi.fn()} onCancel={vi.fn()} />
             </DragDropProvider>
         );
         const header = getByTestId('header');
@@ -69,7 +69,7 @@ describe('when ManageSection renders', () => {
     it('should display two buttons', () => {
         const { container } = render(
             <DragDropProvider pageData={content}>
-                <ManageSection pageId={1} tab={tabData} key={1} onContentChange={jest.fn()} onCancel={jest.fn()} />
+                <ManageSection pageId={1} tab={tabData} key={1} onContentChange={vi.fn()} onCancel={vi.fn()} />
             </DragDropProvider>
         );
         const buttons = container.getElementsByTagName('button');
