@@ -11,8 +11,7 @@ public class PrimaryLanguageAutocompleteSteps {
 
   PrimaryLanguageAutocompleteSteps(
       final PrimaryLanguageOptionAutocompleteRequester request,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.request = request;
     this.response = response;
   }
@@ -23,11 +22,8 @@ public class PrimaryLanguageAutocompleteSteps {
   }
 
   @When("I am trying to find at most {int} primary language(s) that start with {string}")
-  public void i_am_trying_to_find_n_options_that_start_with(
-      final int limit,
-      final String criteria
-  ) throws Exception {
+  public void i_am_trying_to_find_n_options_that_start_with(final int limit, final String criteria)
+      throws Exception {
     response.active(request.complete(criteria, limit));
   }
-
 }

@@ -37,58 +37,58 @@ const columns: Column<PatientFileInvestigation>[] = [
         value: (row) => row.local,
         render: (value) => (
             <a href={`/nbs/api/profile/${value.patient}/investigation/${value.identifier}`}>{value.local}</a>
-        )
+        ),
     },
     {
         ...START_DATE,
         className: styles['date-header'],
         sortable: true,
         sortIconType: 'numeric',
-        value: (row) => row.startedOn
+        value: (row) => row.startedOn,
     },
     {
         ...STATUS,
         sortable: true,
         className: styles['coded-header'],
         value: (row) => row.status,
-        render: (row) => displayStatus(row.status)
+        render: (row) => displayStatus(row.status),
     },
     {
         ...CONDITION,
         sortable: true,
         value: (row) => row.condition,
-        render: (value) => <b>{value.condition}</b>
+        render: (value) => <b>{value.condition}</b>,
     },
     {
         ...CASE_STATUS,
         className: styles['status-header'],
         sortable: true,
         value: (row) => row.caseStatus,
-        render: (row) => displayStatus(row.caseStatus)
+        render: (row) => displayStatus(row.caseStatus),
     },
     {
         ...NOTIFICATION,
         className: styles['status-header'],
         sortable: true,
         value: (row) => row.notification,
-        render: (row) => displayNotificationStatus(row.notification)
+        render: (row) => displayNotificationStatus(row.notification),
     },
     {
         ...JURISDICTION,
         sortable: true,
-        value: (row) => row.jurisdiction
+        value: (row) => row.jurisdiction,
     },
     {
         ...INVESTIGATOR,
         sortable: true,
-        value: (row) => displayInvestigator(row.investigator)
+        value: (row) => displayInvestigator(row.investigator),
     },
     {
         ...CO_INFECTION,
         sortable: true,
         className: styles['co-infection-header'],
-        value: (row) => row.coInfection
-    }
+        value: (row) => row.coInfection,
+    },
 ];
 
 const columnPreferences: ColumnPreference[] = [
@@ -101,7 +101,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...NOTIFICATION, moveable: true, toggleable: true },
     { ...JURISDICTION, moveable: true, toggleable: true },
     { ...INVESTIGATOR, moveable: true, toggleable: true },
-    { ...CO_INFECTION, moveable: true, toggleable: true }
+    { ...CO_INFECTION, moveable: true, toggleable: true },
 ];
 
 type InternalCardProps = {
@@ -142,7 +142,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                     />
                 </Shown>
             </Permitted>
-        )
+        ),
     };
 
     return (
@@ -161,7 +161,8 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                             secondary
                             sizing={sizing}
                             icon="add_circle"
-                            href={`/nbs/api/profile/${patient}/investigation`}>
+                            href={`/nbs/api/profile/${patient}/investigation`}
+                        >
                             Add investigation
                         </LinkButton>
                     </Permitted>
@@ -176,10 +177,12 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                                     sizing={sizing}
                                     disabled={!comparison}
                                     aria-describedby="compare-investigations"
-                                    href={`/nbs/api/profile/${patient}/investigation/${comparison?.selected}/compare/${comparison?.comparedTo}`}>
+                                    href={`/nbs/api/profile/${patient}/investigation/${comparison?.selected}/compare/${comparison?.comparedTo}`}
+                                >
                                     Compare investigations
                                 </LinkButton>
-                            }>
+                            }
+                        >
                             <LabeledValue label="Compare investigations disabled" orientation="vertical">
                                 You can only select two Page Builder investigations of the same condition to compare.
                                 Legacy investigations cannot use Merge functionality.
@@ -203,7 +206,8 @@ const PatientFileInvestigationsCard = ({ provider, ...remaining }: PatientFileIn
             <LoadingOverlay>
                 <InternalCard {...remaining} />
             </LoadingOverlay>
-        }>
+        }
+    >
         <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
     </Suspense>
 );

@@ -1,14 +1,14 @@
 package gov.cdc.nbs.authentication.token;
 
-import java.util.Optional;
-import java.util.function.Predicate;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import gov.cdc.nbs.authentication.NBSToken;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.Optional;
+import java.util.function.Predicate;
+import org.springframework.stereotype.Component;
 
 @Component
 public class NBSTokenValidator {
@@ -23,8 +23,8 @@ public class NBSTokenValidator {
 
   // Check for an `Authorization` header or nbs_token cookie, return the status of the token
   public TokenValidation validate(final HttpServletRequest request) {
-    Optional<String> token = resolveTokenFromAuth(request)
-        .or(() -> resolveTokenFromCookie(request));
+    Optional<String> token =
+        resolveTokenFromAuth(request).or(() -> resolveTokenFromCookie(request));
 
     if (token.isPresent()) {
       try {
@@ -68,5 +68,4 @@ public class NBSTokenValidator {
     INVALID,
     UNSET
   }
-
 }

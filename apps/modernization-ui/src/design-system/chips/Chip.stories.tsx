@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Chip } from './Chip';
 
 const meta = {
     title: 'Design System/Chip',
-    component: Chip
+    component: Chip,
 } satisfies Meta<typeof Chip>;
 
 export default meta;
@@ -16,8 +16,8 @@ export const Default: Story = {
     args: {
         name: 'Name',
         value: 'Default',
-        handleClose: handleClose
-    }
+        handleClose: handleClose,
+    },
 };
 
 export const Operator: Story = {
@@ -25,6 +25,6 @@ export const Operator: Story = {
         name: 'Name',
         value: 'Operator',
         operator: '!=',
-        handleClose: handleClose
-    }
+        handleClose: handleClose,
+    },
 };

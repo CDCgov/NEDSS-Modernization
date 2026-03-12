@@ -1,8 +1,8 @@
 package gov.cdc.nbs.event.search;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 class LabReportFilterTest {
 
@@ -13,10 +13,7 @@ class LabReportFilterTest {
 
     filter.setEventId(
         new LabReportFilter.LabReportEventId(
-            LabReportFilter.LaboratoryEventIdType.ACCESSION_NUMBER,
-            null
-        )
-    );
+            LabReportFilter.LaboratoryEventIdType.ACCESSION_NUMBER, null));
 
     assertThat(filter.accession()).isEmpty();
   }
@@ -27,11 +24,7 @@ class LabReportFilterTest {
     LabReportFilter filter = new LabReportFilter();
 
     filter.setEventId(
-        new LabReportFilter.LabReportEventId(
-            LabReportFilter.LaboratoryEventIdType.LAB_ID,
-            null
-        )
-    );
+        new LabReportFilter.LabReportEventId(LabReportFilter.LaboratoryEventIdType.LAB_ID, null));
 
     assertThat(filter.labId()).isEmpty();
   }

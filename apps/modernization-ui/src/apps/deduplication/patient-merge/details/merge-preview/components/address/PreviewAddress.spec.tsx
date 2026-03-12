@@ -30,7 +30,7 @@ const mockMergeCandidates: MergeCandidate[] = [
                 state: 'CA',
                 zipcode: '12345',
                 county: 'Orange',
-                country: 'USA'
+                country: 'USA',
             },
             {
                 id: 'addr-2',
@@ -42,8 +42,8 @@ const mockMergeCandidates: MergeCandidate[] = [
                 state: undefined,
                 zipcode: undefined,
                 county: undefined,
-                country: undefined
-            }
+                country: undefined,
+            },
         ],
         phoneEmails: [],
         identifications: [],
@@ -52,8 +52,8 @@ const mockMergeCandidates: MergeCandidate[] = [
         sexAndBirth: {},
         mortality: {},
         general: {},
-        investigations: []
-    }
+        investigations: [],
+    },
 ];
 
 const selectedAddresses: AddressId[] = [{ locatorId: 'addr-1' }, { locatorId: 'addr-2' }];

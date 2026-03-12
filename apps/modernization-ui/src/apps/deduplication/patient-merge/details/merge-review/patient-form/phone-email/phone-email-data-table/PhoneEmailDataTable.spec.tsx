@@ -16,7 +16,7 @@ const patientData: Partial<MergeCandidate> = {
             extension: '12',
             email: 'email@email.com',
             url: 'url@url.com',
-            comments: 'phone comment'
+            comments: 'phone comment',
         },
         {
             id: '321',
@@ -27,11 +27,11 @@ const patientData: Partial<MergeCandidate> = {
             phoneNumber: '2222222222',
             extension: '3',
             email: 'email2@email.com',
-            url: 'google.com'
-        }
-    ]
+            url: 'google.com',
+        },
+    ],
 };
-const onViewPhoneEmail = jest.fn();
+const onViewPhoneEmail = vi.fn();
 const Fixture = () => {
     const form = useForm();
     return (

@@ -1,4 +1,4 @@
-import { openInvestigationPage } from 'cypress/e2e/pages/nbs-classic/openInvestigation.page';
+import { openInvestigationPage } from '@pages/nbs-classic/openInvestigation.page';
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 // Accessing and verifying Open Investigation Queue page
@@ -155,4 +155,3 @@ Then('Click Create Notifications button from top action button group', () => {
 Then('Click Submit button in newly opened window Create Notification Page', () => {
   openInvestigationPage.clickSubmitBtnInCreateNotificationPage();
 });
-

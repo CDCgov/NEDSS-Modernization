@@ -4,12 +4,12 @@ import { permitsAll, Permitted } from '../../../../libs/permission';
 const securityLinks = [
     {
         text: 'Manage permission sets',
-        href: '/nbs/loadPermissionSets.do?OperationType=152'
+        href: '/nbs/loadPermissionSets.do?OperationType=152',
     },
     {
         text: 'Manage users',
-        href: '/nbs/userList.do'
-    }
+        href: '/nbs/userList.do',
+    },
 ];
 
 type Props = {

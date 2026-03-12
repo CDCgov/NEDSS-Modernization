@@ -18,16 +18,12 @@ export class ValueSetControllerService {
      * @returns Valueset OK
      * @throws ApiError
      */
-    public static getValueset({
-        codeSetNm,
-    }: {
-        codeSetNm: string,
-    }): CancelablePromise<Valueset> {
+    public static getValueset({ codeSetNm }: { codeSetNm: string }): CancelablePromise<Valueset> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/valueset/{codeSetNm}',
             path: {
-                'codeSetNm': codeSetNm,
+                codeSetNm: codeSetNm,
             },
         });
     }
@@ -39,14 +35,14 @@ export class ValueSetControllerService {
         codeSetNm,
         requestBody,
     }: {
-        codeSetNm: string,
-        requestBody: UpdateValueSetRequest,
+        codeSetNm: string;
+        requestBody: UpdateValueSetRequest;
     }): CancelablePromise<Valueset> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/valueset/{codeSetNm}',
             path: {
-                'codeSetNm': codeSetNm,
+                codeSetNm: codeSetNm,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -56,16 +52,12 @@ export class ValueSetControllerService {
      * @returns ValueSetStateChangeResponse OK
      * @throws ApiError
      */
-    public static deleteValueSet({
-        codeSetNm,
-    }: {
-        codeSetNm: string,
-    }): CancelablePromise<ValueSetStateChangeResponse> {
+    public static deleteValueSet({ codeSetNm }: { codeSetNm: string }): CancelablePromise<ValueSetStateChangeResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/valueset/{codeSetNm}/deactivate',
             path: {
-                'codeSetNm': codeSetNm,
+                codeSetNm: codeSetNm,
             },
         });
     }
@@ -76,13 +68,13 @@ export class ValueSetControllerService {
     public static activateValueSet({
         codeSetNm,
     }: {
-        codeSetNm: string,
+        codeSetNm: string;
     }): CancelablePromise<ValueSetStateChangeResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/valueset/{codeSetNm}/activate',
             path: {
-                'codeSetNm': codeSetNm,
+                codeSetNm: codeSetNm,
             },
         });
     }
@@ -90,11 +82,7 @@ export class ValueSetControllerService {
      * @returns Valueset OK
      * @throws ApiError
      */
-    public static create({
-        requestBody,
-    }: {
-        requestBody: CreateValuesetRequest,
-    }): CancelablePromise<Valueset> {
+    public static create({ requestBody }: { requestBody: CreateValuesetRequest }): CancelablePromise<Valueset> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/valueset',
@@ -112,27 +100,27 @@ export class ValueSetControllerService {
         size = 25,
         sort,
     }: {
-        requestBody: ValueSetSearchRequest,
+        requestBody: ValueSetSearchRequest;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<PageValueSetOption> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/valueset/options/search',
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -142,16 +130,12 @@ export class ValueSetControllerService {
      * @returns County OK
      * @throws ApiError
      */
-    public static findCountyByStateCode({
-        stateCode,
-    }: {
-        stateCode: string,
-    }): CancelablePromise<Array<County>> {
+    public static findCountyByStateCode({ stateCode }: { stateCode: string }): CancelablePromise<Array<County>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/valueset/{stateCode}/counties',
             path: {
-                'stateCode': stateCode,
+                stateCode: stateCode,
             },
         });
     }

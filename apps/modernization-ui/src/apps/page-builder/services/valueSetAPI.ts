@@ -18,6 +18,6 @@ export const fetchGroupOptions = () => {
 
 export const fetchValueSetOptions = (codeSet: string) => {
     return ConceptControllerService.findConcepts({
-        codeSetNm: codeSet
+        codeSetNm: codeSet,
     });
 };

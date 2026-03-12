@@ -1,13 +1,14 @@
+import { Mock } from 'vitest';
 import { act } from 'react';
 import { renderHook } from '@testing-library/react';
 import { useNavigationBlock } from './useNavigationBlock';
 import { useBlocker } from 'react-router';
 
-const mockUseNavigate = jest.fn();
+const mockUseNavigate = vi.fn();
 
-jest.mock('react-router', () => ({
-    useBlocker: jest.fn(),
-    useNavigate: () => mockUseNavigate
+vi.mock('react-router', () => ({
+    useBlocker: vi.fn(),
+    useNavigate: () => mockUseNavigate,
 }));
 
 /*
@@ -18,8 +19,8 @@ activated is enabled by default
 
 const defaultBlockerResult = {
     state: 'unblocked',
-    proceed: jest.fn(),
-    reset: jest.fn()
+    proceed: vi.fn(),
+    reset: vi.fn(),
 };
 
 describe('useNavigationBlock', () => {
@@ -27,7 +28,7 @@ describe('useNavigationBlock', () => {
 
     beforeEach(() => {
         mockBlocker = { ...defaultBlockerResult };
-        (useBlocker as jest.Mock).mockReturnValue(mockBlocker);
+        (useBlocker as Mock).mockReturnValue(mockBlocker);
     });
 
     it('should block navigation when blocking is activated', () => {
@@ -60,7 +61,7 @@ describe('useNavigationBlock', () => {
 
     it('should not block when route in list of unblockable routes', () => {
         let blockerResult: boolean | undefined = undefined;
-        (useBlocker as jest.Mock).mockImplementation((fn) => {
+        (useBlocker as Mock).mockImplementation((fn) => {
             blockerResult = fn({ currentLocation: { pathname: '/current' }, nextLocation: { pathname: '/expired' } });
             return { ...defaultBlockerResult };
         });
@@ -76,7 +77,7 @@ describe('useNavigationBlock', () => {
 
     it('should block navigation when block is engaged', () => {
         let blockerResult: boolean | undefined = undefined;
-        (useBlocker as jest.Mock).mockImplementation((fn) => {
+        (useBlocker as Mock).mockImplementation((fn) => {
             blockerResult = fn({ currentLocation: { pathname: '/current' }, nextLocation: { pathname: '/next' } });
             return { ...defaultBlockerResult };
         });
@@ -91,7 +92,7 @@ describe('useNavigationBlock', () => {
 
     it('should not block navigation when block is not engaged', () => {
         let blockerResult: boolean | undefined = undefined;
-        (useBlocker as jest.Mock).mockImplementation((fn) => {
+        (useBlocker as Mock).mockImplementation((fn) => {
             blockerResult = fn({ currentLocation: { pathname: '/current' }, nextLocation: { pathname: '/next' } });
             return { ...defaultBlockerResult };
         });
@@ -110,10 +111,10 @@ describe('useNavigationBlock', () => {
 
     it('should not block when route is allowed', () => {
         let blockerResult: boolean | undefined = undefined;
-        (useBlocker as jest.Mock).mockImplementation((fn) => {
+        (useBlocker as Mock).mockImplementation((fn) => {
             blockerResult = fn({
                 currentLocation: { pathname: '/current' },
-                nextLocation: { pathname: '/allowed-next' }
+                nextLocation: { pathname: '/allowed-next' },
             });
             return { ...defaultBlockerResult };
         });
@@ -128,10 +129,10 @@ describe('useNavigationBlock', () => {
 
     it('should not block when route is allowed', () => {
         let blockerResult: boolean | undefined = undefined;
-        (useBlocker as jest.Mock).mockImplementation((fn) => {
+        (useBlocker as Mock).mockImplementation((fn) => {
             blockerResult = fn({
                 currentLocation: { pathname: '/current' },
-                nextLocation: { pathname: '/allowed-next' }
+                nextLocation: { pathname: '/allowed-next' },
             });
             return { ...defaultBlockerResult };
         });

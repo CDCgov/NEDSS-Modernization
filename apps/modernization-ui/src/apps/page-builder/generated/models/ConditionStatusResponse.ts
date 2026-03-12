@@ -6,4 +6,3 @@ export type ConditionStatusResponse = {
     id?: string;
     statusCd?: string;
 };
-

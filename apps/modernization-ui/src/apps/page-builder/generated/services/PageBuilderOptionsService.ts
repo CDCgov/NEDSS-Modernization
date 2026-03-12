@@ -29,15 +29,15 @@ export class PageBuilderOptionsService {
         criteria,
         limit = 15,
     }: {
-        criteria: string,
-        limit?: number,
+        criteria: string;
+        limit?: number;
     }): CancelablePromise<Array<PageBuilderOption>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/options/page/names/search',
             query: {
-                'criteria': criteria,
-                'limit': limit,
+                criteria: criteria,
+                limit: limit,
             },
         });
     }

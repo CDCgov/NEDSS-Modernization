@@ -7,7 +7,7 @@ const entry: IdentificationDemographic = {
     asOf: '2000-01-01',
     type: asSelectable('DL', 'Driver license'),
     issuer: asSelectable('DR', 'Dr. Keble'),
-    value: '12345'
+    value: '12345',
 };
 
 describe('Identification demographic view', () => {

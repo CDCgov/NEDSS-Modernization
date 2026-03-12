@@ -4,13 +4,13 @@ import { PageProvider, usePage } from './PageContext';
 
 const mockLocation = {} as Location;
 
-jest.mock('react-router', () => ({
-    useLocation: () => mockLocation
+vi.mock('react-router', () => ({
+    useLocation: () => mockLocation,
 }));
 
 const setup = () => {
     return renderHook(() => usePage(), {
-        wrapper: PageProvider
+        wrapper: PageProvider,
     });
 };
 

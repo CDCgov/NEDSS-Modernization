@@ -8,7 +8,7 @@ type VerificationRenderProps = {
 
 type VerificationProps<
     Values extends FieldValues = FieldValues,
-    Name extends FieldPath<Values> = FieldPath<Values>
+    Name extends FieldPath<Values> = FieldPath<Values>,
 > = VerificationOptions<Values, Name> & {
     render: (result: VerificationRenderProps) => JSX.Element;
 };
@@ -17,7 +17,7 @@ const Verification = <V extends FieldValues = FieldValues, N extends FieldPath<V
     name,
     control,
     constraint,
-    render
+    render,
 }: VerificationProps<V, N>) => {
     const { violation, verify } = useVerification({ name, control, constraint });
 

@@ -6,12 +6,12 @@ import { PatientFileLink } from './PatientFileLink';
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
-    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+vi.mock('user', () => ({
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } }),
 }));
 
 let mockFeatures: Features = {
-    ...defaultConfiguration.features
+    ...defaultConfiguration.features,
 };
 
 const withModernizedPatientFile = (enabled: boolean) => ({
@@ -19,13 +19,13 @@ const withModernizedPatientFile = (enabled: boolean) => ({
     patient: {
         ...defaultConfiguration.features.patient,
         file: {
-            enabled: enabled
-        }
-    }
+            enabled: enabled,
+        },
+    },
 });
 
-jest.mock('configuration', () => ({
-    useConfiguration: () => ({ ready: false, loading: false, load: jest.fn(), features: mockFeatures })
+vi.mock('configuration', () => ({
+    useConfiguration: () => ({ ready: false, loading: false, load: vi.fn(), features: mockFeatures }),
 }));
 
 describe('PatientFileLink', () => {

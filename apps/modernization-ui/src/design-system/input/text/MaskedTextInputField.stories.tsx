@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { MaskedTextInputField } from './MaskedTextInputField';
 
 const meta = {
     title: 'Design System/Input/Text/Masked',
-    component: MaskedTextInputField
+    component: MaskedTextInputField,
 } satisfies Meta<typeof MaskedTextInputField>;
 
 export default meta;
@@ -16,22 +16,22 @@ export const Default: Story = {
         label: 'Masked Text Input',
         helperText: 'Values will be formatted accorded to the given mask',
         mask: '(_)____-____@_',
-        onChange: () => {}
-    }
+        onChange: () => {},
+    },
 };
 
 export const Horizontal: Story = {
     args: {
         ...Default.args,
         id: 'masked-text-input-horizontal',
-        orientation: 'horizontal'
-    }
+        orientation: 'horizontal',
+    },
 };
 
 export const Vertical: Story = {
     args: {
         ...Default.args,
         id: 'masked-text-input-vertical',
-        orientation: 'vertical'
-    }
+        orientation: 'vertical',
+    },
 };

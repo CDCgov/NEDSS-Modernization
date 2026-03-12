@@ -18,7 +18,7 @@ const usePageNameOptions = ({ lazy = true }: Settings): ConceptOptions => {
 
     return {
         options,
-        load
+        load,
     };
 };
 

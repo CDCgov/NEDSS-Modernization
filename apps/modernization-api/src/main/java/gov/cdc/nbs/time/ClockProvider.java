@@ -1,16 +1,14 @@
 package gov.cdc.nbs.time;
 
+import java.time.Clock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.time.Clock;
 
 @Configuration
 class ClockProvider {
 
-    @Bean
-    Clock clock() {
-        return Clock.systemDefaultZone();
-    }
-
+  @Bean
+  Clock clock() {
+    return Clock.systemDefaultZone();
+  }
 }

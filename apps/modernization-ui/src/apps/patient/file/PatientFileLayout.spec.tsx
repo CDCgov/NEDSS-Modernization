@@ -15,10 +15,11 @@ describe('PatientFileLayout', () => {
                         deletability: 'Deletable',
                         name: {
                             first: 'John',
-                            last: 'Doe'
-                        }
+                            last: 'Doe',
+                        },
                     }}
-                    navigation={() => <div>Nav</div>}>
+                    navigation={() => <div>Nav</div>}
+                >
                     <div>Content</div>
                 </PatientFileLayout>
             </SkipLinkProvider>

@@ -6,6 +6,12 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import gov.cdc.nbs.questionbank.support.PageIdentifier;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
+import gov.cdc.nbs.testing.support.Active;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,11 +20,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import gov.cdc.nbs.questionbank.support.PageIdentifier;
-import gov.cdc.nbs.testing.interaction.http.Authenticated;
-import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 
 public class ClassicPagePreviewSteps {
   private final String classicUrl;
@@ -42,33 +43,29 @@ public class ClassicPagePreviewSteps {
     this.response = new Active<>();
   }
 
-
   @When("I view the page preview")
   public void i_view_the_page_preview() throws Exception {
 
-    server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=list&initLoad=true"))
+    server
+        .expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=list&initLoad=true"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    response.active(mvc.perform(
-        this.authenticated.withUser(
-            get(
-                "/api/v1/pages/{page}/preview",
-                page.active().id()))));
+    response.active(
+        mvc.perform(
+            this.authenticated.withUser(get("/api/v1/pages/{page}/preview", page.active().id()))));
   }
 
   @Then("the NBS Classic page preview is loaded")
   public void the_nbs_classic_page_preview_is_loaded() throws Exception {
     server.verify();
-    MockHttpServletResponse servletResponse = response.active()
-        .andExpect(status().is3xxRedirection())
-        .andReturn()
-        .getResponse();
+    MockHttpServletResponse servletResponse =
+        response.active().andExpect(status().is3xxRedirection()).andReturn().getResponse();
     String location = servletResponse.getHeader("Location");
-    String expectedUrl = "/nbs/PreviewPage.do?from=L&method=viewPageLoad&waTemplateUid=" + page.active().id();
+    String expectedUrl =
+        "/nbs/PreviewPage.do?from=L&method=viewPageLoad&waTemplateUid=" + page.active().id();
     assertEquals(expectedUrl, location);
     Cookie returnPageCookie = servletResponse.getCookie("Return-Page");
     assertEquals(String.valueOf(page.active().id()), returnPageCookie.getValue());
   }
-
 }

@@ -6,7 +6,7 @@ const transformer = (response: PatientMorbidityReport): PatientFileMorbidityRepo
     ...response,
     addedOn: new Date(response.addedOn),
     receivedOn: maybeDate(response.receivedOn),
-    reportedOn: maybeDate(response.reportedOn)
+    reportedOn: maybeDate(response.reportedOn),
 });
 
 export { transformer };

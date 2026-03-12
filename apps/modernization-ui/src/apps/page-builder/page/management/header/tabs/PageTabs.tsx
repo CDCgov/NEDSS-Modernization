@@ -10,7 +10,7 @@ const contactRecordTab: PagesTab = {
     name: 'Contact Records',
     sections: [],
     visible: true,
-    order: -1
+    order: -1,
 };
 
 const supplementalInfoTab: PagesTab = {
@@ -18,7 +18,7 @@ const supplementalInfoTab: PagesTab = {
     name: 'Supplemental Info',
     sections: [],
     visible: true,
-    order: -1
+    order: -1,
 };
 
 type Props = {

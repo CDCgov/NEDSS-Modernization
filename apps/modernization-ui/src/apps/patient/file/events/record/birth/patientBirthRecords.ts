@@ -19,7 +19,7 @@ type PatientFileBirthRecordResponse = {
 const transformer = (response: PatientFileBirthRecordResponse): PatientFileBirthRecord => ({
     ...response,
     receivedOn: maybeDate(response.receivedOn),
-    collectedOn: maybeDate(response.collectedOn)
+    collectedOn: maybeDate(response.collectedOn),
 });
 
 const patientBirthRecords = (patient: number): Promise<PatientFileBirthRecord[]> =>

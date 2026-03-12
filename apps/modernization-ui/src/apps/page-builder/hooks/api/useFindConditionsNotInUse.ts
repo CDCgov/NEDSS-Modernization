@@ -32,7 +32,7 @@ export const useFindConditionsNotInUse = (page?: number) => {
     useEffect(() => {
         if (state.status === 'fetching') {
             ConditionControllerService.findConditionsNotInUse({
-                page: page ?? -1
+                page: page ?? -1,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) =>
@@ -47,7 +47,7 @@ export const useFindConditionsNotInUse = (page?: number) => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'fetching',
         conditions: state.status === 'complete' ? state.conditions : [],
-        fetch: (page: number) => dispatch({ type: 'fetch', page })
+        fetch: (page: number) => dispatch({ type: 'fetch', page }),
     };
 
     return value;

@@ -5,7 +5,7 @@ import { PatientFileTreatment } from 'generated';
 const transformer = (response: PatientFileTreatment): Treatment => ({
     ...response,
     treatedOn: maybeDate(response.treatedOn),
-    createdOn: maybeDate(response.createdOn)
+    createdOn: maybeDate(response.createdOn),
 });
 
 export { transformer };

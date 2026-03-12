@@ -10,4 +10,3 @@ export type MessagingInfo = {
     requiredInMessage?: boolean;
     hl7DataType?: string;
 };
-

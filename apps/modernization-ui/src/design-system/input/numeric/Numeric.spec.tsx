@@ -22,7 +22,7 @@ describe('when entering numeric values', () => {
 
     it('should alert when value changed', async () => {
         const user = userEvent.setup();
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole } = render(<Fixture onChange={onChange} />);
 
@@ -112,7 +112,7 @@ describe('when entering numeric values', () => {
             '&',
             '*',
             '(',
-            ')'
+            ')',
         ])('should not allow input of "%s"', async (value) => {
             const user = userEvent.setup();
             const { getByRole } = render(<Fixture />);

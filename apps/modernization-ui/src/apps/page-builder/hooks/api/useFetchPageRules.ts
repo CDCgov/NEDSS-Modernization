@@ -17,7 +17,7 @@ export enum RuleSortField {
     VALUE = 'values',
     TARGET = 'target',
     ID = 'id',
-    LOGIC = 'logic'
+    LOGIC = 'logic',
 }
 
 export type BusinessRuleSort = {
@@ -69,7 +69,7 @@ export const useFetchPageRules = () => {
                 requestBody: request,
                 page: state.search.page,
                 size: state.search.pageSize,
-                sort: sortString ? [sortString] : undefined
+                sort: sortString ? [sortString] : undefined,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
@@ -84,7 +84,7 @@ export const useFetchPageRules = () => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'searching',
         response: state.status === 'complete' ? state.rules : undefined,
-        search: (search: FetchBusinessRules) => dispatch({ type: 'search', search })
+        search: (search: FetchBusinessRules) => dispatch({ type: 'search', search }),
     };
 
     return value;

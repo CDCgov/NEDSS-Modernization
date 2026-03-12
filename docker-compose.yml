@@ -32,6 +32,9 @@ services:
       - PARAMETER_SECRET=${PARAMETER_SECRET}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=default,development,local
+    ports:
+      - "8080:8080"
 
   pagebuilder-api:
     build:
@@ -45,6 +48,7 @@ services:
       - TOKEN_SECRET=${TOKEN_SECRET}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=default,development,local
 
   nbs-gateway:
     build:
@@ -70,5 +74,15 @@ services:
       - NBS_GATEWAY_PAGEBUILDER_PAGE_MANAGEMENT_CREATE_ENABLED=${PAGEBUILDER_ENABLED}
       - NBS_GATEWAY_PAGEBUILDER_PAGE_MANAGEMENT_EDIT_ENABLED=${PAGEBUILDER_ENABLED}
       - NBS_GATEWAY_PAGEBUILDER_SERVICE=${PAGEBUILDER_SERVICE}
+      - SPRING_PROFILES_ACTIVE=default,development,local
     ports:
       - "8000:8000"
+
+  report-execution:
+    build:
+      context: ./apps/report-execution
+    container_name: report-execution
+    environment:
+      - DATABASE_CONN_STRING=${DATABASE_CONN_STRING}
+    ports:
+      - "8001:8001"

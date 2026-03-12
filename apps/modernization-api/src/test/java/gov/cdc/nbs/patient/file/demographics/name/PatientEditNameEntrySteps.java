@@ -1,13 +1,12 @@
 package gov.cdc.nbs.patient.file.demographics.name;
 
-import java.util.Collection;
-
 import gov.cdc.nbs.data.selectable.Selectable;
 import gov.cdc.nbs.patient.demographics.name.NameDemographic;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
+import java.util.Collection;
 
 public class PatientEditNameEntrySteps {
   private final Active<PatientIdentifier> activePatient;
@@ -27,9 +26,9 @@ public class PatientEditNameEntrySteps {
   public void editing() {
     this.available.reset();
 
-    this.activePatient.maybeActive()
-        .map(patient -> this.finder.find(patient.id()))
-        .stream().flatMap(Collection::stream).map(this::from)
+    this.activePatient.maybeActive().map(patient -> this.finder.find(patient.id())).stream()
+        .flatMap(Collection::stream)
+        .map(this::from)
         .forEach(this.available::available);
   }
 

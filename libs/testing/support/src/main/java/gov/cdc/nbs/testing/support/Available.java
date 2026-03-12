@@ -12,10 +12,7 @@ public class Available<V> {
 
   private static final SecureRandom RANDOM = new SecureRandom();
 
-
-  public record Indexed<V>(int index, V item) {
-  }
-
+  public record Indexed<V>(int index, V item) {}
 
   private final List<V> items;
 
@@ -49,8 +46,7 @@ public class Available<V> {
   }
 
   public V one() {
-    return maybeOne()
-        .orElseThrow(() -> new NoSuchElementException("there are none available"));
+    return maybeOne().orElseThrow(() -> new NoSuchElementException("there are none available"));
   }
 
   public Stream<V> all() {
@@ -64,7 +60,8 @@ public class Available<V> {
   }
 
   public V previous() {
-    return maybePrevious().orElseThrow(() -> new NoSuchElementException("there is no previous available"));
+    return maybePrevious()
+        .orElseThrow(() -> new NoSuchElementException("there is no previous available"));
   }
 
   public Stream<Indexed<V>> indexed() {
@@ -82,12 +79,14 @@ public class Available<V> {
   }
 
   public void select(final Predicate<V> filter) {
-    indexed().filter(item -> filter.test(item.item))
+    indexed()
+        .filter(item -> filter.test(item.item))
         .findFirst()
-        .ifPresent(index -> {
-          this.items.remove(index.index);
-          this.items.addFirst(index.item);
-        });
+        .ifPresent(
+            index -> {
+              this.items.remove(index.index);
+              this.items.addFirst(index.item);
+            });
   }
 
   public void selected(final V next) {
@@ -99,15 +98,15 @@ public class Available<V> {
   }
 
   public void selected(final UnaryOperator<V> operator, final Supplier<V> initializer) {
-    V current = maybeOne()
-        .or(() -> Optional.ofNullable(initializer.get()))
-        .orElseThrow(() -> new NoSuchElementException("there are none available"));
+    V current =
+        maybeOne()
+            .or(() -> Optional.ofNullable(initializer.get()))
+            .orElseThrow(() -> new NoSuchElementException("there are none available"));
 
     this.items.remove(current);
     V next = operator.apply(current);
 
     selected(next);
-
   }
 
   public void selected(final UnaryOperator<V> operator) {

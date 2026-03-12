@@ -6,5 +6,4 @@ public class TemplateNotFoundException extends NotFoundException {
   public TemplateNotFoundException(Long id) {
     super("Failed to find Template with id: " + id);
   }
-
 }

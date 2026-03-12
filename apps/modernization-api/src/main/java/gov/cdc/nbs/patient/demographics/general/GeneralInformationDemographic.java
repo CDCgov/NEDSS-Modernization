@@ -2,12 +2,10 @@ package gov.cdc.nbs.patient.demographics.general;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
-
 import java.time.LocalDate;
 
 public record GeneralInformationDemographic(
-    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
-    LocalDate asOf,
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
     String maritalStatus,
     String maternalMaidenName,
     Integer adultsInResidence,
@@ -16,22 +14,10 @@ public record GeneralInformationDemographic(
     String educationLevel,
     String primaryLanguage,
     String speaksEnglish,
-    String stateHIVCase
-) {
+    String stateHIVCase) {
 
   public GeneralInformationDemographic(final LocalDate asOf) {
-    this(
-        asOf,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null
-    );
+    this(asOf, null, null, null, null, null, null, null, null, null);
   }
 
   public GeneralInformationDemographic withAsOf(final LocalDate value) {
@@ -45,10 +31,8 @@ public record GeneralInformationDemographic(
         educationLevel(),
         primaryLanguage(),
         speaksEnglish(),
-        stateHIVCase()
-    );
+        stateHIVCase());
   }
-
 
   public GeneralInformationDemographic withMaritalStatus(final String value) {
     return new GeneralInformationDemographic(
@@ -61,8 +45,7 @@ public record GeneralInformationDemographic(
         educationLevel(),
         primaryLanguage(),
         speaksEnglish(),
-        stateHIVCase()
-    );
+        stateHIVCase());
   }
 
   public GeneralInformationDemographic withMaternalMaidenName(final String value) {
@@ -76,8 +59,7 @@ public record GeneralInformationDemographic(
         educationLevel(),
         primaryLanguage(),
         speaksEnglish(),
-        stateHIVCase()
-    );
+        stateHIVCase());
   }
 
   public GeneralInformationDemographic withAdultsInResidence(final int value) {
@@ -91,8 +73,7 @@ public record GeneralInformationDemographic(
         educationLevel(),
         primaryLanguage(),
         speaksEnglish(),
-        stateHIVCase()
-    );
+        stateHIVCase());
   }
 
   public GeneralInformationDemographic withChildrenInResidence(final int value) {
@@ -106,8 +87,7 @@ public record GeneralInformationDemographic(
         educationLevel(),
         primaryLanguage(),
         speaksEnglish(),
-        stateHIVCase()
-    );
+        stateHIVCase());
   }
 
   public GeneralInformationDemographic withPrimaryOccupation(final String value) {
@@ -121,8 +101,7 @@ public record GeneralInformationDemographic(
         educationLevel(),
         primaryLanguage(),
         speaksEnglish(),
-        stateHIVCase()
-    );
+        stateHIVCase());
   }
 
   public GeneralInformationDemographic withEducationLevel(final String value) {
@@ -136,8 +115,7 @@ public record GeneralInformationDemographic(
         value,
         primaryLanguage(),
         speaksEnglish(),
-        stateHIVCase()
-    );
+        stateHIVCase());
   }
 
   public GeneralInformationDemographic withPrimaryLanguage(final String value) {
@@ -151,8 +129,7 @@ public record GeneralInformationDemographic(
         educationLevel(),
         value,
         speaksEnglish(),
-        stateHIVCase()
-    );
+        stateHIVCase());
   }
 
   public GeneralInformationDemographic withSpeaksEnglish(final String value) {
@@ -166,8 +143,7 @@ public record GeneralInformationDemographic(
         educationLevel(),
         primaryLanguage(),
         value,
-        stateHIVCase()
-    );
+        stateHIVCase());
   }
 
   public GeneralInformationDemographic withStateHIVCase(final String value) {
@@ -181,7 +157,6 @@ public record GeneralInformationDemographic(
         educationLevel(),
         primaryLanguage(),
         speaksEnglish(),
-        value
-    );
+        value);
   }
 }

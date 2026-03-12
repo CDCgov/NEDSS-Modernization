@@ -13,19 +13,19 @@ import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
 class TreatmentMother {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Act(act_uid, class_cd, mood_cd) values (:identifier, 'TRMT','EVN');
-      
+
       -- create the treatment
       insert into Treatment (
           treatment_uid,
@@ -56,7 +56,7 @@ class TreatmentMother {
           'NBS',
           'T'
       );
-      
+
       --  extra information about the administered treatment
       insert into Treatment_administered (
           treatment_uid,
@@ -69,7 +69,8 @@ class TreatmentMother {
       );
       """;
 
-  private static final String PARTICIPATE_IN = """
+  private static final String PARTICIPATE_IN =
+      """
       insert into Participation(
           act_uid,
           act_class_cd,
@@ -93,7 +94,8 @@ class TreatmentMother {
       );
       """;
 
-  private static final String RELATED_TO = """
+  private static final String RELATED_TO =
+      """
        insert into Act_Relationship (
           source_act_uid,
           source_class_cd,
@@ -113,7 +115,8 @@ class TreatmentMother {
       )
       """;
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete from Participation where act_class_cd = 'TRMT' and act_uid in (:identifiers);
       delete from Treatment_administered where treatment_uid in (:identifiers);
       delete from treatment where treatment_uid in (:identifiers);
@@ -132,15 +135,13 @@ class TreatmentMother {
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator,
       final JdbcClient client,
-      final Active<TreatmentIdentifier> active
-  ) {
+      final Active<TreatmentIdentifier> active) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.client = client;
     this.active = active;
 
     this.cleaner = new TestingDataCleaner<>(client, DELETE_IN, "identifiers");
-
   }
 
   @PreDestroy
@@ -153,12 +154,12 @@ class TreatmentMother {
       final LocalDate treatedOn,
       final String treatment,
       final String description,
-      final long patient
-  ) {
+      final long patient) {
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal("TRMT");
 
-    this.client.sql(CREATE)
+    this.client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("local", local)
         .param("programArea", programArea.code())
@@ -184,9 +185,9 @@ class TreatmentMother {
       final TreatmentIdentifier treatment,
       final String type,
       final long subject,
-      final String subjectClass
-  ) {
-    this.client.sql(PARTICIPATE_IN)
+      final String subjectClass) {
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", treatment.identifier())
         .param("type", type)
         .param("addedOn", settings.createdOn())
@@ -199,64 +200,44 @@ class TreatmentMother {
   void create(
       final ProgramAreaIdentifier programArea,
       final PatientIdentifier patient,
-      final String treatment
-  ) {
-    create(
-        programArea,
-        RandomUtil.dateInPast(),
-        treatment,
-        null,
-        patient.id()
-    );
+      final String treatment) {
+    create(programArea, RandomUtil.dateInPast(), treatment, null, patient.id());
   }
 
   void createCustom(
       final PatientIdentifier patient,
       final ProgramAreaIdentifier programArea,
-      final String treatment
-  ) {
-    create(
-        programArea,
-        RandomUtil.dateInPast(),
-        "OTH",
-        treatment,
-        patient.id()
-    );
+      final String treatment) {
+    create(programArea, RandomUtil.dateInPast(), "OTH", treatment, patient.id());
   }
 
   void create(
-      final MorbidityReportIdentifier report,
-      final String treatment,
-      final String description
-  ) {
+      final MorbidityReportIdentifier report, final String treatment, final String description) {
 
-    TreatmentIdentifier created = create(
-        report.programArea(),
-        RandomUtil.dateInPast(),
-        treatment,
-        description,
-        report.revision()
-    );
+    TreatmentIdentifier created =
+        create(
+            report.programArea(),
+            RandomUtil.dateInPast(),
+            treatment,
+            description,
+            report.revision());
 
     relatedTo(created, report.identifier(), "OBS", "TreatmentToMorb");
   }
 
-  void create(
-      final MorbidityReportIdentifier report,
-      final String treatment
-  ) {
+  void create(final MorbidityReportIdentifier report, final String treatment) {
 
     create(report, treatment, null);
   }
 
   void create(final InvestigationIdentifier investigation) {
-    TreatmentIdentifier created = create(
-        investigation.programArea(),
-        RandomUtil.dateInPast(),
-        "OTH",
-        "Other",
-        investigation.revision()
-    );
+    TreatmentIdentifier created =
+        create(
+            investigation.programArea(),
+            RandomUtil.dateInPast(),
+            "OTH",
+            "Other",
+            investigation.revision());
 
     associated(created, investigation);
   }
@@ -265,26 +246,27 @@ class TreatmentMother {
       final TreatmentIdentifier treatment,
       final long target,
       final String targetClass,
-      final String type
-  ) {
-    this.client.sql(RELATED_TO)
+      final String type) {
+    this.client
+        .sql(RELATED_TO)
         .param("identifier", treatment.identifier())
         .param("target", target)
         .param("targetClass", targetClass)
         .param("type", type)
         .update();
-
   }
 
   void createdOn(final TreatmentIdentifier treatment, final LocalDateTime on) {
-    this.client.sql("update Treatment set add_time = ? where treatment_uid = ?")
+    this.client
+        .sql("update Treatment set add_time = ? where treatment_uid = ?")
         .param(on)
         .param(treatment.identifier())
         .update();
   }
 
   void treatedOn(final TreatmentIdentifier treatment, final LocalDate on) {
-    this.client.sql("update Treatment_administered set effective_from_time = ? where treatment_uid = ?")
+    this.client
+        .sql("update Treatment_administered set effective_from_time = ? where treatment_uid = ?")
         .param(on)
         .param(treatment.identifier())
         .update();
@@ -299,9 +281,7 @@ class TreatmentMother {
   }
 
   void associated(
-      final TreatmentIdentifier treatment,
-      final InvestigationIdentifier investigation
-  ) {
+      final TreatmentIdentifier treatment, final InvestigationIdentifier investigation) {
     relatedTo(treatment, investigation.identifier(), "CASE", "TreatmentToPHC");
   }
 }

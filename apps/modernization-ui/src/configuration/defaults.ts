@@ -2,90 +2,95 @@ import { Features, Properties, Configuration, Settings, Search } from './configu
 
 const search: Search = {
     events: {
-        enabled: true
+        enabled: true,
     },
     investigations: {
-        enabled: true
+        enabled: true,
     },
     laboratoryReports: {
-        enabled: true
+        enabled: true,
     },
     view: {
         table: {
-            enabled: false
+            enabled: false,
         },
-        enabled: false
-    }
+        enabled: false,
+    },
 };
 
 const defaultFeatures: Features = {
     address: {
         autocomplete: false,
-        verification: false
+        verification: false,
     },
     pageBuilder: {
         enabled: false,
         page: {
             library: {
-                enabled: false
+                enabled: false,
             },
             management: {
                 create: {
-                    enabled: false
+                    enabled: false,
                 },
                 edit: {
-                    enabled: false
-                }
-            }
-        }
+                    enabled: false,
+                },
+            },
+        },
     },
     deduplication: {
         enabled: false,
         merge: {
-            enabled: false
-        }
+            enabled: false,
+        },
     },
     search,
     patient: {
         search: {
             filters: {
-                enabled: false
-            }
+                enabled: false,
+            },
         },
         file: {
             enabled: false,
             mergeHistory: {
-                enabled: false
-            }
-        }
+                enabled: false,
+            },
+        },
     },
     system: {
         management: {
-            enabled: false
-        }
-    }
+            enabled: false,
+        },
+    },
+    report: {
+        execution: {
+            enabled: false,
+        },
+    },
 };
 
 const defaultProperties: Properties = {
     hivProgramAreas: [],
-    stdProgramAreas: []
+    stdProgramAreas: [],
 };
 
 const defaultSettings: Settings = {
     session: {
         warning: 1000 * 60 * 18,
         expiration: 1000 * 60 * 20,
-        keepAlivePath: '/nbs/HomePage.do?method=loadHomePage'
+        keepAlivePath: '/nbs/HomePage.do?method=loadHomePage',
     },
     defaults: {
-        sizing: 'large'
-    }
+        sizing: 'large',
+    },
 };
 
 const defaultConfiguration: Configuration = {
     settings: defaultSettings,
     features: defaultFeatures,
-    properties: defaultProperties
+    properties: defaultProperties,
 };
 
 export { defaultConfiguration };

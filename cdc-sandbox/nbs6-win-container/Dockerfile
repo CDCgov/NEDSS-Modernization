@@ -3,7 +3,7 @@
 # DATABASE_ENDPOINT provided on RUN to provided Database Endpoint
 
 # Use Windows Server Core as the base image and builder
-FROM mcr.microsoft.com/windows/servercore:ltsc2019 AS builder
+FROM mcr.microsoft.com/windows/servercore:ltsc2022 AS builder
 
 # Run Shell as Powershell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -23,10 +23,10 @@ RUN Expand-Archive C:\executables\sqlcmd\sqlcmd-windows-amd64.zip C:\executables
 
 ## LogMonitor
 RUN mkdir C:\executables\LogMonitor
-RUN Invoke-WebRequest -Uri https://github.com/microsoft/windows-container-tools/releases/download/v2.1.1/LogMonitor.exe -OutFile C:\executables\LogMonitor\LogMonitor.exe
+RUN Invoke-WebRequest -Uri https://github.com/microsoft/windows-container-tools/releases/download/v2.1.3/LogMonitor.exe -OutFile C:\executables\LogMonitor\LogMonitor.exe
 
 # Use Windows Server Core as the base image
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
 
 ### Setting Docker Build Arguments ###

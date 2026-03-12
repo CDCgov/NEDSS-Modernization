@@ -1,3 +1,4 @@
+import { Mock } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CaseReportLaboratorySection } from './CaseReportLaboratorySection';
@@ -5,9 +6,9 @@ import { CaseReportLaboratorySection } from './CaseReportLaboratorySection';
 const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'DECISION_SUPPORT_ADMIN', 'REPORTADMIN', 'SRTADMIN-SYSTEM'];
 
 const mockAllows = (p: string) => mockPermissions.includes(p);
-const mockAllowFn = jest.fn(mockAllows);
+const mockAllowFn = vi.fn(mockAllows);
 
-jest.mock('../../../../libs/permission/usePermissions', () => ({
+vi.mock('../../../../libs/permission/usePermissions', () => ({
     usePermissions: () => ({
         permissions: mockPermissions,
         allows: mockAllowFn,
@@ -16,7 +17,7 @@ jest.mock('../../../../libs/permission/usePermissions', () => ({
 
 describe('CaseReportLaboratorySection', () => {
     const setup = (filter = '') => {
-        const setAlert = jest.fn();
+        const setAlert = vi.fn();
         render(<CaseReportLaboratorySection filter={filter} setAlert={setAlert} />);
         return { setAlert };
     };
@@ -31,9 +32,7 @@ describe('CaseReportLaboratorySection', () => {
     });
 
     it('does not render component if no matching links', () => {
-        const { container } = render(
-            <CaseReportLaboratorySection filter="xyz" setAlert={jest.fn()} />
-        );
+        const { container } = render(<CaseReportLaboratorySection filter="xyz" setAlert={vi.fn()} />);
         expect(container).toBeEmptyDOMElement();
     });
 
@@ -49,9 +48,7 @@ describe('CaseReportLaboratorySection', () => {
         const user = userEvent.setup();
         const { setAlert } = setup();
 
-        global.fetch = jest.fn(() =>
-            Promise.resolve({ ok: true })
-        ) as jest.Mock;
+        global.fetch = vi.fn(() => Promise.resolve({ ok: true })) as Mock;
 
         await user.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
         await user.click(screen.getByRole('button', { name: /yes, reset/i }));
@@ -60,7 +57,7 @@ describe('CaseReportLaboratorySection', () => {
             expect(setAlert).toHaveBeenCalledWith({
                 type: 'success',
                 message:
-                    'Labtest program area mapping cache has been successfully reset. Please restart Wildfly to reflect the changes.'
+                    'Labtest program area mapping cache has been successfully reset. Please restart Wildfly to reflect the changes.',
             })
         );
     });
@@ -69,7 +66,7 @@ describe('CaseReportLaboratorySection', () => {
         const user = userEvent.setup();
         const { setAlert } = setup();
 
-        global.fetch = jest.fn(() => Promise.reject()) as jest.Mock;
+        global.fetch = vi.fn(() => Promise.reject()) as Mock;
 
         await user.click(screen.getByRole('button', { name: /reset lab mapping cache/i }));
         await user.click(screen.getByRole('button', { name: /yes, reset/i }));
@@ -77,7 +74,7 @@ describe('CaseReportLaboratorySection', () => {
         await waitFor(() =>
             expect(setAlert).toHaveBeenCalledWith({
                 type: 'error',
-                message: 'Failed to reset Lab Mapping Cache. Please try again later.'
+                message: 'Failed to reset Lab Mapping Cache. Please try again later.',
             })
         );
     });

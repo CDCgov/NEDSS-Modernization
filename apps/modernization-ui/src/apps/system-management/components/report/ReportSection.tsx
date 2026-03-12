@@ -4,16 +4,16 @@ import { Permitted } from '../../../../libs/permission';
 const reportLinks = [
     {
         text: 'Manage data sources',
-        href: '/nbs/ListDataSource.do'
+        href: '/nbs/ListDataSource.do',
     },
     {
         text: 'Manage reports',
-        href: '/nbs/ListReport.do'
+        href: '/nbs/ListReport.do',
     },
     {
         text: 'Manage report sections',
-        href: '/nbs/ListReportSections.do'
-    }
+        href: '/nbs/ListReportSections.do',
+    },
 ];
 
 type Props = {

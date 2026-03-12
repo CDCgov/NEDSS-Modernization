@@ -32,7 +32,7 @@ export const useQuestionValidation = (field: QuestionValidationRequest.field) =>
     useEffect(() => {
         if (state.status === 'validating') {
             QuestionControllerHelperService.validate({
-                requestBody: { value: state.value, field: state.field }
+                requestBody: { value: state.value, field: state.field },
             })
                 .then((response) => dispatch({ type: 'complete', isValid: response.isValid ?? false }))
                 .catch(() => console.error(`Failed to validate ${state.field}`));
@@ -43,7 +43,7 @@ export const useQuestionValidation = (field: QuestionValidationRequest.field) =>
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'validating',
         isValid: state.status === 'complete' ? state.isValid : undefined,
-        validate: (value: string) => dispatch({ type: 'validate', field, value })
+        validate: (value: string) => dispatch({ type: 'validate', field, value }),
     };
     return value;
 };

@@ -23,7 +23,8 @@ const TextInputField = ({
             helperText={helperText}
             required={required}
             error={error}
-            warning={warning}>
+            warning={warning}
+        >
             <TextInput id={id} required={required} aria-required={required} {...remaining} />
         </Field>
     );

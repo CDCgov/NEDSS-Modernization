@@ -5,17 +5,17 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { BasicAddressFields } from './BasicAddressFields';
 import { LocationOptions } from 'options/location';
 
-const mockState = jest.fn();
+const mockState = vi.fn();
 
 const mockLocationOptions: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: mockState
+    state: mockState,
 };
 
-jest.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+vi.mock('options/location', () => ({
+    useLocationOptions: () => mockLocationOptions,
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
@@ -29,8 +29,8 @@ const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
             zipcode: undefined,
             county: undefined,
             country: undefined,
-            censusTract: undefined
-        }
+            censusTract: undefined,
+        },
     });
     return (
         <FormProvider {...form}>
@@ -78,7 +78,7 @@ describe('when entering address section', () => {
         { value: '0000', valid: false },
         { value: '9999.00', valid: false },
         { value: '0001.99', valid: false },
-        { value: '1234.56', valid: true }
+        { value: '1234.56', valid: true },
     ])('should validate Census Tract format for value: $value', async ({ value, valid }) => {
         const user = userEvent.setup();
 

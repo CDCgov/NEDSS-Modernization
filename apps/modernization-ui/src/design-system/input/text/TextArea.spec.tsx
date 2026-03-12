@@ -21,7 +21,7 @@ describe('text area', () => {
     it('should alert when value changed', async () => {
         const user = userEvent.setup();
 
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole } = render(<Fixture onChange={onChange} />);
 
@@ -34,7 +34,7 @@ describe('text area', () => {
     });
 
     it('should allow pasting of text values', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         const user = userEvent.setup();
         const { getByRole } = render(<Fixture onChange={onChange} />);
 

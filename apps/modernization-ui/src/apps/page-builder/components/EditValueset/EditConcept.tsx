@@ -24,8 +24,8 @@ export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }:
         defaultValues: {
             ...concept,
             effectiveToTime: internalizeDate(concept.effectiveToTime) ?? undefined,
-            effectiveFromTime: internalizeDate(concept.effectiveFromTime) ?? internalizeDate(new Date())
-        }
+            effectiveFromTime: internalizeDate(concept.effectiveFromTime) ?? internalizeDate(new Date()),
+        },
     });
     const { isDirty, isValid } = useFormState(form);
     const { showError, showSuccess } = useAlert();
@@ -35,7 +35,7 @@ export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }:
         update(valueset, concept.localCode, {
             ...form.getValues(),
             effectiveToTime: externalizeDateTime(form.getValues('effectiveToTime')) ?? undefined,
-            effectiveFromTime: externalizeDateTime(form.getValues('effectiveFromTime')) ?? new Date().toISOString()
+            effectiveFromTime: externalizeDateTime(form.getValues('effectiveFromTime')) ?? new Date().toISOString(),
         });
     };
 

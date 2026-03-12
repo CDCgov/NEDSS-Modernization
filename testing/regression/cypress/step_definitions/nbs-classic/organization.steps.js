@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicSearchOrganizationPage from "cypress/e2e/pages/nbs-classic/organization.page";
+import classicSearchOrganizationPage from "@pages/nbs-classic/organization.page";
 
 Then("Navigate to classic organization Search pane", () => {
     classicSearchOrganizationPage.navigateToClassicOrganizationSearchPane()

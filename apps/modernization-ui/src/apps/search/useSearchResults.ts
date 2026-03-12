@@ -86,7 +86,7 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
         case 'no-input': {
             return {
                 status: 'no-input',
-                results: { total: 0, content: [], terms: [], page: action.page.number, size: action.page.size }
+                results: { total: 0, content: [], terms: [], page: action.page.number, size: action.page.size },
             };
         }
         case 'initialize': {
@@ -103,9 +103,9 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
                         ...action.found,
                         total: filter.filtering ? filter.overallTotal : found.total,
                         filteredTotal: filter.filtering ? found.total : undefined,
-                        terms: current.terms
+                        terms: current.terms,
                     },
-                    filter: filter
+                    filter: filter,
                 };
             }
             break;
@@ -117,7 +117,7 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
                     parameters: current.parameters,
                     terms: current.results.terms,
                     page: { number: action.number, size: action.size },
-                    results: current.results
+                    results: current.results,
                 };
             }
             break;
@@ -132,7 +132,7 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
                     parameters: current.parameters,
                     terms: current.results.terms,
                     page,
-                    results: current.results
+                    results: current.results,
                 };
             }
             break;
@@ -160,7 +160,7 @@ const blankResults = (size: number, page: number) => ({
     content: [],
     terms: [],
     page,
-    size
+    size,
 });
 
 type SearchResultsInteraction<C, R> = {
@@ -201,7 +201,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     resultResolver,
     termResolver,
     noInputCheck = defaultNoInputCheck,
-    defaultValues
+    defaultValues,
 }: SearchResultSettings<C, A, R>): SearchResultsInteraction<C, R> => {
     const { page, ready, reset: pageReset } = usePagination();
     const { property, direction } = useSorting();
@@ -212,7 +212,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         if (property && direction) {
             return {
                 property,
-                direction
+                direction,
             };
         }
     }, [property, direction]);
@@ -220,7 +220,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     const filter: Filtering = useMemo(
         () => ({
             overallTotal: currentTotal,
-            filtering: !!filtering?.filter
+            filtering: !!filtering?.filter,
         }),
         [currentTotal, filtering]
     );
@@ -228,7 +228,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     const {
         criteria: searchCriteria,
         clear: clearCriteria,
-        change: changeCriteria
+        change: changeCriteria,
     } = useSearchCriteria({ defaultValues });
 
     const [state, dispatch] = useReducer(reducer<C, A, R>, { status: 'waiting' });
@@ -309,7 +309,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
                 parameters: state.parameters,
                 page: state.page,
                 sort,
-                filter: filtering?.filter
+                filter: filtering?.filter,
             };
 
             resultResolver(request)
@@ -379,7 +379,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         results,
         error,
         reset,
-        search
+        search,
     };
 };
 

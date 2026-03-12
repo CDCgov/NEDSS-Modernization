@@ -66,7 +66,7 @@ describe('when a modal is displayed', () => {
     it('should invoke the onClose when icon close called', async () => {
         const user = userEvent.setup();
 
-        const onClose = jest.fn();
+        const onClose = vi.fn();
         const { getByRole } = render(
             <Modal id={'identifier-value'} title="Title Value" onClose={onClose}>
                 Contents
@@ -103,7 +103,7 @@ describe('when a modal is displayed', () => {
     it('should invoke the onClose when footer close called', async () => {
         const user = userEvent.setup();
 
-        const onClose = jest.fn();
+        const onClose = vi.fn();
 
         const { getByRole } = render(
             <Modal
@@ -114,7 +114,8 @@ describe('when a modal is displayed', () => {
                     <button type="button" onClick={close}>
                         Close
                     </button>
-                )}>
+                )}
+            >
                 Contents
             </Modal>
         );

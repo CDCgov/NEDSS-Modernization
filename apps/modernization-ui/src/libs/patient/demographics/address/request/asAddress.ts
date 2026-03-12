@@ -17,7 +17,7 @@ const asAddress = (demographic: Partial<AddressDemographic>): AddressDemographic
         city,
         zipcode,
         censusTract,
-        comment
+        comment,
     } = demographic;
 
     if (asOf && exists(use) && exists(type)) {
@@ -34,7 +34,7 @@ const asAddress = (demographic: Partial<AddressDemographic>): AddressDemographic
             city: orUndefined(city),
             zipcode: orUndefined(zipcode),
             censusTract: orUndefined(censusTract),
-            comment: orUndefined(comment)
+            comment: orUndefined(comment),
         };
     }
 };

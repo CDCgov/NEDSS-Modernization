@@ -81,4 +81,3 @@ export namespace ValueSetStateChangeResponse {
         _511_NETWORK_AUTHENTICATION_REQUIRED = '511 NETWORK_AUTHENTICATION_REQUIRED',
     }
 }
-

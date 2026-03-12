@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NameEntry } from './entry';
 import { NameEntryFields } from './NameEntryFields';
@@ -8,11 +8,11 @@ const mockNameCodedValues = {
     types: [{ name: 'Adopted name', value: 'AN' }],
     prefixes: [{ name: 'Miss', value: 'MS' }],
     suffixes: [{ name: 'Sr.', value: 'SR' }],
-    degrees: [{ name: 'BA', value: 'BA' }]
+    degrees: [{ name: 'BA', value: 'BA' }],
 };
 
-jest.mock('./useNameCodedValues', () => ({
-    useNameCodedValues: () => mockNameCodedValues
+vi.mock('./useNameCodedValues', () => ({
+    useNameCodedValues: () => mockNameCodedValues,
 }));
 
 const Fixture = () => {
@@ -28,8 +28,8 @@ const Fixture = () => {
             secondMiddle: '',
             secondLast: '',
             suffix: undefined,
-            degree: undefined
-        }
+            degree: undefined,
+        },
     });
 
     return (
@@ -72,7 +72,10 @@ describe('when entering patient name demographics', () => {
 
         const dateInput = getByLabelText('Name as of');
 
-        expect(dateInput).toHaveAttribute('aria-description', 'This date defaults to today and can be changed if needed');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            'This date defaults to today and can be changed if needed'
+        );
     });
 
     it('should require type', async () => {

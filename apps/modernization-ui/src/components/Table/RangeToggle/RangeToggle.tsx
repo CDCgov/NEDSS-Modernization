@@ -31,7 +31,8 @@ export const RangeToggle = ({
             id={id}
             name={name}
             defaultValue={initial}
-            onChange={(e) => setRange(Number(e.target.value))}>
+            onChange={(e) => setRange(Number(e.target.value))}
+        >
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={30}>30</option>

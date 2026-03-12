@@ -42,7 +42,7 @@ export const PageProvider = ({ children }: PageProviderProps) => {
     const value: UsePageInteraction = {
         title,
         setTitle,
-        resetTitle
+        resetTitle,
     };
 
     return (

@@ -1,16 +1,14 @@
 package gov.cdc.nbs.patient.file.events.record.birth;
 
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientFileBirthRecordRowMapper implements RowMapper<PatientFileBirthRecord> {
-
 
   private static final String MOTHER_FIRST_NAME_QUESTION = "MTH201";
   private static final String MOTHER_MIDDLE_NAME_QUESTION = "MTH202";
@@ -23,7 +21,6 @@ class PatientFileBirthRecordRowMapper implements RowMapper<PatientFileBirthRecor
   private static final String MOTHER_COUNTY_QUESTION = "MTH168";
   private static final String MOTHER_ZIP_CODE_QUESTION = "MTH169";
 
-
   record Column(
       int patient,
       int identifier,
@@ -33,13 +30,11 @@ class PatientFileBirthRecordRowMapper implements RowMapper<PatientFileBirthRecor
       int collectedOn,
       int certificate,
       int question,
-      int answer
-  ) {
+      int answer) {
     Column() {
       this(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
   }
-
 
   private final Column columns;
 
@@ -52,7 +47,8 @@ class PatientFileBirthRecordRowMapper implements RowMapper<PatientFileBirthRecor
   }
 
   @Override
-  public PatientFileBirthRecord mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public PatientFileBirthRecord mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
 
     long patient = resultSet.getLong(this.columns.patient);
     long identifier = resultSet.getLong(this.columns.identifier);
@@ -65,18 +61,11 @@ class PatientFileBirthRecordRowMapper implements RowMapper<PatientFileBirthRecor
     PatientFileBirthRecord.MotherInformation mother = mapMother(resultSet);
 
     return new PatientFileBirthRecord(
-        patient,
-        identifier,
-        local,
-        receivedOn,
-        facility,
-        collectedOn,
-        certificate,
-        mother
-    );
+        patient, identifier, local, receivedOn, facility, collectedOn, certificate, mother);
   }
 
-  private PatientFileBirthRecord.MotherInformation mapMother(final ResultSet resultSet) throws SQLException {
+  private PatientFileBirthRecord.MotherInformation mapMother(final ResultSet resultSet)
+      throws SQLException {
     String question = resultSet.getString(this.columns.question);
     String answer = resultSet.getString(this.columns.answer);
 
@@ -90,7 +79,8 @@ class PatientFileBirthRecordRowMapper implements RowMapper<PatientFileBirthRecor
     return null;
   }
 
-  private PatientFileBirthRecord.MotherInformation.Name mapName(final String question, final String answer) {
+  private PatientFileBirthRecord.MotherInformation.Name mapName(
+      final String question, final String answer) {
     String first = Objects.equals(question, MOTHER_FIRST_NAME_QUESTION) ? answer : null;
     String middle = Objects.equals(question, MOTHER_MIDDLE_NAME_QUESTION) ? answer : null;
     String last = Objects.equals(question, MOTHER_LAST_NAME_QUESTION) ? answer : null;
@@ -98,13 +88,15 @@ class PatientFileBirthRecordRowMapper implements RowMapper<PatientFileBirthRecor
     return new PatientFileBirthRecord.MotherInformation.Name(first, middle, last, suffix);
   }
 
-  private PatientFileBirthRecord.MotherInformation.Address mapAddress(final String question, final String answer) {
+  private PatientFileBirthRecord.MotherInformation.Address mapAddress(
+      final String question, final String answer) {
     String address = Objects.equals(question, MOTHER_STREET_ADDRESS_QUESTION) ? answer : null;
     String address2 = Objects.equals(question, MOTHER_STREET_ADDRESS_2_QUESTION) ? answer : null;
     String city = Objects.equals(question, MOTHER_CITY_QUESTION) ? answer : null;
     String state = Objects.equals(question, MOTHER_STATE_QUESTION) ? answer : null;
     String county = Objects.equals(question, MOTHER_COUNTY_QUESTION) ? answer : null;
     String zipcode = Objects.equals(question, MOTHER_ZIP_CODE_QUESTION) ? answer : null;
-    return new PatientFileBirthRecord.MotherInformation.Address(address, address2, city, state, county, zipcode);
+    return new PatientFileBirthRecord.MotherInformation.Address(
+        address, address2, city, state, county, zipcode);
   }
 }

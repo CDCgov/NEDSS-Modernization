@@ -6,4 +6,3 @@ export type SelectableEventType = {
     value?: string;
     name?: string;
 };
-

@@ -3,10 +3,6 @@ package gov.cdc.nbs.questionbank.page;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Optional;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -17,6 +13,10 @@ import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import java.util.Optional;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class DeleteQuestionFromPageSteps {
@@ -50,15 +50,19 @@ public class DeleteQuestionFromPageSteps {
   @Given("I delete a question from a page")
   public void i_delete_a_question_from_a_page() {
     WaTemplate page = pageMother.one();
-    WaUiMetadata waUiMetadata = page.getUiMetadata().stream().findFirst()
-        .orElseThrow(() -> new PageContentModificationException("the page does not contain questions"));
+    WaUiMetadata waUiMetadata =
+        page.getUiMetadata().stream()
+            .findFirst()
+            .orElseThrow(
+                () -> new PageContentModificationException("the page does not contain questions"));
     waUiMetadata.setStandardQuestionIndCd('F');
     waUiMetadata.setOrderNbr(3);
     waUiMetadata.setWaTemplateUid(page);
     this.questionId = waUiMetadata.getId();
 
     try {
-      pageQuestionController.deleteQuestion(page.getId(), waUiMetadata.getId(), user.getCurrentUserDetails());
+      pageQuestionController.deleteQuestion(
+          page.getId(), waUiMetadata.getId(), user.getCurrentUserDetails());
     } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
       exceptionHolder.setException(e);
     }

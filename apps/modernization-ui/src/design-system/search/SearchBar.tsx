@@ -53,14 +53,15 @@ export const SearchBar = ({
 
     const className = classNames(styles.searchBar, styles[`size-${size}`], styles[inputState], {
         [styles.focused]: focused,
-        [styles.tall]: tall
+        [styles.tall]: tall,
     });
 
     return (
         <div
             className={classNames(styles.wrapper, styles[`size-${size}`], {
-                [styles.tall]: tall
-            })}>
+                [styles.tall]: tall,
+            })}
+        >
             <div className={className}>
                 <input
                     className={classNames(styles.input, styles[`size-${size}`])}

@@ -5,21 +5,21 @@ import userEvent from '@testing-library/user-event';
 import GeneralSearchFields from './GeneralSearchFields';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 
-jest.mock('options/jurisdictions', () => ({
-    useJurisdictionOptions: () => ({ all: [] })
+vi.mock('options/jurisdictions', () => ({
+    useJurisdictionOptions: () => ({ all: [] }),
 }));
 
-jest.mock('options/program-areas', () => ({
-    useProgramAreaOptions: () => ({ all: [] })
+vi.mock('options/program-areas', () => ({
+    useProgramAreaOptions: () => ({ all: [] }),
 }));
 
-jest.mock('options/condition', () => ({
-    useConditionOptions: () => ({ options: [] })
+vi.mock('options/condition', () => ({
+    useConditionOptions: () => ({ options: [] }),
 }));
 
 const InvestigationFormWithFields = () => {
     const form = useForm<InvestigationFilterEntry>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (
@@ -31,7 +31,7 @@ const InvestigationFormWithFields = () => {
 
 describe('GeneralSearchFields', () => {
     beforeEach(() => {
-        const options = jest.fn();
+        const options = vi.fn();
 
         options.mockImplementation(() => Promise.resolve([]));
 

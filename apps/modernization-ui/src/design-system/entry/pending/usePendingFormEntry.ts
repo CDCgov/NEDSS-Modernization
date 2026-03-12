@@ -26,7 +26,7 @@ const usePendingFormEntry = ({ form }: PendingFormEntrySettings): PendingFormEnt
         name: 'pending',
         control: form.control,
         defaultValue: [],
-        rules: { validate }
+        rules: { validate },
     });
 
     const evaluate = useCallback(() => {

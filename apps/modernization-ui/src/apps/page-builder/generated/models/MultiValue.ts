@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { FilterJSON } from './FilterJSON';
-export type MultiValue = (FilterJSON & {
+export type MultiValue = FilterJSON & {
     property?: string;
     operator?: MultiValue.operator;
     values?: Array<string>;
@@ -11,7 +11,7 @@ export type MultiValue = (FilterJSON & {
     property: string;
     operator: MultiValue.operator;
     values: Array<string>;
-});
+};
 export namespace MultiValue {
     export enum operator {
         EQUALS = 'EQUALS',
@@ -20,4 +20,3 @@ export namespace MultiValue {
         CONTAINS = 'CONTAINS',
     }
 }
-

@@ -9,11 +9,10 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class CaseReportSteps {
@@ -34,8 +33,7 @@ public class CaseReportSteps {
       final Active<PatientIdentifier> activePatient,
       final Active<CaseReportIdentifier> activeReport,
       final CaseReportMother reportMother,
-      final RevisionMother revisionMother
-  ) {
+      final RevisionMother revisionMother) {
     this.activeJurisdiction = activeJurisdiction;
     this.activeProgramArea = activeProgramArea;
     this.activeInvestigation = activeInvestigation;
@@ -54,7 +52,8 @@ public class CaseReportSteps {
   public void the_patient_has_a_Case_Report() {
     ProgramAreaIdentifier programArea = activeProgramArea.active();
     JurisdictionIdentifier jurisdiction = activeJurisdiction.active();
-    activePatient.maybeActive()
+    activePatient
+        .maybeActive()
         .map(revisionMother::revise)
         .ifPresent(patient -> reportMother.create(patient, programArea, jurisdiction));
   }
@@ -63,17 +62,18 @@ public class CaseReportSteps {
   public void the_patient_has_a_Case_Report_for(final String condition) {
     ProgramAreaIdentifier programArea = activeProgramArea.active();
     JurisdictionIdentifier jurisdiction = activeJurisdiction.active();
-    activePatient.maybeActive()
+    activePatient
+        .maybeActive()
         .map(revisionMother::revise)
         .ifPresent(patient -> reportMother.create(patient, programArea, jurisdiction, condition));
   }
 
   @Given("the case report is for {programArea} within {jurisdiction}")
   public void the_case_report_is_within(
-      final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
-    this.activeReport.maybeActive().ifPresent(report -> reportMother.within(report, programArea, jurisdiction));
+      final ProgramAreaIdentifier programArea, final JurisdictionIdentifier jurisdiction) {
+    this.activeReport
+        .maybeActive()
+        .ifPresent(report -> reportMother.within(report, programArea, jurisdiction));
   }
 
   @When("the case report requires security assignment")
@@ -93,18 +93,24 @@ public class CaseReportSteps {
 
   @Given("the case report was received on {localDate}")
   public void the_case_report_was_received_on(final LocalDate on) {
-    this.activeReport.maybeActive().ifPresent(report -> reportMother.addedOn(report, on.atStartOfDay()));
+    this.activeReport
+        .maybeActive()
+        .ifPresent(report -> reportMother.addedOn(report, on.atStartOfDay()));
   }
 
   @Given("the case report was received on {localDate} at {time}")
   public void receivedOn(final LocalDate on, final LocalTime at) {
-    this.activeReport.maybeActive().ifPresent(report -> reportMother.addedOn(report, LocalDateTime.of(on, at)));
+    this.activeReport
+        .maybeActive()
+        .ifPresent(report -> reportMother.addedOn(report, LocalDateTime.of(on, at)));
   }
 
   @Given("the case report is for the condition {condition}")
   @Given("the case report is for the {condition} condition")
   public void the_case_report_is_for_the_condition(final String condition) {
-    this.activeReport.maybeActive().ifPresent(report -> reportMother.withCondition(report, condition));
+    this.activeReport
+        .maybeActive()
+        .ifPresent(report -> reportMother.withCondition(report, condition));
   }
 
   @Given("the case report has been updated")
@@ -114,7 +120,8 @@ public class CaseReportSteps {
 
   @Given("the case report is associated with the investigation")
   public void associated() {
-    this.activeReport.maybeActive()
+    this.activeReport
+        .maybeActive()
         .ifPresent(report -> reportMother.associated(report, this.activeInvestigation.active()));
   }
 }

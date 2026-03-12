@@ -21,7 +21,7 @@ class PreviewPagePage {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
         cy.get('#range-toggle').select('100')
-        cy.wait(5000);
+        cy.wait(2000);
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Initial Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
@@ -35,7 +35,7 @@ class PreviewPagePage {
         cy.wait(2000);
         function search () {
             cy.get('#range-toggle').select('100')
-            cy.wait(5000);
+            cy.wait(2000);
             let isExist = false;
             cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
                 if($tr.find("td").eq(3).text() === "Published") {
@@ -57,7 +57,7 @@ class PreviewPagePage {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
         cy.get('#range-toggle').select('100')
-        cy.wait(5000);
+        cy.wait(2000);
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Published with Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
@@ -161,7 +161,7 @@ class PreviewPagePage {
     }
 
     checkSuccessMessage() {
-        cy.wait(5000)
+        cy.wait(2000)
     }
 
     checkChangesOnPreviewPageStatusType() {
@@ -269,7 +269,7 @@ class PreviewPagePage {
     }
 
     clickPublishBtn() {
-        cy.get('menu div button').eq(0).click();
+        cy.contains('button', 'Publish').click();
 
     }
 

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Modal } from './Modal';
 import { Confirmation } from './Confirmation';
 import { Success } from './Success';
@@ -7,7 +7,7 @@ import { Warning } from './Warning';
 const meta = {
     title: 'Design System/Modal',
     component: Modal,
-    subcomponents: { Confirmation, Success, Warning }
+    subcomponents: { Confirmation, Success, Warning },
 } satisfies Meta<typeof Modal>;
 
 export default meta;
@@ -33,8 +33,8 @@ export const Default: Story = {
         ),
         onClose: () => {
             console.log('Modal closed');
-        }
-    }
+        },
+    },
 };
 
 export const ConfirmationStory: Story = {
@@ -44,9 +44,9 @@ export const ConfirmationStory: Story = {
         title: 'Confirmation',
         children: <div>This is a confirmation message</div>,
         forceAction: true,
-        onClose: onCancel
+        onClose: onCancel,
     },
-    render: (args) => <Confirmation {...args} onConfirm={onConfirm} onCancel={onCancel} />
+    render: (args) => <Confirmation {...args} onConfirm={onConfirm} onCancel={onCancel} />,
 };
 
 export const SuccessStory: Story = {
@@ -56,9 +56,9 @@ export const SuccessStory: Story = {
         title: 'Success',
         children: <div>This is a success message</div>,
         forceAction: true,
-        onClose: onCancel
+        onClose: onCancel,
     },
-    render: (args) => <Success {...args} />
+    render: (args) => <Success {...args} />,
 };
 
 export const WarningStory: Story = {
@@ -68,7 +68,7 @@ export const WarningStory: Story = {
         title: 'Warning',
         children: <div>This is a warning message</div>,
         forceAction: true,
-        onClose: onCancel
+        onClose: onCancel,
     },
-    render: (args) => <Warning {...args} />
+    render: (args) => <Warning {...args} />,
 };

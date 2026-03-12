@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Pagination } from './Pagination';
 
 const meta = {
     title: 'Design System/Pagination',
-    component: Pagination
+    component: Pagination,
 } satisfies Meta<typeof Pagination>;
 
 export default meta;
@@ -28,8 +28,8 @@ export const Default: Story = {
         current: 1,
         onSelectPage: handlePageChange,
         onNext: handleNextPage,
-        onPrevious: handlePrevPage
-    }
+        onPrevious: handlePrevPage,
+    },
 };
 
 export const NoResults: Story = {
@@ -39,6 +39,6 @@ export const NoResults: Story = {
         current: 1,
         onSelectPage: handlePageChange,
         onNext: handleNextPage,
-        onPrevious: handlePrevPage
-    }
+        onPrevious: handlePrevPage,
+    },
 };

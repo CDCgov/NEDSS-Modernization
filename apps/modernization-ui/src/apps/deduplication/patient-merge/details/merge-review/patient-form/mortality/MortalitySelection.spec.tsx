@@ -14,8 +14,8 @@ const data: Partial<MergeCandidate>[] = [
             deathCity: 'Atlanta',
             deathState: 'Georgia',
             deathCounty: 'Fulton County',
-            deathCountry: 'United States'
-        }
+            deathCountry: 'United States',
+        },
     },
     {
         personUid: '2',
@@ -26,16 +26,16 @@ const data: Partial<MergeCandidate>[] = [
             deathCity: 'Las Vegas',
             deathState: 'Nevada',
             deathCounty: 'Fulton County',
-            deathCountry: 'United States'
-        }
+            deathCountry: 'United States',
+        },
     },
     {
         personUid: '3',
         mortality: {
             asOf: '2013-03-13T00:00:00',
-            deceased: 'No'
-        }
-    }
+            deceased: 'No',
+        },
+    },
 ];
 const Fixture = () => {
     const form = useForm();

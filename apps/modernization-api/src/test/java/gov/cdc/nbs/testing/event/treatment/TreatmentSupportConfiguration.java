@@ -13,5 +13,4 @@ class TreatmentSupportConfiguration {
   Active<TreatmentIdentifier> activeTreatment() {
     return new Active<>();
   }
-
 }

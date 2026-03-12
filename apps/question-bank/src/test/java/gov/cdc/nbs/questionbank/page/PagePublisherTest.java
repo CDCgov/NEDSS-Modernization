@@ -4,12 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.classic.ClassicPublishPagePreparer;
 import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicPublishPageRequester;
@@ -17,20 +12,22 @@ import gov.cdc.nbs.questionbank.page.exception.PagePublishException;
 import gov.cdc.nbs.questionbank.page.publish.PagePublisher;
 import gov.cdc.nbs.questionbank.page.request.PagePublishRequest;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class PagePublisherTest {
-  @InjectMocks
-  private PagePublisher pageUpdater;
+  @InjectMocks private PagePublisher pageUpdater;
 
-  @Mock
-  private EntityManager entityManager;
+  @Mock private EntityManager entityManager;
 
-  @Mock
-  private ClassicPublishPagePreparer publishPagePreparer;
+  @Mock private ClassicPublishPagePreparer publishPagePreparer;
 
-  @Mock
-  private ClassicPublishPageRequester publishPageRequester;
+  @Mock private ClassicPublishPageRequester publishPageRequester;
 
   @Test
   void testPublishPage() {
@@ -53,10 +50,8 @@ class PagePublisherTest {
 
     when(entityManager.find(WaTemplate.class, 213L)).thenReturn(newPage);
 
-
     pageUpdater.publishPage(123L, request);
     verify(entityManager).find(WaTemplate.class, 213l);
-
   }
 
   @Test
@@ -66,7 +61,6 @@ class PagePublisherTest {
     page.setId(123L);
 
     when(entityManager.find(WaTemplate.class, 123L)).thenReturn(page);
-
 
     PagePublishRequest request = new PagePublishRequest("something");
 
@@ -94,6 +88,5 @@ class PagePublisherTest {
     when(entityManager.find(WaTemplate.class, 213L)).thenReturn(newPage);
 
     assertThrows(PagePublishException.class, () -> pageUpdater.publishPage(123L, request));
-
   }
 }

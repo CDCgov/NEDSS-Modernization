@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import gov.cdc.nbs.demographics.address.DisplayableAddress;
 import gov.cdc.nbs.demographics.indentification.DisplayableIdentification;
 import gov.cdc.nbs.demographics.phone.DisplayablePhone;
-
 import java.util.Collection;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,6 +13,4 @@ record PatientDemographicsSummary(
     String email,
     String ethnicity,
     Collection<DisplayableIdentification> identifications,
-    Collection<String> races
-) {
-}
+    Collection<String> races) {}

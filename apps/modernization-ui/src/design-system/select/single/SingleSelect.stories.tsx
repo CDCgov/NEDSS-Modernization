@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { SingleSelect } from './SingleSelect';
 import { asSelectable, Selectable } from 'options';
 
 const meta = {
     title: 'Design System/Select/Single',
-    component: SingleSelect
+    component: SingleSelect,
 } satisfies Meta<typeof SingleSelect>;
 
 export default meta;
@@ -16,7 +16,7 @@ const options: Selectable[] = [
     asSelectable('Banana'),
     asSelectable('Mango'),
     asSelectable('Orange'),
-    asSelectable('Watermelon')
+    asSelectable('Watermelon'),
 ];
 
 export const Default: Story = {
@@ -24,20 +24,20 @@ export const Default: Story = {
         id: 'single-select',
         label: 'Single Select',
         options: options,
-        onChange: () => {}
-    }
+        onChange: () => {},
+    },
 };
 
 export const Horizontal: Story = {
     args: {
         ...Default.args,
-        orientation: 'horizontal'
-    }
+        orientation: 'horizontal',
+    },
 };
 
 export const Vertical: Story = {
     args: {
         ...Default.args,
-        orientation: 'vertical'
-    }
+        orientation: 'vertical',
+    },
 };

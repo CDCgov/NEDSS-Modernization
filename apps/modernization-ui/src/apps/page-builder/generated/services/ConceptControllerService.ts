@@ -19,16 +19,16 @@ export class ConceptControllerService {
         localCode,
         requestBody,
     }: {
-        codeSetNm: string,
-        localCode: string,
-        requestBody: UpdateConceptRequest,
+        codeSetNm: string;
+        localCode: string;
+        requestBody: UpdateConceptRequest;
     }): CancelablePromise<Concept> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/valueset/{codeSetNm}/concepts/{localCode}',
             path: {
-                'codeSetNm': codeSetNm,
-                'localCode': localCode,
+                codeSetNm: codeSetNm,
+                localCode: localCode,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -38,16 +38,12 @@ export class ConceptControllerService {
      * @returns Concept OK
      * @throws ApiError
      */
-    public static findConcepts({
-        codeSetNm,
-    }: {
-        codeSetNm: string,
-    }): CancelablePromise<Array<Concept>> {
+    public static findConcepts({ codeSetNm }: { codeSetNm: string }): CancelablePromise<Array<Concept>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/valueset/{codeSetNm}/concepts',
             path: {
-                'codeSetNm': codeSetNm,
+                codeSetNm: codeSetNm,
             },
         });
     }
@@ -59,14 +55,14 @@ export class ConceptControllerService {
         codeSetNm,
         requestBody,
     }: {
-        codeSetNm: string,
-        requestBody: CreateConceptRequest,
+        codeSetNm: string;
+        requestBody: CreateConceptRequest;
     }): CancelablePromise<Concept> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/valueset/{codeSetNm}/concepts',
             path: {
-                'codeSetNm': codeSetNm,
+                codeSetNm: codeSetNm,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -82,30 +78,30 @@ export class ConceptControllerService {
         size = 25,
         sort,
     }: {
-        codeSetNm: string,
+        codeSetNm: string;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<PageConcept> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/valueset/{codeSetNm}/concepts/search',
             path: {
-                'codeSetNm': codeSetNm,
+                codeSetNm: codeSetNm,
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
         });
     }

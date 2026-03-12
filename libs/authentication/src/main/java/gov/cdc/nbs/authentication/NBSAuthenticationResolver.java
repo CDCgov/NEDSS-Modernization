@@ -17,10 +17,6 @@ public class NBSAuthenticationResolver {
   public PreAuthenticatedAuthenticationToken resolve(final String username) {
     UserDetails userDetails = userService.loadUserByUsername(username);
 
-    return new PreAuthenticatedAuthenticationToken(
-        userDetails,
-        null,
-        userDetails.getAuthorities()
-    );
+    return new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
   }
 }

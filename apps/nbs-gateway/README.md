@@ -99,6 +99,7 @@ The default profile contains the following properties configuration most likely 
 | nbs.gateway.deduplication.uri                          | `http://localhost:8083` | The full URI of the Deduplication Api                                                                                                   |
 | nbs.gateway.deduplication.merge.enabled                | `false`                 | Enables the routing for modernized System Identified merge list                                                                         |
 | nbs.gateway.system.management.enabled                  | `false`                 | Enables the routing for modernized System Management screen                                                                             |
+| nbs.gateway.report.execution.enabled                   | `false`                 | Enables the routing for modernized Report Execution                                                                                     |
 
 ### Logo
 

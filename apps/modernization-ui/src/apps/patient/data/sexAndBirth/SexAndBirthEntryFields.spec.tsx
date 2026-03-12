@@ -5,42 +5,42 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { SexAndBirthEntryFields } from './SexAndBirthEntryFields';
 import { SexBirthCodedValues } from './useSexBirthCodedValues';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
-jest.mock('design-system/date/clock', () => ({
-    now: () => mockNow()
+vi.mock('design-system/date/clock', () => ({
+    now: () => mockNow(),
 }));
 
 const mockSexBirthCodedValues: SexBirthCodedValues = {
     genders: [
         { name: 'Male', value: 'M' },
         { name: 'Female', value: 'F' },
-        { name: 'Unknown', value: 'U' }
+        { name: 'Unknown', value: 'U' },
     ],
     preferredGenders: [{ name: 'FTM', value: 'FTM' }],
     genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
-    multipleBirth: [{ name: 'Yes', value: 'Y' }]
+    multipleBirth: [{ name: 'Yes', value: 'Y' }],
 };
 
-jest.mock('./useSexBirthCodedValues', () => ({
-    useSexBirthCodedValues: () => mockSexBirthCodedValues
+vi.mock('./useSexBirthCodedValues', () => ({
+    useSexBirthCodedValues: () => mockSexBirthCodedValues,
 }));
 
 const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: jest.fn()
+    state: vi.fn(),
 };
 
-jest.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+vi.mock('options/location', () => ({
+    useLocationOptions: () => mockLocationOptions,
 }));
 
 const Fixture = ({ formValues }: { formValues?: Partial<ExtendedNewPatientEntry> }) => {
     const form = useForm<ExtendedNewPatientEntry>({
         mode: 'onBlur',
-        defaultValues: { birthAndSex: { multiple: { value: 'Y', name: 'Yes' } }, ...formValues }
+        defaultValues: { birthAndSex: { multiple: { value: 'Y', name: 'Yes' } }, ...formValues },
     });
 
     return (

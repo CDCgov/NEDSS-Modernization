@@ -3,11 +3,10 @@ package gov.cdc.nbs.patient.file.demographics.mortality;
 import gov.cdc.nbs.data.selectable.Selectable;
 import gov.cdc.nbs.data.selectable.SelectableRowMapper;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientMortalityDemographicRowMapper implements RowMapper<PatientMortalityDemographic> {
 
@@ -18,20 +17,19 @@ class PatientMortalityDemographicRowMapper implements RowMapper<PatientMortality
       int city,
       SelectableRowMapper.Column state,
       SelectableRowMapper.Column county,
-      SelectableRowMapper.Column country
-  ) {
+      SelectableRowMapper.Column country) {
 
     Column() {
-      this(1,
+      this(
+          1,
           new SelectableRowMapper.Column(2, 3),
-          4, 5,
+          4,
+          5,
           new SelectableRowMapper.Column(6, 7),
           new SelectableRowMapper.Column(8, 9),
-          new SelectableRowMapper.Column(10, 11)
-      );
+          new SelectableRowMapper.Column(10, 11));
     }
   }
-
 
   private final Column columns;
   private final SelectableRowMapper deceasedMapper;
@@ -53,7 +51,8 @@ class PatientMortalityDemographicRowMapper implements RowMapper<PatientMortality
   }
 
   @Override
-  public PatientMortalityDemographic mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
+  public PatientMortalityDemographic mapRow(final ResultSet resultSet, int rowNum)
+      throws SQLException {
 
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
     Selectable deceased = deceasedMapper.mapRow(resultSet, rowNum);
@@ -69,15 +68,8 @@ class PatientMortalityDemographicRowMapper implements RowMapper<PatientMortality
       county = null;
       country = null;
     }
-    
+
     return new PatientMortalityDemographic(
-        asOf,
-        deceased,
-        deceasedOn,
-        city,
-        state,
-        county,
-        country
-    );
+        asOf, deceased, deceasedOn, city, state, county, country);
   }
 }

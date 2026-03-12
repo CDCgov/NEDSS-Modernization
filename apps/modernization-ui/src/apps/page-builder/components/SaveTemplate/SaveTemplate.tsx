@@ -10,7 +10,7 @@ export const SaveTemplates = ({ modalRef }: any) => {
     const handleTabInput = ({ target }: any) => {
         setDetails({
             ...details,
-            [target.name]: target?.type === 'checkbox' ? target?.checked : target.value
+            [target.name]: target?.type === 'checkbox' ? target?.checked : target.value,
         });
     };
     const handleValidation = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,6 +20,8 @@ export const SaveTemplates = ({ modalRef }: any) => {
 
     const handleSubmit = () => {
         const { name, desc } = details;
+        // This file appears to be dead code
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const request = { name, desc };
     };
     const validateBtn = !details.name || validateName || !details.desc;
@@ -63,7 +65,8 @@ export const SaveTemplates = ({ modalRef }: any) => {
                     className="submit-btn"
                     onClick={handleSubmit}
                     disabled={validateBtn}
-                    type="button">
+                    type="button"
+                >
                     Save
                 </ModalToggleButton>
                 <ModalToggleButton closer modalRef={modalRef} className="cancel-btn" type="button">

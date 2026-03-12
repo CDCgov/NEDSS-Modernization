@@ -26,7 +26,7 @@ export const ImportModal = ({
     visible,
     error,
     onImport,
-    onCancel
+    onCancel,
 }: Props) => {
     const [selectedFile, setSelectedFile] = useState<File | undefined>();
     const [dragOver, setDragOver] = useState(false);
@@ -91,7 +91,8 @@ export const ImportModal = ({
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragEnd}
                     onDragEnd={handleDragEnd}
-                    onDrop={handleFileDrop}>
+                    onDrop={handleFileDrop}
+                >
                     <Shown when={error !== undefined}>
                         <div className={styles.errorBar} />
                     </Shown>
@@ -111,7 +112,8 @@ export const ImportModal = ({
                                     error={error}
                                     dropSectionContent={dropSectionContent}
                                 />
-                            }>
+                            }
+                        >
                             <Selected
                                 htmlFor={`${id}-file-input`}
                                 fileIcon={fileIcon}
@@ -145,14 +147,16 @@ const Unselected = ({ htmlFor, dragOver, error, dropSectionContent }: Unselected
                 styles.selectFileLabel,
                 dragOver ? styles.dragOver : '',
                 error ? styles.errorBorder : ''
-            )}>
+            )}
+        >
             <Shown
                 when={dropSectionContent !== undefined}
                 fallback={
                     <>
                         Drag file here or <span>choose from folder</span>
                     </>
-                }>
+                }
+            >
                 {dropSectionContent}
             </Shown>
         </label>

@@ -52,7 +52,7 @@ const eventStatusTypes: Selectable[] = [NEW_STATUS, asSelectable('UPDATE', 'Upda
 
 const identificationTypes: Selectable[] = [
     asSelectable('ACCESSION_NUMBER', 'Accession Number'),
-    asSelectable('LAB_ID', 'Lab Id')
+    asSelectable('LAB_ID', 'Lab Id'),
 ];
 
 const UNPROCESSED = asSelectable('UNPROCESSED', 'Unprocessed');
@@ -64,20 +64,20 @@ const dateTypes: Selectable[] = [
     asSelectable('DATE_OF_SPECIMEN_COLLECTION', 'Date of Specimen Collection'),
     asSelectable('DATE_RECEIVED_BY_PUBLIC_HEALTH', 'Date Received By Public Health'),
     asSelectable('LAB_REPORT_CREATE_DATE', 'Lab Report Create Date'),
-    asSelectable('LAST_UPDATE_DATE', 'Last Update Date')
+    asSelectable('LAST_UPDATE_DATE', 'Last Update Date'),
 ];
 
 const entityTypes: Selectable[] = [
     asSelectable('ORDERING_FACILITY', 'Ordering Facility'),
     asSelectable('ORDERING_PROVIDER', 'Ordering Provider'),
-    asSelectable('REPORTING_FACILITY', 'Reporting Facility')
+    asSelectable('REPORTING_FACILITY', 'Reporting Facility'),
 ];
 
 const initial: LabReportFilterEntry = {
     enteredBy: enteredByTypes,
     entryMethods: [ELECTRONIC_ENTRY],
     eventStatus: [NEW_STATUS],
-    processingStatus: [UNPROCESSED]
+    processingStatus: [UNPROCESSED],
 };
 
 // when EventID is provided, the form should be initialized with all fields selected
@@ -85,7 +85,7 @@ const initialForEventId: LabReportFilterEntry = {
     enteredBy: enteredByTypes,
     entryMethods: entryMethodTypes,
     eventStatus: eventStatusTypes,
-    processingStatus: processingStatusTypes
+    processingStatus: processingStatusTypes,
 };
 
 export {
@@ -98,5 +98,5 @@ export {
     processingStatusTypes,
     pregnancyStatusOptions as pregnancyStatus,
     initial,
-    initialForEventId
+    initialForEventId,
 };

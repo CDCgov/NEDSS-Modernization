@@ -1,51 +1,26 @@
 package gov.cdc.nbs.event.search.investigation.indexing;
 
-import gov.cdc.nbs.event.search.investigation.SearchableInvestigation;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.event.search.investigation.SearchableInvestigation;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Test;
 
 class SearchableInvestigationRowMapperTest {
 
   @Test
   void should_map_from_result_set() throws SQLException {
 
-    SearchableInvestigationRowMapper.Column columns = new SearchableInvestigationRowMapper.Column(
-        2,
-        3,
-        5,
-        7,
-        11,
-        19,
-        23,
-        29,
-        31,
-        37,
-        41,
-        43,
-        47,
-        53,
-        59,
-        61,
-        67,
-        71,
-        73,
-        79,
-        83,
-        89,
-        97,
-        101,
-        103,
-        107,
-        108);
+    SearchableInvestigationRowMapper.Column columns =
+        new SearchableInvestigationRowMapper.Column(
+            2, 3, 5, 7, 11, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97,
+            101, 103, 107, 108);
 
     ResultSet resultSet = mock(ResultSet.class);
     when(resultSet.getLong(columns.identifier())).thenReturn(419L);

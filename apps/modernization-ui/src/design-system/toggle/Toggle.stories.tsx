@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Toggle } from './Toggle';
 
 const meta = {
     title: 'Design System/Toggle',
-    component: Toggle
+    component: Toggle,
 } satisfies Meta<typeof Toggle>;
 
 export default meta;
@@ -16,8 +16,8 @@ export const Default: Story = {
         label: 'Toggle',
         onChange: (checked) => {
             console.log('Toggle changed:', checked);
-        }
-    }
+        },
+    },
 };
 
 export const Toggled: Story = {
@@ -27,6 +27,6 @@ export const Toggled: Story = {
         value: true,
         onChange: (checked) => {
             console.log('Toggle changed:', checked);
-        }
-    }
+        },
+    },
 };

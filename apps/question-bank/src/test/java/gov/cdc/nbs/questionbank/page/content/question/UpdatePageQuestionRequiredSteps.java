@@ -3,8 +3,7 @@ package gov.cdc.nbs.questionbank.page.content.question;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.util.List;
-import org.springframework.test.web.servlet.ResultActions;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.PageMother;
@@ -12,6 +11,8 @@ import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestion
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.List;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class UpdatePageQuestionRequiredSteps {
   private final UpdatePageRequiredRequester requester;
@@ -37,8 +38,6 @@ public class UpdatePageQuestionRequiredSteps {
 
   @Then("the question is not required")
   public void question_is_not_required() throws Exception {
-    response.active()
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.required", equalTo(false)));
+    response.active().andExpect(status().isOk()).andExpect(jsonPath("$.required", equalTo(false)));
   }
 }

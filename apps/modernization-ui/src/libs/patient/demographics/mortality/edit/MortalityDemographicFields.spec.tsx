@@ -1,29 +1,28 @@
 import { useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import { MortalityDemographicFields } from './MortalityDemographicFields';
 import { HasMortalityDemographic, initial } from '../mortality';
 import { useMortalityOptions } from './useMortalityOptions';
 import { LocationOptions } from 'options/location';
 
-const mockState = jest.fn();
+const mockState = vi.fn();
 
 const mockLocationOptions: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: mockState
+    state: mockState,
 };
 
-jest.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+vi.mock('options/location', () => ({
+    useLocationOptions: () => mockLocationOptions,
 }));
 
 const Fixture = () => {
     const form = useForm<HasMortalityDemographic>({
         mode: 'onBlur',
-        defaultValues: { mortality: initial(() => '06/25/2001') }
+        defaultValues: { mortality: initial(() => '06/25/2001') },
     });
 
     const options = useMortalityOptions();

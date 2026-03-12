@@ -2,9 +2,6 @@ package gov.cdc.nbs.questionbank.entity.question;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.Instant;
-
-import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddTextQuestion;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.MessagingData;
@@ -12,6 +9,8 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.ReportingData;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.question.request.create.TextMask;
+import java.time.Instant;
+import org.junit.jupiter.api.Test;
 
 class WaQuestionTest {
 
@@ -21,10 +20,9 @@ class WaQuestionTest {
     String datamart = null;
 
     // then setting the rdbColumnName
-    WaQuestion question = new TextQuestionEntity(
-        createCommand(
-            messagingData(),
-            reportingData("label", "rdbTable", "rdb", datamart)));
+    WaQuestion question =
+        new TextQuestionEntity(
+            createCommand(messagingData(), reportingData("label", "rdbTable", "rdb", datamart)));
 
     // sets a null value
     assertNull(question.getUserDefinedColumnNm());
@@ -46,10 +44,10 @@ class WaQuestionTest {
   void should_uppercase_rdb_column_name() {
     // given lower case characters for the rdbColumnNm
     String rdbColumName = "something_lower_case";
-    WaQuestion question = new TextQuestionEntity(
-        createCommand(
-            messagingData(),
-            reportingData("label", "rdbTable", rdbColumName, "dmart")));
+    WaQuestion question =
+        new TextQuestionEntity(
+            createCommand(
+                messagingData(), reportingData("label", "rdbTable", rdbColumName, "dmart")));
 
     // then the characters are upper cased
     assertEquals("SOMETHING_LOWER_CASE", question.getRdbColumnNm());
@@ -61,9 +59,7 @@ class WaQuestionTest {
     String dataMartColumn = " !BAD_DATA";
     MessagingData messagingData = messagingData();
     ReportingData reportingData = reportingData("label", "rdbTable", "rdbColumn", dataMartColumn);
-    AddTextQuestion command = createCommand(
-        messagingData,
-        reportingData);
+    AddTextQuestion command = createCommand(messagingData, reportingData);
 
     // then setting the rdbColumnNm throws an exception
     assertThrows(IllegalArgumentException.class, () -> new TextQuestionEntity(command));
@@ -73,15 +69,13 @@ class WaQuestionTest {
   void should_uppercase_data_mart_column_name() {
     // given lower case characters for the rdbColumnNm
     String dmart = "something_lower_case";
-    WaQuestion question = new TextQuestionEntity(
-        createCommand(
-            messagingData(),
-            reportingData("label", "rdbTable", "rdbCol", dmart)));
+    WaQuestion question =
+        new TextQuestionEntity(
+            createCommand(messagingData(), reportingData("label", "rdbTable", "rdbCol", dmart)));
 
     // then the characters are upper cased
     assertEquals("SOMETHING_LOWER_CASE", question.getUserDefinedColumnNm());
   }
-
 
   private WaQuestion emptyQuestion() {
     return new WaQuestion() {
@@ -130,26 +124,16 @@ class WaQuestionTest {
   @Test
   void should_set_messaging_data_false() {
     WaQuestion question = emptyQuestion();
-    question.setMessagingData(new MessagingData(
-        true,
-        "variableId",
-        "label",
-        "codeSystem",
-        false,
-        "hl7 type"));
+    question.setMessagingData(
+        new MessagingData(true, "variableId", "label", "codeSystem", false, "hl7 type"));
     assertEquals('O', question.getQuestionRequiredNnd().charValue());
   }
 
   @Test
   void should_set_messaging_data_true() {
     WaQuestion question = emptyQuestion();
-    question.setMessagingData(new MessagingData(
-        true,
-        "variableId",
-        "label",
-        "codeSystem",
-        true,
-        "hl7 type"));
+    question.setMessagingData(
+        new MessagingData(true, "variableId", "label", "codeSystem", true, "hl7 type"));
     assertEquals('R', question.getQuestionRequiredNnd().charValue());
   }
 
@@ -158,7 +142,8 @@ class WaQuestionTest {
     assertEquals(data.messageVariableId(), question.getQuestionIdentifierNnd());
     assertEquals(data.labelInMessage(), question.getQuestionLabelNnd());
     assertEquals('F', question.getStandardNndIndCd().charValue());
-    assertEquals(data.requiredInMessage() ? 'R' : 'O', question.getQuestionRequiredNnd().charValue());
+    assertEquals(
+        data.requiredInMessage() ? 'R' : 'O', question.getQuestionRequiredNnd().charValue());
     assertEquals(data.hl7DataType(), question.getQuestionDataTypeNnd());
     assertEquals("OBX-3.0", question.getHl7SegmentField());
   }
@@ -181,7 +166,8 @@ class WaQuestionTest {
     assertEquals(command.requestedOn(), question.getRecordStatusTime());
   }
 
-  private QuestionCommand.AddTextQuestion createCommand(MessagingData messagingData, ReportingData reportingData) {
+  private QuestionCommand.AddTextQuestion createCommand(
+      MessagingData messagingData, ReportingData reportingData) {
     return new QuestionCommand.AddTextQuestion(
         TextMask.TXT,
         25,
@@ -204,38 +190,25 @@ class WaQuestionTest {
   }
 
   private MessagingData messagingData() {
-    return messagingData(
-        true,
-        "message variable id",
-        "code system",
-        false,
-        "hl7 type");
+    return messagingData(true, "message variable id", "code system", false, "hl7 type");
   }
 
   private MessagingData messagingData(
-      boolean included,
-      String message,
-      String codeSystem,
-      boolean required,
-      String hl7Type) {
+      boolean included, String message, String codeSystem, boolean required, String hl7Type) {
     return new MessagingData(included, message, message, codeSystem, required, hl7Type);
   }
 
   private ReportingData reportingData() {
     return reportingData(
-        "report label",
-        "RDB_TABLE_NAME",
-        "RDB_COLUMN_NAME",
-        "DATA_MART_COLUMN_NAME");
+        "report label", "RDB_TABLE_NAME", "RDB_COLUMN_NAME", "DATA_MART_COLUMN_NAME");
   }
 
-  private ReportingData reportingData(String label, String rdbTable, String rdbCol, String datamart) {
+  private ReportingData reportingData(
+      String label, String rdbTable, String rdbCol, String datamart) {
     return new ReportingData(label, rdbTable, rdbCol, datamart);
   }
 
   private QuestionOid questionOid() {
-    return new QuestionOid(
-        "oid",
-        "oid system");
+    return new QuestionOid("oid", "oid system");
   }
 }

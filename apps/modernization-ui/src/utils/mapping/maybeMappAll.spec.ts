@@ -6,7 +6,7 @@ type Testing = {
 
 describe('when mapping over an array that could result in undefined elements', () => {
     it('should map undefined to an empty array', () => {
-        const mapping = jest.fn();
+        const mapping = vi.fn();
 
         const actual = maybeMapAll(mapping)(undefined);
 
@@ -16,7 +16,7 @@ describe('when mapping over an array that could result in undefined elements', (
     });
 
     it('should map an empty array to an empty array', () => {
-        const mapping = jest.fn();
+        const mapping = vi.fn();
 
         const actual = maybeMapAll(mapping)([]);
 

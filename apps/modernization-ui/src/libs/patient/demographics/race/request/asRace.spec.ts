@@ -6,7 +6,7 @@ describe('when mapping a race demographic to a format accepted by the API', () =
             id: 331,
             asOf: '04/13/2017',
             race: { value: 'race-value', name: 'race-name' },
-            detailed: []
+            detailed: [],
         };
 
         const actual = asRace(demographic);
@@ -19,7 +19,7 @@ describe('when mapping a race demographic to a format accepted by the API', () =
             id: 331,
             asOf: '04/13/2017',
             race: { value: 'race-value', name: 'race-name' },
-            detailed: []
+            detailed: [],
         };
 
         const actual = asRace(demographic);
@@ -34,8 +34,8 @@ describe('when mapping a race demographic to a format accepted by the API', () =
             race: { value: 'race-value', name: 'race-name' },
             detailed: [
                 { value: 'detail-one-value', name: 'detail-one-name' },
-                { value: 'detail-two-value', name: 'detail-two-name' }
-            ]
+                { value: 'detail-two-value', name: 'detail-two-name' },
+            ],
         };
 
         const actual = asRace(demographic);
@@ -50,7 +50,7 @@ describe('when mapping a race demographic to a format accepted by the API', () =
             id: 331,
             asOf: '04/13/2017',
 
-            detailed: []
+            detailed: [],
         };
 
         const actual = asRace(demographic);

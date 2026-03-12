@@ -4,9 +4,9 @@ import { Pass } from 'apps/deduplication/api/model/Pass';
 import { PassList } from './PassList';
 import { AlertProvider } from 'alert';
 
-const selectPass = jest.fn();
-const addPass = jest.fn();
-const onRenamePass = jest.fn();
+const selectPass = vi.fn();
+const addPass = vi.fn();
+const onRenamePass = vi.fn();
 const passes: Pass[] = [
     {
         name: 'Pass name 1',
@@ -15,7 +15,7 @@ const passes: Pass[] = [
         matchingCriteria: [],
         lowerBound: 0.25,
         upperBound: 1,
-        active: true
+        active: true,
     },
     {
         name: 'Pass name 2',
@@ -24,8 +24,8 @@ const passes: Pass[] = [
         matchingCriteria: [],
         lowerBound: 0.25,
         upperBound: 1,
-        active: false
-    }
+        active: false,
+    },
 ];
 const Fixture = ({ passList = passes }) => {
     return (

@@ -8,8 +8,8 @@ import { GeneralInformationEntryFields } from './GeneralInformationEntryFields';
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
-    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+vi.mock('user', () => ({
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } }),
 }));
 
 const mockGeneralCodedValues: GeneralCodedValues = {
@@ -17,16 +17,16 @@ const mockGeneralCodedValues: GeneralCodedValues = {
     educationLevels: [{ name: '1 or more years of college', value: '1' }],
     primaryOccupations: [{ name: 'Tester', value: 'T' }],
     primaryLanguages: [{ name: 'Welsh', value: 'W' }],
-    speaksEnglish: [{ name: 'Yes', value: 'Y' }]
+    speaksEnglish: [{ name: 'Yes', value: 'Y' }],
 };
 
-jest.mock('./useGeneralCodedValues', () => ({
-    useGeneralCodedValues: () => mockGeneralCodedValues
+vi.mock('./useGeneralCodedValues', () => ({
+    useGeneralCodedValues: () => mockGeneralCodedValues,
 }));
 
 const Fixture = () => {
     const form = useForm<ExtendedNewPatientEntry>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (

@@ -7,7 +7,7 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
     data.identification && data.identificationType
         ? {
               identificationNumber: data.identification,
-              identificationType: data.identificationType.value
+              identificationType: data.identificationType.value,
           }
         : undefined;
 
@@ -56,6 +56,6 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         zip: remaining.zip ? String(remaining.zip) : undefined,
         race: asValue(remaining.race),
         ethnicity: asValue(remaining.ethnicity),
-        identification: resolveIdentification(remaining)
+        identification: resolveIdentification(remaining),
     };
 };

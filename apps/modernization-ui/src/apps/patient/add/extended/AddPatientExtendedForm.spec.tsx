@@ -10,25 +10,25 @@ const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: jest.fn()
+    state: vi.fn(),
 };
 
-jest.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+vi.mock('options/location', () => ({
+    useLocationOptions: () => mockLocationOptions,
 }));
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 const mockRaceCategories: Selectable[] = [{ value: '1', name: 'race name' }];
 
 const mockDetailedRaces: Selectable[] = [
     { value: '2', name: 'detailed race1' },
-    { value: '3', name: 'detailed race2' }
+    { value: '3', name: 'detailed race2' },
 ];
 
-jest.mock('options/race', () => ({
+vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
-    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: jest.fn })
+    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn }),
 }));
 
 type Props = {
@@ -41,12 +41,12 @@ const Fixture = ({ asOf, validationErrors }: Props) => {
 
     const form = useForm<ExtendedNewPatientEntry>({
         defaultValues,
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (
         <FormProvider {...form}>
-            <AddPatientExtendedForm setSubFormState={jest.fn()} validationErrors={validationErrors} />
+            <AddPatientExtendedForm setSubFormState={vi.fn()} validationErrors={validationErrors} />
         </FormProvider>
     );
 };
@@ -96,7 +96,7 @@ describe('AddPatientExtendedForm', () => {
     });
 
     it('should set default date for as of fields', () => {
-        const { getByLabelText, getByRole } = render(<Fixture asOf="05/07/1977" />);
+        const { getByLabelText } = render(<Fixture asOf="05/07/1977" />);
 
         //  The Repeating block as of dates are being initialized to today's date within the component.
         const expected = internalizeDate(new Date());
@@ -126,7 +126,7 @@ describe('AddPatientExtendedForm', () => {
         const { getAllByText, getAllByRole } = render(
             <Fixture
                 validationErrors={{
-                    dirtySections: { name: true, phone: true, address: true, identification: true, race: true }
+                    dirtySections: { name: true, phone: true, address: true, identification: true, race: true },
                 }}
             />
         );

@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { TextCriteriaField } from './TextCriteriaField';
 
 const meta = {
     title: 'Design System/Input/TextCriteriaField',
-    component: TextCriteriaField
+    component: TextCriteriaField,
 } satisfies Meta<typeof TextCriteriaField>;
 
 export default meta;
@@ -17,22 +17,22 @@ export const Default: Story = {
         operationMode: 'all',
         onChange: (value) => {
             console.log('Value changed:', value);
-        }
-    }
+        },
+    },
 };
 
 export const Horizontal: Story = {
     args: {
         ...Default.args,
         id: 'criteria-horizontal',
-        orientation: 'horizontal'
-    }
+        orientation: 'horizontal',
+    },
 };
 
 export const Vertical: Story = {
     args: {
         ...Default.args,
         id: 'criteria-vertical',
-        orientation: 'vertical'
-    }
+        orientation: 'vertical',
+    },
 };

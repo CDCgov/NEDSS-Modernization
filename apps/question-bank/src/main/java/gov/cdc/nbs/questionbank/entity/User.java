@@ -34,5 +34,4 @@ public class User {
   public Long nedssEntryId() {
     return nedssEntryId;
   }
-
 }

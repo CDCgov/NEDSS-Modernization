@@ -31,12 +31,12 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
                 appearsInTable: true,
                 width: 0,
                 label: question.name,
-                id: question.id
+                id: question.id,
             })),
             blockName: '',
             visible: subsection.visible,
-            repeatingNbr: 0
-        }
+            repeatingNbr: 0,
+        },
     });
 
     useEffect(() => {
@@ -46,11 +46,11 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
                 appearsInTable: true,
                 width: 0,
                 label: question.name,
-                id: question.id
+                id: question.id,
             })),
             blockName: '',
             visible: subsection.visible,
-            repeatingNbr: 0
+            repeatingNbr: 0,
         });
     }, [JSON.stringify(subsection)]);
 
@@ -70,7 +70,7 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
             showAlert({
                 type: 'success',
                 title: 'Grouped',
-                message: `You've successfully grouped ${form.getValues('blockName')} subsection`
+                message: `You've successfully grouped ${form.getValues('blockName')} subsection`,
             });
             form.reset();
             onSuccess();
@@ -78,7 +78,7 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
             showAlert({
                 type: 'error',
                 title: 'error',
-                message: 'Failed to group subsection'
+                message: 'Failed to group subsection',
             });
         }
     }, [error, response]);
@@ -108,7 +108,8 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
                     onClick={handleSubmit}
                     type="button"
                     data-testid="group-questions-submit-btn"
-                    disabled={batches.length > 20 || !valid || !form.formState.isValid}>
+                    disabled={batches.length > 20 || !valid || !form.formState.isValid}
+                >
                     Submit
                 </Button>
             </ButtonBar>

@@ -30,7 +30,7 @@ describe('when ManageSectionTile renders', () => {
                                 order: 1,
                                 isGroupable: true,
                                 questionIdentifier: 'identifier',
-                                questions: []
+                                questions: [],
                             },
                             {
                                 id: 456,
@@ -40,13 +40,13 @@ describe('when ManageSectionTile renders', () => {
                                 order: 2,
                                 isGroupable: true,
                                 questionIdentifier: 'identifier',
-                                questions: []
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                questions: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     };
     const section: PagesSection = {
         id: 123456,
@@ -61,7 +61,7 @@ describe('when ManageSectionTile renders', () => {
                 order: 1,
                 isGroupable: true,
                 questionIdentifier: 'identifier',
-                questions: []
+                questions: [],
             },
             {
                 id: 456,
@@ -71,10 +71,10 @@ describe('when ManageSectionTile renders', () => {
                 order: 2,
                 isGroupable: true,
                 questionIdentifier: 'identifier',
-                questions: []
-            }
+                questions: [],
+            },
         ],
-        visible: true
+        visible: true,
     };
     it('should display Name and number of subsections', () => {
         const { getByTestId } = render(
@@ -86,14 +86,14 @@ describe('when ManageSectionTile renders', () => {
                                 <ManageSectionTile
                                     section={section}
                                     index={1}
-                                    setSelectedForDelete={jest.fn}
+                                    setSelectedForDelete={vi.fn}
                                     selectedForDelete={undefined}
-                                    handleDelete={jest.fn}
-                                    setOnAction={jest.fn}
+                                    handleDelete={vi.fn}
+                                    setOnAction={vi.fn}
                                     onAction={false}
-                                    setSectionState={jest.fn}
-                                    setSelectedForEdit={jest.fn}
-                                    onChangeVisibility={jest.fn}
+                                    setSectionState={vi.fn}
+                                    setSelectedForEdit={vi.fn}
+                                    onChangeVisibility={vi.fn}
                                 />
                             </div>
                         )}

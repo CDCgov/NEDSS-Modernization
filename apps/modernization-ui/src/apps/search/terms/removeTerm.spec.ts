@@ -9,7 +9,7 @@ const DEFAULT_TERM = {
     title: 'title-value',
     name: 'name-value',
     value: 'current-value',
-    partial: false
+    partial: false,
 };
 
 describe('when removing search terms', () => {
@@ -18,10 +18,10 @@ describe('when removing search terms', () => {
 
         result.current.setValue('value', 'current-value');
 
-        const after = jest.fn();
+        const after = vi.fn();
 
-        const setValue = jest.spyOn(result.current, 'setValue');
-        const resetField = jest.spyOn(result.current, 'resetField');
+        const setValue = vi.spyOn(result.current, 'setValue');
+        const resetField = vi.spyOn(result.current, 'resetField');
 
         const remove = removeTerm(result.current, after);
 
@@ -37,7 +37,7 @@ describe('when removing search terms', () => {
 
         result.current.setValue('values', ['one', 'two', 'current-value']);
 
-        const after = jest.fn();
+        const after = vi.fn();
 
         const remove = removeTerm(result.current, after);
 
@@ -56,7 +56,7 @@ describe('when removing search terms', () => {
         const { result } = renderHook(() => useForm<{ values?: Selectable[] }>());
         result.current.setValue('values', [asSelectable('one'), asSelectable('two'), asSelectable('current-value')]);
 
-        const after = jest.fn();
+        const after = vi.fn();
 
         const remove = removeTerm(result.current, after);
 
@@ -76,7 +76,7 @@ describe('when removing search terms', () => {
 
         result.current.setValue('value', 'one, two, three');
 
-        const after = jest.fn();
+        const after = vi.fn();
 
         const remove = removeTerm(result.current, after);
 
@@ -97,8 +97,8 @@ describe('when removing search terms', () => {
 
         result.current.setValue('nested.value', 'current-value');
 
-        const after = jest.fn();
-        const resetField = jest.spyOn(result.current, 'resetField');
+        const after = vi.fn();
+        const resetField = vi.spyOn(result.current, 'resetField');
 
         const remove = removeTerm(result.current, after);
 

@@ -19,7 +19,7 @@ const patientData: Partial<MergeCandidate> = {
             county: 'Fulton county',
             censusTract: '0224',
             country: 'United States',
-            comments: 'Comment'
+            comments: 'Comment',
         },
         {
             id: '321',
@@ -31,11 +31,11 @@ const patientData: Partial<MergeCandidate> = {
             state: 'Georgia',
             zipcode: '44112',
             county: 'Dekalb county',
-            country: 'United States'
-        }
-    ]
+            country: 'United States',
+        },
+    ],
 };
-const onViewAddress = jest.fn();
+const onViewAddress = vi.fn();
 const Fixture = () => {
     const form = useForm();
     return (

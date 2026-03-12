@@ -1,9 +1,5 @@
 package gov.cdc.nbs.questionbank.support;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -12,6 +8,10 @@ import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.testing.support.Active;
 import jakarta.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
@@ -47,30 +47,35 @@ public class QuestionMother {
 
   public WaQuestion textQuestion() {
     return allQuestions.stream()
-        .filter(TextQuestionEntity.class::isInstance).findFirst()
+        .filter(TextQuestionEntity.class::isInstance)
+        .findFirst()
         .orElseGet(this::createTextQuestion);
   }
 
   public WaQuestion dateQuestion() {
     return allQuestions.stream()
-        .filter(DateQuestionEntity.class::isInstance).findFirst()
+        .filter(DateQuestionEntity.class::isInstance)
+        .findFirst()
         .orElseGet(this::createDateQuestion);
   }
 
   public void codeQuestion() {
     allQuestions.stream()
-        .filter(CodedQuestionEntity.class::isInstance).findFirst()
+        .filter(CodedQuestionEntity.class::isInstance)
+        .findFirst()
         .orElseGet(this::createCodeQuestion);
   }
 
   public void numericQuestion() {
     allQuestions.stream()
-        .filter(NumericQuestionEntity.class::isInstance).findFirst()
+        .filter(NumericQuestionEntity.class::isInstance)
+        .findFirst()
         .orElseGet(this::createNumericQuestion);
   }
 
   public WaQuestion one() {
-    return allQuestions.stream().findFirst()
+    return allQuestions.stream()
+        .findFirst()
         .orElseThrow(() -> new IllegalStateException("No questions are available"));
   }
 
@@ -112,6 +117,4 @@ public class QuestionMother {
   public List<WaQuestion> list(int count) {
     return allQuestions.stream().limit(count).toList();
   }
-
 }
-

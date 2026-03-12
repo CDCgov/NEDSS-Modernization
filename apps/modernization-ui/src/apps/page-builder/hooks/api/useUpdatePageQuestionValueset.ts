@@ -46,7 +46,7 @@ export const useUpdatePageQuestionValueset = () => {
             PageQuestionControllerService.updatePageCodedQuestionValueset({
                 questionId: state.question,
                 page: state.page,
-                requestBody: { valueset: state.valueset }
+                requestBody: { valueset: state.valueset },
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
@@ -62,7 +62,7 @@ export const useUpdatePageQuestionValueset = () => {
         isLoading: state.status === 'updating',
         response: state.status === 'complete' ? state.response : undefined,
         update: (page: number, question: number, valueset: number) =>
-            dispatch({ type: 'update', page, question, valueset })
+            dispatch({ type: 'update', page, question, valueset }),
     };
 
     return value;

@@ -18,7 +18,7 @@ export class TemplateControllerService {
     }: {
         formData?: {
             file: Blob;
-        },
+        };
     }): CancelablePromise<Template> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -31,16 +31,12 @@ export class TemplateControllerService {
      * @returns Template OK
      * @throws ApiError
      */
-    public static findAllTemplates({
-        type,
-    }: {
-        type?: string,
-    }): CancelablePromise<Array<Template>> {
+    public static findAllTemplates({ type }: { type?: string }): CancelablePromise<Array<Template>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/template/',
             query: {
-                'type': type,
+                type: type,
             },
         });
     }

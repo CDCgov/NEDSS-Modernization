@@ -1,11 +1,11 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router';
 import { ColumnPreferenceProvider } from './useColumnPreferences';
 import { ColumnPreferencesPanel } from './ColumnPreferencesPanel'; // Moved after dependencies
 
 const meta = {
     title: 'Design System/Table/ColumnPreferencesPanel',
-    component: ColumnPreferencesPanel
+    component: ColumnPreferencesPanel,
 } satisfies Meta<typeof ColumnPreferencesPanel>;
 
 export default meta;
@@ -16,14 +16,14 @@ const storageKey = 'storybook.preferences.columns';
 const columns = [
     { id: 'id', name: 'ID', visible: true },
     { id: 'name', name: 'Name', visible: true },
-    { id: 'email', name: 'Email', visible: false }
+    { id: 'email', name: 'Email', visible: false },
 ];
 
 const preferences = columns.map((column) => ({
     id: column.id,
     name: column.name,
     moveable: true,
-    toggleable: true
+    toggleable: true,
 }));
 
 export const Default: Story = {
@@ -34,11 +34,11 @@ export const Default: Story = {
                     <Story />
                 </ColumnPreferenceProvider>
             </MemoryRouter>
-        )
+        ),
     ],
     args: {
-        close: () => {}
-    }
+        close: () => {},
+    },
 };
 
 export const InPanel: Story = {
@@ -48,5 +48,5 @@ export const InPanel: Story = {
         <div style={{ width: '300px', height: 'auto', backgroundColor: 'white', border: '1px solid black' }}>
             <ColumnPreferencesPanel {...args} />
         </div>
-    )
+    ),
 };

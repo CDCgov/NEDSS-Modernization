@@ -3,7 +3,7 @@ import { useEffect, useReducer } from 'react';
 import {
     GroupSubSectionRequest,
     SubSectionControllerService,
-    UpdateSubSectionRequest
+    UpdateSubSectionRequest,
 } from 'apps/page-builder/generated';
 
 export type GroupRequest = GroupSubSectionRequest & UpdateSubSectionRequest;
@@ -28,7 +28,7 @@ const reducer = (_state: State, action: Action): State => {
                 status: 'grouping',
                 page: action.page,
                 subsection: action.subsection,
-                request: action.request
+                request: action.request,
             };
         case 'complete':
             return { status: 'complete' };
@@ -48,13 +48,13 @@ export const useGroupSubsection = () => {
             SubSectionControllerService.updateSubSection({
                 page: state.page,
                 subSectionId: state.subsection,
-                requestBody: state.request
+                requestBody: state.request,
             })
                 .then(() => {
                     SubSectionControllerService.groupSubSection({
                         page: state.page,
                         subsection: state.subsection,
-                        requestBody: state.request
+                        requestBody: state.request,
                     })
                         .then(() => dispatch({ type: 'complete' }))
                         .catch((error) => dispatch({ type: 'error', error: error.message }));
@@ -68,7 +68,7 @@ export const useGroupSubsection = () => {
         isLoading: state.status === 'grouping',
         response: state.status === 'complete',
         group: (page: number, subsection: number, request: GroupRequest) =>
-            dispatch({ type: 'group', page, subsection, request })
+            dispatch({ type: 'group', page, subsection, request }),
     };
 
     return value;

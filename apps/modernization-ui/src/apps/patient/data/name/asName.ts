@@ -1,4 +1,3 @@
-/* eslint-disable no-redeclare */
 import { asValue } from 'options';
 import { NameEntry } from './entry';
 import { Name } from '../api';
@@ -18,7 +17,7 @@ const asName = (entry: NameEntry): Name | undefined => {
             last: orUndefined(last),
             secondLast: orUndefined(secondLast),
             suffix: asValue(suffix),
-            degree: asValue(degree)
+            degree: asValue(degree),
         };
     }
 };

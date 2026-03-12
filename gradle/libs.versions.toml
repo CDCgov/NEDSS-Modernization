@@ -1,7 +1,7 @@
 [versions]
 springBoot = '3.5.6'
-spring-security = '6.5.5'
-jackson = '2.19.0'
+spring-security = '6.5.7'
+jackson = '2.21.1'
 queryDSL = '5.1.0'
 
 junit-jupiter = '5.13.4'
@@ -16,7 +16,7 @@ springBoot-jdbc = { module = 'org.springframework.boot:spring-boot-starter-jdbc'
 springBoot-jpa = { module = 'org.springframework.boot:spring-boot-starter-data-jpa', version.ref = 'springBoot' }
 springBoot-web = { module = 'org.springframework.boot:spring-boot-starter-web', version.ref = 'springBoot' }
 springBoot-actuator = {module='org.springframework.boot:spring-boot-starter-actuator', version.ref= 'springBoot'}
-graphql = { module = 'com.graphql-java:graphql-java', version = '24.2' }
+graphql = { module = 'com.graphql-java:graphql-java', version = '25.0' } 
 springBoot-graphql = { module = 'org.springframework.boot:spring-boot-starter-graphql', version.ref = 'springBoot' }
 elasticsearch-java = { module = 'co.elastic.clients:elasticsearch-java', version = '9.2.3' }
 parsson = { module = 'org.eclipse.parsson:parsson', version = '1.1.7' }
@@ -34,7 +34,7 @@ jackson-datatype-jsr310 = { module = 'com.fasterxml.jackson.datatype:jackson-dat
 queryDSL-apt = { module = 'com.querydsl:querydsl-apt', version.ref = 'queryDSL' }
 queryDSL-jpa = { module = 'com.querydsl:querydsl-jpa', version.ref = 'queryDSL' }
 lombok = { module = 'org.projectlombok:lombok', version = '1.18.36' }
-mssql-jdbc = { module = 'com.microsoft.sqlserver:mssql-jdbc', version = '12.10.1.jre11' }
+mssql-jdbc = { module = 'com.microsoft.sqlserver:mssql-jdbc', version = '12.10.2.jre11' }
 java-jwt = { module = 'com.auth0:java-jwt', version = '4.5.0' }
 itextpdf = { module = 'com.itextpdf:itextpdf', version = '5.5.13.4' }
 assertj-core = { module = 'org.assertj:assertj-core', version.ref = 'assertj' }

@@ -20,7 +20,7 @@ describe('BusinessRulesLibraryTable', () => {
                 comparator: '=',
                 targetType: 'QUESTION',
                 errorMsgText: 'Type of Arbovirus = must be ( Dengue virus ) Dengue (DENV) Serotype',
-                targetValueIdentifier: [{ label: '404400' }]
+                targetValueIdentifier: [{ label: '404400' }],
             };
             const summaries = [rulesSummary];
             render(
@@ -29,10 +29,10 @@ describe('BusinessRulesLibraryTable', () => {
                         <BusinessRulesLibraryTable
                             rules={summaries}
                             qtnModalRef={modalRef}
-                            onSortChange={jest.fn()}
-                            onQueryChange={jest.fn()}
-                            onDownloadCsv={jest.fn()}
-                            onDownloadPdf={jest.fn()}
+                            onSortChange={vi.fn()}
+                            onQueryChange={vi.fn()}
+                            onDownloadCsv={vi.fn()}
+                            onDownloadPdf={vi.fn()}
                         />
                     </PaginationProvider>
                 </BrowserRouter>
@@ -62,7 +62,7 @@ describe('BusinessRulesLibraryTable', () => {
                 targetType: 'QUESTION' as Rule.targetType,
                 errorMsgText: 'Type of Arbovirus = must be ( Dengue virus ) Dengue (DENV) Serotype',
                 targets: [{ label: '404400' }],
-                anySourceValue: false
+                anySourceValue: false,
             };
 
             const summaries = [rulesSummary];
@@ -73,10 +73,10 @@ describe('BusinessRulesLibraryTable', () => {
                         <BusinessRulesLibraryTable
                             rules={summaries}
                             qtnModalRef={modalRef}
-                            onSortChange={jest.fn()}
-                            onQueryChange={jest.fn()}
-                            onDownloadCsv={jest.fn()}
-                            onDownloadPdf={jest.fn()}
+                            onSortChange={vi.fn()}
+                            onQueryChange={vi.fn()}
+                            onDownloadCsv={vi.fn()}
+                            onDownloadPdf={vi.fn()}
                         />
                     </PaginationProvider>
                 </BrowserRouter>

@@ -17,3 +17,13 @@ Before({ tags: "@skip-if-disabled-is-int" }, function () {
     this.skip();
   }
 });
+
+Before({ tags: "@skip-broken" }, function () {
+  this.skip();
+});
+
+Before({ tags: "@skip-if-no-di-api" }, function () {
+  if (!Cypress.env("DI_API")) {
+    this.skip();
+  }
+});

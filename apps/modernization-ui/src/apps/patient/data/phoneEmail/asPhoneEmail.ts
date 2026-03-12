@@ -16,7 +16,7 @@ const asPhoneEmail = (entry: PhoneEmailEntry): PhoneEmail | undefined => {
             extension: orUndefined(extension),
             email: orUndefined(email),
             url: orUndefined(url),
-            comment: orUndefined(comment)
+            comment: orUndefined(comment),
         };
     }
 };

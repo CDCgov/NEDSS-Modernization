@@ -28,7 +28,8 @@ export const DeletePassConfirmation = ({ passName, visible, isLastPass, onAccept
                 size="small"
                 title="Delete pass configuration"
                 onClose={onCancel}
-                footer={footer}>
+                footer={footer}
+            >
                 <Message type="warning">
                     Are you sure you want to delete the configuration for the <strong>{passName}</strong> pass?{' '}
                     {isLastPass && (

@@ -4,27 +4,27 @@ import userEvent from '@testing-library/user-event';
 import { RaceEntry } from './entry';
 import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
 
-const mockDetailResolver = jest.fn();
+const mockDetailResolver = vi.fn();
 
-jest.mock('options/race', () => ({
-    useDetailedRaceOptions: () => ({ options: [], load: mockDetailResolver })
+vi.mock('options/race', () => ({
+    useDetailedRaceOptions: () => ({ options: [], load: mockDetailResolver }),
 }));
 
 type Props = Partial<RaceEntryFieldsProps> & { entry?: RaceEntry };
 
 const Fixture = ({
     categories = [],
-    categoryValidator = jest.fn().mockResolvedValue('true'),
+    categoryValidator = vi.fn().mockResolvedValue('true'),
     entry = {
         id: 19,
         asOf: '04/11/2022',
         race: null,
-        detailed: []
-    }
+        detailed: [],
+    },
 }: Props) => {
     const form = useForm<RaceEntry>({
         mode: 'onBlur',
-        defaultValues: entry
+        defaultValues: entry,
     });
 
     return (
@@ -59,11 +59,11 @@ describe('Race entry fields', () => {
 
         const user = userEvent.setup();
 
-        const { getByLabelText, getByText } = render(
+        const { getByLabelText } = render(
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );
@@ -82,7 +82,7 @@ describe('Race entry fields', () => {
             id: 389,
             asOf: '05/08/2013',
             race: { value: 'selected', name: 'selected name' },
-            detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }]
+            detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }],
         };
 
         const user = userEvent.setup();
@@ -92,7 +92,7 @@ describe('Race entry fields', () => {
                 entry={entry}
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );
@@ -113,7 +113,7 @@ describe('Race entry fields', () => {
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );
@@ -152,7 +152,7 @@ describe('Race entry fields', () => {
     });
 
     it('should require race category to pass validation', async () => {
-        const validator = jest.fn();
+        const validator = vi.fn();
         validator.mockResolvedValue('category not valid');
 
         const { getByRole, getByText } = render(
@@ -160,7 +160,7 @@ describe('Race entry fields', () => {
                 categoryValidator={validator}
                 categories={[
                     { value: '1', name: 'race name' },
-                    { value: 'other', name: 'other name' }
+                    { value: 'other', name: 'other name' },
                 ]}
             />
         );

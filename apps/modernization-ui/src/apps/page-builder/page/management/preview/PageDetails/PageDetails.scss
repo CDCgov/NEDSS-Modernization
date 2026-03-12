@@ -11,13 +11,14 @@
         display: flex;
         justify-content: center;
     }
-    .page-details-printer{ display: none}
+    .page-details-printer {
+        display: none;
+    }
     .page-details__form {
         position: relative;
         .page-details-printer {
             position: absolute;
-            right:  1rem ;
-
+            right: 1rem;
         }
         display: flex;
         flex-direction: column;
@@ -83,7 +84,7 @@
         }
 
         .unsupported-event-type-message {
-            border: .25rem solid colors.$warm-accent;
+            border: 0.25rem solid colors.$warm-accent;
             background: rgba(250, 243, 209, 0.44);
             display: flex;
             margin-top: 1.5rem;
@@ -114,12 +115,12 @@
     .usa-modal,
     &.usa-modal {
         border-radius: 0.313rem;
-        font-family: "Public Sans";
-        border: .125rem solid colors.$base-lighter;
+        font-family: 'Public Sans';
+        border: 0.125rem solid colors.$base-lighter;
         max-width: 38rem;
     }
     .usa-modal__footer {
         display: flex !important;
-        justify-content: flex-end!important;
+        justify-content: flex-end !important;
     }
 }

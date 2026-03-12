@@ -6,7 +6,6 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.patient.PatientCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -14,7 +13,6 @@ import java.util.Objects;
 public class GeneralInformation {
 
   private static final Permission HIV_PERMISSION = new Permission("HIVQuestions", "Global");
-
 
   @Column(name = "as_of_date_general")
   private LocalDate asOf;
@@ -75,8 +73,7 @@ public class GeneralInformation {
 
   public void associate(
       final PermissionScopeResolver resolver,
-      final PatientCommand.AssociateStateHIVCase associate
-  ) {
+      final PatientCommand.AssociateStateHIVCase associate) {
     PermissionScope scope = resolver.resolve(HIV_PERMISSION);
     if (scope.allowed()) {
       this.stateHIVCase = associate.stateHIVCase();
@@ -95,8 +92,7 @@ public class GeneralInformation {
           && this.occupation == null
           && this.educationLevel == null
           && this.primaryLanguage == null
-          && this.speaksEnglish == null
-      ) {
+          && this.speaksEnglish == null) {
         this.asOf = null;
       }
     }
@@ -153,7 +149,6 @@ public class GeneralInformation {
         educationLevel,
         primaryLanguage,
         speaksEnglish,
-        stateHIVCase
-    );
+        stateHIVCase);
   }
 }

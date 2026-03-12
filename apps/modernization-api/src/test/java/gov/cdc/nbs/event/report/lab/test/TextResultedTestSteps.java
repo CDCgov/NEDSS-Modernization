@@ -16,8 +16,7 @@ public class TextResultedTestSteps {
       final Active<LabReportIdentifier> activeLab,
       final TextResultedTestMother mother,
       final Active<MorbidityReportIdentifier> activeMorbidity,
-      final MorbidityLabReportMother reportMother
-  ) {
+      final MorbidityLabReportMother reportMother) {
     this.activeLab = activeLab;
     this.mother = mother;
     this.activeMorbidity = activeMorbidity;
@@ -26,17 +25,14 @@ public class TextResultedTestSteps {
 
   @Given("the lab(oratory) report has a(n) {labTest} test with a text result of {string}")
   public void createForLab(final String test, final String result) {
-    this.activeLab.maybeActive().ifPresent(
-        found -> mother.create(found, test, result)
-    );
+    this.activeLab.maybeActive().ifPresent(found -> mother.create(found, test, result));
   }
 
   @Given("the morbidity report has a(n) {labTest} test with a text result of {string}")
   public void createForMorbidity(final String test, final String result) {
-    this.activeMorbidity.maybeActive()
+    this.activeMorbidity
+        .maybeActive()
         .map(reportMother::create)
-        .ifPresent(
-            found -> mother.create(found, test, result)
-        );
+        .ifPresent(found -> mother.create(found, test, result));
   }
 }

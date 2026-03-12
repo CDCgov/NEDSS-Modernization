@@ -17,8 +17,7 @@ class SettingsConfiguration {
       final Smarty smarty,
       final Analytics analytics,
       final Defaults defaults,
-      final Session session
-  ) {
+      final Session session) {
     return () -> new Settings(smarty, analytics, defaults, session);
   }
 }

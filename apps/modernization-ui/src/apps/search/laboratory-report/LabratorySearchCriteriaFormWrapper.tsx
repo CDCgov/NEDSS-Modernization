@@ -6,7 +6,7 @@ import { LabReportFilterEntry, initial } from './labReportFormTypes';
 const LabratorySearchCriteriaFormWrapper = ({ children }: { children: ReactNode }) => {
     const form = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
         defaultValues: initial,
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return <FormProvider {...form}>{children}</FormProvider>;

@@ -1,16 +1,16 @@
 package gov.cdc.nbs.option.countries.list;
 
-
+import gov.cdc.nbs.option.Option;
+import java.util.Collection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import java.util.Collection;
-import gov.cdc.nbs.option.Option;
 
 @Component
 public class CountriesListFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           code                as [value],
           code_desc_txt       as [name]
@@ -29,10 +29,6 @@ public class CountriesListFinder {
   }
 
   public Collection<Option> find() {
-    return this.template.query(
-        QUERY,
-        statement -> {
-        },
-        this.mapper);
+    return this.template.query(QUERY, statement -> {}, this.mapper);
   }
 }

@@ -18,7 +18,7 @@ type NumericRangeRule = {
  */
 const numericRangeRule = (min = 0, max = 99999): NumericRangeRule => ({
     min: { value: min, message: `Must be ${min} or greater.` },
-    max: { value: max, message: `Must be ${max} or less.` }
+    max: { value: max, message: `Must be ${max} or less.` },
 });
 
 export { numericRangeRule };

@@ -16,7 +16,7 @@ const questionTypes: { name: string; value: 'CODED' | 'NUMERIC' | 'TEXT' | 'DATE
     { name: 'Value set', value: 'CODED' },
     { name: 'Numeric entry', value: 'NUMERIC' },
     { name: 'Text only', value: 'TEXT' },
-    { name: 'Date picker', value: 'DATE' }
+    { name: 'Date picker', value: 'DATE' },
 ];
 
 type Props = {
@@ -27,7 +27,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
     const [uniqueId, uniqueName] = useWatch({
         control: form.control,
         name: ['uniqueId', 'uniqueName', 'questionType'],
-        exact: true
+        exact: true,
     });
     const { options: subgroups } = useOptions('NBS_QUES_SUBGROUP');
     const { isValid: uniqueIdIsValid, validate: validateUniqueId } = useQuestionValidation(
@@ -53,7 +53,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
         // check === false to keep undefined from triggering an error
         if (uniqueIdIsValid === false) {
             form.setError('uniqueId', {
-                message: `A question with Unique ID: ${uniqueId} already exists in the system`
+                message: `A question with Unique ID: ${uniqueId} already exists in the system`,
             });
         }
     }, [uniqueIdIsValid]);
@@ -62,7 +62,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
         // check === false to keep undefined from triggering an error
         if (uniqueNameIsValid === false) {
             form.setError('uniqueName', {
-                message: `A question with Unique name: ${uniqueName} already exists in the system`
+                message: `A question with Unique name: ${uniqueName} already exists in the system`,
             });
         }
     }, [uniqueNameIsValid]);
@@ -102,7 +102,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                     name="uniqueId"
                     rules={{
                         pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' },
-                        ...maxLengthRule(50)
+                        ...maxLengthRule(50),
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input
@@ -209,7 +209,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                             buttons={questionTypes.map((field) => ({
                                 value: field.value,
                                 name: field.name,
-                                label: field.name
+                                label: field.name,
                             }))}
                             onClick={(field): void => {
                                 onChange(field.value);

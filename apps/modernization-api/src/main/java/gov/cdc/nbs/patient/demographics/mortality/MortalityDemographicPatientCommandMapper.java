@@ -6,9 +6,7 @@ import gov.cdc.nbs.patient.RequestContext;
 public class MortalityDemographicPatientCommandMapper {
 
   public static PatientCommand.UpdateMortality asUpdateMortality(
-      final long patient,
-      final RequestContext context,
-      final MortalityDemographic demographic) {
+      final long patient, final RequestContext context, final MortalityDemographic demographic) {
 
     return new PatientCommand.UpdateMortality(
         patient,
@@ -24,14 +22,9 @@ public class MortalityDemographicPatientCommandMapper {
   }
 
   public static PatientCommand.ClearMoralityDemographics asClearMoralityDemographics(
-      final long patient,
-      final RequestContext context
-  ) {
+      final long patient, final RequestContext context) {
     return new PatientCommand.ClearMoralityDemographics(
-        patient,
-        context.requestedBy(),
-        context.requestedAt()
-    );
+        patient, context.requestedBy(), context.requestedAt());
   }
 
   private MortalityDemographicPatientCommandMapper() {

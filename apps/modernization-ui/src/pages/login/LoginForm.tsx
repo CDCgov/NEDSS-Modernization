@@ -14,7 +14,7 @@ const LoginForm = () => {
     useEffect(() => {
         if (pending) {
             LoginService.login({
-                requestBody: { username: username }
+                requestBody: { username: username },
             })
                 .then(() => navigate('/'))
                 .catch((error: ApiError) => {
@@ -65,7 +65,8 @@ const LoginForm = () => {
                             title="Show password"
                             className="usa-show-password"
                             aria-controls="password-sign-in"
-                            onClick={(): void => setShowPassword((showPassword) => !showPassword)}>
+                            onClick={(): void => setShowPassword((showPassword) => !showPassword)}
+                        >
                             {showPassword ? 'Hide password' : 'Show password'}
                         </a>
                     </p>
