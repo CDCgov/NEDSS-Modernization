@@ -18,7 +18,7 @@ nbs:
     url: http://${nbs.wildfly.server}
   report:
     execution:
-      host: localhost
+      host: report-execution
       port: 8001
       url: http://${nbs.report.execution.host}:${nbs.report.execution.port}
   datasource:
