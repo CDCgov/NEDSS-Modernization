@@ -19,23 +19,22 @@ def execute(
     * % change Current YTD vs 5 Year Median YTD
 
     Conversion notes:
-    * Lifted the size check to a global check and refined the env var names
-    * Date formatting still needs to be figured out
+    * Export included the year as a column
+    * Export has columns in different order
     """
     content = trx.query(
+        # State filtering is assumed to happen in the filters
         f'WITH subset as ({subset_query})\n'
 
         ', base_data as ('
-        'SELECT state_cd, state, phc_code_short_desc, MONTH(event_date) as month, '
+        'SELECT phc_code_short_desc, MONTH(event_date) as month, '
         'YEAR(event_date) as year, sum(group_case_cnt) as cases\n'
         'FROM subset\n'
-        'WHERE state is not NULL\n'
         'AND event_date is not NULL\n'
         'AND DATEPART(dayofyear, event_date) <= '
         '        DATEPART(dayofyear, CURRENT_TIMESTAMP)\n'
         'AND YEAR(event_date) >= (YEAR(CURRENT_TIMESTAMP) - 5)\n'
-        'GROUP BY state_cd, state, phc_code_short_desc, '
-        'MONTH(event_date), YEAR(event_date)\n'
+        'GROUP BY phc_code_short_desc, MONTH(event_date), YEAR(event_date)\n'
         ')\n'
 
         ', diseases as (\n'
@@ -91,6 +90,10 @@ def execute(
         'LEFT JOIN median_year my on my.phc_code_short_desc = d.phc_code_short_desc\n'
         'ORDER BY d.phc_code_short_desc asc'
     )
+    
+    # TODO:
+    # column header names
+    # sub header
 
     header = 'SR5: Cases of Reportable Diseases by State'
     subheader = None
@@ -100,8 +103,7 @@ def execute(
     description = (
         '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
         '*Output:* Report demonstrates, in table form, the total number of '
-        'Investigation(s) [both Individual and Summary] by County irrespective of '
-        'Case Status.\n'
+        'Investigation(s) [both Individual and Summary] irrespective of Case Status.\n'
         'Output:\n'
         '* Does not include Investigation(s) that have been logically deleted\n'
         '* Is filtered based on the state, disease(s) and advanced criteria selected '
