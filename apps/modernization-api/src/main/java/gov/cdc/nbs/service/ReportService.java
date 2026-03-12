@@ -11,7 +11,6 @@ import jakarta.json.JsonObject;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,7 +45,7 @@ public class ReportService {
         fetchedReport.getReportLibrary().getRunner());
   }
 
-  public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
+  public String executeReport(ReportExecutionRequest request) {
     ReportConfigurationResponse reportConfigRes =
         getReport(request.reportUid(), request.dataSourceUid());
 
@@ -54,7 +53,7 @@ public class ReportService {
       if (Objects.equals(reportConfigRes.runner(), "python")) {
         JsonObject json =
             Json.createObjectBuilder()
-                .add("version", "1")
+                .add("version", 1)
                 .add("is_export", true)
                 .add("is_builtin", true)
                 .add("report_title", "Test report")
