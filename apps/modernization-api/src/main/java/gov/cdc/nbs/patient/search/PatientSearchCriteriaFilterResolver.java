@@ -194,6 +194,30 @@ class PatientSearchCriteriaFilterResolver {
                                 .lang(PAINLESS)))));
   }
 
+  private Optional<QueryVariant> applyDateOfBirthYearCriteria(
+      final PatientSearchCriteria criteria) {
+    DateCriteria dateCriteria = criteria.getBornOn();
+    if (dateCriteria == null) {
+      return Optional.empty();
+    }
+    Equals equalsDate = dateCriteria.equals();
+    if (equalsDate == null || !equalsDate.isPartialDate() || equalsDate.year() == null) {
+      return Optional.empty();
+    }
+
+    return Optional.of(
+        ScriptQuery.of(
+            query ->
+                query.script(
+                    Script.of(
+                        script ->
+                            script
+                                .source(
+                                    "doc['birth_time'].size()!=0 && doc['birth_time'].value.getYear() == "
+                                        + equalsDate.year())
+                                .lang(PAINLESS)))));
+  }
+
   private Optional<QueryVariant> applyIdentificationCriteria(final PatientSearchCriteria criteria) {
 
     PatientSearchCriteria.Identification identification = criteria.getIdentification();
