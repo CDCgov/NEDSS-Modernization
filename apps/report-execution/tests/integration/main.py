@@ -36,6 +36,6 @@ class TestMainApp:
 
         result = json.loads(response.read())
         assert (
-            result['description']
+            result['header']
             == 'Custom Report For Table: [NBS_ODSE].[dbo].[Filter_code]'
         )

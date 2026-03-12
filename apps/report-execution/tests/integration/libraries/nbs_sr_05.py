@@ -31,9 +31,10 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.description == (
-            'SR5: Cases of Reportable Diseases by State\n' + '2024-01-01 - 2024-12-31'
+        assert result.header == (
+            'SR5: Cases of Reportable Diseases by State'
         )
+        assert result.subheader == '2024-01-01 - 2024-12-31'
         assert result.content_type == 'table'
         logging.info(result.content.data)
 
