@@ -37,8 +37,44 @@ def execute(
         + 'ORDER BY phc_code_short_desc, YEAR(event_date), MONTH(event_date)'
     )
 
-    description = 'SR5: Cases of Reportable Diseases by State'
+    header = 'SR5: Cases of Reportable Diseases by State'
+    subheader = None
     if time_range is not None:
-        description += f'\n{time_range.start} - {time_range.end}'
+        subheader = f'\n{time_range.start} - {time_range.end}'
 
-    return ReportResult(content_type='table', content=content, description=description)
+    description = (
+        '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
+        '*Output:* Report demonstrates, in table form, the total number of '
+        'Investigation(s) [both Individual and Summary] by County irrespective of '
+        'Case Status.\n'
+        'Output:\n'
+        '* Does not include Investigation(s) that have been logically deleted\n'
+        '* Is filtered based on the state, disease(s) and advanced criteria selected '
+        'by user\n'
+        '* Will not include Investigation(s) that do not have a value for the State '
+        'selected by the user\n'
+        '* Is based on month and year of the calculated Event Date\n'
+        '*Calculations:*'
+        '* *Current Month Totals by disease:* Total Investigation(s) [both Individual '
+        'and Summary] where the Year and Month of the Event Date equal the current '
+        'Year and Month\n'
+        '* *Current Year Totals by disease:* Total Investigation(s) [both Individual '
+        'and Summary] where the Year of the Event Date equal the current Year\n'
+        '* *Previous Year  Totals by disease:* Total Investigation(s) [both '
+        'Individual and Summary] where the Year of the Event Date equal last Year\n'
+        '* *5-Year median:* Median number of Investigation(s) [both Individual and '
+        'Summary] for the past five years\n'
+        '* *Percentage change (current year vs. 5 year median):* Percentage change '
+        'between the Current Year Totals by disease and the 5-Year median\n'
+        ' * *Event Date:* Derived using the hierarchy of Onset Date, Diagnosis Date, '
+        'Report to County, Report to State and Date the Investigation was created in '
+        'the NBS.\n'
+    )
+
+    return ReportResult(
+        content_type='table',
+        content=content,
+        header=header,
+        subheader=subheader,
+        description=description,
+    )
