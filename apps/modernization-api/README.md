@@ -26,7 +26,17 @@ Ensure you have the following installed:
 ### 1. Environment & Secrets
 
 This project uses a `.env` file for local configuration. The provided script initializes this file and exports
-variables to your current session.
+variables to your current session or relevant properties set
+   in `src/main/resources/application-local.yml`
+   
+```yml
+nbs:
+  security:
+    parameterSecret: result of `openssl rand -base64 32 | cut -c1-32`
+    tokenSecret: result of `openssl rand -base64 64`
+  datasource:
+    password: password used for sa user on db
+```
 
 ```shell
 # From repo root
@@ -200,4 +210,3 @@ multipart form-data that easily hit the default `max-part-count` of Tomcat. A th
 accommodate Page Builder templates with large number of questions. Due to the customizability of Page Builder templates
 this limit may not be sufficient in some deployments. The `max-part-count` can be overridden using the
 `SERVER_TOMCAT_MAX_PART_COUNT` environment variable.
-
