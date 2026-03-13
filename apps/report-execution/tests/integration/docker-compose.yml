@@ -3,3 +3,9 @@ services:
   report-execution:
     # allows using localhost db conn for easy access to db container directly or via report-execution container
     network_mode: host
+    # Tests external client library mounting into container works
+    volumes:
+      - type: bind
+        source: ../apps/report-execution/tests/integration/assets/custom_library.py
+        target: /usr/report-execution/src/libraries/custom/custom_library.py
+        read_only: true
