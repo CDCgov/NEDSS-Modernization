@@ -70,6 +70,9 @@ def execute(
         'SELECT * FROM disease_year\n'
     )
 
+    # Because the base data is guaranteed to have a "0" entry for every year and disease
+    # in the current month, we know that all diseases for all years will be present
+    # and don't need to worry about null coalescing
     content = trx.query(
         # year_data CTE
         'WITH year_data as (\n'
@@ -123,6 +126,7 @@ def execute(
         'ORDER BY ty.phc_code_short_desc asc'
     )
 
+    # Get the state(s) in the data set for subheader display
     states = trx.query('SELECT DISTINCT state FROM #base_data ORDER BY state')
     state_list = [
         row[0] if row[0] is not None else 'N/A'
