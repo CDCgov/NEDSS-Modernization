@@ -129,6 +129,10 @@ The Modernization API can connect to the Kafka instance defined in `cdc-sandbox/
 ./gradlew -Dtest.single="RunCucumber" -Dcucumber.filter.tags="@patient_create" :modernization-api:test
 ```
 
+### Debugging tests
+
+Run the tests with the `--debug-jvm` flag and the tests will wait for a debugger to attach at port 5005 before proceeding. Set breakpoints where you want to debug the code.
+
 ## 📖 API Documentation and Tools
 
 ### Authentication

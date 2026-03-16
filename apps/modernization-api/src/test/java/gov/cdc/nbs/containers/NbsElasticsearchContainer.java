@@ -16,6 +16,8 @@ public class NbsElasticsearchContainer extends ElasticsearchContainer {
         DockerImageName.parse(ELASTIC_SEARCH_DOCKER)
             .asCompatibleSubstituteFor("docker.elastic.co/elasticsearch/elasticsearch"));
     this.addEnv(CLUSTER_NAME, ELASTIC_SEARCH);
+    this.addEnv("xpack.security.enabled", "false");
+    this.addEnv("discovery.type", "single-node");
     this.addEnv("ES_JAVA_OPTS", "-Xms256m -Xmx512m -XX:MaxDirectMemorySize=536870912");
   }
 
