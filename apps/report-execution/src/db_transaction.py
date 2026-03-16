@@ -1,3 +1,4 @@
+import logging
 from contextlib import contextmanager
 
 import mssql_python
@@ -19,6 +20,7 @@ class Transaction:
         Positional `?` placeholders can be used in the query and values passed as
         parameters in a tuple.
         """
+        logging.debug(f'Querying: {query}')
         data = self._cursor.execute(query, parameters).fetchall()
         columns = self._column_names()
         return Table(columns=columns, data=data)
@@ -31,6 +33,7 @@ class Transaction:
         Positional `?` placeholders can be used in the query and values passed as
         parameters in a tuple.
         """
+        logging.debug(f'Executing: {query}')
         self._cursor.execute(query, parameters)
         return None
 

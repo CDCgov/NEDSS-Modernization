@@ -4,11 +4,17 @@ from contextlib import contextmanager
 
 import pytest
 import tablefaker
+import time_machine
 from testcontainers.compose import ContainerIsNotRunning, DockerCompose
 
 from src import utils
 from src.db_transaction import db_transaction
 from src.models import Table
+
+# Per package's recommendation to use a consistent time mode
+time_machine.naive_mode = (
+    time_machine.NaiveMode.LOCAL
+)  # pyrefly: ignore[bad-assignment]
 
 
 def pytest_configure(config):
@@ -30,7 +36,7 @@ class MockTransaction:
 
     # Pointer to the parent connection for testing purposes
     def __init__(self, cursor=None):
-        self.cursor = cursor
+        self._cursor = cursor
 
     def execute(self, query):
         return Table(
@@ -104,11 +110,7 @@ def setup_containers(request):
         except ContainerIsNotRunning:
             return None
 
-    containers_to_stop = [
-        maybe_get_container(service)
-        for service in services
-        if maybe_get_container(service) is not None
-    ]
+    containers_to_stop = [maybe_get_container(service) for service in services]
 
     containers.start()
     containers.wait_for(report_exec_url)
@@ -118,7 +120,8 @@ def setup_containers(request):
         logging.info('Service logs...\n')
         logging.info('Tests finished! Tearing down.')
         for container in containers_to_stop:
-            container.stop()
+            if container is not None:
+                container.stop()
 
     request.addfinalizer(teardown)
 

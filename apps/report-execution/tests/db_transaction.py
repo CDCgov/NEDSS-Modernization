@@ -9,4 +9,4 @@ class TestDbTransaction:
     def test_db_conn_autocommit_false(self, mocker, mock_db_connection):
         mocker.patch('src.db_transaction.Transaction', MockTransaction)
         with db_transaction('test connection string') as trx:
-            assert trx.cursor.autocommit is False
+            assert trx._cursor.autocommit is False

@@ -1,6 +1,5 @@
-import logging
-
 import pytest
+import time_machine
 
 from src.execute_report import execute_report
 from src.models import ReportSpec
@@ -13,9 +12,13 @@ faker_schema = 'phc_demographic.yaml'
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationNbsSr05Library:
-    """Integration tests for the nbs_custom library."""
+    """Integration tests for the nbs_sr_05 library.
 
-    def test_execute_report_with_time_range(self):
+    This library looks at the past five years of data and the date on the sql server
+    is not readily hardcoded, so the tests here are largely probabalistic.
+    """
+
+    def test_execute_report_check_data(self):
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -23,7 +26,6 @@ class TestIntegrationNbsSr05Library:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                # Filter operator is used here as it is a stable, small table
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
                 'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
@@ -31,24 +33,191 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == ('SR5: Cases of Reportable Diseases by State')
-        assert result.subheader == '2024-01-01 - 2024-12-31'
         assert result.content_type == 'table'
-        logging.info(result.content.data)
 
         assert len(result.content.data) >= 1
-        assert len(result.content.data[0]) == 4
         assert len(result.content.data[0]) == len(result.content.columns)
 
-        record = None
-        for row in result.content.data:
-            if (
-                row[0] == 'Georgia'
-                and row[1] == 'Gwinnett County'
-                and row[2] == 'Pertussis'
-            ):
-                record = row
-                break
+        for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
+            record = None
+            for row in result.content.data:
+                if row[0] == disease:
+                    record = row
+                    break
 
-        assert record is not None
-        assert record[3] >= 1
+            assert record is not None
+            # Because these tests need to pass very early in the year, only weak checks
+            assert record[1] >= 0
+            assert record[2] >= 0
+            assert record[2] >= record[1]  # ytd must be at least this month
+            assert record[3] >= 0
+            assert record[4] >= 0
+            # -1000% to 1000%
+            assert record[5] <= 10
+            assert record[5] >= -10
+
+    def test_execute_report_old_data_zeros(self):
+        report_spec = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'NBS Custom',
+                'library_name': 'nbs_sr_05',
+                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
+                'subset_query': (
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
+                    'WHERE YEAR(event_date) <= (YEAR(CURRENT_TIMESTAMP) - 5)'
+                ),
+                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+
+        assert len(result.content.data) >= 1
+        assert len(result.content.data[0]) == len(result.content.columns)
+
+        for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
+            record = None
+            for row in result.content.data:
+                if row[0] == disease:
+                    record = row
+                    break
+
+            assert record is not None
+            # No data returned should default to zero
+            assert record[1] == 0
+            assert record[2] == 0
+            assert record[3] == 0
+            assert record[4] == 0
+            assert record[5] == 0
+
+    def test_execute_report_no_current_year(self):
+        report_spec = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'NBS Custom',
+                'library_name': 'nbs_sr_05',
+                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
+                'subset_query': (
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
+                    'WHERE YEAR(event_date) < YEAR(CURRENT_TIMESTAMP)'
+                ),
+                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+
+        assert len(result.content.data) >= 1
+        assert len(result.content.data[0]) == len(result.content.columns)
+
+        for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
+            record = None
+            for row in result.content.data:
+                if row[0] == disease:
+                    record = row
+                    break
+
+            assert record is not None
+            # current year data should be zero, older not
+            assert record[1] == 0
+            assert record[2] == 0
+            assert record[3] >= 0
+            assert record[4] >= 0
+            assert record[5] < 0
+
+    def test_execute_report_only_current_year(self):
+        report_spec = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'NBS Custom',
+                'library_name': 'nbs_sr_05',
+                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
+                'subset_query': (
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
+                    'WHERE YEAR(event_date) = YEAR(CURRENT_TIMESTAMP)'
+                ),
+                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+
+        assert len(result.content.data) >= 1
+        assert len(result.content.data[0]) == len(result.content.columns)
+
+        for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
+            record = None
+            for row in result.content.data:
+                if row[0] == disease:
+                    record = row
+                    break
+
+            assert record is not None
+            # current year data should be zero, older not
+            assert record[1] >= 0
+            assert record[2] >= 0
+            assert record[3] == 0
+            assert record[4] == 0
+            # default zero when median is zero to avoid error
+            assert record[5] == 0
+
+    def test_execute_report_empty_subset(self):
+        report_spec = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'NBS Custom',
+                'library_name': 'nbs_sr_05',
+                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
+                'subset_query': (
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 0'
+                ),
+                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+
+        assert len(result.content.data) == 0
+        assert len(result.content.columns) == 6
+
+    @time_machine.travel('2020-06-04')
+    def test_execute_report_check_metadata(self):
+        """Check the metadata and column names are correct with a frozen date."""
+        report_spec = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'NBS Custom',
+                'library_name': 'nbs_sr_05',
+                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
+                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
+                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.header == 'SR5: Cases of Reportable Diseases by State'
+        assert result.subheader == 'N/A, Georgia, Tennessee | 06/04/2020'
+        assert len(result.description) > 100
+        assert result.content_type == 'table'
+
+        assert result.content.columns[0] == 'Disease'
+        assert result.content.columns[1] == 'JUN2020'
+        assert result.content.columns[2] == 'Cumulative for 2020 to Date'
+        assert result.content.columns[3] == 'Cumulative for 2019 to Date'
+        assert result.content.columns[4] == '5 Year Median Year to Date'
+        assert result.content.columns[5] == 'Percent Change 2020 vs 5 Year Median'
