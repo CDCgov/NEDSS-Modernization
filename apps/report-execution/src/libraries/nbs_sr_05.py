@@ -25,16 +25,20 @@ def execute(
     * Use pipe separator instead of new line for subheader
     """
     today = datetime.date.today()
+
+    # date-based variables for use in the queries
     curr_month = today.strftime('%b%Y').upper()
     year = today.year
     last_year = year - 1
     years = range(year, year - 5, -1)
+
+    # Place holder value used when ensuring all disease+year have data
     filler_state = '<FILLER>'
 
     trx.execute(
         # State filtering is assumed to happen in the filters/subset
         f'WITH subset as ({subset_query})\n'
-        # diseases CTE
+        # diseases CTE done without any filtering
         ', diseases as (\n'
         'SELECT DISTINCT phc_code_short_desc\n'
         'FROM subset\n'
@@ -67,13 +71,8 @@ def execute(
     )
 
     content = trx.query(
-        # diseases CTE
-        'WITH diseases as (\n'
-        'SELECT DISTINCT phc_code_short_desc\n'
-        'FROM #base_data\n'
-        ')\n'
         # year_data CTE
-        ', year_data as (\n'
+        'WITH year_data as (\n'
         'SELECT phc_code_short_desc, year, SUM(cases) as cases\n'
         'FROM #base_data\n'
         'GROUP BY phc_code_short_desc, year'
@@ -107,7 +106,7 @@ def execute(
         'FROM year_data\n'
         ')\n'
         # Result select
-        'SELECT d.phc_code_short_desc as [Disease], '
+        'SELECT ty.phc_code_short_desc as [Disease], '
         f'COALESCE(curr_month, 0) as [{curr_month}], \n'
         f'COALESCE(curr_ytd, 0) as [Cumulative for {year} to Date], '
         f'COALESCE(last_ytd, 0) as [Cumulative for {last_year} to Date], \n'
@@ -117,12 +116,11 @@ def execute(
         '  0, '
         '  COALESCE((curr_ytd - median_ytd) / median_ytd, 0)) '
         f'       as [Percent Change {year} vs 5 Year Median]\n'
-        'FROM diseases d\n'
-        'LEFT JOIN this_month tm on tm.phc_code_short_desc = d.phc_code_short_desc\n'
-        'LEFT JOIN this_year ty on ty.phc_code_short_desc = d.phc_code_short_desc\n'
-        'LEFT JOIN last_year ly on ly.phc_code_short_desc = d.phc_code_short_desc\n'
-        'LEFT JOIN median_year my on my.phc_code_short_desc = d.phc_code_short_desc\n'
-        'ORDER BY d.phc_code_short_desc asc'
+        'FROM this_year ty\n'
+        'LEFT JOIN this_month tm on tm.phc_code_short_desc = ty.phc_code_short_desc\n'
+        'LEFT JOIN last_year ly on ly.phc_code_short_desc = ty.phc_code_short_desc\n'
+        'LEFT JOIN median_year my on my.phc_code_short_desc = ty.phc_code_short_desc\n'
+        'ORDER BY ty.phc_code_short_desc asc'
     )
 
     states = trx.query('SELECT DISTINCT state FROM #base_data ORDER BY state')
