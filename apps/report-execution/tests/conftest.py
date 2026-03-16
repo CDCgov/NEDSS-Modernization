@@ -104,13 +104,14 @@ def setup_containers(request):
     )
     report_exec_url = 'http://0.0.0.0:8001/status'
 
-    def maybe_get_container(name):
+    def get_running_container(name):
         try:
             containers.get_container(name)
         except ContainerIsNotRunning:
             return None
 
-    containers_to_stop = [maybe_get_container(service) for service in services]
+    # Only stop containers that we start here
+    containers_to_stop = [get_running_container(service) for service in services]
 
     containers.start()
     containers.wait_for(report_exec_url)
@@ -158,9 +159,22 @@ def temp_name(table_name: str) -> str:
     return table_name[0:-1] + '_temp]'
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope='module')
 def fake_db_table(request):
-    """Replace a DB table with fake table per the tablefaker schema."""
+    """Temporarily replace a DB table with fake table per the tablefaker schema.
+
+    In the module where the table should be replaced, add the following variables
+    at the top level:
+    * `db_table` - table to replace with fake data
+    * `db_fk_tables` - tables with foreign keys pointing at `db_table` which also need to
+    be cleared to avoid foreign key violations
+    * `faker_schema` - schema yaml file in `tests/integration/assets/tablefaker_schema`
+    
+    See https://github.com/necatiarslan/table-faker?tab=readme-ov-file#-table-faker
+
+    The table is replaced for the entire module and it is assumed at this point only
+    one table with one set of fake data is needed per module.
+    """
     db_table = request.module.db_table
     fk_tables = getattr(request.module, 'db_fk_tables', [])
     faker_schema = request.module.faker_schema
