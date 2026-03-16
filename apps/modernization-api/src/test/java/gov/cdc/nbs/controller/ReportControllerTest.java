@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import gov.cdc.nbs.model.ReportConfigurationResponse;
 import gov.cdc.nbs.service.ReportService;
 import java.util.HashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,14 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-public class ReportControllerTest {
+class ReportControllerTest {
 
   @Mock private ReportService service;
 
   @InjectMocks private ReportController controller;
 
   @Test
-  public void should_get_report_configuration_response() {
+  void should_get_report_configuration_response() {
     Long reportUid = 1L;
     Long dataSourceUid = 2L;
 
