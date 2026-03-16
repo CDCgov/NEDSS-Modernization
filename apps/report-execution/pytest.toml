@@ -1,6 +1,7 @@
 [pytest]
 pythonpath = ["."]
 testpaths = ["tests"]
+norecursedirs = ["assets"]
 python_files = ["*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
