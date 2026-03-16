@@ -1,12 +1,13 @@
+import datetime
+
 from src.db_transaction import Transaction
-from src.models import ReportResult, TimeRange
+from src.models import ReportResult
 
 
 def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
-    time_range: TimeRange | None = None,
     **kwargs,
 ):
     """Standard Report 05: Cases of Reportable Diseases for a specific state.
@@ -21,36 +22,66 @@ def execute(
     Conversion notes:
     * Export included the year as a column
     * Export has columns in different order
+    * Use pipe separator instead of new line for subheader
     """
-    content = trx.query(
-        # State filtering is assumed to happen in the filters
+    today = datetime.date.today()
+    curr_month = today.strftime('%b%Y').upper()
+    year = today.year
+    last_year = year - 1
+    years = range(year, year - 5, -1)
+    filler_state = '<FILLER>'
+
+    trx.execute(
+        # State filtering is assumed to happen in the filters/subset
         f'WITH subset as ({subset_query})\n'
-        # base_data CTE
-        ', base_data as ('
-        'SELECT phc_code_short_desc, MONTH(event_date) as month, '
-        'YEAR(event_date) as year, sum(group_case_cnt) as cases\n'
-        'FROM subset\n'
-        'AND event_date is not NULL\n'
-        'AND DATEPART(dayofyear, event_date) <= '
-        '        DATEPART(dayofyear, CURRENT_TIMESTAMP)\n'
-        'AND YEAR(event_date) >= (YEAR(CURRENT_TIMESTAMP) - 5)\n'
-        'GROUP BY phc_code_short_desc, MONTH(event_date), YEAR(event_date)\n'
-        ')\n'
         # diseases CTE
         ', diseases as (\n'
         'SELECT DISTINCT phc_code_short_desc\n'
+        'FROM subset\n'
+        ')\n'
+        # all diseases and all years with zero's pre-filtering CTE
+        # ensures that row exists for all diseases and median is correct
+        ', disease_year as (\n'
+        f"SELECT phc_code_short_desc, '{filler_state}' as state, "
+        '1 as month, year, 0 as cases\n'
+        'FROM diseases, \n'
+        f'(VALUES {", ".join([f"({y})" for y in years])}) as year_values(year)\n'
+        ')\n'
+        # base_data CTE
+        ', base_data as (\n'
+        'SELECT phc_code_short_desc, state, MONTH(event_date) as month, '
+        'YEAR(event_date) as year, sum(group_case_cnt) as cases\n'
+        'FROM subset\n'
+        'WHERE event_date is not NULL\n'
+        'AND DATEPART(dayofyear, event_date) <= '
+        '        DATEPART(dayofyear, CURRENT_TIMESTAMP)\n'
+        'AND YEAR(event_date) > (YEAR(CURRENT_TIMESTAMP) - 5)\n'
+        'GROUP BY phc_code_short_desc, state, MONTH(event_date), YEAR(event_date)\n'
+        ')\n'
+        # base_data temp table
+        'SELECT *\n'
+        'INTO #base_data\n'
         'FROM base_data\n'
+        'UNION ALL\n'
+        'SELECT * FROM disease_year\n'
+    )
+
+    content = trx.query(
+        # diseases CTE
+        'WITH diseases as (\n'
+        'SELECT DISTINCT phc_code_short_desc\n'
+        'FROM #base_data\n'
         ')\n'
         # year_data CTE
         ', year_data as (\n'
         'SELECT phc_code_short_desc, year, SUM(cases) as cases\n'
-        'FROM base_data\n'
+        'FROM #base_data\n'
         'GROUP BY phc_code_short_desc, year'
         ')\n'
         # this_month CTE
         ', this_month as (\n'
         'SELECT phc_code_short_desc, SUM(cases) as curr_month\n'
-        'FROM base_data\n'
+        'FROM #base_data\n'
         'WHERE month = MONTH(CURRENT_TIMESTAMP)\n'
         'AND year = YEAR(CURRENT_TIMESTAMP)\n'
         'GROUP BY phc_code_short_desc'
@@ -76,13 +107,16 @@ def execute(
         'FROM year_data\n'
         ')\n'
         # Result select
-        'SELECT d.phc_code_short_desc, COALESCE(curr_month, 0) as curr_month, \n'
-        'COALESCE(curr_ytd, 0) as curr_ytd, COALESCE(last_ytd, 0) as last_ytd, \n'
-        'COALESCE(median_ytd, 0) as median_ytd, \n'
+        'SELECT d.phc_code_short_desc as [Disease], '
+        f'COALESCE(curr_month, 0) as [{curr_month}], \n'
+        f'COALESCE(curr_ytd, 0) as [Cumulative for {year} to Date], '
+        f'COALESCE(last_ytd, 0) as [Cumulative for {last_year} to Date], \n'
+        'COALESCE(median_ytd, 0) as [5 Year Median Year to Date], \n'
         'IIF('
         '  COALESCE(median_ytd, 0) = 0, '
         '  0, '
-        '  COALESCE((curr_ytd - median_ytd) / median_ytd, 0)) as pct_chg\n'
+        '  COALESCE((curr_ytd - median_ytd) / median_ytd, 0)) '
+        f'       as [Percent Change {year} vs 5 Year Median]\n'
         'FROM diseases d\n'
         'LEFT JOIN this_month tm on tm.phc_code_short_desc = d.phc_code_short_desc\n'
         'LEFT JOIN this_year ty on ty.phc_code_short_desc = d.phc_code_short_desc\n'
@@ -91,15 +125,17 @@ def execute(
         'ORDER BY d.phc_code_short_desc asc'
     )
 
-    # TODO:  # noqa: FIX002
-    # column header names
-    # sub header
+    states = trx.query('SELECT DISTINCT state FROM #base_data ORDER BY state')
+    state_list = [
+        row[0] if row[0] is not None else 'N/A'
+        for row in states.data
+        if row[0] != filler_state
+    ]
+
+    trx.execute('DROP TABLE #base_data')
 
     header = 'SR5: Cases of Reportable Diseases by State'
-    subheader = None
-    if time_range is not None:
-        subheader = f'{time_range.start} - {time_range.end}'
-
+    subheader = f'{", ".join(state_list)} | {today.strftime("%m/%d/%Y")}'
     description = (
         '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
         '*Output:* Report demonstrates, in table form, the total number of '
