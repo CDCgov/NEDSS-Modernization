@@ -38,10 +38,13 @@ class MockTransaction:
     def __init__(self, cursor=None):
         self._cursor = cursor
 
-    def execute(self, query):
+    def query(self, query):
         return Table(
             columns=['id', 'name'], data=[(1, 'a'), (2, 'b'), (3, 'c'), (4, 'd')]
         )
+
+    def execute(self, query):
+        return None
 
 
 class MockConnection:
@@ -57,6 +60,9 @@ class MockConnection:
     def cursor(self):
         # elide the need for a mock cursor
         yield self
+
+    def commit(self):
+        pass
 
 
 @contextmanager
