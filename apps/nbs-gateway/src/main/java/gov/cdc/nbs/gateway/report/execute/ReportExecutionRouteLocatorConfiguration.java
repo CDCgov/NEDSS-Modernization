@@ -32,8 +32,8 @@ import org.springframework.util.LinkedMultiValueMap;
     havingValue = "true")
 class ReportExecutionRouteLocatorConfiguration {
 
-  private static final System.Logger LOGGER =
-      System.getLogger(ReportExecutionRouteLocatorConfiguration.class.getName());
+  private static final String REPORT_OBJECT_TYPE = "7";
+  private static final List<String> REPORT_OPERATION_TYPES = List.of("124", "138");
 
   @Bean
   RouteLocator reportExecuteRouteLocator(
@@ -61,10 +61,8 @@ class ReportExecutionRouteLocatorConfiguration {
   @SuppressWarnings({"unchecked", "rawtypes"})
   private Predicate<LinkedMultiValueMap> bodyPredicate() {
     return r -> {
-      LOGGER.log(System.Logger.Level.ERROR, () -> "Body (%s)".formatted(r));
-
-      return r.getFirst("ObjectType").equals("7")
-          && List.of("124", "138").contains(r.getFirst("OperationType"));
+      return r.getFirst("ObjectType").equals(REPORT_OBJECT_TYPE)
+          && REPORT_OPERATION_TYPES.contains(r.getFirst("OperationType"));
     };
   }
 }
