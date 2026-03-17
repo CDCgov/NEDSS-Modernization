@@ -40,7 +40,7 @@
         "@graphql-codegen/typescript-operations": "^4.0.1",
         "@graphql-codegen/typescript-react-apollo": "^4.4.1",
         "@storybook/addon-docs": "^9.1.19",
-        "@storybook/addon-onboarding": "^9.1.19",
+        "@storybook/addon-onboarding": "^10.2.19",
         "@storybook/react-vite": "^9.1.19",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.3.0",
