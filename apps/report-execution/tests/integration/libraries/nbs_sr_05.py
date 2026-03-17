@@ -1,7 +1,7 @@
 import datetime
-import yaml
 
 import pytest
+import yaml
 
 from src.execute_report import execute_report
 from src.models import ReportSpec
@@ -19,6 +19,7 @@ class TestIntegrationNbsSr05Library:
     This library looks at the past five years of data and the date on the sql server
     is not readily hardcoded, so the tests here are largely probabalistic.
     """
+
     @pytest.fixture(autouse=True)
     def set_time(self, time_machine):
         time_machine.move_to(datetime.datetime(2024, 6, 14))
