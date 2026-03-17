@@ -24,7 +24,7 @@ import org.springframework.web.reactive.function.BodyInserters;
       "nbs.gateway.modernization.service=localhost:10001",
       "nbs.gateway.report.execute.enabled=true"
     })
-class ReportExecutionLocatorConfigurationTest {
+class ReportExecutionRouteLocatorConfigurationTest {
 
   @RegisterExtension
   static WireMockExtension classic =
