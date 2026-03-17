@@ -91,7 +91,9 @@ class ReportExecutionLocatorConfigurationTest {
   @Test
   void should_not_route_to_modernization_when_not_report_object() {
 
-    classic.stubFor(post("/nbs/nfc").willReturn(ok()));
+    classic.stubFor(
+        post("/nbs/nfc")
+            .willReturn(ok().withBody("{{request.body}}").withTransformers("response-template")));
 
     MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
     data.add("mode", "edit");
@@ -105,13 +107,19 @@ class ReportExecutionLocatorConfigurationTest {
         .body(BodyInserters.fromFormData(data))
         .exchange()
         .expectStatus()
-        .isOk();
+        .isOk()
+        .expectBody(String.class)
+        .value(v -> assertThat(v).contains("edit"))
+        .value(v -> assertThat(v).contains("8"))
+        .returnResult();
   }
 
   @Test
   void should_not_route_to_modernization_when_not_run_or_export() {
 
-    classic.stubFor(post("/nbs/nfc").willReturn(ok()));
+    classic.stubFor(
+        post("/nbs/nfc")
+            .willReturn(ok().withBody("{{request.body}}").withTransformers("response-template")));
 
     MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
     data.add("mode", "edit");
@@ -125,7 +133,11 @@ class ReportExecutionLocatorConfigurationTest {
         .body(BodyInserters.fromFormData(data))
         .exchange()
         .expectStatus()
-        .isOk();
+        .isOk()
+        .expectBody(String.class)
+        .value(v -> assertThat(v).contains("edit"))
+        .value(v -> assertThat(v).contains("117"))
+        .returnResult();
   }
 
   @Test
