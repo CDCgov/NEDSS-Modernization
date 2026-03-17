@@ -1,5 +1,6 @@
 package gov.cdc.nbs.gateway.report.execute;
 
+import gov.cdc.nbs.gateway.modernization.ModernizationService;
 import java.util.List;
 import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,7 +40,7 @@ class ReportExecutionRouteLocatorConfiguration {
   RouteLocator reportExecuteRouteLocator(
       final RouteLocatorBuilder builder,
       @Qualifier("defaults") final List<GatewayFilter> defaults,
-      final ReportExecutionService parameters) {
+      final ModernizationService parameters) {
     return builder
         .routes()
         .route(
