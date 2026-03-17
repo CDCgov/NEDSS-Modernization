@@ -1,12 +1,10 @@
-package gov.cdc.nbs.service;
+package gov.cdc.nbs.report;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.model.ReportConfigurationResponse;
-import gov.cdc.nbs.model.ReportExecutionRequest;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.HashMap;
 import java.util.Objects;
@@ -29,7 +27,7 @@ public class ReportService {
     this.reportExecutionClient = reportExecutionClient;
   }
 
-  public ReportConfigurationResponse getReport(Long reportUid, Long dataSourceUid) {
+  public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
     ReportId id = new ReportId(reportUid, dataSourceUid);
     Optional<Report> optionalReport = reportRepository.findById(id);
     Report fetchedReport;
@@ -39,7 +37,7 @@ public class ReportService {
       fetchedReport = optionalReport.get();
       fetchedReportId = fetchedReport.getId();
 
-      return new ReportConfigurationResponse(
+      return new ReportConfiguration(
           createReportId(fetchedReportId.getReportUid(), fetchedReportId.getDataSourceUid()),
           fetchedReport.getReportLibrary().getRunner());
     }
@@ -53,7 +51,7 @@ public class ReportService {
   public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
     Long reportUid = request.reportUid();
     Long dataSourceUid = request.dataSourceUid();
-    ReportConfigurationResponse reportConfigResponse = getReport(reportUid, dataSourceUid);
+    ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
 
     if (reportConfigResponse != null) {
       if (Objects.equals(reportConfigResponse.runner(), "python")) {

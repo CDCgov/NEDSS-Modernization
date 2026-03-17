@@ -1,9 +1,6 @@
-package gov.cdc.nbs.controller;
+package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.model.ReportConfigurationResponse;
-import gov.cdc.nbs.model.ReportExecutionRequest;
-import gov.cdc.nbs.service.ReportService;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +25,9 @@ public class ReportController {
 
   @GetMapping("/configuration/{reportUid}/{dataSourceUid}")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
-  public ResponseEntity<ReportConfigurationResponse> getReport(
+  public ResponseEntity<ReportConfiguration> getReportConfiguration(
       @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
-    ReportConfigurationResponse reportConfigResponse =
-        reportService.getReport(reportUid, dataSourceUid);
+    ReportConfiguration reportConfigResponse = reportService.getReport(reportUid, dataSourceUid);
     return new ResponseEntity<>(reportConfigResponse, HttpStatus.OK);
   }
 

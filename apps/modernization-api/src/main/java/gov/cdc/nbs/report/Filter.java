@@ -1,4 +1,4 @@
-package gov.cdc.nbs.model;
+package gov.cdc.nbs.report;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = ReportFilter.BasicFilter.class, name = "BasicFilter"),
-  @JsonSubTypes.Type(value = ReportFilter.AdvancedFilter.class, name = "AdvancedFilter")
+  @JsonSubTypes.Type(value = Filter.BasicFilter.class, name = "BasicFilter"),
+  @JsonSubTypes.Type(value = Filter.AdvancedFilter.class, name = "AdvancedFilter")
 })
-public sealed interface ReportFilter {
+public sealed interface Filter {
   record BasicFilter(
       @Schema(
               type = "boolean",
@@ -18,7 +18,7 @@ public sealed interface ReportFilter {
           boolean isBasic,
       String filterCode,
       ArrayList<String> values)
-      implements ReportFilter {}
+      implements Filter {}
 
   record AdvancedFilter(
       @Schema(
@@ -26,7 +26,7 @@ public sealed interface ReportFilter {
               allowableValues = {"false"})
           boolean isBasic,
       Expr logic)
-      implements ReportFilter {}
+      implements Filter {}
 
   @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
   @JsonSubTypes({

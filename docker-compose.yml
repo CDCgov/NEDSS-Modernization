@@ -86,5 +86,3 @@ services:
       - DATABASE_CONN_STRING=${DATABASE_CONN_STRING}
     ports:
       - "8001:8001"
-    environment:
-      - DATABASE_CONN_STRING=${DATABASE_CONN_STRING}

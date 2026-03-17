@@ -1,4 +1,4 @@
-package gov.cdc.nbs.config;
+package gov.cdc.nbs.report;
 
 import java.net.http.HttpClient;
 import org.springframework.beans.factory.annotation.Value;
