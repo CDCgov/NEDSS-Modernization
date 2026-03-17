@@ -115,7 +115,7 @@ def setup_containers(request):
 
     containers.start()
     containers.wait_for(report_exec_url)
-    logging.info('Ingestion ready to test!')
+    logging.info('Containers ready to test!')
 
     def teardown():
         logging.info('Service logs...\n')
