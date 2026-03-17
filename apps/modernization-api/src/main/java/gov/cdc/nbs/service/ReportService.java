@@ -92,7 +92,7 @@ public class ReportService {
     return objectNode;
   }
 
-  private HashMap<String, Long> createReportId(Long reportUid, Long dataSourceUid) {
+  private HashMap<String, Long> createReportId(long reportUid, Long dataSourceUid) {
     HashMap<String, Long> idMap = new HashMap<>();
     idMap.put("reportUid", reportUid);
     idMap.put("dataSourceUid", dataSourceUid);
