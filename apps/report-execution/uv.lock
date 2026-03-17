@@ -896,6 +896,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-snapshot"
+version = "0.9.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9b/7b/ab8f1fc1e687218aa66acec1c3674d9c443f6a2dc8cb6a50f464548ffa34/pytest-snapshot-0.9.0.tar.gz", hash = "sha256:c7013c3abc3e860f9feff899f8b4debe3708650d8d8242a61bf2625ff64db7f3", size = 19877, upload-time = "2022-04-23T17:35:31.751Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cb/29/518f32faf6edad9f56d6e0107217f7de6b79f297a47170414a2bd4be7f01/pytest_snapshot-0.9.0-py3-none-any.whl", hash = "sha256:4b9fe1c21c868fe53a545e4e3184d36bc1c88946e3f5c1d9dd676962a9b3d4ab", size = 10715, upload-time = "2022-04-23T17:35:30.288Z" },
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -977,6 +989,8 @@ dev = [
     { name = "pyrefly" },
     { name = "pytest" },
     { name = "pytest-mock" },
+    { name = "pytest-snapshot" },
+    { name = "pyyaml" },
     { name = "ruff" },
     { name = "tablefaker" },
     { name = "testcontainers" },
@@ -996,6 +1010,8 @@ dev = [
     { name = "pyrefly", specifier = ">=0.54.0" },
     { name = "pytest", specifier = ">=9.0.2,<10.0.0" },
     { name = "pytest-mock", specifier = ">=3.15.1" },
+    { name = "pytest-snapshot", specifier = ">=0.9.0" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "ruff", specifier = ">=0.15.0,<1.0.0" },
     { name = "tablefaker", specifier = ">=1.8.0" },
     { name = "testcontainers", specifier = ">=4.14.1" },

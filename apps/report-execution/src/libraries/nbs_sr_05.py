@@ -23,12 +23,17 @@ def execute(
     * Export included the year as a column
     * Export has columns in different order
     * Use pipe separator instead of new line for subheader
+    * Remove "by county" from the description since this isn't by county
     """
     today = datetime.date.today()
 
     # date-based variables for use in the queries
+    # lifting these to pythong (vs using CURRENT_TIMESTAMP) allows easier testing
+    # by freezing time and using a set data set vs needing one always relative to today
     curr_month = today.strftime('%b%Y').upper()
     year = today.year
+    month = today.month
+    day_of_year = int(today.strftime('%j'))
     last_year = year - 1
     years = range(year, year - 5, -1)
 
@@ -47,7 +52,7 @@ def execute(
         # ensures that row exists for all diseases and median is correct
         ', disease_year as (\n'
         f"SELECT phc_code_short_desc, '{filler_state}' as state, "
-        'MONTH(CURRENT_TIMESTAMP) as month, year, 0 as cases\n'
+        f'{month} as month, year, 0 as cases\n'
         'FROM diseases, \n'
         f'(VALUES {", ".join([f"({y})" for y in years])}) as year_values(year)\n'
         ')\n'
@@ -57,9 +62,8 @@ def execute(
         'YEAR(event_date) as year, sum(group_case_cnt) as cases\n'
         'FROM subset\n'
         'WHERE event_date is not NULL\n'
-        'AND DATEPART(dayofyear, event_date) <= '
-        '        DATEPART(dayofyear, CURRENT_TIMESTAMP)\n'
-        'AND YEAR(event_date) > (YEAR(CURRENT_TIMESTAMP) - 5)\n'
+        f'AND DATEPART(dayofyear, event_date) <= {day_of_year}\n'
+        f'AND YEAR(event_date) > ({year} - 5)\n'
         'GROUP BY phc_code_short_desc, state, MONTH(event_date), YEAR(event_date)\n'
         ')\n'
         # base_data temp table
@@ -84,22 +88,22 @@ def execute(
         ', this_month as (\n'
         'SELECT phc_code_short_desc, SUM(cases) as curr_month\n'
         'FROM #base_data\n'
-        'WHERE month = MONTH(CURRENT_TIMESTAMP)\n'
-        'AND year = YEAR(CURRENT_TIMESTAMP)\n'
+        f'WHERE month = {month}\n'
+        f'AND year = {year}\n'
         'GROUP BY phc_code_short_desc'
         ')\n'
         # this_year CTE
         ', this_year as (\n'
         'SELECT phc_code_short_desc, SUM(cases) as curr_ytd\n'
         'FROM year_data\n'
-        'WHERE year = YEAR(CURRENT_TIMESTAMP)\n'
+        f'WHERE year = {year}\n'
         'GROUP BY phc_code_short_desc'
         ')\n'
         # last_year CTE
         ', last_year as (\n'
         'SELECT phc_code_short_desc, SUM(cases) as last_ytd\n'
         'FROM year_data\n'
-        'WHERE year = (YEAR(CURRENT_TIMESTAMP) - 1)\n'
+        f'WHERE year = ({year} - 1)\n'
         'GROUP BY phc_code_short_desc'
         ')\n'
         # median_year CTE
@@ -139,6 +143,7 @@ def execute(
     header = 'SR5: Cases of Reportable Diseases by State'
     subheader = f'{", ".join(state_list)} | {today.strftime("%m/%d/%Y")}'
     description = (
+        '*<u>Report Content</u>*\n'
         '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
         '*Output:* Report demonstrates, in table form, the total number of '
         'Investigation(s) [both Individual and Summary] irrespective of Case Status.\n'

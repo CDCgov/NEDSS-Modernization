@@ -52,5 +52,6 @@ def db_transaction(connection_string):
             trx = Transaction(cursor)
             yield trx
 
-        # not sure why this is needed - it shouldn't be per docs
+        # not sure why this is needed - it shouldn't be per docs:
+        # https://github.com/microsoft/mssql-python/wiki/Connection#context-manager
         connection.commit()
