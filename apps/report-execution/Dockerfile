@@ -9,6 +9,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /usr/report-execution
 
+# Install mssql driver deps
 RUN apt-get update && apt-get install -y libltdl7 libkrb5-3 libgssapi-krb5-2
 
 # Copy relevant application code
