@@ -13,8 +13,8 @@ from src.models import Table
 
 # Per package's recommendation to use a consistent time mode
 time_machine.naive_mode = (
-    time_machine.NaiveMode.LOCAL
-)  # pyrefly: ignore[bad-assignment]
+    time_machine.NaiveMode.LOCAL  # pyrefly: ignore[bad-assignment]
+)
 
 
 def pytest_configure(config):
@@ -166,10 +166,10 @@ def fake_db_table(request):
     In the module where the table should be replaced, add the following variables
     at the top level:
     * `db_table` - table to replace with fake data
-    * `db_fk_tables` - tables with foreign keys pointing at `db_table` which also need to
-    be cleared to avoid foreign key violations
+    * `db_fk_tables` - tables with foreign keys pointing at `db_table` which also need
+    to be cleared to avoid foreign key violations
     * `faker_schema` - schema yaml file in `tests/integration/assets/tablefaker_schema`
-    
+
     See https://github.com/necatiarslan/table-faker?tab=readme-ov-file#-table-faker
 
     The table is replaced for the entire module and it is assumed at this point only
