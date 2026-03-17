@@ -22,9 +22,9 @@ const Fixture = ({ visible = true }) => {
 };
 describe('ImportConfigurationModal', () => {
     beforeEach(() => {
-        onImport.mockClear()
-        onCancel.mockClear()
-    })
+        onImport.mockClear();
+        onCancel.mockClear();
+    });
 
     it('should show proper heading', () => {
         const { getByText } = render(<Fixture />);
