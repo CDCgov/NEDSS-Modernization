@@ -13,19 +13,21 @@ import java.util.ArrayList;
 public sealed interface Filter {
   record BasicFilter(
       @Schema(
+              requiredMode = Schema.RequiredMode.REQUIRED,
               type = "boolean",
               allowableValues = {"true"})
           boolean isBasic,
-      String filterCode,
-      ArrayList<String> values)
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterCode,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ArrayList<String> values)
       implements Filter {}
 
   record AdvancedFilter(
       @Schema(
+              requiredMode = Schema.RequiredMode.REQUIRED,
               type = "boolean",
               allowableValues = {"false"})
           boolean isBasic,
-      Expr logic)
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Expr logic)
       implements Filter {}
 
   @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -34,9 +36,16 @@ public sealed interface Filter {
     @JsonSubTypes.Type(value = Expr.Connector.class, name = "Connector")
   })
   sealed interface Expr {
-    record Clause(String fieldName, String filterOperatorCode, String filterValue)
+    record Clause(
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String fieldName,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterOperatorCode,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterValue)
         implements Expr {}
 
-    record Connector(String operator, Expr left, Expr right) implements Expr {}
+    record Connector(
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String operator,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Expr left,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Expr right)
+        implements Expr {}
   }
 }
