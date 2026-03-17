@@ -1,14 +1,10 @@
-package gov.cdc.nbs.controller;
+package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.model.ReportConfigurationResponse;
-import gov.cdc.nbs.model.ReportExecutionRequest;
-import gov.cdc.nbs.model.ReportFilter;
-import gov.cdc.nbs.service.ReportService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,11 +33,11 @@ class ReportControllerTest {
     idMap.put("reportUid", reportUid);
     idMap.put("dataSourceUid", dataSourceUid);
 
-    ReportConfigurationResponse reportConfig = new ReportConfigurationResponse(idMap, "python");
+    ReportConfiguration reportConfig = new ReportConfiguration(idMap, "python");
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
-    ResponseEntity<ReportConfigurationResponse> response =
-        controller.getReport(reportUid, dataSourceUid);
+    ResponseEntity<ReportConfiguration> response =
+        controller.getReportConfiguration(reportUid, dataSourceUid);
 
     assertEquals(reportConfig, response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -56,7 +52,7 @@ class ReportControllerTest {
         .thenThrow(
             new NotFoundException("Report not found for Report UID: 1 and Data Source UID: 2"));
 
-    assertThatThrownBy(() -> controller.getReport(reportUid, dataSourceUid))
+    assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid))
         .isInstanceOf(NotFoundException.class)
         .hasMessageContaining("Report not found for Report UID: 1 and Data Source UID: 2");
   }
@@ -74,8 +70,7 @@ class ReportControllerTest {
             new ArrayList<>(Arrays.asList("state_cd", "cnty_cd")),
             new ArrayList<>(
                 List.of(
-                    new ReportFilter.BasicFilter(
-                        true, "10066724", new ArrayList<>(List.of("test"))))));
+                    new Filter.BasicFilter(true, "10066724", new ArrayList<>(List.of("test"))))));
 
     when(service.executeReport(request)).thenReturn(new ResponseEntity<>("blah", HttpStatus.OK));
 
@@ -97,8 +92,7 @@ class ReportControllerTest {
             new ArrayList<>(Arrays.asList("state_cd", "cnty_cd")),
             new ArrayList<>(
                 List.of(
-                    new ReportFilter.BasicFilter(
-                        true, "10066724", new ArrayList<>(List.of("test"))))));
+                    new Filter.BasicFilter(true, "10066724", new ArrayList<>(List.of("test"))))));
 
     when(service.executeReport(request))
         .thenThrow(
@@ -123,8 +117,7 @@ class ReportControllerTest {
             new ArrayList<>(Arrays.asList("state_cd", "cnty_cd")),
             new ArrayList<>(
                 List.of(
-                    new ReportFilter.BasicFilter(
-                        true, "10066724", new ArrayList<>(List.of("test"))))));
+                    new Filter.BasicFilter(true, "10066724", new ArrayList<>(List.of("test"))))));
 
     when(service.executeReport(request))
         .thenThrow(new NotImplementedException("Report not implemented for python"));
