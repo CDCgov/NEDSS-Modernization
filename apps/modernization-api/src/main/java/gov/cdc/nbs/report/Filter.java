@@ -43,7 +43,10 @@ public sealed interface Filter {
         implements Expr {}
 
     record Connector(
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String operator,
+        @Schema(
+                requiredMode = Schema.RequiredMode.REQUIRED,
+                allowableValues = {"OR", "AND"})
+            String operator,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Expr left,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Expr right)
         implements Expr {}
