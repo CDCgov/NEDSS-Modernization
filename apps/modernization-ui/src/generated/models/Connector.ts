@@ -4,12 +4,18 @@
 /* eslint-disable */
 import type { Expr } from './Expr';
 export type Connector = (Expr & {
-    operator?: string;
+    operator?: Connector.operator;
     left?: any;
     right?: any;
 } & {
-    operator: string;
+    operator: Connector.operator;
     left: any;
     right: any;
 });
+export namespace Connector {
+    export enum operator {
+        OR = 'OR',
+        AND = 'AND',
+    }
+}
 
