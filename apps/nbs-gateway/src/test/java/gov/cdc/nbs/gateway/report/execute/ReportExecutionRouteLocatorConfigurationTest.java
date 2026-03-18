@@ -157,4 +157,23 @@ class ReportExecutionRouteLocatorConfigurationTest {
         .expectStatus()
         .isOk();
   }
+
+  @Test
+  void should_not_route_to_modernization_when_missing_object_type() {
+
+    classic.stubFor(post("/nbs/nfc").willReturn(ok()));
+
+    MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
+    data.add("mode", "edit");
+    data.add("OperationType", "124");
+
+    webClient
+        .post()
+        .uri(builder -> builder.path("/nbs/nfc").build())
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .body(BodyInserters.fromFormData(data))
+        .exchange()
+        .expectStatus()
+        .isOk();
+  }
 }
