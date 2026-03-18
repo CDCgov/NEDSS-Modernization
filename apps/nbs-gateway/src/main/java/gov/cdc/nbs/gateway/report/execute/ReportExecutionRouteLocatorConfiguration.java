@@ -62,7 +62,7 @@ class ReportExecutionRouteLocatorConfiguration {
   @SuppressWarnings({"unchecked", "rawtypes"})
   private Predicate<LinkedMultiValueMap> bodyPredicate() {
     return r ->
-        r.getFirst("ObjectType").equals(REPORT_OBJECT_TYPE)
+        REPORT_OBJECT_TYPE.equals(r.getFirst("ObjectType")
             && REPORT_OPERATION_TYPES.contains(r.getFirst("OperationType"));
   }
 }
