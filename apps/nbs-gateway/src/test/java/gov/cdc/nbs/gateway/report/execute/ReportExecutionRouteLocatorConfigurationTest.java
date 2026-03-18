@@ -22,7 +22,7 @@ import org.springframework.web.reactive.function.BodyInserters;
     properties = {
       "nbs.gateway.classic=http://localhost:10000",
       "nbs.gateway.modernization.service=localhost:10001",
-      "nbs.gateway.report.execute.enabled=true"
+      "nbs.gateway.report.execution.enabled=true"
     })
 class ReportExecutionRouteLocatorConfigurationTest {
 

@@ -3,6 +3,7 @@ package gov.cdc.nbs.gateway.classic.report;
 import gov.cdc.nbs.gateway.RouteOrdering;
 import gov.cdc.nbs.gateway.classic.NBSClassicService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebSession;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
@@ -46,7 +48,8 @@ class NBS6ReportRunnerRouteLocatorConfiguration {
                             filter
                                 .filters(defaults)
                                 .filter(
-                                    (exchange, chain) -> resolveReport(classic, exchange, chain)))
+                                    (exchange, chain) -> resolveReport(classic, exchange, chain))
+                                .filter(this::saveBodyToSession))
                     .uri(classic.uri()))
         .build();
   }
@@ -76,5 +79,31 @@ class NBS6ReportRunnerRouteLocatorConfiguration {
         .mutate()
         .request(builder -> builder.headers(headers -> headers.set(HttpHeaders.REFERER, referer)))
         .build();
+  }
+
+  private static final System.Logger LOGGER =
+      System.getLogger(NBS6ReportRunnerRouteLocatorConfiguration.class.getName());
+
+  private Mono<Void> saveBodyToSession(
+      final ServerWebExchange exchange, final GatewayFilterChain chain) {
+    String body = exchange.getRequest().getBody().toString();
+    LOGGER.log(System.Logger.Level.ERROR, () -> "here");
+
+    String path = exchange.getRequest().getPath().toString();
+    exchange
+        .getSession()
+        .flatMap(
+            (WebSession s) -> {
+              s.start();
+              Map<String, Object> attrs = s.getAttributes();
+              attrs.replace(path, body);
+              LOGGER.log(
+                  System.Logger.Level.ERROR, () -> "saved: k: %s v: %s.".formatted(path, body));
+
+              s.save();
+              return Mono.just(s);
+            })
+        .toFuture();
+    return chain.filter(exchange);
   }
 }

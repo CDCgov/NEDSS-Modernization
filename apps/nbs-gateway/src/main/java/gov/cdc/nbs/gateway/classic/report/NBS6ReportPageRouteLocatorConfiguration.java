@@ -12,6 +12,7 @@ import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
 
 /**
@@ -41,7 +42,12 @@ class NBS6ReportPageRouteLocatorConfiguration {
             route ->
                 route
                     .path("/nbs/report/{page:reports|basic|advanced|column|run|save|error}")
-                    .filters(filter -> filter.filters(defaults).filter(this::applyReportCookie))
+                    .filters(
+                        filter ->
+                            filter
+                                .filters(defaults)
+                                .filter(this::applyReportCookie)
+                                .filter(this::saveBodyToSession))
                     .uri(classic.uri()))
         .build();
   }
@@ -61,5 +67,23 @@ class NBS6ReportPageRouteLocatorConfiguration {
                     exchange
                         .getResponse()
                         .addCookie(new NBSReportCookie(segment).toResponseCookie())));
+  }
+
+  private Mono<Void> saveBodyToSession(
+      final ServerWebExchange exchange, final GatewayFilterChain chain) {
+    String body = exchange.getRequest().getBody().toString();
+
+    String path = exchange.getRequest().getPath().toString();
+    exchange
+        .getSession()
+        .flatMap(
+            (WebSession s) -> {
+              Map<String, Object> attrs = s.getAttributes();
+              attrs.put(path, body);
+
+              return Mono.just(s);
+            })
+        .toFuture();
+    return chain.filter(exchange);
   }
 }
