@@ -8,6 +8,8 @@
     npm install
     ```
 
+1. Make sure the `modernization-api` is running, either via the gradle `modernization-api:bootRun` task, or via a container
+
 2. Then execute to start the application. Default url is [http://localhost:3000](http://localhost:3000)
 
     ```bash
