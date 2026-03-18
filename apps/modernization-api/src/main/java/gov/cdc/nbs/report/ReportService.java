@@ -1,7 +1,5 @@
 package gov.cdc.nbs.report;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
@@ -20,10 +18,15 @@ public class ReportService {
 
   private final ReportRepository reportRepository;
   private final RestClient reportExecutionClient;
+  private final ReportSpecGenerator specGenerator;
 
-  public ReportService(final ReportRepository reportRepository, RestClient reportExecutionClient) {
+  public ReportService(
+      final ReportRepository reportRepository,
+      RestClient reportExecutionClient,
+      ReportSpecGenerator specGenerator) {
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
+    this.specGenerator = specGenerator;
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
@@ -55,7 +58,7 @@ public class ReportService {
 
     if (reportConfigResponse != null) {
       if (Objects.equals(reportConfigResponse.runner(), "python")) {
-        ObjectNode reportSpec = getReportSpec();
+        ReportSpec reportSpec = specGenerator.generate();
         return reportExecutionClient
             .post()
             .uri("/report/execute")
@@ -72,21 +75,5 @@ public class ReportService {
         String.format(
             "Report not found for Report UID: %d and Data Source UID: %d",
             reportUid, dataSourceUid));
-  }
-
-  private ObjectNode getReportSpec() {
-    ObjectMapper mapper = new ObjectMapper();
-    ObjectNode objectNode = mapper.createObjectNode();
-
-    objectNode.put("version", 1);
-    objectNode.put("is_export", true);
-    objectNode.put("is_builtin", true);
-    objectNode.put("report_title", "Test report");
-    objectNode.put("library_name", "nbs_custom");
-    objectNode.put("data_source_name", "[NBS_ODSE].[dbo].[Report]");
-    objectNode.put("subset_query", "SELECT * FROM [NBS_ODSE].[dbo].[Report]");
-    objectNode.putNull("time_range");
-
-    return objectNode;
   }
 }

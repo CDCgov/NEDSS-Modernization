@@ -13,6 +13,9 @@ public class ReportExecutionClientConfig {
   @Bean
   public RestClient reportExecutionClient(
       @Value("${nbs.report.execution.url}") final String url, RestClient.Builder builder) {
+    // set to HttpClient to version 1.1, otherwise python report execution service has issue parsing
+    // this request
+    // https://github.com/spring-projects/spring-framework/issues/33275#issuecomment-2252184391
     HttpClient httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
     JdkClientHttpRequestFactory jdkClientHttpRequestFactory =
         new JdkClientHttpRequestFactory(httpClient);
