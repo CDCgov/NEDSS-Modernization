@@ -88,7 +88,6 @@ class ReportControllerTest {
             List.of(new Filter.BasicFilter(true, "10066724", List.of("35001"))));
 
     when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
-    ;
 
     assertThatThrownBy(() -> controller.executeReport(request))
         .isInstanceOf(NotFoundException.class)

@@ -15,10 +15,8 @@ public record ReportSpec(
     @JsonProperty(value = "time_range") Map<String, LocalDate> timeRange) {
 
   public ReportSpec {
-    if (timeRange != null) {
-      if (!timeRange.containsKey("start") || !timeRange.containsKey("end")) {
-        throw new IllegalArgumentException("time_range must contain 'start' and 'end' keys");
-      }
+    if (timeRange != null && (!timeRange.containsKey("start") || !timeRange.containsKey("end"))) {
+      throw new IllegalArgumentException("time_range must contain 'start' and 'end' keys");
     }
   }
 }

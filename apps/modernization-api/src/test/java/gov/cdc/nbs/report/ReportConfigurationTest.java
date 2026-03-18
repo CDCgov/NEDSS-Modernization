@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-public class ReportConfigurationTest {
+class ReportConfigurationTest {
   @Test
   void should_create_report_configuration_with_idMap() {
     Long reportUid = 1L;

@@ -1,11 +1,8 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.exception.NotFoundException;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,17 +31,7 @@ public class ReportController {
   @PostMapping("/execute")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
   public ResponseEntity<String> executeReport(@RequestBody ReportExecutionRequest request) {
-    // TODO: validate request
+    // TODO: validate request // NOSONAR
     return reportService.executeReport(request);
-  }
-
-  @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<String> handleNotFound(NotFoundException ex) {
-    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-  }
-
-  @ExceptionHandler(NotImplementedException.class)
-  public ResponseEntity<String> handleNotImplemented(NotImplementedException ex) {
-    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_IMPLEMENTED);
   }
 }
