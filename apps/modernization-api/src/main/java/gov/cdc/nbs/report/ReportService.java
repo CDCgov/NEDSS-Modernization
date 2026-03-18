@@ -6,7 +6,6 @@ import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.repository.ReportRepository;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 import org.apache.commons.lang3.NotImplementedException;
@@ -38,7 +37,8 @@ public class ReportService {
       fetchedReportId = fetchedReport.getId();
 
       return new ReportConfiguration(
-          createReportId(fetchedReportId.getReportUid(), fetchedReportId.getDataSourceUid()),
+          fetchedReportId.getReportUid(),
+          fetchedReportId.getDataSourceUid(),
           fetchedReport.getReportLibrary().getRunner());
     }
 
@@ -88,12 +88,5 @@ public class ReportService {
     objectNode.putNull("time_range");
 
     return objectNode;
-  }
-
-  private HashMap<String, Long> createReportId(long reportUid, Long dataSourceUid) {
-    HashMap<String, Long> idMap = new HashMap<>();
-    idMap.put("reportUid", reportUid);
-    idMap.put("dataSourceUid", dataSourceUid);
-    return idMap;
   }
 }

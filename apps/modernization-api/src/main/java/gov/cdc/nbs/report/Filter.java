@@ -3,7 +3,7 @@ package gov.cdc.nbs.report;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.ArrayList;
+import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -18,7 +18,7 @@ public sealed interface Filter {
               allowableValues = {"true"})
           boolean isBasic,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterCode,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ArrayList<String> values)
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<String> values)
       implements Filter {}
 
   record AdvancedFilter(
