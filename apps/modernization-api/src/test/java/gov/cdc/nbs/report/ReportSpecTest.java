@@ -6,7 +6,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class ReportSpecTest {
   @Test
@@ -23,8 +26,8 @@ class ReportSpecTest {
             null);
 
     assertThat(reportSpec.version()).isEqualTo(1);
-    assertThat(reportSpec.isBuiltin()).isEqualTo(true);
-    assertThat(reportSpec.isExport()).isEqualTo(true);
+    assertThat(reportSpec.isBuiltin()).isTrue();
+    assertThat(reportSpec.isExport()).isTrue();
     assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
     assertThat(reportSpec.libraryName()).isEqualTo("nbs_custom");
     assertThat(reportSpec.dataSourceName()).isEqualTo("nbs_rdb.investigation");
@@ -50,23 +53,21 @@ class ReportSpecTest {
             timeRange);
 
     assertThat(reportSpec.version()).isEqualTo(1);
-    assertThat(reportSpec.isBuiltin()).isEqualTo(true);
-    assertThat(reportSpec.isExport()).isEqualTo(true);
+    assertThat(reportSpec.isBuiltin()).isTrue();
+    assertThat(reportSpec.isExport()).isTrue();
     assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
     assertThat(reportSpec.libraryName()).isEqualTo("nbs_custom");
     assertThat(reportSpec.dataSourceName()).isEqualTo("nbs_rdb.investigation");
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
-    assertThat(reportSpec.timeRange().get("start")).isEqualTo(LocalDate.parse("1999-01-01"));
-    assertThat(reportSpec.timeRange().get("end")).isEqualTo(LocalDate.parse("1999-01-10"));
-    assertThat(reportSpec.timeRange().size()).isEqualTo(2);
+    assertThat(reportSpec.timeRange()).containsEntry("start", LocalDate.parse("1999-01-01"));
+    assertThat(reportSpec.timeRange()).containsEntry("end", LocalDate.parse("1999-01-10"));
+    assertThat(reportSpec.timeRange()).hasSize(2);
   }
 
-  @Test
-  void should_throw_exception_with_invalid_time_range() {
-    Map<String, LocalDate> invalidTimeRange = new HashMap<>();
-    invalidTimeRange.put("effective_time", LocalDate.parse("1999-01-01"));
-
+  @ParameterizedTest
+  @MethodSource("invalidTimeRangeProvider")
+  void should_throw_exception_with_invalid_time_range(Map<String, LocalDate> timeRange) {
     assertThatThrownBy(
             () ->
                 new ReportSpec(
@@ -77,8 +78,23 @@ class ReportSpecTest {
                     "nbs_custom",
                     "nbs_rdb.investigation",
                     "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
-                    invalidTimeRange))
+                    timeRange))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("time_range must contain 'start' and 'end' keys");
+  }
+
+  private static Stream<Map<String, LocalDate>> invalidTimeRangeProvider() {
+    Map<String, LocalDate> timeRange1 = new HashMap<>();
+    timeRange1.put("effective_time", LocalDate.parse("1999-01-10"));
+
+    Map<String, LocalDate> timeRange2 = new HashMap<>();
+    timeRange2.put("start", LocalDate.parse("1999-01-01"));
+    timeRange2.put("effective_time", LocalDate.parse("1999-01-10"));
+
+    Map<String, LocalDate> timeRange3 = new HashMap<>();
+    timeRange3.put("end", LocalDate.parse("1999-01-01"));
+    timeRange3.put("effective_time", LocalDate.parse("1999-01-10"));
+
+    return Stream.of(timeRange1, timeRange2, timeRange3);
   }
 }

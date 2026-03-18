@@ -11,8 +11,8 @@ class ReportSpecGeneratorTest {
   void should_generate_hardcoded_report_spec() {
     ReportSpec reportSpec = generator.generate();
     assertThat(reportSpec.version()).isEqualTo(1);
-    assertThat(reportSpec.isBuiltin()).isEqualTo(true);
-    assertThat(reportSpec.isExport()).isEqualTo(true);
+    assertThat(reportSpec.isBuiltin()).isTrue();
+    assertThat(reportSpec.isExport()).isTrue();
     assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
     assertThat(reportSpec.libraryName()).isEqualTo("nbs_custom");
     assertThat(reportSpec.dataSourceName()).isEqualTo("nbs_rdb.investigation");
