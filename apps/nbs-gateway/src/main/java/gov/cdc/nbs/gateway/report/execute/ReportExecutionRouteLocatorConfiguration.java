@@ -28,7 +28,7 @@ import org.springframework.util.LinkedMultiValueMap;
  */
 @Configuration
 @ConditionalOnProperty(
-    prefix = "nbs.gateway.report.execute",
+    prefix = "nbs.gateway.report.execution",
     name = "enabled",
     havingValue = "true")
 class ReportExecutionRouteLocatorConfiguration {
