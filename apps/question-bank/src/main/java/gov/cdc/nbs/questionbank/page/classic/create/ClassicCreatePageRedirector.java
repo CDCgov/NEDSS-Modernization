@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.classic.create;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +8,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import io.swagger.v3.oas.annotations.Hidden;
 
 @Hidden
 @RestController
@@ -23,13 +23,12 @@ public class ClassicCreatePageRedirector {
   ResponseEntity<Void> view() {
     preparer.prepare();
 
-    String location = UriComponentsBuilder.fromPath("/nbs/ManagePage.do")
-        .queryParam("method", "addPageLoad")
-        .build()
-        .toUriString();
+    String location =
+        UriComponentsBuilder.fromPath("/nbs/ManagePage.do")
+            .queryParam("method", "addPageLoad")
+            .build()
+            .toUriString();
 
-    return ResponseEntity.status(HttpStatus.FOUND)
-        .header(HttpHeaders.LOCATION, location)
-        .build();
+    return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, location).build();
   }
 }

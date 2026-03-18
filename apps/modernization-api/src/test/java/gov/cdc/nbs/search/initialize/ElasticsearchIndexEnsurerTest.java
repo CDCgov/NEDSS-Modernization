@@ -1,15 +1,14 @@
 package gov.cdc.nbs.search.initialize;
 
-import gov.cdc.nbs.search.SimpleIndex;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
+import gov.cdc.nbs.search.SimpleIndex;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 class ElasticsearchIndexEnsurerTest {
 
@@ -18,28 +17,18 @@ class ElasticsearchIndexEnsurerTest {
 
     ElasticsearchIndexExistenceVerifier verifier = mock(ElasticsearchIndexExistenceVerifier.class);
 
-
     SimpleIndex existing = new SimpleIndex("existing", "location");
 
-    List<SimpleIndex> indices = List.of(
-        existing,
-        new SimpleIndex("other", "location")
-    );
+    List<SimpleIndex> indices = List.of(existing, new SimpleIndex("other", "location"));
 
     when(verifier.notExists(any())).thenReturn(List.of(existing));
 
     ElasticsearchIndexCreator creator = mock(ElasticsearchIndexCreator.class);
 
-
-    new ElasticsearchIndexEnsurer(
-        verifier,
-        creator
-    ).ensure(indices);
-
+    new ElasticsearchIndexEnsurer(verifier, creator).ensure(indices);
 
     verify(verifier).notExists(indices);
     verify(creator).create(existing);
-
   }
 
   @Test
@@ -49,25 +38,16 @@ class ElasticsearchIndexEnsurerTest {
 
     SimpleIndex existing = new SimpleIndex("existing", "location");
 
-    List<SimpleIndex> indices = List.of(
-        existing,
-        new SimpleIndex("other", "location")
-    );
+    List<SimpleIndex> indices = List.of(existing, new SimpleIndex("other", "location"));
 
     when(verifier.notExists(any())).thenReturn(Collections.emptyList());
 
     ElasticsearchIndexCreator creator = mock(ElasticsearchIndexCreator.class);
 
-
-    new ElasticsearchIndexEnsurer(
-        verifier,
-        creator
-    ).ensure(indices);
-
+    new ElasticsearchIndexEnsurer(verifier, creator).ensure(indices);
 
     verify(verifier).notExists(indices);
     verifyNoInteractions(creator);
-
   }
 
   @Test
@@ -77,10 +57,7 @@ class ElasticsearchIndexEnsurerTest {
 
     SimpleIndex existing = new SimpleIndex("existing", "location");
 
-    List<SimpleIndex> indices = List.of(
-        existing,
-        new SimpleIndex("other", "location")
-    );
+    List<SimpleIndex> indices = List.of(existing, new SimpleIndex("other", "location"));
 
     when(verifier.notExists(any())).thenReturn(List.of(existing));
 
@@ -88,10 +65,7 @@ class ElasticsearchIndexEnsurerTest {
 
     doThrow(new IOException()).when(creator).create(any());
 
-    ElasticsearchIndexEnsurer ensurer = new ElasticsearchIndexEnsurer(
-        verifier,
-        creator
-    );
+    ElasticsearchIndexEnsurer ensurer = new ElasticsearchIndexEnsurer(verifier, creator);
 
     assertDoesNotThrow(() -> ensurer.ensure(indices));
 

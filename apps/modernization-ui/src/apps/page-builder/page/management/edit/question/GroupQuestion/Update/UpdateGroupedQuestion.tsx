@@ -29,12 +29,12 @@ export const UpdateGroupedQuestion = ({ page, subsection, onSuccess, onCancel }:
                 appearsInTable: question.appearsInBatch,
                 width: question.batchWidth,
                 label: question.batchLabel,
-                id: question.id
+                id: question.id,
             })),
             blockName: subsection.blockName,
             visible: subsection.visible,
-            repeatingNbr: subsection.questions[0]?.dataMartRepeatNumber ?? 0
-        }
+            repeatingNbr: subsection.questions[0]?.dataMartRepeatNumber ?? 0,
+        },
     });
 
     useEffect(() => {
@@ -44,11 +44,11 @@ export const UpdateGroupedQuestion = ({ page, subsection, onSuccess, onCancel }:
                 appearsInTable: question.appearsInBatch,
                 width: question.batchWidth,
                 label: question.batchLabel,
-                id: question.id
+                id: question.id,
             })),
             blockName: subsection.blockName,
             visible: subsection.visible,
-            repeatingNbr: subsection.questions[0]?.dataMartRepeatNumber ?? 0
+            repeatingNbr: subsection.questions[0]?.dataMartRepeatNumber ?? 0,
         });
     }, [JSON.stringify(subsection)]);
 
@@ -66,7 +66,7 @@ export const UpdateGroupedQuestion = ({ page, subsection, onSuccess, onCancel }:
             showAlert({
                 type: 'success',
                 title: 'Grouped',
-                message: `You've successfully grouped ${form.getValues('blockName')} subsection`
+                message: `You've successfully grouped ${form.getValues('blockName')} subsection`,
             });
             form.reset();
             onSuccess();
@@ -74,13 +74,13 @@ export const UpdateGroupedQuestion = ({ page, subsection, onSuccess, onCancel }:
             showAlert({
                 type: 'error',
                 title: 'error',
-                message: 'Subsection includes a question(s) that has already been published”'
+                message: 'Subsection includes a question(s) that has already been published”',
             });
         } else if (error) {
             showAlert({
                 type: 'error',
                 title: 'error',
-                message: 'Failed to group subsection'
+                message: 'Failed to group subsection',
             });
         }
     }, [error, response]);
@@ -107,7 +107,8 @@ export const UpdateGroupedQuestion = ({ page, subsection, onSuccess, onCancel }:
                     onClick={handleSubmit}
                     type="button"
                     data-testid="subsection-submit-btn"
-                    disabled={!valid || !form.formState.isValid}>
+                    disabled={!valid || !form.formState.isValid}
+                >
                     Submit
                 </Button>
             </ButtonBar>

@@ -30,7 +30,7 @@ const reducer = (state: State, action: Action): State => {
 
 const initial = (criteria?: string): State => ({
     status: 'idle',
-    criteria
+    criteria,
 });
 
 type SuggestRequester = (criteria: string, limit?: number) => void;
@@ -54,7 +54,7 @@ type SelectableAutocompleteParameters = {
 const useSelectableAutocomplete = ({
     resolver,
     criteria = '',
-    limit
+    limit,
 }: SelectableAutocompleteParameters): SelectableAutocompletion => {
     const [state, dispatch] = useReducer(reducer, criteria, initial);
 
@@ -75,7 +75,7 @@ const useSelectableAutocomplete = ({
         options,
         suggest: debounce(suggest, 600),
         reset,
-        complete: resolver
+        complete: resolver,
     };
 };
 

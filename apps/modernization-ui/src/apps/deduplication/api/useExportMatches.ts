@@ -11,8 +11,8 @@ export const useExportMatches = () => {
             const response = await fetch(url.toString(), {
                 method: 'GET',
                 headers: {
-                    Accept: 'text/csv'
-                }
+                    Accept: 'text/csv',
+                },
             });
 
             if (!response.ok) {
@@ -42,8 +42,8 @@ export const useExportMatches = () => {
             const response = await fetch(url.toString(), {
                 method: 'GET',
                 headers: {
-                    Accept: 'application/pdf'
-                }
+                    Accept: 'application/pdf',
+                },
             });
 
             if (!response.ok) {
@@ -65,6 +65,6 @@ export const useExportMatches = () => {
 
     return {
         exportCSV: exportMatchesCSV,
-        exportPDF: exportMatchesPDF
+        exportPDF: exportMatchesPDF,
     };
 };

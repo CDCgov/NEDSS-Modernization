@@ -14,4 +14,3 @@ export type PageInformation = {
     description?: string;
     conditions: Array<SelectableCondition>;
 };
-

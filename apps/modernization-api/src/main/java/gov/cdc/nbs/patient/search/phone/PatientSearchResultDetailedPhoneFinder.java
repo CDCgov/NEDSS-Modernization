@@ -1,13 +1,13 @@
 package gov.cdc.nbs.patient.search.phone;
 
+import java.util.Collection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-
 @Component
 class PatientSearchResultDetailedPhoneFinder {
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select distinct
       coalesce(
           [type].code_short_desc_txt,
@@ -49,8 +49,6 @@ class PatientSearchResultDetailedPhoneFinder {
 
   Collection<PatientSearchResultPhone> find(final long patient) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(PATIENT_PARAMETER, patient),
-        mapper);
+        QUERY, statement -> statement.setLong(PATIENT_PARAMETER, patient), mapper);
   }
 }

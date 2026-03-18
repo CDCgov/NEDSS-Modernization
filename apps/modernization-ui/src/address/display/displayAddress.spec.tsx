@@ -8,7 +8,7 @@ describe('when given an address', () => {
             address2: 'Suite A',
             city: 'New York',
             state: 'NY',
-            zipcode: '10013'
+            zipcode: '10013',
         };
 
         expect(displayAddressText(address)).toBe('14 North Moore St, Suite A\nNew York, NY 10013');
@@ -21,7 +21,7 @@ describe('when given an address', () => {
             address2: 'Suite A',
             city: 'New York',
             state: 'NY',
-            zipcode: '10013'
+            zipcode: '10013',
         };
         const addressElement = displayAddress(address);
         expect(addressElement.type).toBe(ItemGroup);

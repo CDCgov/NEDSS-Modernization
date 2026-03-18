@@ -19,7 +19,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
         const value = [...(blockingCriteria ?? [])].filter((a) => a !== attribute);
 
         registeredBlockingCriteria.onChange({
-            target: { name: 'blockingCriteria', value: value }
+            target: { name: 'blockingCriteria', value: value },
         });
         form.trigger('blockingCriteria');
     };
@@ -28,7 +28,8 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
         <Card
             id="blockingCriteriaCard"
             title="1. Blocking criteria"
-            subtext="Include records that meet all these conditions">
+            subtext="Include records that meet all these conditions"
+        >
             <div className={styles.blockingCriteria}>
                 <Shown
                     when={blockingCriteria && blockingCriteria.length > 0}
@@ -36,7 +37,8 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                         <div className={styles.noBlockingCriteriaText}>
                             Please add blocking criteria to get started.
                         </div>
-                    }>
+                    }
+                >
                     {BlockingAttributeLabelsList.map(([attribute, entry], k) => {
                         return (
                             <BlockingCriteriaAttribute
@@ -56,7 +58,8 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                         secondary
                         onClick={onShowAttributes}
                         sizing="small"
-                        className={styles.addButton}>
+                        className={styles.addButton}
+                    >
                         Add blocking attribute(s)
                     </Button>
                 </div>

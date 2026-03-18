@@ -26,7 +26,7 @@ describe('when getting the value of multiple Selectables', () => {
             { name: 'name-one', value: 'value-one', label: 'label-one' },
             { name: 'name-two', value: 'value-two', label: 'label-two' },
             { name: 'name-three', value: 'value-three', label: 'label-three' },
-            { name: 'name-four', value: 'value-four', label: 'label-four' }
+            { name: 'name-four', value: 'value-four', label: 'label-four' },
         ]);
 
         expect(actual).toEqual(expect.arrayContaining(['value-one', 'value-two', 'value-three', 'value-four']));

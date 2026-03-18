@@ -8,4 +8,3 @@ export type PageBuilderOption = {
     label: string;
     order: number;
 };
-

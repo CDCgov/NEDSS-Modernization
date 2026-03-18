@@ -7,11 +7,11 @@ import { PatientFileLink } from './PatientFileLink';
 let mockPermissions: string[] = [];
 
 vi.mock('user', () => ({
-    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } }),
 }));
 
 let mockFeatures: Features = {
-    ...defaultConfiguration.features
+    ...defaultConfiguration.features,
 };
 
 const withModernizedPatientFile = (enabled: boolean) => ({
@@ -19,13 +19,13 @@ const withModernizedPatientFile = (enabled: boolean) => ({
     patient: {
         ...defaultConfiguration.features.patient,
         file: {
-            enabled: enabled
-        }
-    }
+            enabled: enabled,
+        },
+    },
 });
 
 vi.mock('configuration', () => ({
-    useConfiguration: () => ({ ready: false, loading: false, load: vi.fn(), features: mockFeatures })
+    useConfiguration: () => ({ ready: false, loading: false, load: vi.fn(), features: mockFeatures }),
 }));
 
 describe('PatientFileLink', () => {

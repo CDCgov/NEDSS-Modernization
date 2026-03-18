@@ -5,7 +5,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import java.util.Objects;
 
 @Entity
@@ -13,6 +12,7 @@ import java.util.Objects;
 public class PostalLocator extends Locator {
 
   private static final String YES = "Y";
+
   @Id
   @Column(name = "postal_locator_uid", nullable = false, updatable = false)
   private Long id;
@@ -74,11 +74,10 @@ public class PostalLocator extends Locator {
   @Column(name = "census_tract", length = 10)
   private String censusTract;
 
-  protected PostalLocator() {
+  protected PostalLocator() {}
 
-  }
-
-  public PostalLocator(final PatientCommand.AddAddress address, final EntityLocatorParticipationId identifier) {
+  public PostalLocator(
+      final PatientCommand.AddAddress address, final EntityLocatorParticipationId identifier) {
     super(address);
     this.id = identifier.getLocatorUid();
     this.streetAddr1 = address.address1();
@@ -91,18 +90,13 @@ public class PostalLocator extends Locator {
     this.censusTract = address.censusTract();
   }
 
-  PostalLocator(
-      final long identifier,
-      final PatientCommand.UpdateBirth birth) {
+  PostalLocator(final long identifier, final PatientCommand.UpdateBirth birth) {
     super(birth);
 
     this.id = identifier;
   }
 
-  PostalLocator(
-      final long identifier,
-      final PatientCommand.UpdateMortality mortality
-  ) {
+  PostalLocator(final long identifier, final PatientCommand.UpdateMortality mortality) {
     super(mortality);
 
     this.id = identifier;
@@ -198,9 +192,6 @@ public class PostalLocator extends Locator {
 
   @Override
   public String toString() {
-    return "PostalLocator{" +
-        "id=" + id +
-        '}';
+    return "PostalLocator{" + "id=" + id + '}';
   }
-
 }

@@ -7,9 +7,7 @@ import gov.cdc.nbs.questionbank.filter.SingleValueFilter;
 class QueryDSLSingleValueFilterApplier {
 
   static BooleanExpression apply(
-      final SingleValueFilter filter,
-      final StringExpression expression
-  ) {
+      final SingleValueFilter filter, final StringExpression expression) {
     return switch (filter.operator()) {
       case EQUALS -> expression.eq(filter.value());
       case NOT_EQUAL_TO -> expression.ne(filter.value());
@@ -18,7 +16,5 @@ class QueryDSLSingleValueFilterApplier {
     };
   }
 
-  private QueryDSLSingleValueFilterApplier() {
-  }
-
+  private QueryDSLSingleValueFilterApplier() {}
 }

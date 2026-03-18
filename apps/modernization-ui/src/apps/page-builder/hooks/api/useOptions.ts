@@ -40,7 +40,7 @@ export const useOptions = (name?: string) => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'fetching',
         options: state.status === 'complete' ? state.options : [],
-        fetch: (name: string) => dispatch({ type: 'fetch', name })
+        fetch: (name: string) => dispatch({ type: 'fetch', name }),
     };
 
     return value;

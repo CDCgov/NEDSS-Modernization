@@ -3,14 +3,12 @@ package gov.cdc.nbs.configuration.settings;
 import io.cucumber.java.en.Given;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PostConstruct;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.MutablePropertySources;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.env.MutablePropertySources;
 
 @ScenarioScope
 public class SettingEntrySteps {
@@ -33,7 +31,8 @@ public class SettingEntrySteps {
     if (sources.get(SETTINGS_PROPERTY_SOURCE) instanceof MapPropertySource source) {
       return source.getSource();
     } else {
-      MapPropertySource properties = new MapPropertySource(SETTINGS_PROPERTY_SOURCE, new HashMap<>());
+      MapPropertySource properties =
+          new MapPropertySource(SETTINGS_PROPERTY_SOURCE, new HashMap<>());
       sources.addFirst(properties);
       return properties.getSource();
     }

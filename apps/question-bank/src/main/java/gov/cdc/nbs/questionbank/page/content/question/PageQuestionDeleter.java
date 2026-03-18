@@ -1,5 +1,11 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.question.exception.DeletePageQuestionException;
+import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
+import jakarta.persistence.EntityManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -9,18 +15,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.content.question.exception.DeletePageQuestionException;
-import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
-import jakarta.persistence.EntityManager;
 
 @Component
 @Transactional
 public class PageQuestionDeleter {
 
-  private static final String SELECT_ALL_IDENTIFIERS_FOR_PAGE = """
+  private static final String SELECT_ALL_IDENTIFIERS_FOR_PAGE =
+      """
         SELECT
         concat(source_question_identifier, ',', target_question_identifier)
       FROM
@@ -32,9 +33,7 @@ public class PageQuestionDeleter {
   private final EntityManager entityManager;
   private final JdbcTemplate template;
 
-  public PageQuestionDeleter(
-      final EntityManager entityManager,
-      final JdbcTemplate template) {
+  public PageQuestionDeleter(final EntityManager entityManager, final JdbcTemplate template) {
     this.entityManager = entityManager;
     this.template = template;
   }
@@ -45,7 +44,8 @@ public class PageQuestionDeleter {
       throw new DeletePageQuestionException("Failed to find question");
     }
     if (isAssociatedWithRule(metadata.getQuestionIdentifier(), pageId)) {
-      throw new DeletePageQuestionException("Unable to delete question associated with a business rule");
+      throw new DeletePageQuestionException(
+          "Unable to delete question associated with a business rule");
     }
 
     WaTemplate page = entityManager.find(WaTemplate.class, pageId);
@@ -56,13 +56,12 @@ public class PageQuestionDeleter {
   }
 
   private boolean isAssociatedWithRule(String questionIdentifier, long pageId) {
-    String[] identifiers = template.query(
-        SELECT_ALL_IDENTIFIERS_FOR_PAGE,
-        setter -> setter.setLong(1, pageId),
-        mapper())
-        .stream()
-        .collect(Collectors.joining(","))
-        .split(",");
+    String[] identifiers =
+        template
+            .query(SELECT_ALL_IDENTIFIERS_FOR_PAGE, setter -> setter.setLong(1, pageId), mapper())
+            .stream()
+            .collect(Collectors.joining(","))
+            .split(",");
 
     return Arrays.asList(identifiers).contains(questionIdentifier);
   }
@@ -75,6 +74,4 @@ public class PageQuestionDeleter {
       }
     };
   }
-
-
 }

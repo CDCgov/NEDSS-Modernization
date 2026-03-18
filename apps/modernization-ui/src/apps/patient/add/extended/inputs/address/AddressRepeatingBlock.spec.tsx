@@ -10,11 +10,11 @@ const mockLocationOptions: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: mockState
+    state: mockState,
 };
 
 vi.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+    useLocationOptions: () => mockLocationOptions,
 }));
 
 const onChange = vi.fn();
@@ -36,8 +36,8 @@ describe('when entering multiple address demographics', () => {
                     {
                         asOf: '07/11/1997',
                         type: { name: 'type-name', value: 'type-value' },
-                        use: { name: 'use-name', value: 'use-value' }
-                    }
+                        use: { name: 'use-name', value: 'use-value' },
+                    },
                 ]}
             />
         );

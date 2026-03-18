@@ -7,7 +7,7 @@ describe('Given a MultiSelectInput component', () => {
     const options = [
         { name: 'name-one', value: '1' },
         { name: 'name-two', value: '2' },
-        { name: 'name-three', value: '3' }
+        { name: 'name-three', value: '3' },
     ];
 
     it('should display options when clicked', async () => {

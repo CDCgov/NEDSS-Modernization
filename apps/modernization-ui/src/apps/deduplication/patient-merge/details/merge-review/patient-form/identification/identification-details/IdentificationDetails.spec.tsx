@@ -8,7 +8,7 @@ const defaultIdentification: MergeIdentification = {
     asOf: '2014-03-11T00:00:00.000',
     type: "Driver's license",
     assigningAuthority: 'TX',
-    value: '10001'
+    value: '10001',
 };
 
 const Fixture = ({ identification = defaultIdentification }: { identification?: MergeIdentification }) => {
@@ -31,7 +31,7 @@ describe('IdentificationDetails', () => {
             sequence: '1',
             asOf: '2014-03-11T00:00:00.000',
             type: "Driver's license",
-            value: '10001'
+            value: '10001',
         };
         const { getByText } = render(<Fixture identification={sparseIdentification} />);
         expect(within(getByText('Assigning authority').parentElement!).getByText('---')).toBeInTheDocument();

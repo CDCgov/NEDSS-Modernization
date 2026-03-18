@@ -3,9 +3,8 @@ package gov.cdc.nbs.questionbank.page.summary.search;
 import com.google.common.collect.Ordering;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.accumulation.Accumulator;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 class PageSummaryFinder {
@@ -24,7 +23,8 @@ class PageSummaryFinder {
   }
 
   List<PageSummary> findAll(final List<Long> identifiers) {
-    return factory.select(
+    return factory
+        .select(
             this.tables.page().id,
             this.tables.page().templateType,
             this.tables.page().templateNm,
@@ -36,12 +36,12 @@ class PageSummaryFinder {
             this.tables.page().publishVersionNbr,
             this.tables.lastUpdatedBy(),
             this.tables.condition().id,
-            this.tables.condition().conditionShortNm
-        ).from(this.tables.page())
-        .join(this.tables.eventType()).on(
+            this.tables.condition().conditionShortNm)
+        .from(this.tables.page())
+        .join(this.tables.eventType())
+        .on(
             this.tables.eventType().id.codeSetNm.eq(BUSINESS_OBJECT_CODE_SET),
-            this.tables.eventType().id.code.eq(this.tables.page().busObjType)
-        )
+            this.tables.eventType().id.code.eq(this.tables.page().busObjType))
         .leftJoin(this.tables.authUser())
         .on(this.tables.page().lastChgUserId.eq(this.tables.authUser().nedssEntryId))
         .leftJoin(this.tables.conditionMapping())
@@ -56,6 +56,4 @@ class PageSummaryFinder {
         .sorted(Ordering.explicit(identifiers).onResultOf(PageSummary::id))
         .toList();
   }
-
 }
-

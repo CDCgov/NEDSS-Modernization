@@ -17,8 +17,7 @@ public class SearchablePatientSteps {
       final Available<PatientIdentifier> patients,
       final SearchablePatientMother mother,
       final Available<SearchablePatient> availableSearchablePatient,
-      final Active<SearchablePatient> activeSearchablePatient
-  ) {
+      final Active<SearchablePatient> activeSearchablePatient) {
     this.patients = patients;
     this.mother = mother;
     this.availableSearchablePatient = availableSearchablePatient;
@@ -45,5 +44,4 @@ public class SearchablePatientSteps {
     //  make all patients searchable
     this.mother.searchable(this.patients.all());
   }
-
 }

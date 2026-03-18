@@ -6,4 +6,3 @@ export type CreateTabRequest = {
     name?: string;
     visible?: boolean;
 };
-

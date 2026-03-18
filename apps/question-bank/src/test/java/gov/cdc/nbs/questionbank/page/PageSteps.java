@@ -6,7 +6,6 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
-
 import java.time.Instant;
 import java.util.function.Consumer;
 
@@ -18,10 +17,7 @@ public class PageSteps {
   private final PageMother mother;
   private final Active<PageIdentifier> activePage;
 
-  public PageSteps(
-      final PageMother mother,
-      final Active<PageIdentifier> activePage
-  ) {
+  public PageSteps(final PageMother mother, final Active<PageIdentifier> activePage) {
     this.mother = mother;
     this.activePage = activePage;
   }
@@ -53,7 +49,8 @@ public class PageSteps {
   }
 
   @Given("I have a(n) {eventType} page named {string} mapped by {messageMappingGuide}")
-  public void i_have_an_event_type_page_named_mapped_by(final String eventType, final String name, final String mmg) {
+  public void i_have_an_event_type_page_named_mapped_by(
+      final String eventType, final String name, final String mmg) {
     this.mother.create(eventType, name, mmg);
   }
 
@@ -73,28 +70,17 @@ public class PageSteps {
   @Given("{user} changed the page name to {string}")
   public void the_user_changed_the_page_property(final ActiveUser user, final String value) {
     Instant when = Instant.now();
-    this.activePage.maybeActive()
-        .ifPresent(
-            active -> mother.withName(
-                active,
-                value,
-                user.nedssEntry(),
-                when
-            )
-        );
+    this.activePage
+        .maybeActive()
+        .ifPresent(active -> mother.withName(active, value, user.nedssEntry(), when));
   }
 
   @Given("{user} changed the page name to {string} {past}")
-  public void the_user_changed_the_page_property(final ActiveUser user, final String value, final Instant when) {
-    this.activePage.maybeActive()
-        .ifPresent(
-            active -> mother.withName(
-                active,
-                value,
-                user.nedssEntry(),
-                when
-            )
-        );
+  public void the_user_changed_the_page_property(
+      final ActiveUser user, final String value, final Instant when) {
+    this.activePage
+        .maybeActive()
+        .ifPresent(active -> mother.withName(active, value, user.nedssEntry(), when));
   }
 
   @ParameterType("(?i)(draft|published with draft|initial draft|published|template|legacy)")
@@ -105,15 +91,16 @@ public class PageSteps {
   @Given("the page is (a ){pageStatus}")
   public void the_page_has_the_status_of(final String status) {
 
-    Consumer<PageIdentifier> consumer = switch (status.toLowerCase()) {
-      case "draft", "initial draft" -> mother::draft;
-      case "published with draft" -> ((Consumer<PageIdentifier>) mother::published).andThen(mother::draft);
-      case "published" -> mother::published;
-      case "template" -> mother::template;
-      case "legacy" -> mother::legacy;
-      default -> page -> {
-      };  //  NOOP
-    };
+    Consumer<PageIdentifier> consumer =
+        switch (status.toLowerCase()) {
+          case "draft", "initial draft" -> mother::draft;
+          case "published with draft" ->
+              ((Consumer<PageIdentifier>) mother::published).andThen(mother::draft);
+          case "published" -> mother::published;
+          case "template" -> mother::template;
+          case "legacy" -> mother::legacy;
+          default -> page -> {}; //  NOOP
+        };
 
     this.activePage.maybeActive().ifPresent(consumer);
   }
@@ -123,5 +110,4 @@ public class PageSteps {
   public void the_page_is_tied_to_the_condition(final String condition) {
     this.activePage.maybeActive().ifPresent(page -> mother.withCondition(page, condition));
   }
-
 }

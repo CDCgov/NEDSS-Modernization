@@ -12,8 +12,8 @@ public class DateOperatorSteps {
       case "last 14 days" -> DateFilter.Operator.LAST_14_DAYS;
       case "last 30 days" -> DateFilter.Operator.LAST_30_DAYS;
       case "more than 30 days" -> DateFilter.Operator.MORE_THAN_30_DAYS;
-      default -> throw new IllegalStateException("Unexpected Date Operator value: " + value.toLowerCase());
+      default ->
+          throw new IllegalStateException("Unexpected Date Operator value: " + value.toLowerCase());
     };
   }
-
 }

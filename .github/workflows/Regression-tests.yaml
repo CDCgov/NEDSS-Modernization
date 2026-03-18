@@ -18,10 +18,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      
+
       - name: Run containers
         working-directory: ./cdc-sandbox
         run: ./build_all.sh
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.x
+
+      # Check graphql types are up to date
+      - name: Check Graphql generated types are still correct
+        working-directory: apps/modernization-ui
+        run: npm ci && npm run generate && git diff --exit-code
 
       # Install npm dependencies, cache them, run tests
       - name: Cypress run

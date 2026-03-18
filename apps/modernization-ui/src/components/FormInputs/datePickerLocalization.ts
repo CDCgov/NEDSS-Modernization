@@ -10,7 +10,7 @@ const MONTH_LABELS = [
     'September',
     'October',
     'November',
-    'December'
+    'December',
 ];
 
 const DAY_OF_WEEK_LABELS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -26,7 +26,7 @@ export const EN_US = {
         'Weeks by using up and down arrows',
         'Months by using page up and page down keys',
         'Years by using shift plus page up and shift plus page down',
-        'Home and end keys navigate to the beginning and end of a week'
+        'Home and end keys navigate to the beginning and end of a week',
     ],
     selectedDate: 'Selected date',
     selectAMonth: 'Select a month.',
@@ -36,5 +36,5 @@ export const EN_US = {
     forwardOneYear: 'Navigate forward one year',
     forwardOneMonth: 'Navigate forward one month',
     selectMonth: 'Select month',
-    selectYear: 'Select year'
+    selectYear: 'Select year',
 };

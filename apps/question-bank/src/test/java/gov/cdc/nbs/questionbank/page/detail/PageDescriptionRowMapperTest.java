@@ -1,13 +1,12 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
-import org.junit.jupiter.api.Test;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.junit.jupiter.api.Test;
 
 class PageDescriptionRowMapperTest {
 
@@ -34,13 +33,12 @@ class PageDescriptionRowMapperTest {
 
   @Test
   void should_return_published() throws SQLException {
-    int statusColNum =3;
+    int statusColNum = 3;
     ResultSet resultSet = mock(ResultSet.class);
     when(resultSet.getString(statusColNum)).thenReturn("Published");
     PageDescriptionRowMapper mapper = new PageDescriptionRowMapper();
     PageDescription actual = mapper.mapRow(resultSet, -1);
     assertThat(actual.status()).isEqualTo("Published");
-
   }
 
   @Test
@@ -64,7 +62,4 @@ class PageDescriptionRowMapperTest {
     PageDescription actual = mapper.mapRow(resultSet, -1);
     assertThat(actual.status()).isEqualTo("Published with Draft");
   }
-
-
 }
-

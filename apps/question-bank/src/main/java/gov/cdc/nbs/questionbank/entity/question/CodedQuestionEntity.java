@@ -1,10 +1,11 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
 import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
+
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -60,5 +61,4 @@ public class CodedQuestionEntity extends WaQuestion {
     // Audit
     changed(command);
   }
-
 }

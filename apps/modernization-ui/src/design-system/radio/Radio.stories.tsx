@@ -3,7 +3,7 @@ import { Radio } from './Radio';
 
 const meta = {
     title: 'Design System/Radio',
-    component: Radio
+    component: Radio,
 } as Meta;
 
 export default meta;
@@ -14,6 +14,6 @@ export const Default: Story = {
     args: {
         label: 'Default Radio',
         name: 'defaultRadio',
-        value: 'default'
-    }
+        value: 'default',
+    },
 };

@@ -18,7 +18,7 @@ const GeneralInformationDemographicFields = ({
     orientation = 'horizontal',
     sizing,
     form,
-    options
+    options,
 }: GeneralInformationDemographicFieldsProps) => (
     <>
         <Controller

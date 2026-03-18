@@ -7,7 +7,7 @@ import {
     displayInvestigationLink,
     displayInvestigator,
     displayStatus,
-    getPatient
+    getPatient,
 } from 'apps/search/investigation/result';
 
 type Props = {

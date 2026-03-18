@@ -9,9 +9,7 @@ public class GraphQLPageableMapper {
 
   private final int maxPageSize;
 
-  public GraphQLPageableMapper(
-      @Value("${nbs.max-page-size}") final int maxPageSize
-  ) {
+  public GraphQLPageableMapper(@Value("${nbs.max-page-size}") final int maxPageSize) {
     this.maxPageSize = maxPageSize;
   }
 

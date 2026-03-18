@@ -4,12 +4,12 @@ import { Permitted } from '../../../../libs/permission';
 const personMatchLinks = [
     {
         text: 'Manage data elements',
-        href: '/deduplication/data_elements'
+        href: '/deduplication/data_elements',
     },
     {
         text: 'Manage pass configurations',
-        href: '/deduplication/configuration'
-    }
+        href: '/deduplication/configuration',
+    },
 ];
 
 type Props = {

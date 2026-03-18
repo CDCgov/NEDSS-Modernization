@@ -6,4 +6,3 @@ export type PageStateResponse = {
     templateId?: number;
     message?: string;
 };
-

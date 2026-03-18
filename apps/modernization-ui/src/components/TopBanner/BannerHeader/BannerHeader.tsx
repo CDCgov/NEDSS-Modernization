@@ -26,7 +26,7 @@ export const BannerHeader = ({
     const classes = classNames(
         'usa-banner__header',
         {
-            'usa-banner__header--expanded': isOpen
+            'usa-banner__header--expanded': isOpen,
         },
         className
     );

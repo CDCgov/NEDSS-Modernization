@@ -14,7 +14,7 @@ import {
     InvestigationFilterEntry,
     dateTypeOptions,
     investigationEventTypeOptions,
-    pregnancyStatusOptions
+    pregnancyStatusOptions,
 } from './InvestigationFormTypes';
 import { EntryFieldsProps } from 'design-system/entry';
 
@@ -113,7 +113,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                     control={form.control}
                     name="identification.value"
                     rules={{
-                        required: { value: true, message: 'Event Id is required' }
+                        required: { value: true, message: 'Event Id is required' },
                     }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
@@ -156,7 +156,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                         control={form.control}
                         name="eventDate.from"
                         rules={{
-                            required: { value: true, message: 'From date is required' }
+                            required: { value: true, message: 'From date is required' },
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
@@ -178,7 +178,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                         control={form.control}
                         name="eventDate.to"
                         rules={{
-                            required: { value: true, message: 'To date is required' }
+                            required: { value: true, message: 'To date is required' },
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput

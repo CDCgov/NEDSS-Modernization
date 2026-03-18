@@ -16,7 +16,7 @@ export const PhoneEmailDataTable = ({ patientData, selectedPhoneEmail, onViewPho
     const form = useFormContext<PatientMergeForm>();
     const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: 'phoneEmails'
+        name: 'phoneEmails',
     });
 
     const handlePhoneEmailSelection = (phoneEmail: MergePhoneEmail) => {
@@ -33,19 +33,19 @@ export const PhoneEmailDataTable = ({ patientData, selectedPhoneEmail, onViewPho
             id: 'as-of',
             name: 'As of',
             className: styles['date-header'],
-            render: (n) => toDateDisplay(n.asOf)
+            render: (n) => toDateDisplay(n.asOf),
         },
         {
             id: 'type',
             name: 'Type',
             className: styles['text-header'],
-            render: (n) => `${n.type}/${n.use}`
+            render: (n) => `${n.type}/${n.use}`,
         },
         {
             id: 'phoneNumber',
             name: 'Phone number',
-            render: (n) => formatPhone(n.phoneNumber)
-        }
+            render: (n) => formatPhone(n.phoneNumber),
+        },
     ];
     return (
         <MergeDataTable<MergePhoneEmail>

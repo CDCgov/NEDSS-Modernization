@@ -59,7 +59,7 @@ const MultiSelectAutocomplete = ({
     placeholder,
     orientation = 'vertical',
     asValue = asSelectableValue,
-    asDisplay = asSelectableDisplay
+    asDisplay = asSelectableDisplay,
 }: MultiSelectInputProps) => {
     const [selectedOptions, setSelectedOptions] = useState<Selectable[]>(value);
 
@@ -79,7 +79,8 @@ const MultiSelectAutocomplete = ({
                 label={label ?? ''}
                 htmlFor={id ?? ''}
                 required={required}
-                error={error}>
+                error={error}
+            >
                 <AsyncSelect
                     isMulti={true}
                     id={id}

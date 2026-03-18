@@ -15,7 +15,8 @@ const PatientFileRaceCard = ({ provider, ...remaining }: PatientFileRaceProps) =
                 <LoadingOverlay>
                     <RaceDemographicCard data={undefined} title="Race" {...remaining} />
                 </LoadingOverlay>
-            }>
+            }
+        >
             <Await resolve={provider.get()}>
                 {(resolved) => <RaceDemographicCard data={resolved} title="Race" {...remaining} />}
             </Await>

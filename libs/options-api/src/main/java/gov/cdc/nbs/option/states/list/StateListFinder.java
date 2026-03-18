@@ -1,9 +1,9 @@
 package gov.cdc.nbs.option.states.list;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import gov.cdc.nbs.option.Option;
 import java.util.Collection;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 @Component
 public class StateListFinder {
@@ -26,9 +26,6 @@ public class StateListFinder {
   }
 
   public Collection<Option> all() {
-    return this.template.query(
-        QUERY, statement -> {
-        }, mapper);
+    return this.template.query(QUERY, statement -> {}, mapper);
   }
-
 }

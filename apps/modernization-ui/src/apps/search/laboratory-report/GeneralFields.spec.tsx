@@ -4,11 +4,11 @@ import { GeneralFields } from './GeneralFields';
 import { LabratorySearchCriteriaFormWrapper } from './LabratorySearchCriteriaFormWrapper';
 
 vi.mock('options/jurisdictions', () => ({
-    useJurisdictionOptions: () => ({ all: [], resolve: () => {} })
+    useJurisdictionOptions: () => ({ all: [], resolve: () => {} }),
 }));
 
 vi.mock('options/program-areas', () => ({
-    useProgramAreaOptions: () => ({ all: [], resolve: () => {} })
+    useProgramAreaOptions: () => ({ all: [], resolve: () => {} }),
 }));
 
 const GeneralFieldsWithForm = () => {

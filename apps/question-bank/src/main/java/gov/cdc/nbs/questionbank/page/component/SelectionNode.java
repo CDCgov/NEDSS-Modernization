@@ -24,7 +24,6 @@ public final class SelectionNode extends ContentNode {
     }
   }
 
-
   private final String valueSet;
 
   public SelectionNode(
@@ -32,8 +31,7 @@ public final class SelectionNode extends ContentNode {
       final Type type,
       final Definition definition,
       final Attributes attributes,
-      final String valueSet
-  ) {
+      final String valueSet) {
     super(identifier, type, definition, attributes);
     this.valueSet = valueSet;
   }

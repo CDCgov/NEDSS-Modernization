@@ -43,33 +43,33 @@ export const MergePreview = ({ onBack, mergeFormData, mergeCandidates, onMerge }
                 mergeCandidates={mergeCandidates}
                 selectedNames={mergeFormData.names.map(({ personUid, sequence }) => ({
                     personUid,
-                    sequence
+                    sequence,
                 }))}
             />
             <PreviewAddress
                 mergeCandidates={mergeCandidates}
                 selectedAddresses={mergeFormData.addresses.map(({ locatorId }) => ({
-                    locatorId
+                    locatorId,
                 }))}
             />
             <PreviewPhoneAndEmail
                 mergeCandidates={mergeCandidates}
                 selectedPhoneEmails={mergeFormData.phoneEmails.map(({ locatorId }) => ({
-                    locatorId
+                    locatorId,
                 }))}
             />
             <PreviewIdentification
                 mergeCandidates={mergeCandidates}
                 selectedIdentifications={mergeFormData.identifications.map(({ personUid, sequence }) => ({
                     personUid,
-                    sequence
+                    sequence,
                 }))}
             />
             <PreviewRace
                 mergeCandidates={mergeCandidates}
                 selectedRaces={mergeFormData.races.map(({ personUid, raceCode }) => ({
                     personUid,
-                    raceCode
+                    raceCode,
                 }))}
             />
             <div className={styles.previewTwoColumn}>

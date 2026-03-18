@@ -7,7 +7,7 @@ import {
     ExactValueOperators,
     SelectableDateRangeOperator,
     PartialValueOperators,
-    withValue
+    withValue,
 } from './selectables';
 
 const asFilter =
@@ -32,7 +32,7 @@ const asValue = (property: ValueProperty, entry: FilterEntry): ValueFilter | und
                 id: crypto.randomUUID(),
                 property,
                 operator,
-                value: entry.value
+                value: entry.value,
             }
         );
     } else if ('values' in entry && isExactValueProperty(entry.operator)) {
@@ -42,7 +42,7 @@ const asValue = (property: ValueProperty, entry: FilterEntry): ValueFilter | und
                 id: crypto.randomUUID(),
                 property,
                 operator,
-                values: entry.values
+                values: entry.values,
             }
         );
     }
@@ -62,7 +62,7 @@ const asDisplayableDate = (property: DateProperty, entry: FilterEntry): DateFilt
     return {
         id: crypto.randomUUID(),
         property,
-        operator
+        operator,
     };
 };
 
@@ -77,7 +77,7 @@ const asDateRange = (
             property,
             operator,
             after: entry.after,
-            before: entry.before
+            before: entry.before,
         };
     }
 

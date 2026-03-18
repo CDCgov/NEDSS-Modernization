@@ -69,7 +69,8 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                 id="matchingBoundsCard"
                 title="3. Matching bounds"
                 subtext="Records with log odds scores between the lower and upper bounds will present for review and
-                    resolution in the potential match queue">
+                    resolution in the potential match queue"
+            >
                 <div className={styles.body}>
                     <div>
                         <Controller
@@ -77,7 +78,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                             name={'lowerBound'}
                             rules={{
                                 required: { value: true, message: 'Lower bound is required.' },
-                                validate: validateLowerBound
+                                validate: validateLowerBound,
                             }}
                             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <NumericHintInput
@@ -109,12 +110,12 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                 required: { value: true, message: 'Upper bound is required.' },
                                 max: {
                                     value: totalLogOdds ?? 0,
-                                    message: 'Cannot be greater than total log odds.'
+                                    message: 'Cannot be greater than total log odds.',
                                 },
                                 min: {
                                     value: lowerBound ?? 0,
-                                    message: `Must be between ${lowerBound ? 'lower bound' : '0'} and total log odds.`
-                                }
+                                    message: `Must be between ${lowerBound ? 'lower bound' : '0'} and total log odds.`,
+                                },
                             }}
                             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <NumericHintInput

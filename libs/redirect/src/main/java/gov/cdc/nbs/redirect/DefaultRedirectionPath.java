@@ -1,5 +1,3 @@
 package gov.cdc.nbs.redirect;
 
-record DefaultRedirectionPath(String path) {
-
-}
+record DefaultRedirectionPath(String path) {}

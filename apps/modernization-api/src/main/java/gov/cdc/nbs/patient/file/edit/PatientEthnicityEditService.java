@@ -1,5 +1,8 @@
 package gov.cdc.nbs.patient.file.edit;
 
+import static gov.cdc.nbs.patient.demographics.ethnicity.EthnicityPatientCommandMapper.asAddDetailedEthnicity;
+import static gov.cdc.nbs.patient.demographics.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
+
 import gov.cdc.nbs.change.ChangeResolver;
 import gov.cdc.nbs.change.Changes;
 import gov.cdc.nbs.entity.odse.Person;
@@ -7,27 +10,17 @@ import gov.cdc.nbs.entity.odse.PersonEthnicGroup;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographics.ethnicity.EthnicityDemographic;
-import org.springframework.stereotype.Component;
-
 import java.util.function.Function;
-
-import static gov.cdc.nbs.patient.demographics.ethnicity.EthnicityPatientCommandMapper.asAddDetailedEthnicity;
-import static gov.cdc.nbs.patient.demographics.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientEthnicityEditService {
 
-  private final ChangeResolver<PersonEthnicGroup, String, String> resolver = ChangeResolver.ofDifferingTypes(
-      PersonEthnicGroup::ethnicGroup,
-      Function.identity()
-  );
-
+  private final ChangeResolver<PersonEthnicGroup, String, String> resolver =
+      ChangeResolver.ofDifferingTypes(PersonEthnicGroup::ethnicGroup, Function.identity());
 
   void apply(
-      final RequestContext context,
-      final Person patient,
-      final EthnicityDemographic demographic
-  ) {
+      final RequestContext context, final Person patient, final EthnicityDemographic demographic) {
     //  apply any changes to the base ethnicity
     patient.update(asUpdateEthnicityInfo(patient.id(), context, demographic));
 
@@ -35,25 +28,20 @@ class PatientEthnicityEditService {
     Changes<PersonEthnicGroup, String> changes =
         resolver.resolve(patient.ethnicity().ethnicities(), demographic.detailed());
 
-    changes.added()
+    changes
+        .added()
         .map(detail -> asAddDetailedEthnicity(patient.id(), context, detail))
         .forEach(patient::add);
 
-    changes.removed()
+    changes
+        .removed()
         .map(detail -> asRemoveDetailedEthnicity(patient.id(), context, detail.ethnicGroup()))
         .forEach(patient::remove);
   }
 
   private static PatientCommand.RemoveDetailedEthnicity asRemoveDetailedEthnicity(
-      final long patient,
-      final RequestContext context,
-      final String detail
-  ) {
+      final long patient, final RequestContext context, final String detail) {
     return new PatientCommand.RemoveDetailedEthnicity(
-        patient,
-        detail,
-        context.requestedBy(),
-        context.requestedAt()
-    );
+        patient, detail, context.requestedBy(), context.requestedAt());
   }
 }

@@ -4,7 +4,6 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.LocalDate;
 
 public class PatientRaceDemographicsSteps {
@@ -13,9 +12,7 @@ public class PatientRaceDemographicsSteps {
   private final PatientRaceDemographicApplier applier;
 
   PatientRaceDemographicsSteps(
-      final Active<PatientIdentifier> patient,
-      final PatientRaceDemographicApplier applier
-  ) {
+      final Active<PatientIdentifier> patient, final PatientRaceDemographicApplier applier) {
     this.patient = patient;
     this.applier = applier;
   }

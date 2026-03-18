@@ -5,8 +5,8 @@ import { PatientFileService } from 'generated';
 
 vi.mock('generated', () => ({
     PatientFileService: {
-        delete: vi.fn()
-    }
+        delete: vi.fn(),
+    },
 }));
 
 describe('useDeletePatient', () => {
@@ -38,7 +38,7 @@ describe('useDeletePatient', () => {
         expect(PatientFileService.delete).toHaveBeenCalledWith({ patient: 123 });
         expect(onDeleteCompleteMock).toHaveBeenCalledWith({
             success: false,
-            message: 'Failed to delete patient.'
+            message: 'Failed to delete patient.',
         });
     });
 });

@@ -21,7 +21,7 @@ export const IdentificationRepeatingBlock = ({
     values,
     onChange,
     isDirty,
-    sizing
+    sizing,
 }: IdentificationRepeatingBlockProps) => {
     const renderForm = () => <IdentificationEntryFields sizing={sizing} />;
     const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} sizing={sizing} />;
@@ -30,7 +30,7 @@ export const IdentificationRepeatingBlock = ({
         { id: 'identificationAsOf', name: 'As of', render: (v) => v.asOf },
         { id: 'identificationType', name: 'Type', render: (v) => v.type?.name },
         { id: 'assigningAuthority', name: 'Authority', render: (v) => v.issuer?.name },
-        { id: 'idValue', name: 'Value', render: (v) => v.id }
+        { id: 'idValue', name: 'Value', render: (v) => v.id },
     ];
     return (
         <RepeatingBlock<IdentificationEntry>

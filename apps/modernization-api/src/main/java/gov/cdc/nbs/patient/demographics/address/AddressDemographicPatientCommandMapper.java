@@ -7,9 +7,7 @@ import gov.cdc.nbs.patient.RequestContext;
 public class AddressDemographicPatientCommandMapper {
 
   public static PatientCommand.AddAddress asAddAddress(
-      final long patient,
-      final RequestContext context,
-      final AddressDemographic input) {
+      final long patient, final RequestContext context, final AddressDemographic input) {
     return new PatientCommand.AddAddress(
         patient,
         input.asOf(),
@@ -29,9 +27,7 @@ public class AddressDemographicPatientCommandMapper {
   }
 
   public static PatientCommand.UpdateAddress asUpdateAddress(
-      final long patient,
-      final RequestContext context,
-      final AddressDemographic demographic) {
+      final long patient, final RequestContext context, final AddressDemographic demographic) {
     return new PatientCommand.UpdateAddress(
         patient,
         demographic.identifier(),
@@ -65,5 +61,4 @@ public class AddressDemographicPatientCommandMapper {
   private AddressDemographicPatientCommandMapper() {
     // static
   }
-
 }

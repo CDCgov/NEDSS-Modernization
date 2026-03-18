@@ -5,7 +5,7 @@ import { Patient } from './patient';
 const mockNow = vi.fn();
 
 vi.mock('design-system/date/clock', () => ({
-    now: () => mockNow()
+    now: () => mockNow(),
 }));
 
 describe('when displaying the demographics summary of a patient', () => {
@@ -19,7 +19,7 @@ describe('when displaying the demographics summary of a patient', () => {
             patientId: 397,
             local: 'local-id-value',
             status: 'ACTIVE',
-            deletability: 'Deletable'
+            deletability: 'Deletable',
         };
 
         render(<PatientFileHeader patient={patient} actions={<></>} />);
@@ -34,7 +34,7 @@ describe('when displaying the demographics summary of a patient', () => {
             patientId: 397,
             local: 'local-id-value',
             status: 'ACTIVE',
-            deletability: 'Deletable'
+            deletability: 'Deletable',
         };
 
         render(<PatientFileHeader patient={patient} actions={<></>} />);
@@ -49,7 +49,7 @@ describe('when displaying the demographics summary of a patient', () => {
             local: 'local-id-value',
             status: 'ACTIVE',
             deletability: 'Deletable',
-            sex: 'gender-value'
+            sex: 'gender-value',
         };
 
         render(<PatientFileHeader patient={patient} actions={<></>} />);
@@ -63,7 +63,7 @@ describe('when displaying the demographics summary of a patient', () => {
             patientId: 397,
             local: 'local-id-value',
             status: 'ACTIVE',
-            deletability: 'Deletable'
+            deletability: 'Deletable',
         };
 
         render(<PatientFileHeader patient={patient} actions={'actions'} />);
@@ -77,7 +77,7 @@ describe('when displaying the demographics summary of a patient', () => {
             patientId: 397,
             local: 'local-id-value',
             status: 'INACTIVE',
-            deletability: 'Deletable'
+            deletability: 'Deletable',
         };
 
         render(<PatientFileHeader patient={patient} actions={<></>} />);
@@ -97,15 +97,15 @@ describe('when displaying the demographics summary of a patient', () => {
                     first: 'first-name-value',
                     middle: 'middle-name-value',
                     last: 'last-name-value',
-                    suffix: 'suffix-value'
-                }
+                    suffix: 'suffix-value',
+                },
             };
 
             render(<PatientFileHeader patient={patient} actions={<></>} />);
 
             expect(
                 screen.getByRole('heading', {
-                    name: 'last-name-value, first-name-value middle-name-value, suffix-value'
+                    name: 'last-name-value, first-name-value middle-name-value, suffix-value',
                 })
             ).toBeInTheDocument();
         });
@@ -118,15 +118,15 @@ describe('when displaying the demographics summary of a patient', () => {
                 status: 'ACTIVE',
                 deletability: 'Deletable',
                 name: {
-                    first: 'first-name-value'
-                }
+                    first: 'first-name-value',
+                },
             };
 
             render(<PatientFileHeader patient={patient} actions={<></>} />);
 
             expect(
                 screen.getByRole('heading', {
-                    name: '--, first-name-value'
+                    name: '--, first-name-value',
                 })
             ).toBeInTheDocument();
         });
@@ -139,15 +139,15 @@ describe('when displaying the demographics summary of a patient', () => {
                 status: 'ACTIVE',
                 deletability: 'Deletable',
                 name: {
-                    middle: 'middle-name-value'
-                }
+                    middle: 'middle-name-value',
+                },
             };
 
             render(<PatientFileHeader patient={patient} actions={<></>} />);
 
             expect(
                 screen.getByRole('heading', {
-                    name: '--, -- middle-name-value'
+                    name: '--, -- middle-name-value',
                 })
             ).toBeInTheDocument();
         });
@@ -160,15 +160,15 @@ describe('when displaying the demographics summary of a patient', () => {
                 status: 'ACTIVE',
                 deletability: 'Deletable',
                 name: {
-                    last: 'last-name-value'
-                }
+                    last: 'last-name-value',
+                },
             };
 
             render(<PatientFileHeader patient={patient} actions={<></>} />);
 
             expect(
                 screen.getByRole('heading', {
-                    name: 'last-name-value, --'
+                    name: 'last-name-value, --',
                 })
             ).toBeInTheDocument();
         });
@@ -181,15 +181,15 @@ describe('when displaying the demographics summary of a patient', () => {
                 status: 'ACTIVE',
                 deletability: 'Deletable',
                 name: {
-                    suffix: 'suffix-value'
-                }
+                    suffix: 'suffix-value',
+                },
             };
 
             render(<PatientFileHeader patient={patient} actions={<></>} />);
 
             expect(
                 screen.getByRole('heading', {
-                    name: '--, --, suffix-value'
+                    name: '--, --, suffix-value',
                 })
             ).toBeInTheDocument();
         });
@@ -205,7 +205,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 local: 'local-id-value',
                 status: 'ACTIVE',
                 deletability: 'Deletable',
-                birthday: '08/09/1979'
+                birthday: '08/09/1979',
             };
 
             render(<PatientFileHeader patient={patient} actions={<></>} />);
@@ -223,7 +223,7 @@ describe('when displaying the demographics summary of a patient', () => {
                 status: 'ACTIVE',
                 deletability: 'Deletable',
                 birthday: '08/09/1979',
-                deceasedOn: '11/18/2010'
+                deceasedOn: '11/18/2010',
             };
 
             render(<PatientFileHeader patient={patient} actions={<></>} />);

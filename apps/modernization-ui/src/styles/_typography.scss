@@ -4,13 +4,34 @@ html body {
     font-family: Public Sans !important;
 
     [class*='font-sans-'] {
-        font-family: Public Sans, Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif !important;
+        font-family:
+            Public Sans,
+            Source Sans Pro Web,
+            Helvetica Neue,
+            Helvetica,
+            Roboto,
+            Arial,
+            sans-serif !important;
     }
     [class*='usa-'] {
-        font-family: Public Sans, Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif !important;
+        font-family:
+            Public Sans,
+            Source Sans Pro Web,
+            Helvetica Neue,
+            Helvetica,
+            Roboto,
+            Arial,
+            sans-serif !important;
     }
     [class*='text-'] {
-        font-family: Public Sans, Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif !important;
+        font-family:
+            Public Sans,
+            Source Sans Pro Web,
+            Helvetica Neue,
+            Helvetica,
+            Roboto,
+            Arial,
+            sans-serif !important;
     }
     [class*='-3xs'] {
         font-size: 0.7rem;

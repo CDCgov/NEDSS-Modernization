@@ -1,17 +1,16 @@
 package gov.cdc.nbs.option.counties.list;
 
-
 import gov.cdc.nbs.option.Option;
+import java.util.Collection;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-
 @Component
 public class CountiesListFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           code                as [value],
           code_desc_txt       as [name],
@@ -33,9 +32,6 @@ public class CountiesListFinder {
   }
 
   Collection<Option> find(final String state) {
-    return this.client.sql(QUERY)
-        .param(state)
-        .query(this.mapper)
-        .list();
+    return this.client.sql(QUERY).param(state).query(this.mapper).list();
   }
 }

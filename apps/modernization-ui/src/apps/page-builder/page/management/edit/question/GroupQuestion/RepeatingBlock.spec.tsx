@@ -9,7 +9,7 @@ const dateQuestion: PagesQuestion = {
     name: 'date test question',
     order: 3,
     dataType: 'DATE',
-    isStandard: true
+    isStandard: true,
 };
 
 const dropDownQuestion: PagesQuestion = {
@@ -17,7 +17,7 @@ const dropDownQuestion: PagesQuestion = {
     name: 'test drop down question',
     order: 4,
     isStandard: true,
-    displayComponent: 1007
+    displayComponent: 1007,
 };
 
 const subSections: PagesSubSection = {
@@ -28,7 +28,7 @@ const subSections: PagesSubSection = {
     questions: [dateQuestion, dropDownQuestion],
     isGroupable: true,
     questionIdentifier: 'identifier',
-    visible: true
+    visible: true,
 };
 
 type Additional = {
@@ -47,15 +47,15 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
                     appearsInTable: undefined,
                     width: undefined,
                     label: undefined,
-                    id: 1234
-                }
+                    id: 1234,
+                },
             ],
             blockName: undefined,
             id: 1234,
             visibleText: 'Y',
-            repeatNumber: 1
+            repeatNumber: 1,
         },
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return <FormProvider {...methods}>{children}</FormProvider>;

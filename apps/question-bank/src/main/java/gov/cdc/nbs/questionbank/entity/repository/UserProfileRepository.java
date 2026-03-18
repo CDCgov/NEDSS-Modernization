@@ -1,11 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.repository;
 
+import gov.cdc.nbs.questionbank.entity.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import gov.cdc.nbs.questionbank.entity.UserProfile;
-
-
-
-public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {
-
-}
+public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {}

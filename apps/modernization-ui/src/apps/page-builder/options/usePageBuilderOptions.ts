@@ -17,7 +17,7 @@ const reducer = (_state: State, action: Action): State => {
 };
 
 const initial: State = {
-    status: 'idle'
+    status: 'idle',
 };
 
 type PageBuilderOptionsResolver = () => Promise<Selectable[]>;
@@ -54,7 +54,7 @@ const usePageBuilderOptions = ({ resolver, lazy = true }: Settings): PageBuilder
 
     return {
         options,
-        load
+        load,
     };
 };
 

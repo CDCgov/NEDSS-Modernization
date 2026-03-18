@@ -6,4 +6,3 @@ export type ConditionSummary = {
     id?: string;
     name?: string;
 };
-

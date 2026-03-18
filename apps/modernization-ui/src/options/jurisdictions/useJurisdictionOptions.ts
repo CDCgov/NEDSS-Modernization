@@ -7,7 +7,7 @@ import { SelectableResolver, findByValue } from 'options/findByValue';
 const asSelectable = (jurisdiction: Jurisdiction): Selectable => ({
     value: jurisdiction.id,
     name: jurisdiction.codeShortDescTxt || '',
-    label: jurisdiction.codeShortDescTxt || ''
+    label: jurisdiction.codeShortDescTxt || '',
 });
 
 type Interaction = {

@@ -11,4 +11,3 @@ export type PageCreateRequest = {
     pageDescription?: string;
     dataMartName?: string;
 };
-

@@ -21,7 +21,7 @@ describe('when mapping a name entry to a format accepted by the API', () => {
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            prefix: { value: 'prefix-value', name: 'prefix-name' }
+            prefix: { value: 'prefix-value', name: 'prefix-name' },
         };
 
         const actual = asName(entry);
@@ -33,7 +33,7 @@ describe('when mapping a name entry to a format accepted by the API', () => {
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            first: 'first-value'
+            first: 'first-value',
         };
 
         const actual = asName(entry);
@@ -45,7 +45,7 @@ describe('when mapping a name entry to a format accepted by the API', () => {
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            middle: 'middle-value'
+            middle: 'middle-value',
         };
 
         const actual = asName(entry);
@@ -57,7 +57,7 @@ describe('when mapping a name entry to a format accepted by the API', () => {
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            secondMiddle: 'second-middle-value'
+            secondMiddle: 'second-middle-value',
         };
 
         const actual = asName(entry);
@@ -69,7 +69,7 @@ describe('when mapping a name entry to a format accepted by the API', () => {
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            last: 'last-value'
+            last: 'last-value',
         };
 
         const actual = asName(entry);
@@ -81,7 +81,7 @@ describe('when mapping a name entry to a format accepted by the API', () => {
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            secondLast: 'second-last-value'
+            secondLast: 'second-last-value',
         };
 
         const actual = asName(entry);
@@ -93,7 +93,7 @@ describe('when mapping a name entry to a format accepted by the API', () => {
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            suffix: { value: 'suffix-value', name: 'suffix-name' }
+            suffix: { value: 'suffix-value', name: 'suffix-name' },
         };
 
         const actual = asName(entry);
@@ -105,7 +105,7 @@ describe('when mapping a name entry to a format accepted by the API', () => {
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            degree: { value: 'degree-value', name: 'degree-name' }
+            degree: { value: 'degree-value', name: 'degree-name' },
         };
 
         const actual = asName(entry);
@@ -116,7 +116,7 @@ describe('when mapping a name entry to a format accepted by the API', () => {
     it('should not map when type is null', () => {
         const entry = {
             asOf: '04/13/2017',
-            type: null
+            type: null,
         };
 
         const actual = asName(entry);

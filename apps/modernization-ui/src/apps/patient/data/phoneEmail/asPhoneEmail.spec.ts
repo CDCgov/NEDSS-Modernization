@@ -5,7 +5,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' }
+            use: { value: 'use-value', name: 'use-phone-email' },
         };
 
         const actual = asPhoneEmail(entry);
@@ -17,7 +17,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' }
+            use: { value: 'use-value', name: 'use-phone-email' },
         };
 
         const actual = asPhoneEmail(entry);
@@ -29,7 +29,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            use: { value: 'use-value', name: 'use-name' }
+            use: { value: 'use-value', name: 'use-name' },
         };
 
         const actual = asPhoneEmail(entry);
@@ -42,7 +42,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            countryCode: 'country-code-value'
+            countryCode: 'country-code-value',
         };
 
         const actual = asPhoneEmail(entry);
@@ -55,7 +55,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            phoneNumber: 'phone-number-value'
+            phoneNumber: 'phone-number-value',
         };
 
         const actual = asPhoneEmail(entry);
@@ -68,7 +68,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            extension: 'extension-value'
+            extension: 'extension-value',
         };
 
         const actual = asPhoneEmail(entry);
@@ -81,7 +81,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            email: 'email-value'
+            email: 'email-value',
         };
 
         const actual = asPhoneEmail(entry);
@@ -94,7 +94,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            url: 'url-value'
+            url: 'url-value',
         };
 
         const actual = asPhoneEmail(entry);
@@ -107,7 +107,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            comment: 'comment-value'
+            comment: 'comment-value',
         };
 
         const actual = asPhoneEmail(entry);
@@ -119,7 +119,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
         const entry = {
             asOf: '04/13/2017',
             type: null,
-            use: { value: 'use-value', name: 'use-value' }
+            use: { value: 'use-value', name: 'use-value' },
         };
 
         const actual = asPhoneEmail(entry);
@@ -131,7 +131,7 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
         const entry = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-value' },
-            use: null
+            use: null,
         };
 
         const actual = asPhoneEmail(entry);

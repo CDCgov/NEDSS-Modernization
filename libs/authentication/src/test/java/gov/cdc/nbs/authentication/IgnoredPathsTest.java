@@ -1,10 +1,10 @@
 package gov.cdc.nbs.authentication;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class IgnoredPathsTest {
 
@@ -79,5 +79,4 @@ class IgnoredPathsTest {
     // Then the expected paths should be returned
     assertThat(paths).contains("/some/path", "/some/other/path");
   }
-
 }

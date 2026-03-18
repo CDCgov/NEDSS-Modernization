@@ -5,7 +5,7 @@ import { CancelAddPatientPanel } from './CancelAddPatientPanel';
 const mockSave = vi.fn();
 
 vi.mock('./useShowCancelModal', () => ({
-    useShowCancelModal: () => ({ value: false, save: mockSave })
+    useShowCancelModal: () => ({ value: false, save: mockSave }),
 }));
 
 describe('CancelAddPatientPanel', () => {

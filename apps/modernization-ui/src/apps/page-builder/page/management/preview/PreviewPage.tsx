@@ -6,7 +6,7 @@ import {
     PageManagementMenu,
     PageManagementProvider,
     useGetPageDetails,
-    usePageManagement
+    usePageManagement,
 } from 'apps/page-builder/page/management';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { Loading } from 'components/Spinner';
@@ -63,13 +63,13 @@ const PreviewPageContent = () => {
 
     const handleCreateDraft = () => {
         PageControllerService.savePageDraft({
-            id: page.id
+            id: page.id,
         })
             .then((response) => {
                 showAlert({
                     type: 'success',
                     title: 'Success',
-                    message: `${page.name} is in Draft mode. You can edit the page details, rules, and layout.`
+                    message: `${page.name} is in Draft mode. You can edit the page details, rules, and layout.`,
                 });
                 if (response?.templateId) {
                     navigate(`/page-builder/pages/${response.templateId}`);
@@ -82,14 +82,14 @@ const PreviewPageContent = () => {
                     showAlert({
                         type: 'error',
                         title: 'error',
-                        message: error.message
+                        message: error.message,
                     });
                 } else {
                     console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
-                        message: 'An unknown error occurred'
+                        message: 'An unknown error occurred',
                     });
                 }
             });
@@ -97,14 +97,14 @@ const PreviewPageContent = () => {
 
     const handleDeleteDraft = () => {
         PageControllerService.deletePageDraft({
-            id: page.id
+            id: page.id,
         })
             .then(() => {
                 deleteDraftRef.current?.toggleModal();
                 showAlert({
                     type: 'success',
                     title: 'Success',
-                    message: `${page.name} draft was successfully deleted.`
+                    message: `${page.name} draft was successfully deleted.`,
                 });
                 navigate('/page-builder/pages');
             })
@@ -114,14 +114,14 @@ const PreviewPageContent = () => {
                     showAlert({
                         type: 'error',
                         title: 'error',
-                        message: error.message
+                        message: error.message,
                     });
                 } else {
                     console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
-                        message: 'An unknown error occurred'
+                        message: 'An unknown error occurred',
                     });
                 }
             });
@@ -146,7 +146,8 @@ const PreviewPageContent = () => {
                                 <NavLinkButton
                                     className="editDraftBtn"
                                     to={`/page-builder/pages/${page.id}/edit`}
-                                    type="outline">
+                                    type="outline"
+                                >
                                     Edit draft
                                 </NavLinkButton>
                             </>
@@ -157,7 +158,8 @@ const PreviewPageContent = () => {
                                 className={styles.link}
                                 rel="noopener noreferrer"
                                 data-tooltip-position="top"
-                                aria-label="Preview in NBS Classic">
+                                aria-label="Preview in NBS Classic"
+                            >
                                 <Icon.Visibility size={3} />
                             </LinkButton>
                             {page.status !== 'Published' ? (
@@ -166,7 +168,8 @@ const PreviewPageContent = () => {
                                     className={styles.link}
                                     rel="noopener noreferrer"
                                     data-tooltip-position="top"
-                                    aria-label="Page porting">
+                                    aria-label="Page porting"
+                                >
                                     <Icon.ContentCopy size={3} />
                                 </LinkButton>
                             ) : null}
@@ -175,7 +178,8 @@ const PreviewPageContent = () => {
                                 className={styles.link}
                                 rel="noopener noreferrer"
                                 data-tooltip-position="top"
-                                aria-label="Print this page">
+                                aria-label="Print this page"
+                            >
                                 <Icon.Print size={3} />
                             </LinkButton>
                             {page.status === 'Published' ? (
@@ -187,7 +191,8 @@ const PreviewPageContent = () => {
                                     modalRef={publishDraftRef}
                                     type="button"
                                     data-testid="publishBtn"
-                                    className="publishBtn">
+                                    className="publishBtn"
+                                >
                                     Publish
                                 </ModalToggleButton>
                             )}

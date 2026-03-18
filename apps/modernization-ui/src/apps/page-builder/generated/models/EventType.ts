@@ -6,4 +6,3 @@ export type EventType = {
     value?: string;
     name?: string;
 };
-

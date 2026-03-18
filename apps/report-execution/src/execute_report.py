@@ -26,8 +26,7 @@ def execute_report(report_spec: models.ReportSpec):
             time_range=report_spec.time_range,
         )
 
-    if not is_valid_result(result):
-        raise errors.ToDoError('validation handling')
+    check_valid_result(result, report_spec.is_export)
 
     return result
 
@@ -43,9 +42,18 @@ def is_valid_library(library):
     return True
 
 
-def is_valid_result(report_result: models.ReportResult):
+def check_valid_result(report_result: models.ReportResult, is_export: bool):
     """Check if the returned result is valid."""
-    return True
+    row_limit = (
+        utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_EXPORT', 100000)
+        if is_export
+        else utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_RUN', 10000)
+    )
+    num_rows = len(report_result.content.data)
+    if num_rows > row_limit:
+        raise errors.ResultTooBigError(is_export, row_limit, num_rows)
+
+    return None
 
 
 def get_library(library_name: str, is_builtin: bool):
@@ -54,7 +62,7 @@ def get_library(library_name: str, is_builtin: bool):
         if is_builtin:
             return import_module(f'src.libraries.{library_name}')
         else:
-            raise errors.ToDoError('support custom libraries')
+            return import_module(f'src.libraries.custom.{library_name}')
     except ModuleNotFoundError:
         # Initial error not helpful for debugging
         raise errors.MissingLibraryError(library_name, is_builtin) from None

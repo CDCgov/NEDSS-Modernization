@@ -17,7 +17,8 @@ const PatientSearchActions = ({ disabled }: Props) => {
                 disabled={disabled}
                 icon="add_circle"
                 aria-keyshortcuts="Alt+A"
-                accessKey="a">
+                accessKey="a"
+            >
                 Add new patient
             </Button>
         </Permitted>

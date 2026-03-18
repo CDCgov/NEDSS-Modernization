@@ -46,7 +46,7 @@ const SearchResultDisplayProvider = ({ children }: Props) => {
 
     const { value, save } = useLocalStorage<ViewPreference>({
         key: 'search.view',
-        initial: { view: settings.defaultView }
+        initial: { view: settings.defaultView },
     });
 
     useEffect(() => {
@@ -68,7 +68,7 @@ const SearchResultDisplayProvider = ({ children }: Props) => {
     const interaction = {
         view: state.preference.view,
         asTable,
-        asList
+        asList,
     };
 
     return <SearchContext.Provider value={interaction}>{children}</SearchContext.Provider>;

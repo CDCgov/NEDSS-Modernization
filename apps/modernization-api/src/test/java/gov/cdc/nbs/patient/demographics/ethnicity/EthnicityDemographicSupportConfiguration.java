@@ -13,5 +13,4 @@ class EthnicityDemographicSupportConfiguration {
   Active<EthnicityDemographic> activeEthnicityDemographic() {
     return new Active<>();
   }
-
 }

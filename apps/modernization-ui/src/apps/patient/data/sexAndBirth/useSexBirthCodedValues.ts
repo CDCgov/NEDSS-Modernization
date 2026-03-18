@@ -18,7 +18,7 @@ const useSexBirthCodedValues = (): SexBirthCodedValues => {
         genders: genders.all,
         preferredGenders: preferredGenders.options,
         genderUnknownReasons: genderUnknownReasons.options,
-        multipleBirth: indicators.all
+        multipleBirth: indicators.all,
     };
 };
 
