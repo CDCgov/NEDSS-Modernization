@@ -7,7 +7,7 @@ import {
     AddExtendedPatientInteraction,
     AddExtendedPatientState,
     SubFormDirtyState,
-    ValidationErrors
+    ValidationErrors,
 } from './useAddExtendedPatientInteraction';
 
 type ExtendedStep =
@@ -54,7 +54,7 @@ const useAddExtendedPatient = (): AddExtendedPatientInteraction => {
         phone: false,
         identification: false,
         name: false,
-        race: false
+        race: false,
     });
 
     const setSubFormState = (subFormState: Partial<SubFormDirtyState>) => {
@@ -87,7 +87,7 @@ const useAddExtendedPatient = (): AddExtendedPatientInteraction => {
     return {
         ...state,
         create,
-        setSubFormState
+        setSubFormState,
     };
 };
 

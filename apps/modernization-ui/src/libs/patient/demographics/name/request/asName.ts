@@ -1,4 +1,3 @@
-/* eslint-disable no-redeclare */
 import { asValue } from 'options';
 import { exists, orUndefined } from 'utils';
 import { NameDemographic } from '../names';
@@ -19,7 +18,7 @@ const asName = (demographic: Partial<NameDemographic>): NameDemographicRequest |
             last: orUndefined(last),
             secondLast: orUndefined(secondLast),
             suffix: asValue(suffix),
-            degree: asValue(degree)
+            degree: asValue(degree),
         };
     }
 };

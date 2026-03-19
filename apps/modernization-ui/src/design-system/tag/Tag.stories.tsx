@@ -1,11 +1,11 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Tag, TagProps } from './Tag';
 import React from 'react';
 import { DataTable } from 'design-system/table';
 
 const meta = {
     title: 'Design System/Tag',
-    component: Tag
+    component: Tag,
 } satisfies Meta<typeof Tag>;
 
 export default meta;
@@ -34,56 +34,56 @@ const renderTags = (args: TagProps) => (
 
 export const Default: Story = {
     args: {
-        children: '10'
+        children: '10',
     },
-    render: renderTags
+    render: renderTags,
 };
 
 export const Success: Story = {
     args: {
         ...Default.args,
-        variant: 'success'
+        variant: 'success',
     },
-    render: renderTags
+    render: renderTags,
 };
 
 export const Warning: Story = {
     args: {
         ...Default.args,
-        variant: 'warning'
+        variant: 'warning',
     },
-    render: renderTags
+    render: renderTags,
 };
 
 export const ErrorVariant: Story = {
     name: 'error',
     args: {
         ...Default.args,
-        variant: 'error'
+        variant: 'error',
     },
-    render: renderTags
+    render: renderTags,
 };
 
 export const Info: Story = {
     args: {
         ...Default.args,
-        variant: 'info'
+        variant: 'info',
     },
-    render: renderTags
+    render: renderTags,
 };
 
 export const Gray: Story = {
     args: {
         ...Default.args,
-        variant: 'gray'
+        variant: 'gray',
     },
-    render: renderTags
+    render: renderTags,
 };
 
 const data: Data[] = [
     { id: 1, name: 'Item 1', status: 'Open', notification: 'Rejected' },
     { id: 2, name: 'Item 2', status: 'Closed', notification: null },
-    { id: 3, name: 'Item 3', status: 'Open', notification: 'Rejected' }
+    { id: 3, name: 'Item 3', status: 'Open', notification: 'Rejected' },
 ];
 
 const columns: Column[] = [
@@ -99,7 +99,7 @@ const columns: Column[] = [
                 </Tag>
             ) : (
                 row.status
-            )
+            ),
     },
     {
         id: 'notification',
@@ -111,13 +111,13 @@ const columns: Column[] = [
                 </Tag>
             ) : (
                 row.notification
-            )
-    }
+            ),
+    },
 ];
 
 export const TagInTableColumn: Story = {
     args: {
-        ...Default.args
+        ...Default.args,
     },
     render: () => {
         return (
@@ -125,5 +125,5 @@ export const TagInTableColumn: Story = {
                 <DataTable<Data> id={'tag-table'} columns={columns} data={data} />
             </div>
         );
-    }
+    },
 };

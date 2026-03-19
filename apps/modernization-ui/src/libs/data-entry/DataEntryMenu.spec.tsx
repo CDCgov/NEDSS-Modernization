@@ -3,8 +3,8 @@ import { DataEntryMenu } from './DataEntryMenu';
 
 let mockPermissions: string[] = [];
 
-jest.mock('user', () => ({
-    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+vi.mock('user', () => ({
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } }),
 }));
 
 describe('when displaying the Data entry menu', () => {

@@ -3,7 +3,6 @@ package gov.cdc.nbs.authentication.util;
 import gov.cdc.nbs.authentication.entity.AuthAudit;
 import gov.cdc.nbs.authentication.entity.AuthProgAreaAdmin;
 import gov.cdc.nbs.authentication.entity.AuthUser;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +28,7 @@ public class AuthObjectUtil {
 
   public static List<AuthProgAreaAdmin> progAreaAdmins(AuthUser user) {
     var adminAreas = new ArrayList<AuthProgAreaAdmin>();
-    adminAreas.add(
-        new AuthProgAreaAdmin(
-            null,
-            "progArea",
-            user,
-            'T',
-            audit()));
+    adminAreas.add(new AuthProgAreaAdmin(null, "progArea", user, 'T', audit()));
     return adminAreas;
   }
-
 }

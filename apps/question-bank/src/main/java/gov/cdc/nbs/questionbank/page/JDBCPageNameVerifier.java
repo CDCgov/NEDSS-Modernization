@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 class JDBCPageNameVerifier implements PageNameVerifier {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
       count(*)
       from WA_template
@@ -21,11 +22,9 @@ class JDBCPageNameVerifier implements PageNameVerifier {
 
   @Override
   public boolean isUnique(final String name) {
-    return this.template.query(
-            QUERY,
-            statement -> statement.setString(1, name),
-            (rs, row) -> rs.getLong(1)
-        ).stream()
+    return this.template
+        .query(QUERY, statement -> statement.setString(1, name), (rs, row) -> rs.getLong(1))
+        .stream()
         .filter(found -> found > 0)
         .findFirst()
         .isEmpty();

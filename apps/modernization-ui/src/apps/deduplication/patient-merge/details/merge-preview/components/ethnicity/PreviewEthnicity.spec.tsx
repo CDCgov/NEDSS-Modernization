@@ -28,13 +28,13 @@ const mockMergeCandidates: MergeCandidate[] = [
             asOf: '2023-01-02',
             ethnicity: 'White',
             reasonUnknown: '',
-            spanishOrigin: 'N/A'
+            spanishOrigin: 'N/A',
         },
         sexAndBirth: {},
         mortality: {},
         general: {},
         investigations: [],
-    }
+    },
 ];
 
 const mergeFormData: PatientMergeForm = {

@@ -8,7 +8,7 @@ import {
     Sex,
     Birth,
     Mortality,
-    GeneralInformation
+    GeneralInformation,
 } from 'apps/patient/data/api';
 import { Race } from 'apps/patient/data/race/api';
 

@@ -11,7 +11,7 @@ const asEthnicity = (entry: EthnicityEntry): Ethnicity | undefined => {
             asOf,
             ethnicGroup: asValue(ethnicGroup),
             detailed: asValues(detailed),
-            unknownReason: asValue(unknownReason)
+            unknownReason: asValue(unknownReason),
         };
     }
 };

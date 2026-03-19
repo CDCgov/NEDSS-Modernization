@@ -3,11 +3,10 @@ package gov.cdc.nbs.questionbank.page.classic;
 import gov.cdc.nbs.web.AddCookie;
 import gov.cdc.nbs.web.FindCookie;
 import gov.cdc.nbs.web.RemoveCookie;
-import org.springframework.http.HttpHeaders;
-
 import jakarta.servlet.http.Cookie;
 import java.util.Optional;
 import java.util.function.Consumer;
+import org.springframework.http.HttpHeaders;
 
 public record ReturningPageCookie(String page) {
 

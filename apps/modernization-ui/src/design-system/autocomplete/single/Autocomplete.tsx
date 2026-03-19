@@ -43,7 +43,7 @@ const Autocomplete = <V,>({
     asValue,
     asText,
     asSuggestion = renderSuggestion,
-    resolver
+    resolver,
 }: AutocompleteSingleProps<V> & { resolver: AutocompleteOptionsResolver }) => {
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -101,7 +101,8 @@ const Autocomplete = <V,>({
                 label={label}
                 htmlFor={id}
                 required={required}
-                error={error}>
+                error={error}
+            >
                 <TextInput
                     inputRef={inputRef}
                     className="usa-input"

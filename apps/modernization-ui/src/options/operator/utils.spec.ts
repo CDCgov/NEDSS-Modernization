@@ -3,7 +3,7 @@ import {
     asTextCriteria,
     asTextCriteriaOperator,
     asTextCriteriaOrString,
-    asTextCriteriaValue
+    asTextCriteriaValue,
 } from './utils';
 import { textOperators, defaultTextOperator } from './operators';
 import { Selectable } from 'options/selectable';
@@ -50,7 +50,7 @@ describe('utils', () => {
             const operator: Selectable = {
                 value: 'contains',
                 label: 'Contains',
-                name: ''
+                name: '',
             };
             expect(asTextCriteriaOrString(value, operator)).toEqual({ contains: value });
         });

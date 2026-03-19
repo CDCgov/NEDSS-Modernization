@@ -3,8 +3,7 @@ package gov.cdc.nbs.questionbank.question;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.util.Map;
-import org.springframework.test.web.servlet.ResultActions;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
@@ -20,6 +19,8 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.Map;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class CreateDateQuestionSteps {
   private final ObjectMapper mapper;
@@ -58,12 +59,14 @@ public class CreateDateQuestionSteps {
   @Then("the date question is created")
   public void the_date_question_is_create() throws Exception {
     Concept codeSystem =
-        conceptFinder.find("CODE_SYSTEM", dateRequest.getMessagingInfo().codeSystem()).orElseThrow();
-    response.active()
+        conceptFinder
+            .find("CODE_SYSTEM", dateRequest.getMessagingInfo().codeSystem())
+            .orElseThrow();
+    response
+        .active()
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.mask", equalTo(dateRequest.getMask().toString())))
         .andExpect(jsonPath("$.allowFutureDates", equalTo(dateRequest.isAllowFutureDates())))
-
         .andExpect(jsonPath("$.codeSet", equalTo(dateRequest.getCodeSet().toString())))
         .andExpect(jsonPath("$.uniqueId", equalTo(dateRequest.getUniqueId())))
         .andExpect(jsonPath("$.uniqueName", equalTo(dateRequest.getUniqueName())))
@@ -73,31 +76,49 @@ public class CreateDateQuestionSteps {
         .andExpect(jsonPath("$.type", equalTo("DATE")))
         .andExpect(jsonPath("$.label", equalTo(dateRequest.getLabel())))
         .andExpect(jsonPath("$.tooltip", equalTo(dateRequest.getTooltip())))
-        .andExpect(jsonPath("$.displayControl", equalTo(dateRequest.getDisplayControl().intValue())))
+        .andExpect(
+            jsonPath("$.displayControl", equalTo(dateRequest.getDisplayControl().intValue())))
         .andExpect(jsonPath("$.adminComments", equalTo(dateRequest.getAdminComments())))
         .andExpect(
-            jsonPath("$.dataMartInfo.defaultLabelInReport", equalTo(dateRequest.getDataMartInfo().reportLabel())))
-        .andExpect(jsonPath("$.dataMartInfo.defaultRdbTableName",
-            equalTo(dateRequest.getDataMartInfo().defaultRdbTableName())))
-        .andExpect(jsonPath("$.dataMartInfo.rdbColumnName",
-            equalTo(
-                dateRequest.getSubgroup() + "_" + dateRequest.getDataMartInfo().rdbColumnName().toUpperCase())))
+            jsonPath(
+                "$.dataMartInfo.defaultLabelInReport",
+                equalTo(dateRequest.getDataMartInfo().reportLabel())))
         .andExpect(
-            jsonPath("$.dataMartInfo.dataMartColumnName",
+            jsonPath(
+                "$.dataMartInfo.defaultRdbTableName",
+                equalTo(dateRequest.getDataMartInfo().defaultRdbTableName())))
+        .andExpect(
+            jsonPath(
+                "$.dataMartInfo.rdbColumnName",
+                equalTo(
+                    dateRequest.getSubgroup()
+                        + "_"
+                        + dateRequest.getDataMartInfo().rdbColumnName().toUpperCase())))
+        .andExpect(
+            jsonPath(
+                "$.dataMartInfo.dataMartColumnName",
                 equalTo(dateRequest.getDataMartInfo().dataMartColumnName())))
         .andExpect(
-            jsonPath("$.messagingInfo.includedInMessage",
+            jsonPath(
+                "$.messagingInfo.includedInMessage",
                 equalTo(dateRequest.getMessagingInfo().includedInMessage())))
         .andExpect(
-            jsonPath("$.messagingInfo.messageVariableId",
+            jsonPath(
+                "$.messagingInfo.messageVariableId",
                 equalTo(dateRequest.getMessagingInfo().messageVariableId())))
         .andExpect(
-            jsonPath("$.messagingInfo.labelInMessage", equalTo(dateRequest.getMessagingInfo().labelInMessage())))
+            jsonPath(
+                "$.messagingInfo.labelInMessage",
+                equalTo(dateRequest.getMessagingInfo().labelInMessage())))
         .andExpect(jsonPath("$.messagingInfo.codeSystem", equalTo(codeSystem.conceptName())))
         .andExpect(
-            jsonPath("$.messagingInfo.requiredInMessage",
+            jsonPath(
+                "$.messagingInfo.requiredInMessage",
                 equalTo(dateRequest.getMessagingInfo().requiredInMessage())))
-        .andExpect(jsonPath("$.messagingInfo.hl7DataType", equalTo(dateRequest.getMessagingInfo().hl7DataType())));
+        .andExpect(
+            jsonPath(
+                "$.messagingInfo.hl7DataType",
+                equalTo(dateRequest.getMessagingInfo().hl7DataType())));
   }
 
   private CreateDateQuestionRequest toCreateDateRequest(DataTable dataTable) {
@@ -117,24 +138,25 @@ public class CreateDateQuestionSteps {
     request.setMask(DateMask.valueOf(map.get("mask")));
     request.setAllowFutureDates("true".equals(map.get("allowFutureDates").toLowerCase()));
 
-    request.setDataMartInfo(new ReportingInfo(
-        map.get("reportLabel"),
-        map.get("defaultRdbTableName"),
-        map.get("rdbColumnName"),
-        map.get("dataMartColumnName")));
+    request.setDataMartInfo(
+        new ReportingInfo(
+            map.get("reportLabel"),
+            map.get("defaultRdbTableName"),
+            map.get("rdbColumnName"),
+            map.get("dataMartColumnName")));
 
     if ("false".equals(map.get("includedInMessage"))) {
       request.setMessagingInfo(new MessagingInfo(false, null, null, null, false, null));
     } else {
-      request.setMessagingInfo(new MessagingInfo(
-          "true".equals(map.get("includedInMessage").toLowerCase()),
-          map.get("messageVariableId"),
-          map.get("labelInMessage"),
-          map.get("codeSystem"),
-          "true".equals(map.get("requiredInMessage").toLowerCase()),
-          map.get("hl7DataType")));
+      request.setMessagingInfo(
+          new MessagingInfo(
+              "true".equals(map.get("includedInMessage").toLowerCase()),
+              map.get("messageVariableId"),
+              map.get("labelInMessage"),
+              map.get("codeSystem"),
+              "true".equals(map.get("requiredInMessage").toLowerCase()),
+              map.get("hl7DataType")));
     }
     return request;
   }
-
 }

@@ -1,12 +1,7 @@
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from pandas import DataFrame
 from pydantic import BaseModel, ConfigDict, PlainSerializer
-
-
-def serialize_dataframe(df: DataFrame) -> str:
-    """Turn a dataframe into a CSV for returning to the user."""
-    return df.to_csv(index=False)
 
 
 class TimeRange(BaseModel):
@@ -29,6 +24,22 @@ class ReportSpec(BaseModel):
     time_range: TimeRange | None = None
 
 
+# column names and values
+class Table(BaseModel):
+    """Basic tabular data format."""
+
+    columns: list[str]
+    data: list[tuple[Any, ...]]
+
+
+def serialize_table(table: Table) -> str:
+    """Turn a Table into a CSV for returning to the user."""
+    # Short cut to valid CSV - can swap out later if performance dictates
+    # or serialize to CSV at a different location
+    df = DataFrame.from_records(table.data, columns=table.columns)
+    return df.to_csv(index=False)
+
+
 # TODO: add other return types  # noqa: FIX002
 class ReportResult(BaseModel):
     """Report execution result."""
@@ -36,5 +47,7 @@ class ReportResult(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     content_type: Literal['table']
-    content: Annotated[DataFrame, PlainSerializer(serialize_dataframe)]
-    description: str | None
+    content: Annotated[Table, PlainSerializer(serialize_table)]
+    header: str | None = None
+    subheader: str | None = None
+    description: str | None = None

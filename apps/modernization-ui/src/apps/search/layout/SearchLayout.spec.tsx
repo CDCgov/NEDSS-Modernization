@@ -7,41 +7,41 @@ import { FilterProvider } from 'design-system/filter/useFilter';
 import userEvent from '@testing-library/user-event';
 import { ReactNode } from 'react';
 
-jest.mock('pagination', () => ({
+vi.mock('pagination', () => ({
     usePagination: () => ({
         page: {
             status: 0,
             pageSize: 1,
             total: 1,
-            current: 1
+            current: 1,
         },
-        firstPage: jest.fn(),
-        reload: jest.fn(),
-        request: jest.fn(),
-        ready: jest.fn(),
-        resize: jest.fn(),
-        reset: jest.fn()
-    })
+        firstPage: vi.fn(),
+        reload: vi.fn(),
+        request: vi.fn(),
+        ready: vi.fn(),
+        resize: vi.fn(),
+        reset: vi.fn(),
+    }),
 }));
 
-jest.mock('libs/sorting', () => ({
+vi.mock('libs/sorting', () => ({
     useSorting: () => ({
-        reset: jest.fn(),
-        sortBy: jest.fn(),
-        toggle: jest.fn()
-    })
+        reset: vi.fn(),
+        sortBy: vi.fn(),
+        toggle: vi.fn(),
+    }),
 }));
 
-jest.mock('apps/search', () => ({
+vi.mock('apps/search', () => ({
     useSearchResultDisplay: () => ({
-        view: 'list'
+        view: 'list',
     }),
     useSearchInteraction: () => ({ status: 'no-input', results: { total: 1, terms: [] } }),
     useFilter: () => ({
         filterable: false,
-        toggleFilterable: jest.fn(),
-        applyFilter: jest.fn()
-    })
+        toggleFilterable: vi.fn(),
+        applyFilter: vi.fn(),
+    }),
 }));
 
 type FixtureProps = {
@@ -56,11 +56,11 @@ const Fixture = ({ criteria, searchEnabled, onSearch }: FixtureProps) => (
             <SearchResultDisplayProvider>
                 <FilterProvider>
                     <SearchLayout
-                        criteria={criteria ?? jest.fn()}
-                        resultsAsList={jest.fn()}
-                        resultsAsTable={jest.fn()}
-                        onSearch={onSearch ?? jest.fn()}
-                        onClear={jest.fn()}
+                        criteria={criteria ?? vi.fn()}
+                        resultsAsList={vi.fn()}
+                        resultsAsTable={vi.fn()}
+                        onSearch={onSearch ?? vi.fn()}
+                        onClear={vi.fn()}
                         searchEnabled={searchEnabled}
                     />
                 </FilterProvider>
@@ -77,7 +77,7 @@ describe('SearchLayout', () => {
 
     it('calls onSearch when Enter is pressed on an input and searchEnabled is true', async () => {
         const user = userEvent.setup();
-        const onSearch = jest.fn();
+        const onSearch = vi.fn();
         const { getByRole } = render(
             <Fixture criteria={() => <input type="text" />} searchEnabled={true} onSearch={onSearch} />
         );
@@ -90,7 +90,7 @@ describe('SearchLayout', () => {
 
     it('calls onSearch when Enter is pressed on an select and searchEnabled is true', async () => {
         const user = userEvent.setup();
-        const onSearch = jest.fn();
+        const onSearch = vi.fn();
         const { getByRole } = render(<Fixture criteria={() => <select />} searchEnabled={true} onSearch={onSearch} />);
         const select = getByRole('combobox');
         select.focus();
@@ -100,7 +100,7 @@ describe('SearchLayout', () => {
 
     it('does not call onSearch when Enter is pressed on a button and searchEnabled is false', async () => {
         const user = userEvent.setup();
-        const onSearch = jest.fn();
+        const onSearch = vi.fn();
         const { getByRole } = render(
             <Fixture criteria={() => <input type="text" />} searchEnabled={false} onSearch={onSearch} />
         );

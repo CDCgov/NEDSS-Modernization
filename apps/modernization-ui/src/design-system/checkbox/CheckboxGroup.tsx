@@ -32,7 +32,7 @@ export const CheckboxGroup = ({
     error,
     required,
     orientation = 'vertical',
-    sizing
+    sizing,
 }: Props) => {
     const { items, selected, select, deselect, reset } = useMultiSelection({ available: options });
 
@@ -57,23 +57,25 @@ export const CheckboxGroup = ({
     return (
         <Field
             className={classNames(styles.checkboxGroup, {
-                [styles.horizontalCheckboxGroup]: orientation === 'horizontal'
+                [styles.horizontalCheckboxGroup]: orientation === 'horizontal',
             })}
             orientation={orientation}
             sizing={sizing}
             label={label}
             htmlFor={name}
             required={required}
-            error={error}>
+            error={error}
+        >
             <fieldset
                 className={classNames(
                     {
                         [styles.verticalOptions]: orientation === 'vertical',
-                        [styles.horizontalOptions]: orientation === 'horizontal'
+                        [styles.horizontalOptions]: orientation === 'horizontal',
                     },
                     styles.fieldSet
                 )}
-                aria-label={label}>
+                aria-label={label}
+            >
                 {items.map((item, index) => (
                     <SelectableCheckbox
                         name={name}

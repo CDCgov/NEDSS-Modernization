@@ -5,5 +5,4 @@ import gov.cdc.nbs.configuration.settings.defautls.Defaults;
 import gov.cdc.nbs.configuration.settings.session.Session;
 import gov.cdc.nbs.configuration.settings.smarty.Smarty;
 
-public record Settings(Smarty smarty, Analytics analytics, Defaults defaults, Session session) {
-}
+public record Settings(Smarty smarty, Analytics analytics, Defaults defaults, Session session) {}

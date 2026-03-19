@@ -2,10 +2,10 @@ import { internalizeDate } from 'date';
 import { validateDateEntry } from './validateDateEntry';
 import { add } from 'date-fns';
 
-const mockNow = jest.fn();
+const mockNow = vi.fn();
 
-jest.mock('./clock', () => ({
-    now: () => mockNow()
+vi.mock('./clock', () => ({
+    now: () => mockNow(),
 }));
 
 describe('when validating a date entered in parts', () => {
@@ -49,7 +49,7 @@ describe('when validating a date entered in parts', () => {
 
             const actual = validateDateEntry('Date in the future')({
                 month: 6,
-                year: 2017
+                year: 2017,
             });
 
             expect(actual).toContain('The Date in the future cannot be after 05/23/2017.');
@@ -96,7 +96,7 @@ describe('when validating a date entered in parts', () => {
             const tomorrow = add(today, { years: 1 });
 
             const actual = validateDateEntry('Date in the future')({
-                year: tomorrow.getFullYear()
+                year: tomorrow.getFullYear(),
             });
 
             expect(actual).toContain('The Date in the future should occur before or within the current year.');
@@ -110,7 +110,7 @@ describe('when validating a date entered in parts', () => {
             const next = {
                 year: 2021,
                 month: 8,
-                day: 20
+                day: 20,
             };
 
             const actual = validateDateEntry('Date in the future')(next);

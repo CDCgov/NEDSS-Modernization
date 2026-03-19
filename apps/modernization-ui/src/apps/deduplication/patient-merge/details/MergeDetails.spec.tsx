@@ -12,13 +12,13 @@ const mockResponse: MergeCandidate[] = [
         addTime: '2022-05-19 18:34:42.363', // oldest record
         adminComments: {
             date: '',
-            comment: 'abc'
+            comment: 'abc',
         },
         ethnicity: {
             asOf: '2025-05-30T00:00:00',
             ethnicity: 'Hispanic or Latino',
             reasonUnknown: undefined,
-            spanishOrigin: 'Central American | Cuban'
+            spanishOrigin: 'Central American | Cuban',
         },
         sexAndBirth: {
             asOf: '2022-06-07T00:00:00',
@@ -33,7 +33,7 @@ const mockResponse: MergeCandidate[] = [
             birthCity: undefined,
             birthState: undefined,
             birthCounty: undefined,
-            birthCountry: undefined
+            birthCountry: undefined,
         },
         mortality: {
             asOf: '2025-06-09T00:00:00',
@@ -42,7 +42,7 @@ const mockResponse: MergeCandidate[] = [
             deathCity: undefined,
             deathState: undefined,
             deathCounty: undefined,
-            deathCountry: undefined
+            deathCountry: undefined,
         },
         general: {
             asOf: '2022-06-07T00:00:00',
@@ -54,7 +54,7 @@ const mockResponse: MergeCandidate[] = [
             educationLevel: undefined,
             primaryLanguage: undefined,
             speaksEnglish: undefined,
-            stateHivCaseId: undefined
+            stateHivCaseId: undefined,
         },
         investigations: [],
         addresses: [
@@ -71,8 +71,8 @@ const mockResponse: MergeCandidate[] = [
                 county: undefined,
                 censusTract: undefined,
                 country: 'United States',
-                comments: undefined
-            }
+                comments: undefined,
+            },
         ],
         phoneEmails: [
             {
@@ -85,7 +85,7 @@ const mockResponse: MergeCandidate[] = [
                 extension: undefined,
                 email: undefined,
                 url: undefined,
-                comments: undefined
+                comments: undefined,
             },
             {
                 id: '10052301',
@@ -97,8 +97,8 @@ const mockResponse: MergeCandidate[] = [
                 extension: undefined,
                 email: undefined,
                 url: undefined,
-                comments: undefined
-            }
+                comments: undefined,
+            },
         ],
         names: [
             {
@@ -113,8 +113,8 @@ const mockResponse: MergeCandidate[] = [
                 last: 'WESLEY',
                 secondLast: undefined,
                 suffix: undefined,
-                degree: undefined
-            }
+                degree: undefined,
+            },
         ],
         identifications: [
             {
@@ -123,7 +123,7 @@ const mockResponse: MergeCandidate[] = [
                 asOf: '2018-04-18T00:00:00',
                 type: 'WIC identifier',
                 assigningAuthority: 'NH',
-                value: 'WIC123'
+                value: 'WIC123',
             },
             {
                 personUid: '10052298',
@@ -131,8 +131,8 @@ const mockResponse: MergeCandidate[] = [
                 asOf: '2025-05-28T00:00:00',
                 type: 'Account number',
                 assigningAuthority: '',
-                value: '23123132'
-            }
+                value: '23123132',
+            },
         ],
         races: [
             {
@@ -140,16 +140,16 @@ const mockResponse: MergeCandidate[] = [
                 raceCode: '2028-9',
                 asOf: '2025-05-28T00:00:00',
                 race: 'Asian',
-                detailedRaces: 'Asian Indian | Bangladeshi | Bhutanese | Burmese'
+                detailedRaces: 'Asian Indian | Bangladeshi | Bhutanese | Burmese',
             },
             {
                 personUid: '10052298',
                 raceCode: '2106-3',
                 asOf: '2022-06-07T00:00:00',
                 race: 'White',
-                detailedRaces: 'European | Middle Eastern or North African'
-            }
-        ]
+                detailedRaces: 'European | Middle Eastern or North African',
+            },
+        ],
     },
     {
         personLocalId: '91000',
@@ -157,13 +157,13 @@ const mockResponse: MergeCandidate[] = [
         addTime: '2025-05-27 14:56:50.523',
         adminComments: {
             date: '2025-05-27T00:00',
-            comment: 'Some admin comment goes here'
+            comment: 'Some admin comment goes here',
         },
         ethnicity: {
             asOf: undefined,
             ethnicity: undefined,
             reasonUnknown: undefined,
-            spanishOrigin: undefined
+            spanishOrigin: undefined,
         },
         sexAndBirth: {
             asOf: '2025-06-05T00:00:00',
@@ -178,7 +178,7 @@ const mockResponse: MergeCandidate[] = [
             birthCity: 'Birth City',
             birthState: 'Tennessee',
             birthCounty: 'Monroe County',
-            birthCountry: 'United States'
+            birthCountry: 'United States',
         },
         mortality: {
             asOf: '2025-06-05T00:00:00',
@@ -187,7 +187,7 @@ const mockResponse: MergeCandidate[] = [
             deathCity: 'Death city',
             deathState: 'Texas',
             deathCounty: 'Anderson County',
-            deathCountry: 'Afghanistan'
+            deathCountry: 'Afghanistan',
         },
         general: {
             asOf: '2025-06-05T00:00:00',
@@ -199,19 +199,19 @@ const mockResponse: MergeCandidate[] = [
             educationLevel: '10th grade',
             primaryLanguage: 'Eastern Frisian',
             speaksEnglish: 'Yes',
-            stateHivCaseId: undefined
+            stateHivCaseId: undefined,
         },
         investigations: [
             {
                 id: 'CAS10001000GA01',
                 startDate: '2025-06-05T00:00:00',
-                condition: '2019 Novel Coronavirus'
+                condition: '2019 Novel Coronavirus',
             },
             {
                 id: 'CAS10001001GA01',
                 startDate: undefined,
-                condition: 'Cholera'
-            }
+                condition: 'Cholera',
+            },
         ],
         addresses: [
             {
@@ -227,7 +227,7 @@ const mockResponse: MergeCandidate[] = [
                 county: undefined,
                 censusTract: undefined,
                 country: undefined,
-                comments: undefined
+                comments: undefined,
             },
             {
                 id: '10055292',
@@ -242,7 +242,7 @@ const mockResponse: MergeCandidate[] = [
                 county: 'Atkinson County',
                 censusTract: '0111',
                 country: 'United States',
-                comments: 'Address comment 1'
+                comments: 'Address comment 1',
             },
             {
                 id: '10056288',
@@ -257,7 +257,7 @@ const mockResponse: MergeCandidate[] = [
                 county: 'Atkinson County',
                 censusTract: undefined,
                 country: 'United States',
-                comments: undefined
+                comments: undefined,
             },
             {
                 id: '10056294',
@@ -272,8 +272,8 @@ const mockResponse: MergeCandidate[] = [
                 county: 'Atkinson County',
                 censusTract: undefined,
                 country: 'United States',
-                comments: undefined
-            }
+                comments: undefined,
+            },
         ],
         phoneEmails: [
             {
@@ -286,7 +286,7 @@ const mockResponse: MergeCandidate[] = [
                 extension: '1',
                 email: 'oneEmail@email.com',
                 url: '1Url.com',
-                comments: '1 phone comment'
+                comments: '1 phone comment',
             },
             {
                 id: '10055293',
@@ -298,8 +298,8 @@ const mockResponse: MergeCandidate[] = [
                 extension: undefined,
                 email: undefined,
                 url: undefined,
-                comments: undefined
-            }
+                comments: undefined,
+            },
         ],
         names: [
             {
@@ -314,8 +314,8 @@ const mockResponse: MergeCandidate[] = [
                 last: 'Smith',
                 secondLast: '2Last',
                 suffix: 'Esquire',
-                degree: 'PHD'
-            }
+                degree: 'PHD',
+            },
         ],
         identifications: [
             {
@@ -324,7 +324,7 @@ const mockResponse: MergeCandidate[] = [
                 asOf: '2025-05-28T00:00:00',
                 type: 'Account number',
                 assigningAuthority: 'AZ',
-                value: '444111'
+                value: '444111',
             },
             {
                 personUid: '10055283',
@@ -332,8 +332,8 @@ const mockResponse: MergeCandidate[] = [
                 asOf: '2025-05-05T00:00:00',
                 type: "Driver's license number",
                 assigningAuthority: 'TN',
-                value: '001111'
-            }
+                value: '001111',
+            },
         ],
         races: [
             {
@@ -341,16 +341,16 @@ const mockResponse: MergeCandidate[] = [
                 raceCode: '2106-3',
                 asOf: '2025-05-27T00:00:00',
                 race: 'White',
-                detailedRaces: 'European'
+                detailedRaces: 'European',
             },
             {
                 personUid: '10055283',
                 raceCode: '2106-3',
                 asOf: '2025-06-05T00:00:00',
                 race: 'White',
-                detailedRaces: undefined
-            }
-        ]
+                detailedRaces: undefined,
+            },
+        ],
     },
     {
         personUid: '000123',
@@ -358,13 +358,13 @@ const mockResponse: MergeCandidate[] = [
         addTime: '2025-05-27 14:56:50.523',
         adminComments: {
             date: '2025-05-27T00:00',
-            comment: 'Some admin comment goes here'
+            comment: 'Some admin comment goes here',
         },
         ethnicity: {
             asOf: undefined,
             ethnicity: undefined,
             reasonUnknown: undefined,
-            spanishOrigin: undefined
+            spanishOrigin: undefined,
         },
         sexAndBirth: {
             asOf: '2025-06-05T00:00:00',
@@ -379,7 +379,7 @@ const mockResponse: MergeCandidate[] = [
             birthCity: 'Birth City',
             birthState: 'Tennessee',
             birthCounty: 'Monroe County',
-            birthCountry: 'United States'
+            birthCountry: 'United States',
         },
         mortality: {
             asOf: '2025-06-05T00:00:00',
@@ -388,7 +388,7 @@ const mockResponse: MergeCandidate[] = [
             deathCity: 'Death city',
             deathState: 'Texas',
             deathCounty: 'Anderson County',
-            deathCountry: 'Afghanistan'
+            deathCountry: 'Afghanistan',
         },
         general: {
             asOf: '2025-06-05T00:00:00',
@@ -400,7 +400,7 @@ const mockResponse: MergeCandidate[] = [
             educationLevel: '10th grade',
             primaryLanguage: 'Eastern Frisian',
             speaksEnglish: 'Yes',
-            stateHivCaseId: undefined
+            stateHivCaseId: undefined,
         },
         investigations: [],
         addresses: [],
@@ -418,7 +418,7 @@ const mockResponse: MergeCandidate[] = [
                 last: 'Match',
                 secondLast: '2Last',
                 suffix: 'Esquire',
-                degree: 'PHD'
+                degree: 'PHD',
             },
             {
                 personUid: '10055283',
@@ -432,27 +432,27 @@ const mockResponse: MergeCandidate[] = [
                 last: 'Doe',
                 secondLast: '2Last',
                 suffix: 'Esquire',
-                degree: 'PHD'
-            }
+                degree: 'PHD',
+            },
         ],
         identifications: [],
-        races: []
-    }
+        races: [],
+    },
 ];
 
-const mockFetch = jest.fn();
+const mockFetch = vi.fn();
 let mockLoading = false;
-jest.mock('apps/deduplication/api/useMergeDetails', () => ({
+vi.mock('apps/deduplication/api/useMergeDetails', () => ({
     useMergeDetails: () => {
         return { fetchPatientMergeDetails: mockFetch, loading: mockLoading, response: mockResponse };
-    }
+    },
 }));
 
-const mockRemovePatient = jest.fn();
-jest.mock('apps/deduplication/api/useRemoveMerge', () => ({
+const mockRemovePatient = vi.fn();
+vi.mock('apps/deduplication/api/useRemoveMerge', () => ({
     useRemoveMerge: () => {
         return { removePatient: mockRemovePatient };
-    }
+    },
 }));
 
 const Fixture = () => {
@@ -517,7 +517,7 @@ describe('MergeDetails', () => {
         // modal should pop up
         expect(getByText('Remove from group')).toBeInTheDocument();
 
-        //click confirm
+        // click confirm
         await user.click(getAllByText('Remove')[2]);
 
         // api called

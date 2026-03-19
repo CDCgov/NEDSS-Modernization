@@ -6,17 +6,17 @@ import { PhoneEmailEntryFields } from './PhoneEmailEntryFields';
 
 const mockPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
-    uses: [{ name: 'Home', value: 'H' }]
+    uses: [{ name: 'Home', value: 'H' }],
 };
 
-jest.mock('./usePhoneCodedValues', () => ({
-    usePhoneCodedValues: () => mockPhoneCodedValues
+vi.mock('./usePhoneCodedValues', () => ({
+    usePhoneCodedValues: () => mockPhoneCodedValues,
 }));
 
 const Fixture = () => {
     const form = useForm<PhoneEmailEntry>({
         mode: 'onBlur',
-        defaultValues: initial()
+        defaultValues: initial(),
     });
     return (
         <FormProvider {...form}>
@@ -83,7 +83,10 @@ describe('when entering patient phone & email demographics', () => {
 
         const dateInput = getByLabelText('Phone & email as of');
 
-        expect(dateInput).toHaveAttribute('aria-description', 'This date defaults to today and can be changed if needed');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            'This date defaults to today and can be changed if needed'
+        );
     });
 
     it('should be valid with as of, type, and use', async () => {
@@ -125,7 +128,7 @@ describe('when entering patient phone & email demographics', () => {
         { value: '01234567901234567' },
         { value: '012345679012345678' },
         { value: '012345679012345679' },
-        { value: '0123456790123456790' }
+        { value: '0123456790123456790' },
     ])('should allow country codes up to 20 characters: $value', async ({ value }) => {
         const { getByLabelText, queryByText } = render(<Fixture />);
         const user = userEvent.setup();
@@ -165,7 +168,7 @@ describe('when entering patient phone & email demographics', () => {
         { value: '01234567901234567' },
         { value: '012345679012345678' },
         { value: '012345679012345679' },
-        { value: '0123456790123456790' }
+        { value: '0123456790123456790' },
     ])('should allow extensions up to 20 characters: $value', async ({ value }) => {
         const { getByLabelText, queryByText } = render(<Fixture />);
         const user = userEvent.setup();

@@ -35,7 +35,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...DATE_NAMED, moveable: true, toggleable: true },
     { ...NAME, moveable: true, toggleable: true },
     { ...DESCRIPTION, moveable: true, toggleable: true },
-    { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
+    { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
 ];
 
 const displayReferralBasis = maybeMap((value) => ` (${value})`);
@@ -53,7 +53,8 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
                     sizing="small"
                     className={styles['event-id']}
                     url={`/nbs/api/profile/${value.patient}/contact/${value.identifier}?condition=${value.condition}`}
-                    onClose={onClose}>
+                    onClose={onClose}
+                >
                     {value.local}
                 </ClassicModalButton>
                 <br />
@@ -62,7 +63,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
                     {displayReferralBasis(value.referralBasis)}
                 </strong>
             </>
-        )
+        ),
     },
     {
         ...DATE_CREATED,
@@ -70,21 +71,21 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
         sortable: true,
         value: (value) => value.createdOn,
         render: (value) => internalizeDateTime(value.createdOn),
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...DATE_NAMED,
         className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.namedOn,
-        render: (value) => internalizeDate(value.namedOn)
+        render: (value) => internalizeDate(value.namedOn),
     },
     {
         ...NAME,
         className: styles['text-header'],
         sortable: true,
         value: (value) => maybeDisplayName(value.named),
-        render: (value) => <NavLink to={`/patient/${value.named.patientId}`}>{maybeDisplayName(value.named)}</NavLink>
+        render: (value) => <NavLink to={`/patient/${value.named.patientId}`}>{maybeDisplayName(value.named)}</NavLink>,
     },
     {
         ...DESCRIPTION,
@@ -93,7 +94,8 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
         render: (value) => (
             <Shown
                 when={exists(value.associated) || exists(value.priority) || exists(value.disposition)}
-                fallback={displayNoData()}>
+                fallback={displayNoData()}
+            >
                 <Shown when={exists(value.associated)}>
                     <strong>{value.associated?.condition}</strong>
                 </Shown>
@@ -104,7 +106,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
                     {value.disposition}
                 </MaybeLabeledValue>
             </Shown>
-        )
+        ),
     },
     {
         ...ASSOCIATED_WITH,
@@ -112,8 +114,8 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
         sortable: true,
         value: (value) => value.associated?.local,
         render: (value) =>
-            value.associated && <AssociatedWith patient={value.patient}>{value.associated}</AssociatedWith>
-    }
+            value.associated && <AssociatedWith patient={value.patient}>{value.associated}</AssociatedWith>,
+    },
 ];
 
 type TitleResolver = (condition: string) => string;
@@ -138,7 +140,8 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
                     open={data.length > 0}
                     flair={<Tag size={sizing}>{total}</Tag>}
                     className={styles.card}
-                    actions={<ColumnPreferencesAction sizing={sizing} />}>
+                    actions={<ColumnPreferencesAction sizing={sizing} />}
+                >
                     <Shown when={data.length > 0} fallback={<Empty />}>
                         <div className={styles.content}>
                             {data.map((contact) => (
@@ -148,7 +151,8 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
                                     id={`${contact.condition}-${title}`}
                                     sizing={sizing}
                                     className={styles.card}
-                                    subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}>
+                                    subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}
+                                >
                                     <SortableDataTable
                                         columns={apply.apply(columns(onClose))}
                                         data={contact.contacts}
@@ -187,7 +191,8 @@ const ContactsCard = ({ provider, ...remaining }: ContactsCardProps) => {
                 <LoadingOverlay>
                     <InternalCard {...remaining} onClose={handleClose} />
                 </LoadingOverlay>
-            }>
+            }
+        >
             <Await resolve={provider?.get()}>
                 {(data) => <InternalCard data={data} onClose={handleClose} {...remaining} />}
             </Await>

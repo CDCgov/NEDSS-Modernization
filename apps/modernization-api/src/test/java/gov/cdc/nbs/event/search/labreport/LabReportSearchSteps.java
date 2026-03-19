@@ -21,8 +21,7 @@ public class LabReportSearchSteps {
       final Active<LabReportFilter> criteria,
       final Active<Pageable> paging,
       final Active<SortCriteria> sorting,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.requester = requester;
     this.criteria = criteria;
     this.paging = paging;
@@ -30,19 +29,8 @@ public class LabReportSearchSteps {
     this.response = response;
   }
 
-
-
   @When("I search for lab reports")
   public void i_search_for_lab_reports() {
-    this.response.active(
-        requester.search(
-            criteria.active(),
-            paging.active(),
-            sorting.active()
-        )
-    );
+    this.response.active(requester.search(criteria.active(), paging.active(), sorting.active()));
   }
-
-
-
 }

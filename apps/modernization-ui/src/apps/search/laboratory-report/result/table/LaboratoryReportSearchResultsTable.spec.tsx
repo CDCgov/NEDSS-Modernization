@@ -5,13 +5,13 @@ import { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResu
 import { Selectable } from 'options';
 import { Column } from 'design-system/table';
 
-jest.mock('design-system/table/preferences', () => ({
-    useColumnPreferences: () => ({ apply: (columns: Column<LabReport>[]) => columns })
+vi.mock('design-system/table/preferences', () => ({
+    useColumnPreferences: () => ({ apply: (columns: Column<LabReport>[]) => columns }),
 }));
 
 const Wrapper = ({
     results,
-    jurisdictionResolver = jest.fn()
+    jurisdictionResolver = vi.fn(),
 }: {
     results: LabReport[];
     jurisdictionResolver?: (value: string) => Selectable | undefined;
@@ -52,13 +52,13 @@ describe('When a Laboratory Report search result is viewed in a table', () => {
                     {
                         __typename: 'AssociatedInvestigation',
                         cdDescTxt: 'Bacterial Vaginosis',
-                        localId: 'CAS10001001GA01'
+                        localId: 'CAS10001001GA01',
                     },
                     {
                         __typename: 'AssociatedInvestigation',
                         cdDescTxt: 'Bacterial Vaginosis',
-                        localId: 'CAS10001001GA01'
-                    }
+                        localId: 'CAS10001001GA01',
+                    },
                 ],
                 id: '10000013',
                 jurisdictionCd: 130006,
@@ -69,22 +69,22 @@ describe('When a Laboratory Report search result is viewed in a table', () => {
                         cdDescTxt: 'No Information Given',
                         statusCd: null,
                         altCd: null,
-                        displayName: null
+                        displayName: null,
                     },
                     {
                         __typename: 'Observation',
                         cdDescTxt: '11-Desoxycortisol',
                         statusCd: null,
                         altCd: '1657-6',
-                        displayName: 'abnormal'
-                    }
+                        displayName: 'abnormal',
+                    },
                 ],
                 organizationParticipations: [
                     {
                         __typename: 'LabReportOrganizationParticipation',
                         typeCd: 'AUT',
-                        name: 'Emory University Hospital'
-                    }
+                        name: 'Emory University Hospital',
+                    },
                 ],
                 personParticipations: [
                     {
@@ -96,7 +96,7 @@ describe('When a Laboratory Report search result is viewed in a table', () => {
                         lastName: 'Singh',
                         personCd: 'PAT',
                         personParentUid: 10000001,
-                        shortId: 63000
+                        shortId: 63000,
                     },
                     {
                         __typename: 'LabReportPersonParticipation',
@@ -107,20 +107,20 @@ describe('When a Laboratory Report search result is viewed in a table', () => {
                         lastName: 'Henry',
                         personCd: 'PRV',
                         personParentUid: 10000001,
-                        shortId: 63000
-                    }
+                        shortId: 63000,
+                    },
                 ],
                 tests: [
                     {
                         name: '11-Desoxycortisol',
-                        coded: 'abnormal'
-                    }
+                        coded: 'abnormal',
+                    },
                 ],
-                relevance: 1
-            }
+                relevance: 1,
+            },
         ];
 
-        const jurisdictionResolver = jest.fn();
+        const jurisdictionResolver = vi.fn();
 
         jurisdictionResolver.mockReturnValue({ name: 'Gwinnett County' });
 

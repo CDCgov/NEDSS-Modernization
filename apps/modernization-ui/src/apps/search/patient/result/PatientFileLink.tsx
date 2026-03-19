@@ -15,7 +15,8 @@ const PatientFileLink = ({ identifier, patientId, children }: PatientFileLinkPro
         <Permitted permission="VIEWWORKUP-PATIENT" fallback={display}>
             <FeatureToggle
                 guard={(features) => features?.patient?.file.enabled}
-                fallback={<NBS6PatientFile identifier={identifier}>{display}</NBS6PatientFile>}>
+                fallback={<NBS6PatientFile identifier={identifier}>{display}</NBS6PatientFile>}
+            >
                 <ModernizePatientFile patientId={patientId}>{display}</ModernizePatientFile>
             </FeatureToggle>
         </Permitted>

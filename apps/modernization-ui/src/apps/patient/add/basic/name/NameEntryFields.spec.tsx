@@ -8,11 +8,11 @@ const mockPatientNameCodedValues = {
     types: [{ name: 'Adopted name', value: 'AN' }],
     prefixes: [{ name: 'Miss', value: 'MS' }],
     suffixes: [{ name: 'Sr.', value: 'SR' }],
-    degrees: [{ name: 'BA', value: 'BA' }]
+    degrees: [{ name: 'BA', value: 'BA' }],
 };
 
-jest.mock('apps/patient/data/name/useNameCodedValues', () => ({
-    useNameCodedValues: () => mockPatientNameCodedValues
+vi.mock('apps/patient/data/name/useNameCodedValues', () => ({
+    useNameCodedValues: () => mockPatientNameCodedValues,
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
@@ -22,8 +22,8 @@ const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
             first: undefined,
             middle: undefined,
             last: undefined,
-            suffix: undefined
-        }
+            suffix: undefined,
+        },
     });
 
     return (

@@ -12,7 +12,5 @@ class PatientStatusCriteriaResolver {
     };
   }
 
-  private PatientStatusCriteriaResolver() {
-  }
-
+  private PatientStatusCriteriaResolver() {}
 }

@@ -11,12 +11,12 @@ export const PassConfigurationTable = ({ algorithm }: Props) => {
         {
             id: 'pass-name',
             name: 'Pass name',
-            render: (pass) => pass.name
+            render: (pass) => pass.name,
         },
         {
             id: 'pass-description',
             name: 'Description',
-            render: (pass) => pass.description
+            render: (pass) => pass.description,
         },
         {
             id: 'pass-blocking-criteria',
@@ -29,7 +29,7 @@ export const PassConfigurationTable = ({ algorithm }: Props) => {
                         ))}
                     </>
                 );
-            }
+            },
         },
         {
             id: 'pass-matchin-criteria',
@@ -44,23 +44,23 @@ export const PassConfigurationTable = ({ algorithm }: Props) => {
                         ))}
                     </>
                 );
-            }
+            },
         },
         {
             id: 'pass-lower-bounds',
             name: 'Lower bounds',
-            render: (pass) => pass.lowerBound
+            render: (pass) => pass.lowerBound,
         },
         {
             id: 'pass-upper-bounds',
             name: 'Upper bounds',
-            render: (pass) => pass.upperBound
+            render: (pass) => pass.upperBound,
         },
         {
             id: 'pass-active',
             name: 'Active',
-            render: (pass) => (pass.active ? 'Yes' : 'No')
-        }
+            render: (pass) => (pass.active ? 'Yes' : 'No'),
+        },
     ];
     return (
         <Card id="pass-configuration-card" title="Pass configurations">

@@ -33,7 +33,7 @@ const PatientFileProvider = ({ data, children }: PatientProviderProps) => {
 
     const interaction = {
         ...value,
-        refresh
+        refresh,
     };
 
     return <PatientContext.Provider value={interaction}>{children}</PatientContext.Provider>;

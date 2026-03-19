@@ -1,86 +1,88 @@
 import { ReactNode, act } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { SearchResultSettings, useSearchResults } from './useSearchResults';
-import { Page } from 'pagination';
+import { Page, Status as PageStatus } from 'pagination';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 import { Filter } from 'design-system/filter';
 
 let mockCriteria: Criteria | undefined = undefined;
-const mockClearCriteria = jest.fn();
-const mockChangeCriteria = jest.fn();
+const mockClearCriteria = vi.fn();
+const mockChangeCriteria = vi.fn();
 
-jest.mock('./useSearchCriteria', () => ({
+vi.mock('./useSearchCriteria', () => ({
     useSearchCriteria: () => ({
         criteria: mockCriteria,
         clear: mockClearCriteria,
-        change: mockChangeCriteria
-    })
+        change: mockChangeCriteria,
+    }),
 }));
 
-const { Status: PageStatus } = jest.requireActual('pagination');
+vi.mock(import('pagination'), async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+        ...actual,
+        usePagination: () => ({
+            page: mockPage,
+            firstPage: mockFirstPage,
+            reload: mockReload,
+            request: mockRequest,
+            ready: mockReady,
+            resize: mockResize,
+            reset: mockPageReset,
+        }),
+    };
+});
 
 const mockPage: Page = {
     status: PageStatus.Ready,
     pageSize: 5,
     total: 7,
-    current: 11
+    current: 11,
 };
 
-const mockFirstPage = jest.fn();
-const mockReload = jest.fn();
-const mockRequest = jest.fn();
-const mockReady = jest.fn();
-const mockResize = jest.fn();
-const mockPageReset = jest.fn();
+const mockFirstPage = vi.fn();
+const mockReload = vi.fn();
+const mockRequest = vi.fn();
+const mockReady = vi.fn();
+const mockResize = vi.fn();
+const mockPageReset = vi.fn();
 
-jest.mock('pagination', () => ({
-    usePagination: () => ({
-        page: mockPage,
-        firstPage: mockFirstPage,
-        reload: mockReload,
-        request: mockRequest,
-        ready: mockReady,
-        resize: mockResize,
-        reset: mockPageReset
-    })
-}));
-
-const { Direction } = jest.requireActual('libs/sorting');
+const { Direction } = (await vi.importActual('libs/sorting')) as any;
 
 let mockSortProperty: string | undefined = undefined;
 let mockSortDirection: any | undefined = undefined;
-const mockSortReset = jest.fn();
-const mockSortBy = jest.fn();
-const mockToggle = jest.fn();
+const mockSortReset = vi.fn();
+const mockSortBy = vi.fn();
+const mockToggle = vi.fn();
 
-jest.mock('libs/sorting', () => ({
+vi.mock('libs/sorting', () => ({
     useSorting: () => ({
         property: mockSortProperty,
         direction: mockSortDirection,
         reset: mockSortReset,
         sortBy: mockSortBy,
-        toggle: mockToggle
-    })
+        toggle: mockToggle,
+    }),
 }));
 
 let mockFilterActive: boolean = false;
 let mockFilterObject: Filter | undefined = undefined;
 
-jest.mock('design-system/filter', () => ({
+vi.mock('design-system/filter', () => ({
     maybeUseFilter: () => ({
         active: mockFilterActive,
         filter: mockFilterObject,
-        show: jest.fn(),
-        hide: jest.fn(),
-        toggle: jest.fn(),
-        valueOf: jest.fn(),
-        apply: jest.fn(),
-        clear: jest.fn(),
-        clearAll: jest.fn(),
-        reset: jest.fn(),
-        add: jest.fn(),
-        pendingFilter: undefined
-    })
+        show: vi.fn(),
+        hide: vi.fn(),
+        toggle: vi.fn(),
+        valueOf: vi.fn(),
+        apply: vi.fn(),
+        clear: vi.fn(),
+        clearAll: vi.fn(),
+        reset: vi.fn(),
+        add: vi.fn(),
+        pendingFilter: undefined,
+    }),
 }));
 
 type Criteria = { name: string; filteredName?: string };
@@ -95,7 +97,7 @@ const setup = (props?: Partial<SearchResultSettings<Criteria, APIParameters, Res
     const defaultTransformer = (criteria: Criteria) => ({ search: criteria.name });
     const defaultResultResolver = () => Promise.resolve({ total: 0, content: [], page: 0, size: 7 });
     const defaultTermResolver = () => [
-        { source: 'default-source', title: 'title-value', name: 'name-value', value: 'value-value', partial: false }
+        { source: 'default-source', title: 'title-value', name: 'name-value', value: 'value-value', partial: false },
     ];
     //
     const transformer = props?.transformer ?? defaultTransformer;
@@ -105,14 +107,14 @@ const setup = (props?: Partial<SearchResultSettings<Criteria, APIParameters, Res
     return renderHook(
         () => useSearchResults<Criteria, APIParameters, Result>({ transformer, resultResolver, termResolver }),
         {
-            wrapper
+            wrapper,
         }
     );
 };
 
 describe('when searching using useSearchResults', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         mockPage.status = PageStatus.Ready;
         mockPage.pageSize = 10;
         mockPage.total = 1;
@@ -177,7 +179,7 @@ describe('when searching using useSearchResults', () => {
 
     it('should change to status to error when search produces an error', async () => {
         const { result } = setup({
-            resultResolver: () => Promise.reject(new Error('there has been an error'))
+            resultResolver: () => Promise.reject(new Error('there has been an error')),
         });
 
         mockCriteria = { name: 'name-value' };
@@ -204,13 +206,13 @@ describe('when searching using useSearchResults', () => {
     });
 
     it('should change the criteria when searching', async () => {
-        const transformer = jest.fn(() => ({ search: 'name-value' }));
+        const transformer = vi.fn(() => ({ search: 'name-value' }));
 
         const terms = [
-            { source: 'mock-source', title: 'Mocked Title', name: 'Mocked Name', value: 'mock', partial: false }
+            { source: 'mock-source', title: 'Mocked Title', name: 'Mocked Name', value: 'mock', partial: false },
         ];
 
-        const termResolver = jest.fn(() => terms);
+        const termResolver = vi.fn(() => terms);
 
         const { result } = setup({ transformer, termResolver });
 
@@ -230,7 +232,7 @@ describe('when searching using useSearchResults', () => {
     it('should use the request first page when criteria changes', async () => {
         mockCriteria = { name: 'mocked' };
 
-        const resultResolver = jest.fn();
+        const resultResolver = vi.fn();
         resultResolver.mockResolvedValue({ total: 2, content: [], page: 3, size: 5 });
 
         mockPage.current = 227;
@@ -250,7 +252,7 @@ describe('when searching using useSearchResults', () => {
     });
 
     it('should use the request first page when sort property changes', async () => {
-        const resultResolver = jest.fn();
+        const resultResolver = vi.fn();
         resultResolver.mockResolvedValue({ total: 2, content: [], page: 3, size: 5 });
         mockCriteria = { name: 'name-value' };
         mockPage.current = 227;
@@ -272,7 +274,7 @@ describe('when searching using useSearchResults', () => {
     });
 
     it('should use the request first page when sort direction changes', async () => {
-        const resultResolver = jest.fn();
+        const resultResolver = vi.fn();
         resultResolver.mockResolvedValue({ total: 2, content: [], page: 3, size: 5 });
         mockCriteria = { name: 'name-value' };
         mockPage.current = 227;
@@ -294,7 +296,7 @@ describe('when searching using useSearchResults', () => {
     });
 
     it('should return a results object with separate total and filteredTotal properties when filter applied', async () => {
-        const resultResolver = jest.fn();
+        const resultResolver = vi.fn();
         resultResolver.mockResolvedValue({ total: 13, content: [], page: 0, size: 10 });
 
         const { result } = setup({ resultResolver });
@@ -317,7 +319,7 @@ describe('when searching using useSearchResults', () => {
                     filteredTotal: undefined,
                     content: [],
                     page: 1,
-                    size: 10
+                    size: 10,
                 })
             );
         });
@@ -343,7 +345,7 @@ describe('when searching using useSearchResults', () => {
                     filteredTotal: 9,
                     content: [],
                     page: 1,
-                    size: 10
+                    size: 10,
                 })
             );
         });

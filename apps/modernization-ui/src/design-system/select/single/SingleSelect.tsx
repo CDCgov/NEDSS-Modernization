@@ -42,7 +42,8 @@ const SingleSelect = ({
             htmlFor={id}
             required={required}
             error={error}
-            warning={warning}>
+            warning={warning}
+        >
             <Select
                 className={className}
                 id={id}

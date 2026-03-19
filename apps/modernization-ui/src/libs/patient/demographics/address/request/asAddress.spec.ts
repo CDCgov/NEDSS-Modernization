@@ -5,7 +5,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
         const demographic = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-address' },
-            use: { value: 'use-value', name: 'use-address' }
+            use: { value: 'use-value', name: 'use-address' },
         };
 
         const actual = asAddress(demographic);
@@ -17,7 +17,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
         const demographic = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-address' },
-            use: { value: 'use-value', name: 'use-address' }
+            use: { value: 'use-value', name: 'use-address' },
         };
 
         const actual = asAddress(demographic);
@@ -29,7 +29,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
         const demographic = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-address' },
-            use: { value: 'use-value', name: 'use-address' }
+            use: { value: 'use-value', name: 'use-address' },
         };
 
         const actual = asAddress(demographic);
@@ -42,7 +42,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            address1: 'address-1-value'
+            address1: 'address-1-value',
         };
 
         const actual = asAddress(demographic);
@@ -55,7 +55,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            address2: 'address-2-value'
+            address2: 'address-2-value',
         };
 
         const actual = asAddress(demographic);
@@ -68,7 +68,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            city: 'city-value'
+            city: 'city-value',
         };
 
         const actual = asAddress(demographic);
@@ -81,7 +81,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            county: { value: 'county-value', name: 'county-name' }
+            county: { value: 'county-value', name: 'county-name' },
         };
 
         const actual = asAddress(demographic);
@@ -94,7 +94,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            state: { value: 'state-value', name: 'state-name' }
+            state: { value: 'state-value', name: 'state-name' },
         };
 
         const actual = asAddress(demographic);
@@ -107,7 +107,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            zipcode: 'zipcode-value'
+            zipcode: 'zipcode-value',
         };
 
         const actual = asAddress(demographic);
@@ -120,7 +120,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            country: { value: 'country-value', name: 'country-name' }
+            country: { value: 'country-value', name: 'country-name' },
         };
 
         const actual = asAddress(demographic);
@@ -133,7 +133,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            censusTract: 'census-tract-value'
+            censusTract: 'census-tract-value',
         };
 
         const actual = asAddress(demographic);
@@ -146,7 +146,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            comment: 'comment-value'
+            comment: 'comment-value',
         };
 
         const actual = asAddress(demographic);
@@ -157,7 +157,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
     it('should not map when type is null', () => {
         const demographic = {
             asOf: '04/13/2017',
-            use: { value: 'use-value', name: 'use-value' }
+            use: { value: 'use-value', name: 'use-value' },
         };
 
         const actual = asAddress(demographic);
@@ -168,7 +168,7 @@ describe('when mapping an address demographic to a format accepted by the API', 
     it('should not map when use is null', () => {
         const demographic = {
             asOf: '04/13/2017',
-            type: { value: 'type-value', name: 'type-value' }
+            type: { value: 'type-value', name: 'type-value' },
         };
 
         const actual = asAddress(demographic);

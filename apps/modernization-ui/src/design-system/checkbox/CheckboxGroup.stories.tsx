@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { CheckboxGroup } from './CheckboxGroup';
 import { asSelectable, Selectable } from 'options';
 
 const meta = {
     title: 'Design System/CheckboxGroup',
-    component: CheckboxGroup
+    component: CheckboxGroup,
 } satisfies Meta<typeof CheckboxGroup>;
 
 export default meta;
@@ -16,7 +16,7 @@ const options: Selectable[] = [
     asSelectable('banana', 'Banana'),
     asSelectable('mango', 'Mango'),
     asSelectable('orange', 'Orange'),
-    asSelectable('watermelon', 'Watermelon')
+    asSelectable('watermelon', 'Watermelon'),
 ];
 const [, banana, mango] = options;
 
@@ -24,8 +24,8 @@ export const Default: Story = {
     args: {
         name: 'Fruits',
         label: 'Fruits',
-        options: [...options]
-    }
+        options: [...options],
+    },
 };
 
 export const Medium: Story = {
@@ -33,8 +33,8 @@ export const Medium: Story = {
         name: 'Fruits',
         label: 'Fruits',
         options: [...options],
-        sizing: 'medium'
-    }
+        sizing: 'medium',
+    },
 };
 
 export const PreselectedOptions: Story = {
@@ -42,6 +42,6 @@ export const PreselectedOptions: Story = {
         name: 'Fruits',
         label: 'Fruits',
         options: [...options],
-        value: [banana, mango]
-    }
+        value: [banana, mango],
+    },
 };

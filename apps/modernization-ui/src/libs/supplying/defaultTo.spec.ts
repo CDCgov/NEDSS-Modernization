@@ -8,7 +8,7 @@ describe('defaultTo', () => {
     });
 
     it('should return the provided value when present without resolving the fallback', () => {
-        const fallback = jest.fn();
+        const fallback = vi.fn();
 
         const actual = defaultTo(fallback)('actual-value');
 

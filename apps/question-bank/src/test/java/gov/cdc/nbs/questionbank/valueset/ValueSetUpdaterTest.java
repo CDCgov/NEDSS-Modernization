@@ -3,6 +3,13 @@ package gov.cdc.nbs.questionbank.valueset;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.questionbank.entity.Codeset;
+import gov.cdc.nbs.questionbank.entity.CodesetId;
+import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
+import gov.cdc.nbs.questionbank.valueset.exception.ValuesetUpdateException;
+import gov.cdc.nbs.questionbank.valueset.model.Valueset;
+import gov.cdc.nbs.questionbank.valueset.request.UpdateValueSetRequest;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,25 +20,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.questionbank.entity.Codeset;
-import gov.cdc.nbs.questionbank.entity.CodesetId;
-import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
-import gov.cdc.nbs.questionbank.valueset.exception.ValuesetUpdateException;
-import gov.cdc.nbs.questionbank.valueset.model.Valueset;
-import gov.cdc.nbs.questionbank.valueset.request.UpdateValueSetRequest;
 
 @ExtendWith(MockitoExtension.class)
 class ValueSetUpdaterTest {
 
-  @Mock
-  private EntityManager entityManager;
+  @Mock private EntityManager entityManager;
 
-  @Mock
-  private ValueSetFinder finder;
+  @Mock private ValueSetFinder finder;
 
-  @InjectMocks
-  private ValueSetUpdater updater;
-
+  @InjectMocks private ValueSetUpdater updater;
 
   @Test
   void should_update() {
@@ -40,7 +37,8 @@ class ValueSetUpdaterTest {
 
     // and a valid value set
     Codeset codeset = Mockito.mock(Codeset.class);
-    when(entityManager.find(Codeset.class, new CodesetId("code_value_general", "valueset"))).thenReturn(codeset);
+    when(entityManager.find(Codeset.class, new CodesetId("code_value_general", "valueset")))
+        .thenReturn(codeset);
 
     // and a working finder
     when(finder.find("valueset")).thenReturn(new Valueset(null, null, null, null, null));
@@ -70,7 +68,8 @@ class ValueSetUpdaterTest {
     final UpdateValueSetRequest request = new UpdateValueSetRequest("new_name", "new description");
 
     // and an invalid value set
-    when(entityManager.find(Codeset.class, new CodesetId("code_value_general", "valueset"))).thenReturn(null);
+    when(entityManager.find(Codeset.class, new CodesetId("code_value_general", "valueset")))
+        .thenReturn(null);
 
     // when the update command is applied
     // then an exception is thrown

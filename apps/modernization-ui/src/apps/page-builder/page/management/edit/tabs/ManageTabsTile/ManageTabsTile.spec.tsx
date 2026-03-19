@@ -20,30 +20,30 @@ const content: PagesResponse = {
                     name: 'Section1',
                     visible: true,
                     order: 1,
-                    subSections: []
+                    subSections: [],
                 },
                 {
                     id: 5678,
                     name: 'Section2',
                     visible: true,
                     order: 2,
-                    subSections: []
-                }
-            ]
-        }
-    ]
+                    subSections: [],
+                },
+            ],
+        },
+    ],
 };
 
 const props = {
     tab: content.tabs![0],
     index: 0,
-    setSelectedForEdit: jest.fn(),
-    setDeleteTab: jest.fn(),
+    setSelectedForEdit: vi.fn(),
+    setDeleteTab: vi.fn(),
     selectedForDelete: content.tabs![0],
-    setSelectedForDelete: jest.fn(),
-    deleteTab: jest.fn(),
-    reset: jest.fn(),
-    onChangeVisibility: jest.fn()
+    setSelectedForDelete: vi.fn(),
+    deleteTab: vi.fn(),
+    reset: vi.fn(),
+    onChangeVisibility: vi.fn(),
 };
 
 const { getByTestId } = render(

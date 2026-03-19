@@ -12,7 +12,7 @@ describe('AdministrativeComments', () => {
                 personUid: '123',
                 personLocalId: '98882',
                 addTime: '2023-05-31T00:00:00Z',
-                general:{},
+                general: {},
                 investigations: [],
                 adminComments: {
                     date: '2023-05-31T00:00:00Z', // use ISO format date
@@ -64,12 +64,7 @@ describe('AdministrativeComments', () => {
             },
         } as any;
 
-        render(
-            <AdministrativeComments
-                mergeCandidates={mergeCandidates}
-                mergeFormData={mergeFormData}
-            />
-        );
+        render(<AdministrativeComments mergeCandidates={mergeCandidates} mergeFormData={mergeFormData} />);
 
         expect(screen.getByText(/Administrative/i)).toBeInTheDocument();
         expect(screen.getByText('05/30/2023')).toBeInTheDocument();
@@ -106,18 +101,14 @@ describe('AdministrativeComments', () => {
             sexAndBirth: {},
         } as any;
 
-        render(
-            <AdministrativeComments
-                mergeCandidates={mergeCandidates}
-                mergeFormData={mergeFormData}
-            />
-        );
+        render(<AdministrativeComments mergeCandidates={mergeCandidates} mergeFormData={mergeFormData} />);
 
         //Confirm the date is not rendered
         expect(screen.queryByText('05/31/2023')).not.toBeInTheDocument();
 
         //Confirm the <p> tag is in the document, but empty
-        const commentParagraph = screen.getByRole('paragraph', { hidden: true }) || screen.getByText((_, el) => el?.tagName === 'P');
+        const commentParagraph =
+            screen.getByRole('paragraph', { hidden: true }) || screen.getByText((_, el) => el?.tagName === 'P');
         expect(commentParagraph).toBeInTheDocument();
         expect(commentParagraph).toBeEmptyDOMElement();
     });

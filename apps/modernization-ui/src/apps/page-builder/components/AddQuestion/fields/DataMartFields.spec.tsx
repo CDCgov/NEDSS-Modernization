@@ -8,28 +8,31 @@ const { result } = renderHook(() =>
         mode: 'onBlur',
         defaultValues: {
             subgroup: 'RSK',
-            dataMartInfo: { dataMartColumnName: 'duplicateDataMartColumnName', rdbColumnName: 'duplicateRdbColumnName' }
-        }
+            dataMartInfo: {
+                dataMartColumnName: 'duplicateDataMartColumnName',
+                rdbColumnName: 'duplicateRdbColumnName',
+            },
+        },
     })
 );
 
-const setError = jest.fn();
-const validate = jest.fn();
+const setError = vi.fn();
+const validate = vi.fn();
 const mockUseQuestionValidation = {
     validate,
     isValid: false,
     error: undefined,
-    isLoading: false
+    isLoading: false,
 };
 
-jest.mock('apps/page-builder/hooks/api/useQuestionValidation', () => ({
-    useQuestionValidation: () => mockUseQuestionValidation
+vi.mock('apps/page-builder/hooks/api/useQuestionValidation', () => ({
+    useQuestionValidation: () => mockUseQuestionValidation,
 }));
 
-jest.mock('apps/page-builder/hooks/api/useOptions', () => ({
+vi.mock('apps/page-builder/hooks/api/useOptions', () => ({
     useOptions: () => {
         return { options: [] };
-    }
+    },
 }));
 
 const Fixture = () => {
@@ -37,8 +40,11 @@ const Fixture = () => {
         mode: 'onBlur',
         defaultValues: {
             subgroup: 'RSK',
-            dataMartInfo: { dataMartColumnName: 'duplicateDataMartColumnName', rdbColumnName: 'duplicateRdbColumnName' }
-        }
+            dataMartInfo: {
+                dataMartColumnName: 'duplicateDataMartColumnName',
+                rdbColumnName: 'duplicateRdbColumnName',
+            },
+        },
     });
 
     return (
@@ -58,7 +64,7 @@ describe('DataMartFields', () => {
 
         expect(validate).toHaveBeenCalled();
         expect(setError).toHaveBeenNthCalledWith(2, 'dataMartInfo.dataMartColumnName', {
-            message: 'A Data mart column named: duplicateDataMartColumnName already exists in the system'
+            message: 'A Data mart column named: duplicateDataMartColumnName already exists in the system',
         });
     });
 
@@ -72,7 +78,7 @@ describe('DataMartFields', () => {
         expect(validate).toHaveBeenCalled();
         expect(setError).toHaveBeenNthCalledWith(1, 'dataMartInfo.rdbColumnName', {
             message:
-                'An Rdb column named: duplicateRdbColumnName already exists in the system for the specified subgroup'
+                'An Rdb column named: duplicateRdbColumnName already exists in the system for the specified subgroup',
         });
     });
 });

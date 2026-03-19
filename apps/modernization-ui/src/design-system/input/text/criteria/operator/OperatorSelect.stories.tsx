@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { OperatorSelect } from './OperatorSelect';
 
 const meta = {
     title: 'Design System/Input/OperatorSelect',
-    component: OperatorSelect
+    component: OperatorSelect,
 } satisfies Meta<typeof OperatorSelect>;
 
 export default meta;
@@ -15,6 +15,6 @@ export const Default: Story = {
         id: 'operator-select',
         onChange: (selected) => {
             console.log('Selected options:', selected);
-        }
-    }
+        },
+    },
 };

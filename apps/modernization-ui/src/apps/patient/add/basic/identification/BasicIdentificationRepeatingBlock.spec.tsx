@@ -1,14 +1,24 @@
 import { render } from '@testing-library/react';
 import {
     BasicIdentificationRepeatingBlock,
-    BasicIdentificationRepeatingBlockProps
+    BasicIdentificationRepeatingBlockProps,
 } from './BasicIdentificationRepeatingBlock';
+import { IdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
+
+const mockPatientIdentificationCodedValues: IdentificationCodedValues = {
+    types: [{ name: 'Account number', value: 'AN' }],
+    authorities: [{ name: 'Assigning auth', value: 'AA' }],
+};
+
+vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
+    useIdentificationCodedValues: () => mockPatientIdentificationCodedValues,
+}));
 
 const Fixture = ({
     values,
-    onChange = jest.fn(),
-    isDirty = jest.fn(),
-    isValid = jest.fn()
+    onChange = vi.fn(),
+    isDirty = vi.fn(),
+    isValid = vi.fn(),
 }: Partial<BasicIdentificationRepeatingBlockProps>) => (
     <BasicIdentificationRepeatingBlock
         id="identifications"
@@ -26,8 +36,8 @@ describe('BasicIdentificationRepeatingBlock', () => {
                 values={[
                     {
                         type: { value: 'type-value', name: 'type-name' },
-                        id: '12341241'
-                    }
+                        id: '12341241',
+                    },
                 ]}
             />
         );

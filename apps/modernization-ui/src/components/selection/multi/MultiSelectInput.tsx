@@ -38,7 +38,7 @@ export const MultiSelectInput = ({
     error,
     placeholder = '- Select -',
     orientation = 'vertical',
-    disabled = false
+    disabled = false,
 }: MultiSelectInputProps) => {
     const [selectedOptions, setSelectedOptions] = useState<Selectable[]>([]);
     const [searchText, setSearchText] = useState('');
@@ -68,7 +68,8 @@ export const MultiSelectInput = ({
             label={label ?? ''}
             htmlFor={id ?? ''}
             required={required}
-            error={error}>
+            error={error}
+        >
             <ReactSelect<Selectable, true>
                 theme={theme}
                 styles={styles}

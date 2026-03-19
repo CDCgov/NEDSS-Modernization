@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
@@ -63,13 +63,13 @@ const columns = [
     {
         id: 'first',
         name: 'First column name',
-        render: (entry: TestType) => entry.firstInput
+        render: (entry: TestType) => entry.firstInput,
     },
     {
         id: 'second',
         name: 'Second column name',
-        render: (entry: TestType) => entry.secondInput
-    }
+        render: (entry: TestType) => entry.secondInput,
+    },
 ];
 
 const Fixture = ({
@@ -77,9 +77,9 @@ const Fixture = ({
     errors,
     defaultValues,
     sizing,
-    onChange = jest.fn(),
-    isDirty = jest.fn(),
-    isValid
+    onChange = vi.fn(),
+    isDirty = vi.fn(),
+    isValid,
 }: Partial<RepeatingBlockProps<TestType>>) => (
     <RepeatingBlock<TestType>
         id="testing"
@@ -117,7 +117,7 @@ describe('RepeatingBlock', () => {
             <Fixture
                 defaultValues={{
                     firstInput: 'first value',
-                    secondInput: 'second value'
+                    secondInput: 'second value',
                 }}
             />
         );
@@ -158,7 +158,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should trigger on change when data is submitted', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole, getByLabelText } = render(<Fixture onChange={onChange} />);
 
@@ -204,7 +204,7 @@ describe('RepeatingBlock', () => {
         const { getByRole, getByLabelText } = render(
             <Fixture
                 defaultValues={{
-                    firstInput: 'first value'
+                    firstInput: 'first value',
                 }}
             />
         );
@@ -222,7 +222,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should display submitted data in table', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole, getAllByRole, getByLabelText } = render(<Fixture onChange={onChange} />);
 
@@ -245,7 +245,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should reset after adding data', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole, getByLabelText, queryByText } = render(<Fixture onChange={onChange} />);
 
@@ -263,11 +263,11 @@ describe('RepeatingBlock', () => {
         await user.type(getByLabelText('First Input'), 'typed value').then(() => user.click(add));
 
         // expect value to be added
-
-        expect(onChange).toBeCalledWith([{ firstInput: 'typed value', secondInput: undefined }]);
+        await waitFor(() => {
+            expect(onChange).toBeCalledWith([{ firstInput: 'typed value', secondInput: undefined }]);
+        });
 
         // verify validation message is no longer visible
-
         expect(queryByText('First input is required.')).not.toBeInTheDocument();
 
         // immediately click add button again
@@ -284,8 +284,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -307,8 +307,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -329,8 +329,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -351,7 +351,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should delete row when delete icon clicked', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         render(
             <Fixture
                 onChange={onChange}
@@ -359,8 +359,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -374,7 +374,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should allow edit of row', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const { getByRole, getAllByRole, getByLabelText } = render(
             <Fixture
@@ -383,8 +383,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -403,7 +403,7 @@ describe('RepeatingBlock', () => {
         // change event fires, form resets to default
         expect(onChange).toHaveBeenCalledWith(
             expect.arrayContaining([
-                expect.objectContaining({ firstInput: 'first-value-changed', secondInput: 'second-value' })
+                expect.objectContaining({ firstInput: 'first-value-changed', secondInput: 'second-value' }),
             ])
         );
 
@@ -422,8 +422,8 @@ describe('RepeatingBlock', () => {
                     {
                         firstInput: 'first-value',
                         secondInput: 'second-value',
-                        others: []
-                    }
+                        others: [],
+                    },
                 ]}
             />
         );
@@ -469,7 +469,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should call isDirty with true when form input applied', async () => {
-        const isDirty = jest.fn();
+        const isDirty = vi.fn();
         const { getByLabelText } = render(<Fixture isDirty={isDirty} />);
         const input1 = getByLabelText('First Input');
         const user = userEvent.setup();
@@ -480,7 +480,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should call isDirty with false when form input cleared', async () => {
-        const isDirty = jest.fn();
+        const isDirty = vi.fn();
         const { getByLabelText, getByRole } = render(<Fixture isDirty={isDirty} />);
         const input1 = getByLabelText('First Input');
         const user = userEvent.setup();
@@ -495,7 +495,7 @@ describe('RepeatingBlock', () => {
     });
 
     it('should call isValid with false when there are form errors', async () => {
-        const isValid = jest.fn();
+        const isValid = vi.fn();
         const { getByRole, getByText } = render(<Fixture isValid={isValid} />);
 
         const add = getByRole('button', { name: 'Add test title' });

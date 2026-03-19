@@ -16,7 +16,7 @@ type Props = {
 export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAccept }: Props) => {
     const form = useForm<{ name: string; description?: string }>({
         mode: 'onBlur',
-        defaultValues: { name, description }
+        defaultValues: { name, description },
     });
 
     useEffect(() => {
@@ -31,7 +31,8 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
             <Button
                 disabled={!form.formState.isValid}
                 onClick={() => onAccept(form.getValues().name, form.getValues().description)}
-                data-close-modal>
+                data-close-modal
+            >
                 Save
             </Button>
         </>
@@ -44,7 +45,8 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
                 title="Save pass configuration"
                 onClose={onCancel}
                 footer={footer}
-                className={styles.savePassModal}>
+                className={styles.savePassModal}
+            >
                 <Controller
                     control={form.control}
                     name="name"

@@ -3,7 +3,7 @@ import {
     CreateSectionRequest,
     PagesSection,
     SectionControllerService,
-    UpdateSectionRequest
+    UpdateSectionRequest,
 } from 'apps/page-builder/generated';
 import { Controller, useForm } from 'react-hook-form';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
@@ -30,11 +30,11 @@ export const AddSection = ({
     pageId,
     section,
     isEdit,
-    onAddSection
+    onAddSection,
 }: sectionProps) => {
     const form = useForm<CreateSectionRequest | UpdateSectionRequest>({
         mode: 'onBlur',
-        defaultValues: { visible: true }
+        defaultValues: { visible: true },
     });
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export const AddSection = ({
             SectionControllerService.updateSection({
                 page: pageId ?? 0,
                 section: section?.id ?? 0,
-                requestBody: { name: data.name, visible: data.visible }
+                requestBody: { name: data.name, visible: data.visible },
             }).then(() => {
                 form.reset();
                 onSectionTouched?.();
@@ -55,7 +55,7 @@ export const AddSection = ({
         } else {
             SectionControllerService.createSection({
                 page: pageId ?? 0,
-                requestBody: { name: data.name, visible: data.visible, tabId: tabId }
+                requestBody: { name: data.name, visible: data.visible, tabId: tabId },
             }).then(() => {
                 form.reset();
                 onAddSection?.(data.name ?? '');
@@ -81,7 +81,7 @@ export const AddSection = ({
                             required: { value: true, message: 'Section name is required' },
                             ...maxLengthRule(50),
                             ...validPageNameRule,
-                            ...notEmptyRule
+                            ...notEmptyRule,
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
@@ -124,7 +124,8 @@ export const AddSection = ({
                             type="button"
                             onClick={onSubmit}
                             disabled={!form.formState.isDirty || !form.formState.isValid}
-                            className="saveChangesBtn">
+                            className="saveChangesBtn"
+                        >
                             Save changes
                         </Button>
                     ) : (
@@ -132,7 +133,8 @@ export const AddSection = ({
                             className="addSectionBtn"
                             type="button"
                             onClick={onSubmit}
-                            disabled={!form.formState.isValid}>
+                            disabled={!form.formState.isValid}
+                        >
                             Add section
                         </Button>
                     )}

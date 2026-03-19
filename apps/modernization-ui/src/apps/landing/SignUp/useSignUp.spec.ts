@@ -4,14 +4,14 @@ import { useSignUp } from './useSignUp';
 describe('useSignUp', () => {
     const { location } = window;
 
-    const getHrefSpy = jest.fn(() => 'invalid');
-    const setHrefSpy = jest.fn((href) => href);
+    const getHrefSpy = vi.fn(() => 'invalid');
+    const setHrefSpy = vi.fn((href) => href);
 
     beforeAll(() => {
         const mockLocation = { ...location };
         Object.defineProperty(mockLocation, 'href', {
             get: getHrefSpy,
-            set: setHrefSpy
+            set: setHrefSpy,
         });
 
         // @ts-expect-error : location is mocked to check that the href is changed by the redirect
@@ -26,7 +26,7 @@ describe('useSignUp', () => {
     });
 
     beforeEach(() => {
-        jest.restoreAllMocks();
+        vi.restoreAllMocks();
     });
 
     it('should prepare an email message to request access from the requester', () => {

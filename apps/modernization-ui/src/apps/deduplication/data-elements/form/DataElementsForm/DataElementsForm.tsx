@@ -36,7 +36,7 @@ const dataElementKeys: (keyof DataElements)[] = [
     'personNumber',
     'socialSecurity',
     'visaPassport',
-    'wicIdentifier'
+    'wicIdentifier',
 ];
 
 type Props = {
@@ -59,7 +59,8 @@ export const DataElementsForm = ({ dataElements }: Props) => {
         <Card
             id="dataElementsCard"
             title="Data elements"
-            subtext="This table contains all the possible data elements that are available for use as person matching criteria.">
+            subtext="This table contains all the possible data elements that are available for use as person matching criteria."
+        >
             <div className={styles.dataElementsForm}>
                 <table>
                     <thead>

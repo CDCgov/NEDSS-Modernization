@@ -15,7 +15,8 @@ const PatientFileDemographicsSummaryCard = ({ provider, ...remaining }: PatientF
             <LoadingOverlay>
                 <PatientDemographicsSummaryCard {...remaining} />
             </LoadingOverlay>
-        }>
+        }
+    >
         <Await resolve={provider.get()}>
             {(summary) => <PatientDemographicsSummaryCard summary={summary} {...remaining} />}
         </Await>

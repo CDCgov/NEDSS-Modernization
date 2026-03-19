@@ -7,32 +7,32 @@ import { CreateQuestionForm } from '../QuestionForm';
 const { result } = renderHook(() =>
     useForm<CreateQuestionForm>({
         mode: 'onBlur',
-        defaultValues: { uniqueId: 'duplicateUniqueId', uniqueName: 'duplicateUniqueName' }
+        defaultValues: { uniqueId: 'duplicateUniqueId', uniqueName: 'duplicateUniqueName' },
     })
 );
 
-const setError = jest.fn();
-const validate = jest.fn();
+const setError = vi.fn();
+const validate = vi.fn();
 const mockUseQuestionValidation = {
     validate,
     isValid: false,
     error: undefined,
-    isLoading: false
+    isLoading: false,
 };
 
-jest.mock('apps/page-builder/hooks/api/useQuestionValidation', () => ({
-    useQuestionValidation: () => mockUseQuestionValidation
+vi.mock('apps/page-builder/hooks/api/useQuestionValidation', () => ({
+    useQuestionValidation: () => mockUseQuestionValidation,
 }));
 
-jest.mock('apps/page-builder/hooks/api/useOptions', () => ({
+vi.mock('apps/page-builder/hooks/api/useOptions', () => ({
     useOptions: () => {
         return { options: [] };
-    }
+    },
 }));
 
 const Fixture = () => {
     const form = useForm<CreateQuestionForm>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (

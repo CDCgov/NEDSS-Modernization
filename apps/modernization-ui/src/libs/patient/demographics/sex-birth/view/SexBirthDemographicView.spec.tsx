@@ -13,7 +13,7 @@ describe('SexBirthDemographicView', () => {
     });
 
     it('should display "Date of birth" with calculated "Current age" when present', () => {
-        const ageResolver = jest.fn().mockReturnValue('calculated-age');
+        const ageResolver = vi.fn().mockReturnValue('calculated-age');
 
         render(
             <SexBirthDemographicView
@@ -41,8 +41,8 @@ describe('SexBirthDemographicView', () => {
                     asOf: '2020-03-17',
                     current: {
                         name: 'current sex name',
-                        value: 'current-sex-value'
-                    }
+                        value: 'current-sex-value',
+                    },
                 }}
             />
         );
@@ -58,7 +58,7 @@ describe('SexBirthDemographicView', () => {
                 ageResolver={noop}
                 demographic={{
                     asOf: '2020-03-17',
-                    unknownReason: { name: 'unknown reason name', value: 'unknown-reason-value' }
+                    unknownReason: { name: 'unknown reason name', value: 'unknown-reason-value' },
                 }}
             />
         );
@@ -76,8 +76,8 @@ describe('SexBirthDemographicView', () => {
                     asOf: '2020-03-17',
                     transgenderInformation: {
                         name: 'transgender information name',
-                        value: 'transgender-information-value'
-                    }
+                        value: 'transgender-information-value',
+                    },
                 }}
             />
         );
@@ -93,7 +93,7 @@ describe('SexBirthDemographicView', () => {
                 ageResolver={noop}
                 demographic={{
                     asOf: '2020-03-17',
-                    additionalGender: 'additional gender value'
+                    additionalGender: 'additional gender value',
                 }}
             />
         );
@@ -111,8 +111,8 @@ describe('SexBirthDemographicView', () => {
                     asOf: '2020-03-17',
                     sex: {
                         name: 'birth sex name',
-                        value: 'birth-sex-value'
-                    }
+                        value: 'birth-sex-value',
+                    },
                 }}
             />
         );
@@ -130,8 +130,8 @@ describe('SexBirthDemographicView', () => {
                     asOf: '2020-03-17',
                     multiple: {
                         name: 'multiple birth name',
-                        value: 'multiple-birth-value'
-                    }
+                        value: 'multiple-birth-value',
+                    },
                 }}
             />
         );
@@ -147,7 +147,7 @@ describe('SexBirthDemographicView', () => {
                 ageResolver={noop}
                 demographic={{
                     asOf: '2020-03-17',
-                    order: 499
+                    order: 499,
                 }}
             />
         );
@@ -163,7 +163,7 @@ describe('SexBirthDemographicView', () => {
                 ageResolver={noop}
                 demographic={{
                     asOf: '2020-03-17',
-                    city: 'birth city value'
+                    city: 'birth city value',
                 }}
             />
         );
@@ -181,8 +181,8 @@ describe('SexBirthDemographicView', () => {
                     asOf: '2020-03-17',
                     state: {
                         name: 'birth state name',
-                        value: 'birth-state-value'
-                    }
+                        value: 'birth-state-value',
+                    },
                 }}
             />
         );
@@ -200,8 +200,8 @@ describe('SexBirthDemographicView', () => {
                     asOf: '2020-03-17',
                     county: {
                         name: 'birth county name',
-                        value: 'birth-county-value'
-                    }
+                        value: 'birth-county-value',
+                    },
                 }}
             />
         );
@@ -219,8 +219,8 @@ describe('SexBirthDemographicView', () => {
                     asOf: '2020-03-17',
                     country: {
                         name: 'birth country name',
-                        value: 'birth-country-value'
-                    }
+                        value: 'birth-country-value',
+                    },
                 }}
             />
         );

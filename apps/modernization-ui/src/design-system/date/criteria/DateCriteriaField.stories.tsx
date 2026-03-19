@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { DateCriteriaField } from './DateCriteriaField';
 import { DateCriteria } from './dateCriteria';
 
 const meta = {
     title: 'Design System/Date/DateCriteriaField',
-    component: DateCriteriaField
+    component: DateCriteriaField,
 } satisfies Meta<typeof DateCriteriaField>;
 
 export default meta;
@@ -24,11 +24,11 @@ export const Default: Story = {
     args: {
         id: 'datecriteriafield-default',
         value: {
-            equals: {}
+            equals: {},
         },
         label: 'Date Criteria',
-        onChange: handleChange
-    }
+        onChange: handleChange,
+    },
 };
 
 export const EqualsCriteria: Story = {
@@ -38,12 +38,12 @@ export const EqualsCriteria: Story = {
             equals: {
                 year: 2024,
                 month: 9,
-                day: 30
-            }
+                day: 30,
+            },
         },
         label: 'Date Criteria',
-        onChange: handleChange
-    }
+        onChange: handleChange,
+    },
 };
 
 export const DateRangeCriteria: Story = {
@@ -52,10 +52,10 @@ export const DateRangeCriteria: Story = {
         value: {
             between: {
                 from: '07/15/2024',
-                to: '09/30/2024'
-            }
+                to: '09/30/2024',
+            },
         },
         label: 'Date Criteria',
-        onChange: handleChange
-    }
+        onChange: handleChange,
+    },
 };

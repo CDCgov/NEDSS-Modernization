@@ -1,17 +1,12 @@
 package gov.cdc.nbs.demographics.phone;
 
-
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 public class DisplayablePhoneRowMapper implements RowMapper<DisplayablePhone> {
 
-
-  public record Columns(int type, int use, int number) {
-  }
-
+  public record Columns(int type, int use, int number) {}
 
   private final Columns columns;
 
@@ -30,7 +25,4 @@ public class DisplayablePhoneRowMapper implements RowMapper<DisplayablePhone> {
     String number = resultSet.getString(columns.number());
     return new DisplayablePhone(type, use, number);
   }
-
-
-
 }

@@ -1,3 +1,4 @@
+import { Mock } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SearchTerms } from './SearchTerms';
@@ -6,29 +7,29 @@ import { useSearchInteraction } from 'apps/search';
 import { focusedTarget } from 'utils/focusedTarget';
 import { Term } from 'apps/search/terms';
 
-const mockSkipTo = jest.fn();
-const mockRemove = jest.fn();
-const mockFocusedTarget = jest.fn();
-const mockWithout = jest.fn();
+const mockSkipTo = vi.fn();
+const mockRemove = vi.fn();
+const mockFocusedTarget = vi.fn();
+const mockWithout = vi.fn();
 
-jest.mock('SkipLink/SkipLinkContext');
-jest.mock('apps/search');
-jest.mock('utils/focusedTarget');
+vi.mock('SkipLink/SkipLinkContext');
+vi.mock('apps/search');
+vi.mock('utils/focusedTarget');
 
 const terms: Term[] = [
     { title: 'Term1', name: 'term1', source: 'term1', value: '1' },
-    { title: 'Term2', name: 'term2', source: 'term2', value: '2' }
+    { title: 'Term2', name: 'term2', source: 'term2', value: '2' },
 ];
 
 describe('SearchTerms', () => {
     beforeEach(() => {
-        (useSkipLink as jest.Mock).mockReturnValue({ skipTo: mockSkipTo, remove: mockRemove });
-        (focusedTarget as jest.Mock).mockImplementation(mockFocusedTarget);
-        (useSearchInteraction as jest.Mock).mockReturnValue({ without: mockWithout });
+        (useSkipLink as Mock).mockReturnValue({ skipTo: mockSkipTo, remove: mockRemove });
+        (focusedTarget as Mock).mockImplementation(mockFocusedTarget);
+        (useSearchInteraction as Mock).mockReturnValue({ without: mockWithout });
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('renders the correct number of results', () => {

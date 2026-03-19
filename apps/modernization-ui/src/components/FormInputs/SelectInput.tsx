@@ -53,7 +53,8 @@ export const SelectInput = ({
             defaultValue={defaultValue || undefined}
             onChange={onChange}
             onBlur={onBlur}
-            {...props}>
+            {...props}
+        >
             {renderOptions(options)}
         </Select>
     );
@@ -64,7 +65,8 @@ export const SelectInput = ({
             label={label || ''}
             htmlFor={htmlFor || ''}
             required={required}
-            error={error}>
+            error={error}
+        >
             {defaultValue && <Wrapped />}
             {!defaultValue && <Wrapped />}
         </EntryWrapper>

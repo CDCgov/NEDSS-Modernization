@@ -6,7 +6,7 @@ describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const { getAllByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableEdit={true} summaries={[]} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={[]} onSort={vi.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -30,7 +30,7 @@ describe('when at least one summary is available', () => {
             lastUpdate: '2019-09-25T13:27:16.380Z',
             lastUpdateBy: 'last-update-by-value',
             name: 'test page',
-            status: 'Draft'
+            status: 'Draft',
         },
         {
             conditions: [],
@@ -39,14 +39,14 @@ describe('when at least one summary is available', () => {
             lastUpdate: '2019-09-25T13:27:16.380Z',
             lastUpdateBy: 'last-update-by-value',
             name: 'Lab report page',
-            status: 'Published'
-        }
+            status: 'Published',
+        },
     ];
 
     it('should display the page summaries', async () => {
         const { findAllByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={vi.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -63,7 +63,7 @@ describe('when at least one summary is available', () => {
     it('should redirect to the preview page when an investigation page name is clicked', () => {
         const { getByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={vi.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -73,7 +73,7 @@ describe('when at least one summary is available', () => {
     it('should redirect to classic when a non investigation page name is clicked', () => {
         const { getByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={vi.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -93,13 +93,13 @@ describe('when rendered with mangement disabled', () => {
             lastUpdate: '2019-09-25T13:27:16.380Z',
             lastUpdateBy: 'last-update-by-value',
             name: 'test page',
-            status: 'Draft'
-        }
+            status: 'Draft',
+        },
     ];
     it('should redirect to the edit page when the page name is clicked', async () => {
         const { getByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableEdit={false} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={false} summaries={summaries} onSort={vi.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 

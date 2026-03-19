@@ -9,4 +9,3 @@ export type DisplayControlOptions = {
     numericDisplayControl?: Array<DisplayOption>;
     textDisplayControl?: Array<DisplayOption>;
 };
-

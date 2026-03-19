@@ -21,29 +21,29 @@ describe('when ReorderModal renders', () => {
                         name: 'Section1',
                         visible: true,
                         order: 1,
-                        subSections: []
+                        subSections: [],
                     },
                     {
                         id: 5678,
                         name: 'Section2',
                         visible: true,
                         order: 2,
-                        subSections: []
-                    }
-                ]
-            }
-        ]
+                        subSections: [],
+                    },
+                ],
+            },
+        ],
     };
     const fetch = () => {
-        jest.fn();
+        vi.fn();
     };
 
     const refresh = () => {
-        jest.fn();
+        vi.fn();
     };
     const props = {
         modalRef: { current: null },
-        pageName: 'Test Page'
+        pageName: 'Test Page',
     };
     it('should display Tab', () => {
         const { getByText } = render(

@@ -24,7 +24,7 @@ const routing = [
             <PageProvider>
                 <Login />
             </PageProvider>
-        )
+        ),
     },
     {
         path: '/',
@@ -37,11 +37,11 @@ const routing = [
             ...pageBuilderRouting,
             ...deduplicationRouting,
             ...patientFileRouting,
-            ...systemManagementRouting
-        ]
+            ...systemManagementRouting,
+        ],
     },
     { path: '*', element: <Navigate to={'/'} /> },
-    { path: 'expired', element: <Expired /> }
+    { path: 'expired', element: <Expired /> },
 ];
 
 const router = createBrowserRouter(routing);

@@ -1,17 +1,21 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { render } from '@testing-library/react';
 import { Address } from './Address';
 import { PatientCriteriaEntry } from '../criteria';
 
+vi.mock('options/location', () => ({
+    useStateOptions: () => [],
+}));
+
 const Fixture = () => {
     const form = useForm<PatientCriteriaEntry>({
         mode: 'onBlur',
-        defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] }
+        defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] },
     });
 
     return (
-        <MockedProvider>
+        <MockedProvider mocks={[]}>
             <FormProvider {...form}>
                 <Address />
             </FormProvider>

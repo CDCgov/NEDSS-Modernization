@@ -44,11 +44,12 @@ const BaseHeader = <V,>({ className, sizing, column, children, ...remaining }: B
                 [styles.fixed]: column.fixed,
                 [styles.small]: sizing === 'small',
                 [styles.medium]: sizing === 'medium',
-                [styles.large]: sizing === 'large'
+                [styles.large]: sizing === 'large',
             },
             className
         )}
-        {...remaining}>
+        {...remaining}
+    >
         {children}
     </th>
 );
@@ -97,10 +98,11 @@ const SortableHeader = <V,>({ sorting, filtering, column, sizing, ...remaining }
             column={column}
             sizing={sizing}
             className={classNames({
-                [styles.sorted]: direction !== Direction.None
+                [styles.sorted]: direction !== Direction.None,
             })}
             aria-sort={ariaSort}
-            {...remaining}>
+            {...remaining}
+        >
             <NamedHeaderContent column={column} sizing={sizing} filtering={filtering}>
                 <div className={styles.sortable}>
                     {column.name}

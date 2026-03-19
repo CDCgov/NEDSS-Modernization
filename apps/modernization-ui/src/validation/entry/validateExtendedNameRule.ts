@@ -7,7 +7,7 @@ import { maxLengthRule } from './maxLengthRule';
  * @return {MaxLengthRule}
  */
 const validateExtendedNameRule = (name?: string) => ({
-    ...maxLengthRule(50, name)
+    ...maxLengthRule(50, name),
 });
 
 export { validateExtendedNameRule };

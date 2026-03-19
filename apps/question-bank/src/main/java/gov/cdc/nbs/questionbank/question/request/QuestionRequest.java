@@ -21,7 +21,5 @@ public class QuestionRequest {
       String reportLabel,
       String defaultRdbTableName,
       String rdbColumnName,
-      String dataMartColumnName) {
-  }
-
+      String dataMartColumnName) {}
 }

@@ -3,19 +3,19 @@ import { MemoryRouter } from 'react-router';
 import { axe } from 'jest-axe';
 import { PatientSearchActions } from './PatientSearchActions';
 
-jest.mock('./add/useAddPatientFromSearch', () => ({
+vi.mock('./add/useAddPatientFromSearch', () => ({
     useAddPatientFromSearch: () => ({
-        add: jest.fn()
-    })
+        add: vi.fn(),
+    }),
 }));
 
-jest.mock('libs/permission', () => ({
+vi.mock('libs/permission', () => ({
     Permitted: ({ children }: { children: React.ReactNode }) => children,
     permissions: {
         patient: {
-            add: 'patient.add'
-        }
-    }
+            add: 'patient.add',
+        },
+    },
 }));
 
 describe('PatientSearchActions Accessibility', () => {
@@ -37,4 +37,4 @@ describe('PatientSearchActions Accessibility', () => {
         const button = getByRole('button');
         expect(button).toHaveAttribute('aria-keyshortcuts', 'Alt+A');
     });
-}); 
+});

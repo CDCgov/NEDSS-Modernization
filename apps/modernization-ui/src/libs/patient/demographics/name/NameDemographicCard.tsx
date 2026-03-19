@@ -3,7 +3,7 @@ import { columnSortResolver } from 'design-system/table';
 import {
     columns,
     NameDemographicRepeatingBlock,
-    NameDemographicRepeatingBlockProps
+    NameDemographicRepeatingBlockProps,
 } from './NameDemographicRepeatingBlock';
 
 const sortResolver = columnSortResolver(columns);

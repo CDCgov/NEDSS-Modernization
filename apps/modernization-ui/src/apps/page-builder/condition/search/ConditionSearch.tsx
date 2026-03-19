@@ -102,7 +102,8 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
                         aria-label="Create new condition"
                         type="button"
                         onClick={onCreateNew}
-                        data-testid="createNewConditionBtn">
+                        data-testid="createNewConditionBtn"
+                    >
                         Create new condition
                     </Button>
                 </div>
@@ -121,14 +122,16 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
                     onClick={handleCancel}
                     type="button"
                     outline
-                    data-testid="advancedConditionSearchCancelBtn">
+                    data-testid="advancedConditionSearchCancelBtn"
+                >
                     Cancel
                 </Button>
                 <Button
                     aria-label="Add conditions"
                     disabled={selected.length === 0}
                     onClick={handleAddConditions}
-                    type="button">
+                    type="button"
+                >
                     Add conditions
                 </Button>
             </div>

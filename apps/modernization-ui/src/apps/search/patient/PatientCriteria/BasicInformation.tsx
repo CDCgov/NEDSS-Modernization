@@ -90,8 +90,8 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                 rules={{
                     pattern: {
                         value: /^[0-9,; ]*$/,
-                        message: 'Only numbers, spaces, commas, and semicolons are allowed'
-                    }
+                        message: 'Only numbers, spaces, commas, and semicolons are allowed',
+                    },
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <TextInputField
@@ -115,7 +115,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                     control={control}
                     name="status"
                     rules={{
-                        required: { value: true, message: 'At least one status is required' }
+                        required: { value: true, message: 'At least one status is required' },
                     }}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <CheckboxGroup

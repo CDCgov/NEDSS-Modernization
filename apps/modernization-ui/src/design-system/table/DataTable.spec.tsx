@@ -11,7 +11,7 @@ type TestData = {
 
 const data: TestData[] = [
     { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Smith' }
+    { id: 2, name: 'Jane Smith' },
 ];
 
 describe('DataTable', () => {
@@ -20,18 +20,18 @@ describe('DataTable', () => {
             {
                 id: 'id',
                 name: 'ID',
-                render: () => 'id-value'
+                render: () => 'id-value',
             },
             {
                 id: 'name',
                 name: 'Name',
-                render: () => `name-value`
+                render: () => `name-value`,
             },
             {
                 id: 'other',
                 name: 'Other',
-                render: () => 'other-value'
-            }
+                render: () => 'other-value',
+            },
         ];
 
         const { container } = render(<DataTable id="test-table" columns={columns} data={data} />);
@@ -43,18 +43,18 @@ describe('DataTable', () => {
             {
                 id: 'id',
                 name: 'ID',
-                render: () => 'id-value'
+                render: () => 'id-value',
             },
             {
                 id: 'name',
                 name: 'Name',
-                render: () => `name-value`
+                render: () => `name-value`,
             },
             {
                 id: 'other',
                 name: 'Other',
-                render: () => 'other-value'
-            }
+                render: () => 'other-value',
+            },
         ];
 
         render(<DataTable id="test-table" columns={columns} data={[]} />);
@@ -77,19 +77,19 @@ describe('DataTable', () => {
                 id: 'id',
                 name: 'ID',
                 className: 'id-class-name',
-                render: () => 'id-value'
+                render: () => 'id-value',
             },
             {
                 id: 'name',
                 name: 'Name',
-                render: () => `name-value`
+                render: () => `name-value`,
             },
             {
                 id: 'other',
                 name: 'Other',
                 className: 'other-class-name',
-                render: () => 'other-value'
-            }
+                render: () => 'other-value',
+            },
         ];
 
         render(<DataTable id="test-table" columns={columns} data={[]} />);
@@ -108,24 +108,24 @@ describe('DataTable', () => {
             {
                 id: 'id',
                 name: 'ID',
-                value: (value) => value.id
+                value: (value) => value.id,
             },
             {
                 id: 'name',
                 name: 'Name',
-                value: (value) => value.name
+                value: (value) => value.name,
             },
             {
                 id: 'combined',
                 name: 'Combined values',
-                render: (value) => `${value.name} (${value.id})`
-            }
+                render: (value) => `${value.name} (${value.id})`,
+            },
         ];
 
         const data = [
             { id: 2, name: 'name-two', value: 'two-value' },
             { id: 5, name: 'name-five', value: 'five-value' },
-            { id: 3, name: 'name-three', value: 'three-value' }
+            { id: 3, name: 'name-three', value: 'three-value' },
         ];
 
         render(<DataTable id="test-table" columns={columns} data={data} />);
@@ -153,20 +153,20 @@ describe('DataTable', () => {
                 id: 'id',
                 name: 'ID',
                 value: (value) => value.id,
-                render: (value) => `Rendered ${value.id}`
+                render: (value) => `Rendered ${value.id}`,
             },
             {
                 id: 'name',
                 name: 'Name',
                 value: (value) => value.name,
-                render: (value) => `Rendered ${value.name}`
-            }
+                render: (value) => `Rendered ${value.name}`,
+            },
         ];
 
         const data = [
             { id: 2, name: 'name-two', value: 'two-value' },
             { id: 5, name: 'name-five', value: 'five-value' },
-            { id: 3, name: 'name-three', value: 'three-value' }
+            { id: 3, name: 'name-three', value: 'three-value' },
         ];
 
         render(<DataTable id="test-table" columns={columns} data={data} />);
@@ -186,13 +186,13 @@ describe('DataTable', () => {
             {
                 id: 'id',
                 name: 'ID',
-                value: (value) => value.id
+                value: (value) => value.id,
             },
             {
                 id: 'name',
                 name: 'Name',
-                value: (value) => value.name
-            }
+                value: (value) => value.name,
+            },
         ];
 
         render(<DataTable id="test-table" columns={columns} data={[]} />);
@@ -205,21 +205,21 @@ describe('DataTable', () => {
             {
                 id: 'id',
                 name: 'ID',
-                value: (value) => value.id
+                value: (value) => value.id,
             },
             {
                 id: 'name',
                 name: 'Name',
-                value: (value) => value.name
+                value: (value) => value.name,
             },
             {
                 id: 'combined',
                 name: 'Combined values',
-                render: (value) => `${value.name} (${value.id})`
-            }
+                render: (value) => `${value.name} (${value.id})`,
+            },
         ];
 
-        const onEmpty = jest.fn();
+        const onEmpty = vi.fn();
         render(<DataTable id="test-table" columns={columns} data={[]} onEmpty={onEmpty} />);
 
         expect(onEmpty).toHaveBeenCalledWith(3);
@@ -232,8 +232,8 @@ describe('DataTable', () => {
             {
                 id: 'id',
                 name: 'ID',
-                value: (value) => value.id
-            }
+                value: (value) => value.id,
+            },
         ];
 
         render(<DataTable id="test-table" columns={columns} data={[]} sizing={sizing} />);

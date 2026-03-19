@@ -20,7 +20,7 @@ const useAddBasicPatient = (): AddBasicPatientInteraction => {
     return {
         ...interaction,
         canSave: allowSave,
-        setCanSave: setAllowSave
+        setCanSave: setAllowSave,
     };
 };
 

@@ -4,7 +4,6 @@ import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
-
 import java.util.Objects;
 
 public class SearchableInvestigationSteps {
@@ -20,8 +19,7 @@ public class SearchableInvestigationSteps {
       final Available<SearchableInvestigation> available,
       final Active<InvestigationIdentifier> investigation,
       final Available<InvestigationIdentifier> investigations,
-      final SearchableInvestigationMother mother
-  ) {
+      final SearchableInvestigationMother mother) {
     this.active = active;
     this.available = available;
     this.investigation = investigation;
@@ -41,14 +39,15 @@ public class SearchableInvestigationSteps {
 
   @Given("I am searching for the Investigation")
   public void i_am_searching_the_investigation() {
-    this.investigation.maybeActive()
-        .stream()
+    this.investigation.maybeActive().stream()
         .flatMap(
-            current -> this.available.all().filter(
-                searchable -> Objects.equals(current.identifier(), searchable.identifier())
-            )
-        ).findFirst()
+            current ->
+                this.available
+                    .all()
+                    .filter(
+                        searchable ->
+                            Objects.equals(current.identifier(), searchable.identifier())))
+        .findFirst()
         .ifPresent(this.active::active);
   }
-
 }

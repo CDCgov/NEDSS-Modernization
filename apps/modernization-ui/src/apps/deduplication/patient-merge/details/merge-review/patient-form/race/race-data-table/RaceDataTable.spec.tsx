@@ -11,18 +11,18 @@ const patientData: Partial<MergeCandidate> = {
             raceCode: '2106-3',
             asOf: '2014-03-11T00:00:00.000',
             race: 'White',
-            detailedRaces: 'European'
+            detailedRaces: 'European',
         },
         {
             personUid: '1',
             raceCode: '2028-9',
             asOf: '2000-01-12T00:00:00.000',
             race: 'Asian',
-            detailedRaces: 'Asian Indian | Bangladeshi | Bhutanese | Burmese'
-        }
-    ]
+            detailedRaces: 'Asian Indian | Bangladeshi | Bhutanese | Burmese',
+        },
+    ],
 };
-const onViewRace = jest.fn();
+const onViewRace = vi.fn();
 const Fixture = () => {
     const form = useForm();
     return (

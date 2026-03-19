@@ -15,7 +15,7 @@ export { initial };
 
 const labels = {
     asOf: 'As of',
-    comment: 'Comments'
+    comment: 'Comments',
 };
 
 export { labels };

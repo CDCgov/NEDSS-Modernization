@@ -16,7 +16,7 @@ type PhoneEmailDemographicFieldsProps = { options: PhoneEmailOptions } & EntryFi
 const PhoneEmailDemographicFields = ({
     orientation = 'horizontal',
     sizing = 'medium',
-    options
+    options,
 }: PhoneEmailDemographicFieldsProps) => {
     const { control } = useFormContext<PhoneEmailDemographic>();
 
@@ -89,8 +89,8 @@ const PhoneEmailDemographicFields = ({
                 rules={{
                     pattern: {
                         value: /^\+?\d{1,20}$/,
-                        message: 'A Country code should be 1 to 20 digits.'
-                    }
+                        message: 'A Country code should be 1 to 20 digits.',
+                    },
                 }}
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                     <MaskedTextInputField
@@ -131,8 +131,8 @@ const PhoneEmailDemographicFields = ({
                 rules={{
                     pattern: {
                         value: /^\+?\d{1,20}$/,
-                        message: 'An Extension should be 1 to 20 digits.'
-                    }
+                        message: 'An Extension should be 1 to 20 digits.',
+                    },
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <MaskedTextInputField

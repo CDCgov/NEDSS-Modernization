@@ -34,7 +34,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...TEST_RESULTS, moveable: true, toggleable: true },
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
     { ...PROGRAM_AREA, moveable: true, toggleable: true },
-    { ...JURISDICTION, moveable: true, toggleable: true }
+    { ...JURISDICTION, moveable: true, toggleable: true },
 ];
 
 const columns: Column<PatientFileLaboratoryReport>[] = [
@@ -51,7 +51,7 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
                     {value.processingDecision}
                 </Shown>
             </>
-        )
+        ),
     },
     {
         ...DATE_RECEIVED,
@@ -59,7 +59,7 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
         sortable: true,
         value: (value) => value.receivedDate,
         render: (value) => internalizeDateTime(value.receivedDate),
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...FACILITY_PROVIDER,
@@ -78,14 +78,14 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
                     {value.orderingFacility}
                 </MaybeLabeledValue>
             </>
-        )
+        ),
     },
     {
         ...DATE_COLLECTED,
         className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.collectedDate,
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...TEST_RESULTS,
@@ -96,27 +96,27 @@ const columns: Column<PatientFileLaboratoryReport>[] = [
                 <ResultedTests>{value.resultedTests}</ResultedTests>
                 <MaybeLabeledValue label="Specimen Source:">{value?.specimen?.source}</MaybeLabeledValue>
             </>
-        )
+        ),
     },
     {
         ...ASSOCIATED_WITH,
         className: styles['local-header'],
         sortable: true,
         value: (value) => value.associations?.[0]?.local,
-        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
+        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>,
     },
     {
         ...PROGRAM_AREA,
         sortable: true,
         className: styles['long-coded-header'],
-        value: (value) => value.programArea
+        value: (value) => value.programArea,
     },
     {
         ...JURISDICTION,
         sortable: true,
         className: styles['long-coded-header'],
-        value: (value) => value.jurisdiction
-    }
+        value: (value) => value.jurisdiction,
+    },
 ];
 
 type InternalCardProps = {
@@ -156,7 +156,8 @@ const PatientFileLaboratoryReportsCard = ({ provider, ...remaining }: PatientFil
             <LoadingOverlay>
                 <InternalCard {...remaining} />
             </LoadingOverlay>
-        }>
+        }
+    >
         <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
     </Suspense>
 );

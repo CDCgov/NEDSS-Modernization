@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { DatePickerInput } from './DatePickerInput';
 
 const meta = {
     title: 'Design System/Date/Picker/Field',
-    component: DatePickerInput
+    component: DatePickerInput,
 } satisfies Meta<typeof DatePickerInput>;
 
 export default meta;
@@ -14,62 +14,62 @@ export const Default: Story = {
     args: {
         id: 'date-picker-field',
         label: 'Date Picker Field',
-        onChange: () => {}
-    }
+        onChange: () => {},
+    },
 };
 
 export const Horizontal: Story = {
     args: {
         ...Default.args,
-        orientation: 'horizontal'
-    }
+        orientation: 'horizontal',
+    },
 };
 
 export const HorizontalSmall: Story = {
     args: {
         ...Horizontal.args,
-        sizing: 'small'
-    }
+        sizing: 'small',
+    },
 };
 
 export const HorizontalMedium: Story = {
     args: {
         ...Horizontal.args,
-        sizing: 'medium'
-    }
+        sizing: 'medium',
+    },
 };
 
 export const HorizontalLarge: Story = {
     args: {
         ...Horizontal.args,
-        sizing: 'large'
-    }
+        sizing: 'large',
+    },
 };
 
 export const Vertical: Story = {
     args: {
         ...Default.args,
-        orientation: 'vertical'
-    }
+        orientation: 'vertical',
+    },
 };
 
 export const VerticalSmall: Story = {
     args: {
         ...Vertical.args,
-        sizing: 'small'
-    }
+        sizing: 'small',
+    },
 };
 
 export const VerticalMedium: Story = {
     args: {
         ...Vertical.args,
-        sizing: 'medium'
-    }
+        sizing: 'medium',
+    },
 };
 
 export const VerticalLarge: Story = {
     args: {
         ...Vertical.args,
-        sizing: 'large'
-    }
+        sizing: 'large',
+    },
 };

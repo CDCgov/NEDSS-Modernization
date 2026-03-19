@@ -19,8 +19,9 @@ const AlertToast = ({ status, children }: AlertToastProps) =>
             title={children.title}
             className={classNames(styles.toast, {
                 [styles.showing]: status === 'showing',
-                [styles.leaving]: status === 'leaving'
-            })}>
+                [styles.leaving]: status === 'leaving',
+            })}
+        >
             {children.message}
         </AlertMessage>,
         document.body

@@ -7,8 +7,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Determines matches between Left and Right values by inserting values from each input collection into respective
- * {@link java.util.Map}s.  Each Map is iterated over attempting to look up each value in the other Map.
+ * Determines matches between Left and Right values by inserting values from each input collection
+ * into respective {@link java.util.Map}s. Each Map is iterated over attempting to look up each
+ * value in the other Map.
  *
  * @param <L> The type of the Left values
  * @param <R> The type of the Right values
@@ -35,15 +36,11 @@ class MatchResolver<L, R, I> {
 
   private Stream<Match<L, R>> paired(final Map<I, L> lefts, final Map<I, R> rights) {
     return Stream.concat(
-        lefts.entrySet().stream()
-            .map(e -> Match.of(e.getValue(), rights.get(e.getKey()))),
-        rights.entrySet().stream()
-            .map(e -> Match.of(lefts.get(e.getKey()), e.getValue()))
-    );
+        lefts.entrySet().stream().map(e -> Match.of(e.getValue(), rights.get(e.getKey()))),
+        rights.entrySet().stream().map(e -> Match.of(lefts.get(e.getKey()), e.getValue())));
   }
 
   private <K, V> Map<K, V> identified(final Function<V, K> idMapper, final Collection<V> values) {
     return values.stream().collect(Collectors.toMap(idMapper, Function.identity()));
   }
-
 }

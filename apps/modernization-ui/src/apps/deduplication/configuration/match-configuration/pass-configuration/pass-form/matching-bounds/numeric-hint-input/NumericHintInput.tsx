@@ -31,7 +31,7 @@ export const NumericHintInput = ({
     className,
     disabled = false,
     onBlur,
-    onChange
+    onChange,
 }: Props) => {
     return (
         <div className={classNames(className, styles.boundEntry, error ? styles.hasError : '')}>

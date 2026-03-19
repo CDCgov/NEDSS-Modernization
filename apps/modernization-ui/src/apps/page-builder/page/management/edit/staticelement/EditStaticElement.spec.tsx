@@ -8,7 +8,7 @@ import { render } from '@testing-library/react';
 const page: PagesResponse = {
     id: 12039120,
     name: 'test page',
-    status: 'Draft'
+    status: 'Draft',
 };
 
 const hyperlinkElement: PagesQuestion = {
@@ -17,7 +17,7 @@ const hyperlinkElement: PagesQuestion = {
     defaultValue: 'google.com',
     order: 3,
     adminComments: 'admin comments',
-    displayComponent: 1003
+    displayComponent: 1003,
 };
 
 const commentsElement: PagesQuestion = {
@@ -25,7 +25,7 @@ const commentsElement: PagesQuestion = {
     name: 'testing comments element',
     order: 4,
     adminComments: 'admin comments',
-    displayComponent: 1014
+    displayComponent: 1014,
 };
 
 const lineSeparatorElement: PagesQuestion = {
@@ -33,15 +33,15 @@ const lineSeparatorElement: PagesQuestion = {
     order: 4,
     adminComments: 'admin comments',
     displayComponent: 1012,
-    name: ''
+    name: '',
 };
 
 const fetch = () => {
-    jest.fn();
+    vi.fn();
 };
 
 const refresh = () => {
-    jest.fn();
+    vi.fn();
 };
 
 describe('When modal loads with hyperlink element', () => {

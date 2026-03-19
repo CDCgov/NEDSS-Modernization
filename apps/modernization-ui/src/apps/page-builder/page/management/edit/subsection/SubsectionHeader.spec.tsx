@@ -5,11 +5,11 @@ import { PageManagementProvider } from '../../usePageManagement';
 import { AlertProvider } from 'alert';
 import userEvent from '@testing-library/user-event';
 
-const onAdd = jest.fn();
-const handleExpanded = jest.fn();
-const onDelete = jest.fn();
-const onEdit = jest.fn();
-const onGroup = jest.fn();
+const onAdd = vi.fn();
+const handleExpanded = vi.fn();
+const onDelete = vi.fn();
+const onEdit = vi.fn();
+const onGroup = vi.fn();
 
 const unGroupedSubsection: PagesSubSection = {
     id: 1,
@@ -20,7 +20,7 @@ const unGroupedSubsection: PagesSubSection = {
     isGroupable: true,
     questionIdentifier: 'TSTSBSCTN',
     blockName: undefined,
-    questions: [{ id: 2, name: 'test Question', order: 24, isPublished: false }]
+    questions: [{ id: 2, name: 'test Question', order: 24, isPublished: false }],
 };
 
 const groupedSubsection: PagesSubSection = {
@@ -32,7 +32,7 @@ const groupedSubsection: PagesSubSection = {
     isGroupable: false,
     questionIdentifier: 'TSTSBSCTN',
     blockName: 'BLOCK_NAME',
-    questions: [{ id: 2, name: 'test Question', order: 24, isPublished: false }]
+    questions: [{ id: 2, name: 'test Question', order: 24, isPublished: false }],
 };
 
 describe('Subsection header', () => {
@@ -40,11 +40,11 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Draft'
+            status: 'Draft',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={unGroupedSubsection}
                         onAddQuestion={onAdd}
@@ -67,11 +67,11 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published with Draft'
+            status: 'Published with Draft',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={unGroupedSubsection}
                         onAddQuestion={onAdd}
@@ -93,11 +93,11 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published'
+            status: 'Published',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={unGroupedSubsection}
                         onAddQuestion={onAdd}
@@ -119,7 +119,7 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published with Draft'
+            status: 'Published with Draft',
         };
 
         const subsectionWithPublishedQuestion: PagesSubSection = {
@@ -131,11 +131,11 @@ describe('Subsection header', () => {
             isGroupable: true,
             questionIdentifier: 'TSTSBSCTN',
             blockName: 'BLOCK_NAME',
-            questions: [{ id: 2, name: 'test Question', order: 24, isPublished: true }]
+            questions: [{ id: 2, name: 'test Question', order: 24, isPublished: true }],
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={subsectionWithPublishedQuestion}
                         onAddQuestion={onAdd}
@@ -157,11 +157,11 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published'
+            status: 'Published',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={groupedSubsection}
                         onAddQuestion={onAdd}
@@ -183,11 +183,11 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Draft'
+            status: 'Draft',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={groupedSubsection}
                         onAddQuestion={onAdd}
@@ -209,11 +209,11 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published with Draft'
+            status: 'Published with Draft',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={groupedSubsection}
                         onAddQuestion={onAdd}
@@ -235,7 +235,7 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published with Draft'
+            status: 'Published with Draft',
         };
 
         const subsectionWithPublishedQuestion: PagesSubSection = {
@@ -247,11 +247,11 @@ describe('Subsection header', () => {
             isGroupable: true,
             questionIdentifier: 'TSTSBSCTN',
             blockName: 'BLOCK_NAME',
-            questions: [{ id: 2, name: 'test Question', order: 24, isPublished: true }]
+            questions: [{ id: 2, name: 'test Question', order: 24, isPublished: true }],
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
-                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
                     <SubsectionHeader
                         subsection={subsectionWithPublishedQuestion}
                         onAddQuestion={onAdd}

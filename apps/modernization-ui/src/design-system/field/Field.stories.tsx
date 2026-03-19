@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Field } from './Field';
 
 const meta = {
     title: 'Design System/Field',
-    component: Field
+    component: Field,
 } satisfies Meta<typeof Field>;
 
 export default meta;
@@ -17,8 +17,8 @@ export const Default: Story = {
         children: <span>Field</span>,
         sizing: 'medium',
         orientation: 'horizontal',
-        htmlFor: 'name'
-    }
+        htmlFor: 'name',
+    },
 };
 
 export const ErrorWarning: Story = {
@@ -28,6 +28,6 @@ export const ErrorWarning: Story = {
         warning: 'This is an warning message',
         children: <span>Field</span>,
         sizing: 'medium',
-        htmlFor: 'name'
-    }
+        htmlFor: 'name',
+    },
 };

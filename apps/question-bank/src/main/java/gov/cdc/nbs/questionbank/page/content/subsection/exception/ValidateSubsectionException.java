@@ -7,6 +7,4 @@ public class ValidateSubsectionException extends BadRequestException {
   public ValidateSubsectionException(String message) {
     super(message);
   }
-
-
 }

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Icon, IconProps } from './Icon';
 import { available } from './types';
 
@@ -7,8 +7,8 @@ const meta = {
     component: Icon,
     argTypes: {
         name: { control: 'select', options: available },
-        color: { control: 'color' }
-    }
+        color: { control: 'color' },
+    },
 } satisfies Meta<typeof Icon>;
 
 export default meta;
@@ -25,9 +25,9 @@ const sizes = (args: IconProps) => (
 
 export const Default: Story = {
     args: {
-        name: 'check'
+        name: 'check',
     },
-    render: sizes
+    render: sizes,
 };
 
 //  Double check

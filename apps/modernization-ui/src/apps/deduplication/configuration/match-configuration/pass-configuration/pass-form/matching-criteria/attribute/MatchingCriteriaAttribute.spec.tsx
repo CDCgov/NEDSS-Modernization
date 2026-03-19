@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
 import { MatchingCriteriaAttribute } from './MatchingCriteriaAttribute';
 
-const onRemove = jest.fn();
+const onRemove = vi.fn();
 const Fixture = () => {
     const form = useForm<Pass>({
         defaultValues: {
@@ -12,10 +12,10 @@ const Fixture = () => {
             description: 'This is my description for this pass',
             blockingCriteria: [BlockingAttribute.LAST_NAME],
             matchingCriteria: [
-                { attribute: MatchingAttribute.FIRST_NAME, method: MatchMethod.JAROWINKLER, threshold: 0.5 }
+                { attribute: MatchingAttribute.FIRST_NAME, method: MatchMethod.JAROWINKLER, threshold: 0.5 },
             ],
-            active: true
-        }
+            active: true,
+        },
     });
     return (
         <FormProvider {...form}>

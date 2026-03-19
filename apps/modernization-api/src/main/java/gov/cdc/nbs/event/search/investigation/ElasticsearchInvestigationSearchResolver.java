@@ -12,14 +12,14 @@ import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.search.SearchResolver;
 import gov.cdc.nbs.search.SearchResult;
 import gov.cdc.nbs.search.SearchResultResolver;
+import java.io.IOException;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.List;
-
 @Component
-class ElasticsearchInvestigationSearchResolver implements SearchResolver<InvestigationFilter, InvestigationSearchResult> {
+class ElasticsearchInvestigationSearchResolver
+    implements SearchResolver<InvestigationFilter, InvestigationSearchResult> {
 
   private static final Permission PERMISSION = new Permission("view", "investigation");
   private final PermissionScopeResolver resolver;
@@ -34,8 +34,8 @@ class ElasticsearchInvestigationSearchResolver implements SearchResolver<Investi
       final InvestigationSearchCriteriaFilterResolver filterResolver,
       final InvestigationSearchCriteriaQueryResolver queryResolver,
       final InvestigationSearchCriteriaSortResolver sortResolver,
-      final ElasticsearchClient client, SearchResultResolver resultResolver
-  ) {
+      final ElasticsearchClient client,
+      SearchResultResolver resultResolver) {
     this.resolver = resolver;
     this.filterResolver = filterResolver;
     this.queryResolver = queryResolver;
@@ -46,9 +46,7 @@ class ElasticsearchInvestigationSearchResolver implements SearchResolver<Investi
 
   @Override
   public SearchResult<InvestigationSearchResult> search(
-      final InvestigationFilter criteria,
-      final Pageable pageable
-  ) {
+      final InvestigationFilter criteria, final Pageable pageable) {
     PermissionScope scope = this.resolver.resolve(PERMISSION);
 
     Query filter = filterResolver.resolve(criteria, scope);
@@ -57,44 +55,39 @@ class ElasticsearchInvestigationSearchResolver implements SearchResolver<Investi
 
     try {
 
-      SearchResponse<SearchableInvestigation> response = client.search(
-          search -> search.index("investigation")
-              .postFilter(filter)
-              .query(query)
-              .sort(sorting)
-              .from((int) pageable.getOffset())
-              .size(pageable.getPageSize()),
-          SearchableInvestigation.class
-      );
+      SearchResponse<SearchableInvestigation> response =
+          client.search(
+              search ->
+                  search
+                      .index("investigation")
+                      .postFilter(filter)
+                      .query(query)
+                      .sort(sorting)
+                      .from((int) pageable.getOffset())
+                      .size(pageable.getPageSize()),
+              SearchableInvestigation.class);
 
       HitsMetadata<SearchableInvestigation> hits = response.hits();
 
       long total = hits.total().value();
 
-      return total > 0
-          ? paged(hits, pageable)
-          : resultResolver.empty(pageable);
+      return total > 0 ? paged(hits, pageable) : resultResolver.empty(pageable);
 
     } catch (RuntimeException | IOException exception) {
-      throw new IllegalStateException("An unexpected error occurred when searching for lab reports.", exception);
+      throw new IllegalStateException(
+          "An unexpected error occurred when searching for lab reports.", exception);
     }
-
   }
 
   private SearchResult<InvestigationSearchResult> paged(
-      final HitsMetadata<SearchableInvestigation> hits,
-      final Pageable pageable
-  ) {
+      final HitsMetadata<SearchableInvestigation> hits, final Pageable pageable) {
 
-    List<InvestigationSearchResult> results = hits.hits().stream()
-        .filter(hit -> hit.source() != null)
-        .map(hit -> InvestigationSearchResultConverter.convert(hit.source(), hit.score()))
-        .toList();
+    List<InvestigationSearchResult> results =
+        hits.hits().stream()
+            .filter(hit -> hit.source() != null)
+            .map(hit -> InvestigationSearchResultConverter.convert(hit.source(), hit.score()))
+            .toList();
 
-    return resultResolver.resolve(
-        results,
-        pageable,
-        hits.total().value()
-    );
+    return resultResolver.resolve(results, pageable, hits.total().value());
   }
 }

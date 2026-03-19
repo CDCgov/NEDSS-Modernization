@@ -13,14 +13,16 @@ import org.springframework.stereotype.Component;
 @ScenarioScope
 class OrganizationMother {
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete
       from Organization
       where organization_uid in (:identifiers);
       delete from Entity where entity_uid in (:identifiers) and class_cd = 'ORG';
       """;
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Entity(entity_uid, class_cd) values (:identifier, 'ORG');
       insert into Organization(organization_uid, display_nm, local_id, version_ctrl_nbr)
       values (:identifier, :name, :local, 1);
@@ -36,8 +38,7 @@ class OrganizationMother {
       final SequentialIdentityGenerator idGenerator,
       final JdbcClient client,
       final Available<OrganizationIdentifier> available,
-      final Active<OrganizationIdentifier> active
-  ) {
+      final Active<OrganizationIdentifier> active) {
     this.idGenerator = idGenerator;
     this.client = client;
 
@@ -56,7 +57,8 @@ class OrganizationMother {
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal("ORG");
 
-    client.sql(CREATE)
+    client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("name", name)
         .param("local", local)
@@ -69,5 +71,4 @@ class OrganizationMother {
     this.available.available(created);
     this.active.active(created);
   }
-
 }

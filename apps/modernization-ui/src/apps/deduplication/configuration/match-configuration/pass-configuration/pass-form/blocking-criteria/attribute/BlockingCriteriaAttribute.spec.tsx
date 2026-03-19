@@ -4,7 +4,7 @@ import { BlockingCriteriaAttribute } from './BlockingCriteriaAttribute';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-const onRemove = jest.fn();
+const onRemove = vi.fn();
 const Fixture = () => {
     const form = useForm<Pass>({
         defaultValues: {
@@ -12,8 +12,8 @@ const Fixture = () => {
             description: 'This is my description for this pass',
             blockingCriteria: [BlockingAttribute.FIRST_NAME],
             matchingCriteria: [],
-            active: true
-        }
+            active: true,
+        },
     });
     return (
         <FormProvider {...form}>

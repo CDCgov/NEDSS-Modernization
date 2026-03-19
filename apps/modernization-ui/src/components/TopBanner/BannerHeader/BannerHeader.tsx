@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { ReactElement, ReactNode } from 'react';
 import classNames from 'classnames';
 
@@ -27,7 +26,7 @@ export const BannerHeader = ({
     const classes = classNames(
         'usa-banner__header',
         {
-            'usa-banner__header--expanded': isOpen
+            'usa-banner__header--expanded': isOpen,
         },
         className
     );

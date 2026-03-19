@@ -8,6 +8,4 @@ public record InvestigationIdentifier(
     String local,
     long revision,
     ProgramAreaIdentifier programArea,
-    JurisdictionIdentifier jurisdiction
-) {
-}
+    JurisdictionIdentifier jurisdiction) {}

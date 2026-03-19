@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { SelectableAutocomplete } from './SelectableAutocomplete';
 import { asSelectable, Selectable } from 'options';
 
 const meta = {
     title: 'Design System/Autocomplete/SelectableAutocomplete',
-    component: SelectableAutocomplete
+    component: SelectableAutocomplete,
 } satisfies Meta<typeof SelectableAutocomplete>;
 
 export default meta;
@@ -16,7 +16,7 @@ const options: Selectable[] = [
     asSelectable('banana', 'Banana'),
     asSelectable('mango', 'Mango'),
     asSelectable('orange', 'Orange'),
-    asSelectable('watermelon', 'Watermelon')
+    asSelectable('watermelon', 'Watermelon'),
 ];
 
 const resolver = (searchText: string) => {
@@ -29,6 +29,6 @@ export const Default: Story = {
         name: 'selectautocomplete-default',
         label: 'Default',
         resolver: resolver,
-        placeholder: 'Select text'
-    }
+        placeholder: 'Select text',
+    },
 };

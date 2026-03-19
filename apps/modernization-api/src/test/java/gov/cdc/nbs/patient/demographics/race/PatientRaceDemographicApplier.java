@@ -1,13 +1,12 @@
 package gov.cdc.nbs.patient.demographics.race;
 
+import static gov.cdc.nbs.support.util.RandomUtil.oneFrom;
+
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import java.time.LocalDate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-
-import static gov.cdc.nbs.support.util.RandomUtil.oneFrom;
 
 @Component
 public class PatientRaceDemographicApplier {
@@ -30,12 +29,9 @@ public class PatientRaceDemographicApplier {
     withRace(patient, LocalDate.now(), race);
   }
 
-  void withRace(
-      final PatientIdentifier patient,
-      final LocalDate asOf,
-      final String race
-  ) {
-    this.client.sql(
+  void withRace(final PatientIdentifier patient, final LocalDate asOf, final String race) {
+    this.client
+        .sql(
             """
                 insert into Person_race (
                     person_uid,
@@ -60,8 +56,7 @@ public class PatientRaceDemographicApplier {
                     'ACTIVE',
                     :addedOn
                 );
-                """
-        )
+                """)
         .param("patient", patient.id())
         .param("asOf", asOf)
         .param("race", race)
@@ -70,12 +65,9 @@ public class PatientRaceDemographicApplier {
         .update();
   }
 
-  void withRace(
-      final PatientIdentifier patient,
-      final String category,
-      final String race
-  ) {
-    this.client.sql(
+  void withRace(final PatientIdentifier patient, final String category, final String race) {
+    this.client
+        .sql(
             """
                 insert into Person_race (
                     person_uid,
@@ -103,9 +95,8 @@ public class PatientRaceDemographicApplier {
                 from Person_race [race]
                 where   [race].person_uid = :patient
                     and [race].race_category_cd = :category
-                
-                """
-        )
+
+                """)
         .param("patient", patient.id())
         .param("category", category)
         .param("race", race)

@@ -2,7 +2,7 @@ import { render, waitFor } from '@testing-library/react';
 import { SidePanel } from './SidePanel';
 import userEvent from '@testing-library/user-event';
 
-const onClose = jest.fn();
+const onClose = vi.fn();
 class ResizeObserver {
     observe() {
         // do nothing

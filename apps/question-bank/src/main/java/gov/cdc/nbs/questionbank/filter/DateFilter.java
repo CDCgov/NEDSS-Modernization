@@ -1,9 +1,6 @@
 package gov.cdc.nbs.questionbank.filter;
 
-public record DateFilter(
-    String property,
-    Operator operator
-) implements Filter {
+public record DateFilter(String property, Operator operator) implements Filter {
 
   public enum Operator {
     TODAY("today"),
@@ -21,5 +18,4 @@ public record DateFilter(
       return display;
     }
   }
-
 }

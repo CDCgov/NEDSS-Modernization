@@ -1,4 +1,4 @@
-export { externalizeDate, asDate } from './ExternalizeDate';
+export { externalizeDate } from './ExternalizeDate';
 export { externalizeDateTime } from './ExternalizeDateTime';
 export { internalizeDate } from './InternalizeDate';
 export { internalizeDateTime } from './InternalizeDateTime';

@@ -11,7 +11,7 @@ describe('when resolving a PatientSearchFilter', () => {
         const actual = filterResolver({
             some: 'some',
             other: 'other',
-            unknown: 'unknown'
+            unknown: 'unknown',
         });
 
         expect(actual).toBe(undefined);
@@ -19,7 +19,7 @@ describe('when resolving a PatientSearchFilter', () => {
 
     it('should resolve id when present', () => {
         const actual = filterResolver({
-            id: 'filter-value'
+            id: 'filter-value',
         });
 
         expect(actual).toEqual({ id: 'filter-value' });
@@ -27,7 +27,7 @@ describe('when resolving a PatientSearchFilter', () => {
 
     it('should resolve address when present', () => {
         const actual = filterResolver({
-            address: 'filter-value'
+            address: 'filter-value',
         });
 
         expect(actual).toEqual({ address: 'filter-value' });
@@ -35,7 +35,7 @@ describe('when resolving a PatientSearchFilter', () => {
 
     it('should resolve ageOrDateOfBirth when present', () => {
         const actual = filterResolver({
-            ageOrDateOfBirth: 'filter-value'
+            ageOrDateOfBirth: 'filter-value',
         });
 
         expect(actual).toEqual({ ageOrDateOfBirth: 'filter-value' });
@@ -43,7 +43,7 @@ describe('when resolving a PatientSearchFilter', () => {
 
     it('should resolve email when present', () => {
         const actual = filterResolver({
-            email: 'filter-value'
+            email: 'filter-value',
         });
 
         expect(actual).toEqual({ email: 'filter-value' });
@@ -51,7 +51,7 @@ describe('when resolving a PatientSearchFilter', () => {
 
     it('should resolve name when present', () => {
         const actual = filterResolver({
-            name: 'filter-value'
+            name: 'filter-value',
         });
 
         expect(actual).toEqual({ name: 'filter-value' });
@@ -59,7 +59,7 @@ describe('when resolving a PatientSearchFilter', () => {
 
     it('should resolve sex when present', () => {
         const actual = filterResolver({
-            sex: 'filter-value'
+            sex: 'filter-value',
         });
 
         expect(actual).toEqual({ sex: 'filter-value' });
@@ -67,7 +67,7 @@ describe('when resolving a PatientSearchFilter', () => {
 
     it('should resolve phone when present', () => {
         const actual = filterResolver({
-            phone: 'filter-value'
+            phone: 'filter-value',
         });
 
         expect(actual).toEqual({ phone: 'filter-value' });
@@ -75,7 +75,7 @@ describe('when resolving a PatientSearchFilter', () => {
 
     it('should resolve identification when present', () => {
         const actual = filterResolver({
-            identification: 'filter-value'
+            identification: 'filter-value',
         });
 
         expect(actual).toEqual({ identification: 'filter-value' });

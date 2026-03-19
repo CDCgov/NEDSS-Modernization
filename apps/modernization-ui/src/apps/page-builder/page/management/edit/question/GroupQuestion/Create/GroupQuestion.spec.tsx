@@ -14,7 +14,7 @@ type Additional = {
 const page: PagesResponse = {
     id: 12039120,
     name: 'test page',
-    status: 'Draft'
+    status: 'Draft',
 };
 
 const dateQuestion: PagesQuestion = {
@@ -22,7 +22,7 @@ const dateQuestion: PagesQuestion = {
     name: 'date test question',
     order: 3,
     dataType: 'DATE',
-    isStandard: true
+    isStandard: true,
 };
 
 const dropDownQuestion: PagesQuestion = {
@@ -30,7 +30,7 @@ const dropDownQuestion: PagesQuestion = {
     name: 'test drop down question',
     order: 4,
     isStandard: true,
-    displayComponent: 1007
+    displayComponent: 1007,
 };
 
 const subSections: PagesSubSection = {
@@ -41,7 +41,7 @@ const subSections: PagesSubSection = {
     questions: [dateQuestion, dropDownQuestion],
     isGroupable: true,
     questionIdentifier: 'identifier',
-    visible: true
+    visible: true,
 };
 
 type GroupQuestionFormType = GroupSubSectionRequest & PagesSubSection & Additional;
@@ -55,19 +55,19 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
                     appearsInTable: undefined,
                     width: undefined,
                     label: undefined,
-                    id: 1234
-                }
+                    id: 1234,
+                },
             ],
             blockName: undefined,
             id: 1234,
             visibleText: 'Y',
-            repeatNumber: 1
+            repeatNumber: 1,
         },
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (
-        <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+        <PageManagementProvider page={page} fetch={vi.fn()} refresh={vi.fn} loading={false}>
             <AlertProvider>
                 <FormProvider {...methods}>{children}</FormProvider>
             </AlertProvider>
@@ -78,7 +78,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 const setup = () => {
     return render(
         <Wrapper>
-            <GroupQuestion page={1} subsection={subSections} onSuccess={jest.fn()} onCancel={jest.fn()} />
+            <GroupQuestion page={1} subsection={subSections} onSuccess={vi.fn()} onCancel={vi.fn()} />
         </Wrapper>
     );
 };
@@ -89,7 +89,7 @@ describe('when GroupQuestion renders', () => {
         const inputs = container.getElementsByTagName('input');
         expect(inputs.length).toBe(9);
     });
-    xit('should display input labels', () => {
+    it.skip('should display input labels', () => {
         //  disabling this test as the component being tested contains field labels that are label elements.
         const { container } = setup();
         const labels = container.getElementsByTagName('label');

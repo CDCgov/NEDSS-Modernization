@@ -1,13 +1,13 @@
 package gov.cdc.nbs.patient.file.delete;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PatientDeleteSteps {
 
@@ -18,8 +18,7 @@ public class PatientDeleteSteps {
   PatientDeleteSteps(
       final PatientDeleteRequester requester,
       final Active<PatientIdentifier> patient,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.requester = requester;
     this.patient = patient;
     this.response = response;
@@ -27,7 +26,8 @@ public class PatientDeleteSteps {
 
   @When("I delete the patient")
   public void i_delete_the_patient() {
-    this.patient.maybeActive()
+    this.patient
+        .maybeActive()
         .map(PatientIdentifier::id)
         .map(requester::request)
         .ifPresent(response::active);
@@ -40,18 +40,15 @@ public class PatientDeleteSteps {
 
   @Then("the patient is deleted")
   public void the_patient_is_deleted() throws Exception {
-    this.response.active()
-        .andExpect(status().isAccepted());
+    this.response.active().andExpect(status().isAccepted());
   }
 
   @Then("the patient is not deleted because of an association with an event")
-  public void the_patient_is_not_deleted_because_of_an_association_with_an_event() throws Exception {
-    this.response.active()
+  public void the_patient_is_not_deleted_because_of_an_association_with_an_event()
+      throws Exception {
+    this.response
+        .active()
         .andExpect(status().isBadRequest())
-        .andExpect(
-            jsonPath("$.reason")
-                .value("Cannot delete patient with Active Revisions")
-        );
+        .andExpect(jsonPath("$.reason").value("Cannot delete patient with Active Revisions"));
   }
-
 }

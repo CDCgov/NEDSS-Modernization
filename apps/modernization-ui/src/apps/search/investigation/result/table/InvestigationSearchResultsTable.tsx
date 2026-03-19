@@ -9,7 +9,7 @@ import {
     displayInvestigator,
     displayNotificationStatus,
     displayStatus,
-    getPatient
+    getPatient,
 } from 'apps/search/investigation/result';
 
 const LEGAL_NAME = { id: 'legalName', name: 'Legal name' };
@@ -30,58 +30,58 @@ const columns = (notificationStatusResolver: SelectableResolver): Column<Investi
         ...LEGAL_NAME,
         fixed: true,
         sortable: true,
-        render: withPatient(getPatient, displayProfileLink)
+        render: withPatient(getPatient, displayProfileLink),
     },
     {
         ...DATE_OF_BIRTH,
         sortable: true,
-        render: (row) => internalizeDate(getPatient(row)?.birthTime)
+        render: (row) => internalizeDate(getPatient(row)?.birthTime),
     },
     {
         ...SEX,
         sortable: true,
-        render: withPatient(getPatient, displayGender)
+        render: withPatient(getPatient, displayGender),
     },
     {
         ...PATIENT_ID,
         sortable: true,
-        render: (row) => getPatient(row)?.shortId
+        render: (row) => getPatient(row)?.shortId,
     },
     {
         ...CONDITION,
         sortable: true,
-        render: (row) => displayInvestigationLink(row)
+        render: (row) => displayInvestigationLink(row),
     },
     {
         ...START_DATE,
         sortable: true,
-        render: (row) => internalizeDate(row.startedOn)
+        render: (row) => internalizeDate(row.startedOn),
     },
     {
         ...JURSIDICTION,
         sortable: true,
-        render: (row) => row.jurisdictionCodeDescTxt
+        render: (row) => row.jurisdictionCodeDescTxt,
     },
     {
         ...INVESTIGATOR,
         sortable: true,
-        render: displayInvestigator
+        render: displayInvestigator,
     },
     {
         ...INVESTIGATION_ID,
         sortable: true,
-        render: (row) => row.localId
+        render: (row) => row.localId,
     },
     {
         ...STATUS,
         sortable: true,
-        render: displayStatus
+        render: displayStatus,
     },
     {
         ...NOTIFICATION,
         sortable: true,
-        render: displayNotificationStatus(notificationStatusResolver)
-    }
+        render: displayNotificationStatus(notificationStatusResolver),
+    },
 ];
 
 const preferences: ColumnPreference[] = [
@@ -95,7 +95,7 @@ const preferences: ColumnPreference[] = [
     { ...INVESTIGATOR, moveable: true, toggleable: true },
     { ...INVESTIGATION_ID, moveable: true, toggleable: true },
     { ...STATUS, moveable: true, toggleable: true },
-    { ...NOTIFICATION, moveable: true, toggleable: true }
+    { ...NOTIFICATION, moveable: true, toggleable: true },
 ];
 
 type Props = {

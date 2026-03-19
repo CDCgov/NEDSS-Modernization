@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { ReactElement } from 'react';
 import classNames from 'classnames';
 
@@ -35,7 +34,8 @@ export const BannerLockImage = ({
                 role="img"
                 aria-labelledby="banner-lock-title banner-lock-description"
                 focusable="false"
-                {...remainingSvgProps}>
+                {...remainingSvgProps}
+            >
                 <title id="banner-lock-title" {...titleProps}>
                     {title}
                 </title>

@@ -30,7 +30,7 @@ export const PreviewRace = ({ selectedRaces, mergeCandidates }: PreviewRaceProps
 
             raceMap.set(key, {
                 latestDate: isNewer ? r.asOf : (existing?.latestDate ?? r.asOf),
-                detailed: new Set([...(existing?.detailed ?? []), ...details])
+                detailed: new Set([...(existing?.detailed ?? []), ...details]),
             });
         });
 
@@ -40,14 +40,14 @@ export const PreviewRace = ({ selectedRaces, mergeCandidates }: PreviewRaceProps
             race,
             asOf: format(parseISO(latestDate), 'MM/dd/yyyy'),
             latestDate,
-            detailedRace: detailed.size ? Array.from(detailed).join(', ') : undefined
+            detailedRace: detailed.size ? Array.from(detailed).join(', ') : undefined,
         }))
         .sort((a, b) => (parseISO(a.latestDate) > parseISO(b.latestDate) ? -1 : 1));
 
     const columns: Column<RaceEntry>[] = [
         { id: 'asOf', name: 'As of', value: (e) => e.asOf, sortable: true },
         { id: 'race', name: 'Race', value: (e) => e.race, sortable: true },
-        { id: 'detailedRace', name: 'Detailed Race', value: (e) => e.detailedRace ?? '---', sortable: true }
+        { id: 'detailedRace', name: 'Detailed Race', value: (e) => e.detailedRace ?? '---', sortable: true },
     ];
 
     return <MergePreviewTableCard<RaceEntry> id="race" title="Race" columns={columns} data={races} />;

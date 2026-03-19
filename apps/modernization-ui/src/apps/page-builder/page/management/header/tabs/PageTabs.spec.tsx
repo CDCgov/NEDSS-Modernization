@@ -20,26 +20,26 @@ const content: PagesResponse = {
                     name: 'Section1',
                     visible: true,
                     order: 1,
-                    subSections: []
+                    subSections: [],
                 },
                 {
                     id: 5678,
                     name: 'Section2',
                     visible: true,
                     order: 2,
-                    subSections: []
-                }
-            ]
-        }
-    ]
+                    subSections: [],
+                },
+            ],
+        },
+    ],
 };
 
 describe('When PageTabs renders', () => {
     it('should display the Manage Tabs button when passed onAddSuccess', () => {
         const { container } = render(
             <DragDropProvider pageData={content}>
-                <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
-                    <PageTabs pageId={999} tabs={content.tabs!} onAddSuccess={jest.fn()} />
+                <PageManagementProvider page={content} fetch={vi.fn()} refresh={vi.fn()} loading={false}>
+                    <PageTabs pageId={999} tabs={content.tabs!} onAddSuccess={vi.fn()} />
                 </PageManagementProvider>
             </DragDropProvider>
         );
@@ -49,7 +49,7 @@ describe('When PageTabs renders', () => {
     it('should not display the Manage Tabs button when not passed onAddSuccess', () => {
         const { queryByText } = render(
             <DragDropProvider pageData={content}>
-                <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
+                <PageManagementProvider page={content} fetch={vi.fn()} refresh={vi.fn()} loading={false}>
                     <PageTabs pageId={999} tabs={content.tabs!} />
                 </PageManagementProvider>
             </DragDropProvider>

@@ -11,5 +11,4 @@ public record PageBuilderOption(
   public PageBuilderOption(String value, String name, int order) {
     this(value, name, name, order);
   }
-
 }

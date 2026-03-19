@@ -24,7 +24,7 @@ describe('useMultiValueEntry', () => {
         expect(result.current.entries).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({ value: expect.objectContaining({ id: 47, name: 'name-one' }) }),
-                expect.objectContaining({ value: expect.objectContaining({ id: 61, name: 'name-other' }) })
+                expect.objectContaining({ value: expect.objectContaining({ id: 61, name: 'name-other' }) }),
             ])
         );
     });
@@ -33,15 +33,15 @@ describe('useMultiValueEntry', () => {
         const { result } = setup({
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         expect(result.current.selected).toBeUndefined();
     });
 
     it('should select an item for viewing', () => {
-        const identifierGenerator = jest
+        const identifierGenerator = vi
             .fn()
             .mockImplementationOnce(() => '557')
             .mockImplementationOnce(() => '601');
@@ -50,8 +50,8 @@ describe('useMultiValueEntry', () => {
             identifierGenerator,
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         act(() => {
@@ -63,8 +63,8 @@ describe('useMultiValueEntry', () => {
                 status: 'viewing',
                 selected: expect.objectContaining({
                     id: '601',
-                    value: expect.objectContaining({ id: 61, name: 'name-other' })
-                })
+                    value: expect.objectContaining({ id: 61, name: 'name-other' }),
+                }),
             })
         );
     });
@@ -78,7 +78,7 @@ describe('useMultiValueEntry', () => {
 
         expect(result.current).toEqual(
             expect.objectContaining({
-                status: 'adding'
+                status: 'adding',
             })
         );
     });
@@ -92,13 +92,13 @@ describe('useMultiValueEntry', () => {
 
         expect(result.current).toEqual(
             expect.objectContaining({
-                status: 'adding'
+                status: 'adding',
             })
         );
     });
 
     it('should select an item for editing', () => {
-        const identifierGenerator = jest
+        const identifierGenerator = vi
             .fn()
             .mockImplementationOnce(() => '557')
             .mockImplementationOnce(() => '601');
@@ -107,8 +107,8 @@ describe('useMultiValueEntry', () => {
             identifierGenerator,
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         act(() => {
@@ -120,14 +120,14 @@ describe('useMultiValueEntry', () => {
                 status: 'editing',
                 selected: expect.objectContaining({
                     id: '601',
-                    value: expect.objectContaining({ id: 61, name: 'name-other' })
-                })
+                    value: expect.objectContaining({ id: 61, name: 'name-other' }),
+                }),
             })
         );
     });
 
     it('should update the selected value', () => {
-        const identifierGenerator = jest
+        const identifierGenerator = vi
             .fn()
             .mockImplementationOnce(() => '557')
             .mockImplementationOnce(() => '601');
@@ -136,8 +136,8 @@ describe('useMultiValueEntry', () => {
             identifierGenerator,
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         act(() => {
@@ -149,14 +149,14 @@ describe('useMultiValueEntry', () => {
             expect.arrayContaining([
                 expect.objectContaining({
                     id: '601',
-                    value: expect.objectContaining({ id: 61, name: 'name-changed' })
-                })
+                    value: expect.objectContaining({ id: 61, name: 'name-changed' }),
+                }),
             ])
         );
     });
 
     it('should remove an existing value', () => {
-        const identifierGenerator = jest
+        const identifierGenerator = vi
             .fn()
             .mockImplementationOnce(() => '557')
             .mockImplementationOnce(() => '601');
@@ -165,8 +165,8 @@ describe('useMultiValueEntry', () => {
             identifierGenerator,
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         act(() => {
@@ -179,7 +179,7 @@ describe('useMultiValueEntry', () => {
     });
 
     it('should reset when removing the selected value', () => {
-        const identifierGenerator = jest
+        const identifierGenerator = vi
             .fn()
             .mockImplementationOnce(() => '557')
             .mockImplementationOnce(() => '601');
@@ -188,8 +188,8 @@ describe('useMultiValueEntry', () => {
             identifierGenerator,
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         act(() => {

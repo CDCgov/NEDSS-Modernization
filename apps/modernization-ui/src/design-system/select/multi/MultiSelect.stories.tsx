@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { MultiSelect } from './MultiSelect';
 import { asSelectable, Selectable } from 'options';
 
 const meta = {
     title: 'Design System/Select/MultiSelect',
-    component: MultiSelect
+    component: MultiSelect,
 } satisfies Meta<typeof MultiSelect>;
 
 export default meta;
@@ -16,7 +16,7 @@ const options: Selectable[] = [
     asSelectable('banana', 'Banana'),
     asSelectable('mango', 'Mango'),
     asSelectable('orange', 'Orange'),
-    asSelectable('watermelon', 'Watermelon')
+    asSelectable('watermelon', 'Watermelon'),
 ];
 
 export const Default: Story = {
@@ -28,8 +28,8 @@ export const Default: Story = {
         value: [options[0]],
         onChange: (selected) => {
             console.log('Selected options:', selected);
-        }
-    }
+        },
+    },
 };
 
 export const Horizontal: Story = {
@@ -39,6 +39,6 @@ export const Horizontal: Story = {
         name: 'HorizontalMultiSelect',
         label: 'Horizontal Multi Select',
         options: options,
-        orientation: 'horizontal'
-    }
+        orientation: 'horizontal',
+    },
 };

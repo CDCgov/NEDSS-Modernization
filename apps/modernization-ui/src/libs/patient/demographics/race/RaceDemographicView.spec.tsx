@@ -7,7 +7,7 @@ const entry: RaceDemographic = {
     id: 613,
     asOf: '2000-01-01',
     race: asSelectable('A', 'Asian'),
-    detailed: [asSelectable('IN', 'Indian')]
+    detailed: [asSelectable('IN', 'Indian')],
 };
 
 describe('phone email demographic', () => {
