@@ -1,12 +1,9 @@
 package gov.cdc.nbs.report;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.repository.ReportRepository;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 import org.apache.commons.lang3.NotImplementedException;
@@ -21,10 +18,15 @@ public class ReportService {
 
   private final ReportRepository reportRepository;
   private final RestClient reportExecutionClient;
+  private final ReportSpecBuilder specBuilder;
 
-  public ReportService(final ReportRepository reportRepository, RestClient reportExecutionClient) {
+  public ReportService(
+      final ReportRepository reportRepository,
+      RestClient reportExecutionClient,
+      ReportSpecBuilder specBuilder) {
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
+    this.specBuilder = specBuilder;
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
@@ -33,19 +35,20 @@ public class ReportService {
     Report fetchedReport;
     ReportId fetchedReportId;
 
-    if (optionalReport.isPresent()) {
-      fetchedReport = optionalReport.get();
-      fetchedReportId = fetchedReport.getId();
-
-      return new ReportConfiguration(
-          createReportId(fetchedReportId.getReportUid(), fetchedReportId.getDataSourceUid()),
-          fetchedReport.getReportLibrary().getRunner());
+    if (optionalReport.isEmpty()) {
+      throw new NotFoundException(
+          String.format(
+              "Report not found for Report UID: %d and Data Source UID: %d",
+              reportUid, dataSourceUid));
     }
 
-    throw new NotFoundException(
-        String.format(
-            "Report not found for Report UID: %d and Data Source UID: %d",
-            reportUid, dataSourceUid));
+    fetchedReport = optionalReport.get();
+    fetchedReportId = fetchedReport.getId();
+
+    return new ReportConfiguration(
+        fetchedReportId.getReportUid(),
+        fetchedReportId.getDataSourceUid(),
+        fetchedReport.getReportLibrary().getRunner());
   }
 
   public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
@@ -53,47 +56,19 @@ public class ReportService {
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
 
-    if (reportConfigResponse != null) {
-      if (Objects.equals(reportConfigResponse.runner(), "python")) {
-        ObjectNode reportSpec = getReportSpec();
-        return reportExecutionClient
-            .post()
-            .uri("/report/execute")
-            .contentType(MediaType.valueOf("application/json;charset=UTF-8"))
-            .body(reportSpec)
-            .retrieve()
-            .toEntity(String.class);
-      }
+    if (!Objects.equals(reportConfigResponse.runner(), "python")) {
       throw new NotImplementedException(
           String.format("Report not implemented for %s", reportConfigResponse.runner()),
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
     }
-    throw new NotFoundException(
-        String.format(
-            "Report not found for Report UID: %d and Data Source UID: %d",
-            reportUid, dataSourceUid));
-  }
 
-  private ObjectNode getReportSpec() {
-    ObjectMapper mapper = new ObjectMapper();
-    ObjectNode objectNode = mapper.createObjectNode();
-
-    objectNode.put("version", 1);
-    objectNode.put("is_export", true);
-    objectNode.put("is_builtin", true);
-    objectNode.put("report_title", "Test report");
-    objectNode.put("library_name", "nbs_custom");
-    objectNode.put("data_source_name", "[NBS_ODSE].[dbo].[Report]");
-    objectNode.put("subset_query", "SELECT * FROM [NBS_ODSE].[dbo].[Report]");
-    objectNode.putNull("time_range");
-
-    return objectNode;
-  }
-
-  private HashMap<String, Long> createReportId(long reportUid, Long dataSourceUid) {
-    HashMap<String, Long> idMap = new HashMap<>();
-    idMap.put("reportUid", reportUid);
-    idMap.put("dataSourceUid", dataSourceUid);
-    return idMap;
+    ReportSpec reportSpec = specBuilder.build();
+    return reportExecutionClient
+        .post()
+        .uri("/report/execute")
+        .contentType(MediaType.valueOf("application/json;charset=UTF-8"))
+        .body(reportSpec)
+        .retrieve()
+        .toEntity(String.class);
   }
 }

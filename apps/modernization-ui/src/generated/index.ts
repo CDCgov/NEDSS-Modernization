@@ -17,7 +17,7 @@ export type { BasicFilter } from './models/BasicFilter';
 export type { BirthDemographic } from './models/BirthDemographic';
 export type { Clause } from './models/Clause';
 export type { ConceptOptionsResponse } from './models/ConceptOptionsResponse';
-export type { Connector } from './models/Connector';
+export { Connector } from './models/Connector';
 export type { CreatedPatient } from './models/CreatedPatient';
 export type { DisplayableAddress } from './models/DisplayableAddress';
 export type { DisplayableIdentification } from './models/DisplayableIdentification';

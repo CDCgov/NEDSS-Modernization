@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.exception.NotFoundException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
@@ -29,11 +29,7 @@ class ReportControllerTest {
     Long reportUid = 1L;
     Long dataSourceUid = 2L;
 
-    HashMap<String, Long> idMap = new HashMap<>();
-    idMap.put("reportUid", reportUid);
-    idMap.put("dataSourceUid", dataSourceUid);
-
-    ReportConfiguration reportConfig = new ReportConfiguration(idMap, "python");
+    ReportConfiguration reportConfig = new ReportConfiguration(reportUid, dataSourceUid, "python");
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ResponseEntity<ReportConfiguration> response =
@@ -47,14 +43,13 @@ class ReportControllerTest {
   void getReport_should_return_400_status_code_when_report_not_found() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
+    String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
 
-    when(service.getReport(reportUid, dataSourceUid))
-        .thenThrow(
-            new NotFoundException("Report not found for Report UID: 1 and Data Source UID: 2"));
+    when(service.getReport(reportUid, dataSourceUid)).thenThrow(new NotFoundException(errorMsg));
 
     assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid))
         .isInstanceOf(NotFoundException.class)
-        .hasMessageContaining("Report not found for Report UID: 1 and Data Source UID: 2");
+        .hasMessageContaining(errorMsg);
   }
 
   @Test
@@ -62,20 +57,24 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
+    Filter.Expr.Clause clause1 = new Filter.Expr.Clause("state_cd", "EQ", "47");
+    Filter.Expr.Clause clause2 = new Filter.Expr.Clause("cnty_cd", "EQ", "35001");
+    Filter.Expr.Connector connector = new Filter.Expr.Connector("OR", clause1, clause2);
+    Filter.AdvancedFilter advancedFilter = new Filter.AdvancedFilter(false, connector);
+
     ReportExecutionRequest request =
         new ReportExecutionRequest(
             reportUid,
             dataSourceUid,
             true,
-            new ArrayList<>(Arrays.asList("state_cd", "cnty_cd")),
-            new ArrayList<>(
-                List.of(
-                    new Filter.BasicFilter(true, "10066724", new ArrayList<>(List.of("test"))))));
+            Arrays.asList("state_cd", "cnty_cd"),
+            List.of(advancedFilter));
 
-    when(service.executeReport(request)).thenReturn(new ResponseEntity<>("blah", HttpStatus.OK));
+    when(service.executeReport(request))
+        .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
 
     ResponseEntity<String> response = controller.executeReport(request);
-    assertEquals("blah", response.getBody());
+    assertEquals(getReportExecutionResponse(), response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }
 
@@ -83,47 +82,54 @@ class ReportControllerTest {
   void executeReport_should_return_400_status_code_when_report_not_found() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
+    String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
             reportUid,
             dataSourceUid,
             true,
-            new ArrayList<>(Arrays.asList("state_cd", "cnty_cd")),
-            new ArrayList<>(
-                List.of(
-                    new Filter.BasicFilter(true, "10066724", new ArrayList<>(List.of("test"))))));
+            Arrays.asList("state_cd", "cnty_cd"),
+            List.of(new Filter.BasicFilter(true, "10066724", List.of("35001"))));
 
-    when(service.executeReport(request))
-        .thenThrow(
-            new NotFoundException("Report not found for Report UID: 1 and Data Source UID: 2"));
-    ;
+    when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
     assertThatThrownBy(() -> controller.executeReport(request))
         .isInstanceOf(NotFoundException.class)
-        .hasMessageContaining("Report not found for Report UID: 1 and Data Source UID: 2");
+        .hasMessageContaining(errorMsg);
   }
 
   @Test
   void executeReport_should_return_501_status_code_when_report_not_implemented() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
+    String errorMsg = "Report not implemented for python";
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
             reportUid,
             dataSourceUid,
             true,
-            new ArrayList<>(Arrays.asList("state_cd", "cnty_cd")),
-            new ArrayList<>(
-                List.of(
-                    new Filter.BasicFilter(true, "10066724", new ArrayList<>(List.of("test"))))));
+            Arrays.asList("state_cd", "cnty_cd"),
+            List.of(new Filter.BasicFilter(true, "10066724", List.of("35001"))));
 
-    when(service.executeReport(request))
-        .thenThrow(new NotImplementedException("Report not implemented for python"));
+    when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
 
     assertThatThrownBy(() -> controller.executeReport(request))
         .isInstanceOf(NotImplementedException.class)
-        .hasMessageContaining("Report not implemented for python");
+        .hasMessageContaining(errorMsg);
+  }
+
+  private String getReportExecutionResponse() {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode objectNode = mapper.createObjectNode();
+
+    objectNode.put("content_type", "table");
+    objectNode.put(
+        "content",
+        "report_uid,data_source_uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time");
+    objectNode.put("description", "Custom Report For Table: nbs_ods.NBS_configuration");
+
+    return objectNode.toPrettyString();
   }
 }
