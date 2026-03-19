@@ -56,8 +56,6 @@ class ReportServiceTest {
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
   }
 
-  ///////////////////////////////////////////////////////////////////////////////////
-
   @Test
   void getReport_should_return_configuration_when_report_exists() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
