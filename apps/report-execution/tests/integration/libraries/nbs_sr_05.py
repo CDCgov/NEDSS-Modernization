@@ -22,7 +22,7 @@ class TestIntegrationNbsSr05Library:
 
     @pytest.fixture(autouse=True)
     def set_time(self, time_machine):
-        time_machine.move_to(datetime.datetime(2024, 6, 14))
+        time_machine.move_to(datetime.datetime(2024, 6, 24))
 
     def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
@@ -51,20 +51,21 @@ class TestIntegrationNbsSr05Library:
         for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
             record = None
             for row in result.content.data:
-                if row[0] == disease:
+                if row[3] == disease:
                     record = row
                     break
 
             assert record is not None
-            # Because these tests need to pass very early in the year, only weak checks
-            assert record[1] >= 10
-            assert record[2] >= 100
-            assert record[2] >= record[1]  # ytd must be at least this month
-            assert record[3] >= 100
-            assert record[4] >= 100
             # -100% to 100%
-            assert int(record[5][:-1]) <= 100
-            assert int(record[5][:-1]) >= -100
+            assert int(record[0][:-1]) <= 100
+            assert int(record[0][:-1]) >= -100
+            assert record[1] >= 100
+            assert record[2] >= 100
+            assert record[4] == 2024
+            assert record[5] == record[2]
+            assert record[6] >= 100
+            assert record[7] >= 10
+            assert record[2] >= record[7]  # ytd must be at least this month
 
     def test_execute_report_old_data_zeros(self):
         report_spec = ReportSpec.model_validate(
@@ -77,7 +78,7 @@ class TestIntegrationNbsSr05Library:
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
-                    'WHERE YEAR(event_date) <= (2024 - 5)'
+                    'WHERE YEAR(event_date) < (2024 - 5)'
                 ),
                 'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
             }
@@ -92,17 +93,19 @@ class TestIntegrationNbsSr05Library:
         for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
             record = None
             for row in result.content.data:
-                if row[0] == disease:
+                if row[3] == disease:
                     record = row
                     break
 
             assert record is not None
             # No data returned should default to zero
+            assert record[0] == '0%'
             assert record[1] == 0
             assert record[2] == 0
-            assert record[3] == 0
-            assert record[4] == 0
-            assert record[5] == '0%'
+            assert record[4] == 2024
+            assert record[5] == 0
+            assert record[6] == 0
+            assert record[7] == 0
 
     def test_execute_report_no_current_year(self):
         report_spec = ReportSpec.model_validate(
@@ -129,17 +132,19 @@ class TestIntegrationNbsSr05Library:
         for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
             record = None
             for row in result.content.data:
-                if row[0] == disease:
+                if row[3] == disease:
                     record = row
                     break
 
             assert record is not None
             # current year data should be zero, older not
-            assert record[1] == 0
+            assert int(record[0][:-1]) < 0
+            assert record[1] >= 100
             assert record[2] == 0
-            assert record[3] >= 100
-            assert record[4] >= 100
-            assert int(record[5][:-1]) < 0
+            assert record[4] == 2024
+            assert record[5] == 0
+            assert record[6] >= 100
+            assert record[7] == 0
 
     def test_execute_report_only_current_year(self):
         report_spec = ReportSpec.model_validate(
@@ -166,18 +171,20 @@ class TestIntegrationNbsSr05Library:
         for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
             record = None
             for row in result.content.data:
-                if row[0] == disease:
+                if row[3] == disease:
                     record = row
                     break
 
             assert record is not None
-            # current year data should be zero, older not
-            assert record[1] >= 10
-            assert record[2] >= 100
-            assert record[3] == 0
-            assert record[4] == 0
+            # current year data should be non-zero, older zero
             # default zero when median is zero to avoid error
-            assert record[5] == '0%'
+            assert record[0] == '0%'
+            assert record[1] == 0
+            assert record[2] >= 100
+            assert record[4] == 2024
+            assert record[5] >= 100
+            assert record[6] == 0
+            assert record[7] >= 10
 
     def test_execute_report_empty_subset(self):
         report_spec = ReportSpec.model_validate(
@@ -198,7 +205,7 @@ class TestIntegrationNbsSr05Library:
         assert result.content_type == 'table'
 
         assert len(result.content.data) == 0
-        assert len(result.content.columns) == 6
+        assert len(result.content.columns) == 8
 
     def test_execute_report_check_metadata(self):
         """Check the metadata and column names are correct with a frozen date."""
@@ -217,13 +224,15 @@ class TestIntegrationNbsSr05Library:
 
         result = execute_report(report_spec)
         assert result.header == 'SR5: Cases of Reportable Diseases by State'
-        assert result.subheader == 'N/A, Georgia, Tennessee | 06/14/2024'
+        assert result.subheader == 'N/A, Georgia, Tennessee | 06/24/2024'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 
-        assert result.content.columns[0] == 'Disease'
-        assert result.content.columns[1] == 'JUN2024'
+        assert result.content.columns[0] == 'Percent Change 2024 vs 5 Year Median'
+        assert result.content.columns[1] == 'Cumulative for 2023 to Date'
         assert result.content.columns[2] == 'Cumulative for 2024 to Date'
-        assert result.content.columns[3] == 'Cumulative for 2023 to Date'
-        assert result.content.columns[4] == '5 Year Median Year to Date'
-        assert result.content.columns[5] == 'Percent Change 2024 vs 5 Year Median'
+        assert result.content.columns[3] == 'Disease'
+        assert result.content.columns[4] == 'Year'
+        assert result.content.columns[5] == 'Cases'
+        assert result.content.columns[6] == '5 Year Median Year to Date'
+        assert result.content.columns[7] == 'JUN2024'

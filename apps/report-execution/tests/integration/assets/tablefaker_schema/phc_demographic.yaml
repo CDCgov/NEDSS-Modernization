@@ -34,7 +34,7 @@ tables:
         type: string
         data: PHC_code_desc
       - column_name: event_date 
-        data: fake.date_between(start_date=date(2019, 5, 5), end_date=date(2025, 5, 5))
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         null_percentage: 0.05
       - column_name: group_case_cnt
         data: fake.random_int(1, 90)

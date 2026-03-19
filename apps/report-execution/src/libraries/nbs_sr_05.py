@@ -35,7 +35,7 @@ def execute(
     month = today.month
     day_of_year = int(today.strftime('%j'))
     last_year = year - 1
-    years = range(year, year - 5, -1)
+    years = range(year, year - 6, -1)
 
     # Place holder value used when ensuring all disease+year have data
     filler_state = '<FILLER>'
@@ -111,13 +111,10 @@ def execute(
         'SELECT DISTINCT phc_code_short_desc, PERCENTILE_CONT(0.5) WITHIN GROUP '
         '(ORDER BY cases) OVER (PARTITION BY phc_code_short_desc) as median_ytd\n'
         'FROM year_data\n'
+        f'WHERE year != {year}\n'
         ')\n'
         # Result select
-        'SELECT ty.phc_code_short_desc as [Disease], '
-        f'curr_month as [{curr_month}], \n'
-        f'curr_ytd as [Cumulative for {year} to Date], '
-        f'last_ytd as [Cumulative for {last_year} to Date], \n'
-        'median_ytd as [5 Year Median Year to Date], \n'
+        'SELECT \n'
         'FORMAT('
         '  IIF('
         '    median_ytd = 0, '
@@ -126,7 +123,14 @@ def execute(
         '  ), '
         "  'P0', 'en-us'"
         ')'
-        f'       as [Percent Change {year} vs 5 Year Median]\n'
+        f'       as [Percent Change {year} vs 5 Year Median], \n'
+        f'last_ytd as [Cumulative for {last_year} to Date], \n'
+        f'curr_ytd as [Cumulative for {year} to Date], \n'
+        'ty.phc_code_short_desc as [Disease], \n'
+        f'{year} as [Year], \n'
+        'curr_ytd as [Cases], \n'
+        'median_ytd as [5 Year Median Year to Date], \n'
+        f'curr_month as [{curr_month}] \n'
         'FROM this_year ty\n'
         'LEFT JOIN this_month tm on tm.phc_code_short_desc = ty.phc_code_short_desc\n'
         'LEFT JOIN last_year ly on ly.phc_code_short_desc = ty.phc_code_short_desc\n'

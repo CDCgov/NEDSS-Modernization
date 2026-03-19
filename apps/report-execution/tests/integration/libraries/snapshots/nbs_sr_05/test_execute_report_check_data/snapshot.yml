@@ -1,30 +1,39 @@
 - !!python/tuple
+  - 18%
+  - !!python/object/apply:decimal.Decimal
+    - '1185.00000'
+  - !!python/object/apply:decimal.Decimal
+    - '951.00000'
   - Measles
+  - 2024
   - !!python/object/apply:decimal.Decimal
-    - '63.00000'
+    - '951.00000'
+  - 807.0
   - !!python/object/apply:decimal.Decimal
-    - '847.00000'
-  - !!python/object/apply:decimal.Decimal
-    - '897.00000'
-  - 938.5
-  - -10%
+    - '175.00000'
 - !!python/tuple
+  - 73%
+  - !!python/object/apply:decimal.Decimal
+    - '728.00000'
+  - !!python/object/apply:decimal.Decimal
+    - '1373.00000'
   - Pertussis
+  - 2024
   - !!python/object/apply:decimal.Decimal
-    - '162.00000'
+    - '1373.00000'
+  - 791.5
   - !!python/object/apply:decimal.Decimal
-    - '1117.00000'
-  - !!python/object/apply:decimal.Decimal
-    - '1321.00000'
-  - 1100.5
-  - 1%
+    - '299.00000'
 - !!python/tuple
+  - 93%
+  - !!python/object/apply:decimal.Decimal
+    - '718.00000'
+  - !!python/object/apply:decimal.Decimal
+    - '1492.00000'
   - Salmonellosis
+  - 2024
   - !!python/object/apply:decimal.Decimal
-    - '199.00000'
+    - '1492.00000'
+  - 775.0
   - !!python/object/apply:decimal.Decimal
-    - '1099.00000'
-  - !!python/object/apply:decimal.Decimal
-    - '648.00000'
-  - 925.5
-  - 19%
+    - '81.00000'
