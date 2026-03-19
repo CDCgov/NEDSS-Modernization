@@ -1,5 +1,6 @@
 import logging
 import os
+from collections.abc import Sequence
 from contextlib import contextmanager
 
 import pytest
@@ -187,7 +188,24 @@ def fake_db_table(request):
     faker_sql = get_faker_sql(faker_schema)
 
     conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+    insert_fake_data(conn_string, faker_sql, db_table, fk_tables)
 
+    # avoid connection inside connection
+    yield
+
+    restore_real_data(conn_string, db_table, fk_tables)
+
+
+def insert_fake_data(
+    conn_string, sql: str, db_table: str, fk_tables: Sequence[str] = ()
+):
+    """Replace db_table with insert sql.
+
+    Clears out and backs up the db table and any fk_tables passed (those with foreign
+    keys pointing to the table we want to replace).
+
+    `restore_real_data` can be later used to restore the original database tables.
+    """
     # swap out original data for fake data
     with db_transaction(conn_string) as trx:
         # Tables with foreign keys pointing to the table we want to replace need to
@@ -209,16 +227,19 @@ def fake_db_table(request):
         trx.execute(f'SELECT * INTO {temp_db_table} FROM {db_table}')
         trx.execute(f'DELETE {db_table}')
         logging.info(f'cleared table: {db_table}')
-        trx.execute(faker_sql)
+        trx.execute(sql)
         logging.info(f'Inserted fake data: {db_table}')
 
-    # avoid connection inside connection
-    yield
 
+def restore_real_data(conn_string, db_table: str, fk_tables: Sequence[str] = ()):
+    """Restore db_table and fk_tables to original state after inserting fake data.
+
+    To be used after running `insert_fake_data.
+    """
     # restore the original data
     with db_transaction(conn_string) as trx:
         trx.execute(f'DELETE {db_table}')
-        trx.execute(f'INSERT INTO {db_table} SELECT * FROM {temp_db_table}')
+        trx.execute(f'INSERT INTO {db_table} SELECT * FROM {temp_name(db_table)}')
         logging.info(f'Restored table: {db_table}')
 
         for fk_table in fk_tables:

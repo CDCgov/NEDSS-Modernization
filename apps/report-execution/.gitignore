@@ -2,3 +2,6 @@ __pycache__/
 .ruff_cache/
 .pytest_cache/
 .venv/
+
+# output file from scripts/fake_table_sql.py
+out.sql
