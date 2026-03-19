@@ -44,17 +44,24 @@ class ReportServiceTest {
 
   @InjectMocks private ReportService service;
 
-  @Test
-  void getReport_should_return_configuration_when_report_exists() {
-    Long reportUid = 1L;
-    Long dataSourceUid = 2L;
-    ReportId id = new ReportId(reportUid, dataSourceUid);
+  private final Long reportUid = 1L;
+  private final Long dataSourceUid = 2L;
 
+  private void mockReport(ReportId id, String runner) {
     Report report = mock(Report.class);
+
     when(report.getId()).thenReturn(id);
     when(report.getReportLibrary()).thenReturn(reportLibrary);
-    when(reportLibrary.getRunner()).thenReturn("python");
+    when(reportLibrary.getRunner()).thenReturn(runner);
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  @Test
+  void getReport_should_return_configuration_when_report_exists() {
+    ReportId id = new ReportId(reportUid, dataSourceUid);
+    mockReport(id, "python");
 
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
@@ -65,10 +72,7 @@ class ReportServiceTest {
 
   @Test
   void getReport_should_throw_when_report_not_found() {
-    Long reportUid = 1L;
-    Long dataSourceUid = 2L;
     ReportId id = new ReportId(reportUid, dataSourceUid);
-
     when(reportRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThatThrownBy(() -> service.getReport(reportUid, dataSourceUid))
@@ -78,15 +82,8 @@ class ReportServiceTest {
 
   @Test
   void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
-    Long reportUid = 1L;
-    Long dataSourceUid = 2L;
     ReportId id = new ReportId(reportUid, dataSourceUid);
-
-    Report report = mock(Report.class);
-    when(report.getId()).thenReturn(id);
-    when(report.getReportLibrary()).thenReturn(reportLibrary);
-    when(reportLibrary.getRunner()).thenReturn("python");
-    when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+    mockReport(id, "python");
 
     ReportSpec spec =
         new ReportSpec(
@@ -120,15 +117,8 @@ class ReportServiceTest {
 
   @Test
   void executeReport_should_throw_not_implemented_when_runner_not_python() {
-    Long reportUid = 1L;
-    Long dataSourceUid = 2L;
     ReportId id = new ReportId(reportUid, dataSourceUid);
-
-    Report report = mock(Report.class);
-    when(report.getId()).thenReturn(id);
-    when(report.getReportLibrary()).thenReturn(reportLibrary);
-    when(reportLibrary.getRunner()).thenReturn("java");
-    when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+    mockReport(id, "java");
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of("col"), List.of());
@@ -140,8 +130,6 @@ class ReportServiceTest {
 
   @Test
   void executeReport_should_throw_not_found_when_report_not_found() {
-    Long reportUid = 1L;
-    Long dataSourceUid = 2L;
     ReportId id = new ReportId(reportUid, dataSourceUid);
 
     when(reportRepository.findById(id)).thenReturn(Optional.empty());
