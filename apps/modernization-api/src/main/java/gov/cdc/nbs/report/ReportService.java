@@ -18,15 +18,15 @@ public class ReportService {
 
   private final ReportRepository reportRepository;
   private final RestClient reportExecutionClient;
-  private final ReportSpecGenerator specGenerator;
+  private final ReportSpecBuilder specBuilder;
 
   public ReportService(
       final ReportRepository reportRepository,
       RestClient reportExecutionClient,
-      ReportSpecGenerator specGenerator) {
+      ReportSpecBuilder specBuilder) {
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
-    this.specGenerator = specGenerator;
+    this.specBuilder = specBuilder;
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
@@ -58,7 +58,7 @@ public class ReportService {
 
     if (reportConfigResponse != null) {
       if (Objects.equals(reportConfigResponse.runner(), "python")) {
-        ReportSpec reportSpec = specGenerator.generate();
+        ReportSpec reportSpec = specBuilder.generate();
         return reportExecutionClient
             .post()
             .uri("/report/execute")

@@ -34,7 +34,7 @@ class ReportServiceTest {
 
   @Mock private ReportRepository reportRepository;
   @Mock private RestClient reportExecutionClient;
-  @Mock private ReportSpecGenerator specGenerator;
+  @Mock private ReportSpecBuilder specBuilder;
   @Mock private ReportLibrary reportLibrary;
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
@@ -93,7 +93,7 @@ class ReportServiceTest {
             "nbs_rdb.investigation",
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
             null);
-    when(specGenerator.generate()).thenReturn(spec);
+    when(specBuilder.generate()).thenReturn(spec);
 
     when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
     when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
@@ -110,7 +110,7 @@ class ReportServiceTest {
     ResponseEntity<String> response = service.executeReport(request);
 
     assertThat(response).isEqualTo(expectedResponse);
-    verify(specGenerator).generate();
+    verify(specBuilder).generate();
   }
 
   @Test

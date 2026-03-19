@@ -3,7 +3,7 @@ package gov.cdc.nbs.report;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReportSpecGenerator {
+public class ReportSpecBuilder {
 
   public ReportSpec generate() {
     return new ReportSpec(
