@@ -16,7 +16,7 @@
     uv sync --frozen
     ```
 
-1. (Optional) Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development (particularly helpful if you're running outside of Docker).  _NOTE: You'll need to manually load the env (`export $(xargs <.env)`), add `--env-file .env` to `uv` commands, or install and configure [direnv](https://direnv.net/) (or an equivalent shell extension) in order to make these environment variables available to the application._
+1. Create a `.env` file from the `sample.env`, if you'd like to configure the application's port or host during local development (particularly helpful if you're running outside of Docker).  _NOTE: You'll need to manually load the env (`export $(xargs <.env)`), add `--env-file .env` to `uv` commands, or install and configure [direnv](https://direnv.net/) (or an equivalent shell extension) in order to make these environment variables available to the application._
 
     ```sh
     cp sample.env .env
@@ -36,17 +36,17 @@
 1. Start the FastAPI development server with [Uvicorn](https://uvicorn.dev/) (the default ASGI server program shipped with FastAPI):
 
     ```bash
-    uv run uvicorn src.main:app
+    uv run --env-file .env uvicorn src.main:app
     ```
 
 The application will be available at:
-- API: http://localhost:8001
-- Interactive API docs (Swagger UI): http://localhost:8001/docs
-- Alternative API docs (ReDoc): http://localhost:8001/redoc
+- API: http://localhost:8000
+- Interactive API docs (Swagger UI): http://localhost:8000/docs
+- Alternative API docs (ReDoc): http://localhost:8000/redoc
 
 Sample curl:
 ```sh
-curl -X POST 'http://localhost:8001/report/execute' -H "accept: application/json" -H "Content-Type: application/json" -d '{
+curl -X POST 'http://localhost:8000/report/execute' -H "accept: application/json" -H "Content-Type: application/json" -d '{
             "version": 1,
             "is_export": true,
             "is_builtin": true,
