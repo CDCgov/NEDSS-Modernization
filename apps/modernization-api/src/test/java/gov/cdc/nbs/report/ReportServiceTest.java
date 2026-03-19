@@ -26,7 +26,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClient.RequestBodySpec;
 import org.springframework.web.client.RestClient.RequestBodyUriSpec;
-import org.springframework.web.client.RestClient.RequestHeadersSpec;
 import org.springframework.web.client.RestClient.ResponseSpec;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +38,6 @@ class ReportServiceTest {
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RequestBodySpec requestBodySpec;
-  @Mock private RequestHeadersSpec requestHeadersSpec;
   @Mock private ResponseSpec responseSpec;
 
   @InjectMocks private ReportService service;
@@ -93,7 +91,7 @@ class ReportServiceTest {
             "nbs_rdb.investigation",
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
             null);
-    when(specBuilder.generate()).thenReturn(spec);
+    when(specBuilder.build()).thenReturn(spec);
 
     when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
     when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
@@ -110,7 +108,7 @@ class ReportServiceTest {
     ResponseEntity<String> response = service.executeReport(request);
 
     assertThat(response).isEqualTo(expectedResponse);
-    verify(specBuilder).generate();
+    verify(specBuilder).build();
   }
 
   @Test

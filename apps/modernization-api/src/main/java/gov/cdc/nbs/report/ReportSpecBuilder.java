@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReportSpecBuilder {
 
-  public ReportSpec generate() {
+  public ReportSpec build() {
     return new ReportSpec(
         1,
         true,

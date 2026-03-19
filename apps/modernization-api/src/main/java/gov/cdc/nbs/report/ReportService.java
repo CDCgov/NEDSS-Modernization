@@ -35,20 +35,20 @@ public class ReportService {
     Report fetchedReport;
     ReportId fetchedReportId;
 
-    if (optionalReport.isPresent()) {
-      fetchedReport = optionalReport.get();
-      fetchedReportId = fetchedReport.getId();
-
-      return new ReportConfiguration(
-          fetchedReportId.getReportUid(),
-          fetchedReportId.getDataSourceUid(),
-          fetchedReport.getReportLibrary().getRunner());
+    if (optionalReport.isEmpty()) {
+      throw new NotFoundException(
+          String.format(
+              "Report not found for Report UID: %d and Data Source UID: %d",
+              reportUid, dataSourceUid));
     }
 
-    throw new NotFoundException(
-        String.format(
-            "Report not found for Report UID: %d and Data Source UID: %d",
-            reportUid, dataSourceUid));
+    fetchedReport = optionalReport.get();
+    fetchedReportId = fetchedReport.getId();
+
+    return new ReportConfiguration(
+        fetchedReportId.getReportUid(),
+        fetchedReportId.getDataSourceUid(),
+        fetchedReport.getReportLibrary().getRunner());
   }
 
   public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
@@ -56,24 +56,19 @@ public class ReportService {
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
 
-    if (reportConfigResponse != null) {
-      if (Objects.equals(reportConfigResponse.runner(), "python")) {
-        ReportSpec reportSpec = specBuilder.generate();
-        return reportExecutionClient
-            .post()
-            .uri("/report/execute")
-            .contentType(MediaType.valueOf("application/json;charset=UTF-8"))
-            .body(reportSpec)
-            .retrieve()
-            .toEntity(String.class);
-      }
+    if (!Objects.equals(reportConfigResponse.runner(), "python")) {
       throw new NotImplementedException(
           String.format("Report not implemented for %s", reportConfigResponse.runner()),
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
     }
-    throw new NotFoundException(
-        String.format(
-            "Report not found for Report UID: %d and Data Source UID: %d",
-            reportUid, dataSourceUid));
+
+    ReportSpec reportSpec = specBuilder.build();
+    return reportExecutionClient
+        .post()
+        .uri("/report/execute")
+        .contentType(MediaType.valueOf("application/json;charset=UTF-8"))
+        .body(reportSpec)
+        .retrieve()
+        .toEntity(String.class);
   }
 }

@@ -8,8 +8,8 @@ class ReportSpecBuilderTest {
   ReportSpecBuilder specBuilder = new ReportSpecBuilder();
 
   @Test
-  void should_generate_hardcoded_report_spec() {
-    ReportSpec reportSpec = specBuilder.generate();
+  void should_build_hardcoded_report_spec() {
+    ReportSpec reportSpec = specBuilder.build();
     assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
