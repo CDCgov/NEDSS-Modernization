@@ -63,8 +63,8 @@ class TestIntegrationNbsSr05Library:
             assert record[3] >= 100
             assert record[4] >= 100
             # -100% to 100%
-            assert record[5] <= 1
-            assert record[5] >= -1
+            assert int(record[5][:-1]) <= 100
+            assert int(record[5][:-1]) >= -100
 
     def test_execute_report_old_data_zeros(self):
         report_spec = ReportSpec.model_validate(
@@ -102,7 +102,7 @@ class TestIntegrationNbsSr05Library:
             assert record[2] == 0
             assert record[3] == 0
             assert record[4] == 0
-            assert record[5] == 0
+            assert record[5] == '0%'
 
     def test_execute_report_no_current_year(self):
         report_spec = ReportSpec.model_validate(
@@ -139,7 +139,7 @@ class TestIntegrationNbsSr05Library:
             assert record[2] == 0
             assert record[3] >= 100
             assert record[4] >= 100
-            assert record[5] < 0
+            assert int(record[5][:-1]) < 0
 
     def test_execute_report_only_current_year(self):
         report_spec = ReportSpec.model_validate(
@@ -177,7 +177,7 @@ class TestIntegrationNbsSr05Library:
             assert record[3] == 0
             assert record[4] == 0
             # default zero when median is zero to avoid error
-            assert record[5] == 0
+            assert record[5] == '0%'
 
     def test_execute_report_empty_subset(self):
         report_spec = ReportSpec.model_validate(

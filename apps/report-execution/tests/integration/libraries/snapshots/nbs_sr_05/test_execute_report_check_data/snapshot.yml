@@ -7,7 +7,7 @@
   - !!python/object/apply:decimal.Decimal
     - '897.00000'
   - 938.5
-  - -0.0974960042621204
+  - -10%
 - !!python/tuple
   - Pertussis
   - !!python/object/apply:decimal.Decimal
@@ -17,7 +17,7 @@
   - !!python/object/apply:decimal.Decimal
     - '1321.00000'
   - 1100.5
-  - 0.014993184915947297
+  - 1%
 - !!python/tuple
   - Salmonellosis
   - !!python/object/apply:decimal.Decimal
@@ -27,4 +27,4 @@
   - !!python/object/apply:decimal.Decimal
     - '648.00000'
   - 925.5
-  - 0.1874662344678552
+  - 19%
