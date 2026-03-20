@@ -1,6 +1,7 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
