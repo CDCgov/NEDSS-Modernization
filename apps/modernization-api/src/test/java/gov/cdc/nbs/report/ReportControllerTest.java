@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.exception.NotFoundException;
 import java.util.Arrays;
 import java.util.List;
+
+import gov.cdc.nbs.report.models.Filter;
+import gov.cdc.nbs.report.models.ReportConfiguration;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.report;
+package gov.cdc.nbs.report.models;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
