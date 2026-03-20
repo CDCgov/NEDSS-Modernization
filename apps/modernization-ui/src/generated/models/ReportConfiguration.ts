@@ -3,7 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export type ReportConfiguration = {
-    id: Record<string, number>;
+    reportUid: number;
+    dataSourceUid: number;
     runner: string;
 };
 
