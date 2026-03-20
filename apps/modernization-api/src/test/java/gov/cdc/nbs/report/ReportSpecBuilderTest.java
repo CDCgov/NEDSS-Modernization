@@ -2,14 +2,15 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import gov.cdc.nbs.report.models.ReportSpec;
 import org.junit.jupiter.api.Test;
 
-class ReportSpecGeneratorTest {
-  ReportSpecGenerator generator = new ReportSpecGenerator();
+class ReportSpecBuilderTest {
+  ReportSpecBuilder specBuilder = new ReportSpecBuilder();
 
   @Test
-  void should_generate_hardcoded_report_spec() {
-    ReportSpec reportSpec = generator.generate();
+  void should_build_hardcoded_report_spec() {
+    ReportSpec reportSpec = specBuilder.build();
     assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();

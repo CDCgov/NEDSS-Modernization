@@ -11,6 +11,8 @@ import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +28,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClient.RequestBodySpec;
 import org.springframework.web.client.RestClient.RequestBodyUriSpec;
-import org.springframework.web.client.RestClient.RequestHeadersSpec;
 import org.springframework.web.client.RestClient.ResponseSpec;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,12 +35,11 @@ class ReportServiceTest {
 
   @Mock private ReportRepository reportRepository;
   @Mock private RestClient reportExecutionClient;
-  @Mock private ReportSpecGenerator specGenerator;
+  @Mock private ReportSpecBuilder specBuilder;
   @Mock private ReportLibrary reportLibrary;
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RequestBodySpec requestBodySpec;
-  @Mock private RequestHeadersSpec requestHeadersSpec;
   @Mock private ResponseSpec responseSpec;
 
   @InjectMocks private ReportService service;
@@ -93,7 +93,7 @@ class ReportServiceTest {
             "nbs_rdb.investigation",
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
             null);
-    when(specGenerator.generate()).thenReturn(spec);
+    when(specBuilder.build()).thenReturn(spec);
 
     when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
     when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
@@ -110,7 +110,7 @@ class ReportServiceTest {
     ResponseEntity<String> response = service.executeReport(request);
 
     assertThat(response).isEqualTo(expectedResponse);
-    verify(specGenerator).generate();
+    verify(specBuilder).build();
   }
 
   @Test

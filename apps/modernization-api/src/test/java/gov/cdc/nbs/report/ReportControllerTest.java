@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.report.models.Filter;
+import gov.cdc.nbs.report.models.ReportConfiguration;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.report;
+package gov.cdc.nbs.report.models;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.HashMap;
