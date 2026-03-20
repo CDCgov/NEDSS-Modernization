@@ -64,8 +64,8 @@ class ReportServiceTest {
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
     assertThat(config.runner()).isEqualTo("python");
-    assertThat(config.id()).containsEntry("reportUid", reportUid);
-    assertThat(config.id()).containsEntry("dataSourceUid", dataSourceUid);
+    assertThat(config.reportUid()).isEqualTo(reportUid);
+    assertThat(config.dataSourceUid()).isEqualTo(dataSourceUid);
   }
 
   @Test
