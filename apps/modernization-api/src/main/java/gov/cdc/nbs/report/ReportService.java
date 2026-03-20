@@ -35,8 +35,6 @@ public class ReportService {
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
     ReportId id = new ReportId(reportUid, dataSourceUid);
     Optional<Report> optionalReport = reportRepository.findById(id);
-    Report fetchedReport;
-    ReportId fetchedReportId;
 
     if (optionalReport.isEmpty()) {
       throw new NotFoundException(
@@ -45,8 +43,8 @@ public class ReportService {
               reportUid, dataSourceUid));
     }
 
-    fetchedReport = optionalReport.get();
-    fetchedReportId = fetchedReport.getId();
+    Report fetchedReport = optionalReport.get();
+    ReportId fetchedReportId = fetchedReport.getId();
 
     return new ReportConfiguration(
         fetchedReportId.getReportUid(),
