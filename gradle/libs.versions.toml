@@ -5,7 +5,7 @@ jackson = '2.21.1'
 queryDSL = '5.1.0'
 
 junit-jupiter = '5.13.4'
-cucumber = '7.27.2'
+cucumber = '7.34.3'
 assertj = '3.27.4'
 testcontainers = '1.21.0'
 
