@@ -19,4 +19,9 @@ public class ReportExceptionHandler {
   public ResponseEntity<String> handleNotImplemented(NotImplementedException ex) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_IMPLEMENTED);
   }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity<String> handleUnprocessableEntity(IllegalArgumentException ex) {
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
 }
