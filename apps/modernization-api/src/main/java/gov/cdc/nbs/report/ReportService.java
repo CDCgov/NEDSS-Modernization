@@ -1,21 +1,14 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.exception.BadRequestException;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.repository.ReportRepository;
-
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +26,7 @@ public class ReportService {
 
   public ReportService(
       final ReportRepository reportRepository,
+      final DataSourceColumnRepository dataSourceColumnRepository,
       RestClient reportExecutionClient,
       ReportSpecBuilder specBuilder) {
     this.reportRepository = reportRepository;
@@ -66,22 +60,6 @@ public class ReportService {
   public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
     Long reportUid = request.reportUid();
     Long dataSourceUid = request.dataSourceUid();
-    List<Long> columnUids = request.columnUids();
-
-    if (columnUids.isEmpty()) {
-      throw new BadRequestException("No column UIDs specified");
-    }
-
-    List<DataSourceColumn> columns = dataSourceColumnRepository.findAllById(columnUids);
-    if (columns.size() != columnUids.size()) {
-      throw new BadRequestException("One or more of the columns provided is invalid");
-    }
-
-    Map<String, String> map = columns.stream().collect(Collectors.toMap(DataSourceColumn::getColumnName, DataSourceColumn::getColumnTitle));
-
-    String selectQuery = "SELECT " + columns.stream()
-            .map(column -> column.getColumnName() + " AS " + column.getColumnTitle())
-            .collect(Collectors.joining(", "));
 
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
 
@@ -91,7 +69,8 @@ public class ReportService {
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
     }
 
-    ReportSpec reportSpec = specBuilder.build();
+    ReportSpec reportSpec = specBuilder.addColumns(request.columnUids()).build();
+
     return reportExecutionClient
         .post()
         .uri("/report/execute")
