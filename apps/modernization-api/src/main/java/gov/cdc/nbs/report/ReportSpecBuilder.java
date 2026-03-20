@@ -29,12 +29,6 @@ public class ReportSpecBuilder {
       throw new IllegalArgumentException("One or more of the columns provided is invalid");
     }
 
-    Map<String, String> map =
-        columns.stream()
-            .collect(
-                Collectors.toMap(
-                    DataSourceColumn::getColumnName, DataSourceColumn::getColumnTitle));
-
     selectQuery =
         "SELECT "
             + columns.stream()
