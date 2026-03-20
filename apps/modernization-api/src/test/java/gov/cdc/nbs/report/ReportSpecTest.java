@@ -3,12 +3,11 @@ package gov.cdc.nbs.report;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import gov.cdc.nbs.report.models.ReportSpec;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import gov.cdc.nbs.report.models.ReportSpec;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
