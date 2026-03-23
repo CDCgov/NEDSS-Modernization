@@ -20,8 +20,9 @@ def execute(
     * % change Current YTD vs 5 Year Median YTD
 
     Conversion notes:
-    * Export included the year as a column
-    * Export has columns in different order
+    * Matched "export format"
+    * Run doesn't include the Year and Cases columns
+    * Run has columns in different order
     * Use pipe separator instead of new line for subheader
     * Remove "by county" from the description since this isn't by county
     """
