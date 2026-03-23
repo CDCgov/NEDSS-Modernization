@@ -27,6 +27,7 @@ on:
     paths:
       - "apps/**"
       - "!apps/modernization-ui/**"
+      - "!apps/report-execution/**"
       - "libs/**"
       - "build.gradle"
       - "settings.gradle"
@@ -43,7 +44,7 @@ env:
 
 jobs:
   pipeline:
-    name: Build and analyze
+    name: Build and analyze Java
     runs-on: ubuntu-latest
 
     permissions:
@@ -62,7 +63,7 @@ jobs:
           java-version: "21"
 
       - name: Cache Gradle packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
@@ -78,7 +79,7 @@ jobs:
           DATABASE_PASSWORD: ${{ env.test_database_password }}
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
-        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=ghcr.io/cdcent/nedssdb:latest
+        run: ./gradlew clean build codeCoverageReport sonar
 
       - name: Publish Testing Reports
         if: always()

@@ -5,10 +5,6 @@ nbs:
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
 
-testing:
-  database:
-    image: cdc-sandbox-nbs-mssql
-
 spring:
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
