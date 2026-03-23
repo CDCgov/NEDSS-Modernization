@@ -5,8 +5,6 @@ import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(prefix = "spring.liquibase", name = "enabled", havingValue = "true")
 public class LiquibaseConfig {
+
+  private static final String reportExecutionChangeLog =
+      "classpath:db/changelog/report-execution-changelog.yml";
 
   @Value("${spring.liquibase.driver-class-name}")
   private String driverClassName;
@@ -26,16 +27,6 @@ public class LiquibaseConfig {
 
   @Value("${spring.datasource.url}")
   private String dbUrl;
-
-  @Bean
-  @ConfigurationProperties(prefix = "spring.liquibase.report.execution")
-  @ConditionalOnProperty(
-      prefix = "nbs.ui.features.report.execution",
-      name = "enabled",
-      havingValue = "true")
-  public LiquibaseProperties reportExecutionLiquibaseProperties() {
-    return new LiquibaseProperties();
-  }
 
   @Bean
   @ConditionalOnProperty(
@@ -57,11 +48,10 @@ public class LiquibaseConfig {
       name = "enabled",
       havingValue = "true")
   public SpringLiquibase reportExecutionLiquibase(
-      @Qualifier("reportExecutionDataSource") DataSource dataSource,
-      @Qualifier("reportExecutionLiquibaseProperties") LiquibaseProperties props) {
+      @Qualifier("reportExecutionDataSource") DataSource dataSource) {
     SpringLiquibase liquibase = new SpringLiquibase();
     liquibase.setDataSource(dataSource);
-    liquibase.setChangeLog(props.getChangeLog());
+    liquibase.setChangeLog(reportExecutionChangeLog);
     if (liquibase.getContexts() != null) {
       liquibase.setContexts(String.join(",", liquibase.getContexts()));
     }
