@@ -34,22 +34,13 @@ public class ReportService {
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    Optional<Report> optionalReport = reportRepository.findById(id);
-
-    if (optionalReport.isEmpty()) {
-      throw new NotFoundException(
-          String.format(
-              "Report not found for Report UID: %d and Data Source UID: %d",
-              reportUid, dataSourceUid));
-    }
-
-    Report fetchedReport = optionalReport.get();
-    ReportId fetchedReportId = fetchedReport.getId();
-
-    return new ReportConfiguration(
-        fetchedReportId.getReportUid(),
-        fetchedReportId.getDataSourceUid(),
-        fetchedReport.getReportLibrary().getRunner());
+    return reportRepository.findById(id)
+                .map(report -> new ReportConfiguration(
+                        report.getId().getReportUid(),
+                        report.getId().getDataSourceUid(),
+                       report.getReportLibrary().getRunner()))
+                .orElseThrow(() -> new NotFoundException(
+                        String.format("Report not found for Report UID: %d and Data Source UID: %d", reportUid, dataSourceUid)));
   }
 
   public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
