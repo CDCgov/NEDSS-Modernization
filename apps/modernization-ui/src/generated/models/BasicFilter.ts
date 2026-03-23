@@ -5,11 +5,11 @@
 import type { Filter } from './Filter';
 export type BasicFilter = (Filter & {
     isBasic?: boolean;
-    filterCode?: string;
+    reportFilterUid?: number;
     values?: Array<string>;
 } & {
     isBasic: boolean;
-    filterCode: string;
+    reportFilterUid: number;
     values: Array<string>;
 });
 

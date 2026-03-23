@@ -8,7 +8,7 @@ export type ReportExecutionRequest = {
     reportUid: number;
     dataSourceUid: number;
     isExport: boolean;
-    columns: Array<string>;
+    columnUids?: Array<number>;
     filters?: Array<(AdvancedFilter | BasicFilter)>;
 };
 
