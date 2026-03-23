@@ -13,8 +13,8 @@ type PermittedProps = {
 };
 
 /**
- * Renders the children of this component only if the permission is allowed.  If specified the fallback component is displayed
- * when the permission fails.
+ * Renders the children of this component only if the permission is allowed.  If specified,
+ * the fallback component is displayed when the permission fails.
  *
  * A permission of 'string' is equivalent to using {@link permits}.
  *

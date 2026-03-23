@@ -1,21 +1,23 @@
 import { Navigate, RouteObject } from 'react-router';
-import { ApolloWrapper } from 'providers/ApolloContext';
-import { ReportPage } from './ReportPage';
 import { ReportRun } from './run';
+import { RedirectHome } from 'routes';
+import { FeatureLayout } from 'feature';
+import { Permitted } from 'libs/permission';
 
 const routing: RouteObject[] = [
     {
-        path: 'report',
-        element: (
-            <ApolloWrapper>
-                <ReportPage />
-            </ApolloWrapper>
-        ),
+        path: 'report/:reportUid/:dataSourceUid',
+        element: <FeatureLayout guard={(features) => features?.report?.execution?.enabled} />,
+        errorElement: <RedirectHome />,
         children: [
-            { index: true, element: <Navigate to="run/1/2" /> },
+            { index: true, element: <Navigate to="run" replace /> },
             {
-                path: 'run/:reportUid/:dataSourceUid',
-                element: <ReportRun />,
+                path: 'run',
+                element: (
+                    <Permitted permission={'RUNREPORT-REPORTING'} fallback={<RedirectHome />}>
+                        <ReportRun />
+                    </Permitted>
+                ),
             },
         ],
     },
