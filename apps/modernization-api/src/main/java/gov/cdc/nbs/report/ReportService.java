@@ -58,7 +58,7 @@ public class ReportService {
     return reportExecutionClient
         .post()
         .uri("/report/execute")
-        .contentType(MediaType.valueOf("application/json;charset=UTF-8"))
+        .contentType(MediaType.APPLICATION_JSON)
         .body(reportSpec)
         .retrieve()
         .toEntity(String.class);
