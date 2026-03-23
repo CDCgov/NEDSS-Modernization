@@ -1,6 +1,5 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.ReportConfiguration;
@@ -8,7 +7,6 @@ import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.Objects;
-import java.util.Optional;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,13 +32,20 @@ public class ReportService {
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    return reportRepository.findById(id)
-                .map(report -> new ReportConfiguration(
-                        report.getId().getReportUid(),
-                        report.getId().getDataSourceUid(),
-                       report.getReportLibrary().getRunner()))
-                .orElseThrow(() -> new NotFoundException(
-                        String.format("Report not found for Report UID: %d and Data Source UID: %d", reportUid, dataSourceUid)));
+    return reportRepository
+        .findById(id)
+        .map(
+            report ->
+                new ReportConfiguration(
+                    report.getId().getReportUid(),
+                    report.getId().getDataSourceUid(),
+                    report.getReportLibrary().getRunner()))
+        .orElseThrow(
+            () ->
+                new NotFoundException(
+                    String.format(
+                        "Report not found for Report UID: %d and Data Source UID: %d",
+                        reportUid, dataSourceUid)));
   }
 
   public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
