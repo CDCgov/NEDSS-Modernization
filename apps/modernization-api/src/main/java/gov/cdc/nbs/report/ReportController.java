@@ -2,6 +2,7 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/nbs/api/report")
+@ConditionalOnProperty(
+    prefix = "nbs.ui.features.report.execution",
+    name = "enabled",
+    havingValue = "true")
 public class ReportController {
 
   private final ReportService reportService;
