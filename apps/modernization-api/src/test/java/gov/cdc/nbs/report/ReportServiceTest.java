@@ -106,7 +106,7 @@ class ReportServiceTest {
     when(responseSpec.toEntity(String.class)).thenReturn(expectedResponse);
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of("col"), List.of());
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(16), List.of());
 
     ResponseEntity<String> response = service.executeReport(request);
 
@@ -120,7 +120,7 @@ class ReportServiceTest {
     mockReport(id, "java");
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of("col"), List.of());
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17), List.of());
 
     assertThatThrownBy(() -> service.executeReport(request))
         .isInstanceOf(NotImplementedException.class)
@@ -134,7 +134,7 @@ class ReportServiceTest {
     when(reportRepository.findById(id)).thenReturn(Optional.empty());
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of("col"), List.of());
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(18), List.of());
 
     assertThatThrownBy(() -> service.executeReport(request))
         .isInstanceOf(NotFoundException.class)
