@@ -48,7 +48,7 @@ public class ReportService {
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
 
-    if (!Objects.equals(reportConfigResponse.runner(), "python")) {
+    if (!reportConfigResponse.isPython()) {
       throw new NotImplementedException(
           String.format("Report not implemented for %s", reportConfigResponse.runner()),
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
