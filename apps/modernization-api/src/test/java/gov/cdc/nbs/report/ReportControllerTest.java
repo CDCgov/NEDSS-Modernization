@@ -67,11 +67,7 @@ class ReportControllerTest {
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(advancedFilter));
+            reportUid, dataSourceUid, true, Arrays.asList(27L, 31L), List.of(advancedFilter));
 
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
