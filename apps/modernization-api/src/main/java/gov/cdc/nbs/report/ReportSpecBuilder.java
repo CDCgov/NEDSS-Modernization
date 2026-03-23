@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.report.models.ReportSpec;
 import org.springframework.stereotype.Component;
 
 @Component

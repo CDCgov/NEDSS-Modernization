@@ -2,6 +2,7 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import gov.cdc.nbs.report.models.ReportSpec;
 import org.junit.jupiter.api.Test;
 
 class ReportSpecBuilderTest {

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.report;
+package gov.cdc.nbs.report.models;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,7 +17,7 @@ public sealed interface Filter {
               type = "boolean",
               allowableValues = {"true"})
           boolean isBasic,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterCode,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long reportFilterUid,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<String> values)
       implements Filter {}
 
@@ -37,7 +37,7 @@ public sealed interface Filter {
   })
   sealed interface Expr {
     record Clause(
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String fieldName,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long columnUid,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterOperatorCode,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterValue)
         implements Expr {}
