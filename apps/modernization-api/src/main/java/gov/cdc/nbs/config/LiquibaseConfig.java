@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "spring.liquibase", name = "enabled", havingValue = "true")
 public class LiquibaseConfig {
 
-  private static final String reportExecutionChangeLog =
+  private static final String REPORT_EXECUTION_CHANGE_LOG =
       "classpath:db/changelog/report-execution-changelog.yml";
 
   @Value("${spring.liquibase.driver-class-name}")
@@ -51,7 +51,7 @@ public class LiquibaseConfig {
       @Qualifier("reportExecutionDataSource") DataSource dataSource) {
     SpringLiquibase liquibase = new SpringLiquibase();
     liquibase.setDataSource(dataSource);
-    liquibase.setChangeLog(reportExecutionChangeLog);
+    liquibase.setChangeLog(REPORT_EXECUTION_CHANGE_LOG);
     if (liquibase.getContexts() != null) {
       liquibase.setContexts(String.join(",", liquibase.getContexts()));
     }

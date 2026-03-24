@@ -32,7 +32,7 @@ class ReportControllerTest {
     Long reportUid = 1L;
     Long dataSourceUid = 2L;
 
-    ReportConfiguration reportConfig = new ReportConfiguration(reportUid, dataSourceUid, "python");
+    ReportConfiguration reportConfig = new ReportConfiguration("python");
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ResponseEntity<ReportConfiguration> response =

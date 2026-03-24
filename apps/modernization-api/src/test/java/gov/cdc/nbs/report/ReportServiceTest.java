@@ -51,7 +51,6 @@ class ReportServiceTest {
   private void mockReport(ReportId id, String runner) {
     Report report = mock(Report.class);
 
-    when(report.getId()).thenReturn(id);
     when(report.getReportLibrary()).thenReturn(reportLibrary);
     when(reportLibrary.getRunner()).thenReturn(runner);
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
@@ -65,8 +64,6 @@ class ReportServiceTest {
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
     assertThat(config.runner()).isEqualTo("python");
-    assertThat(config.reportUid()).isEqualTo(reportUid);
-    assertThat(config.dataSourceUid()).isEqualTo(dataSourceUid);
   }
 
   @Test
@@ -106,7 +103,7 @@ class ReportServiceTest {
     when(responseSpec.toEntity(String.class)).thenReturn(expectedResponse);
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(16), List.of());
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(16L), List.of());
 
     ResponseEntity<String> response = service.executeReport(request);
 
@@ -120,7 +117,7 @@ class ReportServiceTest {
     mockReport(id, "java");
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17), List.of());
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17L), List.of());
 
     assertThatThrownBy(() -> service.executeReport(request))
         .isInstanceOf(NotImplementedException.class)
@@ -134,7 +131,7 @@ class ReportServiceTest {
     when(reportRepository.findById(id)).thenReturn(Optional.empty());
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(18), List.of());
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(18L), List.of());
 
     assertThatThrownBy(() -> service.executeReport(request))
         .isInstanceOf(NotFoundException.class)

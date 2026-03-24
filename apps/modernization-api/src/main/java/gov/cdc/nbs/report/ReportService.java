@@ -6,7 +6,10 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
+<<<<<<< mcm/poc-ui
 import java.util.Objects;
+=======
+>>>>>>> bg-el/app-276-read-report-config
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,12 +37,7 @@ public class ReportService {
     ReportId id = new ReportId(reportUid, dataSourceUid);
     return reportRepository
         .findById(id)
-        .map(
-            report ->
-                new ReportConfiguration(
-                    report.getId().getReportUid(),
-                    report.getId().getDataSourceUid(),
-                    report.getReportLibrary().getRunner()))
+        .map(report -> new ReportConfiguration(report.getReportLibrary().getRunner()))
         .orElseThrow(
             () ->
                 new NotFoundException(
@@ -53,7 +51,7 @@ public class ReportService {
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
 
-    if (!Objects.equals(reportConfigResponse.runner(), "python")) {
+    if (!reportConfigResponse.isPython()) {
       throw new NotImplementedException(
           String.format("Report not implemented for %s", reportConfigResponse.runner()),
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
@@ -63,7 +61,7 @@ public class ReportService {
     return reportExecutionClient
         .post()
         .uri("/report/execute")
-        .contentType(MediaType.valueOf("application/json;charset=UTF-8"))
+        .contentType(MediaType.APPLICATION_JSON)
         .body(reportSpec)
         .retrieve()
         .toEntity(String.class);
