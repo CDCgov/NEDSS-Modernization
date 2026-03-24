@@ -16,7 +16,9 @@ class NbsTestDatabaseInitializer
   })
   public void initialize(final ConfigurableApplicationContext context) {
     String image =
-        context.getEnvironment().getProperty("testing.database.image", "cdc-sandbox-nbs-mssql");
+        context
+            .getEnvironment()
+            .getProperty("testing.database.image", "ghcr.io/cdcent/nedssdb:latest");
     String username = context.getEnvironment().getProperty("nbs.datasource.username");
     String credential = context.getEnvironment().getProperty("nbs.datasource.password");
 
@@ -24,9 +26,8 @@ class NbsTestDatabaseInitializer
         new NbsDatabaseContainer<>(image)
             .withUsername(username)
             .withPassword(credential)
+            .withEnv("DB_VERSION", "6.0.19.0")
             .withImagePullPolicy(PullPolicy.defaultPolicy());
-
-    container.addEnv("DB_VERSION", "6.0.19.0");
 
     container.start();
 

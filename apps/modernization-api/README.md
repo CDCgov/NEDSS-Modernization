@@ -26,7 +26,17 @@ Ensure you have the following installed:
 ### 1. Environment & Secrets
 
 This project uses a `.env` file for local configuration. The provided script initializes this file and exports
-variables to your current session.
+variables to your current session or relevant properties set
+   in `src/main/resources/application-local.yml`
+   
+```yml
+nbs:
+  security:
+    parameterSecret: result of `openssl rand -base64 32 | cut -c1-32`
+    tokenSecret: result of `openssl rand -base64 64`
+  datasource:
+    password: password used for sa user on db
+```
 
 ```shell
 # From repo root
@@ -118,6 +128,10 @@ The Modernization API can connect to the Kafka instance defined in `cdc-sandbox/
 ```shell
 ./gradlew -Dtest.single="RunCucumber" -Dcucumber.filter.tags="@patient_create" :modernization-api:test
 ```
+
+### Debugging tests
+
+Run the tests with the `--debug-jvm` flag and the tests will wait for a debugger to attach at port 5005 before proceeding. Set breakpoints where you want to debug the code.
 
 ## 📖 API Documentation and Tools
 
