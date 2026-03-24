@@ -50,6 +50,9 @@ class ReportExecutionRouteLocatorConfiguration {
   private static final String REPORT_OBJECT_TYPE = "7";
   private static final String REPORT_OPERATION_TYPE = "117";
 
+  private static final System.Logger LOGGER =
+      System.getLogger(ReportExecutionRouteLocatorConfiguration.class.getName());
+
   @Bean
   RouteLocator reportExecuteRouteLocator(
       final RouteLocatorBuilder builder,
@@ -109,6 +112,12 @@ class ReportExecutionRouteLocatorConfiguration {
               })
           .retrieve()
           .bodyToMono(JsonNode.class)
+          .doOnError(
+              err ->
+                  LOGGER.log(
+                      System.Logger.Level.ERROR,
+                      "Error querying modernization-api for report metadata: %s"
+                          .formatted(err.getMessage())))
           .flatMap(
               b -> {
                 JsonNode runnerNode = b.get("runner");
@@ -159,6 +168,11 @@ class ReportExecutionRouteLocatorConfiguration {
             exchange.getRequest().getAttributes().get("cachedRequestBodyObject");
 
     HashMap<String, String> params = new HashMap<>();
+    if (body == null) {
+      // This should never happen, but if it does will present weirdly, so leaving a breadcrumb
+      LOGGER.log(System.Logger.Level.ERROR, "No request body found on report execution request");
+      return params;
+    }
     params.put("reportUid", body.getFirst("ReportUID"));
     params.put("dataSourceUid", body.getFirst("DataSourceUID"));
     return params;
