@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -18,7 +19,8 @@ class NBSSessionAuthenticationEntryPoint implements AuthenticationEntryPoint {
       final AuthenticationException authException)
       throws IOException {
 
-    if (authException instanceof InsufficientAuthenticationException) {
+    if (authException instanceof InsufficientAuthenticationException
+        && MediaType.APPLICATION_JSON_VALUE.equals(request.getHeader(HttpHeaders.ACCEPT))) {
       response.setStatus(HttpStatus.FOUND.value());
       response.setHeader(HttpHeaders.LOCATION, "/nbs/timeout");
     } else {
