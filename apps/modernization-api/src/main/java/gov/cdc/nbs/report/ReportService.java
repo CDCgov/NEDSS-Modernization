@@ -33,12 +33,7 @@ public class ReportService {
     ReportId id = new ReportId(reportUid, dataSourceUid);
     return reportRepository
         .findById(id)
-        .map(
-            report ->
-                new ReportConfiguration(
-                    report.getId().getReportUid(),
-                    report.getId().getDataSourceUid(),
-                    report.getReportLibrary().getRunner()))
+        .map(report -> new ReportConfiguration(report.getReportLibrary().getRunner()))
         .orElseThrow(
             () ->
                 new NotFoundException(

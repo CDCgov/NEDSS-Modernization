@@ -51,7 +51,6 @@ class ReportServiceTest {
   private void mockReport(ReportId id, String runner) {
     Report report = mock(Report.class);
 
-    when(report.getId()).thenReturn(id);
     when(report.getReportLibrary()).thenReturn(reportLibrary);
     when(reportLibrary.getRunner()).thenReturn(runner);
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
@@ -65,8 +64,6 @@ class ReportServiceTest {
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
     assertThat(config.runner()).isEqualTo("python");
-    assertThat(config.reportUid()).isEqualTo(reportUid);
-    assertThat(config.dataSourceUid()).isEqualTo(dataSourceUid);
   }
 
   @Test
