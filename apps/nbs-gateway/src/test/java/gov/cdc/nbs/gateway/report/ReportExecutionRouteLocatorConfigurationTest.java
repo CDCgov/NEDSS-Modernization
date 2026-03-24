@@ -68,6 +68,8 @@ class ReportExecutionRouteLocatorConfigurationTest {
         .uri(builder -> builder.path("/nbs/nfc").build())
         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         .body(BodyInserters.fromFormData(data))
+        .cookie("test", "123")
+        .cookie("test", "456")
         .exchange()
         .expectStatus()
         .isFound()
