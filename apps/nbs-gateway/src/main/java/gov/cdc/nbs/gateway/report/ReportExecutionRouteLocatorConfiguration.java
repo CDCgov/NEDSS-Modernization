@@ -102,14 +102,13 @@ class ReportExecutionRouteLocatorConfiguration {
           .cookies(
               // Copy the cookies from the original request onto the new request to make sure auth
               // works
-              newCookies -> {
-                exchange
-                    .getRequest()
-                    .getCookies()
-                    .forEach(
-                        (name, cookies) ->
-                            cookies.forEach(cookie -> newCookies.add(name, cookie.getValue())));
-              })
+              newCookies ->
+                  exchange
+                      .getRequest()
+                      .getCookies()
+                      .forEach(
+                          (name, cookies) ->
+                              cookies.forEach(cookie -> newCookies.add(name, cookie.getValue()))))
           .retrieve()
           .bodyToMono(JsonNode.class)
           .doOnError(
