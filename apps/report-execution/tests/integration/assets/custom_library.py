@@ -10,7 +10,7 @@ def execute(
     **kwargs,
 ):
     """This is a stub custom library just to start to get the interface hooked up."""
-    content = trx.execute(subset_query)
+    content = trx.query(subset_query)
 
     return ReportResult(
         content_type='table', content=content, description='Custom pass through query'
