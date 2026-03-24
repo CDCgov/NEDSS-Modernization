@@ -9,6 +9,6 @@ public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String runner) {
 
   public boolean isPython() {
-    return Objects.equals(runner(), "python");
+    return runner().equalsIgnoreCase("python");
   }
 }
