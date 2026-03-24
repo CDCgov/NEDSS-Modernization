@@ -20,7 +20,7 @@ class NBSSessionAuthenticationEntryPoint implements AuthenticationEntryPoint {
       throws IOException {
 
     if (authException instanceof InsufficientAuthenticationException
-        && MediaType.APPLICATION_JSON_VALUE.equals(request.getHeader(HttpHeaders.ACCEPT))) {
+        && !MediaType.APPLICATION_JSON_VALUE.equals(request.getHeader(HttpHeaders.ACCEPT))) {
       response.setStatus(HttpStatus.FOUND.value());
       response.setHeader(HttpHeaders.LOCATION, "/nbs/timeout");
     } else {
