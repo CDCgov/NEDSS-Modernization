@@ -31,6 +31,11 @@ nbs:
   security:
     oidc:
       enabled: false
+  report:
+    execution:
+      host: report-execution
+      port: 8001
+      url: http://${nbs.report.execution.host}:${nbs.report.execution.port}
   ui:
     settings:
       defaults:
