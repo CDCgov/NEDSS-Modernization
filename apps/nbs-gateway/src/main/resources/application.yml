@@ -10,7 +10,7 @@ nbs:
       uri: ${nbs.gateway.classic}
       base: '/nbs/HomePage.do?method=loadHomePage'
     ui:
-      service: 'localhost:8080'
+      service: ${nbs.gateway.modernization.service}
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.ui.service}'
     modernization:
       service: 'localhost:8080'
