@@ -3,8 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type ReportConfiguration = {
-    reportUid: number;
-    dataSourceUid: number;
     runner: string;
+    python?: boolean;
 };
 
