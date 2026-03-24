@@ -36,7 +36,7 @@ jobs:
     name: Build NBS Gateway Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
-      microservice_name: nbs-gateway    
+      microservice_name: nbs7-nbs-gateway
       build-new-container: true
       dockerfile_relative_path: -f ./apps/nbs-gateway/Dockerfile .
       environment_classifier: ${{inputs.environment}}
@@ -70,7 +70,7 @@ jobs:
     name: Build Modernization API Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
-      microservice_name: modernization-api    
+      microservice_name: nbs7-modernization-api
       build-new-container: true
       dockerfile_relative_path: -f ./apps/modernization-api/Dockerfile .
       environment_classifier: ${{inputs.environment}}
@@ -104,7 +104,7 @@ jobs:
     name: Build Page Builder API Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
-      microservice_name: page-builder-api
+      microservice_name: nbs7-page-builder-api
       build-new-container: true
       dockerfile_relative_path: -f ./apps/question-bank/Dockerfile .
       environment_classifier: ${{inputs.environment}}
@@ -139,7 +139,7 @@ jobs:
     name: Build Elasticsearch Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
-      microservice_name: elasticsearch    
+      microservice_name: nbs7-elasticsearch
       build-new-container: true
       dockerfile_relative_path: -f ./cdc-sandbox/elasticsearch/Dockerfile .
       environment_classifier: ${{inputs.environment}}
@@ -174,7 +174,7 @@ jobs:
     name: Build NiFi Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
-      microservice_name: nifi    
+      microservice_name: nbs7-nifi
       build-new-container: true
       dockerfile_relative_path: -f ./cdc-sandbox/nifi/Dockerfile .
       environment_classifier: ${{inputs.environment}}

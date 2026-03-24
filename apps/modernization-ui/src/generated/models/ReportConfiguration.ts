@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type ReportConfiguration = {
-    id: Record<string, number>;
     runner: string;
+    python?: boolean;
 };
 

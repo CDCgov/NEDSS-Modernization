@@ -12,6 +12,7 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
@@ -50,7 +51,6 @@ class ReportServiceTest {
   private void mockReport(ReportId id, String runner) {
     Report report = mock(Report.class);
 
-    when(report.getId()).thenReturn(id);
     when(report.getReportLibrary()).thenReturn(reportLibrary);
     when(reportLibrary.getRunner()).thenReturn(runner);
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
@@ -64,8 +64,6 @@ class ReportServiceTest {
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
     assertThat(config.runner()).isEqualTo("python");
-    assertThat(config.id()).containsEntry("reportUid", reportUid);
-    assertThat(config.id()).containsEntry("dataSourceUid", dataSourceUid);
   }
 
   @Test
@@ -105,7 +103,7 @@ class ReportServiceTest {
     when(responseSpec.toEntity(String.class)).thenReturn(expectedResponse);
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of("col"), List.of());
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(16L), List.of());
 
     ResponseEntity<String> response = service.executeReport(request);
 
@@ -119,7 +117,7 @@ class ReportServiceTest {
     mockReport(id, "java");
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of("col"), List.of());
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17L), List.of());
 
     assertThatThrownBy(() -> service.executeReport(request))
         .isInstanceOf(NotImplementedException.class)
@@ -133,7 +131,7 @@ class ReportServiceTest {
     when(reportRepository.findById(id)).thenReturn(Optional.empty());
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of("col"), List.of());
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(18L), List.of());
 
     assertThatThrownBy(() -> service.executeReport(request))
         .isInstanceOf(NotFoundException.class)

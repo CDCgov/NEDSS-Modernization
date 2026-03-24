@@ -4,11 +4,11 @@
 /* eslint-disable */
 import type { Expr } from './Expr';
 export type Clause = (Expr & {
-    fieldName?: string;
+    columnUid?: number;
     filterOperatorCode?: string;
     filterValue?: string;
 } & {
-    fieldName: string;
+    columnUid: number;
     filterOperatorCode: string;
     filterValue: string;
 });

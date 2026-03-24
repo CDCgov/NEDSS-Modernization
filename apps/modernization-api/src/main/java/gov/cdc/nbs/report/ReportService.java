@@ -1,13 +1,11 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
-import java.util.Objects;
-import java.util.Optional;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,24 +31,15 @@ public class ReportService {
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    Optional<Report> optionalReport = reportRepository.findById(id);
-    Report fetchedReport;
-    ReportId fetchedReportId;
-
-    if (optionalReport.isEmpty()) {
-      throw new NotFoundException(
-          String.format(
-              "Report not found for Report UID: %d and Data Source UID: %d",
-              reportUid, dataSourceUid));
-    }
-
-    fetchedReport = optionalReport.get();
-    fetchedReportId = fetchedReport.getId();
-
-    return new ReportConfiguration(
-        fetchedReportId.getReportUid(),
-        fetchedReportId.getDataSourceUid(),
-        fetchedReport.getReportLibrary().getRunner());
+    return reportRepository
+        .findById(id)
+        .map(report -> new ReportConfiguration(report.getReportLibrary().getRunner()))
+        .orElseThrow(
+            () ->
+                new NotFoundException(
+                    String.format(
+                        "Report not found for Report UID: %d and Data Source UID: %d",
+                        reportUid, dataSourceUid)));
   }
 
   public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
@@ -59,7 +48,7 @@ public class ReportService {
 
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
 
-    if (!Objects.equals(reportConfigResponse.runner(), "python")) {
+    if (!reportConfigResponse.isPython()) {
       throw new NotImplementedException(
           String.format("Report not implemented for %s", reportConfigResponse.runner()),
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
@@ -70,7 +59,7 @@ public class ReportService {
     return reportExecutionClient
         .post()
         .uri("/report/execute")
-        .contentType(MediaType.valueOf("application/json;charset=UTF-8"))
+        .contentType(MediaType.APPLICATION_JSON)
         .body(reportSpec)
         .retrieve()
         .toEntity(String.class);

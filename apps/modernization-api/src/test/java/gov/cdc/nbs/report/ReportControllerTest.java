@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.Filter;
 import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
@@ -31,7 +32,7 @@ class ReportControllerTest {
     Long reportUid = 1L;
     Long dataSourceUid = 2L;
 
-    ReportConfiguration reportConfig = new ReportConfiguration(reportUid, dataSourceUid, "python");
+    ReportConfiguration reportConfig = new ReportConfiguration("python");
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ResponseEntity<ReportConfiguration> response =
@@ -59,18 +60,14 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
-    Filter.Expr.Clause clause1 = new Filter.Expr.Clause("state_cd", "EQ", "47");
-    Filter.Expr.Clause clause2 = new Filter.Expr.Clause("cnty_cd", "EQ", "35001");
+    Filter.Expr.Clause clause1 = new Filter.Expr.Clause(27L, "EQ", "47");
+    Filter.Expr.Clause clause2 = new Filter.Expr.Clause(31L, "EQ", "35001");
     Filter.Expr.Connector connector = new Filter.Expr.Connector("OR", clause1, clause2);
     Filter.AdvancedFilter advancedFilter = new Filter.AdvancedFilter(false, connector);
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList("state_cd", "cnty_cd"),
-            List.of(advancedFilter));
+            reportUid, dataSourceUid, true, Arrays.asList(27L, 31L), List.of(advancedFilter));
 
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
@@ -91,8 +88,8 @@ class ReportControllerTest {
             reportUid,
             dataSourceUid,
             true,
-            Arrays.asList("state_cd", "cnty_cd"),
-            List.of(new Filter.BasicFilter(true, "10066724", List.of("35001"))));
+            Arrays.asList(27L, 31L),
+            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
@@ -112,8 +109,8 @@ class ReportControllerTest {
             reportUid,
             dataSourceUid,
             true,
-            Arrays.asList("state_cd", "cnty_cd"),
-            List.of(new Filter.BasicFilter(true, "10066724", List.of("35001"))));
+            Arrays.asList(27L, 31L),
+            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
 

@@ -31,4 +31,14 @@ class ReportExceptionHandlerTest {
     assertEquals("Not Implemented", responseEntity.getBody());
     assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
   }
+
+  @Test
+  void should_return_error_msg_and_status_code_for_illegal_argument() {
+    IllegalArgumentException exception = new IllegalArgumentException("Illegal Argument");
+
+    ResponseEntity<String> responseEntity = handler.handleUnprocessableEntity(exception);
+
+    assertEquals("Illegal Argument", responseEntity.getBody());
+    assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+  }
 }
