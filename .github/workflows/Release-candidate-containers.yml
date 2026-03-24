@@ -46,22 +46,22 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  prepare-nbs-gateway-release-candidate:
-    permissions:
-      id-token: write
-      contents: write      
-      pull-requests: write
-    name: Prepare NBS Gateway Release Candidate Deployment
-    needs: build-nbs-gateway-release-candidate
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
-    with:
-      microservice_name: nbs-gateway
-      values_file_with_path: charts/nbs-gateway/values-${{inputs.values}}.yaml
-      new_image_tag: ${{ needs.build-nbs-gateway-release-candidate.outputs.output_image_tag }}
-    secrets:
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+#  prepare-nbs-gateway-release-candidate:
+#    permissions:
+#      id-token: write
+#      contents: write
+#      pull-requests: write
+#    name: Prepare NBS Gateway Release Candidate Deployment
+#    needs: build-nbs-gateway-release-candidate
+#    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
+#    with:
+#      microservice_name: nbs-gateway
+#      values_file_with_path: charts/nbs-gateway/values-${{inputs.values}}.yaml
+#      new_image_tag: ${{ needs.build-nbs-gateway-release-candidate.outputs.output_image_tag }}
+#    secrets:
+#      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+#      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+#      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   build-modernization-api-release-candidate:
     permissions:
       id-token: write
@@ -80,22 +80,22 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  prepare-modernization-api-release-candidate:
-    permissions:
-      id-token: write
-      contents: write      
-      pull-requests: write
-    name: Prepare Modernization API Candidate Deployment
-    needs: build-modernization-api-release-candidate
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
-    with:
-      microservice_name: modernization-api
-      values_file_with_path: charts/modernization-api/values-${{inputs.values}}.yaml
-      new_image_tag: ${{ needs.build-modernization-api-release-candidate.outputs.output_image_tag }}
-    secrets:
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+#  prepare-modernization-api-release-candidate:
+#    permissions:
+#      id-token: write
+#      contents: write
+#      pull-requests: write
+#    name: Prepare Modernization API Candidate Deployment
+#    needs: build-modernization-api-release-candidate
+#    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
+#    with:
+#      microservice_name: modernization-api
+#      values_file_with_path: charts/modernization-api/values-${{inputs.values}}.yaml
+#      new_image_tag: ${{ needs.build-modernization-api-release-candidate.outputs.output_image_tag }}
+#    secrets:
+#      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+#      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+#      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   build-page-builder-api-release-candidate:
     permissions:
       id-token: write
@@ -114,28 +114,28 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  prepare-page-builder-api-release-candidate:
-    permissions:
-      id-token: write
-      contents: write      
-      pull-requests: write
-    name: Prepare Page Builder API Candidate Deployment
-    needs: build-page-builder-api-release-candidate
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
-    with:
-      microservice_name: page-builder-api
-      values_file_with_path: charts/page-builder-api/values-${{inputs.values}}.yaml
-      new_image_tag: ${{ needs.build-page-builder-api-release-candidate.outputs.output_image_tag }}
-    secrets:
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+#  prepare-page-builder-api-release-candidate:
+#    permissions:
+#      id-token: write
+#      contents: write
+#      pull-requests: write
+#    name: Prepare Page Builder API Candidate Deployment
+#    needs: build-page-builder-api-release-candidate
+#    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
+#    with:
+#      microservice_name: page-builder-api
+#      values_file_with_path: charts/page-builder-api/values-${{inputs.values}}.yaml
+#      new_image_tag: ${{ needs.build-page-builder-api-release-candidate.outputs.output_image_tag }}
+#    secrets:
+#      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+#      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+#      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   build-elasticsearch-release-candidate:
     permissions:
       id-token: write
       contents: read
       security-events: write
-    if: ${{ inputs.build-elasticsearch == 'true' }}
+    if: ${{ inputs.build-elasticsearch }}
     name: Build Elasticsearch Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
@@ -149,28 +149,28 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  prepare-elasticsearch-release-candidate:
-    permissions:
-      id-token: write
-      contents: write      
-      pull-requests: write
-    name: Prepare Elasticsearch Release Candidate Deployment
-    needs: build-elasticsearch-release-candidate
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
-    with:
-      microservice_name: elasticsearch
-      values_file_with_path: charts/elasticsearch-efs/values-${{inputs.values}}.yaml
-      new_image_tag: ${{ needs.build-elasticsearch-release-candidate.outputs.output_image_tag }}
-    secrets:
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}        
+#  prepare-elasticsearch-release-candidate:
+#    permissions:
+#      id-token: write
+#      contents: write
+#      pull-requests: write
+#    name: Prepare Elasticsearch Release Candidate Deployment
+#    needs: build-elasticsearch-release-candidate
+#    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
+#    with:
+#      microservice_name: elasticsearch
+#      values_file_with_path: charts/elasticsearch-efs/values-${{inputs.values}}.yaml
+#      new_image_tag: ${{ needs.build-elasticsearch-release-candidate.outputs.output_image_tag }}
+#    secrets:
+#      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+#      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+#      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   build-nifi-release-candidate:
     permissions:
       id-token: write
       contents: read
       security-events: write
-    if: ${{ inputs.build-nifi == 'true' }}
+    if: ${{ inputs.build-nifi }}
     name: Build NiFi Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
@@ -184,19 +184,19 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  prepare-nifi-release-candidate:
-    permissions:
-      id-token: write
-      contents: write      
-      pull-requests: write
-    name: Prepare NiFi Release Candidate Deployment
-    needs: build-nifi-release-candidate
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
-    with:
-      microservice_name: nifi
-      values_file_with_path: charts/nifi-efs/values-${{inputs.values}}.yaml
-      new_image_tag: ${{ needs.build-nifi-release-candidate.outputs.output_image_tag }}
-    secrets:
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}       
+#  prepare-nifi-release-candidate:
+#    permissions:
+#      id-token: write
+#      contents: write
+#      pull-requests: write
+#    name: Prepare NiFi Release Candidate Deployment
+#    needs: build-nifi-release-candidate
+#    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
+#    with:
+#      microservice_name: nifi
+#      values_file_with_path: charts/nifi-efs/values-${{inputs.values}}.yaml
+#      new_image_tag: ${{ needs.build-nifi-release-candidate.outputs.output_image_tag }}
+#    secrets:
+#      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+#      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+#      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
