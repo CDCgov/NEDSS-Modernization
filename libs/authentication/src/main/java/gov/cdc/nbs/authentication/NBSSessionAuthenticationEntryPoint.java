@@ -19,6 +19,9 @@ class NBSSessionAuthenticationEntryPoint implements AuthenticationEntryPoint {
       final AuthenticationException authException)
       throws IOException {
 
+    // Redirect to timeout on permissions error unless the request was asking for JSON and
+    // can be strongly intuited is a true API call and the redirect does more harm than good
+    // and we should instead return the 403
     if (authException instanceof InsufficientAuthenticationException
         && !MediaType.APPLICATION_JSON_VALUE.equals(request.getHeader(HttpHeaders.ACCEPT))) {
       response.setStatus(HttpStatus.FOUND.value());
