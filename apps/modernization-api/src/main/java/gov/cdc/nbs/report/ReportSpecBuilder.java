@@ -28,7 +28,8 @@ public class ReportSpecBuilder {
   private String buildSelectClause() {
     return "SELECT "
         + columns.stream()
-            .map(column -> column.getColumnName() + " AS " + column.getColumnTitle())
+            .map(
+                column -> "[" + column.getColumnName() + "] AS \"" + column.getColumnTitle() + "\"")
             .collect(Collectors.joining(", "));
   }
 

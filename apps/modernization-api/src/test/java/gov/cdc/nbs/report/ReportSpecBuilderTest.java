@@ -46,7 +46,7 @@ class ReportSpecBuilderTest {
     assertThat(reportSpec.dataSourceName()).isEqualTo("nbs_rdb.investigation");
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
-            "SELECT column1 AS Column 1, column2 AS Column 2 FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+            "SELECT [column1] AS \"Column 1\", [column2] AS \"Column 2\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
   }
 
   @Test
@@ -93,7 +93,7 @@ class ReportSpecBuilderTest {
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
-            "SELECT single_column AS Single Column FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+            "SELECT [single_column] AS \"Single Column\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
   }
 
   @Test
@@ -110,6 +110,31 @@ class ReportSpecBuilderTest {
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
-            "SELECT col1 AS Col 1, col2 AS Col 2, col3 AS Col 3 FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+            "SELECT [col1] AS \"Col 1\", [col2] AS \"Col 2\", [col3] AS \"Col 3\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+  }
+
+  @Test
+  void build_should_generate_correct_select_clause_for_column_names_with_spaces() {
+    DataSourceColumn column = mockColumn("first column", "Column 1");
+    List<Long> columnUids = List.of(1L);
+    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+
+    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
+
+    assertThat(reportSpec.subsetQuery())
+        .isEqualTo(
+            "SELECT [first column] AS \"Column 1\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+  }
+
+  @Test
+  void build_should_generate_correct_select_clause_for_column_names_with_keywords() {
+    DataSourceColumn column = mockColumn("user", "User Column");
+    List<Long> columnUids = List.of(1L);
+    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+
+    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
+
+    assertThat(reportSpec.subsetQuery())
+        .isEqualTo("SELECT [user] AS \"User Column\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
   }
 }
