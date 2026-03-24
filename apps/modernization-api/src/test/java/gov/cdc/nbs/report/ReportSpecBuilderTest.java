@@ -58,7 +58,6 @@ class ReportSpecBuilderTest {
         .isInstanceOf(BadRequestException.class)
         .hasMessage("No column UIDs specified");
   }
-
   @Test
   void addColumns_should_throw_illegal_argument_when_columns_not_found() {
     List<Long> columnUids = List.of(1L, 2L);

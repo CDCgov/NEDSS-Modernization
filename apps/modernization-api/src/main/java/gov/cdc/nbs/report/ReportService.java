@@ -45,7 +45,6 @@ public class ReportService {
   public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
     Long reportUid = request.reportUid();
     Long dataSourceUid = request.dataSourceUid();
-
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
 
     if (!reportConfigResponse.isPython()) {
@@ -57,9 +56,6 @@ public class ReportService {
     ReportSpec reportSpec = specBuilder.addColumns(request.columnUids()).build();
 
     return reportExecutionClient
-        .post()
-        .uri("/report/execute")
-        .contentType(MediaType.APPLICATION_JSON)
         .body(reportSpec)
         .retrieve()
         .toEntity(String.class);
