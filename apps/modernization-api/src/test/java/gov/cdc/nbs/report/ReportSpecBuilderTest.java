@@ -21,23 +21,23 @@ class ReportSpecBuilderTest {
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
   @InjectMocks private ReportSpecBuilder specBuilder;
 
+  private DataSourceColumn mockColumn(String columnName, String columnTitle) {
+    DataSourceColumn column = Mockito.mock(DataSourceColumn.class);
+    when(column.getColumnName()).thenReturn(columnName);
+    when(column.getColumnTitle()).thenReturn(columnTitle);
+
+    return column;
+  }
+
   @Test
   void should_build_hardcoded_report_spec() {
-    // Arrange
-    DataSourceColumn column1 = Mockito.mock(DataSourceColumn.class);
-    when(column1.getColumnName()).thenReturn("column1");
-    when(column1.getColumnTitle()).thenReturn("Column 1");
-    DataSourceColumn column2 = Mockito.mock(DataSourceColumn.class);
-    when(column2.getColumnName()).thenReturn("column2");
-    when(column2.getColumnTitle()).thenReturn("Column 2");
+    DataSourceColumn column1 = mockColumn("column1", "Column 1");
+    DataSourceColumn column2 = mockColumn("column2", "Column 2");
     List<Long> columnUids = List.of(1L, 2L);
     when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column1, column2));
 
-    // Act
-    specBuilder.addColumns(columnUids);
-    ReportSpec reportSpec = specBuilder.build();
+    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
 
-    // Assert
     assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
@@ -50,59 +50,46 @@ class ReportSpecBuilderTest {
   }
 
   @Test
-  void addColumns_should_throw_bad_request_when_column_uids_empty() {
+  void setColumns_should_throw_illegal_argument_when_column_uids_empty() {
     List<Long> emptyUids = List.of();
 
-    assertThatThrownBy(() -> specBuilder.addColumns(emptyUids))
-        .isInstanceOf(BadRequestException.class)
+    assertThatThrownBy(() -> specBuilder.setColumns(emptyUids))
+        .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("No column UIDs specified");
   }
 
   @Test
-  void addColumns_should_throw_illegal_argument_when_columns_not_found() {
+  void setColumns_should_throw_illegal_argument_when_columns_not_found() {
     List<Long> columnUids = List.of(1L, 2L);
-    DataSourceColumn column1 = Mockito.mock(DataSourceColumn.class);
-    when(column1.getColumnName()).thenReturn("column1");
-    when(column1.getColumnTitle()).thenReturn("Column 1");
+    DataSourceColumn column1 = mockColumn("column1", "Column 1");
     when(dataSourceColumnRepository.findAllById(columnUids))
         .thenReturn(List.of(column1)); // Only one found
 
-    assertThatThrownBy(() -> specBuilder.addColumns(columnUids))
+    assertThatThrownBy(() -> specBuilder.setColumns(columnUids))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("One or more of the columns provided is invalid");
   }
 
   @Test
-  void addColumns_should_set_columns_when_all_found() {
-    DataSourceColumn column1 = Mockito.mock(DataSourceColumn.class);
-    when(column1.getColumnName()).thenReturn("column1");
-    when(column1.getColumnTitle()).thenReturn("Column 1");
-    DataSourceColumn column2 = Mockito.mock(DataSourceColumn.class);
-    when(column2.getColumnName()).thenReturn("column2");
-    when(column2.getColumnTitle()).thenReturn("Column 2");
+  void setColumns_should_set_columns_when_all_found() {
+    DataSourceColumn column1 = mockColumn("column1", "Column 1");
+    DataSourceColumn column2 = mockColumn("column2", "Column 2");
     List<Long> columnUids = List.of(1L, 2L);
     when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column1, column2));
 
-    ReportSpecBuilder result = specBuilder.addColumns(columnUids);
+    ReportSpecBuilder result = specBuilder.setColumns(columnUids);
 
     assertThat(result).isEqualTo(specBuilder);
-    // Since columns is private, we can verify by calling build and checking the query
-    ReportSpec reportSpec = specBuilder.build();
-    assertThat(reportSpec.subsetQuery())
-        .isEqualTo(
-            "SELECT column1 AS Column 1, column2 AS Column 2 FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+    assertThat(result.getColumns()).containsExactly(column1, column2);
   }
 
   @Test
   void build_should_generate_correct_select_clause_for_single_column() {
-    DataSourceColumn column = Mockito.mock(DataSourceColumn.class);
-    when(column.getColumnName()).thenReturn("single_column");
-    when(column.getColumnTitle()).thenReturn("Single Column");
+    DataSourceColumn column = mockColumn("column1", "Column 1");
     List<Long> columnUids = List.of(1L);
     when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
 
-    specBuilder.addColumns(columnUids);
-    ReportSpec reportSpec = specBuilder.build();
+    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
@@ -111,21 +98,15 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_multiple_columns() {
-    DataSourceColumn column1 = Mockito.mock(DataSourceColumn.class);
-    when(column1.getColumnName()).thenReturn("col1");
-    when(column1.getColumnTitle()).thenReturn("Col 1");
-    DataSourceColumn column2 = Mockito.mock(DataSourceColumn.class);
-    when(column2.getColumnName()).thenReturn("col2");
-    when(column2.getColumnTitle()).thenReturn("Col 2");
-    DataSourceColumn column3 = Mockito.mock(DataSourceColumn.class);
-    when(column3.getColumnName()).thenReturn("col3");
-    when(column3.getColumnTitle()).thenReturn("Col 3");
+    DataSourceColumn column1 = mockColumn("col1", "Col 1");
+    DataSourceColumn column2 = mockColumn("col2", "Col 2");
+    DataSourceColumn column3 = mockColumn("col3", "Col 3");
+
     List<Long> columnUids = List.of(1L, 2L, 3L);
     when(dataSourceColumnRepository.findAllById(columnUids))
         .thenReturn(List.of(column1, column2, column3));
 
-    specBuilder.addColumns(columnUids);
-    ReportSpec reportSpec = specBuilder.build();
+    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(

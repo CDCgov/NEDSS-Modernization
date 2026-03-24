@@ -53,7 +53,7 @@ public class ReportService {
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
     }
 
-    ReportSpec reportSpec = specBuilder.addColumns(request.columnUids()).build();
+    ReportSpec reportSpec = specBuilder.setColumns(request.columnUids()).build();
 
     return reportExecutionClient
         .post()

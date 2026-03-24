@@ -5,12 +5,13 @@ import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ReportSpecBuilder {
   private final DataSourceColumnRepository dataSourceColumnRepository;
-  private List<DataSourceColumn> columns;
+  @Getter private List<DataSourceColumn> columns;
 
   @SuppressWarnings("FieldCanBeLocal")
   private String selectClause;
@@ -36,7 +37,7 @@ public class ReportSpecBuilder {
     this.dataSourceColumnRepository = dataSourceColumnRepository;
   }
 
-  public ReportSpecBuilder addColumns(List<Long> columnUids) {
+  public ReportSpecBuilder setColumns(List<Long> columnUids) {
     if (columnUids.isEmpty()) {
       throw new IllegalArgumentException("No column UIDs specified");
     }
