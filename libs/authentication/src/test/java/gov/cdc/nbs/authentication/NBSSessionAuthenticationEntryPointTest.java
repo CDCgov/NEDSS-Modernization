@@ -13,17 +13,17 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 
-public class NBSSessionAuthenticationEntryPointTest {
+class NBSSessionAuthenticationEntryPointTest {
 
   private NBSSessionAuthenticationEntryPoint authenticationEntryPoint;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     authenticationEntryPoint = new NBSSessionAuthenticationEntryPoint();
   }
 
   @Test
-  public void commence_insufficient_not_json() throws IOException {
+  void commence_insufficient_not_json() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest();
     MockHttpServletResponse response = new MockHttpServletResponse();
     AuthenticationException ex = new InsufficientAuthenticationException("uh oh");
@@ -35,7 +35,7 @@ public class NBSSessionAuthenticationEntryPointTest {
   }
 
   @Test
-  public void commence_insufficient_with_json() throws IOException {
+  void commence_insufficient_with_json() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest();
     request.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -47,7 +47,7 @@ public class NBSSessionAuthenticationEntryPointTest {
   }
 
   @Test
-  public void commence_other_error() throws IOException {
+  void commence_other_error() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest();
     MockHttpServletResponse response = new MockHttpServletResponse();
     AuthenticationException ex = new InternalAuthenticationServiceException("uh oh");
