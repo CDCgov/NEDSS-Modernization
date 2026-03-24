@@ -4,9 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.cdc.nbs.report.models.ReportSpec;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 
 class ReportSpecBuilderTest {
-  ReportSpecBuilder specBuilder = new ReportSpecBuilder();
+  @InjectMocks private ReportSpecBuilder specBuilder;
 
   @Test
   void should_build_hardcoded_report_spec() {

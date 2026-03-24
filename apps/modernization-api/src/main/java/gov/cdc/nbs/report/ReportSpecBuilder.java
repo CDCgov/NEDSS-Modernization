@@ -12,8 +12,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReportSpecBuilder {
   private final DataSourceColumnRepository dataSourceColumnRepository;
+  private List<DataSourceColumn> columns;
 
-  private String selectQuery;
+  @SuppressWarnings("FieldCanBeLocal")
+  private String selectClause;
+  @SuppressWarnings("FieldCanBeLocal")
+  private String fromClause;
+  @SuppressWarnings("FieldCanBeLocal")
+  private String whereClause;
+  @SuppressWarnings("FieldCanBeLocal")
+  private String orderByClause;
 
   public ReportSpecBuilder(final DataSourceColumnRepository dataSourceColumnRepository) {
     this.dataSourceColumnRepository = dataSourceColumnRepository;
@@ -24,21 +32,26 @@ public class ReportSpecBuilder {
       throw new BadRequestException("No column UIDs specified");
     }
 
-    List<DataSourceColumn> columns = dataSourceColumnRepository.findAllById(columnUids);
-    if (columns.size() != columnUids.size()) {
+    List<DataSourceColumn> dataSourceColumns = dataSourceColumnRepository.findAllById(columnUids);
+    if (dataSourceColumns.size() != columnUids.size()) {
       throw new IllegalArgumentException("One or more of the columns provided is invalid");
     }
 
-    selectQuery =
-        "SELECT "
-            + columns.stream()
-                .map(column -> column.getColumnName() + " AS " + column.getColumnTitle())
-                .collect(Collectors.joining(", "));
-
+    columns = dataSourceColumns;
     return this;
   }
 
   public ReportSpec build() {
+    selectClause = "SELECT "
+            + columns.stream()
+            .map(column -> column.getColumnName() + " AS " + column.getColumnTitle())
+            .collect(Collectors.joining(", "));
+    fromClause = "FROM [NBS_ODSE].[dbo].[NBS_configuration]";
+    whereClause = "";
+    orderByClause = "";
+
+    String subsetQuery = String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
+
     return new ReportSpec(
         1,
         true,
@@ -46,7 +59,7 @@ public class ReportSpecBuilder {
         "Test Report",
         "nbs_custom",
         "nbs_rdb.investigation",
-        selectQuery + " FROM [NBS_ODSE].[dbo].[NBS_configuration]",
+        subsetQuery,
         null);
   }
 }
