@@ -5,7 +5,6 @@ import gov.cdc.nbs.exception.BadRequestException;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +15,13 @@ public class ReportSpecBuilder {
 
   @SuppressWarnings("FieldCanBeLocal")
   private String selectClause;
+
   @SuppressWarnings("FieldCanBeLocal")
   private String fromClause;
+
   @SuppressWarnings("FieldCanBeLocal")
   private String whereClause;
+
   @SuppressWarnings("FieldCanBeLocal")
   private String orderByClause;
 
@@ -42,24 +44,19 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpec build() {
-    selectClause = "SELECT "
+    selectClause =
+        "SELECT "
             + columns.stream()
-            .map(column -> column.getColumnName() + " AS " + column.getColumnTitle())
-            .collect(Collectors.joining(", "));
+                .map(column -> column.getColumnName() + " AS " + column.getColumnTitle())
+                .collect(Collectors.joining(", "));
     fromClause = "FROM [NBS_ODSE].[dbo].[NBS_configuration]";
     whereClause = "";
     orderByClause = "";
 
-    String subsetQuery = String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
+    String subsetQuery =
+        String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        1,
-        true,
-        true,
-        "Test Report",
-        "nbs_custom",
-        "nbs_rdb.investigation",
-        subsetQuery,
-        null);
+        1, true, true, "Test Report", "nbs_custom", "nbs_rdb.investigation", subsetQuery, null);
   }
 }
