@@ -1,12 +1,11 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
-import gov.cdc.nbs.exception.BadRequestException;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-import gov.cdc.nbs.report.models.ReportSpec;
+
 import org.springframework.stereotype.Component;
 
 @Component

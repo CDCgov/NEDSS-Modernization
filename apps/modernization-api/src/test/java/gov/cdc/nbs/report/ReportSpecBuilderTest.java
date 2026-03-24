@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
-import gov.cdc.nbs.exception.BadRequestException;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.util.List;
