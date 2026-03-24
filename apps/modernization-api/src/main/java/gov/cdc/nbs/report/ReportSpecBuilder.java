@@ -5,7 +5,6 @@ import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,13 +24,21 @@ public class ReportSpecBuilder {
   @SuppressWarnings("FieldCanBeLocal")
   private String orderByClause;
 
+  private String buildSelectClause() {
+    return "SELECT "
+        + columns.stream()
+            .map(column -> column.getColumnName() + " AS " + column.getColumnTitle())
+            .collect(Collectors.joining(", "));
+  }
+
+  @SuppressWarnings("FieldCanBeLocal")
   public ReportSpecBuilder(final DataSourceColumnRepository dataSourceColumnRepository) {
     this.dataSourceColumnRepository = dataSourceColumnRepository;
   }
 
   public ReportSpecBuilder addColumns(List<Long> columnUids) {
     if (columnUids.isEmpty()) {
-      throw new BadRequestException("No column UIDs specified");
+      throw new IllegalArgumentException("No column UIDs specified");
     }
 
     List<DataSourceColumn> dataSourceColumns = dataSourceColumnRepository.findAllById(columnUids);
@@ -44,11 +51,7 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpec build() {
-    selectClause =
-        "SELECT "
-            + columns.stream()
-                .map(column -> column.getColumnName() + " AS " + column.getColumnTitle())
-                .collect(Collectors.joining(", "));
+    selectClause = buildSelectClause();
     fromClause = "FROM [NBS_ODSE].[dbo].[NBS_configuration]";
     whereClause = "";
     orderByClause = "";

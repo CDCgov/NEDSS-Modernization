@@ -56,9 +56,9 @@ public class ReportService {
     ReportSpec reportSpec = specBuilder.addColumns(request.columnUids()).build();
 
     return reportExecutionClient
-            .post()
-            .uri("/report/execute")
-            .contentType(MediaType.APPLICATION_JSON)
+        .post()
+        .uri("/report/execute")
+        .contentType(MediaType.APPLICATION_JSON)
         .body(reportSpec)
         .retrieve()
         .toEntity(String.class);

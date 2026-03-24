@@ -7,5 +7,5 @@ public record ReportExecutionRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long reportUid,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long dataSourceUid,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean isExport,
-    List<Long> columnUids,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<Long> columnUids,
     List<Filter> filters) {}
