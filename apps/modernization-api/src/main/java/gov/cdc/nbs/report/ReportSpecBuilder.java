@@ -4,6 +4,7 @@ import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class ReportSpecBuilder {
   @Getter private String libraryName = "nbs_custom";
   @Getter private String dataSourceName = "nbs_rdb.investigation";
   @Getter private Map<String, LocalDate> timeRange;
-  @Getter private List<DataSourceColumn> columns;
+  @Getter private List<DataSourceColumn> columns = new ArrayList<>();
 
   @SuppressWarnings("FieldCanBeLocal")
   private String selectClause;
@@ -37,6 +38,10 @@ public class ReportSpecBuilder {
   private String orderByClause;
 
   private String buildSelectClause() {
+    if (columns.isEmpty()) {
+      return "SELECT *";
+    }
+
     return "SELECT "
         + columns.stream()
             .map(
@@ -84,10 +89,6 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpecBuilder setColumns(List<Long> columnUids) {
-    if (columnUids.isEmpty()) {
-      throw new IllegalArgumentException("No column UIDs specified");
-    }
-
     List<DataSourceColumn> dataSourceColumns = dataSourceColumnRepository.findAllById(columnUids);
     if (dataSourceColumns.size() != columnUids.size()) {
       throw new IllegalArgumentException("One or more of the columns provided is invalid");

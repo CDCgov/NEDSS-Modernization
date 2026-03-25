@@ -8,6 +8,7 @@ import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -49,15 +50,6 @@ class ReportSpecBuilderTest {
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
             "SELECT [column1] AS \"Column 1\", [column2] AS \"Column 2\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
-  }
-
-  @Test
-  void setColumns_should_throw_illegal_argument_when_column_uids_empty() {
-    List<Long> emptyUids = List.of();
-
-    assertThatThrownBy(() -> specBuilder.setColumns(emptyUids))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("No column UIDs specified");
   }
 
   @Test
@@ -112,6 +104,22 @@ class ReportSpecBuilderTest {
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
             "SELECT [col1] AS \"Col 1\", [col2] AS \"Col 2\", [col3] AS \"Col 3\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+  }
+
+  @Test
+  void build_should_generate_correct_select_clause_for_no_columns() {
+    ReportSpec reportSpec1 = specBuilder.build();
+
+    assertThat(reportSpec1.subsetQuery())
+        .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+  }
+
+  @Test
+  void build_should_generate_correct_select_clause_for_no_empty_column_list() {
+    ReportSpec reportSpec1 = specBuilder.setColumns(new ArrayList<>()).build();
+
+    assertThat(reportSpec1.subsetQuery())
+        .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
   }
 
   @Test
