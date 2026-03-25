@@ -43,15 +43,9 @@ public class ReportService {
                           reportFilter ->
                               new FilterConfiguration(
                                   reportFilter.getId(),
-                                  reportFilter.getDataSourceColumn().getId(),
-                                  reportFilter.getDataSourceColumn().getColumnName(),
-                                  reportFilter.getDataSourceColumn().getColumnTitle(),
-                                  reportFilter.getDataSourceColumn().getColumnSourceTypeCode(),
-                                  reportFilter.getDataSourceColumn().getDescTxt(),
-                                  reportFilter.getFilterCode().getFilterName(),
-                                  reportFilter.getFilterCode().getFilterType(),
-                                  reportFilter.getFilterCode().getCode(),
-                                  reportFilter.getFilterCode().getFilterCodeSetName()))
+                                  reportFilter.getDataSourceColumn(),
+                                  reportFilter.getFilterCode(),
+                                  reportFilter.getFilterValues()))
                       .toList();
 
               return new ReportConfiguration(report.getReportLibrary().getRunner(), filters);
