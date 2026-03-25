@@ -1,12 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,6 +34,9 @@ public class ReportFilter {
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "column_uid")
   private DataSourceColumn dataSourceColumn;
+
+  @OneToMany(mappedBy = "report_filter_uid", fetch = FetchType.LAZY)
+  private List<FilterValue> filterValues;
 
   @Column(name = "status_cd")
   private Character statusCd;
