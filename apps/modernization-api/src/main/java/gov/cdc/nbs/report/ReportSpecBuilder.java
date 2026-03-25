@@ -33,7 +33,6 @@ public class ReportSpecBuilder {
             .collect(Collectors.joining(", "));
   }
 
-  @SuppressWarnings("FieldCanBeLocal")
   public ReportSpecBuilder(final DataSourceColumnRepository dataSourceColumnRepository) {
     this.dataSourceColumnRepository = dataSourceColumnRepository;
   }
