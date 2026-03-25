@@ -2,10 +2,12 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.report.models.FilterConfiguration;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
+import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,7 +35,27 @@ public class ReportService {
     ReportId id = new ReportId(reportUid, dataSourceUid);
     return reportRepository
         .findById(id)
-        .map(report -> new ReportConfiguration(report.getReportLibrary().getRunner()))
+        .map(
+            report -> {
+              List<FilterConfiguration> filters =
+                  report.getReportFilters().stream()
+                      .map(
+                          reportFilter ->
+                              new FilterConfiguration(
+                                  reportFilter.getId(),
+                                  reportFilter.getDataSourceColumn().getId(),
+                                  reportFilter.getDataSourceColumn().getColumnName(),
+                                  reportFilter.getDataSourceColumn().getColumnTitle(),
+                                  reportFilter.getDataSourceColumn().getColumnSourceTypeCode(),
+                                  reportFilter.getDataSourceColumn().getDescTxt(),
+                                  reportFilter.getFilterCode().getFilterName(),
+                                  reportFilter.getFilterCode().getFilterType(),
+                                  reportFilter.getFilterCode().getCode(),
+                                  reportFilter.getFilterCode().getFilterCodeSetName()))
+                      .toList();
+
+              return new ReportConfiguration(report.getReportLibrary().getRunner(), filters);
+            })
         .orElseThrow(
             () ->
                 new NotFoundException(
