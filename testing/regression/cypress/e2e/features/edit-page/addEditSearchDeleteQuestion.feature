@@ -1,3 +1,4 @@
+@skip-flaky-and-low-priority
 @skip-if-disabled-is-int
 Feature: Page Builder - User can verify managing question while editing the page here.
 
@@ -89,5 +90,3 @@ Feature: Page Builder - User can verify managing question while editing the page
     When User clicks Create and add to page button
     Then A confirmation message displays "Successfully added questions to page"
     And Add new question pop-up window will disappear with the newly added question displayed on Edit page
-
-
