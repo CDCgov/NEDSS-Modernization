@@ -4,6 +4,7 @@
 /* eslint-disable */
 export type ReportConfiguration = {
     runner: string;
+    dataSourceName: string;
     python?: boolean;
 };
 

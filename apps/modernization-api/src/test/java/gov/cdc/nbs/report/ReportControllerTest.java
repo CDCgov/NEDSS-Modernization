@@ -32,7 +32,7 @@ class ReportControllerTest {
     Long reportUid = 1L;
     Long dataSourceUid = 2L;
 
-    ReportConfiguration reportConfig = new ReportConfiguration("python");
+    ReportConfiguration reportConfig = new ReportConfiguration("python", "nbs_ods.PHCDemographic");
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ResponseEntity<ReportConfiguration> response =

@@ -33,7 +33,11 @@ public class ReportService {
     ReportId id = new ReportId(reportUid, dataSourceUid);
     return reportRepository
         .findById(id)
-        .map(report -> new ReportConfiguration(report.getReportLibrary().getRunner()))
+        .map(
+            report ->
+                new ReportConfiguration(
+                    report.getReportLibrary().getRunner(),
+                    report.getDataSource().getDataSourceName()))
         .orElseThrow(
             () ->
                 new NotFoundException(
@@ -53,7 +57,11 @@ public class ReportService {
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
     }
 
-    ReportSpec reportSpec = specBuilder.setColumns(request.columnUids()).build();
+    ReportSpec reportSpec =
+        specBuilder
+            .setDataSourceName(reportConfigResponse.dataSourceName())
+            .setColumns(request.columnUids())
+            .build();
 
     return reportExecutionClient
         .post()
