@@ -7,7 +7,9 @@ import static org.mockito.Mockito.when;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,8 +25,8 @@ class ReportSpecBuilderTest {
 
   private DataSourceColumn mockColumn(String columnName, String columnTitle) {
     DataSourceColumn column = Mockito.mock(DataSourceColumn.class);
-    when(column.getColumnName()).thenReturn(columnName);
-    when(column.getColumnTitle()).thenReturn(columnTitle);
+    Mockito.lenient().when(column.getColumnName()).thenReturn(columnName);
+    Mockito.lenient().when(column.getColumnTitle()).thenReturn(columnTitle);
 
     return column;
   }
@@ -92,8 +94,7 @@ class ReportSpecBuilderTest {
     ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
 
     assertThat(reportSpec.subsetQuery())
-        .isEqualTo(
-            "SELECT [single_column] AS \"Single Column\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+        .isEqualTo("SELECT [column1] AS \"Column 1\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
   }
 
   @Test
@@ -136,5 +137,90 @@ class ReportSpecBuilderTest {
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT [user] AS \"User Column\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+  }
+
+  @Test
+  void setVersion_should_update_report_spec_version() {
+    DataSourceColumn column = mockColumn("col1", "Col 1");
+    List<Long> columnUids = List.of(1L);
+    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+
+    ReportSpec reportSpec = specBuilder.setVersion(2).setColumns(columnUids).build();
+
+    assertThat(reportSpec.version()).isEqualTo(2);
+    assertThat(reportSpec.isExport()).isTrue();
+    assertThat(reportSpec.isBuiltin()).isTrue();
+  }
+
+  @Test
+  void setIsExport_should_update_report_spec_isExport() {
+    DataSourceColumn column = mockColumn("col1", "Col 1");
+    List<Long> columnUids = List.of(1L);
+    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+
+    ReportSpec reportSpec = specBuilder.setIsExport(false).setColumns(columnUids).build();
+
+    assertThat(reportSpec.isExport()).isFalse();
+  }
+
+  @Test
+  void setIsBuiltin_should_update_report_spec_isBuiltin() {
+    DataSourceColumn column = mockColumn("col1", "Col 1");
+    List<Long> columnUids = List.of(1L);
+    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+
+    ReportSpec reportSpec = specBuilder.setIsBuiltin(false).setColumns(columnUids).build();
+
+    assertThat(reportSpec.isBuiltin()).isFalse();
+  }
+
+  @Test
+  void setReportTitle_should_update_report_spec_reportTitle() {
+    DataSourceColumn column = mockColumn("col1", "Col 1");
+    List<Long> columnUids = List.of(1L);
+    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+
+    ReportSpec reportSpec =
+        specBuilder.setReportTitle("Custom Report").setColumns(columnUids).build();
+
+    assertThat(reportSpec.reportTitle()).isEqualTo("Custom Report");
+  }
+
+  @Test
+  void setLibraryName_should_update_report_spec_libraryName() {
+    DataSourceColumn column = mockColumn("col1", "Col 1");
+    List<Long> columnUids = List.of(1L);
+    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+
+    ReportSpec reportSpec =
+        specBuilder.setLibraryName("custom_library").setColumns(columnUids).build();
+
+    assertThat(reportSpec.libraryName()).isEqualTo("custom_library");
+  }
+
+  @Test
+  void setDataSourceName_should_update_report_spec_dataSourceName() {
+    DataSourceColumn column = mockColumn("col1", "Col 1");
+    List<Long> columnUids = List.of(1L);
+    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+
+    ReportSpec reportSpec =
+        specBuilder.setDataSourceName("custom.datasource").setColumns(columnUids).build();
+
+    assertThat(reportSpec.dataSourceName()).isEqualTo("custom.datasource");
+  }
+
+  @Test
+  void setTimeRange_should_update_report_spec_timeRange() {
+    DataSourceColumn column = mockColumn("col1", "Col 1");
+    List<Long> columnUids = List.of(1L);
+    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+
+    Map<String, LocalDate> timeRange =
+        Map.of("start", LocalDate.of(2024, 1, 1), "end", LocalDate.of(2024, 12, 31));
+
+    ReportSpec reportSpec = specBuilder.setTimeRange(timeRange).setColumns(columnUids).build();
+
+    assertThat(reportSpec.timeRange()).isEqualTo(timeRange);
   }
 }

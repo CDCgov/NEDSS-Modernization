@@ -3,7 +3,9 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -11,6 +13,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReportSpecBuilder {
   private final DataSourceColumnRepository dataSourceColumnRepository;
+
+  //  TODO: Remove defaults once support has been established for these fields
+  @Getter private int version = 1;
+  @Getter private Boolean isExport = true;
+  @Getter private Boolean isBuiltin = true;
+  @Getter private String reportTitle = "Test Report";
+  @Getter private String libraryName = "nbs_custom";
+  @Getter private String dataSourceName = "nbs_rdb.investigation";
+  @Getter private Map<String, LocalDate> timeRange;
   @Getter private List<DataSourceColumn> columns;
 
   @SuppressWarnings("FieldCanBeLocal")
@@ -37,6 +48,41 @@ public class ReportSpecBuilder {
     this.dataSourceColumnRepository = dataSourceColumnRepository;
   }
 
+  public ReportSpecBuilder setVersion(int version) {
+    this.version = version;
+    return this;
+  }
+
+  public ReportSpecBuilder setIsExport(Boolean isExport) {
+    this.isExport = isExport;
+    return this;
+  }
+
+  public ReportSpecBuilder setIsBuiltin(Boolean isBuiltin) {
+    this.isBuiltin = isBuiltin;
+    return this;
+  }
+
+  public ReportSpecBuilder setReportTitle(String reportTitle) {
+    this.reportTitle = reportTitle;
+    return this;
+  }
+
+  public ReportSpecBuilder setLibraryName(String libraryName) {
+    this.libraryName = libraryName;
+    return this;
+  }
+
+  public ReportSpecBuilder setDataSourceName(String dataSourceName) {
+    this.dataSourceName = dataSourceName;
+    return this;
+  }
+
+  public ReportSpecBuilder setTimeRange(Map<String, LocalDate> timeRange) {
+    this.timeRange = timeRange;
+    return this;
+  }
+
   public ReportSpecBuilder setColumns(List<Long> columnUids) {
     if (columnUids.isEmpty()) {
       throw new IllegalArgumentException("No column UIDs specified");
@@ -61,6 +107,13 @@ public class ReportSpecBuilder {
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        1, true, true, "Test Report", "nbs_custom", "nbs_rdb.investigation", subsetQuery, null);
+        version,
+        isExport,
+        isBuiltin,
+        reportTitle,
+        libraryName,
+        dataSourceName,
+        subsetQuery,
+        timeRange);
   }
 }
