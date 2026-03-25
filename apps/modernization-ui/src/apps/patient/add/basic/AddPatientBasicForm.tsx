@@ -16,7 +16,7 @@ import {
     NAME_SECTION,
     PERSONAL_DETAILS_SECTION,
     PHONE_EMAIL_SECTION,
-    RACE_ETHNICITY_SECTION
+    RACE_ETHNICITY_SECTION,
 } from './sections';
 
 import styles from './add-patient-basic-form.module.scss';
@@ -34,7 +34,8 @@ export const AddPatientBasicForm = ({ isValid }: Props) => {
             <Card
                 id={ADMINISTRATIVE_SECTION.id}
                 title={ADMINISTRATIVE_SECTION.label}
-                info={<span className="required-before">Required</span>}>
+                info={<span className="required-before">Required</span>}
+            >
                 <AdministrativeEntryFields sizing={sizing} />
             </Card>
             <Card id={NAME_SECTION.id} title={NAME_SECTION.label}>

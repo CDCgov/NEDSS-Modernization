@@ -28,7 +28,7 @@ export const SubsectionHeader = ({
     onExpandedChange,
     onDeleteSubsection,
     onEditSubsection,
-    onGroupQuestion
+    onGroupQuestion,
 }: Props) => {
     const { page, refresh } = usePageManagement();
     const ungroupSubsectionModalRef = useRef<ModalRef>(null);
@@ -39,13 +39,13 @@ export const SubsectionHeader = ({
     const handleUngroup = () => {
         SubSectionControllerService.unGroupSubSection({
             page: page.id,
-            subSectionId: subsection.id
+            subSectionId: subsection.id,
         })
             .then(() => {
                 showAlert({
                     type: 'success',
                     title: 'Ungrouped',
-                    message: `You've successfully ungrouped ${subsection.name}`
+                    message: `You've successfully ungrouped ${subsection.name}`,
                 });
                 refresh();
             })
@@ -55,14 +55,14 @@ export const SubsectionHeader = ({
                     showAlert({
                         type: 'error',
                         title: 'error',
-                        message: error.message
+                        message: error.message,
                     });
                 } else {
                     console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
-                        message: 'An unknown error occurred'
+                        message: 'An unknown error occurred',
                     });
                 }
             });
@@ -97,11 +97,13 @@ export const SubsectionHeader = ({
                 <MoreOptions
                     header={<Icon.MoreVert role="menu" size={4} onClick={() => setCloseOptions(false)} />}
                     className={`subsectionOptionsWithGrouped-${subsection.isGrouped ? 'grouped' : subsection.questions.length > 2 ? 'ungrouped' : ''}`}
-                    close={closeOptions}>
+                    close={closeOptions}
+                >
                     <Button
                         type="button"
                         data-testid="editSubsectionOption"
-                        onClick={() => closeThenAct(onEditSubsection)}>
+                        onClick={() => closeThenAct(onEditSubsection)}
+                    >
                         <Icon.Edit size={3} /> Edit subsection
                     </Button>
                     {subsection.isGrouped &&
@@ -111,7 +113,8 @@ export const SubsectionHeader = ({
                                 type="button"
                                 modalRef={ungroupSubsectionModalRef}
                                 data-testid="ungroupQuestionsOption"
-                                onClick={() => setCloseOptions(true)}>
+                                onClick={() => setCloseOptions(true)}
+                            >
                                 <IconComponent name={'group'} size={'s'} /> Ungroup questions
                             </ModalToggleButton>
                         )}
@@ -127,7 +130,8 @@ export const SubsectionHeader = ({
                                     <Button
                                         type="button"
                                         data-testid="groupQuestionsOption"
-                                        onClick={() => closeThenAct(onGroupQuestion)}>
+                                        onClick={() => closeThenAct(onGroupQuestion)}
+                                    >
                                         <IconComponent name={'group'} size={'s'} /> Group questions
                                     </Button>
                                 )}
@@ -141,7 +145,8 @@ export const SubsectionHeader = ({
                         onClick={() => {
                             closeThenAct(onDeleteSubsection);
                         }}
-                        className="deleteSubsectionBtn">
+                        className="deleteSubsectionBtn"
+                    >
                         <Icon.Delete size={3} /> Delete subsection
                     </Button>
                 </MoreOptions>

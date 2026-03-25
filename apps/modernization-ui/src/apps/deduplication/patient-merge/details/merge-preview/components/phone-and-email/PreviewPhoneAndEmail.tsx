@@ -28,7 +28,7 @@ export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: P
 
     const phoneEmails: PhoneEmailEntry[] = detailedPhoneEmails.map((p) => ({
         ...p,
-        asOf: format(parseISO(p.asOf), 'MM/dd/yyyy')
+        asOf: format(parseISO(p.asOf), 'MM/dd/yyyy'),
     }));
 
     const columns: Column<PhoneEmailEntry>[] = [
@@ -36,34 +36,34 @@ export const PreviewPhoneAndEmail = ({ selectedPhoneEmails, mergeCandidates }: P
             id: 'asOf',
             name: 'As of',
             value: (e) => e.asOf ?? '---',
-            sortable: true
+            sortable: true,
         },
         {
             id: 'typeUse',
             name: 'Type',
             value: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '',
             render: (entry) => [entry.type, entry.use].filter(Boolean).join(' / ') || '---',
-            sortable: true
+            sortable: true,
         },
         {
             id: 'phoneNumber',
             name: 'Phone Number',
             value: (e) => formatPhone(e.phoneNumber) ?? '---',
             render: (e) => formatPhone(e.phoneNumber) ?? '---',
-            sortable: true
+            sortable: true,
         },
         {
             id: 'email',
             name: 'Email Address',
             value: (e) => e.email ?? '---',
-            sortable: true
+            sortable: true,
         },
         {
             id: 'comments',
             name: 'Comments',
             value: (e) => e.comments ?? '---',
-            sortable: true
-        }
+            sortable: true,
+        },
     ];
 
     return (

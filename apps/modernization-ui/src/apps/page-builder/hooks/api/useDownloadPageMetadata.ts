@@ -32,8 +32,8 @@ export const useDownloadPageMetadata = () => {
                 method: 'GET',
                 headers: {
                     Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
             })
                 .then((response) => response.blob())
                 .then((blob) => {
@@ -51,7 +51,7 @@ export const useDownloadPageMetadata = () => {
     const value = {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'downloading',
-        downloadMetadata: (page: number) => dispatch({ type: 'download', page })
+        downloadMetadata: (page: number) => dispatch({ type: 'download', page }),
     };
 
     return value;

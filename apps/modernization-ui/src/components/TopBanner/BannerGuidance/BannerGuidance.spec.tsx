@@ -5,12 +5,14 @@ import { BannerGuidance } from './BannerGuidance';
 
 describe('BannerGuidance component tests', () => {
     it('should render banner guidance children inside a div', () => {
-        const { container } = render(<BannerGuidance className="custom-class">
-            <BannerIcon />
-            <MediaBlockBody>
-                <p>Some sample text</p>
-            </MediaBlockBody>
-        </BannerGuidance>);
+        const { container } = render(
+            <BannerGuidance className="custom-class">
+                <BannerIcon />
+                <MediaBlockBody>
+                    <p>Some sample text</p>
+                </MediaBlockBody>
+            </BannerGuidance>
+        );
         expect(container.firstChild).toHaveClass('usa-banner__guidance custom-class');
     });
 });

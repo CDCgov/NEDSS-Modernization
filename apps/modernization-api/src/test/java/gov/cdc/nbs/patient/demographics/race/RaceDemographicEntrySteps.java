@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.demographics.race;
 
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -14,17 +13,13 @@ public class RaceDemographicEntrySteps {
     this.available = available;
   }
 
-
   @Given("I select the entered race that is as of {localDate}")
   public void select(final LocalDate asOf) {
     this.available.select(item -> Objects.equals(item.asOf(), asOf));
   }
 
   @Given("I am entering the {raceCategory} race as of {localDate}")
-  public void entering(
-      final String race,
-      final LocalDate asOf
-  ) {
+  public void entering(final String race, final LocalDate asOf) {
     this.available.selected(new RaceDemographic(asOf, race));
   }
 

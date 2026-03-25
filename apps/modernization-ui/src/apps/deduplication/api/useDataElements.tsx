@@ -13,8 +13,8 @@ export const useDataElements = () => {
         fetch(`${Config.deduplicationUrl}/configuration/data-elements`, {
             method: 'GET',
             headers: {
-                Accept: 'application/json'
-            }
+                Accept: 'application/json',
+            },
         })
             .then((response) => {
                 response
@@ -36,9 +36,9 @@ export const useDataElements = () => {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
             },
-            body: JSON.stringify(updatedDataElements)
+            body: JSON.stringify(updatedDataElements),
         })
             .then((response) => {
                 response

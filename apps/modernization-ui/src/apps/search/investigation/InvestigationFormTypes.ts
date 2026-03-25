@@ -43,7 +43,7 @@ const caseStatusOptions = [
     asSelectable('PROBABLE', 'Probable'),
     asSelectable('SUSPECT', 'Suspect'),
     asSelectable('UNASSIGNED', 'Unassigned'),
-    asSelectable('UNKNOWN', 'Unknown')
+    asSelectable('UNKNOWN', 'Unknown'),
 ];
 
 //  This is a subset of the NBS_EVENT_SEARCH_DATES value set
@@ -53,7 +53,7 @@ const dateTypeOptions = [
     asSelectable('INVESTIGATION_CREATE_DATE', 'Investigation create date'),
     asSelectable('INVESTIGATION_START_DATE', 'Investigation start date'),
     asSelectable('LAST_UPDATE_DATE', 'Last update date'),
-    asSelectable('NOTIFICATION_CREATE_DATE', 'Notification create date')
+    asSelectable('NOTIFICATION_CREATE_DATE', 'Notification create date'),
 ];
 
 //  This is a subset of the REC_STAT value set
@@ -63,7 +63,7 @@ const notificationStatusOptions = [
     asSelectable('MESSAGE_FAILED', 'Message Failed'),
     asSelectable('PENDING_APPROVAL', 'Pending Approval'),
     asSelectable('REJECTED', 'Rejected'),
-    asSelectable('UNASSIGNED', 'Unassigned')
+    asSelectable('UNASSIGNED', 'Unassigned'),
 ];
 
 //  This should be using CM_PROCESS_STAGE however, the API doesn't use value sets
@@ -74,12 +74,12 @@ const processingStatusOptions = [
     asSelectable('NO_FOLLOW_UP', 'No Follow-up'),
     asSelectable('OPEN_CASE', 'Open Case'),
     asSelectable('SURVEILLANCE_FOLLOW_UP', 'Surveillance Follow-up'),
-    asSelectable('UNASSIGNED', 'Unassigned')
+    asSelectable('UNASSIGNED', 'Unassigned'),
 ];
 
 const entityOptions: Selectable[] = [
     asSelectable('REPORTING_PROVIDER', 'Reporting Provider'),
-    asSelectable('REPORTING_FACILITY', 'Reporting Facility')
+    asSelectable('REPORTING_FACILITY', 'Reporting Facility'),
 ];
 
 const investigationEventTypeOptions: Selectable[] = [
@@ -87,7 +87,7 @@ const investigationEventTypeOptions: Selectable[] = [
     asSelectable('CITY_COUNTY_CASE_ID', 'City Case ID'),
     asSelectable('INVESTIGATION_ID', 'Investigation ID'),
     asSelectable('NOTIFICATION_ID', 'Notification ID'),
-    asSelectable('STATE_CASE_ID', 'State Case ID')
+    asSelectable('STATE_CASE_ID', 'State Case ID'),
 ];
 
 export {
@@ -98,5 +98,5 @@ export {
     caseStatusOptions,
     dateTypeOptions,
     investigationEventTypeOptions,
-    pregnancyStatusOptions
+    pregnancyStatusOptions,
 };

@@ -30,14 +30,14 @@ export class QuestionControllerService {
         id,
         requestBody,
     }: {
-        id: number,
-        requestBody: QuestionStatusRequest,
-    }): CancelablePromise<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)> {
+        id: number;
+        requestBody: QuestionStatusRequest;
+    }): CancelablePromise<CodedQuestion | DateQuestion | NumericQuestion | TextQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/questions/{id}/status',
             path: {
-                'id': id,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -51,14 +51,14 @@ export class QuestionControllerService {
         id,
         requestBody,
     }: {
-        id: number,
-        requestBody: UpdateTextQuestionRequest,
-    }): CancelablePromise<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)> {
+        id: number;
+        requestBody: UpdateTextQuestionRequest;
+    }): CancelablePromise<CodedQuestion | DateQuestion | NumericQuestion | TextQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/questions/text/{id}',
             path: {
-                'id': id,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -72,14 +72,14 @@ export class QuestionControllerService {
         id,
         requestBody,
     }: {
-        id: number,
-        requestBody: UpdateNumericQuestionRequest,
-    }): CancelablePromise<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)> {
+        id: number;
+        requestBody: UpdateNumericQuestionRequest;
+    }): CancelablePromise<CodedQuestion | DateQuestion | NumericQuestion | TextQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/questions/numeric/{id}',
             path: {
-                'id': id,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -93,14 +93,14 @@ export class QuestionControllerService {
         id,
         requestBody,
     }: {
-        id: number,
-        requestBody: UpdateDateQuestionRequest,
-    }): CancelablePromise<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)> {
+        id: number;
+        requestBody: UpdateDateQuestionRequest;
+    }): CancelablePromise<CodedQuestion | DateQuestion | NumericQuestion | TextQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/questions/date/{id}',
             path: {
-                'id': id,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -114,14 +114,14 @@ export class QuestionControllerService {
         id,
         requestBody,
     }: {
-        id: number,
-        requestBody: UpdateCodedQuestionRequest,
-    }): CancelablePromise<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)> {
+        id: number;
+        requestBody: UpdateCodedQuestionRequest;
+    }): CancelablePromise<CodedQuestion | DateQuestion | NumericQuestion | TextQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/questions/coded/{id}',
             path: {
-                'id': id,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -134,7 +134,7 @@ export class QuestionControllerService {
     public static createTextQuestion({
         requestBody,
     }: {
-        requestBody: CreateTextQuestionRequest,
+        requestBody: CreateTextQuestionRequest;
     }): CancelablePromise<TextQuestion> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -153,27 +153,27 @@ export class QuestionControllerService {
         size = 25,
         sort,
     }: {
-        requestBody: FindQuestionRequest,
+        requestBody: FindQuestionRequest;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<PageQuestion> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/questions/search',
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -186,7 +186,7 @@ export class QuestionControllerService {
     public static createNumericQuestion({
         requestBody,
     }: {
-        requestBody: CreateNumericQuestionRequest,
+        requestBody: CreateNumericQuestionRequest;
     }): CancelablePromise<NumericQuestion> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -202,7 +202,7 @@ export class QuestionControllerService {
     public static createDateQuestion({
         requestBody,
     }: {
-        requestBody: CreateDateQuestionRequest,
+        requestBody: CreateDateQuestionRequest;
     }): CancelablePromise<DateQuestion> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -218,7 +218,7 @@ export class QuestionControllerService {
     public static createCodedQuestion({
         requestBody,
     }: {
-        requestBody: CreateCodedQuestionRequest,
+        requestBody: CreateCodedQuestionRequest;
     }): CancelablePromise<CodedQuestion> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -239,23 +239,23 @@ export class QuestionControllerService {
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<PageQuestion> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/questions',
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
         });
     }
@@ -263,16 +263,12 @@ export class QuestionControllerService {
      * @returns GetQuestionResponse OK
      * @throws ApiError
      */
-    public static getQuestion({
-        id,
-    }: {
-        id: number,
-    }): CancelablePromise<GetQuestionResponse> {
+    public static getQuestion({ id }: { id: number }): CancelablePromise<GetQuestionResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/questions/{id}',
             path: {
-                'id': id,
+                id: id,
             },
         });
     }

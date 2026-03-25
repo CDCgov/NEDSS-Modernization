@@ -3,7 +3,7 @@ import {
     Concept,
     PageInformation,
     PageInformationChangeRequest,
-    PageInformationService
+    PageInformationService,
 } from 'apps/page-builder/generated';
 import { useFindConditionsNotInUse } from 'apps/page-builder/hooks/api/useFindConditionsNotInUse';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
@@ -30,7 +30,7 @@ export const PageDetails = () => {
 
     const form = useForm<PageInformationChangeRequest>({
         mode: 'onBlur',
-        defaultValues: {}
+        defaultValues: {},
     });
     useEffect(() => {
         fetchMMGOptions()
@@ -44,7 +44,7 @@ export const PageDetails = () => {
     useEffect(() => {
         if (pageId) {
             PageInformationService.find({
-                page: Number(pageId)
+                page: Number(pageId),
             }).then((data: PageInformation) => {
                 setPageEvent(data.eventType.value ?? '');
                 form.reset({
@@ -53,7 +53,7 @@ export const PageDetails = () => {
                     messageMappingGuide: data?.messageMappingGuide?.value,
                     description: data?.description,
                     name: data.name,
-                    conditions: data.conditions.map((c) => c.value)
+                    conditions: data.conditions.map((c) => c.value),
                 });
             });
         }
@@ -66,8 +66,8 @@ export const PageDetails = () => {
             page: Number(pageId),
             requestBody: {
                 ...request,
-                conditions: request.conditions
-            }
+                conditions: request.conditions,
+            },
         })
             .then(() => {
                 showSuccess('You have successfully performed a task');
@@ -90,7 +90,8 @@ export const PageDetails = () => {
                         <LinkButton
                             className="page-details-printer"
                             href={`/nbs/page-builder/api/v1/pages/${pageId}/print`}
-                            aria-label="open simplified page details view for printing">
+                            aria-label="open simplified page details view for printing"
+                        >
                             <Icon.Print size={3} />
                         </LinkButton>
                         <h2 className="page-title">Page Details</h2>

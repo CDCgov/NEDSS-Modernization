@@ -1,12 +1,11 @@
 package gov.cdc.nbs.questionbank.support;
 
-import java.time.Instant;
-
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.request.create.DateMask;
 import gov.cdc.nbs.questionbank.question.request.create.NumericMask;
 import gov.cdc.nbs.questionbank.question.request.create.TextMask;
+import java.time.Instant;
 
 public class QuestionCommandMother {
   private QuestionCommandMother() {}
@@ -133,20 +132,12 @@ public class QuestionCommandMother {
 
   private static QuestionCommand.ReportingData reportingData() {
     return new QuestionCommand.ReportingData(
-        "report label",
-        "RDB_TABLE_NM",
-        "ADM_RDB_COL_NM",
-        "DATA_MRT_COL_NM");
+        "report label", "RDB_TABLE_NM", "ADM_RDB_COL_NM", "DATA_MRT_COL_NM");
   }
 
   private static QuestionCommand.MessagingData messagingData() {
     return new QuestionCommand.MessagingData(
-        true,
-        "var id",
-        "label",
-        "codeSystem",
-        true,
-        "hl7Type");
+        true, "var id", "label", "codeSystem", true, "hl7Type");
   }
 
   private static QuestionCommand.QuestionOid questionOid() {

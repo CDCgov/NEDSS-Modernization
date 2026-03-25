@@ -31,7 +31,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...ORG_PROV, moveable: true, toggleable: true },
     { ...DATE_ADMINISTERED, moveable: true, toggleable: true },
     { ...VACCINE_ADMINISTERED, moveable: true, toggleable: true },
-    { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
+    { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
 ];
 
 const columns = (onClose: () => void): Column<PatientFileVaccinations>[] => [
@@ -46,10 +46,11 @@ const columns = (onClose: () => void): Column<PatientFileVaccinations>[] => [
                 sizing="small"
                 className={styles['event-id']}
                 url={`/nbs/api/profile/${value.patient}/vaccination/${value.id}`}
-                onClose={onClose}>
+                onClose={onClose}
+            >
                 {value.local}
             </ClassicModalButton>
-        )
+        ),
     },
     {
         ...DATE_RECEIVED,
@@ -57,7 +58,7 @@ const columns = (onClose: () => void): Column<PatientFileVaccinations>[] => [
         sortable: true,
         value: (value) => value.createdOn,
         render: (value) => internalizeDateTime(value.createdOn),
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...ORG_PROV,
@@ -73,28 +74,28 @@ const columns = (onClose: () => void): Column<PatientFileVaccinations>[] => [
                     {displayProvider(value.provider)}
                 </MaybeLabeledValue>
             </Shown>
-        )
+        ),
     },
     {
         ...DATE_ADMINISTERED,
         className: styles['date-administered-header'],
         sortable: true,
         value: (value) => value.administeredOn,
-        render: (value) => internalizeDate(value.administeredOn)
+        render: (value) => internalizeDate(value.administeredOn),
     },
     {
         ...VACCINE_ADMINISTERED,
         sortable: true,
         value: (value) => value.administered,
-        render: (value) => <strong>{value.administered}</strong>
+        render: (value) => <strong>{value.administered}</strong>,
     },
     {
         ...ASSOCIATED_WITH,
         sortable: true,
         className: styles['long-coded-header'],
         value: (value) => value.associations?.[0]?.local,
-        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
-    }
+        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>,
+    },
 ];
 
 type InternalCardProps = {
@@ -122,7 +123,8 @@ const InternalCard = ({ patient, sizing, data = [], onClose, ...remaining }: Int
                         icon="add_circle"
                         secondary
                         sizing={sizing}
-                        onClose={onClose}>
+                        onClose={onClose}
+                    >
                         Add vaccination
                     </ClassicModalButton>
                 </Permitted>
@@ -151,7 +153,8 @@ const PatientFileVaccinationsCard = ({ provider, ...remaining }: PatientFileVacc
                 <LoadingOverlay>
                     <InternalCard {...remaining} onClose={handleClose} />
                 </LoadingOverlay>
-            }>
+            }
+        >
             <Await resolve={provider.get()}>
                 {(data) => <InternalCard data={data} onClose={handleClose} {...remaining} />}
             </Await>

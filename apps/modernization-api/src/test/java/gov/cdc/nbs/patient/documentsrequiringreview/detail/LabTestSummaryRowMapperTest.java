@@ -1,18 +1,18 @@
 package gov.cdc.nbs.patient.documentsrequiringreview.detail;
 
-import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.junit.jupiter.api.Test;
+
 class LabTestSummaryRowMapperTest {
 
-  private final LabTestSummaryRowMapper.Column columns = new LabTestSummaryRowMapper.Column(2, 3, 5, 6, 11, 13, 17);
+  private final LabTestSummaryRowMapper.Column columns =
+      new LabTestSummaryRowMapper.Column(2, 3, 5, 6, 11, 13, 17);
 
   @Test
   void should_map_from_result_set() throws SQLException {
@@ -31,7 +31,6 @@ class LabTestSummaryRowMapperTest {
     assertThat(mapped.high()).isNull();
     assertThat(mapped.low()).isNull();
     assertThat(mapped.unit()).isNull();
-
   }
 
   @Test
@@ -46,7 +45,6 @@ class LabTestSummaryRowMapperTest {
     LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.coded()).isEqualTo("coded-value");
-
   }
 
   @Test
@@ -60,7 +58,6 @@ class LabTestSummaryRowMapperTest {
     LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.numeric()).isEqualTo("739.53");
-
   }
 
   @Test
@@ -75,7 +72,6 @@ class LabTestSummaryRowMapperTest {
     LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.high()).isEqualTo("high-value");
-
   }
 
   @Test
@@ -90,7 +86,6 @@ class LabTestSummaryRowMapperTest {
     LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.low()).isEqualTo("low-value");
-
   }
 
   @Test
@@ -105,7 +100,6 @@ class LabTestSummaryRowMapperTest {
     LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.unit()).isEqualTo("unit-value");
-
   }
 
   @Test
@@ -120,6 +114,5 @@ class LabTestSummaryRowMapperTest {
     LabTestSummary mapped = mapper.mapRow(resultSet, 0);
 
     assertThat(mapped.status()).isEqualTo("status-value");
-
   }
 }

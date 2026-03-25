@@ -10,70 +10,70 @@ type SelectOption = { name: string; value: string };
 const textDisplayOptions: SelectOption[] = [
     {
         value: '1008',
-        name: 'User entered text, number or date'
+        name: 'User entered text, number or date',
     },
     {
         value: '1009',
-        name: 'Multi-line user-entered text'
+        name: 'Multi-line user-entered text',
     },
     {
         value: '1019',
-        name: 'Multi-line Notes with User/Date Stamp'
+        name: 'Multi-line Notes with User/Date Stamp',
     },
     {
         value: '1026',
-        name: 'Readonly User entered text, number, or date'
+        name: 'Readonly User entered text, number, or date',
     },
     {
         value: '1029',
-        name: 'Readonly User text, number, or date no save'
-    }
+        name: 'Readonly User text, number, or date no save',
+    },
 ];
 
 const dateOrNumericDisplayOptions: SelectOption[] = [
     {
         value: '1008',
-        name: 'User entered text, number or date'
+        name: 'User entered text, number or date',
     },
     {
         value: '1026',
-        name: 'Readonly User entered text, number, or date'
+        name: 'Readonly User entered text, number, or date',
     },
     {
         value: '1029',
-        name: 'Readonly User  text, number, or date no save'
-    }
+        name: 'Readonly User  text, number, or date no save',
+    },
 ];
 
 const codedDisplayOptions: SelectOption[] = [
     {
         value: '1007',
-        name: 'Single-Select (Drop down)'
+        name: 'Single-Select (Drop down)',
     },
     {
         value: '1013',
-        name: 'Multi-Select (List Box)'
+        name: 'Multi-Select (List Box)',
     },
     {
         value: '1024',
-        name: 'Single-select save (readonly)'
+        name: 'Single-select save (readonly)',
     },
     {
         value: '1025',
-        name: 'Multi-select save (readonly)'
+        name: 'Multi-select save (readonly)',
     },
     {
         value: '1027',
-        name: 'Single-select no save (readonly)'
+        name: 'Single-select no save (readonly)',
     },
     {
         value: '1028',
-        name: 'Multi-select no save (readonly)'
+        name: 'Multi-select no save (readonly)',
     },
     {
         value: '1031',
-        name: 'Code Lookup'
-    }
+        name: 'Code Lookup',
+    },
 ];
 
 type Props = {
@@ -105,7 +105,7 @@ export const UserInterfaceFields = ({ published = false }: Props) => {
                 name="label"
                 rules={{
                     required: { value: true, message: 'Question label is required' },
-                    ...maxLengthRule(50)
+                    ...maxLengthRule(50),
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input

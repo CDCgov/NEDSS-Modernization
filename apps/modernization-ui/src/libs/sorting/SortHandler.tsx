@@ -6,7 +6,7 @@ import {
     nullsLast,
     defaultComparator,
     Comparator,
-    SortingInteraction
+    SortingInteraction,
 } from 'libs/sorting';
 import { Mapping, Maybe } from 'utils';
 
@@ -65,7 +65,7 @@ const SortHandler = <T, U>({
     data,
     sorting,
     comparator = nullsLast(defaultComparator),
-    children
+    children,
 }: SortHandlerProps<T, U>) => {
     const applySort = (): T[] => {
         if (sorting.property && sorting.direction && sorting.direction !== Direction.None) {

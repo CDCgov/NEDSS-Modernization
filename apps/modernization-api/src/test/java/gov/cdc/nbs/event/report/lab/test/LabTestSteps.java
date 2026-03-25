@@ -12,7 +12,6 @@ public class LabTestSteps {
 
   @ParameterType(name = "labTest", value = ".*")
   public String labTest(final String value) {
-    return resolver.resolve(value)
-        .orElse(value);
+    return resolver.resolve(value).orElse(value);
   }
 }

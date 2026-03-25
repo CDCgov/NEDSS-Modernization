@@ -7,7 +7,7 @@ import {
     displayEmails,
     displayAddresses,
     displayProfileLegalName,
-    displayPatientAge
+    displayPatientAge,
 } from 'apps/search/patient/result';
 
 type Props = {

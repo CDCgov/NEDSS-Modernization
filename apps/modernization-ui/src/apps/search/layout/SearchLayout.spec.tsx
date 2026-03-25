@@ -13,35 +13,35 @@ vi.mock('pagination', () => ({
             status: 0,
             pageSize: 1,
             total: 1,
-            current: 1
+            current: 1,
         },
         firstPage: vi.fn(),
         reload: vi.fn(),
         request: vi.fn(),
         ready: vi.fn(),
         resize: vi.fn(),
-        reset: vi.fn()
-    })
+        reset: vi.fn(),
+    }),
 }));
 
 vi.mock('libs/sorting', () => ({
     useSorting: () => ({
         reset: vi.fn(),
         sortBy: vi.fn(),
-        toggle: vi.fn()
-    })
+        toggle: vi.fn(),
+    }),
 }));
 
 vi.mock('apps/search', () => ({
     useSearchResultDisplay: () => ({
-        view: 'list'
+        view: 'list',
     }),
     useSearchInteraction: () => ({ status: 'no-input', results: { total: 1, terms: [] } }),
     useFilter: () => ({
         filterable: false,
         toggleFilterable: vi.fn(),
-        applyFilter: vi.fn()
-    })
+        applyFilter: vi.fn(),
+    }),
 }));
 
 type FixtureProps = {

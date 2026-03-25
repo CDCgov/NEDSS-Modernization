@@ -13,7 +13,7 @@ const entry: NameEntry = {
     last: 'test last',
     secondLast: 'second last',
     suffix: asSelectable('SR', 'test 2'),
-    degree: asSelectable('BA', 'test ba')
+    degree: asSelectable('BA', 'test ba'),
 };
 
 describe('NameEntryView', () => {

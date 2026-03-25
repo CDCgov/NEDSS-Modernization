@@ -12,5 +12,4 @@ class PhoneIdentifierGeneratorConfiguration {
   PhoneIdentifierGenerator phoneIdentifierGenerator(final IdGeneratorService service) {
     return () -> service.getNextValidId(IdGeneratorService.EntityType.NBS).getId();
   }
-
 }

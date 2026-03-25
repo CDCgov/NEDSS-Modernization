@@ -25,7 +25,7 @@ export const Sections = ({
     onEditValueset,
     onChangeValueset,
     onGroupQuestion,
-    onEditGroupedSubsection
+    onEditGroupedSubsection,
 }: Props) => {
     const { page, refresh } = usePageManagement();
 
@@ -57,11 +57,11 @@ export const Sections = ({
         }
         SectionControllerService.deleteSection({
             page: page.id,
-            sectionId: selectedSectionToDelete.id
+            sectionId: selectedSectionToDelete.id,
         }).then(() => {
             showAlert({
                 message: `You have successfully deleted section "${selectedSectionToDelete.name}"`,
-                type: `success`
+                type: `success`,
             });
             refresh();
         });

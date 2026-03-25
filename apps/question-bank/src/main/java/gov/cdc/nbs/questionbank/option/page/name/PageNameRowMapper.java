@@ -1,11 +1,10 @@
 package gov.cdc.nbs.questionbank.option.page.name;
 
 import gov.cdc.nbs.questionbank.option.PageBuilderOption;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.lang.NonNull;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.NonNull;
 
 public class PageNameRowMapper implements RowMapper<PageBuilderOption> {
 
@@ -14,7 +13,6 @@ public class PageNameRowMapper implements RowMapper<PageBuilderOption> {
       this(1);
     }
   }
-
 
   private final Column columns;
 
@@ -27,8 +25,7 @@ public class PageNameRowMapper implements RowMapper<PageBuilderOption> {
   }
 
   @Override
-  @NonNull
-  public PageBuilderOption mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+  @NonNull public PageBuilderOption mapRow(final ResultSet rs, final int rowNum) throws SQLException {
     String value = rs.getString(columns.value());
     return new PageBuilderOption(value, value, rowNum);
   }

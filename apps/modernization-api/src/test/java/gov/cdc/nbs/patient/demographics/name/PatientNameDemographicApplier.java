@@ -2,12 +2,11 @@ package gov.cdc.nbs.patient.demographics.name;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
+import java.time.LocalDate;
+import java.util.Locale;
 import net.datafaker.Faker;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.util.Locale;
 
 @Component
 public class PatientNameDemographicApplier {
@@ -28,23 +27,15 @@ public class PatientNameDemographicApplier {
         faker.name().firstName(),
         faker.name().firstName(),
         faker.name().lastName(),
-        null
-    );
+        null);
   }
 
   public void withName(
       final PatientIdentifier identifier,
       final String type,
       final String first,
-      final String last
-  ) {
-    withName(
-        identifier,
-        RandomUtil.dateInPast(),
-        type,
-        first,
-        last
-    );
+      final String last) {
+    withName(identifier, RandomUtil.dateInPast(), type, first, last);
   }
 
   public void withName(
@@ -52,17 +43,8 @@ public class PatientNameDemographicApplier {
       final LocalDate asOf,
       final String type,
       final String first,
-      final String last
-  ) {
-    withName(
-        identifier,
-        asOf,
-        type,
-        first,
-        null,
-        last,
-        null
-    );
+      final String last) {
+    withName(identifier, asOf, type, first, null, last, null);
   }
 
   public void withName(
@@ -72,10 +54,11 @@ public class PatientNameDemographicApplier {
       final String first,
       final String middle,
       final String last,
-      final String suffix
-  ) {
+      final String suffix) {
 
-    this.client.sql("""
+    this.client
+        .sql(
+            """
             insert into Person_name (
                 person_uid,
                 person_name_seq,
@@ -111,8 +94,7 @@ public class PatientNameDemographicApplier {
                 getDate(),
                 'ACTIVE'
             );
-            """
-        )
+            """)
         .param("patient", identifier.id())
         .param("asOf", asOf)
         .param("type", type)
@@ -121,6 +103,5 @@ public class PatientNameDemographicApplier {
         .param("last", last)
         .param("suffix", suffix)
         .update();
-
   }
 }

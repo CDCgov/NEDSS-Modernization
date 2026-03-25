@@ -13,7 +13,7 @@ export type { EthnicityEntry };
 const initial = (asOf: string = today()): EthnicityEntry => ({
     asOf: asOf,
     ethnicGroup: null,
-    detailed: []
+    detailed: [],
 });
 
 export { initial };

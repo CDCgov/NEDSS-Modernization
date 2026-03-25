@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.support;
 
 import io.cucumber.java.ParameterType;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -17,12 +16,8 @@ public class DateTimeSteps {
 
     ChronoUnit chronoUnit = resolve(unit);
 
-    return LocalDate.now()
-        .minus(value, chronoUnit)
-        .atStartOfDay()
-        .toInstant(ZoneOffset.UTC);
+    return LocalDate.now().minus(value, chronoUnit).atStartOfDay().toInstant(ZoneOffset.UTC);
   }
-
 
   private ChronoUnit resolve(final String unit) {
     return switch (unit.toLowerCase()) {

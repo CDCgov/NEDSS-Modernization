@@ -1,23 +1,22 @@
 package gov.cdc.nbs.change;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import org.junit.jupiter.api.Test;
 
 class ChangesTest {
 
   @Test
   void should_resolve_additions_from_only_right_matches() {
-    List<Match<String, String>> matches = List.of(
-        new Match.OnlyRight<>("one"),
-        new Match.Both<>("two", "two"),
-        new Match.OnlyLeft<>("three"),
-        new Match.OnlyRight<>("nine")
-    );
+    List<Match<String, String>> matches =
+        List.of(
+            new Match.OnlyRight<>("one"),
+            new Match.Both<>("two", "two"),
+            new Match.OnlyLeft<>("three"),
+            new Match.OnlyRight<>("nine"));
 
     Changes<String, String> changes = new Changes<>(matches);
 
@@ -28,10 +27,8 @@ class ChangesTest {
 
   @Test
   void should_not_resolve_additions_with_only_right_matches() {
-    List<Match<String, String>> matches = List.of(
-        new Match.Both<>("two", "two"),
-        new Match.OnlyLeft<>("three")
-    );
+    List<Match<String, String>> matches =
+        List.of(new Match.Both<>("two", "two"), new Match.OnlyLeft<>("three"));
 
     Changes<String, String> changes = new Changes<>(matches);
 
@@ -42,32 +39,29 @@ class ChangesTest {
 
   @Test
   void should_resolve_default_alteration_based_on_non_equal_both_matches() {
-    List<Match<String, String>> matches = List.of(
-        new Match.OnlyRight<>("one"),
-        new Match.Both<>("two", "two"),
-        new Match.Both<>("X", "Y"),
-        new Match.OnlyLeft<>("three")
-    );
+    List<Match<String, String>> matches =
+        List.of(
+            new Match.OnlyRight<>("one"),
+            new Match.Both<>("two", "two"),
+            new Match.Both<>("X", "Y"),
+            new Match.OnlyLeft<>("three"));
 
     Changes<String, String> changes = new Changes<>(matches);
 
     Stream<Match.Both<String, String>> actual = changes.altered();
 
-    assertThat(actual).satisfiesExactly(
-        match -> assertAll(
-            () -> assertThat(match.left()).isEqualTo("X"),
-            () -> assertThat(match.right()).isEqualTo("Y")
-        )
-    );
+    assertThat(actual)
+        .satisfiesExactly(
+            match ->
+                assertAll(
+                    () -> assertThat(match.left()).isEqualTo("X"),
+                    () -> assertThat(match.right()).isEqualTo("Y")));
   }
-
 
   @Test
   void should_not_resolve_default_alteration_without_both_matches() {
-    List<Match<String, String>> matches = List.of(
-        new Match.OnlyRight<>("one"),
-        new Match.OnlyLeft<>("three")
-    );
+    List<Match<String, String>> matches =
+        List.of(new Match.OnlyRight<>("one"), new Match.OnlyLeft<>("three"));
 
     Changes<String, String> changes = new Changes<>(matches);
 
@@ -76,35 +70,31 @@ class ChangesTest {
     assertThat(actual).isEmpty();
   }
 
-
   @Test
   void should_resolve_alteration_based_on_non_equal_both_matches() {
-    List<Match<String, String>> matches = List.of(
-        new Match.OnlyRight<>("one"),
-        new Match.Both<>("TWO", "two"),
-        new Match.Both<>("X", "Y"),
-        new Match.OnlyLeft<>("three")
-    );
+    List<Match<String, String>> matches =
+        List.of(
+            new Match.OnlyRight<>("one"),
+            new Match.Both<>("TWO", "two"),
+            new Match.Both<>("X", "Y"),
+            new Match.OnlyLeft<>("three"));
 
     Changes<String, String> changes = new Changes<>(matches);
 
     Stream<Match.Both<String, String>> actual = changes.altered((l, r) -> !l.equalsIgnoreCase(r));
 
-    assertThat(actual).satisfiesExactly(
-        match -> assertAll(
-            () -> assertThat(match.left()).isEqualTo("X"),
-            () -> assertThat(match.right()).isEqualTo("Y")
-        )
-    );
+    assertThat(actual)
+        .satisfiesExactly(
+            match ->
+                assertAll(
+                    () -> assertThat(match.left()).isEqualTo("X"),
+                    () -> assertThat(match.right()).isEqualTo("Y")));
   }
-
 
   @Test
   void should_not_resolve_alteration_without_both_matches() {
-    List<Match<String, String>> matches = List.of(
-        new Match.OnlyRight<>("one"),
-        new Match.OnlyLeft<>("three")
-    );
+    List<Match<String, String>> matches =
+        List.of(new Match.OnlyRight<>("one"), new Match.OnlyLeft<>("three"));
 
     Changes<String, String> changes = new Changes<>(matches);
 
@@ -115,11 +105,11 @@ class ChangesTest {
 
   @Test
   void should_not_resolve_alteration_without_qualifying_matches() {
-    List<Match<String, String>> matches = List.of(
-        new Match.OnlyRight<>("one"),
-        new Match.OnlyLeft<>("three"),
-        new Match.Both<>("TWO", "two")
-    );
+    List<Match<String, String>> matches =
+        List.of(
+            new Match.OnlyRight<>("one"),
+            new Match.OnlyLeft<>("three"),
+            new Match.Both<>("TWO", "two"));
 
     Changes<String, String> changes = new Changes<>(matches);
 
@@ -127,5 +117,4 @@ class ChangesTest {
 
     assertThat(actual).isEmpty();
   }
-
 }

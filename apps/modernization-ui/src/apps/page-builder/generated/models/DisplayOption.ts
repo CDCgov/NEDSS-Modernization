@@ -6,4 +6,3 @@ export type DisplayOption = {
     value?: number;
     name?: string;
 };
-

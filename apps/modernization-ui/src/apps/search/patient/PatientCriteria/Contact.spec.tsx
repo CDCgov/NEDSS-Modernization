@@ -8,7 +8,7 @@ import { MockedProvider } from '@apollo/client/testing';
 const Fixture = () => {
     const form = useForm<PatientCriteriaEntry>({
         mode: 'onChange',
-        defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] }
+        defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] },
     });
 
     return (

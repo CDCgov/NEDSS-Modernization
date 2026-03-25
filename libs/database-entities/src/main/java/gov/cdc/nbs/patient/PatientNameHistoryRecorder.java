@@ -13,7 +13,8 @@ class PatientNameHistoryRecorder {
     this.client = client;
   }
 
-  private static final String INSERT_SNAPSHOT = """
+  private static final String INSERT_SNAPSHOT =
+      """
       insert into Person_name_hist (
           person_uid,
           person_name_seq,
@@ -82,16 +83,17 @@ class PatientNameHistoryRecorder {
           [name].user_affiliation_txt,
           [name].as_of_date
       from Person_name [name]
-      
+
           join [Person] [patient] on
               [patient].person_uid = [name].person_uid
-      
+
       where [name].person_uid = :patient
         and [name].person_name_seq = :sequence
       """;
 
   void snapshot(final PersonNameId identifier) {
-    this.client.sql(INSERT_SNAPSHOT)
+    this.client
+        .sql(INSERT_SNAPSHOT)
         .param("patient", identifier.getPersonUid())
         .param("sequence", identifier.getPersonNameSeq())
         .update();

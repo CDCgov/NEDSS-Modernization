@@ -18,7 +18,7 @@ const routing = [
                     </PageTitle>
                 </Permitted>
             </FeatureGuard>
-        )
+        ),
     },
     {
         path: '/deduplication/data_elements',
@@ -30,7 +30,7 @@ const routing = [
                     </PageTitle>
                 </Permitted>
             </FeatureGuard>
-        )
+        ),
     },
     {
         path: '/deduplication/merge',
@@ -42,7 +42,7 @@ const routing = [
                     </PageTitle>
                 </Permitted>
             </FeatureGuard>
-        )
+        ),
     },
     {
         path: '/deduplication/merge/:matchId',
@@ -54,8 +54,8 @@ const routing = [
                     </PageTitle>
                 </Permitted>
             </FeatureGuard>
-        )
-    }
+        ),
+    },
 ];
 
 export { routing };

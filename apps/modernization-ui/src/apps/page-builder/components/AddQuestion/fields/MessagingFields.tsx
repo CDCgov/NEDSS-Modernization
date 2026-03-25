@@ -22,8 +22,8 @@ export const MessagingFields = () => {
                     messageVariableId: undefined,
                     labelInMessage: undefined,
                     requiredInMessage: undefined,
-                    hl7DataType: undefined
-                }
+                    hl7DataType: undefined,
+                },
             });
         }
     }, [includedInMessage]);
@@ -51,9 +51,9 @@ export const MessagingFields = () => {
                 rules={{
                     required: {
                         value: includedInMessage ?? false,
-                        message: 'Message variable ID is required'
+                        message: 'Message variable ID is required',
                     },
-                    ...maxLengthRule(50)
+                    ...maxLengthRule(50),
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
@@ -77,9 +77,9 @@ export const MessagingFields = () => {
                 rules={{
                     required: {
                         value: includedInMessage ?? false,
-                        message: 'Message label is required'
+                        message: 'Message label is required',
                     },
-                    ...maxLengthRule(100)
+                    ...maxLengthRule(100),
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
@@ -103,8 +103,8 @@ export const MessagingFields = () => {
                 rules={{
                     required: {
                         value: includedInMessage ?? false,
-                        message: 'Code system name is required'
-                    }
+                        message: 'Code system name is required',
+                    },
                 }}
                 render={({ field: { onChange, onBlur, name, value } }) => (
                     <SelectInput
@@ -150,8 +150,8 @@ export const MessagingFields = () => {
                 rules={{
                     required: {
                         value: includedInMessage ?? false,
-                        message: 'HL7 data type required'
-                    }
+                        message: 'HL7 data type required',
+                    },
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <SelectInput

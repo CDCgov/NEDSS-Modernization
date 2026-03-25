@@ -32,7 +32,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
     const onDelete = (subsection: PagesSubSection) => {
         SubSectionControllerService.deleteSubSection({
             page: page.id,
-            subSectionId: subsection.id
+            subSectionId: subsection.id,
         }).then(() => {
             onSetAlert?.(`You have successfully deleted "${subsection.name}"`, `success`);
             refresh?.();
@@ -48,7 +48,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
         SubSectionControllerService.updateSubSection({
             page: page.id,
             subSectionId: subsection.id,
-            requestBody: { name: subsection.name, visible: visibility }
+            requestBody: { name: subsection.name, visible: visibility },
         }).then(() => {
             refresh?.();
             if (visibility) {
@@ -105,7 +105,8 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                                     handleUpdateState('add');
                                 }}
                                 className={styles.addSubsectionBtn}
-                                disabled={onAction}>
+                                disabled={onAction}
+                            >
                                 <Icon.Add size={3} className={styles.addIcon} />
                                 Add new subsection
                             </Button>
@@ -136,7 +137,8 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                                 <div
                                     className="manage-subsections"
                                     {...provided.droppableProps}
-                                    ref={provided.innerRef}>
+                                    ref={provided.innerRef}
+                                >
                                     {section.subSections.map((s, k) => {
                                         return (
                                             <ManageSubsectionTile
@@ -163,7 +165,8 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                             }}
                             type={'button'}
                             data-testid="manageSubsectionCloseBtn"
-                            outline>
+                            outline
+                        >
                             Close
                         </Button>
                     </div>

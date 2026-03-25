@@ -1,9 +1,8 @@
 package gov.cdc.nbs.questionbank.page.component.tree;
 
 import gov.cdc.nbs.questionbank.page.component.ComponentNode;
-import org.springframework.stereotype.Service;
-
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ComponentTreeResolver {
@@ -15,8 +14,6 @@ public class ComponentTreeResolver {
   }
 
   public Optional<ComponentNode> resolve(final long page) {
-    return this.finder.find(page)
-        .stream()
-        .collect(Treeify.asTree());
+    return this.finder.find(page).stream().collect(Treeify.asTree());
   }
 }

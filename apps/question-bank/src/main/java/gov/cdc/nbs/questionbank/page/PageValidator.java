@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page;
 
-import org.springframework.stereotype.Component;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.questionbank.entity.QCodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.QWaTemplate;
@@ -8,6 +7,7 @@ import gov.cdc.nbs.questionbank.page.exception.PageCreateException;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.request.PageValidationRequest;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PageValidator {
@@ -21,10 +21,12 @@ public class PageValidator {
   }
 
   boolean validate(PageValidationRequest request) {
-    return factory.select(pageTable.id.count())
-        .from(pageTable)
-        .where(pageTable.templateNm.toLowerCase().eq(request.name().toLowerCase()))
-        .fetchFirst() == 0;
+    return factory
+            .select(pageTable.id.count())
+            .from(pageTable)
+            .where(pageTable.templateNm.toLowerCase().eq(request.name().toLowerCase()))
+            .fetchFirst()
+        == 0;
   }
 
   void validate(PageCreateRequest request) {
@@ -53,13 +55,15 @@ public class PageValidator {
   }
 
   void validateMmg(String code) {
-    boolean exists = factory.select(codeValueGeneral.id.code.count())
-        .from(codeValueGeneral)
-        .where(codeValueGeneral.id.code.equalsIgnoreCase(code))
-        .fetchFirst() == 1;
+    boolean exists =
+        factory
+                .select(codeValueGeneral.id.code.count())
+                .from(codeValueGeneral)
+                .where(codeValueGeneral.id.code.equalsIgnoreCase(code))
+                .fetchFirst()
+            == 1;
     if (!exists) {
       throw new PageCreateException(PageConstants.ADD_PAGE_MMG_INVALID);
     }
   }
-
 }

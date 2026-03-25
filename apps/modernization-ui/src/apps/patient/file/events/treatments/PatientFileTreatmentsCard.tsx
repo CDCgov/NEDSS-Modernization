@@ -26,7 +26,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...PROVIDER, moveable: true, toggleable: true },
     { ...TREATMENT_DATE, moveable: true, toggleable: true },
     { ...TREATMENT, moveable: true, toggleable: true },
-    { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
+    { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
 ];
 
 const columns = (onClose: () => void): Column<PatientFileTreatment>[] => [
@@ -41,10 +41,11 @@ const columns = (onClose: () => void): Column<PatientFileTreatment>[] => [
                 sizing={'small'}
                 className={styles['event-id']}
                 url={`/nbs/api/patients/${value.patient}/treatments/${value.id}`}
-                onClose={onClose}>
+                onClose={onClose}
+            >
                 {value.local}
             </ClassicModalButton>
-        )
+        ),
     },
     {
         ...DATE_RECEIVED,
@@ -52,34 +53,34 @@ const columns = (onClose: () => void): Column<PatientFileTreatment>[] => [
         sortable: true,
         value: (value) => value.createdOn,
         render: (value) => internalizeDateTime(value.createdOn),
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...PROVIDER,
         sortable: true,
         className: styles['text-header'],
-        value: (value) => displayProvider(value.provider)
+        value: (value) => displayProvider(value.provider),
     },
     {
         ...TREATMENT_DATE,
         className: styles['treatment-date-header'],
         sortable: true,
         value: (value) => value.treatedOn,
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...TREATMENT,
         sortable: true,
         value: (value) => value.description,
-        render: (value) => <strong>{value.description}</strong>
+        render: (value) => <strong>{value.description}</strong>,
     },
     {
         ...ASSOCIATED_WITH,
         sortable: true,
         className: styles['long-coded-header'],
         value: (value) => value.associations?.[0]?.local,
-        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
-    }
+        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>,
+    },
 ];
 
 type InternalCardProps = {
@@ -120,7 +121,8 @@ const PatientFileTreatmentsCard = ({ provider, ...remaining }: PatientFileTreatm
                 <LoadingOverlay>
                     <InternalCard {...remaining} onClose={handleClose} />
                 </LoadingOverlay>
-            }>
+            }
+        >
             <Await resolve={provider.get()}>
                 {(data) => <InternalCard data={data} {...remaining} onClose={handleClose} />}
             </Await>

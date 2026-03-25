@@ -8,7 +8,7 @@ const asAdministrative = (value: Partial<AdministrativeInformation>): Administra
     if (asOf) {
         return {
             asOf,
-            comment: orUndefined(comment)
+            comment: orUndefined(comment),
         };
     }
 };

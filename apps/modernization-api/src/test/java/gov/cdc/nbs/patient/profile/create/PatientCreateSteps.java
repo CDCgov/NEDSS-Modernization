@@ -5,10 +5,9 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.When;
-import org.springframework.test.web.servlet.ResultActions;
-
 import java.io.IOException;
 import java.util.Optional;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class PatientCreateSteps {
 
@@ -26,8 +25,7 @@ public class PatientCreateSteps {
       final Active<PatientIdentifier> activePatient,
       final Available<PatientIdentifier> availablePatients,
       final PatientCreateRequester requester,
-      final ObjectMapper mapper
-  ) {
+      final ObjectMapper mapper) {
     this.input = input;
     this.response = response;
     this.activePatient = activePatient;
@@ -38,11 +36,8 @@ public class PatientCreateSteps {
 
   @When("I create a patient with extended data")
   public void i_create_a_patient_with_extended_data() {
-    this.input.maybeActive()
-        .map(this.requester::create)
-        .ifPresent(this::created);
+    this.input.maybeActive().map(this.requester::create).ifPresent(this::created);
   }
-
 
   private void created(final ResultActions result) {
     this.response.active(result);
@@ -53,11 +48,9 @@ public class PatientCreateSteps {
   private Optional<PatientIdentifier> maybeCreatedPatient(final ResultActions result) {
     try {
 
-
-      CreatedPatient created = mapper.readValue(
-          result.andReturn().getResponse().getContentAsByteArray(),
-          CreatedPatient.class
-      );
+      CreatedPatient created =
+          mapper.readValue(
+              result.andReturn().getResponse().getContentAsByteArray(), CreatedPatient.class);
 
       return Optional.of(new PatientIdentifier(created.id(), created.shortId(), created.local()));
     } catch (IOException exception) {

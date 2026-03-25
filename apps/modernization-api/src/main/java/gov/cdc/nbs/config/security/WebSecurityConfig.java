@@ -18,11 +18,8 @@ class WebSecurityConfig {
   SecurityFilterChain securityFilterChain(
       final HttpSecurity http,
       final SecurityConfigurer configurer,
-      final GraphQLExceptionHandlingConfigurer graphQLConfigurer
-  )
+      final GraphQLExceptionHandlingConfigurer graphQLConfigurer)
       throws Exception {
-    return configurer.configure(http.exceptionHandling(graphQLConfigurer::configure))
-        .build();
+    return configurer.configure(http.exceptionHandling(graphQLConfigurer::configure)).build();
   }
-
 }

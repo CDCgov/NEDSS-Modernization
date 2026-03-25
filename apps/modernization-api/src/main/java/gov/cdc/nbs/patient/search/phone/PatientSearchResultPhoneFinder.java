@@ -1,14 +1,14 @@
 package gov.cdc.nbs.patient.search.phone;
 
+import java.util.Collection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
 
 @Component
 class PatientSearchResultPhoneFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
           select distinct
               [phone_number].phone_nbr_txt    as [phone_number],
               [phone_number].extension_txt    as [extension],

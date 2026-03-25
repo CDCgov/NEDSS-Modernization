@@ -4,7 +4,7 @@ import { LabReport, LabReportFilter, useFindLabReportsByFilterLazyQuery } from '
 import {
     LabReportFilterEntry,
     initial as defaultValues,
-    initialForEventId as defaultValuesForIdentification
+    initialForEventId as defaultValuesForIdentification,
 } from './labReportFormTypes';
 import { transformObject as transformer } from './transformer';
 import { laboratoryReportTermsResolver as termResolver } from './laboratoryReportTermsResolver';
@@ -23,10 +23,10 @@ const useLaboratoryReportSearch = ({ form }: Settings): SearchInteraction<LabRep
                 page: {
                     pageNumber: request.page.number - 1,
                     pageSize: request.page.size,
-                    sort: request.sort
-                }
+                    sort: request.sort,
+                },
             },
-            notifyOnNetworkStatusChange: true
+            notifyOnNetworkStatusChange: true,
         }).then((response) => {
             if (response.error) {
                 throw new Error(response.error.message);
@@ -42,7 +42,7 @@ const useLaboratoryReportSearch = ({ form }: Settings): SearchInteraction<LabRep
         defaultValues: defaultValuesResolver,
         transformer,
         resultResolver,
-        termResolver
+        termResolver,
     });
 };
 

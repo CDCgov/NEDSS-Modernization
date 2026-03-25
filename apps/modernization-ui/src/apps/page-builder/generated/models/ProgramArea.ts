@@ -8,4 +8,3 @@ export type ProgramArea = {
     nbsId?: number;
     status?: string;
 };
-

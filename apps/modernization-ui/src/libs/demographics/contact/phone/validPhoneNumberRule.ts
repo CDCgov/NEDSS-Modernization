@@ -4,9 +4,9 @@ import { validatePhoneNumber } from 'validation/phone';
 
 const validPhoneNumberRule = (name: string) => ({
     validate: {
-        properNumber: validateIfPresent((value: string) => validatePhoneNumber(value, name))
+        properNumber: validateIfPresent((value: string) => validatePhoneNumber(value, name)),
     },
-    ...maxLengthRule(20, name)
+    ...maxLengthRule(20, name),
 });
 
 export { validPhoneNumberRule };

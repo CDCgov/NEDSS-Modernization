@@ -28,7 +28,7 @@ const content: PagesResponse = {
                             order: 1,
                             questions: [],
                             isGroupable: true,
-                            questionIdentifier: 'identifier'
+                            questionIdentifier: 'identifier',
                         },
                         {
                             id: 456,
@@ -38,13 +38,13 @@ const content: PagesResponse = {
                             order: 2,
                             questions: [],
                             isGroupable: true,
-                            questionIdentifier: 'identifier'
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+                            questionIdentifier: 'identifier',
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
 };
 
 const { getByTestId } = render(

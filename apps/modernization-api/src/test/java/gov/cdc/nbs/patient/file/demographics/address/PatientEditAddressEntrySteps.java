@@ -6,7 +6,6 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
-
 import java.util.Collection;
 
 public class PatientEditAddressEntrySteps {
@@ -18,8 +17,7 @@ public class PatientEditAddressEntrySteps {
   PatientEditAddressEntrySteps(
       final Active<PatientIdentifier> activePatient,
       final Available<AddressDemographic> available,
-      final PatientAddressDemographicFinder finder
-  ) {
+      final PatientAddressDemographicFinder finder) {
     this.activePatient = activePatient;
     this.available = available;
     this.finder = finder;
@@ -27,9 +25,9 @@ public class PatientEditAddressEntrySteps {
 
   @Given("I want to change the patient's addresses")
   public void editing() {
-    this.activePatient.maybeActive()
-        .map(patient -> this.finder.find(patient.id()))
-        .stream().flatMap(Collection::stream).map(this::from)
+    this.activePatient.maybeActive().map(patient -> this.finder.find(patient.id())).stream()
+        .flatMap(Collection::stream)
+        .map(this::from)
         .forEach(this.available::available);
   }
 
@@ -47,7 +45,6 @@ public class PatientEditAddressEntrySteps {
         Selectable.maybeValue(incoming.county()).orElse(null),
         incoming.censusTract(),
         Selectable.maybeValue(incoming.country()).orElse(null),
-        incoming.comment()
-    );
+        incoming.comment());
   }
 }

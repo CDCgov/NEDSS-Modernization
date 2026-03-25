@@ -29,7 +29,7 @@ export const ViewValueset = ({
     onEditDetails,
     onAddConcept,
     onEditConcept,
-    onSort
+    onSort,
 }: Props) => {
     return (
         <>

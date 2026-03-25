@@ -1,11 +1,11 @@
 package gov.cdc.nbs.questionbank.condition;
 
-import org.springframework.stereotype.Service;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionBadRequest;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionInternalServerError;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
 import gov.cdc.nbs.questionbank.condition.response.ConditionStatusResponse;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ConditionStatus {

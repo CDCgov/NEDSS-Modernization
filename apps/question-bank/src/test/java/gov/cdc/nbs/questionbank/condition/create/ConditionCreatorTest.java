@@ -1,5 +1,9 @@
 package gov.cdc.nbs.questionbank.condition.create;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
+
 import gov.cdc.nbs.questionbank.condition.ConditionCreator;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionCreateException;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
@@ -8,6 +12,13 @@ import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.exception.NullObjectException;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,40 +27,24 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
-
-
 @ExtendWith(MockitoExtension.class)
 class ConditionCreatorTest {
 
-  @Mock
-  ConditionCodeRepository conditionCodeRepository;
+  @Mock ConditionCodeRepository conditionCodeRepository;
 
-  @Mock
-  LdfPageSetRepository ldfPageSetRepository;
+  @Mock LdfPageSetRepository ldfPageSetRepository;
 
-  @Spy
-  Clock clock = Clock.fixed(Instant.parse("2024-01-09T02:03:04Z"), ZoneId.of("UTC"));
+  @Spy Clock clock = Clock.fixed(Instant.parse("2024-01-09T02:03:04Z"), ZoneId.of("UTC"));
 
-  @InjectMocks
-  ConditionCreator conditionCreator;
+  @InjectMocks ConditionCreator conditionCreator;
 
   private static final long USER_ID = 1L;
 
   @Test
   void createConditionTest() {
     CreateConditionRequest request = getCreateConditionRequest();
-    ConditionCode conditionDb = new ConditionCode(conditionCreator.conditionAdd(request, USER_ID, 123));
+    ConditionCode conditionDb =
+        new ConditionCode(conditionCreator.conditionAdd(request, USER_ID, 123));
     when(conditionCodeRepository.save(Mockito.any(ConditionCode.class))).thenReturn(conditionDb);
     when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn(0L);
     when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(0L);
@@ -61,108 +56,59 @@ class ConditionCreatorTest {
   void requireNonNullCode() {
     CreateConditionRequest request =
         new CreateConditionRequest(
-            null,
-            "null",
-            "null",
-            "null",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null);
-    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
+            null, "null", "null", "null", null, null, null, null, null, null);
+    assertThrows(
+        NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
   void requireNonNullCodeSystem() {
     CreateConditionRequest request =
         new CreateConditionRequest(
-            "null",
-            null,
-            "null",
-            "null",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null);
+            "null", null, "null", "null", null, null, null, null, null, null);
 
-    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
+    assertThrows(
+        NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
   void requireNonNullName() {
     CreateConditionRequest request =
         new CreateConditionRequest(
-            "null",
-            "null",
-            null,
-            "null",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null);
+            "null", "null", null, "null", null, null, null, null, null, null);
 
-    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
+    assertThrows(
+        NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
   void requireNonNullProgramArea() {
     CreateConditionRequest request =
         new CreateConditionRequest(
-            "null",
-            "null",
-            "null",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null);
+            "null", "null", "null", null, null, null, null, null, null, null);
 
-    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
+    assertThrows(
+        NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
-
 
   @Test
   void createIdExistsTest() {
     CreateConditionRequest request =
         new CreateConditionRequest(
-            "1L",
-            "null",
-            "null",
-            "null",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null);
+            "1L", "null", "null", "null", null, null, null, null, null, null);
     when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn((1L));
-    assertThrows(ConditionCreateException.class, () -> conditionCreator.createCondition(request, USER_ID));
+    assertThrows(
+        ConditionCreateException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
   void createConditionNameExistsTest() {
     CreateConditionRequest request =
         new CreateConditionRequest(
-            "null",
-            "null",
-            "condition name",
-            "null",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null);
+            "null", "null", "condition name", "null", null, null, null, null, null, null);
     when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(1L);
-    assertThrows(ConditionCreateException.class, () -> conditionCreator.createCondition(request, USER_ID));
+    assertThrows(
+        ConditionCreateException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
@@ -203,7 +149,8 @@ class ConditionCreatorTest {
   @Test
   void testGenerateNewIdWithExistingIdsContainingCurrentYear() {
     String currentYear = String.valueOf(LocalDate.now(clock).getYear());
-    List<String> existingIds = Arrays.asList(currentYear + "001", currentYear + "002", currentYear + "003");
+    List<String> existingIds =
+        Arrays.asList(currentYear + "001", currentYear + "002", currentYear + "003");
     doReturn(existingIds).when(ldfPageSetRepository).findAllIds();
     String newId = conditionCreator.getLdfId();
     String expected = currentYear + "004";
@@ -233,5 +180,4 @@ class ConditionCreatorTest {
         "family test",
         "co infection test");
   }
-
 }

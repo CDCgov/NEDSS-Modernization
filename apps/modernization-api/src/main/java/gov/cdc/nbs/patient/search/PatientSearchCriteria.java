@@ -7,12 +7,11 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
+import java.time.LocalDate;
+import java.util.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.util.*;
 
 @Getter
 @Setter
@@ -21,10 +20,7 @@ public class PatientSearchCriteria {
 
   @JsonInclude(Include.NON_NULL)
   public record Identification(
-      String identificationNumber,
-      String assigningAuthority,
-      String identificationType
-  ) {
+      String identificationNumber, String assigningAuthority, String identificationType) {
     Identification withType(final String type) {
       return new Identification(identificationNumber(), assigningAuthority(), type);
     }
@@ -34,7 +30,6 @@ public class PatientSearchCriteria {
     }
   }
 
-
   public record Filter(
       String id,
       String name,
@@ -43,8 +38,7 @@ public class PatientSearchCriteria {
       String address,
       String email,
       String phone,
-      String identification
-  ) {
+      String identification) {
     Filter withId(final String id) {
       return new Filter(id, name(), ageOrDateOfBirth(), sex(), address(), email(), null, null);
     }
@@ -58,8 +52,7 @@ public class PatientSearchCriteria {
     }
 
     Filter withSex(final String sex) {
-      return new Filter(id(), name(), ageOrDateOfBirth(), sex, address(), email(), null,
-          null);
+      return new Filter(id(), name(), ageOrDateOfBirth(), sex, address(), email(), null, null);
     }
 
     Filter withAddress(final String address) {
@@ -75,11 +68,10 @@ public class PatientSearchCriteria {
     }
 
     Filter withIdentification(final String identification) {
-      return new Filter(id(), name(), ageOrDateOfBirth(), sex(), address(), email(), phone(), identification);
+      return new Filter(
+          id(), name(), ageOrDateOfBirth(), sex(), address(), email(), phone(), identification);
     }
-
   }
-
 
   public record NameCriteria(TextCriteria first, TextCriteria last) {
 
@@ -100,7 +92,6 @@ public class PatientSearchCriteria {
     }
   }
 
-
   public record LocationCriteria(TextCriteria street, TextCriteria city) {
 
     Optional<TextCriteria> maybeStreet() {
@@ -119,7 +110,6 @@ public class PatientSearchCriteria {
       return new LocationCriteria(street(), city);
     }
   }
-
 
   private String id;
   private NameCriteria name;
@@ -156,6 +146,7 @@ public class PatientSearchCriteria {
   private Filter filter;
 
   private boolean disableSoundex;
+
   @JsonIgnore
   @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
@@ -199,7 +190,9 @@ public class PatientSearchCriteria {
   }
 
   public List<RecordStatus> adjustedStatus() {
-    return adjustedStatus == null ? List.copyOf(this.recordStatus) : List.copyOf(this.adjustedStatus);
+    return adjustedStatus == null
+        ? List.copyOf(this.recordStatus)
+        : List.copyOf(this.adjustedStatus);
   }
 
   public PatientSearchCriteria adjustStatuses(final Collection<RecordStatus> statuses) {
@@ -245,7 +238,6 @@ public class PatientSearchCriteria {
       this.filter = this.filter.withName(nameFilter);
     }
     return this;
-
   }
 
   public PatientSearchCriteria withAddressFilter(final String addressFilter) {
@@ -255,7 +247,6 @@ public class PatientSearchCriteria {
       this.filter = this.filter.withAddress(addressFilter);
     }
     return this;
-
   }
 
   public PatientSearchCriteria withEmailFilter(final String emailFilter) {
@@ -265,7 +256,6 @@ public class PatientSearchCriteria {
       this.filter = this.filter.withEmail(emailFilter);
     }
     return this;
-
   }
 
   public PatientSearchCriteria withPhoneFilter(final String phoneFilter) {
@@ -275,7 +265,6 @@ public class PatientSearchCriteria {
       this.filter = this.filter.withPhone(phoneFilter);
     }
     return this;
-
   }
 
   public PatientSearchCriteria withAgeOrDateOfBirthFilter(final String ageOrDateOfBirthFilter) {
@@ -285,7 +274,6 @@ public class PatientSearchCriteria {
       this.filter = this.filter.withAgeOrDateOfBirth(ageOrDateOfBirthFilter);
     }
     return this;
-
   }
 
   public PatientSearchCriteria withSexFilter(final String sex) {
@@ -295,7 +283,6 @@ public class PatientSearchCriteria {
       this.filter = this.filter.withSex(sex);
     }
     return this;
-
   }
 
   public PatientSearchCriteria withIdentificationFilter(final String identificationFilter) {
@@ -305,7 +292,6 @@ public class PatientSearchCriteria {
       this.filter = this.filter.withIdentification(identificationFilter);
     }
     return this;
-
   }
 
   public PatientSearchCriteria withMorbidity(final String identifier) {
@@ -326,7 +312,6 @@ public class PatientSearchCriteria {
     return Optional.ofNullable(document);
   }
 
-
   public PatientSearchCriteria withStateCase(final String identifier) {
     this.stateCase = identifier;
     return this;
@@ -335,7 +320,6 @@ public class PatientSearchCriteria {
   public Optional<String> maybeStateCase() {
     return Optional.ofNullable(stateCase);
   }
-
 
   public PatientSearchCriteria withAbcCase(final String identifier) {
     this.abcCase = identifier;
@@ -485,5 +469,4 @@ public class PatientSearchCriteria {
     }
     return this;
   }
-
 }

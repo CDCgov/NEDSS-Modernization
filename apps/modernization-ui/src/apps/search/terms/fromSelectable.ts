@@ -7,7 +7,7 @@ const fromSelectable =
         source,
         title,
         name,
-        value
+        value,
     });
 
 export { fromSelectable };

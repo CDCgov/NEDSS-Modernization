@@ -55,18 +55,18 @@ const RepeatingBlock = <V extends FieldValues>({
     isDirty,
     isValid,
     formRenderer,
-    viewRenderer
+    viewRenderer,
 }: RepeatingBlockProps<V>) => {
     const form = useForm<V>({
         mode: 'onSubmit',
         reValidateMode: 'onBlur',
-        defaultValues: resolveDefaultValues(defaultValues)
+        defaultValues: resolveDefaultValues(defaultValues),
     });
 
     const interaction = useMultiValueEntry<V>({
         values: data,
         identifierGenerator: entryIdentifierGenerator,
-        onChange
+        onChange,
     });
 
     useEffect(() => {
@@ -114,8 +114,8 @@ const RepeatingBlock = <V extends FieldValues>({
                               form={form}
                               defaultValues={defaultValues}
                           />
-                      )
-                  }
+                      ),
+                  },
               ]
             : adjustedColumns;
 
@@ -154,7 +154,8 @@ const RepeatingBlock = <V extends FieldValues>({
                         clearable={form.formState.isDirty || errorMessages.length !== 0}
                     />
                 </Shown>
-            }>
+            }
+        >
             <Shown when={errorMessages.length > 0}>
                 <AlertMessage title="Please fix the following errors:" type="error">
                     <ul className={styles.errorList}>
@@ -168,7 +169,7 @@ const RepeatingBlock = <V extends FieldValues>({
                 className={classNames(styles.table, {
                     [styles.small]: sizing === 'small',
                     [styles.medium]: sizing === 'medium',
-                    [styles.large]: sizing === 'large'
+                    [styles.large]: sizing === 'large',
                 })}
                 id={`${id}-table`}
                 columns={modifiedColumns}
@@ -213,7 +214,7 @@ const EntryActionColumn = <E extends FieldValues>({
     interaction,
     viewable,
     editable,
-    sizing
+    sizing,
 }: EntryActionColumnProps<E>) => {
     const handleRemove = (identifier: string) => {
         if (interaction.selected?.id === identifier) {
@@ -256,15 +257,16 @@ const ActionColumn = ({
     editable,
     onEdit,
     isEditing,
-    onRemove
+    onRemove,
 }: ActionColumnProps) => {
     return (
         <div
             className={classNames(styles.actions, {
                 [styles.small]: sizing === 'small',
                 [styles.medium]: sizing === 'medium',
-                [styles.large]: sizing === 'large'
-            })}>
+                [styles.large]: sizing === 'large',
+            })}
+        >
             <Shown when={viewable}>
                 <Tooltip message="View">
                     {(id) => (
@@ -326,7 +328,7 @@ const EditFooter = <E extends FieldValues>({
     title,
     clearable,
     defaultValues,
-    sizing
+    sizing,
 }: EditFooterProps<E>) => {
     const handleClear = () => {
         form.reset(resolveDefaultValues(defaultValues));
@@ -350,8 +352,9 @@ const EditFooter = <E extends FieldValues>({
             className={classNames(styles.controls, {
                 [styles.small]: sizing === 'small',
                 [styles.medium]: sizing === 'medium',
-                [styles.large]: sizing === 'large'
-            })}>
+                [styles.large]: sizing === 'large',
+            })}
+        >
             <Shown when={interaction.status === 'adding'}>
                 <Button secondary icon="add" sizing={sizing} onClick={form.handleSubmit(handleAdd)}>
                     {`Add ${title.toLowerCase()}`}
@@ -362,7 +365,8 @@ const EditFooter = <E extends FieldValues>({
                         sizing={sizing}
                         aria-description={`clear the pending values for ${title}`}
                         onClick={handleClear}
-                        onMouseDown={(e) => e.preventDefault()}>
+                        onMouseDown={(e) => e.preventDefault()}
+                    >
                         Clear
                     </Button>
                 </Shown>
@@ -375,7 +379,8 @@ const EditFooter = <E extends FieldValues>({
                     secondary
                     sizing={sizing}
                     aria-description={`cancel editing current ${title}`}
-                    onClick={interaction.reset}>
+                    onClick={interaction.reset}
+                >
                     Cancel
                 </Button>
             </Shown>

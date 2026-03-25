@@ -34,7 +34,7 @@ const asData = <V>(next: Lookup<Entry<V>>) =>
             return {
                 lookup: existing.lookup,
                 values: [...existing.values, entry.value],
-                entries: [...existing.entries, entry]
+                entries: [...existing.entries, entry],
             };
         },
         { values: [], entries: [], lookup: next } as Data<V>
@@ -56,7 +56,7 @@ const initialize =
                     status: existing.status,
                     values,
                     entries: [...existing.entries, entry],
-                    lookup: { ...existing.lookup, [id]: entry }
+                    lookup: { ...existing.lookup, [id]: entry },
                 };
             },
             { status: 'adding', values: [...values], entries: [], lookup: {} } as Waiting<V>
@@ -173,7 +173,7 @@ type MultiValueEntrySettings<V> = {
 const useMultiValueEntry = <E>({
     values,
     identifierGenerator,
-    onChange
+    onChange,
 }: MultiValueEntrySettings<E>): MultiValueEntryInteraction<E> => {
     const [state, dispatch] = useReducer(
         reducer<E>(identifierGenerator, onChange),
@@ -206,7 +206,7 @@ const useMultiValueEntry = <E>({
         update,
         remove,
         view,
-        reset
+        reset,
     };
 };
 

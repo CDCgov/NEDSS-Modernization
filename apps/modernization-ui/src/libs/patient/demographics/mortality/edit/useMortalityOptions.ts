@@ -11,7 +11,7 @@ const useMortalityOptions = (): MoralityOptions => {
 
     return {
         deceased: indicators,
-        location
+        location,
     };
 };
 

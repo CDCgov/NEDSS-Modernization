@@ -12,7 +12,7 @@ type AdministrativeInformationFieldsProps = {
 const AdministrativeInformationFields = ({
     form,
     sizing,
-    orientation = 'horizontal'
+    orientation = 'horizontal',
 }: AdministrativeInformationFieldsProps) => (
     <>
         <Controller

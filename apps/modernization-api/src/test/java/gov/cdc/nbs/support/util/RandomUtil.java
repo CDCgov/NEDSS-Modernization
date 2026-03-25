@@ -16,12 +16,14 @@ public class RandomUtil {
     LOGGER.log(System.Logger.Level.INFO, "Random data generated with seed: %d", randomSeed);
   }
 
-
   public static String getRandomNumericString(int length) {
     int leftLimit = 48; // 0
     int rightLimit = 57; // 9
-    return RANDOM.ints(leftLimit, rightLimit + 1).limit(length)
-        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+    return RANDOM
+        .ints(leftLimit, rightLimit + 1)
+        .limit(length)
+        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+        .toString();
   }
 
   public static String randomPartialDataSearchString(String data) {
@@ -42,9 +44,7 @@ public class RandomUtil {
   public static <T> T maybeOneFrom(T... values) {
     int flip = RANDOM.nextInt(2);
 
-    return (flip == 0)
-        ? oneFrom(values)
-        : null;
+    return (flip == 0) ? oneFrom(values) : null;
   }
 
   public static LocalDate dateInPast() {
@@ -53,6 +53,5 @@ public class RandomUtil {
 
     long day = RANDOM.nextLong(min, max);
     return LocalDate.ofEpochDay(day);
-
   }
 }

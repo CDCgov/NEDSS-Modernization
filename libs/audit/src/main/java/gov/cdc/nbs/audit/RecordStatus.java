@@ -2,7 +2,6 @@ package gov.cdc.nbs.audit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
 import java.time.LocalDateTime;
 import java.util.function.Predicate;
 
@@ -20,7 +19,6 @@ public class RecordStatus {
 
   @Column(name = "record_status_time")
   private LocalDateTime appliedOn;
-
 
   public RecordStatus() {
     this.status = ACTIVE_STATUS;
@@ -51,5 +49,4 @@ public class RecordStatus {
   public LocalDateTime appliedOn() {
     return appliedOn;
   }
-
 }

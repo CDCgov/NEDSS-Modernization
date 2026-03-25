@@ -31,7 +31,7 @@ const AutocompleteMulti = ({
     disabled = false,
     asValue = asSelectableValue,
     asDisplay = asSelectableDisplay,
-    resolver
+    resolver,
 }: AutocompleteMultiProps) => {
     const [searchText, setSearchText] = useState('');
     const [selected, setSelected] = useState<Selectable[]>(value);
@@ -58,7 +58,8 @@ const AutocompleteMulti = ({
             label={label}
             htmlFor={id}
             required={required}
-            error={error}>
+            error={error}
+        >
             <AsyncSelect<Selectable, true>
                 theme={theme}
                 styles={styles}

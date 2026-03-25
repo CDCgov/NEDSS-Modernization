@@ -6,7 +6,7 @@ const routing: RouteObject[] = [
         path: '/patient/:id',
         lazy: {
             loader: async () => (await import('./loader')).loader,
-            Component: async () => (await import('./GuardedPatientFile')).GuardedPatientFile
+            Component: async () => (await import('./GuardedPatientFile')).GuardedPatientFile,
         },
         errorElement: <RedirectHome />,
         children: [
@@ -14,29 +14,29 @@ const routing: RouteObject[] = [
             {
                 path: 'summary',
                 lazy: {
-                    Component: async () => (await import('./summary/PatientFileSummary')).PatientFileSummary
-                }
+                    Component: async () => (await import('./summary/PatientFileSummary')).PatientFileSummary,
+                },
             },
             {
                 path: 'events',
                 lazy: {
-                    Component: async () => (await import('./events')).PatientFileEvents
-                }
+                    Component: async () => (await import('./events')).PatientFileEvents,
+                },
             },
             {
                 path: 'demographics',
                 lazy: {
-                    Component: async () => (await import('./demographics')).PatientFileDemographics
-                }
+                    Component: async () => (await import('./demographics')).PatientFileDemographics,
+                },
             },
             {
                 path: 'edit',
                 lazy: {
-                    Component: async () => (await import('./edit')).GuardedPatientFileEdit
-                }
-            }
-        ]
-    }
+                    Component: async () => (await import('./edit')).GuardedPatientFileEdit,
+                },
+            },
+        ],
+    },
 ];
 
 export { routing };

@@ -23,7 +23,8 @@ const TextAreaField = ({
             required={required}
             error={error}
             warning={warning}
-            helperText={helperText}>
+            helperText={helperText}
+        >
             <TextArea id={id} required={required} {...remaining} />
         </Field>
     );

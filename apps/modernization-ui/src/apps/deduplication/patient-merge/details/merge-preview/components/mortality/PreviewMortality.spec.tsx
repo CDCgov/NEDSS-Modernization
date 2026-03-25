@@ -32,7 +32,7 @@ const mockMergeCandidates: MergeCandidate[] = [
             deathCity: '',
             deathState: '',
             deathCounty: '',
-            deathCountry: ''
+            deathCountry: '',
         },
         general: {},
         investigations: [],
@@ -60,10 +60,10 @@ const mockMergeCandidates: MergeCandidate[] = [
             educationLevel: '',
             primaryLanguage: 'Latin',
             speaksEnglish: '',
-            stateHivCaseId: '1234-HIV'
+            stateHivCaseId: '1234-HIV',
         },
         investigations: [],
-    }
+    },
 ];
 
 const mergeFormData: PatientMergeForm = {
@@ -77,11 +77,11 @@ const mergeFormData: PatientMergeForm = {
         deathCity: '',
         deathState: '',
         deathCounty: '',
-        deathCountry: ''
+        deathCountry: '',
     },
     generalInfo: {
         stateHivCaseId: '1',
-        primaryLanguage: '2'
+        primaryLanguage: '2',
     },
     names: [
         {

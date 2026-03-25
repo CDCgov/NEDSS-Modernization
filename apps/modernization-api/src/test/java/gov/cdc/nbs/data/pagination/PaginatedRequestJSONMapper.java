@@ -15,18 +15,17 @@ public class PaginatedRequestJSONMapper {
     this.mapper = mapper;
   }
 
-  public JsonNode map(
-      final Pageable paging,
-      final SortCriteria sorting
-  ) {
-    JsonNode sort = mapper.createObjectNode()
-        .put("property", sorting.field())
-        .put("direction", sorting.direction().name());
+  public JsonNode map(final Pageable paging, final SortCriteria sorting) {
+    JsonNode sort =
+        mapper
+            .createObjectNode()
+            .put("property", sorting.field())
+            .put("direction", sorting.direction().name());
 
-    return mapper.createObjectNode()
+    return mapper
+        .createObjectNode()
         .put("pageNumber", paging.getPageNumber())
         .put("pageSize", paging.getPageSize())
         .set("sort", sort);
   }
-
 }

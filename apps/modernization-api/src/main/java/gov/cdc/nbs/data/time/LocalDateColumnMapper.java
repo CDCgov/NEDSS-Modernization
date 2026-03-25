@@ -18,8 +18,5 @@ public class LocalDateColumnMapper {
     }
   }
 
-  private LocalDateColumnMapper() {
-
-  }
-
+  private LocalDateColumnMapper() {}
 }

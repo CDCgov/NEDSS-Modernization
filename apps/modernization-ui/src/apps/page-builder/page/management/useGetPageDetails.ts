@@ -53,7 +53,7 @@ export const useGetPageDetails = (): Interaction => {
     useEffect(() => {
         if (state.status === 'fetching' || state.status === 'refreshing') {
             PagesService.details({
-                id: state.page
+                id: state.page,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
@@ -71,7 +71,8 @@ export const useGetPageDetails = (): Interaction => {
         loading: state.status === 'fetching' || state.status === 'refreshing',
         page: state.status === 'complete' || state.status === 'refreshing' ? state.details : undefined,
         fetch: (page: number) => dispatch({ type: 'fetch', page }),
-        refresh: () => (state.status === 'complete' ? dispatch({ type: 'refresh', details: state.details }) : undefined)
+        refresh: () =>
+            state.status === 'complete' ? dispatch({ type: 'refresh', details: state.details }) : undefined,
     };
 
     return value;

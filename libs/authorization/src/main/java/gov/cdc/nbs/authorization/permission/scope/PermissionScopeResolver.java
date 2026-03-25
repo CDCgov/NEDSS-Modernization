@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class PermissionScopeResolver {
 
-
   private final PermissionScopeFinder finder;
 
   public PermissionScopeResolver(final PermissionScopeFinder finder) {
@@ -17,10 +16,6 @@ public class PermissionScopeResolver {
   public PermissionScope resolve(final Permission permission) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-    return this.finder.find(username, permission)
-        .orElse(PermissionScope.none());
+    return this.finder.find(username, permission).orElse(PermissionScope.none());
   }
-
-
-
 }

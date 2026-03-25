@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -15,8 +17,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @Transactional
 public class HyperLinkSteps {
@@ -38,8 +38,7 @@ public class HyperLinkSteps {
       final StaticRequest request,
       final ObjectMapper mapper,
       final PageMother mother,
-      final ExceptionHolder exceptionHolder
-  ) {
+      final ExceptionHolder exceptionHolder) {
     this.request = request;
     this.mapper = mapper;
     this.mother = mother;
@@ -51,32 +50,26 @@ public class HyperLinkSteps {
     updateRequest.active(new UpdateStaticRequests.UpdateHyperlink(null, null, null));
   }
 
-
   @Given("I create a hyperlink request with {string} and {string}")
   public void i_create_a_hyperlink_request(String label, String link) {
     WaTemplate temp = mother.one();
-    WaUiMetadata subsection = temp.getUiMetadata().stream()
-        .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
-        .findFirst()
-        .orElseThrow();
+    WaUiMetadata subsection =
+        temp.getUiMetadata().stream()
+            .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
+            .findFirst()
+            .orElseThrow();
 
     currPage.active(temp);
 
     jsonRequestBody.active(
-        new StaticContentRequests.AddHyperlink(
-            label,
-            link,
-            null,
-            subsection.getId()));
-
+        new StaticContentRequests.AddHyperlink(label, link, null, subsection.getId()));
   }
 
   @When("I send a hyperlink request")
   public void i_send_a_hyperlink_request() {
     try {
-      this.response.active(request.hyperlinkRequest(
-          currPage.active().getId(),
-          this.jsonRequestBody.active()));
+      this.response.active(
+          request.hyperlinkRequest(currPage.active().getId(), this.jsonRequestBody.active()));
     } catch (Exception e) {
       exceptionHolder.setException(e);
     }
@@ -86,11 +79,14 @@ public class HyperLinkSteps {
   public void i_update_a_hyperlink_of(String key, String value) {
     switch (key) {
       case ("label") ->
-          this.updateRequest.active(UpdateStaticRequestHelper.withLabel(this.updateRequest.active(), value));
+          this.updateRequest.active(
+              UpdateStaticRequestHelper.withLabel(this.updateRequest.active(), value));
       case ("link") ->
-          this.updateRequest.active(UpdateStaticRequestHelper.withLink(this.updateRequest.active(), value));
+          this.updateRequest.active(
+              UpdateStaticRequestHelper.withLink(this.updateRequest.active(), value));
       case ("adminComments") ->
-          this.updateRequest.active(UpdateStaticRequestHelper.withHyperlinkAdmin(this.updateRequest.active(), value));
+          this.updateRequest.active(
+              UpdateStaticRequestHelper.withHyperlinkAdmin(this.updateRequest.active(), value));
       default -> throw new IllegalStateException("Unknown hyperlink property: " + key);
     }
   }
@@ -101,8 +97,8 @@ public class HyperLinkSteps {
     AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
 
     this.updateResponse.active(
-        request.updateHyperlinkRequest(updateRequest.active(), currPage.active().getId(),
-            staticResponse.componentId()));
+        request.updateHyperlinkRequest(
+            updateRequest.active(), currPage.active().getId(), staticResponse.componentId()));
   }
 
   @Then("the hyperlink should have {string} of {string}")
@@ -110,7 +106,8 @@ public class HyperLinkSteps {
     switch (key) {
       case "label" -> this.updateResponse.active().andExpect(jsonPath("$.label").value(value));
       case "link" -> this.updateResponse.active().andExpect(jsonPath("$.linkUrl").value(value));
-      case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").value(value));
+      case "adminComments" ->
+          this.updateResponse.active().andExpect(jsonPath("$.adminComments").value(value));
       default -> throw new IllegalStateException("Unknown hyperlink property: " + key);
     }
   }
@@ -118,8 +115,7 @@ public class HyperLinkSteps {
   @Then("a hyperlink is created")
   public void a_hyperlink_is_created() {
     try {
-      this.response.active()
-          .andExpect(jsonPath("$.componentId").isNumber());
+      this.response.active().andExpect(jsonPath("$.componentId").isNumber());
     } catch (Exception e) {
       exceptionHolder.setException(e);
     }

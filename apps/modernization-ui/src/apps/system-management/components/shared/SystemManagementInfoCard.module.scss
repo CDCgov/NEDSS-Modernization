@@ -1,15 +1,15 @@
 .card {
-  min-width: 14rem;
+    min-width: 14rem;
 }
 
 .sectionContent {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-  font-size: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    font-size: 0.875rem;
 
-  a {
-    cursor: pointer;
-  }
+    a {
+        cursor: pointer;
+    }
 }

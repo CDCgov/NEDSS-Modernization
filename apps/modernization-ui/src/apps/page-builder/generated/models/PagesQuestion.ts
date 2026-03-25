@@ -40,4 +40,3 @@ export type PagesQuestion = {
     componentName?: string;
     classCode?: string;
 };
-

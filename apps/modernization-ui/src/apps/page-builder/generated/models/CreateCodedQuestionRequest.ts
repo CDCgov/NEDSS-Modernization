@@ -25,4 +25,3 @@ export namespace CreateCodedQuestionRequest {
         PHIN = 'PHIN',
     }
 }
-

@@ -13,4 +13,3 @@ export type PagesResponse = {
     tabs?: Array<PagesTab>;
     rules?: Array<BusinessRule>;
 };
-

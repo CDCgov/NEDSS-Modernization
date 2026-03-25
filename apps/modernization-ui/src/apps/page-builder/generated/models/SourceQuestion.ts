@@ -7,4 +7,3 @@ export type SourceQuestion = {
     label?: string;
     codeSetName?: string;
 };
-

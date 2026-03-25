@@ -1,8 +1,8 @@
 package gov.cdc.nbs.search;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 class WildCardsTest {
 
@@ -12,7 +12,6 @@ class WildCardsTest {
     String actual = WildCards.startsWith("value");
 
     assertThat(actual).endsWith("*");
-
   }
 
   @Test
@@ -35,7 +34,6 @@ class WildCardsTest {
     String actual = WildCards.contains("value");
 
     assertThat(actual).startsWith("*").endsWith("*");
-
   }
 
   @Test
@@ -58,5 +56,4 @@ class WildCardsTest {
 
     assertThat(actual).isEqualTo("value\\**");
   }
-
 }

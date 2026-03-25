@@ -14,5 +14,4 @@ class RedirectionConfiguration {
       @Value("${nbs.redirect.default:/search}") final String defaultPath) {
     return new DefaultRedirectionPath(defaultPath);
   }
-
 }

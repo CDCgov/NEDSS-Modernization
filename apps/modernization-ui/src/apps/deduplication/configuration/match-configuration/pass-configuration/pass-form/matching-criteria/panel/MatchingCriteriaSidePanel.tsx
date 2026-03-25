@@ -45,7 +45,8 @@ export const MatchingCriteriaSidePanel = ({ visible, dataElements, onAccept, onC
                         Add attribute(s)
                     </Button>
                 </>
-            }>
+            }
+        >
             <div className={styles.matchingCriteriaPanel}>
                 {MatchingAttributeLabelsList.filter((a) => a[1].isActive(dataElements)).map(([attribute, entry]) => (
                     <AttributeEntry

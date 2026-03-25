@@ -5,8 +5,8 @@ import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 
 const mergeCandidates: Partial<MergeCandidate>[] = [
     {
-        sexAndBirth: {}
-    }
+        sexAndBirth: {},
+    },
 ];
 const Fixture = () => {
     const form = useForm();

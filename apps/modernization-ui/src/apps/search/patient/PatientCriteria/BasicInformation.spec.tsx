@@ -9,13 +9,13 @@ import { error } from 'console';
 const mockAllows = vi.fn();
 
 vi.mock('libs/permission/usePermissions', () => ({
-    usePermissions: () => ({ permissions: [], allows: mockAllows })
+    usePermissions: () => ({ permissions: [], allows: mockAllows }),
 }));
 
 const Fixture = () => {
     const form = useForm<PatientCriteriaEntry>({
         mode: 'onChange',
-        defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] }
+        defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] },
     });
 
     return (

@@ -1,10 +1,9 @@
 package gov.cdc.nbs.search.redirect.simple;
 
 import gov.cdc.nbs.encryption.EncryptionService;
-import org.springframework.stereotype.Component;
-
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 class SimpleSearchResolver {
@@ -22,7 +21,8 @@ class SimpleSearchResolver {
   }
 
   private Optional<SimpleSearch> maybePatient(final Map<String, String> criteria) {
-    return patientSearchCriteriaResolver.resolve(criteria)
+    return patientSearchCriteriaResolver
+        .resolve(criteria)
         .map(encryptionService::encrypt)
         .map(encrypted -> new SimpleSearch("patients", encrypted));
   }

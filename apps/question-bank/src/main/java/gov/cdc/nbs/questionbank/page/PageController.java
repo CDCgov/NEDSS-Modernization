@@ -1,6 +1,13 @@
 package gov.cdc.nbs.questionbank.page;
 
-
+import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.page.model.PageHistory;
+import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
+import gov.cdc.nbs.questionbank.page.request.PageValidationRequest;
+import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
+import gov.cdc.nbs.questionbank.page.response.PageDeleteResponse;
+import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
+import gov.cdc.nbs.questionbank.page.service.PageHistoryFinder;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,14 +21,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.page.model.PageHistory;
-import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
-import gov.cdc.nbs.questionbank.page.request.PageValidationRequest;
-import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
-import gov.cdc.nbs.questionbank.page.response.PageDeleteResponse;
-import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
-import gov.cdc.nbs.questionbank.page.service.PageHistoryFinder;
 
 @RestController
 @RequestMapping("/api/v1/pages")
@@ -62,7 +61,8 @@ public class PageController {
   }
 
   @GetMapping("{id}/page-history")
-  public Page<PageHistory> getPageHistory(@PathVariable("id") Long pageId,
+  public Page<PageHistory> getPageHistory(
+      @PathVariable("id") Long pageId,
       @ParameterObject @PageableDefault(size = 25) Pageable pageable) {
     return pageHistoryFinder.getPageHistory(pageId, pageable);
   }
@@ -76,5 +76,4 @@ public class PageController {
   public Boolean validatePageRequest(@RequestBody PageValidationRequest request) {
     return validator.validate(request);
   }
-
 }

@@ -41,18 +41,18 @@ export enum MatchingAttribute {
     PERSON_NUMBER = 'IDENTIFIER:PN',
     SOCIAL_SECURITY = 'IDENTIFIER:SS',
     VISA_PASSPORT = 'IDENTIFIER:VS',
-    WIC_IDENTIFIER = 'IDENTIFIER:WC'
+    WIC_IDENTIFIER = 'IDENTIFIER:WC',
 }
 
 export enum MatchMethod {
     NONE = '',
     EXACT = 'EXACT',
-    JAROWINKLER = 'JAROWINKLER'
+    JAROWINKLER = 'JAROWINKLER',
 }
 
 export const matchMethodLabelMap = new Map<MatchMethod, string>([
     [MatchMethod.EXACT, 'Exact'],
-    [MatchMethod.JAROWINKLER, 'JaroWinkler']
+    [MatchMethod.JAROWINKLER, 'JaroWinkler'],
 ]);
 
 export enum BlockingAttribute {
@@ -64,5 +64,5 @@ export enum BlockingAttribute {
     ZIP = 'ZIP',
     EMAIL = 'EMAIL',
     PHONE = 'PHONE',
-    IDENTIFIER = 'IDENTIFIER'
+    IDENTIFIER = 'IDENTIFIER',
 }

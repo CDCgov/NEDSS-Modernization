@@ -20,7 +20,7 @@ const mockInteraction: FilterInteraction = {
     clearAll: vi.fn(),
     reset: vi.fn(),
     add: mockAdd,
-    pendingFilter: { 'applying-value': 't' }
+    pendingFilter: { 'applying-value': 't' },
 };
 
 const Fixture = ({ id, type = 'text' }: { id: string; type?: FilterType }) => {

@@ -17,5 +17,4 @@ class SupportConfiguration {
   <I> Available<I> available() {
     return new Available<>();
   }
-
 }

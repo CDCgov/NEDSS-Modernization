@@ -20,7 +20,7 @@ const unGroupedSubsection: PagesSubSection = {
     isGroupable: true,
     questionIdentifier: 'TSTSBSCTN',
     blockName: undefined,
-    questions: [{ id: 2, name: 'test Question', order: 24, isPublished: false }]
+    questions: [{ id: 2, name: 'test Question', order: 24, isPublished: false }],
 };
 
 const groupedSubsection: PagesSubSection = {
@@ -32,7 +32,7 @@ const groupedSubsection: PagesSubSection = {
     isGroupable: false,
     questionIdentifier: 'TSTSBSCTN',
     blockName: 'BLOCK_NAME',
-    questions: [{ id: 2, name: 'test Question', order: 24, isPublished: false }]
+    questions: [{ id: 2, name: 'test Question', order: 24, isPublished: false }],
 };
 
 describe('Subsection header', () => {
@@ -40,7 +40,7 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Draft'
+            status: 'Draft',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
@@ -67,7 +67,7 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published with Draft'
+            status: 'Published with Draft',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
@@ -93,7 +93,7 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published'
+            status: 'Published',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
@@ -119,7 +119,7 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published with Draft'
+            status: 'Published with Draft',
         };
 
         const subsectionWithPublishedQuestion: PagesSubSection = {
@@ -131,7 +131,7 @@ describe('Subsection header', () => {
             isGroupable: true,
             questionIdentifier: 'TSTSBSCTN',
             blockName: 'BLOCK_NAME',
-            questions: [{ id: 2, name: 'test Question', order: 24, isPublished: true }]
+            questions: [{ id: 2, name: 'test Question', order: 24, isPublished: true }],
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
@@ -157,7 +157,7 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published'
+            status: 'Published',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
@@ -183,7 +183,7 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Draft'
+            status: 'Draft',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
@@ -209,7 +209,7 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published with Draft'
+            status: 'Published with Draft',
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>
@@ -235,7 +235,7 @@ describe('Subsection header', () => {
         const page: PagesResponse = {
             id: 12039120,
             name: 'Test Page',
-            status: 'Published with Draft'
+            status: 'Published with Draft',
         };
 
         const subsectionWithPublishedQuestion: PagesSubSection = {
@@ -247,7 +247,7 @@ describe('Subsection header', () => {
             isGroupable: true,
             questionIdentifier: 'TSTSBSCTN',
             blockName: 'BLOCK_NAME',
-            questions: [{ id: 2, name: 'test Question', order: 24, isPublished: true }]
+            questions: [{ id: 2, name: 'test Question', order: 24, isPublished: true }],
         };
         const { queryByText, getByRole } = render(
             <AlertProvider>

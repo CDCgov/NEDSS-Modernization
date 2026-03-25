@@ -10,7 +10,7 @@ import {
     asSex,
     asBirth,
     asMortality,
-    asGeneral
+    asGeneral,
 } from 'apps/patient/data';
 import { ExtendedNewPatientEntry } from './entry';
 
@@ -54,7 +54,7 @@ const transformer: Transformer<ExtendedNewPatientEntry> = (entry: ExtendedNewPat
         gender,
         birth,
         mortality,
-        general
+        general,
     };
 };
 

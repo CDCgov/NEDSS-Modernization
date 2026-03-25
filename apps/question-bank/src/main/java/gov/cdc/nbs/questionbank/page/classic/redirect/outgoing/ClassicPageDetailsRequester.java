@@ -13,25 +13,21 @@ public class ClassicPageDetailsRequester {
 
   private final RestTemplate template;
 
-
-  public ClassicPageDetailsRequester(
-      @Qualifier("classicTemplate") final RestTemplate template) {
+  public ClassicPageDetailsRequester(@Qualifier("classicTemplate") final RestTemplate template) {
     this.template = template;
   }
 
   public void request() {
 
-    String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("method", "viewPageDetailsLoad")
-        .queryParam("initLoad", "true")
-        .build()
-        .toUriString();
+    String pageLocation =
+        UriComponentsBuilder.fromPath(LOCATION)
+            .queryParam("method", "viewPageDetailsLoad")
+            .queryParam("initLoad", "true")
+            .build()
+            .toUriString();
 
-    RequestEntity<Void> viewPageRequest = RequestEntity
-        .get(pageLocation)
-        .build();
+    RequestEntity<Void> viewPageRequest = RequestEntity.get(pageLocation).build();
 
     this.template.exchange(viewPageRequest, Void.class);
-
   }
 }

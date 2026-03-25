@@ -32,7 +32,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                             selectable={{
                                 id: `${field.name}-${personUid}`,
                                 formValue: personUid,
-                                ...field
+                                ...field,
                             }}
                         />
                     )}
@@ -53,7 +53,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                             selectable={{
                                 id: `${field.name}-${personUid}`,
                                 formValue: personUid,
-                                ...field
+                                ...field,
                             }}
                             underlined
                         />
@@ -69,7 +69,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                             selectable={{
                                 id: `${field.name}-${personUid}`,
                                 formValue: personUid,
-                                ...field
+                                ...field,
                             }}
                             underlined
                         />
@@ -85,7 +85,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                             selectable={{
                                 id: `${field.name}-${personUid}`,
                                 formValue: personUid,
-                                ...field
+                                ...field,
                             }}
                         />
                     )}
@@ -101,7 +101,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                             selectable={{
                                 id: `${field.name}-${personUid}`,
                                 formValue: personUid,
-                                ...field
+                                ...field,
                             }}
                         />
                     )}
@@ -118,7 +118,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                             selectable={{
                                 id: `${field.name}-${personUid}`,
                                 formValue: personUid,
-                                ...field
+                                ...field,
                             }}
                         />
                     )}

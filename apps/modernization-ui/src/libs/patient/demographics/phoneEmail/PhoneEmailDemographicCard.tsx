@@ -3,7 +3,7 @@ import { SortHandler, SortingProvider } from 'libs/sorting';
 import {
     PhoneEmailDemographicRepeatingBlock,
     PhoneEmailDemographicRepeatingBlockProps,
-    columns
+    columns,
 } from './PhoneEmailDemographicRepeatingBlock';
 
 type PhoneEmailDemographicCardProps = {

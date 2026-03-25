@@ -18,16 +18,16 @@ export class SectionControllerService {
         section,
         requestBody,
     }: {
-        page: number,
-        section: number,
-        requestBody: UpdateSectionRequest,
+        page: number;
+        section: number;
+        requestBody: UpdateSectionRequest;
     }): CancelablePromise<Section> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/sections/{section}',
             path: {
-                'page': page,
-                'section': section,
+                page: page,
+                section: section,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -41,14 +41,14 @@ export class SectionControllerService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: CreateSectionRequest,
+        page: number;
+        requestBody: CreateSectionRequest;
     }): CancelablePromise<Section> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/sections/',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -58,19 +58,13 @@ export class SectionControllerService {
      * @returns any OK
      * @throws ApiError
      */
-    public static deleteSection({
-        page,
-        sectionId,
-    }: {
-        page: number,
-        sectionId: number,
-    }): CancelablePromise<any> {
+    public static deleteSection({ page, sectionId }: { page: number; sectionId: number }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/v1/pages/{page}/sections/{sectionId}',
             path: {
-                'page': page,
-                'sectionId': sectionId,
+                page: page,
+                sectionId: sectionId,
             },
         });
     }

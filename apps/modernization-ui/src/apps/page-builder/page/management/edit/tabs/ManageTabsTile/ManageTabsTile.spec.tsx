@@ -20,18 +20,18 @@ const content: PagesResponse = {
                     name: 'Section1',
                     visible: true,
                     order: 1,
-                    subSections: []
+                    subSections: [],
                 },
                 {
                     id: 5678,
                     name: 'Section2',
                     visible: true,
                     order: 2,
-                    subSections: []
-                }
-            ]
-        }
-    ]
+                    subSections: [],
+                },
+            ],
+        },
+    ],
 };
 
 const props = {
@@ -43,7 +43,7 @@ const props = {
     setSelectedForDelete: vi.fn(),
     deleteTab: vi.fn(),
     reset: vi.fn(),
-    onChangeVisibility: vi.fn()
+    onChangeVisibility: vi.fn(),
 };
 
 const { getByTestId } = render(

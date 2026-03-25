@@ -7,7 +7,7 @@ import styles from './NavBar.module.scss';
 export const NavBar = () => {
     const {
         state: { user },
-        logout
+        logout,
     } = useUser();
 
     const { title } = usePage();
@@ -34,7 +34,8 @@ export const NavBar = () => {
                                                 permissions.place.manage,
                                                 permissions.provider.manage,
                                                 permissions.organization.manage
-                                            )}>
+                                            )}
+                                        >
                                             <td>
                                                 <span> | </span>
                                             </td>
@@ -59,7 +60,8 @@ export const NavBar = () => {
                                             </td>
                                             <td className={styles.navLink}>
                                                 <a
-                                                    href={`/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true`}>
+                                                    href={`/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true`}
+                                                >
                                                     Open Investigations
                                                 </a>
                                             </td>
@@ -71,7 +73,8 @@ export const NavBar = () => {
                                                 permissions.reports.public.view,
                                                 permissions.reports.private.view,
                                                 permissions.reports.reportingFacility.view
-                                            )}>
+                                            )}
+                                        >
                                             <td>
                                                 <span> | </span>
                                             </td>
@@ -92,7 +95,8 @@ export const NavBar = () => {
                                                 'ADMINISTRATE-SYSTEM',
                                                 'ADMINISTRATE-SECURITY',
                                                 'MERGE-PATIENT'
-                                            )}>
+                                            )}
+                                        >
                                             <td className={styles.navLink}>
                                                 <span> | </span>
                                                 <a href={`/nbs/SystemAdmin.do`}>System Management</a>

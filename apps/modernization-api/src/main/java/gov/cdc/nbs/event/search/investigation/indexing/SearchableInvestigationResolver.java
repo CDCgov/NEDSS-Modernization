@@ -3,10 +3,9 @@ package gov.cdc.nbs.event.search.investigation.indexing;
 import gov.cdc.nbs.event.search.investigation.SearchableInvestigation;
 import gov.cdc.nbs.event.search.investigation.indexing.identifier.SearchableInvestigationIdentifierFinder;
 import gov.cdc.nbs.event.search.investigation.indexing.organization.SearchableInvestigationOrganizationFinder;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class SearchableInvestigationResolver {
@@ -31,11 +30,15 @@ public class SearchableInvestigationResolver {
     return this.finder.find(identifier).map(this::withLinkedInformation);
   }
 
-  private SearchableInvestigation withLinkedInformation(final SearchableInvestigation investigation) {
+  private SearchableInvestigation withLinkedInformation(
+      final SearchableInvestigation investigation) {
 
-    List<SearchableInvestigation.Person> people = this.personFinder.find(investigation.identifier());
-    List<SearchableInvestigation.Organization> organizations = this.organizationFinder.find(investigation.identifier());
-    List<SearchableInvestigation.Identifier> identifiers = this.identifierFinder.find(investigation.identifier());
+    List<SearchableInvestigation.Person> people =
+        this.personFinder.find(investigation.identifier());
+    List<SearchableInvestigation.Organization> organizations =
+        this.organizationFinder.find(investigation.identifier());
+    List<SearchableInvestigation.Identifier> identifiers =
+        this.identifierFinder.find(investigation.identifier());
 
     return new SearchableInvestigation(
         investigation.identifier(),

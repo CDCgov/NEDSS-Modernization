@@ -25,9 +25,7 @@ class SectionController {
   private final SectionUpdater updater;
 
   SectionController(
-      final SectionCreator creator,
-      final SectionDeleter deleter,
-      final SectionUpdater updater) {
+      final SectionCreator creator, final SectionDeleter deleter, final SectionUpdater updater) {
     this.creator = creator;
     this.deleter = deleter;
     this.updater = updater;
@@ -57,5 +55,4 @@ class SectionController {
       @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(page, section, request, details.getId());
   }
-
 }

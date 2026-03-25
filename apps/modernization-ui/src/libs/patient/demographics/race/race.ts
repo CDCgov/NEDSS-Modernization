@@ -14,7 +14,7 @@ const initial = (asOf: Supplier<string>): RaceDemographic => ({
     id: new Date().getTime(),
     asOf: asOf(),
     race: null,
-    detailed: []
+    detailed: [],
 });
 
 export { initial };
@@ -22,7 +22,7 @@ export { initial };
 const labels = {
     asOf: 'As of',
     race: 'Race',
-    detailed: 'Detailed race'
+    detailed: 'Detailed race',
 };
 
 export { labels };

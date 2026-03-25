@@ -18,4 +18,3 @@ export type PagePageSummary = {
     numberOfElements?: number;
     empty?: boolean;
 };
-

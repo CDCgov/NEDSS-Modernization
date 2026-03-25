@@ -9,7 +9,7 @@ describe('OperatorSelect', () => {
     const defaultProps: OperatorSelectProps = {
         id: 'operator-select',
         value: null,
-        onChange: mockOnChange
+        onChange: mockOnChange,
     };
 
     it('renders without crashing', () => {

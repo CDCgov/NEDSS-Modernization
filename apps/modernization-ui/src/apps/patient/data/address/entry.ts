@@ -30,10 +30,10 @@ const initial = (asOf: string = today()): Partial<AddressEntry> => ({
     county: undefined,
     country: {
         value: '840',
-        name: 'United States'
+        name: 'United States',
     },
     censusTract: undefined,
-    comment: ''
+    comment: '',
 });
 
 export { initial };

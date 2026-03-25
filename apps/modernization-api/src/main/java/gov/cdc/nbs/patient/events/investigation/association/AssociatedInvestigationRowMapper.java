@@ -1,21 +1,13 @@
 package gov.cdc.nbs.patient.events.investigation.association;
 
 import gov.cdc.nbs.sql.LongColumnMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 public class AssociatedInvestigationRowMapper implements RowMapper<AssociatedInvestigation> {
 
-  public record Column(
-      int identifier,
-      int local,
-      int condition,
-      int status
-  ) {
-
-  }
+  public record Column(int identifier, int local, int condition, int status) {}
 
   private final Column columns;
 
@@ -24,7 +16,8 @@ public class AssociatedInvestigationRowMapper implements RowMapper<AssociatedInv
   }
 
   @Override
-  public AssociatedInvestigation mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public AssociatedInvestigation mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
 
     Long identifier = LongColumnMapper.map(resultSet, columns.identifier());
 
@@ -33,12 +26,7 @@ public class AssociatedInvestigationRowMapper implements RowMapper<AssociatedInv
       String condition = resultSet.getString(columns.condition);
       String status = resultSet.getString(columns.status);
 
-      return new AssociatedInvestigation(
-          identifier,
-          local,
-          condition,
-          status
-      );
+      return new AssociatedInvestigation(identifier, local, condition, status);
     }
 
     return null;

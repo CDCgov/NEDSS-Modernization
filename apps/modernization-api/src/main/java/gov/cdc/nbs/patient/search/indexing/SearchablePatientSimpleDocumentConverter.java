@@ -7,12 +7,8 @@ public class SearchablePatientSimpleDocumentConverter {
 
   public static SimpleDocument convert(final SearchablePatient searchable) {
     String identifier = String.valueOf(searchable.identifier());
-    return new SimpleDocument(
-        identifier,
-        searchable
-    );
+    return new SimpleDocument(identifier, searchable);
   }
 
-  private SearchablePatientSimpleDocumentConverter() {
-  }
+  private SearchablePatientSimpleDocumentConverter() {}
 }

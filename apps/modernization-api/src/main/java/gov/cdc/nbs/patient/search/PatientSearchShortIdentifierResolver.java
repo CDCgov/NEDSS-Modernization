@@ -1,11 +1,10 @@
 package gov.cdc.nbs.patient.search;
 
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
+import java.util.OptionalLong;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-
-import java.util.OptionalLong;
 
 @Controller
 class PatientSearchShortIdentifierResolver {

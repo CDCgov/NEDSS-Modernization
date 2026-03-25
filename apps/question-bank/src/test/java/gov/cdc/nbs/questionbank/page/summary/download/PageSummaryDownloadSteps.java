@@ -1,5 +1,8 @@
 package gov.cdc.nbs.questionbank.page.summary.download;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryRequest;
@@ -9,14 +12,10 @@ import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.io.IOException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PageSummaryDownloadSteps {
 
@@ -43,14 +42,10 @@ public class PageSummaryDownloadSteps {
   public void i_download_page_summaries_as_a(final String type) throws Exception {
     switch (type.toLowerCase()) {
       case "csv":
-        response.active(requester.csv(
-            criteria.active(),
-            pageable.maybeActive().orElse(null)));
+        response.active(requester.csv(criteria.active(), pageable.maybeActive().orElse(null)));
         break;
       case "pdf":
-        response.active(requester.pdf(
-            criteria.active(),
-            pageable.maybeActive().orElse(null)));
+        response.active(requester.pdf(criteria.active(), pageable.maybeActive().orElse(null)));
         break;
       default:
         throw new IllegalArgumentException("Unsupported file type specified");
@@ -72,7 +67,6 @@ public class PageSummaryDownloadSteps {
     }
   }
 
-
   @Then("^the (.*) has the following headers:$")
   public void the_file_has_the_headers(final String type, final DataTable dataTable)
       throws IOException {
@@ -80,13 +74,11 @@ public class PageSummaryDownloadSteps {
     switch (type.toLowerCase()) {
       case "csv":
         String content = response.active().andReturn().getResponse().getContentAsString();
-        dataTable.asList()
-            .forEach(h -> assertThat(content).contains(h));
+        dataTable.asList().forEach(h -> assertThat(content).contains(h));
         break;
       case "pdf":
         String textContent = getPdfTextContent(response);
-        dataTable.asList()
-            .forEach(h -> assertThat(textContent).contains(h));
+        dataTable.asList().forEach(h -> assertThat(textContent).contains(h));
         break;
       default:
         throw new IllegalArgumentException("Unknown file type: " + type);
@@ -108,27 +100,31 @@ public class PageSummaryDownloadSteps {
       default:
         throw new IllegalArgumentException("Unknown file type: " + type);
     }
-
   }
 
   private String getPdfTextContent(Active<ResultActions> response) throws IOException {
-    PdfReader reader = new PdfReader(response.active().andReturn().getResponse().getContentAsByteArray());
+    PdfReader reader =
+        new PdfReader(response.active().andReturn().getResponse().getContentAsByteArray());
     return PdfTextExtractor.getTextFromPage(reader, 1);
   }
 
   private void validateCsvContainsAll(String contentAsString) {
     assertThat(contentAsString).isNotEmpty();
-    availablePages.all().forEach(p -> {
-      assertThat(contentAsString).contains(p.name());
-    });
+    availablePages
+        .all()
+        .forEach(
+            p -> {
+              assertThat(contentAsString).contains(p.name());
+            });
   }
 
   private void validatePdfContainsAll(Active<ResultActions> response) throws IOException {
     String textContent = getPdfTextContent(response);
-    availablePages.all().forEach(p -> {
-      assertThat(textContent).contains(p.name());
-    });
+    availablePages
+        .all()
+        .forEach(
+            p -> {
+              assertThat(textContent).contains(p.name());
+            });
   }
-
-
 }

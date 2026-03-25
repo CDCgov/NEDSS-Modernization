@@ -38,7 +38,7 @@ const DateCriteriaField = ({
     error,
     onChange,
     onBlur,
-    clearErrors
+    clearErrors,
 }: DateCriteriaFieldProps) => {
     const type = resolveInitialCriteriaType(value);
 

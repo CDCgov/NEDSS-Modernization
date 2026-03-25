@@ -1,5 +1,8 @@
 package gov.cdc.nbs.patient.search;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -7,14 +10,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 @Component
 public class PatientSearchResultFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [patient].person_uid                    as [patient],
           [patient].local_id                      as [local],
@@ -36,9 +36,8 @@ public class PatientSearchResultFinder {
 
   PatientSearchResultFinder(final JdbcTemplate template) {
     this.template = new NamedParameterJdbcTemplate(template);
-    this.mapper = new PatientSearchResultMapper(
-        new PatientSearchResultMapper.Columns(
-            1, 2, 3, 4, 5));
+    this.mapper =
+        new PatientSearchResultMapper(new PatientSearchResultMapper.Columns(1, 2, 3, 4, 5));
   }
 
   public Collection<PatientSearchResult> find(final Collection<Long> patients) {
@@ -47,12 +46,8 @@ public class PatientSearchResultFinder {
       return List.of();
     }
 
-    SqlParameterSource parameters = new MapSqlParameterSource(
-        Map.of("patients", patients));
+    SqlParameterSource parameters = new MapSqlParameterSource(Map.of("patients", patients));
 
-    return this.template.query(
-        QUERY,
-        parameters,
-        this.mapper);
+    return this.template.query(QUERY, parameters, this.mapper);
   }
 }

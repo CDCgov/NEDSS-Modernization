@@ -2,12 +2,11 @@ package gov.cdc.nbs.testing.classic;
 
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PostConstruct;
+import java.util.function.BiConsumer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.client.MockRestServiceServer;
-
-import java.util.function.BiConsumer;
 
 @Component
 @ScenarioScope
@@ -18,8 +17,7 @@ public class NBS6Server {
 
   public NBS6Server(
       @Value("${nbs.wildfly.url}") final String classicUrl,
-      @Qualifier("classicRestService") final MockRestServiceServer server
-  ) {
+      @Qualifier("classicRestService") final MockRestServiceServer server) {
     this.classicUrl = classicUrl;
     this.server = server;
   }

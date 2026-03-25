@@ -38,7 +38,7 @@ export type {
     SortIconType,
     HasValueFunction,
     HasRenderFunction,
-    Rendered
+    Rendered,
 };
 
 const isNamed = <R, C>(column: Column<R, C>): column is NamedColumn<R, C> => 'name' in column;

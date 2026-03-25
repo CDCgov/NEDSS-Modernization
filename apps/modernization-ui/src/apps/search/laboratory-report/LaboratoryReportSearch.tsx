@@ -16,7 +16,7 @@ import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 const LaboratoryReportSearch = () => {
     const form = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
         defaultValues,
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     const interaction = useLaboratoryReportSearch({ form });

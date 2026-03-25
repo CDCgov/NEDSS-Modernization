@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.file.events.investigation;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
-
 import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,8 +18,4 @@ record PatientInvestigation(
     String coInfection,
     String notification,
     DisplayableSimpleName investigator,
-    @JsonProperty(required = true) boolean comparable
-) {
-
-
-}
+    @JsonProperty(required = true) boolean comparable) {}

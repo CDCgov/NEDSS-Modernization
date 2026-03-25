@@ -1,11 +1,9 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
 import gov.cdc.nbs.maybe.MaybeLong;
-import org.springframework.stereotype.Component;
-
 import jakarta.servlet.http.HttpServletRequest;
-
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class RequestedIncomingPatientResolver {
@@ -15,7 +13,6 @@ public class RequestedIncomingPatientResolver {
 
   private final IncomingPatientFinder finder;
 
-
   public RequestedIncomingPatientResolver(final IncomingPatientFinder finder) {
     this.finder = finder;
   }
@@ -24,7 +21,6 @@ public class RequestedIncomingPatientResolver {
     return MaybeLong.from(request.getParameter(PATIENT_PARENT_ID))
         .or(() -> MaybeLong.from(request.getParameter(PATIENT_ID)))
         .flatMap(finder::find);
-
   }
 
   public Optional<IncomingPatient> from(final long identifier) {

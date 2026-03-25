@@ -17,7 +17,7 @@ export const AddEditTab = () => {
                 name="name"
                 rules={{
                     ...maxLengthRule(50),
-                    required: { value: true, message: 'Tab name is required' }
+                    required: { value: true, message: 'Tab name is required' },
                 }}
                 defaultValue={control._formValues.name}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (

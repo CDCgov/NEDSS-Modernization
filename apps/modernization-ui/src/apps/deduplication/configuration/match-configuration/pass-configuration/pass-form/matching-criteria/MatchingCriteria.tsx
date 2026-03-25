@@ -36,7 +36,8 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
             <Card
                 id="matchingCriteriaCard"
                 title="2. Matching criteria"
-                subtext="Include records that meet all these conditions">
+                subtext="Include records that meet all these conditions"
+            >
                 <div className={styles.body}>
                     <Shown
                         when={fields && fields.length > 0}
@@ -44,7 +45,8 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                             <div className={styles.noMatchingCriteriaText}>
                                 Please add matching criteria to continue.
                             </div>
-                        }>
+                        }
+                    >
                         {fields
                             .filter((f) => f !== undefined)
                             .map((entry, index) => (
@@ -66,7 +68,8 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                             onClick={onAddAttributes}
                             sizing="small"
                             disabled={disabled}
-                            className={styles.addButton}>
+                            className={styles.addButton}
+                        >
                             Add matching attribute(s)
                         </Button>
                     </div>

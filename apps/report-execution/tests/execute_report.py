@@ -8,21 +8,23 @@ from src.models import ReportSpec
 class TestExecuteReport:
     """Tests for the execute_report function."""
 
-    def test_execute_report_hello_world(self, mock_db_transaction):
+    def test_execute_report_nbs_custom(self, mock_db_transaction):
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Test Report',
-                'library_name': 'hello_world',
+                'library_name': 'nbs_custom',
                 'data_source_name': 'random_db_table_0',
                 'subset_query': 'SELECT * FROM test',
             }
         )
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-        assert result.description == 'Pass through query'
+        assert result.header == 'Custom Report For Table: random_db_table_0'
+        assert result.subheader is None
+        assert result.description is None
         assert result.content.columns == ['id', 'name']
 
         assert len(result.content.data) == 4

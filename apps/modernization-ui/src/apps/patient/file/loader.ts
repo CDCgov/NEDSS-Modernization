@@ -14,7 +14,7 @@ const loader = ({ params }: LoaderParams): Promise<PatientFileData> =>
         patient,
         summary: new MemoizedSupplier(() => summary(patient.id)),
         events: new MemoizedSupplier(() => events(patient.id)),
-        demographics: new MemoizedSupplier(() => demographics(patient.id))
+        demographics: new MemoizedSupplier(() => demographics(patient.id)),
     }));
 
 export { loader };

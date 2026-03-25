@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.data.selectable.Selectable;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
-
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -13,8 +12,4 @@ record PatientEthnicityDemographic(
     @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
     Selectable ethnicGroup,
     Selectable unknownReason,
-    Collection<Selectable> detailed
-) {
-
-
-}
+    Collection<Selectable> detailed) {}

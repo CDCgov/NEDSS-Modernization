@@ -20,7 +20,7 @@ describe('BusinessRulesLibraryTable', () => {
                 comparator: '=',
                 targetType: 'QUESTION',
                 errorMsgText: 'Type of Arbovirus = must be ( Dengue virus ) Dengue (DENV) Serotype',
-                targetValueIdentifier: [{ label: '404400' }]
+                targetValueIdentifier: [{ label: '404400' }],
             };
             const summaries = [rulesSummary];
             render(
@@ -62,7 +62,7 @@ describe('BusinessRulesLibraryTable', () => {
                 targetType: 'QUESTION' as Rule.targetType,
                 errorMsgText: 'Type of Arbovirus = must be ( Dengue virus ) Dengue (DENV) Serotype',
                 targets: [{ label: '404400' }],
-                anySourceValue: false
+                anySourceValue: false,
             };
 
             const summaries = [rulesSummary];

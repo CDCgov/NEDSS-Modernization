@@ -31,7 +31,7 @@ const mockMergeCandidates: MergeCandidate[] = [
                 extension: '',
                 email: 'harry.potter@hogwarts.uk',
                 url: '',
-                comments: ''
+                comments: '',
             },
             {
                 id: '2',
@@ -43,8 +43,8 @@ const mockMergeCandidates: MergeCandidate[] = [
                 extension: '',
                 email: 'harry.potter@hogwarts.uk',
                 url: '',
-                comments: ''
-            }
+                comments: '',
+            },
         ],
         identifications: [],
         races: [],
@@ -52,8 +52,8 @@ const mockMergeCandidates: MergeCandidate[] = [
         sexAndBirth: {},
         mortality: {},
         general: {},
-        investigations: []
-    }
+        investigations: [],
+    },
 ];
 
 const selectedPhoneEmails: PhoneEmailId[] = [{ locatorId: '1' }, { locatorId: '2' }];

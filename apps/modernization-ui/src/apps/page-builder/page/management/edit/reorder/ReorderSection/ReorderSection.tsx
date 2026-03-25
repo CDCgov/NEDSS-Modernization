@@ -37,7 +37,8 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
                         snapshot.isDragging ? styles.dragging : ''
                     }`}
                     ref={provided.innerRef}
-                    {...provided.draggableProps}>
+                    {...provided.draggableProps}
+                >
                     <div className={styles.tile}>
                         <div className={styles.toggle} onClick={() => setSubsectionsOpen(!subsectionsOpen)}>
                             {subsectionsOpen ? (
@@ -59,7 +60,8 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
                                     className={styles.droppable}
                                     {...prov.droppableProps}
                                     ref={prov.innerRef}
-                                    style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}>
+                                    style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}
+                                >
                                     {subsections
                                         ? subsections.map((subsection: any, i: number) => {
                                               return (

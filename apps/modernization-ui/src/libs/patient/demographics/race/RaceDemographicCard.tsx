@@ -3,7 +3,7 @@ import { columnSortResolver } from 'design-system/table';
 import {
     RaceDemographicRepeatingBlock,
     RaceDemographicRepeatingBlockProps,
-    columns
+    columns,
 } from './RaceDemographicRepeatingBlock';
 
 type RaceDemographicCardProps = { title?: string } & Omit<

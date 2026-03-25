@@ -5,7 +5,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
         const demographic = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' }
+            use: { value: 'use-value', name: 'use-phone-email' },
         };
 
         const actual = asPhoneEmail(demographic);
@@ -17,7 +17,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
         const demographic = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' }
+            use: { value: 'use-value', name: 'use-phone-email' },
         };
 
         const actual = asPhoneEmail(demographic);
@@ -29,7 +29,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
         const demographic = {
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
-            use: { value: 'use-value', name: 'use-name' }
+            use: { value: 'use-value', name: 'use-name' },
         };
 
         const actual = asPhoneEmail(demographic);
@@ -42,7 +42,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            countryCode: 'country-code-value'
+            countryCode: 'country-code-value',
         };
 
         const actual = asPhoneEmail(demographic);
@@ -55,7 +55,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            phoneNumber: 'phone-number-value'
+            phoneNumber: 'phone-number-value',
         };
 
         const actual = asPhoneEmail(demographic);
@@ -68,7 +68,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            extension: 'extension-value'
+            extension: 'extension-value',
         };
 
         const actual = asPhoneEmail(demographic);
@@ -81,7 +81,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            email: 'email-value'
+            email: 'email-value',
         };
 
         const actual = asPhoneEmail(demographic);
@@ -94,7 +94,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            url: 'url-value'
+            url: 'url-value',
         };
 
         const actual = asPhoneEmail(demographic);
@@ -107,7 +107,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
             asOf: '04/13/2017',
             type: { value: 'type-value', name: 'type-name' },
             use: { value: 'use-value', name: 'use-name' },
-            comment: 'comment-value'
+            comment: 'comment-value',
         };
 
         const actual = asPhoneEmail(demographic);
@@ -118,7 +118,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
     it('should not map when type is null', () => {
         const demographic = {
             asOf: '04/13/2017',
-            use: { value: 'use-value', name: 'use-value' }
+            use: { value: 'use-value', name: 'use-value' },
         };
 
         const actual = asPhoneEmail(demographic);
@@ -129,7 +129,7 @@ describe('when mapping a phone email demographic to a format accepted by the API
     it('should not map when use is null', () => {
         const demographic = {
             asOf: '04/13/2017',
-            type: { value: 'type-value', name: 'type-value' }
+            type: { value: 'type-value', name: 'type-value' },
         };
 
         const actual = asPhoneEmail(demographic);

@@ -8,23 +8,20 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(
     classes = {GatewayApplication.class, LandingServiceProvider.class},
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class DefaultLandingRouteLocatorConfigurationTest {
 
-  @Autowired
-  WebTestClient webClient;
+  @Autowired WebTestClient webClient;
 
   @Test
   void should_redirect_to_default_landing_when_landing_not_configured() {
     webClient
-        .get().uri(
-            builder -> builder
-                .path("/")
-                .build())
+        .get()
+        .uri(builder -> builder.path("/").build())
         .exchange()
-        .expectHeader().location("/nbs/login")
-        .expectStatus().is3xxRedirection();
+        .expectHeader()
+        .location("/nbs/login")
+        .expectStatus()
+        .is3xxRedirection();
   }
-
 }

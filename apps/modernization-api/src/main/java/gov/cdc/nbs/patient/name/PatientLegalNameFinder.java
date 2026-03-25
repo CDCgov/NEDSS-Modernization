@@ -2,17 +2,17 @@ package gov.cdc.nbs.patient.name;
 
 import gov.cdc.nbs.demographics.name.DisplayableName;
 import gov.cdc.nbs.demographics.name.DisplayableNameRowMapper;
+import java.time.LocalDate;
+import java.util.Optional;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
 @Component
 public class PatientLegalNameFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [use].[code_short_desc_txt] as [type],
           [name].first_nm,
@@ -20,15 +20,15 @@ public class PatientLegalNameFinder {
           [name].last_nm,
           [suffix].code_short_desc_txt
       from Person_name [name]
-      
+
       join NBS_SRTE..Code_value_general [use] on
                  [use].[code_set_nm] = 'P_NM_USE'
              and [use].[code] = [name].nm_use_cd
-      
+
           left join NBS_SRTE..Code_value_general [suffix] on
                   [suffix].[code_set_nm] = 'P_NM_SFX'
               and [suffix].[code] = [name].nm_suffix
-      
+
       where   [name].person_uid = ?
           and [name].nm_use_cd = 'L'
           and [name].record_status_cd = 'ACTIVE'
@@ -61,7 +61,8 @@ public class PatientLegalNameFinder {
   }
 
   public Optional<DisplayableName> find(final long patient, final LocalDate asOf) {
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param(patient)
         .param(asOf.atTime(23, 59, 59))
         .query(this.mapper)

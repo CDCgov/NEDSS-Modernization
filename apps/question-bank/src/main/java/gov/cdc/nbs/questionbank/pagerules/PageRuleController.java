@@ -10,6 +10,8 @@ import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
 import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
 import gov.cdc.nbs.questionbank.pagerules.request.TargetSubsectionRequest;
 import io.swagger.v3.oas.annotations.Parameter;
+import java.util.Collection;
+import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,8 +32,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.Collection;
-import java.util.List;
 
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
@@ -91,7 +91,8 @@ class PageRuleController {
   Rule updatePageRule(
       @PathVariable Long ruleId,
       @RequestBody RuleRequest request,
-      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) throws RuleException {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details)
+      throws RuleException {
     return pageRuleUpdater.updatePageRule(ruleId, request, details.getId());
   }
 
@@ -117,11 +118,9 @@ class PageRuleController {
     byte[] pdf = pdfCreator.create(rules.toList());
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_PDF)
-        .header(HttpHeaders.CONTENT_DISPOSITION,
-            ContentDisposition.attachment()
-                .filename("ManageRulesLibrary.pdf")
-                .build()
-                .toString())
+        .header(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment().filename("ManageRulesLibrary.pdf").build().toString())
         .body(pdf);
   }
 
@@ -135,11 +134,9 @@ class PageRuleController {
     byte[] csv = csvCreator.create(rules.toList());
     return ResponseEntity.ok()
         .contentType(MediaType.TEXT_PLAIN)
-        .header(HttpHeaders.CONTENT_DISPOSITION,
-            ContentDisposition.attachment()
-                .filename("ManageRulesLibrary.csv")
-                .build()
-                .toString())
+        .header(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment().filename("ManageRulesLibrary.csv").build().toString())
         .body(csv);
   }
 
@@ -149,18 +146,20 @@ class PageRuleController {
   }
 
   @PostMapping("/source/questions")
-  public PagesResponse getSourceQuestions(@PathVariable("id") Long pageId, @RequestBody SourceQuestionRequest request) {
+  public PagesResponse getSourceQuestions(
+      @PathVariable("id") Long pageId, @RequestBody SourceQuestionRequest request) {
     return sourceQuestionFinder.filterQuestions(pageId, request);
   }
 
   @PostMapping("/target/questions")
-  public PagesResponse getTargetQuestions(@PathVariable("id") Long pageId, @RequestBody TargetQuestionRequest request) {
+  public PagesResponse getTargetQuestions(
+      @PathVariable("id") Long pageId, @RequestBody TargetQuestionRequest request) {
     return targetQuestionFinder.filterQuestions(pageId, request);
   }
 
   @PostMapping("/target/subsections")
-  public Collection<PagesSubSection> getTargetSubsections(@PathVariable("id") Long pageId,
-      @RequestBody TargetSubsectionRequest request) {
+  public Collection<PagesSubSection> getTargetSubsections(
+      @PathVariable("id") Long pageId, @RequestBody TargetSubsectionRequest request) {
     return targetSubsectionFinder.filterSubsections(pageId, request);
   }
 }

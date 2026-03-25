@@ -14,4 +14,3 @@ export namespace QuestionValidationRequest {
         DATA_MART_COLUMN_NAME = 'DATA_MART_COLUMN_NAME',
     }
 }
-

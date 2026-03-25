@@ -13,18 +13,18 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
+import java.time.LocalDate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Component
 @ScenarioScope
 public class InvestigationMother {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Act(act_uid, class_cd, mood_cd) values (:identifier, 'CASE','EVN');
-      
+
       insert into Public_health_case (
           public_health_case_uid,
           local_id,
@@ -58,7 +58,8 @@ public class InvestigationMother {
       );
       """;
 
-  private static final String PARTICIPATE_IN = """
+  private static final String PARTICIPATE_IN =
+      """
       insert into Participation(
           act_uid,
           act_class_cd,
@@ -82,7 +83,8 @@ public class InvestigationMother {
       );
       """;
 
-  private static final String RELATE_WITH = """
+  private static final String RELATE_WITH =
+      """
       insert into Act_id(
           act_uid,
           act_id_seq,
@@ -106,7 +108,8 @@ public class InvestigationMother {
       );
       """;
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete from Participation where act_class_cd = 'OBS' and act_uid in (:identifiers);
       delete from Public_health_case where public_health_case_uid in (:identifiers);
       delete from Act_id where act_uid in (:identifiers);
@@ -140,8 +143,7 @@ public class InvestigationMother {
       final Active<AbcCaseIdentifier> activeAbcCase,
       final Active<StateCaseIdentifier> activeStateCase,
       final Active<CityCountyCaseIdentifier> activeCityCountyCase,
-      final JdbcClient client
-  ) {
+      final JdbcClient client) {
     this.idGenerator = idGenerator;
     this.settings = settings;
     this.investigations = investigations;
@@ -166,9 +168,9 @@ public class InvestigationMother {
       final InvestigationIdentifier investigation,
       final String type,
       final long subject,
-      final String subjectClass
-  ) {
-    this.client.sql(PARTICIPATE_IN)
+      final String subjectClass) {
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", investigation.identifier())
         .param("type", type)
         .param("addedOn", settings.createdOn())
@@ -182,7 +184,8 @@ public class InvestigationMother {
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal(INVESTIGATION_CODE);
 
-    this.client.sql(CREATE)
+    this.client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("local", local)
         .param("addedOn", settings.createdOn())
@@ -193,7 +196,8 @@ public class InvestigationMother {
         .param("condition", "42060")
         .update();
 
-    InvestigationIdentifier created = new InvestigationIdentifier(identifier, local, subject, null, null);
+    InvestigationIdentifier created =
+        new InvestigationIdentifier(identifier, local, subject, null, null);
 
     subjectOf(created, subject);
     include(created);
@@ -203,14 +207,14 @@ public class InvestigationMother {
   void create(
       final PatientIdentifier patient,
       final JurisdictionIdentifier jurisdiction,
-      final ProgramAreaIdentifier programArea
-  ) {
+      final ProgramAreaIdentifier programArea) {
     PatientIdentifier revision = revisionMother.revise(patient);
 
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal(INVESTIGATION_CODE);
 
-    this.client.sql(CREATE)
+    this.client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("local", local)
         .param("addedOn", settings.createdOn())
@@ -242,10 +246,11 @@ public class InvestigationMother {
   public void within(
       final InvestigationIdentifier investigation,
       final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
+      final JurisdictionIdentifier jurisdiction) {
 
-    this.client.sql("""
+    this.client
+        .sql(
+            """
             update Public_health_case set
                 jurisdiction_cd = ?,
                 prog_area_cd = ?,
@@ -259,48 +264,45 @@ public class InvestigationMother {
         .update();
   }
 
-  void closed(
-      final InvestigationIdentifier investigation,
-      final LocalDate on
-  ) {
-    this.client.sql("update Public_health_case set investigation_status_cd = 'C', activity_to_time = ? where public_health_case_uid = ?")
+  void closed(final InvestigationIdentifier investigation, final LocalDate on) {
+    this.client
+        .sql(
+            "update Public_health_case set investigation_status_cd = 'C', activity_to_time = ? where public_health_case_uid = ?")
         .param(on)
         .param(investigation.identifier())
         .update();
   }
 
   void processing(final InvestigationIdentifier investigation, final String status) {
-    this.client.sql("update Public_health_case set curr_process_state_cd = ? where public_health_case_uid = ?")
+    this.client
+        .sql(
+            "update Public_health_case set curr_process_state_cd = ? where public_health_case_uid = ?")
         .param(status)
         .param(investigation.identifier())
         .update();
   }
 
   void caseStatus(final InvestigationIdentifier investigation, final String status) {
-    this.client.sql("update Public_health_case set case_class_cd = ? where public_health_case_uid = ?")
+    this.client
+        .sql("update Public_health_case set case_class_cd = ? where public_health_case_uid = ?")
         .param(status)
         .param(investigation.identifier())
         .update();
   }
 
-  void created(
-      final InvestigationIdentifier investigation,
-      final long by,
-      final LocalDate on
-  ) {
-    this.client.sql("update Public_health_case set add_user_id = ?, add_time = ? where public_health_case_uid = ?")
+  void created(final InvestigationIdentifier investigation, final long by, final LocalDate on) {
+    this.client
+        .sql(
+            "update Public_health_case set add_user_id = ?, add_time = ? where public_health_case_uid = ?")
         .param(by)
         .param(on)
         .param(investigation.identifier())
         .update();
   }
 
-  void updated(
-      final InvestigationIdentifier investigation,
-      final long by,
-      final LocalDate on
-  ) {
-    this.client.sql(
+  void updated(final InvestigationIdentifier investigation, final long by, final LocalDate on) {
+    this.client
+        .sql(
             "update Public_health_case set last_chg_user_id = ?, last_chg_time = ? where public_health_case_uid = ?")
         .param(by)
         .param(on)
@@ -309,7 +311,8 @@ public class InvestigationMother {
   }
 
   private void withPregnancy(final InvestigationIdentifier investigation, final String value) {
-    this.client.sql("update Public_health_case set pregnant_ind_cd = ? where public_health_case_uid = ?")
+    this.client
+        .sql("update Public_health_case set pregnant_ind_cd = ? where public_health_case_uid = ?")
         .param(value)
         .param(investigation.identifier())
         .update();
@@ -328,59 +331,53 @@ public class InvestigationMother {
   }
 
   void withCondition(final InvestigationIdentifier investigation, final String condition) {
-    this.client.sql("update Public_health_case set cd = ? where public_health_case_uid = ?")
+    this.client
+        .sql("update Public_health_case set cd = ? where public_health_case_uid = ?")
         .param(condition)
         .param(investigation.identifier())
         .update();
   }
 
   public void started(final InvestigationIdentifier investigation, final LocalDate on) {
-    this.client.sql("update Public_health_case set activity_from_time = ? where public_health_case_uid = ?")
+    this.client
+        .sql(
+            "update Public_health_case set activity_from_time = ? where public_health_case_uid = ?")
         .param(on)
         .param(investigation.identifier())
         .update();
   }
 
   void reported(final InvestigationIdentifier investigation, final LocalDate on) {
-    this.client.sql("update Public_health_case set rpt_form_cmplt_time = ? where public_health_case_uid = ?")
+    this.client
+        .sql(
+            "update Public_health_case set rpt_form_cmplt_time = ? where public_health_case_uid = ?")
         .param(on)
         .param(investigation.identifier())
         .update();
   }
 
-  void relatedToABCSCase(
-      final InvestigationIdentifier investigation,
-      final String value
-  ) {
+  void relatedToABCSCase(final InvestigationIdentifier investigation, final String value) {
 
     relateWithIdentifier(investigation, 2, "STATE", "ABCS", value);
     activeAbcCase.active(new AbcCaseIdentifier(investigation.identifier(), value));
   }
 
-  void relatedToCountyCase(
-      final InvestigationIdentifier investigation,
-      final String value
-  ) {
+  void relatedToCountyCase(final InvestigationIdentifier investigation, final String value) {
     relateWithIdentifier(investigation, 2, "CITY", value);
     activeCityCountyCase.active(new CityCountyCaseIdentifier(investigation.identifier(), value));
   }
 
-  void relatedToStateCase(
-      final InvestigationIdentifier investigation,
-      final String value
-  ) {
+  void relatedToStateCase(final InvestigationIdentifier investigation, final String value) {
 
     relateWithIdentifier(investigation, 1, "STATE", value);
     activeStateCase.active(new StateCaseIdentifier(investigation.identifier(), value));
-
   }
 
   private void relateWithIdentifier(
       final InvestigationIdentifier investigation,
       final int sequence,
       final String type,
-      final String value
-  ) {
+      final String value) {
     relateWithIdentifier(investigation, sequence, type, null, value);
   }
 
@@ -389,9 +386,9 @@ public class InvestigationMother {
       final int sequence,
       final String type,
       final String authority,
-      final String value
-  ) {
-    this.client.sql(RELATE_WITH)
+      final String value) {
+    this.client
+        .sql(RELATE_WITH)
         .param("identifier", investigation.identifier())
         .param("sequence", sequence)
         .param("authority", authority)
@@ -402,35 +399,25 @@ public class InvestigationMother {
         .update();
   }
 
-  void relatedToOutbreak(
-      final InvestigationIdentifier investigation,
-      final String outbreak
-  ) {
-    this.client.sql("update Public_health_case set outbreak_name = ? where public_health_case_uid = ?")
+  void relatedToOutbreak(final InvestigationIdentifier investigation, final String outbreak) {
+    this.client
+        .sql("update Public_health_case set outbreak_name = ? where public_health_case_uid = ?")
         .param(outbreak)
         .param(investigation.identifier())
         .update();
   }
 
   void reportedBy(
-      final InvestigationIdentifier identifier,
-      final OrganizationIdentifier organization
-  ) {
+      final InvestigationIdentifier identifier, final OrganizationIdentifier organization) {
     participate(identifier, "OrgAsReporterOfPHC", organization.identifier(), "ORG");
   }
 
-  void reportedBy(
-      final InvestigationIdentifier identifier,
-      final ProviderIdentifier provider
-  ) {
+  void reportedBy(final InvestigationIdentifier identifier, final ProviderIdentifier provider) {
     participate(identifier, "PerAsReporterOfPHC", provider.identifier(), "PSN");
   }
 
   void investigatedBy(
-      final InvestigationIdentifier identifier,
-      final ProviderIdentifier investigator
-  ) {
+      final InvestigationIdentifier identifier, final ProviderIdentifier investigator) {
     participate(identifier, "InvestgrOfPHC", investigator.identifier(), "PSN");
   }
-
 }

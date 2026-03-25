@@ -15,7 +15,8 @@ export const UnsavedChangesConfirmation = ({ passName, visible, onAccept, onCanc
                 title="Unsaved changes"
                 confirmText="Yes, leave"
                 cancelText="No, back to configuration"
-                onCancel={onCancel}>
+                onCancel={onCancel}
+            >
                 Leaving this screen before saving will result in loss of data for <strong>{passName}</strong>. Are you
                 sure you want to proceed?
             </Confirmation>

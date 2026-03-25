@@ -21,6 +21,11 @@ const Fixture = ({ visible = true }) => {
     return <ImportConfigurationModal visible={visible} onCancel={onCancel} onImport={onImport} />;
 };
 describe('ImportConfigurationModal', () => {
+    beforeEach(() => {
+        onImport.mockClear();
+        onCancel.mockClear();
+    });
+
     it('should show proper heading', () => {
         const { getByText } = render(<Fixture />);
 
@@ -73,7 +78,7 @@ describe('ImportConfigurationModal', () => {
         const fileInput = getByLabelText('Drag configuration file here or choose from folder');
         const algorithmExport: AlgorithmExport = {
             dataElements: {
-                firstName: { active: true, oddsRatio: 5.0, logOdds: 1.609437 }
+                firstName: { active: true, oddsRatio: 5.0, logOdds: 1.609437 },
             },
             algorithm: {
                 passes: [
@@ -85,13 +90,13 @@ describe('ImportConfigurationModal', () => {
                         blockingCriteria: [BlockingAttribute.BIRTHDATE],
                         matchingCriteria: [
                             { attribute: MatchingAttribute.FIRST_NAME, method: MatchMethod.JAROWINKLER },
-                            { attribute: MatchingAttribute.LAST_NAME, method: MatchMethod.EXACT }
+                            { attribute: MatchingAttribute.LAST_NAME, method: MatchMethod.EXACT },
                         ],
                         lowerBound: 2.0,
-                        upperBound: 3.0
-                    }
-                ]
-            }
+                        upperBound: 3.0,
+                    },
+                ],
+            },
         };
         const fileContent = JSON.stringify(algorithmExport);
         const file = new File([fileContent], 'test.json', { type: 'application/json' });

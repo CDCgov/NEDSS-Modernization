@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.questionbank.template.exception.TemplateImportException;
+import gov.cdc.nbs.questionbank.template.response.Template;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,8 +18,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import gov.cdc.nbs.questionbank.template.exception.TemplateImportException;
-import gov.cdc.nbs.questionbank.template.response.Template;
 
 @ExtendWith(MockitoExtension.class)
 class TemplateImporterTest {
@@ -30,13 +31,10 @@ class TemplateImporterTest {
   private static final String BAD_FILE_LOCATION =
       "http://localhost:8080/nbs/PreviewTemplate.do?method=viewTemplate&srcTemplateNm=&src=Import&templateUid=TNF";
 
-  @Mock
-  private RestTemplate restTemplate;
-  @Mock
-  private TemplateFinder finder;
+  @Mock private RestTemplate restTemplate;
+  @Mock private TemplateFinder finder;
 
-  @InjectMocks
-  private TemplateImporter importer;
+  @InjectMocks private TemplateImporter importer;
 
   @Test
   @SuppressWarnings("unchecked")
@@ -53,7 +51,6 @@ class TemplateImporterTest {
     when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
     Template createdTemplate = template();
     when(finder.find(1000380l)).thenReturn(createdTemplate);
-
 
     // when a template is imported
     Template template = importer.importTemplate(mockFile);
@@ -140,15 +137,6 @@ class TemplateImporterTest {
   }
 
   private Template template() {
-    return new Template(
-        1000380l,
-        "test",
-        null,
-        null,
-        null,
-        null,
-        null,
-        null);
+    return new Template(1000380l, "test", null, null, null, null, null, null);
   }
-
 }

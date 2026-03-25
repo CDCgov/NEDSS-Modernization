@@ -16,7 +16,7 @@ const asMortality = (entry: MortalityEntry): Mortality | undefined => {
             city: orUndefined(city),
             county: asValue(county),
             state: asValue(state),
-            country: asValue(country)
+            country: asValue(country),
         };
     }
 };

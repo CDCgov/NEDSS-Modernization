@@ -20,5 +20,4 @@ class PatientSupportConfiguration {
   TestPatientIdentifier availablePatients() {
     return new TestPatientIdentifier();
   }
-
 }

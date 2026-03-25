@@ -14,10 +14,6 @@ public class AddressUseSteps {
   @ParameterType(name = "addressUse", value = "\".*\"|.*")
   public String addressUse(final String type) {
     String adjusted = type.replaceAll("\"", "");
-    return this.resolver.resolve(
-        "EL_USE_PST_PAT",
-        adjusted
-    ).orElse(adjusted);
+    return this.resolver.resolve("EL_USE_PST_PAT", adjusted).orElse(adjusted);
   }
-
 }

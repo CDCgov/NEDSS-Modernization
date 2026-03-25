@@ -4,12 +4,11 @@ import gov.cdc.nbs.patient.events.tests.ResultedTest;
 import gov.cdc.nbs.patient.events.tests.ResultedTestResolver;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentRequiringReview;
 import gov.cdc.nbs.patient.file.summary.drr.DocumentsRequiringReviewCriteria;
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 public class LaboratoryReportRequiringReviewResolver {
@@ -28,19 +27,19 @@ public class LaboratoryReportRequiringReviewResolver {
     if (criteria.labReportScope().allowed()) {
       List<DocumentRequiringReview> reports = reportFinder.find(criteria);
 
-      List<Long> identifiers = reports.stream()
-          .map(DocumentRequiringReview::id)
-          .toList();
+      List<Long> identifiers = reports.stream().map(DocumentRequiringReview::id).toList();
 
       Map<Long, Collection<ResultedTest>> resultedTests = resultedTests(identifiers);
-
 
       if (resultedTests.isEmpty()) {
         return reports;
       }
 
       return reports.stream()
-          .map(report -> report.withResultedTests(resultedTests.getOrDefault(report.id(), Collections.emptyList())))
+          .map(
+              report ->
+                  report.withResultedTests(
+                      resultedTests.getOrDefault(report.id(), Collections.emptyList())))
           .toList();
     }
 

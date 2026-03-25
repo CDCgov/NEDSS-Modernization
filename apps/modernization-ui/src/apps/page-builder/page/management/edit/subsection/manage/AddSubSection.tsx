@@ -2,7 +2,7 @@ import {
     CreateSubSectionRequest,
     PagesSubSection,
     SubSectionControllerService,
-    UpdateSubSectionRequest
+    UpdateSubSectionRequest,
 } from 'apps/page-builder/generated';
 import { Controller, useForm } from 'react-hook-form';
 import styles from './addsubsection.module.scss';
@@ -28,11 +28,11 @@ export const AddSubSection = ({
     onCancel,
     onSubSectionTouched,
     subsectionEdit,
-    isEdit
+    isEdit,
 }: subSectionProps) => {
     const form = useForm<CreateSubSectionRequest | UpdateSubSectionRequest>({
         mode: 'onBlur',
-        defaultValues: { visible: true }
+        defaultValues: { visible: true },
     });
 
     useEffect(() => {
@@ -46,14 +46,14 @@ export const AddSubSection = ({
             SubSectionControllerService.updateSubSection({
                 page: pageId ?? 0,
                 subSectionId: subsectionEdit?.id ?? 0,
-                requestBody: { name: data.name, visible: data.visible }
+                requestBody: { name: data.name, visible: data.visible },
             }).then(() => {
                 onSubSectionTouched?.('');
             });
         } else {
             SubSectionControllerService.createSubsection({
                 page: pageId ?? 0,
-                requestBody: { name: data.name, visible: data.visible, sectionId: sectionId }
+                requestBody: { name: data.name, visible: data.visible, sectionId: sectionId },
             }).then(() => {
                 onSubSectionTouched?.(data.name ?? '');
                 form.reset();
@@ -84,7 +84,7 @@ export const AddSubSection = ({
                         rules={{
                             required: { value: true, message: 'Subsection name is required' },
                             validate: (v) => validSubsectionNameRule(v ?? ''),
-                            ...maxLengthRule(50)
+                            ...maxLengthRule(50),
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
@@ -128,14 +128,16 @@ export const AddSubSection = ({
                                 onClick={() => {
                                     form.reset();
                                     onCancel?.();
-                                }}>
+                                }}
+                            >
                                 Cancel
                             </Button>
                             <Button
                                 type="button"
                                 onClick={onSubmit}
                                 data-testid="confirmation-btn"
-                                disabled={!form.formState.isDirty || !form.formState.isValid}>
+                                disabled={!form.formState.isDirty || !form.formState.isValid}
+                            >
                                 Save changes
                             </Button>
                         </>
@@ -147,14 +149,16 @@ export const AddSubSection = ({
                                 onClick={() => {
                                     form.reset();
                                     onCancel?.();
-                                }}>
+                                }}
+                            >
                                 Cancel
                             </Button>
                             <Button
                                 type="button"
                                 onClick={onSubmit}
                                 disabled={!form.formState.isValid}
-                                data-testid="addOrEditSubsectionBtn">
+                                data-testid="addOrEditSubsectionBtn"
+                            >
                                 Add subsection
                             </Button>
                         </>

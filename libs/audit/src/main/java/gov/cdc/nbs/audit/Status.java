@@ -2,7 +2,6 @@ package gov.cdc.nbs.audit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
 import java.time.LocalDateTime;
 
 @Embeddable
@@ -17,8 +16,7 @@ public class Status {
   @Column(name = "status_time", nullable = false)
   private LocalDateTime statusTime;
 
-  public Status() {
-  }
+  public Status() {}
 
   public Status(final LocalDateTime applied) {
     this(ACTIVE_CODE, applied);
@@ -41,7 +39,4 @@ public class Status {
   public LocalDateTime appliedOn() {
     return statusTime;
   }
-
-
-
 }

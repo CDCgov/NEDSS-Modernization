@@ -31,8 +31,8 @@ const mockMergeCandidates: MergeCandidate[] = [
                 middle: '',
                 secondMiddle: '',
                 suffix: '',
-                degree: ''
-            }
+                degree: '',
+            },
         ],
         addresses: [],
         phoneEmails: [],
@@ -42,7 +42,7 @@ const mockMergeCandidates: MergeCandidate[] = [
         sexAndBirth: {},
         mortality: {},
         general: {},
-        investigations: []
+        investigations: [],
     },
     {
         personUid: '2',
@@ -62,8 +62,8 @@ const mockMergeCandidates: MergeCandidate[] = [
                 middle: '',
                 secondMiddle: '',
                 suffix: '',
-                degree: ''
-            }
+                degree: '',
+            },
         ],
         addresses: [],
         phoneEmails: [],
@@ -73,13 +73,13 @@ const mockMergeCandidates: MergeCandidate[] = [
         sexAndBirth: {},
         mortality: {},
         general: {},
-        investigations: []
-    }
+        investigations: [],
+    },
 ];
 
 const selectedNames: NameId[] = [
     { personUid: '1', sequence: '1' },
-    { personUid: '2', sequence: '1' }
+    { personUid: '2', sequence: '1' },
 ];
 
 describe('PreviewName Component', () => {

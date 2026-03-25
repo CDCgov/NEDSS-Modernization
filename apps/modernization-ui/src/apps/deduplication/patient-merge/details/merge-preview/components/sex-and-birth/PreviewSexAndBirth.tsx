@@ -36,12 +36,12 @@ export const PreviewSexAndBirth = ({ mergeFormData, mergeCandidates }: PreviewSe
         {
             label: 'Transgender information',
             text: getField(mergeCandidates, sAndB.transgenderInfo, 'transgender'),
-            lined: true
+            lined: true,
         },
         {
             label: 'Additional gender',
             text: getField(mergeCandidates, sAndB.additionalGender, 'additionalGender'),
-            lined: true
+            lined: true,
         },
         { label: 'Birth sex', text: getField(mergeCandidates, sAndB.birthGender, 'birthGender'), lined: true },
         { label: 'Multiple birth', text: getField(mergeCandidates, sAndB.multipleBirth, 'multipleBirth'), lined: true },
@@ -49,7 +49,7 @@ export const PreviewSexAndBirth = ({ mergeFormData, mergeCandidates }: PreviewSe
         { label: 'Birth city', text: getField(mergeCandidates, sAndB.birthCity, 'birthCity'), lined: true },
         { label: 'Birth state', text: getField(mergeCandidates, sAndB.birthState, 'birthState'), lined: true },
         { label: 'Birth county', text: getField(mergeCandidates, sAndB.birthState, 'birthCounty'), lined: true },
-        { label: 'Birth country', text: getField(mergeCandidates, sAndB.birthCountry, 'birthCountry'), lined: false }
+        { label: 'Birth country', text: getField(mergeCandidates, sAndB.birthCountry, 'birthCountry'), lined: false },
     ];
 
     return <LinedMergePreviewCard id="sexAndBirth" title="Sex & birth" items={items} />;

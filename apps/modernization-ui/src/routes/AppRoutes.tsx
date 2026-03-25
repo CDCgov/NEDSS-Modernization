@@ -4,6 +4,7 @@ import { initializationLoader, ProtectedLayout } from 'authorization';
 import { RedirectHome } from './RedirectHome';
 
 import { routing as searchRouting } from 'apps/search';
+import { routing as reportRouting } from 'apps/report';
 import { routing as addPatientRouting } from 'apps/patient/add';
 import { routing as pageBuilderRouting } from 'apps/page-builder';
 import { routing as deduplicationRouting } from 'apps/deduplication';
@@ -24,7 +25,7 @@ const routing = [
             <PageProvider>
                 <Login />
             </PageProvider>
-        )
+        ),
     },
     {
         path: '/',
@@ -37,11 +38,12 @@ const routing = [
             ...pageBuilderRouting,
             ...deduplicationRouting,
             ...patientFileRouting,
-            ...systemManagementRouting
-        ]
+            ...systemManagementRouting,
+            ...reportRouting,
+        ],
     },
     { path: '*', element: <Navigate to={'/'} /> },
-    { path: 'expired', element: <Expired /> }
+    { path: 'expired', element: <Expired /> },
 ];
 
 const router = createBrowserRouter(routing);

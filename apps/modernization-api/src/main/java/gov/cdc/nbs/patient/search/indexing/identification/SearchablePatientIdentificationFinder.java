@@ -1,16 +1,16 @@
 package gov.cdc.nbs.patient.search.indexing.identification;
 
 import gov.cdc.nbs.patient.search.SearchablePatient;
+import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class SearchablePatientIdentificationFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [identification].as_of_date         as [as_of],
           [identification].entity_id_seq      as [sequence],
@@ -34,19 +34,13 @@ public class SearchablePatientIdentificationFinder {
 
   public SearchablePatientIdentificationFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new SearchablePatientIdentificationRowMapper(
-        new SearchablePatientIdentificationRowMapper.Column(
-            TYPE_COLUMN,
-            VALUE_COLUMN
-        )
-    );
+    this.mapper =
+        new SearchablePatientIdentificationRowMapper(
+            new SearchablePatientIdentificationRowMapper.Column(TYPE_COLUMN, VALUE_COLUMN));
   }
 
   public List<SearchablePatient.Identification> find(final long patient) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(PATIENT_PARAMETER, patient),
-        this.mapper
-    );
+        QUERY, statement -> statement.setLong(PATIENT_PARAMETER, patient), this.mapper);
   }
 }

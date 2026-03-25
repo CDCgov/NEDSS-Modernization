@@ -28,7 +28,7 @@ export const PreviewIdentification = ({ selectedIdentifications, mergeCandidates
 
     const identifications: IdentificationEntry[] = detailedIdentifications.map((id) => ({
         ...id,
-        asOf: format(parseISO(id.asOf), 'MM/dd/yyyy')
+        asOf: format(parseISO(id.asOf), 'MM/dd/yyyy'),
     }));
 
     const columns: Column<IdentificationEntry>[] = [
@@ -37,29 +37,29 @@ export const PreviewIdentification = ({ selectedIdentifications, mergeCandidates
             name: 'As of',
             render: (entry: IdentificationEntry) => entry.asOf ?? '---',
             value: (entry: IdentificationEntry) => entry.asOf,
-            sortable: true
+            sortable: true,
         },
         {
             id: 'type',
             name: 'Type',
             render: (entry: IdentificationEntry) => entry.type ?? '---',
             value: (entry: IdentificationEntry) => entry.type,
-            sortable: true
+            sortable: true,
         },
         {
             id: 'assigningAuthority',
             name: 'Assigning Authority',
             render: (entry: IdentificationEntry) => entry.assigningAuthority ?? '---',
             value: (entry: IdentificationEntry) => entry.assigningAuthority,
-            sortable: true
+            sortable: true,
         },
         {
             id: 'value',
             name: 'Value',
             render: (entry: IdentificationEntry) => entry.value ?? '---',
             value: (entry: IdentificationEntry) => entry.value,
-            sortable: true
-        }
+            sortable: true,
+        },
     ];
 
     return (

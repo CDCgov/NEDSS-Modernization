@@ -26,14 +26,16 @@ const Checkbox = ({ id, className, sizing, selected = false, onChange, ...remain
                 [styles.sized]: sizing,
                 [styles.small]: sizing === 'small',
                 [styles.medium]: sizing === 'medium',
-                [styles.large]: sizing === 'large'
+                [styles.large]: sizing === 'large',
             })}
-            data-selected={selected}>
+            data-selected={selected}
+        >
             <label
                 className={classNames(styles.label, {
                     [styles.disabled]: remaining.disabled,
-                    [styles.labeled]: isLabelVisible(remaining)
-                })}>
+                    [styles.labeled]: isLabelVisible(remaining),
+                })}
+            >
                 {isLabelVisible(remaining) && remaining.label}
                 <input
                     id={id}

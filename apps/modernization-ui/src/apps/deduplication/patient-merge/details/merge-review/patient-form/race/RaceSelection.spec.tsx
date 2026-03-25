@@ -11,10 +11,10 @@ const mergeCandidates: Partial<MergeCandidate>[] = [
                 raceCode: '2106-3',
                 asOf: '2014-03-11T00:00:00.000',
                 race: 'White',
-                detailedRaces: 'European'
-            }
-        ]
-    }
+                detailedRaces: 'European',
+            },
+        ],
+    },
 ];
 const Fixture = () => {
     const form = useForm();

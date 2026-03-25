@@ -22,14 +22,7 @@ describe('TableNumericInput', () => {
     });
 
     it('should not display error message when no error is passed', () => {
-        render(
-            <TableNumericInput
-                name="testInput"
-                value="5"
-                onChange={() => {}}
-                onBlur={() => {}}
-            />
-        );
+        render(<TableNumericInput name="testInput" value="5" onChange={() => {}} onBlur={() => {}} />);
 
         const errorTooltip = screen.queryByText('This is an error');
         expect(errorTooltip).not.toBeInTheDocument();
@@ -39,15 +32,7 @@ describe('TableNumericInput', () => {
     });
 
     it('should be disabled when disabled prop is true', () => {
-        render(
-            <TableNumericInput
-                name="testInput"
-                value="5"
-                disabled
-                onChange={() => {}}
-                onBlur={() => {}}
-            />
-        );
+        render(<TableNumericInput name="testInput" value="5" disabled onChange={() => {}} onBlur={() => {}} />);
 
         const input = screen.getByLabelText('numericInput');
         expect(input).toBeDisabled();
@@ -55,14 +40,7 @@ describe('TableNumericInput', () => {
 
     it('should call onBlur when the input loses focus', () => {
         const onBlurMock = vi.fn();
-        render(
-            <TableNumericInput
-                name="testInput"
-                value="5"
-                onChange={() => {}}
-                onBlur={onBlurMock}
-            />
-        );
+        render(<TableNumericInput name="testInput" value="5" onChange={() => {}} onBlur={onBlurMock} />);
 
         const input = screen.getByLabelText('numericInput');
         fireEvent.blur(input);

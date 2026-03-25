@@ -3,9 +3,8 @@ package gov.cdc.nbs.data.sensitive;
 import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
-import org.springframework.stereotype.Component;
-
 import java.util.function.Supplier;
+import org.springframework.stereotype.Component;
 
 @Component
 public class SensitiveValueResolver {
@@ -22,10 +21,7 @@ public class SensitiveValueResolver {
   }
 
   public <V> SensitiveValue resolve(
-      final Permission permission,
-      final V value,
-      final Supplier<String> ifRestricted
-  ) {
+      final Permission permission, final V value, final Supplier<String> ifRestricted) {
     PermissionScope scope = resolver.resolve(permission);
 
     return scope.allowed()

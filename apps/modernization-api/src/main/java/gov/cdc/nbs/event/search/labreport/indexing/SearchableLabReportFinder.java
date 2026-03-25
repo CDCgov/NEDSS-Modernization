@@ -1,15 +1,15 @@
 package gov.cdc.nbs.event.search.labreport.indexing;
 
 import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
+import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 class SearchableLabReportFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           observation_uid,
           act.class_cd,
@@ -30,10 +30,10 @@ class SearchableLabReportFinder {
           [lab_report].record_status_cd,
           [lab_report].electronic_ind
       from Observation [lab_report]
-            
+
           join act [act] on
                   [act].act_uid = [lab_report].observation_uid
-            
+
       where   [lab_report].ctrl_cd_display_form = 'LabReport'
           and [lab_report].obs_domain_cd_st_1 = 'Order'
           and [lab_report].observation_uid = ?
@@ -63,36 +63,33 @@ class SearchableLabReportFinder {
 
   SearchableLabReportFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new SearchableLabReportRowMapper(
-        new SearchableLabReportRowMapper.Column(
-            IDENTIFIER_COLUMN,
-            CLASS_CODE_COLUMN,
-            MOOD_COLUMN,
-            PROGRAM_AREA_COLUMN,
-            JURISDICTION_COLUMN,
-            OID_COLUMN,
-            PREGNANCY_STATUS_COLUMN,
-            LOCAL_COLUMN,
-            REPORTED_ON_COLUMN,
-            COLLECTED_ON_COLUMN,
-            RECEIVED_ON_COLUMN,
-            CREATED_BY_COLUMN,
-            CREATED_ON_COLUMN,
-            UPDATED_BY_COLUMN,
-            UPDATED_ON_COLUMN,
-            VERSION_COLUMN,
-            STATUS_COLUMN,
-            ELECTRONIC_ENTRY_COLUMN
-        )
-    );
+    this.mapper =
+        new SearchableLabReportRowMapper(
+            new SearchableLabReportRowMapper.Column(
+                IDENTIFIER_COLUMN,
+                CLASS_CODE_COLUMN,
+                MOOD_COLUMN,
+                PROGRAM_AREA_COLUMN,
+                JURISDICTION_COLUMN,
+                OID_COLUMN,
+                PREGNANCY_STATUS_COLUMN,
+                LOCAL_COLUMN,
+                REPORTED_ON_COLUMN,
+                COLLECTED_ON_COLUMN,
+                RECEIVED_ON_COLUMN,
+                CREATED_BY_COLUMN,
+                CREATED_ON_COLUMN,
+                UPDATED_BY_COLUMN,
+                UPDATED_ON_COLUMN,
+                VERSION_COLUMN,
+                STATUS_COLUMN,
+                ELECTRONIC_ENTRY_COLUMN));
   }
 
   Optional<SearchableLabReport> find(final long identifier) {
-    return this.template.query(
-            QUERY,
-            statement -> statement.setLong(IDENTIFIER_PARAMETER, identifier),
-            this.mapper
-        ).stream()
+    return this.template
+        .query(QUERY, statement -> statement.setLong(IDENTIFIER_PARAMETER, identifier), this.mapper)
+        .stream()
         .findFirst();
   }
 }

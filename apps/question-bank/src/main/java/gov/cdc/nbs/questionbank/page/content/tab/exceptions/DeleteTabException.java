@@ -4,8 +4,7 @@ import gov.cdc.nbs.questionbank.exception.BadRequestException;
 
 public class DeleteTabException extends BadRequestException {
 
-    public DeleteTabException(String message) {
-        super(message);
-    }
-
+  public DeleteTabException(String message) {
+    super(message);
+  }
 }

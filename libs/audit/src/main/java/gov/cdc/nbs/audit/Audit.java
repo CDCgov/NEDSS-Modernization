@@ -2,21 +2,16 @@ package gov.cdc.nbs.audit;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-
 import java.time.LocalDateTime;
 
 @Embeddable
 public class Audit {
 
-  @Embedded
-  private Added added;
+  @Embedded private Added added;
 
-  @Embedded
-  private Changed changed;
+  @Embedded private Changed changed;
 
-  public Audit() {
-
-  }
+  public Audit() {}
 
   public Audit(final long who, final LocalDateTime when, final String why) {
     this.added = new Added(who, when, why);

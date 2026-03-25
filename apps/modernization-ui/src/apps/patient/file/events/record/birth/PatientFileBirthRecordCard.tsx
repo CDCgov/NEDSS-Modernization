@@ -29,7 +29,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...REPORT_DATE, moveable: true, toggleable: true },
     { ...MOTHER_INFORMATION, moveable: true, toggleable: true },
     { ...BIRTH_CERTIFICATE, moveable: true, toggleable: true },
-    { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
+    { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
 ];
 
 const columns = (onClose: () => void): Column<PatientFileBirthRecord>[] => [
@@ -44,10 +44,11 @@ const columns = (onClose: () => void): Column<PatientFileBirthRecord>[] => [
                 sizing="small"
                 className={styles['event-id']}
                 url={`/nbs/api/patients/${value.patient}/records/birth/${value.id}`}
-                onClose={onClose}>
+                onClose={onClose}
+            >
                 {value.local}
             </ClassicModalButton>
-        )
+        ),
     },
     {
         ...DATE_RECEIVED,
@@ -55,37 +56,37 @@ const columns = (onClose: () => void): Column<PatientFileBirthRecord>[] => [
         sortable: true,
         sortIconType: 'numeric',
         value: (value) => value.receivedOn,
-        render: (value) => internalizeDateTime(value.receivedOn)
+        render: (value) => internalizeDateTime(value.receivedOn),
     },
     {
         ...BIRTH_FACILITY,
         sortable: true,
         className: styles['text-header'],
-        value: (value) => value.facility
+        value: (value) => value.facility,
     },
     {
         ...REPORT_DATE,
         sortable: true,
         sortIconType: 'numeric',
-        value: (value) => value.collectedOn
+        value: (value) => value.collectedOn,
     },
     {
         ...MOTHER_INFORMATION,
         sortable: true,
-        value: (value) => maybeDisplayMotherInformation(value.mother)
+        value: (value) => maybeDisplayMotherInformation(value.mother),
     },
     {
         ...BIRTH_CERTIFICATE,
         sortable: true,
-        value: (value) => value.certificate
+        value: (value) => value.certificate,
     },
     {
         ...ASSOCIATED_WITH,
         sortable: true,
         className: styles['long-coded-header'],
         value: (value) => value.associations?.[0]?.local,
-        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
-    }
+        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>,
+    },
 ];
 
 type InternalCardProps = {
@@ -113,7 +114,8 @@ const InternalCard = ({ patient, sizing, data = [], onClose, ...remaining }: Int
                         icon="add_circle"
                         secondary
                         sizing={sizing}
-                        onClose={onClose}>
+                        onClose={onClose}
+                    >
                         Add birth record
                     </ClassicModalButton>
                 </Permitted>
@@ -142,7 +144,8 @@ const PatientFileBirthRecordCard = ({ provider, ...remaining }: PatientFileBirth
                 <LoadingOverlay>
                     <InternalCard {...remaining} onClose={handleClose} />
                 </LoadingOverlay>
-            }>
+            }
+        >
             <Await resolve={provider.get()}>
                 {(data) => <InternalCard data={data} onClose={handleClose} {...remaining} />}
             </Await>

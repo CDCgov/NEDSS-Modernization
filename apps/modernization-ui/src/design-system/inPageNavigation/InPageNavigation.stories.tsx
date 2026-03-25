@@ -3,7 +3,7 @@ import { InPageNavigation, NavSection, InPageNavigationProps } from './InPageNav
 
 const meta: Meta<InPageNavigationProps> = {
     title: 'Design System/InPageNavigation',
-    component: InPageNavigation
+    component: InPageNavigation,
 };
 
 export default meta;
@@ -15,12 +15,12 @@ const sections: NavSection[] = [
     { id: 'banana', label: 'Banana' },
     { id: 'mango', label: 'Mango' },
     { id: 'orange', label: 'Orange' },
-    { id: 'watermelon', label: 'Watermelon' }
+    { id: 'watermelon', label: 'Watermelon' },
 ];
 
 export const Default: Story = {
     args: {
         title: 'Fruits',
-        sections: sections
-    }
+        sections: sections,
+    },
 };

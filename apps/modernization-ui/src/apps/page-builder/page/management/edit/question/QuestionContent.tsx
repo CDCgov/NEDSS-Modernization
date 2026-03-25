@@ -41,7 +41,7 @@ export const QuestionContent = ({
     isStandard,
     isPublished,
     onEditValueset,
-    onChangeValueset
+    onChangeValueset,
 }: Props) => {
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
     const { loading } = usePageManagement();
@@ -49,7 +49,7 @@ export const QuestionContent = ({
     useEffect(() => {
         if (valueSet && !loading) {
             ConceptOptionsService.concepts({
-                name: valueSet
+                name: valueSet,
             }).then((resp: ConceptOptionsResponse) => {
                 setConceptState(resp.options);
             });
@@ -117,7 +117,8 @@ export const QuestionContent = ({
                         className={`${styles.unStyledButton} margin-right-2`}
                         type="button"
                         onClick={() => onEditValueset(valueSet)}
-                        unstyled>
+                        unstyled
+                    >
                         <Icon.Edit className="margin-right-2px" />
                         <span> Edit value set</span>
                     </Button>
@@ -127,7 +128,8 @@ export const QuestionContent = ({
                             type="button"
                             onClick={onChangeValueset}
                             unstyled
-                            disabled={isPublished}>
+                            disabled={isPublished}
+                        >
                             <Icon.Edit className="margin-right-2px" />
                             <span> Change value set</span>
                         </Button>

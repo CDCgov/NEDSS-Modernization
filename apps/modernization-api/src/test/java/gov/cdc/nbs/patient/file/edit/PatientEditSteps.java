@@ -82,41 +82,63 @@ public class PatientEditSteps {
   }
 
   private void edit(final long patient) {
-    this.activeAdministrative.maybeActive()
-        .ifPresent(administrative -> this.activeEntry.active(current -> current.withAdministrative(administrative)));
+    this.activeAdministrative
+        .maybeActive()
+        .ifPresent(
+            administrative ->
+                this.activeEntry.active(current -> current.withAdministrative(administrative)));
 
-    this.availableNames.all()
+    this.availableNames
+        .all()
         .forEach(name -> this.activeEntry.active(current -> current.withName(name)));
 
-    this.availableAddresses.all()
+    this.availableAddresses
+        .all()
         .forEach(address -> this.activeEntry.active(current -> current.withAddress(address)));
 
-    this.availablePhones.all()
+    this.availablePhones
+        .all()
         .forEach(phone -> this.activeEntry.active(current -> current.withPhoneEmail(phone)));
 
-    this.availableIdentifications.all()
-        .forEach(identification -> this.activeEntry.active(current -> current.withIdentification(identification)));
+    this.availableIdentifications
+        .all()
+        .forEach(
+            identification ->
+                this.activeEntry.active(current -> current.withIdentification(identification)));
 
-    this.availableRaces.all()
+    this.availableRaces
+        .all()
         .forEach(race -> this.activeEntry.active(current -> current.withRace(race)));
 
-    this.activeEthnicity.maybeActive()
-        .ifPresent(ethnicity -> this.activeEntry.active(current -> current.withEthnicity(ethnicity)));
+    this.activeEthnicity
+        .maybeActive()
+        .ifPresent(
+            ethnicity -> this.activeEntry.active(current -> current.withEthnicity(ethnicity)));
 
-    this.activeBirthDemographic.maybeActive()
-        .ifPresent(demographic -> this.activeEntry.active(current -> current.withBirth(demographic)));
+    this.activeBirthDemographic
+        .maybeActive()
+        .ifPresent(
+            demographic -> this.activeEntry.active(current -> current.withBirth(demographic)));
 
-    this.activeGenderDemographic.maybeActive()
-        .ifPresent(demographic -> this.activeEntry.active(current -> current.withGender(demographic)));
+    this.activeGenderDemographic
+        .maybeActive()
+        .ifPresent(
+            demographic -> this.activeEntry.active(current -> current.withGender(demographic)));
 
-    this.activeMortalityDemographic.maybeActive()
-        .ifPresent(demographic -> this.activeEntry.active(current -> current.withMortality(demographic)));
+    this.activeMortalityDemographic
+        .maybeActive()
+        .ifPresent(
+            demographic -> this.activeEntry.active(current -> current.withMortality(demographic)));
 
-    this.activeGeneralInformation.maybeActive()
-        .ifPresent(demographic -> this.activeEntry.active(current -> current.withGeneralInformation(demographic)));
+    this.activeGeneralInformation
+        .maybeActive()
+        .ifPresent(
+            demographic ->
+                this.activeEntry.active(current -> current.withGeneralInformation(demographic)));
 
-    this.activeEntry.maybeActive().map(changes -> this.requester.edit(patient, changes))
+    this.activeEntry
+        .maybeActive()
+        .map(changes -> this.requester.edit(patient, changes))
         .ifPresent(this.response::active);
   }
-
 }

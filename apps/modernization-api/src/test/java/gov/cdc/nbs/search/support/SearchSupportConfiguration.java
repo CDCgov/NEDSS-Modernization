@@ -14,5 +14,4 @@ class SearchSupportConfiguration {
   Active<SortCriteria> activeSortCriteria() {
     return new Active<>(() -> new SortCriteria(Sort.Direction.DESC, "relevance"));
   }
-
 }

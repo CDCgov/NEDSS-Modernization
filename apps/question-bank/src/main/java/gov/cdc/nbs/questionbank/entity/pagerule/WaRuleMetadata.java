@@ -1,13 +1,13 @@
 package gov.cdc.nbs.questionbank.entity.pagerule;
 
-import java.time.Instant;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -84,7 +84,6 @@ public class WaRuleMetadata {
   @Column(name = "target_type", length = 50)
   private String targetType;
 
-
   public WaRuleMetadata(PageContentCommand.AddRuleCommand command) {
     this.waTemplateUid = command.page();
     this.targetType = command.targetType();
@@ -102,7 +101,6 @@ public class WaRuleMetadata {
     this.userRuleId = "Rule" + command.ruleId();
     added(command);
   }
-
 
   public void update(PageContentCommand.UpdateRuleCommand command) {
     this.targetType = command.targetType();
@@ -164,7 +162,5 @@ public class WaRuleMetadata {
         original.getLogic(),
         original.getSourceValues(),
         original.getTargetType());
-
   }
-
 }

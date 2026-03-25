@@ -1,10 +1,9 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
 import gov.cdc.nbs.questionbank.page.component.tree.ComponentTreeResolver;
-import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PagesResolver {
@@ -31,9 +30,9 @@ public class PagesResolver {
 
   private PagesResponse withTree(final PageDescription detailed) {
     Collection<PagesRule> rules = this.ruleFinder.find(detailed.identifier());
-    return this.resolver.resolve(detailed.identifier())
+    return this.resolver
+        .resolve(detailed.identifier())
         .map(tree -> this.mapper.asResponse(detailed, rules, tree))
         .orElseGet(() -> this.mapper.asResponse(detailed, rules));
   }
-
 }

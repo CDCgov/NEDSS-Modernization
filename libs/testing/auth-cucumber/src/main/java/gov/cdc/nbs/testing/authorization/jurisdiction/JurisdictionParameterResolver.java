@@ -1,16 +1,16 @@
 package gov.cdc.nbs.testing.authorization.jurisdiction;
 
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 class JurisdictionParameterResolver {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           nbs_uid,
           code,
@@ -30,10 +30,7 @@ class JurisdictionParameterResolver {
   }
 
   Optional<JurisdictionIdentifier> resolve(final String value) {
-    return this.client.sql(QUERY)
-        .param(value)
-        .query(this::map)
-        .optional();
+    return this.client.sql(QUERY).param(value).query(this::map).optional();
   }
 
   private JurisdictionIdentifier map(final ResultSet resultSet, final int row) throws SQLException {

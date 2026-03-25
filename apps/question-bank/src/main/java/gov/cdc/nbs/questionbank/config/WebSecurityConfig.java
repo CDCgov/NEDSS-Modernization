@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
@@ -20,14 +19,7 @@ class WebSecurityConfig {
 
   @Bean
   SecurityFilterChain securityFilterChain(
-      final HttpSecurity http,
-      final SecurityConfigurer configurer
-  )
-      throws Exception {
-    return configurer.configure(http)
-        .build();
+      final HttpSecurity http, final SecurityConfigurer configurer) throws Exception {
+    return configurer.configure(http).build();
   }
-
-
-
 }

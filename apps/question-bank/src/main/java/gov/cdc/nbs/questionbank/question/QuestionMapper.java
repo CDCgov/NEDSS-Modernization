@@ -1,8 +1,5 @@
 package gov.cdc.nbs.questionbank.question;
 
-import gov.cdc.nbs.questionbank.question.request.UpdateQuestion;
-import gov.cdc.nbs.questionbank.question.request.update.*;
-import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -16,6 +13,9 @@ import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestion;
+import gov.cdc.nbs.questionbank.question.request.update.*;
+import org.springframework.stereotype.Component;
 
 @Component
 public class QuestionMapper {
@@ -26,7 +26,8 @@ public class QuestionMapper {
       case DateQuestionEntity dq -> toDateQuestion(dq);
       case NumericQuestionEntity nq -> toNumericQuestion(nq);
       case CodedQuestionEntity cq -> toCodedQuestion(cq);
-      case null, default -> throw new UpdateQuestionException("Failed to convert entity to question");
+      case null, default ->
+          throw new UpdateQuestionException("Failed to convert entity to question");
     };
   }
 
@@ -140,7 +141,6 @@ public class QuestionMapper {
     } else {
       return character.equals(trueValue);
     }
-
   }
 
   public UpdateQuestion toUpdateQuestion(UpdateQuestionRequest updateQuestionRequest) {
@@ -149,8 +149,8 @@ public class QuestionMapper {
       case UpdateDateQuestionRequest dq -> new UpdateQuestion(dq);
       case UpdateNumericQuestionRequest nq -> new UpdateQuestion(nq);
       case UpdateCodedQuestionRequest cq -> new UpdateQuestion(cq);
-      case null, default -> throw new UpdateQuestionException("Failed to convert entity to question");
+      case null, default ->
+          throw new UpdateQuestionException("Failed to convert entity to question");
     };
   }
-
 }

@@ -5,7 +5,7 @@ import React from 'react';
 
 const links = [
     { text: 'Page Builder', href: '/page/builder' },
-    { text: 'Static Page Editor', href: '/editor' }
+    { text: 'Static Page Editor', href: '/editor' },
 ];
 
 const Fixture = (props: React.ComponentProps<typeof SystemManagementInfoCard>) => {
@@ -31,9 +31,7 @@ describe('SystemManagementInfoCard', () => {
     });
 
     test('renders nothing if no links match', () => {
-        const { container } = render(
-            <Fixture id="page" title="Page" filter="zzz" links={links} />
-        );
+        const { container } = render(<Fixture id="page" title="Page" filter="zzz" links={links} />);
         expect(container).toBeEmptyDOMElement();
     });
 });

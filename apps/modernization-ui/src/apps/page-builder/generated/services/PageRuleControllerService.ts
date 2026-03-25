@@ -19,16 +19,12 @@ export class PageRuleControllerService {
      * @returns Rule OK
      * @throws ApiError
      */
-    public static viewRuleResponse({
-        ruleId,
-    }: {
-        ruleId: number,
-    }): CancelablePromise<Rule> {
+    public static viewRuleResponse({ ruleId }: { ruleId: number }): CancelablePromise<Rule> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/pages/{id}/rules/{ruleId}',
             path: {
-                'ruleId': ruleId,
+                ruleId: ruleId,
             },
         });
     }
@@ -40,14 +36,14 @@ export class PageRuleControllerService {
         ruleId,
         requestBody,
     }: {
-        ruleId: number,
-        requestBody: RuleRequest,
+        ruleId: number;
+        requestBody: RuleRequest;
     }): CancelablePromise<Rule> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{id}/rules/{ruleId}',
             path: {
-                'ruleId': ruleId,
+                ruleId: ruleId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -57,19 +53,13 @@ export class PageRuleControllerService {
      * @returns any OK
      * @throws ApiError
      */
-    public static deletePageRule({
-        id,
-        ruleId,
-    }: {
-        id: number,
-        ruleId: number,
-    }): CancelablePromise<any> {
+    public static deletePageRule({ id, ruleId }: { id: number; ruleId: number }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/v1/pages/{id}/rules/{ruleId}',
             path: {
-                'id': id,
-                'ruleId': ruleId,
+                id: id,
+                ruleId: ruleId,
             },
         });
     }
@@ -81,14 +71,14 @@ export class PageRuleControllerService {
         id,
         requestBody,
     }: {
-        id: number,
-        requestBody: RuleRequest,
+        id: number;
+        requestBody: RuleRequest;
     }): CancelablePromise<Rule> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules',
             path: {
-                'id': id,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -102,14 +92,14 @@ export class PageRuleControllerService {
         id,
         requestBody,
     }: {
-        id: number,
-        requestBody: TargetSubsectionRequest,
+        id: number;
+        requestBody: TargetSubsectionRequest;
     }): CancelablePromise<Array<PagesSubSection>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules/target/subsections',
             path: {
-                'id': id,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -123,14 +113,14 @@ export class PageRuleControllerService {
         id,
         requestBody,
     }: {
-        id: number,
-        requestBody: TargetQuestionRequest,
+        id: number;
+        requestBody: TargetQuestionRequest;
     }): CancelablePromise<PagesResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules/target/questions',
             path: {
-                'id': id,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -144,14 +134,14 @@ export class PageRuleControllerService {
         id,
         requestBody,
     }: {
-        id: number,
-        requestBody: SourceQuestionRequest,
+        id: number;
+        requestBody: SourceQuestionRequest;
     }): CancelablePromise<PagesResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules/source/questions',
             path: {
-                'id': id,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -168,31 +158,31 @@ export class PageRuleControllerService {
         size = 25,
         sort,
     }: {
-        id: number,
-        requestBody: SearchPageRuleRequest,
+        id: number;
+        requestBody: SearchPageRuleRequest;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<PageRule> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules/search',
             path: {
-                'id': id,
+                id: id,
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -209,31 +199,31 @@ export class PageRuleControllerService {
         size = 25,
         sort,
     }: {
-        id: number,
-        requestBody: SearchPageRuleRequest,
+        id: number;
+        requestBody: SearchPageRuleRequest;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<Array<string>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules/pdf',
             path: {
-                'id': id,
+                id: id,
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -250,31 +240,31 @@ export class PageRuleControllerService {
         size = 25,
         sort,
     }: {
-        id: number,
-        requestBody: SearchPageRuleRequest,
+        id: number;
+        requestBody: SearchPageRuleRequest;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<Array<string>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules/csv',
             path: {
-                'id': id,
+                id: id,
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -284,16 +274,12 @@ export class PageRuleControllerService {
      * @returns Rule OK
      * @throws ApiError
      */
-    public static getAllRules({
-        id,
-    }: {
-        id: number,
-    }): CancelablePromise<Array<Rule>> {
+    public static getAllRules({ id }: { id: number }): CancelablePromise<Array<Rule>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/pages/{id}/rules/getAll',
             path: {
-                'id': id,
+                id: id,
             },
         });
     }

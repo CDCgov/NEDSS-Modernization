@@ -2,10 +2,11 @@ package gov.cdc.nbs.event.document;
 
 import io.cucumber.java.ParameterType;
 
-
 public class DocumentSteps {
 
-  @ParameterType(name = "documentType", value = "(?i)lab report|laboratory report|morbidity report|case report")
+  @ParameterType(
+      name = "documentType",
+      value = "(?i)lab report|laboratory report|morbidity report|case report")
   public String documentType(final String value) {
     return switch (value.toLowerCase()) {
       case "lab report", "laboratory report" -> "Laboratory Report";
@@ -14,6 +15,4 @@ public class DocumentSteps {
       default -> value;
     };
   }
-
-
 }

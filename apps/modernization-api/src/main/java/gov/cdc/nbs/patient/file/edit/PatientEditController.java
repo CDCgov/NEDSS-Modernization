@@ -1,20 +1,19 @@
 package gov.cdc.nbs.patient.file.edit;
 
+import static gov.cdc.nbs.web.response.Failures.failure;
+import static gov.cdc.nbs.web.response.Successes.accepted;
+
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.patient.PatientException;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.web.response.StandardResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Clock;
-import java.time.LocalDateTime;
-
-import static gov.cdc.nbs.web.response.Failures.failure;
-import static gov.cdc.nbs.web.response.Successes.accepted;
 
 @RestController
 class PatientEditController {
@@ -22,10 +21,7 @@ class PatientEditController {
   private final Clock clock;
   private final PatientEditService service;
 
-  PatientEditController(
-      final Clock clock,
-      final PatientEditService service
-  ) {
+  PatientEditController(final Clock clock, final PatientEditService service) {
     this.clock = clock;
     this.service = service;
   }
@@ -36,8 +32,7 @@ class PatientEditController {
   ResponseEntity<StandardResponse> edit(
       @AuthenticationPrincipal final NbsUserDetails user,
       @RequestBody final EditedPatient changes,
-      @PathVariable final long patient
-  ) {
+      @PathVariable final long patient) {
     RequestContext context = new RequestContext(user.getId(), LocalDateTime.now(this.clock));
 
     try {
@@ -47,6 +42,5 @@ class PatientEditController {
     } catch (PatientException exception) {
       return failure(exception);
     }
-
   }
 }

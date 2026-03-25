@@ -7,4 +7,3 @@ export type AddReadOnlyComments = {
     adminComments?: string;
     subSectionId?: number;
 };
-

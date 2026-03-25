@@ -18,7 +18,7 @@ export const ViewBusinessRule = () => {
     useEffect(() => {
         if (ruleId) {
             PageRuleControllerService.viewRuleResponse({
-                ruleId: Number(ruleId)
+                ruleId: Number(ruleId),
             }).then((response: Rule) => {
                 setRule(response);
             });

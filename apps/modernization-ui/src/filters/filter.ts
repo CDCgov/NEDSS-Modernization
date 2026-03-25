@@ -5,7 +5,7 @@ import {
     SelectableDatePeriodOperator,
     SelectableDateRangeOperator,
     SelectableExactValueOperator,
-    SelectableSinlgeValueOperator
+    SelectableSinlgeValueOperator,
 } from './selectables';
 
 type ExactValue = { values: string[] };
@@ -56,5 +56,5 @@ export type {
     DatePeriodFilter,
     DateRangeFilter,
     DateFilter,
-    Filter
+    Filter,
 };

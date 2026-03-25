@@ -3,7 +3,7 @@ type Comparator<T> = (left: T, right: T) => number;
 enum Direction {
     None = 'all',
     Ascending = 'asc',
-    Descending = 'desc'
+    Descending = 'desc',
 }
 
 export { Direction };

@@ -5,11 +5,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 class PatientEthnicityPreviousVersionVerifier {
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select 1 from Person_ethnic_group [current]
           join Person_ethnic_group_hist [history] on
                   [history].[person_uid] = [current].[person_uid]
-      
+
       where [current].person_uid = ?
       """;
 
@@ -20,10 +21,6 @@ class PatientEthnicityPreviousVersionVerifier {
   }
 
   boolean verify(long patient) {
-    return this.client.sql(QUERY)
-        .param(patient)
-        .query(Boolean.class)
-        .optional()
-        .orElse(false);
+    return this.client.sql(QUERY).param(patient).query(Boolean.class).optional().orElse(false);
   }
 }

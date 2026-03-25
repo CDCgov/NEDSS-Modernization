@@ -1,7 +1,6 @@
 package gov.cdc.nbs.gateway.patient.file;
 
 import gov.cdc.nbs.gateway.Service;
-
 import java.net.URI;
 
 public class PatientFileService extends Service {

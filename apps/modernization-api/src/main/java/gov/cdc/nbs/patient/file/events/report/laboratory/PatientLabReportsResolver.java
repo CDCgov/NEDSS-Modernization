@@ -7,12 +7,11 @@ import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigat
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigationFinder;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
 import gov.cdc.nbs.patient.events.tests.ResultedTestResolver;
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientLabReportsResolver {
@@ -28,8 +27,7 @@ class PatientLabReportsResolver {
       final PermissionScopeResolver scopeResolver,
       final PatientLabReportsFinder finder,
       final ResultedTestResolver resultedTestResolver,
-      final AssociatedInvestigationFinder associatedInvestigationFinder
-  ) {
+      final AssociatedInvestigationFinder associatedInvestigationFinder) {
     this.scopeResolver = scopeResolver;
     this.finder = finder;
     this.resultedTestResolver = resultedTestResolver;
@@ -48,7 +46,8 @@ class PatientLabReportsResolver {
 
         List<Long> identifiers = reports.stream().map(PatientLabReport::id).toList();
 
-        Map<Long, Collection<ResultedTest>> resultedTests = resultedTestResolver.resolve(identifiers);
+        Map<Long, Collection<ResultedTest>> resultedTests =
+            resultedTestResolver.resolve(identifiers);
 
         Map<Long, Collection<AssociatedInvestigation>> associations =
             associatedInvestigationFinder.find(identifiers, associationScope);
@@ -58,10 +57,13 @@ class PatientLabReportsResolver {
         }
 
         return reports.stream()
-            .map(report -> report
-                .withResultedTests(resultedTests.getOrDefault(report.id(), Collections.emptyList()))
-                .withAssociations(associations.getOrDefault(report.id(), Collections.emptyList()))
-            )
+            .map(
+                report ->
+                    report
+                        .withResultedTests(
+                            resultedTests.getOrDefault(report.id(), Collections.emptyList()))
+                        .withAssociations(
+                            associations.getOrDefault(report.id(), Collections.emptyList())))
             .toList();
       }
     }

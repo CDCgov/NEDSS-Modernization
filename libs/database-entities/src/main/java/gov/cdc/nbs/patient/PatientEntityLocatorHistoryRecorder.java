@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 class PatientEntityLocatorHistoryRecorder {
 
-  private static final String INSERT_SNAPSHOT = """
+  private static final String INSERT_SNAPSHOT =
+      """
       insert into Entity_loc_participation_hist (
           entity_uid,
           locator_uid,
@@ -62,14 +63,13 @@ class PatientEntityLocatorHistoryRecorder {
           [participation].valid_time_txt,
           [participation].as_of_date
       from Entity_locator_participation [participation]
-      
+
           join [Person] [patient] on
               [patient].person_uid = [participation].entity_uid
-      
+
       where   [participation].entity_uid = :entity
           and [participation].locator_uid = :locator
       """;
-
 
   private final JdbcClient client;
 
@@ -78,10 +78,10 @@ class PatientEntityLocatorHistoryRecorder {
   }
 
   void snapshot(final EntityLocatorParticipationId identifier) {
-    this.client.sql(INSERT_SNAPSHOT)
+    this.client
+        .sql(INSERT_SNAPSHOT)
         .param("entity", identifier.getEntityUid())
         .param("locator", identifier.getLocatorUid())
         .update();
   }
-
 }

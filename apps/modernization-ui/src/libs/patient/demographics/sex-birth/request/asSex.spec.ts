@@ -4,7 +4,7 @@ describe('when mapping a sex demographic to a format accepted by the API', () =>
     it('should include the as of date', () => {
         const demographic = {
             asOf: '04/13/2017',
-            current: { value: 'current-sex-value', name: 'current-sex-name' }
+            current: { value: 'current-sex-value', name: 'current-sex-name' },
         };
 
         const actual = asSex(demographic);
@@ -15,7 +15,7 @@ describe('when mapping a sex demographic to a format accepted by the API', () =>
     it('should include the current sex', () => {
         const demographic = {
             asOf: '04/13/2017',
-            current: { value: 'current-sex-value', name: 'current-sex-name' }
+            current: { value: 'current-sex-value', name: 'current-sex-name' },
         };
 
         const actual = asSex(demographic);
@@ -26,7 +26,7 @@ describe('when mapping a sex demographic to a format accepted by the API', () =>
     it('should include the unknown reason', () => {
         const demographic = {
             asOf: '04/13/2017',
-            unknownReason: { value: 'unknown-reason-value', name: 'unknown-reason-name' }
+            unknownReason: { value: 'unknown-reason-value', name: 'unknown-reason-name' },
         };
 
         const actual = asSex(demographic);
@@ -37,7 +37,7 @@ describe('when mapping a sex demographic to a format accepted by the API', () =>
     it('should include the current sex', () => {
         const demographic = {
             asOf: '04/13/2017',
-            transgenderInformation: { value: 'transgender-information-value', name: 'transgender-information-name' }
+            transgenderInformation: { value: 'transgender-information-value', name: 'transgender-information-name' },
         };
 
         const actual = asSex(demographic);
@@ -48,7 +48,7 @@ describe('when mapping a sex demographic to a format accepted by the API', () =>
     it('should include the additional gender', () => {
         const demographic = {
             asOf: '04/13/2017',
-            additionalGender: 'additional-gender'
+            additionalGender: 'additional-gender',
         };
 
         const actual = asSex(demographic);
@@ -58,7 +58,7 @@ describe('when mapping a sex demographic to a format accepted by the API', () =>
 
     it('should not map when only as of is present', () => {
         const demographic = {
-            asOf: '04/13/2017'
+            asOf: '04/13/2017',
         };
 
         const actual = asSex(demographic);

@@ -118,7 +118,8 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAliv
                 cancelText="Logout"
                 forceAction={true}
                 onConfirm={handleContinue}
-                onCancel={handleLogout}>
+                onCancel={handleLogout}
+            >
                 Your session will timeout in <time>{countdown.current}</time> minutes due to inactivity. Would you like
                 to continue your session in NBS?
             </Confirmation>

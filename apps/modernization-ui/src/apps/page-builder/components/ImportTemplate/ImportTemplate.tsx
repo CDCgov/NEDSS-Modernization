@@ -68,7 +68,8 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                 className="drop-container"
                 onDragLeave={handleDragEnd}
                 onDragOver={handleDragOver}
-                onDrop={handleFileDrop}>
+                onDrop={handleFileDrop}
+            >
                 {error && (
                     <div className="banner">
                         <AlertBanner type="error">{error}</AlertBanner>
@@ -109,7 +110,8 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                     disabled={file === undefined || isLoading}
                     className="submit-btn"
                     type="button"
-                    onClick={handleSubmit}>
+                    onClick={handleSubmit}
+                >
                     Import
                 </Button>
                 <Button className="cancel-btn" type="button" onClick={handleCancel}>

@@ -2,7 +2,6 @@ package gov.cdc.nbs.audit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
 import java.time.LocalDateTime;
 
 @Embeddable
@@ -17,8 +16,7 @@ public class Added {
   @Column(name = "add_user_id")
   private Long addUserId;
 
-  protected Added() {
-  }
+  protected Added() {}
 
   public Added(final long who, final LocalDateTime when) {
     this(who, when, "Add");
@@ -41,6 +39,4 @@ public class Added {
   public Long addedBy() {
     return addUserId;
   }
-
-
 }

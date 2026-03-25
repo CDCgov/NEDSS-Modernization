@@ -8,12 +8,12 @@ let mockReturnValue: DataElements | undefined = { firstName: { active: true } };
 vi.mock('apps/deduplication/api/useDataElements', () => ({
     useDataElements: () => {
         return { dataElements: mockReturnValue };
-    }
+    },
 }));
 vi.mock('apps/deduplication/api/useMatchConfiguration', () => ({
     useMatchConfiguration: () => {
         return { passes: [] };
-    }
+    },
 }));
 
 const Fixture = () => {

@@ -19,31 +19,31 @@ export class AvailableQuestionControllerService {
         size = 25,
         sort,
     }: {
-        pageId: number,
-        requestBody: AvailableQuestionCriteria,
+        pageId: number;
+        requestBody: AvailableQuestionCriteria;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<PageAvailableQuestion> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/questions/page/{pageId}/search',
             path: {
-                'pageId': pageId,
+                pageId: pageId,
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
             body: requestBody,
             mediaType: 'application/json',

@@ -12,7 +12,7 @@ const useIdentificationOptions = () => {
 
     return {
         types: types.options,
-        authorities: authorities.options
+        authorities: authorities.options,
     };
 };
 

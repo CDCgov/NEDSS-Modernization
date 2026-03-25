@@ -28,27 +28,27 @@ const mockMergeCandidates: MergeCandidate[] = [
                 raceCode: '123',
                 asOf: '2023-01-01',
                 race: 'RandomRace',
-                detailedRaces: ''
+                detailedRaces: '',
             },
             {
                 personUid: '1',
                 raceCode: '456',
                 asOf: '2025-01-01',
                 race: 'SomeRace',
-                detailedRaces: ''
-            }
+                detailedRaces: '',
+            },
         ],
         ethnicity: {},
         sexAndBirth: {},
         mortality: {},
         general: {},
-        investigations: []
-    }
+        investigations: [],
+    },
 ];
 
 const selectedRaces: RaceId[] = [
     { personUid: '1', raceCode: '123' },
-    { personUid: '1', raceCode: '456' }
+    { personUid: '1', raceCode: '456' },
 ];
 
 describe('PreviewRace Component', () => {

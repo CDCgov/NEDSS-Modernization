@@ -22,7 +22,7 @@ const RaceEntryFields = ({
     categoryValidator,
     entry,
     orientation = 'horizontal',
-    sizing = 'medium'
+    sizing = 'medium',
 }: RaceEntryFieldsProps) => {
     const { control, setValue } = useFormContext<RaceEntry>();
 
@@ -65,7 +65,7 @@ const RaceEntryFields = ({
                 name="race"
                 rules={{
                     ...validateRequiredRule(RACE_CATEGORY_LABEL),
-                    validate: (category) => categoryValidator(id, category)
+                    validate: (category) => categoryValidator(id, category),
                 }}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <SingleSelect

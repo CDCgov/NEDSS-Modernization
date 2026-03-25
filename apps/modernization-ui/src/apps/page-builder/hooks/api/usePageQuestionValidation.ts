@@ -19,7 +19,7 @@ const reducer = (_state: State, action: Action): State => {
                 status: 'validating',
                 page: action.page,
                 questionId: action.questionId,
-                dataMart: action.dataMart
+                dataMart: action.dataMart,
             };
         case 'complete':
             return { status: 'complete', isValid: action.isValid };
@@ -38,7 +38,7 @@ export const usePageQuestionDataMartValidation = () => {
             PageQuestionControllerService.validateDatamart({
                 page: state.page,
                 questionId: state.questionId,
-                datamart: state.dataMart
+                datamart: state.dataMart,
             })
                 .then((response) => dispatch({ type: 'complete', isValid: response.isValid ?? false }))
                 .catch(() => console.error(`Failed to validate Data Mart Column Name`));
@@ -50,7 +50,7 @@ export const usePageQuestionDataMartValidation = () => {
         isLoading: state.status === 'validating',
         isValid: state.status === 'complete' ? state.isValid : undefined,
         validate: (page: number, questionId: number, dataMart: string) =>
-            dispatch({ type: 'validate', page, questionId, dataMart })
+            dispatch({ type: 'validate', page, questionId, dataMart }),
     };
     return value;
 };

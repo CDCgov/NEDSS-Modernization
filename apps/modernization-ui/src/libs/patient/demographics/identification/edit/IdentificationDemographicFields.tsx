@@ -12,7 +12,7 @@ type IdentificationDemographicFieldsProps = { options: IdentificationOptions } &
 const IdentificationDemographicFields = ({
     orientation = 'horizontal',
     sizing = 'medium',
-    options
+    options,
 }: IdentificationDemographicFieldsProps) => {
     const { control } = useFormContext<IdentificationDemographic>();
 

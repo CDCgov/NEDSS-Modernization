@@ -4,7 +4,7 @@ import {
     getDescription,
     getOrderingProviderName,
     getPatient,
-    getReportingFacility
+    getReportingFacility,
 } from './laboratoryReportResult';
 import { render } from '@testing-library/react';
 
@@ -29,7 +29,7 @@ describe('when displaying a Laboratory Search Result', () => {
                     lastName: 'patient-last-name',
                     personCd: 'PAT',
                     personParentUid: 349,
-                    shortId: 919
+                    shortId: 919,
                 },
                 {
                     __typename: 'LabReportPersonParticipation',
@@ -40,11 +40,11 @@ describe('when displaying a Laboratory Search Result', () => {
                     lastName: 'provider-last-name',
                     personCd: 'PRV',
                     personParentUid: 503,
-                    shortId: 571
-                }
+                    shortId: 571,
+                },
             ],
             tests: [],
-            relevance: 1
+            relevance: 1,
         };
 
         const actual = getPatient(result);
@@ -72,7 +72,7 @@ describe('when displaying a Laboratory Search Result', () => {
                     lastName: 'patient-last-name',
                     personCd: 'PAT',
                     personParentUid: 349,
-                    shortId: 919
+                    shortId: 919,
                 },
                 {
                     __typename: 'LabReportPersonParticipation',
@@ -83,11 +83,11 @@ describe('when displaying a Laboratory Search Result', () => {
                     lastName: 'provider-last-name',
                     personCd: 'PRV',
                     personParentUid: 503,
-                    shortId: 571
-                }
+                    shortId: 571,
+                },
             ],
             tests: [],
-            relevance: 1
+            relevance: 1,
         };
 
         const actual = getOrderingProviderName(result);
@@ -108,12 +108,12 @@ describe('when displaying a Laboratory Search Result', () => {
                 {
                     __typename: 'LabReportOrganizationParticipation',
                     typeCd: 'AUT',
-                    name: 'ordering-facility-value'
-                }
+                    name: 'ordering-facility-value',
+                },
             ],
             personParticipations: [],
             tests: [],
-            relevance: 1
+            relevance: 1,
         };
 
         const actual = getReportingFacility(result);
@@ -135,19 +135,19 @@ describe('when displaying a Laboratory Search Result', () => {
                     cdDescTxt: 'No Information Given',
                     statusCd: null,
                     altCd: null,
-                    displayName: null
+                    displayName: null,
                 },
                 {
                     __typename: 'Observation',
                     cdDescTxt: 'lab-test-name',
                     altCd: 'lab-test-code',
-                    displayName: 'lab-test-value'
-                }
+                    displayName: 'lab-test-value',
+                },
             ],
             organizationParticipations: [],
             personParticipations: [],
             tests: [{ coded: 'abnormal' }],
-            relevance: 1
+            relevance: 1,
         };
 
         const { getByText } = render(<>{getDescription(result)}</>);
@@ -162,13 +162,13 @@ describe('when displaying a Laboratory Search Result', () => {
                 {
                     __typename: 'AssociatedInvestigation',
                     cdDescTxt: 'condition-one-name',
-                    localId: 'condition-one-local'
+                    localId: 'condition-one-local',
                 },
                 {
                     __typename: 'AssociatedInvestigation',
                     cdDescTxt: 'condition-two-name',
-                    localId: 'condition-two-local'
-                }
+                    localId: 'condition-two-local',
+                },
             ],
             id: 'id-value',
             jurisdictionCd: 1063,
@@ -177,7 +177,7 @@ describe('when displaying a Laboratory Search Result', () => {
             organizationParticipations: [],
             personParticipations: [],
             tests: [],
-            relevance: 1
+            relevance: 1,
         };
 
         const actual = getAssociatedInvestigations(result);

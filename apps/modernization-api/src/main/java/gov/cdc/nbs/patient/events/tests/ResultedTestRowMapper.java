@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.events.tests;
 
-import org.springframework.jdbc.core.RowMapper;
+import static java.util.stream.Collectors.joining;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -9,8 +9,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.joining;
+import org.springframework.jdbc.core.RowMapper;
 
 class ResultedTestRowMapper implements RowMapper<ResultedTest> {
 
@@ -27,10 +26,7 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
       int high,
       int low,
       int unit,
-      int text
-  ) {
-  }
-
+      int text) {}
 
   private final Column columns;
 
@@ -43,9 +39,8 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     String name = resultSet.getString(columns.name());
     String reference = maybeDisplayReferenceRange(columns, resultSet);
 
-    String status = maybeDisplayStatus(columns, resultSet)
-        .filter(unused -> reference == null)
-        .orElse("");
+    String status =
+        maybeDisplayStatus(columns, resultSet).filter(unused -> reference == null).orElse("");
 
     String coded = resultSet.getString(columns.coded());
 
@@ -53,27 +48,16 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
 
     String text = resultSet.getString(columns.text());
 
-
     String result =
-        Stream.of(
-                coded, numeric, text
-            ).filter(value -> value != null && !value.isEmpty())
-            .collect(
-                joining(
-                    "\n",
-                    "",
-                    status
-                )
-            );
+        Stream.of(coded, numeric, text)
+            .filter(value -> value != null && !value.isEmpty())
+            .collect(joining("\n", "", status));
 
-    return new ResultedTest(
-        name,
-        result,
-        reference
-    );
+    return new ResultedTest(name, result, reference);
   }
 
-  private static String maybeDisplayNumericResult(final Column columns, final ResultSet resultSet) throws SQLException {
+  private static String maybeDisplayNumericResult(final Column columns, final ResultSet resultSet)
+      throws SQLException {
 
     BigDecimal numeric = resultSet.getBigDecimal(columns.numeric());
 
@@ -111,26 +95,14 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     return null;
   }
 
-  private static String maybeDisplayReferenceRange(
-      final Column columns,
-      final ResultSet resultSet
-  )
+  private static String maybeDisplayReferenceRange(final Column columns, final ResultSet resultSet)
       throws SQLException {
 
     String high = resultSet.getString(columns.high());
     String low = resultSet.getString(columns.low());
 
     if (high != null || low != null) {
-      String range = Stream.of(low, high)
-          .filter(Objects::nonNull)
-          .collect(
-              joining(
-                  "-",
-                  "(",
-                  ")"
-              )
-          );
-
+      String range = Stream.of(low, high).filter(Objects::nonNull).collect(joining("-", "(", ")"));
 
       return maybeDisplayStatus(columns, resultSet).map(range::concat).orElse(range);
     }
@@ -138,11 +110,10 @@ class ResultedTestRowMapper implements RowMapper<ResultedTest> {
     return null;
   }
 
-  private static Optional<String> maybeDisplayStatus(final Column columns, final ResultSet resultSet)
-      throws SQLException {
+  private static Optional<String> maybeDisplayStatus(
+      final Column columns, final ResultSet resultSet) throws SQLException {
     String status = resultSet.getString(columns.status());
 
     return status == null ? Optional.empty() : Optional.of(String.format(" - (%s)", status));
   }
 }
-

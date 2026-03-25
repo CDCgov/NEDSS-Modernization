@@ -14,7 +14,7 @@ const entry: AddressEntry = {
     county: { name: 'CountyName', value: '2' },
     country: { name: 'CountryName', value: '3' },
     censusTract: '22222',
-    comment: 'comment'
+    comment: 'comment',
 };
 
 describe('PhoneEntryView', () => {

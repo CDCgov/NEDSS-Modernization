@@ -18,7 +18,7 @@ const asName = (demographic: Partial<NameDemographic>): NameDemographicRequest |
             last: orUndefined(last),
             secondLast: orUndefined(secondLast),
             suffix: asValue(suffix),
-            degree: asValue(degree)
+            degree: asValue(degree),
         };
     }
 };

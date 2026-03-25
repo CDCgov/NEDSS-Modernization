@@ -11,9 +11,7 @@ public class ConditionAutocompleteSteps {
   private final Active<ResultActions> response;
 
   ConditionAutocompleteSteps(
-      final ConditionAutocompleteRequester request,
-      final Active<ResultActions> response
-  ) {
+      final ConditionAutocompleteRequester request, final Active<ResultActions> response) {
     this.request = request;
     this.response = response;
   }
@@ -24,16 +22,14 @@ public class ConditionAutocompleteSteps {
   }
 
   @When("I am trying to find conditions that start with {string}")
-  public void i_am_trying_to_find_conditions_that_start_with(final String criteria) throws Exception {
+  public void i_am_trying_to_find_conditions_that_start_with(final String criteria)
+      throws Exception {
     response.active(request.complete(criteria));
   }
 
   @When("I am trying to find at most {int} condition(s) that start with {string}")
   public void i_am_trying_to_find_n_conditions_that_start_with(
-      final int limit,
-      final String criteria
-  ) throws Exception {
+      final int limit, final String criteria) throws Exception {
     response.active(request.complete(criteria, limit));
   }
-
 }

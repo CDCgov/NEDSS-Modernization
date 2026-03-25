@@ -19,8 +19,12 @@ public class RedirectController {
     this.defaultRedirection = defaultRedirection;
   }
 
-  @SuppressWarnings("squid:S3752") // Allow GET and POST on same method as requests forwarded from classic for redirection can be either
-  @RequestMapping(path = "/redirect", method = {RequestMethod.POST, RequestMethod.GET})
+  @SuppressWarnings(
+      "squid:S3752") // Allow GET and POST on same method as requests forwarded from classic for
+  // redirection can be either
+  @RequestMapping(
+      path = "/redirect",
+      method = {RequestMethod.POST, RequestMethod.GET})
   public ResponseEntity<Void> redirect(HttpServletRequest request) {
     String location = request.getHeader(HttpHeaders.LOCATION);
     if (location == null) {

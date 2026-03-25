@@ -32,7 +32,7 @@ export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [panelState, setPanelState] = useState<{ visible: boolean; content: 'blocking' | 'matching' }>({
         visible: false,
-        content: 'blocking'
+        content: 'blocking',
     });
 
     useEffect(() => {

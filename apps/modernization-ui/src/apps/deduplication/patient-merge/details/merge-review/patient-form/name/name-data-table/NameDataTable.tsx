@@ -35,19 +35,19 @@ export const NameDataTable = ({ patientData, onViewName, selectedName }: Props) 
             id: 'as-of',
             name: 'As of',
             className: styles['date-header'],
-            render: (n) => toDateDisplay(n.asOf)
+            render: (n) => toDateDisplay(n.asOf),
         },
         {
             id: 'type',
             name: 'Type',
             className: styles['text-header'],
-            render: (n) => n.type
+            render: (n) => n.type,
         },
         {
             id: 'name',
             name: 'Name',
-            render: (n) => formatName(n)
-        }
+            render: (n) => formatName(n),
+        },
     ];
     return (
         <MergeDataTable<MergeName>

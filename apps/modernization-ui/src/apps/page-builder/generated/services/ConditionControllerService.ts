@@ -21,27 +21,27 @@ export class ConditionControllerService {
         size = 20,
         sort,
     }: {
-        requestBody: ReadConditionRequest,
+        requestBody: ReadConditionRequest;
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<PageCondition> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/conditions/search',
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -59,23 +59,23 @@ export class ConditionControllerService {
         /**
          * Zero-based page index (0..N)
          */
-        page?: number,
+        page?: number;
         /**
          * The size of the page to be returned
          */
-        size?: number,
+        size?: number;
         /**
          * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          */
-        sort?: Array<string>,
+        sort?: Array<string>;
     }): CancelablePromise<PageCondition> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/conditions/',
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort,
             },
         });
     }
@@ -86,7 +86,7 @@ export class ConditionControllerService {
     public static createCondition({
         requestBody,
     }: {
-        requestBody: CreateConditionRequest,
+        requestBody: CreateConditionRequest;
     }): CancelablePromise<Condition> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -99,16 +99,12 @@ export class ConditionControllerService {
      * @returns ConditionStatusResponse OK
      * @throws ApiError
      */
-    public static inactivateCondition({
-        id,
-    }: {
-        id: string,
-    }): CancelablePromise<ConditionStatusResponse> {
+    public static inactivateCondition({ id }: { id: string }): CancelablePromise<ConditionStatusResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/v1/conditions/{id}',
             path: {
-                'id': id,
+                id: id,
             },
         });
     }
@@ -116,16 +112,12 @@ export class ConditionControllerService {
      * @returns ConditionStatusResponse OK
      * @throws ApiError
      */
-    public static activateCondition({
-        id,
-    }: {
-        id: string,
-    }): CancelablePromise<ConditionStatusResponse> {
+    public static activateCondition({ id }: { id: string }): CancelablePromise<ConditionStatusResponse> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/api/v1/conditions/{id}',
             path: {
-                'id': id,
+                id: id,
             },
         });
     }
@@ -133,16 +125,12 @@ export class ConditionControllerService {
      * @returns Condition OK
      * @throws ApiError
      */
-    public static findConditionsNotInUse({
-        page,
-    }: {
-        page?: number,
-    }): CancelablePromise<Array<Condition>> {
+    public static findConditionsNotInUse({ page }: { page?: number }): CancelablePromise<Array<Condition>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/conditions/available',
             query: {
-                'page': page,
+                page: page,
             },
         });
     }

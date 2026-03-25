@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 class JDBCDatamartNameVerifier implements DatamartNameVerifier {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
       count(*)
       from WA_template
@@ -21,11 +22,9 @@ class JDBCDatamartNameVerifier implements DatamartNameVerifier {
 
   @Override
   public boolean isUnique(final String datamart) {
-    return this.template.query(
-            QUERY,
-            statement -> statement.setString(1, datamart),
-            (rs, row) -> rs.getLong(1)
-        ).stream()
+    return this.template
+        .query(QUERY, statement -> statement.setString(1, datamart), (rs, row) -> rs.getLong(1))
+        .stream()
         .filter(found -> found > 0)
         .findFirst()
         .isEmpty();

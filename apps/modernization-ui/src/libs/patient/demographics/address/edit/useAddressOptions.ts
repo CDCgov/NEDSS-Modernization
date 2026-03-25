@@ -16,7 +16,7 @@ const useAddressOptions = (): AddressOptions => {
     return {
         types: types.options,
         uses: uses.options,
-        location
+        location,
     };
 };
 

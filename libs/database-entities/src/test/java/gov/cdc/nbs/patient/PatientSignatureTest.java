@@ -1,24 +1,22 @@
 package gov.cdc.nbs.patient;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Indicator;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-
 class PatientSignatureTest {
-
 
   @Test
   void should_not_compute_different_hash_when_administrative_does_not_change() {
@@ -31,9 +29,7 @@ class PatientSignatureTest {
             LocalDate.parse("2023-06-01"),
             "comments",
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     long before = patient.signature();
 
@@ -43,9 +39,7 @@ class PatientSignatureTest {
             LocalDate.parse("2023-06-01"),
             "comments",
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     long after = patient.signature();
 
@@ -56,44 +50,26 @@ class PatientSignatureTest {
     return Stream.of(
         arguments(
             new PatientCommand.UpdateAdministrativeInfo(
-                967L,
-                LocalDate.now(),
-                "comments",
-                131L,
-                LocalDateTime.now()
-            )
-        ),
+                967L, LocalDate.now(), "comments", 131L, LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateAdministrativeInfo(
                 967L,
                 LocalDate.parse("2023-06-01"),
                 "changed comments",
                 131L,
-                LocalDateTime.now()
-            )
-        )
-    );
+                LocalDateTime.now())));
   }
 
   @ParameterizedTest
   @MethodSource("administrativeUpdates")
   void should_compute_different_hash_when_administrative_changes(
-      final PatientCommand.UpdateAdministrativeInfo changes
-  ) {
-
-
+      final PatientCommand.UpdateAdministrativeInfo changes) {
 
     Person patient = new Person(967L, "local-id-value");
 
     patient.update(
         new PatientCommand.UpdateAdministrativeInfo(
-            967L,
-            LocalDate.parse("2023-06-01"),
-            "comments",
-            131L,
-            LocalDateTime.now()
-        )
-    );
+            967L, LocalDate.parse("2023-06-01"), "comments", 131L, LocalDateTime.now()));
 
     long before = patient.signature();
 
@@ -107,8 +83,6 @@ class PatientSignatureTest {
   @Test
   void should_not_compute_different_hash_when_general_information_does_not_change() {
 
-
-
     Person patient = new Person(967L, "local-id-value");
 
     patient.update(
@@ -124,8 +98,7 @@ class PatientSignatureTest {
             "prim language",
             "speaks english",
             12L,
-            LocalDateTime.parse("2019-03-03T10:15:30"))
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     long before = patient.signature();
 
@@ -142,8 +115,7 @@ class PatientSignatureTest {
             "prim language",
             "speaks english",
             12L,
-            LocalDateTime.parse("2019-03-03T10:15:30"))
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     long after = patient.signature();
 
@@ -165,9 +137,7 @@ class PatientSignatureTest {
                 "prim language",
                 "speaks english",
                 12L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
@@ -181,9 +151,7 @@ class PatientSignatureTest {
                 "prim language",
                 "speaks english",
                 12L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
@@ -197,9 +165,7 @@ class PatientSignatureTest {
                 "prim language",
                 "speaks english",
                 12L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
@@ -213,9 +179,7 @@ class PatientSignatureTest {
                 "prim language",
                 "speaks english",
                 12L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
@@ -229,9 +193,7 @@ class PatientSignatureTest {
                 "prim language",
                 "speaks english",
                 12L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
@@ -245,9 +207,7 @@ class PatientSignatureTest {
                 "prim language",
                 "speaks english",
                 12L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
@@ -261,9 +221,7 @@ class PatientSignatureTest {
                 "prim language",
                 "speaks english",
                 12L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
@@ -277,9 +235,7 @@ class PatientSignatureTest {
                 "changed prim language",
                 "speaks english",
                 12L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGeneralInfo(
                 967L,
@@ -293,17 +249,13 @@ class PatientSignatureTest {
                 "prim language",
                 "changed speaks english",
                 12L,
-                LocalDateTime.now()
-            )
-        )
-    );
+                LocalDateTime.now())));
   }
 
   @ParameterizedTest
   @MethodSource("generalInformationUpdates")
-  void should_compute_different_hash_when_general_information_changes(final PatientCommand.UpdateGeneralInfo changes) {
-
-
+  void should_compute_different_hash_when_general_information_changes(
+      final PatientCommand.UpdateGeneralInfo changes) {
 
     Person patient = new Person(967L, "local-id-value");
 
@@ -320,10 +272,7 @@ class PatientSignatureTest {
             "prim language",
             "speaks english",
             12L,
-            LocalDateTime.now()
-        )
-
-    );
+            LocalDateTime.now()));
 
     long before = patient.signature();
 
@@ -336,8 +285,6 @@ class PatientSignatureTest {
 
   @Test
   void should_not_compute_different_hash_when_mortality_does_not_change() {
-
-
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -354,10 +301,8 @@ class PatientSignatureTest {
             null,
             null,
             131L,
-            LocalDateTime.now()
-        ),
-        generator
-    );
+            LocalDateTime.now()),
+        generator);
 
     long before = patient.signature();
 
@@ -372,10 +317,8 @@ class PatientSignatureTest {
             null,
             null,
             131L,
-            LocalDateTime.now()
-        ),
-        generator
-    );
+            LocalDateTime.now()),
+        generator);
 
     long after = patient.signature();
 
@@ -395,9 +338,7 @@ class PatientSignatureTest {
                 null,
                 null,
                 131L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateMortality(
                 1157,
@@ -409,9 +350,7 @@ class PatientSignatureTest {
                 null,
                 null,
                 131L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateMortality(
                 1157,
@@ -423,17 +362,13 @@ class PatientSignatureTest {
                 null,
                 null,
                 131L,
-                LocalDateTime.now()
-            )
-        )
-    );
+                LocalDateTime.now())));
   }
 
   @ParameterizedTest
   @MethodSource("mortalityUpdates")
-  void should_compute_different_hash_when_mortality_changes(final PatientCommand.UpdateMortality changes) {
-
-
+  void should_compute_different_hash_when_mortality_changes(
+      final PatientCommand.UpdateMortality changes) {
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -450,10 +385,8 @@ class PatientSignatureTest {
             null,
             null,
             131L,
-            LocalDateTime.now()
-        ),
-        generator
-    );
+            LocalDateTime.now()),
+        generator);
 
     long before = patient.signature();
 
@@ -467,8 +400,6 @@ class PatientSignatureTest {
   @Test
   void should_not_compute_different_hash_when_ethnicity_does_not_change() {
 
-
-
     Person patient = new Person(967L, "local-id-value");
 
     patient.update(
@@ -478,9 +409,7 @@ class PatientSignatureTest {
             "ethnic-group-value",
             "unknown-reason-value",
             131L,
-            LocalDateTime.parse("2020-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2020-03-03T10:15:30")));
 
     long before = patient.signature();
 
@@ -491,9 +420,7 @@ class PatientSignatureTest {
             "ethnic-group-value",
             "unknown-reason-value",
             131L,
-            LocalDateTime.parse("2020-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2020-03-03T10:15:30")));
 
     long after = patient.signature();
 
@@ -504,14 +431,7 @@ class PatientSignatureTest {
     return Stream.of(
         arguments(
             new PatientCommand.UpdateEthnicityInfo(
-                121L,
-                LocalDate.now(),
-                "ethnic-group-value",
-                null,
-                131L,
-                LocalDateTime.now()
-            )
-        ),
+                121L, LocalDate.now(), "ethnic-group-value", null, 131L, LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateEthnicityInfo(
                 121L,
@@ -519,30 +439,19 @@ class PatientSignatureTest {
                 "UNK",
                 "changed unknown-reason-value",
                 131L,
-                LocalDateTime.now()
-            )
-        )
-    );
+                LocalDateTime.now())));
   }
 
   @ParameterizedTest
   @MethodSource("ethnicityUpdates")
-  void should_compute_different_hash_when_ethnicity_changes(final PatientCommand.UpdateEthnicityInfo changes) {
-
-
+  void should_compute_different_hash_when_ethnicity_changes(
+      final PatientCommand.UpdateEthnicityInfo changes) {
 
     Person patient = new Person(967L, "local-id-value");
 
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
-            121L,
-            LocalDate.parse("2012-03-03"),
-            null,
-            null,
-            131L,
-            LocalDateTime.now()
-        )
-    );
+            121L, LocalDate.parse("2012-03-03"), null, null, 131L, LocalDateTime.now()));
 
     long before = patient.signature();
 
@@ -556,8 +465,6 @@ class PatientSignatureTest {
   @Test
   void should_not_compute_different_hash_when_gender_does_not_change() {
 
-
-
     Person patient = new Person(967L, "local-id-value");
 
     patient.update(
@@ -569,9 +476,7 @@ class PatientSignatureTest {
             "gender-preferred",
             "gender-additional",
             131L,
-            LocalDateTime.now()
-        )
-    );
+            LocalDateTime.now()));
 
     long before = patient.signature();
 
@@ -584,9 +489,7 @@ class PatientSignatureTest {
             "gender-preferred",
             "gender-additional",
             131L,
-            LocalDateTime.now()
-        )
-    );
+            LocalDateTime.now()));
 
     long after = patient.signature();
 
@@ -604,9 +507,7 @@ class PatientSignatureTest {
                 "gender-preferred",
                 "gender-additional",
                 131L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGender(
                 967L,
@@ -616,9 +517,7 @@ class PatientSignatureTest {
                 "gender-preferred",
                 "gender-additional",
                 131L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGender(
                 967L,
@@ -628,9 +527,7 @@ class PatientSignatureTest {
                 "gender-preferred",
                 "gender-additional",
                 131L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGender(
                 967L,
@@ -640,9 +537,7 @@ class PatientSignatureTest {
                 "changed gender-preferred",
                 "gender-additional",
                 131L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateGender(
                 967L,
@@ -652,17 +547,13 @@ class PatientSignatureTest {
                 "gender-preferred",
                 "changed gender-additional",
                 131L,
-                LocalDateTime.now()
-            )
-        )
-    );
+                LocalDateTime.now())));
   }
 
   @ParameterizedTest
   @MethodSource("genderUpdates")
-  void should_compute_different_hash_when_gender_changes(final PatientCommand.UpdateGender changes) {
-
-
+  void should_compute_different_hash_when_gender_changes(
+      final PatientCommand.UpdateGender changes) {
 
     Person patient = new Person(967L, "local-id-value");
 
@@ -675,9 +566,7 @@ class PatientSignatureTest {
             "gender-preferred",
             "gender-additional",
             131L,
-            LocalDateTime.now()
-        )
-    );
+            LocalDateTime.now()));
 
     long before = patient.signature();
 
@@ -690,8 +579,6 @@ class PatientSignatureTest {
 
   @Test
   void should_not_compute_different_hash_when_birth_does_not_change() {
-
-
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -710,10 +597,8 @@ class PatientSignatureTest {
             null,
             null,
             131L,
-            LocalDateTime.now()
-        ),
-        generator
-    );
+            LocalDateTime.now()),
+        generator);
 
     long before = patient.signature();
 
@@ -730,10 +615,8 @@ class PatientSignatureTest {
             null,
             null,
             131L,
-            LocalDateTime.now()
-        ),
-        generator
-    );
+            LocalDateTime.now()),
+        generator);
 
     long after = patient.signature();
 
@@ -755,9 +638,7 @@ class PatientSignatureTest {
                 null,
                 null,
                 131L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateBirth(
                 967L,
@@ -771,9 +652,7 @@ class PatientSignatureTest {
                 null,
                 null,
                 131L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateBirth(
                 967L,
@@ -787,9 +666,7 @@ class PatientSignatureTest {
                 null,
                 null,
                 131L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateBirth(
                 967L,
@@ -803,9 +680,7 @@ class PatientSignatureTest {
                 null,
                 null,
                 131L,
-                LocalDateTime.now()
-            )
-        ),
+                LocalDateTime.now())),
         arguments(
             new PatientCommand.UpdateBirth(
                 967L,
@@ -819,17 +694,12 @@ class PatientSignatureTest {
                 null,
                 null,
                 131L,
-                LocalDateTime.now()
-            )
-        )
-    );
+                LocalDateTime.now())));
   }
 
   @ParameterizedTest
   @MethodSource("birthUpdates")
   void should_compute_different_hash_when_birth_changes(final PatientCommand.UpdateBirth changes) {
-
-
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -848,10 +718,8 @@ class PatientSignatureTest {
             null,
             null,
             131L,
-            LocalDateTime.now()
-        ),
-        generator
-    );
+            LocalDateTime.now()),
+        generator);
 
     long before = patient.signature();
 

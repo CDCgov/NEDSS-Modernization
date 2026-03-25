@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//  "The intended client of this endpoint is a Classic redirection component so it will not be exposed through API documentation."
+//  "The intended client of this endpoint is a Classic redirection component so it will not be
+// exposed through API documentation."
 @Hidden
 @RestController
 @RequestMapping("/api/v1/pages/{page}/clone")

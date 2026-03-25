@@ -22,7 +22,7 @@ const useSexBirthOptions = (): SexBirthOptions => {
         preferredGenders: preferredGenders.options,
         genderUnknownReasons: genderUnknownReasons.options,
         multipleBirth: indicators,
-        location
+        location,
     };
 };
 

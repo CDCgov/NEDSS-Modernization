@@ -18,4 +18,3 @@ export type PageConcept = {
     numberOfElements?: number;
     empty?: boolean;
 };
-

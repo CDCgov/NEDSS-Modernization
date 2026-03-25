@@ -31,7 +31,8 @@ const DataTableHeader = <T,>({ columns, sizing, sorting, filtering, sticky = fal
                             className={column.className}
                             sizing={sizing}
                             sorting={sorting}
-                            filtering={filtering}>
+                            filtering={filtering}
+                        >
                             {column}
                         </ColumnHeader>
                     ))}

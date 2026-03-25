@@ -1,15 +1,12 @@
 package gov.cdc.nbs.questionbank.valueset;
 
 import gov.cdc.nbs.questionbank.valueset.response.County;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 class CountyMapper implements RowMapper<County> {
-  record Column(int code, int shortDescription, int description, int codeSetName) {
-  }
-
+  record Column(int code, int shortDescription, int description, int codeSetName) {}
 
   private final Column columns;
 
@@ -25,5 +22,4 @@ class CountyMapper implements RowMapper<County> {
     String codeSetName = rs.getString(columns.codeSetName);
     return new County(code, shortDescription, description, codeSetName);
   }
-
 }

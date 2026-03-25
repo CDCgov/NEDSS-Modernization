@@ -41,13 +41,13 @@ const DataTable = <V,>({
     sizing,
     onEmpty = defaultEmptyHandler,
     features = {},
-    options = {}
+    options = {},
 }: DataTableProps<V>) => {
     const resolvedClasses = classNames('usa-table--borderless', styles.table, {
         [styles.sized]: sizing,
         [styles.small]: sizing === 'small',
         [styles.medium]: sizing === 'medium',
-        [styles.large]: sizing === 'large'
+        [styles.large]: sizing === 'large',
     });
     return (
         <div id={id} className={resolvedClasses}>

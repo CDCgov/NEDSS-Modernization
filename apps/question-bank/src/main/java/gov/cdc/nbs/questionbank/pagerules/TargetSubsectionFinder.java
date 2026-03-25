@@ -1,10 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.page.detail.PagesResolver;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesSection;
@@ -12,6 +7,11 @@ import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesSubSection;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesTab;
 import gov.cdc.nbs.questionbank.pagerules.Rule.Target;
 import gov.cdc.nbs.questionbank.pagerules.request.TargetSubsectionRequest;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TargetSubsectionFinder {
@@ -37,12 +37,16 @@ public class TargetSubsectionFinder {
     return targetIdentifiers;
   }
 
-  private void processSubsections(PagesSection section, TargetSubsectionRequest request, Long id,
+  private void processSubsections(
+      PagesSection section,
+      TargetSubsectionRequest request,
+      Long id,
       Collection<PagesSubSection> result) {
     List<String> targetIdentifiers = previousTargetQuestions(id);
 
     for (PagesSubSection subsection : section.subSections()) {
-      if (!subsection.questions().isEmpty() && request.orderNbr() <= subsection.order()
+      if (!subsection.questions().isEmpty()
+          && request.orderNbr() <= subsection.order()
           && (!targetIdentifiers.contains(subsection.questionIdentifier())
               || request.targetSubsections().contains(subsection.questionIdentifier()))) {
         result.add(subsection);
@@ -53,7 +57,6 @@ public class TargetSubsectionFinder {
   public Collection<PagesSubSection> filterSubsections(Long id, TargetSubsectionRequest request) {
     Collection<PagesSubSection> result = new ArrayList<>();
     Optional<PagesResponse> page = pageResolver.resolve(id);
-
 
     if (!page.isEmpty()) {
       for (PagesTab tab : page.get().tabs()) {

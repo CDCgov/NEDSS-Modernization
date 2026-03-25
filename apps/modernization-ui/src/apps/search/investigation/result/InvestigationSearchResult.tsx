@@ -12,7 +12,8 @@ const displayInvestigationLink = (investigation: Investigation) => {
     return (
         <ClassicLink
             id="condition"
-            url={`/nbs/api/profile/${patient?.personParentUid}/investigation/${investigation.id}`}>
+            url={`/nbs/api/profile/${patient?.personParentUid}/investigation/${investigation.id}`}
+        >
             {investigation.cdDescTxt}
         </ClassicLink>
     );

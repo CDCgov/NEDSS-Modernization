@@ -1,17 +1,17 @@
 package gov.cdc.nbs.testing.authorization;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 @Component
 @SuppressWarnings("java:S100")
 class ActiveUserParameterResolver {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           auth_user_uid,
           user_id,
@@ -27,11 +27,10 @@ class ActiveUserParameterResolver {
   }
 
   Optional<ActiveUser> resolve(final String value) {
-    return this.template.query(
-        QUERY,
-        statement -> statement.setString(1, value),
-        this::map
-    ).stream().findFirst();
+    return this.template
+        .query(QUERY, statement -> statement.setString(1, value), this::map)
+        .stream()
+        .findFirst();
   }
 
   private ActiveUser map(final ResultSet resultSet, final int row) throws SQLException {
@@ -39,10 +38,6 @@ class ActiveUserParameterResolver {
     String username = resultSet.getString(2);
     long nedss = resultSet.getLong(3);
 
-    return new ActiveUser(
-      identifier,
-      username,
-      nedss
-    );
+    return new ActiveUser(identifier, username, nedss);
   }
 }

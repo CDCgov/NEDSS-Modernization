@@ -10,14 +10,11 @@ public class SearchGraphQLPageableMapper {
 
   private final int maxPageSize;
 
-  public SearchGraphQLPageableMapper(
-      @Value("${nbs.search.max-page-size}") final int maxPageSize
-  ) {
+  public SearchGraphQLPageableMapper(@Value("${nbs.search.max-page-size}") final int maxPageSize) {
     this.maxPageSize = maxPageSize;
   }
 
   public Pageable from(final GraphQLPage page) {
     return GraphQLPage.toPageable(page, maxPageSize);
   }
-
 }

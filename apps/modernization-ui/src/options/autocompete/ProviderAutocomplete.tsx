@@ -1,13 +1,13 @@
 import {
     SelectableAutocomplete,
-    SelectableAutocompleteSingleProps
+    SelectableAutocompleteSingleProps,
 } from 'design-system/autocomplete/single/selectable';
 import { ProviderOptionsService } from 'generated';
 
 const resolver = (criteria: string, limit?: number) =>
     ProviderOptionsService.providerAutocomplete({
         criteria: criteria,
-        limit: limit
+        limit: limit,
     }).then((response) => response);
 
 const ProviderAutocomplete = ({

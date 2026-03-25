@@ -1,5 +1,9 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
@@ -7,14 +11,10 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand.GroupSubsection;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.time.Instant;
 import java.util.Arrays;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class WaTemplateTest {
 
@@ -27,13 +27,10 @@ class WaTemplateTest {
     page.addTab(tab(page, 2L, 2));
 
     // When an add section request is processed
-    WaUiMetadata section = page.addSection(new PageContentCommand.AddSection(
-        "section label",
-        true,
-        "sectionIdentifier",
-        2,
-        999L,
-        Instant.now()));
+    WaUiMetadata section =
+        page.addSection(
+            new PageContentCommand.AddSection(
+                "section label", true, "sectionIdentifier", 2, 999L, Instant.now()));
 
     // Then the section is added
     assertNotNull(section);
@@ -46,19 +43,14 @@ class WaTemplateTest {
   @Test
   void section_add_error_page_not_draft() {
     // Given a template that is not a draft
-    WaTemplate page = new WaTemplate().publish(
-        new PageCommand.Publish(
-            227L,
-            Instant.parse("2022-01-18T01:15:50Z")));
+    WaTemplate page =
+        new WaTemplate()
+            .publish(new PageCommand.Publish(227L, Instant.parse("2022-01-18T01:15:50Z")));
 
     // When an add section request is processed
-    PageContentCommand.AddSection command = new PageContentCommand.AddSection(
-        "section label",
-        true,
-        "sectionIdentifier",
-        2,
-        999L,
-        Instant.now());
+    PageContentCommand.AddSection command =
+        new PageContentCommand.AddSection(
+            "section label", true, "sectionIdentifier", 2, 999L, Instant.now());
 
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.addSection(command));
@@ -72,13 +64,9 @@ class WaTemplateTest {
     // And there is no tab
 
     // When an add section request is processed
-    PageContentCommand.AddSection command = new PageContentCommand.AddSection(
-        "section label",
-        true,
-        "sectionIdentifier",
-        2,
-        999L,
-        Instant.now());
+    PageContentCommand.AddSection command =
+        new PageContentCommand.AddSection(
+            "section label", true, "sectionIdentifier", 2, 999L, Instant.now());
 
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.addSection(command));
@@ -156,7 +144,8 @@ class WaTemplateTest {
     page.addTab(tab(page, 2L, 2));
 
     // When a delete section request is processed
-    PageContentCommand.DeleteSection command = new PageContentCommand.DeleteSection(3L, 999L, Instant.now());
+    PageContentCommand.DeleteSection command =
+        new PageContentCommand.DeleteSection(3L, 999L, Instant.now());
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.deleteSection(command));
   }
@@ -176,7 +165,8 @@ class WaTemplateTest {
     page.addSubSection(subsection(page, 4L, 4));
 
     // When a delete section request is processed
-    PageContentCommand.DeleteSection command = new PageContentCommand.DeleteSection(3L, 999L, Instant.now());
+    PageContentCommand.DeleteSection command =
+        new PageContentCommand.DeleteSection(3L, 999L, Instant.now());
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.deleteSection(command));
   }
@@ -287,7 +277,8 @@ class WaTemplateTest {
     page.addTab(tab(page, 2L, 2));
 
     // When a delete section request is processed
-    PageContentCommand.DeleteSubsection command = new PageContentCommand.DeleteSubsection(3L, 999L, Instant.now());
+    PageContentCommand.DeleteSubsection command =
+        new PageContentCommand.DeleteSubsection(3L, 999L, Instant.now());
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.deleteSubsection(command));
   }
@@ -308,17 +299,11 @@ class WaTemplateTest {
     page.addSubSection(subsection(page, 4L, 4));
 
     // And that subsection has content
-    page.addContent(
-        "question",
-        1008,
-        5,
-        999L,
-        Instant.now(),
-        null,
-        null);
+    page.addContent("question", 1008, 5, 999L, Instant.now(), null, null);
 
     // When a delete subsection request is processed
-    PageContentCommand.DeleteSubsection command = new PageContentCommand.DeleteSubsection(4L, 999L, Instant.now());
+    PageContentCommand.DeleteSubsection command =
+        new PageContentCommand.DeleteSubsection(4L, 999L, Instant.now());
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.deleteSubsection(command));
   }
@@ -335,13 +320,10 @@ class WaTemplateTest {
     page.addSection(section(page, 3L, 3));
 
     // When an add subsection request is processed
-    WaUiMetadata subsection = page.addSubSection(new PageContentCommand.AddSubsection(
-        "subsection label",
-        true,
-        "subsectionIdentifier",
-        3L,
-        999L,
-        Instant.now()));
+    WaUiMetadata subsection =
+        page.addSubSection(
+            new PageContentCommand.AddSubsection(
+                "subsection label", true, "subsectionIdentifier", 3L, 999L, Instant.now()));
 
     // Then the section is added
     assertNotNull(subsection);
@@ -355,18 +337,13 @@ class WaTemplateTest {
   @Test
   void subsection_add_error_page_not_draft() {
     // Given a template that is not a draft
-    WaTemplate page = new WaTemplate().publish(
-        new PageCommand.Publish(
-            227L,
-            Instant.parse("2022-01-18T01:15:50Z")));
+    WaTemplate page =
+        new WaTemplate()
+            .publish(new PageCommand.Publish(227L, Instant.parse("2022-01-18T01:15:50Z")));
     // When an add subsection request is processed
-    PageContentCommand.AddSubsection command = new PageContentCommand.AddSubsection(
-        "subsection label",
-        true,
-        "subsectionIdentifier",
-        3,
-        999L,
-        Instant.now());
+    PageContentCommand.AddSubsection command =
+        new PageContentCommand.AddSubsection(
+            "subsection label", true, "subsectionIdentifier", 3, 999L, Instant.now());
 
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.addSubSection(command));
@@ -383,13 +360,9 @@ class WaTemplateTest {
     // And there is no section
 
     // When an add subsection request is processed
-    PageContentCommand.AddSubsection command = new PageContentCommand.AddSubsection(
-        "subsection label",
-        true,
-        "subsectionIdentifier",
-        3,
-        999L,
-        Instant.now());
+    PageContentCommand.AddSubsection command =
+        new PageContentCommand.AddSubsection(
+            "subsection label", true, "subsectionIdentifier", 3, 999L, Instant.now());
 
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.addSubSection(command));
@@ -413,14 +386,9 @@ class WaTemplateTest {
 
     // When an update subsection command is processed
     Instant now = Instant.now();
-    PageContentCommand.UpdateSubsection command = new PageContentCommand.UpdateSubsection(
-        "updated subsection label",
-        false,
-        4,
-        998L,
-        now);
-    WaUiMetadata updated = page.updateSubSection(
-        command, ss -> subsection);
+    PageContentCommand.UpdateSubsection command =
+        new PageContentCommand.UpdateSubsection("updated subsection label", false, 4, 998L, now);
+    WaUiMetadata updated = page.updateSubSection(command, ss -> subsection);
 
     // Then the subsection is updated
     assertNotNull(updated);
@@ -432,22 +400,18 @@ class WaTemplateTest {
   @Test
   void subsection_update_error_non_draft() {
     // Given a template that is not a Draft
-    WaTemplate page = new WaTemplate().publish(
-        new PageCommand.Publish(
-            227L,
-            Instant.parse("2022-01-18T01:15:50Z")));
+    WaTemplate page =
+        new WaTemplate()
+            .publish(new PageCommand.Publish(227L, Instant.parse("2022-01-18T01:15:50Z")));
 
     // When an update subsection command is processed
     Instant now = Instant.now();
-    PageContentCommand.UpdateSubsection command = new PageContentCommand.UpdateSubsection(
-        "updated subsection label",
-        false,
-        4,
-        998L,
-        now);
+    PageContentCommand.UpdateSubsection command =
+        new PageContentCommand.UpdateSubsection("updated subsection label", false, 4, 998L, now);
 
     // Then an exception is thrown
-    assertThrows(PageContentModificationException.class, () -> page.updateSubSection(command, null));
+    assertThrows(
+        PageContentModificationException.class, () -> page.updateSubSection(command, null));
   }
 
   @Test
@@ -464,12 +428,8 @@ class WaTemplateTest {
 
     // When an update section command is processed
     Instant now = Instant.now();
-    PageContentCommand.UpdateSection command = new PageContentCommand.UpdateSection(
-        "updated section label",
-        false,
-        3,
-        998L,
-        now);
+    PageContentCommand.UpdateSection command =
+        new PageContentCommand.UpdateSection("updated section label", false, 3, 998L, now);
     WaUiMetadata updated = page.updateSection(command, s -> section);
 
     // Then the subsection is updated
@@ -482,24 +442,18 @@ class WaTemplateTest {
   @Test
   void section_update_error_non_draft() {
     // Given a template that is not a Draft
-    WaTemplate page = new WaTemplate().publish(
-        new PageCommand.Publish(
-            227L,
-            Instant.parse("2022-01-18T01:15:50Z")));
+    WaTemplate page =
+        new WaTemplate()
+            .publish(new PageCommand.Publish(227L, Instant.parse("2022-01-18T01:15:50Z")));
 
     // When an update section command is processed
     Instant now = Instant.now();
-    PageContentCommand.UpdateSection command = new PageContentCommand.UpdateSection(
-        "updated section label",
-        false,
-        4,
-        998L,
-        now);
+    PageContentCommand.UpdateSection command =
+        new PageContentCommand.UpdateSection("updated section label", false, 4, 998L, now);
 
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.updateSection(command, null));
   }
-
 
   @Test
   void tab_update() {
@@ -512,12 +466,8 @@ class WaTemplateTest {
 
     // When an update tab command is processed
     Instant now = Instant.now();
-    PageContentCommand.UpdateTab command = new PageContentCommand.UpdateTab(
-        "updated tab label",
-        false,
-        2,
-        998L,
-        now);
+    PageContentCommand.UpdateTab command =
+        new PageContentCommand.UpdateTab("updated tab label", false, 2, 998L, now);
     WaUiMetadata updated = page.updateTab(command, t -> tab);
 
     // Then the subsection is updated
@@ -530,19 +480,14 @@ class WaTemplateTest {
   @Test
   void tab_update_error_non_draft() {
     // Given a template that is not a Draft
-    WaTemplate page = new WaTemplate().publish(
-        new PageCommand.Publish(
-            227L,
-            Instant.parse("2022-01-18T01:15:50Z")));
+    WaTemplate page =
+        new WaTemplate()
+            .publish(new PageCommand.Publish(227L, Instant.parse("2022-01-18T01:15:50Z")));
 
     // When an update tab command is processed
     Instant now = Instant.now();
-    PageContentCommand.UpdateSection command = new PageContentCommand.UpdateSection(
-        "updated tab label",
-        false,
-        4,
-        998L,
-        now);
+    PageContentCommand.UpdateSection command =
+        new PageContentCommand.UpdateSection("updated tab label", false, 4, 998L, now);
 
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.updateSection(command, null));
@@ -589,7 +534,8 @@ class WaTemplateTest {
     WaTemplate page = new WaTemplate();
 
     // When a delete tab request is processed
-    PageContentCommand.DeleteTab command = new PageContentCommand.DeleteTab(2L, 999L, Instant.now());
+    PageContentCommand.DeleteTab command =
+        new PageContentCommand.DeleteTab(2L, 999L, Instant.now());
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.deleteTab(command));
   }
@@ -606,7 +552,8 @@ class WaTemplateTest {
     page.addSection(section(page, 3L, 3));
 
     // When a delete section request is processed
-    PageContentCommand.DeleteTab command = new PageContentCommand.DeleteTab(2L, 999L, Instant.now());
+    PageContentCommand.DeleteTab command =
+        new PageContentCommand.DeleteTab(2L, 999L, Instant.now());
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.deleteTab(command));
   }
@@ -617,12 +564,9 @@ class WaTemplateTest {
     WaTemplate page = new WaTemplate();
 
     // When an add tab request is processed
-    WaUiMetadata tab = page.addTab(new PageContentCommand.AddTab(
-        "tab label",
-        true,
-        "tabIdentifier",
-        999L,
-        Instant.now()));
+    WaUiMetadata tab =
+        page.addTab(
+            new PageContentCommand.AddTab("tab label", true, "tabIdentifier", 999L, Instant.now()));
 
     // Then the tab is added
     assertNotNull(tab);
@@ -634,18 +578,13 @@ class WaTemplateTest {
   @Test
   void tab_add_error_page_not_draft() {
     // Given a template that is not a draft
-    WaTemplate page = new WaTemplate().publish(
-        new PageCommand.Publish(
-            227L,
-            Instant.parse("2022-01-18T01:15:50Z")));
+    WaTemplate page =
+        new WaTemplate()
+            .publish(new PageCommand.Publish(227L, Instant.parse("2022-01-18T01:15:50Z")));
 
     // When an add tab request is processed
-    PageContentCommand.AddTab command = new PageContentCommand.AddTab(
-        "tab label",
-        true,
-        "tabIdentifier",
-        999L,
-        Instant.now());
+    PageContentCommand.AddTab command =
+        new PageContentCommand.AddTab("tab label", true, "tabIdentifier", 999L, Instant.now());
 
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.addTab(command));
@@ -669,17 +608,15 @@ class WaTemplateTest {
     WaQuestion question = QuestionEntityMother.textQuestion();
 
     // When an add question request is processed
-    WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        4L,
-        98L,
-        Instant.now()));
+    WaUiMetadata questionMeta =
+        page.addQuestion(
+            new PageContentCommand.AddQuestion(page.getId(), question, 4L, 98L, Instant.now()));
 
     // Then the question is added
     assertNotNull(questionMeta);
     assertTrue(page.getUiMetadata().contains(questionMeta));
-    assertEquals(question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
+    assertEquals(
+        question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
     assertEquals(5, questionMeta.getOrderNbr().intValue());
   }
 
@@ -701,23 +638,21 @@ class WaTemplateTest {
     WaQuestion question = QuestionEntityMother.textQuestion();
 
     // And an add question request is processed
-    WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        4L,
-        98L,
-        Instant.now()));
+    WaUiMetadata questionMeta =
+        page.addQuestion(
+            new PageContentCommand.AddQuestion(page.getId(), question, 4L, 98L, Instant.now()));
     questionMeta.setWaRdbMetadatum(new WaRdbMetadata());
     questionMeta.setId(765l);
 
     // And the subsection is grouped
-    page.groupSubSection(new GroupSubsection(
-        4l,
-        "BLOCK_NAME",
-        Arrays.asList(new GroupSubSectionRequest.Batch(765l, true, "question label", 100)),
-        5,
-        99l,
-        Instant.now()));
+    page.groupSubSection(
+        new GroupSubsection(
+            4l,
+            "BLOCK_NAME",
+            Arrays.asList(new GroupSubSectionRequest.Batch(765l, true, "question label", 100)),
+            5,
+            99l,
+            Instant.now()));
 
     // Then the question is grouped
     assertNotNull(questionMeta);
@@ -747,34 +682,29 @@ class WaTemplateTest {
     WaQuestion question = QuestionEntityMother.textQuestion();
 
     // And an add question request is processed
-    WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        4L,
-        98L,
-        Instant.now()));
+    WaUiMetadata questionMeta =
+        page.addQuestion(
+            new PageContentCommand.AddQuestion(page.getId(), question, 4L, 98L, Instant.now()));
     questionMeta.setWaRdbMetadatum(new WaRdbMetadata());
     questionMeta.setId(765l);
 
     // And the subsection is grouped
-    page.groupSubSection(new GroupSubsection(
-        4l,
-        "BLOCK_NAME",
-        Arrays.asList(new GroupSubSectionRequest.Batch(765l, true, "question label", 100)),
-        5,
-        99l,
-        Instant.now()));
+    page.groupSubSection(
+        new GroupSubsection(
+            4l,
+            "BLOCK_NAME",
+            Arrays.asList(new GroupSubSectionRequest.Batch(765l, true, "question label", 100)),
+            5,
+            99l,
+            Instant.now()));
 
     // When a question is added to a grouped subsection
     WaQuestion question2 = QuestionEntityMother.numericQuestion();
 
     // And an add question request is processed
-    WaUiMetadata questionMeta2 = page.addQuestion(new PageContentCommand.AddQuestion(
-        page.getId(),
-        question2,
-        4L,
-        98L,
-        Instant.now()));
+    WaUiMetadata questionMeta2 =
+        page.addQuestion(
+            new PageContentCommand.AddQuestion(page.getId(), question2, 4L, 98L, Instant.now()));
 
     // Then it has proper values set
     assertThat(questionMeta2).isNotNull();
@@ -804,23 +734,21 @@ class WaTemplateTest {
     WaQuestion question = QuestionEntityMother.textQuestion();
 
     // And an add question request is processed
-    WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        4L,
-        98L,
-        Instant.now()));
+    WaUiMetadata questionMeta =
+        page.addQuestion(
+            new PageContentCommand.AddQuestion(page.getId(), question, 4L, 98L, Instant.now()));
     questionMeta.setWaRdbMetadatum(new WaRdbMetadata());
     questionMeta.setId(765l);
 
     // And the subsection is grouped
-    page.groupSubSection(new GroupSubsection(
-        4l,
-        "BLOCK_NAME",
-        Arrays.asList(new GroupSubSectionRequest.Batch(765l, true, "question label", 100)),
-        5,
-        99l,
-        Instant.now()));
+    page.groupSubSection(
+        new GroupSubsection(
+            4l,
+            "BLOCK_NAME",
+            Arrays.asList(new GroupSubSectionRequest.Batch(765l, true, "question label", 100)),
+            5,
+            99l,
+            Instant.now()));
 
     // subsection is at order nbr 4
     // so setting the first question to 24 makes it look like subsection already contains 20
@@ -830,12 +758,8 @@ class WaTemplateTest {
     WaQuestion question2 = QuestionEntityMother.numericQuestion();
 
     // When an add question request is processed
-    PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question2,
-        4L,
-        98L,
-        Instant.now());
+    PageContentCommand.AddQuestion command =
+        new PageContentCommand.AddQuestion(page.getId(), question2, 4L, 98L, Instant.now());
     // then an exception is thrown due to the grouped subsection containing too many questions
     assertThrows(
         PageContentModificationException.class,
@@ -864,17 +788,15 @@ class WaTemplateTest {
     WaQuestion question = QuestionEntityMother.textQuestion();
 
     // When an add question request is processed
-    WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        4L,
-        98L,
-        Instant.now()));
+    WaUiMetadata questionMeta =
+        page.addQuestion(
+            new PageContentCommand.AddQuestion(page.getId(), question, 4L, 98L, Instant.now()));
 
     // Then the question is added
     assertNotNull(questionMeta);
     assertTrue(page.getUiMetadata().contains(questionMeta));
-    assertEquals(question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
+    assertEquals(
+        question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
     assertEquals(5, questionMeta.getOrderNbr().intValue());
   }
 
@@ -899,17 +821,15 @@ class WaTemplateTest {
     WaQuestion question = QuestionEntityMother.textQuestion();
 
     // When an add question request is processed
-    WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        4L,
-        98L,
-        Instant.now()));
+    WaUiMetadata questionMeta =
+        page.addQuestion(
+            new PageContentCommand.AddQuestion(page.getId(), question, 4L, 98L, Instant.now()));
 
     // Then the question is added
     assertNotNull(questionMeta);
     assertTrue(page.getUiMetadata().contains(questionMeta));
-    assertEquals(question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
+    assertEquals(
+        question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
     assertEquals(5, questionMeta.getOrderNbr().intValue());
   }
 
@@ -934,38 +854,31 @@ class WaTemplateTest {
     WaQuestion question = QuestionEntityMother.textQuestion();
 
     // When an add question request is processed
-    WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        4L,
-        98L,
-        Instant.now()));
+    WaUiMetadata questionMeta =
+        page.addQuestion(
+            new PageContentCommand.AddQuestion(page.getId(), question, 4L, 98L, Instant.now()));
 
     // Then the question is added
     assertNotNull(questionMeta);
     assertTrue(page.getUiMetadata().contains(questionMeta));
-    assertEquals(question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
+    assertEquals(
+        question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
     assertEquals(5, questionMeta.getOrderNbr().intValue());
   }
 
   @Test
   void question_add_error_page_not_draft() {
     // Given a template that is not a draft
-    WaTemplate page = new WaTemplate().publish(
-        new PageCommand.Publish(
-            227L,
-            Instant.parse("2022-01-18T01:15:50Z")));
+    WaTemplate page =
+        new WaTemplate()
+            .publish(new PageCommand.Publish(227L, Instant.parse("2022-01-18T01:15:50Z")));
 
     // And a question exists
     WaQuestion question = QuestionEntityMother.textQuestion();
 
     // When an add question request is processed
-    PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        4L,
-        98L,
-        Instant.now());
+    PageContentCommand.AddQuestion command =
+        new PageContentCommand.AddQuestion(page.getId(), question, 4L, 98L, Instant.now());
 
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.addQuestion(command));
@@ -989,12 +902,8 @@ class WaTemplateTest {
     WaQuestion question = QuestionEntityMother.textQuestion();
 
     // And an add question request is processed
-    PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        4L,
-        98L,
-        Instant.now());
+    PageContentCommand.AddQuestion command =
+        new PageContentCommand.AddQuestion(page.getId(), question, 4L, 98L, Instant.now());
     WaUiMetadata questionMeta = page.addQuestion(command);
 
     // And the question is added
@@ -1023,61 +932,42 @@ class WaTemplateTest {
     WaQuestion question = QuestionEntityMother.textQuestion();
 
     // When an add question request is processed
-    PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        4L,
-        98L,
-        Instant.now());
+    PageContentCommand.AddQuestion command =
+        new PageContentCommand.AddQuestion(page.getId(), question, 4L, 98L, Instant.now());
 
     // Then an exception is thrown
     assertThrows(PageContentModificationException.class, () -> page.addQuestion(command));
   }
 
   private WaUiMetadata tab(WaTemplate page, Long id, int orderNbr) {
-    WaUiMetadata tab = new WaUiMetadata(page, new PageContentCommand.AddTab(
-        "tab",
-        true,
-        "tab",
-        999L,
-        Instant.now()),
-        orderNbr);
+    WaUiMetadata tab =
+        new WaUiMetadata(
+            page, new PageContentCommand.AddTab("tab", true, "tab", 999L, Instant.now()), orderNbr);
     tab = Mockito.spy(tab);
     when(tab.getId()).thenReturn(id);
     return tab;
   }
 
   private WaUiMetadata section(WaTemplate page, Long id, int orderNbr) {
-    WaUiMetadata section = new WaUiMetadata(
-        page,
-        new PageContentCommand.AddSection(
-            "section",
-            true,
-            "section",
-            0,
-            999L,
-            Instant.now()),
-        orderNbr);
+    WaUiMetadata section =
+        new WaUiMetadata(
+            page,
+            new PageContentCommand.AddSection("section", true, "section", 0, 999L, Instant.now()),
+            orderNbr);
     section = Mockito.spy(section);
     when(section.getId()).thenReturn(id);
     return section;
   }
 
   private WaUiMetadata subsection(WaTemplate page, Long id, int orderNbr) {
-    WaUiMetadata subsection = new WaUiMetadata(
-        page,
-        new PageContentCommand.AddSubsection(
-            "subsection",
-            true,
-            "subsection",
-            0,
-            999L,
-            Instant.now()),
-        orderNbr);
+    WaUiMetadata subsection =
+        new WaUiMetadata(
+            page,
+            new PageContentCommand.AddSubsection(
+                "subsection", true, "subsection", 0, 999L, Instant.now()),
+            orderNbr);
     subsection = Mockito.spy(subsection);
     when(subsection.getId()).thenReturn(id);
     return subsection;
   }
-
-
 }

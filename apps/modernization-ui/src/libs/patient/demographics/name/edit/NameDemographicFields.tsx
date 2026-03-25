@@ -13,7 +13,7 @@ type NameDemographicFieldsProps = { options: NameOptions } & EntryFieldsProps;
 const NameDemographicFields = ({
     orientation = 'horizontal',
     sizing = 'medium',
-    options
+    options,
 }: NameDemographicFieldsProps) => {
     const { control } = useFormContext<NameDemographic>();
 

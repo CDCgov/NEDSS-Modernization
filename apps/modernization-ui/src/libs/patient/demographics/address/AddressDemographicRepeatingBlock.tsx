@@ -19,34 +19,34 @@ const columns: Column<AddressDemographic>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (v) => v.asOf,
-        render: (v) => internalizeDate(v.asOf)
+        render: (v) => internalizeDate(v.asOf),
     },
     {
         id: 'address-type',
         name: labels.type,
         className: styles.typeWidth,
         sortable: true,
-        value: (v) => `${v.type?.name} / ${v.use?.name}`
+        value: (v) => `${v.type?.name} / ${v.use?.name}`,
     },
     {
         id: 'address-address',
         name: 'Address',
         sortable: true,
-        value: displayAddress
+        value: displayAddress,
     },
     {
         id: 'address-city',
         name: labels.city,
         className: styles['text-header'],
         sortable: true,
-        value: (v) => v.city
+        value: (v) => v.city,
     },
     {
         id: 'address-state',
         name: labels.state,
         className: styles['text-header'],
         sortable: true,
-        value: (v) => v.state?.name
+        value: (v) => v.state?.name,
     },
     {
         id: 'address-zip',
@@ -54,8 +54,8 @@ const columns: Column<AddressDemographic>[] = [
         className: styles.zipWidth,
         sortable: true,
         sortIconType: 'numeric',
-        value: (v) => v.zipcode
-    }
+        value: (v) => v.zipcode,
+    },
 ];
 
 type AddressDemographicRepeatingBlockProps = {

@@ -17,7 +17,7 @@ describe('Field Component', () => {
     } = {
         htmlFor: 'test-field',
         children: 'Test Content',
-        label: 'Test Label'
+        label: 'Test Label',
     };
 
     it('renders with correct name and value with the large class by default', () => {

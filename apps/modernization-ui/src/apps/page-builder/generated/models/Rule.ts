@@ -38,4 +38,3 @@ export namespace Rule {
         SUBSECTION = 'SUBSECTION',
     }
 }
-

@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.file.events.document;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigation;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -19,8 +18,7 @@ record PatientFileDocument(
     LocalDate reportedOn,
     String condition,
     boolean updated,
-    Collection<AssociatedInvestigation> associations
-) {
+    Collection<AssociatedInvestigation> associations) {
 
   PatientFileDocument(
       long patient,
@@ -30,9 +28,17 @@ record PatientFileDocument(
       String sendingFacility,
       LocalDate reportedOn,
       String condition,
-      boolean updated
-  ) {
-    this(patient, id, local, receivedOn, sendingFacility, reportedOn, condition, updated, Collections.emptyList());
+      boolean updated) {
+    this(
+        patient,
+        id,
+        local,
+        receivedOn,
+        sendingFacility,
+        reportedOn,
+        condition,
+        updated,
+        Collections.emptyList());
   }
 
   PatientFileDocument withAssociations(final Collection<AssociatedInvestigation> associations) {
@@ -45,8 +51,6 @@ record PatientFileDocument(
         reportedOn,
         condition,
         updated,
-        associations
-    );
+        associations);
   }
-
 }

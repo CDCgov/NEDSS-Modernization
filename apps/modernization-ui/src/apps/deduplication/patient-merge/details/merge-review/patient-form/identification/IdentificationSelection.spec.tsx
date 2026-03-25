@@ -11,10 +11,10 @@ const mergeCandidates: Partial<MergeCandidate>[] = [
                 sequence: '1',
                 asOf: '2014-03-11T00:00:00.000',
                 type: "Driver's license",
-                value: '10001'
-            }
-        ]
-    }
+                value: '10001',
+            },
+        ],
+    },
 ];
 const Fixture = () => {
     const form = useForm();

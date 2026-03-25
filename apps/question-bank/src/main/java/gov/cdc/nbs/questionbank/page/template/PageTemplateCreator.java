@@ -16,32 +16,20 @@ class PageTemplateCreator {
   PageTemplateCreator(
       final PageService service,
       final TemplateNameVerifier verifier,
-      final ClassicPageTemplateCreator classicCreator
-  ) {
+      final ClassicPageTemplateCreator classicCreator) {
     this.service = service;
     this.verifier = verifier;
     this.classicCreator = classicCreator;
   }
 
-  void create(
-      final RequestContext context,
-      final long page,
-      final CreateTemplateRequest request
-  ) {
+  void create(final RequestContext context, final long page, final CreateTemplateRequest request) {
 
-    PageCommand.CreateTemplate command = new PageCommand.CreateTemplate(
-        request.name(),
-        request.description(),
-        context.requestedBy(),
-        context.requestedAt()
-    );
+    PageCommand.CreateTemplate command =
+        new PageCommand.CreateTemplate(
+            request.name(), request.description(), context.requestedBy(), context.requestedAt());
 
-    this.service.using(
-        page,
-        found -> found.createTemplate(verifier, command)
-    );
+    this.service.using(page, found -> found.createTemplate(verifier, command));
 
     classicCreator.create(page, request);
   }
-
 }

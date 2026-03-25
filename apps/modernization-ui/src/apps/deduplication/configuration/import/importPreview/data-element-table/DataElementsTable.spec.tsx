@@ -6,13 +6,13 @@ const dataElements: DataElements = {
     firstName: {
         active: true,
         oddsRatio: 5,
-        logOdds: 2.3154
+        logOdds: 2.3154,
     },
     lastName: {
         active: false,
         oddsRatio: 3,
-        logOdds: 1.44
-    }
+        logOdds: 1.44,
+    },
 };
 const Fixture = () => {
     return <DataElementsTable dataElements={dataElements} />;

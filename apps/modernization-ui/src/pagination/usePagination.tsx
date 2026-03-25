@@ -6,7 +6,7 @@ const PAGE_PARAMETER = 'page';
 
 enum Status {
     Ready,
-    Requested
+    Requested,
 }
 
 type PageState = {
@@ -47,7 +47,7 @@ const initialize = (size: number, current = 0): PageState => ({
     status: Status.Ready,
     pageSize: size,
     total: 0,
-    current
+    current,
 });
 
 type PageContextState = {
@@ -74,7 +74,7 @@ type PaginationProviderProps = {
 const PaginationProvider = ({
     pageSize = TOTAL_TABLE_DATA,
     appendToUrl = false,
-    children
+    children,
 }: PaginationProviderProps) => {
     const [page, dispatch] = useReducer(pageReducer, pageSize, initialize);
 

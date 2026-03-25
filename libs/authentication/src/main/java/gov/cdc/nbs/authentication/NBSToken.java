@@ -1,16 +1,14 @@
 package gov.cdc.nbs.authentication;
 
-import java.util.Optional;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 public record NBSToken(String value) {
 
   private static final String NBS_TOKEN_NAME = "nbs_token";
 
-  public void apply(
-      final SecurityProperties properties,
-      final HttpServletResponse response) {
+  public void apply(final SecurityProperties properties, final HttpServletResponse response) {
     Cookie cookie = asCookie();
     cookie.setMaxAge(properties.getTokenExpirationSeconds());
     response.addCookie(cookie);
@@ -28,7 +26,6 @@ public record NBSToken(String value) {
     return Optional.empty();
   }
 
-
   @SuppressWarnings({"squid:S3330"})
   private Cookie asCookie() {
     Cookie cookie = new Cookie(NBS_TOKEN_NAME, value());
@@ -36,5 +33,4 @@ public record NBSToken(String value) {
     cookie.setSecure(true);
     return cookie;
   }
-
 }

@@ -1,11 +1,11 @@
 package gov.cdc.nbs.search;
 
+import static org.assertj.core.api.Assertions.*;
+
 import gov.cdc.nbs.data.pagination.PaginationRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
-import static org.assertj.core.api.Assertions.*;
 
 class SearchPageableMapperTest {
 
@@ -17,9 +17,7 @@ class SearchPageableMapperTest {
 
     Pageable actual = mapper.from(request);
 
-    assertThat(actual)
-        .extracting(Pageable::getPageSize)
-        .isEqualTo(5);
+    assertThat(actual).extracting(Pageable::getPageSize).isEqualTo(5);
   }
 
   @Test
@@ -30,9 +28,7 @@ class SearchPageableMapperTest {
 
     Pageable actual = mapper.from(request);
 
-    assertThat(actual)
-        .extracting(Pageable::getPageSize)
-        .isEqualTo(23);
+    assertThat(actual).extracting(Pageable::getPageSize).isEqualTo(23);
   }
 
   @Test
@@ -43,10 +39,7 @@ class SearchPageableMapperTest {
 
     Pageable actual = mapper.from(request);
 
-    assertThat(actual)
-        .extracting(Pageable::getPageNumber)
-        .isEqualTo(109);
-
+    assertThat(actual).extracting(Pageable::getPageNumber).isEqualTo(109);
   }
 
   @Test
@@ -57,10 +50,7 @@ class SearchPageableMapperTest {
 
     Pageable actual = mapper.from(request);
 
-    assertThat(actual)
-        .extracting(Pageable::getPageNumber)
-        .isEqualTo(0);
-
+    assertThat(actual).extracting(Pageable::getPageNumber).isEqualTo(0);
   }
 
   @Test
@@ -76,7 +66,6 @@ class SearchPageableMapperTest {
     assertThat(actual)
         .extracting(Pageable::getSort)
         .isEqualTo(Sort.by(Sort.Direction.ASC, "property-value"));
-
   }
 
   @Test
@@ -87,10 +76,7 @@ class SearchPageableMapperTest {
 
     Pageable actual = mapper.from(request);
 
-    assertThat(actual)
-        .extracting(Pageable::getSort)
-        .isEqualTo(Sort.unsorted());
-
+    assertThat(actual).extracting(Pageable::getSort).isEqualTo(Sort.unsorted());
   }
 
   @Test
@@ -103,10 +89,7 @@ class SearchPageableMapperTest {
 
     Pageable actual = mapper.from(request);
 
-    assertThat(actual)
-        .extracting(Pageable::getSort)
-        .isEqualTo(Sort.unsorted());
-
+    assertThat(actual).extracting(Pageable::getSort).isEqualTo(Sort.unsorted());
   }
 
   @Test
@@ -119,10 +102,7 @@ class SearchPageableMapperTest {
 
     Pageable actual = mapper.from(request);
 
-    assertThat(actual)
-        .extracting(Pageable::getSort)
-        .isEqualTo(Sort.unsorted());
-
+    assertThat(actual).extracting(Pageable::getSort).isEqualTo(Sort.unsorted());
   }
 
   @Test
@@ -135,9 +115,7 @@ class SearchPageableMapperTest {
 
     assertThat(actual)
         .extracting("pageSize", "pageNumber", "sort")
-        .containsExactly(
-            23, 0, Sort.unsorted()
-        );
+        .containsExactly(23, 0, Sort.unsorted());
   }
 
   @Test
@@ -148,9 +126,7 @@ class SearchPageableMapperTest {
 
     assertThat(actual)
         .extracting("pageSize", "pageNumber", "sort")
-        .containsExactly(
-            47, 0, Sort.unsorted()
-        );
+        .containsExactly(47, 0, Sort.unsorted());
   }
 
   @Test
@@ -159,10 +135,8 @@ class SearchPageableMapperTest {
 
     PaginationRequest request = PaginationRequest.withSize(37);
 
-    assertThatThrownBy(
-        () -> mapper.from(request)
-    ).isInstanceOf(IllegalArgumentException.class)
+    assertThatThrownBy(() -> mapper.from(request))
+        .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("page size: 37");
   }
-
 }

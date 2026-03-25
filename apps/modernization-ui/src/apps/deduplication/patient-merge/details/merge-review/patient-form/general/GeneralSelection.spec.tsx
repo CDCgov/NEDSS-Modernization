@@ -6,8 +6,8 @@ import { GeneralSelection } from './GeneralSelection';
 
 const mergeCandidates: Partial<MergeCandidate>[] = [
     {
-        general: {}
-    }
+        general: {},
+    },
 ];
 const Fixture = () => {
     const form = useForm();

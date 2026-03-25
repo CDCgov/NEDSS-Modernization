@@ -12,5 +12,4 @@ public class DirectionSteps {
       default -> Sort.Direction.DESC;
     };
   }
-
 }

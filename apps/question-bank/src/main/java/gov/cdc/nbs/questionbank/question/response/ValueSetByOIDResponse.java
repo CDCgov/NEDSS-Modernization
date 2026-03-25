@@ -11,10 +11,9 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class ValueSetByOIDResponse {
-    @JsonInclude(value = Include.NON_EMPTY, content = Include.NON_EMPTY)
-    private Status status;
+  @JsonInclude(value = Include.NON_EMPTY, content = Include.NON_EMPTY)
+  private Status status;
 
-    @JsonInclude(value = Include.NON_EMPTY, content = Include.NON_EMPTY)
-    private ValueSetByOIDResults data;
-
+  @JsonInclude(value = Include.NON_EMPTY, content = Include.NON_EMPTY)
+  private ValueSetByOIDResults data;
 }

@@ -18,7 +18,7 @@ export const NameDetails = ({ name }: Props) => {
                 { label: 'Middle', value: name.middle },
                 { label: 'Second middle', value: name.secondMiddle },
                 { label: 'Suffix', value: name.suffix },
-                { label: 'Degree', value: name.degree }
+                { label: 'Degree', value: name.degree },
             ]}
         />
     );

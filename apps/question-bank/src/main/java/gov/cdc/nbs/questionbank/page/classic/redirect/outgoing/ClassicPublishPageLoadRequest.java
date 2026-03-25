@@ -12,23 +12,20 @@ public class ClassicPublishPageLoadRequest {
 
   private final RestTemplate template;
 
-  public ClassicPublishPageLoadRequest(
-      @Qualifier("classicTemplate") final RestTemplate template) {
+  public ClassicPublishPageLoadRequest(@Qualifier("classicTemplate") final RestTemplate template) {
     this.template = template;
   }
 
   public void request() {
 
-    String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("method", "publishPopUpLoad")
-        .build()
-        .toUriString();
+    String pageLocation =
+        UriComponentsBuilder.fromPath(LOCATION)
+            .queryParam("method", "publishPopUpLoad")
+            .build()
+            .toUriString();
 
-    RequestEntity<Void> publishPageRequest = RequestEntity
-        .post(pageLocation)
-        .build();
+    RequestEntity<Void> publishPageRequest = RequestEntity.post(pageLocation).build();
 
     this.template.exchange(publishPageRequest, Void.class);
-
   }
 }

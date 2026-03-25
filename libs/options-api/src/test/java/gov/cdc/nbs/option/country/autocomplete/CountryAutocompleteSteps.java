@@ -12,8 +12,7 @@ public class CountryAutocompleteSteps {
   private final Active<ResultActions> response;
 
   CountryAutocompleteSteps(
-      final AutocompleteRequester request,
-      final Active<ResultActions> response) {
+      final AutocompleteRequester request, final Active<ResultActions> response) {
     this.request = request;
     this.response = response;
   }
@@ -26,9 +25,7 @@ public class CountryAutocompleteSteps {
 
   @When("I am trying to find at most {int} countries that start with {string}")
   public void i_am_trying_to_find_n_countries_that_start_with(
-      final int limit,
-      final String criteria) throws Exception {
+      final int limit, final String criteria) throws Exception {
     response.active(request.complete(NAME, criteria, limit));
   }
-
 }

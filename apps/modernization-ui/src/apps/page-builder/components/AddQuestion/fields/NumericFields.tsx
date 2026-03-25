@@ -19,7 +19,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
     const [mask, relatedUnits, unitType] = useWatch({
         control: form.control,
         name: ['mask', 'relatedUnits', 'unitType'],
-        exact: true
+        exact: true,
     });
     const [numericMaskOptions, setNumericMaskOptions] = useState<Option[]>([]);
     const [relatedUnitsToggle, setRelatedUnitsToggle] = useState(unitType !== undefined && unitType !== '');
@@ -36,7 +36,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                 unitType: undefined,
                 relatedUnitsLiteral: undefined,
                 relatedUnitsValueSet: undefined,
-                mask: CreateNumericQuestionRequest.mask.NUM
+                mask: CreateNumericQuestionRequest.mask.NUM,
             });
         }
     }, []);
@@ -92,9 +92,9 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                 rules={{
                     required: {
                         value: !published && mask === CreateNumericQuestionRequest.mask.NUM,
-                        message: 'Field length is required'
+                        message: 'Field length is required',
                     },
-                    ...maxLengthRule(10)
+                    ...maxLengthRule(10),
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
@@ -216,7 +216,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                                 defaultValue={value}
                                 options={[
                                     { value: 'literal', name: 'Literal value' },
-                                    { value: 'coded', name: 'Coded value' }
+                                    { value: 'coded', name: 'Coded value' },
                                 ]}
                                 name={name}
                                 id={name}
@@ -233,7 +233,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                             name="relatedUnitsLiteral"
                             rules={{
                                 required: { value: !published, message: 'Literal units value is required' },
-                                ...maxLengthRule(50)
+                                ...maxLengthRule(50),
                             }}
                             render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                                 <Input
@@ -258,7 +258,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                             name="relatedUnitsValueSet"
                             rules={{
                                 required: { value: !published, message: 'Related units value set is required' },
-                                ...maxLengthRule(50)
+                                ...maxLengthRule(50),
                             }}
                             render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                                 <SelectInput

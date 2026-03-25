@@ -1,5 +1,10 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Active;
@@ -16,31 +21,21 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-
 public class PatientProfileAddInvestigationSteps {
 
   @Value("${nbs.wildfly.url:http://wildfly:7001}")
   String classicUrl;
 
-  @Autowired
-  TestPatients patients;
+  @Autowired TestPatients patients;
+
+  @Autowired Authenticated authenticated;
+
+  @Autowired MockMvc mvc;
+
+  @Autowired Active<MockHttpServletResponse> activeResponse;
 
   @Autowired
-  Authenticated authenticated;
-
-  @Autowired
-  MockMvc mvc;
-
-  @Autowired
-  Active<MockHttpServletResponse> activeResponse;
-
-  @Autowired
-  @Qualifier("classicRestService")
-  MockRestServiceServer server;
+  @Qualifier("classicRestService") MockRestServiceServer server;
 
   @Before
   public void clearServer() {
@@ -51,18 +46,23 @@ public class PatientProfileAddInvestigationSteps {
   public void an_investigation_is_added_from_a_patient_profile() throws Exception {
     long patient = patients.one();
 
-    server.expect(
-        requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+    server
+        .expect(requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
+    server
+        .expect(
+            requestTo(
+                classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
     activeResponse.active(
         mvc.perform(
-            authenticated.withUser(MockMvcRequestBuilders.get("/nbs/api/profile/{patient}/investigation", patient)))
+                authenticated.withUser(
+                    MockMvcRequestBuilders.get(
+                        "/nbs/api/profile/{patient}/investigation", patient)))
             .andReturn()
             .getResponse());
   }
@@ -83,10 +83,11 @@ public class PatientProfileAddInvestigationSteps {
     assertThat(response.getRedirectedUrl()).contains(expected);
 
     assertThat(response.getCookies())
-        .satisfiesOnlyOnce(cookie -> {
-          assertThat(cookie.getName()).isEqualTo("Return-Patient");
-          assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-        });
+        .satisfiesOnlyOnce(
+            cookie -> {
+              assertThat(cookie.getName()).isEqualTo("Return-Patient");
+              assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
+            });
   }
 
   @Then("I am not allowed to add a Classic NBS Investigation")

@@ -3,7 +3,7 @@ import {
     PageQuestionControllerService,
     PageStaticControllerService,
     PagesQuestion,
-    PagesSubSection
+    PagesSubSection,
 } from 'apps/page-builder/generated';
 import { useSetPageQuestionRequired } from 'apps/page-builder/hooks/api/useSetPageQuestionRequired';
 import { useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ export const Subsection = ({
     onEditSubsection,
     onGroupQuestion,
     onEditValueset,
-    onChangeValueset
+    onChangeValueset,
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, refresh } = usePageManagement();
@@ -51,7 +51,7 @@ export const Subsection = ({
         if (staticElementTypes.includes(componentId)) {
             PageStaticControllerService.deleteStaticElement({
                 page: page.id,
-                requestBody: { componentId: id }
+                requestBody: { componentId: id },
             })
                 .then(() => {
                     handleAlert(`Element deleted successfully`);
@@ -61,7 +61,7 @@ export const Subsection = ({
         } else {
             PageQuestionControllerService.deleteQuestion({
                 page: page.id,
-                questionId: Number(id)
+                questionId: Number(id),
             })
                 .then(() => {
                     refresh();

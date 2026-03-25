@@ -35,7 +35,7 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
                 control={form.control}
                 name="valueSet"
                 rules={{
-                    required: { value: !published, message: 'Value set is required' }
+                    required: { value: !published, message: 'Value set is required' },
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <SelectInput

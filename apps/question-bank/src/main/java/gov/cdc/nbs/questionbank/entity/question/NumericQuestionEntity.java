@@ -2,11 +2,10 @@ package gov.cdc.nbs.questionbank.entity.question;
 
 import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
 
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-
-import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -123,7 +122,6 @@ public class NumericQuestionEntity extends WaQuestion {
       setUnitValue(command.relatedUnitsLiteral());
     }
 
-
     // Reporting
     setReportingData(command);
 
@@ -133,5 +131,4 @@ public class NumericQuestionEntity extends WaQuestion {
     // Audit
     changed(command);
   }
-
 }

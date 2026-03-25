@@ -19,7 +19,7 @@ const initial = (asOf: Supplier<string>): EthnicityDemographic => ({
     asOf: asOf(),
     ethnicGroup: null,
     unknownReason: null,
-    detailed: []
+    detailed: [],
 });
 
 export { initial };
@@ -28,7 +28,7 @@ const labels = {
     asOf: 'As of',
     ethnicity: 'Ethnicity',
     detailed: 'Spanish origin',
-    unknownReason: 'Reason unknown'
+    unknownReason: 'Reason unknown',
 };
 
 export { labels };

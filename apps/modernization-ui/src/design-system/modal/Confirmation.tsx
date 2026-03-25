@@ -22,7 +22,7 @@ const Confirmation = ({
     destructive = false,
     onConfirm,
     cancelText = 'No, go back',
-    onCancel
+    onCancel,
 }: Props) => {
     return (
         <Modal
@@ -40,7 +40,8 @@ const Confirmation = ({
                         {confirmText}
                     </Button>
                 </>
-            )}>
+            )}
+        >
             <Message type="warning">{children}</Message>
         </Modal>
     );

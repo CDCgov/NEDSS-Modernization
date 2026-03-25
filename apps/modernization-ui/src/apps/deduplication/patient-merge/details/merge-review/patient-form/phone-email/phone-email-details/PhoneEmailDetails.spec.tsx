@@ -12,7 +12,7 @@ const defaultPhoneEmail: MergePhoneEmail = {
     extension: '12',
     email: 'email@email.com',
     url: 'url@url.com',
-    comments: 'phone comment'
+    comments: 'phone comment',
 };
 
 const Fixture = ({ phoneEmail = defaultPhoneEmail }: { phoneEmail?: MergePhoneEmail }) => {
@@ -39,7 +39,7 @@ describe('PhoneEmailDetails', () => {
             id: '1',
             asOf: '2022-06-07T14:24:44.970',
             type: 'Type',
-            use: 'Use'
+            use: 'Use',
         };
         const { getByText } = render(<Fixture phoneEmail={sparsePhoneEmail} />);
         expect(within(getByText('Country code').parentElement!).getByText('---')).toBeInTheDocument();

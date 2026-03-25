@@ -69,7 +69,7 @@ describe('IdleTimer Component', () => {
 
         expect(global.fetch).toHaveBeenCalledWith('/nbs/logout', { credentials: 'include' });
 
-        expect(onIdle).toHaveBeenCalled()
+        expect(onIdle).toHaveBeenCalled();
     });
 
     it('should reset timers on continue', () => {

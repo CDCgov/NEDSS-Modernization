@@ -8,10 +8,10 @@ const meta = {
         headingLevel: {
             control: {
                 type: 'select',
-                options: [2, 3, 4, 5]
-            }
-        }
-    }
+                options: [2, 3, 4, 5],
+            },
+        },
+    },
 } satisfies Meta<typeof ClosablePanel>;
 
 export default meta;
@@ -24,8 +24,8 @@ export const Default: Story = {
         children: <div>This is a panel message</div>,
         onClose: () => {
             console.log('Panel closed');
-        }
-    }
+        },
+    },
 };
 
 export const WithHeading: Story = {
@@ -35,6 +35,6 @@ export const WithHeading: Story = {
         children: <div>This is a panel message</div>,
         onClose: () => {
             console.log('Panel closed');
-        }
-    }
+        },
+    },
 };

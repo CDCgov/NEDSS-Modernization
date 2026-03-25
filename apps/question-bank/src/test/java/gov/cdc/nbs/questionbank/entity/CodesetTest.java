@@ -1,24 +1,18 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
-import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
-
 
 class CodesetTest {
 
   @Test
   void should_create() {
     Instant now = Instant.now();
-    var command = new ValueSetCommand.Add(
-        "PHIN",
-        "valueset_name",
-        "code",
-        "description",
-        1,
-        now,
-        2l);
+    var command =
+        new ValueSetCommand.Add("PHIN", "valueset_name", "code", "description", 1, now, 2l);
 
     Codeset codeset = new Codeset(command);
     assertThat(codeset.getId().getClassCd()).isEqualTo("code_value_general");
@@ -43,23 +37,17 @@ class CodesetTest {
     assertThat(codeset.getCodeSetGroup().getCodeSetShortDescTxt()).isEqualTo(command.name());
     assertThat(codeset.getCodeSetGroup().getCodeSetDescTxt()).isEqualTo(command.description());
     assertThat(codeset.getCodeSetGroup().getCodeSetNm()).isEqualTo(command.code().toUpperCase());
-    assertThat(codeset.getCodeSetGroup().getVadsValueSetCode()).isEqualTo(command.code().toUpperCase());
+    assertThat(codeset.getCodeSetGroup().getVadsValueSetCode())
+        .isEqualTo(command.code().toUpperCase());
     assertThat(codeset.getCodeSetGroup().getLdfPicklistIndCd()).isEqualTo('Y');
     assertThat(codeset.getCodeSetGroup().getPhinStdValInd()).isEqualTo('N');
   }
 
-
   @Test
   void should_update() {
     Instant now = Instant.now();
-    var command = new ValueSetCommand.Add(
-        "PHIN",
-        "valueset_name",
-        "code",
-        "description",
-        1,
-        now,
-        2l);
+    var command =
+        new ValueSetCommand.Add("PHIN", "valueset_name", "code", "description", 1, now, 2l);
 
     Codeset codeset = new Codeset(command);
     var update = new ValueSetCommand.Update("new_name", "new description");
@@ -70,6 +58,5 @@ class CodesetTest {
     assertThat(codeset.getCodeSetDescTxt()).isEqualTo(update.description());
     assertThat(codeset.getCodeSetGroup().getCodeSetShortDescTxt()).isEqualTo(update.name());
     assertThat(codeset.getCodeSetGroup().getCodeSetDescTxt()).isEqualTo(update.description());
-
   }
 }

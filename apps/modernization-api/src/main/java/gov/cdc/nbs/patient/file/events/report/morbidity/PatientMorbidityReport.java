@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigation;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -24,8 +23,7 @@ record PatientMorbidityReport(
     DisplayableSimpleName reportingProvider,
     Collection<String> treatments,
     Collection<ResultedTest> resultedTests,
-    Collection<AssociatedInvestigation> associations
-) {
+    Collection<AssociatedInvestigation> associations) {
 
   public PatientMorbidityReport withTreatments(final Collection<String> treatments) {
     return new PatientMorbidityReport(
@@ -43,8 +41,7 @@ record PatientMorbidityReport(
         reportingProvider,
         treatments,
         resultedTests,
-        associations
-    );
+        associations);
   }
 
   public PatientMorbidityReport withResultedTests(final Collection<ResultedTest> resultedTests) {
@@ -63,11 +60,11 @@ record PatientMorbidityReport(
         reportingProvider,
         treatments,
         resultedTests,
-        associations
-    );
+        associations);
   }
 
-  public PatientMorbidityReport withAssociations(final Collection<AssociatedInvestigation> associations) {
+  public PatientMorbidityReport withAssociations(
+      final Collection<AssociatedInvestigation> associations) {
     return new PatientMorbidityReport(
         patient,
         id,
@@ -83,7 +80,6 @@ record PatientMorbidityReport(
         reportingProvider,
         treatments,
         resultedTests,
-        associations
-    );
+        associations);
   }
 }

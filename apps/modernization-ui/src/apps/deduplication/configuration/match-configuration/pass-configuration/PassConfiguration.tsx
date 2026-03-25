@@ -33,7 +33,7 @@ export const PassConfiguration = ({ dataElements, onImportClick }: Props) => {
         onAccept: (() => void) | (() => Promise<void>) | undefined;
     }>({
         visible: false,
-        onAccept: undefined
+        onAccept: undefined,
     });
     const [showSaveModal, setShowSaveModal] = useState<boolean>(false);
 

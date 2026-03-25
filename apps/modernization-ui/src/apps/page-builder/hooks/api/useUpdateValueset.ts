@@ -36,7 +36,7 @@ export const useUpdateValueset = () => {
         if (state.status === 'updating') {
             ValueSetControllerService.updateValueSet({
                 codeSetNm: state.valueset,
-                requestBody: state.request
+                requestBody: state.request,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
@@ -53,7 +53,7 @@ export const useUpdateValueset = () => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'updating',
         response: state.status === 'complete' ? state.valueset : undefined,
-        update: (valueset: string, request: UpdateValueSetRequest) => dispatch({ type: 'update', valueset, request })
+        update: (valueset: string, request: UpdateValueSetRequest) => dispatch({ type: 'update', valueset, request }),
     };
 
     return value;

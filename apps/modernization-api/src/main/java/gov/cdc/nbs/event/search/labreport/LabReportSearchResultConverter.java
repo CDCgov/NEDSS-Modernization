@@ -8,24 +8,23 @@ import java.util.List;
 
 class LabReportSearchResultConverter {
 
-  static LabReportSearchResult convert(final SearchableLabReport searchable, final Double score,
+  static LabReportSearchResult convert(
+      final SearchableLabReport searchable,
+      final Double score,
       final LabTestSummaryFinder labTestSummaryFinder) {
 
     double relevance = RelevanceResolver.resolve(score);
 
-    List<LabReportSearchResult.PersonParticipation> personParticipations = searchable.people()
-        .stream().map(LabReportSearchResultConverter::asPerson)
-        .toList();
+    List<LabReportSearchResult.PersonParticipation> personParticipations =
+        searchable.people().stream().map(LabReportSearchResultConverter::asPerson).toList();
 
-    List<LabReportSearchResult.OrganizationParticipation> organizationParticipations = searchable.organizations()
-        .stream()
-        .map(LabReportSearchResultConverter::asOrganization)
-        .toList();
+    List<LabReportSearchResult.OrganizationParticipation> organizationParticipations =
+        searchable.organizations().stream()
+            .map(LabReportSearchResultConverter::asOrganization)
+            .toList();
 
-    List<LabReportSearchResult.Observation> observations = searchable.tests()
-        .stream()
-        .map(LabReportSearchResultConverter::asObservation)
-        .toList();
+    List<LabReportSearchResult.Observation> observations =
+        searchable.tests().stream().map(LabReportSearchResultConverter::asObservation).toList();
 
     List<LabReportSearchResult.AssociatedInvestigation> associatedInvestigations =
         asAssociatedInvestigations(searchable.associated());
@@ -40,17 +39,20 @@ class LabReportSearchResultConverter {
         organizationParticipations,
         observations,
         associatedInvestigations,
-        labTestSummaryFinder == null ? new ArrayList<LabTestSummary>()
+        labTestSummaryFinder == null
+            ? new ArrayList<LabTestSummary>()
             : labTestSummaryFinder.find(searchable.identifier()));
   }
 
-  private static LabReportSearchResult.PersonParticipation asPerson(final SearchableLabReport.Person person) {
+  private static LabReportSearchResult.PersonParticipation asPerson(
+      final SearchableLabReport.Person person) {
     return person instanceof SearchableLabReport.Person.Patient patient
         ? asPerson(patient)
         : asPerson((SearchableLabReport.Person.Provider) person);
   }
 
-  private static LabReportSearchResult.PersonParticipation asPerson(final SearchableLabReport.Person.Patient patient) {
+  private static LabReportSearchResult.PersonParticipation asPerson(
+      final SearchableLabReport.Person.Patient patient) {
     return new LabReportSearchResult.PersonParticipation(
         patient.birthday(),
         patient.gender(),
@@ -78,15 +80,12 @@ class LabReportSearchResultConverter {
   private static LabReportSearchResult.OrganizationParticipation asOrganization(
       final SearchableLabReport.Organization organization) {
     return new LabReportSearchResult.OrganizationParticipation(
-        organization.type(),
-        organization.name());
+        organization.type(), organization.name());
   }
 
-  private static LabReportSearchResult.Observation asObservation(final SearchableLabReport.LabTest test) {
-    return new LabReportSearchResult.Observation(
-        test.name(),
-        test.alternative(),
-        test.result());
+  private static LabReportSearchResult.Observation asObservation(
+      final SearchableLabReport.LabTest test) {
+    return new LabReportSearchResult.Observation(test.name(), test.alternative(), test.result());
   }
 
   private static List<LabReportSearchResult.AssociatedInvestigation> asAssociatedInvestigations(
@@ -101,12 +100,8 @@ class LabReportSearchResultConverter {
   private static LabReportSearchResult.AssociatedInvestigation asAssociatedInvestigation(
       final SearchableLabReport.Investigation investigation) {
     return new LabReportSearchResult.AssociatedInvestigation(
-        investigation.condition(),
-        investigation.local());
+        investigation.condition(), investigation.local());
   }
 
-  private LabReportSearchResultConverter() {
-
-  }
-
+  private LabReportSearchResultConverter() {}
 }

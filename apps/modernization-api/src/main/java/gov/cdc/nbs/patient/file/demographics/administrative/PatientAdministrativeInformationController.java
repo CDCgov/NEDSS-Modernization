@@ -20,12 +20,13 @@ class PatientAdministrativeInformationController {
   @Operation(
       summary = "Patient File Administrative Information",
       description = "Provides the administrative information for a patient",
-      tags = "PatientFile"
-  )
+      tags = "PatientFile")
   @GetMapping("/nbs/api/patients/{patient}/demographics/administrative")
   @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT')")
   ResponseEntity<Administrative> administrative(@PathVariable("patient") long patient) {
-    return this.finder.find(patient).map(ResponseEntity::ok)
+    return this.finder
+        .find(patient)
+        .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.ok().build());
   }
 }

@@ -1,19 +1,14 @@
 package gov.cdc.nbs.event.search.labreport.indexing.investigation;
 
 import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
-class SearchableLabReportInvestigationRowMapper implements RowMapper<SearchableLabReport.Investigation> {
+class SearchableLabReportInvestigationRowMapper
+    implements RowMapper<SearchableLabReport.Investigation> {
 
-  record Column(
-      int local,
-      int condition
-  ) {
-  }
-
+  record Column(int local, int condition) {}
 
   private final Column columns;
 
@@ -22,17 +17,11 @@ class SearchableLabReportInvestigationRowMapper implements RowMapper<SearchableL
   }
 
   @Override
-  public SearchableLabReport.Investigation mapRow(
-      final ResultSet resultSet,
-      final int rowNum
-  ) throws SQLException {
+  public SearchableLabReport.Investigation mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     String local = resultSet.getString(this.columns.local());
     String condition = resultSet.getString(this.columns.condition());
 
-
-    return new SearchableLabReport.Investigation(
-        local,
-        condition
-    );
+    return new SearchableLabReport.Investigation(local, condition);
   }
 }

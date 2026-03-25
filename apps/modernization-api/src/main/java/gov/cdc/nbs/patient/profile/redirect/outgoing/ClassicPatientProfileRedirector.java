@@ -1,11 +1,10 @@
 package gov.cdc.nbs.patient.profile.redirect.outgoing;
 
 import gov.cdc.nbs.patient.profile.redirect.ReturningPatientCookie;
+import java.net.URI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import java.net.URI;
 
 @Component
 public class ClassicPatientProfileRedirector {
@@ -15,16 +14,14 @@ public class ClassicPatientProfileRedirector {
 
   ClassicPatientProfileRedirector(
       final ClassicPatientSearchPreparer searchPreparer,
-      final ClassicPatientProfilePreparer profilePreparer
-  ) {
+      final ClassicPatientProfilePreparer profilePreparer) {
     this.searchPreparer = searchPreparer;
     this.profilePreparer = profilePreparer;
   }
 
   public ResponseEntity<Void> preparedRedirect(final long patient, final URI location) {
     prepare(patient);
-    return ResponseEntity
-        .status(HttpStatus.TEMPORARY_REDIRECT)
+    return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
         .location(location)
         .headers(new ReturningPatientCookie(patient).apply())
         .build();

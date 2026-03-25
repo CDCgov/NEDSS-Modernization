@@ -4,7 +4,7 @@ import { DataEntryMenu } from './DataEntryMenu';
 let mockPermissions: string[] = [];
 
 vi.mock('user', () => ({
-    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } }),
 }));
 
 describe('when displaying the Data entry menu', () => {

@@ -23,14 +23,14 @@ const eventTypeOptions = [
     { value: 'ISO', name: 'Lab Isolate Tracking' },
     { value: 'LAB', name: 'Lab Report' },
     { value: 'SUS', name: 'Lab Susceptibility' },
-    { value: 'VAC', name: 'Vaccination' }
+    { value: 'VAC', name: 'Vaccination' },
 ];
 
 export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageStatus }: AddNewPageFieldProps) => {
     const form = useFormContext<PageInformationChangeRequest>();
     const validatePageName = async (val: string) => {
         const response = await PageControllerService.validatePageRequest({
-            requestBody: { name: val }
+            requestBody: { name: val },
         });
         if (!response) {
             form.setError('name', { message: 'Name is already in use' });
@@ -54,7 +54,7 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                         options={conditions.map((m) => {
                             return {
                                 name: m.name ?? '',
-                                value: m.id
+                                value: m.id,
                             };
                         })}
                     />
@@ -65,7 +65,7 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                 name="name"
                 rules={{
                     required: { value: true, message: 'Name is required.' },
-                    ...validPageNameRule
+                    ...validPageNameRule,
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
@@ -108,7 +108,7 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                         options={mmgs.map((m) => {
                             return {
                                 name: m.display ?? '',
-                                value: m.localCode ?? ''
+                                value: m.localCode ?? '',
                             };
                         })}
                         error={error?.message}

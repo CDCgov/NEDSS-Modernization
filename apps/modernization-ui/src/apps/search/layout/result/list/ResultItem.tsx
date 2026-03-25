@@ -15,8 +15,9 @@ const ResultItem = ({ label, orientation = 'horizontal', children }: ResultItemP
         <div
             className={classNames(styles.item, {
                 [styles.vertical]: orientation === 'vertical',
-                [styles.horizontal]: orientation === 'horizontal'
-            })}>
+                [styles.horizontal]: orientation === 'horizontal',
+            })}
+        >
             <span className={styles.label}>{label}</span>
             <Value>{children}</Value>
         </div>

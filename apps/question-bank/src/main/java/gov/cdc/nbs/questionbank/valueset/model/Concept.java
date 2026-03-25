@@ -1,7 +1,7 @@
 package gov.cdc.nbs.questionbank.valueset.model;
 
-import java.time.Instant;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.Instant;
 
 public record Concept(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String codeSetName,

@@ -46,7 +46,7 @@ const useSearchResultsFormAdapter = <C extends object, A extends object, R exten
         defaultValues: settings.defaultValues,
         transformer: settings.transformer,
         resultResolver: settings.resultResolver,
-        termResolver: settings.termResolver
+        termResolver: settings.termResolver,
     });
 
     useEffect(() => {

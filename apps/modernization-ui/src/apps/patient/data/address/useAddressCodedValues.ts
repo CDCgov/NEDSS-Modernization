@@ -12,7 +12,7 @@ const useAddressCodedValues = (): AddressCodedValues => {
 
     return {
         types: types.options,
-        uses: uses.options
+        uses: uses.options,
     };
 };
 
