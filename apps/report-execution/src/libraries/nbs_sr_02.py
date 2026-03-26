@@ -13,21 +13,46 @@ def execute(
     source and filters (executing subset_sql) and returns the table.
 
     Conversion notes:
-    * Lifted the size check to a global check and refined the env var names
-    * Date formatting still needs to be figured out
+    * Matched export format without pivot
+    * Removed calculations section of descriptions as those were run-format specific
     """
-    content = trx.execute(
-        f'WITH subset as ({subset_query})\n' +
-        'SELECT state, county, phc_code_short_desc, sum(group_case_cnt) as cases\n' +
-        'FROM subset\n' + 
-        'GROUP BY state, county, phc_code_short_desc'
-        )
+    content = trx.query(
+        f'WITH subset as ({subset_query})\n'
+        + 'SELECT state as State, county as County, phc_code_short_desc as Condition, '
+        'sum(group_case_cnt) as Cases\n'
+        + 'FROM subset\n'
+        + 'GROUP BY state, county, phc_code_short_desc\n'
+        + 'ORDER BY state, county, phc_code_short_desc'
+    )
 
-    description = 'SR2: Counts of Reportable Diseases by County for Selected Time frame'
+    # Get the state(s) in the data set for subheader display
+    states = trx.query(f'SELECT DISTINCT q.state FROM ({subset_query}) q ORDER BY q.state')
+    state_list = [row[0] if row[0] is not None else 'N/A' for row in states.data]
+
+    header = 'SR2: Counts of Reportable Diseases by County for Selected Time frame'
+    subheader = f'For {", ".join(state_list)}'
     if time_range is not None:
-        description += f'\n{time_range.start} - {time_range.end}'
+        subheader += f' and From {time_range.start} To {time_range.end}'
+    description = (
+        '*<u>Report Content</u>*\n'
+        '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
+        '*Output:* Report demonstrates, in table form, the total number of '
+        'Investigation(s) [both Individual and Summary] by County irrespective of Case Status.\n'
+        'Output:\n'
+        '* Does not include Investigation(s) that have been logically deleted\n'
+        '* Is filtered based on the state, county(s), disease(s) and advanced criteria selected '
+        'by user\n'
+        '* Will not include Investigation(s) that do not have a value for the State '
+        'selected by the user\n'
+        '* Will not include Investigation(s) that do not have a value for the County(s) '
+        'selected by the user\n'
+        '* Is based on the calculated Event Date\n'
+    )
 
-    # TODO: datetimes are formatted '%0m/%0d/%Y %0H:%0M:%0S' in sas. # noqa: FIX002
-    # Should this be a util/post processing/sql step in python land?
-
-    return ReportResult(content_type='table', content=content, description=description)
+    return ReportResult(
+        content_type='table',
+        content=content,
+        header=header,
+        subheader=subheader,
+        description=description,
+    )
