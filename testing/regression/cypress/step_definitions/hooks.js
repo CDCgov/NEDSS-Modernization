@@ -22,6 +22,10 @@ Before({ tags: "@skip-broken" }, function () {
   this.skip();
 });
 
+Before({ tags: "@skip-flaky-and-low-priority" }, function () {
+  this.skip();
+});
+
 Before({ tags: "@skip-if-no-di-api" }, function () {
   if (!Cypress.env("DI_API")) {
     this.skip();
