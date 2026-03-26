@@ -50,20 +50,21 @@ class ReportServiceTest {
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
 
-  private void mockReport(ReportId id, String runner, String dataSourceName) {
+  private void mockReport(ReportId id, String runner, String dataSourceName, String libraryName) {
     Report report = mock(Report.class);
 
     when(report.getReportLibrary()).thenReturn(reportLibrary);
     when(report.getDataSource()).thenReturn(dataSource);
     when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
     when(reportLibrary.getRunner()).thenReturn(runner);
+    when(reportLibrary.getLibraryName()).thenReturn(libraryName);
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
   }
 
   @Test
   void getReport_should_return_configuration_when_report_exists() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "python", "nbs_ods.PHCDemographic");
+    mockReport(id, "python", "nbs_ods.PHCDemographic", "nbs_custom");
 
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
@@ -84,7 +85,7 @@ class ReportServiceTest {
   @Test
   void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "python", "nbs_ods.PHCDemographic");
+    mockReport(id, "python", "nbs_ods.PHCDemographic", "nbs_custom");
 
     ReportSpec spec =
         new ReportSpec(
@@ -98,6 +99,7 @@ class ReportServiceTest {
             null);
     when(specBuilder.setDataSourceName("nbs_ods.PHCDemographic")).thenReturn(specBuilder);
     when(specBuilder.setColumns(List.of(16L))).thenReturn(specBuilder);
+    when(specBuilder.setLibraryName("nbs_custom")).thenReturn(specBuilder);
     when(specBuilder.build()).thenReturn(spec);
 
     when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
@@ -121,7 +123,7 @@ class ReportServiceTest {
   @Test
   void executeReport_should_throw_not_implemented_when_runner_not_python() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "java", "nbs_rdb.V_CHALK_TALK");
+    mockReport(id, "java", "nbs_rdb.V_CHALK_TALK", "nbs_custom");
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17L), List.of());

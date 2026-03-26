@@ -16,7 +16,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class DataSourceNameUtilsTest {
-  //  @Mock private DataSourceNames dataSourceNames;
   @InjectMocks private DataSourceNameUtils utils;
 
   @BeforeEach
