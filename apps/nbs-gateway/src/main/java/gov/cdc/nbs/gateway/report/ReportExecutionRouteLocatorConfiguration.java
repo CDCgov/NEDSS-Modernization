@@ -49,6 +49,7 @@ class ReportExecutionRouteLocatorConfiguration {
 
   private static final String REPORT_OBJECT_TYPE = "7";
   private static final String REPORT_OPERATION_TYPE = "117";
+  private static final String REPORT_MOD_RUNNER = "python";
 
   private static final System.Logger LOGGER =
       System.getLogger(ReportExecutionRouteLocatorConfiguration.class.getName());
@@ -109,21 +110,28 @@ class ReportExecutionRouteLocatorConfiguration {
                       .forEach(
                           (name, cookies) ->
                               cookies.forEach(cookie -> newCookies.add(name, cookie.getValue()))))
-          .retrieve()
-          .bodyToMono(JsonNode.class)
+          .exchangeToMono(
+              response -> {
+                // If the api response has any set-cookie's, pass them on to overall response
+                // so they are set in the browser. This is important for auth.
+                exchange.getResponse().getCookies().addAll(response.cookies());
+
+                return response
+                    .bodyToMono(JsonNode.class)
+                    .flatMap(
+                        b -> {
+                          JsonNode runnerNode = b.get("runner");
+                          if (runnerNode == null) return Mono.just(false);
+                          String runner = runnerNode.textValue();
+                          return Mono.just(REPORT_MOD_RUNNER.equals(runner));
+                        });
+              })
           .doOnError(
               err ->
                   LOGGER.log(
                       System.Logger.Level.ERROR,
                       "Error querying modernization-api for report metadata: %s"
-                          .formatted(err.getMessage())))
-          .flatMap(
-              b -> {
-                JsonNode runnerNode = b.get("runner");
-                if (runnerNode == null) return Mono.just(false);
-                String runner = runnerNode.textValue();
-                return Mono.just("python".equals(runner));
-              });
+                          .formatted(err.getMessage())));
     };
   }
 

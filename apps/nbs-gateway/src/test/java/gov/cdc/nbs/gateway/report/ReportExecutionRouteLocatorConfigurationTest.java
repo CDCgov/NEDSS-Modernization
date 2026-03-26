@@ -54,7 +54,8 @@ class ReportExecutionRouteLocatorConfigurationTest {
         get(urlPathMatching("/nbs/api/report/configuration/2/1"))
             .willReturn(
                 ok().withJsonBody(node)
-                    .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)));
+                    .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .withHeader("Set-Cookie", "nbs_token=blah")));
 
     MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
     data.add("mode", "edit");
@@ -74,7 +75,9 @@ class ReportExecutionRouteLocatorConfigurationTest {
         .expectStatus()
         .isFound()
         .expectHeader()
-        .location("http://localhost:%s/report/2/1/run".formatted(gatewayServerPort));
+        .location("http://localhost:%s/report/2/1/run".formatted(gatewayServerPort))
+        .expectCookie()
+        .valueEquals("nbs_token", "blah");
   }
 
   @Test
