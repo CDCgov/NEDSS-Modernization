@@ -2,28 +2,30 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
-import java.util.List;
+import gov.cdc.nbs.report.utils.DataSourceNames;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class DataSourceNameUtilsTest {
+  @Mock private DataSourceNames dataSourceNames;
   @InjectMocks private DataSourceNameUtils utils;
+
+  Map<String, String> mappings;
 
   @BeforeEach
   void setUp() {
-    utils = new DataSourceNameUtils();
-    ReflectionTestUtils.setField(utils, "nbsOdseDbName", "NBS_ODSE");
-    ReflectionTestUtils.setField(utils, "nbsOdseAltNames", List.of("nbs_ods", "odse", "ods"));
-    ReflectionTestUtils.setField(utils, "rdbDbName", "RDB");
-    ReflectionTestUtils.setField(utils, "rdbAltNames", List.of(""));
+    utils = new DataSourceNameUtils(dataSourceNames);
   }
 
   @ParameterizedTest
@@ -46,11 +48,17 @@ class DataSourceNameUtilsTest {
       strings = {
         "NBS_ODSE.dbo.PHCDemographic",
         "nbs_ods.PHCDemographic",
-        "[nbS_odS].[PHCDemographic]",
+        "odse.[PHCDemographic]",
         "ods.[dbo].[PHCDemographic]",
-        "ODS.PHCDemographic"
+        "[ods].[dbo].PHCDemographic"
       })
   void buildDataSourceName_should_return_standardized_nbs_odse_name(String dataSourceName) {
+    mappings = new HashMap<>();
+    mappings.put("nbs_ods", "NBS_ODSE");
+    mappings.put("odse", "NBS_ODSE");
+    mappings.put("ods", "NBS_ODSE");
+    when(dataSourceNames.getMappings()).thenReturn(mappings);
+
     String result = utils.buildDataSourceName(dataSourceName);
     assertThat(result).isEqualTo("NBS_ODSE.dbo.PHCDemographic");
   }
