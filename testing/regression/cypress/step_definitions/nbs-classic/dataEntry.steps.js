@@ -1,8 +1,22 @@
-import { labReportPage } from "@pages/nbs-classic/dataEntry.page";
-import { morbidityReportPage } from "@pages/nbs-classic/morbidityReportPage";
-import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { labReportPage } from '../../e2e/pages/nbs-classic/dataEntry.page';
+import { patientEntitySearch } from '../../e2e/pages/nbs-classic/patientEntitySearch.page';
+import { morbidityReportPage } from '../../e2e/pages/nbs-classic/morbidityReportPage';
+import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { clickSubmitButton, clickHome } from '../../e2e/pages/nbs-classic/utils';
 
-When("I click on Data Entry in the menu bar", () => {
+When("I search for patient {string} {string}", (patientFirstName, patientLastName) => {
+  patientEntitySearch.getPatientByName({patientLastName, patientFirstName});
+});
+
+When("I check the Lab Report count", () => {
+  labReportPage.getLabReportCountForPatient();
+});
+
+When('I click on Home in the navigation bar', () => {
+  labReportPage.clickHome();
+});
+
+When('I click on Data Entry in the navigation bar', () => {
   labReportPage.clickDataEntry();
 });
 
@@ -55,7 +69,7 @@ When("I click the add button to add the lab report", () => {
 });
 
 When("I click the submit button", () => {
-  labReportPage.clickSubmitButton();
+  clickSubmitButton();
 });
 
 When("I click on the Morbidity Report link", () => {
@@ -109,14 +123,103 @@ When('I confirm the submission by clicking "Ok"', () => {
   morbidityReportPage.confirmSubmission();
 });
 
-When(
-  "I enter patient first name {string} and last name {string}",
-  (firstName, lastName) => {
-    morbidityReportPage.enterPatientBothNames(firstName, lastName);
-  }
-);
+//Data Entry - Lab Report - Patient Tab
 
-// Successful submission verification
+//  1: Patient Search
+
+When("I populate the page with patient Surma J Singh's information", () => {
+  labReportPage.searchForPatientInPopup();
+});
+
+When('I click Next to navigate to the Lab Report tab', () => {
+  labReportPage.clickNext();
+});
+
+//Data Entry - Lab Report - Lab Report Tab
+
+//  1: Facility and Provider Information
+
+
+When("I search for Reporting Facility with Quick Code {string}", (quickCode) => {
+  labReportPage.searchForReportingFacility(quickCode);
+});
+
+//  2: Order Details
+
+When("I select a random Program Area", () => {
+  labReportPage.selectProgramArea();
+});
+
+
+
+When("I select a random Jursidiction", () => {
+  labReportPage.selectJurisdiction();
+});
+
+//  3: Ordered Test
+
+When("I populate Ordered Test with Measles virus Rubeola antigen", () => {
+  labReportPage.searchForOrderedTestInPopup();
+});
+
+When("I select a random Coded Result", () => {
+  labReportPage.selectCodedResult();
+});
+
+When("I select a random Specimen Source", () => {
+  labReportPage.selectSpecimenSource();
+});
+
+When("I select a random Specimen Site", () => {
+  labReportPage.selectSpecimenSite();
+});
+
+When('I select {string} from the Specimen Source dropdown', (specimenSource) => {
+  labReportPage.selectLabReportSpecimenSource(specimenSource);
+});
+
+When('I select {string} from the Specimen Site dropdown', (specimenSite) => {
+  labReportPage.selectLabReportSpecimenSite(specimenSite);
+});
+
+When('I enter the current date in the Specimen Collection Date/Time field', () => {
+  labReportPage.enterSpecimenCollectionDate();
+});
+
+//  4: Resulted Test
+
+When('I select a random Resulted Test', () => {
+  labReportPage.selectResultedTest();
+});
+
+When('I select {string} from the Code Result dropdown', (specimenSource) => {
+  labReportPage.selectLabReportSpecimenSource(specimenSource);
+});
+
+When("I click the Add button under Resulted Tests", () => {
+  labReportPage.clickAddButtonResultedTests();
+});
+
+//  5: Morbidity Report
+
+When("I enter patient first name {string} and last name {string}", (firstName, lastName) => {
+  morbidityReportPage.enterPatientBothNames(firstName, lastName);
+});
+
+// 6: Verification Steps
+
+When("I go to the Home page", () => {
+  clickHome();
+});
+
+Then("there should be one more Lab Report than before", () => {
+  labReportPage.verifyLabReportCountIncreased();
+});
+
+Then("the last Lab Report should have multiple resulted tests associated with it", () => {
+  labReportPage.verifyLastLabReportHasMultipleResultedTests();
+});
+
 Then("the morbidity report should be submitted successfully", () => {
   morbidityReportPage.verifySuccessfulSubmission();
 });
