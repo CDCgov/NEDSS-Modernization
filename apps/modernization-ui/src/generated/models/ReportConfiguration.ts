@@ -2,9 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Library } from './Library';
+import type { ReportDataSource } from './ReportDataSource';
 export type ReportConfiguration = {
     runner: string;
-    dataSourceName: string;
+    dataSource: ReportDataSource;
+    reportLibrary: Library;
     python?: boolean;
 };
 

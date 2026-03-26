@@ -2,18 +2,18 @@ package gov.cdc.nbs.report.utils;
 
 import java.util.Map;
 import java.util.regex.Pattern;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConfigurationProperties(prefix = "nbs.report.datasource")
 public class DataSourceNameUtils {
-  private DataSourceNames dataSourceNames = new DataSourceNames();
-
-  public DataSourceNameUtils(DataSourceNames dataSourceNames) {
-    this.dataSourceNames = dataSourceNames;
-  }
+  @Getter @Setter Map<String, String> mappings;
 
   public String buildDataSourceName(String orgDataSourceName) {
-    Map<String, String> mappings = dataSourceNames.getMappings();
+    Map<String, String> mappings = getMappings();
     String modifiedName = orgDataSourceName.trim().replace("[", "").replace("]", "");
 
     int orgDBNameIndex = modifiedName.indexOf(".");
@@ -24,11 +24,10 @@ public class DataSourceNameUtils {
 
     String orgDBName = modifiedName.substring(0, orgDBNameIndex);
 
-    if (!mappings.containsKey(orgDBName)) {
-      if (mappings.values().stream().noneMatch(s -> s.equals(orgDBName))) {
-        throw new IllegalArgumentException(
-            String.format("No data source found for %s", orgDataSourceName));
-      }
+    if (!mappings.containsKey(orgDBName)
+        && mappings.values().stream().noneMatch(s -> s.equals(orgDBName))) {
+      throw new IllegalArgumentException(
+          String.format("No data source found for %s", orgDataSourceName));
     }
 
     String standardizedDBName = mappings.getOrDefault(orgDBName, orgDBName);

@@ -62,6 +62,7 @@ public class ReportService {
 
     ReportSpec reportSpec =
         specBuilder
+            .setLibraryName(reportConfigResponse.reportLibrary().libraryName())
             .setDataSourceName(reportConfigResponse.dataSource().name())
             .setColumns(request.columnUids())
             .build();
