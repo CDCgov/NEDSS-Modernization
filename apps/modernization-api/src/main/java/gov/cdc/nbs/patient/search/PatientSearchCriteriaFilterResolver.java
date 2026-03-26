@@ -161,8 +161,10 @@ class PatientSearchCriteriaFilterResolver {
                         script ->
                             script
                                 .source(
-                                    "doc['birth_time'].size()!=0 && doc['birth_time'].value.getDayOfMonth() == "
-                                        + equalsDate.day())
+                                    so ->
+                                        so.scriptString(
+                                            "doc['birth_time'].size()!=0 && doc['birth_time'].value.getDayOfMonth() == "
+                                                + equalsDate.day()))
                                 .lang(PAINLESS)))));
   }
 
@@ -185,8 +187,10 @@ class PatientSearchCriteriaFilterResolver {
                         script ->
                             script
                                 .source(
-                                    "doc['birth_time'].size()!=0 && doc['birth_time'].value.getMonthValue() == "
-                                        + equalsDate.month())
+                                    so ->
+                                        so.scriptString(
+                                            "doc['birth_time'].size()!=0 && doc['birth_time'].value.getMonthValue() == "
+                                                + equalsDate.month()))
                                 .lang(PAINLESS)))));
   }
 
@@ -209,8 +213,10 @@ class PatientSearchCriteriaFilterResolver {
                         script ->
                             script
                                 .source(
-                                    "doc['birth_time'].size()!=0 && doc['birth_time'].value.getYear() == "
-                                        + equalsDate.year())
+                                    so ->
+                                        so.scriptString(
+                                            "doc['birth_time'].size()!=0 && doc['birth_time'].value.getYear() == "
+                                                + equalsDate.year()))
                                 .lang(PAINLESS)))));
   }
 

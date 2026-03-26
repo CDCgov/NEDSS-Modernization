@@ -1,0 +1,202 @@
+config:
+  seed: 4
+
+tables:
+  # Table backing PHCDemographic view
+  - table_name: "[NBS_ODSE].[dbo].[PublicHealthCaseFact]"
+    row_count: 1000
+    columns:
+      # required columns:
+      - column_name: public_health_case_uid
+        data: row_id
+        is_primary_key: true
+      - column_name: case_class_cd
+        data: random.choice(["N", "C", ""])
+      - column_name: PHC_code
+        data: random.choice(["10190", "10140", "502651"])
+      - column_name: PHC_code_desc
+        data: |
+          if PHC_code == "10190":
+            return "Pertussis"
+          elif PHC_code == "10140":
+            return "Measles"
+          elif PHC_code == "502651":
+            return "Salmonellosis"
+      - column_name: prog_area_cd
+        data: |
+          if PHC_code in ("10190", "10140"):
+            return "GCD"
+          elif PHC_code == "502651":
+            return "FOOD"
+
+      # Case basics
+      - column_name: PHC_code_short_desc
+        type: string
+        data: PHC_code_desc
+      - column_name: event_date 
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.05
+      - column_name: group_case_cnt
+        data: fake.random_int(1, 90)
+        null_percentage: 0.05
+
+      # Location
+      - column_name: state
+        type: string
+        data: random.choice(["Georgia", "Tennessee"]) if random.random() < .95 else None
+      - column_name: state_cd
+        type: string
+        data: |
+          if state == "Georgia":
+            return "13"
+          elif state == "Tennessee":
+            return "47"
+          else:
+            return None
+  
+# === Columns not needed for reports yet ===
+# adults_in_house_nbr smallint NULL,
+# ageInMonths smallint NULL,
+# ageInYears smallint NULL,
+# age_category_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# age_reported_time datetime NULL,
+# age_reported_unit_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# age_reported numeric(8,0) NULL,
+# awareness_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# awareness_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# birth_gender_cd char(1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# birth_order_nbr smallint NULL,
+# birth_time datetime NULL,
+# birth_time_calc datetime NULL,
+# birth_time_std datetime NULL,
+# case_type_cd char(1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# cd_system_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# cd_system_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# census_block_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# census_minor_civil_division_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# census_track_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# cnty_code_desc_txt varchar(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# children_in_house_nbr smallint NULL,
+# city_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# city_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# confidentiality_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# confidentiality_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# confirmation_method_cd varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# confirmation_method_time datetime NULL,
+# county varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# cntry_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# cnty_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# curr_sex_cd char(1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# deceased_ind_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# deceased_time datetime NULL,
+# detection_method_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# detection_method_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# diagnosis_date datetime NULL,
+# disease_imported_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# disease_imported_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# education_level_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# ELP_class_cd varchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# ELP_from_time datetime NULL,
+# ELP_to_time datetime NULL,
+# ethnic_group_ind varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# ethnic_group_ind_desc varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# event_type varchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# education_level_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# firstNotificationSenddate datetime NULL,
+# firstNotificationdate datetime NULL,
+# firstNotificationStatus varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# firstNotificationSubmittedBy bigint NULL,
+# geoLatitude real NULL,
+# geoLongitude real NULL,
+# investigation_status_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# investigatorAssigneddate datetime NULL,
+# investigatorName varchar(102) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# investigatorPhone varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# jurisdiction_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# lastNotificationdate datetime NULL,
+# lastNotificationSenddate datetime NULL,
+# lastNotificationSubmittedBy bigint NULL,
+# marital_status_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# marital_status_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# mart_record_creation_date datetime NULL,
+# mart_record_creation_time datetime NULL,
+# mmwr_week numeric(8,0) NULL,
+# mmwr_year numeric(8,0) NULL,
+# MSA_congress_district_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# multiple_birth_ind varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# notifCreatedCount int NULL,
+# notificationdate datetime NULL,
+# notifSentCount int NULL,
+# occupation_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# onSetDate datetime NULL,
+# organizationName varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# outcome_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# outbreak_from_time datetime NULL,
+# outbreak_ind varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# outbreak_name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# outbreak_to_time datetime NULL,
+# PAR_type_cd varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# pat_age_at_onset numeric(8,0) NULL,
+# pat_age_at_onset_unit_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# postal_locator_uid bigint NULL,
+# person_cd varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# person_code_desc varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# person_uid bigint NULL,
+# PHC_add_time datetime NULL,
+# PHC_code_short_desc varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# prim_lang_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# prim_lang_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# providerPhone varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# providerName varchar(102) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# PST_record_status_time datetime NULL,
+# PST_record_status_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# race_concatenated_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# race_concatenated_desc_txt varchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# region_district_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# record_status_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# reporterName varchar(102) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# reporterPhone varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# rpt_cnty_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# rpt_form_cmplt_time datetime NULL,
+# rpt_source_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# rpt_source_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# rpt_to_county_time datetime NULL,
+# rpt_to_state_time datetime NULL,
+# shared_ind varchar(1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# state_code_short_desc_txt varchar(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# status_cd char(1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# street_addr1 varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# street_addr2 varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# ELP_use_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# zip_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# patientName varchar(102) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# jurisdiction varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# investigationstartdate datetime NULL,
+# program_jurisdiction_oid bigint NULL,
+# report_date datetime NULL,
+# person_parent_uid bigint NULL,
+# person_local_id varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# sub_addr_as_of_date datetime NULL,
+# state_case_id varchar(199) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# LOCAL_ID varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# NOTIFCURRENTSTATE varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# age_reported_unit_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# birth_gender_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# case_class_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# cntry_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# curr_sex_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# investigation_status_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# occupation_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# outcome_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# pat_age_at_onset_unit_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# prog_area_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# rpt_cnty_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# outbreak_name_desc varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# confirmation_method_desc_txt varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# LASTUPDATE datetime NULL,
+# PHCTXT varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# NOTITXT varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# NOTIFICATION_LOCAL_ID varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+# HSPTL_ADMISSION_DT datetime NULL,
+# HSPTL_DISCHARGE_DT datetime NULL,
+# hospitalized_ind varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
