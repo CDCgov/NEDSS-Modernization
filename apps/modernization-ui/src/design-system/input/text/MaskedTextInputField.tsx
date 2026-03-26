@@ -21,7 +21,8 @@ const MaskedTextInputField = ({
             htmlFor={id}
             required={required}
             error={error}
-            helperText={helperText}>
+            helperText={helperText}
+        >
             <MaskedTextInput id={id} required={required} aria-required={required} {...remaining} />
         </Field>
     );

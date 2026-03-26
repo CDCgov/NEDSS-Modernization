@@ -8,7 +8,7 @@ import {
     ExactValueFilter,
     PartialValue,
     PartialValueFilter,
-    Value
+    Value,
 } from './filter';
 import { DatePeriodOperator, ExactValueOperator, PartialValueOperator } from './operators';
 import { FilterJSON } from 'apps/page-builder/generated';
@@ -53,7 +53,7 @@ const asPartialValue = (value: Value): string => (typeof value === 'string' ? va
 const asPartialValueFilter = (displayable: PartialValueFilter): ExternalPartialValueFilter => ({
     property: displayable.property.value,
     operator: displayable.operator.value,
-    value: asPartialValue(displayable.value)
+    value: asPartialValue(displayable.value),
 });
 
 const asExactValue = (values: Value[]): string[] => values.map(asPartialValue);
@@ -61,13 +61,13 @@ const asExactValue = (values: Value[]): string[] => values.map(asPartialValue);
 const asExactValueFilter = (displayable: ExactValueFilter): ExternalExactValueFilter => ({
     property: displayable.property.value,
     operator: displayable.operator.value,
-    values: asExactValue(displayable.values)
+    values: asExactValue(displayable.values),
 });
 
 const asDatePeriodFilter = (displayable: DatePeriodFilter): ExternalDatePeriodFilter => ({
     property: displayable.property.value,
     operator: displayable.operator.value,
-    from: null
+    from: null,
 });
 
 const asDateRangeFilter = (displayable: DateRangeFilter): ExternalDateRangeFilter => {
@@ -75,13 +75,13 @@ const asDateRangeFilter = (displayable: DateRangeFilter): ExternalDateRangeFilte
 
     return {
         property: displayable.property.value,
-        ...range
+        ...range,
     };
 };
 
 const asDateRange = (displayable: DateRangeFilter): DateRange => ({
     after: externalizeDate(displayable.after),
-    before: externalizeDate(displayable.before)
+    before: externalizeDate(displayable.before),
 });
 
 export { externalize };

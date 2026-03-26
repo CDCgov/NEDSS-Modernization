@@ -54,7 +54,7 @@ const asSorting = (property: string, direction: Direction) => {
         : {
               property,
               direction,
-              sorting: `${property},${fromDirection(direction)}`
+              sorting: `${property},${fromDirection(direction)}`,
           };
 };
 
@@ -141,7 +141,7 @@ const SortingProvider = ({ appendToUrl = false, children }: SortingProviderProps
         direction: state?.direction,
         reset: () => dispatch({ type: 'reset' }),
         sortBy: appendToUrl ? sortByParameter : sortByDispatch,
-        toggle: (property: string) => dispatch({ type: 'toggle', property })
+        toggle: (property: string) => dispatch({ type: 'toggle', property }),
     };
 
     return (

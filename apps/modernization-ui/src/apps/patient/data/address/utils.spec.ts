@@ -4,7 +4,7 @@ describe('asAddressTypeUse', () => {
     it('should display the type and use as a string', () => {
         const address = {
             type: 'Dormitory',
-            use: 'Home'
+            use: 'Home',
         };
 
         expect(asAddressTypeUse(address)).toBe('Dormitory/Home');
@@ -13,7 +13,7 @@ describe('asAddressTypeUse', () => {
     it('should display only the type when use is null', () => {
         const address = {
             type: 'Dormitory',
-            use: null
+            use: null,
         };
 
         expect(asAddressTypeUse(address)).toBe('Dormitory');
@@ -22,7 +22,7 @@ describe('asAddressTypeUse', () => {
     it('should display only the use without slash when type is null', () => {
         const address = {
             type: null,
-            use: 'Home'
+            use: 'Home',
         };
 
         expect(asAddressTypeUse(address)).toBe('Home');
@@ -31,7 +31,7 @@ describe('asAddressTypeUse', () => {
     it('should display empty string when type and use are null', () => {
         const address = {
             type: null,
-            use: null
+            use: null,
         };
 
         expect(asAddressTypeUse(address)).toBe('');

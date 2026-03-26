@@ -1,9 +1,7 @@
 package gov.cdc.nbs.authentication.entity;
 
 import jakarta.persistence.*;
-
 import java.util.List;
-
 
 @Entity
 @Table(name = "Auth_user", catalog = "NBS_ODSE")
@@ -16,30 +14,19 @@ public class AuthUser {
 
   @SuppressWarnings(
       //  Bidirectional mappings require knowledge of each other
-      "javaarchitecture:S7027"
-  )
+      "javaarchitecture:S7027")
   @OneToMany(
       mappedBy = "authUserUid",
       fetch = FetchType.LAZY,
-      cascade = {
-          CascadeType.MERGE,
-          CascadeType.REMOVE,
-          CascadeType.PERSIST
-      },
-      orphanRemoval = true
-  )
+      cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST},
+      orphanRemoval = true)
   private List<AuthUserRole> authUserRoles;
 
   @OneToMany(
       mappedBy = "authUserUid",
       fetch = FetchType.LAZY,
-      cascade = {
-          CascadeType.MERGE,
-          CascadeType.REMOVE,
-          CascadeType.PERSIST
-      },
-      orphanRemoval = true
-  )
+      cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST},
+      orphanRemoval = true)
   private List<AuthProgAreaAdmin> adminProgramAreas;
 
   @Column(name = "user_id", length = 256)
@@ -63,8 +50,7 @@ public class AuthUser {
   @Column(name = "nedss_entry_id", nullable = false)
   private Long nedssEntryId;
 
-  @Embedded
-  private AuthAudit audit;
+  @Embedded private AuthAudit audit;
 
   public Long id() {
     return id;

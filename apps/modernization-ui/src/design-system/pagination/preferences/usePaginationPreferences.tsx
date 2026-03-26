@@ -29,7 +29,7 @@ const reducer = (current: State, action: Action): State => {
                     ? //  update the preference to match the active pagination
                       {
                           changed: new Date(),
-                          active: { pageSize: action.pageSize }
+                          active: { pageSize: action.pageSize },
                       }
                     : //  reset the preference to match the active pagination
                       { changed: new Date() };
@@ -78,7 +78,7 @@ const PaginationPreferenceProvider = ({ id, children }: Props) => {
 
     const interaction = {
         active: state.active,
-        resizeOn
+        resizeOn,
     };
 
     return (

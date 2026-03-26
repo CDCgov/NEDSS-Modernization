@@ -1,5 +1,10 @@
 package gov.cdc.nbs.questionbank.page.clone;
 
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
@@ -11,11 +16,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.ResultActions;
-
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class PageCloneSteps {
 
@@ -46,22 +46,24 @@ public class PageCloneSteps {
 
   @When("the page is cloned from Page Preview")
   public void the_page_is_cloned_from_Page_Preview() {
-    this.page.maybeActive()
-        .map(found -> clone(found.id()))
-        .ifPresent(this.response::active);
-
+    this.page.maybeActive().map(found -> clone(found.id())).ifPresent(this.response::active);
   }
 
   private ResultActions clone(final long page) {
-    server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=list&initLoad=true"))
+    server
+        .expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=list&initLoad=true"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    server.expect(requestTo(classicUrl + "/nbs/PreviewPage.do?method=viewPageLoad&waTemplateUid=" + page))
+    server
+        .expect(
+            requestTo(classicUrl + "/nbs/PreviewPage.do?method=viewPageLoad&waTemplateUid=" + page))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=viewPageDetailsLoad&initLoad=true"))
+    server
+        .expect(
+            requestTo(classicUrl + "/nbs/ManagePage.do?method=viewPageDetailsLoad&initLoad=true"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
@@ -72,17 +74,13 @@ public class PageCloneSteps {
   public void i_am_redirected_to_classic_nbs_to_view_the_simplified_page() throws Exception {
     server.verify();
 
-    String returning = this.page.maybeActive()
-        .map(PageIdentifier::id)
-        .map(String::valueOf)
-        .orElse("NOPE");
+    String returning =
+        this.page.maybeActive().map(PageIdentifier::id).map(String::valueOf).orElse("NOPE");
 
-    response.active()
+    response
+        .active()
         .andExpect(status().isTemporaryRedirect())
-        .andExpect(
-            header().string(
-                HttpHeaders.LOCATION,
-                "/nbs/ManagePage.do?method=clonePageLoad"))
+        .andExpect(header().string(HttpHeaders.LOCATION, "/nbs/ManagePage.do?method=clonePageLoad"))
         .andExpect(cookie().value("Return-Page", returning));
   }
 }

@@ -18,5 +18,4 @@ public class CountyListSteps {
   public void counties(final String state) throws Exception {
     response.active(this.requester.request(state));
   }
-
 }

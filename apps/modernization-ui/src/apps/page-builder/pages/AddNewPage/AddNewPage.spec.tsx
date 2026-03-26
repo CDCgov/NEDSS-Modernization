@@ -15,7 +15,7 @@ import {
     ProgramAreaControllerService,
     Template,
     TemplateControllerService,
-    ConceptControllerService
+    ConceptControllerService,
 } from 'apps/page-builder/generated';
 import userEvent from '@testing-library/user-event';
 
@@ -44,7 +44,7 @@ const eventType = [
     { value: 'ISO', name: 'Lab Isolate Tracking' },
     { value: 'LAB', name: 'Lab Report' },
     { value: 'SUS', name: 'Lab Susceptibility' },
-    { value: 'VAC', name: 'Vaccination' }
+    { value: 'VAC', name: 'Vaccination' },
 ];
 
 const Fixture = () => (
@@ -110,7 +110,7 @@ describe('Add New Page', () => {
         const setHrefSpy = vi.fn((href) => href);
         const mockLocation = { ...location };
         Object.defineProperty(mockLocation, 'href', {
-            set: setHrefSpy
+            set: setHrefSpy,
         });
 
         // @ts-expect-error : location is mocked to check that the href is changed

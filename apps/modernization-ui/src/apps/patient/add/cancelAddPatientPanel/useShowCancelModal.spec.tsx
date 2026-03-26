@@ -5,7 +5,7 @@ const mockSave = vi.fn();
 const mockRemove = vi.fn();
 
 vi.mock('storage', () => ({
-    useLocalStorage: () => ({ value: false, save: mockSave, remove: mockRemove })
+    useLocalStorage: () => ({ value: false, save: mockSave, remove: mockRemove }),
 }));
 
 describe('useShowCancelModal', () => {

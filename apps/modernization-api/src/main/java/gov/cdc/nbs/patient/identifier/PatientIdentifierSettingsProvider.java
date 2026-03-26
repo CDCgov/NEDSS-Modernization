@@ -11,5 +11,4 @@ class PatientIdentifierSettingsProvider {
   PatientIdentifierSettings defaultPatientIdentifierSettings(final JdbcClient client) {
     return new PatientIdentifierSettingsFinder(client).find();
   }
-
 }

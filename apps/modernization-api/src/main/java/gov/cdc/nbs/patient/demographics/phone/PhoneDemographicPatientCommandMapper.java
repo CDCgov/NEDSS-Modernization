@@ -7,9 +7,7 @@ import gov.cdc.nbs.patient.RequestContext;
 public class PhoneDemographicPatientCommandMapper {
 
   public static PatientCommand.AddPhone asAddPhone(
-      final long patient,
-      final RequestContext context,
-      final PhoneDemographic input) {
+      final long patient, final RequestContext context, final PhoneDemographic input) {
     return new PatientCommand.AddPhone(
         patient,
         input.type(),
@@ -26,9 +24,7 @@ public class PhoneDemographicPatientCommandMapper {
   }
 
   public static PatientCommand.UpdatePhone asUpdatePhone(
-      final long patient,
-      final RequestContext context,
-      final PhoneDemographic input) {
+      final long patient, final RequestContext context, final PhoneDemographic input) {
     return new PatientCommand.UpdatePhone(
         patient,
         input.identifier(),
@@ -59,5 +55,4 @@ public class PhoneDemographicPatientCommandMapper {
   private PhoneDemographicPatientCommandMapper() {
     // static
   }
-
 }

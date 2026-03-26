@@ -1,15 +1,14 @@
 package gov.cdc.nbs.data.pagination;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import graphql.GraphQLContext;
 import graphql.execution.CoercedVariables;
 import graphql.language.BooleanValue;
 import graphql.language.StringValue;
+import java.util.Locale;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Sort;
-
-import java.util.Locale;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class DirectionCoercingTest {
 
@@ -20,11 +19,7 @@ class DirectionCoercingTest {
     GraphQLContext context = GraphQLContext.getDefault();
     Locale locale = Locale.getDefault();
 
-    String actual = coercing.serialize(
-        Sort.Direction.ASC,
-        context,
-        locale
-    );
+    String actual = coercing.serialize(Sort.Direction.ASC, context, locale);
 
     assertThat(actual).isEqualTo("ASC");
   }
@@ -36,11 +31,7 @@ class DirectionCoercingTest {
     GraphQLContext context = GraphQLContext.getDefault();
     Locale locale = Locale.getDefault();
 
-    String actual = coercing.serialize(
-        new Object(),
-        context,
-        locale
-    );
+    String actual = coercing.serialize(new Object(), context, locale);
 
     assertThat(actual).isNull();
   }
@@ -53,14 +44,9 @@ class DirectionCoercingTest {
     GraphQLContext context = GraphQLContext.getDefault();
     Locale locale = Locale.getDefault();
 
-    Sort.Direction actual = coercing.parseValue(
-        "desc",
-        context,
-        locale
-    );
+    Sort.Direction actual = coercing.parseValue("desc", context, locale);
 
     assertThat(actual).isEqualTo(Sort.Direction.DESC);
-
   }
 
   @Test
@@ -71,14 +57,9 @@ class DirectionCoercingTest {
     GraphQLContext context = GraphQLContext.getDefault();
     Locale locale = Locale.getDefault();
 
-    Sort.Direction actual = coercing.parseValue(
-        new Object(),
-        context,
-        locale
-    );
+    Sort.Direction actual = coercing.parseValue(new Object(), context, locale);
 
     assertThat(actual).isNull();
-
   }
 
   @Test
@@ -90,15 +71,10 @@ class DirectionCoercingTest {
     Locale locale = Locale.getDefault();
     CoercedVariables variables = CoercedVariables.emptyVariables();
 
-    Sort.Direction actual = coercing.parseLiteral(
-        new StringValue("asc"),
-        variables,
-        context,
-        locale
-    );
+    Sort.Direction actual =
+        coercing.parseLiteral(new StringValue("asc"), variables, context, locale);
 
     assertThat(actual).isEqualTo(Sort.Direction.ASC);
-
   }
 
   @Test
@@ -110,15 +86,9 @@ class DirectionCoercingTest {
     Locale locale = Locale.getDefault();
     CoercedVariables variables = CoercedVariables.emptyVariables();
 
-    Sort.Direction actual = coercing.parseLiteral(
-        new BooleanValue(true),
-        variables,
-        context,
-        locale
-    );
+    Sort.Direction actual =
+        coercing.parseLiteral(new BooleanValue(true), variables, context, locale);
 
     assertThat(actual).isNull();
-
   }
-
 }

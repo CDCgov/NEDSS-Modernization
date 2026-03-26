@@ -8,10 +8,7 @@ public class PatientIndexer {
   private final SearchablePatientResolver resolver;
   private final SearchablePatientIndexer indexer;
 
-  PatientIndexer(
-      final SearchablePatientResolver resolver,
-      final SearchablePatientIndexer indexer
-  ) {
+  PatientIndexer(final SearchablePatientResolver resolver, final SearchablePatientIndexer indexer) {
     this.resolver = resolver;
     this.indexer = indexer;
   }
@@ -19,5 +16,4 @@ public class PatientIndexer {
   public void index(final long patient) {
     this.resolver.resolve(patient).ifPresent(this.indexer::index);
   }
-
 }

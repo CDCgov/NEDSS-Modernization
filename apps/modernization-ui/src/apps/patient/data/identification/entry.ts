@@ -14,7 +14,7 @@ const initial = (asOf: string = today()): Partial<IdentificationEntry> => ({
     asOf,
     type: undefined,
     issuer: undefined,
-    id: ''
+    id: '',
 });
 
 export { initial };

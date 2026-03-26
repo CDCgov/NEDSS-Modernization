@@ -5,7 +5,7 @@ import { LoadingOverlay } from 'libs/loading';
 import {
     PhoneEmailDemographic,
     PhoneEmailDemographicCard,
-    PhoneEmailDemographicCardProps
+    PhoneEmailDemographicCardProps,
 } from 'libs/patient/demographics/phoneEmail';
 
 type PatientFilePhoneEmailProps = {
@@ -19,7 +19,8 @@ const PatientFilePhoneEmailCard = ({ provider, ...remaining }: PatientFilePhoneE
                 <LoadingOverlay>
                     <PhoneEmailDemographicCard {...remaining} />
                 </LoadingOverlay>
-            }>
+            }
+        >
             <Await resolve={provider.get()}>
                 {(resolved) => <PhoneEmailDemographicCard data={resolved} {...remaining} />}
             </Await>

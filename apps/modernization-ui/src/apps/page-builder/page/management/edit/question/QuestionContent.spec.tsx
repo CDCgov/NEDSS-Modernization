@@ -8,7 +8,7 @@ import { PageContent } from '../content/PageContent';
 const page: PagesResponse = {
     id: 12039120,
     name: 'test page',
-    status: 'Draft'
+    status: 'Draft',
 };
 
 const fetch = () => {
@@ -24,7 +24,7 @@ const dateQuestion: PagesQuestion = {
     name: 'date test question',
     order: 3,
     dataType: 'DATE',
-    isStandard: true
+    isStandard: true,
 };
 
 const dropDownQuestion: PagesQuestion = {
@@ -32,7 +32,7 @@ const dropDownQuestion: PagesQuestion = {
     name: 'test drop down question',
     order: 4,
     isStandard: true,
-    displayComponent: 1007
+    displayComponent: 1007,
 };
 
 const subSections: PagesSubSection = {
@@ -43,7 +43,7 @@ const subSections: PagesSubSection = {
     questions: [dateQuestion, dropDownQuestion],
     isGroupable: true,
     questionIdentifier: 'identifier',
-    visible: true
+    visible: true,
 };
 
 const sections: PagesSection = {
@@ -51,7 +51,7 @@ const sections: PagesSection = {
     name: 'test section',
     order: 1,
     subSections: [subSections],
-    visible: true
+    visible: true,
 };
 
 const tabs: PagesTab = {
@@ -59,7 +59,7 @@ const tabs: PagesTab = {
     name: 'test tab',
     order: 0,
     sections: [sections],
-    visible: true
+    visible: true,
 };
 
 describe('when page loads', () => {

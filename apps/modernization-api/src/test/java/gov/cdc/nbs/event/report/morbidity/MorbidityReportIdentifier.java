@@ -8,6 +8,4 @@ public record MorbidityReportIdentifier(
     String local,
     long revision,
     ProgramAreaIdentifier programArea,
-    JurisdictionIdentifier jurisdiction
-) {
-}
+    JurisdictionIdentifier jurisdiction) {}

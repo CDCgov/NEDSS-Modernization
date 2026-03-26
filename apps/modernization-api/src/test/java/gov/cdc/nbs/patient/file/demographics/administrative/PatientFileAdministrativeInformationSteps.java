@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.file.demographics.administrative;
 
-
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
@@ -17,8 +16,7 @@ public class PatientFileAdministrativeInformationSteps {
   PatientFileAdministrativeInformationSteps(
       final PatientFileAdministrativeInformationRequester requester,
       final Active<PatientIdentifier> activePatient,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.requester = requester;
     this.activePatient = activePatient;
     this.response = response;
@@ -26,7 +24,8 @@ public class PatientFileAdministrativeInformationSteps {
 
   @Then("I view the patient's Administrative information")
   public void i_view_the_patient_file_administration() {
-    this.activePatient.maybeActive()
+    this.activePatient
+        .maybeActive()
         .map(PatientIdentifier::id)
         .map(requester::request)
         .ifPresent(this.response::active);
@@ -36,5 +35,4 @@ public class PatientFileAdministrativeInformationSteps {
   public void i_view_the_demographics_summary_for(final long patient) {
     this.response.active(requester.request(patient));
   }
-
 }

@@ -16,7 +16,7 @@ const Internal = () => {
     const { page: curPage, ready, firstPage, reload } = usePagination();
     const [sort, setSort] = useState<BusinessRuleSort | undefined>({
         field: RuleSortField.FUNCTION,
-        direction: Direction.Descending
+        direction: Direction.Descending,
     });
     const [query, setQuery] = useState<string>('');
     const { showAlert } = useAlert();
@@ -35,7 +35,7 @@ const Internal = () => {
                 page: curPage.current - 1,
                 pageSize: curPage.pageSize,
                 sort: sort,
-                query: query
+                query: query,
             });
         }
     }, [curPage.status, page?.id]);
@@ -80,7 +80,8 @@ const Internal = () => {
                         <Breadcrumb
                             start="../.."
                             currentPage="Business rules"
-                            crumbs={[{ name: page.name, position: 1, to: '..' }]}>
+                            crumbs={[{ name: page.name, position: 1, to: '..' }]}
+                        >
                             Page library
                         </Breadcrumb>
                     </div>

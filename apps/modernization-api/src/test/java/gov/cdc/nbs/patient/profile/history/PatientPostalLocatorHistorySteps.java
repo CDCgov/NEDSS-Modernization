@@ -1,15 +1,16 @@
 package gov.cdc.nbs.patient.profile.history;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class PatientPostalLocatorHistorySteps {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       SELECT TOP 1 locator_uid FROM Entity_locator_participation WHERE entity_uid = ?
       """;
 
@@ -20,8 +21,7 @@ public class PatientPostalLocatorHistorySteps {
   PatientPostalLocatorHistorySteps(
       final Active<PatientIdentifier> activePatient,
       final PatientPostalLocatorHistoryPreviousVersionVerifier versionVerifier,
-      final JdbcTemplate template
-  ) {
+      final JdbcTemplate template) {
     this.activePatient = activePatient;
     this.versionVerifier = versionVerifier;
     this.template = template;
@@ -36,10 +36,13 @@ public class PatientPostalLocatorHistorySteps {
   }
 
   private long getLocatorUid(long entityUid) {
-    return template.query(
-        QUERY,
-        statement -> statement.setLong(1, entityUid),
-        (resultSet, row) -> resultSet.getLong(1)
-    ).stream().findFirst().orElse(1L);
+    return template
+        .query(
+            QUERY,
+            statement -> statement.setLong(1, entityUid),
+            (resultSet, row) -> resultSet.getLong(1))
+        .stream()
+        .findFirst()
+        .orElse(1L);
   }
 }

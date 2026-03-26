@@ -44,8 +44,8 @@ describe('question search table tests', () => {
                                 label: 'label',
                                 subgroupName: 'subgroup name',
                                 type: 'PHIN',
-                                status: 'Active'
-                            }
+                                status: 'Active',
+                            },
                         ]}
                         onCreateNew={vi.fn()}
                     />

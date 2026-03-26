@@ -30,12 +30,13 @@ public class ClassicPageEditRedirector {
     ReturningPageCookie pageCookie = new ReturningPageCookie(String.valueOf(page));
     preparer.prepare(page);
 
-    String location = UriComponentsBuilder.fromPath(EDIT)
-        .queryParam("fromWhere", "V")
-        .queryParam("method", "editPageContentsLoad")
-        .queryParam("waTemplateUid", page)
-        .build()
-        .toUriString();
+    String location =
+        UriComponentsBuilder.fromPath(EDIT)
+            .queryParam("fromWhere", "V")
+            .queryParam("method", "editPageContentsLoad")
+            .queryParam("waTemplateUid", page)
+            .build()
+            .toUriString();
 
     return ResponseEntity.status(HttpStatus.FOUND)
         .header(HttpHeaders.LOCATION, location)

@@ -1,5 +1,7 @@
 package gov.cdc.nbs.graphql;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -9,8 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 @Component
 public class GraphQLRequest {
 
@@ -19,38 +19,28 @@ public class GraphQLRequest {
   private final MockMvc mvc;
 
   public GraphQLRequest(
-      final ObjectMapper mapper,
-      final Authenticated authenticated,
-      final MockMvc mvc
-  ) {
+      final ObjectMapper mapper, final Authenticated authenticated, final MockMvc mvc) {
     this.mapper = mapper;
     this.authenticated = authenticated;
     this.mvc = mvc;
   }
 
-  public ResultActions query(
-      final String query,
-      final JsonNode variables
-  ) {
+  public ResultActions query(final String query, final JsonNode variables) {
 
     try {
-      ObjectNode payload = mapper.createObjectNode()
-          .put("query", query)
-          .set("variables", variables);
+      ObjectNode payload =
+          mapper.createObjectNode().put("query", query).set("variables", variables);
 
       byte[] content = mapper.writeValueAsBytes(payload);
 
       return mvc.perform(
-          this.authenticated.withUser(post("/graphql"))
+          this.authenticated
+              .withUser(post("/graphql"))
               .content(content)
-              .contentType(MediaType.APPLICATION_JSON)
-      );
+              .contentType(MediaType.APPLICATION_JSON));
 
     } catch (Exception exception) {
       throw new IllegalStateException((exception));
     }
   }
 }
-
-
-

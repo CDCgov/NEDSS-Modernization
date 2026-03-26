@@ -1,17 +1,16 @@
 package gov.cdc.nbs.event.search.investigation;
 
 import gov.cdc.nbs.event.search.RelevanceResolver;
-
 import java.util.List;
 
 class InvestigationSearchResultConverter {
 
-  static InvestigationSearchResult convert(final SearchableInvestigation searchable, final Double score) {
+  static InvestigationSearchResult convert(
+      final SearchableInvestigation searchable, final Double score) {
     double relevance = RelevanceResolver.resolve(score);
 
-    List<InvestigationSearchResult.PersonParticipation> people = searchable.people()
-        .stream().map(InvestigationSearchResultConverter::asPerson)
-        .toList();
+    List<InvestigationSearchResult.PersonParticipation> people =
+        searchable.people().stream().map(InvestigationSearchResultConverter::asPerson).toList();
 
     return new InvestigationSearchResult(
         relevance,
@@ -27,7 +26,8 @@ class InvestigationSearchResultConverter {
         people);
   }
 
-  private static InvestigationSearchResult.PersonParticipation asPerson(final SearchableInvestigation.Person person) {
+  private static InvestigationSearchResult.PersonParticipation asPerson(
+      final SearchableInvestigation.Person person) {
     return person instanceof SearchableInvestigation.Person.Patient patient
         ? asPerson(patient)
         : asPerson((SearchableInvestigation.Person.Provider) person);
@@ -59,7 +59,5 @@ class InvestigationSearchResultConverter {
         null);
   }
 
-  private InvestigationSearchResultConverter() {
-
-  }
+  private InvestigationSearchResultConverter() {}
 }

@@ -33,7 +33,7 @@ describe('when adding patients with extended data', () => {
         const { result } = setup({ transformer, creator });
 
         const entry: Example = {
-            administrative: { asOf: '04/13/2017', comment: 'entered' }
+            administrative: { asOf: '04/13/2017', comment: 'entered' },
         };
 
         await act(async () => {

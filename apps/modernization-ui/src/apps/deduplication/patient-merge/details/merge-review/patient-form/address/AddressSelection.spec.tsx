@@ -19,10 +19,10 @@ const mergeCandidates: Partial<MergeCandidate>[] = [
                 county: 'Fulton county',
                 censusTract: '0224',
                 country: 'United States',
-                comments: 'Comment'
-            }
-        ]
-    }
+                comments: 'Comment',
+            },
+        ],
+    },
 ];
 const Fixture = () => {
     const form = useForm();

@@ -1,16 +1,16 @@
 package gov.cdc.nbs.patient.file.events.document;
 
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
+import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 class PatientFileDocumentFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       with revisions (person_uid, mpr_id) as (
           select
               [patient].[person_uid],
@@ -35,19 +35,19 @@ class PatientFileDocumentFinder {
               else 0
           end                                     as [updated]
       from revisions
-      
+
           join participation [subject_of_document] with (nolock) on
                   [subject_of_document].subject_entity_uid = [revisions].person_uid
               AND [subject_of_document].type_cd='SubjOfDoc'
               AND [subject_of_document].act_class_cd = 'DOC'
               AND [subject_of_document].subject_class_cd = 'PSN'
               AND [subject_of_document].record_status_cd = 'ACTIVE'
-      
+
           join nbs_document [document] with (nolock) on
                   [document].nbs_document_uid = [subject_of_document].act_uid
               and [document].record_status_cd != 'LOG_DEL'
               and [document].program_jurisdiction_oid in (:any)
-      
+
           left join nbs_srte..Condition_code [condition] with (nolock) on
                    [condition].condition_cd = [document].cd
       order by
@@ -63,7 +63,8 @@ class PatientFileDocumentFinder {
   }
 
   List<PatientFileDocument> find(final long patient, final PermissionScope scope) {
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param("patient", patient)
         .param("any", scope.any())
         .query(this.mapper)

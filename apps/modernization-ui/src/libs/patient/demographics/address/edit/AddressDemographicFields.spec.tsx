@@ -12,13 +12,13 @@ const location: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: mockState
+    state: mockState,
 };
 
 const options: AddressOptions = {
     types: [{ name: 'House', value: 'H' }],
     uses: [{ name: 'Home', value: 'HM' }],
-    location
+    location,
 };
 
 type FixtureProps = { entry?: Partial<AddressDemographic> };
@@ -26,7 +26,7 @@ type FixtureProps = { entry?: Partial<AddressDemographic> };
 const Fixture = ({ entry }: FixtureProps) => {
     const form = useForm<AddressDemographic>({
         mode: 'onBlur',
-        defaultValues: entry
+        defaultValues: entry,
     });
     return (
         <FormProvider {...form}>
@@ -133,7 +133,7 @@ describe('when entering patient address demographics', () => {
         { value: '0000', valid: false },
         { value: '9999.00', valid: false },
         { value: '0001.99', valid: false },
-        { value: '1234.56', valid: true }
+        { value: '1234.56', valid: true },
     ])('should validate Census Tract format for value: $value', async ({ value, valid }) => {
         const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);
@@ -161,7 +161,7 @@ describe('when entering patient address demographics', () => {
         { value: '12345 6789', valid: true },
         { value: '12345-678', valid: false },
         { value: '12345 678', valid: false },
-        { value: '1234-5678', valid: false }
+        { value: '1234-5678', valid: false },
     ])('should validate ZIP code format for value: $value', async ({ value, valid }) => {
         const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);

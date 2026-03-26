@@ -5,8 +5,8 @@ import { IdentificationRepeatingBlock, IdentificationRepeatingBlockProps } from 
 vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
     useIdentificationCodedValues: () => ({
         types: [{ value: 'type-value', name: 'type-name' }],
-        authorities: [{ value: 'authority-value', name: 'authority-name' }]
-    })
+        authorities: [{ value: 'authority-value', name: 'authority-name' }],
+    }),
 }));
 
 const Fixture = ({ values, onChange = vi.fn(), isDirty = vi.fn() }: Partial<IdentificationRepeatingBlockProps>) => (

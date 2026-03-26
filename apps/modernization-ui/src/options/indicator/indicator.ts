@@ -15,7 +15,7 @@ const indicators: Indicators = {
     yes: YES,
     no: NO,
     unknown: UNKNOWN,
-    all: [YES, NO, UNKNOWN]
+    all: [YES, NO, UNKNOWN],
 };
 
 export { indicators };

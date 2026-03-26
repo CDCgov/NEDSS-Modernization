@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import gov.cdc.nbs.questionbank.page.summary.download.exceptions.CsvCreationException;
+import gov.cdc.nbs.questionbank.pagerules.Rule.Target;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,35 +12,30 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.questionbank.page.summary.download.exceptions.CsvCreationException;
-import gov.cdc.nbs.questionbank.pagerules.Rule.Target;
 
 @Component
 public class CsvCreator {
 
   public byte[] create(List<Rule> rules) {
-    final CSVFormat format = CSVFormat.Builder.create()
-        .setQuoteMode(QuoteMode.MINIMAL)
-        .setHeader(
-            "Function",
-            "Source Field",
-            "Logic",
-            "Value(s)",
-            "Target Field(s)",
-            "ID")
-        .build();
+    final CSVFormat format =
+        CSVFormat.Builder.create()
+            .setQuoteMode(QuoteMode.MINIMAL)
+            .setHeader("Function", "Source Field", "Logic", "Value(s)", "Target Field(s)", "ID")
+            .build();
 
     try (ByteArrayOutputStream out = new ByteArrayOutputStream();
         CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format)) {
 
       for (Rule r : rules) {
-        List<String> row = Arrays.asList(
-            r.ruleFunction().getValue(),
-            "%s (%s)".formatted(r.sourceQuestion().label(), r.sourceQuestion().questionIdentifier()),
-            r.comparator().getValue(),
-            formatSourceValues(r.anySourceValue(), r.sourceValues()),
-            formatTargets(r.targets()),
-            String.valueOf(r.id()));
+        List<String> row =
+            Arrays.asList(
+                r.ruleFunction().getValue(),
+                "%s (%s)"
+                    .formatted(r.sourceQuestion().label(), r.sourceQuestion().questionIdentifier()),
+                r.comparator().getValue(),
+                formatSourceValues(r.anySourceValue(), r.sourceValues()),
+                formatTargets(r.targets()),
+                String.valueOf(r.id()));
         csvPrinter.printRecord(row);
       }
       csvPrinter.flush();
@@ -63,4 +60,3 @@ public class CsvCreator {
         .collect(Collectors.joining(","));
   }
 }
-

@@ -1,10 +1,9 @@
 package gov.cdc.nbs.patient.search.indexing;
 
 import gov.cdc.nbs.patient.search.SearchablePatient;
+import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 class SearchablePatientFinder {
@@ -277,34 +276,34 @@ class SearchablePatientFinder {
 
   SearchablePatientFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new SearchablePatientRowMapper(
-        new SearchablePatientRowMapper.Column(
-            IDENTIFIER_COLUMN,
-            LOCAL_COLUMN,
-            SHORT_ID_COLUMN,
-            STATUS_COLUMN,
-            BIRTHDAY_COLUMN,
-            DECEASED_COLUMN,
-            GENDER_COLUMN,
-            ETHNICITY_COLUMN,
-            DOCUMENT_IDS_COLUMN,
-            MORBIDITY_REPORT_IDS_COLUMN,
-            TREATMENT_IDS_COLUMN,
-            VACCINATION_IDS_COLUMN,
-            ABCS_CASE_IDS_COLUMN,
-            CITY_CASE_IDS_COLUMN,
-            STATE_CASE_IDS_COLUMN,
-            ACCESSION_IDS_COLUMN,
-            INVESTIGATION_IDS_COLUMN,
-            LAB_REPORT_IDS_COLUMN,
-            NOTIFICATION_IDS_COLUMN));
+    this.mapper =
+        new SearchablePatientRowMapper(
+            new SearchablePatientRowMapper.Column(
+                IDENTIFIER_COLUMN,
+                LOCAL_COLUMN,
+                SHORT_ID_COLUMN,
+                STATUS_COLUMN,
+                BIRTHDAY_COLUMN,
+                DECEASED_COLUMN,
+                GENDER_COLUMN,
+                ETHNICITY_COLUMN,
+                DOCUMENT_IDS_COLUMN,
+                MORBIDITY_REPORT_IDS_COLUMN,
+                TREATMENT_IDS_COLUMN,
+                VACCINATION_IDS_COLUMN,
+                ABCS_CASE_IDS_COLUMN,
+                CITY_CASE_IDS_COLUMN,
+                STATE_CASE_IDS_COLUMN,
+                ACCESSION_IDS_COLUMN,
+                INVESTIGATION_IDS_COLUMN,
+                LAB_REPORT_IDS_COLUMN,
+                NOTIFICATION_IDS_COLUMN));
   }
 
   Optional<SearchablePatient> find(long identifier) {
-    return this.template.query(
-        QUERY,
-        statement -> statement.setLong(PATIENT_PARAMETER, identifier),
-        this.mapper).stream()
+    return this.template
+        .query(QUERY, statement -> statement.setLong(PATIENT_PARAMETER, identifier), this.mapper)
+        .stream()
         .findFirst();
   }
 }

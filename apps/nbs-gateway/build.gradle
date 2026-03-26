@@ -44,6 +44,7 @@ dependencies {
     implementation libs.bundles.oidc
     implementation 'org.springframework.security:spring-security-oauth2-client'
     implementation libs.springBoot.actuator
+    implementation libs.bundles.jackson
 
     constraints {
         implementation("io.projectreactor.netty:reactor-netty-http:1.2.10") {

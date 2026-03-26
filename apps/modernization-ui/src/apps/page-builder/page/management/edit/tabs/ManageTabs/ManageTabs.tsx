@@ -26,8 +26,8 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
         mode: 'onBlur',
         defaultValues: {
             name: selectedForEdit ? selectedForEdit.name : undefined,
-            visible: selectedForEdit ? selectedForEdit.visible : true
-        }
+            visible: selectedForEdit ? selectedForEdit.visible : true,
+        },
     });
 
     type AlertMessage = {
@@ -61,7 +61,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                         <p>
                             You've successfully added <span>{data?.name}!</span>
                         </p>
-                    )
+                    ),
                 });
             })
             .then(() => {
@@ -84,7 +84,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                             <p>
                                 You've successfully edited <span>{data?.name}!</span>
                             </p>
-                        )
+                        ),
                     });
                 })
                 .then(() => {
@@ -116,7 +116,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                     This tab cannot be deleted because there are other elements inside it. Please remove or delete all
                     child elements by managing the content at the subsection/section/question level.
                 </p>
-            )
+            ),
         });
     };
 
@@ -126,7 +126,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
         setMessage({
             type: 'success',
             expiration: 3000,
-            message: <p>{message}</p>
+            message: <p>{message}</p>,
         });
     };
 
@@ -137,7 +137,8 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                 unstyled
                 type="button"
                 modalRef={modalRef}
-                data-testid="openManageTabs">
+                data-testid="openManageTabs"
+            >
                 <Icon.Edit />
                 <h2>Manage tabs</h2>
             </ModalToggleButton>
@@ -149,7 +150,8 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                             <AlertBanner
                                 type={message.type}
                                 expiration={message.expiration}
-                                onClose={() => setMessage(undefined)}>
+                                onClose={() => setMessage(undefined)}
+                            >
                                 {message.message}
                             </AlertBanner>
                         )}

@@ -1,19 +1,14 @@
 package gov.cdc.nbs.event.search.investigation.indexing.organization;
 
 import gov.cdc.nbs.event.search.investigation.SearchableInvestigation;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
-class SearchableInvestigationOrganizationRowMapper implements RowMapper<SearchableInvestigation.Organization> {
+class SearchableInvestigationOrganizationRowMapper
+    implements RowMapper<SearchableInvestigation.Organization> {
 
-  record Column(
-      int identifier,
-      int type
-  ) {
-  }
-
+  record Column(int identifier, int type) {}
 
   private final Column columns;
 
@@ -22,16 +17,11 @@ class SearchableInvestigationOrganizationRowMapper implements RowMapper<Searchab
   }
 
   @Override
-  public SearchableInvestigation.Organization mapRow(
-      final ResultSet resultSet,
-      final int rowNum
-  ) throws SQLException {
+  public SearchableInvestigation.Organization mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     long identifier = resultSet.getLong(this.columns.identifier());
     String type = resultSet.getString(this.columns.type());
 
-    return new SearchableInvestigation.Organization(
-        identifier,
-        type
-    );
+    return new SearchableInvestigation.Organization(identifier, type);
   }
 }

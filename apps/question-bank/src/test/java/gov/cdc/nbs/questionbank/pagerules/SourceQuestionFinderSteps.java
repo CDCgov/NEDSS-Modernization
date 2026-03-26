@@ -1,5 +1,8 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import static org.junit.Assert.assertNotNull;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse;
@@ -8,26 +11,22 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import static org.junit.Assert.assertNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Transactional
 public class SourceQuestionFinderSteps {
-  @Autowired
-  private PageMother mother;
+  @Autowired private PageMother mother;
 
-  @Autowired
-  private ObjectMapper mapper;
+  @Autowired private ObjectMapper mapper;
 
   private final Active<ResultActions> response;
   private final PageRuleRequester requester;
   private final Active<SourceQuestionRequest> jsonRequestBody = new Active<>();
 
-
-  public SourceQuestionFinderSteps(final Active<ResultActions> response, final PageRuleRequester requester) {
+  public SourceQuestionFinderSteps(
+      final Active<ResultActions> response, final PageRuleRequester requester) {
     this.response = response;
     this.requester = requester;
   }

@@ -54,7 +54,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                     rules={{
                         pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' },
                         required: { value: true, message: 'Value set code is required' },
-                        ...maxLengthRule(50)
+                        ...maxLengthRule(50),
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input
@@ -78,7 +78,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                     rules={{
                         pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' },
                         required: { value: true, message: 'Value set name is required' },
-                        ...maxLengthRule(50)
+                        ...maxLengthRule(50),
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input
@@ -99,7 +99,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                     control={form.control}
                     name="description"
                     rules={{
-                        ...maxLengthRule(2000)
+                        ...maxLengthRule(2000),
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input

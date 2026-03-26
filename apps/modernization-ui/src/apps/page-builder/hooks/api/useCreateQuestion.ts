@@ -9,7 +9,7 @@ import {
     DateQuestion,
     NumericQuestion,
     QuestionControllerService,
-    TextQuestion
+    TextQuestion,
 } from '../../generated';
 
 export type CreateQuestionRequest =
@@ -53,22 +53,22 @@ export const useCreateQuestion = () => {
             switch (state.request.questionType) {
                 case 'CODED':
                     request = QuestionControllerService.createCodedQuestion({
-                        requestBody: state.request as CreateCodedQuestionRequest
+                        requestBody: state.request as CreateCodedQuestionRequest,
                     });
                     break;
                 case 'TEXT':
                     request = QuestionControllerService.createTextQuestion({
-                        requestBody: state.request as CreateTextQuestionRequest
+                        requestBody: state.request as CreateTextQuestionRequest,
                     });
                     break;
                 case 'DATE':
                     request = QuestionControllerService.createDateQuestion({
-                        requestBody: state.request as CreateDateQuestionRequest
+                        requestBody: state.request as CreateDateQuestionRequest,
                     });
                     break;
                 case 'NUMERIC':
                     request = QuestionControllerService.createNumericQuestion({
-                        requestBody: state.request as CreateNumericQuestionRequest
+                        requestBody: state.request as CreateNumericQuestionRequest,
                     });
                     break;
                 default:
@@ -86,7 +86,7 @@ export const useCreateQuestion = () => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'creating',
         questionId: state.status === 'complete' ? state.id : undefined,
-        createQuestion: (request: CreateQuestionRequest) => dispatch({ type: 'create', request })
+        createQuestion: (request: CreateQuestionRequest) => dispatch({ type: 'create', request }),
     };
 
     return value;

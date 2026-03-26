@@ -1,18 +1,18 @@
 package gov.cdc.nbs.event.search.investigation;
 
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
-import org.springframework.stereotype.Controller;
-
 import java.util.Objects;
 import java.util.OptionalLong;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
+import org.springframework.stereotype.Controller;
 
 @Controller
 class InvestigationPersonParticipationShortIdentifierResolver {
 
   private final PatientShortIdentifierResolver resolver;
 
-  InvestigationPersonParticipationShortIdentifierResolver(final PatientShortIdentifierResolver resolver) {
+  InvestigationPersonParticipationShortIdentifierResolver(
+      final PatientShortIdentifierResolver resolver) {
     this.resolver = resolver;
   }
 

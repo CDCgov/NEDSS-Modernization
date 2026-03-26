@@ -21,18 +21,18 @@ const asNewExtendedPatientEntry = (initial: BasicNewPatientEntry): ExtendedNewPa
             asOf: initial.administrative.asOf,
             bornOn: initial.personalDetails?.bornOn,
             sex: initial.personalDetails?.birthSex,
-            current: initial.personalDetails?.currentSex
+            current: initial.personalDetails?.currentSex,
         },
         mortality: {
             asOf: initial.administrative.asOf,
             deceased: initial.personalDetails?.deceased,
-            deceasedOn: initial.personalDetails?.deceasedOn
+            deceasedOn: initial.personalDetails?.deceasedOn,
         },
         general: {
             asOf: initial.administrative.asOf,
             maritalStatus: initial.personalDetails?.maritalStatus,
-            stateHIVCase: initial.personalDetails?.stateHIVCase
-        }
+            stateHIVCase: initial.personalDetails?.stateHIVCase,
+        },
     };
 };
 
@@ -46,7 +46,7 @@ const identificationExtended = (initial: BasicNewPatientEntry): IdentificationEn
                     asOf: initial.administrative.asOf,
                     type: identity.type,
                     issuer: identity.issuer,
-                    id: identity.id
+                    id: identity.id,
                 });
             }
         });
@@ -63,7 +63,7 @@ const raceExtended = (initial: BasicNewPatientEntry): RaceEntry[] => {
                 id: new Date().getTime(),
                 asOf: initial.administrative.asOf,
                 race: race ?? null,
-                detailed: []
+                detailed: [],
             });
         });
     }
@@ -78,7 +78,7 @@ const phoneEmailsExtended = (initial: BasicNewPatientEntry): PhoneEmailEntry[] =
             workNum: initial.phoneEmail?.work?.phone,
             workExt: initial.phoneEmail?.work?.extension,
             cell: initial.phoneEmail?.cell,
-            email: initial.phoneEmail?.email
+            email: initial.phoneEmail?.email,
         })
     ) {
         if (initial.phoneEmail?.home) {
@@ -86,7 +86,7 @@ const phoneEmailsExtended = (initial: BasicNewPatientEntry): PhoneEmailEntry[] =
                 asOf: initial.administrative.asOf,
                 type: PHONE,
                 use: HOME_PHONE,
-                phoneNumber: initial.phoneEmail.home
+                phoneNumber: initial.phoneEmail.home,
             });
         }
 
@@ -95,7 +95,7 @@ const phoneEmailsExtended = (initial: BasicNewPatientEntry): PhoneEmailEntry[] =
                 asOf: initial.administrative.asOf,
                 type: CELL_PHONE,
                 use: MOBILE_CONTACT,
-                phoneNumber: initial.phoneEmail.cell
+                phoneNumber: initial.phoneEmail.cell,
             });
         }
 
@@ -105,7 +105,7 @@ const phoneEmailsExtended = (initial: BasicNewPatientEntry): PhoneEmailEntry[] =
                 type: PHONE,
                 use: PRIMARY_WORKPLACE,
                 phoneNumber: initial.phoneEmail.work.phone,
-                extension: initial.phoneEmail.work.extension ?? undefined
+                extension: initial.phoneEmail.work.extension ?? undefined,
             });
         }
 
@@ -114,7 +114,7 @@ const phoneEmailsExtended = (initial: BasicNewPatientEntry): PhoneEmailEntry[] =
                 asOf: initial.administrative.asOf,
                 type: EMAIL,
                 use: HOME_PHONE,
-                email: initial.phoneEmail.email ?? undefined
+                email: initial.phoneEmail.email ?? undefined,
             });
         }
 
@@ -130,7 +130,7 @@ const nameExtended = (initial: BasicNewPatientEntry): NameEntry[] => {
             first: initial.name?.first,
             last: initial.name?.last,
             middle: initial.name?.middle,
-            suffix: initial.name?.suffix
+            suffix: initial.name?.suffix,
         })
     ) {
         return [
@@ -140,8 +140,8 @@ const nameExtended = (initial: BasicNewPatientEntry): NameEntry[] => {
                 first: initial.name?.first,
                 last: initial.name?.last,
                 middle: initial.name?.middle,
-                suffix: initial.name?.suffix
-            }
+                suffix: initial.name?.suffix,
+            },
         ];
     }
     return [];
@@ -156,7 +156,7 @@ const addressExtended = (initial: BasicNewPatientEntry): AddressEntry[] => {
             state: initial.address?.state,
             zipcode: initial.address?.zipcode,
             county: initial.address?.county,
-            country: initial.address?.country
+            country: initial.address?.country,
         })
     ) {
         return [
@@ -171,8 +171,8 @@ const addressExtended = (initial: BasicNewPatientEntry): AddressEntry[] => {
                 zipcode: initial.address?.zipcode ?? undefined,
                 county: initial.address?.county,
                 country: initial.address?.country,
-                censusTract: initial.address?.censusTract ?? undefined
-            }
+                censusTract: initial.address?.censusTract ?? undefined,
+            },
         ];
     }
 

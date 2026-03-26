@@ -21,13 +21,13 @@ const asSelected = (selections: Selections) =>
 const updateState = (selections: Selections): State => ({
     selections,
     items: asItems(selections),
-    selected: asSelected(selections)
+    selected: asSelected(selections),
 });
 
 const asSelections =
     (selected: boolean) =>
     (selectable: Selectable): Selections => ({
-        [selectable.value]: { selected, value: selectable }
+        [selectable.value]: { selected, value: selectable },
     });
 
 const withItemSelected = (current: State, selectable: Selectable) => {
@@ -114,7 +114,7 @@ const useMultiSelection = ({ available, selected = [] }: Settings): Interaction 
         selected: state.selected,
         reset,
         select,
-        deselect
+        deselect,
     };
 };
 

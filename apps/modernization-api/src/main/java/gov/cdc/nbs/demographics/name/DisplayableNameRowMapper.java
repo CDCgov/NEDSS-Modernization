@@ -1,15 +1,12 @@
 package gov.cdc.nbs.demographics.name;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 public class DisplayableNameRowMapper implements RowMapper<DisplayableName> {
 
-  record Columns(int type, int first, int middle, int last, int suffix) {
-  }
-
+  record Columns(int type, int first, int middle, int last, int suffix) {}
 
   private final Columns columns;
 
@@ -29,12 +26,6 @@ public class DisplayableNameRowMapper implements RowMapper<DisplayableName> {
     String last = resultSet.getString(columns.last());
     String suffix = resultSet.getString(columns.suffix());
 
-    return new DisplayableName(
-        type,
-        first,
-        middle,
-        last,
-        suffix
-    );
+    return new DisplayableName(type, first, middle, last, suffix);
   }
 }

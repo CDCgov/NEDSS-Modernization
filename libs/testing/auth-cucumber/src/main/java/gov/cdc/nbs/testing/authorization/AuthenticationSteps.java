@@ -51,8 +51,7 @@ public class AuthenticationSteps {
   public void notLoggedIn() {
 
     String session = activeSession.maybeActive().map(SessionCookie::identifier).orElse("NOPE");
-    activeUser.maybeActive()
-        .ifPresent(current -> sessionMother.logout(current, session));
+    activeUser.maybeActive().ifPresent(current -> sessionMother.logout(current, session));
 
     activeUser.reset();
     SecurityContextHolder.getContext().setAuthentication(null);

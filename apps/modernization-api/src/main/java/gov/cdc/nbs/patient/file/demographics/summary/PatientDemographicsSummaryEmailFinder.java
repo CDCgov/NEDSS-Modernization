@@ -1,15 +1,15 @@
 package gov.cdc.nbs.patient.file.demographics.summary;
 
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.Optional;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientDemographicsSummaryEmailFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       with emails(patient, locator_uid, as_of_date, [type], [use], [email]) as (
           select
               [locators].entity_uid,
@@ -19,12 +19,12 @@ class PatientDemographicsSummaryEmailFinder {
               [locators].use_cd,
               [email_address].email_address
           from Entity_locator_participation [locators]
-      
+
           join Tele_locator [email_address] on
                   [email_address].[tele_locator_uid] = [locators].[locator_uid]
               and [email_address].record_status_cd   = [locators].[record_status_cd]
               and [email_address].email_address is not null
-      
+
           where   [locators].entity_uid = ?
               and [locators].[class_cd] = 'TELE'
               and [locators].record_status_cd = 'ACTIVE'
@@ -32,7 +32,7 @@ class PatientDemographicsSummaryEmailFinder {
       select
           [emails].email  as [email_address]
       from emails
-      
+
       where [emails].as_of_date = (
               select
                   max(eff_as_of.as_of_date)
@@ -56,11 +56,11 @@ class PatientDemographicsSummaryEmailFinder {
   }
 
   Optional<String> find(final long patient, final LocalDate asOf) {
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param(patient)
         .param(asOf.atTime(23, 59, 59))
         .query(String.class)
         .optional();
   }
-
 }

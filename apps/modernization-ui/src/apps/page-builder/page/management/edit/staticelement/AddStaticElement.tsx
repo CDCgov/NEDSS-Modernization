@@ -3,7 +3,7 @@ import {
     AddDefault,
     AddHyperlink,
     AddReadOnlyComments,
-    PageStaticControllerService
+    PageStaticControllerService,
 } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -19,7 +19,7 @@ import { useAlert } from 'libs/alert';
 const staticType = [
     { value: 'LIN', name: 'Line separator' },
     { value: 'HYP', name: 'Hyperlink' },
-    { value: 'COM', name: 'Comments (read-only)' }
+    { value: 'COM', name: 'Comments (read-only)' },
 ];
 
 type AddStaticElementModalProps = {
@@ -35,7 +35,7 @@ type StaticElementFormValues = (AddReadOnlyComments | AddHyperlink | AddDefault)
 
 export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementModalProps) => {
     const form = useForm<StaticElementFormValues>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
     const watch = useWatch({ control: form.control });
     const { page, refresh } = usePageManagement();
@@ -55,7 +55,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 data.subSectionId = subsectionId;
                 PageStaticControllerService.addStaticHyperLink({
                     page: page.id,
-                    requestBody: data
+                    requestBody: data,
                 }).then(() => {
                     form.reset();
                     handleAlert(`The element ${(data as AddHyperlink).label} has been successfully added.`);
@@ -67,7 +67,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 data.subSectionId = subsectionId;
                 PageStaticControllerService.addStaticReadOnlyComments({
                     page: page.id,
-                    requestBody: data
+                    requestBody: data,
                 }).then(() => {
                     form.reset();
                     handleAlert(`The comment element has been successfully added.`);
@@ -79,7 +79,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 data.subSectionId = subsectionId;
                 PageStaticControllerService.addStaticLineSeparator({
                     page: page.id,
-                    requestBody: data
+                    requestBody: data,
                 }).then(() => {
                     form.reset();
                     handleAlert(`The line separator element has been successfully added.`);
@@ -91,7 +91,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 data.subSectionId = subsectionId;
                 PageStaticControllerService.addStaticOriginalElectronicDocList({
                     page: page.id,
-                    requestBody: data
+                    requestBody: data,
                 }).then(() => {
                     form.reset();
                     handleAlert(`The electronic document list has been successfully added.`);
@@ -103,7 +103,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 data.subSectionId = subsectionId;
                 PageStaticControllerService.addStaticReadOnlyParticipantsList({
                     page: page.id,
-                    requestBody: data
+                    requestBody: data,
                 }).then(() => {
                     form.reset();
                     handleAlert(`The participant list has been successfully added.`);
@@ -133,7 +133,8 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                                     onBlur={onBlur}
                                     error={error?.message}
                                     data-testid="staticType"
-                                    className={styles.select_input}></SelectInput>
+                                    className={styles.select_input}
+                                ></SelectInput>
                             )}
                         />
                     </div>
@@ -181,7 +182,8 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                                 closer
                                 disabled={!form.formState.isValid}
                                 onClick={handleSubmit}
-                                data-testid="submit-btn">
+                                data-testid="submit-btn"
+                            >
                                 Save changes
                             </ModalToggleButton>
                         </>
@@ -194,7 +196,8 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                                 disabled={!form.formState.isValid}
                                 onClick={handleSubmit}
                                 type={'button'}
-                                data-testid="submit-btn">
+                                data-testid="submit-btn"
+                            >
                                 Save changes
                             </Button>
                         </>

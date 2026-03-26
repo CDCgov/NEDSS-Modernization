@@ -31,7 +31,7 @@ const initial = (asOf: Supplier<string>): GeneralInformationDemographic => ({
     educationLevel: null,
     primaryLanguage: null,
     speaksEnglish: null,
-    stateHIVCase: null
+    stateHIVCase: null,
 });
 
 export { initial };
@@ -46,7 +46,7 @@ const labels = {
     educationLevel: 'Highest level of education',
     primaryLanguage: 'Primary language',
     speaksEnglish: 'Speaks English',
-    stateHIVCase: 'State HIV case ID'
+    stateHIVCase: 'State HIV case ID',
 };
 
 export { labels };

@@ -1,10 +1,9 @@
 package gov.cdc.nbs.patient.demographics.identification;
 
-import java.time.LocalDate;
-import java.util.Objects;
-
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
+import java.time.LocalDate;
+import java.util.Objects;
 
 public class IdentificationDemographicEntrySteps {
 
@@ -15,10 +14,7 @@ public class IdentificationDemographicEntrySteps {
   }
 
   @Given("I am entering a(n) {identificationType} identification of {string} as of {localDate}")
-  public void entering(
-      final String type,
-      final String value,
-      final LocalDate asOf) {
+  public void entering(final String type, final String value, final LocalDate asOf) {
     this.available.selected(
         current -> current.withAsOf(asOf).withType(type).withValue(value),
         () -> new IdentificationDemographic(asOf, type, null, value, null));
@@ -26,7 +22,8 @@ public class IdentificationDemographicEntrySteps {
 
   @Given("the entered identification was issued by {assigningAuthority}")
   public void authorizedBy(final String authority) {
-    this.available.selected(current -> current.withIssuer(authority),
+    this.available.selected(
+        current -> current.withIssuer(authority),
         () -> new IdentificationDemographic(null, null, authority, null, null));
   }
 
@@ -39,5 +36,4 @@ public class IdentificationDemographicEntrySteps {
   public void remove(final LocalDate asOf) {
     this.available.removeIf(item -> Objects.equals(item.asOf(), asOf));
   }
-
 }

@@ -3,10 +3,9 @@ package gov.cdc.nbs.patient.file;
 import gov.cdc.nbs.demographics.name.DisplayableName;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
 import gov.cdc.nbs.patient.name.PatientLegalNameResolver;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientFileResolver {
@@ -16,14 +15,11 @@ class PatientFileResolver {
   private final PatientLegalNameResolver nameFinder;
   private final PatientFileDeletabilityResolver deletabilityResolver;
 
-
-
   PatientFileResolver(
       final PatientLocalIdentifierResolver localIdentifierResolver,
       final PatientFileFinder finder,
       final PatientLegalNameResolver nameFinder,
-      final PatientFileDeletabilityResolver deletabilityResolver
-  ) {
+      final PatientFileDeletabilityResolver deletabilityResolver) {
     this.localIdentifierResolver = localIdentifierResolver;
     this.finder = finder;
     this.deletabilityResolver = deletabilityResolver;
@@ -41,11 +37,6 @@ class PatientFileResolver {
     DisplayableName name = this.nameFinder.resolve(file.id(), asOf).orElse(null);
     PatientDeletability deletability = this.deletabilityResolver.resolve(file);
 
-
-    return file.withName(name)
-        .withDeletability(deletability);
+    return file.withName(name).withDeletability(deletability);
   }
-
-
 }
-

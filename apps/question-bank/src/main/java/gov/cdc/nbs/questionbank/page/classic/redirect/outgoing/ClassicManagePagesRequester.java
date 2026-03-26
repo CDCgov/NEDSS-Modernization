@@ -13,23 +13,20 @@ public class ClassicManagePagesRequester {
 
   private final RestTemplate template;
 
-  public ClassicManagePagesRequester(
-      @Qualifier("classicTemplate") final RestTemplate template) {
+  public ClassicManagePagesRequester(@Qualifier("classicTemplate") final RestTemplate template) {
     this.template = template;
   }
 
   public void request() {
-    String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("method", "list")
-        .queryParam("initLoad", true)
-        .build()
-        .toUriString();
+    String pageLocation =
+        UriComponentsBuilder.fromPath(LOCATION)
+            .queryParam("method", "list")
+            .queryParam("initLoad", true)
+            .build()
+            .toUriString();
 
-    RequestEntity<Void> viewPageRequest = RequestEntity
-        .get(pageLocation)
-        .build();
+    RequestEntity<Void> viewPageRequest = RequestEntity.get(pageLocation).build();
 
     this.template.exchange(viewPageRequest, Void.class);
-
   }
 }

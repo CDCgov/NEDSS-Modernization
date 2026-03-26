@@ -58,7 +58,8 @@ export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onD
                     unstyled
                     className={`${styles.editButton} questionEditButton`}
                     type="button"
-                    onClick={onEditQuestion}>
+                    onClick={onEditQuestion}
+                >
                     <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" />
                 </Button>
                 {!question.isStandard && !question.isPublished && (

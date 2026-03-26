@@ -5,7 +5,7 @@ import { LoadingOverlay } from 'libs/loading';
 import {
     AddressDemographic,
     AddressDemographicCard,
-    AddressDemographicCardProps
+    AddressDemographicCardProps,
 } from 'libs/patient/demographics/address';
 
 type PatientFileAddressProps = {
@@ -18,7 +18,8 @@ const PatientFileAddressCard = ({ provider, ...remaining }: PatientFileAddressPr
             <LoadingOverlay>
                 <AddressDemographicCard {...remaining} />
             </LoadingOverlay>
-        }>
+        }
+    >
         <Await resolve={provider.get()}>
             {(resolved) => <AddressDemographicCard data={resolved} {...remaining} />}
         </Await>

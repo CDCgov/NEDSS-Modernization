@@ -6,7 +6,6 @@ public class PrimaryLanguageSteps {
 
   private final PrimaryLanguageMother mother;
 
-
   PrimaryLanguageSteps(final PrimaryLanguageMother mother) {
     this.mother = mother;
   }
@@ -15,7 +14,4 @@ public class PrimaryLanguageSteps {
   public void the_language_exists_in_the_value_set(final String name) {
     mother.create(name);
   }
-
-
-
 }

@@ -1,6 +1,7 @@
 [pytest]
 pythonpath = ["."]
 testpaths = ["tests"]
+norecursedirs = ["assets"]
 python_files = ["*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
@@ -11,3 +12,5 @@ addopts = [
     "--showlocals",
     "--import-mode=importlib"
 ]
+log_cli = true
+log_cli_level = "INFO"

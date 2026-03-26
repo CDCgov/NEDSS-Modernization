@@ -4,12 +4,11 @@ import gov.cdc.nbs.data.LimitString;
 import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
+import java.time.LocalDate;
+import java.util.Locale;
 import net.datafaker.Faker;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.util.Locale;
 
 @Component
 public class PatientEmailDemographicApplier {
@@ -18,7 +17,8 @@ public class PatientEmailDemographicApplier {
   private final PhoneIdentifierGenerator phoneIdentifierGenerator;
   private final Faker faker;
 
-  public PatientEmailDemographicApplier(final JdbcClient client, final PhoneIdentifierGenerator phoneIdentifierGenerator) {
+  public PatientEmailDemographicApplier(
+      final JdbcClient client, final PhoneIdentifierGenerator phoneIdentifierGenerator) {
     this.client = client;
     this.phoneIdentifierGenerator = phoneIdentifierGenerator;
     this.faker = new Faker(Locale.of("en-us"));
@@ -34,8 +34,7 @@ public class PatientEmailDemographicApplier {
         "NET",
         RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
         email,
-        RandomUtil.dateInPast()
-    );
+        RandomUtil.dateInPast());
   }
 
   public void withEmail(
@@ -43,11 +42,11 @@ public class PatientEmailDemographicApplier {
       final String type,
       final String use,
       final String email,
-      final LocalDate asOf
-  ) {
+      final LocalDate asOf) {
     long locator = this.phoneIdentifierGenerator.generate();
 
-    client.sql(
+    client
+        .sql(
             """
                 --- Entity Participation
                 insert into Entity_locator_participation (
@@ -79,7 +78,7 @@ public class PatientEmailDemographicApplier {
                     :type,
                     'TELE'
                 );
-                
+
                 insert into Tele_locator (
                       tele_locator_uid,
                       email_address,
@@ -95,8 +94,8 @@ public class PatientEmailDemographicApplier {
                       'ACTIVE',
                       getDate()
                 );
-                """
-        ).param("asOf", asOf)
+                """)
+        .param("asOf", asOf)
         .param("type", type)
         .param("use", use)
         .param("email", email)

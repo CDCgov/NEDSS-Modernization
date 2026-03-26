@@ -50,7 +50,8 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
                 title="Save pass configuration"
                 onClose={onCancel}
                 footer={footer}
-                className={styles.savePassModal}>
+                className={styles.savePassModal}
+            >
                 <Controller
                     control={form.control}
                     name="name"

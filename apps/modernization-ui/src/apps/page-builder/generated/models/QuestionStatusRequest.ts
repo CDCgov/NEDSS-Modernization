@@ -5,4 +5,3 @@
 export type QuestionStatusRequest = {
     active?: boolean;
 };
-

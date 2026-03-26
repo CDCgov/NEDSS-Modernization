@@ -14,8 +14,7 @@ public class PatientProfileRedirectionSteps {
   PatientProfileRedirectionSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientProfileRedirectRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;
@@ -23,8 +22,6 @@ public class PatientProfileRedirectionSteps {
 
   @When("navigating to a Patient Profile from event search results")
   public void navigating_to_a_patient_profile_from_event_search_results() {
-    this.activePatient.maybeActive()
-        .map(requester::profile)
-        .ifPresent(response::active);
+    this.activePatient.maybeActive().map(requester::profile).ifPresent(response::active);
   }
 }

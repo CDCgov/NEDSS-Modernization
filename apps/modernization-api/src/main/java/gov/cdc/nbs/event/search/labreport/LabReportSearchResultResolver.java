@@ -18,8 +18,7 @@ class LabReportSearchResultResolver {
 
   LabReportSearchResultResolver(
       final SearchPageableMapper mapper,
-      final SearchResolver<LabReportFilter, LabReportSearchResult> resolver
-  ) {
+      final SearchResolver<LabReportFilter, LabReportSearchResult> resolver) {
     this.mapper = mapper;
     this.resolver = resolver;
   }
@@ -27,16 +26,10 @@ class LabReportSearchResultResolver {
   @QueryMapping("findLabReportsByFilter")
   @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-OBSERVATIONLABREPORT')")
   SearchResult<LabReportSearchResult> search(
-      @Argument final LabReportFilter filter,
-      @Argument("page") PaginationRequest paginated
-  ) {
+      @Argument final LabReportFilter filter, @Argument("page") PaginationRequest paginated) {
 
     Pageable pageable = mapper.from(paginated);
 
-    return this.resolver.search(
-        filter,
-        pageable
-    );
+    return this.resolver.search(filter, pageable);
   }
-
 }

@@ -13,12 +13,11 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Component;
 
 @Component
 class InvestigationSearchCriteriaFilterResolver {
@@ -49,29 +48,30 @@ class InvestigationSearchCriteriaFilterResolver {
             withOutbreaks(criteria),
             withCaseStatus(criteria),
             withProcessingStatus(criteria),
-            withNotificationStatus(criteria)
-        ).flatMap(Optional::stream)
+            withNotificationStatus(criteria))
+        .flatMap(Optional::stream)
         .map(QueryVariant::_toQuery)
         .reduce(
             new BoolQuery.Builder(),
             BoolQuery.Builder::filter,
-            (one, two) -> one.filter(two.build().filter())
-        ).build()._toQuery();
+            (one, two) -> one.filter(two.build().filter()))
+        .build()
+        ._toQuery();
   }
 
   private Optional<QueryVariant> withPermission(final PermissionScope scope) {
-    TermsQuery statuses = scope.any()
-        .stream()
-        .map(FieldValue::of)
-        .collect(
-            Collectors.collectingAndThen(
-                Collectors.toList(),
-                collected -> TermsQuery.of(
-                    query -> query.field("program_jurisdiction_oid")
-                        .terms(terms -> terms.value(collected))
-                )
-            )
-        );
+    TermsQuery statuses =
+        scope.any().stream()
+            .map(FieldValue::of)
+            .collect(
+                Collectors.collectingAndThen(
+                    Collectors.toList(),
+                    collected ->
+                        TermsQuery.of(
+                            query ->
+                                query
+                                    .field("program_jurisdiction_oid")
+                                    .terms(terms -> terms.value(collected)))));
 
     return Optional.of(statuses);
   }
@@ -82,19 +82,17 @@ class InvestigationSearchCriteriaFilterResolver {
     return condition.isEmpty()
         ? Optional.empty()
         : Optional.of(
-        condition
-            .stream()
-            .map(FieldValue::of)
-            .collect(
-                Collectors.collectingAndThen(
-                    Collectors.toList(),
-                    collected -> TermsQuery.of(
-                        query -> query.field("condition")
-                            .terms(terms -> terms.value(collected))
-                    )
-                )
-            )
-    );
+            condition.stream()
+                .map(FieldValue::of)
+                .collect(
+                    Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        collected ->
+                            TermsQuery.of(
+                                query ->
+                                    query
+                                        .field("condition")
+                                        .terms(terms -> terms.value(collected))))));
   }
 
   private Optional<QueryVariant> withProgramAreas(final InvestigationFilter criteria) {
@@ -103,19 +101,17 @@ class InvestigationSearchCriteriaFilterResolver {
     return programAreas.isEmpty()
         ? Optional.empty()
         : Optional.of(
-        programAreas
-            .stream()
-            .map(FieldValue::of)
-            .collect(
-                Collectors.collectingAndThen(
-                    Collectors.toList(),
-                    collected -> TermsQuery.of(
-                        query -> query.field("prog_area_cd")
-                            .terms(terms -> terms.value(collected))
-                    )
-                )
-            )
-    );
+            programAreas.stream()
+                .map(FieldValue::of)
+                .collect(
+                    Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        collected ->
+                            TermsQuery.of(
+                                query ->
+                                    query
+                                        .field("prog_area_cd")
+                                        .terms(terms -> terms.value(collected))))));
   }
 
   private Optional<QueryVariant> withJurisdictions(final InvestigationFilter criteria) {
@@ -124,19 +120,17 @@ class InvestigationSearchCriteriaFilterResolver {
     return jurisdictions.isEmpty()
         ? Optional.empty()
         : Optional.of(
-        jurisdictions
-            .stream()
-            .map(FieldValue::of)
-            .collect(
-                Collectors.collectingAndThen(
-                    Collectors.toList(),
-                    collected -> TermsQuery.of(
-                        query -> query.field("jurisdiction_cd")
-                            .terms(terms -> terms.value(collected))
-                    )
-                )
-            )
-    );
+            jurisdictions.stream()
+                .map(FieldValue::of)
+                .collect(
+                    Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        collected ->
+                            TermsQuery.of(
+                                query ->
+                                    query
+                                        .field("jurisdiction_cd")
+                                        .terms(terms -> terms.value(collected))))));
   }
 
   private Optional<QueryVariant> withPregnancyStatus(final InvestigationFilter criteria) {
@@ -144,129 +138,141 @@ class InvestigationSearchCriteriaFilterResolver {
 
     return (status == null)
         ? Optional.empty()
-        : Optional.of(
-        TermQuery.of(
-            term -> term.field("pregnant_ind_cd")
-                .value(status.value())
-        )
-    );
+        : Optional.of(TermQuery.of(term -> term.field("pregnant_ind_cd").value(status.value())));
   }
 
   private Optional<QueryVariant> withABCSCase(final InvestigationFilter criteria) {
-    return criteria.abcsCase().map(
-        number -> NestedQuery.of(
-            nested -> nested.path(SearchableInvestigation.IDENTIFICATION)
-                .scoreMode(ChildScoreMode.Avg)
-                .query(
-                    query -> query.bool(
-                        bool -> bool.filter(
-                                filter -> filter.term(
-                                    term -> term.field(SearchableInvestigation.IDENTIFICATION_TYPE)
-                                        .value("STATE")
-                                )
-                            )
-                            .filter(
-                                filter -> filter.term(
-                                    term -> term.field(SearchableInvestigation.IDENTIFICATION_SEQUENCE)
-                                        .value(2)
-                                )
-                            )
-                    )
-                )
-        )
-    );
+    return criteria
+        .abcsCase()
+        .map(
+            number ->
+                NestedQuery.of(
+                    nested ->
+                        nested
+                            .path(SearchableInvestigation.IDENTIFICATION)
+                            .scoreMode(ChildScoreMode.Avg)
+                            .query(
+                                query ->
+                                    query.bool(
+                                        bool ->
+                                            bool.filter(
+                                                    filter ->
+                                                        filter.term(
+                                                            term ->
+                                                                term.field(
+                                                                        SearchableInvestigation
+                                                                            .IDENTIFICATION_TYPE)
+                                                                    .value("STATE")))
+                                                .filter(
+                                                    filter ->
+                                                        filter.term(
+                                                            term ->
+                                                                term.field(
+                                                                        SearchableInvestigation
+                                                                            .IDENTIFICATION_SEQUENCE)
+                                                                    .value(2)))))));
   }
 
   private Optional<QueryVariant> withCountyCase(final InvestigationFilter criteria) {
-    return criteria.countyCase().map(
-        number -> NestedQuery.of(
-            nested -> nested.path(SearchableInvestigation.IDENTIFICATION)
-                .scoreMode(ChildScoreMode.Avg)
-                .query(
-                    query -> query.bool(
-                        bool -> bool.filter(
-                            filter -> filter.term(
-                                term -> term.field("act_ids.type_cd")
-                                    .value("CITY")
-                            )
-                        )
-                    )
-                )
-        )
-    );
+    return criteria
+        .countyCase()
+        .map(
+            number ->
+                NestedQuery.of(
+                    nested ->
+                        nested
+                            .path(SearchableInvestigation.IDENTIFICATION)
+                            .scoreMode(ChildScoreMode.Avg)
+                            .query(
+                                query ->
+                                    query.bool(
+                                        bool ->
+                                            bool.filter(
+                                                filter ->
+                                                    filter.term(
+                                                        term ->
+                                                            term.field("act_ids.type_cd")
+                                                                .value("CITY")))))));
   }
 
   private Optional<QueryVariant> withStateCase(final InvestigationFilter criteria) {
-    return criteria.stateCase().map(
-        number -> NestedQuery.of(
-            nested -> nested.path(SearchableInvestigation.IDENTIFICATION)
-                .scoreMode(ChildScoreMode.Avg)
-                .query(
-                    query -> query.bool(
-                        bool -> bool.filter(
-                            filter -> filter.term(
-                                term -> term.field(SearchableInvestigation.IDENTIFICATION_TYPE)
-                                    .value("STATE")
-                            )
-                        )
-                    )
-                )
-        )
-    );
+    return criteria
+        .stateCase()
+        .map(
+            number ->
+                NestedQuery.of(
+                    nested ->
+                        nested
+                            .path(SearchableInvestigation.IDENTIFICATION)
+                            .scoreMode(ChildScoreMode.Avg)
+                            .query(
+                                query ->
+                                    query.bool(
+                                        bool ->
+                                            bool.filter(
+                                                filter ->
+                                                    filter.term(
+                                                        term ->
+                                                            term.field(
+                                                                    SearchableInvestigation
+                                                                        .IDENTIFICATION_TYPE)
+                                                                .value("STATE")))))));
   }
 
   private Optional<QueryVariant> withReportedOn(final InvestigationFilter criteria) {
-    return criteria.reportedOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.term(
-                    term -> term.field("rpt_form_cmplt_time")
-                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .lte(FlexibleInstantConverter.toString(reported.getTo())
-                        )
-                )
-            )
-    );
+    return criteria
+        .reportedOn()
+        .map(
+            reported ->
+                RangeQuery.of(
+                    range ->
+                        range.term(
+                            term ->
+                                term.field("rpt_form_cmplt_time")
+                                    .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                                    .lte(FlexibleInstantConverter.toString(reported.getTo())))));
   }
 
   private Optional<QueryVariant> withStartedOn(final InvestigationFilter criteria) {
-    return criteria.startedOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.term(
-                    term -> term.field("activity_from_time")
-                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .lte(FlexibleInstantConverter.toString(reported.getTo())
-                        )
-                )
-            )
-    );
+    return criteria
+        .startedOn()
+        .map(
+            reported ->
+                RangeQuery.of(
+                    range ->
+                        range.term(
+                            term ->
+                                term.field("activity_from_time")
+                                    .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                                    .lte(FlexibleInstantConverter.toString(reported.getTo())))));
   }
 
   private Optional<QueryVariant> withClosedOn(final InvestigationFilter criteria) {
-    return criteria.closedOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.term(
-                    term -> term.field("activity_to_time")
-                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
-                )
-            )
-    );
+    return criteria
+        .closedOn()
+        .map(
+            reported ->
+                RangeQuery.of(
+                    range ->
+                        range.term(
+                            term ->
+                                term.field("activity_to_time")
+                                    .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                                    .lte(FlexibleInstantConverter.toString(reported.getTo())))));
   }
 
   private Optional<QueryVariant> withNotifiedOn(final InvestigationFilter criteria) {
-    return criteria.notifiedOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.term(
-                    term -> term.field("notification_add_time")
-                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
-                )
-            )
-    );
+    return criteria
+        .notifiedOn()
+        .map(
+            reported ->
+                RangeQuery.of(
+                    range ->
+                        range.term(
+                            term ->
+                                term.field("notification_add_time")
+                                    .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                                    .lte(FlexibleInstantConverter.toString(reported.getTo())))));
   }
 
   private Optional<QueryVariant> withCreatedBy(final InvestigationFilter criteria) {
@@ -276,25 +282,21 @@ class InvestigationSearchCriteriaFilterResolver {
       return Optional.empty();
     }
 
-    return Optional.of(
-        TermQuery.of(
-            term -> term.field("add_user_id")
-                .value(createdBy)
-        )
-    );
+    return Optional.of(TermQuery.of(term -> term.field("add_user_id").value(createdBy)));
   }
 
   private Optional<QueryVariant> withCreatedOn(final InvestigationFilter criteria) {
-    return criteria.createdOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.term(
-                    term -> term.field("add_time")
-                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
-                )
-            )
-    );
+    return criteria
+        .createdOn()
+        .map(
+            reported ->
+                RangeQuery.of(
+                    range ->
+                        range.term(
+                            term ->
+                                term.field("add_time")
+                                    .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                                    .lte(FlexibleInstantConverter.toString(reported.getTo())))));
   }
 
   private Optional<QueryVariant> withUpdatedBy(final InvestigationFilter criteria) {
@@ -304,25 +306,21 @@ class InvestigationSearchCriteriaFilterResolver {
       return Optional.empty();
     }
 
-    return Optional.of(
-        TermQuery.of(
-            term -> term.field("last_chg_user_id")
-                .value(updatedBy)
-        )
-    );
+    return Optional.of(TermQuery.of(term -> term.field("last_chg_user_id").value(updatedBy)));
   }
 
   private Optional<QueryVariant> withUpdatedOn(final InvestigationFilter criteria) {
-    return criteria.updatedOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.term(
-                    term -> term.field("public_health_case_last_chg_time")
-                        .gte(FlexibleInstantConverter.toString(reported.getFrom()))
-                        .lte(FlexibleInstantConverter.toString(reported.getTo()))
-                )
-            )
-    );
+    return criteria
+        .updatedOn()
+        .map(
+            reported ->
+                RangeQuery.of(
+                    range ->
+                        range.term(
+                            term ->
+                                term.field("public_health_case_last_chg_time")
+                                    .gte(FlexibleInstantConverter.toString(reported.getFrom()))
+                                    .lte(FlexibleInstantConverter.toString(reported.getTo())))));
   }
 
   private Optional<QueryVariant> withPatient(final InvestigationFilter criteria) {
@@ -331,111 +329,137 @@ class InvestigationSearchCriteriaFilterResolver {
     return (patient == null)
         ? Optional.empty()
         : Optional.of(
-        NestedQuery.of(
-            nested -> nested.path(SearchableInvestigation.PERSON)
-                .scoreMode(ChildScoreMode.None)
-                .query(
-                    query -> query.bool(
-                        bool -> bool.filter(
-                            filter -> filter.term(
-                                term -> term.field(SearchableInvestigation.PERSON_TYPE)
-                                    .value("SubjOfPHC")
-                            )
-                        ).must(
-                            must -> must.term(
-                                term -> term.field("person_participations.person_parent_uid")
-                                    .value(patient)
-                            )
-                        )
-                    )
-                )
-        )
-    );
+            NestedQuery.of(
+                nested ->
+                    nested
+                        .path(SearchableInvestigation.PERSON)
+                        .scoreMode(ChildScoreMode.None)
+                        .query(
+                            query ->
+                                query.bool(
+                                    bool ->
+                                        bool.filter(
+                                                filter ->
+                                                    filter.term(
+                                                        term ->
+                                                            term.field(
+                                                                    SearchableInvestigation
+                                                                        .PERSON_TYPE)
+                                                                .value("SubjOfPHC")))
+                                            .must(
+                                                must ->
+                                                    must.term(
+                                                        term ->
+                                                            term.field(
+                                                                    "person_participations.person_parent_uid")
+                                                                .value(patient)))))));
   }
 
   private Optional<QueryVariant> withInvestigator(final InvestigationFilter criteria) {
     return criteria.getInvestigatorId() == null
         ? Optional.empty()
         : Optional.of(
-        NestedQuery.of(
-            nested -> nested.path(SearchableInvestigation.PERSON)
-                .scoreMode(ChildScoreMode.None)
-                .query(
-                    query -> query.bool(
-                        bool -> bool.filter(
-                            filter -> filter.term(
-                                term -> term.field(SearchableInvestigation.PERSON_TYPE)
-                                    .value("InvestgrOfPHC")
-                            )
-                        ).must(
-                            must -> must.term(
-                                term -> term.field(SearchableInvestigation.PERSON_IDENTIFIER)
-                                    .value(criteria.getInvestigatorId())
-                            )
-                        )
-                    )
-                )
-        )
-    );
+            NestedQuery.of(
+                nested ->
+                    nested
+                        .path(SearchableInvestigation.PERSON)
+                        .scoreMode(ChildScoreMode.None)
+                        .query(
+                            query ->
+                                query.bool(
+                                    bool ->
+                                        bool.filter(
+                                                filter ->
+                                                    filter.term(
+                                                        term ->
+                                                            term.field(
+                                                                    SearchableInvestigation
+                                                                        .PERSON_TYPE)
+                                                                .value("InvestgrOfPHC")))
+                                            .must(
+                                                must ->
+                                                    must.term(
+                                                        term ->
+                                                            term.field(
+                                                                    SearchableInvestigation
+                                                                        .PERSON_IDENTIFIER)
+                                                                .value(
+                                                                    criteria
+                                                                        .getInvestigatorId())))))));
   }
 
   private Optional<QueryVariant> withReportingFacility(final InvestigationFilter criteria) {
-    return criteria.reportingFacility().map(
-        facility -> NestedQuery.of(
-            nested -> nested.path(SearchableInvestigation.ORGANIZATION)
-                .scoreMode(ChildScoreMode.None)
-                .query(
-                    query -> query.bool(
-                        bool -> bool.filter(
-                            filter -> filter.term(
-                                term -> term.field(SearchableInvestigation.ORGANIZATION_TYPE)
-                                    .value("OrgAsReporterOfPHC")
-                            )
-                        ).must(
-                            must -> must.term(
-                                term -> term.field(SearchableInvestigation.ORGANIZATION_IDENTIFIER)
-                                    .value(facility)
-                            )
-                        )
-                    )
-                )
-        )
-    );
+    return criteria
+        .reportingFacility()
+        .map(
+            facility ->
+                NestedQuery.of(
+                    nested ->
+                        nested
+                            .path(SearchableInvestigation.ORGANIZATION)
+                            .scoreMode(ChildScoreMode.None)
+                            .query(
+                                query ->
+                                    query.bool(
+                                        bool ->
+                                            bool.filter(
+                                                    filter ->
+                                                        filter.term(
+                                                            term ->
+                                                                term.field(
+                                                                        SearchableInvestigation
+                                                                            .ORGANIZATION_TYPE)
+                                                                    .value("OrgAsReporterOfPHC")))
+                                                .must(
+                                                    must ->
+                                                        must.term(
+                                                            term ->
+                                                                term.field(
+                                                                        SearchableInvestigation
+                                                                            .ORGANIZATION_IDENTIFIER)
+                                                                    .value(facility)))))));
   }
 
   private Optional<QueryVariant> withReportingProvider(final InvestigationFilter criteria) {
-    return criteria.reportingProvider().map(
-        provider -> NestedQuery.of(
-            nested -> nested.path(SearchableInvestigation.PERSON)
-                .scoreMode(ChildScoreMode.None)
-                .query(
-                    query -> query.bool(
-                        bool -> bool.filter(
-                            filter -> filter.term(
-                                term -> term.field(SearchableInvestigation.PERSON_TYPE)
-                                    .value("PerAsReporterOfPHC")
-                            )
-                        ).must(
-                            must -> must.term(
-                                term -> term.field(SearchableInvestigation.PERSON_IDENTIFIER)
-                                    .value(provider)
-                            )
-                        )
-                    )
-                )
-        )
-    );
+    return criteria
+        .reportingProvider()
+        .map(
+            provider ->
+                NestedQuery.of(
+                    nested ->
+                        nested
+                            .path(SearchableInvestigation.PERSON)
+                            .scoreMode(ChildScoreMode.None)
+                            .query(
+                                query ->
+                                    query.bool(
+                                        bool ->
+                                            bool.filter(
+                                                    filter ->
+                                                        filter.term(
+                                                            term ->
+                                                                term.field(
+                                                                        SearchableInvestigation
+                                                                            .PERSON_TYPE)
+                                                                    .value("PerAsReporterOfPHC")))
+                                                .must(
+                                                    must ->
+                                                        must.term(
+                                                            term ->
+                                                                term.field(
+                                                                        SearchableInvestigation
+                                                                            .PERSON_IDENTIFIER)
+                                                                    .value(provider)))))));
   }
 
   private Optional<QueryVariant> withStatus(final InvestigationFilter criteria) {
     return criteria.getInvestigationStatus() == null
         ? Optional.empty()
         : Optional.of(
-        TermQuery.of(
-            term -> term.field("investigation_status_cd")
-                .value(criteria.getInvestigationStatus().value())
-        )
-    );
+            TermQuery.of(
+                term ->
+                    term.field("investigation_status_cd")
+                        .value(criteria.getInvestigationStatus().value())));
   }
 
   private Optional<QueryVariant> withOutbreaks(final InvestigationFilter criteria) {
@@ -444,78 +468,70 @@ class InvestigationSearchCriteriaFilterResolver {
     return outbreaks.isEmpty()
         ? Optional.empty()
         : Optional.of(
-        outbreaks
-            .stream()
-            .map(FieldValue::of)
-            .collect(
-                Collectors.collectingAndThen(
-                    Collectors.toList(),
-                    collected -> TermsQuery.of(
-                        query -> query.field("outbreak_name")
-                            .terms(terms -> terms.value(collected))
-                    )
-                )
-            )
-    );
+            outbreaks.stream()
+                .map(FieldValue::of)
+                .collect(
+                    Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        collected ->
+                            TermsQuery.of(
+                                query ->
+                                    query
+                                        .field("outbreak_name")
+                                        .terms(terms -> terms.value(collected))))));
   }
 
   private Optional<QueryVariant> withCaseStatus(final InvestigationFilter criteria) {
     return criteria.getCaseStatuses().isEmpty()
         ? Optional.empty()
         : Optional.of(
-        criteria.getCaseStatuses()
-            .stream()
-            .map(InvestigationFilter.CaseStatus::value)
-            .map(FieldValue::of)
-            .collect(
-                Collectors.collectingAndThen(
-                    Collectors.toList(),
-                    collected -> TermsQuery.of(
-                        query -> query.field("case_class_cd")
-                            .terms(terms -> terms.value(collected))
-                    )
-                )
-            )
-    );
+            criteria.getCaseStatuses().stream()
+                .map(InvestigationFilter.CaseStatus::value)
+                .map(FieldValue::of)
+                .collect(
+                    Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        collected ->
+                            TermsQuery.of(
+                                query ->
+                                    query
+                                        .field("case_class_cd")
+                                        .terms(terms -> terms.value(collected))))));
   }
 
   private Optional<QueryVariant> withProcessingStatus(final InvestigationFilter criteria) {
     return criteria.getProcessingStatuses().isEmpty()
         ? Optional.empty()
         : Optional.of(
-        criteria.getProcessingStatuses()
-            .stream()
-            .map(InvestigationFilter.ProcessingStatus::value)
-            .map(FieldValue::of)
-            .collect(
-                Collectors.collectingAndThen(
-                    Collectors.toList(),
-                    collected -> TermsQuery.of(
-                        query -> query.field("curr_process_state_cd")
-                            .terms(terms -> terms.value(collected))
-                    )
-                )
-            )
-    );
+            criteria.getProcessingStatuses().stream()
+                .map(InvestigationFilter.ProcessingStatus::value)
+                .map(FieldValue::of)
+                .collect(
+                    Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        collected ->
+                            TermsQuery.of(
+                                query ->
+                                    query
+                                        .field("curr_process_state_cd")
+                                        .terms(terms -> terms.value(collected))))));
   }
 
   private Optional<QueryVariant> withNotificationStatus(final InvestigationFilter criteria) {
     return criteria.getNotificationStatuses().isEmpty()
         ? Optional.empty()
         : Optional.of(
-        criteria.getNotificationStatuses()
-            .stream()
-            .map(InvestigationFilter.NotificationStatus::value)
-            .map(FieldValue::of)
-            .collect(
-                Collectors.collectingAndThen(
-                    Collectors.toList(),
-                    collected -> TermsQuery.of(
-                        query -> query.field("notification_record_status_cd")
-                            .terms(terms -> terms.value(collected))
-                    )
-                )
-            )
-    );
+            criteria.getNotificationStatuses().stream()
+                .map(InvestigationFilter.NotificationStatus::value)
+                .map(FieldValue::of)
+                .collect(
+                    Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        collected ->
+                            TermsQuery.of(
+                                query ->
+                                    query
+                                        .field("notification_record_status_cd")
+                                        .terms(terms -> terms.value(collected))))));
   }
 }

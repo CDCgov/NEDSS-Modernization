@@ -1,5 +1,7 @@
 package gov.cdc.nbs.security.oidc;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,27 +12,20 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 class OIDCAuthenticationConfiguration {
 
   @Bean
   SecurityWebFilterChain oidcAuthentication(
-      final ServerHttpSecurity http,
-      final ReactiveClientRegistrationRepository repository) {
-    return http
-        .authorizeExchange(
+      final ServerHttpSecurity http, final ReactiveClientRegistrationRepository repository) {
+    return http.authorizeExchange(
             authorize ->
                 //  the landing page
-                authorize.pathMatchers(HttpMethod.GET, "/welcome/**").permitAll()
+                authorize
+                    .pathMatchers(HttpMethod.GET, "/welcome/**")
+                    .permitAll()
                     //  paths associated with authentication
-                    .pathMatchers(
-                        HttpMethod.GET,
-                        "/nbs/logged-out",
-                        "/nbs/timeout",
-                        "/nbs/logOut"
-                    )
+                    .pathMatchers(HttpMethod.GET, "/nbs/logged-out", "/nbs/timeout", "/nbs/logOut")
                     .permitAll()
                     //  assets that do not require authentication
                     .pathMatchers(
@@ -45,19 +40,20 @@ class OIDCAuthenticationConfiguration {
                         "/static/**",
                         "/logout",
                         "/goodbye",
-                        "/expired"
-                    )
+                        "/expired")
                     .permitAll()
                     // monitoring endpoints that do not require authentication
-                    .pathMatchers(HttpMethod.GET, "/~/**").permitAll()
+                    .pathMatchers(HttpMethod.GET, "/~/**")
+                    .permitAll()
                     .anyExchange()
-                    .authenticated()
-        )
+                    .authenticated())
         .oauth2Client(withDefaults())
         .oauth2Login(withDefaults())
-        .logout(logout -> logout
-            .requiresLogout(ServerWebExchangeMatchers.pathMatchers("/nbs/logout"))
-            .logoutSuccessHandler(oidcLogoutSuccessHandler(repository)))
+        .logout(
+            logout ->
+                logout
+                    .requiresLogout(ServerWebExchangeMatchers.pathMatchers("/nbs/logout"))
+                    .logoutSuccessHandler(oidcLogoutSuccessHandler(repository)))
         .csrf(ServerHttpSecurity.CsrfSpec::disable)
         .build();
   }

@@ -11,7 +11,7 @@ export const handleChangeToDefaultValue = (
     if (!e.target.value) {
         form.setValue(name as any, value, {
             shouldDirty: true,
-            shouldValidate: true
+            shouldValidate: true,
         });
         return;
     }

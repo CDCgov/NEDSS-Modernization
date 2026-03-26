@@ -3,12 +3,10 @@ package gov.cdc.nbs.questionbank.page.component;
 public final class InputNode extends ContentNode {
 
   public enum Type implements ComponentNode.Type {
-
     INPUT(1008L),
     INPUT_READ_ONLY_SAVE(1026L),
 
-    INPUT_READ_ONLY_NO_SAVE(1029L)
-    ;
+    INPUT_READ_ONLY_NO_SAVE(1029L);
 
     private final long identifier;
 
@@ -22,7 +20,6 @@ public final class InputNode extends ContentNode {
     }
   }
 
-
   private final boolean allowFutureDates;
 
   public InputNode(
@@ -30,8 +27,7 @@ public final class InputNode extends ContentNode {
       final Type type,
       final Definition definition,
       final Attributes attributes,
-      final boolean allowFutureDates
-  ) {
+      final boolean allowFutureDates) {
     super(identifier, type, definition, attributes);
     this.allowFutureDates = allowFutureDates;
   }

@@ -31,7 +31,8 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                         secondary
                         icon="filter_alt"
                         labelPosition="left"
-                        className={styles.filterButton}>
+                        className={styles.filterButton}
+                    >
                         Filter
                     </Button>
                 )}
@@ -58,7 +59,8 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     target="_self"
                     href="/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true"
                     data-tooltip-position="top"
-                    aria-label="Page porting">
+                    aria-label="Page porting"
+                >
                     Page porting
                 </LinkButton>
                 <Button

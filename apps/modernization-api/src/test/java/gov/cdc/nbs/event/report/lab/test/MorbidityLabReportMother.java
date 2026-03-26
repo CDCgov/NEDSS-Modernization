@@ -14,11 +14,12 @@ import org.springframework.stereotype.Component;
 @ScenarioScope
 class MorbidityLabReportMother {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       -- Morbidity Reports have an associated Lab report Observation that a Resulted Test is attached to
-      
+
       insert into Act(act_uid, class_cd, mood_cd) values (:identifier, 'OBS','EVN');
-      
+
       insert into Observation(
           observation_uid,
           local_id,
@@ -50,7 +51,7 @@ class MorbidityLabReportMother {
           :addedOn,
           :addedBy
       );
-      
+
       -- associate the Lab Report with the Morbidity Report
       insert into Act_Relationship (
           source_act_uid,
@@ -77,7 +78,8 @@ class MorbidityLabReportMother {
       )
       """;
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete from Act_relationship where source_class_cd = 'OBS' and source_act_uid in (:identifiers);
       delete from Observation where observation_uid in (:identifiers);
       delete from Act where class_cd = 'OBS' and act_uid in (:identifiers);
@@ -93,8 +95,7 @@ class MorbidityLabReportMother {
   MorbidityLabReportMother(
       final MotherSettings settings,
       final SequentialIdentityGenerator idGenerator,
-      final JdbcClient client
-  ) {
+      final JdbcClient client) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.client = client;
@@ -117,7 +118,8 @@ class MorbidityLabReportMother {
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal("OBS");
 
-    this.client.sql(CREATE)
+    this.client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("local", local)
         .param("addedOn", settings.createdBy())

@@ -18,4 +18,3 @@ export type PageCondition = {
     numberOfElements?: number;
     empty?: boolean;
 };
-

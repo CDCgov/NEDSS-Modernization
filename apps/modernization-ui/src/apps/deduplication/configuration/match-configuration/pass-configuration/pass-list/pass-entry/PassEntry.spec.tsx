@@ -13,7 +13,7 @@ const pass: Pass = {
     matchingCriteria: [],
     lowerBound: 0.25,
     upperBound: 1,
-    active: true
+    active: true,
 };
 const Fixture = ({ status = true }) => {
     return (

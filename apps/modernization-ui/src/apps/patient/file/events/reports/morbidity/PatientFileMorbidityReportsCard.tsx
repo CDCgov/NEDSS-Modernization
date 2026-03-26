@@ -37,7 +37,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...CONDITION, moveable: true, toggleable: true },
     { ...TREATMENT_INFO, moveable: true, toggleable: true },
     { ...JURISDICTION, moveable: true, toggleable: true },
-    { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
+    { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
 ];
 
 const columns: Column<PatientFileMorbidityReport>[] = [
@@ -54,7 +54,7 @@ const columns: Column<PatientFileMorbidityReport>[] = [
                     {value.processingDecision}
                 </Shown>
             </>
-        )
+        ),
     },
     {
         ...DATE_RECEIVED,
@@ -62,7 +62,7 @@ const columns: Column<PatientFileMorbidityReport>[] = [
         sortable: true,
         value: (value) => value.receivedOn,
         render: (value) => internalizeDateTime(value.receivedOn),
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...DATE_ADDED,
@@ -70,7 +70,7 @@ const columns: Column<PatientFileMorbidityReport>[] = [
         sortable: true,
         value: (value) => value.addedOn,
         render: (value) => internalizeDateTime(value.addedOn),
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...FACILITY_PROVIDER,
@@ -89,14 +89,14 @@ const columns: Column<PatientFileMorbidityReport>[] = [
                     {displayProvider(value.reportingProvider)}
                 </MaybeLabeledValue>
             </>
-        )
+        ),
     },
     {
         ...REPORT_DATE,
         className: styles['date-time-header'],
         sortable: true,
         value: (value) => value.reportedOn,
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...CONDITION,
@@ -107,27 +107,27 @@ const columns: Column<PatientFileMorbidityReport>[] = [
                 <strong>{value.condition}</strong>
                 <ResultedTests>{value.resultedTests}</ResultedTests>
             </>
-        )
+        ),
     },
     {
         ...TREATMENT_INFO,
         sortable: true,
         value: (value) => value.treatments?.join(),
-        render: (value) => <TreatmentList>{value.treatments}</TreatmentList>
+        render: (value) => <TreatmentList>{value.treatments}</TreatmentList>,
     },
     {
         ...JURISDICTION,
         sortable: true,
         className: styles['long-coded-header'],
-        value: (value) => value.jurisdiction
+        value: (value) => value.jurisdiction,
     },
     {
         ...ASSOCIATED_WITH,
         className: styles['local-header'],
         sortable: true,
         value: (value) => value.associations?.[0]?.local,
-        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
-    }
+        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>,
+    },
 ];
 
 type InternalCardProps = {
@@ -152,7 +152,8 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                     secondary
                     sizing={sizing}
                     icon="add_circle"
-                    href={`/nbs/api/profile/${patient}/report/morbidity`}>
+                    href={`/nbs/api/profile/${patient}/report/morbidity`}
+                >
                     Add morbidity report
                 </LinkButton>
             </Permitted>
@@ -171,7 +172,8 @@ const PatientFileMorbidityReportsCard = ({ provider, ...remaining }: PatientFile
             <LoadingOverlay>
                 <InternalCard {...remaining} />
             </LoadingOverlay>
-        }>
+        }
+    >
         <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
     </Suspense>
 );

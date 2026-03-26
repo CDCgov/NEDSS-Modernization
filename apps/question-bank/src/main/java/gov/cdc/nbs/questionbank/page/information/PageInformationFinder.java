@@ -1,9 +1,5 @@
 package gov.cdc.nbs.questionbank.page.information;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.stereotype.Component;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,6 +11,10 @@ import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 import gov.cdc.nbs.questionbank.page.SelectableCondition;
 import gov.cdc.nbs.questionbank.page.SelectableEventType;
 import gov.cdc.nbs.questionbank.page.SelectableMessageMappingGuide;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 class PageInformationFinder {
@@ -32,21 +32,35 @@ class PageInformationFinder {
   }
 
   Optional<PageInformation> find(final long id) {
-    // Find page 
-    PageInformation pageInfo = toPageInfo(factory.select(
-        page.id,
-        eventType.id.code,
-        eventType.codeShortDescTxt,
-        mmg.id.code,
-        mmg.codeShortDescTxt,
-        page.templateNm,
-        page.datamartNm,
-        page.descTxt)
-        .from(page)
-        .join(eventType).on(eventType.id.codeSetNm.eq("BUS_OBJ_TYPE").and(eventType.id.code.eq(page.busObjType)))
-        .join(mmg).on(mmg.id.codeSetNm.eq("NBS_MSG_PROFILE").and(mmg.id.code.eq(page.nndEntityIdentifier)))
-        .where(page.id.eq(id))
-        .fetchFirst());
+    // Find page
+    PageInformation pageInfo =
+        toPageInfo(
+            factory
+                .select(
+                    page.id,
+                    eventType.id.code,
+                    eventType.codeShortDescTxt,
+                    mmg.id.code,
+                    mmg.codeShortDescTxt,
+                    page.templateNm,
+                    page.datamartNm,
+                    page.descTxt)
+                .from(page)
+                .join(eventType)
+                .on(
+                    eventType
+                        .id
+                        .codeSetNm
+                        .eq("BUS_OBJ_TYPE")
+                        .and(eventType.id.code.eq(page.busObjType)))
+                .join(mmg)
+                .on(
+                    mmg.id
+                        .codeSetNm
+                        .eq("NBS_MSG_PROFILE")
+                        .and(mmg.id.code.eq(page.nndEntityIdentifier)))
+                .where(page.id.eq(id))
+                .fetchFirst());
 
     if (pageInfo != null) {
       pageInfo.conditions().addAll(getConditions(id));
@@ -55,13 +69,13 @@ class PageInformationFinder {
   }
 
   private List<SelectableCondition> getConditions(Long id) {
-    return factory.select(
-        condition.id,
-        condition.conditionShortNm,
-        page.publishIndCd)
+    return factory
+        .select(condition.id, condition.conditionShortNm, page.publishIndCd)
         .from(page)
-        .leftJoin(conditionMapping).on(conditionMapping.waTemplateUid.id.eq(page.id))
-        .leftJoin(condition).on(condition.id.eq(conditionMapping.conditionCd))
+        .leftJoin(conditionMapping)
+        .on(conditionMapping.waTemplateUid.id.eq(page.id))
+        .leftJoin(condition)
+        .on(condition.id.eq(conditionMapping.conditionCd))
         .where(page.formCd.eq(JPAExpressions.select(page.formCd).from(page).where(page.id.eq(id))))
         .fetch()
         .stream()
@@ -75,7 +89,6 @@ class PageInformationFinder {
         row.get(condition.conditionShortNm),
         Character.valueOf('T').equals(row.get(page.publishIndCd)));
   }
-
 
   private PageInformation toPageInfo(Tuple row) {
     if (row == null) {

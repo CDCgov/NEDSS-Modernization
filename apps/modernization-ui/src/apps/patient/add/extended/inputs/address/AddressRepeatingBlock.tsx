@@ -26,12 +26,12 @@ export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty, s
         {
             id: 'addressType',
             name: 'Type',
-            render: (v) => asAddressTypeUse({ type: v.type?.name, use: v.use?.name })
+            render: (v) => asAddressTypeUse({ type: v.type?.name, use: v.use?.name }),
         },
         { id: 'address', name: 'Address', render: (v) => v.address1 },
         { id: 'city', name: 'City', render: (v) => v.city },
         { id: 'state', name: 'State', render: (v) => v.state?.name },
-        { id: 'zip', name: 'Zip', render: (v) => v.zipcode }
+        { id: 'zip', name: 'Zip', render: (v) => v.zipcode },
     ];
 
     return (

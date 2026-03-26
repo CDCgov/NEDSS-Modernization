@@ -23,7 +23,7 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
     const {
         control,
         handleSubmit,
-        formState: { isValid }
+        formState: { isValid },
     } = methods;
 
     const selectedProperty = useWatch({ control, name: 'property' });

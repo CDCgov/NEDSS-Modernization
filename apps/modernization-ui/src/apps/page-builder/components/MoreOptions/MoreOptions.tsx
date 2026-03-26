@@ -20,7 +20,8 @@ export const MoreOptions = ({ children, header, close, className }: any) => {
                     } else {
                         setIsComponentVisible(true);
                     }
-                }}>
+                }}
+            >
                 {header}
             </div>
             {isComponentVisible ? (

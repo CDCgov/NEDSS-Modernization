@@ -1,5 +1,7 @@
 package gov.cdc.nbs.patient.file.edit;
 
+import static gov.cdc.nbs.patient.demographics.phone.PhoneDemographicPatientCommandMapper.*;
+
 import gov.cdc.nbs.change.ChangeResolver;
 import gov.cdc.nbs.change.Changes;
 import gov.cdc.nbs.change.Match;
@@ -8,12 +10,9 @@ import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 import java.util.Objects;
-
-import static gov.cdc.nbs.patient.demographics.phone.PhoneDemographicPatientCommandMapper.*;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientPhoneEditService {
@@ -26,7 +25,8 @@ class PatientPhoneEditService {
     return demographic.identifier() == null ? demographic.hashCode() : demographic.identifier();
   }
 
-  private static boolean changed(final Match.Both<TeleEntityLocatorParticipation, PhoneDemographic> both) {
+  private static boolean changed(
+      final Match.Both<TeleEntityLocatorParticipation, PhoneDemographic> both) {
     TeleEntityLocatorParticipation existing = both.left();
     PhoneDemographic demographic = both.right();
 
@@ -38,15 +38,12 @@ class PatientPhoneEditService {
         && Objects.equals(existing.locator().extension(), demographic.extension())
         && Objects.equals(existing.locator().email(), demographic.email())
         && Objects.equals(existing.locator().url(), demographic.url())
-        && Objects.equals(existing.comments(), demographic.comment())
-    );
+        && Objects.equals(existing.comments(), demographic.comment()));
   }
 
-  private final ChangeResolver<TeleEntityLocatorParticipation, PhoneDemographic, Long> resolver = ChangeResolver
-      .ofDifferingTypes(
-          PatientPhoneEditService::identifiedBy,
-          PatientPhoneEditService::identifiedBy
-      );
+  private final ChangeResolver<TeleEntityLocatorParticipation, PhoneDemographic, Long> resolver =
+      ChangeResolver.ofDifferingTypes(
+          PatientPhoneEditService::identifiedBy, PatientPhoneEditService::identifiedBy);
 
   private final PhoneIdentifierGenerator phoneIdentifierGenerator;
 
@@ -57,22 +54,24 @@ class PatientPhoneEditService {
   void apply(
       final RequestContext context,
       final Person patient,
-      final Collection<PhoneDemographic> demographics
-  ) {
+      final Collection<PhoneDemographic> demographics) {
 
-    Changes<TeleEntityLocatorParticipation, PhoneDemographic> changes = resolver.resolve(patient.phones(),
-        demographics);
+    Changes<TeleEntityLocatorParticipation, PhoneDemographic> changes =
+        resolver.resolve(patient.phones(), demographics);
 
-    changes.added()
+    changes
+        .added()
         .map(demographic -> asAddPhone(patient.id(), context, demographic))
         .forEach(command -> patient.add(command, phoneIdentifierGenerator));
 
-    changes.altered()
+    changes
+        .altered()
         .filter(PatientPhoneEditService::changed)
         .map(match -> asUpdatePhone(patient.id(), context, match.right()))
         .forEach(patient::update);
 
-    changes.removed()
+    changes
+        .removed()
         .map(existing -> asDeletePhone(patient.id(), context, existing))
         .forEach(patient::delete);
   }

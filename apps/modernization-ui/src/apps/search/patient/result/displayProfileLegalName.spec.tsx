@@ -9,11 +9,11 @@ import { PatientSearchResult } from 'generated/graphql/schema';
 let mockPermissions: string[] = [];
 
 vi.mock('user', () => ({
-    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } }),
 }));
 
 let mockFeatures: Features = {
-    ...defaultConfiguration.features
+    ...defaultConfiguration.features,
 };
 
 const withModernizedPatientProfile = (enabled: boolean) => ({
@@ -21,13 +21,13 @@ const withModernizedPatientProfile = (enabled: boolean) => ({
     patient: {
         ...defaultConfiguration.features.patient,
         file: {
-            enabled: enabled
-        }
-    }
+            enabled: enabled,
+        },
+    },
 });
 
 vi.mock('configuration', () => ({
-    useConfiguration: () => ({ ready: false, loading: false, load: vi.fn(), features: mockFeatures })
+    useConfiguration: () => ({ ready: false, loading: false, load: vi.fn(), features: mockFeatures }),
 }));
 
 describe('when navigating to the patient profile from a list view search result', () => {
@@ -47,14 +47,14 @@ describe('when navigating to the patient profile from a list view search result'
                 shortId: 84001,
                 legalName: {
                     first: 'John',
-                    last: 'Doe'
+                    last: 'Doe',
                 },
                 addresses: [],
                 detailedPhones: [],
                 emails: [],
                 identification: [],
                 names: [],
-                phones: []
+                phones: [],
             };
 
             const { getByText } = render(<BrowserRouter>{displayProfileLegalName(searchResult)}</BrowserRouter>);
@@ -73,7 +73,7 @@ describe('when navigating to the patient profile from a list view search result'
                 emails: [],
                 identification: [],
                 names: [],
-                phones: []
+                phones: [],
             };
 
             const { getByText } = render(<BrowserRouter>{displayProfileLegalName(searchResult)}</BrowserRouter>);
@@ -94,14 +94,14 @@ describe('when navigating to the patient profile from a list view search result'
                 shortId: 84001,
                 legalName: {
                     first: 'John',
-                    last: 'Doe'
+                    last: 'Doe',
                 },
                 addresses: [],
                 detailedPhones: [],
                 emails: [],
                 identification: [],
                 names: [],
-                phones: []
+                phones: [],
             };
 
             const { getByText } = render(<BrowserRouter>{displayProfileLegalName(searchResult)}</BrowserRouter>);
@@ -120,7 +120,7 @@ describe('when navigating to the patient profile from a list view search result'
                 emails: [],
                 identification: [],
                 names: [],
-                phones: []
+                phones: [],
             };
 
             const { getByText } = render(<BrowserRouter>{displayProfileLegalName(searchResult)}</BrowserRouter>);

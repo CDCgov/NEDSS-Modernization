@@ -28,7 +28,7 @@ const useStorage = <V>({ storage, key, initial }: StorageOptions<V> & { storage:
     return {
         value,
         save,
-        remove
+        remove,
     };
 };
 

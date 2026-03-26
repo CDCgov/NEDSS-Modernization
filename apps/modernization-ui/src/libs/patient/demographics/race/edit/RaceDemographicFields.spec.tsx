@@ -14,11 +14,11 @@ const Fixture = ({
     details = [],
     selected = mockSelected,
     categoryValidator = vi.fn().mockResolvedValue('true'),
-    entry
+    entry,
 }: Props) => {
     const form = useForm<RaceDemographic>({
         mode: 'onBlur',
-        defaultValues: entry
+        defaultValues: entry,
     });
 
     const options = { categories, details, selected };
@@ -57,7 +57,7 @@ describe('Race entry fields', () => {
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
                 details={[{ value: 'detailed', name: 'detailed race' }]}
             />
@@ -75,7 +75,7 @@ describe('Race entry fields', () => {
             id: 389,
             asOf: '05/08/2013',
             race: { value: 'selected', name: 'selected name' },
-            detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }]
+            detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }],
         };
 
         const user = userEvent.setup();
@@ -85,7 +85,7 @@ describe('Race entry fields', () => {
                 entry={entry}
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );
@@ -99,7 +99,7 @@ describe('Race entry fields', () => {
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
                 details={[{ value: 'other-detailed', name: 'other detailed' }]}
             />
@@ -116,7 +116,7 @@ describe('Race entry fields', () => {
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );
@@ -164,12 +164,12 @@ describe('Race entry fields', () => {
                     id: 19,
                     asOf: '04/11/2022',
                     race: { name: 'Selected Name', value: 'selected-value' },
-                    detailed: []
+                    detailed: [],
                 }}
                 categoryValidator={validator}
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );

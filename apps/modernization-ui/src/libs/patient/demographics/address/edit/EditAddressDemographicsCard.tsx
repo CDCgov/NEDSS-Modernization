@@ -4,7 +4,7 @@ import { PatientDemographicsDefaults } from '../../demographics';
 import { AddressDemographic, HasAddressDemographics, initial } from '../address';
 import {
     AddressDemographicRepeatingBlock,
-    AddressDemographicRepeatingBlockProps
+    AddressDemographicRepeatingBlockProps,
 } from '../AddressDemographicRepeatingBlock';
 import { AddressDemographicFields } from './AddressDemographicFields';
 import { useAddressOptions } from './useAddressOptions';

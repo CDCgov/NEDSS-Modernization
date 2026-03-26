@@ -5,7 +5,7 @@ import { axe } from 'jest-axe';
 
 const options = [
     { value: 'value1', label: 'label1', name: 'name1' },
-    { value: 'value2', label: 'label2', name: 'name2' }
+    { value: 'value2', label: 'label2', name: 'name2' },
 ];
 
 describe('CheckboxGroup', () => {
@@ -41,11 +41,11 @@ describe('CheckboxGroup', () => {
                 options={[
                     { name: 'One Name', label: 'One Label', value: 'ONE' },
                     { name: 'Two Name', label: 'Two Label', value: 'TWO' },
-                    { name: 'Three Name', label: 'Three Label', value: 'Three' }
+                    { name: 'Three Name', label: 'Three Label', value: 'Three' },
                 ]}
                 value={[
                     { name: 'Three Name', label: 'Three Label', value: 'Three' },
-                    { name: 'One Name', label: 'One Label', value: 'ONE' }
+                    { name: 'One Name', label: 'One Label', value: 'ONE' },
                 ]}
             />
         );
@@ -68,7 +68,7 @@ describe('CheckboxGroup', () => {
                 options={[
                     { name: 'One Name', label: 'One Label', value: 'ONE' },
                     { name: 'Two Name', label: 'Two Label', value: 'TWO' },
-                    { name: 'Three Name', label: 'Three Label', value: 'Three' }
+                    { name: 'Three Name', label: 'Three Label', value: 'Three' },
                 ]}
             />
         );
@@ -100,7 +100,7 @@ describe('CheckboxGroup', () => {
                 label="Testing CheckboxGroup"
                 options={[
                     { value: 'value1', label: 'label1', name: 'name1' },
-                    { value: 'value2', label: 'label2', name: 'name2' }
+                    { value: 'value2', label: 'label2', name: 'name2' },
                 ]}
                 onChange={onChange}
             />
@@ -119,7 +119,7 @@ describe('CheckboxGroup', () => {
         expect(onChange).toHaveBeenCalledWith(
             expect.arrayContaining([
                 expect.objectContaining({ value: 'value1' }),
-                expect.objectContaining({ value: 'value2' })
+                expect.objectContaining({ value: 'value2' }),
             ])
         );
     });
@@ -152,17 +152,12 @@ describe('CheckboxGroup', () => {
     });
     it('should set aria-required and required attributes when required is true', () => {
         const { getAllByRole } = render(
-            <CheckboxGroup
-                name="test"
-                label="Testing CheckboxGroup"
-                options={options}
-                required
-            />
+            <CheckboxGroup name="test" label="Testing CheckboxGroup" options={options} required />
         );
         const checkboxes = getAllByRole('checkbox');
-        checkboxes.forEach(checkbox => {
+        checkboxes.forEach((checkbox) => {
             expect(checkbox).toHaveAttribute('aria-required', 'true');
             expect(checkbox).toHaveAttribute('required');
         });
-    })
+    });
 });

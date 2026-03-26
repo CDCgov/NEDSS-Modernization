@@ -11,7 +11,7 @@ describe('useSignUp', () => {
         const mockLocation = { ...location };
         Object.defineProperty(mockLocation, 'href', {
             get: getHrefSpy,
-            set: setHrefSpy
+            set: setHrefSpy,
         });
 
         // @ts-expect-error : location is mocked to check that the href is changed by the redirect

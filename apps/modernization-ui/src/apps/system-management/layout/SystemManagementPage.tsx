@@ -29,18 +29,18 @@ const SystemManagementPage = () => {
     const cardGroups = [
         [
             { key: 'lab', component: <CaseReportLaboratorySection filter={filter} setAlert={setAlert} /> },
-            { key: 'decision', component: <DecisionSupportSection filter={filter} /> }
+            { key: 'decision', component: <DecisionSupportSection filter={filter} /> },
         ],
         [
             { key: 'epi', component: <EpiLinkSection filter={filter} /> },
             { key: 'messaging', component: <MessagingSection filter={filter} /> },
-            { key: 'page', component: <PageSection filter={filter} /> }
+            { key: 'page', component: <PageSection filter={filter} /> },
         ],
         [
             { key: 'person', component: <PersonMatchSection filter={filter} /> },
             { key: 'report', component: <ReportSection filter={filter} /> },
-            { key: 'security', component: <SecuritySection filter={filter} /> }
-        ]
+            { key: 'security', component: <SecuritySection filter={filter} /> },
+        ],
     ];
 
     useEffect(() => {
@@ -56,7 +56,7 @@ const SystemManagementPage = () => {
     // push empty columns to the right
     const reorderedGroups = [
         ...cardGroups.filter((group) => group.some(({ key }) => visibilityMap[key])), // visible columns
-        ...cardGroups.filter((group) => group.every(({ key }) => !visibilityMap[key])) // empty columns
+        ...cardGroups.filter((group) => group.every(({ key }) => !visibilityMap[key])), // empty columns
     ];
     return (
         <div className={styles.systemManagement}>
@@ -91,7 +91,8 @@ const SystemManagementPage = () => {
                                 visibleCards.map(({ key, component }) => (
                                     <VisibleWrapper
                                         key={key}
-                                        onVisibilityChange={(visible) => updateVisibility(key, visible)}>
+                                        onVisibilityChange={(visible) => updateVisibility(key, visible)}
+                                    >
                                         {component}
                                     </VisibleWrapper>
                                 ))

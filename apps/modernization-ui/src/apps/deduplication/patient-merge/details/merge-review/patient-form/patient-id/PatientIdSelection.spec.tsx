@@ -11,7 +11,7 @@ const Fixture = () => {
     const data: Partial<MergeCandidate>[] = [
         { personUid: '100', personLocalId: '001' },
         { personUid: '200', personLocalId: '002' },
-        { personUid: '300', personLocalId: '003' }
+        { personUid: '300', personLocalId: '003' },
     ];
     return (
         <FormProvider {...form}>

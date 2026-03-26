@@ -10,9 +10,8 @@ import lombok.*;
 @EqualsAndHashCode
 public class Status {
 
-    private String code;
-    private String type;
-    private String message;
-    private String description;
-
+  private String code;
+  private String type;
+  private String message;
+  private String description;
 }

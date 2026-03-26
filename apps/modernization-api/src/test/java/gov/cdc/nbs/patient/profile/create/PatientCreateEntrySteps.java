@@ -59,67 +59,84 @@ public class PatientCreateEntrySteps {
 
   @Given("the ethnicity is included in the extended patient data")
   public void the_ethnicity_is_included_in_the_extended_patient_data() {
-    this.activeEthnicity.maybeActive()
+    this.activeEthnicity
+        .maybeActive()
         .ifPresent(ethnicity -> this.input.active(current -> current.withEthnicity(ethnicity)));
   }
 
   @Given("the administrative is included in the extended patient data")
   public void the_administrative_is_included_in_the_extended_patient_data() {
-    this.activeAdministrative.maybeActive()
-        .ifPresent(administrative -> this.input.active(current -> current.withAdministrative(administrative)));
+    this.activeAdministrative
+        .maybeActive()
+        .ifPresent(
+            administrative ->
+                this.input.active(current -> current.withAdministrative(administrative)));
   }
 
   @Given("the name is included with the extended patient data")
   public void i_add_the_current_name() {
-    this.availableName.maybeOne().ifPresent(
-        name -> this.input.active(current -> current.withName(name)));
+    this.availableName
+        .maybeOne()
+        .ifPresent(name -> this.input.active(current -> current.withName(name)));
   }
 
   @Given("the phone is included with the extended patient data")
   public void includePhone() {
-    this.availablePoneDemographic.maybeOne().ifPresent(
-        demographic -> this.input.active(current -> current.withPhoneEmail(demographic)));
+    this.availablePoneDemographic
+        .maybeOne()
+        .ifPresent(
+            demographic -> this.input.active(current -> current.withPhoneEmail(demographic)));
   }
 
   @Given("the race is included with the extended patient data")
   public void includeRace() {
-    this.availableRaceDemographic.all().forEach(
-        demographic -> this.input.active(current -> current.withRace(demographic)));
+    this.availableRaceDemographic
+        .all()
+        .forEach(demographic -> this.input.active(current -> current.withRace(demographic)));
   }
 
   @Given("the address is included with the extended patient data")
   public void includeAddress() {
-    this.availableAddressDemographic.all().forEach(
-        demographic -> this.input.active(current -> current.withAddress(demographic)));
+    this.availableAddressDemographic
+        .all()
+        .forEach(demographic -> this.input.active(current -> current.withAddress(demographic)));
   }
 
   @Given("the identification is included with the extended patient data")
   public void includeIdentification() {
-    this.availableIdentificationDemographic.all()
-        .forEach(demographic -> this.input.active(current -> current.withIdentification(demographic)));
+    this.availableIdentificationDemographic
+        .all()
+        .forEach(
+            demographic -> this.input.active(current -> current.withIdentification(demographic)));
   }
 
   @Given("the birth demographics are included in the extended patient data")
   public void the_birth_demographics_are_included_in_the_extended_patient_data() {
-    this.activeBirthDemographic.maybeActive()
+    this.activeBirthDemographic
+        .maybeActive()
         .ifPresent(demographic -> this.input.active(current -> current.withBirth(demographic)));
   }
 
   @Given("the gender demographics are included in the extended patient data")
   public void the_gender_demographics_are_included_in_the_extended_patient_data() {
-    this.activeGenderDemographic.maybeActive()
+    this.activeGenderDemographic
+        .maybeActive()
         .ifPresent(demographic -> this.input.active(current -> current.withGender(demographic)));
   }
 
   @Given("the mortality demographics are included in the extended patient data")
   public void the_mortality_demographics_are_included_in_the_extended_patient_data() {
-    this.activeMortalityDemographic.maybeActive()
+    this.activeMortalityDemographic
+        .maybeActive()
         .ifPresent(demographic -> this.input.active(current -> current.withMortality(demographic)));
   }
 
   @Given("the general information demographics are included in the extended patient data")
   public void the_general_information_is_included_in_the_extended_patient_data() {
-    this.activeGeneralInformation.maybeActive()
-        .ifPresent(demographic -> this.input.active(current -> current.withGeneralInformation(demographic)));
+    this.activeGeneralInformation
+        .maybeActive()
+        .ifPresent(
+            demographic ->
+                this.input.active(current -> current.withGeneralInformation(demographic)));
   }
 }

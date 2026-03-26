@@ -11,7 +11,7 @@ const textOperators: Selectable[] = [
     CONTAINS_OPERATOR,
     EQUAL_OPERATOR,
     NOT_EQUAL_OPERATOR,
-    SOUNDS_LIKE_OPERATOR
+    SOUNDS_LIKE_OPERATOR,
 ];
 
 /** A subset of operators: equals, not equals, contains */

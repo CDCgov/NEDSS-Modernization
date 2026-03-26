@@ -9,8 +9,8 @@ const meta = {
             <div style={{ margin: '3em', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Story />
             </div>
-        )
-    ]
+        ),
+    ],
 } satisfies Meta<typeof Hint>;
 
 export default meta;
@@ -28,28 +28,28 @@ const renderPositions = (props: HintProps) => (
 export const Default: Story = {
     args: {
         id: 'storybook-hint',
-        children: 'This is some additional information that is available in a tooltip.'
+        children: 'This is some additional information that is available in a tooltip.',
     },
-    render: renderPositions
+    render: renderPositions,
 };
 
 export const CustomTarget: Story = {
     args: {
         ...Default.args,
-        target: <span>Hover over me</span>
-    }
+        target: <span>Hover over me</span>,
+    },
 };
 
 export const Left: Story = {
     args: {
         ...Default.args,
-        position: 'left'
-    }
+        position: 'left',
+    },
 };
 
 export const Center: Story = {
     args: {
         ...Default.args,
-        position: 'center'
-    }
+        position: 'center',
+    },
 };

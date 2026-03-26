@@ -3,7 +3,6 @@ package gov.cdc.nbs.search;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-
 import java.io.IOException;
 
 public class WithoutSpecialCharactersJsonSerializer extends JsonSerializer<String> {
@@ -12,8 +11,8 @@ public class WithoutSpecialCharactersJsonSerializer extends JsonSerializer<Strin
   public void serialize(
       final String value,
       final JsonGenerator jsonGenerator,
-      final SerializerProvider serializerProvider
-  ) throws IOException {
+      final SerializerProvider serializerProvider)
+      throws IOException {
     String adjusted = AdjustStrings.withoutSpecialCharacters(value);
 
     if (adjusted == null) {

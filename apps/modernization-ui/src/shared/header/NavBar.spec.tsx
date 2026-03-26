@@ -8,18 +8,18 @@ let mockPermissions: string[] = [];
 const mockAllowFn = vi.fn((permission: string) => mockPermissions.includes(permission));
 
 vi.mock('page', () => ({
-    usePage: vi.fn()
+    usePage: vi.fn(),
 }));
 
 vi.mock('react-router', () => ({
-    useLocation: vi.fn()
+    useLocation: vi.fn(),
 }));
 
 vi.mock('../../libs/permission/usePermissions', () => ({
     usePermissions: () => ({
         permissions: mockPermissions,
-        allows: mockAllowFn
-    })
+        allows: mockAllowFn,
+    }),
 }));
 
 const renderNavBarWithPermissions = (permissions: string[]) => {
@@ -50,7 +50,7 @@ describe('NavBar component tests', () => {
             [permissions.morbidityReport.add],
             [permissions.labReport.add],
             [permissions.summaryReports.view],
-            [permissions.patient.search]
+            [permissions.patient.search],
         ])('should show Data Entry with permission: %s', (permission) => {
             const { getByText } = renderNavBarWithPermissions([permission]);
             expect(getByText('Data Entry')).toBeInTheDocument();
@@ -79,7 +79,7 @@ describe('NavBar component tests', () => {
             [permissions.reports.template.view],
             [permissions.reports.public.view],
             [permissions.reports.private.view],
-            [permissions.reports.reportingFacility.view]
+            [permissions.reports.reportingFacility.view],
         ])('should show Reports with permission: %s', (permission) => {
             const { getByText } = renderNavBarWithPermissions([permission]);
             expect(getByText('Reports')).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('NavBar component tests', () => {
         it('should show Reports with multiple report permissions', () => {
             const { getByText } = renderNavBarWithPermissions([
                 permissions.reports.template.view,
-                permissions.reports.private.view
+                permissions.reports.private.view,
             ]);
             expect(getByText('Reports')).toBeInTheDocument();
         });

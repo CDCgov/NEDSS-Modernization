@@ -16,7 +16,7 @@ export type SourceValueProp = {
 
 export const AddBusinessRule = () => {
     const form = useForm<RuleRequest>({
-        defaultValues: { targetType: Rule.targetType.QUESTION, anySourceValue: false }
+        defaultValues: { targetType: Rule.targetType.QUESTION, anySourceValue: false },
     });
     const watch = useWatch(form);
     const { options, fetch } = useOptions();
@@ -30,7 +30,7 @@ export const AddBusinessRule = () => {
         try {
             await PageRuleControllerService.createBusinessRule({
                 id: page?.id ?? 0,
-                requestBody: data
+                requestBody: data,
             });
             showAlert({
                 type: 'success',
@@ -39,13 +39,13 @@ export const AddBusinessRule = () => {
                         The business rule <span className="bold-text">'{data.sourceText}'</span> is successfully added.
                         Please click the unique name to edit.
                     </>
-                )
+                ),
             });
             redirectToLibrary();
         } catch (error) {
             showAlert({
                 type: 'error',
-                message: 'There was an error. Please try again.'
+                message: 'There was an error. Please try again.',
             });
             redirectToLibrary();
         }
@@ -112,14 +112,16 @@ export const AddBusinessRule = () => {
                             form.reset();
                             redirectToLibrary();
                         }}
-                        type="button">
+                        type="button"
+                    >
                         Cancel
                     </Button>
                     <Button
                         disabled={!checkIsValid()}
                         type="submit"
                         data-testid="AddToLibraryNewBusinessRulesModel"
-                        onClick={onSubmit}>
+                        onClick={onSubmit}
+                    >
                         Add to library
                     </Button>
                 </div>

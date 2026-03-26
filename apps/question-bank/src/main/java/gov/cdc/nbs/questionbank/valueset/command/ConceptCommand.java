@@ -26,9 +26,8 @@ public sealed interface ConceptCommand {
       String codeSystemId,
       // Audit fields
       long userId,
-      Instant requestedOn) implements ConceptCommand {
-  }
-
+      Instant requestedOn)
+      implements ConceptCommand {}
 
   public record UpdateConcept(
       String displayName,
@@ -46,7 +45,6 @@ public sealed interface ConceptCommand {
       String codeSystemId,
       // Audit fields
       long userId,
-      Instant requestedOn) implements ConceptCommand {
-
-  }
+      Instant requestedOn)
+      implements ConceptCommand {}
 }

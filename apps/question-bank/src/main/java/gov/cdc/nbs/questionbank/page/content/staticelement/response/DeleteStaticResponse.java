@@ -1,5 +1,3 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement.response;
 
-public record DeleteStaticResponse(String result) {
-    
-}
+public record DeleteStaticResponse(String result) {}

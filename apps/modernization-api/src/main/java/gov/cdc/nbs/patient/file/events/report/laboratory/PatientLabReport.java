@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleName;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigation;
 import gov.cdc.nbs.patient.events.tests.ResultedTest;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -18,8 +17,7 @@ record PatientLabReport(
     @JsonProperty(required = true) String programArea,
     @JsonProperty(required = true) String jurisdiction,
     LocalDateTime receivedDate,
-    @JsonProperty(required = true)
-    boolean electronic,
+    @JsonProperty(required = true) boolean electronic,
     String processingDecision,
     LocalDate collectedDate,
     Collection<ResultedTest> resultedTests,
@@ -27,13 +25,9 @@ record PatientLabReport(
     DisplayableSimpleName orderingProvider,
     String orderingFacility,
     Specimen specimen,
-    Collection<AssociatedInvestigation> associations
-) {
+    Collection<AssociatedInvestigation> associations) {
 
-  record Specimen(String site, String source) {
-  }
-
-
+  record Specimen(String site, String source) {}
 
   PatientLabReport withResultedTests(final Collection<ResultedTest> resultedTests) {
     return new PatientLabReport(
@@ -51,8 +45,7 @@ record PatientLabReport(
         orderingProvider(),
         orderingFacility(),
         specimen(),
-        associations()
-    );
+        associations());
   }
 
   PatientLabReport withAssociations(final Collection<AssociatedInvestigation> associations) {
@@ -71,7 +64,6 @@ record PatientLabReport(
         orderingProvider(),
         orderingFacility(),
         specimen(),
-        associations
-    );
+        associations);
   }
 }

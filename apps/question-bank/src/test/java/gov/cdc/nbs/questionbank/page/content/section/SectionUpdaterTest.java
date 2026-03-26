@@ -4,6 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
+import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,22 +19,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
-import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SectionUpdaterTest {
 
-  @Mock
-  private EntityManager entityManager;
+  @Mock private EntityManager entityManager;
 
-  @InjectMocks
-  private SectionUpdater updater;
-
+  @InjectMocks private SectionUpdater updater;
 
   @Test
   void should_update_section() {
@@ -39,7 +37,6 @@ class SectionUpdaterTest {
     ArgumentCaptor<PageContentCommand.UpdateSection> captor =
         ArgumentCaptor.forClass(PageContentCommand.UpdateSection.class);
     when(page.updateSection(captor.capture(), Mockito.any())).thenReturn(sectionMock);
-
 
     // When a valid request is made to update the section
     UpdateSectionRequest request = new UpdateSectionRequest("New name", false);

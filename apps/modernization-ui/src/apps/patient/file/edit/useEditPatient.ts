@@ -76,7 +76,7 @@ const useEditPatient = ({ onValidate }: EditPatientSettings): EditPatientInterac
 
     return {
         ...state,
-        edit
+        edit,
     };
 };
 

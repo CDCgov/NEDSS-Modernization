@@ -4,13 +4,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import java.util.Optional;
-
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import jakarta.persistence.EntityManager;
-
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -19,29 +22,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
-
 @ExtendWith(MockitoExtension.class)
 class PageStaticCreatorTest {
-  @Mock
-  private WaUiMetadataRepository uiMetadatumRepository;
+  @Mock private WaUiMetadataRepository uiMetadatumRepository;
 
-  @Mock
-  private EntityManager entityManager;
+  @Mock private EntityManager entityManager;
 
-  @Mock
-  NbsConfigurationRepository configRepository;
+  @Mock NbsConfigurationRepository configRepository;
 
-  @Mock
-  IdGeneratorService idGenerator;
+  @Mock IdGeneratorService idGenerator;
 
-  @InjectMocks
-  private PageStaticCreator contentManager;
-
+  @InjectMocks private PageStaticCreator contentManager;
 
   @Test
   void should_add_line_separator_to_page() {
@@ -59,14 +50,17 @@ class PageStaticCreatorTest {
 
     when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
 
-    when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr())).thenReturn(4);
+    when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr()))
+        .thenReturn(4);
 
     ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
-    when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
-      WaUiMetadata savedMetadatum = m.getArgument(0);
-      savedMetadatum.setId(77L);
-      return savedMetadatum;
-    });
+    when(uiMetadatumRepository.save(captor.capture()))
+        .thenAnswer(
+            m -> {
+              WaUiMetadata savedMetadatum = m.getArgument(0);
+              savedMetadatum.setId(77L);
+              return savedMetadatum;
+            });
 
     when(configRepository.findById(any())).thenReturn(Optional.of(nbsConfiguration));
     when(idGenerator.getNextValidId(any())).thenReturn(generatedId);
@@ -91,7 +85,9 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class, () -> contentManager.addLineSeparator(pageId, request, userId));
+    assertThrows(
+        AddStaticElementException.class,
+        () -> contentManager.addLineSeparator(pageId, request, userId));
   }
 
   @Test
@@ -101,9 +97,9 @@ class PageStaticCreatorTest {
     Long pageId = null;
     Long userId = 999L;
 
-
-
-    assertThrows(AddStaticElementException.class, () -> contentManager.addLineSeparator(pageId, request, userId));
+    assertThrows(
+        AddStaticElementException.class,
+        () -> contentManager.addLineSeparator(pageId, request, userId));
   }
 
   @Test
@@ -118,16 +114,14 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class, () -> contentManager.addLineSeparator(pageId, request, userId));
+    assertThrows(
+        AddStaticElementException.class,
+        () -> contentManager.addLineSeparator(pageId, request, userId));
   }
 
   @Test
   void should_add_hyperlink_to_page() {
-    var request = new StaticContentRequests.AddHyperlink(
-        "google",
-        "google.com",
-        null,
-        10L);
+    var request = new StaticContentRequests.AddHyperlink("google", "google.com", null, 10L);
 
     Long pageId = 123L;
 
@@ -143,14 +137,17 @@ class PageStaticCreatorTest {
 
     when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
 
-    when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr())).thenReturn(4);
+    when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr()))
+        .thenReturn(4);
 
     ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
-    when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
-      WaUiMetadata savedMetadatum = m.getArgument(0);
-      savedMetadatum.setId(77L);
-      return savedMetadatum;
-    });
+    when(uiMetadatumRepository.save(captor.capture()))
+        .thenAnswer(
+            m -> {
+              WaUiMetadata savedMetadatum = m.getArgument(0);
+              savedMetadatum.setId(77L);
+              return savedMetadatum;
+            });
 
     when(configRepository.findById(any())).thenReturn(Optional.of(nbsConfiguration));
     when(idGenerator.getNextValidId(any())).thenReturn(generatedId);
@@ -167,11 +164,7 @@ class PageStaticCreatorTest {
 
   @Test
   void should_not_create_hyperlink_if_not_draft() {
-    var request = new StaticContentRequests.AddHyperlink(
-        "google",
-        "google.com",
-        null,
-        10L);
+    var request = new StaticContentRequests.AddHyperlink("google", "google.com", null, 10L);
 
     Long pageId = 123L;
     WaTemplate temp = new WaTemplate();
@@ -181,30 +174,26 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class, () -> contentManager.addHyperLink(pageId, request, userId));
+    assertThrows(
+        AddStaticElementException.class,
+        () -> contentManager.addHyperLink(pageId, request, userId));
   }
 
   @Test
   void should_not_create_hyperlink_if_page_null() {
-    var request = new StaticContentRequests.AddHyperlink(
-        "google",
-        "google.com",
-        null,
-        10L);
+    var request = new StaticContentRequests.AddHyperlink("google", "google.com", null, 10L);
 
     Long pageId = null;
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class, () -> contentManager.addHyperLink(pageId, request, userId));
+    assertThrows(
+        AddStaticElementException.class,
+        () -> contentManager.addHyperLink(pageId, request, userId));
   }
 
   @Test
   void should_not_create_hyperlink_if_subsection_invalid() {
-    var request = new StaticContentRequests.AddHyperlink(
-        "google",
-        "google.com",
-        null,
-        null);
+    var request = new StaticContentRequests.AddHyperlink("google", "google.com", null, null);
 
     Long pageId = 123L;
     WaTemplate temp = new WaTemplate();
@@ -214,15 +203,14 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class, () -> contentManager.addHyperLink(pageId, request, userId));
+    assertThrows(
+        AddStaticElementException.class,
+        () -> contentManager.addHyperLink(pageId, request, userId));
   }
 
   @Test
   void should_add_read_only_comments_to_page() {
-    var request = new StaticContentRequests.AddReadOnlyComments(
-        "comments test",
-        null,
-        123L);
+    var request = new StaticContentRequests.AddReadOnlyComments("comments test", null, 123L);
 
     Long pageId = 321L;
     NbsConfiguration nbsConfiguration = new NbsConfiguration("test");
@@ -237,20 +225,22 @@ class PageStaticCreatorTest {
 
     when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
 
-    when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr())).thenReturn(4);
+    when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr()))
+        .thenReturn(4);
 
     ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
-    when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
-      WaUiMetadata savedMetadatum = m.getArgument(0);
-      savedMetadatum.setId(77L);
-      return savedMetadatum;
-    });
+    when(uiMetadatumRepository.save(captor.capture()))
+        .thenAnswer(
+            m -> {
+              WaUiMetadata savedMetadatum = m.getArgument(0);
+              savedMetadatum.setId(77L);
+              return savedMetadatum;
+            });
 
     when(configRepository.findById(any())).thenReturn(Optional.of(nbsConfiguration));
     when(idGenerator.getNextValidId(any())).thenReturn(generatedId);
 
     Long newId = contentManager.addReadOnlyComments(pageId, request, userId);
-
 
     verify(uiMetadatumRepository, times(1)).save(Mockito.any());
     assertEquals(999L, captor.getValue().getAddUserId().longValue());
@@ -261,10 +251,7 @@ class PageStaticCreatorTest {
 
   @Test
   void should_not_create_read_only_comments_if_not_draft() {
-    var request = new StaticContentRequests.AddReadOnlyComments(
-        "comments test",
-        null,
-        123L);
+    var request = new StaticContentRequests.AddReadOnlyComments("comments test", null, 123L);
 
     Long pageId = 123L;
     WaTemplate temp = new WaTemplate();
@@ -274,30 +261,26 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class,
+    assertThrows(
+        AddStaticElementException.class,
         () -> contentManager.addReadOnlyComments(pageId, request, userId));
   }
 
   @Test
   void should_not_create_read_only_comments_if_page_null() {
-    var request = new StaticContentRequests.AddReadOnlyComments(
-        "comments test",
-        null,
-        123L);
+    var request = new StaticContentRequests.AddReadOnlyComments("comments test", null, 123L);
 
     Long pageId = null;
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class,
+    assertThrows(
+        AddStaticElementException.class,
         () -> contentManager.addReadOnlyComments(pageId, request, userId));
   }
 
   @Test
   void should_not_create_read_only_comments_if_subsection_invalid() {
-    var request = new StaticContentRequests.AddReadOnlyComments(
-        "comments test",
-        null,
-        123L);
+    var request = new StaticContentRequests.AddReadOnlyComments("comments test", null, 123L);
 
     Long pageId = 123L;
     WaTemplate temp = new WaTemplate();
@@ -307,7 +290,8 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class,
+    assertThrows(
+        AddStaticElementException.class,
         () -> contentManager.addReadOnlyComments(pageId, request, userId));
   }
 
@@ -328,14 +312,17 @@ class PageStaticCreatorTest {
 
     when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
 
-    when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr())).thenReturn(4);
+    when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr()))
+        .thenReturn(4);
 
     ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
-    when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
-      WaUiMetadata savedMetadatum = m.getArgument(0);
-      savedMetadatum.setId(77L);
-      return savedMetadatum;
-    });
+    when(uiMetadatumRepository.save(captor.capture()))
+        .thenAnswer(
+            m -> {
+              WaUiMetadata savedMetadatum = m.getArgument(0);
+              savedMetadatum.setId(77L);
+              return savedMetadatum;
+            });
 
     when(configRepository.findById(any())).thenReturn(Optional.of(nbsConfiguration));
     when(idGenerator.getNextValidId(any())).thenReturn(generatedId);
@@ -360,7 +347,8 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class,
+    assertThrows(
+        AddStaticElementException.class,
         () -> contentManager.addReadOnlyParticipantsList(pageId, request, userId));
   }
 
@@ -371,7 +359,8 @@ class PageStaticCreatorTest {
     Long pageId = null;
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class,
+    assertThrows(
+        AddStaticElementException.class,
         () -> contentManager.addReadOnlyParticipantsList(pageId, request, userId));
   }
 
@@ -387,7 +376,8 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class,
+    assertThrows(
+        AddStaticElementException.class,
         () -> contentManager.addReadOnlyParticipantsList(pageId, request, userId));
   }
 
@@ -408,14 +398,17 @@ class PageStaticCreatorTest {
 
     when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
 
-    when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr())).thenReturn(4);
+    when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr()))
+        .thenReturn(4);
 
     ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
-    when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
-      WaUiMetadata savedMetadatum = m.getArgument(0);
-      savedMetadatum.setId(77L);
-      return savedMetadatum;
-    });
+    when(uiMetadatumRepository.save(captor.capture()))
+        .thenAnswer(
+            m -> {
+              WaUiMetadata savedMetadatum = m.getArgument(0);
+              savedMetadatum.setId(77L);
+              return savedMetadatum;
+            });
 
     when(configRepository.findById(any())).thenReturn(Optional.of(nbsConfiguration));
     when(idGenerator.getNextValidId(any())).thenReturn(generatedId);
@@ -440,7 +433,8 @@ class PageStaticCreatorTest {
 
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class,
+    assertThrows(
+        AddStaticElementException.class,
         () -> contentManager.addOriginalElectronicDocList(pageId, request, userId));
   }
 
@@ -451,7 +445,8 @@ class PageStaticCreatorTest {
     Long pageId = null;
     Long userId = 999L;
 
-    assertThrows(AddStaticElementException.class,
+    assertThrows(
+        AddStaticElementException.class,
         () -> contentManager.addOriginalElectronicDocList(pageId, request, userId));
   }
 
@@ -466,10 +461,9 @@ class PageStaticCreatorTest {
     when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
 
     Long userId = 999L;
-    
+
     assertThrows(
         AddStaticElementException.class,
         () -> contentManager.addOriginalElectronicDocList(pageId, request, userId));
   }
-
 }

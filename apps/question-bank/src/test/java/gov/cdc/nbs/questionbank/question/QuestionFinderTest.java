@@ -5,12 +5,20 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-import java.util.*;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
+import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
+import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.Field;
+import gov.cdc.nbs.questionbank.question.response.GetQuestionResponse;
+import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
+import java.util.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -21,32 +29,19 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
-import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
-import gov.cdc.nbs.questionbank.question.response.GetQuestionResponse;
-import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
 @ExtendWith(MockitoExtension.class)
 class QuestionFinderTest {
 
-  @Mock
-  private WaQuestionRepository questionRepository;
+  @Mock private WaQuestionRepository questionRepository;
 
-  @Spy
-  private QuestionMapper questionMapper = new QuestionMapper();
+  @Spy private QuestionMapper questionMapper = new QuestionMapper();
 
-  @Mock
-  private WaUiMetadataRepository metadatumRepository;
+  @Mock private WaUiMetadataRepository metadatumRepository;
 
-  @Mock
-  private ConceptFinder conceptFinder;
+  @Mock private ConceptFinder conceptFinder;
 
-  @InjectMocks
-  private QuestionFinder finder;
+  @InjectMocks private QuestionFinder finder;
 
   @Test
   void find_test() {
@@ -100,9 +95,9 @@ class QuestionFinderTest {
 
     // and a question exists
     ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-    when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("123"), captor.capture(),
-        Mockito.anyString(), Mockito.any()))
-            .thenReturn(new PageImpl<>(new ArrayList<>()));
+    when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(
+            eq("123"), captor.capture(), Mockito.anyString(), Mockito.any()))
+        .thenReturn(new PageImpl<>(new ArrayList<>()));
 
     // when a query is run
     finder.find(request, PageRequest.ofSize(10));
@@ -118,9 +113,9 @@ class QuestionFinderTest {
 
     // and a question exists
     ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-    when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("abc"), captor.capture(),
-        Mockito.anyString(), Mockito.any()))
-            .thenReturn(new PageImpl<>(new ArrayList<>()));
+    when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(
+            eq("abc"), captor.capture(), Mockito.anyString(), Mockito.any()))
+        .thenReturn(new PageImpl<>(new ArrayList<>()));
 
     // when a query is run
     finder.find(request, PageRequest.ofSize(10));
@@ -138,11 +133,18 @@ class QuestionFinderTest {
 
     when(conceptFinder.find(anyString())).thenReturn(getConceptList());
 
-    assertTrue(finder.checkUnique(new QuestionValidationRequest(Field.UNIQUE_ID, "unique")).isValid());
-    assertTrue(finder.checkUnique(new QuestionValidationRequest(Field.UNIQUE_NAME, "unique")).isValid());
-    assertTrue(finder.checkUnique(new QuestionValidationRequest(Field.DATA_MART_COLUMN_NAME, "unique")).isValid());
     assertTrue(
-        finder.checkUnique(new QuestionValidationRequest(Field.RDB_COLUMN_NAME, "subgroup_unique")).isValid());
+        finder.checkUnique(new QuestionValidationRequest(Field.UNIQUE_ID, "unique")).isValid());
+    assertTrue(
+        finder.checkUnique(new QuestionValidationRequest(Field.UNIQUE_NAME, "unique")).isValid());
+    assertTrue(
+        finder
+            .checkUnique(new QuestionValidationRequest(Field.DATA_MART_COLUMN_NAME, "unique"))
+            .isValid());
+    assertTrue(
+        finder
+            .checkUnique(new QuestionValidationRequest(Field.RDB_COLUMN_NAME, "subgroup_unique"))
+            .isValid());
   }
 
   @Test
@@ -156,12 +158,20 @@ class QuestionFinderTest {
 
     when(conceptFinder.find(anyString())).thenReturn(getConceptList());
 
-    assertFalse(finder.checkUnique(new QuestionValidationRequest(Field.UNIQUE_ID, "duplicate")).isValid());
-    assertFalse(finder.checkUnique(new QuestionValidationRequest(Field.UNIQUE_NAME, "duplicate")).isValid());
     assertFalse(
-        finder.checkUnique(new QuestionValidationRequest(Field.RDB_COLUMN_NAME, "subgroup_duplicate")).isValid());
+        finder.checkUnique(new QuestionValidationRequest(Field.UNIQUE_ID, "duplicate")).isValid());
     assertFalse(
-        finder.checkUnique(new QuestionValidationRequest(Field.DATA_MART_COLUMN_NAME, "duplicate")).isValid());
+        finder
+            .checkUnique(new QuestionValidationRequest(Field.UNIQUE_NAME, "duplicate"))
+            .isValid());
+    assertFalse(
+        finder
+            .checkUnique(new QuestionValidationRequest(Field.RDB_COLUMN_NAME, "subgroup_duplicate"))
+            .isValid());
+    assertFalse(
+        finder
+            .checkUnique(new QuestionValidationRequest(Field.DATA_MART_COLUMN_NAME, "duplicate"))
+            .isValid());
   }
 
   @Test
@@ -170,7 +180,8 @@ class QuestionFinderTest {
         new QuestionValidationRequest(Field.RDB_COLUMN_NAME, "xxx_unique");
     when(conceptFinder.find(anyString())).thenReturn(getConceptList());
     UniqueQuestionException exception =
-        assertThrows(UniqueQuestionException.class, () -> finder.checkUnique(invalidSubgroupRequest));
+        assertThrows(
+            UniqueQuestionException.class, () -> finder.checkUnique(invalidSubgroupRequest));
     assertEquals("invalid subgroup Code", exception.getMessage());
   }
 
@@ -184,26 +195,16 @@ class QuestionFinderTest {
 
   @Test
   void should_throw_exception_for_invalid_unique_field_value() {
-    QuestionValidationRequest invalidFieldRequest = new QuestionValidationRequest(Field.UNIQUE_ID, null);
+    QuestionValidationRequest invalidFieldRequest =
+        new QuestionValidationRequest(Field.UNIQUE_ID, null);
     UniqueQuestionException exception =
         assertThrows(UniqueQuestionException.class, () -> finder.checkUnique(invalidFieldRequest));
     assertEquals("Invalid request", exception.getMessage());
   }
 
   private List<Concept> getConceptList() {
-    Concept concept = new Concept(
-        null,
-        "subgroup",
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null);
+    Concept concept =
+        new Concept(null, "subgroup", null, null, null, null, null, null, null, null, null, null);
     return Arrays.asList(concept);
   }
 }

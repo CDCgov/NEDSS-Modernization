@@ -13,26 +13,27 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
 class VaccinationMother {
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete from Participation where act_class_cd = 'INTV' and act_uid in (:identifiers);
       delete from Intervention where intervention_uid in (:identifiers);
       delete from Act_relationship where source_act_uid in (:identifiers);
       delete from Act where class_cd = 'INTV' and act_uid in (:identifiers);
       """;
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Act(act_uid, class_cd, mood_cd) values (:identifier, 'INTV','EVN');
-      
+
       insert into Intervention(
         intervention_uid,
         local_id,
@@ -56,7 +57,8 @@ class VaccinationMother {
       );
       """;
 
-  private static final String ASSOCIATE_INVESTIGATION = """
+  private static final String ASSOCIATE_INVESTIGATION =
+      """
       insert into Act_relationship(
           source_act_uid,
           source_class_cd,
@@ -72,7 +74,8 @@ class VaccinationMother {
       );
       """;
 
-  private static final String PARTICIPATE_IN = """
+  private static final String PARTICIPATE_IN =
+      """
       insert into Participation(
           act_uid,
           act_class_cd,
@@ -105,11 +108,12 @@ class VaccinationMother {
   private final TestingDataCleaner<Long> cleaner;
 
   VaccinationMother(
-      final JdbcClient client, MotherSettings settings, SequentialIdentityGenerator idGenerator,
+      final JdbcClient client,
+      MotherSettings settings,
+      SequentialIdentityGenerator idGenerator,
       final Available<VaccinationIdentifier> available,
       final Active<VaccinationIdentifier> active,
-      final RevisionMother revisionMother
-  ) {
+      final RevisionMother revisionMother) {
     this.client = client;
     this.settings = settings;
     this.idGenerator = idGenerator;
@@ -134,7 +138,8 @@ class VaccinationMother {
     long identifier = idGenerator.next();
     String localId = idGenerator.nextLocal("INT");
 
-    this.client.sql(CREATE)
+    this.client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("local", localId)
         .param("vaccine", vaccine)
@@ -154,7 +159,8 @@ class VaccinationMother {
   }
 
   private void forPatient(final long identifier, final long patient) {
-    this.client.sql(PARTICIPATE_IN)
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", identifier)
         .param("type", "SubOfVacc")
         .param("addedOn", settings.createdOn())
@@ -165,14 +171,16 @@ class VaccinationMother {
   }
 
   void createdOn(final VaccinationIdentifier report, final LocalDateTime on) {
-    this.client.sql("update Intervention set add_time = ? where intervention_uid = ?")
+    this.client
+        .sql("update Intervention set add_time = ? where intervention_uid = ?")
         .param(on)
         .param(report.identifier())
         .update();
   }
 
   void performedBy(final VaccinationIdentifier identifier, final ProviderIdentifier provider) {
-    this.client.sql(PARTICIPATE_IN)
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", identifier.identifier())
         .param("type", "PerformerOfVacc")
         .param("addedOn", settings.createdOn())
@@ -182,8 +190,10 @@ class VaccinationMother {
         .update();
   }
 
-  void performedAt(final VaccinationIdentifier identifier, final OrganizationIdentifier organiztion) {
-    this.client.sql(PARTICIPATE_IN)
+  void performedAt(
+      final VaccinationIdentifier identifier, final OrganizationIdentifier organiztion) {
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", identifier.identifier())
         .param("type", "PerformerOfVacc")
         .param("addedOn", settings.createdOn())
@@ -194,17 +204,17 @@ class VaccinationMother {
   }
 
   void administeredOn(final VaccinationIdentifier vaccination, final LocalDate on) {
-    this.client.sql("update Intervention set activity_from_time = ? where intervention_uid = ?")
+    this.client
+        .sql("update Intervention set activity_from_time = ? where intervention_uid = ?")
         .param(on)
         .param(vaccination.identifier())
         .update();
   }
 
   void associated(
-      final VaccinationIdentifier vaccination,
-      final InvestigationIdentifier investigation
-  ) {
-    this.client.sql(ASSOCIATE_INVESTIGATION)
+      final VaccinationIdentifier vaccination, final InvestigationIdentifier investigation) {
+    this.client
+        .sql(ASSOCIATE_INVESTIGATION)
         .param("identifier", vaccination.identifier())
         .param("investigation", investigation.identifier())
         .update();

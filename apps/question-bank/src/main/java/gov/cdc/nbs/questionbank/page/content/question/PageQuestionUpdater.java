@@ -1,10 +1,5 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
-
-import java.time.Instant;
-import jakarta.persistence.EntityManager;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
@@ -26,6 +21,10 @@ import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageTextQues
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
+import jakarta.persistence.EntityManager;
+import java.time.Instant;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
@@ -45,10 +44,7 @@ public class PageQuestionUpdater {
   }
 
   public EditableQuestion update(
-      Long pageId,
-      Long questionId,
-      UpdatePageQuestionRequest request,
-      Long user) {
+      Long pageId, Long questionId, UpdatePageQuestionRequest request, Long user) {
     validateRequest(request);
     Concept codeSystem = findCodeSystem(request.messagingInfo());
     WaTemplate page = findPage(pageId);
@@ -57,14 +53,11 @@ public class PageQuestionUpdater {
     return finder.find(pageId, questionId);
   }
 
-
   public EditableQuestion setRequired(
-      Long pageId,
-      Long questionId,
-      UpdatePageQuestionRequiredRequest request,
-      long user) {
+      Long pageId, Long questionId, UpdatePageQuestionRequiredRequest request, long user) {
     WaTemplate page = findPage(pageId);
-    page.updateRequired(asUpdate(request.required(), questionId, user), question -> findQuestion(question, pageId));
+    page.updateRequired(
+        asUpdate(request.required(), questionId, user), question -> findQuestion(question, pageId));
 
     return finder.find(pageId, questionId);
   }
@@ -78,10 +71,7 @@ public class PageQuestionUpdater {
   }
 
   public EditableQuestion update(
-      Long pageId,
-      Long questionId,
-      UpdatePageCodedQuestionValuesetRequest request,
-      Long user) {
+      Long pageId, Long questionId, UpdatePageCodedQuestionValuesetRequest request, Long user) {
     if (request == null) {
       throw new UpdatePageQuestionException("Invalid request");
     }
@@ -91,18 +81,19 @@ public class PageQuestionUpdater {
     return finder.find(pageId, questionId);
   }
 
-
   private PageContentCommand.QuestionUpdate asUpdate(
-      UpdatePageQuestionRequest request,
-      Concept codeSystem,
-      Long questionId,
-      Long user) {
+      UpdatePageQuestionRequest request, Concept codeSystem, Long questionId, Long user) {
     return switch (request) {
-      case UpdatePageTextQuestionRequest textRequest -> asUpdate(textRequest, codeSystem, questionId, user);
-      case UpdatePageNumericQuestionRequest numericRequest -> asUpdate(numericRequest, codeSystem, questionId, user);
-      case UpdatePageDateQuestionRequest dateRequest -> asUpdate(dateRequest, codeSystem, questionId, user);
-      case UpdatePageCodedQuestionRequest codedRequest -> asUpdate(codedRequest, codeSystem, questionId, user);
-      case null, default -> throw new UpdatePageQuestionException("Failed to process update question");
+      case UpdatePageTextQuestionRequest textRequest ->
+          asUpdate(textRequest, codeSystem, questionId, user);
+      case UpdatePageNumericQuestionRequest numericRequest ->
+          asUpdate(numericRequest, codeSystem, questionId, user);
+      case UpdatePageDateQuestionRequest dateRequest ->
+          asUpdate(dateRequest, codeSystem, questionId, user);
+      case UpdatePageCodedQuestionRequest codedRequest ->
+          asUpdate(codedRequest, codeSystem, questionId, user);
+      case null, default ->
+          throw new UpdatePageQuestionException("Failed to process update question");
     };
   }
 
@@ -118,16 +109,15 @@ public class PageQuestionUpdater {
     }
 
     if (request.displayControl() != 1026) { // Readonly User entered text, number, or date
-      if (request.dataMartInfo() == null ||
-          request.dataMartInfo().reportLabel() == null ||
-          request.dataMartInfo().reportLabel().trim().isEmpty()) {
+      if (request.dataMartInfo() == null
+          || request.dataMartInfo().reportLabel() == null
+          || request.dataMartInfo().reportLabel().trim().isEmpty()) {
         throw new UpdatePageQuestionException("Default label in report is a required field");
       }
       if (request.messagingInfo() == null) {
         throw new UpdatePageQuestionException("Included in Message is a required field");
       }
     }
-
   }
 
   private WaTemplate findPage(Long pageId) {
@@ -141,17 +131,16 @@ public class PageQuestionUpdater {
   private Concept findCodeSystem(MessagingInfo info) {
     if (info.includedInMessage()) {
       String conceptId = info.codeSystem();
-      return conceptFinder.find("CODE_SYSTEM", conceptId)
-          .orElseThrow(() -> new UpdatePageQuestionException("Failed to find code system: " + conceptId));
+      return conceptFinder
+          .find("CODE_SYSTEM", conceptId)
+          .orElseThrow(
+              () -> new UpdatePageQuestionException("Failed to find code system: " + conceptId));
     }
     return null;
   }
 
   private PageContentCommand.UpdateTextQuestion asUpdate(
-      UpdatePageTextQuestionRequest request,
-      Concept codeSystem,
-      Long questionId,
-      Long user) {
+      UpdatePageTextQuestionRequest request, Concept codeSystem, Long questionId, Long user) {
     return new PageContentCommand.UpdateTextQuestion(
         questionId,
         request.label(),
@@ -176,10 +165,7 @@ public class PageQuestionUpdater {
   }
 
   private UpdateNumericQuestion asUpdate(
-      UpdatePageNumericQuestionRequest request,
-      Concept codeSystem,
-      Long questionId,
-      Long user) {
+      UpdatePageNumericQuestionRequest request, Concept codeSystem, Long questionId, Long user) {
     return new PageContentCommand.UpdateNumericQuestion(
         questionId,
         request.label(),
@@ -209,10 +195,7 @@ public class PageQuestionUpdater {
   }
 
   private UpdateDateQuestion asUpdate(
-      UpdatePageDateQuestionRequest request,
-      Concept codeSystem,
-      Long questionId,
-      Long user) {
+      UpdatePageDateQuestionRequest request, Concept codeSystem, Long questionId, Long user) {
     return new PageContentCommand.UpdateDateQuestion(
         questionId,
         request.label(),
@@ -237,10 +220,7 @@ public class PageQuestionUpdater {
   }
 
   private UpdateCodedQuestion asUpdate(
-      UpdatePageCodedQuestionRequest request,
-      Concept codeSystem,
-      Long questionId,
-      Long user) {
+      UpdatePageCodedQuestionRequest request, Concept codeSystem, Long questionId, Long user) {
     return new PageContentCommand.UpdateCodedQuestion(
         questionId,
         request.label(),
@@ -264,15 +244,13 @@ public class PageQuestionUpdater {
         Instant.now());
   }
 
-
   private SetQuestionRequired asUpdate(boolean required, long questionId, long user) {
     return new PageContentCommand.SetQuestionRequired(required, questionId, user, Instant.now());
   }
 
   private UpdateCodedQuestionValueset asUpdate(
-      long questionId,
-      UpdatePageCodedQuestionValuesetRequest request,
-      Long user) {
-    return new PageContentCommand.UpdateCodedQuestionValueset(questionId, request.valueset(), user, Instant.now());
+      long questionId, UpdatePageCodedQuestionValuesetRequest request, Long user) {
+    return new PageContentCommand.UpdateCodedQuestionValueset(
+        questionId, request.valueset(), user, Instant.now());
   }
 }

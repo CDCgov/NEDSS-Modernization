@@ -9,7 +9,7 @@ import {
     AddressDemographic,
     NameDemographic,
     EthnicityDemographic,
-    IdentificationDemographic
+    IdentificationDemographic,
 } from 'libs/patient/demographics';
 
 import { PatientFileSexBirthDemographic, patientSexBirth } from './sex-birth';
@@ -50,7 +50,7 @@ const demographics = (patient: number): PatientDemographicsData => ({
     ethnicity: new MemoizedSupplier(() => patientEthnicity(patient)),
     sexBirth: new MemoizedSupplier(() => patientSexBirth(patient)),
     mortality: new MemoizedSupplier(() => patientMortality(patient)),
-    general: new MemoizedSupplier(() => patientGeneral(patient))
+    general: new MemoizedSupplier(() => patientGeneral(patient)),
 });
 
 export { demographics };

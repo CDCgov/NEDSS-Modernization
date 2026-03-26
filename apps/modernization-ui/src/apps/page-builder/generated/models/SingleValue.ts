@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { FilterJSON } from './FilterJSON';
-export type SingleValue = (FilterJSON & {
+export type SingleValue = FilterJSON & {
     property?: string;
     operator?: SingleValue.operator;
     value?: string;
@@ -11,7 +11,7 @@ export type SingleValue = (FilterJSON & {
     property: string;
     operator: SingleValue.operator;
     value: string;
-});
+};
 export namespace SingleValue {
     export enum operator {
         EQUALS = 'EQUALS',
@@ -20,4 +20,3 @@ export namespace SingleValue {
         CONTAINS = 'CONTAINS',
     }
 }
-

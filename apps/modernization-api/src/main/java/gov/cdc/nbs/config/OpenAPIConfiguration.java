@@ -6,11 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
- class OpenAPIConfiguration {
+class OpenAPIConfiguration {
 
   @Bean
   OpenAPI openAPI() {
-    return new OpenAPI()
-        .info(new Info().title("NBS Modernization API"));
+    return new OpenAPI().info(new Info().title("NBS Modernization API"));
   }
 }

@@ -13,7 +13,7 @@ function internalizeDate(input: string | Date | null | undefined) {
         return input.toLocaleDateString('en-US', {
             day: '2-digit',
             month: '2-digit',
-            year: 'numeric'
+            year: 'numeric',
         });
     }
 

@@ -5,7 +5,7 @@ import { PatientCreatedPanel } from './PatientCreatedPanel';
 let mockPermissions: string[] = [];
 
 vi.mock('user', () => ({
-    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } }),
 }));
 
 describe('PatientCreatedPanel', () => {
@@ -16,7 +16,7 @@ describe('PatientCreatedPanel', () => {
     const createdPatient: CreatedPatient = {
         id: 123,
         shortId: 123,
-        name: { first: 'John', last: 'Doe' }
+        name: { first: 'John', last: 'Doe' },
     };
 
     it('renders success message with patient name and ID', () => {

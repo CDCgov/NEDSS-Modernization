@@ -10,19 +10,19 @@ import gov.cdc.nbs.testing.patient.RevisionMother;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
 class BirthRecordMother {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Act(act_uid, class_cd, mood_cd) values (:identifier, 'DOCCLIN','EVN');
-      
+
       insert into Clinical_document(
           clinical_document_uid,
           local_id,
@@ -44,7 +44,7 @@ class BirthRecordMother {
           :addedOn,
           :addedBy
       );
-      
+
       insert into Act_id (
           act_uid,
           act_id_seq,
@@ -66,7 +66,8 @@ class BirthRecordMother {
       );
       """;
 
-  private static final String PARTICIPATE_IN = """
+  private static final String PARTICIPATE_IN =
+      """
       insert into Participation(
           act_uid,
           act_class_cd,
@@ -90,7 +91,8 @@ class BirthRecordMother {
       );
       """;
 
-  private static final String ASSOCIATE_INVESTIGATION = """
+  private static final String ASSOCIATE_INVESTIGATION =
+      """
       insert into Act_relationship(
           source_act_uid,
           source_class_cd,
@@ -106,7 +108,8 @@ class BirthRecordMother {
       );
       """;
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete from nbs_answer where act_uid in (:identifiers);
       delete from Participation where act_class_cd = 'DOCCLIN' and act_uid in (:identifiers);
       delete from Clinical_Document where clinical_document_uid in (:identifiers);
@@ -128,8 +131,7 @@ class BirthRecordMother {
       final SequentialIdentityGenerator idGenerator,
       final JdbcClient client,
       final RevisionMother revisionMother,
-      final Active<BirthRecordIdentifier> active
-  ) {
+      final Active<BirthRecordIdentifier> active) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.client = client;
@@ -149,7 +151,8 @@ class BirthRecordMother {
     long identifier = idGenerator.next();
     String local = idGenerator.nextLocal("CDI");
 
-    this.client.sql(CREATE)
+    this.client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("local", local)
         .param("certificate", certificate)
@@ -168,7 +171,8 @@ class BirthRecordMother {
   }
 
   private void forPatient(final long identifier, final long patient) {
-    this.client.sql(PARTICIPATE_IN)
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", identifier)
         .param("type", "SubjOfBirth")
         .param("addedOn", settings.createdOn())
@@ -179,21 +183,24 @@ class BirthRecordMother {
   }
 
   void receivedOn(final BirthRecordIdentifier document, final LocalDateTime on) {
-    this.client.sql("update Clinical_document set add_time = ? where clinical_document_uid = ?")
+    this.client
+        .sql("update Clinical_document set add_time = ? where clinical_document_uid = ?")
         .param(on)
         .param(document.identifier())
         .update();
   }
 
   void collectedOn(final BirthRecordIdentifier document, final LocalDate on) {
-    this.client.sql("update Clinical_document set record_status_time = ? where clinical_document_uid = ?")
+    this.client
+        .sql("update Clinical_document set record_status_time = ? where clinical_document_uid = ?")
         .param(on)
         .param(document.identifier())
         .update();
   }
 
   void bornAt(final BirthRecordIdentifier document, final OrganizationIdentifier organization) {
-    this.client.sql(PARTICIPATE_IN)
+    this.client
+        .sql(PARTICIPATE_IN)
         .param("identifier", document.identifier())
         .param("type", "FacilityOfBirth")
         .param("addedOn", settings.createdOn())
@@ -204,16 +211,16 @@ class BirthRecordMother {
   }
 
   void associated(
-      final BirthRecordIdentifier document,
-      final InvestigationIdentifier investigation
-  ) {
-    this.client.sql(ASSOCIATE_INVESTIGATION)
+      final BirthRecordIdentifier document, final InvestigationIdentifier investigation) {
+    this.client
+        .sql(ASSOCIATE_INVESTIGATION)
         .param("identifier", document.identifier())
         .param("investigation", investigation.identifier())
         .update();
   }
 
-  private static final String QUESTION = """
+  private static final String QUESTION =
+      """
       merge into nbs_answer [answer]
       using (
           select
@@ -252,11 +259,9 @@ class BirthRecordMother {
       """;
 
   private void question(
-      final BirthRecordIdentifier document,
-      final String question,
-      final String answer
-  ) {
-    this.client.sql(QUESTION)
+      final BirthRecordIdentifier document, final String question, final String answer) {
+    this.client
+        .sql(QUESTION)
         .param("identifier", document.identifier())
         .param("question", question)
         .param("answer", answer)
@@ -270,8 +275,7 @@ class BirthRecordMother {
       final String first,
       final String middle,
       final String last,
-      final String suffix
-  ) {
+      final String suffix) {
 
     if (first != null) {
       question(document, "MTH201", first);
@@ -297,8 +301,7 @@ class BirthRecordMother {
       final String city,
       final String state,
       final String county,
-      final String zip
-  ) {
+      final String zip) {
     if (address != null) {
       question(document, "DEM159_MTH", address);
     }

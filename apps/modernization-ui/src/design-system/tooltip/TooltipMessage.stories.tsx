@@ -9,8 +9,8 @@ const meta = {
             <div style={{ margin: '3rem', display: 'flex', justifyContent: 'center', gap: '5rem' }}>
                 <Story />
             </div>
-        )
-    ]
+        ),
+    ],
 } satisfies Meta<typeof TooltipMessage>;
 
 export default meta;
@@ -27,8 +27,9 @@ const renderPositions = (props: TooltipMessageProps) => {
                 width: '2.5rem',
                 height: '2.5rem',
                 margin: '0 auto',
-                border: '1px transparent'
-            }}>
+                border: '1px transparent',
+            }}
+        >
             {(!position || position === 'top') && (
                 <div
                     style={{
@@ -37,8 +38,9 @@ const renderPositions = (props: TooltipMessageProps) => {
                         left: 0,
                         right: 0,
                         display: 'flex',
-                        justifyContent: 'center'
-                    }}>
+                        justifyContent: 'center',
+                    }}
+                >
                     <TooltipMessage position="top" {...props} />
                 </div>
             )}
@@ -51,8 +53,9 @@ const renderPositions = (props: TooltipMessageProps) => {
                         bottom: 0,
                         right: '0.5rem',
                         display: 'flex',
-                        alignItems: 'center'
-                    }}>
+                        alignItems: 'center',
+                    }}
+                >
                     <TooltipMessage position="right" {...props} />
                 </div>
             )}
@@ -65,8 +68,9 @@ const renderPositions = (props: TooltipMessageProps) => {
                         left: 0,
                         right: 0,
                         display: 'flex',
-                        justifyContent: 'center'
-                    }}>
+                        justifyContent: 'center',
+                    }}
+                >
                     <TooltipMessage position="bottom" {...props} />
                 </div>
             )}
@@ -79,8 +83,9 @@ const renderPositions = (props: TooltipMessageProps) => {
                         bottom: 0,
                         left: '0.5rem',
                         display: 'flex',
-                        alignItems: 'center'
-                    }}>
+                        alignItems: 'center',
+                    }}
+                >
                     <TooltipMessage position="left" {...props} />
                 </div>
             )}
@@ -98,37 +103,37 @@ const renderOffsets = (props: TooltipMessageProps) => (
 
 export const Default: Story = {
     args: {
-        children: 'Tooltip message'
+        children: 'Tooltip message',
     },
-    render: renderPositions
+    render: renderPositions,
 };
 
 export const Top: Story = {
     args: {
         ...Default.args,
-        position: 'top'
+        position: 'top',
     },
-    render: renderOffsets
+    render: renderOffsets,
 };
 
 export const Right: Story = {
     args: {
         ...Default.args,
-        position: 'right'
-    }
+        position: 'right',
+    },
 };
 
 export const Bottom: Story = {
     args: {
         ...Default.args,
-        position: 'bottom'
+        position: 'bottom',
     },
-    render: renderOffsets
+    render: renderOffsets,
 };
 
 export const Left: Story = {
     args: {
         ...Default.args,
-        position: 'left'
-    }
+        position: 'left',
+    },
 };

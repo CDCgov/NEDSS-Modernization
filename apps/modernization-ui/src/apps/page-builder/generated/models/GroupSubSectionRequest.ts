@@ -8,4 +8,3 @@ export type GroupSubSectionRequest = {
     batches: Array<Batch>;
     repeatingNbr: number;
 };
-

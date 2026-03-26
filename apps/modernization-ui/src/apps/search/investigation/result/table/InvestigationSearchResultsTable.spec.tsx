@@ -6,13 +6,13 @@ import { InvestigationSearchResultsTable } from './InvestigationSearchResultsTab
 import { SelectableResolver } from 'options';
 
 vi.mock('design-system/table/preferences', () => ({
-    useColumnPreferences: () => ({ apply: (columns: Column<Investigation>[]) => columns })
+    useColumnPreferences: () => ({ apply: (columns: Column<Investigation>[]) => columns }),
 }));
 
 describe('When InvestigationSearchResultsTable renders', () => {
     const Wrapper = ({
         results,
-        notificationStatusResolver = vi.fn()
+        notificationStatusResolver = vi.fn(),
     }: {
         results: Investigation[];
         notificationStatusResolver?: SelectableResolver;
@@ -55,10 +55,10 @@ describe('When InvestigationSearchResultsTable renders', () => {
                         personCd: 'PAT',
                         typeCd: 'SubjOfPHC',
                         firstName: 'legal-first-name',
-                        lastName: 'legal-last-name'
-                    }
-                ]
-            }
+                        lastName: 'legal-last-name',
+                    },
+                ],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -77,10 +77,10 @@ describe('When InvestigationSearchResultsTable renders', () => {
                     {
                         personCd: 'PAT',
                         typeCd: 'SubjOfPHC',
-                        birthTime: '1976-12-01'
-                    }
-                ]
-            }
+                        birthTime: '1976-12-01',
+                    },
+                ],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -98,10 +98,10 @@ describe('When InvestigationSearchResultsTable renders', () => {
                     {
                         currSexCd: 'M',
                         typeCd: 'SubjOfPHC',
-                        personCd: 'PAT'
-                    }
-                ]
-            }
+                        personCd: 'PAT',
+                    },
+                ],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -119,10 +119,10 @@ describe('When InvestigationSearchResultsTable renders', () => {
                     {
                         shortId: 677,
                         personCd: 'PAT',
-                        typeCd: 'SubjOfPHC'
-                    }
-                ]
-            }
+                        typeCd: 'SubjOfPHC',
+                    },
+                ],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -137,8 +137,8 @@ describe('When InvestigationSearchResultsTable renders', () => {
             {
                 relevance: 1,
                 cdDescTxt: 'investigated-condition',
-                personParticipations: []
-            }
+                personParticipations: [],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -153,8 +153,8 @@ describe('When InvestigationSearchResultsTable renders', () => {
             {
                 relevance: 1,
                 startedOn: '2015-09-22',
-                personParticipations: []
-            }
+                personParticipations: [],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -169,8 +169,8 @@ describe('When InvestigationSearchResultsTable renders', () => {
             {
                 relevance: 1069,
                 jurisdictionCodeDescTxt: 'jurisdication name',
-                personParticipations: []
-            }
+                personParticipations: [],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -189,10 +189,10 @@ describe('When InvestigationSearchResultsTable renders', () => {
                         typeCd: 'InvestgrOfPHC',
                         personCd: 'PRV',
                         firstName: 'investigator-first-name',
-                        lastName: 'investigator-last-name'
-                    }
-                ]
-            }
+                        lastName: 'investigator-last-name',
+                    },
+                ],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -207,8 +207,8 @@ describe('When InvestigationSearchResultsTable renders', () => {
             {
                 relevance: 1,
                 localId: 'CAS10000000GA01',
-                personParticipations: []
-            }
+                personParticipations: [],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -223,8 +223,8 @@ describe('When InvestigationSearchResultsTable renders', () => {
             {
                 relevance: 63.1,
                 investigationStatusCd: 'O',
-                personParticipations: []
-            }
+                personParticipations: [],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -239,8 +239,8 @@ describe('When InvestigationSearchResultsTable renders', () => {
             {
                 relevance: 63.1,
                 investigationStatusCd: 'C',
-                personParticipations: []
-            }
+                personParticipations: [],
+            },
         ];
 
         const { getAllByRole } = render(<Wrapper results={results} />);
@@ -264,8 +264,8 @@ describe('When InvestigationSearchResultsTable renders', () => {
                 addTime: '2015-09-22',
                 investigationStatusCd: 'O',
                 notificationRecordStatusCd: 'notification-status',
-                personParticipations: []
-            }
+                personParticipations: [],
+            },
         ];
 
         render(<Wrapper results={results} notificationStatusResolver={notificationStatusResolver} />);

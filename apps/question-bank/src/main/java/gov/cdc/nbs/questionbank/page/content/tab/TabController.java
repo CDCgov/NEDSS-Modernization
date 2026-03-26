@@ -25,9 +25,7 @@ class TabController {
   private final TabDeleter deleter;
 
   public TabController(
-      final TabCreator creator,
-      final TabUpdater updater,
-      final TabDeleter deleter) {
+      final TabCreator creator, final TabUpdater updater, final TabDeleter deleter) {
     this.creator = creator;
     this.updater = updater;
     this.deleter = deleter;
@@ -57,5 +55,4 @@ class TabController {
       @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(page, tabId, request, details.getId());
   }
-
 }

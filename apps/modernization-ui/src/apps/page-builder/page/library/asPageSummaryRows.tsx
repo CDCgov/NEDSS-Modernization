@@ -12,7 +12,7 @@ const asTableRow = (page: PageSummary): TableBody => ({
                 <div className="page-name">
                     <Link to={`/page-builder/edit/page/${page.id}`}>{page?.name}</Link>
                 </div>
-            )
+            ),
         },
         { id: 2, title: <div className="event-text">{page.eventType?.name}</div> },
         {
@@ -23,15 +23,15 @@ const asTableRow = (page: PageSummary): TableBody => ({
                         <div key={index}>{c.name}</div>
                     ))}
                 </div>
-            )
+            ),
         },
         { id: 4, title: page?.status },
         {
             id: 5,
-            title: internalizeDate(page?.lastUpdate)
+            title: internalizeDate(page?.lastUpdate),
         },
-        { id: 6, title: page?.lastUpdateBy }
-    ]
+        { id: 6, title: page?.lastUpdateBy },
+    ],
 });
 
 const asTableRows = (pages: PageSummary[]): TableBody[] => pages.map(asTableRow);

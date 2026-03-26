@@ -1,11 +1,10 @@
 package gov.cdc.nbs.questionbank.page.clone;
 
 import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicPageRedirector;
+import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
 
 @Component
 class PageCloneRedirector {
@@ -16,9 +15,7 @@ class PageCloneRedirector {
   private final ClassicPageRedirector redirector;
 
   PageCloneRedirector(
-      final ClassicClonePagePreparer preparer,
-      final ClassicPageRedirector redirector
-  ) {
+      final ClassicClonePagePreparer preparer, final ClassicPageRedirector redirector) {
     this.preparer = preparer;
     this.redirector = redirector;
   }
@@ -26,10 +23,11 @@ class PageCloneRedirector {
   ResponseEntity<Void> redirect(final long page) {
     this.preparer.prepare(page);
 
-    URI location = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("method", "clonePageLoad")
-        .build()
-        .toUri();
+    URI location =
+        UriComponentsBuilder.fromPath(LOCATION)
+            .queryParam("method", "clonePageLoad")
+            .build()
+            .toUri();
 
     return this.redirector.redirect(page, location);
   }

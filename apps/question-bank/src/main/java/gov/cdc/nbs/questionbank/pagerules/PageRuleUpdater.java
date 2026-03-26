@@ -1,9 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import java.util.List;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
@@ -12,6 +8,10 @@ import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 @Transactional
@@ -62,13 +62,14 @@ public class PageRuleUpdater {
       request = addSourceValues(request, template.getId());
     }
 
-    PageContentCommand.UpdateRuleCommand command = switch (request.ruleFunction()) {
-      case DATE_COMPARE -> dateCompareCreator.update(ruleId, request, user);
-      case DISABLE, ENABLE -> enableDisableCreator.update(ruleId, request, user);
-      case HIDE, UNHIDE -> hideUnhideCreator.update(ruleId, request, user);
-      case REQUIRE_IF -> requireIfCreator.update(ruleId, request, user);
-      default -> throw new RuleException("Unsupported function specified");
-    };
+    PageContentCommand.UpdateRuleCommand command =
+        switch (request.ruleFunction()) {
+          case DATE_COMPARE -> dateCompareCreator.update(ruleId, request, user);
+          case DISABLE, ENABLE -> enableDisableCreator.update(ruleId, request, user);
+          case HIDE, UNHIDE -> hideUnhideCreator.update(ruleId, request, user);
+          case REQUIRE_IF -> requireIfCreator.update(ruleId, request, user);
+          default -> throw new RuleException("Unsupported function specified");
+        };
 
     rule.update(command);
     entityManager.flush();
@@ -76,10 +77,10 @@ public class PageRuleUpdater {
   }
 
   RuleRequest addSourceValues(RuleRequest request, long page) {
-    List<Concept> concepts = conceptFinder.findByQuestionIdentifier(request.sourceIdentifier(), page);
-    List<SourceValue> sourceValues = concepts.stream()
-        .map(c -> new SourceValue(c.localCode(), c.display()))
-        .toList();
+    List<Concept> concepts =
+        conceptFinder.findByQuestionIdentifier(request.sourceIdentifier(), page);
+    List<SourceValue> sourceValues =
+        concepts.stream().map(c -> new SourceValue(c.localCode(), c.display())).toList();
     return new RuleRequest(
         request.ruleFunction(),
         request.description(),
@@ -92,5 +93,4 @@ public class PageRuleUpdater {
         request.sourceText(),
         request.targetValueText());
   }
-
 }

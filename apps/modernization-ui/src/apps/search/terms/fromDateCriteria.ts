@@ -8,7 +8,7 @@ const fromDateEqualsCriteria =
         title,
         name: `${criteria.equals?.month || '--'}/${criteria.equals?.day || '--'}/${criteria.equals?.year || '----'}`,
         value: `${criteria.equals?.month || '--'}/${criteria.equals?.day || '--'}/${criteria.equals?.year || '----'}`,
-        operator: 'Equal'
+        operator: 'Equal',
     });
 
 const fromDateBetweenCriteria =
@@ -18,7 +18,7 @@ const fromDateBetweenCriteria =
         title,
         name: `${criteria.between.from}${(criteria.between.to && '-' + criteria.between.to) ?? ''}`,
         value: `${criteria.between.from}${(criteria.between.to && '-' + criteria.between.to) ?? ''}`,
-        operator: 'Between'
+        operator: 'Between',
     });
 
 export { fromDateEqualsCriteria, fromDateBetweenCriteria };

@@ -4,21 +4,20 @@ import { ClassicModalProvider } from './ClassicModalContext';
 import { Status } from './useClassicModal';
 import userEvent from '@testing-library/user-event';
 
-
 const openMock = vi.fn();
 const resetMock = vi.fn();
 
 const mockUseClassicModal = {
     state: { status: Status.Idle },
     open: openMock,
-    reset: resetMock
+    reset: resetMock,
 };
 
 vi.mock('./useClassicModal', async (importOriginal) => {
     const actual = await importOriginal();
     return {
         ...actual,
-        useClassicModal: () => mockUseClassicModal
+        useClassicModal: () => mockUseClassicModal,
     };
 });
 

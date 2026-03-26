@@ -11,7 +11,7 @@ const entry: PhoneEmailEntry = {
     extension: '2',
     email: 'email@email.com',
     url: 'someUrl@nbs.gov',
-    comment: 'test comments'
+    comment: 'test comments',
 };
 
 describe('PhoneEntryView', () => {

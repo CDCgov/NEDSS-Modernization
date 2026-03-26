@@ -1,19 +1,25 @@
 package gov.cdc.nbs.address;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 public class AddressRowMapper implements RowMapper<Address> {
 
-  public record Columns(int type, int use, int address, int address2, int city, int state, int zipcode, int country,
-                        int county) {
+  public record Columns(
+      int type,
+      int use,
+      int address,
+      int address2,
+      int city,
+      int state,
+      int zipcode,
+      int country,
+      int county) {
     public Columns() {
       this(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
   }
-
 
   private final Columns columns;
 
@@ -37,15 +43,6 @@ public class AddressRowMapper implements RowMapper<Address> {
     String country = resultSet.getString(columns.country());
     String county = resultSet.getString(columns.county());
 
-    return new Address(
-        type,
-        use,
-        address,
-        address2,
-        city,
-        state,
-        zipcode,
-        country,
-        county);
+    return new Address(type, use, address, address2, city, state, zipcode, country, county);
   }
 }

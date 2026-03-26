@@ -5,7 +5,7 @@ import {
     UpdatePageCodedQuestionRequest,
     UpdatePageDateQuestionRequest,
     UpdatePageNumericQuestionRequest,
-    UpdatePageTextQuestionRequest
+    UpdatePageTextQuestionRequest,
 } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
 
@@ -53,28 +53,28 @@ export const useUpdatePageQuestion = () => {
                     request = PageQuestionControllerService.updatePageCodedQuestion({
                         page: state.page,
                         questionId: state.questionId,
-                        requestBody: state.request
+                        requestBody: state.request,
                     });
                     break;
                 case 'TEXT':
                     request = PageQuestionControllerService.updatePageTextQuestion({
                         page: state.page,
                         questionId: state.questionId,
-                        requestBody: state.request
+                        requestBody: state.request,
                     });
                     break;
                 case 'DATE':
                     request = PageQuestionControllerService.updatePageDateQuestion({
                         page: state.page,
                         questionId: state.questionId,
-                        requestBody: state.request
+                        requestBody: state.request,
                     });
                     break;
                 case 'NUMERIC':
                     request = PageQuestionControllerService.updatePageNumericQuestion({
                         page: state.page,
                         questionId: state.questionId,
-                        requestBody: state.request
+                        requestBody: state.request,
                     });
                     break;
                 default:
@@ -92,7 +92,7 @@ export const useUpdatePageQuestion = () => {
         isLoading: state.status === 'updating',
         response: state.status === 'complete' ? state.response : undefined,
         update: (page: number, questionId: number, request: UpdatePageQuestionRequest) =>
-            dispatch({ type: 'update', page, questionId, request })
+            dispatch({ type: 'update', page, questionId, request }),
     };
 
     return value;

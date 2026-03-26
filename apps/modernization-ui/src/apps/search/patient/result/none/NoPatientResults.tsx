@@ -13,7 +13,8 @@ const NoPatientResults = () => {
                 <AlertMessage
                     type="information"
                     title="No results found"
-                    aria-label="Try refining your search, or add a new patient.">
+                    aria-label="Try refining your search, or add a new patient."
+                >
                     <div className={styles.noResultsContent}>
                         <Permitted permission={permissions.patient.add} fallback="Try refining your search.">
                             <span className={styles.noResultsSubHeading}>

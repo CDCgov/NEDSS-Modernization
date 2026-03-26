@@ -1,5 +1,7 @@
 package gov.cdc.nbs.event.search.investigation;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -11,11 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
 @Component
 class InvestigationSearchRequester {
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortablePage){
           findInvestigationsByFilter(filter: $filter, page: $page){
               content{
@@ -52,35 +53,28 @@ class InvestigationSearchRequester {
   public InvestigationSearchRequester(
       final ObjectMapper mapper,
       final GraphQLRequest graphql,
-      final PaginatedRequestJSONMapper paginatedMapper
-  ) {
+      final PaginatedRequestJSONMapper paginatedMapper) {
     this.mapper = mapper;
     this.graphql = graphql;
     this.paginatedMapper = paginatedMapper;
   }
 
   ResultActions search(
-      final InvestigationFilter filter,
-      final Pageable paging,
-      final SortCriteria sorting
-  ) {
+      final InvestigationFilter filter, final Pageable paging, final SortCriteria sorting) {
     try {
-
 
       JsonNode page = paginatedMapper.map(paging, sorting);
 
-      return graphql.query(
+      return graphql
+          .query(
               QUERY,
-              mapper.createObjectNode()
-                  .<ObjectNode>set(
-                      "filter",
-                      mapper.convertValue(filter, JsonNode.class))
-                  .set("page", page)
-          )
+              mapper
+                  .createObjectNode()
+                  .<ObjectNode>set("filter", mapper.convertValue(filter, JsonNode.class))
+                  .set("page", page))
           .andDo(print());
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to request a Patient Search");
     }
   }
-
 }

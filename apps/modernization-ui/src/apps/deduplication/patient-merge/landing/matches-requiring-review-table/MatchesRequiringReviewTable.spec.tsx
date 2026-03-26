@@ -18,11 +18,11 @@ beforeEach(() => {
                 patientName: 'John Smith',
                 createdDate: '2014-02-11T11:30:30',
                 identifiedDate: '2024-02-11T12:30:30',
-                numOfMatchingRecords: 2
-            }
+                numOfMatchingRecords: 2,
+            },
         ],
         page: 0,
-        total: 0
+        total: 0,
     };
 });
 
@@ -36,13 +36,13 @@ vi.mock('pagination', async () => {
                 current: 1,
                 pageSize: 20,
                 status: 'Requested',
-                total: 1
+                total: 1,
             },
             ready: vi.fn(),
             request: vi.fn(),
             resize: vi.fn(),
-            firstPage: vi.fn()
-        })
+            firstPage: vi.fn(),
+        }),
     };
 });
 
@@ -50,8 +50,8 @@ const mockFetch = vi.fn();
 vi.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
     useMatchesRequiringReview: () => ({
         response: mockReturnValue,
-        fetchMatchesRequiringReview: mockFetch
-    })
+        fetchMatchesRequiringReview: mockFetch,
+    }),
 }));
 
 const Fixture = () => {

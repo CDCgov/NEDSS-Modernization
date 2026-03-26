@@ -77,7 +77,7 @@ const useAddPatient = <E>({ transformer, creator }: AddPatientSettings<E>): AddP
 
     return {
         ...state,
-        create
+        create,
     };
 };
 

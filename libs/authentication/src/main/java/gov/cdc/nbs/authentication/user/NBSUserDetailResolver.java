@@ -1,11 +1,10 @@
 package gov.cdc.nbs.authentication.user;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 import java.util.Set;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 @Component
 class NBSUserDetailResolver {
@@ -14,9 +13,7 @@ class NBSUserDetailResolver {
   private final GrantedAuthorityFinder authorityFinder;
 
   NBSUserDetailResolver(
-      final UserInformationFinder informationFinder,
-      final GrantedAuthorityFinder authorityFinder
-  ) {
+      final UserInformationFinder informationFinder, final GrantedAuthorityFinder authorityFinder) {
     this.informationFinder = informationFinder;
     this.authorityFinder = authorityFinder;
   }
@@ -34,7 +31,6 @@ class NBSUserDetailResolver {
         information.first(),
         information.last(),
         authorities,
-        information.enabled()
-    );
+        information.enabled());
   }
 }

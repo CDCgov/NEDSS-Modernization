@@ -40,21 +40,21 @@
     }
 
     .content {
-      display: flex;
-      align-items: center;
+        display: flex;
+        align-items: center;
         .sourceBtn {
             min-width: 28.0625rem;
         }
         .sourceQuestionDisplay {
-          display: flex;
-          flex-direction: row;
-          padding-top: 1rem;
+            display: flex;
+            flex-direction: row;
+            padding-top: 1rem;
             .title {
                 max-width: 28.0625rem;
             }
             .closeBtn {
-              display: flex;
-              align-items: center;
+                display: flex;
+                align-items: center;
             }
         }
     }

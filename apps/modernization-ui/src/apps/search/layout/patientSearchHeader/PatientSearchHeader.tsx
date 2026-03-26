@@ -15,7 +15,8 @@ const PatientSearchHeader = ({ className }: Props) => {
                 <div className={styles.linkContainer}>
                     <Link
                         href="/nbs/LoadFindPatient1.do?ContextAction=GlobalPatient"
-                        aria-describedby="classic-search-hint">
+                        aria-describedby="classic-search-hint"
+                    >
                         Go to classic search
                     </Link>
                     <div className={styles.infoIconContainer}>

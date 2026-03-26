@@ -5,7 +5,7 @@ import {
     PagesQuestion,
     UpdateDefault,
     UpdateHyperlink,
-    UpdateReadOnlyComments
+    UpdateReadOnlyComments,
 } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -21,7 +21,7 @@ const staticType = [
     { value: 'HYP', name: 'Hyperlink' },
     { value: 'COM', name: 'Comments (read-only)' },
     { value: 'PAR', name: 'Participant list (read-only)' },
-    { value: 'ELE', name: 'Electronic document list (read-only)' }
+    { value: 'ELE', name: 'Electronic document list (read-only)' },
 ];
 
 type EditStaticProps = {
@@ -47,8 +47,8 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
             adminComments: question.adminComments,
             label: question.name,
             commentsText: question.name,
-            linkUrl: question.defaultValue
-        }
+            linkUrl: question.defaultValue,
+        },
     });
 
     const { page } = usePageManagement();
@@ -69,7 +69,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 PageStaticControllerService.updateHyperlink({
                     id: question.id,
                     page: page.id,
-                    requestBody: data
+                    requestBody: data,
                 }).then(() => {
                     form.reset();
                     handleAlert(`The element ${(data as UpdateHyperlink).label} has been successfully updated.`);
@@ -80,7 +80,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 PageStaticControllerService.updateReadOnlyComments({
                     id: question.id,
                     page: page.id,
-                    requestBody: data
+                    requestBody: data,
                 }).then(() => {
                     form.reset();
                     handleAlert(`The comment element has been successfully updated.`);
@@ -91,7 +91,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 PageStaticControllerService.updateDefaultStaticElement({
                     id: question.id,
                     page: page.id,
-                    requestBody: data
+                    requestBody: data,
                 }).then(() => {
                     form.reset();
                     handleAlert(`The line separator element has been successfully updated.`);
@@ -102,7 +102,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 PageStaticControllerService.updateDefaultStaticElement({
                     id: question.id,
                     page: page.id,
-                    requestBody: data
+                    requestBody: data,
                 }).then(() => {
                     form.reset();
                     handleAlert(`The participant list has been successfully updated.`);
@@ -113,7 +113,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 PageStaticControllerService.updateDefaultStaticElement({
                     id: question.id,
                     page: page.id,
-                    requestBody: data
+                    requestBody: data,
                 }).then(() => {
                     form.reset();
                     handleAlert(`The electronic document list has been successfully updated.`);
@@ -157,7 +157,8 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                             defaultValue={checkStaticType(question.displayComponent)}
                             aria-label="staticType"
                             disabled
-                            className={styles.select_input}></SelectInput>
+                            className={styles.select_input}
+                        ></SelectInput>
                     </div>
                     {question.displayComponent === hyperlinkId && (
                         <FormProvider {...form}>
@@ -196,7 +197,8 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                         disabled={!form.formState.isDirty || !form.formState.isValid}
                         onClick={handleSubmit}
                         type={'button'}
-                        aria-label="submit-btn">
+                        aria-label="submit-btn"
+                    >
                         Save changes
                     </Button>
                 </div>

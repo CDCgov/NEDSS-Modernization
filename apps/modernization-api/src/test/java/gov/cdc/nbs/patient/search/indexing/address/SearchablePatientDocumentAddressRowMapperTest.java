@@ -1,14 +1,13 @@
 package gov.cdc.nbs.patient.search.indexing.address;
 
-import gov.cdc.nbs.patient.search.SearchablePatient;
-import org.junit.jupiter.api.Test;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.patient.search.SearchablePatient;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.junit.jupiter.api.Test;
 
 class SearchablePatientDocumentAddressRowMapperTest {
 
@@ -40,5 +39,4 @@ class SearchablePatientDocumentAddressRowMapperTest {
     assertThat(mapped.county()).isEqualTo("county-value");
     assertThat(mapped.country()).isEqualTo("country-value");
   }
-
 }

@@ -11,7 +11,7 @@ enum Status {
     Idle,
     Opening,
     Open,
-    Closed
+    Closed,
 }
 
 type ModalState = {

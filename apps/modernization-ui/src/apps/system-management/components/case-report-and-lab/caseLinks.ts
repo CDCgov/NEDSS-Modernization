@@ -1,7 +1,7 @@
 export const caseReportLinks = [
     {
         text: 'Manage trigger codes for case reporting',
-        href: '/nbs/TriggerCodes.do?method=manageLoad&initLoad=true'
+        href: '/nbs/TriggerCodes.do?method=manageLoad&initLoad=true',
     },
     { text: 'Manage laboratories', href: '/nbs/Laboratories.do?method=searchLab' },
     { group: 'Manage lab results' },
@@ -9,11 +9,11 @@ export const caseReportLinks = [
     { text: 'Manage SNOMEDs', href: '/nbs/SnomedCode.do?method=manageSnomedCodeLoad' },
     {
         text: 'Manage link between lab results and SNOMED',
-        href: '/nbs/ExistingResultsSnomedLink.do?method=searchResultSnomedLinkLoad'
+        href: '/nbs/ExistingResultsSnomedLink.do?method=searchResultSnomedLinkLoad',
     },
     {
         text: 'Manage link between SNOMED and condition',
-        href: '/nbs/SnomedtoConditionLink.do?method=searchSnomedtoCondLinkLoad'
+        href: '/nbs/SnomedtoConditionLink.do?method=searchSnomedtoCondLinkLoad',
     },
     { group: 'Manage lab tests' },
     { text: 'Manage local lab tests', href: '/nbs/LDLabTests.do?method=searchLabLoad' },
@@ -21,6 +21,6 @@ export const caseReportLinks = [
     { text: 'Manage link between lab tests and LOINC', href: '/nbs/LabTestLoincLink.do?method=searchLoincLoad' },
     {
         text: 'Manage link between LOINC and condition',
-        href: '/nbs/LoinctoConditionLink.do?method=searchLoinctoCondLinkLoad'
-    }
+        href: '/nbs/LoinctoConditionLink.do?method=searchLoinctoCondLinkLoad',
+    },
 ];

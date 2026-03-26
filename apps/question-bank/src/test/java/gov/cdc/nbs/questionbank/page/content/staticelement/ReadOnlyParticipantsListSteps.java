@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
@@ -15,8 +16,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @Transactional
 public class ReadOnlyParticipantsListSteps {
@@ -38,8 +37,7 @@ public class ReadOnlyParticipantsListSteps {
       final StaticRequest request,
       final ObjectMapper mapper,
       final PageMother mother,
-      final ExceptionHolder exceptionHolder
-  ) {
+      final ExceptionHolder exceptionHolder) {
     this.request = request;
     this.mapper = mapper;
     this.mother = mother;
@@ -49,10 +47,11 @@ public class ReadOnlyParticipantsListSteps {
   @Given("I create a read only participants list request with {string}")
   public void i_create_a_read_only_participants_list_request(String adminComments) {
     WaTemplate temp = mother.one();
-    WaUiMetadata subsection = temp.getUiMetadata().stream()
-        .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
-        .findFirst()
-        .orElseThrow();
+    WaUiMetadata subsection =
+        temp.getUiMetadata().stream()
+            .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
+            .findFirst()
+            .orElseThrow();
 
     currPage.active(temp);
 
@@ -63,7 +62,8 @@ public class ReadOnlyParticipantsListSteps {
   public void i_send_a_read_only_participants_list_request() {
     try {
       this.response.active(
-          request.readOnlyParticipantsListRequest(currPage.active().getId(), jsonRequestBody.active()));
+          request.readOnlyParticipantsListRequest(
+              currPage.active().getId(), jsonRequestBody.active()));
     } catch (Exception e) {
       exceptionHolder.setException(e);
     }
@@ -82,8 +82,8 @@ public class ReadOnlyParticipantsListSteps {
     AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
 
     this.updateResponse.active(
-        request.updateParticipantsListRequest(updateRequest.active(), currPage.active().getId(),
-            staticResponse.componentId()));
+        request.updateParticipantsListRequest(
+            updateRequest.active(), currPage.active().getId(), staticResponse.componentId()));
   }
 
   @Then("the participants list should have {string} of {string}")
@@ -96,8 +96,7 @@ public class ReadOnlyParticipantsListSteps {
   @Then("a read only participants list element is created")
   public void a_read_only_participants_list_element_is_created() {
     try {
-      this.response.active()
-          .andExpect(jsonPath("$.componentId").isNumber());
+      this.response.active().andExpect(jsonPath("$.componentId").isNumber());
     } catch (Exception e) {
       exceptionHolder.setException(e);
     }

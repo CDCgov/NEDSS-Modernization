@@ -57,7 +57,7 @@ export const getQueryString = (params: Record<string, any>): string => {
     const process = (key: string, value: any) => {
         if (isDefined(value)) {
             if (Array.isArray(value)) {
-                value.forEach(v => {
+                value.forEach((v) => {
                     process(key, v);
                 });
             } else if (typeof value === 'object') {
@@ -116,7 +116,7 @@ export const getFormData = (options: ApiRequestOptions): FormData | undefined =>
             .filter(([_, value]) => isDefined(value))
             .forEach(([key, value]) => {
                 if (Array.isArray(value)) {
-                    value.forEach(v => process(key, v));
+                    value.forEach((v) => process(key, v));
                 } else {
                     process(key, value);
                 }
@@ -150,10 +150,13 @@ export const getHeaders = async (config: OpenAPIConfig, options: ApiRequestOptio
         ...options.headers,
     })
         .filter(([_, value]) => isDefined(value))
-        .reduce((headers, [key, value]) => ({
-            ...headers,
-            [key]: String(value),
-        }), {} as Record<string, string>);
+        .reduce(
+            (headers, [key, value]) => ({
+                ...headers,
+                [key]: String(value),
+            }),
+            {} as Record<string, string>
+        );
 
     if (isStringWithValue(token)) {
         headers['Authorization'] = `Bearer ${token}`;
@@ -182,7 +185,7 @@ export const getHeaders = async (config: OpenAPIConfig, options: ApiRequestOptio
 export const getRequestBody = (options: ApiRequestOptions): any => {
     if (options.body !== undefined) {
         if (options.mediaType?.includes('/json')) {
-            return JSON.stringify(options.body)
+            return JSON.stringify(options.body);
         } else if (isString(options.body) || isBlob(options.body) || isFormData(options.body)) {
             return options.body;
         } else {
@@ -234,8 +237,8 @@ export const getResponseBody = async (response: Response): Promise<any> => {
         try {
             const contentType = response.headers.get('Content-Type');
             if (contentType) {
-                const jsonTypes = ['application/json', 'application/problem+json']
-                const isJSON = jsonTypes.some(type => contentType.toLowerCase().startsWith(type));
+                const jsonTypes = ['application/json', 'application/problem+json'];
+                const isJSON = jsonTypes.some((type) => contentType.toLowerCase().startsWith(type));
                 if (isJSON) {
                     return await response.json();
                 } else {
@@ -259,7 +262,7 @@ export const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): 
         502: 'Bad Gateway',
         503: 'Service Unavailable',
         ...options.errors,
-    }
+    };
 
     const error = errors[result.status];
     if (error) {
@@ -277,7 +280,9 @@ export const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): 
             }
         })();
 
-        throw new ApiError(options, result,
+        throw new ApiError(
+            options,
+            result,
             `Generic Error: status: ${errorStatus}; status text: ${errorStatusText}; body: ${errorBody}`
         );
     }

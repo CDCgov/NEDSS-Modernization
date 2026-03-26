@@ -1,15 +1,15 @@
 package gov.cdc.nbs.event.search.investigation.indexing.identifier;
 
 import gov.cdc.nbs.event.search.investigation.SearchableInvestigation;
+import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class SearchableInvestigationIdentifierFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [identifier].act_id_seq  as [sequence],
           [identifier].type_cd,
@@ -29,20 +29,14 @@ public class SearchableInvestigationIdentifierFinder {
 
   public SearchableInvestigationIdentifierFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new SearchableInvestigationIdentifierRowMapper(
-        new SearchableInvestigationIdentifierRowMapper.Column(
-            SEQUENCE_COLUMN,
-            TYPE_COLUMN,
-            VALUE_COLUMN
-        )
-    );
+    this.mapper =
+        new SearchableInvestigationIdentifierRowMapper(
+            new SearchableInvestigationIdentifierRowMapper.Column(
+                SEQUENCE_COLUMN, TYPE_COLUMN, VALUE_COLUMN));
   }
 
   public List<SearchableInvestigation.Identifier> find(final long investigation) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(INVESTIGATION_PARAMETER, investigation),
-        this.mapper
-    );
+        QUERY, statement -> statement.setLong(INVESTIGATION_PARAMETER, investigation), this.mapper);
   }
 }

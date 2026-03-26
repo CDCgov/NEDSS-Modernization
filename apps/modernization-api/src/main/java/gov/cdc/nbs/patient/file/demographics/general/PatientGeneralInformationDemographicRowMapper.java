@@ -7,16 +7,15 @@ import gov.cdc.nbs.data.sensitive.SensitiveValue;
 import gov.cdc.nbs.data.sensitive.SensitiveValueResolver;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.sql.IntegerColumnMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
-class PatientGeneralInformationDemographicRowMapper implements RowMapper<PatientGeneralInformationDemographic> {
+class PatientGeneralInformationDemographicRowMapper
+    implements RowMapper<PatientGeneralInformationDemographic> {
 
   private static final Permission HIV_PERMISSION = new Permission("HIVQuestions", "Global");
-
 
   record Column(
       int asOf,
@@ -28,21 +27,21 @@ class PatientGeneralInformationDemographicRowMapper implements RowMapper<Patient
       SelectableRowMapper.Column educationLevel,
       SelectableRowMapper.Column primaryLanguage,
       SelectableRowMapper.Column speaksEnglish,
-      int stateHIVCase
-  ) {
+      int stateHIVCase) {
     Column() {
-      this(1,
+      this(
+          1,
           new SelectableRowMapper.Column(2, 3),
-          4, 5, 6,
+          4,
+          5,
+          6,
           new SelectableRowMapper.Column(7, 8),
           new SelectableRowMapper.Column(9, 10),
           new SelectableRowMapper.Column(11, 12),
           new SelectableRowMapper.Column(13, 14),
-          15
-      );
+          15);
     }
   }
-
 
   private final Column columns;
   private final SelectableRowMapper maritalStatusMapper;
@@ -57,9 +56,7 @@ class PatientGeneralInformationDemographicRowMapper implements RowMapper<Patient
   }
 
   PatientGeneralInformationDemographicRowMapper(
-      final SensitiveValueResolver resolver,
-      final Column columns
-  ) {
+      final SensitiveValueResolver resolver, final Column columns) {
     this.resolver = resolver;
 
     this.columns = columns;
@@ -68,12 +65,11 @@ class PatientGeneralInformationDemographicRowMapper implements RowMapper<Patient
     this.educationLevelMapper = new SelectableRowMapper(columns.educationLevel());
     this.primaryLanguageMapper = new SelectableRowMapper(columns.primaryLanguage());
     this.speaksEnglishMapper = new SelectableRowMapper(columns.speaksEnglish());
-
-
   }
 
   @Override
-  public PatientGeneralInformationDemographic mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
+  public PatientGeneralInformationDemographic mapRow(final ResultSet resultSet, int rowNum)
+      throws SQLException {
 
     LocalDate asOf = LocalDateColumnMapper.map(resultSet, columns.asOf());
     Selectable maritalStatus = maritalStatusMapper.mapRow(resultSet, rowNum);
@@ -86,7 +82,6 @@ class PatientGeneralInformationDemographicRowMapper implements RowMapper<Patient
     Selectable speaksEnglish = speaksEnglishMapper.mapRow(resultSet, rowNum);
     SensitiveValue stateHIVCase = resolveStateHIVCase(resultSet);
 
-
     return new PatientGeneralInformationDemographic(
         asOf,
         maritalStatus,
@@ -97,12 +92,10 @@ class PatientGeneralInformationDemographicRowMapper implements RowMapper<Patient
         educationLevel,
         primaryLanguage,
         speaksEnglish,
-        stateHIVCase
-    );
+        stateHIVCase);
   }
 
   private SensitiveValue resolveStateHIVCase(final ResultSet resultSet) throws SQLException {
     return this.resolver.resolve(HIV_PERMISSION, resultSet.getString(columns.stateHIVCase()));
   }
 }
-

@@ -22,18 +22,18 @@ describe('When SaveTemplate renders', () => {
                         name: 'Section1',
                         visible: true,
                         order: 1,
-                        subSections: []
+                        subSections: [],
                     },
                     {
                         id: 5678,
                         name: 'Section2',
                         visible: true,
                         order: 2,
-                        subSections: []
-                    }
-                ]
-            }
-        ]
+                        subSections: [],
+                    },
+                ],
+            },
+        ],
     };
     it('should display inputs', () => {
         const { container } = render(

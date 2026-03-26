@@ -1,8 +1,13 @@
 package gov.cdc.nbs.authentication.session;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
+
 import gov.cdc.nbs.authentication.NBSAuthenticationException;
 import gov.cdc.nbs.authentication.NBSAuthenticationIssuer;
 import gov.cdc.nbs.authentication.session.SessionAuthorization.Unauthorized;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,24 +15,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
-
-
 @ExtendWith(MockitoExtension.class)
 class SessionAuthenticatorTest {
 
-  @Mock
-  private AuthorizedSessionResolver sessionResolver;
+  @Mock private AuthorizedSessionResolver sessionResolver;
 
-  @Mock
-  private NBSAuthenticationIssuer authIssuer;
+  @Mock private NBSAuthenticationIssuer authIssuer;
 
-  @InjectMocks
-  private SessionAuthenticator authenticator;
+  @InjectMocks private SessionAuthenticator authenticator;
 
   @Test
   void should_authentication() {
@@ -43,7 +38,6 @@ class SessionAuthenticatorTest {
 
     // Then nbs credentials should be issued
     verify(authIssuer).issue("user", response);
-
   }
 
   @Test
@@ -64,6 +58,5 @@ class SessionAuthenticatorTest {
 
     // And nbs credentials should not be issued
     verifyNoInteractions(authIssuer);
-
   }
 }

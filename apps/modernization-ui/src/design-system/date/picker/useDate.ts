@@ -67,7 +67,7 @@ const useDate = (settings?: UseDateSettings): UseDateInteraction => {
         date: state.date,
         initialize,
         clear,
-        change
+        change,
     };
 };
 

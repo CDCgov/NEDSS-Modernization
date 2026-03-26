@@ -17,8 +17,9 @@ const ValueField = ({ label, children, sizing }: ValueFieldProps) => {
             className={classNames(styles.view, {
                 [styles.small]: sizing === 'small',
                 [styles.medium]: sizing === 'medium',
-                [styles.large]: sizing === 'large'
-            })}>
+                [styles.large]: sizing === 'large',
+            })}
+        >
             <span id={id} role="term" className={styles.label}>
                 {label}
             </span>

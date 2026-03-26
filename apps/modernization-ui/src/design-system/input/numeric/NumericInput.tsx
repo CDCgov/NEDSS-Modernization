@@ -27,7 +27,8 @@ const NumericInput = ({
             label={label}
             htmlFor={id}
             required={required}
-            error={error}>
+            error={error}
+        >
             <Numeric id={id} placeholder={placeholder} {...remaining} />
         </EntryWrapper>
     );

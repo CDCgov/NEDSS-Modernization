@@ -12,9 +12,7 @@ class AnalyticsConfiguration {
   @Scope("prototype")
   Analytics analytics(
       @Value("${nbs.ui.settings.analytics.host:https://us.i.posthog.com}") final String host,
-      @Value("${nbs.ui.settings.analytics.key:#{null}}") final String key
-  ) {
+      @Value("${nbs.ui.settings.analytics.key:#{null}}") final String key) {
     return new Analytics(key, host);
   }
-
 }

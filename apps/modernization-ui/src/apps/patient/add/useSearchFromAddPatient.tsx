@@ -24,7 +24,7 @@ function SearchFromAddPatientProvider({ children }: SearchFromAddPatientProvider
     );
 
     const value = {
-        toSearch
+        toSearch,
     };
 
     return <SearchFromAddPatientContext.Provider value={value}>{children}</SearchFromAddPatientContext.Provider>;

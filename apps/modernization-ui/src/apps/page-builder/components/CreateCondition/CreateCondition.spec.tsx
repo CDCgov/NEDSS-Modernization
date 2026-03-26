@@ -3,6 +3,16 @@ import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router';
 import { CreateCondition } from './CreateCondition';
 
+vi.mock('apps/page-builder/services/valueSetAPI', () => ({
+    fetchCodingSystemOptions: vi.fn().mockResolvedValue([]),
+    fetchFamilyOptions: vi.fn().mockResolvedValue([]),
+    fetchGroupOptions: vi.fn().mockResolvedValue([]),
+}));
+
+vi.mock('apps/page-builder/services/programAreaAPI', () => ({
+    fetchProgramAreaOptions: vi.fn().mockResolvedValue([]),
+}));
+
 describe('Create Condition', () => {
     const modal = { current: null };
     describe('General information component tests', () => {

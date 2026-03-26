@@ -12,8 +12,8 @@ describe('Basic form to extended transfer', () => {
                 first: 'testFirst',
                 middle: 'testMiddle',
                 last: 'testLast',
-                suffix: asSelectable('ESQ', 'Esquire')
-            }
+                suffix: asSelectable('ESQ', 'Esquire'),
+            },
         };
 
         const result = asNewExtendedPatientEntry(initial);
@@ -24,8 +24,8 @@ describe('Basic form to extended transfer', () => {
                     first: 'testFirst',
                     last: 'testLast',
                     middle: 'testMiddle',
-                    suffix: expect.objectContaining({ value: 'ESQ' })
-                })
+                    suffix: expect.objectContaining({ value: 'ESQ' }),
+                }),
             ])
         );
     });
@@ -39,8 +39,8 @@ describe('Basic form to extended transfer', () => {
                 city: 'city',
                 country: asSelectable('US', 'United states'),
                 state: asSelectable('AL', 'Alabama'),
-                zipcode: '12345'
-            }
+                zipcode: '12345',
+            },
         };
 
         const result = asNewExtendedPatientEntry(initial);
@@ -52,14 +52,14 @@ describe('Basic form to extended transfer', () => {
                     address1: 'test address 1',
                     address2: 'test address 2',
                     country: expect.objectContaining({
-                        name: 'United states'
+                        name: 'United states',
                     }),
                     state: expect.objectContaining({
-                        name: 'Alabama'
+                        name: 'Alabama',
                     }),
                     zipcode: '12345',
-                    city: 'city'
-                })
+                    city: 'city',
+                }),
             ])
         );
     });
@@ -71,8 +71,8 @@ describe('Basic form to extended transfer', () => {
                 cell: '1231231234',
                 work: { phone: '1231231234' },
                 home: '1231231234',
-                email: 'test@test.com'
-            }
+                email: 'test@test.com',
+            },
         };
 
         const result = asNewExtendedPatientEntry(initial);
@@ -82,21 +82,21 @@ describe('Basic form to extended transfer', () => {
                 expect.objectContaining({
                     phoneNumber: '1231231234',
                     type: expect.objectContaining({ name: 'Phone' }),
-                    use: expect.objectContaining({ name: 'Home' })
+                    use: expect.objectContaining({ name: 'Home' }),
                 }),
                 expect.objectContaining({
                     phoneNumber: '1231231234',
                     type: expect.objectContaining({ name: 'Cellular phone' }),
-                    use: expect.objectContaining({ name: 'Mobile contact' })
+                    use: expect.objectContaining({ name: 'Mobile contact' }),
                 }),
                 expect.objectContaining({
                     phoneNumber: '1231231234',
                     type: expect.objectContaining({ name: 'Phone' }),
-                    use: expect.objectContaining({ name: 'Primary work place' })
+                    use: expect.objectContaining({ name: 'Primary work place' }),
                 }),
                 expect.objectContaining({
-                    email: 'test@test.com'
-                })
+                    email: 'test@test.com',
+                }),
             ])
         );
     });
@@ -104,7 +104,7 @@ describe('Basic form to extended transfer', () => {
         const date = today();
         const initial: BasicNewPatientEntry = {
             administrative: { asOf: date },
-            identifications: [{ type: asSelectable('ID'), issuer: asSelectable('test authority'), id: '12344' }]
+            identifications: [{ type: asSelectable('ID'), issuer: asSelectable('test authority'), id: '12344' }],
         };
 
         const result = asNewExtendedPatientEntry(initial);
@@ -118,7 +118,7 @@ describe('Basic form to extended transfer', () => {
         const date = today();
         const initial: BasicNewPatientEntry = {
             administrative: { asOf: date },
-            ethnicityRace: { races: [asSelectable('A', 'Asian')], ethnicity: asSelectable('T', 'Test') }
+            ethnicityRace: { races: [asSelectable('A', 'Asian')], ethnicity: asSelectable('T', 'Test') },
         };
 
         const result = asNewExtendedPatientEntry(initial);
@@ -127,9 +127,9 @@ describe('Basic form to extended transfer', () => {
             expect.arrayContaining([
                 expect.objectContaining({
                     race: expect.objectContaining({
-                        name: 'Asian'
-                    })
-                })
+                        name: 'Asian',
+                    }),
+                }),
             ])
         );
     });
@@ -137,7 +137,7 @@ describe('Basic form to extended transfer', () => {
         const date = today();
         const initial: BasicNewPatientEntry = {
             administrative: { asOf: date },
-            ethnicityRace: { ethnicity: asSelectable('T', 'Test') }
+            ethnicityRace: { ethnicity: asSelectable('T', 'Test') },
         };
 
         const result = asNewExtendedPatientEntry(initial);
@@ -146,7 +146,7 @@ describe('Basic form to extended transfer', () => {
             expect.objectContaining({
                 detailed: [],
                 asOf: date,
-                ethnicGroup: { name: 'Test', value: 'T' }
+                ethnicGroup: { name: 'Test', value: 'T' },
             })
         );
     });
@@ -161,8 +161,8 @@ describe('Basic form to extended transfer', () => {
                 deceased: asSelectable('Y'),
                 deceasedOn: '01/01/2004',
                 maritalStatus: asSelectable('Anulled'),
-                stateHIVCase: '1234'
-            }
+                stateHIVCase: '1234',
+            },
         };
 
         const result = asNewExtendedPatientEntry(initial);
@@ -173,27 +173,27 @@ describe('Basic form to extended transfer', () => {
             expect.objectContaining({
                 bornOn: '01/01/1999',
                 sex: expect.objectContaining({
-                    name: 'Male'
+                    name: 'Male',
                 }),
                 current: expect.objectContaining({
-                    name: 'Male'
-                })
+                    name: 'Male',
+                }),
             })
         );
 
         expect(result.mortality).toEqual(
             expect.objectContaining({
                 deceased: expect.objectContaining({
-                    name: 'Y'
+                    name: 'Y',
                 }),
-                deceasedOn: '01/01/2004'
+                deceasedOn: '01/01/2004',
             })
         );
 
         expect(result.general).toEqual(
             expect.objectContaining({
                 maritalStatus: expect.objectContaining({ name: 'Anulled' }),
-                stateHIVCase: '1234'
+                stateHIVCase: '1234',
             })
         );
     });

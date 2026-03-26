@@ -7,9 +7,9 @@ export const downloadPageLibraryPdf = (search: string, filters: Filter[], sort?:
         method: 'POST',
         headers: {
             Accept: 'application/pdf',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ search: search, filters: externalize(filters) })
+        body: JSON.stringify({ search: search, filters: externalize(filters) }),
     })
         .then((response) => response.blob())
         .then((blob) => {

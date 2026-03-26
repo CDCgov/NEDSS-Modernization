@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserOptionResolver extends SQLBasedOptionResolver {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       with [user]([value], [name]) as (
           select
               nedss_entry_id,
@@ -27,7 +28,7 @@ public class UserOptionResolver extends SQLBasedOptionResolver {
 
       order by
           [name]
-         
+
       offset 0 rows
       fetch next :limit rows only
       """;

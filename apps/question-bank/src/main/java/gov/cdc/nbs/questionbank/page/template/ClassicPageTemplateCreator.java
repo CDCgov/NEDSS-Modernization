@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.template;
 
+import gov.cdc.nbs.questionbank.page.classic.ClassicCreateTemplatePreparer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,7 +10,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import gov.cdc.nbs.questionbank.page.classic.ClassicCreateTemplatePreparer;
 
 @Component
 class ClassicPageTemplateCreator {
@@ -33,10 +33,11 @@ class ClassicPageTemplateCreator {
     form.add("selection.templateNm", request.name());
     form.add("selection.descTxt", request.description());
 
-    String location = UriComponentsBuilder.fromPath("/ManagePage.do")
-        .queryParam("method", "saveAsTemplate")
-        .build()
-        .toUriString();
+    String location =
+        UriComponentsBuilder.fromPath("/ManagePage.do")
+            .queryParam("method", "saveAsTemplate")
+            .build()
+            .toUriString();
 
     HttpHeaders header = new HttpHeaders();
     header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -44,6 +45,4 @@ class ClassicPageTemplateCreator {
     HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(form, header);
     this.template.postForEntity(location, entity, Void.class);
   }
-
 }
-

@@ -3,10 +3,10 @@ package gov.cdc.nbs.questionbank.entity.question;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
+import org.junit.jupiter.api.Test;
 
 class WaQuestionHistTest {
 
@@ -96,17 +96,18 @@ class WaQuestionHistTest {
 
   @Test
   void should_throw_exception_unrecognized_type() {
-    WaQuestion question = new WaQuestion() {
-      @Override
-      public String getDataType() {
-        return "Test";
-      }
+    WaQuestion question =
+        new WaQuestion() {
+          @Override
+          public String getDataType() {
+            return "Test";
+          }
 
-      @Override
-      public void update(Update command) {
-        // NOOP
-      }
-    };
+          @Override
+          public void update(Update command) {
+            // NOOP
+          }
+        };
 
     assertThrows(UpdateQuestionException.class, () -> new WaQuestionHist(question));
   }

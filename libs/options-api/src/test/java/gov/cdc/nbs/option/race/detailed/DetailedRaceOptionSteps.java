@@ -10,9 +10,7 @@ public class DetailedRaceOptionSteps {
   private final Active<ResultActions> response;
 
   DetailedRaceOptionSteps(
-      final DetailedRaceRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final DetailedRaceRequester requester, final Active<ResultActions> response) {
     this.requester = requester;
     this.response = response;
   }
@@ -21,5 +19,4 @@ public class DetailedRaceOptionSteps {
   public void i_am_trying_detailed_races(final String category) throws Exception {
     response.active(requester.request(category));
   }
-
 }

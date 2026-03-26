@@ -68,7 +68,8 @@ const DeleteAction = ({ patient }: DeleteActionProps) => {
                         sizing={'medium'}
                         onClick={show}
                     />
-                }>
+                }
+            >
                 <LabeledValue label="Delete disabled" orientation="vertical" aria-describedby="delete-patient-hint">
                     {patient.deletability === 'Has_Associations' ? HAS_ASSOCIATIONS_MESSAGE : INACTIVE_MESSAGE}
                 </LabeledValue>
@@ -81,7 +82,8 @@ const DeleteAction = ({ patient }: DeleteActionProps) => {
                     confirmText="Delete"
                     destructive
                     forceAction
-                    onConfirm={handleDeletePatient}>
+                    onConfirm={handleDeletePatient}
+                >
                     You have indicated that you would like to delete this patient file. Select Delete to continue or
                     Cancel to return to the patient file.
                 </Confirmation>

@@ -7,7 +7,6 @@ public enum PatientDeletability {
   IS_INACTIVE("Is_Inactive"),
   HAS_ASSOCIATIONS("Has_Associations");
 
-
   private final String value;
 
   PatientDeletability(final String value) {

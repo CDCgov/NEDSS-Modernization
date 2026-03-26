@@ -23,8 +23,7 @@ class ConfigurationController {
   ConfigurationController(
       final FeaturesResolver featuresResolver,
       final SettingsResolver settingsResolver,
-      final NbsPropertiesFinder finder
-  ) {
+      final NbsPropertiesFinder finder) {
     this.featuresResolver = featuresResolver;
     this.settingsResolver = settingsResolver;
     this.finder = finder;
@@ -35,10 +34,6 @@ class ConfigurationController {
     Features features = featuresResolver.resolve();
     Settings settings = settingsResolver.resolve();
     Properties properties = finder.find();
-    return new Configuration(
-        features,
-        settings,
-        properties
-    );
+    return new Configuration(features, settings, properties);
   }
 }

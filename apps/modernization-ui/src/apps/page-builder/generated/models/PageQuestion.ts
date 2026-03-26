@@ -16,9 +16,8 @@ export type PageQuestion = {
     last?: boolean;
     sort?: Array<SortObject>;
     size?: number;
-    content?: Array<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)>;
+    content?: Array<CodedQuestion | DateQuestion | NumericQuestion | TextQuestion>;
     pageable?: PageableObject;
     numberOfElements?: number;
     empty?: boolean;
 };
-

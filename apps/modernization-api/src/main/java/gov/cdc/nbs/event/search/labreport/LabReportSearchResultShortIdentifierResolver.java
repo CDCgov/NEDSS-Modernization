@@ -1,11 +1,10 @@
 package gov.cdc.nbs.event.search.labreport;
 
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
-import org.springframework.stereotype.Controller;
-
 import java.util.Objects;
 import java.util.OptionalLong;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
+import org.springframework.stereotype.Controller;
 
 @Controller
 class LabReportSearchResultShortIdentifierResolver {

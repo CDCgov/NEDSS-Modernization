@@ -1,5 +1,8 @@
 package gov.cdc.nbs.questionbank.question;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
@@ -18,6 +21,9 @@ import gov.cdc.nbs.questionbank.question.request.UpdateQuestion;
 import gov.cdc.nbs.questionbank.question.request.update.UpdateQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -27,33 +33,20 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Instant;
-import java.util.Collections;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 class QuestionUpdaterTest {
 
-  @Mock
-  private WaQuestionRepository repository;
+  @Mock private WaQuestionRepository repository;
 
-  @Mock
-  private WaQuestionHistRepository histRepository;
+  @Mock private WaQuestionHistRepository histRepository;
 
-  @Mock
-  private QuestionManagementUtil managementUtil;
+  @Mock private QuestionManagementUtil managementUtil;
 
-  @Mock
-  private WaUiMetadataRepository metadatumRepository;
+  @Mock private WaUiMetadataRepository metadatumRepository;
 
-  @Spy
-  private QuestionMapper questionMapper = new QuestionMapper();
+  @Spy private QuestionMapper questionMapper = new QuestionMapper();
 
-  @InjectMocks
-  private QuestionUpdater updater;
+  @InjectMocks private QuestionUpdater updater;
 
   @Test
   void should_set_status_inactive() {
@@ -116,7 +109,6 @@ class QuestionUpdaterTest {
     assertThrows(QuestionNotFoundException.class, () -> updater.setStatus(1L, 222L, false));
   }
 
-
   @Test
   void should_not_allow_update_inactive() {
     // given an update request
@@ -135,15 +127,12 @@ class QuestionUpdaterTest {
   @SuppressWarnings("squid:S5961")
   void should_convert_to_update_text_question() {
     // given an update request
-    UpdateQuestion request = questionMapper.toUpdateQuestion(QuestionRequestMother.updateTextQuestionRequest());
+    UpdateQuestion request =
+        questionMapper.toUpdateQuestion(QuestionRequestMother.updateTextQuestionRequest());
 
     // and a valid oid
-    when(managementUtil.getQuestionOid(
-        true,
-        "PH_ACCEPTAPPLICATION",
-        null))
+    when(managementUtil.getQuestionOid(true, "PH_ACCEPTAPPLICATION", null))
         .thenReturn(new QuestionOid("oid", "oid system"));
-
 
     // and an existing question
     TextQuestionEntity question = QuestionEntityMother.textQuestion();
@@ -164,7 +153,8 @@ class QuestionUpdaterTest {
     assertEquals(request.getDefaultValue(), update.defaultValue());
 
     QuestionCommand.ReportingData reportingData = update.reportingData();
-    assertEquals(question.getSubGroupNm() + "_" + request.getRdbColumnName(), reportingData.rdbColumnName());
+    assertEquals(
+        question.getSubGroupNm() + "_" + request.getRdbColumnName(), reportingData.rdbColumnName());
     assertEquals(request.getDefaultLabelInReport(), reportingData.reportLabel());
     assertEquals(request.getDataMartColumnName(), reportingData.dataMartColumnName());
 
@@ -179,13 +169,11 @@ class QuestionUpdaterTest {
 
   @Test
   void should_convert_to_update_date_question() {
-    UpdateQuestion request = questionMapper.toUpdateQuestion(QuestionRequestMother.updateDateQuestionRequest());
+    UpdateQuestion request =
+        questionMapper.toUpdateQuestion(QuestionRequestMother.updateDateQuestionRequest());
 
     // and a valid oid
-    when(managementUtil.getQuestionOid(
-        true,
-        "PH_ACCEPTAPPLICATION",
-        null))
+    when(managementUtil.getQuestionOid(true, "PH_ACCEPTAPPLICATION", null))
         .thenReturn(new QuestionOid("oid", "oid system"));
 
     DateQuestionEntity question = QuestionEntityMother.dateQuestion();
@@ -202,13 +190,11 @@ class QuestionUpdaterTest {
 
   @Test
   void should_convert_to_update_coded_Question() {
-    UpdateQuestion request = questionMapper.toUpdateQuestion(QuestionRequestMother.updateCodedQuestionRequest());
+    UpdateQuestion request =
+        questionMapper.toUpdateQuestion(QuestionRequestMother.updateCodedQuestionRequest());
 
     // and a valid oid
-    when(managementUtil.getQuestionOid(
-        true,
-        "PH_ACCEPTAPPLICATION",
-        null))
+    when(managementUtil.getQuestionOid(true, "PH_ACCEPTAPPLICATION", null))
         .thenReturn(new QuestionOid("oid", "oid system"));
 
     CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
@@ -221,18 +207,15 @@ class QuestionUpdaterTest {
     assertEquals(request.getTooltip(), data.tooltip());
     assertEquals(request.getDisplayControl(), data.displayControl());
     assertEquals(request.getDefaultValue(), update.defaultValue());
-
   }
 
   @Test
   void should_convert_to_update_numeric_Question() {
-    UpdateQuestion request = questionMapper.toUpdateQuestion(QuestionRequestMother.updateNumericQuestionRequest());
+    UpdateQuestion request =
+        questionMapper.toUpdateQuestion(QuestionRequestMother.updateNumericQuestionRequest());
 
     // and a valid oid
-    when(managementUtil.getQuestionOid(
-        true,
-        "PH_ACCEPTAPPLICATION",
-        null))
+    when(managementUtil.getQuestionOid(true, "PH_ACCEPTAPPLICATION", null))
         .thenReturn(new QuestionOid("oid", "oid system"));
 
     NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
@@ -252,9 +235,7 @@ class QuestionUpdaterTest {
     assertEquals(request.getMaxValue(), update.maxValue());
     assertEquals(request.getRelatedUnitsLiteral(), update.relatedUnitsLiteral());
     assertEquals(request.getRelatedUnitsValueSet(), update.relatedUnitsValueSet());
-
   }
-
 
   private WaQuestion emptyQuestion() {
     return QuestionEntityMother.textQuestion();
@@ -275,8 +256,7 @@ class QuestionUpdaterTest {
     when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(spy));
 
     // and a question that is in use
-    when(metadatumRepository
-        .findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
+    when(metadatumRepository.findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
         .thenReturn(Collections.singletonList(new WaUiMetadata()));
 
     // and the question can be saved
@@ -289,7 +269,6 @@ class QuestionUpdaterTest {
     verify(repository, times(0)).setDataType(Mockito.anyString(), Mockito.anyLong());
   }
 
-
   @Test
   void can_update_type_if_not_inuse() {
     // given an update request
@@ -299,8 +278,7 @@ class QuestionUpdaterTest {
     when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(spy));
 
     // and a question that is in use
-    when(metadatumRepository
-        .findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
+    when(metadatumRepository.findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
         .thenReturn(Collections.emptyList());
 
     // and the question can be saved
@@ -312,5 +290,4 @@ class QuestionUpdaterTest {
     // then set data type is not called
     verify(repository, times(1)).setDataType(Mockito.anyString(), Mockito.anyLong());
   }
-
 }

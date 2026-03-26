@@ -4,13 +4,12 @@ import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @PreAuthorize("hasAuthority('VIEW-INVESTIGATION')")
@@ -22,8 +21,7 @@ class PatientInvestigationsController {
   private final PermissionScopeResolver scopeResolver;
 
   PatientInvestigationsController(
-      final PermissionScopeResolver scopeResolver,
-      final PatientInvestigationsFinder finder) {
+      final PermissionScopeResolver scopeResolver, final PatientInvestigationsFinder finder) {
     this.finder = finder;
     this.scopeResolver = scopeResolver;
   }
@@ -31,8 +29,7 @@ class PatientInvestigationsController {
   @Operation(
       summary = "Patient Investigations",
       description = "Patient Investigations",
-      tags = "PatientFile"
-  )
+      tags = "PatientFile")
   @GetMapping
   List<PatientInvestigation> investigations(@PathVariable final long patientId) {
     PermissionScope scope = this.scopeResolver.resolve(PERMISSION);
@@ -42,8 +39,7 @@ class PatientInvestigationsController {
   @Operation(
       summary = "Patient Open Investigations",
       description = "Patient Open Investigations",
-      tags = "PatientFile"
-  )
+      tags = "PatientFile")
   @GetMapping("/open")
   List<PatientInvestigation> openInvestigations(@PathVariable final long patientId) {
     PermissionScope scope = this.scopeResolver.resolve(PERMISSION);

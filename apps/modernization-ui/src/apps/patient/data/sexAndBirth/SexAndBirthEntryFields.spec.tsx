@@ -8,39 +8,39 @@ import { SexBirthCodedValues } from './useSexBirthCodedValues';
 const mockNow = vi.fn();
 
 vi.mock('design-system/date/clock', () => ({
-    now: () => mockNow()
+    now: () => mockNow(),
 }));
 
 const mockSexBirthCodedValues: SexBirthCodedValues = {
     genders: [
         { name: 'Male', value: 'M' },
         { name: 'Female', value: 'F' },
-        { name: 'Unknown', value: 'U' }
+        { name: 'Unknown', value: 'U' },
     ],
     preferredGenders: [{ name: 'FTM', value: 'FTM' }],
     genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
-    multipleBirth: [{ name: 'Yes', value: 'Y' }]
+    multipleBirth: [{ name: 'Yes', value: 'Y' }],
 };
 
 vi.mock('./useSexBirthCodedValues', () => ({
-    useSexBirthCodedValues: () => mockSexBirthCodedValues
+    useSexBirthCodedValues: () => mockSexBirthCodedValues,
 }));
 
 const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: vi.fn()
+    state: vi.fn(),
 };
 
 vi.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+    useLocationOptions: () => mockLocationOptions,
 }));
 
 const Fixture = ({ formValues }: { formValues?: Partial<ExtendedNewPatientEntry> }) => {
     const form = useForm<ExtendedNewPatientEntry>({
         mode: 'onBlur',
-        defaultValues: { birthAndSex: { multiple: { value: 'Y', name: 'Yes' } }, ...formValues }
+        defaultValues: { birthAndSex: { multiple: { value: 'Y', name: 'Yes' } }, ...formValues },
     });
 
     return (

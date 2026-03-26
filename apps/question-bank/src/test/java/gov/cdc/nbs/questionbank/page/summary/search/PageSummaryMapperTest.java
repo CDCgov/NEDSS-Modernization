@@ -1,16 +1,15 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
+
 import com.querydsl.core.Tuple;
+import java.time.Instant;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
-
-import java.time.Instant;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
 
 class PageSummaryMapperTest {
 
@@ -19,9 +18,9 @@ class PageSummaryMapperTest {
 
   @ParameterizedTest
   @CsvSource({
-      "Draft,0,Published with Draft",
-      "Draft,null,Initial Draft",
-      "Published,0,Published",
+    "Draft,0,Published with Draft",
+    "Draft,null,Initial Draft",
+    "Published,0,Published",
   })
   void should_set_status(String templateType, String versionNbr, String expected) {
     Tuple tuple = Mockito.mock(Tuple.class);
@@ -47,7 +46,8 @@ class PageSummaryMapperTest {
     when(tuple.get(this.tables.page().publishVersionNbr)).thenReturn(null);
     when(tuple.get(this.tables.eventType().id.code)).thenReturn("INV");
     when(tuple.get(this.tables.eventType().codeShortDescTxt)).thenReturn("Investigation");
-    when(tuple.get(this.tables.page().lastChgTime)).thenReturn(Instant.parse("2023-10-17T15:27:13Z"));
+    when(tuple.get(this.tables.page().lastChgTime))
+        .thenReturn(Instant.parse("2023-10-17T15:27:13Z"));
     when(tuple.get(this.tables.page().lastChgUserId)).thenReturn(2L);
     when(tuple.get(this.tables.lastUpdatedBy())).thenReturn("first last");
 
@@ -62,7 +62,6 @@ class PageSummaryMapperTest {
 
     assertThat(actual.lastUpdateBy()).isEqualTo("first last");
     assertThat(actual.lastUpdate()).isEqualTo("2023-10-17");
-
   }
 
   @Test
@@ -72,6 +71,5 @@ class PageSummaryMapperTest {
 
     assertThatThrownBy(() -> mapper.map(tuple))
         .hasMessageContaining("A Page Summary ID is required");
-
   }
 }

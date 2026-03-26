@@ -30,7 +30,7 @@ const mockMergeCandidates: MergeCandidate[] = [
                 asOf: '2022-02-03',
                 type: 'DL',
                 assigningAuthority: 'CDW',
-                value: '1110000'
+                value: '1110000',
             },
             {
                 personUid: '1',
@@ -38,21 +38,21 @@ const mockMergeCandidates: MergeCandidate[] = [
                 asOf: '2023-01-02',
                 type: 'SSN',
                 assigningAuthority: 'CDW',
-                value: '123-456-789'
-            }
+                value: '123-456-789',
+            },
         ],
         races: [],
         ethnicity: {},
         sexAndBirth: {},
         mortality: {},
         general: {},
-        investigations: []
-    }
+        investigations: [],
+    },
 ];
 
 const selectedIdentifications: IdentificationId[] = [
     { personUid: '1', sequence: '1' },
-    { personUid: '2', sequence: '1' }
+    { personUid: '2', sequence: '1' },
 ];
 
 describe('PreviewIdentification Component', () => {

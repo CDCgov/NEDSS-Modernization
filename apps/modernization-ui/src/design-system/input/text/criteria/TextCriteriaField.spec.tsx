@@ -9,7 +9,7 @@ const renderComponent = (props: Partial<TextCriteriaFieldProps> = {}) => {
         id: 'test-operator-input',
         label: 'test-operator-input',
         onChange: vi.fn(),
-        ...props
+        ...props,
     };
     return render(<TextCriteriaField {...combinedProps} />);
 };

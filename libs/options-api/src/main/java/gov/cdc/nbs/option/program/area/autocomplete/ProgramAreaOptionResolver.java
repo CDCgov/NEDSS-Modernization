@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 class ProgramAreaOptionResolver extends SQLBasedOptionResolver {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           prog_area_cd        as [value],
           prog_area_desc_txt  as [name],

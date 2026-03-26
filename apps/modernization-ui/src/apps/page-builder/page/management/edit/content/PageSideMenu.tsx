@@ -16,7 +16,8 @@ export const PageSideMenu = ({ onAddSection, onManageSection, onReorderModal }: 
                     onClick={() => {
                         onManageSection();
                     }}
-                    className="manageSections">
+                    className="manageSections"
+                >
                     <Icon.Edit size={3} />
                     Manage sections
                 </li>
@@ -24,14 +25,16 @@ export const PageSideMenu = ({ onAddSection, onManageSection, onReorderModal }: 
                     onClick={() => {
                         onAddSection();
                     }}
-                    className="addSection">
+                    className="addSection"
+                >
                     <Icon.Add size={3} />
                     Add section
                 </li>
                 <li
                     onClick={() => {
                         onReorderModal();
-                    }}>
+                    }}
+                >
                     <EQIcon name="reorder" />
                     Reorder
                 </li>

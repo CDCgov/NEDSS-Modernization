@@ -23,7 +23,7 @@ export const ModalComponent = ({
     isLarge,
     size,
     closer,
-    onCloseModal
+    onCloseModal,
 }: ModalProps) => {
     return (
         <Modal
@@ -33,7 +33,8 @@ export const ModalComponent = ({
             forceAction={true}
             aria-labelledby="modal-1-heading"
             className={`padding-0 ${size}`}
-            aria-describedby="modal-1-description">
+            aria-describedby="modal-1-description"
+        >
             {modalHeading ? (
                 <ModalHeading id="modal-1-heading">
                     {modalHeading}

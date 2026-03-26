@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.demographics.address;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-
 import java.time.LocalDate;
 
 public class PatientAddressDemographicSteps {
@@ -14,8 +13,7 @@ public class PatientAddressDemographicSteps {
 
   PatientAddressDemographicSteps(
       final PatientAddressDemographicApplier applier,
-      final Active<PatientIdentifier> activePatient
-  ) {
+      final Active<PatientIdentifier> activePatient) {
     this.applier = applier;
     this.activePatient = activePatient;
   }
@@ -26,26 +24,13 @@ public class PatientAddressDemographicSteps {
   }
 
   @Given("the patient has a {string} address at {string} {string} {string}")
-  public void address(
-      final String use,
-      final String address,
-      final String city,
-      final String zip
-  ) {
+  public void address(final String use, final String address, final String city, final String zip) {
 
     PatientIdentifier identifier = activePatient.active();
 
     String resolvedUse = resolveUse(use);
 
-    applier.withAddress(
-        identifier,
-        resolvedUse,
-        address,
-        city,
-        null,
-        null,
-        zip);
-
+    applier.withAddress(identifier, resolvedUse, address, city, null, null, zip);
   }
 
   private String resolveUse(final String use) {
@@ -71,41 +56,22 @@ public class PatientAddressDemographicSteps {
 
     PatientIdentifier identifier = activePatient.active();
 
-    applier.withAddress(
-        identifier,
-        type,
-        use,
-        address,
-        city,
-        null,
-        null,
-        zip);
-
+    applier.withAddress(identifier, type, use, address, city, null, null, zip);
   }
 
-  @Given("the patient has a(n) {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
+  @Given(
+      "the patient has a(n) {addressType} - {addressUse} address at {string} {string} {string} as of {localDate}")
   public void address(
       final String type,
       final String use,
       final String address,
       final String city,
       final String zip,
-      final LocalDate asOf
-  ) {
+      final LocalDate asOf) {
 
     PatientIdentifier identifier = activePatient.active();
 
-    applier.withAddress(
-        identifier,
-        type,
-        use,
-        address,
-        city,
-        null,
-        null,
-        zip,
-        asOf);
-
+    applier.withAddress(identifier, type, use, address, city, null, null, zip, asOf);
   }
 
   @Given(
@@ -117,23 +83,10 @@ public class PatientAddressDemographicSteps {
       final String city,
       final String state,
       final String zip,
-      final LocalDate asOf
-  ) {
+      final LocalDate asOf) {
 
     PatientIdentifier identifier = activePatient.active();
 
-    applier.withAddress(
-        identifier,
-        type,
-        use,
-        address,
-        city,
-        null,
-        state,
-        zip,
-        asOf
-    );
-
+    applier.withAddress(identifier, type, use, address, city, null, state, zip, asOf);
   }
-
 }

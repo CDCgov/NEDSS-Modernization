@@ -10,11 +10,7 @@ class SmartyConfiguration {
 
   @Bean
   @Scope("prototype")
-  Smarty smarty(
-      @Value("${nbs.ui.settings.smarty.key:#{null}}")
-      final String key
-  ) {
+  Smarty smarty(@Value("${nbs.ui.settings.smarty.key:#{null}}") final String key) {
     return new Smarty(key);
   }
-
 }

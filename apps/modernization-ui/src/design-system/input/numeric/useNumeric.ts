@@ -38,7 +38,7 @@ const useNumeric = (value?: NumericValue): UseNumericInteraction => {
         current: state.value,
         initialize,
         change,
-        clear
+        clear,
     };
 };
 

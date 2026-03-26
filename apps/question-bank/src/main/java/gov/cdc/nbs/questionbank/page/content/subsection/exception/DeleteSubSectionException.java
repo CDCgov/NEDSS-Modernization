@@ -4,8 +4,7 @@ import gov.cdc.nbs.questionbank.exception.BadRequestException;
 
 public class DeleteSubSectionException extends BadRequestException {
 
-    public DeleteSubSectionException(String message) {
-        super(message);
-    }
-
+  public DeleteSubSectionException(String message) {
+    super(message);
+  }
 }

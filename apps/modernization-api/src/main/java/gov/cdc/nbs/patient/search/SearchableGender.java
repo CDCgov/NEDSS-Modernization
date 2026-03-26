@@ -1,40 +1,31 @@
 package gov.cdc.nbs.patient.search;
 
-/**
- * Values that can be used to search the gender of a patient using .
- */
+/** Values that can be used to search the gender of a patient using . */
 public enum SearchableGender {
-  /**
-   * The Code System value for Female
-   */
+  /** The Code System value for Female */
   FEMALE("F", "Female"),
-  /**
-   * The Code System value for Mail
-   */
+  /** The Code System value for Mail */
   MALE("M", "Male"),
-  /**
-   * The Code System null flavor signifier for a value that is not known.
-   */
+  /** The Code System null flavor signifier for a value that is not known. */
   UNKNOWN("U", "Unknown"),
   /**
-   * A specialized search value that signifies searching for patients without a gender value specified.
+   * A specialized search value that signifies searching for patients without a gender value
+   * specified.
    */
   NO_VALUE("NO_VALUE", "No value"),
-  /**
-   * Signifies that the gender value being searched with is not one of the known values.
-   */
+  /** Signifies that the gender value being searched with is not one of the known values. */
   UNRECOGNIZED;
 
   public static SearchableGender resolve(final String value) {
     return value == null
         ? null
         : switch (value.toUpperCase()) {
-      case "F", "FEMALE" -> FEMALE;
-      case "M", "MALE" -> MALE;
-      case "U", "UNK", "UNKNOWN" -> UNKNOWN;
-      case "NO_VALUE" -> NO_VALUE;
-      default -> UNRECOGNIZED;
-    };
+          case "F", "FEMALE" -> FEMALE;
+          case "M", "MALE" -> MALE;
+          case "U", "UNK", "UNKNOWN" -> UNKNOWN;
+          case "NO_VALUE" -> NO_VALUE;
+          default -> UNRECOGNIZED;
+        };
   }
 
   private final String value;
@@ -49,8 +40,6 @@ public enum SearchableGender {
     this.display = display;
   }
 
-
-
   public String value() {
     return value;
   }
@@ -58,5 +47,4 @@ public enum SearchableGender {
   public String display() {
     return display;
   }
-
 }

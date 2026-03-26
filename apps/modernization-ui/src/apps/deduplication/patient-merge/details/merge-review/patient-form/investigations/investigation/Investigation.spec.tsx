@@ -6,13 +6,13 @@ const investigations: MergeInvestigation[] = [
     {
         id: 'CAS10001000GA01',
         startDate: '2025-06-05T00:00:00',
-        condition: '2019 Novel Coronavirus'
+        condition: '2019 Novel Coronavirus',
     },
     {
         id: 'CAS10001001GA01',
         startDate: undefined,
-        condition: 'Cholera'
-    }
+        condition: 'Cholera',
+    },
 ];
 
 const Fixture = () => {

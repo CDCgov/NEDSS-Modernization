@@ -1,8 +1,8 @@
 package gov.cdc.nbs.event.search;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 class InvestigationFilterTest {
 
@@ -13,10 +13,7 @@ class InvestigationFilterTest {
 
     filter.setEventId(
         new InvestigationFilter.InvestigationEventId(
-            InvestigationFilter.IdType.ABCS_CASE_ID,
-            null
-        )
-    );
+            InvestigationFilter.IdType.ABCS_CASE_ID, null));
 
     assertThat(filter.abcsCase()).isEmpty();
   }
@@ -28,10 +25,7 @@ class InvestigationFilterTest {
 
     filter.setEventId(
         new InvestigationFilter.InvestigationEventId(
-            InvestigationFilter.IdType.STATE_CASE_ID,
-            null
-        )
-    );
+            InvestigationFilter.IdType.STATE_CASE_ID, null));
 
     assertThat(filter.stateCase()).isEmpty();
   }
@@ -43,10 +37,7 @@ class InvestigationFilterTest {
 
     filter.setEventId(
         new InvestigationFilter.InvestigationEventId(
-            InvestigationFilter.IdType.CITY_COUNTY_CASE_ID,
-            null
-        )
-    );
+            InvestigationFilter.IdType.CITY_COUNTY_CASE_ID, null));
 
     assertThat(filter.countyCase()).isEmpty();
   }
@@ -58,10 +49,7 @@ class InvestigationFilterTest {
 
     filter.setEventId(
         new InvestigationFilter.InvestigationEventId(
-            InvestigationFilter.IdType.NOTIFICATION_ID,
-            null
-        )
-    );
+            InvestigationFilter.IdType.NOTIFICATION_ID, null));
 
     assertThat(filter.notification()).isEmpty();
   }
@@ -73,12 +61,8 @@ class InvestigationFilterTest {
 
     filter.setEventId(
         new InvestigationFilter.InvestigationEventId(
-            InvestigationFilter.IdType.INVESTIGATION_ID,
-            null
-        )
-    );
+            InvestigationFilter.IdType.INVESTIGATION_ID, null));
 
     assertThat(filter.caseId()).isEmpty();
   }
-
 }

@@ -18,7 +18,7 @@ const asSearchRequest = (request: ResultRequest<PersonFilter>) => {
 const asSortablePage = <A>(request: ResultRequest<A>) => ({
     pageNumber: request.page.number - 1,
     pageSize: request.page.size,
-    sort: request.sort
+    sort: request.sort,
 });
 
 type Settings = {
@@ -32,9 +32,9 @@ const usePatientSearch = ({ form }: Settings): SearchInteraction<PatientSearchRe
         fetch({
             variables: {
                 filter: asSearchRequest(request),
-                page: asSortablePage(request)
+                page: asSortablePage(request),
             },
-            notifyOnNetworkStatusChange: true
+            notifyOnNetworkStatusChange: true,
         }).then((response) => {
             if (response.error) {
                 throw new Error(response.error.message);

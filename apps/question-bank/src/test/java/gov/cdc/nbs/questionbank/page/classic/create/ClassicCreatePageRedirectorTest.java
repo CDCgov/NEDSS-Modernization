@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page.classic.create;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,11 +13,9 @@ import org.springframework.http.ResponseEntity;
 @ExtendWith(MockitoExtension.class)
 class ClassicCreatePageRedirectorTest {
 
-  @Mock
-  private ClassicCreatePagePreparer preparer;
+  @Mock private ClassicCreatePagePreparer preparer;
 
-  @InjectMocks
-  private ClassicCreatePageRedirector redirector;
+  @InjectMocks private ClassicCreatePageRedirector redirector;
 
   @Test
   void should_redirect_to_create() {
@@ -30,5 +29,4 @@ class ClassicCreatePageRedirectorTest {
     String location = response.getHeaders().get("Location").get(0);
     assertEquals("/nbs/ManagePage.do?method=addPageLoad", location);
   }
-
 }

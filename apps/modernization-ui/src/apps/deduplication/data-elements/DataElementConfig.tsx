@@ -43,7 +43,7 @@ const initial: DataElements = {
     personNumber: { active: false, oddsRatio: undefined, logOdds: undefined },
     socialSecurity: { active: false, oddsRatio: undefined, logOdds: undefined },
     visaPassport: { active: false, oddsRatio: undefined, logOdds: undefined },
-    wicIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined }
+    wicIdentifier: { active: false, oddsRatio: undefined, logOdds: undefined },
 };
 
 export const DataElementConfig = () => {

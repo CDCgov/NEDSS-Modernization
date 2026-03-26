@@ -36,7 +36,7 @@ const sorting: SortingSelectable[] = [
     { property: 'patientname', direction: Direction.Ascending, name: 'Patient name (A-Z)' },
     { property: 'patientname', direction: Direction.Descending, name: 'Patient name (Z-A)' },
     { property: 'birthday', direction: Direction.Ascending, name: 'Date of birth (Ascending)' },
-    { property: 'birthday', direction: Direction.Descending, name: 'Date of birth (Descending)' }
+    { property: 'birthday', direction: Direction.Descending, name: 'Date of birth (Descending)' },
 ];
 
 export { sorting };

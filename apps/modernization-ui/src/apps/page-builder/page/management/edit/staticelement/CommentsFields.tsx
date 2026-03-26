@@ -13,7 +13,7 @@ export const CommentsFields = () => {
                 name="commentsText"
                 rules={{
                     required: { value: true, message: 'Comments is required' },
-                    ...maxLengthRule(2000)
+                    ...maxLengthRule(2000),
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Input

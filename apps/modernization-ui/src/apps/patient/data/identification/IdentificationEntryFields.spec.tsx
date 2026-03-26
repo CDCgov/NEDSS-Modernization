@@ -7,11 +7,11 @@ import { IdentificationEntryFields } from './IdentificationEntryFields';
 
 const mockIdentificationCodedValues: IdentificationCodedValues = {
     types: [{ name: 'Account number', value: 'AN' }],
-    authorities: [{ name: 'Assigning auth', value: 'AA' }]
+    authorities: [{ name: 'Assigning auth', value: 'AA' }],
 };
 
 vi.mock('./useIdentificationCodedValues', () => ({
-    useIdentificationCodedValues: () => mockIdentificationCodedValues
+    useIdentificationCodedValues: () => mockIdentificationCodedValues,
 }));
 
 const Fixture = () => {
@@ -21,8 +21,8 @@ const Fixture = () => {
             asOf: undefined,
             type: undefined,
             issuer: undefined,
-            id: ''
-        }
+            id: '',
+        },
     });
     return (
         <FormProvider {...form}>
@@ -59,7 +59,10 @@ describe('when entering patient identification demographics', () => {
 
         const dateInput = getByLabelText('Identification as of');
 
-        expect(dateInput).toHaveAttribute('aria-description', 'This date defaults to today and can be changed if needed');
+        expect(dateInput).toHaveAttribute(
+            'aria-description',
+            'This date defaults to today and can be changed if needed'
+        );
     });
 
     it('should require type', async () => {

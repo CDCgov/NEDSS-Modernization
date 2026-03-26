@@ -23,13 +23,15 @@ export const TopBanner = (): ReactElement => {
                 isOpen={isOpen}
                 flagImg={<BannerFlag src={flagImage} alt="U.S. flag" />}
                 headerText="An official website of the United States government"
-                headerActionText="Here's how you know">
+                headerActionText="Here's how you know"
+            >
                 <BannerButton
                     isOpen={isOpen}
                     aria-controls="custom-banner"
                     onClick={(): void => {
                         setIsOpen((previousIsOpen) => !previousIsOpen);
-                    }}>
+                    }}
+                >
                     Here&apos;s how you know
                 </BannerButton>
             </BannerHeader>

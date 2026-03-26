@@ -14,7 +14,7 @@ import {
     NameId,
     PatientMergeForm,
     PhoneEmailId,
-    RaceId
+    RaceId,
 } from './merge-review/model/PatientMergeForm';
 import styles from './MergeDetails.module.scss';
 import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
@@ -101,7 +101,7 @@ export const MergeDetails = () => {
                     multipleBirth: oldestRecordId,
                     birthCity: oldestRecordId,
                     birthState: oldestRecordId,
-                    birthCountry: oldestRecordId
+                    birthCountry: oldestRecordId,
                 },
                 mortality: {
                     asOf: oldestRecordId,
@@ -109,7 +109,7 @@ export const MergeDetails = () => {
                     dateOfDeath: oldestRecordId,
                     deathCity: oldestRecordId,
                     deathState: oldestRecordId,
-                    deathCountry: oldestRecordId
+                    deathCountry: oldestRecordId,
                 },
                 generalInfo: {
                     asOf: oldestRecordId,
@@ -121,8 +121,8 @@ export const MergeDetails = () => {
                     educationLevel: oldestRecordId,
                     primaryLanguage: oldestRecordId,
                     speaksEnglish: oldestRecordId,
-                    stateHivCaseId: oldestRecordId
-                }
+                    stateHivCaseId: oldestRecordId,
+                },
             },
             { keepDefaultValues: false }
         );
@@ -158,7 +158,7 @@ export const MergeDetails = () => {
                             <span>
                                 You have successfully merged <strong>{getMergedPatientNameDisplay()}</strong>
                             </span>
-                        )
+                        ),
                     });
                     const survivingLocalId = getSurvivingLocalId();
                     nav(
@@ -229,7 +229,8 @@ export const MergeDetails = () => {
                     confirmText="Remove"
                     cancelText="Cancel"
                     onConfirm={handleRemovePatient}
-                    onCancel={() => setPatientToRemove(undefined)}>
+                    onCancel={() => setPatientToRemove(undefined)}
+                >
                     You have indicated that you do not want to merge{' '}
                     <strong>{getPatientNameDisplay(patientToRemove!)}</strong>. This action will remove the patient from
                     this identified merge group.
@@ -241,7 +242,8 @@ export const MergeDetails = () => {
                     confirmText="Merge"
                     cancelText="Cancel"
                     onConfirm={handleMerge}
-                    onCancel={() => setDisplayMergeConfirmation(false)}>
+                    onCancel={() => setDisplayMergeConfirmation(false)}
+                >
                     You have indicated that you would like to merge the following patients:{' '}
                     <strong>{response?.map((c) => c.personLocalId).join(', ')}.</strong> Patient ID:{' '}
                     <strong>{getSurvivingLocalId()}</strong> will be the surviving record.

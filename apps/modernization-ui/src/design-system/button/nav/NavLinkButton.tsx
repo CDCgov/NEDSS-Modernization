@@ -29,7 +29,8 @@ const NavLinkButton = ({
                 tertiary={tertiary}
                 secondary={secondary}
                 destructive={destructive}
-                disabled={disabled}>
+                disabled={disabled}
+            >
                 {children}
             </Button>
         </NavLink>

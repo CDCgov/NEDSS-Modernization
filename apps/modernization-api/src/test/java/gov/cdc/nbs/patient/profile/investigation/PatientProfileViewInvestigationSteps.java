@@ -1,5 +1,11 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
@@ -15,14 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 public class PatientProfileViewInvestigationSteps {
-
 
   private final String classicUrl;
   private final MockRestServiceServer server;
@@ -44,8 +43,7 @@ public class PatientProfileViewInvestigationSteps {
       final Active<InvestigationIdentifier> activeInvestigation,
       final Authenticated authenticated,
       final MockMvc mvc,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.classicUrl = classicUrl;
     this.server = server;
     this.activePatient = activePatient;
@@ -64,24 +62,23 @@ public class PatientProfileViewInvestigationSteps {
   public void the_investigation_is_viewed_from_the_patient_profile() throws Exception {
     long patient = activePatient.active().id();
 
-    server.expect(
-            requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+    server
+        .expect(requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
+    server
+        .expect(
+            requestTo(
+                classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
     long investigation = activeInvestigation.active().identifier();
 
-    String request =
-        "/nbs/api/profile/%d/investigation/%d".formatted(
-            patient,
-            investigation);
+    String request = "/nbs/api/profile/%d/investigation/%d".formatted(patient, investigation);
 
-    response.active(
-        mvc.perform(authenticated.withUser(MockMvcRequestBuilders.get(request))));
+    response.active(mvc.perform(authenticated.withUser(MockMvcRequestBuilders.get(request))));
   }
 
   @Then("the classic profile is prepared to view an investigation")
@@ -94,10 +91,12 @@ public class PatientProfileViewInvestigationSteps {
     long patient = activePatient.active().id();
     long investigation = activeInvestigation.active().identifier();
 
-    String expected = "/nbs/ViewFile1.do?ContextAction=InvestigationIDOnSummary&publicHealthCaseUID="
-        + investigation;
+    String expected =
+        "/nbs/ViewFile1.do?ContextAction=InvestigationIDOnSummary&publicHealthCaseUID="
+            + investigation;
 
-    this.response.active()
+    this.response
+        .active()
         .andExpect(status().isTemporaryRedirect())
         .andExpect(header().string("Location", containsString(expected)))
         .andExpect(cookie().value("Return-Patient", String.valueOf(patient)));

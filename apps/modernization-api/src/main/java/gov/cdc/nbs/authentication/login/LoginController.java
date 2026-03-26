@@ -19,8 +19,7 @@ class LoginController {
   LoginController(
       final UserDetailsService userService,
       final SecurityProperties securityProperties,
-      final TokenCreator creator
-  ) {
+      final TokenCreator creator) {
     this.userService = userService;
     this.securityProperties = securityProperties;
     this.creator = creator;
@@ -30,23 +29,15 @@ class LoginController {
       operationId = "login",
       summary = "NBS User Authentication",
       description = "Provides options from Users that have a name matching a criteria.",
-      tags = "Login"
-  )
+      tags = "Login")
   @PostMapping("/login")
   LoginResponse login(@RequestBody LoginRequest request, HttpServletResponse response) {
     var userDetails = userService.loadUserByUsername(request.username());
 
     NBSToken token = this.creator.forUser(request.username());
 
-    token.apply(
-        securityProperties,
-        response
-    );
+    token.apply(securityProperties, response);
 
-    return new LoginResponse(
-        userDetails.getUsername(),
-        token.value()
-    );
+    return new LoginResponse(userDetails.getUsername(), token.value());
   }
-
 }

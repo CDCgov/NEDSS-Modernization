@@ -8,13 +8,11 @@ import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class VaccinationSteps {
-
 
   private final Active<PatientIdentifier> activePatient;
   private final Active<ProviderIdentifier> activeProvider;
@@ -27,8 +25,7 @@ public class VaccinationSteps {
       final Active<ProviderIdentifier> activeProvider,
       final Active<VaccinationIdentifier> activeVaccination,
       final Active<InvestigationIdentifier> activeInvestigation,
-      final VaccinationMother mother
-  ) {
+      final VaccinationMother mother) {
     this.activePatient = activePatient;
     this.activeProvider = activeProvider;
     this.activeVaccination = activeVaccination;
@@ -43,44 +40,45 @@ public class VaccinationSteps {
 
   @When("the patient is vaccinated with {vaccine}")
   public void create(final String vaccine) {
-    activePatient.maybeActive()
-        .ifPresent(patient -> mother.create(patient, vaccine));
+    activePatient.maybeActive().ifPresent(patient -> mother.create(patient, vaccine));
   }
 
   @When("the vaccination was created on {localDate} at {time}")
   public void createdOn(final LocalDate on, final LocalTime at) {
-    activeVaccination.maybeActive()
-        .ifPresent(
-            vaccination -> mother.createdOn(
-                vaccination,
-                LocalDateTime.of(on, at)
-            )
-        );
+    activeVaccination
+        .maybeActive()
+        .ifPresent(vaccination -> mother.createdOn(vaccination, LocalDateTime.of(on, at)));
   }
 
   @When("the vaccination was administered on {localDate}")
   public void administeredOn(final LocalDate on) {
-    activeVaccination.maybeActive()
+    activeVaccination
+        .maybeActive()
         .ifPresent(vaccination -> mother.administeredOn(vaccination, on));
   }
 
   @Given("the vaccination was performed by the provider")
   public void reportedBy() {
-    activeVaccination.maybeActive()
-        .ifPresent(vaccination -> this.activeProvider.maybeActive()
-            .ifPresent(provider -> mother.performedBy(vaccination, provider))
-        );
+    activeVaccination
+        .maybeActive()
+        .ifPresent(
+            vaccination ->
+                this.activeProvider
+                    .maybeActive()
+                    .ifPresent(provider -> mother.performedBy(vaccination, provider)));
   }
 
   @Given("the vaccination was performed at {organization}")
   public void reportedAt(final OrganizationIdentifier organization) {
-    activeVaccination.maybeActive()
+    activeVaccination
+        .maybeActive()
         .ifPresent(vaccination -> mother.performedAt(vaccination, organization));
   }
 
   @Given("the vaccination is associated with the investigation")
   public void associatedWith() {
-    activeVaccination.maybeActive()
+    activeVaccination
+        .maybeActive()
         .ifPresent(vaccination -> mother.associated(vaccination, activeInvestigation.active()));
   }
 }

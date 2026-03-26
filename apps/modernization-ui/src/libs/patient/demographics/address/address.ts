@@ -41,7 +41,7 @@ const initial = (asOf: Supplier<string>, defaults?: AddressDemographicDefaults):
     county: null,
     country: orNull(defaults?.country),
     censusTract: null,
-    comment: null
+    comment: null,
 });
 
 export type { AddressDemographicDefaults };
@@ -59,7 +59,7 @@ const labels = {
     county: 'County',
     censusTract: 'Census tract',
     country: 'Country',
-    comment: 'Comments'
+    comment: 'Comments',
 };
 
 export { labels };

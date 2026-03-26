@@ -1,5 +1,8 @@
 package gov.cdc.nbs.questionbank.question;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -16,9 +19,6 @@ import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class QuestionMapperTest {
@@ -67,7 +67,6 @@ class QuestionMapperTest {
     validateQuestionFields(q, entity);
   }
 
-
   @Test
   void should_map_coded_question() {
     CodedQuestionEntity entity = QuestionEntityMother.codedQuestion();
@@ -82,24 +81,22 @@ class QuestionMapperTest {
 
   @Test
   void should_throw_if_unable_to_map() {
-    WaQuestion entity = new WaQuestion() {
+    WaQuestion entity =
+        new WaQuestion() {
 
-      @Override
-      public String getDataType() {
-        return "Test";
-      }
+          @Override
+          public String getDataType() {
+            return "Test";
+          }
 
-      @Override
-      public void update(Update command) {// NOOP
-        //
-      }
-
-    };
+          @Override
+          public void update(Update command) { // NOOP
+            //
+          }
+        };
 
     assertThrows(UpdateQuestionException.class, () -> questionMapper.toQuestion(entity));
   }
-
-
 
   private void validateQuestionFields(Question q, WaQuestion entity) {
     assertEquals(entity.getId().longValue(), q.id());
@@ -126,9 +123,8 @@ class QuestionMapperTest {
     assertEquals(entity.getQuestionIdentifierNnd(), q.messagingInfo().messageVariableId());
     assertEquals(entity.getQuestionLabelNnd(), q.messagingInfo().labelInMessage());
     assertEquals(entity.getQuestionOid(), q.messagingInfo().codeSystem());
-    assertEquals(entity.getQuestionRequiredNnd().equals('R'), q.messagingInfo().requiredInMessage());
+    assertEquals(
+        entity.getQuestionRequiredNnd().equals('R'), q.messagingInfo().requiredInMessage());
     assertEquals(entity.getQuestionDataTypeNnd(), q.messagingInfo().hl7DataType());
   }
-
-
 }

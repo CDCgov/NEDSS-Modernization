@@ -20,15 +20,15 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
                     appearsInTable: undefined,
                     width: undefined,
                     label: undefined,
-                    id: 1234
-                }
+                    id: 1234,
+                },
             ],
             blockName: undefined,
             id: 1234,
             visibleText: 'Y',
-            repeatNumber: 1
+            repeatNumber: 1,
         },
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return <FormProvider {...methods}>{children}</FormProvider>;

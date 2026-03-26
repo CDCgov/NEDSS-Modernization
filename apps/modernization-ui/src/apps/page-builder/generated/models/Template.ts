@@ -12,4 +12,3 @@ export type Template = {
     parentTemplateUid?: number;
     sourceNm?: string;
 };
-

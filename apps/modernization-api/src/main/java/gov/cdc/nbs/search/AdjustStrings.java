@@ -1,18 +1,16 @@
 package gov.cdc.nbs.search;
 
+import static java.util.function.Predicate.not;
+
 import java.util.Optional;
 import java.util.regex.Pattern;
-
-import static java.util.function.Predicate.not;
 
 public class AdjustStrings {
 
   private static final Pattern SPECIAL_CHARACTERS = Pattern.compile("\\W");
 
   public static String withoutSpecialCharacters(final String value) {
-    return value != null
-        ? SPECIAL_CHARACTERS.matcher(value).replaceAll("")
-        : null;
+    return value != null ? SPECIAL_CHARACTERS.matcher(value).replaceAll("") : null;
   }
 
   public static Optional<String> maybeWithoutSpecialCharacters(final String value) {
@@ -32,9 +30,7 @@ public class AdjustStrings {
   }
 
   public static String withoutHyphens(final String value) {
-    return value != null
-        ? value.replace("-", " ")
-        : null;
+    return value != null ? value.replace("-", " ") : null;
   }
 
   public static Optional<String> maybeWithoutHyphens(final String value) {
@@ -43,8 +39,5 @@ public class AdjustStrings {
         .filter(not(String::isBlank));
   }
 
-  private AdjustStrings() {
-
-  }
-
+  private AdjustStrings() {}
 }

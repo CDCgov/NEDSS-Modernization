@@ -5,7 +5,7 @@ import { validateDate } from './validateDate';
 const mockNow = vi.fn();
 
 vi.mock('./clock', () => ({
-    now: () => mockNow()
+    now: () => mockNow(),
 }));
 
 describe('when validating a date entered at text', () => {

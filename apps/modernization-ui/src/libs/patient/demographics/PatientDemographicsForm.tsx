@@ -9,7 +9,7 @@ import { BackToTop } from 'libs/page/back-to-top';
 import {
     PendingEntryAlert,
     PendingFormEntryInteraction,
-    PendingMessageRendererProps
+    PendingMessageRendererProps,
 } from 'design-system/entry/pending';
 import { PatientDemographicsDefaults, PatientDemographicsEntry } from './demographics';
 import { EditAdministrativeInformationCard } from './administrative';

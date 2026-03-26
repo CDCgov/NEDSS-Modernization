@@ -8,12 +8,12 @@ import { PaginationProvider } from 'pagination';
 import { SortingProvider } from 'libs/sorting';
 
 vi.mock('../../api/useExportMatches', () => ({
-    useExportMatches: vi.fn()
+    useExportMatches: vi.fn(),
 }));
 
 vi.mock('react-router', async () => ({
     ...(await vi.importActual('react-router')),
-    useSearchParams: vi.fn()
+    useSearchParams: vi.fn(),
 }));
 
 const mockReturnValue = {
@@ -25,18 +25,18 @@ const mockReturnValue = {
             patientName: 'John Smith',
             createdDate: '2014-02-11T11:30:30',
             identifiedDate: '2024-02-11T12:30:30',
-            numOfMatchingRecords: 2
-        }
+            numOfMatchingRecords: 2,
+        },
     ],
     page: 0,
-    total: 0
+    total: 0,
 };
 const mockFetch = vi.fn();
 vi.mock('apps/deduplication/api/useMatchesRequiringReview', () => ({
     useMatchesRequiringReview: () => ({
         response: mockReturnValue,
-        fetchMatchesRequiringReview: mockFetch
-    })
+        fetchMatchesRequiringReview: mockFetch,
+    }),
 }));
 
 const mockExportMatchesCSV = vi.fn();
@@ -48,7 +48,7 @@ beforeEach(() => {
 
     (useExportMatches as Mock).mockReturnValue({
         exportCSV: mockExportMatchesCSV,
-        exportPDF: mockExportMatchesPDF
+        exportPDF: mockExportMatchesPDF,
     });
 
     (useSearchParams as Mock).mockReturnValue([new URLSearchParams(), vi.fn()]);

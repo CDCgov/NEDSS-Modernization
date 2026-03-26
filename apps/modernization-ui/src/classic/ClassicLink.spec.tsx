@@ -16,7 +16,7 @@ describe('A ClassicLink component', () => {
             redirecting: false,
             location: 'location-value',
             redirect,
-            reset: vi.fn()
+            reset: vi.fn(),
         }));
 
         const { findByText } = render(<ClassicLink url="redirect-url">Link text</ClassicLink>);

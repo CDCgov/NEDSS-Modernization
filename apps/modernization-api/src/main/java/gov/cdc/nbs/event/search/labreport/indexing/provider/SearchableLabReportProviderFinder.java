@@ -1,15 +1,15 @@
 package gov.cdc.nbs.event.search.labreport.indexing.provider;
 
 import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
+import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class SearchableLabReportProviderFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [participation].[subject_entity_uid] as [entity_id],
           [participation].type_cd,
@@ -17,11 +17,11 @@ public class SearchableLabReportProviderFinder {
           [name].first_nm,
           [name].last_nm
       from [Participation] [participation]
-            
+
           join Person_name [name] on
                   [name].person_uid = [participation].[subject_entity_uid]
               and [name].nm_use_cd = 'L'
-            
+
       where   [participation].subject_class_cd = 'PSN'
           and [participation].type_cd <> 'PATSBJ'
           and [participation].record_status_cd = 'ACTIVE'
@@ -39,22 +39,18 @@ public class SearchableLabReportProviderFinder {
 
   public SearchableLabReportProviderFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new SearchableLabReportProviderRowMapper(
-        new SearchableLabReportProviderRowMapper.Column(
-            IDENTIFIER_COLUMN,
-            TYPE_COLUMN,
-            SUBJECT_TYPE_COLUMN,
-            FIRST_NAME_COLUMN,
-            LAST_NAME_COLUMN
-        )
-    );
+    this.mapper =
+        new SearchableLabReportProviderRowMapper(
+            new SearchableLabReportProviderRowMapper.Column(
+                IDENTIFIER_COLUMN,
+                TYPE_COLUMN,
+                SUBJECT_TYPE_COLUMN,
+                FIRST_NAME_COLUMN,
+                LAST_NAME_COLUMN));
   }
 
   public List<SearchableLabReport.Person.Provider> find(final long lab) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(LAB_REPORT_PARAMETER, lab),
-        this.mapper
-    );
+        QUERY, statement -> statement.setLong(LAB_REPORT_PARAMETER, lab), this.mapper);
   }
 }

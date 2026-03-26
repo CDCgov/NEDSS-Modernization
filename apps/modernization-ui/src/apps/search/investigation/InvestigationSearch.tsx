@@ -15,7 +15,7 @@ import { useInvestigationSearch } from './useInvestigationSearch';
 
 const InvestigationSearch = () => {
     const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     const interaction = useInvestigationSearch({ form });

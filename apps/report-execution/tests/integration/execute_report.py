@@ -27,7 +27,7 @@ class TestIntegrationExecuteReport:
         result = execute_report(report_spec)
         assert result.content_type == 'table'
         assert (
-            result.description
+            result.header
             == 'Custom Report For Table: [NBS_ODSE].[dbo].[Filter_operator]'
         )
         assert result.content.columns == [

@@ -7,8 +7,8 @@ const meta = {
     title: 'Design System/Message',
     component: Message,
     argTypes: {
-        type: { control: 'select', options: messageTypes }
-    }
+        type: { control: 'select', options: messageTypes },
+    },
 } satisfies Meta<typeof Message>;
 
 export default meta;
@@ -25,35 +25,35 @@ export const Default: Story = {
                 cursus. In varius lacinia odio non cursus. Fusce quis tellus quis elit sollicitudin placerat. In
                 efficitur, massa eget pharetra pretium, ante eros venenatis ipsum, eu finibus dui diam sed massa.{' '}
             </p>
-        )
-    }
+        ),
+    },
 };
 
 export const ErrorStory: Story = {
     name: 'Error',
     args: {
         type: 'error',
-        children: 'This is an error message'
-    }
+        children: 'This is an error message',
+    },
 };
 
 export const Information: Story = {
     args: {
         type: 'information',
-        children: 'This is an information message'
-    }
+        children: 'This is an information message',
+    },
 };
 
 export const Success: Story = {
     args: {
         type: 'success',
-        children: 'This is a success message'
-    }
+        children: 'This is a success message',
+    },
 };
 
 export const Warning: Story = {
     args: {
         type: 'warning',
-        children: 'This is a warning message'
-    }
+        children: 'This is a warning message',
+    },
 };

@@ -12,7 +12,6 @@ import gov.cdc.nbs.patient.demographics.mortality.MortalityDemographic;
 import gov.cdc.nbs.patient.demographics.name.NameDemographic;
 import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
 import gov.cdc.nbs.patient.demographics.race.RaceDemographic;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +26,7 @@ public record EditedPatient(
     List<AddressDemographic> addresses,
     List<PhoneDemographic> phoneEmails,
     List<RaceDemographic> races,
-    List<IdentificationDemographic> identifications
-) {
+    List<IdentificationDemographic> identifications) {
 
   public EditedPatient(
       Administrative administrative,
@@ -41,8 +39,7 @@ public record EditedPatient(
       List<AddressDemographic> addresses,
       List<PhoneDemographic> phoneEmails,
       List<RaceDemographic> races,
-      List<IdentificationDemographic> identifications
-  ) {
+      List<IdentificationDemographic> identifications) {
     this.administrative = administrative;
     this.birth = birth;
     this.gender = gender;
@@ -57,19 +54,7 @@ public record EditedPatient(
   }
 
   public EditedPatient() {
-    this(
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null
-    );
+    this(null, null, null, null, null, null, null, null, null, null, null);
   }
 
   public EditedPatient withAdministrative(final Administrative administrative) {
@@ -84,8 +69,7 @@ public record EditedPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications()
-    );
+        identifications());
   }
 
   public EditedPatient withName(final NameDemographic name) {
@@ -100,8 +84,7 @@ public record EditedPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications()
-    );
+        identifications());
   }
 
   public EditedPatient withAddress(final AddressDemographic value) {
@@ -116,8 +99,7 @@ public record EditedPatient(
         Including.include(addresses(), value),
         phoneEmails(),
         races(),
-        identifications()
-    );
+        identifications());
   }
 
   public EditedPatient withPhoneEmail(final PhoneDemographic value) {
@@ -147,8 +129,7 @@ public record EditedPatient(
         addresses(),
         phoneEmails(),
         Including.include(races(), value),
-        identifications()
-    );
+        identifications());
   }
 
   public EditedPatient withIdentification(final IdentificationDemographic value) {
@@ -163,8 +144,7 @@ public record EditedPatient(
         addresses(),
         phoneEmails(),
         races(),
-        Including.include(identifications(), value)
-    );
+        Including.include(identifications(), value));
   }
 
   public EditedPatient withBirth(final BirthDemographic value) {
@@ -179,8 +159,7 @@ public record EditedPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications()
-    );
+        identifications());
   }
 
   public EditedPatient withEthnicity(final EthnicityDemographic value) {
@@ -195,8 +174,7 @@ public record EditedPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications()
-    );
+        identifications());
   }
 
   public EditedPatient withGender(final GenderDemographic value) {
@@ -211,8 +189,7 @@ public record EditedPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications()
-    );
+        identifications());
   }
 
   public EditedPatient withMortality(final MortalityDemographic value) {
@@ -227,8 +204,7 @@ public record EditedPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications()
-    );
+        identifications());
   }
 
   public EditedPatient withGeneralInformation(final GeneralInformationDemographic value) {
@@ -243,8 +219,7 @@ public record EditedPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications()
-    );
+        identifications());
   }
 
   public Optional<Administrative> maybeAdministrative() {
@@ -270,5 +245,4 @@ public record EditedPatient(
   public Optional<GeneralInformationDemographic> maybeGeneralInformation() {
     return Optional.ofNullable(general());
   }
-
 }

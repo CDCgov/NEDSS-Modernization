@@ -1,18 +1,16 @@
 package gov.cdc.nbs.questionbank.question.request.create;
 
 import gov.cdc.nbs.questionbank.question.model.DisplayOption;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Arrays;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
 public class CreateCodedQuestionRequest extends CreateQuestionRequest {
   private Long valueSet;
   private String defaultValue;
-
 
   public enum CodedDisplayControl {
     SINGLE_SELECT(1007, "Single-Select (Drop down)"),

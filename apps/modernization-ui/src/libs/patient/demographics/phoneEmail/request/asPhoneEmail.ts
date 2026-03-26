@@ -17,7 +17,7 @@ const asPhoneEmail = (demographic: Partial<PhoneEmailDemographic>): PhoneEmailDe
             extension: orUndefined(extension),
             email: orUndefined(email),
             url: orUndefined(url),
-            comment: orUndefined(comment)
+            comment: orUndefined(comment),
         };
     }
 };

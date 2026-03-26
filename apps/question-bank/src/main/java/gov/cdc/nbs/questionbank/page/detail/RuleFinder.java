@@ -1,15 +1,15 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
+import java.util.Collection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-
 @Component
 class RuleFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
            [rule].wa_rule_metadata_uid         as [identifier],
            [rule].wa_template_uid              as [page],
@@ -33,10 +33,6 @@ class RuleFinder {
 
   Collection<PagesRule> find(final long identifier) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(IDENTIFIER_PARAMETER, identifier),
-        this.mapper
-    );
+        QUERY, statement -> statement.setLong(IDENTIFIER_PARAMETER, identifier), this.mapper);
   }
-
 }

@@ -2,16 +2,16 @@ package gov.cdc.nbs.option.concept.autocomplete;
 
 import gov.cdc.nbs.option.concept.ConceptOption;
 import gov.cdc.nbs.option.concept.ConceptOptionRowMapper;
+import java.util.Collection;
+import java.util.Map;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.util.Collection;
-import java.util.Map;
-
 public class JDBCConceptOptionResolver implements ConceptOptionResolver {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           code                as [value],
           code_short_desc_txt as [name],
@@ -38,17 +38,14 @@ public class JDBCConceptOptionResolver implements ConceptOptionResolver {
   }
 
   @Override
-  public Collection<ConceptOption> resolve(final String valueSet, final String query, final int limit) {
-    Map<String, Object> parameters = Map.of(
-        VALUE_SET_PARAMETER, valueSet,
-        CRITERIA_PARAMETER, withWildcard(query),
-        LIMIT_PARAMETER, limit
-    );
-    return this.template.query(
-        QUERY,
-        new MapSqlParameterSource(parameters),
-        this.mapper
-    );
+  public Collection<ConceptOption> resolve(
+      final String valueSet, final String query, final int limit) {
+    Map<String, Object> parameters =
+        Map.of(
+            VALUE_SET_PARAMETER, valueSet,
+            CRITERIA_PARAMETER, withWildcard(query),
+            LIMIT_PARAMETER, limit);
+    return this.template.query(QUERY, new MapSqlParameterSource(parameters), this.mapper);
   }
 
   private String withWildcard(final String value) {

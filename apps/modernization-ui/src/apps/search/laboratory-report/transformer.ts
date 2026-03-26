@@ -10,7 +10,7 @@ import {
     LabReportProviderSearch,
     PregnancyStatus,
     ProviderType,
-    UserType
+    UserType,
 } from 'generated/graphql/schema';
 import { EventDate, Identification, LabReportFilterEntry } from './labReportFormTypes';
 import { asNumericValues, asValue, asValues, Selectable } from 'options/selectable';
@@ -43,7 +43,7 @@ const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
         pregnancyStatus: remaining.pregnancyStatus && (asValue(remaining.pregnancyStatus) as PregnancyStatus),
         eventId: resolveEventId(remaining.identification),
         eventDate: resolveEventDate(remaining.eventDate),
-        providerSearch
+        providerSearch,
     };
 };
 
@@ -52,7 +52,7 @@ const resolveEventDate = (date?: EventDate): LaboratoryEventDateSearch | undefin
         return {
             type: date.type.value as LaboratoryReportEventDateType,
             from: date.from,
-            to: date.to
+            to: date.to,
         };
     }
 };
@@ -61,7 +61,7 @@ const resolveEventId = (identification?: Identification): LabReportEventId | und
     if (identification && identification?.type) {
         return {
             labEventId: identification.value,
-            labEventType: identification.type.value as LaboratoryEventIdType
+            labEventType: identification.type.value as LaboratoryEventIdType,
         };
     }
 };
@@ -71,7 +71,7 @@ const resolveProvider =
     (selectable?: Selectable): LabReportProviderSearch | undefined =>
         selectable && {
             providerId: selectable.value,
-            providerType: type
+            providerType: type,
         };
 
 const resolveOrderingFacility = resolveProvider(ProviderType.OrderingFacility);

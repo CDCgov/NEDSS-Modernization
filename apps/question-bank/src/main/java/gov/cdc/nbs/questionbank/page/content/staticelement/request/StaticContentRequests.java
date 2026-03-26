@@ -4,25 +4,18 @@ import org.springframework.lang.Nullable;
 
 public sealed interface StaticContentRequests {
 
-        String adminComments();
+  String adminComments();
 
-        Long subSectionId();
+  Long subSectionId();
 
-        public record AddDefault(
-                        @Nullable String adminComments,
-                        Long subSectionId) implements StaticContentRequests {
-        }
+  public record AddDefault(@Nullable String adminComments, Long subSectionId)
+      implements StaticContentRequests {}
 
-        public record AddHyperlink(
-                        String label,
-                        String linkUrl,
-                        @Nullable String adminComments,
-                        Long subSectionId) implements StaticContentRequests {
-        }
+  public record AddHyperlink(
+      String label, String linkUrl, @Nullable String adminComments, Long subSectionId)
+      implements StaticContentRequests {}
 
-        public record AddReadOnlyComments(
-                        String commentsText,
-                        @Nullable String adminComments,
-                        Long subSectionId) implements StaticContentRequests {
-        }
+  public record AddReadOnlyComments(
+      String commentsText, @Nullable String adminComments, Long subSectionId)
+      implements StaticContentRequests {}
 }

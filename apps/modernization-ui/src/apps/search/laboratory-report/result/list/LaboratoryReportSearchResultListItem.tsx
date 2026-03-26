@@ -8,7 +8,7 @@ import {
     getOrderingProviderName,
     getReportingFacility,
     getDescription,
-    getAssociatedInvestigations
+    getAssociatedInvestigations,
 } from 'apps/search/laboratory-report/result';
 import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
 
@@ -35,7 +35,8 @@ const LaboratoryReportSearchResultListItem = ({ result, jurisdictionResolver }: 
                 <ResultItem label="Document Type" orientation="vertical">
                     <ClassicLink
                         id="documentType"
-                        url={`/nbs/api/profile/${patient?.personParentUid}/report/lab/${result.id}`}>
+                        url={`/nbs/api/profile/${patient?.personParentUid}/report/lab/${result.id}`}
+                    >
                         Lab report
                     </ClassicLink>
                 </ResultItem>

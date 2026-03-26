@@ -23,7 +23,8 @@ export function MergePreviewTableCard<T>({ id, title, columns, data }: SortableT
                 <Tag size="small" weight="bold">
                     {data.length}
                 </Tag>
-            }>
+            }
+        >
             <SortableDataTable
                 id={`${id}-table`}
                 columns={columns}

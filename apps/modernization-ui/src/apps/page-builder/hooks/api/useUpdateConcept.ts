@@ -22,7 +22,7 @@ const reducer = (_state: State, action: Action): State => {
                 status: 'updating',
                 valueset: action.valueset,
                 localCode: action.localCode,
-                request: action.request
+                request: action.request,
             };
         case 'complete':
             return { status: 'complete', concept: action.concept };
@@ -41,7 +41,7 @@ export const useUpdateConcept = () => {
             ConceptControllerService.updateConcept({
                 codeSetNm: state.valueset,
                 localCode: state.localCode,
-                requestBody: state.request
+                requestBody: state.request,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
@@ -59,7 +59,7 @@ export const useUpdateConcept = () => {
         isLoading: state.status === 'updating',
         response: state.status === 'complete' ? state.concept : undefined,
         update: (valueset: string, localCode: string, request: UpdateConceptRequest) =>
-            dispatch({ type: 'update', valueset, localCode, request })
+            dispatch({ type: 'update', valueset, localCode, request }),
     };
 
     return value;

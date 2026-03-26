@@ -8,9 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Configuration
 class TestActiveUserDetailsConfiguration {
 
-    @Bean
-    static Active<UserDetails> userDetailsTestActive() {
-        return new Active<>();
-    }
-
+  @Bean
+  static Active<UserDetails> userDetailsTestActive() {
+    return new Active<>();
+  }
 }

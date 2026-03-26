@@ -2,11 +2,11 @@ import { render } from '@testing-library/react';
 import { LaboratoryReportSearchCriteria } from './LaboratoryReportSearchCriteria'; // Update this import path
 
 vi.mock('./GeneralFields', () => ({
-    GeneralFields: () => <div data-testid="general-fields">General Fields</div>
+    GeneralFields: () => <div data-testid="general-fields">General Fields</div>,
 }));
 
 vi.mock('./CriteriaFields', () => ({
-    CriteriaFields: () => <div data-testid="criteria-fields">Criteria Fields</div>
+    CriteriaFields: () => <div data-testid="criteria-fields">Criteria Fields</div>,
 }));
 
 describe('LaboratoryReportSearchCriteria', () => {

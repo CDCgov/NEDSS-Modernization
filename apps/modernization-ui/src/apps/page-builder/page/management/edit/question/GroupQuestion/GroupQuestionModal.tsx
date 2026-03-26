@@ -29,7 +29,8 @@ export const GroupQuestionModal = ({ modal, subsection }: Props) => {
             className="group-question-modal"
             id="group-question-modal"
             aria-labelledby="group-question-modal"
-            aria-describedby="group-question-modal">
+            aria-describedby="group-question-modal"
+        >
             <div className={styles.modal}>
                 {subsection && (
                     <>

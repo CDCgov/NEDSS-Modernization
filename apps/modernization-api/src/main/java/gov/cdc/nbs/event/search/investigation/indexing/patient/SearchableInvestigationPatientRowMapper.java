@@ -2,13 +2,13 @@ package gov.cdc.nbs.event.search.investigation.indexing.patient;
 
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.event.search.investigation.SearchableInvestigation;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
-class SearchableInvestigationPatientRowMapper implements RowMapper<SearchableInvestigation.Person.Patient> {
+class SearchableInvestigationPatientRowMapper
+    implements RowMapper<SearchableInvestigation.Person.Patient> {
 
   record Column(
       int identifier,
@@ -18,10 +18,7 @@ class SearchableInvestigationPatientRowMapper implements RowMapper<SearchableInv
       int firstName,
       int lastName,
       int gender,
-      int birthday
-  ) {
-  }
-
+      int birthday) {}
 
   private final Column columns;
 
@@ -30,11 +27,8 @@ class SearchableInvestigationPatientRowMapper implements RowMapper<SearchableInv
   }
 
   @Override
-  public SearchableInvestigation.Person.Patient mapRow(
-      final ResultSet resultSet,
-      final int rowNum
-  ) throws SQLException {
-
+  public SearchableInvestigation.Person.Patient mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
 
     long identifier = resultSet.getLong(this.columns.identifier());
     String local = resultSet.getString(this.columns.local());
@@ -46,14 +40,6 @@ class SearchableInvestigationPatientRowMapper implements RowMapper<SearchableInv
     LocalDate birthday = LocalDateColumnMapper.map(resultSet, columns.birthday());
 
     return new SearchableInvestigation.Person.Patient(
-        identifier,
-        local,
-        type,
-        subjectType,
-        first,
-        last,
-        gender,
-        birthday
-    );
+        identifier, local, type, subjectType, first, last, gender, birthday);
   }
 }

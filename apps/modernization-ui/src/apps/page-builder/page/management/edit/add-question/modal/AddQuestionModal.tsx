@@ -33,7 +33,8 @@ export const AddQuestionModal = ({ modal, onAddQuestion }: Props) => {
             className="add-question-modal"
             id="add-question-modal"
             aria-labelledby="modal-1-heading"
-            aria-describedby="modal-1-description">
+            aria-describedby="modal-1-description"
+        >
             <div className={styles.modal}>
                 {state === 'search' ? (
                     <PaginationProvider>

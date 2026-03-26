@@ -1,12 +1,9 @@
 package gov.cdc.nbs.questionbank.valueset.concept;
 
-
 import static org.hamcrest.Matchers.contains;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.test.web.servlet.ResultActions;
+
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.support.valueset.ValueSetMother;
 import gov.cdc.nbs.testing.support.Active;
@@ -14,6 +11,9 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class ListConceptsSteps {
 
@@ -47,11 +47,15 @@ public class ListConceptsSteps {
   public void i_find_concepts(final DataTable dataTable) throws Exception {
     List<String> names = new ArrayList<>();
     List<String> values = new ArrayList<>();
-    dataTable.asMaps().forEach(row -> {
-      names.add(row.get("name"));
-      values.add(row.get("value"));
-    });
-    response.active()
+    dataTable
+        .asMaps()
+        .forEach(
+            row -> {
+              names.add(row.get("name"));
+              values.add(row.get("value"));
+            });
+    response
+        .active()
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.[*].display", contains(names.toArray())))
         .andExpect(jsonPath("$.[*].localCode", contains(values.toArray())));

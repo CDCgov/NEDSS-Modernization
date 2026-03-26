@@ -29,13 +29,15 @@ export const ConditionsDisplay = ({ conditions }: Props) => {
                 <button
                     aria-label="view all conditions"
                     className={styles.expandButton}
-                    onClick={() => setShowAll(true)}>{`${conditions.length - 5} more...`}</button>
+                    onClick={() => setShowAll(true)}
+                >{`${conditions.length - 5} more...`}</button>
             )}
             {conditions.length > 5 && showAll && (
                 <button
                     aria-label="view fewer conditions"
                     className={styles.expandButton}
-                    onClick={() => setShowAll(false)}>{`view less`}</button>
+                    onClick={() => setShowAll(false)}
+                >{`view less`}</button>
             )}
         </>
     );

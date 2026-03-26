@@ -12,17 +12,17 @@ const mockLocationOptions: LocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: mockState
+    state: mockState,
 };
 
 vi.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+    useLocationOptions: () => mockLocationOptions,
 }));
 
 const Fixture = () => {
     const form = useForm<HasMortalityDemographic>({
         mode: 'onBlur',
-        defaultValues: { mortality: initial(() => '06/25/2001') }
+        defaultValues: { mortality: initial(() => '06/25/2001') },
     });
 
     const options = useMortalityOptions();

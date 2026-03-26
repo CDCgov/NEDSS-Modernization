@@ -14,7 +14,6 @@ public class EducationLevelSteps {
 
   @ParameterType(name = "educationLevel", value = ".*")
   public String educationLevel(final String value) {
-    return resolver.resolve(SET, value)
-        .orElse(null);
+    return resolver.resolve(SET, value).orElse(null);
   }
 }

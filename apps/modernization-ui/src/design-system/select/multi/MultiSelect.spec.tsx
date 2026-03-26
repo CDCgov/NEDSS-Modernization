@@ -6,7 +6,7 @@ describe('MultiSelect', () => {
     const options = [
         { name: 'Option One', value: '1', label: 'Option One' },
         { name: 'Option Two', value: '2', label: 'Option Two' },
-        { name: 'Option Three', value: '3', label: 'Option Three' }
+        { name: 'Option Three', value: '3', label: 'Option Three' },
     ];
 
     it('should display options when clicked', async () => {

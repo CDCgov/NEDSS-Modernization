@@ -19,13 +19,16 @@ class DeduplicationAPIRouteLocatorConfiguration {
       final RouteLocatorBuilder builder,
       @Qualifier("defaults") final List<GatewayFilter> defaults,
       final DeduplicationService service) {
-    return builder.routes()
+    return builder
+        .routes()
         .route(
             "deduplication-api",
-            route -> route.order(Ordered.HIGHEST_PRECEDENCE)
-                .path("/nbs/api/deduplication/**")
-                .filters(filter -> filter.filters(defaults))
-                .uri(service.uri()))
+            route ->
+                route
+                    .order(Ordered.HIGHEST_PRECEDENCE)
+                    .path("/nbs/api/deduplication/**")
+                    .filters(filter -> filter.filters(defaults))
+                    .uri(service.uri()))
         .build();
   }
 }

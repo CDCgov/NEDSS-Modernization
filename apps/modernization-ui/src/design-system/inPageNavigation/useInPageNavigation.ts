@@ -28,7 +28,7 @@ const useInPageNavigation = (threshold: number = 0) => {
         const smoothScroll = (element: HTMLElement) => {
             element.scrollIntoView({
                 behavior: 'smooth',
-                block: 'start'
+                block: 'start',
             });
         };
 

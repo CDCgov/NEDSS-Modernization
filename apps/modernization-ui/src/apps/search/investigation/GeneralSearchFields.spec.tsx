@@ -6,20 +6,20 @@ import GeneralSearchFields from './GeneralSearchFields';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 
 vi.mock('options/jurisdictions', () => ({
-    useJurisdictionOptions: () => ({ all: [] })
+    useJurisdictionOptions: () => ({ all: [] }),
 }));
 
 vi.mock('options/program-areas', () => ({
-    useProgramAreaOptions: () => ({ all: [] })
+    useProgramAreaOptions: () => ({ all: [] }),
 }));
 
 vi.mock('options/condition', () => ({
-    useConditionOptions: () => ({ options: [] })
+    useConditionOptions: () => ({ options: [] }),
 }));
 
 const InvestigationFormWithFields = () => {
     const form = useForm<InvestigationFilterEntry>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (

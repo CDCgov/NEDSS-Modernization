@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -15,8 +17,6 @@ import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
 @Transactional
 public class OriginalElectronicDocListSteps {
   private final PageMother mother;
@@ -31,8 +31,7 @@ public class OriginalElectronicDocListSteps {
       final PageMother mother,
       final ObjectMapper mapper,
       final ExceptionHolder exceptionHolder,
-      final StaticRequest request
-  ) {
+      final StaticRequest request) {
     this.mother = mother;
     this.mapper = mapper;
     this.exceptionHolder = exceptionHolder;
@@ -48,21 +47,22 @@ public class OriginalElectronicDocListSteps {
   @Given("I create an original electronic document list with {string}")
   public void i_create_an_original_electronic_document_list(String adminComments) {
     WaTemplate temp = mother.one();
-    WaUiMetadata subsection = temp.getUiMetadata().stream()
-        .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
-        .findFirst()
-        .orElseThrow();
+    WaUiMetadata subsection =
+        temp.getUiMetadata().stream()
+            .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
+            .findFirst()
+            .orElseThrow();
 
     currPage.active(temp);
 
     requestBody.active(new StaticContentRequests.AddDefault(adminComments, subsection.getId()));
   }
 
-
   @When("I send a original electronic document list request")
   public void i_send_a_original_electronic_document_list_request() {
     try {
-      this.response.active(request.originalElecDocListRequest(currPage.active().getId(), requestBody.active()));
+      this.response.active(
+          request.originalElecDocListRequest(currPage.active().getId(), requestBody.active()));
     } catch (Exception e) {
       exceptionHolder.setException(e);
     }
@@ -81,8 +81,8 @@ public class OriginalElectronicDocListSteps {
     AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
 
     this.updateResponse.active(
-        request.updateElecDocListRequest(updateRequest.active(), currPage.active().getId(),
-            staticResponse.componentId()));
+        request.updateElecDocListRequest(
+            updateRequest.active(), currPage.active().getId(), staticResponse.componentId()));
   }
 
   @Then("the electronic doc list should have {string} of {string}")
@@ -95,11 +95,9 @@ public class OriginalElectronicDocListSteps {
   @Then("a original electronic document list element is created")
   public void a_original_electronic_document_list_element_is_created() {
     try {
-      this.response.active()
-          .andExpect(jsonPath("$.componentId").isNumber());
+      this.response.active().andExpect(jsonPath("$.componentId").isNumber());
     } catch (Exception e) {
       exceptionHolder.setException(e);
     }
   }
-
 }

@@ -11,10 +11,7 @@ public class OutbreakSteps {
   private final ConceptParameterResolver resolver;
   private final ConceptMother mother;
 
-  OutbreakSteps(
-      final ConceptParameterResolver resolver,
-      final ConceptMother mother
-  ) {
+  OutbreakSteps(final ConceptParameterResolver resolver, final ConceptMother mother) {
     this.resolver = resolver;
     this.mother = mother;
   }
@@ -26,7 +23,6 @@ public class OutbreakSteps {
 
   @ParameterType(name = "outbreak", value = ".*")
   public String outbreak(final String value) {
-    return resolver.resolve(SET, value)
-        .orElse(null);
+    return resolver.resolve(SET, value).orElse(null);
   }
 }

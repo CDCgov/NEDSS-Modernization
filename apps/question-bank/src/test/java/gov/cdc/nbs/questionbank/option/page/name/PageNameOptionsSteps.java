@@ -10,9 +10,7 @@ public class PageNameOptionsSteps {
   private final Active<ResultActions> response;
 
   PageNameOptionsSteps(
-      final PageNameOptionRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final PageNameOptionRequester requester, final Active<ResultActions> response) {
     this.requester = requester;
     this.response = response;
   }

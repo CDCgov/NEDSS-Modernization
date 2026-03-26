@@ -1,9 +1,8 @@
 package gov.cdc.nbs.demographics.address;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 public class DisplayableAddressRowMapper implements RowMapper<DisplayableAddress> {
 
@@ -12,7 +11,6 @@ public class DisplayableAddressRowMapper implements RowMapper<DisplayableAddress
       this(1, 2, 3, 4, 5, 6);
     }
   }
-
 
   private final Columns columns;
 
@@ -33,14 +31,6 @@ public class DisplayableAddressRowMapper implements RowMapper<DisplayableAddress
     String state = resultSet.getString(columns.state());
     String zipcode = resultSet.getString(columns.zipcode());
 
-
-    return new DisplayableAddress(
-        use,
-        address,
-        address2,
-        city,
-        state,
-        zipcode
-    );
+    return new DisplayableAddress(use, address, address2, city, state, zipcode);
   }
 }

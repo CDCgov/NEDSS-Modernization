@@ -9,17 +9,17 @@ const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: vi.fn()
+    state: vi.fn(),
 };
 
 vi.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+    useLocationOptions: () => mockLocationOptions,
 }));
 
 const Fixture = () => {
     const form = useForm<ExtendedNewPatientEntry>({
         mode: 'onBlur',
-        defaultValues: { mortality: { asOf: internalizeDate(new Date()) } }
+        defaultValues: { mortality: { asOf: internalizeDate(new Date()) } },
     });
 
     return (

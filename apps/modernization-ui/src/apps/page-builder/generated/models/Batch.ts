@@ -8,4 +8,3 @@ export type Batch = {
     label?: string;
     width?: number;
 };
-

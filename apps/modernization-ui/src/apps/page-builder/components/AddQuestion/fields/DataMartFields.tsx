@@ -19,7 +19,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
     const [displayControl, subgroup, dataMartColumnName, rdbColumnName] = useWatch({
         control: form.control,
         name: ['displayControl', 'subgroup', 'dataMartInfo.dataMartColumnName', 'dataMartInfo.rdbColumnName'],
-        exact: true
+        exact: true,
     });
     const alphanumericUnderscoreNotStartingWithNumber = /^[a-zA-Z_]\w*$/;
     const { isValid: isValidRdbColumn, validate: validateRdbColumnName } = useQuestionValidation(
@@ -65,7 +65,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
         // check === false to keep undefined from triggering an error
         if (isValidRdbColumn === false) {
             form.setError('dataMartInfo.rdbColumnName', {
-                message: `An Rdb column named: ${rdbColumnName} already exists in the system for the specified subgroup`
+                message: `An Rdb column named: ${rdbColumnName} already exists in the system for the specified subgroup`,
             });
         } else {
             form.clearErrors('dataMartInfo.rdbColumnName');
@@ -75,7 +75,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
     useEffect(() => {
         if (isValidDataMartColumnName === false || isValidPageDataMartColumnName === false) {
             form.setError('dataMartInfo.dataMartColumnName', {
-                message: `A Data mart column named: ${dataMartColumnName} already exists in the system`
+                message: `A Data mart column named: ${dataMartColumnName} already exists in the system`,
             });
         }
     }, [isValidDataMartColumnName, isValidPageDataMartColumnName]);
@@ -88,7 +88,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
                 name="dataMartInfo.reportLabel"
                 rules={{
                     required: { value: true, message: 'Default label in report is required' },
-                    ...maxLengthRule(50)
+                    ...maxLengthRule(50),
                 }}
                 render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                     <Input
@@ -111,7 +111,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
                 name="dataMartInfo.defaultRdbTableName"
                 rules={{
                     required: { value: !editing, message: 'Default RDB table name is required' },
-                    ...maxLengthRule(50)
+                    ...maxLengthRule(50),
                 }}
                 render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                     <Input
@@ -136,9 +136,9 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
                     required: { value: !editing, message: 'RDB column name is required' },
                     pattern: {
                         value: alphanumericUnderscoreNotStartingWithNumber,
-                        message: 'Must not start with a number and valid characters are A-Z, a-z, 0-9, or _'
+                        message: 'Must not start with a number and valid characters are A-Z, a-z, 0-9, or _',
                     },
-                    ...maxLengthRule(20)
+                    ...maxLengthRule(20),
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
@@ -171,9 +171,9 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
                 rules={{
                     pattern: {
                         value: alphanumericUnderscoreNotStartingWithNumber,
-                        message: 'Must not start with a number and valid characters are A-Z, a-z, 0-9, or _'
+                        message: 'Must not start with a number and valid characters are A-Z, a-z, 0-9, or _',
                     },
-                    ...maxLengthRule(20)
+                    ...maxLengthRule(20),
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input

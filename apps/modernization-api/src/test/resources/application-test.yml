@@ -28,8 +28,6 @@ testing:
   id-generation:
     suffix: 'TEST'
     starting: -20000000 # a negative id should reduce conflicts of ids in a live system
-  database:
-    image: cdc-sandbox-nbs-mssql
 
 logging:
   level:

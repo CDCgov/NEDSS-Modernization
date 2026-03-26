@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 class OccupationOptionFinder extends SQLBasedOptionFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           code                                as [value],
           code_short_desc_txt                 as [name],
@@ -19,10 +20,7 @@ class OccupationOptionFinder extends SQLBasedOptionFinder {
         code_short_desc_txt
       """;
 
-
   OccupationOptionFinder(final JdbcTemplate template) {
     super(QUERY, template);
   }
-
-
 }

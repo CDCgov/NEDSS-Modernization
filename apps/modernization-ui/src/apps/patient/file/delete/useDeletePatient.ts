@@ -24,7 +24,7 @@ export const useDeletePatient = (
                 console.error('Error deleting patient:', error);
                 onDeleteComplete({
                     success: false,
-                    message: 'Failed to delete patient.'
+                    message: 'Failed to delete patient.',
                 });
             }
         },

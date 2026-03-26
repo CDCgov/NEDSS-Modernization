@@ -55,7 +55,7 @@ const Tooltip = ({ children, message, spanClass, ...remaining }: TooltipProps) =
 
                 setPlacement({
                     top,
-                    left: left + width / 2
+                    left: left + width / 2,
                 });
             }
         },
@@ -67,7 +67,8 @@ const Tooltip = ({ children, message, spanClass, ...remaining }: TooltipProps) =
             className={classNames(styles.container, spanClass)}
             ref={targeted}
             onMouseEnter={() => setVisible(true)}
-            onMouseLeave={() => setVisible(false)}>
+            onMouseLeave={() => setVisible(false)}
+        >
             {children(id)}
             {createPortal(
                 <TooltipMessage id={id} style={{ position: 'fixed', ...placement }} visible={visible} {...remaining}>

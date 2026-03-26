@@ -5,7 +5,7 @@ import { MemoizedSupplier } from 'libs/supplying';
 import {
     AdministrativeInformation,
     AdministrativeInformationCard,
-    AdministrativeInformationCardProps
+    AdministrativeInformationCardProps,
 } from 'libs/patient/demographics/administrative';
 
 type PatientFileAdministrativeInformationCardProps = {
@@ -21,7 +21,8 @@ const PatientFileAdministrativeInformationCard = ({
             <LoadingOverlay>
                 <AdministrativeInformationCard {...remaining} />
             </LoadingOverlay>
-        }>
+        }
+    >
         <Await resolve={provider.get()}>
             {(resolved) => <AdministrativeInformationCard data={resolved} {...remaining} />}
         </Await>

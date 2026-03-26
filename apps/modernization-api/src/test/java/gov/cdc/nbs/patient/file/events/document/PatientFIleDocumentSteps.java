@@ -14,8 +14,7 @@ public class PatientFIleDocumentSteps {
   PatientFIleDocumentSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientFileDocumentsRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;
@@ -23,9 +22,6 @@ public class PatientFIleDocumentSteps {
 
   @When("I view the documents for the patient")
   public void view() {
-    this.activePatient.maybeActive()
-        .map(requester::request)
-        .ifPresent(response::active);
+    this.activePatient.maybeActive().map(requester::request).ifPresent(response::active);
   }
-
 }

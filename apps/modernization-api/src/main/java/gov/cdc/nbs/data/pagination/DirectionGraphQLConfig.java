@@ -10,13 +10,12 @@ class DirectionGraphQLConfig {
 
   @Bean
   public RuntimeWiringConfigurer directionScalarConfigurer() {
-    return wiringBuilder -> wiringBuilder
-        .scalar(
-        GraphQLScalarType.newScalar()
-            .name("Direction")
-            .description("Sort.Direction as scalar.")
-            .coercing(new DirectionCoercing())
-            .build()
-    );
+    return wiringBuilder ->
+        wiringBuilder.scalar(
+            GraphQLScalarType.newScalar()
+                .name("Direction")
+                .description("Sort.Direction as scalar.")
+                .coercing(new DirectionCoercing())
+                .build());
   }
 }

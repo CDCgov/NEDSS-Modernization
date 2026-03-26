@@ -4,7 +4,7 @@ const body = (requester: string) =>
 const template = {
     recipient: encodeURI('nbs@cdc.gov'),
     subject: encodeURI('Requesting access to NBS7 Demo site'),
-    body
+    body,
 };
 
 const signUp = (email: string) => {

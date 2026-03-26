@@ -2,15 +2,15 @@ package gov.cdc.nbs.patient.file.events.investigation;
 
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleNameRowMapper;
+import java.util.List;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 class PatientInvestigationsFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [patient].person_parent_uid                 as [patient],
           [investigation].[public_health_case_uid]    as [identifier],
@@ -26,20 +26,20 @@ class PatientInvestigationsFinder {
           [investigator].last_nm                      as [investigator_last_name],
           [condition].investigation_form_cd           as [investigation_form]
       from person [patient]
-      
+
           join participation [investigated] on
                   [investigated].record_status_cd = 'ACTIVE'
               and [investigated].[type_cd] = 'SubjOfPHC'
               and [investigated].[subject_class_cd] = 'PSN'
               and [investigated].[subject_entity_uid] = [patient].person_uid
               and [investigated].[act_class_cd] = 'CASE'
-      
+
           join Public_health_case [investigation] on
                   [investigation].public_health_case_uid = [investigated].act_uid
               and [investigation].record_status_cd <> 'LOG_DEL'
               and [investigation].program_jurisdiction_oid in (:any)
               and [investigation].investigation_status_cd = coalesce(:status, [investigation].investigation_status_cd)
-      
+
           left join NBS_SRTE..Code_value_general [status] on
                     [status].[code_set_nm]  = 'PHC_IN_STS'
                 and [status].[code]         = [investigation].[investigation_status_cd]
@@ -50,30 +50,30 @@ class PatientInvestigationsFinder {
           left join nbs_srte..Code_value_general [case_status] on
                         [case_status].[code_set_nm] = 'PHC_CLASS'
                     and [case_status].[code] = [investigation].[case_class_cd]
-      
+
           left join Act_relationship [notified] on
                     [notified].[target_act_uid] = [investigation].[public_health_case_uid]
                 and [notified].type_cd = 'Notification'
                 and [notified].[target_class_cd] = 'CASE'
                 and [notified].[source_class_cd] = 'NOTF'
                 and [notified].record_status_cd = 'ACTIVE'
-      
+
           left join [Notification] [notification] on
                     [notification].[notification_uid] = [notified].[source_act_uid]
-      
+
           left join NBS_SRTE..Code_value_general [notification_status] on
                     [notification_status].[code_set_nm] = 'REC_STAT'
                 and [notification_status].[code]        = [notification].[record_status_cd]
-      
+
           left join Participation [investigated_by] on
                     [investigated_by].[type_cd] = 'InvestgrOfPHC'
                 and [investigated_by].[act_uid] = [investigation].[public_health_case_uid]
                 and [investigated_by].[act_class_cd] = 'CASE'
                 and [investigated_by].[subject_class_cd] = 'PSN'
-      
+
           left join [Person_name] [investigator] on
                     [investigator].[person_uid] = [investigated_by].subject_entity_uid
-      
+
       where  [patient].person_parent_uid = :patient
       order by
           [investigation].[local_id] desc
@@ -100,29 +100,27 @@ class PatientInvestigationsFinder {
 
   PatientInvestigationsFinder(final JdbcClient client) {
     this.client = client;
-    this.mapper = new PatientInvestigationsRowMapper(
-        new PatientInvestigationsRowMapper.Column(
-            PATIENT_COLUMN,
-            IDENTIFIER_COLUMN,
-            INVESTIGATION_ID_COLUMN,
-            START_DATE_COLUMN,
-            STATUS_COLUMN,
-            CONDITION_COLUMN,
-            CASE_STATUS_COLUMN,
-            NOTIFICATION_COLUMN,
-            JURISDICTION_COLUMN,
-            COINFECTION_COLUMN,
-            new DisplayableSimpleNameRowMapper.Columns(
-                INVESTIGATOR_FIRST_NAME_COLUMN,
-                INVESTIGATOR_LAST_NAME_COLUMN
-            ),
-            INVESTIGATION_FORM_CODE_COLUMN
-        )
-    );
+    this.mapper =
+        new PatientInvestigationsRowMapper(
+            new PatientInvestigationsRowMapper.Column(
+                PATIENT_COLUMN,
+                IDENTIFIER_COLUMN,
+                INVESTIGATION_ID_COLUMN,
+                START_DATE_COLUMN,
+                STATUS_COLUMN,
+                CONDITION_COLUMN,
+                CASE_STATUS_COLUMN,
+                NOTIFICATION_COLUMN,
+                JURISDICTION_COLUMN,
+                COINFECTION_COLUMN,
+                new DisplayableSimpleNameRowMapper.Columns(
+                    INVESTIGATOR_FIRST_NAME_COLUMN, INVESTIGATOR_LAST_NAME_COLUMN),
+                INVESTIGATION_FORM_CODE_COLUMN));
   }
 
   List<PatientInvestigation> findAll(final long patient, final PermissionScope scope) {
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param("patient", patient)
         .param("any", scope.any())
         .param("status", null)
@@ -131,7 +129,8 @@ class PatientInvestigationsFinder {
   }
 
   List<PatientInvestigation> findOpen(final long patient, final PermissionScope scope) {
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param("patient", patient)
         .param("any", scope.any())
         .param("status", OPEN_STATUS)
@@ -139,4 +138,3 @@ class PatientInvestigationsFinder {
         .list();
   }
 }
-

@@ -10,13 +10,12 @@ public class DateTimeScalarConfig {
 
   @Bean
   public RuntimeWiringConfigurer dateTimeScalarConfigurer() {
-    return wiringBuilder -> wiringBuilder.scalar(
-        GraphQLScalarType.newScalar()
-            .name("DateTime")
-            .description("Java Instant as scalar.")
-            .coercing(new ISO8601InstantCoercing())
-            .build()
-    );
-
+    return wiringBuilder ->
+        wiringBuilder.scalar(
+            GraphQLScalarType.newScalar()
+                .name("DateTime")
+                .description("Java Instant as scalar.")
+                .coercing(new ISO8601InstantCoercing())
+                .build());
   }
 }

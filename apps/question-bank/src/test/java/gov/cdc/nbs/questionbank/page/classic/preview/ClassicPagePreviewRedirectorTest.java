@@ -2,26 +2,25 @@ package gov.cdc.nbs.questionbank.page.classic.preview;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
+
+import gov.cdc.nbs.questionbank.page.classic.ClassicPreviewPagePreparer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-import gov.cdc.nbs.questionbank.page.classic.ClassicPreviewPagePreparer;
 
 @ExtendWith(MockitoExtension.class)
 class ClassicPagePreviewRedirectorTest {
 
-  @Mock
-  private ClassicPreviewPagePreparer preparer;
+  @Mock private ClassicPreviewPagePreparer preparer;
 
-  @InjectMocks
-  private ClassicPagePreviewRedirector redirector;
+  @InjectMocks private ClassicPagePreviewRedirector redirector;
 
   @Test
   void should_redirect_to_preview() {
-    // When a request is processed to preview 
+    // When a request is processed to preview
     ResponseEntity<Void> response = redirector.view(123L);
 
     // Then classic is prepared
@@ -35,5 +34,4 @@ class ClassicPagePreviewRedirectorTest {
     String setCookie = response.getHeaders().get("Set-Cookie").get(0);
     assertEquals("Return-Page=123; Path=/nbs; Secure; HttpOnly; SameSite=Strict", setCookie);
   }
-
 }

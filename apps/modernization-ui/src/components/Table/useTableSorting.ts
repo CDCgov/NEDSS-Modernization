@@ -46,7 +46,7 @@ const useTableSorting = ({ enabled, onSort }: Props): Sorting => {
 
         setSortState({
             ...initialState,
-            [name]: next
+            [name]: next,
         });
     };
 
@@ -56,7 +56,7 @@ const useTableSorting = ({ enabled, onSort }: Props): Sorting => {
         enabled,
         currentDirection: resolveDirection,
         isSorting: isSorting(resolveDirection),
-        toggleSort: handleSort(resolveDirection)
+        toggleSort: handleSort(resolveDirection),
     };
 };
 

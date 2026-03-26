@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.List;
 
 public record Rule(
@@ -16,14 +15,11 @@ public record Rule(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) TargetType targetType,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<Target> targets) {
 
-  public record SourceValue(String id, String text) {
-  }
+  public record SourceValue(String id, String text) {}
 
-  public record SourceQuestion(String questionIdentifier, String label, String codeSetName) {
-  }
+  public record SourceQuestion(String questionIdentifier, String label, String codeSetName) {}
 
-  public record Target(String targetIdentifier, String label) {
-  }
+  public record Target(String targetIdentifier, String label) {}
 
   public enum RuleFunction {
     DATE_COMPARE("Date Compare"),
@@ -67,5 +63,4 @@ public record Rule(
     QUESTION,
     SUBSECTION
   }
-
 }

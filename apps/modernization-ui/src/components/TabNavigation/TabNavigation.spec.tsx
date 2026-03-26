@@ -6,21 +6,21 @@ import { ReactElement } from 'react';
 
 const renderWithRouter = (ui: ReactElement, { route = '/' } = {}) => {
     return render(ui, {
-        wrapper: ({ children }) => <MemoryRouter initialEntries={[route]}>{children}</MemoryRouter>
+        wrapper: ({ children }) => <MemoryRouter initialEntries={[route]}>{children}</MemoryRouter>,
     });
 };
 
 describe('TabNavigation and TabNavigationEntry', () => {
     test('TabNavigationEntry renders with correct text', () => {
         const { getByText } = renderWithRouter(<TabNavigationEntry path="/test-path">Test Link</TabNavigationEntry>, {
-            route: '/'
+            route: '/',
         });
         expect(getByText('Test Link')).toBeInTheDocument();
     });
 
     test('TabNavigationEntry active class is applied correctly', async () => {
         const { getByText } = renderWithRouter(<TabNavigationEntry path="/test-path">Test Link</TabNavigationEntry>, {
-            route: '/test-path'
+            route: '/test-path',
         });
         const linkElement = getByText('Test Link');
         await waitFor(() => {
@@ -30,7 +30,7 @@ describe('TabNavigation and TabNavigationEntry', () => {
 
     test('TabNavigationEntry active class is not applied when path does not match', async () => {
         const { getByText } = renderWithRouter(<TabNavigationEntry path="/test-path">Test Link</TabNavigationEntry>, {
-            route: '/different-path'
+            route: '/different-path',
         });
         const linkElement = getByText('Test Link');
         await waitFor(() => {
