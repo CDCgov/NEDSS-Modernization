@@ -6,10 +6,16 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.Filter;
+import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import gov.cdc.nbs.time.EffectiveTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
@@ -32,7 +38,12 @@ class ReportControllerTest {
     Long reportUid = 1L;
     Long dataSourceUid = 2L;
 
-    ReportConfiguration reportConfig = new ReportConfiguration("python", "nbs_ods.PHCDemographic");
+    DataSource dataSourceEntity = getDataSource();
+    ReportLibrary reportLibraryEntity = getLibrary();
+
+    ReportConfiguration reportConfig =
+        new ReportConfiguration(
+            "python", new ReportDataSource(dataSourceEntity), new Library(reportLibraryEntity));
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ResponseEntity<ReportConfiguration> response =
@@ -130,5 +141,54 @@ class ReportControllerTest {
     objectNode.put("description", "Custom Report For Table: nbs_ods.NBS_configuration");
 
     return objectNode.toPrettyString();
+  }
+
+  private DataSource getDataSource() {
+    Long id = 1L;
+    Integer maxLen = 123;
+    Character conditionSecurity = 'N';
+    Character jurisdictionSecurity = 'Y';
+    Character reportingFacilitySecurity = 'Y';
+    String dataSourceName = "nbs_ods.PHCDemographic";
+    String dataSourceTitle = "Disease Counts by County";
+    String dataSourceTypeCode = "N220";
+    String descTxt = "Disease Counts by County sumarized to the Case Level";
+    LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
+    LocalDateTime effectiveToTime = LocalDateTime.parse("2020-03-04T10:15:30");
+    EffectiveTime effectiveTime = new EffectiveTime(effectiveFromTime, effectiveToTime);
+    String orgAccessPermission = "N";
+    String progAreaAccessPermission = "N";
+    Character statusCd = 'Y';
+    LocalDateTime statusTime = LocalDateTime.parse("2020-03-03T10:15:30");
+
+    return new DataSource(
+        id,
+        maxLen,
+        conditionSecurity,
+        jurisdictionSecurity,
+        reportingFacilitySecurity,
+        dataSourceName,
+        dataSourceTitle,
+        dataSourceTypeCode,
+        descTxt,
+        effectiveTime,
+        orgAccessPermission,
+        progAreaAccessPermission,
+        statusCd,
+        statusTime);
+  }
+
+  private ReportLibrary getLibrary() {
+    String libName = "MOCK_CA01_DIAGNOSIS.SAS";
+    String descTxt =
+        "CA01: Chalk Talk Report: Case. This report includes information on the patients in the same Lot (Epi-linked group) for a specific disease.";
+    String runner = "sas";
+    Character builtIn = 'Y';
+    LocalDateTime addTime = LocalDateTime.parse("2020-03-03T10:15:30");
+    Long userId = 9L;
+    LocalDateTime lastChgTime = LocalDateTime.parse("2020-02-28T09:15:30");
+
+    return new ReportLibrary(
+        libName, descTxt, runner, builtIn, addTime, userId, lastChgTime, userId);
   }
 }

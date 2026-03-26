@@ -39,6 +39,7 @@ class ReportSpecBuilderTest {
 
   @Test
   void should_build_hardcoded_report_spec() {
+    String libraryName = "nbs_sr_05";
     DataSourceColumn column1 = mockColumn("column1", "Column 1");
     DataSourceColumn column2 = mockColumn("column2", "Column 2");
     List<Long> columnUids = List.of(1L, 2L);
@@ -47,13 +48,17 @@ class ReportSpecBuilderTest {
         .thenReturn(standardizedDataSourceName);
 
     ReportSpec reportSpec =
-        specBuilder.setDataSourceName(dataSourceName).setColumns(columnUids).build();
+        specBuilder
+            .setDataSourceName(dataSourceName)
+            .setColumns(columnUids)
+            .setLibraryName(libraryName)
+            .build();
 
     assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
     assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
-    assertThat(reportSpec.libraryName()).isEqualTo("nbs_custom");
+    assertThat(reportSpec.libraryName()).isEqualTo("nbs_sr_05");
     assertThat(reportSpec.dataSourceName()).isEqualTo(standardizedDataSourceName);
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(

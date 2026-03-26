@@ -2,7 +2,9 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
@@ -37,7 +39,8 @@ public class ReportService {
             report ->
                 new ReportConfiguration(
                     report.getReportLibrary().getRunner(),
-                    report.getDataSource().getDataSourceName()))
+                    new ReportDataSource(report.getDataSource()),
+                    new Library(report.getReportLibrary())))
         .orElseThrow(
             () ->
                 new NotFoundException(
@@ -59,7 +62,7 @@ public class ReportService {
 
     ReportSpec reportSpec =
         specBuilder
-            .setDataSourceName(reportConfigResponse.dataSourceName())
+            .setDataSourceName(reportConfigResponse.dataSource().name())
             .setColumns(request.columnUids())
             .build();
 

@@ -22,7 +22,7 @@ public class ReportSpecBuilder {
   @Getter private Boolean isExport = true;
   @Getter private Boolean isBuiltin = true;
   @Getter private String reportTitle = "Test Report";
-  @Getter private String libraryName = "nbs_custom";
+  @Getter private String libraryName;
   @Getter private String dataSourceName;
   @Getter private Map<String, LocalDate> timeRange;
   @Getter private List<DataSourceColumn> columns = new ArrayList<>();
@@ -80,6 +80,10 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpecBuilder setLibraryName(String libraryName) {
+    if (libraryName.isEmpty()) {
+      throw new IllegalArgumentException("Report library name cannot be empty");
+    }
+
     this.libraryName = libraryName;
     return this;
   }
