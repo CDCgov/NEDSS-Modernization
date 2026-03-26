@@ -4,11 +4,10 @@ import userEvent from '@testing-library/user-event';
 import { RaceEntry } from './entry';
 import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
 
-
 const mockDetailResolver = vi.fn();
 
 vi.mock('options/race', () => ({
-    useDetailedRaceOptions: () => ({ options: [], load: mockDetailResolver })
+    useDetailedRaceOptions: () => ({ options: [], load: mockDetailResolver }),
 }));
 
 type Props = Partial<RaceEntryFieldsProps> & { entry?: RaceEntry };
@@ -20,12 +19,12 @@ const Fixture = ({
         id: 19,
         asOf: '04/11/2022',
         race: null,
-        detailed: []
-    }
+        detailed: [],
+    },
 }: Props) => {
     const form = useForm<RaceEntry>({
         mode: 'onBlur',
-        defaultValues: entry
+        defaultValues: entry,
     });
 
     return (
@@ -64,7 +63,7 @@ describe('Race entry fields', () => {
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );
@@ -83,7 +82,7 @@ describe('Race entry fields', () => {
             id: 389,
             asOf: '05/08/2013',
             race: { value: 'selected', name: 'selected name' },
-            detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }]
+            detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }],
         };
 
         const user = userEvent.setup();
@@ -93,7 +92,7 @@ describe('Race entry fields', () => {
                 entry={entry}
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );
@@ -114,7 +113,7 @@ describe('Race entry fields', () => {
             <Fixture
                 categories={[
                     { value: 'other', name: 'other name' },
-                    { value: 'selected', name: 'selected name' }
+                    { value: 'selected', name: 'selected name' },
                 ]}
             />
         );
@@ -161,7 +160,7 @@ describe('Race entry fields', () => {
                 categoryValidator={validator}
                 categories={[
                     { value: '1', name: 'race name' },
-                    { value: 'other', name: 'other name' }
+                    { value: 'other', name: 'other name' },
                 ]}
             />
         );

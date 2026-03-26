@@ -15,7 +15,7 @@ const defaultAddress: MergeAddress = {
     county: 'Fulton county',
     censusTract: '0224',
     country: 'United States',
-    comments: 'Comment'
+    comments: 'Comment',
 };
 
 const Fixture = ({ address = defaultAddress }: { address?: MergeAddress }) => {
@@ -45,7 +45,7 @@ describe('AddressDetails', () => {
             id: '1',
             asOf: '2022-06-07T14:24:44.970',
             type: 'Type',
-            use: 'Use'
+            use: 'Use',
         };
         const { getByText } = render(<Fixture address={sparseAddress} />);
         expect(within(getByText('Street address 1').parentElement!).getByText('---')).toBeInTheDocument();

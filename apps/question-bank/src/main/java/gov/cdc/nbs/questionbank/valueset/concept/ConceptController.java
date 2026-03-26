@@ -5,6 +5,7 @@ import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import gov.cdc.nbs.questionbank.valueset.request.CreateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 import io.swagger.v3.oas.annotations.Parameter;
+import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/valueset/{codeSetNm}/concepts")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
@@ -30,9 +29,7 @@ class ConceptController {
   private final ConceptFinder finder;
 
   ConceptController(
-      final ConceptCreator creator,
-      final ConceptUpdater updater,
-      final ConceptFinder finder) {
+      final ConceptCreator creator, final ConceptUpdater updater, final ConceptFinder finder) {
     this.creator = creator;
     this.updater = updater;
     this.finder = finder;
@@ -66,5 +63,4 @@ class ConceptController {
       @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(codeSetNm, localCode, request, details.getId());
   }
-
 }

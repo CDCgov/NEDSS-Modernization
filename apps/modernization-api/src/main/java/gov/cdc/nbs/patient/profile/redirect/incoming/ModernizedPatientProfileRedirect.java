@@ -1,14 +1,13 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
+import static gov.cdc.nbs.web.RemoveCookie.removeCookie;
+
 import gov.cdc.nbs.patient.profile.redirect.PatientActionCookie;
 import gov.cdc.nbs.patient.profile.redirect.ReturningPatientCookie;
+import java.net.URI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
-
-import static gov.cdc.nbs.web.RemoveCookie.removeCookie;
 
 public sealed interface ModernizedPatientProfileRedirect {
 
@@ -16,7 +15,8 @@ public sealed interface ModernizedPatientProfileRedirect {
     return new ForPatient(incoming.identifier());
   }
 
-  static ModernizedPatientProfileRedirect forPatient(final IncomingPatient incoming, final String tab) {
+  static ModernizedPatientProfileRedirect forPatient(
+      final IncomingPatient incoming, final String tab) {
     return new ForPatient(incoming.identifier(), tab);
   }
 
@@ -25,7 +25,6 @@ public sealed interface ModernizedPatientProfileRedirect {
   }
 
   ResponseEntity<Void> redirect();
-
 
   static ResponseEntity<Void> redirectTo(final URI location) {
     return ResponseEntity.status(HttpStatus.SEE_OTHER)
@@ -43,24 +42,21 @@ public sealed interface ModernizedPatientProfileRedirect {
 
     @Override
     public ResponseEntity<Void> redirect() {
-      URI uri = UriComponentsBuilder.fromPath("/")
-          .path("patient/{identifier}/{tab}")
-          .buildAndExpand(identifier(), tab())
-          .toUri();
+      URI uri =
+          UriComponentsBuilder.fromPath("/")
+              .path("patient/{identifier}/{tab}")
+              .buildAndExpand(identifier(), tab())
+              .toUri();
 
       return redirectTo(uri);
     }
   }
 
-
   record Fallback() implements ModernizedPatientProfileRedirect {
 
     @Override
     public ResponseEntity<Void> redirect() {
-      URI uri = UriComponentsBuilder.fromPath("/")
-          .path("search")
-          .build()
-          .toUri();
+      URI uri = UriComponentsBuilder.fromPath("/").path("search").build().toUri();
       return redirectTo(uri);
     }
   }

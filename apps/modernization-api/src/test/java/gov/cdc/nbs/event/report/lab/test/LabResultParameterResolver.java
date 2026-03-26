@@ -1,15 +1,15 @@
 package gov.cdc.nbs.event.report.lab.test;
 
+import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 class LabResultParameterResolver {
 
   private static final int IDENTIFIER_COLUMN = 1;
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
         lab_result_cd
       from NBS_SRTE.[dbo].Lab_Result
@@ -25,12 +25,14 @@ class LabResultParameterResolver {
   }
 
   Optional<String> resolve(final String value) {
-    return this.template.query(
-        QUERY,
-        statement -> {
-          statement.setString(DESCRIPTION_INDEX, value);
-        },
-        (rs, row) -> rs.getString(IDENTIFIER_COLUMN)
-    ).stream().findFirst();
+    return this.template
+        .query(
+            QUERY,
+            statement -> {
+              statement.setString(DESCRIPTION_INDEX, value);
+            },
+            (rs, row) -> rs.getString(IDENTIFIER_COLUMN))
+        .stream()
+        .findFirst();
   }
 }

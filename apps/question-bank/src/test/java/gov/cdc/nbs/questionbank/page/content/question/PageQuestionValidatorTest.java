@@ -2,26 +2,25 @@ package gov.cdc.nbs.questionbank.page.content.question;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import gov.cdc.nbs.questionbank.entity.QWaUiMetadata;
+import gov.cdc.nbs.questionbank.page.content.question.response.ValidationResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.questionbank.entity.QWaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.question.response.ValidationResponse;
 
 @ExtendWith(MockitoExtension.class)
 class PageQuestionValidatorTest {
   private static final QWaUiMetadata table = QWaUiMetadata.waUiMetadata;
 
-  @Mock
-  private JPAQueryFactory factory;
+  @Mock private JPAQueryFactory factory;
 
-  @InjectMocks
-  private PageQuestionValidator validator;
+  @InjectMocks private PageQuestionValidator validator;
 
   @Test
   void should_fail_no_datamart() {
@@ -35,10 +34,14 @@ class PageQuestionValidatorTest {
     JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
     when(factory.select(table.id.count())).thenReturn(query);
     when(query.from(table)).thenReturn(query);
-    when(query.where(table.waTemplateUid.id.eq(1l)
-        .and(table.id.ne(2l))
-        .and(table.waRdbMetadatum.userDefinedColumnNm.eq("datamart".toUpperCase()))))
-            .thenReturn(query);
+    when(query.where(
+            table
+                .waTemplateUid
+                .id
+                .eq(1l)
+                .and(table.id.ne(2l))
+                .and(table.waRdbMetadatum.userDefinedColumnNm.eq("datamart".toUpperCase()))))
+        .thenReturn(query);
     when(query.fetchOne()).thenReturn(1l);
 
     ValidationResponse response = validator.validateDataMart(1l, 2l, "datamart");
@@ -51,14 +54,17 @@ class PageQuestionValidatorTest {
     JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
     when(factory.select(table.id.count())).thenReturn(query);
     when(query.from(table)).thenReturn(query);
-    when(query.where(table.waTemplateUid.id.eq(1l)
-        .and(table.id.ne(2l))
-        .and(table.waRdbMetadatum.userDefinedColumnNm.eq("datamart".toUpperCase()))))
-            .thenReturn(query);
+    when(query.where(
+            table
+                .waTemplateUid
+                .id
+                .eq(1l)
+                .and(table.id.ne(2l))
+                .and(table.waRdbMetadatum.userDefinedColumnNm.eq("datamart".toUpperCase()))))
+        .thenReturn(query);
     when(query.fetchOne()).thenReturn(0l);
 
     ValidationResponse response = validator.validateDataMart(1l, 2l, "datamart");
     assertThat(response.isValid()).isTrue();
   }
-
 }

@@ -46,7 +46,7 @@ export const useSetPageQuestionRequired = () => {
             PageQuestionControllerService.updatePageQuestionRequired({
                 questionId: state.question,
                 page: state.page,
-                requestBody: { required: state.required }
+                requestBody: { required: state.required },
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
@@ -62,7 +62,7 @@ export const useSetPageQuestionRequired = () => {
         isLoading: state.status === 'updating',
         response: state.status === 'complete' ? state.response : undefined,
         setRequired: (page: number, question: number, required: boolean) =>
-            dispatch({ type: 'update', page, question, required })
+            dispatch({ type: 'update', page, question, required }),
     };
 
     return value;

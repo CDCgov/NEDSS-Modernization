@@ -18,7 +18,7 @@ const useNameCodedValues = (): NameCodedValues => {
         types: types.options,
         prefixes: prefixes.options,
         suffixes: suffixes.options,
-        degrees: degrees.options
+        degrees: degrees.options,
     };
 };
 

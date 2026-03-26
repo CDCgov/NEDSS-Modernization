@@ -13,7 +13,7 @@ enum ConditionColumn {
     CoinfectionGroup = 'Coinfection group',
     NND = 'NND',
     InvestigationPage = 'Investigation page',
-    Status = 'Status'
+    Status = 'Status',
 }
 
 const conditionTableColumns = [
@@ -24,7 +24,7 @@ const conditionTableColumns = [
     { name: ConditionColumn.CoinfectionGroup, sortable: true },
     { name: ConditionColumn.NND, sortable: true },
     { name: ConditionColumn.InvestigationPage, sortable: true },
-    { name: ConditionColumn.Status, sortable: true }
+    { name: ConditionColumn.Status, sortable: true },
 ];
 
 const columnToSortMap = new Map<string, ConditionSortField>([
@@ -35,7 +35,7 @@ const columnToSortMap = new Map<string, ConditionSortField>([
     [ConditionColumn.CoinfectionGroup, ConditionSortField.COINFECTION_GROUP],
     [ConditionColumn.NND, ConditionSortField.NND],
     [ConditionColumn.InvestigationPage, ConditionSortField.INVESTIGATION_PAGE],
-    [ConditionColumn.Status, ConditionSortField.STATUS]
+    [ConditionColumn.Status, ConditionSortField.STATUS],
 ]);
 
 const asTableRow = (condition: Condition): TableBody => ({
@@ -45,20 +45,20 @@ const asTableRow = (condition: Condition): TableBody => ({
     tableDetails: [
         {
             id: 1,
-            title: <div className="condition-name">{condition.name}</div>
+            title: <div className="condition-name">{condition.name}</div>,
         },
         { id: 2, title: condition.id },
         { id: 3, title: condition.programArea },
         {
             id: 4,
-            title: condition.conditionFamily
+            title: condition.conditionFamily,
         },
         { id: 5, title: condition.coinfectionGroup },
 
         { id: 6, title: condition.nndInd },
         { id: 7, title: condition.page },
-        { id: 8, title: condition.status === 'A' ? 'Active' : 'Inactive' }
-    ]
+        { id: 8, title: condition.status === 'A' ? 'Active' : 'Inactive' },
+    ],
 });
 
 type Props = {

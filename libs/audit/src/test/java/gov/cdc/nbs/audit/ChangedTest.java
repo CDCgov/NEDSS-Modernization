@@ -1,21 +1,17 @@
 package gov.cdc.nbs.audit;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class ChangedTest {
 
   @Test
   void should_not_default_reason_when_not_specified() {
 
-    Changed actual = new Changed(311L,
-        LocalDateTime.parse("2021-01-17T01:45:30")
-    );
+    Changed actual = new Changed(311L, LocalDateTime.parse("2021-01-17T01:45:30"));
 
     assertThat(actual.reason()).isNull();
-
   }
 }

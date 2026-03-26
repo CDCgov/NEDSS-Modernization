@@ -9,17 +9,13 @@ public class CountryListSteps {
   private final CountryListRequester request;
   private final Active<ResultActions> response;
 
-  CountryListSteps(
-      final CountryListRequester request,
-      final Active<ResultActions> response) {
+  CountryListSteps(final CountryListRequester request, final Active<ResultActions> response) {
     this.request = request;
     this.response = response;
   }
 
   @When("I am retrieving all the countries")
-  public void i_am_retrieving_all_the_countries()
-      throws Exception {
+  public void i_am_retrieving_all_the_countries() throws Exception {
     response.active(request.complete());
   }
-
 }

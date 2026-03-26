@@ -2,7 +2,6 @@ package gov.cdc.nbs.search.criteria.date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -60,6 +59,5 @@ public record DateCriteria(Equals equals, Between between) {
   }
 
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  public record Between(LocalDate from, LocalDate to) {
-  }
+  public record Between(LocalDate from, LocalDate to) {}
 }

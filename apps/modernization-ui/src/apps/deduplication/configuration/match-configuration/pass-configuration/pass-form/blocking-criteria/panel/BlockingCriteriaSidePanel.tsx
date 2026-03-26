@@ -50,7 +50,8 @@ export const BlockingCriteriaSidePanel = ({ visible, dataElements, onAccept, onC
                         Add attribute(s)
                     </Button>
                 </>
-            }>
+            }
+        >
             <div className={styles.blockingCriteriaPanel}>
                 {BlockingAttributeLabelsList.filter((a) => a[1].isActive(dataElements)).map(([attribute, entry]) => (
                     <AttributeEntry

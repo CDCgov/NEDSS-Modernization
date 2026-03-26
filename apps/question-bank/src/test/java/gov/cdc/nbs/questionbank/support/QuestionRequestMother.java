@@ -2,15 +2,15 @@ package gov.cdc.nbs.questionbank.support;
 
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.question.model.Question.*;
+import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
+import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.DateMask;
 import gov.cdc.nbs.questionbank.question.request.create.NumericMask;
-import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.create.TextMask;
-import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.update.*;
 
 public class QuestionRequestMother {
@@ -93,11 +93,8 @@ public class QuestionRequestMother {
     request.setUniqueId(identifier);
     request.setUniqueName(uniqueName);
     request.setDisplayControl(1008l);
-    request.setDataMartInfo(reportingInfo(
-        "custom label",
-        rdbTableName,
-        rdbColumnName,
-        dataMartColumnName));
+    request.setDataMartInfo(
+        reportingInfo("custom label", rdbTableName, rdbColumnName, dataMartColumnName));
 
     request.setMask(TextMask.TXT);
     request.setFieldLength(50);
@@ -110,8 +107,7 @@ public class QuestionRequestMother {
     setSharedFields(request);
 
     request.setCodeSet(codeSet);
-    request.setMessagingInfo(
-        messagingInfo(includedInMessage));
+    request.setMessagingInfo(messagingInfo(includedInMessage));
     request.setMask(TextMask.TXT);
     request.setFieldLength(50);
     request.setDefaultValue("Test default");
@@ -131,19 +127,12 @@ public class QuestionRequestMother {
 
   public static ReportingInfo reportingInfo() {
     return reportingInfo(
-        "default label",
-        "RDB_TABLE_NAME",
-        "RDB_COLUMN_NAME",
-        "DATA_MART_COLUMN_NAME");
+        "default label", "RDB_TABLE_NAME", "RDB_COLUMN_NAME", "DATA_MART_COLUMN_NAME");
   }
 
-  public static ReportingInfo reportingInfo(String reportLabel, String rdbTableName, String rdbColumnName,
-      String dataMartColumnName) {
-    return new ReportingInfo(
-        reportLabel,
-        rdbTableName,
-        rdbColumnName,
-        dataMartColumnName);
+  public static ReportingInfo reportingInfo(
+      String reportLabel, String rdbTableName, String rdbColumnName, String dataMartColumnName) {
+    return new ReportingInfo(reportLabel, rdbTableName, rdbColumnName, dataMartColumnName);
   }
 
   public static UpdateTextQuestionRequest updateTextQuestionRequest() {
@@ -199,15 +188,12 @@ public class QuestionRequestMother {
   }
 
   private static ReportingInfo getReportingInfo() {
-    return new ReportingInfo("test", "test",
-        "test", "test");
+    return new ReportingInfo("test", "test", "test", "test");
   }
 
   private static MessagingInfo getMessagingInfo() {
-    return new MessagingInfo(true, "test", "test",
-        "PH_ACCEPTAPPLICATION", true, "test");
+    return new MessagingInfo(true, "test", "test", "PH_ACCEPTAPPLICATION", true, "test");
   }
-
 
   public static CreateTextQuestionRequest localWithUniqueId(String uniqueId) {
     CreateTextQuestionRequest request = new CreateTextQuestionRequest();
@@ -215,5 +201,4 @@ public class QuestionRequestMother {
     request.setCodeSet(CodeSet.LOCAL);
     return request;
   }
-
 }

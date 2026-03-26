@@ -5,7 +5,7 @@ describe('when given a name', () => {
         first: 'Bill',
         middle: 'S',
         last: 'Preston',
-        suffix: 'Esquire'
+        suffix: 'Esquire',
     };
 
     it('should display the short name', () => {
@@ -38,7 +38,7 @@ describe('when given a partial name', () => {
         const name = {
             first: 'Bill',
             middle: 'S',
-            suffix: 'Esquire'
+            suffix: 'Esquire',
         };
 
         const actual = displayName('short')(name);
@@ -50,7 +50,7 @@ describe('when given a partial name', () => {
         const name = {
             middle: 'S',
             last: 'Preston',
-            suffix: 'Esquire'
+            suffix: 'Esquire',
         };
 
         const actual = displayName('short')(name);
@@ -62,7 +62,7 @@ describe('when given a partial name', () => {
         const name = {
             first: 'Ted',
             middle: 'Theodore',
-            last: 'Logan'
+            last: 'Logan',
         };
 
         const actual = displayName('full')(name);
@@ -74,7 +74,7 @@ describe('when given a partial name', () => {
         const name = {
             first: 'Ted',
             middle: 'Theodore',
-            last: 'Logan'
+            last: 'Logan',
         };
 
         const actual = displayName('fullLastFirst')(name);
@@ -85,7 +85,7 @@ describe('when given a partial name', () => {
     it('should display the full name without a suffix or middle in a last, first format', () => {
         const name = {
             first: 'Ted',
-            last: 'Logan'
+            last: 'Logan',
         };
 
         const actual = displayName('fullLastFirst')(name);
@@ -95,7 +95,7 @@ describe('when given a partial name', () => {
 
     it('should display the first name with fullLastFirst format', () => {
         const name = {
-            first: 'Ted'
+            first: 'Ted',
         };
 
         const actual = displayName('fullLastFirst')(name);
@@ -105,7 +105,7 @@ describe('when given a partial name', () => {
 
     it('should display the last name with fullLastFirst format', () => {
         const name = {
-            last: 'Logan'
+            last: 'Logan',
         };
 
         const actual = displayName('fullLastFirst')(name);

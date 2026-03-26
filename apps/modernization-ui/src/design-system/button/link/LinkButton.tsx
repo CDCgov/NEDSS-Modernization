@@ -31,7 +31,8 @@ const LinkButton = ({
                 tertiary={tertiary}
                 secondary={secondary}
                 destructive={destructive}
-                disabled={disabled}>
+                disabled={disabled}
+            >
                 {children}
             </Button>
         </a>

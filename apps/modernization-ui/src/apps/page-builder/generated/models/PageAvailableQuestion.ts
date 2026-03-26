@@ -18,4 +18,3 @@ export type PageAvailableQuestion = {
     numberOfElements?: number;
     empty?: boolean;
 };
-

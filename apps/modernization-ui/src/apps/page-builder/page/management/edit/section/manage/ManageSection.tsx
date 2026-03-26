@@ -34,7 +34,7 @@ export const ManageSection = ({
     onUpdateSection,
     onAddSection,
     onHiddenSection,
-    onUnhiddenSection
+    onUnhiddenSection,
 }: ManageSectionProps) => {
     const [sectionState, setSectionState] = useState<'manage' | 'add' | 'edit'>('manage');
 
@@ -51,7 +51,7 @@ export const ManageSection = ({
     const onDelete = (section: PagesSection) => {
         SectionControllerService.deleteSection({
             page: pageId,
-            sectionId: section.id
+            sectionId: section.id,
         }).then(() => {
             onContentChange?.();
             onDeleteSection?.(section.name);
@@ -62,7 +62,7 @@ export const ManageSection = ({
         SectionControllerService.updateSection({
             page: pageId,
             requestBody: { name: section.name, visible: visibility },
-            section: section.id
+            section: section.id,
         }).then(() => {
             onContentChange?.();
             if (visibility) {
@@ -120,7 +120,8 @@ export const ManageSection = ({
                                     handleUpdateState('add');
                                 }}
                                 className={`${styles.addSectionBtn} addNewSectionBtn`}
-                                disabled={onAction}>
+                                disabled={onAction}
+                            >
                                 <Icon.Add size={3} className={styles.addIcon} />
                                 Add new section
                             </Button>
@@ -149,13 +150,15 @@ export const ManageSection = ({
                         <DragDropContext
                             onDragEnd={handleDragEnd}
                             onDragStart={handleDragStart}
-                            onDragUpdate={handleDragUpdate}>
+                            onDragUpdate={handleDragUpdate}
+                        >
                             <Droppable droppableId="all-sections" type="sections">
                                 {(provided) => (
                                     <div
                                         className="manage-sections"
                                         {...provided.droppableProps}
-                                        ref={provided.innerRef}>
+                                        ref={provided.innerRef}
+                                    >
                                         {tab?.sections?.map((section, k) => {
                                             return (
                                                 <ManageSectionTile
@@ -187,7 +190,8 @@ export const ManageSection = ({
                             }}
                             type={'button'}
                             outline
-                            className="manageSectionsCloseBtn">
+                            className="manageSectionsCloseBtn"
+                        >
                             Close
                         </Button>
                     </div>

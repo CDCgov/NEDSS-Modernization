@@ -1,14 +1,12 @@
 package gov.cdc.nbs.patient.file.history;
 
-
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 class PatientMergeHistoryController {
@@ -22,8 +20,7 @@ class PatientMergeHistoryController {
   @Operation(
       summary = "Patient File Merge History",
       description = "Provides the merge history for a patient",
-      tags = "PatientFile"
-  )
+      tags = "PatientFile")
   @GetMapping("/nbs/api/patients/{patient}/merge/history")
   @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT')")
   ResponseEntity<List<PatientMergeHistory>> mergeHistory(@PathVariable("patient") long patient) {

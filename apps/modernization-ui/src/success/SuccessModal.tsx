@@ -18,7 +18,7 @@ export const SuccessModal = ({
     modal,
     title,
     children,
-    actions
+    actions,
 }: Props) => {
     return (
         <Modal
@@ -28,7 +28,8 @@ export const SuccessModal = ({
             isLarge
             aria-labelledby="success-heading"
             className={styles.modal}
-            aria-describedby={ariaDescribedBy}>
+            aria-describedby={ariaDescribedBy}
+        >
             <ModalHeading id="success-heading">{title}</ModalHeading>
             <div className={classNames(styles.content, 'modal-content')}>
                 <div className={classNames(styles.success)}>

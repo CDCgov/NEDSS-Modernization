@@ -3,7 +3,7 @@ import { DetailValue, DetailView, DetailViewProps } from './DetailView';
 
 const meta = {
     title: 'Design System/Multi-value/DetailView',
-    component: DetailView
+    component: DetailView,
 } satisfies Meta<typeof DetailView>;
 
 export default meta;
@@ -20,5 +20,5 @@ const render = (args: DetailViewProps) => (
 );
 
 export const Default: Story = {
-    render
+    render,
 };

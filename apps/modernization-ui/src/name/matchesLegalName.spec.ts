@@ -6,25 +6,25 @@ describe('matchesLegalName', () => {
             first: 'John',
             middle: 'W',
             last: 'Wick',
-            suffix: 'III'
+            suffix: 'III',
         },
         {
             first: 'John',
             middle: 'W',
-            last: 'Wick'
+            last: 'Wick',
         },
         {
             first: 'John',
-            middle: 'W'
+            middle: 'W',
         },
         {
-            first: 'John'
+            first: 'John',
         },
         {
             first: 'John',
 
-            last: 'Wick'
-        }
+            last: 'Wick',
+        },
     ])('should return true when names match exactly', (value) => {
         expect(matchesLegalName(value, value)).toBe(true);
     });
@@ -40,13 +40,13 @@ describe('matchesLegalName', () => {
             first: 'Nick',
             middle: 'W',
             last: 'Wick',
-            suffix: 'III'
+            suffix: 'III',
         };
         const legal = {
             first: 'John',
             middle: 'W',
             last: 'Wick',
-            suffix: 'III'
+            suffix: 'III',
         };
         expect(matchesLegalName(name, legal)).toBe(false);
     });
@@ -56,13 +56,13 @@ describe('matchesLegalName', () => {
             first: 'John',
             middle: 'W',
             last: 'Wick',
-            suffix: 'III'
+            suffix: 'III',
         };
         const legal = {
             first: 'John',
             middle: 'W',
             last: 'Constantine',
-            suffix: 'III'
+            suffix: 'III',
         };
         expect(matchesLegalName(name, legal)).toBe(false);
     });

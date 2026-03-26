@@ -5,7 +5,7 @@ import { useState } from 'react';
 const meta = {
     title: 'Design System/AlertMessage',
     component: AlertMessage,
-    tags: ['autodocs']
+    tags: ['autodocs'],
 } satisfies Meta<typeof AlertMessage>;
 
 export default meta;
@@ -16,40 +16,40 @@ export const Default: Story = {
     args: {
         type: 'information',
         title: 'Info status',
-        children: 'This is a succinct, helpful message.'
-    }
+        children: 'This is a succinct, helpful message.',
+    },
 };
 
 const InfoMessage: Story = {
     args: {
         ...Default.args,
         type: 'information',
-        title: 'Info status'
-    }
+        title: 'Info status',
+    },
 };
 
 const SuccessMessage: Story = {
     args: {
         ...Default.args,
         type: 'success',
-        title: 'Success status'
-    }
+        title: 'Success status',
+    },
 };
 
 const WarningMessage: Story = {
     args: {
         ...Default.args,
         type: 'warning',
-        title: 'Warning status'
-    }
+        title: 'Warning status',
+    },
 };
 
 const ErrorMessage: Story = {
     args: {
         ...Default.args,
         type: 'error',
-        title: 'Error status'
-    }
+        title: 'Error status',
+    },
 };
 
 const InfoSlim: Story = {
@@ -58,8 +58,8 @@ const InfoSlim: Story = {
         type: 'information',
         title: undefined,
         children: "You'll need to change your password by April 25, 2020.",
-        slim: true
-    }
+        slim: true,
+    },
 };
 
 const SuccessSlim: Story = {
@@ -68,8 +68,8 @@ const SuccessSlim: Story = {
         type: 'success',
         title: undefined,
         children: 'You successfully changed your password',
-        slim: true
-    }
+        slim: true,
+    },
 };
 
 const WarningSlim: Story = {
@@ -78,8 +78,8 @@ const WarningSlim: Story = {
         type: 'warning',
         title: undefined,
         children: "You'll need to change your password in the next 48 hours.",
-        slim: true
-    }
+        slim: true,
+    },
 };
 
 const ErrorSlim: Story = {
@@ -88,8 +88,8 @@ const ErrorSlim: Story = {
         type: 'error',
         title: undefined,
         children: 'Sorry, a password needs more than four characters.',
-        slim: true
-    }
+        slim: true,
+    },
 };
 
 const InfoIconless: Story = {
@@ -97,8 +97,8 @@ const InfoIconless: Story = {
         ...Default.args,
         type: 'information',
         title: undefined,
-        iconless: true
-    }
+        iconless: true,
+    },
 };
 
 const SuccessIconless: Story = {
@@ -106,8 +106,8 @@ const SuccessIconless: Story = {
         ...Default.args,
         type: 'success',
         title: undefined,
-        iconless: true
-    }
+        iconless: true,
+    },
 };
 
 const WarningIconless: Story = {
@@ -115,8 +115,8 @@ const WarningIconless: Story = {
         ...Default.args,
         type: 'warning',
         title: undefined,
-        iconless: true
-    }
+        iconless: true,
+    },
 };
 
 const ErrorIconless: Story = {
@@ -124,8 +124,8 @@ const ErrorIconless: Story = {
         ...Default.args,
         type: 'error',
         title: undefined,
-        iconless: true
-    }
+        iconless: true,
+    },
 };
 const standard = [InfoMessage, SuccessMessage, WarningMessage, ErrorMessage];
 export const Standard = () => (

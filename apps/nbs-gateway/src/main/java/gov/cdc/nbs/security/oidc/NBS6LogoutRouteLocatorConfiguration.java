@@ -1,14 +1,13 @@
 package gov.cdc.nbs.security.oidc;
 
 import gov.cdc.nbs.gateway.classic.NBSClassicService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
 
 @Configuration
 class NBS6LogoutRouteLocatorConfiguration {
@@ -18,16 +17,15 @@ class NBS6LogoutRouteLocatorConfiguration {
       final RouteLocatorBuilder builder,
       @Qualifier("defaults") final List<GatewayFilter> defaults,
       final NBSClassicService service) {
-    return builder.routes()
+    return builder
+        .routes()
         .route(
             "logged-out",
-            route -> route.path("/nbs/logged-out")
-                .filters(
-                    filters -> filters
-                        .setPath("/nbs/logout")
-                        .filters(defaults))
-                .uri(service.uri()))
+            route ->
+                route
+                    .path("/nbs/logged-out")
+                    .filters(filters -> filters.setPath("/nbs/logout").filters(defaults))
+                    .uri(service.uri()))
         .build();
   }
-
 }

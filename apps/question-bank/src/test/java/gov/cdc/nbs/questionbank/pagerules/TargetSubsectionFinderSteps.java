@@ -1,10 +1,7 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.PageMother;
@@ -14,20 +11,23 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class TargetSubsectionFinderSteps {
-  @Autowired
-  private PageMother mother;
+  @Autowired private PageMother mother;
 
-  @Autowired
-  private ObjectMapper mapper;
+  @Autowired private ObjectMapper mapper;
 
   private final Active<ResultActions> response;
   private final PageRuleRequester requester;
   private final Active<TargetSubsectionRequest> jsonRequestBody = new Active<>();
 
-  public TargetSubsectionFinderSteps(final Active<ResultActions> response, final PageRuleRequester requester) {
+  public TargetSubsectionFinderSteps(
+      final Active<ResultActions> response, final PageRuleRequester requester) {
     this.response = response;
     this.requester = requester;
   }
@@ -47,7 +47,9 @@ public class TargetSubsectionFinderSteps {
   public void target_subsections_are_returned() throws Exception {
     String res = this.response.active().andReturn().getResponse().getContentAsString();
     List<PagesSubSection> pagesResponse =
-        mapper.readValue(res, mapper.getTypeFactory().constructCollectionType(List.class, PagesSubSection.class));
+        mapper.readValue(
+            res,
+            mapper.getTypeFactory().constructCollectionType(List.class, PagesSubSection.class));
     assertNotNull(pagesResponse);
   }
 }

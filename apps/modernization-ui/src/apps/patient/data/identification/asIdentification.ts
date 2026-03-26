@@ -11,7 +11,7 @@ const asIdentification = (entry: IdentificationEntry): Identification | undefine
             asOf,
             type: asValue(type),
             value: id,
-            issuer: asValue(issuer)
+            issuer: asValue(issuer),
         };
     }
 };

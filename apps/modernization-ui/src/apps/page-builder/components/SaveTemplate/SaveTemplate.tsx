@@ -10,7 +10,7 @@ export const SaveTemplates = ({ modalRef }: any) => {
     const handleTabInput = ({ target }: any) => {
         setDetails({
             ...details,
-            [target.name]: target?.type === 'checkbox' ? target?.checked : target.value
+            [target.name]: target?.type === 'checkbox' ? target?.checked : target.value,
         });
     };
     const handleValidation = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +65,8 @@ export const SaveTemplates = ({ modalRef }: any) => {
                     className="submit-btn"
                     onClick={handleSubmit}
                     disabled={validateBtn}
-                    type="button">
+                    type="button"
+                >
                     Save
                 </ModalToggleButton>
                 <ModalToggleButton closer modalRef={modalRef} className="cancel-btn" type="button">

@@ -80,7 +80,7 @@ enum Tab {
     USER_INTERFACE = 'User interface',
     DATA_MART = 'Data mart',
     MESSAGING = 'Messaging',
-    ADMIN = 'Administrative'
+    ADMIN = 'Administrative',
 }
 export const ExpandedQuestion = ({ question }: Props) => {
     const [active, setActive] = useState<Tab>(Tab.BASIC);

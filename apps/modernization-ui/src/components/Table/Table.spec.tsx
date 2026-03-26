@@ -14,7 +14,7 @@ describe('Table component', () => {
                     { name: 'Jurisdiction', sortable: true },
                     { name: 'Investigator', sortable: true },
                     { name: 'Investigation #', sortable: false },
-                    { name: 'Co-infection #', sortable: false }
+                    { name: 'Co-infection #', sortable: false },
                 ]}
                 tableBody={[
                     {
@@ -27,12 +27,12 @@ describe('Table component', () => {
                             { id: 5, title: 'jurisdictionCodeDescTxt' },
                             {
                                 id: 6,
-                                title: 'John Doe'
+                                title: 'John Doe',
                             },
                             { id: 7, title: '100023' },
-                            { id: 8, title: 'COIN1000XX01' }
-                        ]
-                    }
+                            { id: 8, title: 'COIN1000XX01' },
+                        ],
+                    },
                 ]}
             />
         );
@@ -73,7 +73,7 @@ describe('Table component', () => {
                     { name: 'Jurisdiction', sortable: true },
                     { name: 'Investigator', sortable: true },
                     { name: 'Investigation #', sortable: false },
-                    { name: 'Co-infection #', sortable: false }
+                    { name: 'Co-infection #', sortable: false },
                 ]}
                 tableBody={[
                     {
@@ -87,12 +87,12 @@ describe('Table component', () => {
                             { id: 5, title: 'jurisdictionCodeDescTxt' },
                             {
                                 id: 6,
-                                title: 'John Doe'
+                                title: 'John Doe',
                             },
                             { id: 7, title: '100023' },
-                            { id: 8, title: 'COIN1000XX01' }
-                        ]
-                    }
+                            { id: 8, title: 'COIN1000XX01' },
+                        ],
+                    },
                 ]}
             />
         );
@@ -108,17 +108,17 @@ describe('when a table has a sortable header', () => {
                 tableHeader="Test Table Header"
                 tableHead={[
                     { name: 'A', sortable: true },
-                    { name: 'B', sortable: false }
+                    { name: 'B', sortable: false },
                 ]}
                 tableBody={[
                     {
                         id: 1,
-                        tableDetails: [{ id: 1, title: 'one' }]
+                        tableDetails: [{ id: 1, title: 'one' }],
                     },
                     {
                         id: 2,
-                        tableDetails: [{ id: 2, title: 'two' }]
-                    }
+                        tableDetails: [{ id: 2, title: 'two' }],
+                    },
                 ]}
             />
         );
@@ -141,17 +141,17 @@ describe('when a table has a sortable header', () => {
                 tableHeader="Test Table Header"
                 tableHead={[
                     { name: 'A', sortable: true },
-                    { name: 'B', sortable: false }
+                    { name: 'B', sortable: false },
                 ]}
                 tableBody={[
                     {
                         id: 1,
-                        tableDetails: [{ id: 1, title: 'one' }]
+                        tableDetails: [{ id: 1, title: 'one' }],
                     },
                     {
                         id: 2,
-                        tableDetails: [{ id: 2, title: 'two' }]
-                    }
+                        tableDetails: [{ id: 2, title: 'two' }],
+                    },
                 ]}
             />
         );
@@ -177,17 +177,17 @@ describe('when a table has a sortable header', () => {
                 tableHeader="Test Table Header"
                 tableHead={[
                     { name: 'A', sortable: true },
-                    { name: 'B', sortable: false }
+                    { name: 'B', sortable: false },
                 ]}
                 tableBody={[
                     {
                         id: 1,
-                        tableDetails: [{ id: 1, title: 'one' }]
+                        tableDetails: [{ id: 1, title: 'one' }],
                     },
                     {
                         id: 2,
-                        tableDetails: [{ id: 2, title: 'two' }]
-                    }
+                        tableDetails: [{ id: 2, title: 'two' }],
+                    },
                 ]}
             />
         );
@@ -214,13 +214,13 @@ describe('when a table has a sortable header', () => {
                 tableHeader="Test Table Header"
                 tableHead={[
                     { name: 'A', sortable: true },
-                    { name: 'B', sortable: false }
+                    { name: 'B', sortable: false },
                 ]}
                 tableBody={[
                     {
                         id: 1,
-                        tableDetails: [{ id: 1, title: 'one' }]
-                    }
+                        tableDetails: [{ id: 1, title: 'one' }],
+                    },
                 ]}
                 totalResults={1}
             />

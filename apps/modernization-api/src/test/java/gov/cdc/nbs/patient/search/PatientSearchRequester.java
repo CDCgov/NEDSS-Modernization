@@ -1,5 +1,7 @@
 package gov.cdc.nbs.patient.search;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -10,11 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
 @Component
 class PatientSearchRequester {
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       query search($filter: PersonFilter!, $page: SortablePage) {
         findPatientsByFilter(filter: $filter, page: $page) {
           content {
@@ -78,25 +79,21 @@ class PatientSearchRequester {
   }
 
   ResultActions search(
-      final PatientSearchCriteria filter,
-      final Pageable paging,
-      final SortCriteria sorting) {
+      final PatientSearchCriteria filter, final Pageable paging, final SortCriteria sorting) {
     try {
 
       JsonNode page = paginatedMapper.map(paging, sorting);
 
-
-      return graphql.query(
-          QUERY,
-          mapper.createObjectNode()
-              .<ObjectNode>set(
-                  "filter",
-                  mapper.convertValue(filter, JsonNode.class))
-              .set("page", page))
+      return graphql
+          .query(
+              QUERY,
+              mapper
+                  .createObjectNode()
+                  .<ObjectNode>set("filter", mapper.convertValue(filter, JsonNode.class))
+                  .set("page", page))
           .andDo(print());
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to request a Patient Search");
     }
   }
-
 }

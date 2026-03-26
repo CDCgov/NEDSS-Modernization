@@ -11,9 +11,9 @@ describe('when showing an investigation search results', () => {
                 {
                     shortId: 797,
                     personCd: 'PAT',
-                    typeCd: 'SubjOfPHC'
-                }
-            ]
+                    typeCd: 'SubjOfPHC',
+                },
+            ],
         };
 
         const { getByText } = render(
@@ -34,16 +34,17 @@ describe('when showing an investigation search results', () => {
                     personCd: 'PAT',
                     typeCd: 'SubjOfPHC',
                     firstName: 'legal-first-name',
-                    lastName: 'legal-last-name'
-                }
-            ]
+                    lastName: 'legal-last-name',
+                },
+            ],
         };
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -58,16 +59,17 @@ describe('when showing an investigation search results', () => {
                 {
                     personCd: 'PAT',
                     typeCd: 'SubjOfPHC',
-                    birthTime: '1976-12-01'
-                }
-            ]
+                    birthTime: '1976-12-01',
+                },
+            ],
         };
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -82,16 +84,17 @@ describe('when showing an investigation search results', () => {
                 {
                     personCd: 'PAT',
                     typeCd: 'SubjOfPHC',
-                    currSexCd: 'F'
-                }
-            ]
+                    currSexCd: 'F',
+                },
+            ],
         };
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -105,14 +108,15 @@ describe('when showing an investigation search results', () => {
             id: '1063',
             cdDescTxt: 'investigated-condition',
             localId: 'local-id-value',
-            personParticipations: []
+            personParticipations: [],
         };
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -125,14 +129,15 @@ describe('when showing an investigation search results', () => {
         const result: Investigation = {
             relevance: 63.1,
             addTime: '2023-07-21T15:21:03.770Z',
-            personParticipations: []
+            personParticipations: [],
         };
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -144,14 +149,15 @@ describe('when showing an investigation search results', () => {
         const result: Investigation = {
             relevance: 63.1,
             jurisdictionCodeDescTxt: 'jurisdication name',
-            personParticipations: []
+            personParticipations: [],
         };
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -167,16 +173,17 @@ describe('when showing an investigation search results', () => {
                     typeCd: 'InvestgrOfPHC',
                     personCd: 'PRV',
                     firstName: 'investigator-first-name',
-                    lastName: 'investigator-last-name'
-                }
-            ]
+                    lastName: 'investigator-last-name',
+                },
+            ],
         };
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -188,14 +195,15 @@ describe('when showing an investigation search results', () => {
         const result: Investigation = {
             relevance: 63.1,
             investigationStatusCd: 'O',
-            personParticipations: []
+            personParticipations: [],
         };
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -207,14 +215,15 @@ describe('when showing an investigation search results', () => {
         const result: Investigation = {
             relevance: 63.1,
             investigationStatusCd: 'C',
-            personParticipations: []
+            personParticipations: [],
         };
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -226,21 +235,22 @@ describe('when showing an investigation search results', () => {
         const result: Investigation = {
             relevance: 63.1,
             notificationRecordStatusCd: 'notification-status',
-            personParticipations: []
+            personParticipations: [],
         };
 
         const notificationStatusResolver = vi.fn();
         notificationStatusResolver.mockReturnValue({
             value: 'notification-status',
             name: 'notification-status-display',
-            label: 'notification-status-display'
+            label: 'notification-status-display',
         });
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={notificationStatusResolver}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={notificationStatusResolver}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 
@@ -254,14 +264,15 @@ describe('when showing an investigation search results', () => {
         const result: Investigation = {
             relevance: 63.1,
             notificationRecordStatusCd: 'unknown-value',
-            personParticipations: []
+            personParticipations: [],
         };
 
         const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
-                    notificationStatusResolver={vi.fn()}></InvestigationSearchResultListItem>
+                    notificationStatusResolver={vi.fn()}
+                ></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
 

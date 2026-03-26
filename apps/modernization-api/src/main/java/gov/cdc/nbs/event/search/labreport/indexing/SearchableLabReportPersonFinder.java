@@ -3,10 +3,9 @@ package gov.cdc.nbs.event.search.labreport.indexing;
 import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
 import gov.cdc.nbs.event.search.labreport.indexing.patient.SearchableLabReportPatientFinder;
 import gov.cdc.nbs.event.search.labreport.indexing.provider.SearchableLabReportProviderFinder;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 class SearchableLabReportPersonFinder {
@@ -16,8 +15,7 @@ class SearchableLabReportPersonFinder {
 
   SearchableLabReportPersonFinder(
       final SearchableLabReportPatientFinder patientFinder,
-      final SearchableLabReportProviderFinder providerFinder
-  ) {
+      final SearchableLabReportProviderFinder providerFinder) {
     this.patientFinder = patientFinder;
     this.providerFinder = providerFinder;
   }
@@ -26,7 +24,8 @@ class SearchableLabReportPersonFinder {
     List<SearchableLabReport.Person.Patient> patients = this.patientFinder.find(lab);
     List<SearchableLabReport.Person.Provider> providers = this.providerFinder.find(lab);
 
-    ArrayList<SearchableLabReport.Person> people = new ArrayList<>(patients.size() + providers.size());
+    ArrayList<SearchableLabReport.Person> people =
+        new ArrayList<>(patients.size() + providers.size());
 
     people.addAll(patients);
     people.addAll(providers);

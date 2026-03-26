@@ -22,20 +22,9 @@ public sealed interface Match<L, R> {
     throw new UnsupportedOperationException();
   }
 
-  record OnlyRight<L, R>(R right) implements Match<L, R> {
+  record OnlyRight<L, R>(R right) implements Match<L, R> {}
 
-  }
+  record OnlyLeft<L, R>(L left) implements Match<L, R> {}
 
-
-  record OnlyLeft<L, R>(L left) implements Match<L, R> {
-
-
-  }
-
-
-  record Both<L, R>(L left, R right) implements Match<L, R> {
-
-
-  }
-
+  record Both<L, R>(L left, R right) implements Match<L, R> {}
 }

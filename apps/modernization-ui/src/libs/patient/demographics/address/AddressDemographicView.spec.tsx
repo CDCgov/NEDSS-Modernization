@@ -14,7 +14,7 @@ const entry: AddressDemographic = {
     state: asSelectable('state-value', 'state-name'),
     country: asSelectable('US', 'United states'),
     censusTract: 'census tract value',
-    zipcode: '12345'
+    zipcode: '12345',
 };
 
 describe('AddressDemographicView', () => {

@@ -13,7 +13,8 @@ const GuardedPatientFileEdit = () => {
             <Guarded
                 feature={(features) => features.patient.file.enabled}
                 permission={permissions.patient.update}
-                fallback={<RedirectHome />}>
+                fallback={<RedirectHome />}
+            >
                 <PatientFileEdit />
             </Guarded>
         </Shown>

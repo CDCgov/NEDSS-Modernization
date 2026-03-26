@@ -16,13 +16,13 @@ const mockKeepAllSeparate = vi.fn();
 vi.mock('apps/deduplication/api/useRemoveMerge', () => ({
     useRemoveMerge: () => {
         return { keepAllSeparate: mockKeepAllSeparate };
-    }
+    },
 }));
 vi.mock('react-router', async () => {
     const actual = await vi.importActual('react-router');
     return {
         ...actual,
-        useNavigate: vi.fn()
+        useNavigate: vi.fn(),
     };
 });
 
@@ -37,7 +37,7 @@ const Fixture = () => {
             sexAndBirth: {},
             mortality: {},
             general: {},
-            investigations: []
+            investigations: [],
         },
         {
             personUid: '200',
@@ -47,7 +47,7 @@ const Fixture = () => {
             sexAndBirth: {},
             mortality: {},
             general: {},
-            investigations: []
+            investigations: [],
         },
         {
             personUid: '300',
@@ -57,8 +57,8 @@ const Fixture = () => {
             sexAndBirth: {},
             mortality: {},
             general: {},
-            investigations: []
-        }
+            investigations: [],
+        },
     ];
     return (
         <AlertProvider duration={1000}>
@@ -167,8 +167,8 @@ describe('MergeReview', () => {
                 sexAndBirth: {},
                 mortality: {},
                 general: {},
-                investigations: []
-            }
+                investigations: [],
+            },
         ];
 
         const Wrapper = () => {
@@ -191,9 +191,10 @@ describe('MergeReview', () => {
                     initialEntries={[
                         {
                             pathname: '/deduplication/merge/1234',
-                            state: { fromPatientFileSummary: true, patientId: '999' }
-                        }
-                    ]}>
+                            state: { fromPatientFileSummary: true, patientId: '999' },
+                        },
+                    ]}
+                >
                     <Routes>
                         <Route path="/deduplication/merge/:matchId" element={<Wrapper />} />
                     </Routes>

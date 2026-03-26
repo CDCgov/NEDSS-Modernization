@@ -34,7 +34,7 @@ export const PreviewName = ({ selectedNames, mergeCandidates }: NameProps) => {
         .toSorted((a, b) => (parseISO(a.asOf) > parseISO(b.asOf) ? -1 : 1))
         .map((n) => ({
             ...n,
-            asOf: format(parseISO(n.asOf), 'MM/dd/yyyy')
+            asOf: format(parseISO(n.asOf), 'MM/dd/yyyy'),
         }));
 
     const columns: Column<NameEntry>[] = [
@@ -43,57 +43,57 @@ export const PreviewName = ({ selectedNames, mergeCandidates }: NameProps) => {
             name: 'As of',
             render: (entry: NameEntry) => entry.asOf ?? '---',
             value: (entry: NameEntry) => entry.asOf,
-            sortable: true
+            sortable: true,
         },
         {
             id: 'type',
             name: 'Type',
             render: (entry: NameEntry) => entry.type ?? '---',
             value: (entry: NameEntry) => entry.type,
-            sortable: true
+            sortable: true,
         },
         {
             id: 'prefix',
             name: 'Prefix',
             render: (entry: NameEntry) => entry.prefix ?? '---',
             value: (entry: NameEntry) => entry.prefix,
-            sortable: true
+            sortable: true,
         },
         {
             id: 'last',
             name: 'Last',
             render: (entry: NameEntry) => entry.last ?? '---',
             value: (entry: NameEntry) => entry.last,
-            sortable: true
+            sortable: true,
         },
         {
             id: 'first',
             name: 'First',
             render: (entry: NameEntry) => entry.first ?? '---',
             value: (entry: NameEntry) => entry.first,
-            sortable: true
+            sortable: true,
         },
         {
             id: 'middle',
             name: 'Middle',
             render: (entry: NameEntry) => entry.middle ?? '---',
             value: (entry: NameEntry) => entry.middle,
-            sortable: true
+            sortable: true,
         },
         {
             id: 'suffix',
             name: 'Suffix',
             render: (entry: NameEntry) => entry.suffix ?? '---',
             value: (entry: NameEntry) => entry.suffix,
-            sortable: true
+            sortable: true,
         },
         {
             id: 'degree',
             name: 'Degree',
             render: (entry: NameEntry) => entry.degree ?? '---',
             value: (entry: NameEntry) => entry.degree,
-            sortable: true
-        }
+            sortable: true,
+        },
     ];
 
     return <MergePreviewTableCard<NameEntry> id="name" title="Name" columns={columns} data={initialNames} />;

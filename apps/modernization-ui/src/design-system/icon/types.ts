@@ -26,7 +26,7 @@ const AvailableExtended = [
     'sort_asc_numeric',
     'sort_des_numeric',
     'sort_asc_default',
-    'sort_des_default'
+    'sort_des_default',
 ] as const;
 
 type ExtendedIcons = (typeof AvailableExtended)[number];
@@ -275,7 +275,7 @@ const AvailableUSWDS = [
     'youtube',
     'zoom_in',
     'zoom_out',
-    'zoom_out_map'
+    'zoom_out_map',
 ] as const;
 
 type USWDSIcons = (typeof AvailableUSWDS)[number];

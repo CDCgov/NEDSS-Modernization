@@ -2,11 +2,10 @@ package gov.cdc.nbs.patient.file.demographics.administrative;
 
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.patient.demographics.administrative.Administrative;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientAdministrativeRowMapper implements RowMapper<Administrative> {
 
@@ -15,7 +14,6 @@ class PatientAdministrativeRowMapper implements RowMapper<Administrative> {
       this(1, 2);
     }
   }
-
 
   private final Column columns;
 

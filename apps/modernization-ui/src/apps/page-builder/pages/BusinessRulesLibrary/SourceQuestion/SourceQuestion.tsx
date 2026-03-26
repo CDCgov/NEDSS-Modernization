@@ -66,7 +66,8 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                     setActiveTab(tabKey);
                                     setActiveSection(0);
                                     setSourceList([]);
-                                }}>
+                                }}
+                            >
                                 {tab.name}
                             </li>
                         ))}
@@ -101,7 +102,8 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                     ? setActiveSection(0)
                                                     : setActiveSection(section.id);
                                                 setSourceList([]);
-                                            }}>
+                                            }}
+                                        >
                                             <Icon name={'group'} size={'m'} />
                                             <span className={activeSection === section.id ? styles.active : ''}>
                                                 {section.name}
@@ -123,12 +125,14 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                             handleSourceQuestion(subsection.questions);
                                                             setActiveSubsection(subsection.id);
                                                         }
-                                                    }}>
+                                                    }}
+                                                >
                                                     <Icon name={'group'} size={'m'} />
                                                     <span
                                                         className={
                                                             activeSubsection === subsection.id ? styles.active : ''
-                                                        }>
+                                                        }
+                                                    >
                                                         {subsection.name}
                                                     </span>
                                                 </div>
@@ -162,7 +166,8 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                     onClick={() => {
                         onReset();
                         onCancel?.();
-                    }}>
+                    }}
+                >
                     Cancel
                 </Button>
                 <Button
@@ -171,7 +176,8 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                     onClick={() => {
                         onContinue(questionSelect);
                         onCancel?.();
-                    }}>
+                    }}
+                >
                     Continue
                 </Button>
             </div>

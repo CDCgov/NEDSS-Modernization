@@ -22,8 +22,7 @@ class PatientSearchResultResolver {
 
   PatientSearchResultResolver(
       final SearchPageableMapper mapper,
-      final SearchResolver<PatientSearchCriteria, PatientSearchResult> resolver
-  ) {
+      final SearchResolver<PatientSearchCriteria, PatientSearchResult> resolver) {
     this.mapper = mapper;
     this.resolver = resolver;
     this.adjuster = new AuthorizedPatientFilterAdjuster(new Permission("FindInactive", "Patient"));
@@ -34,17 +33,12 @@ class PatientSearchResultResolver {
   SearchResult<PatientSearchResult> resolve(
       @AuthenticationPrincipal final NbsUserDetails user,
       @Argument final PatientSearchCriteria filter,
-      @Argument("page") PaginationRequest paginated
-  ) {
+      @Argument("page") PaginationRequest paginated) {
 
-    PatientSearchCriteria adjusted = PatientFilterValidator.validate(this.adjuster.adjusted(user, filter));
+    PatientSearchCriteria adjusted =
+        PatientFilterValidator.validate(this.adjuster.adjusted(user, filter));
     Pageable pageable = mapper.from(paginated);
 
-    return resolver.search(
-        adjusted,
-        pageable
-    );
+    return resolver.search(adjusted, pageable);
   }
-
-
 }

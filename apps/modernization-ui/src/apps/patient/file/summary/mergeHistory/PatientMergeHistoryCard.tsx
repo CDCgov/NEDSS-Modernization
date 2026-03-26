@@ -29,18 +29,19 @@ const columns: Column<PatientFileMergeHistory>[] = [
         render: (row) => (
             <Permitted
                 permission={permissions.patient.searchInactive}
-                fallback={<span>{row.supersededPersonLocalId}</span>}>
+                fallback={<span>{row.supersededPersonLocalId}</span>}
+            >
                 <a href={`/patient/${row.supersededPersonLocalId}/summary`} target="_blank" rel="noopener noreferrer">
                     {row.supersededPersonLocalId}
                 </a>
             </Permitted>
-        )
+        ),
     },
     {
         id: 'supersededPersonLegalName',
         name: 'Patient Name',
         sortable: true,
-        value: (row) => row.supersededPersonLegalName
+        value: (row) => row.supersededPersonLegalName,
     },
     {
         id: 'mergeTimestamp',
@@ -48,14 +49,14 @@ const columns: Column<PatientFileMergeHistory>[] = [
         sortable: true,
         sortIconType: 'numeric',
         value: (row) => row.mergeTimestamp,
-        render: (row) => (row.mergeTimestamp ? format(new Date(row.mergeTimestamp), 'Pp') : '')
+        render: (row) => (row.mergeTimestamp ? format(new Date(row.mergeTimestamp), 'Pp') : ''),
     },
     {
         id: 'mergedByUser',
         name: 'Merged By',
         sortable: true,
-        value: (row) => row.mergedByUser
-    }
+        value: (row) => row.mergedByUser,
+    },
 ];
 
 const groupByTimestamp = (rows: PatientFileMergeHistory[]) =>
@@ -69,7 +70,7 @@ const groupByTimestamp = (rows: PatientFileMergeHistory[]) =>
 const InternalMergeHistoryCard = ({
     id,
     data,
-    patient
+    patient,
 }: {
     id: string;
     data: PatientFileMergeHistory[];
@@ -94,7 +95,8 @@ const InternalMergeHistoryCard = ({
                             key={timestampKey}
                             id={`${id}-section-${index}`}
                             title={`The following superseded patient records were merged with ${patientName}`}
-                            subtext={`${group.length} record${group.length === 1 ? '' : 's'}`}>
+                            subtext={`${group.length} record${group.length === 1 ? '' : 's'}`}
+                        >
                             <SortableDataTable
                                 id={`${id}-table-${index}`}
                                 columns={columns}

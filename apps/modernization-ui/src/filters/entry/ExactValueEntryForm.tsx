@@ -21,7 +21,7 @@ const ExactValueEntryForm = ({ property }: ExactValueEntryFormProps) => {
             name="values"
             shouldUnregister
             rules={{
-                required: { value: true, message: 'At least one value is required.' }
+                required: { value: true, message: 'At least one value is required.' },
             }}
             render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
                 <MultiSelectAutocomplete

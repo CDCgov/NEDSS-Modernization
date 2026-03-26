@@ -6,17 +6,17 @@ import { Selectable } from 'options';
 
 const mockRaceCategories: Selectable[] = [
     { value: '1', name: 'race one name' },
-    { value: '2', name: 'race two name' }
+    { value: '2', name: 'race two name' },
 ];
 
 const mockDetailedRaces: Selectable[] = [
     { value: '2', name: 'detailed race1' },
-    { value: '3', name: 'detailed race2' }
+    { value: '3', name: 'detailed race2' },
 ];
 
 vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
-    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn() })
+    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn() }),
 }));
 
 const onChange = vi.fn();
@@ -32,8 +32,8 @@ describe('RaceRepeatingBlock', () => {
                         id: 3,
                         asOf: '06/05/2024',
                         race: { value: '1', name: 'race one name' },
-                        detailed: []
-                    }
+                        detailed: [],
+                    },
                 ]}
                 onChange={onChange}
                 isDirty={isDirty}
@@ -79,8 +79,8 @@ describe('RaceRepeatingBlock', () => {
                         id: 3,
                         asOf: '06/05/2024',
                         race: { value: '1', name: 'race one name' },
-                        detailed: []
-                    }
+                        detailed: [],
+                    },
                 ]}
                 onChange={onChange}
                 isDirty={isDirty}

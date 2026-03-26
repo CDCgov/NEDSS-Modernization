@@ -6,11 +6,11 @@ const mockNameCodedValues = {
     types: [{ name: 'Adopted name', value: 'AN' }],
     prefixes: [{ name: 'Miss', value: 'MS' }],
     suffixes: [{ name: 'Sr.', value: 'SR' }],
-    degrees: [{ name: 'BA', value: 'BA' }]
+    degrees: [{ name: 'BA', value: 'BA' }],
 };
 
 vi.mock('apps/patient/data/name/useNameCodedValues', () => ({
-    useNameCodedValues: () => mockNameCodedValues
+    useNameCodedValues: () => mockNameCodedValues,
 }));
 
 const Fixture = ({ values, onChange = vi.fn(), isDirty = vi.fn() }: Partial<NameRepeatingBlockProps>) => (
@@ -24,8 +24,8 @@ describe('NameRepeatingBlock', () => {
                 values={[
                     {
                         asOf: '07/11/1997',
-                        type: { name: 'type-name', value: 'type-value' }
-                    }
+                        type: { name: 'type-name', value: 'type-value' },
+                    },
                 ]}
             />
         );

@@ -1,15 +1,15 @@
 package gov.cdc.nbs.patient.file;
 
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientFileRowMapper implements RowMapper<PatientFile> {
 
-  record Columns(int id, int patientId, int local, int status, int sex, int birthday, int deceasedOn) {
+  record Columns(
+      int id, int patientId, int local, int status, int sex, int birthday, int deceasedOn) {
     Columns() {
       this(1, 2, 3, 4, 5, 6, 7);
     }
@@ -33,17 +33,6 @@ class PatientFileRowMapper implements RowMapper<PatientFile> {
     LocalDate birthday = LocalDateColumnMapper.map(resultSet, columns.birthday());
     LocalDate deceasedOn = LocalDateColumnMapper.map(resultSet, columns.deceasedOn());
 
-    return new PatientFile(
-        id,
-        patientId,
-        local,
-        status,
-        null,
-        sex,
-        birthday,
-        deceasedOn,
-        null
-    );
+    return new PatientFile(id, patientId, local, status, null, sex, birthday, deceasedOn, null);
   }
-
 }

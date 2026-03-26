@@ -17,14 +17,14 @@ export class PagesService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: CreateTemplateRequest,
+        page: number;
+        requestBody: CreateTemplateRequest;
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{page}/template',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -36,16 +36,12 @@ export class PagesService {
      * @returns PagesResponse OK
      * @throws ApiError
      */
-    public static details({
-        id,
-    }: {
-        id: number,
-    }): CancelablePromise<PagesResponse> {
+    public static details({ id }: { id: number }): CancelablePromise<PagesResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/pages/{id}',
             path: {
-                'id': id,
+                id: id,
             },
         });
     }

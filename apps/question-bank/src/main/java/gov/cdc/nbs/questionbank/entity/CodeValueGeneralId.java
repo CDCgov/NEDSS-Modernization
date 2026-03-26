@@ -1,8 +1,8 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,10 +17,9 @@ import lombok.Setter;
 @Embeddable
 public class CodeValueGeneralId implements Serializable {
 
-    @Column(name = "code_set_nm", nullable = false, length = 256)
-    private String codeSetNm;
+  @Column(name = "code_set_nm", nullable = false, length = 256)
+  private String codeSetNm;
 
-    @Column(name = "code", nullable = false, length = 20)
-    private String code;
-
+  @Column(name = "code", nullable = false, length = 20)
+  private String code;
 }

@@ -13,27 +13,27 @@ const mockGo = vi.fn();
 vi.mock('libs/alert', () => ({
     useAlert: () => ({
         showSuccess: mockShowSuccess,
-        showError: mockShowError
-    })
+        showError: mockShowError,
+    }),
 }));
 
 vi.mock('apps/search', () => ({
     useSearchNavigation: () => ({
-        go: mockGo
-    })
+        go: mockGo,
+    }),
 }));
 
 vi.mock('./useDeletePatient', () => ({
-    useDeletePatient: vi.fn()
+    useDeletePatient: vi.fn(),
 }));
 
 vi.mock('libs/permission', () => ({
     Permitted: vi.fn(({ children }: { children: ReactNode }) => <>{children}</>),
     permissions: {
         patient: {
-            delete: 'DELETE-PATIENT'
-        }
-    }
+            delete: 'DELETE-PATIENT',
+        },
+    },
 }));
 
 describe('DeleteAction', () => {
@@ -52,7 +52,7 @@ describe('DeleteAction', () => {
                     local: 'PSN10091000GA01',
                     patientId: 91000,
                     deletability: 'Deletable',
-                    status: 'ACTIVE'
+                    status: 'ACTIVE',
                 }}
             />
         );
@@ -74,7 +74,7 @@ describe('DeleteAction', () => {
                     local: 'PSN10091000GA01',
                     patientId: 91000,
                     deletability: 'Deletable',
-                    status: 'ACTIVE'
+                    status: 'ACTIVE',
                 }}
             />
         );
@@ -91,7 +91,7 @@ describe('DeleteAction', () => {
                     local: 'PSN10091000GA01',
                     patientId: 91000,
                     deletability: 'Has_Associations',
-                    status: 'ACTIVE'
+                    status: 'ACTIVE',
                 }}
             />
         );
@@ -101,12 +101,12 @@ describe('DeleteAction', () => {
 
         expect(
             getByText('This patient file has associated event records.', {
-                exact: false
+                exact: false,
             })
         ).toBeInTheDocument();
         expect(
             getByText('The file cannot be deleted until all associated event records have been deleted.', {
-                exact: false
+                exact: false,
             })
         ).toBeInTheDocument();
     });
@@ -121,7 +121,7 @@ describe('DeleteAction', () => {
                     local: 'PSN10091000GA01',
                     patientId: 91000,
                     deletability: 'Is_Inactive',
-                    status: 'ACTIVE'
+                    status: 'ACTIVE',
                 }}
             />
         );
@@ -144,7 +144,7 @@ describe('DeleteAction', () => {
                     local: 'PSN10091000GA01',
                     patientId: 91000,
                     deletability: 'Deletable',
-                    status: 'ACTIVE'
+                    status: 'ACTIVE',
                 }}
             />
         );
@@ -174,8 +174,8 @@ describe('DeleteAction', () => {
                     status: 'ACTIVE',
                     name: {
                         first: 'John',
-                        last: 'Doe'
-                    }
+                        last: 'Doe',
+                    },
                 }}
             />
         );
@@ -206,7 +206,7 @@ describe('DeleteAction', () => {
                     local: 'PSN10091000GA01',
                     patientId: 91000,
                     deletability: 'Deletable',
-                    status: 'ACTIVE'
+                    status: 'ACTIVE',
                 }}
             />
         );

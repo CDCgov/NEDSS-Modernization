@@ -1,5 +1,7 @@
 package gov.cdc.nbs.patient.file.edit;
 
+import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemographicPatientCommandMapper.*;
+
 import gov.cdc.nbs.change.ChangeResolver;
 import gov.cdc.nbs.change.Changes;
 import gov.cdc.nbs.change.Match;
@@ -7,18 +9,17 @@ import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographics.identification.IdentificationDemographic;
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 import java.util.Objects;
-
-import static gov.cdc.nbs.patient.demographics.identification.IdentificationDemographicPatientCommandMapper.*;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientIdentificationEditService {
 
   private static long identifiedBy(final IdentificationDemographic demographic) {
-    return demographic.sequence() == null ? demographic.hashCode() : Objects.hash(demographic.sequence());
+    return demographic.sequence() == null
+        ? demographic.hashCode()
+        : Objects.hash(demographic.sequence());
   }
 
   private static long identifyPersonName(EntityId identifier) {
@@ -32,12 +33,11 @@ class PatientIdentificationEditService {
     return !(Objects.equals(existing.asOf(), demographic.asOf())
         && Objects.equals(existing.type(), demographic.type())
         && Objects.equals(existing.issuer(), demographic.issuer())
-        && Objects.equals(existing.value(), demographic.value())
-    );
+        && Objects.equals(existing.value(), demographic.value()));
   }
 
-  private final ChangeResolver<EntityId, IdentificationDemographic, Long> resolver = ChangeResolver
-      .ofDifferingTypes(
+  private final ChangeResolver<EntityId, IdentificationDemographic, Long> resolver =
+      ChangeResolver.ofDifferingTypes(
           PatientIdentificationEditService::identifyPersonName,
           PatientIdentificationEditService::identifiedBy);
 
@@ -45,21 +45,23 @@ class PatientIdentificationEditService {
       final RequestContext context,
       final Person patient,
       final Collection<IdentificationDemographic> demographics) {
-    Changes<EntityId, IdentificationDemographic> changes = resolver.resolve(patient.identifications(),
-        demographics);
+    Changes<EntityId, IdentificationDemographic> changes =
+        resolver.resolve(patient.identifications(), demographics);
 
-    changes.added()
+    changes
+        .added()
         .map(demographic -> asAddIdentification(patient.id(), context, demographic))
         .forEach(patient::add);
 
-    changes.altered()
+    changes
+        .altered()
         .filter(PatientIdentificationEditService::changed)
         .map(match -> asUpdateIdentification(patient.id(), context, match.right()))
         .forEach(patient::update);
 
-    changes.removed()
+    changes
+        .removed()
         .map(existing -> asDeleteIdentification(patient.id(), context, existing))
         .forEach(patient::delete);
   }
-
 }

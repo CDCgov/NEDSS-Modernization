@@ -1,15 +1,15 @@
 package gov.cdc.nbs.patient.file.demographics.mortality;
 
+import java.util.Optional;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 class PatientMortalityDemographicFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [patient].as_of_date_morbidity          as [as_of],
           [patient].deceased_ind_cd               as [deceased_value],
@@ -23,29 +23,29 @@ class PatientMortalityDemographicFinder {
           [address].[cntry_cd]                    as [country_value],
           [country].code_desc_txt                 as [country_name]
       from Person [patient]
-      
+
           left join NBS_SRTE..Code_value_general [deceased] on
                   [deceased].code_set_nm = 'YNU'
               and [deceased].[code] = [patient].deceased_ind_cd
-      
+
           left join Entity_locator_participation [locators] on
                   [locators].entity_uid = [patient].person_uid
               and [locators].[use_cd] = 'DTH'
               and [locators].[class_cd] = 'PST'
               and [locators].record_status_cd = 'ACTIVE'
-      
+
           left join Postal_locator [address] on
                   [address].[postal_locator_uid] = [locators].[locator_uid]
-      
+
           left join NBS_SRTE..State_code [state] on
                   [state].state_cd = [address].state_cd
-      
+
           left join NBS_SRTE..State_county_code_value [county]  with (nolock) on
                   [county].[code] = [address].[cnty_cd]
-      
+
           left join NBS_SRTE..Country_code [country] on
                   [country].code = [address].cntry_cd
-      
+
       where [patient].person_uid = ?
           and [patient].cd = 'PAT'
           and [patient].[as_of_date_morbidity] is not null
@@ -60,9 +60,6 @@ class PatientMortalityDemographicFinder {
   }
 
   Optional<PatientMortalityDemographic> find(final long patient) {
-    return this.client.sql(QUERY)
-        .param(patient)
-        .query(this.mapper)
-        .optional();
+    return this.client.sql(QUERY).param(patient).query(this.mapper).optional();
   }
 }

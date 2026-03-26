@@ -14,9 +14,9 @@ vi.mock('pagination', () => ({
         page: {
             total: mockTotal,
             pageSize: mockPageSize,
-            current: mockCurrent
-        }
-    })
+            current: mockCurrent,
+        },
+    }),
 }));
 
 const Setup = () => <SearchResultPagination id="search-pagination-testing" />;

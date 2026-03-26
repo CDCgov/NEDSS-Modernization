@@ -6,4 +6,3 @@ export type CreateTemplateRequest = {
     name: string;
     description: string;
 };
-

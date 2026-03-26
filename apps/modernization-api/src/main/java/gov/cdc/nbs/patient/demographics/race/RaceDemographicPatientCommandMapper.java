@@ -6,10 +6,7 @@ import gov.cdc.nbs.patient.RequestContext;
 public class RaceDemographicPatientCommandMapper {
 
   public static PatientCommand.AddRaceInfo asAddRace(
-      final long patient,
-      final RequestContext context,
-      final RaceDemographic demographic
-  ) {
+      final long patient, final RequestContext context, final RaceDemographic demographic) {
 
     return new PatientCommand.AddRaceInfo(
         patient,
@@ -17,12 +14,10 @@ public class RaceDemographicPatientCommandMapper {
         demographic.race(),
         demographic.detailed(),
         context.requestedBy(),
-        context.requestedAt()
-    );
+        context.requestedAt());
   }
 
   private RaceDemographicPatientCommandMapper() {
     // static
   }
-
 }

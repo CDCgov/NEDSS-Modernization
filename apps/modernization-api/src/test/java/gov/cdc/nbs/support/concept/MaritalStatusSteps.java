@@ -14,7 +14,6 @@ public class MaritalStatusSteps {
 
   @ParameterType(name = "maritalStatus", value = ".*")
   public String maritalStatus(final String value) {
-    return resolver.resolve(SET, value)
-        .orElse(null);
+    return resolver.resolve(SET, value).orElse(null);
   }
 }

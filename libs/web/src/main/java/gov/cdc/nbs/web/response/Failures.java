@@ -10,13 +10,8 @@ public class Failures {
 
   public static ResponseEntity<StandardResponse> failure(final String reason) {
 
-    return ResponseEntity.badRequest()
-        .body(new StandardResponse.Failure(reason));
+    return ResponseEntity.badRequest().body(new StandardResponse.Failure(reason));
   }
 
-  private Failures() {
-
-  }
-
-
+  private Failures() {}
 }

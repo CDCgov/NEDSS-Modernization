@@ -18,7 +18,8 @@ const TableHeader = ({ sorting, header }: TableHeaderProps) => {
     return (
         <th
             className={classNames({ [styles.sorted]: direction !== Direction.None })}
-            {...(ariaSort && { 'aria-sort': ariaSort })}>
+            {...(ariaSort && { 'aria-sort': ariaSort })}
+        >
             <div>
                 {header.name}
                 {header.sortable && (
@@ -27,7 +28,8 @@ const TableHeader = ({ sorting, header }: TableHeaderProps) => {
                         className="usa-button--unstyled"
                         type={'button'}
                         aria-label="sort"
-                        onClick={() => sorting.toggleSort(header.name)}>
+                        onClick={() => sorting.toggleSort(header.name)}
+                    >
                         {resolveSortIcon(direction)}
                     </Button>
                 )}

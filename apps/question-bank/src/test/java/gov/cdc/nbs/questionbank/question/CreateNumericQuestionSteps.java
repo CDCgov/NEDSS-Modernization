@@ -3,8 +3,7 @@ package gov.cdc.nbs.questionbank.question;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.util.Map;
-import org.springframework.test.web.servlet.ResultActions;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
@@ -20,6 +19,8 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.Map;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class CreateNumericQuestionSteps {
   private final ObjectMapper mapper;
@@ -50,17 +51,21 @@ public class CreateNumericQuestionSteps {
   @When("I send the create numeric question request")
   public void send_create_numeric_question_request() throws Exception {
     response.active(requester.send(numericRequest));
-    NumericQuestion q = mapper.readValue(
-        response.active().andReturn().getResponse().getContentAsString(),
-        NumericQuestion.class);
+    NumericQuestion q =
+        mapper.readValue(
+            response.active().andReturn().getResponse().getContentAsString(),
+            NumericQuestion.class);
     mother.addManaged(q.id());
   }
 
   @Then("the numeric question is created")
   public void the_numeric_question_is_create() throws Exception {
     Concept codeSystem =
-        conceptFinder.find("CODE_SYSTEM", numericRequest.getMessagingInfo().codeSystem()).orElseThrow();
-    response.active()
+        conceptFinder
+            .find("CODE_SYSTEM", numericRequest.getMessagingInfo().codeSystem())
+            .orElseThrow();
+    response
+        .active()
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.mask", equalTo(numericRequest.getMask().toString())))
         .andExpect(jsonPath("$.fieldLength", equalTo(numericRequest.getFieldLength().toString())))
@@ -69,7 +74,6 @@ public class CreateNumericQuestionSteps {
         .andExpect(jsonPath("$.defaultValue", equalTo(numericRequest.getDefaultValue().toString())))
         .andExpect(jsonPath("$.unitTypeCd", equalTo("LITERAL")))
         .andExpect(jsonPath("$.unitValue", equalTo(numericRequest.getRelatedUnitsLiteral())))
-
         .andExpect(jsonPath("$.codeSet", equalTo(numericRequest.getCodeSet().toString())))
         .andExpect(jsonPath("$.uniqueId", equalTo(numericRequest.getUniqueId())))
         .andExpect(jsonPath("$.uniqueName", equalTo(numericRequest.getUniqueName())))
@@ -79,31 +83,49 @@ public class CreateNumericQuestionSteps {
         .andExpect(jsonPath("$.type", equalTo("NUMERIC")))
         .andExpect(jsonPath("$.label", equalTo(numericRequest.getLabel())))
         .andExpect(jsonPath("$.tooltip", equalTo(numericRequest.getTooltip())))
-        .andExpect(jsonPath("$.displayControl", equalTo(numericRequest.getDisplayControl().intValue())))
+        .andExpect(
+            jsonPath("$.displayControl", equalTo(numericRequest.getDisplayControl().intValue())))
         .andExpect(jsonPath("$.adminComments", equalTo(numericRequest.getAdminComments())))
         .andExpect(
-            jsonPath("$.dataMartInfo.defaultLabelInReport", equalTo(numericRequest.getDataMartInfo().reportLabel())))
-        .andExpect(jsonPath("$.dataMartInfo.defaultRdbTableName",
-            equalTo(numericRequest.getDataMartInfo().defaultRdbTableName())))
-        .andExpect(jsonPath("$.dataMartInfo.rdbColumnName",
-            equalTo(
-                numericRequest.getSubgroup() + "_" + numericRequest.getDataMartInfo().rdbColumnName().toUpperCase())))
+            jsonPath(
+                "$.dataMartInfo.defaultLabelInReport",
+                equalTo(numericRequest.getDataMartInfo().reportLabel())))
         .andExpect(
-            jsonPath("$.dataMartInfo.dataMartColumnName",
+            jsonPath(
+                "$.dataMartInfo.defaultRdbTableName",
+                equalTo(numericRequest.getDataMartInfo().defaultRdbTableName())))
+        .andExpect(
+            jsonPath(
+                "$.dataMartInfo.rdbColumnName",
+                equalTo(
+                    numericRequest.getSubgroup()
+                        + "_"
+                        + numericRequest.getDataMartInfo().rdbColumnName().toUpperCase())))
+        .andExpect(
+            jsonPath(
+                "$.dataMartInfo.dataMartColumnName",
                 equalTo(numericRequest.getDataMartInfo().dataMartColumnName())))
         .andExpect(
-            jsonPath("$.messagingInfo.includedInMessage",
+            jsonPath(
+                "$.messagingInfo.includedInMessage",
                 equalTo(numericRequest.getMessagingInfo().includedInMessage())))
         .andExpect(
-            jsonPath("$.messagingInfo.messageVariableId",
+            jsonPath(
+                "$.messagingInfo.messageVariableId",
                 equalTo(numericRequest.getMessagingInfo().messageVariableId())))
         .andExpect(
-            jsonPath("$.messagingInfo.labelInMessage", equalTo(numericRequest.getMessagingInfo().labelInMessage())))
+            jsonPath(
+                "$.messagingInfo.labelInMessage",
+                equalTo(numericRequest.getMessagingInfo().labelInMessage())))
         .andExpect(jsonPath("$.messagingInfo.codeSystem", equalTo(codeSystem.conceptName())))
         .andExpect(
-            jsonPath("$.messagingInfo.requiredInMessage",
+            jsonPath(
+                "$.messagingInfo.requiredInMessage",
                 equalTo(numericRequest.getMessagingInfo().requiredInMessage())))
-        .andExpect(jsonPath("$.messagingInfo.hl7DataType", equalTo(numericRequest.getMessagingInfo().hl7DataType())));
+        .andExpect(
+            jsonPath(
+                "$.messagingInfo.hl7DataType",
+                equalTo(numericRequest.getMessagingInfo().hl7DataType())));
   }
 
   private CreateNumericQuestionRequest toCreateNumericRequest(DataTable dataTable) {
@@ -127,24 +149,25 @@ public class CreateNumericQuestionSteps {
     request.setMaxValue(Long.valueOf(map.get("maxValue")));
     request.setRelatedUnitsLiteral(map.get("relatedUnitsLiteral"));
 
-    request.setDataMartInfo(new ReportingInfo(
-        map.get("reportLabel"),
-        map.get("defaultRdbTableName"),
-        map.get("rdbColumnName"),
-        map.get("dataMartColumnName")));
+    request.setDataMartInfo(
+        new ReportingInfo(
+            map.get("reportLabel"),
+            map.get("defaultRdbTableName"),
+            map.get("rdbColumnName"),
+            map.get("dataMartColumnName")));
 
     if ("false".equals(map.get("includedInMessage"))) {
       request.setMessagingInfo(new MessagingInfo(false, null, null, null, false, null));
     } else {
-      request.setMessagingInfo(new MessagingInfo(
-          "true".equals(map.get("includedInMessage").toLowerCase()),
-          map.get("messageVariableId"),
-          map.get("labelInMessage"),
-          map.get("codeSystem"),
-          "true".equals(map.get("requiredInMessage").toLowerCase()),
-          map.get("hl7DataType")));
+      request.setMessagingInfo(
+          new MessagingInfo(
+              "true".equals(map.get("includedInMessage").toLowerCase()),
+              map.get("messageVariableId"),
+              map.get("labelInMessage"),
+              map.get("codeSystem"),
+              "true".equals(map.get("requiredInMessage").toLowerCase()),
+              map.get("hl7DataType")));
     }
     return request;
   }
-
 }

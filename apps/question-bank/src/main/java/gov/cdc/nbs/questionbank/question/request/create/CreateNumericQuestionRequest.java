@@ -1,11 +1,10 @@
 package gov.cdc.nbs.questionbank.question.request.create;
 
 import gov.cdc.nbs.questionbank.question.model.DisplayOption;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Arrays;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -17,7 +16,6 @@ public class CreateNumericQuestionRequest extends CreateQuestionRequest {
   private Long maxValue;
   private String relatedUnitsLiteral;
   private Long relatedUnitsValueSet;
-
 
   public enum NumericDisplayControl {
     USER_ENTERED(1008, "User entered text, number, or date"),
@@ -39,6 +37,5 @@ public class CreateNumericQuestionRequest extends CreateQuestionRequest {
     private DisplayOption toDisplayOption() {
       return new DisplayOption(value, name);
     }
-
   }
 }

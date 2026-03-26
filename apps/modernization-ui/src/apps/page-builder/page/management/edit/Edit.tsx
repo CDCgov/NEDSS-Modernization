@@ -4,7 +4,7 @@ import {
     PageManagementMenu,
     PageManagementProvider,
     useGetPageDetails,
-    usePageManagement
+    usePageManagement,
 } from 'apps/page-builder/page/management';
 import { Loading } from 'components/Spinner';
 import { NavLinkButton } from 'design-system/button';

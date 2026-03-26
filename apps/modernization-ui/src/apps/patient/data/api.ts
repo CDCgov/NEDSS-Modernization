@@ -102,5 +102,5 @@ export type {
     Sex,
     Birth,
     Mortality,
-    GeneralInformation
+    GeneralInformation,
 };

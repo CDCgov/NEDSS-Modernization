@@ -13,17 +13,19 @@ import org.springframework.stereotype.Component;
 @ScenarioScope
 class ProviderMother {
 
-  private static final String DELETE_IN = """
+  private static final String DELETE_IN =
+      """
       delete from Participation where subject_class_cd = 'PSN' and subject_entity_uid in (:identifiers)
       delete from Person_name where person_uid in (:identifiers);
       delete from Person where person_uid in (:identifiers);
       delete from Entity where entity_uid in (:identifiers);
       """;
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
       insert into Person(person_uid, version_ctrl_nbr, cd) values (:identifier, 1, 'PRV');
-      
+
       insert into Person_name(
         person_uid,
         person_name_seq,
@@ -55,8 +57,7 @@ class ProviderMother {
       final SequentialIdentityGenerator idGenerator,
       final JdbcClient client,
       final Available<ProviderIdentifier> available,
-      final Active<ProviderIdentifier> active
-  ) {
+      final Active<ProviderIdentifier> active) {
     this.idGenerator = idGenerator;
     this.client = client;
     this.available = available;
@@ -74,7 +75,8 @@ class ProviderMother {
 
     long identifier = idGenerator.next();
 
-    client.sql(CREATE)
+    client
+        .sql(CREATE)
         .param("identifier", identifier)
         .param("prefix", prefix)
         .param("first", first)
@@ -88,7 +90,5 @@ class ProviderMother {
 
     this.available.available(created);
     this.active.active(created);
-
   }
-
 }

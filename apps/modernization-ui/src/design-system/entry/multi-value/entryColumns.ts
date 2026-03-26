@@ -15,7 +15,7 @@ const ensureRendered = <R, C = CellValue>(rendered: Rendered<R, C>): Rendered<En
     if ('value' in rendered && 'render' in rendered) {
         return {
             value: (entry: Entry<R>) => rendered.value(entry.value),
-            render: (entry: Entry<R>, index: number) => rendered.render(entry.value, index)
+            render: (entry: Entry<R>, index: number) => rendered.render(entry.value, index),
         };
     } else if ('render' in rendered) {
         return { render: (entry: Entry<R>, index: number) => rendered.render(entry.value, index) };

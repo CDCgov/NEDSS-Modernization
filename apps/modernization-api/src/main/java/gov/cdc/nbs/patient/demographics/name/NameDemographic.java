@@ -2,12 +2,10 @@ package gov.cdc.nbs.patient.demographics.name;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
-
 import java.time.LocalDate;
 
 public record NameDemographic(
-    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) 
-    LocalDate asOf,
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
     String type,
     String prefix,
     String first,
@@ -19,9 +17,7 @@ public record NameDemographic(
     String degree,
     Short sequence) {
 
-  public NameDemographic(
-      LocalDate asOf,
-      String type) {
+  public NameDemographic(LocalDate asOf, String type) {
     this(asOf, type, null, null, null, null, null, null, null, null, null);
   }
 
@@ -174,5 +170,4 @@ public record NameDemographic(
         value,
         sequence());
   }
-
 }

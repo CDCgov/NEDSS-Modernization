@@ -8,7 +8,7 @@ const props = {
     modalRef: { current: null },
     tabId: 5,
     pageId: '10056',
-    onAddSection: vi.fn()
+    onAddSection: vi.fn(),
 };
 
 const mockAddSectionUsingPost = vi.spyOn(SectionControllerService, 'createSection');
@@ -83,8 +83,8 @@ describe('AddSectionModal', () => {
                     requestBody: {
                         name: 'Test Section',
                         visible: true,
-                        tabId: 5
-                    }
+                        tabId: 5,
+                    },
                 });
             });
         });

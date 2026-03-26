@@ -21,4 +21,3 @@ export namespace CreateConceptRequest {
         INACTIVE = 'INACTIVE',
     }
 }
-

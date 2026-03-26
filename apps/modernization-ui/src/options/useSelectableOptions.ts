@@ -39,10 +39,10 @@ type SelectableOptionsSettings<C> = {
 
 const useSelectableOptions = <V = undefined>({
     resolver,
-    lazy = false
+    lazy = false,
 }: SelectableOptionsSettings<V>): SelectableOptionsInteraction<V> => {
     const [state, dispatch] = useReducer(reducer<V>, {
-        status: 'idle'
+        status: 'idle',
     });
 
     useEffect(() => {
@@ -64,7 +64,7 @@ const useSelectableOptions = <V = undefined>({
 
     return {
         options,
-        load
+        load,
     };
 };
 

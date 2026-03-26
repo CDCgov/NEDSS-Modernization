@@ -28,7 +28,7 @@ const useConditionalRender = (): Interaction => {
         render,
         show,
         hide,
-        toggle
+        toggle,
     };
 };
 

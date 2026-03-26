@@ -7,6 +7,4 @@ public record PagesRule(
     String values,
     String function,
     String source,
-    String target
-) {
-}
+    String target) {}

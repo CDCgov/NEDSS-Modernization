@@ -3,7 +3,7 @@ import { LoadingOverlay } from './LoadingOverlay';
 
 const meta = {
     title: 'Loading/Overlay',
-    component: LoadingOverlay
+    component: LoadingOverlay,
 } satisfies Meta<typeof LoadingOverlay>;
 
 export default meta;
@@ -34,6 +34,6 @@ const Lorem = () => (
 
 export const Default: Story = {
     args: {
-        children: <Lorem />
-    }
+        children: <Lorem />,
+    },
 };

@@ -1,5 +1,10 @@
 package gov.cdc.nbs.patient.file.events.treatment.redirect;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.event.treatment.TreatmentIdentifier;
 import gov.cdc.nbs.testing.interaction.http.AuthenticatedMvcRequester;
@@ -16,11 +21,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-
 public class PatientFileViewTreatmentSteps {
 
   private final String classicUrl;
@@ -30,9 +30,7 @@ public class PatientFileViewTreatmentSteps {
   private final AuthenticatedMvcRequester authenticated;
   private final Active<ResultActions> activeResponse;
 
-
-  @Qualifier("classicRestService")
-  private final MockRestServiceServer server;
+  @Qualifier("classicRestService") private final MockRestServiceServer server;
 
   PatientFileViewTreatmentSteps(
       @Value("${nbs.wildfly.url:http://wildfly:7001}") final String classicUrl,
@@ -40,8 +38,7 @@ public class PatientFileViewTreatmentSteps {
       final Active<TreatmentIdentifier> activeTreatment,
       final AuthenticatedMvcRequester authenticated,
       final Active<ResultActions> activeResponse,
-      final MockRestServiceServer server
-  ) {
+      final MockRestServiceServer server) {
     this.classicUrl = classicUrl;
     this.activePatient = activePatient;
     this.activeTreatment = activeTreatment;
@@ -59,19 +56,24 @@ public class PatientFileViewTreatmentSteps {
   public void viewed() {
     long patient = activePatient.active().id();
 
-    server.expect(
-            requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+    server
+        .expect(requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
+    server
+        .expect(
+            requestTo(
+                classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
     long treatment = activeTreatment.active().identifier();
 
     activeResponse.active(
-        authenticated.request(MockMvcRequestBuilders.get("/nbs/api/patients/{patient}/treatments/{identifier}", patient, treatment)));
+        authenticated.request(
+            MockMvcRequestBuilders.get(
+                "/nbs/api/patients/{patient}/treatments/{identifier}", patient, treatment)));
   }
 
   @Then("NBS is prepared to view a Treatment")
@@ -84,9 +86,11 @@ public class PatientFileViewTreatmentSteps {
     long patient = activePatient.active().id();
     long treatment = activeTreatment.active().identifier();
 
-    String expected = "/nbs/PageAction.do?method=viewGenericLoad&businessObjectType=TRMT&actUid=" + treatment;
+    String expected =
+        "/nbs/PageAction.do?method=viewGenericLoad&businessObjectType=TRMT&actUid=" + treatment;
 
-    activeResponse.active()
+    activeResponse
+        .active()
         .andExpect(MockMvcResultMatchers.header().string("Location", expected))
         .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
         .andExpect(MockMvcResultMatchers.cookie().value("Return-Patient", String.valueOf(patient)));
@@ -96,10 +100,10 @@ public class PatientFileViewTreatmentSteps {
     assertThat(response.getRedirectedUrl()).contains(expected);
 
     assertThat(response.getCookies())
-        .satisfiesOnlyOnce(cookie -> {
-          assertThat(cookie.getName()).isEqualTo("Return-Patient");
-          assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-        });
+        .satisfiesOnlyOnce(
+            cookie -> {
+              assertThat(cookie.getName()).isEqualTo("Return-Patient");
+              assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
+            });
   }
-
 }

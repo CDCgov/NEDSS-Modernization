@@ -1,15 +1,12 @@
 package gov.cdc.nbs.data.selectable;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 public class SelectableRowMapper implements RowMapper<Selectable> {
 
-  public record Column(int value, int name) {
-  }
-
+  public record Column(int value, int name) {}
 
   private final Column columns;
 

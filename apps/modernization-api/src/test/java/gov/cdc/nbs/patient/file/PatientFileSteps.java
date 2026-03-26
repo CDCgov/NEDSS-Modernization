@@ -1,5 +1,10 @@
 package gov.cdc.nbs.patient.file;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.startsWith;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.ParameterType;
@@ -7,23 +12,16 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.startsWith;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 public class PatientFileSteps {
 
   private final Active<PatientIdentifier> activePatient;
   private final PatientFileRequester requester;
   private final Active<ResultActions> response;
 
-
   PatientFileSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientFileRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;
@@ -31,9 +29,7 @@ public class PatientFileSteps {
 
   @When("I view the Patient File")
   public void i_view_the_patient_file_of_the_patient() {
-    activePatient.maybeActive()
-        .map(this.requester::request)
-        .ifPresent(this.response::active);
+    activePatient.maybeActive().map(this.requester::request).ifPresent(this.response::active);
   }
 
   @When("I view the Patient File for patient {long}")
@@ -100,7 +96,9 @@ public class PatientFileSteps {
 
   @Then("the patient file can be deleted")
   public void the_patient_can_be_deleted() throws Exception {
-    this.response.active().andExpect(jsonPath("$.deletability").value(PatientDeletability.DELETABLE.value()));
+    this.response
+        .active()
+        .andExpect(jsonPath("$.deletability").value(PatientDeletability.DELETABLE.value()));
   }
 
   @ParameterType(name = "patientNotDeletableReason", value = "(?i)(has associations|is inactive)")
@@ -120,25 +118,22 @@ public class PatientFileSteps {
   @Then("I am unable to delete the patient because it was not found")
   @Then("I am unable to edit the patient because it was not found")
   public void notFound() throws Exception {
-    this.response.active()
+    this.response
+        .active()
         .andExpect(status().isBadRequest())
-        .andExpect(
-            jsonPath(
-                "$.reason",
-                startsWith("Unable to find patient")
-            )
-        );
+        .andExpect(jsonPath("$.reason", startsWith("Unable to find patient")));
   }
 
   @Then("I am unable to edit the patient")
   public void unableToEdit() throws Exception {
-    this.response.active()
+    this.response
+        .active()
         .andExpect(status().isBadRequest())
         .andExpect(
             jsonPath(
                 "$.reason",
-                equalTo("Unable to apply changes to patient %d".formatted(this.activePatient.active().id()))
-            )
-        );
+                equalTo(
+                    "Unable to apply changes to patient %d"
+                        .formatted(this.activePatient.active().id()))));
   }
 }

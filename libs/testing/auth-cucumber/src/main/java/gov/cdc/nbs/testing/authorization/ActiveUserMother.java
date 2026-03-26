@@ -5,16 +5,16 @@ import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
+import java.util.UUID;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Component
 @ScenarioScope
 class ActiveUserMother {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Auth_user (
         nedss_entry_id,
         user_id,
@@ -44,11 +44,12 @@ class ActiveUserMother {
         'ACTIVE',
         :addedOn
       );
-      
+
       select @@Identity
       """;
 
-  private static final String DELETE = """
+  private static final String DELETE =
+      """
       delete from Auth_user_role where auth_user_uid in (:identifiers);
       delete from Auth_user where auth_user_uid in (:identifiers);
       """;
@@ -64,8 +65,7 @@ class ActiveUserMother {
       final AuthenticationSupportSettings settings,
       final SequentialIdentityGenerator idGenerator,
       final JdbcClient client,
-      final Available<ActiveUser> users
-  ) {
+      final Available<ActiveUser> users) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.client = client;
@@ -82,23 +82,21 @@ class ActiveUserMother {
     return create(name, "test", "user");
   }
 
-  ActiveUser create(
-      final String username,
-      final String first,
-      final String last
-  ) {
+  ActiveUser create(final String username, final String first, final String last) {
 
     long nedss = idGenerator.next();
 
-    long id = this.client.sql(CREATE)
-        .param("nedss", nedss)
-        .param("username", username)
-        .param("firstName", first)
-        .param("lastName", last)
-        .param("addedOn", this.settings.createdOn())
-        .param("addedBy", this.settings.createdBy())
-        .query(Long.class)
-        .single();
+    long id =
+        this.client
+            .sql(CREATE)
+            .param("nedss", nedss)
+            .param("username", username)
+            .param("firstName", first)
+            .param("lastName", last)
+            .param("addedOn", this.settings.createdOn())
+            .param("addedBy", this.settings.createdBy())
+            .query(Long.class)
+            .single();
 
     ActiveUser activeUser = new ActiveUser(id, username, nedss);
     include(activeUser);

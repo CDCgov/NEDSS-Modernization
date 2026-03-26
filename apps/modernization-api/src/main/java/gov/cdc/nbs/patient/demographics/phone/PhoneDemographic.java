@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.demographics.phone;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
-
 import java.time.LocalDate;
 
 public record PhoneDemographic(
@@ -18,47 +17,17 @@ public record PhoneDemographic(
     String comment) {
 
   public static PhoneDemographic phoneNumber(
-      final LocalDate asOf,
-      final String type,
-      final String use,
-      final String number) {
-    return new PhoneDemographic(
-        null,
-        asOf,
-        type,
-        use,
-        null,
-        number,
-        null,
-        null,
-        null,
-        null);
-
+      final LocalDate asOf, final String type, final String use, final String number) {
+    return new PhoneDemographic(null, asOf, type, use, null, number, null, null, null, null);
   }
 
   public static PhoneDemographic email(
-      final LocalDate asOf,
-      final String type,
-      final String use,
-      final String email) {
-    return new PhoneDemographic(
-        null,
-        asOf,
-        type,
-        use,
-        null,
-        null,
-        null,
-        email,
-        null,
-        null);
+      final LocalDate asOf, final String type, final String use, final String email) {
+    return new PhoneDemographic(null, asOf, type, use, null, null, null, email, null, null);
   }
 
   public PhoneDemographic withPhoneValues(
-      final LocalDate asOf,
-      final String type,
-      final String use,
-      final String number) {
+      final LocalDate asOf, final String type, final String use, final String number) {
     return new PhoneDemographic(
         identifier(),
         asOf,
@@ -73,10 +42,7 @@ public record PhoneDemographic(
   }
 
   public PhoneDemographic withEmailValues(
-      final LocalDate asOf,
-      final String type,
-      final String use,
-      final String emailAddress) {
+      final LocalDate asOf, final String type, final String use, final String emailAddress) {
     return new PhoneDemographic(
         identifier(),
         asOf,

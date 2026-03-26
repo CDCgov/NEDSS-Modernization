@@ -7,8 +7,8 @@ describe('categoryValidator', () => {
                 id: 3,
                 asOf: '06/05/2024',
                 race: { value: 'race-one-value', name: 'race one name' },
-                detailed: []
-            }
+                detailed: [],
+            },
         ];
 
         const actual = categoryValidator(entries)(5, null);
@@ -22,8 +22,8 @@ describe('categoryValidator', () => {
                 id: 3,
                 asOf: '06/05/2024',
                 race: { value: 'race-one-value', name: 'race one name' },
-                detailed: []
-            }
+                detailed: [],
+            },
         ];
 
         const actual = categoryValidator(entries)(3, { value: 'race-one-value', name: 'race one name' });
@@ -37,8 +37,8 @@ describe('categoryValidator', () => {
                 id: 3,
                 asOf: '06/05/2024',
                 race: { value: 'race-one-value', name: 'race one name' },
-                detailed: []
-            }
+                detailed: [],
+            },
         ];
 
         const actual = categoryValidator(entries)(5, { value: 'race-two-value', name: 'race two name' });
@@ -52,8 +52,8 @@ describe('categoryValidator', () => {
                 id: 3,
                 asOf: '06/05/2024',
                 race: { value: 'race-one-value', name: 'race one name' },
-                detailed: []
-            }
+                detailed: [],
+            },
         ];
 
         const actual = categoryValidator(entries)(5, { value: 'race-one-value', name: 'race one name' });

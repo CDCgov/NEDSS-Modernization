@@ -25,19 +25,19 @@ const SexBirthDemographicFields = ({
     ageResolver,
     entry,
     orientation = 'horizontal',
-    sizing
+    sizing,
 }: SexBirthDemographicFieldsProps) => {
     const currentBirthday = useWatch({ control: form.control, name: 'sexBirth.bornOn', defaultValue: entry?.bornOn });
     const selectedCurrentGender = useWatch({
         control: form.control,
         name: 'sexBirth.current',
-        defaultValue: entry?.current
+        defaultValue: entry?.current,
     });
 
     const selectedMultipleBirth = useWatch({
         control: form.control,
         name: 'sexBirth.multiple',
-        defaultValue: entry?.multiple
+        defaultValue: entry?.multiple,
     });
 
     const age = ageResolver(currentBirthday);

@@ -9,8 +9,8 @@ const data: Partial<MergeCandidate> = {
         asOf: '2014-03-11T00:00:00.000',
         ethnicity: 'Hispanic or Latino',
         spanishOrigin: 'Cuban',
-        reasonUnknown: 'Did not ask'
-    }
+        reasonUnknown: 'Did not ask',
+    },
 };
 const Fixture = () => {
     const form = useForm();

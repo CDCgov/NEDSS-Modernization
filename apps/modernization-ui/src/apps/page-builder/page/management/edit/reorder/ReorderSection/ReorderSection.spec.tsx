@@ -30,7 +30,7 @@ describe('when ReorderSection renders', () => {
                                 order: 1,
                                 isGroupable: true,
                                 questionIdentifier: 'identifier',
-                                questions: []
+                                questions: [],
                             },
                             {
                                 id: 456,
@@ -40,13 +40,13 @@ describe('when ReorderSection renders', () => {
                                 order: 2,
                                 isGroupable: true,
                                 questionIdentifier: 'identifier',
-                                questions: []
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                questions: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     };
     const section: PagesSection = {
         id: 123456,
@@ -61,7 +61,7 @@ describe('when ReorderSection renders', () => {
                 order: 1,
                 isGroupable: true,
                 questionIdentifier: 'identifier',
-                questions: []
+                questions: [],
             },
             {
                 id: 456,
@@ -71,10 +71,10 @@ describe('when ReorderSection renders', () => {
                 order: 2,
                 isGroupable: true,
                 questionIdentifier: 'identifier',
-                questions: []
-            }
+                questions: [],
+            },
         ],
-        visible: true
+        visible: true,
     };
     it('should display Subsections', () => {
         const { container } = render(

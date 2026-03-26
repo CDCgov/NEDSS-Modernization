@@ -1,19 +1,18 @@
 package gov.cdc.nbs.time;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeParseException;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class FlexibleInstantConverterTest {
 
@@ -31,7 +30,6 @@ class FlexibleInstantConverterTest {
     String actual = FlexibleInstantConverter.toString(Instant.parse("1955-11-12T22:04:00Z"));
 
     assertThat(actual).isEqualTo("1955-11-12 22:04:00.000");
-
   }
 
   @Test
@@ -48,7 +46,6 @@ class FlexibleInstantConverterTest {
     String actual = FlexibleInstantConverter.toString(LocalDate.of(1955, Month.NOVEMBER, 8));
 
     assertThat(actual).isEqualTo("1955-11-08 00:00:00.000");
-
   }
 
   @Test
@@ -58,7 +55,6 @@ class FlexibleInstantConverterTest {
     assertThat(actual).isNull();
   }
 
-
   @ParameterizedTest
   @MethodSource("stringToInstant")
   void should_convert_string_to_instant(final String in, final Instant expected) {
@@ -66,7 +62,6 @@ class FlexibleInstantConverterTest {
 
     assertThat(actual).isEqualTo(expected);
   }
-
 
   static Stream<Arguments> stringToInstant() {
     return Stream.of(
@@ -79,9 +74,7 @@ class FlexibleInstantConverterTest {
         arguments("2022-11-18 22:27:13.83", Instant.parse("2022-11-18T22:27:13.83Z")),
         arguments("2022-11-18 22:27:13.8", Instant.parse("2022-11-18T22:27:13.8Z")),
         arguments("2022-11-18T22:27:13.317", Instant.parse("2022-11-18T22:27:13.317Z")),
-        arguments("2022-11-18T22:27:13", Instant.parse("2022-11-18T22:27:13Z"))
-
-    );
+        arguments("2022-11-18T22:27:13", Instant.parse("2022-11-18T22:27:13Z")));
   }
 
   @Test

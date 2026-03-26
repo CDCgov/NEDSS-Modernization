@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class SearchablePatientTelecomFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select distinct
           [locator].email_address         as [email],
           [locator].[phone_nbr_txt]       as [phone_number],
@@ -23,7 +24,7 @@ public class SearchablePatientTelecomFinder {
 
       where   [participation].entity_uid = ?
           and [participation].[class_cd] = 'TELE'
-      order by 
+      order by
           [participation].[as_of_date] desc,
           [participation].[locator_uid] desc
       """;
@@ -39,25 +40,21 @@ public class SearchablePatientTelecomFinder {
   private final SearchablePatientPhoneMapper.Column phoneColumns;
   private final SearchablePatientEmailMapper.Column emailColumns;
 
-
   public SearchablePatientTelecomFinder(final JdbcTemplate template) {
     this.template = template;
     this.emailColumns = new SearchablePatientEmailMapper.Column(ADDRESS_COLUMN);
     this.phoneColumns =
-        new SearchablePatientPhoneMapper.Column(NUMBER_COLUMN, EXTENSION_COLUMN, TYPE_COLUMN, USE_COLUMN);
+        new SearchablePatientPhoneMapper.Column(
+            NUMBER_COLUMN, EXTENSION_COLUMN, TYPE_COLUMN, USE_COLUMN);
   }
 
   public SearchablePatientTelecom find(final long patient) {
 
-    SearchablePatientTelecomRowCallbackHandler handler = new SearchablePatientTelecomRowCallbackHandler(
-        this.emailColumns,
-        this.phoneColumns);
-
+    SearchablePatientTelecomRowCallbackHandler handler =
+        new SearchablePatientTelecomRowCallbackHandler(this.emailColumns, this.phoneColumns);
 
     this.template.query(QUERY, statement -> statement.setLong(PATIENT_PARAMETER, patient), handler);
 
-
     return handler.telecom();
   }
-
 }

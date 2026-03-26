@@ -1,4 +1,3 @@
 package gov.cdc.nbs.support.organization;
 
-public record OrganizationIdentifier(long identifier) {
-}
+public record OrganizationIdentifier(long identifier) {}

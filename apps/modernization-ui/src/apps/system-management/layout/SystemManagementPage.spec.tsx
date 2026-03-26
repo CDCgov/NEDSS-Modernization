@@ -7,7 +7,7 @@ const mockAllows = (permission: string) => mockPermissions.includes(permission);
 const mockAllowFn = vi.fn(mockAllows);
 
 vi.mock('libs/permission/usePermissions', () => ({
-    usePermissions: () => ({ permissions: mockPermissions, allows: mockAllowFn })
+    usePermissions: () => ({ permissions: mockPermissions, allows: mockAllowFn }),
 }));
 
 vi.mock('./VisibleWrapper', () => {

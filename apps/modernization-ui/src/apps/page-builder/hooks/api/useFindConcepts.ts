@@ -6,7 +6,7 @@ import {
     DateQuestion,
     NumericQuestion,
     PageConcept,
-    TextQuestion
+    TextQuestion,
 } from 'apps/page-builder/generated';
 import { Direction } from 'libs/sorting';
 
@@ -23,7 +23,7 @@ export enum SortField {
     CODE = 'code',
     DISPLAY = 'display',
     CONCEPT_CODE = 'conceptCode',
-    EFFECTIVE_DATE = 'effectiveDate'
+    EFFECTIVE_DATE = 'effectiveDate',
 }
 export type ConceptSort = {
     field: SortField;
@@ -69,7 +69,7 @@ export const useFindConcepts = () => {
                 codeSetNm: state.search.codeSetNm,
                 page: state.search.page,
                 size: state.search.pageSize,
-                sort: sortString ? [sortString] : undefined
+                sort: sortString ? [sortString] : undefined,
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
@@ -86,7 +86,7 @@ export const useFindConcepts = () => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'searching',
         response: state.status === 'complete' ? state.concepts : undefined,
-        search: (search: ConceptSearch) => dispatch({ type: 'search', search })
+        search: (search: ConceptSearch) => dispatch({ type: 'search', search }),
     };
 
     return value;

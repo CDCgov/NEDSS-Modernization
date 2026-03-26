@@ -13,5 +13,4 @@ class PatientSearchSupportConfiguration {
   Active<PatientSearchCriteria> activePatientFilter() {
     return new Active<>(PatientSearchCriteria::new);
   }
-
 }

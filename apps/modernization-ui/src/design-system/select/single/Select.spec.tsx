@@ -7,7 +7,7 @@ describe('Select Component', () => {
         { name: 'name-one', value: 'value-one', label: 'label-one' },
         { name: 'name-two', value: 'value-two', label: 'label-two' },
         { name: 'name-three', value: 'value-three', label: 'label-three' },
-        { name: 'name-four', value: 'value-four', label: 'label-four' }
+        { name: 'name-four', value: 'value-four', label: 'label-four' },
     ];
 
     test('renders with placeholder', () => {

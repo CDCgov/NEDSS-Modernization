@@ -7,7 +7,7 @@ import { mapNonNull } from 'utils';
 const asSelectable = (option: ProgramAreaCode): Selectable => ({
     value: option.id,
     name: option.progAreaDescTxt || '',
-    label: option.progAreaDescTxt || ''
+    label: option.progAreaDescTxt || '',
 });
 
 type Interaction = {

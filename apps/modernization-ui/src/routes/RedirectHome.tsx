@@ -4,7 +4,7 @@ import { useConfiguration } from 'configuration';
 
 const RedirectHome = () => {
     const {
-        features: { search }
+        features: { search },
     } = useConfiguration();
 
     const path = search.view.enabled ? '/search' : '/advanced-search';

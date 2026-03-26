@@ -29,7 +29,7 @@ describe('when ManageSection renders', () => {
                                 order: 1,
                                 isGroupable: true,
                                 questionIdentifier: 'identifier',
-                                questions: []
+                                questions: [],
                             },
                             {
                                 id: 456,
@@ -39,13 +39,13 @@ describe('when ManageSection renders', () => {
                                 order: 2,
                                 isGroupable: true,
                                 questionIdentifier: 'identifier',
-                                questions: []
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+                                questions: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     };
 
     const tabData: PagesTab = {
@@ -53,7 +53,7 @@ describe('when ManageSection renders', () => {
         name: 'tab-name',
         order: 1,
         visible: true,
-        sections: []
+        sections: [],
     };
 
     it('should show the heading', () => {

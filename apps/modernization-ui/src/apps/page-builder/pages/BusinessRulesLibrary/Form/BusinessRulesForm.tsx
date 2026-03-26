@@ -33,7 +33,7 @@ export const BusinessRulesForm = ({
     isEdit,
     editSourceQuestion,
     editTargetQuestions,
-    editTargetSubsections
+    editTargetSubsections,
 }: Props) => {
     const form = useFormContext<RuleRequest>();
     const watch = useWatch(form);
@@ -52,37 +52,37 @@ export const BusinessRulesForm = ({
         { value: Rule.ruleFunction.DATE_COMPARE, display: 'Date validation' },
         { value: Rule.ruleFunction.HIDE, display: 'Hide' },
         { value: Rule.ruleFunction.UNHIDE, display: 'Unhide' },
-        { value: Rule.ruleFunction.REQUIRE_IF, display: 'Require if' }
+        { value: Rule.ruleFunction.REQUIRE_IF, display: 'Require if' },
     ];
 
     const nonDateCompare = [
         {
             name: 'Equal to',
-            value: Rule.comparator.EQUAL_TO
+            value: Rule.comparator.EQUAL_TO,
         },
         {
             name: 'Not equal to',
-            value: Rule.comparator.NOT_EQUAL_TO
-        }
+            value: Rule.comparator.NOT_EQUAL_TO,
+        },
     ];
 
     const dateCompare = [
         {
             name: 'Less than',
-            value: Rule.comparator.LESS_THAN
+            value: Rule.comparator.LESS_THAN,
         },
         {
             name: 'Less than or equal to',
-            value: Rule.comparator.LESS_THAN_OR_EQUAL_TO
+            value: Rule.comparator.LESS_THAN_OR_EQUAL_TO,
         },
         {
             name: 'Greater than or equal to',
-            value: Rule.comparator.GREATER_THAN_OR_EQUAL_TO
+            value: Rule.comparator.GREATER_THAN_OR_EQUAL_TO,
         },
         {
             name: 'Greater than',
-            value: Rule.comparator.GREATER_THAN
-        }
+            value: Rule.comparator.GREATER_THAN,
+        },
     ];
 
     const logicList = watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE ? dateCompare : nonDateCompare;
@@ -104,7 +104,7 @@ export const BusinessRulesForm = ({
             targetType: value,
             targetIdentifiers: [],
             targetValueText: [],
-            description: ''
+            description: '',
         });
     };
 
@@ -180,7 +180,7 @@ export const BusinessRulesForm = ({
         watch.ruleFunction,
         JSON.stringify(watch.sourceValues),
         watch.sourceIdentifier,
-        JSON.stringify(targetDescription)
+        JSON.stringify(targetDescription),
     ]);
 
     const handleRuleDescription = (): string => {
@@ -226,7 +226,7 @@ export const BusinessRulesForm = ({
             form.reset({
                 ...form.getValues(),
                 comparator: Rule.comparator.EQUAL_TO,
-                sourceValues: undefined
+                sourceValues: undefined,
             });
         }
     }, [watch.anySourceValue]);
@@ -268,7 +268,7 @@ export const BusinessRulesForm = ({
                                     buttons={fieldTypeTab.map((tab) => ({
                                         value: tab.value,
                                         name: tab.display,
-                                        label: tab.display
+                                        label: tab.display,
                                     }))}
                                     onBlur={onBlur}
                                     onChange={onChange}
@@ -282,7 +282,7 @@ export const BusinessRulesForm = ({
                                             description: '',
                                             sourceIdentifier: '',
                                             sourceValues: [],
-                                            sourceText: ''
+                                            sourceText: '',
                                         });
                                         setTargetQuestion(undefined);
                                         setSourceQuestion(undefined);
@@ -309,7 +309,8 @@ export const BusinessRulesForm = ({
                                     outline
                                     onClick={handleOpenSourceQuestion}
                                     data-testid="searchSourceQuestionBtn"
-                                    className={styles.sourceBtn}>
+                                    className={styles.sourceBtn}
+                                >
                                     Search source question
                                 </Button>
                             ) : (
@@ -365,7 +366,7 @@ export const BusinessRulesForm = ({
                         control={form.control}
                         name="comparator"
                         rules={{
-                            required: { value: watch.anySourceValue ? false : true, message: 'Logic is required' }
+                            required: { value: watch.anySourceValue ? false : true, message: 'Logic is required' },
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <div className={styles.comparator}>
@@ -398,8 +399,8 @@ export const BusinessRulesForm = ({
                                 rules={{
                                     required: {
                                         value: watch.anySourceValue ? false : true,
-                                        message: 'Source value(s) is required'
-                                    }
+                                        message: 'Source value(s) is required',
+                                    },
                                 }}
                                 render={() => (
                                     <div className={styles.sourceValues}>
@@ -486,7 +487,8 @@ export const BusinessRulesForm = ({
                                             outline
                                             data-testid="targetQuestionEditBtn"
                                             onClick={handleOpenTargetQuestion}
-                                            className={styles.btn}>
+                                            className={styles.btn}
+                                        >
                                             <Icon.Edit />
                                             <span>Edit</span>
                                         </Button>
@@ -500,7 +502,8 @@ export const BusinessRulesForm = ({
                                     type="button"
                                     outline
                                     onClick={handleOpenTargetQuestion}
-                                    disabled={sourceQuestion === undefined}>
+                                    disabled={sourceQuestion === undefined}
+                                >
                                     Search target question
                                 </Button>
                             )}

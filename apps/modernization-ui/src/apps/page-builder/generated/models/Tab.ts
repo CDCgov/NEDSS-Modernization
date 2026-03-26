@@ -7,4 +7,3 @@ export type Tab = {
     name?: string;
     visible?: boolean;
 };
-

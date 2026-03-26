@@ -5,12 +5,11 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigation;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigationFinder;
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientFileDocumentResolver {
@@ -25,8 +24,7 @@ class PatientFileDocumentResolver {
   PatientFileDocumentResolver(
       final PermissionScopeResolver resolver,
       final PatientFileDocumentFinder finder,
-      final AssociatedInvestigationFinder associationFinder
-  ) {
+      final AssociatedInvestigationFinder associationFinder) {
     this.resolver = resolver;
     this.finder = finder;
     this.associationFinder = associationFinder;
@@ -49,12 +47,13 @@ class PatientFileDocumentResolver {
       }
 
       return documents.stream()
-          .map(treatment -> treatment.withAssociations(
-              associations.getOrDefault(treatment.id(), Collections.emptyList())))
+          .map(
+              treatment ->
+                  treatment.withAssociations(
+                      associations.getOrDefault(treatment.id(), Collections.emptyList())))
           .toList();
     }
 
     return Collections.emptyList();
   }
-
 }

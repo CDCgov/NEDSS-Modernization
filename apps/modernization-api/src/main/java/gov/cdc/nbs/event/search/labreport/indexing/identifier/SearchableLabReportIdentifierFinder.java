@@ -1,15 +1,15 @@
 package gov.cdc.nbs.event.search.labreport.indexing.identifier;
 
 import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
+import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class SearchableLabReportIdentifierFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [identifier].type_cd,
           [identifier].type_desc_txt,
@@ -29,20 +29,14 @@ public class SearchableLabReportIdentifierFinder {
 
   public SearchableLabReportIdentifierFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new SearchableLabReportIdentifierRowMapper(
-        new SearchableLabReportIdentifierRowMapper.Column(
-            TYPE_COLUMN,
-            DESCRIPTION_COLUMN,
-            VALUE_COLUMN
-        )
-    );
+    this.mapper =
+        new SearchableLabReportIdentifierRowMapper(
+            new SearchableLabReportIdentifierRowMapper.Column(
+                TYPE_COLUMN, DESCRIPTION_COLUMN, VALUE_COLUMN));
   }
 
   public List<SearchableLabReport.Identifier> find(final long lab) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(LAB_REPORT_PARAMETER, lab),
-        this.mapper
-    );
+        QUERY, statement -> statement.setLong(LAB_REPORT_PARAMETER, lab), this.mapper);
   }
 }

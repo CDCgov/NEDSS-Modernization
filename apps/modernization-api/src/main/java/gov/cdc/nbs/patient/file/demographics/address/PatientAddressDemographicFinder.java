@@ -1,15 +1,15 @@
 package gov.cdc.nbs.patient.file.demographics.address;
 
+import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 class PatientAddressDemographicFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [locators].locator_uid          as [id],
           [locators].[as_of_date]         as [as_of],
@@ -30,33 +30,33 @@ class PatientAddressDemographicFinder {
           [address].census_tract          as [census_tract],
           [locators].locator_desc_txt     as [comment]
       from Entity_locator_participation [locators]
-      
+
           join Postal_locator [address] with (nolock) on
                   [address].[postal_locator_uid] = [locators].[locator_uid]
               and [address].record_status_cd = 'ACTIVE'
-      
+
           join  NBS_SRTE..Code_value_general [type] with (nolock) on
                   [type].code_set_nm = 'EL_TYPE_PST_PAT'
               and [type].code = [locators].cd
-      
+
           join NBS_SRTE..Code_value_general [use] with (nolock) on
                   [use].code_set_nm = 'EL_USE_PST_PAT'
               and [use].code = [locators].[use_cd]
-      
+
           left join NBS_SRTE..State_county_code_value [county] with (nolock) on
                   [county].[code] = [address].[cnty_cd]
-      
+
           left join NBS_SRTE..State_code [state] with (nolock) on
                   [state].state_cd = [address].state_cd
-      
+
           left join NBS_SRTE..Country_code [country] with (nolock) on
                   [country].code = [address].cntry_cd
-      
+
       where   [locators].entity_uid = ?
           and [locators].[class_cd] = 'PST'
           and [locators].record_status_cd = 'ACTIVE'
           and [locators].use_cd not in ('BIR', 'DTH')
-      
+
       order by
           [locators].[as_of_date] desc,
           [locators].locator_uid desc
@@ -71,9 +71,6 @@ class PatientAddressDemographicFinder {
   }
 
   List<PatientAddressDemographic> find(final long patient) {
-    return this.client.sql(QUERY)
-        .param(patient)
-        .query(this.mapper)
-        .list();
+    return this.client.sql(QUERY).param(patient).query(this.mapper).list();
   }
 }

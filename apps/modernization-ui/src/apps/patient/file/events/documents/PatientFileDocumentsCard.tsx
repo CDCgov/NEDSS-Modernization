@@ -24,7 +24,7 @@ const columnPreferences: ColumnPreference[] = [
     { ...SENDING_FACILILTY, moveable: true, toggleable: true },
     { ...DATE_REPORTED, moveable: true, toggleable: true },
     { ...CONDITION, moveable: true, toggleable: true },
-    { ...ASSOCIATED_WITH, moveable: true, toggleable: true }
+    { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
 ];
 
 const columns: Column<PatientFileDocument>[] = [
@@ -33,7 +33,7 @@ const columns: Column<PatientFileDocument>[] = [
         className: styles['local-header'],
         sortable: true,
         value: (value) => value.local,
-        render: (value) => <a href={`/nbs/api/profile/${value.patient}/document/${value.id}`}>{value.local}</a>
+        render: (value) => <a href={`/nbs/api/profile/${value.patient}/document/${value.id}`}>{value.local}</a>,
     },
     {
         ...DATE_RECEIVED,
@@ -41,13 +41,13 @@ const columns: Column<PatientFileDocument>[] = [
         sortable: true,
         value: (value) => value.receivedOn,
         render: (value) => internalizeDateTime(value.receivedOn),
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...SENDING_FACILILTY,
         sortable: true,
         className: styles['text-header'],
-        value: (value) => value.sendingFacility
+        value: (value) => value.sendingFacility,
     },
     {
         ...DATE_REPORTED,
@@ -55,20 +55,20 @@ const columns: Column<PatientFileDocument>[] = [
         sortable: true,
         value: (value) => value.reportedOn,
         render: (value) => internalizeDate(value.reportedOn),
-        sortIconType: 'numeric'
+        sortIconType: 'numeric',
     },
     {
         ...CONDITION,
         sortable: true,
-        value: (value) => value.condition
+        value: (value) => value.condition,
     },
     {
         ...ASSOCIATED_WITH,
         sortable: true,
         className: styles['long-coded-header'],
         value: (value) => value.associations?.[0]?.local,
-        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>
-    }
+        render: (value) => <Associations patient={value.patient}>{value.associations}</Associations>,
+    },
 ];
 
 type InternalCardProps = {
@@ -103,7 +103,8 @@ const PatientFileDocumentsCard = ({ provider, ...remaining }: PatientFileDocumen
                 <LoadingOverlay>
                     <InternalCard {...remaining} />
                 </LoadingOverlay>
-            }>
+            }
+        >
             <Await resolve={provider.get()}>{(data) => <InternalCard data={data} {...remaining} />}</Await>
         </Suspense>
     );

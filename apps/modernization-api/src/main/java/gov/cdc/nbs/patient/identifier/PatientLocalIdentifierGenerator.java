@@ -5,14 +5,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PatientLocalIdentifierGenerator {
-    private final IdGeneratorService service;
+  private final IdGeneratorService service;
 
-    public PatientLocalIdentifierGenerator(final IdGeneratorService service) {
-        this.service = service;
-    }
+  public PatientLocalIdentifierGenerator(final IdGeneratorService service) {
+    this.service = service;
+  }
 
-    public String generate() {
-        var generatedId = service.getNextValidId(IdGeneratorService.EntityType.PERSON);
-        return generatedId.getPrefix() + generatedId.getId() + generatedId.getSuffix();
-    }
+  public String generate() {
+    var generatedId = service.getNextValidId(IdGeneratorService.EntityType.PERSON);
+    return generatedId.getPrefix() + generatedId.getId() + generatedId.getSuffix();
+  }
 }

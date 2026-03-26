@@ -79,8 +79,9 @@ const FilterProvider = ({ children }: FilterProviderProps) => {
                 clearAll,
                 reset,
                 add,
-                pendingFilter
-            }}>
+                pendingFilter,
+            }}
+        >
             {children}
         </FilterableContext.Provider>
     );

@@ -1,17 +1,16 @@
 package gov.cdc.nbs.questionbank.option.page.name;
 
 import gov.cdc.nbs.questionbank.option.PageBuilderOption;
+import java.util.Collection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-
 @Component
 class PageNameOptionFinder {
 
-
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           template_nm
       from wa_template [page]
@@ -29,9 +28,6 @@ class PageNameOptionFinder {
   }
 
   Collection<PageBuilderOption> all() {
-    return this.template.query(
-        QUERY,
-        this.mapper
-    );
+    return this.template.query(QUERY, this.mapper);
   }
 }

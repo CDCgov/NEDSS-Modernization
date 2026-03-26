@@ -6,7 +6,7 @@ import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 
 export const PreviewGeneralPatientInfo = ({
     mergeFormData,
-    mergeCandidates
+    mergeCandidates,
 }: {
     mergeFormData: PatientMergeForm;
     mergeCandidates: MergeCandidate[];
@@ -31,18 +31,18 @@ export const PreviewGeneralPatientInfo = ({
         {
             label: 'Number of adults in residence',
             text: getField(g.numberOfAdultsInResidence, 'numberOfAdultsInResidence'),
-            lined: true
+            lined: true,
         },
         {
             label: 'Number of children in residence',
             text: getField(g.numberOfChildrenInResidence, 'numberOfChildrenInResidence'),
-            lined: true
+            lined: true,
         },
         { label: 'Primary occupation', text: getField(g.primaryOccupation, 'primaryOccupation'), lined: true },
         { label: 'Highest level of education', text: getField(g.educationLevel, 'educationLevel'), lined: true },
         { label: 'Primary language', text: getField(g.primaryLanguage, 'primaryLanguage'), lined: true },
         { label: 'Speaks English', text: getField(g.speaksEnglish, 'speaksEnglish'), lined: true },
-        { label: 'State HIV case ID', text: getField(g.stateHivCaseId, 'stateHivCaseId'), lined: false }
+        { label: 'State HIV case ID', text: getField(g.stateHivCaseId, 'stateHivCaseId'), lined: false },
     ];
 
     return <LinedMergePreviewCard id="generalInfo" title="General patient information" items={items} />;

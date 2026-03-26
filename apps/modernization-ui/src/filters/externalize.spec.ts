@@ -7,7 +7,7 @@ describe('when a filter is externalized', () => {
             id: 'single-value-identifier',
             property: { value: 'single-value', name: 'Single Value', type: 'value' },
             operator: { name: 'Starts with', value: 'STARTS_WITH' },
-            value: 'prefix-value'
+            value: 'prefix-value',
         };
 
         const actual = externalize([filter]);
@@ -16,8 +16,8 @@ describe('when a filter is externalized', () => {
             expect.objectContaining({
                 operator: 'STARTS_WITH',
                 property: 'single-value',
-                value: 'prefix-value'
-            })
+                value: 'prefix-value',
+            }),
         ]);
     });
 
@@ -26,7 +26,7 @@ describe('when a filter is externalized', () => {
             id: 'multi-value-identifier',
             property: { value: 'multi-value', name: 'Multi Value', type: 'value' },
             operator: { name: 'equals', value: 'EQUALS' },
-            values: ['value-one', 'value-two']
+            values: ['value-one', 'value-two'],
         };
 
         const actual = externalize([filter]);
@@ -35,8 +35,8 @@ describe('when a filter is externalized', () => {
             expect.objectContaining({
                 operator: 'EQUALS',
                 property: 'multi-value',
-                values: ['value-one', 'value-two']
-            })
+                values: ['value-one', 'value-two'],
+            }),
         ]);
     });
 
@@ -44,7 +44,7 @@ describe('when a filter is externalized', () => {
         const filter: DateFilter = {
             id: 'date-identifier',
             property: { value: 'date-period', name: 'Date Period', type: 'date' },
-            operator: { name: 'today', value: 'TODAY' }
+            operator: { name: 'today', value: 'TODAY' },
         };
 
         const actual = externalize([filter]);
@@ -52,8 +52,8 @@ describe('when a filter is externalized', () => {
         expect(actual).toEqual([
             expect.objectContaining({
                 property: 'date-period',
-                operator: 'TODAY'
-            })
+                operator: 'TODAY',
+            }),
         ]);
     });
 
@@ -63,7 +63,7 @@ describe('when a filter is externalized', () => {
             property: { value: 'date-range', name: 'Date Range', type: 'date' },
             operator: { name: 'between', value: 'BETWEEN' },
             after: '12/01/2023',
-            before: '12/29/2023'
+            before: '12/29/2023',
         };
 
         const actual = externalize([filter]);
@@ -72,8 +72,8 @@ describe('when a filter is externalized', () => {
             expect.objectContaining({
                 property: 'date-range',
                 after: '2023-12-01',
-                before: '2023-12-29'
-            })
+                before: '2023-12-29',
+            }),
         ]);
     });
 });

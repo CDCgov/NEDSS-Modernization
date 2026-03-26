@@ -19,16 +19,16 @@ export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Pr
     const { showError, showSuccess } = useAlert();
     const form = useForm<CreateConceptRequest>({
         mode: 'onBlur',
-        defaultValues: { status: CreateConceptRequest.status.ACTIVE, effectiveFromTime: internalizeDate(new Date()) }
+        defaultValues: { status: CreateConceptRequest.status.ACTIVE, effectiveFromTime: internalizeDate(new Date()) },
     });
     const handleCreate = () => {
         ConceptControllerService.createConcept({
             requestBody: {
                 ...form.getValues(),
                 effectiveToTime: externalizeDateTime(form.getValues('effectiveToTime')) ?? undefined,
-                effectiveFromTime: externalizeDateTime(form.getValues('effectiveFromTime')) ?? new Date().toISOString()
+                effectiveFromTime: externalizeDateTime(form.getValues('effectiveFromTime')) ?? new Date().toISOString(),
             },
-            codeSetNm: valuesetName
+            codeSetNm: valuesetName,
         })
             .then(() => {
                 showSuccess(`Successfully created concept: ${form.getValues('localCode')}`);

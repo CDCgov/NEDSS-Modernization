@@ -5,12 +5,11 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigation;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigationFinder;
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientFileVaccinationResolver {
@@ -24,8 +23,7 @@ class PatientFileVaccinationResolver {
   PatientFileVaccinationResolver(
       final PermissionScopeResolver scopeResolver,
       final PatientFileVaccinationFinder finder,
-      final AssociatedInvestigationFinder associatedInvestigationFinder
-  ) {
+      final AssociatedInvestigationFinder associatedInvestigationFinder) {
     this.scopeResolver = scopeResolver;
     this.finder = finder;
     this.associatedInvestigationFinder = associatedInvestigationFinder;
@@ -35,24 +33,26 @@ class PatientFileVaccinationResolver {
 
     PermissionScope associationScope = this.scopeResolver.resolve(ASSOCIATION);
 
-      List<PatientVaccination> vaccinations = finder.find(patient);
+    List<PatientVaccination> vaccinations = finder.find(patient);
 
-      if (!vaccinations.isEmpty()) {
+    if (!vaccinations.isEmpty()) {
 
-        List<Long> identifiers = vaccinations.stream().map(PatientVaccination::id).toList();
+      List<Long> identifiers = vaccinations.stream().map(PatientVaccination::id).toList();
 
-        Map<Long, Collection<AssociatedInvestigation>> associations =
-            associatedInvestigationFinder.find(identifiers, associationScope);
+      Map<Long, Collection<AssociatedInvestigation>> associations =
+          associatedInvestigationFinder.find(identifiers, associationScope);
 
-        if (associations.isEmpty()) {
-          return vaccinations;
-        }
-
-        return vaccinations.stream()
-            .map(vaccination -> vaccination.withAssociations(associations.getOrDefault(vaccination.id(), Collections.emptyList())))
-            .toList();
+      if (associations.isEmpty()) {
+        return vaccinations;
       }
 
+      return vaccinations.stream()
+          .map(
+              vaccination ->
+                  vaccination.withAssociations(
+                      associations.getOrDefault(vaccination.id(), Collections.emptyList())))
+          .toList();
+    }
 
     return Collections.emptyList();
   }

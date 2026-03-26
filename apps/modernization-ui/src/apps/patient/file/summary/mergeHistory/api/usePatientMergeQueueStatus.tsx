@@ -7,7 +7,7 @@ export function usePatientMergeQueueStatus(personUid?: string | number) {
         fetch(`${Config.deduplicationUrl}/merge/status/${encodeURIComponent(uid)}`, {
             method: 'GET',
             headers: { Accept: 'application/json' },
-            credentials: 'include'
+            credentials: 'include',
         }).then((res) => {
             if (!res.ok) throw new Error('Failed to fetch merge status');
             return res.json();
@@ -23,6 +23,6 @@ export function usePatientMergeQueueStatus(personUid?: string | number) {
         inMergeQueue: data?.inMergeQueue ?? null,
         mergeGroup: data?.mergeGroup ?? null,
         loading: isLoading,
-        error
+        error,
     };
 }

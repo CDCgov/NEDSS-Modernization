@@ -31,7 +31,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Pro
                 query,
                 page: page.current - 1,
                 pageSize: page.pageSize,
-                sort: sort
+                sort: sort,
             });
         }
     }, [page.status]);
@@ -82,7 +82,8 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Pro
                 <Button
                     disabled={selectedValueset === undefined}
                     type="button"
-                    onClick={() => selectedValueset && onAccept(selectedValueset)}>
+                    onClick={() => selectedValueset && onAccept(selectedValueset)}
+                >
                     Apply value set to question
                 </Button>
             </ButtonBar>

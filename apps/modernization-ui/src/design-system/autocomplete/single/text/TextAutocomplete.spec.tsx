@@ -8,7 +8,7 @@ const mockResolver: AutocompleteOptionsResolver = async (criteria: string) => {
     const options = [
         { name: 'Value 1', value: 'val-1', label: 'label-1' },
         { name: 'Value 2', value: 'val-2', label: 'label-2' },
-        { name: 'Value 3', value: 'val-3', label: 'label-3' }
+        { name: 'Value 3', value: 'val-3', label: 'label-3' },
     ];
     return options.filter((option) => option.name.toLowerCase().includes(criteria.toLowerCase()));
 };
@@ -18,7 +18,7 @@ describe('TextAutocomplete', () => {
         id: 'test-autocomplete',
         label: 'Test Autocomplete',
         resolver: mockResolver,
-        onBlur: vi.fn()
+        onBlur: vi.fn(),
     };
 
     it('renders with label and input', () => {

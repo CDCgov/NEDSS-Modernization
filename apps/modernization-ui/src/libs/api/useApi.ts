@@ -51,7 +51,7 @@ const useApi = <I, O>({ resolver }: ApiProps<I, O>): ApiInteraction<I, O> => {
             error: state.status === 'error' ? state.error : undefined,
             isLoading: state.status === 'fetching',
             data: state.status === 'complete' ? state.data : undefined,
-            load
+            load,
         }),
         [state, load]
     );

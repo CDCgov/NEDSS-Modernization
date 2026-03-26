@@ -4,13 +4,12 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.ValidateSubsectionException;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Component
@@ -23,7 +22,6 @@ public class SubSectionValidator {
   private static final long SUB_SECTION = 1016l;
   public static final long ROLLINGNOTE = 1019l;
 
-
   public SubSectionValidator(final EntityManager entityManager) {
     this.entityManager = entityManager;
   }
@@ -33,11 +31,14 @@ public class SubSectionValidator {
 
     for (WaUiMetadata element : subsectionElements) {
       if (element.getDataLocation() == null || !element.getDataLocation().contains("ANSWER_TXT"))
-        throw new ValidateSubsectionException("Subsection includes questions that are considered 'core'");
+        throw new ValidateSubsectionException(
+            "Subsection includes questions that are considered 'core'");
       if (element.getPublishIndCd() != null && element.getPublishIndCd() == 'T')
-        throw new ValidateSubsectionException("Subsection includes a question(s) that has already been published.");
+        throw new ValidateSubsectionException(
+            "Subsection includes a question(s) that has already been published.");
       if (element.getNbsUiComponentUid().equals(ROLLINGNOTE) && subsectionElements.size() > 1)
-        throw new ValidateSubsectionException("""
+        throw new ValidateSubsectionException(
+            """
             Subsection can only have the Repeating Note field \
             and no other fields in the repeating block subsection.\
             """);
@@ -48,19 +49,21 @@ public class SubSectionValidator {
     List<WaUiMetadata> subsectionElements = new ArrayList<>();
     List<Long> containers = Arrays.asList(SUB_SECTION, SECTION, TAB);
     WaTemplate page = entityManager.find(WaTemplate.class, pageId);
-    if (page == null)
-      throw new PageNotFoundException(pageId);
+    if (page == null) throw new PageNotFoundException(pageId);
 
-    WaUiMetadata subsection = page.getUiMetadata()
-        .stream()
-        .filter(w -> w.getId() == subsectionId && w.getNbsUiComponentUid().equals(SUB_SECTION)).findFirst()
-        .orElseThrow(() -> new ValidateSubsectionException("Failed to find subsection with id: " + subsectionId));
+    WaUiMetadata subsection =
+        page.getUiMetadata().stream()
+            .filter(w -> w.getId() == subsectionId && w.getNbsUiComponentUid().equals(SUB_SECTION))
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new ValidateSubsectionException(
+                        "Failed to find subsection with id: " + subsectionId));
 
     for (WaUiMetadata w : page.getUiMetadata()) {
-      if (w.getOrderNbr() > subsection.getOrderNbr() && containers.contains(w.getNbsUiComponentUid()))
-        break;
-      if (w.getOrderNbr() > subsection.getOrderNbr())
-        subsectionElements.add(w);
+      if (w.getOrderNbr() > subsection.getOrderNbr()
+          && containers.contains(w.getNbsUiComponentUid())) break;
+      if (w.getOrderNbr() > subsection.getOrderNbr()) subsectionElements.add(w);
     }
     return subsectionElements;
   }

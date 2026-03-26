@@ -12,7 +12,7 @@ vi.mock('react-router', async () => {
     return {
         ...actual,
         default: actual,
-        useParams: vi.fn(() => ({ pageId: '1' })) // Mock useParams to return a default value
+        useParams: vi.fn(() => ({ pageId: '1' })), // Mock useParams to return a default value
     };
 });
 

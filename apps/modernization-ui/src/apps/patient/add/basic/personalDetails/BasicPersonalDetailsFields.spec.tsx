@@ -9,20 +9,20 @@ const mockNow = vi.fn();
 let mockPermissions: string[] = [];
 
 vi.mock('user', () => ({
-    useUser: () => ({ state: { user: { permissions: mockPermissions } } })
+    useUser: () => ({ state: { user: { permissions: mockPermissions } } }),
 }));
 
 vi.mock('design-system/date/clock', () => ({
-    now: () => mockNow()
+    now: () => mockNow(),
 }));
 
 vi.mock('options/concepts', () => ({
-    useConceptOptions: () => ({ options: [{ name: 'Married', value: 'M' }] })
+    useConceptOptions: () => ({ options: [{ name: 'Married', value: 'M' }] }),
 }));
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const form = useForm<BasicPersonalDetailsEntry>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (

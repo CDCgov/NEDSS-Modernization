@@ -5,12 +5,12 @@ import userEvent from '@testing-library/user-event';
 import CriteriaSearchFields from './CriteriaSearchFields';
 
 vi.mock('options/concepts/useConceptOptions', () => ({
-    useConceptOptions: () => ({ options: [] })
+    useConceptOptions: () => ({ options: [] }),
 }));
 
 const InvestigationFormWithFields = () => {
     const investigationForm = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     return (

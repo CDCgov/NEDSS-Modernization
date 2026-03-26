@@ -1,14 +1,13 @@
 package gov.cdc.nbs.patient.demographic;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Indicator;
 import gov.cdc.nbs.patient.PatientCommand;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class PatientSexBirthTest {
 
@@ -19,8 +18,7 @@ class PatientSexBirthTest {
 
     demographic.clearBirthDemographics();
 
-    assertThat(demographic)
-        .returns(null, PatientSexBirth::asOf);
+    assertThat(demographic).returns(null, PatientSexBirth::asOf);
   }
 
   @Test
@@ -36,18 +34,16 @@ class PatientSexBirthTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     demographic.clearBirthDemographics();
 
-    assertThat(demographic)
-        .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
+    assertThat(demographic).returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
-  void should_not_clear_GenderDemographics_BirthDemographics_as_of_if_preferred_gender_still_present() {
+  void
+      should_not_clear_GenderDemographics_BirthDemographics_as_of_if_preferred_gender_still_present() {
     PatientSexBirth demographic = new PatientSexBirth();
 
     demographic.update(
@@ -59,18 +55,16 @@ class PatientSexBirthTest {
             "gender-preferred",
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     demographic.clearBirthDemographics();
 
-    assertThat(demographic)
-        .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
+    assertThat(demographic).returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
-  void should_not_clear_GenderDemographics_BirthDemographics_as_of_if_additional_gender_still_present() {
+  void
+      should_not_clear_GenderDemographics_BirthDemographics_as_of_if_additional_gender_still_present() {
     PatientSexBirth demographic = new PatientSexBirth();
 
     demographic.update(
@@ -82,14 +76,11 @@ class PatientSexBirthTest {
             null,
             "gender-additional",
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     demographic.clearBirthDemographics();
 
-    assertThat(demographic)
-        .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
+    assertThat(demographic).returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
@@ -99,8 +90,7 @@ class PatientSexBirthTest {
 
     demographic.clearGenderDemographics();
 
-    assertThat(demographic)
-        .returns(null, PatientSexBirth::asOf);
+    assertThat(demographic).returns(null, PatientSexBirth::asOf);
   }
 
   @Test
@@ -120,14 +110,11 @@ class PatientSexBirthTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     demographic.clearGenderDemographics();
 
-    assertThat(demographic)
-        .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
+    assertThat(demographic).returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
@@ -147,18 +134,16 @@ class PatientSexBirthTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     demographic.clearGenderDemographics();
 
-    assertThat(demographic)
-        .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
+    assertThat(demographic).returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
-  void should_not_clear_GenderDemographics_BirthDemographics_as_of_when_multiple_birth_is_present() {
+  void
+      should_not_clear_GenderDemographics_BirthDemographics_as_of_when_multiple_birth_is_present() {
     PatientSexBirth demographic = new PatientSexBirth();
 
     demographic.update(
@@ -174,14 +159,11 @@ class PatientSexBirthTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     demographic.clearGenderDemographics();
 
-    assertThat(demographic)
-        .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
+    assertThat(demographic).returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 
   @Test
@@ -201,13 +183,10 @@ class PatientSexBirthTest {
             null,
             null,
             131L,
-            LocalDateTime.parse("2019-03-03T10:15:30")
-        )
-    );
+            LocalDateTime.parse("2019-03-03T10:15:30")));
 
     demographic.clearGenderDemographics();
 
-    assertThat(demographic)
-        .returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
+    assertThat(demographic).returns(LocalDate.parse("2023-06-01"), PatientSexBirth::asOf);
   }
 }

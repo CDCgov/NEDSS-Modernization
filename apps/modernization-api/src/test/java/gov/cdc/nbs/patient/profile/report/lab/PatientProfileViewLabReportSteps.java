@@ -1,5 +1,10 @@
 package gov.cdc.nbs.patient.profile.report.lab;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -15,11 +20,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 public class PatientProfileViewLabReportSteps {
 
@@ -57,26 +57,24 @@ public class PatientProfileViewLabReportSteps {
   public void the_lab_report_report_is_viewed_from_the_patient_profile() throws Exception {
     long patient = patients.active().id();
 
-    server.expect(
-        requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+    server
+        .expect(requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
+    server
+        .expect(
+            requestTo(
+                classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
     long lab = reports.active().identifier();
 
-    String request = 
-        "/nbs/api/profile/%d/report/lab/%d".formatted(
-        patient,
-        lab);
+    String request = "/nbs/api/profile/%d/report/lab/%d".formatted(patient, lab);
 
     activeResponse.active(
-        mvc.perform(
-            MockMvcRequestBuilders.get(request)
-                .cookie(activeSession.active().asCookie()))
+        mvc.perform(MockMvcRequestBuilders.get(request).cookie(activeSession.active().asCookie()))
             .andReturn()
             .getResponse());
   }
@@ -91,17 +89,19 @@ public class PatientProfileViewLabReportSteps {
     long patient = patients.active().id();
     long lab = reports.active().identifier();
 
-    String expected = "/nbs/ViewFile1.do?ContextAction=ObservationLabIDOnEvents&observationUID=" + lab;
+    String expected =
+        "/nbs/ViewFile1.do?ContextAction=ObservationLabIDOnEvents&observationUID=" + lab;
 
     MockHttpServletResponse response = activeResponse.active();
 
     assertThat(response.getRedirectedUrl()).contains(expected);
 
     assertThat(response.getCookies())
-        .satisfiesOnlyOnce(cookie -> {
-          assertThat(cookie.getName()).isEqualTo("Return-Patient");
-          assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-        });
+        .satisfiesOnlyOnce(
+            cookie -> {
+              assertThat(cookie.getName()).isEqualTo("Return-Patient");
+              assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
+            });
   }
 
   @Then("I am not allowed to view a Classic NBS lab report")

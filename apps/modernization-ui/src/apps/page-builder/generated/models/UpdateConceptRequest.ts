@@ -20,4 +20,3 @@ export namespace UpdateConceptRequest {
         INACTIVE = 'INACTIVE',
     }
 }
-

@@ -26,7 +26,7 @@ const initial = (asOf: string = today()): Partial<NameEntry> => ({
     last: '',
     secondLast: '',
     suffix: undefined,
-    degree: undefined
+    degree: undefined,
 });
 
 export { initial };

@@ -5,7 +5,7 @@ import { LoadingOverlay } from 'libs/loading';
 import {
     EthnicityDemographic,
     EthnicityDemographicCard,
-    EthnicityDemographicCardProps
+    EthnicityDemographicCardProps,
 } from 'libs/patient/demographics/ethnicity';
 
 type PatientFileEthnicityCardType = {
@@ -18,7 +18,8 @@ const PatientFileEthnicityCard = ({ provider, ...remaining }: PatientFileEthnici
             <LoadingOverlay>
                 <EthnicityDemographicCard {...remaining} />
             </LoadingOverlay>
-        }>
+        }
+    >
         <Await resolve={provider.get()}>
             {(demographic) => <EthnicityDemographicCard demographic={demographic} {...remaining} />}
         </Await>

@@ -1,11 +1,10 @@
 package gov.cdc.nbs.patient.search.indexing.address;
 
 import gov.cdc.nbs.patient.search.SearchablePatient;
+import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class SearchablePatientAddressFinder {
@@ -64,25 +63,24 @@ public class SearchablePatientAddressFinder {
 
   public SearchablePatientAddressFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new SearchablePatientAddressRowMapper(
-        new SearchablePatientAddressRowMapper.Column(
-            ADDRESS_1_COLUMN,
-            ADDRESS_2_COLUMN,
-            CITY_COLUMN,
-            STATE_COLUMN,
-            ZIP_COLUMN,
-            COUNTY_COLUMN,
-            COUNTRY_COLUMN,
-            COUNTY_TEXT_COLUMN,
-            STATE_TEXT_COLUMN,
-            COUNTRY_TEXT_COLUMN,
-            FULL_COLUMN));
+    this.mapper =
+        new SearchablePatientAddressRowMapper(
+            new SearchablePatientAddressRowMapper.Column(
+                ADDRESS_1_COLUMN,
+                ADDRESS_2_COLUMN,
+                CITY_COLUMN,
+                STATE_COLUMN,
+                ZIP_COLUMN,
+                COUNTY_COLUMN,
+                COUNTRY_COLUMN,
+                COUNTY_TEXT_COLUMN,
+                STATE_TEXT_COLUMN,
+                COUNTRY_TEXT_COLUMN,
+                FULL_COLUMN));
   }
 
   public List<SearchablePatient.Address> find(final long patient) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(PATIENT_PARAMETER, patient),
-        this.mapper);
+        QUERY, statement -> statement.setLong(PATIENT_PARAMETER, patient), this.mapper);
   }
 }

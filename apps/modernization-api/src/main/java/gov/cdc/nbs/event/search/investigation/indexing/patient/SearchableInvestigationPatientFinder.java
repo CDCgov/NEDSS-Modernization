@@ -1,15 +1,15 @@
 package gov.cdc.nbs.event.search.investigation.indexing.patient;
 
 import gov.cdc.nbs.event.search.investigation.SearchableInvestigation;
+import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class SearchableInvestigationPatientFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [person].person_parent_uid,
           [person].local_id,
@@ -20,16 +20,16 @@ public class SearchableInvestigationPatientFinder {
           [person].curr_sex_cd,
           [person].[birth_time]
       from [Participation] [participation]
-      
+
           join Person [person] on
                   [person].person_uid = [participation].[subject_entity_uid]
               and [person].cd = 'PAT'
-      
+
           left join Person_name [name] on
                   [name].person_uid = [person].[person_uid]
               and [name].nm_use_cd = 'L'
               and [name].record_status_cd = 'ACTIVE'
-      
+
       where   [participation].subject_class_cd = 'PSN'
           and [participation].record_status_cd = 'ACTIVE'
           and [participation].act_class_cd = 'CASE'
@@ -51,25 +51,21 @@ public class SearchableInvestigationPatientFinder {
 
   public SearchableInvestigationPatientFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new SearchableInvestigationPatientRowMapper(
-        new SearchableInvestigationPatientRowMapper.Column(
-            IDENTIFIER_COLUMN,
-            LOCAL_COLUMN,
-            TYPE_COLUMN,
-            SUBJECT_TYPE_COLUMN,
-            FIRST_NAME_COLUMN,
-            LAST_NAME_COLUMN,
-            GENDER_COLUMN,
-            BIRTHDAY_COLUMN
-        )
-    );
+    this.mapper =
+        new SearchableInvestigationPatientRowMapper(
+            new SearchableInvestigationPatientRowMapper.Column(
+                IDENTIFIER_COLUMN,
+                LOCAL_COLUMN,
+                TYPE_COLUMN,
+                SUBJECT_TYPE_COLUMN,
+                FIRST_NAME_COLUMN,
+                LAST_NAME_COLUMN,
+                GENDER_COLUMN,
+                BIRTHDAY_COLUMN));
   }
 
   public List<SearchableInvestigation.Person.Patient> find(final long investigation) {
     return this.template.query(
-        QUERY,
-        statement -> statement.setLong(INVESTIGATION_PARAMETER, investigation),
-        this.mapper
-    );
+        QUERY, statement -> statement.setLong(INVESTIGATION_PARAMETER, investigation), this.mapper);
   }
 }

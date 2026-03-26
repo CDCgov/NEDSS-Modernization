@@ -20,7 +20,7 @@ const reducer = (_state: State, action: Action): State => {
                 page: action.page,
                 sort: action.sort,
                 query: action.query,
-                format: action.format
+                format: action.format,
             };
         case 'complete':
             return { status: 'complete' };
@@ -51,15 +51,15 @@ export const useDownloadPageLibrary = () => {
             method: 'POST',
             headers: {
                 Accept: 'application/pdf',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 pageId: page,
                 page: 0,
                 pageSize: 1000,
                 sort: sort,
-                query: query
-            })
+                query: query,
+            }),
         })
             .then((response) => response.blob())
             .then((blob) => {
@@ -79,15 +79,15 @@ export const useDownloadPageLibrary = () => {
             method: 'POST',
             headers: {
                 Accept: 'application/csv',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 pageId: page,
                 page: 0,
                 pageSize: 1000,
                 sort: sort,
-                query: query
-            })
+                query: query,
+            }),
         })
             .then((response) => response.blob())
             .then((blob) => {
@@ -107,7 +107,7 @@ export const useDownloadPageLibrary = () => {
         downloadPdf: (page: number, sort: BusinessRuleSort | undefined, query: string) =>
             dispatch({ type: 'download', page, sort, query, format: 'pdf' }),
         downloadCsv: (page: number, sort: BusinessRuleSort | undefined, query: string) =>
-            dispatch({ type: 'download', page, sort, query, format: 'csv' })
+            dispatch({ type: 'download', page, sort, query, format: 'csv' }),
     };
 
     return value;

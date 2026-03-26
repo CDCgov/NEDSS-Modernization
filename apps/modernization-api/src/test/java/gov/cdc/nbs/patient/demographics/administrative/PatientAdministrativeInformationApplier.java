@@ -1,10 +1,9 @@
 package gov.cdc.nbs.patient.demographics.administrative;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import java.time.LocalDate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Component
 class PatientAdministrativeInformationApplier {
@@ -24,11 +23,9 @@ class PatientAdministrativeInformationApplier {
   }
 
   void withAdministrative(
-      final PatientIdentifier identifier,
-      final LocalDate asOf,
-      final String comment
-  ) {
-    client.sql(
+      final PatientIdentifier identifier, final LocalDate asOf, final String comment) {
+    client
+        .sql(
             "update person set as_of_date_admin = coalesce(:asOf, as_of_date_admin, getDate()), [description] = coalesce(:comment, [description]) where person_uid = :patient")
         .param("asOf", asOf)
         .param("comment", comment)

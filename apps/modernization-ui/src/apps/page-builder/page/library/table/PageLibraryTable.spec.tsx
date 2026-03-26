@@ -30,7 +30,7 @@ describe('when at least one summary is available', () => {
             lastUpdate: '2019-09-25T13:27:16.380Z',
             lastUpdateBy: 'last-update-by-value',
             name: 'test page',
-            status: 'Draft'
+            status: 'Draft',
         },
         {
             conditions: [],
@@ -39,8 +39,8 @@ describe('when at least one summary is available', () => {
             lastUpdate: '2019-09-25T13:27:16.380Z',
             lastUpdateBy: 'last-update-by-value',
             name: 'Lab report page',
-            status: 'Published'
-        }
+            status: 'Published',
+        },
     ];
 
     it('should display the page summaries', async () => {
@@ -93,8 +93,8 @@ describe('when rendered with mangement disabled', () => {
             lastUpdate: '2019-09-25T13:27:16.380Z',
             lastUpdateBy: 'last-update-by-value',
             name: 'test page',
-            status: 'Draft'
-        }
+            status: 'Draft',
+        },
     ];
     it('should redirect to the edit page when the page name is clicked', async () => {
         const { getByRole } = render(

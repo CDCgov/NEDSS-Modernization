@@ -5,4 +5,3 @@
 export type AvailableQuestionCriteria = {
     query?: string;
 };
-

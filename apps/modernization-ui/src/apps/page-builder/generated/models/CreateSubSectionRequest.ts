@@ -7,4 +7,3 @@ export type CreateSubSectionRequest = {
     name?: string;
     visible?: boolean;
 };
-

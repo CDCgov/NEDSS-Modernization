@@ -7,4 +7,3 @@ export type SubSection = {
     name?: string;
     visible?: boolean;
 };
-

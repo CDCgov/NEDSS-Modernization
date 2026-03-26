@@ -2,11 +2,10 @@ package gov.cdc.nbs.event.search.labreport.indexing;
 
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
 class SearchableLabReportRowMapper implements RowMapper<SearchableLabReport> {
 
@@ -28,10 +27,7 @@ class SearchableLabReportRowMapper implements RowMapper<SearchableLabReport> {
       int updatedOn,
       int version,
       int status,
-      int electronicEntry
-  ) {
-  }
-
+      int electronicEntry) {}
 
   private final Column columns;
 
@@ -40,10 +36,8 @@ class SearchableLabReportRowMapper implements RowMapper<SearchableLabReport> {
   }
 
   @Override
-  public SearchableLabReport mapRow(
-      final ResultSet resultSet,
-      final int rowNum
-  ) throws SQLException {
+  public SearchableLabReport mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     long identifier = resultSet.getLong(this.columns.identifier());
     String classCode = resultSet.getString(this.columns.classCode());
     String mood = resultSet.getString(this.columns.mood());
@@ -85,7 +79,6 @@ class SearchableLabReportRowMapper implements RowMapper<SearchableLabReport> {
         updatedOn,
         version,
         status,
-        electronicEntry
-    );
+        electronicEntry);
   }
 }

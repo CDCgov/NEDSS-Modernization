@@ -9,19 +9,19 @@ type SearchSettings = {
 
 const defaults: SearchSettings = {
     defaultView: 'table',
-    allowToggle: false
+    allowToggle: false,
 };
 
 const useSearchSettings = () => {
     const [settings, setSettings] = useState<SearchSettings>(() => {
         return {
             ...defaults,
-            defaultView: defaults.defaultView
+            defaultView: defaults.defaultView,
         };
     });
 
     const {
-        features: { search }
+        features: { search },
     } = useConfiguration();
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const useSearchSettings = () => {
     }, [search.view.table.enabled]);
 
     return {
-        settings
+        settings,
     };
 };
 

@@ -28,7 +28,8 @@ export const MatchConfiguration = ({ loading, dataElements, onImportClick }: Pro
             <Shown when={!loading} fallback={<Loading center />}>
                 <Shown
                     when={dataElementsConfigured}
-                    fallback={<AlgorithmNotConfigured onImportClick={onImportClick} />}>
+                    fallback={<AlgorithmNotConfigured onImportClick={onImportClick} />}
+                >
                     {dataElements && <PassConfiguration dataElements={dataElements} onImportClick={onImportClick} />}
                 </Shown>
             </Shown>

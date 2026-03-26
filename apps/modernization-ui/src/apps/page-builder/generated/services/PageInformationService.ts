@@ -14,16 +14,12 @@ export class PageInformationService {
      * @returns PageInformation OK
      * @throws ApiError
      */
-    public static find({
-        page,
-    }: {
-        page: number,
-    }): CancelablePromise<PageInformation> {
+    public static find({ page }: { page: number }): CancelablePromise<PageInformation> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/pages/{page}/information',
             path: {
-                'page': page,
+                page: page,
             },
         });
     }
@@ -37,14 +33,14 @@ export class PageInformationService {
         page,
         requestBody,
     }: {
-        page: number,
-        requestBody: PageInformationChangeRequest,
+        page: number;
+        requestBody: PageInformationChangeRequest;
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{page}/information',
             path: {
-                'page': page,
+                page: page,
             },
             body: requestBody,
             mediaType: 'application/json',

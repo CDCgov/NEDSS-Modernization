@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 public class PatientEntityLocatorHistoryListener {
   private final PatientEntityLocatorHistoryRecorder creator;
 
-  PatientEntityLocatorHistoryListener(final PatientEntityLocatorHistoryRecorder entityLocatorHistoryCreator) {
+  PatientEntityLocatorHistoryListener(
+      final PatientEntityLocatorHistoryRecorder entityLocatorHistoryCreator) {
     this.creator = entityLocatorHistoryCreator;
   }
 

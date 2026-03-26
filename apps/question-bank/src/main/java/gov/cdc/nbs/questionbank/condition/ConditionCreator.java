@@ -1,10 +1,7 @@
 package gov.cdc.nbs.questionbank.condition;
 
 import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNotEmpty;
-import java.time.Clock;
-import java.time.LocalDate;
-import java.util.List;
-import org.springframework.stereotype.Service;
+
 import gov.cdc.nbs.questionbank.condition.command.ConditionCommand;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionCreateException;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
@@ -13,7 +10,10 @@ import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.entity.condition.LdfPageSet;
-
+import java.time.Clock;
+import java.time.LocalDate;
+import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ConditionCreator {
@@ -39,24 +39,26 @@ public class ConditionCreator {
 
     long nbsUid = conditionCodeRepository.getNextNbsUid();
 
-    //check if id already exists
+    // check if id already exists
     if (checkId(request.code())) {
       throw new ConditionCreateException("Condition Code already exists");
     }
 
-    //check if conditionNm already exists
+    // check if conditionNm already exists
     if (checkConditionNm(request.conditionShortNm())) {
       throw new ConditionCreateException("Condition Name already exists");
     }
 
     try {
       ConditionCode conditionCode = new ConditionCode(conditionAdd(request, userId, nbsUid));
-      conditionCode.getLdfPageSets().add(
-          new LdfPageSet(
-              conditionCode,
-              getLdfId(),
-              ldfPageSetRepository.nextDisplayRow(),
-              ldfPageSetRepository.nextNbsUid()));
+      conditionCode
+          .getLdfPageSets()
+          .add(
+              new LdfPageSet(
+                  conditionCode,
+                  getLdfId(),
+                  ldfPageSetRepository.nextDisplayRow(),
+                  ldfPageSetRepository.nextNbsUid()));
       conditionCode = conditionCodeRepository.save(conditionCode);
       return new Condition(
           conditionCode.getId(),
@@ -87,17 +89,19 @@ public class ConditionCreator {
     int numericPart = 0;
 
     if (!allIds.isEmpty()) {
-      numericPart = allIds.stream()
-          .filter(id -> id.startsWith(currentYear))
-          .mapToInt(id -> Integer.parseInt(id.substring(4)))
-          .max()
-          .orElse(0);
+      numericPart =
+          allIds.stream()
+              .filter(id -> id.startsWith(currentYear))
+              .mapToInt(id -> Integer.parseInt(id.substring(4)))
+              .max()
+              .orElse(0);
     }
     numericPart++;
     return currentYear + "%03d".formatted(numericPart);
   }
 
-  public ConditionCommand.AddCondition conditionAdd(final CreateConditionRequest request, long userId, long nbsUid) {
+  public ConditionCommand.AddCondition conditionAdd(
+      final CreateConditionRequest request, long userId, long nbsUid) {
     return new ConditionCommand.AddCondition(
         request.code(),
         nbsUid,
@@ -112,5 +116,4 @@ public class ConditionCreator {
         request.coinfectionGrpCd(),
         userId);
   }
-
 }

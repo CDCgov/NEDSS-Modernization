@@ -28,7 +28,7 @@ export const QuestionForm = ({ onFindValueSet }: Props) => {
     const displayControl = useWatch<CreateQuestionForm>({
         control: form.control,
         name: 'displayControl',
-        exact: true
+        exact: true,
     });
 
     useEffect(() => {

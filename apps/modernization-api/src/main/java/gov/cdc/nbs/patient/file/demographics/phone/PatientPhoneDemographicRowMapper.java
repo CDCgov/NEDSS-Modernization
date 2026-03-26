@@ -3,11 +3,10 @@ package gov.cdc.nbs.patient.file.demographics.phone;
 import gov.cdc.nbs.data.selectable.Selectable;
 import gov.cdc.nbs.data.selectable.SelectableRowMapper;
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientPhoneDemographicRowMapper implements RowMapper<PatientPhoneDemographic> {
 
@@ -21,13 +20,21 @@ class PatientPhoneDemographicRowMapper implements RowMapper<PatientPhoneDemograp
       int extension,
       int email,
       int url,
-      int comment
-  ) {
+      int comment) {
     Column() {
-      this(1, 2, new SelectableRowMapper.Column(3, 4), new SelectableRowMapper.Column(5, 6), 7, 8, 9, 10, 11, 12);
+      this(
+          1,
+          2,
+          new SelectableRowMapper.Column(3, 4),
+          new SelectableRowMapper.Column(5, 6),
+          7,
+          8,
+          9,
+          10,
+          11,
+          12);
     }
   }
-
 
   private final Column columns;
   private final SelectableRowMapper typeMapper;
@@ -58,16 +65,6 @@ class PatientPhoneDemographicRowMapper implements RowMapper<PatientPhoneDemograp
     String comment = resultSet.getString(columns.comment());
 
     return new PatientPhoneDemographic(
-        identifier,
-        asOf,
-        type,
-        use,
-        countryCode,
-        phoneNumber,
-        extension,
-        email,
-        url,
-        comment
-    );
+        identifier, asOf, type, use, countryCode, phoneNumber, extension, email, url, comment);
   }
 }

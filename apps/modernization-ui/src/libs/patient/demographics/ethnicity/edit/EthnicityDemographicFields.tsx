@@ -19,7 +19,7 @@ const EthnicityDemographicsFields = ({
     form,
     options,
     sizing,
-    orientation = 'horizontal'
+    orientation = 'horizontal',
 }: EthnicityDemographicsFieldsProps) => {
     const selectedEthnicity = useWatch({ control: form.control, name: 'ethnicity.ethnicGroup.value' });
 

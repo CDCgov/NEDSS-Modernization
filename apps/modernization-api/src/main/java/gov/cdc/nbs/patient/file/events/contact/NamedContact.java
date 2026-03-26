@@ -5,11 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 record NamedContact(
-    @JsonProperty(required = true)
-    long patientId,
+    @JsonProperty(required = true) long patientId,
     String first,
     String middle,
     String last,
-    String suffix
-) {
-}
+    String suffix) {}

@@ -47,17 +47,13 @@ public class AuthUserRole {
   @Column(name = "disp_seq_nbr")
   private Integer dispSeqNbr;
 
-  @Embedded
-  private AuthAudit audit;
+  @Embedded private AuthAudit audit;
 
   protected AuthUserRole() {
-    this.readOnlyInd = 'T'; //not used always "T"
+    this.readOnlyInd = 'T'; // not used always "T"
   }
 
-  public AuthUserRole(
-      final AuthUser user,
-      final AuthPermSet set
-  ) {
+  public AuthUserRole(final AuthUser user, final AuthPermSet set) {
     this();
     this.authUserUid = user;
     this.authPermSetUid = set;

@@ -1,39 +1,36 @@
 package gov.cdc.nbs.data.pagination;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.data.domain.Sort;
 
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 class FlexibleDirectionJsonDeserializerTest {
 
-  record TestData(Sort.Direction value) {
-  }
+  record TestData(Sort.Direction value) {}
 
   @ParameterizedTest
   @MethodSource("knownDirections")
-  void should_deserialize_into_known_values(
-      final String in,
-      final Sort.Direction expected
-  ) throws JsonProcessingException {
+  void should_deserialize_into_known_values(final String in, final Sort.Direction expected)
+      throws JsonProcessingException {
 
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(
         new SimpleModule()
-            .addDeserializer(Sort.Direction.class, new FlexibleDirectionJsonDeserializer())
-    );
+            .addDeserializer(Sort.Direction.class, new FlexibleDirectionJsonDeserializer()));
 
-    String json = """
+    String json =
+        """
         { "value":"%s"}
-        """.formatted(in);
+        """
+            .formatted(in);
 
     TestData actual = mapper.readValue(json, TestData.class);
 
@@ -45,8 +42,7 @@ class FlexibleDirectionJsonDeserializerTest {
         Arguments.arguments("desc", Sort.Direction.DESC),
         Arguments.arguments("DESC", Sort.Direction.DESC),
         Arguments.arguments("asc", Sort.Direction.ASC),
-        Arguments.arguments("ASC", Sort.Direction.ASC)
-    );
+        Arguments.arguments("ASC", Sort.Direction.ASC));
   }
 
   @ParameterizedTest
@@ -56,12 +52,13 @@ class FlexibleDirectionJsonDeserializerTest {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(
         new SimpleModule()
-            .addDeserializer(Sort.Direction.class, new FlexibleDirectionJsonDeserializer())
-    );
+            .addDeserializer(Sort.Direction.class, new FlexibleDirectionJsonDeserializer()));
 
-    String json = """
+    String json =
+        """
         { "value":"%s"}
-        """.formatted(in);
+        """
+            .formatted(in);
 
     TestData actual = mapper.readValue(json, TestData.class);
 

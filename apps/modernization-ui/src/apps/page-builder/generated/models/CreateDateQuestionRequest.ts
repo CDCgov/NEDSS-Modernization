@@ -28,4 +28,3 @@ export namespace CreateDateQuestionRequest {
         DATE = 'DATE',
     }
 }
-

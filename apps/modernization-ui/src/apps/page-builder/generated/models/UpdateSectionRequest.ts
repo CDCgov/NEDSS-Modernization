@@ -6,4 +6,3 @@ export type UpdateSectionRequest = {
     name?: string;
     visible?: boolean;
 };
-

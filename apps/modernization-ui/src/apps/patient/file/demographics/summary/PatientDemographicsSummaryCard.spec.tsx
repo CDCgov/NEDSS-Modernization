@@ -12,7 +12,7 @@ describe('PatientSummaryContent', () => {
                     email: 'test@example.com',
                     identifications: [{ value: 'ID123' }],
                     races: ['Race1', 'Race2'],
-                    ethnicity: 'Ethnicity1'
+                    ethnicity: 'Ethnicity1',
                 }}
             />
         );

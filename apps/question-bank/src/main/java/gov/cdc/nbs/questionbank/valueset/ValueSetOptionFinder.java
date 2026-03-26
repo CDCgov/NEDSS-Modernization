@@ -1,13 +1,5 @@
 package gov.cdc.nbs.questionbank.valueset;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.stereotype.Component;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -19,11 +11,20 @@ import gov.cdc.nbs.questionbank.entity.QCodeSetGroupMetadatum;
 import gov.cdc.nbs.questionbank.entity.QCodeset;
 import gov.cdc.nbs.questionbank.valueset.model.ValueSetOption;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ValueSetOptionFinder {
   private static final QCodeset valuesetTable = QCodeset.codeset;
-  private static final QCodeSetGroupMetadatum metadataTable = QCodeSetGroupMetadatum.codeSetGroupMetadatum;
+  private static final QCodeSetGroupMetadatum metadataTable =
+      QCodeSetGroupMetadatum.codeSetGroupMetadatum;
   final JPAQueryFactory factory;
 
   public ValueSetOptionFinder(final JPAQueryFactory factory) {
@@ -31,20 +32,31 @@ public class ValueSetOptionFinder {
   }
 
   public List<ValueSetOption> findAllValueSetOptions() {
-    return factory.select(
-        metadataTable.id,
-        metadataTable.codeSetShortDescTxt,
-        metadataTable.codeSetNm,
-        metadataTable.codeSetDescTxt,
-        valuesetTable.valueSetTypeCd)
+    return factory
+        .select(
+            metadataTable.id,
+            metadataTable.codeSetShortDescTxt,
+            metadataTable.codeSetNm,
+            metadataTable.codeSetDescTxt,
+            valuesetTable.valueSetTypeCd)
         .from(metadataTable)
-        .leftJoin(valuesetTable).on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
-        .where(metadataTable.ldfPicklistIndCd.eq('Y')
-            .and(valuesetTable.statusCd.eq("A"))
-            .and(metadataTable.id.in(
-                JPAExpressions.select(valuesetTable.codeSetGroup.id)
-                    .from(valuesetTable)
-                    .where(valuesetTable.id.classCd.eq("code_value_general").and(valuesetTable.statusCd.eq("A"))))))
+        .leftJoin(valuesetTable)
+        .on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
+        .where(
+            metadataTable
+                .ldfPicklistIndCd
+                .eq('Y')
+                .and(valuesetTable.statusCd.eq("A"))
+                .and(
+                    metadataTable.id.in(
+                        JPAExpressions.select(valuesetTable.codeSetGroup.id)
+                            .from(valuesetTable)
+                            .where(
+                                valuesetTable
+                                    .id
+                                    .classCd
+                                    .eq("code_value_general")
+                                    .and(valuesetTable.statusCd.eq("A"))))))
         .orderBy(metadataTable.codeSetShortDescTxt.asc())
         .fetch()
         .stream()
@@ -56,21 +68,18 @@ public class ValueSetOptionFinder {
     OrderSpecifier<?>[] orders = resolveOrdering(pageable);
 
     // Get the value set Ids that match the provided criteria
-    List<Long> allIds = findIds(request.query())
-        .orderBy(orders)
-        .fetch()
-        .stream()
-        .map(tuple -> tuple.get(metadataTable.id))
-        .toList();
+    List<Long> allIds =
+        findIds(request.query()).orderBy(orders).fetch().stream()
+            .map(tuple -> tuple.get(metadataTable.id))
+            .toList();
 
     int total = allIds.size();
 
     // Apply paging to list of Ids
-    List<Long> ids = allIds
-        .subList((int) pageable.getOffset(),
-            Math.min(
-                total,
-                (int) pageable.getOffset() + pageable.getPageSize()));
+    List<Long> ids =
+        allIds.subList(
+            (int) pageable.getOffset(),
+            Math.min(total, (int) pageable.getOffset() + pageable.getPageSize()));
 
     // Fetch the value set data for the Ids
     List<ValueSetOption> valuesets = findByIds(ids, orders);
@@ -80,36 +89,56 @@ public class ValueSetOptionFinder {
 
   private JPAQuery<Tuple> findIds(String query) {
     query = "%" + query + "%";
-    return factory.select(
-        metadataTable.id,
-        metadataTable.codeSetShortDescTxt,
-        metadataTable.codeSetNm,
-        metadataTable.codeSetDescTxt,
-        valuesetTable.valueSetTypeCd)
+    return factory
+        .select(
+            metadataTable.id,
+            metadataTable.codeSetShortDescTxt,
+            metadataTable.codeSetNm,
+            metadataTable.codeSetDescTxt,
+            valuesetTable.valueSetTypeCd)
         .from(metadataTable)
-        .join(valuesetTable).on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
-        .where(metadataTable.ldfPicklistIndCd.eq('Y')
-            .and(valuesetTable.statusCd.eq("A"))
-            .and(metadataTable.id.in(
-                JPAExpressions.select(valuesetTable.codeSetGroup.id)
-                    .from(valuesetTable)
-                    .where(valuesetTable.id.classCd.eq("code_value_general").and(valuesetTable.statusCd.eq("A"))))
+        .join(valuesetTable)
+        .on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
+        .where(
+            metadataTable
+                .ldfPicklistIndCd
+                .eq('Y')
+                .and(valuesetTable.statusCd.eq("A"))
                 .and(
-                    metadataTable.codeSetShortDescTxt.like(query)
-                        .or(metadataTable.codeSetDescTxt.like(query)
-                            .or(metadataTable.codeSetNm.like(query))
-                            .or(metadataTable.id.like(query))))));
+                    metadataTable
+                        .id
+                        .in(
+                            JPAExpressions.select(valuesetTable.codeSetGroup.id)
+                                .from(valuesetTable)
+                                .where(
+                                    valuesetTable
+                                        .id
+                                        .classCd
+                                        .eq("code_value_general")
+                                        .and(valuesetTable.statusCd.eq("A"))))
+                        .and(
+                            metadataTable
+                                .codeSetShortDescTxt
+                                .like(query)
+                                .or(
+                                    metadataTable
+                                        .codeSetDescTxt
+                                        .like(query)
+                                        .or(metadataTable.codeSetNm.like(query))
+                                        .or(metadataTable.id.like(query))))));
   }
 
   private List<ValueSetOption> findByIds(List<Long> ids, OrderSpecifier<?>[] orders) {
-    return factory.select(
-        metadataTable.id,
-        metadataTable.codeSetShortDescTxt,
-        metadataTable.codeSetNm,
-        metadataTable.codeSetDescTxt,
-        valuesetTable.valueSetTypeCd)
+    return factory
+        .select(
+            metadataTable.id,
+            metadataTable.codeSetShortDescTxt,
+            metadataTable.codeSetNm,
+            metadataTable.codeSetDescTxt,
+            valuesetTable.valueSetTypeCd)
         .from(metadataTable)
-        .join(valuesetTable).on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
+        .join(valuesetTable)
+        .on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
         .where(metadataTable.id.in(ids))
         .orderBy(orders)
         .fetch()
@@ -138,8 +167,8 @@ public class ValueSetOptionFinder {
 
   private OrderSpecifier<?>[] resolveOrdering(final Pageable pageable) {
     return Stream.concat(
-        pageable.getSort().map(this::resolveOrder).stream(),
-        Stream.of(metadataTable.codeSetNm.asc()))
+            pageable.getSort().map(this::resolveOrder).stream(),
+            Stream.of(metadataTable.codeSetNm.asc()))
         .filter(Objects::nonNull)
         .toArray(OrderSpecifier[]::new);
   }

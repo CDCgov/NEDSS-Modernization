@@ -15,7 +15,7 @@ const useEthnicityCodedValues = (): EthnicityCodedValues => {
     return {
         ethnicGroups: groups.options,
         ethnicityUnknownReasons: reasons.options,
-        detailedEthnicities: detailed.options
+        detailedEthnicities: detailed.options,
     };
 };
 

@@ -1,13 +1,12 @@
 package gov.cdc.nbs.option.county;
 
-import io.cucumber.java.en.Given;
 import io.cucumber.java.ParameterType;
+import io.cucumber.java.en.Given;
 
 public class CountyOptionSteps {
 
   private final CountyMother mother;
   private final CountyStateParameterResolver stateResolver;
-
 
   CountyOptionSteps(final CountyMother mother, final CountyStateParameterResolver stateResolver) {
     this.mother = mother;
@@ -21,8 +20,6 @@ public class CountyOptionSteps {
 
   @ParameterType(name = "state", value = ".+")
   public String state(final String value) {
-    return stateResolver.resolve(value)
-        .orElse(null);
+    return stateResolver.resolve(value).orElse(null);
   }
 }
-

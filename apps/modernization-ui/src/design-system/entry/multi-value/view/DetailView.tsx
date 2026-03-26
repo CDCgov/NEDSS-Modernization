@@ -37,7 +37,8 @@ const DetailValue = ({ label, orientation, children }: DetailValueProps) => {
             <dt id={id}>{label}</dt>
             <dd
                 aria-labelledby={id}
-                className={classNames({ [styles.vertical]: longText || orientation === 'vertical' })}>
+                className={classNames({ [styles.vertical]: longText || orientation === 'vertical' })}
+            >
                 <OrElseNoData>{children}</OrElseNoData>
             </dd>
         </>

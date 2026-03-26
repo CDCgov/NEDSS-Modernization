@@ -11,7 +11,7 @@ const mockCondition: Condition = {
     nndInd: 'T',
     page: undefined,
     programArea: 'program area',
-    status: 'A'
+    status: 'A',
 };
 
 const search = vi.fn();
@@ -22,14 +22,14 @@ const mockUsConditionSearch = {
     response: { content: [mockCondition] },
     error: undefined,
     isLoading: false,
-    reset
+    reset,
 };
 
 vi.mock('./useConditionSearch', async () => {
     const actual = await vi.importActual<any>('./useConditionSearch');
     return {
         ...actual,
-        useConditionSearch: () => mockUsConditionSearch
+        useConditionSearch: () => mockUsConditionSearch,
     };
 });
 

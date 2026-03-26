@@ -8,7 +8,7 @@ import { useUserOptionsAutocomplete } from 'options/users';
 const statusOptions: Selectable[] = [
     { label: 'Initial Draft', value: 'Initial Draft', name: 'Initial Draft' },
     { label: 'Published', value: 'Published', name: 'Published' },
-    { label: 'Published with Draft', value: 'Published with Draft', name: 'Published with Draft' }
+    { label: 'Published with Draft', value: 'Published with Draft', name: 'Published with Draft' },
 ];
 
 const startsWith = (criteria: string) => (option: Selectable) =>
@@ -24,7 +24,7 @@ const usePageLibraryProperties = () => {
         value: 'name',
         name: 'Page name',
         type: 'value',
-        complete: (criteria: string) => completePageName(criteria)
+        complete: (criteria: string) => completePageName(criteria),
     };
 
     const { options: eventTypeOptions } = useConceptOptions('BUS_OBJ_TYPE', { lazy: false });
@@ -35,7 +35,7 @@ const usePageLibraryProperties = () => {
         type: 'value',
         exactOnly: true,
         complete: completeByName(eventTypeOptions),
-        all: eventTypeOptions
+        all: eventTypeOptions,
     };
 
     const { complete: completeConditions } = useConditionOptionsAutocomplete();
@@ -44,7 +44,7 @@ const usePageLibraryProperties = () => {
         value: 'conditions',
         name: 'Related Condition(s)',
         type: 'value',
-        complete: (criteria: string) => completeConditions(criteria)
+        complete: (criteria: string) => completeConditions(criteria),
     };
 
     const status: ValueProperty = {
@@ -53,13 +53,13 @@ const usePageLibraryProperties = () => {
         type: 'value',
         exactOnly: true,
         complete: completeByName(statusOptions),
-        all: statusOptions
+        all: statusOptions,
     };
 
     const lastUpdated: DateProperty = {
         value: 'lastUpdate',
         name: 'Last updated',
-        type: 'date'
+        type: 'date',
     };
 
     const { complete: completeLastUpdatedBy } = useUserOptionsAutocomplete();
@@ -68,7 +68,7 @@ const usePageLibraryProperties = () => {
         value: 'lastUpdatedBy',
         name: 'Last updated by',
         type: 'value',
-        complete: (criteria: string) => completeLastUpdatedBy(criteria)
+        complete: (criteria: string) => completeLastUpdatedBy(criteria),
     };
 
     const properties: Property[] = [name, eventType, conditions, status, lastUpdated, lastUpdatedBy];

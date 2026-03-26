@@ -4,7 +4,7 @@ import {
     SexEntry,
     BirthEntry,
     MortalityEntry,
-    GeneralInformationEntry
+    GeneralInformationEntry,
 } from 'apps/patient/data/entry';
 import { EthnicityEntry, initial as initialEthnicity } from 'apps/patient/data/ethnicity';
 
@@ -27,23 +27,23 @@ export type { ExtendedNewPatientEntry };
 
 const initial = (asOf: string = today()) => ({
     administrative: {
-        asOf: asOf
+        asOf: asOf,
     },
     birthAndSex: {
-        asOf: asOf
+        asOf: asOf,
     },
     ethnicity: initialEthnicity(asOf),
     mortality: {
-        asOf: asOf
+        asOf: asOf,
     },
     general: {
-        asOf: asOf
+        asOf: asOf,
     },
     names: [],
     addresses: [],
     phoneEmails: [],
     identifications: [],
-    races: []
+    races: [],
 });
 
 export { initial };

@@ -12,12 +12,12 @@ type LocationDefaults = {
 
 const useLocationDefaults = (): LocationDefaults => {
     const {
-        settings: { defaults }
+        settings: { defaults },
     } = useConfiguration();
 
     return useMemo(
         () => ({
-            country: maybeAsSelectable(defaults.country)
+            country: maybeAsSelectable(defaults.country),
         }),
         [defaults.country]
     );

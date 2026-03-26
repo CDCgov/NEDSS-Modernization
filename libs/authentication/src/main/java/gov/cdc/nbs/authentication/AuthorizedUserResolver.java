@@ -1,22 +1,22 @@
 package gov.cdc.nbs.authentication;
 
+import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class AuthorizedUserResolver {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [user].user_id
       from Security_log [log]
-            
+
           join [Auth_user] [user] on
                   [user].nedss_entry_id = [log].nedss_entry_id
               and [user].record_status_cd = 'ACTIVE'
-            
+
       where [log].[session_id] = ?
       and [log].event_time = (
           select
@@ -37,13 +37,12 @@ public class AuthorizedUserResolver {
 
   public Optional<String> resolve(final String identifier) {
 
-    return template.query(
-        QUERY,
-        statement -> statement.setString(SESSION_PARAMETER, identifier),
-        (rs, row) -> rs.getString(USER_NAME_COLUMN)
-    ).stream().findFirst();
-
-
+    return template
+        .query(
+            QUERY,
+            statement -> statement.setString(SESSION_PARAMETER, identifier),
+            (rs, row) -> rs.getString(USER_NAME_COLUMN))
+        .stream()
+        .findFirst();
   }
-
 }

@@ -8,4 +8,3 @@ export type DataMartInfo = {
     rdbColumnName?: string;
     dataMartColumnName?: string;
 };
-

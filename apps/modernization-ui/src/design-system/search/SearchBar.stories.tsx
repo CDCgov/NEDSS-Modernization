@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const meta = {
     title: 'Design System/Search/SearchBar',
-    component: SearchBar
+    component: SearchBar,
 } satisfies Meta<typeof SearchBar>;
 
 export default meta;
@@ -12,46 +12,46 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: {}
+    args: {},
 };
 
 export const WithPlaceholder: Story = {
     args: {
         tall: false,
-        placeholder: 'Medium placeholder search...'
-    }
+        placeholder: 'Medium placeholder search...',
+    },
 };
 
 export const Small: Story = {
     args: {
         size: 'small',
         tall: false,
-        placeholder: 'Search small...'
-    }
+        placeholder: 'Search small...',
+    },
 };
 
 export const Large: Story = {
     args: {
         size: 'large',
         tall: false,
-        placeholder: 'Search large...'
-    }
+        placeholder: 'Search large...',
+    },
 };
 
 export const TallSmall: Story = {
     args: {
         size: 'small',
         tall: true,
-        placeholder: 'Tall small search...'
-    }
+        placeholder: 'Tall small search...',
+    },
 };
 
 export const TallMedium: Story = {
     args: {
         size: 'medium',
         tall: true,
-        placeholder: 'Tall medium search...'
-    }
+        placeholder: 'Tall medium search...',
+    },
 };
 
 export const Controlled: Story = {
@@ -63,6 +63,6 @@ export const Controlled: Story = {
     args: {
         size: 'medium',
         tall: false,
-        placeholder: 'Type and clear me!'
-    }
+        placeholder: 'Type and clear me!',
+    },
 };

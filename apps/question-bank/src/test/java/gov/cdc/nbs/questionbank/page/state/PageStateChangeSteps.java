@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.state;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.PageController;
 import gov.cdc.nbs.questionbank.page.PageMother;
@@ -12,8 +14,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class PageStateChangeSteps {
 
@@ -29,8 +29,7 @@ public class PageStateChangeSteps {
   PageStateChangeSteps(
       final PageController pageController,
       final PageMother pageMother,
-      final ExceptionHolder exceptionHolder
-  ) {
+      final ExceptionHolder exceptionHolder) {
     this.pageController = pageController;
     this.pageMother = pageMother;
     this.exceptionHolder = exceptionHolder;
@@ -41,7 +40,9 @@ public class PageStateChangeSteps {
     try {
       requestId = 1L;
       pageStatedResponse = pageController.savePageDraft(requestId);
-    } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException | PageUpdateException e) {
+    } catch (AccessDeniedException
+        | AuthenticationCredentialsNotFoundException
+        | PageUpdateException e) {
       exceptionHolder.setException(e);
     }
   }
@@ -54,7 +55,9 @@ public class PageStateChangeSteps {
       pageMother.createPageDraft(origPage);
       requestId = origPage.getId();
 
-    } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException | PageUpdateException e) {
+    } catch (AccessDeniedException
+        | AuthenticationCredentialsNotFoundException
+        | PageUpdateException e) {
       exceptionHolder.setException(e);
     }
   }
@@ -63,7 +66,9 @@ public class PageStateChangeSteps {
   public void i_save_a_page_as_draft() {
     try {
       pageStatedResponse = pageController.savePageDraft(pageMother.one().getId());
-    } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException | PageUpdateException e) {
+    } catch (AccessDeniedException
+        | AuthenticationCredentialsNotFoundException
+        | PageUpdateException e) {
       exceptionHolder.setException(e);
     }
   }
@@ -72,7 +77,6 @@ public class PageStateChangeSteps {
   public void a_page_update_exception_should__be_thrown() {
     assertNotNull(exceptionHolder.getException());
     assertInstanceOf(PageUpdateException.class, exceptionHolder.getException());
-
   }
 
   @Then("A page state should change")
@@ -87,5 +91,4 @@ public class PageStateChangeSteps {
     assertNotNull(pageStatedResponse);
     assertTrue(pageStatedResponse.getMessage().contains(PageConstants.DRAFT_DELETE_SUCCESS));
   }
-
 }

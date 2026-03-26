@@ -6,5 +6,4 @@ public class PdfCreationException extends InternalServerException {
   public PdfCreationException(String message) {
     super(message);
   }
-
 }

@@ -62,10 +62,11 @@ const Component = ({ title, size, forceAction = false, children, className, onCl
                     aria-describedby={content}
                     className={classNames('usa-modal', styles.modal, className, {
                         [styles.small]: size === 'small',
-                        [styles.large]: size === 'large'
+                        [styles.large]: size === 'large',
                     })}
                     data-force-action={forceAction}
-                    open>
+                    open
+                >
                     <header id={header} className={classNames('usa-modal__heading', styles.header)}>
                         <Heading level={2}>{title}</Heading>
                         {!forceAction && (

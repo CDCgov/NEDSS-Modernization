@@ -13,7 +13,7 @@ const asRace = (demographic: Partial<RaceDemographic>): RaceDemographicRequest |
         return {
             asOf,
             race: asValue(race),
-            detailed: maybeAsValues(detailed)
+            detailed: maybeAsValues(detailed),
         };
     }
 };

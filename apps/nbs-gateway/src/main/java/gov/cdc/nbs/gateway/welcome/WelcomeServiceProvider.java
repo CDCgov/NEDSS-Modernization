@@ -11,16 +11,16 @@ import org.springframework.context.annotation.Configuration;
 class WelcomeServiceProvider {
   @Bean
   @ConditionalOnProperty(prefix = "nbs.gateway.welcome", name = "enabled", havingValue = "false")
-  RouteLocator welcomeRouteLocator(
-      final RouteLocatorBuilder builder,
-      final UIService uiService
-  ) {
-    return builder.routes()
+  RouteLocator welcomeRouteLocator(final RouteLocatorBuilder builder, final UIService uiService) {
+    return builder
+        .routes()
         .route(
             "welcome-service-redirect",
-            route -> route.path("/welcome/**")
-                .filters(filters -> filters.redirect(302, uiService.path("/"))).uri("no://op")
-        )
+            route ->
+                route
+                    .path("/welcome/**")
+                    .filters(filters -> filters.redirect(302, uiService.path("/")))
+                    .uri("no://op"))
         .build();
   }
 }

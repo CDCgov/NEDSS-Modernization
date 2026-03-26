@@ -31,9 +31,7 @@ public final class EntryNode extends ContentNode {
       final long identifier,
       final Type type,
       final Definition definition,
-      final Attributes attributes
-  ) {
+      final Attributes attributes) {
     super(identifier, type, definition, attributes);
   }
-
 }

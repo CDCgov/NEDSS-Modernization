@@ -1,9 +1,9 @@
 package gov.cdc.nbs.option.countries.list;
 
-import org.springframework.jdbc.core.RowMapper;
 import gov.cdc.nbs.option.Option;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 public class CountriesListRowMapper implements RowMapper<Option> {
   public record Columns(int value, int name) {
@@ -27,10 +27,6 @@ public class CountriesListRowMapper implements RowMapper<Option> {
     String value = resultSet.getString(columns.value());
     String name = resultSet.getString(columns.name());
 
-    return new Option(
-        value,
-        name,
-        name,
-        0);
+    return new Option(value, name, name, 0);
   }
 }

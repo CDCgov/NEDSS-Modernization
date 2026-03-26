@@ -55,35 +55,35 @@ export const MatchesRequiringReviewTable = () => {
             name: 'Patient ID',
             sortable: true,
             sortIconType: 'numeric',
-            render: (match) => match.patientLocalId
+            render: (match) => match.patientLocalId,
         },
         {
             id: 'name',
             name: 'Person name',
             sortable: true,
             sortIconType: 'alpha',
-            render: (match) => match.patientName
+            render: (match) => match.patientName,
         },
         {
             id: 'created',
             name: 'Date created',
             sortable: true,
             sortIconType: 'numeric',
-            render: (match) => format(parseISO(match.createdDate), DATE_FORMAT)
+            render: (match) => format(parseISO(match.createdDate), DATE_FORMAT),
         },
         {
             id: 'identified',
             name: 'Date identified',
             sortable: true,
             sortIconType: 'numeric',
-            render: (match) => format(parseISO(match.identifiedDate), DATE_FORMAT)
+            render: (match) => format(parseISO(match.identifiedDate), DATE_FORMAT),
         },
         {
             id: 'count',
             name: 'Number of matching records',
             sortable: true,
             sortIconType: 'numeric',
-            render: (match) => match.numOfMatchingRecords
+            render: (match) => match.numOfMatchingRecords,
         },
         {
             id: 'review',
@@ -93,12 +93,13 @@ export const MatchesRequiringReviewTable = () => {
                     <Button
                         sizing="small"
                         className={styles.reviewButton}
-                        onClick={() => nav(`/deduplication/merge/${match.groupId}`)}>
+                        onClick={() => nav(`/deduplication/merge/${match.groupId}`)}
+                    >
                         Review
                     </Button>
                 );
-            }
-        }
+            },
+        },
     ];
 
     return (

@@ -1,18 +1,16 @@
 package gov.cdc.nbs.change;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
 
 class MatchTest {
 
   @Test
   void should_require_left_or_right_value() {
 
-    assertThatThrownBy(() -> Match.of(null, null))
-        .isInstanceOf(IllegalStateException.class);
-
+    assertThatThrownBy(() -> Match.of(null, null)).isInstanceOf(IllegalStateException.class);
   }
 
   @Test

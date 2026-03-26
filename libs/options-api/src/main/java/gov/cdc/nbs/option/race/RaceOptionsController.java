@@ -2,10 +2,9 @@ package gov.cdc.nbs.option.race;
 
 import gov.cdc.nbs.option.Option;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.Collection;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collection;
 
 @RestController
 class RaceOptionsController {
@@ -20,11 +19,9 @@ class RaceOptionsController {
       operationId = "races",
       summary = "Race Option",
       description = "Provides all Race options.",
-      tags = "RaceOptions"
-  )
+      tags = "RaceOptions")
   @GetMapping("nbs/api/options/races")
   Collection<Option> all() {
     return SpecificRaceSorter.sorted(this.finder.find());
   }
-
 }

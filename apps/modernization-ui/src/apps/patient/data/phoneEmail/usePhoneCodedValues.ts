@@ -12,7 +12,7 @@ const usePhoneCodedValues = (): PhoneCodedValues => {
 
     return {
         types: types.options,
-        uses: uses.options
+        uses: uses.options,
     };
 };
 

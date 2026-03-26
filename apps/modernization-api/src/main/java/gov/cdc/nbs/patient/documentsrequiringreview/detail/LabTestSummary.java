@@ -9,6 +9,4 @@ public record LabTestSummary(
     BigDecimal numeric,
     String high,
     String low,
-    String unit
-) {
-}
+    String unit) {}

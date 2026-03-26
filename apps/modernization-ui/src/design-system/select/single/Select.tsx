@@ -54,7 +54,8 @@ const Select = ({
             name={inputProps.name ?? id}
             value={value?.value ?? ''}
             onChange={handleChange}
-            {...inputProps}>
+            {...inputProps}
+        >
             {renderOptions(options, placeholder)}
         </select>
     );

@@ -1,44 +1,41 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.ValidateSubsectionException;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
+import jakarta.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import jakarta.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 class SubsectionValidatorTest {
 
-  @Mock
-  private EntityManager entityManager;
+  @Mock private EntityManager entityManager;
 
-  @InjectMocks
-  SubSectionValidator subSectionValidator;
+  @InjectMocks SubSectionValidator subSectionValidator;
 
   private static final Long SECTION = 1015l;
   private static final Long SUB_SECTION = 1016l;
   public static final Long ROLLINGNOTE = 1019l;
   public static final Long SINGLE_SELECT_QUESTION = 1007L;
 
-
   @Test
   void not_valid_subsection_no_page_found() {
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
-    assertThrows(PageNotFoundException.class, () -> subSectionValidator.validateIfCanBeGrouped(1l, 100l));
+    assertThrows(
+        PageNotFoundException.class, () -> subSectionValidator.validateIfCanBeGrouped(1l, 100l));
   }
 
   @Test
@@ -47,8 +44,10 @@ class SubsectionValidatorTest {
     long subsectionId = 100l;
     page.setUiMetadata(Collections.emptyList());
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    ValidateSubsectionException exception = assertThrows(ValidateSubsectionException.class,
-        () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
+    ValidateSubsectionException exception =
+        assertThrows(
+            ValidateSubsectionException.class,
+            () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
     assertEquals(("Failed to find subsection with id: " + subsectionId), exception.getMessage());
   }
 
@@ -63,14 +62,20 @@ class SubsectionValidatorTest {
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
 
     pageElements.get(question1).setDataLocation("Person_name.first_nm");
-    ValidateSubsectionException exception = assertThrows(ValidateSubsectionException.class,
-        () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
-    assertEquals("Subsection includes questions that are considered 'core'", exception.getMessage());
+    ValidateSubsectionException exception =
+        assertThrows(
+            ValidateSubsectionException.class,
+            () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
+    assertEquals(
+        "Subsection includes questions that are considered 'core'", exception.getMessage());
 
     pageElements.get(question1).setDataLocation(null);
-    ValidateSubsectionException exception2 = assertThrows(ValidateSubsectionException.class,
-        () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
-    assertEquals("Subsection includes questions that are considered 'core'", exception2.getMessage());
+    ValidateSubsectionException exception2 =
+        assertThrows(
+            ValidateSubsectionException.class,
+            () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
+    assertEquals(
+        "Subsection includes questions that are considered 'core'", exception2.getMessage());
   }
 
   @Test
@@ -85,9 +90,13 @@ class SubsectionValidatorTest {
     pageElements.get(question2).setDataLocation("test_ANSWER_TXT_test");
     page.setUiMetadata(pageElements);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    ValidateSubsectionException exception = assertThrows(ValidateSubsectionException.class,
-        () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
-    assertEquals("Subsection includes a question(s) that has already been published.", exception.getMessage());
+    ValidateSubsectionException exception =
+        assertThrows(
+            ValidateSubsectionException.class,
+            () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
+    assertEquals(
+        "Subsection includes a question(s) that has already been published.",
+        exception.getMessage());
   }
 
   @Test
@@ -101,12 +110,16 @@ class SubsectionValidatorTest {
     pageElements.get(question1).setNbsUiComponentUid(ROLLINGNOTE);
     page.setUiMetadata(pageElements);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    ValidateSubsectionException exception = assertThrows(ValidateSubsectionException.class,
-        () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
-    assertEquals("""
+    ValidateSubsectionException exception =
+        assertThrows(
+            ValidateSubsectionException.class,
+            () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
+    assertEquals(
+        """
         Subsection can only have the Repeating Note field \
         and no other fields in the repeating block subsection.\
-        """, exception.getMessage());
+        """,
+        exception.getMessage());
   }
 
   @Test

@@ -18,4 +18,3 @@ export type PageRule = {
     numberOfElements?: number;
     empty?: boolean;
 };
-

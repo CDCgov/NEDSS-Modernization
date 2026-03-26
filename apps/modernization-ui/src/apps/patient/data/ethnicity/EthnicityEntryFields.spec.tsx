@@ -8,14 +8,14 @@ import { EthnicityEntryFields } from './EthnicityEntryFields';
 const mockEthnicityValues: EthnicityCodedValues = {
     ethnicGroups: [
         { name: 'Hispanic or Latino', value: '2135-2' },
-        { name: 'Unknown', value: 'UNK' }
+        { name: 'Unknown', value: 'UNK' },
     ],
     ethnicityUnknownReasons: [{ name: 'Not asked', value: '6' }],
-    detailedEthnicities: [{ name: 'Central American', value: '2155-0' }]
+    detailedEthnicities: [{ name: 'Central American', value: '2155-0' }],
 };
 
 vi.mock('./useEthnicityCodedValues', () => ({
-    useEthnicityCodedValues: () => mockEthnicityValues
+    useEthnicityCodedValues: () => mockEthnicityValues,
 }));
 
 const Fixture = () => {

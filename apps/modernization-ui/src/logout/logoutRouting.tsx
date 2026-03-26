@@ -7,7 +7,7 @@ const routing = {
         <PageProvider>
             <Logout />
         </PageProvider>
-    )
+    ),
 };
 
 export { routing };

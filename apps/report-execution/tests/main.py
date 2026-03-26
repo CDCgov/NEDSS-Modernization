@@ -40,7 +40,7 @@ class TestReportExecuteEndpoint:
             'is_export': True,
             'is_builtin': True,
             'report_title': 'Test Report',
-            'library_name': 'hello_world',
+            'library_name': 'nbs_custom',
             'data_source_name': 'random_db_table_0',
             'subset_query': 'SELECT * FROM test',
         }
@@ -62,7 +62,7 @@ class TestReportExecuteEndpoint:
             'is_export': False,
             'is_builtin': True,
             'report_title': 'Time-based Report',
-            'library_name': 'hello_world',
+            'library_name': 'nbs_custom',
             'data_source_name': 'random_db_table_1',
             'subset_query': 'SELECT * FROM events WHERE date > ?',
             'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
@@ -79,7 +79,7 @@ class TestReportExecuteEndpoint:
             'is_export': True,
             'is_builtin': True,
             'report_title': 'Simple Report',
-            'library_name': 'hello_world',
+            'library_name': 'nbs_custom',
             'data_source_name': 'random_db_table_2',
             'subset_query': 'SELECT COUNT(*) FROM users',
         }
@@ -105,7 +105,7 @@ class TestReportExecuteEndpoint:
             'is_export': True,
             'is_builtin': True,
             'report_title': 'Test Report',
-            'library_name': 'hello_world',
+            'library_name': 'nbs_custom',
             'data_source_name': 'random_db_table_3',
             'subset_query': 'SELECT * FROM test',
         }

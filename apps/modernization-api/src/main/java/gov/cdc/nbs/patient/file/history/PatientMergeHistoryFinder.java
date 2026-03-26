@@ -1,14 +1,14 @@
 package gov.cdc.nbs.patient.file.history;
 
+import java.util.List;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class PatientMergeHistoryFinder {
 
-  private static final String MERGE_HISTORY_QUERY = """
+  private static final String MERGE_HISTORY_QUERY =
+      """
         SELECT
             pm.superced_person_uid AS supersededPersonId,
             u.user_id AS mergedBy,
@@ -23,7 +23,8 @@ public class PatientMergeHistoryFinder {
             pm.merge_time DESC
         """;
 
-  private static final String PERSON_LOCAL_ID_AND_NAME_QUERY = """
+  private static final String PERSON_LOCAL_ID_AND_NAME_QUERY =
+      """
         WITH
           id_settings (prefix, suffix, initial) AS (
             SELECT
@@ -65,19 +66,16 @@ public class PatientMergeHistoryFinder {
   }
 
   public List<PatientMergeHistory> find(long patientId) {
-    return this.client.sql(MERGE_HISTORY_QUERY)
-        .param(patientId)
-        .query(rowMapper)
-        .list();
+    return this.client.sql(MERGE_HISTORY_QUERY).param(patientId).query(rowMapper).list();
   }
 
   private PatientIdAndName fetchPersonLocalIdAndName(String id) {
-    return this.client.sql(PERSON_LOCAL_ID_AND_NAME_QUERY)
+    return this.client
+        .sql(PERSON_LOCAL_ID_AND_NAME_QUERY)
         .param(id)
-        .query((rs, rowNum) -> new PatientIdAndName(
-            rs.getString("personLocalId"),
-            rs.getString("name")
-        ))
+        .query(
+            (rs, rowNum) ->
+                new PatientIdAndName(rs.getString("personLocalId"), rs.getString("name")))
         .optional()
         .orElse(null);
   }

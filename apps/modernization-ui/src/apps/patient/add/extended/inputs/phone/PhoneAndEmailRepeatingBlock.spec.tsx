@@ -5,11 +5,11 @@ import userEvent from '@testing-library/user-event';
 
 const mockPatientPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
-    uses: [{ name: 'Home', value: 'H' }]
+    uses: [{ name: 'Home', value: 'H' }],
 };
 
 vi.mock('apps/patient/data/phoneEmail/usePhoneCodedValues', () => ({
-    usePhoneCodedValues: () => mockPatientPhoneCodedValues
+    usePhoneCodedValues: () => mockPatientPhoneCodedValues,
 }));
 
 const awaitRender = async () => {
@@ -29,8 +29,8 @@ describe('PhoneAndEmailRepeatingBlock', () => {
                     {
                         asOf: '07/11/1997',
                         type: { name: 'type-name', value: 'type-value' },
-                        use: { name: 'use-name', value: 'use-value' }
-                    }
+                        use: { name: 'use-name', value: 'use-value' },
+                    },
                 ]}
             />
         );
@@ -102,8 +102,8 @@ describe('PhoneAndEmailRepeatingBlock', () => {
                 expect.arrayContaining([
                     expect.objectContaining({
                         type: expect.objectContaining({ name: 'Phone', value: 'PH' }),
-                        use: expect.objectContaining({ name: 'Home', value: 'H' })
-                    })
+                        use: expect.objectContaining({ name: 'Home', value: 'H' }),
+                    }),
                 ])
             );
         });

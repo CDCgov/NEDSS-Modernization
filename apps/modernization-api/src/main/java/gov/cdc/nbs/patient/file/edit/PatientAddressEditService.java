@@ -1,5 +1,7 @@
 package gov.cdc.nbs.patient.file.edit;
 
+import static gov.cdc.nbs.patient.demographics.address.AddressDemographicPatientCommandMapper.*;
+
 import gov.cdc.nbs.change.ChangeResolver;
 import gov.cdc.nbs.change.Changes;
 import gov.cdc.nbs.change.Match;
@@ -8,12 +10,9 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographics.address.AddressDemographic;
-import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 import java.util.Objects;
-
-import static gov.cdc.nbs.patient.demographics.address.AddressDemographicPatientCommandMapper.*;
+import org.springframework.stereotype.Component;
 
 @Component
 class PatientAddressEditService {
@@ -26,7 +25,8 @@ class PatientAddressEditService {
     return demographic.identifier() == null ? demographic.hashCode() : demographic.identifier();
   }
 
-  private static boolean changed(final Match.Both<PostalEntityLocatorParticipation, AddressDemographic> both) {
+  private static boolean changed(
+      final Match.Both<PostalEntityLocatorParticipation, AddressDemographic> both) {
     PostalEntityLocatorParticipation existing = both.left();
     AddressDemographic demographic = both.right();
 
@@ -41,15 +41,13 @@ class PatientAddressEditService {
         && Objects.equals(existing.locator().state(), demographic.state())
         && Objects.equals(existing.locator().country(), demographic.country())
         && Objects.equals(existing.locator().censusTract(), demographic.censusTract())
-        && Objects.equals(existing.comments(), demographic.comment())
-    );
+        && Objects.equals(existing.comments(), demographic.comment()));
   }
 
-  private final ChangeResolver<PostalEntityLocatorParticipation, AddressDemographic, Long> resolver = ChangeResolver
-      .ofDifferingTypes(
-          PatientAddressEditService::identifiedBy,
-          PatientAddressEditService::identifiedBy
-      );
+  private final ChangeResolver<PostalEntityLocatorParticipation, AddressDemographic, Long>
+      resolver =
+          ChangeResolver.ofDifferingTypes(
+              PatientAddressEditService::identifiedBy, PatientAddressEditService::identifiedBy);
 
   private final AddressIdentifierGenerator addressIdentifierGenerator;
 
@@ -61,22 +59,23 @@ class PatientAddressEditService {
       final RequestContext context,
       final Person patient,
       final Collection<AddressDemographic> demographics) {
-    Changes<PostalEntityLocatorParticipation, AddressDemographic> changes = resolver.resolve(patient.addresses(),
-        demographics);
+    Changes<PostalEntityLocatorParticipation, AddressDemographic> changes =
+        resolver.resolve(patient.addresses(), demographics);
 
-    changes.added()
+    changes
+        .added()
         .map(demographic -> asAddAddress(patient.id(), context, demographic))
         .forEach(command -> patient.add(command, addressIdentifierGenerator));
 
-    changes.altered()
+    changes
+        .altered()
         .filter(PatientAddressEditService::changed)
         .map(match -> asUpdateAddress(patient.id(), context, match.right()))
         .forEach(patient::update);
 
-    changes.removed()
+    changes
+        .removed()
         .map(existing -> asDeleteAddress(patient.id(), context, existing))
         .forEach(patient::delete);
-
   }
-
 }

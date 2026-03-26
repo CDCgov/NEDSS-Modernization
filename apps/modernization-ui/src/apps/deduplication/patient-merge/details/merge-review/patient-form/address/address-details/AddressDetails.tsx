@@ -20,7 +20,7 @@ export const AddressDetails = ({ address }: Props) => {
                 { label: 'County', value: address.county },
                 { label: 'Census tract', value: address.censusTract },
                 { label: 'Country', value: address.country },
-                { label: 'Address comments', value: address.comments }
+                { label: 'Address comments', value: address.comments },
             ]}
         />
     );

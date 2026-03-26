@@ -3,8 +3,7 @@ package gov.cdc.nbs.questionbank.question;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.util.Map;
-import org.springframework.test.web.servlet.ResultActions;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
@@ -19,6 +18,8 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.Map;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class CreateCodedQuestionSteps {
   private final ObjectMapper mapper;
@@ -50,20 +51,22 @@ public class CreateCodedQuestionSteps {
   public void send_create_coded_question_request() throws Exception {
     response.active(requester.send(codedRequest));
 
-    CodedQuestion q = mapper.readValue(
-        response.active().andReturn().getResponse().getContentAsString(),
-        CodedQuestion.class);
+    CodedQuestion q =
+        mapper.readValue(
+            response.active().andReturn().getResponse().getContentAsString(), CodedQuestion.class);
     mother.addManaged(q.id());
   }
 
   @Then("the coded question is created")
   public void the_coded_question_is_create() throws Exception {
     Concept codeSystem =
-        conceptFinder.find("CODE_SYSTEM", codedRequest.getMessagingInfo().codeSystem()).orElseThrow();
-    response.active()
+        conceptFinder
+            .find("CODE_SYSTEM", codedRequest.getMessagingInfo().codeSystem())
+            .orElseThrow();
+    response
+        .active()
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.valueSet", equalTo(codedRequest.getValueSet().intValue())))
-
         .andExpect(jsonPath("$.codeSet", equalTo(codedRequest.getCodeSet().toString())))
         .andExpect(jsonPath("$.uniqueId", equalTo(codedRequest.getUniqueId())))
         .andExpect(jsonPath("$.uniqueName", equalTo(codedRequest.getUniqueName())))
@@ -73,31 +76,49 @@ public class CreateCodedQuestionSteps {
         .andExpect(jsonPath("$.type", equalTo("CODED")))
         .andExpect(jsonPath("$.label", equalTo(codedRequest.getLabel())))
         .andExpect(jsonPath("$.tooltip", equalTo(codedRequest.getTooltip())))
-        .andExpect(jsonPath("$.displayControl", equalTo(codedRequest.getDisplayControl().intValue())))
+        .andExpect(
+            jsonPath("$.displayControl", equalTo(codedRequest.getDisplayControl().intValue())))
         .andExpect(jsonPath("$.adminComments", equalTo(codedRequest.getAdminComments())))
         .andExpect(
-            jsonPath("$.dataMartInfo.defaultLabelInReport", equalTo(codedRequest.getDataMartInfo().reportLabel())))
-        .andExpect(jsonPath("$.dataMartInfo.defaultRdbTableName",
-            equalTo(codedRequest.getDataMartInfo().defaultRdbTableName())))
-        .andExpect(jsonPath("$.dataMartInfo.rdbColumnName",
-            equalTo(
-                codedRequest.getSubgroup() + "_" + codedRequest.getDataMartInfo().rdbColumnName().toUpperCase())))
+            jsonPath(
+                "$.dataMartInfo.defaultLabelInReport",
+                equalTo(codedRequest.getDataMartInfo().reportLabel())))
         .andExpect(
-            jsonPath("$.dataMartInfo.dataMartColumnName",
+            jsonPath(
+                "$.dataMartInfo.defaultRdbTableName",
+                equalTo(codedRequest.getDataMartInfo().defaultRdbTableName())))
+        .andExpect(
+            jsonPath(
+                "$.dataMartInfo.rdbColumnName",
+                equalTo(
+                    codedRequest.getSubgroup()
+                        + "_"
+                        + codedRequest.getDataMartInfo().rdbColumnName().toUpperCase())))
+        .andExpect(
+            jsonPath(
+                "$.dataMartInfo.dataMartColumnName",
                 equalTo(codedRequest.getDataMartInfo().dataMartColumnName())))
         .andExpect(
-            jsonPath("$.messagingInfo.includedInMessage",
+            jsonPath(
+                "$.messagingInfo.includedInMessage",
                 equalTo(codedRequest.getMessagingInfo().includedInMessage())))
         .andExpect(
-            jsonPath("$.messagingInfo.messageVariableId",
+            jsonPath(
+                "$.messagingInfo.messageVariableId",
                 equalTo(codedRequest.getMessagingInfo().messageVariableId())))
         .andExpect(
-            jsonPath("$.messagingInfo.labelInMessage", equalTo(codedRequest.getMessagingInfo().labelInMessage())))
+            jsonPath(
+                "$.messagingInfo.labelInMessage",
+                equalTo(codedRequest.getMessagingInfo().labelInMessage())))
         .andExpect(jsonPath("$.messagingInfo.codeSystem", equalTo(codeSystem.conceptName())))
         .andExpect(
-            jsonPath("$.messagingInfo.requiredInMessage",
+            jsonPath(
+                "$.messagingInfo.requiredInMessage",
                 equalTo(codedRequest.getMessagingInfo().requiredInMessage())))
-        .andExpect(jsonPath("$.messagingInfo.hl7DataType", equalTo(codedRequest.getMessagingInfo().hl7DataType())));
+        .andExpect(
+            jsonPath(
+                "$.messagingInfo.hl7DataType",
+                equalTo(codedRequest.getMessagingInfo().hl7DataType())));
   }
 
   private CreateCodedQuestionRequest toCreateCodedRequest(DataTable dataTable) {
@@ -116,30 +137,25 @@ public class CreateCodedQuestionSteps {
 
     request.setValueSet(Long.valueOf(map.get("valueSet")));
 
-    request.setDataMartInfo(new ReportingInfo(
-        map.get("reportLabel"),
-        map.get("defaultRdbTableName"),
-        map.get("rdbColumnName"),
-        map.get("dataMartColumnName")));
+    request.setDataMartInfo(
+        new ReportingInfo(
+            map.get("reportLabel"),
+            map.get("defaultRdbTableName"),
+            map.get("rdbColumnName"),
+            map.get("dataMartColumnName")));
 
     if ("true".equals(map.get("includedInMessage").toLowerCase())) {
-      request.setMessagingInfo(new MessagingInfo(
-          "true".equals(map.get("includedInMessage").toLowerCase()),
-          map.get("messageVariableId"),
-          map.get("labelInMessage"),
-          map.get("codeSystem"),
-          "true".equals(map.get("requiredInMessage").toLowerCase()),
-          map.get("hl7DataType")));
+      request.setMessagingInfo(
+          new MessagingInfo(
+              "true".equals(map.get("includedInMessage").toLowerCase()),
+              map.get("messageVariableId"),
+              map.get("labelInMessage"),
+              map.get("codeSystem"),
+              "true".equals(map.get("requiredInMessage").toLowerCase()),
+              map.get("hl7DataType")));
     } else {
-      request.setMessagingInfo(new MessagingInfo(
-          false,
-          null,
-          null,
-          null,
-          false,
-          null));
+      request.setMessagingInfo(new MessagingInfo(false, null, null, null, false, null));
     }
     return request;
   }
-
 }

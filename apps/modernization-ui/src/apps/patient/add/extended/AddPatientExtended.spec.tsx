@@ -15,7 +15,7 @@ vi.mock('react-router', async () => {
     const actual = await vi.importActual('react-router');
     return {
         ...actual,
-        useNavigate: vi.fn()
+        useNavigate: vi.fn(),
     };
 });
 
@@ -28,72 +28,72 @@ class MockIntersectionObserver {
 Object.defineProperty(window, 'IntersectionObserver', {
     writable: true,
     configurable: true,
-    value: MockIntersectionObserver
+    value: MockIntersectionObserver,
 });
 
 // Mock IntersectionObserverEntry
 Object.defineProperty(window, 'IntersectionObserverEntry', {
     writable: true,
     configurable: true,
-    value: vi.fn()
+    value: vi.fn(),
 });
 
 vi.mock('options/concepts', () => ({
-    useConceptOptions: () => ({ options: [] })
+    useConceptOptions: () => ({ options: [] }),
 }));
 
 const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
     counties: [{ name: 'CountyName', value: '2' }],
     countries: [{ name: 'CountryName', value: '3' }],
-    state: vi.fn()
+    state: vi.fn(),
 };
 
 vi.mock('options/location', () => ({
-    useLocationOptions: () => mockLocationOptions
+    useLocationOptions: () => mockLocationOptions,
 }));
 
 const mockRaceCategories: Selectable[] = [{ value: '1', name: 'race name' }];
 
 const mockDetailedRaces: Selectable[] = [
     { value: '2', name: 'detailed race1' },
-    { value: '3', name: 'detailed race2' }
+    { value: '3', name: 'detailed race2' },
 ];
 
 vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
-    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn })
+    useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn }),
 }));
 
 vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
     useIdentificationCodedValues: () => ({
         types: [{ value: 'type-value', name: 'type-name' }],
-        authorities: [{ value: 'authority-value', name: 'authority-name' }]
-    })
+        authorities: [{ value: 'authority-value', name: 'authority-name' }],
+    }),
 }));
 
 const mockNameCodedValues = {
     types: [{ name: 'Adopted name', value: 'AN' }],
     prefixes: [{ name: 'Miss', value: 'MS' }],
     suffixes: [{ name: 'Sr.', value: 'SR' }],
-    degrees: [{ name: 'BA', value: 'BA' }]
+    degrees: [{ name: 'BA', value: 'BA' }],
 };
 
 vi.mock('apps/patient/data/name/useNameCodedValues', () => ({
-    useNameCodedValues: () => mockNameCodedValues
+    useNameCodedValues: () => mockNameCodedValues,
 }));
 
 const mockPatientPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
-    uses: [{ name: 'Home', value: 'H' }]
+    uses: [{ name: 'Home', value: 'H' }],
 };
 
 vi.mock('apps/patient/data/phoneEmail/usePhoneCodedValues', () => ({
-    usePhoneCodedValues: () => mockPatientPhoneCodedValues
+    usePhoneCodedValues: () => mockPatientPhoneCodedValues,
 }));
 
 vi.mock('../cancelAddPatientPanel/useShowCancelModal', () => ({
-    useShowCancelModal: vi.fn()
+    useShowCancelModal: vi.fn(),
 }));
 
 const renderWithRouter = () => {
@@ -108,8 +108,8 @@ const renderWithRouter = () => {
                         </SkipLinkProvider>
                     </PatientDataEntryMethodProvider>
                 </PageProvider>
-            )
-        }
+            ),
+        },
     ];
 
     const router = createMemoryRouter(routes, { initialEntries: ['/'] });

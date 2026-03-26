@@ -13,13 +13,11 @@ public class SpecimenSteps {
 
   @ParameterType(name = "specimenSite", value = ".*")
   public String specimenSite(final String value) {
-    return resolver.resolve("ANATOMIC_SITE", value)
-        .orElse(value);
+    return resolver.resolve("ANATOMIC_SITE", value).orElse(value);
   }
 
   @ParameterType(name = "specimenSource", value = ".*")
   public String specimenSource(final String value) {
-    return resolver.resolve("SPECMN_SRC", value)
-        .orElse(value);
+    return resolver.resolve("SPECMN_SRC", value).orElse(value);
   }
 }

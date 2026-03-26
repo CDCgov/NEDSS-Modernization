@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 class PatientFileContactNamedByPatientFinder extends BasePatientFIleContactFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       with id_settings([prefix], [suffix],[initial]) as   (
         select
           [generator].UID_prefix_cd     as [prefix],
@@ -63,50 +64,50 @@ class PatientFileContactNamedByPatientFinder extends BasePatientFIleContactFinde
                           [contact_record].SUBJECT_ENTITY_UID = [revisions].person_uid
                       and [contact_record].record_status_cd = 'ACTIVE'
                       and [contact_record].program_jurisdiction_oid in (:any)
-      
+
               join public_health_case [investigation] with (nolock) on
                       [investigation].public_health_case_uid = [contact_record].subject_entity_phc_uid
-      
+
               join nbs_srte..Condition_code [condition] with (nolock) on
                       [condition].condition_cd = [investigation].cd
-      
+
               join Person [named] with (nolock) on
                        [named].person_uid = [contact_record].CONTACT_ENTITY_UID
-      
+
               left join Person_name [person] with (nolock) on
                        [person].person_uid = [named].person_uid
-      
+
               left join NBS_SRTE..Code_value_general [suffix] with (nolock) on
                           [suffix].[code_set_nm] = 'P_NM_SFX'
                       and [suffix].[code] = [person].nm_suffix
-      
+
               left join NBS_SRTE..Code_value_general [processing_decision] with (nolock) on
                           [processing_decision].[code] = [contact_record].[processing_decision_cd]
                       and [processing_decision].code_set_nm = 'STD_CONTACT_RCD_PROCESSING_DECISION'
-      
+
               left join NBS_SRTE..Code_value_general [priority] with (nolock) on
                           [priority].code = [contact_record].priority_cd
                       and [priority].code_set_nm = 'NBS_PRIORITY'
-      
+
               left join NBS_SRTE..Code_value_general [disposition] with (nolock) on
                           [disposition].code = [contact_record].disposition_cd
                       and [disposition].code_set_nm = 'NBS_DISPO'
-      
+
               --  Associated investigations
               left join public_health_case [associated] with (nolock) on
                           [associated].public_health_case_uid  = [contact_record].contact_entity_phc_uid
                       and [associated].program_jurisdiction_oid in (:associated)
-      
+
               left join nbs_srte..Condition_code [associated_condition] with (nolock) on
                               [associated_condition].condition_cd = [associated].cd
-      
+
               left join case_management [management] with (nolock) on
                       [management].public_health_case_uid = [associated].public_health_case_uid
-      
+
               left join NBS_SRTE..Code_value_general [follow_up_status] with (nolock) on
                           [follow_up_status].code = [management].init_foll_up
                       and [follow_up_status].code_set_nm = 'STD_NBS_PROCESSING_DECISION_ALL'
-      
+
       order by
               [contact_record].local_id desc
       """;
@@ -114,5 +115,4 @@ class PatientFileContactNamedByPatientFinder extends BasePatientFIleContactFinde
   PatientFileContactNamedByPatientFinder(final JdbcClient client) {
     super(QUERY, client);
   }
-
 }

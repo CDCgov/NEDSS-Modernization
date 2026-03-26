@@ -6,4 +6,3 @@ export type PageDeleteResponse = {
     templateId?: number;
     message?: string;
 };
-

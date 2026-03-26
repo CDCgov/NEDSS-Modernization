@@ -34,8 +34,8 @@ export const Contact = ({ sizing, orientation }: EntryFieldsProps) => {
                 rules={{
                     pattern: {
                         value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                        message: 'Please enter a valid email address (example: youremail@website.com)'
-                    }
+                        message: 'Please enter a valid email address (example: youremail@website.com)',
+                    },
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input

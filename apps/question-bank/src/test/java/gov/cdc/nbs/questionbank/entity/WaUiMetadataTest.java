@@ -1,5 +1,8 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -18,13 +21,9 @@ import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
-import org.junit.jupiter.api.Test;
-
 import java.time.Instant;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class WaUiMetadataTest {
 
@@ -34,12 +33,8 @@ class WaUiMetadataTest {
     // Given a AddQuestion command
     WaTemplate page = page();
     TextQuestionEntity question = QuestionEntityMother.textQuestion();
-    PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion command =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     // When a new WaUiMetadata entry is created
     WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
@@ -57,12 +52,8 @@ class WaUiMetadataTest {
     // Given a AddQuestion command
     WaTemplate page = page();
     DateQuestionEntity question = QuestionEntityMother.dateQuestion();
-    PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion command =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     // When a new WaUiMetadata entry is created
     WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
@@ -79,12 +70,8 @@ class WaUiMetadataTest {
     // Given a AddQuestion command
     WaTemplate page = page();
     NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
-    PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion command =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     // When a new WaUiMetadata entry is created
     WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
@@ -106,12 +93,8 @@ class WaUiMetadataTest {
     // Given a AddQuestion command
     WaTemplate page = page();
     CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
-    PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion command =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     // When a new WaUiMetadata entry is created
     WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
@@ -127,28 +110,24 @@ class WaUiMetadataTest {
     Instant now = Instant.now();
     // Given an AddQuestion command with invalid question type
     WaTemplate page = page();
-    WaQuestion question = new WaQuestion() {
-      @Override
-      public String getDataType() {
-        return "test";
-      }
+    WaQuestion question =
+        new WaQuestion() {
+          @Override
+          public String getDataType() {
+            return "test";
+          }
 
-      @Override
-      public void update(Update command) {
-        // NOOP
-      }
-    };
+          @Override
+          public void update(Update command) {
+            // NOOP
+          }
+        };
 
-    PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
-    // When a new WaUiMetadata entry is created 
+    PageContentCommand.AddQuestion command =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
+    // When a new WaUiMetadata entry is created
     // Then an exception is thrown
     assertThrows(AddQuestionException.class, () -> new WaUiMetadata(page, command, 5));
-
   }
 
   private void assertDefaultValues(WaUiMetadata metadata) {
@@ -162,8 +141,8 @@ class WaUiMetadataTest {
     assertEquals(1, metadata.getVersionCtrlNbr().intValue());
   }
 
-  private void assertGeneralValues(WaUiMetadata metadata, PageContentCommand.AddQuestion command,
-      int orderNumber) {
+  private void assertGeneralValues(
+      WaUiMetadata metadata, PageContentCommand.AddQuestion command, int orderNumber) {
     var question = command.question();
     assertEquals(command.page(), metadata.getWaTemplateUid().getId());
     assertEquals(question.getNbsUiComponentUid(), metadata.getNbsUiComponentUid());
@@ -189,9 +168,7 @@ class WaUiMetadataTest {
     WaTemplate page = new WaTemplate();
     page.setId(2L);
     return page;
-
   }
-
 
   @Test
   void should_create_tab() {
@@ -259,12 +236,8 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     TextQuestionEntity question = QuestionEntityMother.textQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata textQuestion = new WaUiMetadata(page, create, 5);
 
     // And a valid update command
@@ -293,12 +266,8 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     TextQuestionEntity question = QuestionEntityMother.textQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata textQuestion = new WaUiMetadata(page, create, 5);
     textQuestion.setPublishIndCd('T');
 
@@ -320,12 +289,8 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata textQuestion = new WaUiMetadata(page, create, 5);
     textQuestion.setPublishIndCd('T');
 
@@ -342,12 +307,8 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata numericQuestion = new WaUiMetadata(page, create, 5);
 
     // And a valid update command
@@ -373,41 +334,38 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata numericQuestion = new WaUiMetadata(page, create, 5);
 
     // And a valid update command
-    UpdateNumericQuestion command = new PageContentCommand.UpdateNumericQuestion(
-        36L,
-        "new label",
-        "new tooltip",
-        false,
-        false,
-        false,
-        1007,
-        "NUM",
-        3,
-        0L,
-        0L,
-        999L,
-        null,
-        123L,
-        new ReportingInfo("report Label", "DFT_RDB_TABLE", "RDB_COL", "DMART_COLUMN"),
-        true,
-        "messageVariable",
-        "messageLabel",
-        "codeSystemOid",
-        "codeSystemName",
-        true,
-        "hl7DataType",
-        "admin comments",
-        1L,
-        now);
+    UpdateNumericQuestion command =
+        new PageContentCommand.UpdateNumericQuestion(
+            36L,
+            "new label",
+            "new tooltip",
+            false,
+            false,
+            false,
+            1007,
+            "NUM",
+            3,
+            0L,
+            0L,
+            999L,
+            null,
+            123L,
+            new ReportingInfo("report Label", "DFT_RDB_TABLE", "RDB_COL", "DMART_COLUMN"),
+            true,
+            "messageVariable",
+            "messageLabel",
+            "codeSystemOid",
+            "codeSystemName",
+            true,
+            "hl7DataType",
+            "admin comments",
+            1L,
+            now);
 
     // When the question is updated
     numericQuestion.update(command);
@@ -423,12 +381,8 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     TextQuestionEntity question = QuestionEntityMother.textQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata numericQuestion = new WaUiMetadata(page, create, 5);
 
     // And a valid update command
@@ -444,12 +398,8 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     DateQuestionEntity question = QuestionEntityMother.dateQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
 
     // And a valid update command
@@ -469,17 +419,12 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     TextQuestionEntity question = QuestionEntityMother.textQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
 
     // And a valid update command
     UpdateDateQuestion command = updateDateQuestion(now);
-
 
     // When the question is updated an exception is thrown
     assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
@@ -491,12 +436,8 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
 
     // And a valid update command
@@ -518,12 +459,8 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
     dateQuestion.setPublishIndCd('T');
 
@@ -545,12 +482,8 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     TextQuestionEntity question = QuestionEntityMother.textQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
 
     // And a valid update command
@@ -566,16 +499,13 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     DateQuestionEntity question = QuestionEntityMother.dateQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
 
     // And a valid update command
-    UpdateCodedQuestionValueset command = new UpdateCodedQuestionValueset(1L, 2L, 3L, Instant.now());
+    UpdateCodedQuestionValueset command =
+        new UpdateCodedQuestionValueset(1L, 2L, 3L, Instant.now());
 
     // When the question is updated, an exception is thrown
     assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
@@ -587,16 +517,13 @@ class WaUiMetadataTest {
     // Given a text question
     WaTemplate page = page();
     CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
-    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
-        page.getId(),
-        question,
-        12,
-        1L,
-        now);
+    PageContentCommand.AddQuestion create =
+        new PageContentCommand.AddQuestion(page.getId(), question, 12, 1L, now);
     WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
     dateQuestion.setPublishIndCd('T');
     // And a valid update command
-    UpdateCodedQuestionValueset command = new UpdateCodedQuestionValueset(1L, 2L, 3L, Instant.now());
+    UpdateCodedQuestionValueset command =
+        new UpdateCodedQuestionValueset(1L, 2L, 3L, Instant.now());
 
     // When the question is updated, an exception is thrown
     assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
@@ -606,13 +533,14 @@ class WaUiMetadataTest {
   void should_group() {
     WaUiMetadata metadata = new WaUiMetadata();
     metadata.setId(99L);
-    PageContentCommand.GroupSubsection groupCommand = new PageContentCommand.GroupSubsection(
-        0,
-        "BLOCK_NAME",
-        List.of(new GroupSubSectionRequest.Batch(99L, true, "question label", 100)),
-        2,
-        3L,
-        Instant.now());
+    PageContentCommand.GroupSubsection groupCommand =
+        new PageContentCommand.GroupSubsection(
+            0,
+            "BLOCK_NAME",
+            List.of(new GroupSubSectionRequest.Batch(99L, true, "question label", 100)),
+            2,
+            3L,
+            Instant.now());
     metadata.updateQuestionBatch(groupCommand, 1);
 
     assertThat(metadata.getBlockNm()).isEqualTo("BLOCK_NAME");
@@ -626,13 +554,14 @@ class WaUiMetadataTest {
   void should_clear_group() {
     WaUiMetadata metadata = new WaUiMetadata();
     metadata.setId(99L);
-    PageContentCommand.GroupSubsection groupCommand = new PageContentCommand.GroupSubsection(
-        0,
-        "BLOCK_NAME",
-        List.of(new GroupSubSectionRequest.Batch(99L, false, "question label", 100)),
-        2,
-        3L,
-        Instant.now());
+    PageContentCommand.GroupSubsection groupCommand =
+        new PageContentCommand.GroupSubsection(
+            0,
+            "BLOCK_NAME",
+            List.of(new GroupSubSectionRequest.Batch(99L, false, "question label", 100)),
+            2,
+            3L,
+            Instant.now());
     metadata.updateQuestionBatch(groupCommand, 1);
 
     assertThat(metadata.getBlockNm()).isEqualTo("BLOCK_NAME");
@@ -668,27 +597,28 @@ class WaUiMetadataTest {
   }
 
   private void validateMessaging(WaUiMetadata question, QuestionUpdate command) {
-    assertThat(question.getWaNndMetadatum().getQuestionIdentifierNnd()).isEqualTo(command.messageVariableId());
+    assertThat(question.getWaNndMetadatum().getQuestionIdentifierNnd())
+        .isEqualTo(command.messageVariableId());
     assertThat(question.getWaNndMetadatum().getQuestionRequiredNnd())
         .isEqualTo(command.requiredInMessage() ? 'R' : 'O');
-    assertThat(question.getWaNndMetadatum().getQuestionLabelNnd()).isEqualTo(command.labelInMessage());
-    assertThat(question.getWaNndMetadatum().getQuestionDataTypeNnd()).isEqualTo(command.hl7DataType());
+    assertThat(question.getWaNndMetadatum().getQuestionLabelNnd())
+        .isEqualTo(command.labelInMessage());
+    assertThat(question.getWaNndMetadatum().getQuestionDataTypeNnd())
+        .isEqualTo(command.hl7DataType());
     assertThat(question.getWaNndMetadatum().getLastChgUserId()).isEqualTo(command.userId());
     assertThat(question.getWaNndMetadatum().getLastChgTime()).isEqualTo(command.requestedOn());
     assertThat(question.getQuestionOidSystemTxt()).isEqualTo(command.codeSystemName());
     assertThat(question.getQuestionOid()).isEqualTo(command.codeSystemOid());
   }
 
-  private void validateReporting(
-      WaUiMetadata question,
-      QuestionUpdate command) {
-    assertThat(question.getWaRdbMetadatum().getRptAdminColumnNm()).isEqualTo(command.datamartInfo().reportLabel());
+  private void validateReporting(WaUiMetadata question, QuestionUpdate command) {
+    assertThat(question.getWaRdbMetadatum().getRptAdminColumnNm())
+        .isEqualTo(command.datamartInfo().reportLabel());
     assertThat(question.getWaRdbMetadatum().getUserDefinedColumnNm())
         .isEqualTo(command.datamartInfo().dataMartColumnName());
     assertThat(question.getWaRdbMetadatum().getLastChgUserId()).isEqualTo(command.userId());
     assertThat(question.getWaRdbMetadatum().getLastChgTime()).isEqualTo(command.requestedOn());
   }
-
 
   private PageContentCommand.UpdateTextQuestion updateTextQuestion(Instant requestedOn) {
     return new PageContentCommand.UpdateTextQuestion(
@@ -792,39 +722,19 @@ class WaUiMetadataTest {
   }
 
   private PageContentCommand.UpdateTab updateTab() {
-    return new PageContentCommand.UpdateTab(
-        "updated label",
-        true,
-        3L,
-        444,
-        Instant.now());
+    return new PageContentCommand.UpdateTab("updated label", true, 3L, 444, Instant.now());
   }
 
   private PageContentCommand.UpdateSubsection updateSubsection() {
-    return new PageContentCommand.UpdateSubsection(
-        "updated label",
-        false,
-        3L,
-        444,
-        Instant.now());
+    return new PageContentCommand.UpdateSubsection("updated label", false, 3L, 444, Instant.now());
   }
 
   private PageContentCommand.AddTab addTab() {
-    return new PageContentCommand.AddTab(
-        "test label",
-        false,
-        "some identifier",
-        22,
-        Instant.now());
+    return new PageContentCommand.AddTab("test label", false, "some identifier", 22, Instant.now());
   }
 
   private PageContentCommand.AddSubsection addSubsection() {
     return new PageContentCommand.AddSubsection(
-        "test label",
-        false,
-        "some identifier",
-        55,
-        22,
-        Instant.now());
+        "test label", false, "some identifier", 55, 22, Instant.now());
   }
 }

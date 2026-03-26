@@ -9,4 +9,3 @@ export type PageInformationChangeRequest = {
     description?: string;
     conditions?: Array<string>;
 };
-

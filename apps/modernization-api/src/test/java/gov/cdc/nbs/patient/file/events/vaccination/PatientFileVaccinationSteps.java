@@ -14,8 +14,7 @@ public class PatientFileVaccinationSteps {
   PatientFileVaccinationSteps(
       final Active<PatientIdentifier> activePatient,
       final PatientFileVaccinationsRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;
@@ -23,8 +22,6 @@ public class PatientFileVaccinationSteps {
 
   @When("I view the vaccinations for the patient")
   public void view() {
-    this.activePatient.maybeActive()
-        .map(requester::request)
-        .ifPresent(response::active);
+    this.activePatient.maybeActive().map(requester::request).ifPresent(response::active);
   }
 }

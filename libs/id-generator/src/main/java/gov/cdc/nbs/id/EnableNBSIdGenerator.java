@@ -13,6 +13,4 @@ import org.springframework.context.annotation.Import;
 @Documented
 @Inherited
 @Import(IdGeneratorConfig.class)
-public @interface EnableNBSIdGenerator {
-
-}
+public @interface EnableNBSIdGenerator {}

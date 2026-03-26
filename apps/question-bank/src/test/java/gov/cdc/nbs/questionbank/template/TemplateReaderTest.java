@@ -3,6 +3,10 @@ package gov.cdc.nbs.questionbank.template;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.template.response.Template;
 import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -10,17 +14,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.template.response.Template;
 
 class TemplateReaderTest {
 
-  @Mock
-  WaTemplateRepository templateRepository;
+  @Mock WaTemplateRepository templateRepository;
 
-  @InjectMocks
-  TemplateFinder templateReader;
+  @InjectMocks TemplateFinder templateReader;
 
   public TemplateReaderTest() {
     MockitoAnnotations.openMocks(this);
@@ -28,19 +27,20 @@ class TemplateReaderTest {
 
   @Test
   void findAllTemplates() {
-    when(templateRepository.findAllByTemplateType(eq("TEMPLATE"), Mockito.any())).thenReturn(List.of(getWaTemplate(1)));
+    when(templateRepository.findAllByTemplateType(eq("TEMPLATE"), Mockito.any()))
+        .thenReturn(List.of(getWaTemplate(1)));
     List<Template> result = templateReader.findAllTemplates("");
     assertNotNull(result);
   }
 
   @Test
   void findAllTemplatesInv() {
-    when(templateRepository.findAllByTemplateTypeAndBusObjType(eq("TEMPLATE"), eq("INV"), Mockito.any())).thenReturn(List.of(getWaTemplate(1)));
+    when(templateRepository.findAllByTemplateTypeAndBusObjType(
+            eq("TEMPLATE"), eq("INV"), Mockito.any()))
+        .thenReturn(List.of(getWaTemplate(1)));
     List<Template> result = templateReader.findAllTemplates("INV");
     assertNotNull(result);
   }
-
-
 
   private WaTemplate getWaTemplate(int i) {
     WaTemplate aWaTemplate = new WaTemplate();
@@ -71,5 +71,4 @@ class TemplateReaderTest {
 
     return aWaTemplate;
   }
-
 }

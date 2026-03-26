@@ -1,5 +1,11 @@
 package gov.cdc.nbs.questionbank.condition.search;
 
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.google.common.collect.Comparators;
 import com.jayway.jsonpath.JsonPath;
 import gov.cdc.nbs.questionbank.condition.ConditionCreator;
@@ -13,22 +19,15 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ConditionSearchSteps {
 
@@ -38,7 +37,6 @@ public class ConditionSearchSteps {
   private final ConditionCreator creator;
   private final ConditionSearchRequest request;
   private final PageMother mother;
-
 
   public ConditionSearchSteps(
       final ConditionCreator creator,
@@ -66,9 +64,11 @@ public class ConditionSearchSteps {
 
   @When("i search for the condition {string} in use")
   public void search_for_condition_including_in_use(String excludeInUse) {
-    response.active(request.search(
-        new ReadConditionRequest(activeCondition.active().id(), excludeInUse.contains("exclude")),
-        Pageable.ofSize(20)));
+    response.active(
+        request.search(
+            new ReadConditionRequest(
+                activeCondition.active().id(), excludeInUse.contains("exclude")),
+            Pageable.ofSize(20)));
   }
 
   @When("i search for all available conditions")
@@ -84,20 +84,19 @@ public class ConditionSearchSteps {
 
   @Then("the condition is returned")
   public void the_condition_is_returned() throws Exception {
-    response.active()
+    response
+        .active()
         .andExpect(status().isOk())
-        .andExpect(
-            jsonPath("$.content[*].id")
-                .value(hasItem(this.activeCondition.active().id())));
+        .andExpect(jsonPath("$.content[*].id").value(hasItem(this.activeCondition.active().id())));
   }
 
   @Then("the condition is not returned")
   public void the_condition_is_not_returned() throws Exception {
-    response.active()
+    response
+        .active()
         .andExpect(status().isOk())
         .andExpect(
-            jsonPath("$.content[*].id")
-                .value(not(hasItem(this.activeCondition.active().id()))));
+            jsonPath("$.content[*].id").value(not(hasItem(this.activeCondition.active().id()))));
   }
 
   @Given("a condition exists with {string} set to {string}")
@@ -109,49 +108,44 @@ public class ConditionSearchSteps {
   @When("i search a condition with sort {string} {string}")
   public void i_search_with_sort(String field, String direction) {
     Direction dir = direction.toLowerCase().contains("asc") ? Direction.ASC : Direction.DESC;
-    response.active(request.search(
-        new ReadConditionRequest(),
-        PageRequest.of(0, 50, Sort.by(dir, field))));
+    response.active(
+        request.search(new ReadConditionRequest(), PageRequest.of(0, 50, Sort.by(dir, field))));
   }
 
   @Then("the condition is not in the available conditions")
   public void condition_is_not_in_available() throws Exception {
-    response.active()
+    response
+        .active()
         .andExpect(status().isOk())
-        .andExpect(
-            jsonPath("$.[*].id")
-                .value(not(hasItem(this.activeCondition.active().id()))))
+        .andExpect(jsonPath("$.[*].id").value(not(hasItem(this.activeCondition.active().id()))))
         .andExpect(jsonPath("$.[*].id").isNotEmpty());
   }
 
   @Then("the condition is in the available conditions")
   public void condition_is_in_available() throws Exception {
-    response.active()
+    response
+        .active()
         .andExpect(status().isOk())
-        .andExpect(
-            jsonPath("$.[*].id")
-                .value(hasItem(this.activeCondition.active().id())))
+        .andExpect(jsonPath("$.[*].id").value(hasItem(this.activeCondition.active().id())))
         .andExpect(jsonPath("$.[*].id").isNotEmpty());
   }
 
   @Then("the conditions are returned sorted by {string} {string}")
   public void conditions_are_sorted(String field, String direction) throws Exception {
-    String content = response.active()
-        .andExpect(status().isOk())
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
-    String jsonField = switch (field) {
-      case "id" -> "id";
-      case "conditionShortNm" -> "conditionShortNm";
-      case "progAreaCd" -> "progAreaCd";
-      case "familyCd" -> "familyCd";
-      case "coinfection_grp_cd" -> "coinfectionGrpCd";
-      case "investigationFormCd" -> "investigationFormCd";
-      case "nndInd" -> "nndInd";
-      case "statusCd" -> "statusCd";
-      default -> throw new IllegalArgumentException();
-    };
+    String content =
+        response.active().andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+    String jsonField =
+        switch (field) {
+          case "id" -> "id";
+          case "conditionShortNm" -> "conditionShortNm";
+          case "progAreaCd" -> "progAreaCd";
+          case "familyCd" -> "familyCd";
+          case "coinfection_grp_cd" -> "coinfectionGrpCd";
+          case "investigationFormCd" -> "investigationFormCd";
+          case "nndInd" -> "nndInd";
+          case "statusCd" -> "statusCd";
+          default -> throw new IllegalArgumentException();
+        };
     List<String> results = JsonPath.read(content, "$.content[*]." + jsonField);
     results = results.stream().filter(Objects::nonNull).toList();
     Comparator<String> comparator =
@@ -198,5 +192,4 @@ public class ConditionSearchSteps {
         familyCd,
         coinfectionGrp);
   }
-
 }

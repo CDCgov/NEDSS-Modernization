@@ -7,7 +7,7 @@ import {
     PagesSubSection,
     PagesTab,
     Rule,
-    RuleRequest
+    RuleRequest,
 } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
@@ -39,7 +39,7 @@ export const EditBusinessRule = () => {
 
     useEffect(() => {
         PageRuleControllerService.viewRuleResponse({
-            ruleId: Number(ruleId)
+            ruleId: Number(ruleId),
         }).then((response: Rule) => {
             fetchSourceValues(response.sourceQuestion.codeSetName ?? '');
             setSelectedSourceValues(response.sourceValues?.map((s) => s.trim()));
@@ -54,7 +54,7 @@ export const EditBusinessRule = () => {
                 sourceText: `${response.sourceQuestion.label} (${response.sourceQuestion.questionIdentifier})`,
                 targetIdentifiers: response.targets.map((target) => target.targetIdentifier),
                 targetValueText: response.targets.map((target) => target.label),
-                targetType: response.targetType ?? Rule.targetType.QUESTION
+                targetType: response.targetType ?? Rule.targetType.QUESTION,
             });
         });
     }, [ruleId]);
@@ -101,7 +101,7 @@ export const EditBusinessRule = () => {
         try {
             await PageRuleControllerService.updatePageRule({
                 ruleId: Number(ruleId),
-                requestBody: data
+                requestBody: data,
             });
             showAlert({
                 type: 'success',
@@ -110,13 +110,13 @@ export const EditBusinessRule = () => {
                         The business rule <span className="bold-text">'{data.sourceText}'</span> is successfully
                         updated. Please click the unique name to edit.
                     </>
-                )
+                ),
             });
             redirectToLibrary();
         } catch {
             showAlert({
                 type: 'error',
-                message: 'There was an error. Please try again.'
+                message: 'There was an error. Please try again.',
             });
         }
     });
@@ -168,7 +168,7 @@ export const EditBusinessRule = () => {
     const onDelete = () => {
         PageRuleControllerService.deletePageRule({
             id: page?.id ?? 0,
-            ruleId: Number(ruleId)
+            ruleId: Number(ruleId),
         }).then(() => {
             redirectToLibrary();
             showAlert({
@@ -178,7 +178,7 @@ export const EditBusinessRule = () => {
                         The business rule <span className="bold-text">'{form.getValues('sourceText')}'</span> was
                         successfully deleted.
                     </>
-                )
+                ),
             });
             deleteWarningModal.current?.toggleModal(undefined, true);
         });
@@ -226,7 +226,8 @@ export const EditBusinessRule = () => {
                             outline
                             data-testid="deleteBtnEditBusinessRulesPage"
                             onClick={() => deleteWarningModal.current?.toggleModal(undefined, true)}
-                            className={styles.button}>
+                            className={styles.button}
+                        >
                             <Icon.Delete size={3} />
                             Delete
                         </Button>
@@ -239,14 +240,16 @@ export const EditBusinessRule = () => {
                             onClick={() => {
                                 form.reset();
                                 redirectToLibrary();
-                            }}>
+                            }}
+                        >
                             Cancel
                         </Button>
                         <Button
                             type="submit"
                             disabled={!ifDisabled()}
                             data-testid="updateBtnEditBusinessRulesPage"
-                            onClick={onSubmit}>
+                            onClick={onSubmit}
+                        >
                             Update
                         </Button>
                     </div>

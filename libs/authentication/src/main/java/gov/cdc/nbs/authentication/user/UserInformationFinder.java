@@ -1,14 +1,14 @@
 package gov.cdc.nbs.authentication.user;
 
 import java.util.Optional;
-
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 @Component
 class UserInformationFinder {
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       select
           [user].[nedss_entry_id] as identifier,
           [user].[user_first_nm] as first,
@@ -26,11 +26,11 @@ class UserInformationFinder {
 
   UserInformationFinder(final JdbcClient client) {
     this.client = client;
-
   }
 
   Optional<UserInformation> find(final String username) {
-    return this.client.sql(QUERY)
+    return this.client
+        .sql(QUERY)
         .param("username", username)
         .query(UserInformation.class)
         .optional();

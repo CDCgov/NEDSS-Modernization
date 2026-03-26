@@ -1,8 +1,9 @@
 package gov.cdc.nbs.questionbank.page.information;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.Test;
+
 import gov.cdc.nbs.questionbank.page.SelectableCondition;
+import org.junit.jupiter.api.Test;
 
 class SelectableConditionMergerTest {
 

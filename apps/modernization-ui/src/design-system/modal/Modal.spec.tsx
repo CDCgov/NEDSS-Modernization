@@ -114,7 +114,8 @@ describe('when a modal is displayed', () => {
                     <button type="button" onClick={close}>
                         Close
                     </button>
-                )}>
+                )}
+            >
                 Contents
             </Modal>
         );

@@ -5,17 +5,17 @@ import { PatientSearchActions } from './PatientSearchActions';
 
 vi.mock('./add/useAddPatientFromSearch', () => ({
     useAddPatientFromSearch: () => ({
-        add: vi.fn()
-    })
+        add: vi.fn(),
+    }),
 }));
 
 vi.mock('libs/permission', () => ({
     Permitted: ({ children }: { children: React.ReactNode }) => children,
     permissions: {
         patient: {
-            add: 'patient.add'
-        }
-    }
+            add: 'patient.add',
+        },
+    },
 }));
 
 describe('PatientSearchActions Accessibility', () => {

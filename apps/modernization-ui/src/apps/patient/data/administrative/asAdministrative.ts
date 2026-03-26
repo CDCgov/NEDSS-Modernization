@@ -7,7 +7,7 @@ const asAdministrative = (entry: AdministrativeEntry): Administrative => {
 
     return {
         asOf,
-        comment: orUndefined(comment)
+        comment: orUndefined(comment),
     };
 };
 

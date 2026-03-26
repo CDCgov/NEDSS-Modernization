@@ -7,14 +7,14 @@ import { PhoneEmailDemographicFields } from './PhoneEmailDemographicFields';
 const Fixture = () => {
     const form = useForm<PhoneEmailDemographic>({
         mode: 'onBlur',
-        defaultValues: initial(() => '02/06/2023')
+        defaultValues: initial(() => '02/06/2023'),
     });
     return (
         <FormProvider {...form}>
             <PhoneEmailDemographicFields
                 options={{
                     types: [{ name: 'Phone', value: 'PH' }],
-                    uses: [{ name: 'Home', value: 'H' }]
+                    uses: [{ name: 'Home', value: 'H' }],
                 }}
             />
         </FormProvider>
@@ -124,7 +124,7 @@ describe('when entering patient phone & email demographics', () => {
         { value: '01234567901234567' },
         { value: '012345679012345678' },
         { value: '012345679012345679' },
-        { value: '0123456790123456790' }
+        { value: '0123456790123456790' },
     ])('should allow country codes up to 20 characters: $value', async ({ value }) => {
         const { getByLabelText, queryByText } = render(<Fixture />);
         const user = userEvent.setup();
@@ -164,7 +164,7 @@ describe('when entering patient phone & email demographics', () => {
         { value: '01234567901234567' },
         { value: '012345679012345678' },
         { value: '012345679012345679' },
-        { value: '0123456790123456790' }
+        { value: '0123456790123456790' },
     ])('should allow extensions up to 20 characters: $value', async ({ value }) => {
         const { getByLabelText, queryByText } = render(<Fixture />);
         const user = userEvent.setup();

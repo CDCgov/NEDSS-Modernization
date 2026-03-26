@@ -10,7 +10,7 @@ const asRace = (entry: RaceEntry): Race | undefined => {
         return {
             asOf,
             race: asValue(race),
-            detailed: asValues(detailed)
+            detailed: asValues(detailed),
         };
     }
 };

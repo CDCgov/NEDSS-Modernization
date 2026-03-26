@@ -11,10 +11,7 @@ class SearchableInvestigationConfiguration {
   @Bean
   SimpleIndex investigationIndex(
       @Value("${nbs.search.investigation.index.name}") final String index,
-      @Value("${nbs.search.investigation.index.mapping}") final String location
-  ) {
+      @Value("${nbs.search.investigation.index.mapping}") final String location) {
     return new SimpleIndex(index, location);
   }
-
-
 }

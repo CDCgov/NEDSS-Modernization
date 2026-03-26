@@ -15,14 +15,12 @@ public class InvestigationSearchSteps {
   private final Active<SortCriteria> sorting;
   private final Active<ResultActions> response;
 
-
   InvestigationSearchSteps(
       final InvestigationSearchRequester requester,
       final Active<InvestigationFilter> criteria,
       final Active<Pageable> paging,
       final Active<SortCriteria> sorting,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.requester = requester;
     this.criteria = criteria;
     this.paging = paging;
@@ -32,12 +30,6 @@ public class InvestigationSearchSteps {
 
   @When("I search for investigations")
   public void i_search_for_investigations() {
-    this.response.active(
-        requester.search(
-            criteria.active(),
-            paging.active(),
-            sorting.active()
-        )
-    );
+    this.response.active(requester.search(criteria.active(), paging.active(), sorting.active()));
   }
 }

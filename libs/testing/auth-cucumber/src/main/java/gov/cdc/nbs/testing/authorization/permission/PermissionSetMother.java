@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
 @ScenarioScope
 public class PermissionSetMother {
 
-  private static final String CREATE = """
+  private static final String CREATE =
+      """
       insert into Auth_perm_set(
         perm_set_nm,
         perm_set_desc,
@@ -31,11 +32,12 @@ public class PermissionSetMother {
         'ACTIVE',
         :addedOn
       );
-      
+
       select @@identity
       """;
 
-  private static final String ASSIGN = """
+  private static final String ASSIGN =
+      """
       -- assign the object right
       insert into Auth_bus_obj_rt (
         auth_perm_set_uid,
@@ -58,7 +60,7 @@ public class PermissionSetMother {
           :addedOn
       from Auth_bus_obj_type [object]
       where [object].[bus_obj_nm] = :object;
-      
+
       -- assign the operation right
       insert into Auth_bus_op_rt (
         auth_bus_obj_rt_uid,
@@ -87,7 +89,8 @@ public class PermissionSetMother {
       where [operation].[bus_op_nm] = :operation;
       """;
 
-  private static final String DELETE = """
+  private static final String DELETE =
+      """
       delete from Auth_user_role where auth_perm_set_uid in (:identifiers);
       delete from Auth_bus_op_rt where auth_bus_obj_rt_uid in (select auth_bus_obj_rt_uid from Auth_bus_obj_rt where auth_perm_set_uid in (:identifiers));
       delete from Auth_bus_obj_rt where auth_perm_set_uid in (:identifiers);
@@ -98,12 +101,7 @@ public class PermissionSetMother {
   private final JdbcClient client;
   private final TestingDataCleaner<Long> cleaner;
 
-
-
-  PermissionSetMother(
-      final AuthenticationSupportSettings settings,
-      final JdbcClient client
-  ) {
+  PermissionSetMother(final AuthenticationSupportSettings settings, final JdbcClient client) {
     this.settings = settings;
     this.client = client;
     this.cleaner = new TestingDataCleaner<>(client, DELETE, "identifiers");
@@ -116,22 +114,24 @@ public class PermissionSetMother {
 
   public long allow(final String operation, final String object) {
 
-    long id = this.client.sql(CREATE)
-        .param("name", "")
-        .param("description", "")
-        .param("addedOn", this.settings.createdOn())
-        .param("addedBy", this.settings.createdBy())
-        .query(Long.class)
-        .single();
+    long id =
+        this.client
+            .sql(CREATE)
+            .param("name", "")
+            .param("description", "")
+            .param("addedOn", this.settings.createdOn())
+            .param("addedBy", this.settings.createdBy())
+            .query(Long.class)
+            .single();
 
-    this.client.sql(ASSIGN)
+    this.client
+        .sql(ASSIGN)
         .param("set", id)
         .param("operation", operation)
         .param("object", object)
         .param("addedOn", this.settings.createdOn())
         .param("addedBy", this.settings.createdBy())
         .update();
-
 
     return id;
   }

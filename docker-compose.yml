@@ -27,12 +27,15 @@ services:
       - NBS_UI_FEATURES_DEDUPLICATION_ENABLED=true
       - NBS_UI_SETTINGS_ANALYTICS_KEY=${ANALYTICS_KEY}
       - NBS_UI_SETTINGS_DEFAULTS_SIZING=${COMPONENT_SIZING:-small}
+      - NBS_REPORT_EXECUTION_HOST=${NBS_REPORT_EXECUTION_HOST}
       - SERVER_TOMCAT_MAX_PART_COUNT=${SERVER_TOMCAT_MAX_PART_COUNT:-550}
       - TOKEN_SECRET=${TOKEN_SECRET}
       - PARAMETER_SECRET=${PARAMETER_SECRET}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - SPRING_PROFILES_ACTIVE=default,development,local
+    ports:
+      - "8080:8080"
 
   pagebuilder-api:
     build:
@@ -80,5 +83,7 @@ services:
     build:
       context: ./apps/report-execution
     container_name: report-execution
+    environment:
+      - DATABASE_CONN_STRING=${DATABASE_CONN_STRING}
     ports:
       - "8001:8001"

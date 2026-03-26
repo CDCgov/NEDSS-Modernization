@@ -16,8 +16,7 @@ public class PatientProfileFromActionStep {
   PatientProfileFromActionStep(
       final Active<InvestigationIdentifier> activeInvestigation,
       final PatientProfileFromActionRequester requester,
-      final Active<ResultActions> result
-  ) {
+      final Active<ResultActions> result) {
     this.activeInvestigation = activeInvestigation;
     this.requester = requester;
     this.result = result;
@@ -25,10 +24,6 @@ public class PatientProfileFromActionStep {
 
   @When("navigating to a Patient Profile from an investigation")
   public void navigating_to_a_patient_profile_from_an_investigation() {
-    this.activeInvestigation.maybeActive()
-        .map(requester::returning)
-        .ifPresent(result::active);
+    this.activeInvestigation.maybeActive().map(requester::returning).ifPresent(result::active);
   }
-
-
 }

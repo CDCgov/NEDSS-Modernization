@@ -29,7 +29,8 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
                 <DragDropContext
                     onDragEnd={handleDragEnd}
                     onDragStart={handleDragStart}
-                    onDragUpdate={handleDragUpdate}>
+                    onDragUpdate={handleDragUpdate}
+                >
                     {loading ? <Spinner /> : null}
                     <div className={styles.modal}>
                         {alertMessage ? <AlertBanner type={'prompt'}>{alertMessage}</AlertBanner> : null}
@@ -39,7 +40,8 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
                                     <div
                                         {...provided.droppableProps}
                                         ref={provided.innerRef}
-                                        style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}>
+                                        style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}
+                                    >
                                         {page.tabs
                                             ? page.tabs.map((tab: any, i: number) => {
                                                   return (

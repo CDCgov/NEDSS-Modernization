@@ -13,25 +13,21 @@ public class NameSteps {
 
   @ParameterType(name = "nameUse", value = ".*")
   public String nameUse(final String value) {
-    return resolver.resolve("P_NM_USE", value)
-        .orElse(null);
+    return resolver.resolve("P_NM_USE", value).orElse(null);
   }
 
   @ParameterType(name = "namePrefix", value = ".*")
   public String namePrefix(final String value) {
-    return resolver.resolve("P_NM_PFX", value)
-        .orElse(null);
+    return resolver.resolve("P_NM_PFX", value).orElse(null);
   }
 
   @ParameterType(name = "nameSuffix", value = ".*")
   public String nameSuffix(final String value) {
-    return resolver.resolve("P_NM_SFX", value)
-            .orElse(null);
+    return resolver.resolve("P_NM_SFX", value).orElse(null);
   }
 
   @ParameterType(name = "degree", value = ".*")
   public String degree(final String value) {
-    return resolver.resolve("P_NM_DEG", value)
-        .orElse(null);
+    return resolver.resolve("P_NM_DEG", value).orElse(null);
   }
 }

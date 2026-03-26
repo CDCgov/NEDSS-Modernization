@@ -1,12 +1,11 @@
 package gov.cdc.nbs.patient.file.events.document;
 
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientFileDocumentRowMapper implements RowMapper<PatientFileDocument> {
 
@@ -18,15 +17,12 @@ class PatientFileDocumentRowMapper implements RowMapper<PatientFileDocument> {
       int sendingFacility,
       int reportedOn,
       int condition,
-      int updated
-  ) {
+      int updated) {
 
     Column() {
       this(1, 2, 3, 4, 5, 6, 7, 8);
     }
-
   }
-
 
   private final Column columns;
 
@@ -50,14 +46,6 @@ class PatientFileDocumentRowMapper implements RowMapper<PatientFileDocument> {
     boolean updated = resultSet.getBoolean(columns.updated());
 
     return new PatientFileDocument(
-        patient,
-        identifier,
-        local,
-        receivedOn,
-        sendingFacility,
-        reportedOn,
-        condition,
-        updated
-    );
+        patient, identifier, local, receivedOn, sendingFacility, reportedOn, condition, updated);
   }
 }

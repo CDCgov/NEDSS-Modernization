@@ -36,4 +36,3 @@ export namespace EditableQuestion {
         PHIN = 'PHIN',
     }
 }
-

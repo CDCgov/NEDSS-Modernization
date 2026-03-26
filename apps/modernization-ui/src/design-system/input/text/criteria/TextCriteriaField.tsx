@@ -7,7 +7,7 @@ import {
     TextOperation,
     asSelectableOperator,
     asTextCriteriaValue,
-    asTextCriteria
+    asTextCriteria,
 } from 'options/operator';
 import { TextInput } from '../TextInput';
 import styles from './criteria.module.scss';
@@ -54,7 +54,7 @@ export const TextCriteriaField = ({
     sizing,
     orientation,
     error,
-    onChange
+    onChange,
 }: TextCriteriaFieldProps) => {
     const operatorValue = asOperatorAndValue(value, operator);
     const operatorSelectId = `${id}Operator`;
@@ -86,7 +86,8 @@ export const TextCriteriaField = ({
             helperText={helperText}
             htmlFor={id}
             sizing={sizing}
-            error={error}>
+            error={error}
+        >
             <div className={styles.criteriaField}>
                 <OperatorSelect
                     id={operatorSelectId}

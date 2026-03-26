@@ -19,7 +19,8 @@ const TabNavigationEntry = ({ children, path }: NavigationProps) => {
                 secondary
                 tertiary
                 to={path}
-                className={classNames(style.tabContent, { [style.active]: isActive(path, pathname) })}>
+                className={classNames(style.tabContent, { [style.active]: isActive(path, pathname) })}
+            >
                 {children}
             </NavLinkButton>
         </div>
@@ -42,7 +43,8 @@ const TabNavigation = ({ sizing = 'medium', children = [], className }: TabNavig
                 sizing === 'large' && style['large'],
                 sizing === 'medium' && style['medium'],
                 className
-            )}>
+            )}
+        >
             {ensureArray(children).map((child, index) => (
                 <div key={index}>{child}</div>
             ))}

@@ -6,7 +6,7 @@ import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 
 export const PreviewMortality = ({
     mergeFormData,
-    mergeCandidates
+    mergeCandidates,
 }: {
     mergeFormData: PatientMergeForm;
     mergeCandidates: MergeCandidate[];
@@ -28,7 +28,7 @@ export const PreviewMortality = ({
         { label: 'State of death', text: getField(m.deathState, 'deathState'), lined: true },
         { label: 'County of death', text: getField(m.deathState, 'deathCounty'), lined: true },
         { label: 'County of death', text: getField(m.deathState, 'deathCounty'), lined: true },
-        { label: 'Country of death', text: getField(m.deathCountry, 'deathCountry'), lined: false }
+        { label: 'Country of death', text: getField(m.deathCountry, 'deathCountry'), lined: false },
     ];
 
     return <LinedMergePreviewCard id="mortality" title="Mortality" items={items} />;

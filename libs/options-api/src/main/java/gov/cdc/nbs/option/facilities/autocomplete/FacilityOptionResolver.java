@@ -24,7 +24,7 @@ public class FacilityOptionResolver extends SQLBasedOptionResolver {
                   and [quick_code].type_cd ='QEC'
               where [organization].electronic_ind is null
                 or [organization].electronic_ind <> 'Y'
-              
+
           )
           select
               [value],

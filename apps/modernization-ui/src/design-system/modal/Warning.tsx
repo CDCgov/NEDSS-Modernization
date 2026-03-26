@@ -19,7 +19,8 @@ const Warning = ({ title = 'Warning', children, onClose }: Props) => {
                 <button type="button" className="usa-button usa-button--outline" onClick={close} data-close-modal>
                     Go back
                 </button>
-            )}>
+            )}
+        >
             <Message type="warning">{children}</Message>
         </Modal>
     );

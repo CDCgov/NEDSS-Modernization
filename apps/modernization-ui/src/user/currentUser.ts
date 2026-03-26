@@ -6,9 +6,9 @@ const asUser = ({ identifier, firstName, lastName, permissions }: Me) => ({
     name: {
         first: firstName,
         last: lastName,
-        display: firstName + ' ' + lastName
+        display: firstName + ' ' + lastName,
     },
-    permissions
+    permissions,
 });
 
 const currentUser = (): Promise<User> => UserService.me().then(asUser);

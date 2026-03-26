@@ -5,7 +5,7 @@
 import type { DataMartInfo } from './DataMartInfo';
 import type { MessagingInfo } from './MessagingInfo';
 import type { Question } from './Question';
-export type DateQuestion = (Question & {
+export type DateQuestion = Question & {
     id?: number;
     mask?: string;
     allowFutureDates?: boolean;
@@ -22,5 +22,4 @@ export type DateQuestion = (Question & {
     adminComments?: string;
     dataMartInfo?: DataMartInfo;
     messagingInfo?: MessagingInfo;
-});
-
+};

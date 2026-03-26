@@ -15,17 +15,19 @@ public class PatientSearchSortingSteps {
 
   @Given("I want patients sorted by {string} {string}")
   public void i_want_patients_sorted_by(final String sortBy, final String direction) {
-    Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+    Sort.Direction sortDirection =
+        direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-    String field = switch (sortBy.toLowerCase()) {
-      case "local_id", "patient id" -> "patientid";
-      case "birthday" -> "birthTime";
-      case "first name" -> "firstNm";
-      case "last name" -> "lastNm";
-      case "legal name" -> "legalName";
-      case "phone" -> "phoneNumber";
-      default -> sortBy.toLowerCase();
-    };
+    String field =
+        switch (sortBy.toLowerCase()) {
+          case "local_id", "patient id" -> "patientid";
+          case "birthday" -> "birthTime";
+          case "first name" -> "firstNm";
+          case "last name" -> "lastNm";
+          case "legal name" -> "legalName";
+          case "phone" -> "phoneNumber";
+          default -> sortBy.toLowerCase();
+        };
 
     this.sorting.active(new SortCriteria(sortDirection, field));
   }

@@ -1,10 +1,10 @@
 package gov.cdc.nbs.questionbank.valueset;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ValueSetStateManager {
@@ -40,7 +40,6 @@ public class ValueSetStateManager {
       response.setMessage(e.getMessage());
       response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
       return response;
-
     }
 
     return response;
@@ -71,10 +70,8 @@ public class ValueSetStateManager {
       response.setMessage(e.getMessage());
       response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
       return response;
-
     }
 
     return response;
   }
-
 }

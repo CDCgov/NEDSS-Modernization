@@ -19,7 +19,8 @@ class NotificationStatusResolver {
     this.template = template;
   }
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       SELECT
           top 1 t.record_status_cd status,
           t.notification_local_id localId
@@ -33,8 +34,8 @@ class NotificationStatusResolver {
       """;
 
   public NotificationStatus resolve(String investigationId) {
-    SqlParameterSource params = new MapSqlParameterSource()
-        .addValue("investigationId", investigationId);
+    SqlParameterSource params =
+        new MapSqlParameterSource().addValue("investigationId", investigationId);
     try {
       var statusList = template.query(QUERY, params, mapper);
       if (statusList.isEmpty()) {
@@ -50,10 +51,7 @@ class NotificationStatusResolver {
 
     @Override
     public NotificationStatus mapRow(ResultSet rs, int rowNum) throws SQLException {
-      return new NotificationStatus(
-          rs.getString("status"),
-          rs.getString("localId"));
+      return new NotificationStatus(rs.getString("status"), rs.getString("localId"));
     }
   }
-
 }

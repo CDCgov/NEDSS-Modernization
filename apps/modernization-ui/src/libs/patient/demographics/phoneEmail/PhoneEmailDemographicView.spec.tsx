@@ -13,7 +13,7 @@ const entry: PhoneEmailDemographic = {
     extension: '123',
     email: 'test@test.com',
     url: 'test.com',
-    comment: 'test comments'
+    comment: 'test comments',
 };
 
 describe('phone email demographic', () => {

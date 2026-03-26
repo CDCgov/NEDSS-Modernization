@@ -31,7 +31,7 @@ const useTableActionState = <T>(): TableActions<T> => {
 
         selectForEdit: (item: T) => setSelected({ type: 'update', item: item }),
 
-        selectForDelete: (item: T) => setSelected({ type: 'delete', item: item })
+        selectForDelete: (item: T) => setSelected({ type: 'delete', item: item }),
     };
 
     return { selected, actions };

@@ -15,14 +15,14 @@ export class PagePublishControllerService {
         id,
         requestBody,
     }: {
-        id: number,
-        requestBody: PagePublishRequest,
+        id: number;
+        requestBody: PagePublishRequest;
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/pages/{id}/publish',
             path: {
-                'id': id,
+                id: id,
             },
             body: requestBody,
             mediaType: 'application/json',

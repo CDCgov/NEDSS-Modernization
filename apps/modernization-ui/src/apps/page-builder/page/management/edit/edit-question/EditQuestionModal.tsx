@@ -36,7 +36,8 @@ export const EditQuestionModal = ({ modal, question, onClosed, onUpdated }: Prop
             className="edit-question-modal"
             id="edit-question-modal"
             aria-labelledby="edit-question-modal"
-            aria-describedby="edit-question-modal">
+            aria-describedby="edit-question-modal"
+        >
             <div className={styles.modal}>
                 {question && (
                     <EditQuestionContent question={question} onClose={handleClose} onUpdated={handleUpdated} />
@@ -81,7 +82,7 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
                 ...editableQuestion,
                 questionType: editableQuestion.questionType as 'TEXT' | 'CODED' | 'NUMERIC' | 'DATE',
                 relatedUnits: unitType !== undefined,
-                unitType: unitType
+                unitType: unitType,
             });
         }
     }, [editableQuestion]);
@@ -118,7 +119,8 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
                     className="editQuestionSaveBtn"
                     disabled={!isDirty || !isValid}
                     type="button"
-                    onClick={handleSave}>
+                    onClick={handleSave}
+                >
                     Save changes
                 </Button>
             </ButtonBar>

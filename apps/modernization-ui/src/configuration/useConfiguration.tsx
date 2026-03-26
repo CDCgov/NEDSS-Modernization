@@ -28,7 +28,7 @@ const initialize = (configuration?: Configuration): InternalState => {
     } else {
         return {
             status: 'default',
-            configuration: defaultConfiguration
+            configuration: defaultConfiguration,
         };
     }
 };
@@ -37,7 +37,7 @@ const initial: Interaction = {
     ready: false,
     loading: false,
     load: () => {},
-    ...defaultConfiguration
+    ...defaultConfiguration,
 };
 
 type Interaction = Configuration & {
@@ -71,7 +71,7 @@ const ConfigurationProvider = ({ initial, children }: ConfigurationProviderProps
         ...state.configuration,
         loading: state.status === 'loading',
         ready,
-        load
+        load,
     };
 
     return <ConfigurationContext.Provider value={value}>{children}</ConfigurationContext.Provider>;

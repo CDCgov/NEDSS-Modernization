@@ -18,7 +18,7 @@ const asBirth = (entry: BirthEntry): Birth | undefined => {
             city: orUndefined(city),
             county: asValue(county),
             state: asValue(state),
-            country: asValue(country)
+            country: asValue(country),
         };
     }
 };

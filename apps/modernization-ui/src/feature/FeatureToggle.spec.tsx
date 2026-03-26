@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { FeatureToggle } from './FeatureToggle';
 
 vi.mock('configuration', () => ({
-    useConfiguration: () => ({ ready: false, loading: false, load: vi.fn() })
+    useConfiguration: () => ({ ready: false, loading: false, load: vi.fn() }),
 }));
 
 describe('FeatureToggle', () => {

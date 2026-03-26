@@ -6,24 +6,24 @@ import { ConditionsDisplay } from './ConditionsDisplay';
 const conditions: ConditionSummary[] = [
     {
         name: 'condition1',
-        id: '1'
+        id: '1',
     },
     {
         name: 'condition2',
-        id: '2'
+        id: '2',
     },
     {
         name: 'condition3',
-        id: '3'
+        id: '3',
     },
     {
         name: 'condition4',
-        id: '4'
+        id: '4',
     },
     {
         name: 'condition5',
-        id: '5'
-    }
+        id: '5',
+    },
 ];
 
 const viewLess = 'view less';

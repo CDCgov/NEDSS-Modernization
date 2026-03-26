@@ -12,8 +12,9 @@ const Loading = ({ className, background = 'clear', center }: Props) => (
         className={classNames(styles.loading, className, {
             [styles.white]: background === 'white',
             [styles.colored]: background === 'colored',
-            [styles.centered]: center
-        })}>
+            [styles.centered]: center,
+        })}
+    >
         <span className={styles.icon} role="status">
             <span className={styles['screen-reader']}>Loading</span>
         </span>

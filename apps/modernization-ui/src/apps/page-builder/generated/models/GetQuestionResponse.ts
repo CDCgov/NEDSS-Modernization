@@ -7,7 +7,6 @@ import type { DateQuestion } from './DateQuestion';
 import type { NumericQuestion } from './NumericQuestion';
 import type { TextQuestion } from './TextQuestion';
 export type GetQuestionResponse = {
-    question?: (CodedQuestion | DateQuestion | NumericQuestion | TextQuestion);
+    question?: CodedQuestion | DateQuestion | NumericQuestion | TextQuestion;
     isInUse?: boolean;
 };
-

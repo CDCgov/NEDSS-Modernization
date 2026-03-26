@@ -46,7 +46,8 @@ export const ChangeValuesetModal = ({ modal, question, page, onValuesetChanged }
             className="change-valueset-modal"
             id="change-valueset-modal"
             aria-labelledby="change-valueset-modal"
-            aria-describedby="change-valueset-modal">
+            aria-describedby="change-valueset-modal"
+        >
             <div className={styles.modal}>
                 {isLoading && (
                     <div className={styles.loadingIndicator}>

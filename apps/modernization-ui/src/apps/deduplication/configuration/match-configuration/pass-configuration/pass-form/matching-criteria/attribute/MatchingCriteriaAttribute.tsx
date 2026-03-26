@@ -65,7 +65,7 @@ export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, on
                                 htmlFor={name}
                                 options={[
                                     { name: 'Exact match', value: MatchMethod.EXACT },
-                                    { name: 'JaroWinkler', value: MatchMethod.JAROWINKLER }
+                                    { name: 'JaroWinkler', value: MatchMethod.JAROWINKLER },
                                 ]}
                                 error={error?.message}
                             />
@@ -78,12 +78,12 @@ export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, on
                             required: { value: true, message: 'Threshold is required.' },
                             max: {
                                 value: 1,
-                                message: 'Cannot be greater 1.'
+                                message: 'Cannot be greater 1.',
                             },
                             min: {
                                 value: 0,
-                                message: 'Cannot be a negative number.'
-                            }
+                                message: 'Cannot be a negative number.',
+                            },
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <NumericHintInput

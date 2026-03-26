@@ -6,4 +6,3 @@ export type UpdateTabRequest = {
     name: string;
     visible: boolean;
 };
-

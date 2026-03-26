@@ -1,15 +1,13 @@
 package gov.cdc.nbs.questionbank.condition.repository;
 
+import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.jpa.repository.Modifying;
-
-import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 
 public interface ConditionCodeRepository
     extends JpaRepository<ConditionCode, String>, QuerydslPredicateExecutor<ConditionCode> {
@@ -34,6 +32,4 @@ public interface ConditionCodeRepository
   long getNextNbsUid();
 
   List<ConditionCode> findByIdIn(List<String> ids);
-
-
 }

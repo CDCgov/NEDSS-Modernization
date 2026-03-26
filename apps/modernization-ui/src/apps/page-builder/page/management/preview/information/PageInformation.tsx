@@ -3,7 +3,7 @@ import {
     PageInformation as InfoType,
     PageControllerService,
     PageHistory,
-    PageInformationService
+    PageInformationService,
 } from 'apps/page-builder/generated';
 import { useDownloadPageMetadata } from 'apps/page-builder/hooks/api/useDownloadPageMetadata';
 import { useEffect, useState } from 'react';
@@ -26,7 +26,7 @@ const PageInformation = () => {
         PageControllerService.getPageHistory({
             id: Number(pageId),
             page: currentPage - 1,
-            size: pageSize
+            size: pageSize,
         }).then((rep) => {
             setPageHistory(rep?.content ?? []);
             setTotalResults(rep?.totalElements ?? 0);
@@ -35,7 +35,7 @@ const PageInformation = () => {
 
     const fetchPageInfo = () => {
         PageInformationService.find({
-            page: Number(pageId)
+            page: Number(pageId),
         })
             .then((data: InfoType) => {
                 setPageInfo(data);
@@ -70,7 +70,8 @@ const PageInformation = () => {
             <li
                 className={`${activeTab == 'History' ? styles.active : ''} historyTab`}
                 data-testid="historyTab"
-                onClick={() => setActiveTab('History')}>
+                onClick={() => setActiveTab('History')}
+            >
                 History
             </li>
         </ul>
@@ -133,7 +134,8 @@ const PageInformation = () => {
                                 outline
                                 onClick={handleViewPage}
                                 className={`${styles.icon} EditViewPageDetails`}
-                                data-testid="EditViewPageDetails">
+                                data-testid="EditViewPageDetails"
+                            >
                                 {isEditable ? <Icon.Edit /> : <Icon.Visibility />}
                                 {isEditable ? 'Edit page details' : 'View page details'}
                             </Button>

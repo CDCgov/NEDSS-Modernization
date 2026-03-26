@@ -1,17 +1,12 @@
 package gov.cdc.nbs.patient.search.phone;
 
-
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
 class PatientSearchResultPhoneMapper implements RowMapper<PatientSearchResultPhone> {
 
-
-  record Columns(int type, int use, int typeCode, int useCode, int number) {
-  }
-
+  record Columns(int type, int use, int typeCode, int useCode, int number) {}
 
   private final Columns columns;
 
@@ -24,7 +19,8 @@ class PatientSearchResultPhoneMapper implements RowMapper<PatientSearchResultPho
   }
 
   @Override
-  public PatientSearchResultPhone mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public PatientSearchResultPhone mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     String type = resultSet.getString(columns.type());
     String use = resultSet.getString(columns.use());
     String typeCode = resultSet.getString(columns.typeCode());
@@ -46,5 +42,4 @@ class PatientSearchResultPhoneMapper implements RowMapper<PatientSearchResultPho
     }
     return use;
   }
-
 }

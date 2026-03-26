@@ -1,6 +1,5 @@
 package gov.cdc.nbs.authentication.user;
 
-
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,8 +18,8 @@ class UserService implements UserDetailsService {
   @Override
   @Transactional
   public NbsUserDetails loadUserByUsername(final String username) {
-    return resolver.resolve(username)
+    return resolver
+        .resolve(username)
         .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
   }
-
 }

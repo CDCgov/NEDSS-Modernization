@@ -1,14 +1,13 @@
 package gov.cdc.nbs.event.search;
 
 import gov.cdc.nbs.message.enums.PregnancyStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -33,7 +32,6 @@ public final class LabReportFilter {
   private String resultedTest;
   private String codedResult;
 
-
   @Data
   @AllArgsConstructor
   @NoArgsConstructor
@@ -43,7 +41,6 @@ public final class LabReportFilter {
     private LocalDate to;
   }
 
-
   @Data
   @AllArgsConstructor
   @NoArgsConstructor
@@ -52,7 +49,6 @@ public final class LabReportFilter {
     private Long providerId;
   }
 
-
   @Data
   @AllArgsConstructor
   @NoArgsConstructor
@@ -60,7 +56,6 @@ public final class LabReportFilter {
     private LaboratoryEventIdType labEventType;
     private String labEventId;
   }
-
 
   public enum LaboratoryEventIdType {
     ACCESSION_NUMBER("ACCESSION_NUMBER", "Accession Number"),
@@ -83,7 +78,6 @@ public final class LabReportFilter {
     }
   }
 
-
   public enum LabReportDateType {
     DATE_OF_REPORT,
     DATE_RECEIVED_BY_PUBLIC_HEALTH,
@@ -91,7 +85,6 @@ public final class LabReportFilter {
     LAB_REPORT_CREATE_DATE,
     LAST_UPDATE_DATE
   }
-
 
   public enum EntryMethod {
     ELECTRONIC("Y"),
@@ -108,7 +101,6 @@ public final class LabReportFilter {
     }
   }
 
-
   public enum UserType {
     INTERNAL(null),
     EXTERNAL("E");
@@ -124,18 +116,15 @@ public final class LabReportFilter {
     }
   }
 
-
   public enum EventStatus {
     NEW,
     UPDATE
   }
 
-
   public enum ProcessingStatus {
     PROCESSED,
     UNPROCESSED;
   }
-
 
   public enum ProviderType {
     ORDERING_FACILITY,
@@ -191,19 +180,22 @@ public final class LabReportFilter {
   }
 
   public Optional<LaboratoryEventDateSearch> receivedOn() {
-    return (this.eventDate != null && this.eventDate.type == LabReportDateType.DATE_RECEIVED_BY_PUBLIC_HEALTH)
+    return (this.eventDate != null
+            && this.eventDate.type == LabReportDateType.DATE_RECEIVED_BY_PUBLIC_HEALTH)
         ? Optional.of(this.eventDate)
         : Optional.empty();
   }
 
   public Optional<LaboratoryEventDateSearch> collectedOn() {
-    return (this.eventDate != null && this.eventDate.type == LabReportDateType.DATE_OF_SPECIMEN_COLLECTION)
+    return (this.eventDate != null
+            && this.eventDate.type == LabReportDateType.DATE_OF_SPECIMEN_COLLECTION)
         ? Optional.of(this.eventDate)
         : Optional.empty();
   }
 
   public Optional<LaboratoryEventDateSearch> createdOn() {
-    return (this.eventDate != null && this.eventDate.type == LabReportDateType.LAB_REPORT_CREATE_DATE)
+    return (this.eventDate != null
+            && this.eventDate.type == LabReportDateType.LAB_REPORT_CREATE_DATE)
         ? Optional.of(this.eventDate)
         : Optional.empty();
   }
@@ -218,7 +210,8 @@ public final class LabReportFilter {
     if (this.orderingProviderId != null) {
       return Optional.of(this.orderingProviderId);
     }
-    return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.ORDERING_PROVIDER)
+    return (this.providerSearch != null
+            && this.providerSearch.getProviderType() == ProviderType.ORDERING_PROVIDER)
         ? Optional.of(this.providerSearch.getProviderId())
         : Optional.empty();
   }
@@ -227,7 +220,8 @@ public final class LabReportFilter {
     if (this.orderingLabId != null) {
       return Optional.of(this.orderingLabId);
     }
-    return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.ORDERING_FACILITY)
+    return (this.providerSearch != null
+            && this.providerSearch.getProviderType() == ProviderType.ORDERING_FACILITY)
         ? Optional.of(this.providerSearch.getProviderId())
         : Optional.empty();
   }
@@ -236,7 +230,8 @@ public final class LabReportFilter {
     if (this.reportingLabId != null) {
       return Optional.of(this.reportingLabId);
     }
-    return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.REPORTING_FACILITY)
+    return (this.providerSearch != null
+            && this.providerSearch.getProviderType() == ProviderType.REPORTING_FACILITY)
         ? Optional.of(this.providerSearch.getProviderId())
         : Optional.empty();
   }

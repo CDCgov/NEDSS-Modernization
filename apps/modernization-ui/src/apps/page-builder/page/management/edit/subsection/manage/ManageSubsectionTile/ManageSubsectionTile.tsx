@@ -22,7 +22,7 @@ export const ManageSubsectionTile = ({
     action,
     onDelete,
     index,
-    onChangeVisibility
+    onChangeVisibility,
 }: ManageSubsectionTileProps) => {
     const [deleteWarning, setDeleteWarning] = useState<PagesSubSection | undefined>(undefined);
 
@@ -72,7 +72,8 @@ export const ManageSubsectionTile = ({
                                                     onDelete?.(subsection);
                                                     setDeleteWarning(undefined);
                                                     setOnAction?.(false);
-                                                }}>
+                                                }}
+                                            >
                                                 Yes, delete
                                             </div>
                                             <div className={styles.separator}>|</div>
@@ -80,7 +81,8 @@ export const ManageSubsectionTile = ({
                                                 onClick={() => {
                                                     setDeleteWarning(undefined);
                                                     setOnAction?.(false);
-                                                }}>
+                                                }}
+                                            >
                                                 Cancel
                                             </div>
                                         </>
@@ -90,7 +92,8 @@ export const ManageSubsectionTile = ({
                                             onClick={() => {
                                                 setDeleteWarning(undefined);
                                                 setOnAction?.(false);
-                                            }}>
+                                            }}
+                                        >
                                             OK
                                         </div>
                                     )}
@@ -116,7 +119,8 @@ export const ManageSubsectionTile = ({
                                     outline
                                     disabled={action}
                                     data-testid="subsectionTileEditIcon"
-                                    className={styles.iconBtn}>
+                                    className={styles.iconBtn}
+                                >
                                     <Icon.Edit style={{ cursor: 'pointer' }} size={3} />
                                 </Button>
                                 <Button
@@ -128,7 +132,8 @@ export const ManageSubsectionTile = ({
                                     onClick={() => {
                                         setDeleteWarning(subsection);
                                         setOnAction?.(true);
-                                    }}>
+                                    }}
+                                >
                                     <Icon.Delete style={{ cursor: 'pointer' }} size={3} />
                                 </Button>
                                 {subsection.visible ? (
@@ -140,7 +145,8 @@ export const ManageSubsectionTile = ({
                                         disabled={action}
                                         onClick={() => {
                                             onChangeVisibility(subsection, false);
-                                        }}>
+                                        }}
+                                    >
                                         <Icon.Visibility style={{ cursor: 'pointer' }} size={3} />
                                     </Button>
                                 ) : (
@@ -152,7 +158,8 @@ export const ManageSubsectionTile = ({
                                         disabled={action}
                                         onClick={() => {
                                             onChangeVisibility(subsection, true);
-                                        }}>
+                                        }}
+                                    >
                                         <Icon.VisibilityOff style={{ cursor: 'pointer' }} size={3} />
                                     </Button>
                                 )}

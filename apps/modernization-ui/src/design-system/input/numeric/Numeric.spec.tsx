@@ -112,7 +112,7 @@ describe('when entering numeric values', () => {
             '&',
             '*',
             '(',
-            ')'
+            ')',
         ])('should not allow input of "%s"', async (value) => {
             const user = userEvent.setup();
             const { getByRole } = render(<Fixture />);

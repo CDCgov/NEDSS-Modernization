@@ -5,12 +5,12 @@ import { PageProvider, usePage } from './PageContext';
 const mockLocation = {} as Location;
 
 vi.mock('react-router', () => ({
-    useLocation: () => mockLocation
+    useLocation: () => mockLocation,
 }));
 
 const setup = () => {
     return renderHook(() => usePage(), {
-        wrapper: PageProvider
+        wrapper: PageProvider,
     });
 };
 

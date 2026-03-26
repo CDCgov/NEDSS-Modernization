@@ -39,7 +39,8 @@ export const InPageNavigation: React.FC<InPageNavigationProps> = ({ sections, ti
                         id={`inPageNav-${section.id}`}
                         to={{ pathname: location.pathname, hash: section.id }}
                         className={classNames(styles.navOption)}
-                        state={location.state}>
+                        state={location.state}
+                    >
                         {section.label}
                     </Link>
                 ))}

@@ -2,11 +2,10 @@ package gov.cdc.nbs.event.search.investigation.indexing;
 
 import gov.cdc.nbs.data.time.LocalDateColumnMapper;
 import gov.cdc.nbs.event.search.investigation.SearchableInvestigation;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.springframework.jdbc.core.RowMapper;
 
 class SearchableInvestigationRowMapper implements RowMapper<SearchableInvestigation> {
 
@@ -37,10 +36,7 @@ class SearchableInvestigationRowMapper implements RowMapper<SearchableInvestigat
       int notification,
       int notifiedOn,
       int notificationStatus,
-      int investigatorLastName
-
-  ) {
-  }
+      int investigatorLastName) {}
 
   private final Column columns;
 
@@ -49,7 +45,8 @@ class SearchableInvestigationRowMapper implements RowMapper<SearchableInvestigat
   }
 
   @Override
-  public SearchableInvestigation mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public SearchableInvestigation mapRow(final ResultSet resultSet, final int rowNum)
+      throws SQLException {
     long identifier = resultSet.getLong(this.columns.identifier());
     String classCode = resultSet.getString(this.columns.classCode());
     String mood = resultSet.getString(this.columns.mood());

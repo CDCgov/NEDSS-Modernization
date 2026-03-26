@@ -19,7 +19,7 @@ const asAddress = (entry: AddressEntry): Address | undefined => {
             city: orUndefined(city),
             zipcode: orUndefined(zipcode),
             censusTract: orUndefined(censusTract),
-            comment: orUndefined(comment)
+            comment: orUndefined(comment),
         };
     }
 };

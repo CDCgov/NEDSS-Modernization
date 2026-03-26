@@ -74,7 +74,7 @@ export const TableComponent = ({
     rangeSelector = false,
     selectable = false,
     handleSelected,
-    isLoading = false
+    isLoading = false,
 }: Props) => {
     const sorting = useTableSorting({ enabled: tableBody && totalResults > 1, onSort: sortData });
 
@@ -162,10 +162,11 @@ export const TableComponent = ({
                     className={classNames(
                         {
                             [styles.standard]: display === 'standard',
-                            [styles.zebra]: display === 'zebra'
+                            [styles.zebra]: display === 'zebra',
                         },
                         className
-                    )}>
+                    )}
+                >
                     <TableHeaders sorting={sorting} columns={columns} />
                     <tbody>
                         {isLoading ? (

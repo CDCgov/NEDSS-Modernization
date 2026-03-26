@@ -4,7 +4,7 @@ import { User } from 'user';
 
 type InternalState = { status: 'waiting' } | { status: 'ready'; user: User } | { status: 'logout' };
 const waiting: InternalState = {
-    status: 'waiting'
+    status: 'waiting',
 };
 
 type Action = { type: 'ready'; user: User } | { type: 'logout' };
@@ -30,7 +30,7 @@ type Interaction = {
 
 const UserContext = React.createContext<Interaction>({
     state: { isLoggedIn: false },
-    logout: () => {}
+    logout: () => {},
 });
 
 const initialize = (user?: User): InternalState => (user ? { status: 'ready', user } : waiting);

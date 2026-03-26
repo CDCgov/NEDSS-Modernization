@@ -24,7 +24,7 @@ describe('useMultiValueEntry', () => {
         expect(result.current.entries).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({ value: expect.objectContaining({ id: 47, name: 'name-one' }) }),
-                expect.objectContaining({ value: expect.objectContaining({ id: 61, name: 'name-other' }) })
+                expect.objectContaining({ value: expect.objectContaining({ id: 61, name: 'name-other' }) }),
             ])
         );
     });
@@ -33,8 +33,8 @@ describe('useMultiValueEntry', () => {
         const { result } = setup({
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         expect(result.current.selected).toBeUndefined();
@@ -50,8 +50,8 @@ describe('useMultiValueEntry', () => {
             identifierGenerator,
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         act(() => {
@@ -63,8 +63,8 @@ describe('useMultiValueEntry', () => {
                 status: 'viewing',
                 selected: expect.objectContaining({
                     id: '601',
-                    value: expect.objectContaining({ id: 61, name: 'name-other' })
-                })
+                    value: expect.objectContaining({ id: 61, name: 'name-other' }),
+                }),
             })
         );
     });
@@ -78,7 +78,7 @@ describe('useMultiValueEntry', () => {
 
         expect(result.current).toEqual(
             expect.objectContaining({
-                status: 'adding'
+                status: 'adding',
             })
         );
     });
@@ -92,7 +92,7 @@ describe('useMultiValueEntry', () => {
 
         expect(result.current).toEqual(
             expect.objectContaining({
-                status: 'adding'
+                status: 'adding',
             })
         );
     });
@@ -107,8 +107,8 @@ describe('useMultiValueEntry', () => {
             identifierGenerator,
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         act(() => {
@@ -120,8 +120,8 @@ describe('useMultiValueEntry', () => {
                 status: 'editing',
                 selected: expect.objectContaining({
                     id: '601',
-                    value: expect.objectContaining({ id: 61, name: 'name-other' })
-                })
+                    value: expect.objectContaining({ id: 61, name: 'name-other' }),
+                }),
             })
         );
     });
@@ -136,8 +136,8 @@ describe('useMultiValueEntry', () => {
             identifierGenerator,
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         act(() => {
@@ -149,8 +149,8 @@ describe('useMultiValueEntry', () => {
             expect.arrayContaining([
                 expect.objectContaining({
                     id: '601',
-                    value: expect.objectContaining({ id: 61, name: 'name-changed' })
-                })
+                    value: expect.objectContaining({ id: 61, name: 'name-changed' }),
+                }),
             ])
         );
     });
@@ -165,8 +165,8 @@ describe('useMultiValueEntry', () => {
             identifierGenerator,
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         act(() => {
@@ -188,8 +188,8 @@ describe('useMultiValueEntry', () => {
             identifierGenerator,
             values: [
                 { id: 47, name: 'name-one' },
-                { id: 61, name: 'name-other' }
-            ]
+                { id: 61, name: 'name-other' },
+            ],
         });
 
         act(() => {

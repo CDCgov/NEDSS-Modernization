@@ -14,7 +14,7 @@ const asEthnicity = (demographic: Partial<EthnicityDemographic>): EthnicityDemog
             asOf,
             ethnicGroup: asValue(ethnicGroup),
             detailed: maybeAsValues(detailed),
-            unknownReason: asValue(unknownReason)
+            unknownReason: asValue(unknownReason),
         };
     }
 };

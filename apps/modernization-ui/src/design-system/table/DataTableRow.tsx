@@ -27,8 +27,9 @@ export const DataTableRow = <V,>({ columns, sorting, row, index }: Props<V>) => 
                         key={y}
                         className={classNames({
                             [styles.fixed]: column.fixed,
-                            [styles.sorted]: sorted
-                        })}>
+                            [styles.sorted]: sorted,
+                        })}
+                    >
                         <Shown when={!!children} fallback={<NoData />}>
                             {children}
                         </Shown>

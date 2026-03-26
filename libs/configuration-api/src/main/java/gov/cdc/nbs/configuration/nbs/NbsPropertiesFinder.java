@@ -22,12 +22,12 @@ public class NbsPropertiesFinder {
 
   private final NamedParameterJdbcTemplate template;
 
-  public NbsPropertiesFinder(
-      final NamedParameterJdbcTemplate template) {
+  public NbsPropertiesFinder(final NamedParameterJdbcTemplate template) {
     this.template = template;
   }
 
-  private static final String QUERY = """
+  private static final String QUERY =
+      """
       SELECT
         config_key,
         config_value
@@ -38,16 +38,16 @@ public class NbsPropertiesFinder {
       """;
 
   // List of configs that will be exposed to the UI
-  private static final List<String> exposedConfigs = Arrays.asList(HIV_PROGRAM_AREAS, STD_PROGRAM_AREAS, CODE_BASE);
-
+  private static final List<String> exposedConfigs =
+      Arrays.asList(HIV_PROGRAM_AREAS, STD_PROGRAM_AREAS, CODE_BASE);
 
   // Grab the properties from the database and convert them into a map
   public Properties find() {
     SqlParameterSource parameters = new MapSqlParameterSource("keys", exposedConfigs);
-    Map<String, String> props = this.template.query(QUERY, parameters, mapper())
-        .stream()
-        .filter(o -> o.getKey() != null && o.getValue() != null)
-        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    Map<String, String> props =
+        this.template.query(QUERY, parameters, mapper()).stream()
+            .filter(o -> o.getKey() != null && o.getValue() != null)
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     // convert the map of properties to a Properties object
     return PropertiesMapper.toProperties(props);
@@ -56,10 +56,10 @@ public class NbsPropertiesFinder {
   private RowMapper<AbstractMap.SimpleEntry<String, String>> mapper() {
     return new RowMapper<AbstractMap.SimpleEntry<String, String>>() {
       @Override
-      public AbstractMap.SimpleEntry<String, String> mapRow(ResultSet rs, int rowNum) throws SQLException {
+      public AbstractMap.SimpleEntry<String, String> mapRow(ResultSet rs, int rowNum)
+          throws SQLException {
         return new AbstractMap.SimpleEntry<>(rs.getString(1), rs.getString(2));
       }
     };
   }
-
 }

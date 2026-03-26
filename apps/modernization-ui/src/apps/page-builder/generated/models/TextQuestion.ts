@@ -5,7 +5,7 @@
 import type { DataMartInfo } from './DataMartInfo';
 import type { MessagingInfo } from './MessagingInfo';
 import type { Question } from './Question';
-export type TextQuestion = (Question & {
+export type TextQuestion = Question & {
     id?: number;
     mask?: string;
     fieldSize?: string;
@@ -23,5 +23,4 @@ export type TextQuestion = (Question & {
     adminComments?: string;
     dataMartInfo?: DataMartInfo;
     messagingInfo?: MessagingInfo;
-});
-
+};

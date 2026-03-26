@@ -20,7 +20,7 @@ export const AddPatientBasic = () => {
 
     const form = useForm<BasicNewPatientEntry>({
         defaultValues: initial(),
-        mode: 'onBlur'
+        mode: 'onBlur',
     });
 
     useEffect(() => {
@@ -73,7 +73,8 @@ export const AddPatientBasic = () => {
                                 Save
                             </Button>
                         </>
-                    )}>
+                    )}
+                >
                     <AddPatientBasicForm isValid={handleFormIsValid} />
                 </AddPatientLayout>
             </FormProvider>
