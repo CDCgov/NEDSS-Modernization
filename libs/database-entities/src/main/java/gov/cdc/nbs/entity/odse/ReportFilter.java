@@ -35,7 +35,7 @@ public class ReportFilter {
   @JoinColumn(name = "column_uid")
   private DataSourceColumn dataSourceColumn;
 
-  @OneToMany(mappedBy = "report_filter_uid", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "reportFilter", fetch = FetchType.LAZY)
   private List<FilterValue> filterValues;
 
   @Column(name = "status_cd")
