@@ -20,7 +20,7 @@ public class FilterValue {
   @Column(name = "value_uid", nullable = false)
   private Long id;
 
-  @MapsId("report_filter_uid")
+  @MapsId("id")
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "report_filter_uid", nullable = false)
   private ReportFilter reportFilter;
