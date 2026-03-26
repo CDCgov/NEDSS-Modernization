@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
@@ -38,6 +39,7 @@ class ReportServiceTest {
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportSpecBuilder specBuilder;
   @Mock private ReportLibrary reportLibrary;
+  @Mock private List<ReportFilter> reportFilters;
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RequestBodySpec requestBodySpec;
@@ -52,6 +54,7 @@ class ReportServiceTest {
     Report report = mock(Report.class);
 
     when(report.getReportLibrary()).thenReturn(reportLibrary);
+    when(report.getReportFilters()).thenReturn(reportFilters);
     when(reportLibrary.getRunner()).thenReturn(runner);
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
   }
@@ -64,6 +67,21 @@ class ReportServiceTest {
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
     assertThat(config.runner()).isEqualTo("python");
+    assertThat(config.filters())
+        .allSatisfy(
+            filter -> {
+              Optional<ReportFilter> matchingReportFilter =
+                  reportFilters.stream()
+                      .filter(f -> f.getId().equals(filter.reportFilterUid()))
+                      .findAny();
+
+              assertThat(matchingReportFilter).isPresent();
+              assertThat(matchingReportFilter.get().getDataSourceColumn())
+                  .isEqualTo(filter.dataSourceColumn());
+              assertThat(matchingReportFilter.get().getFilterCode()).isEqualTo(filter.filterCode());
+              assertThat(matchingReportFilter.get().getFilterValues())
+                  .isEqualTo(filter.filterValues());
+            });
   }
 
   @Test
