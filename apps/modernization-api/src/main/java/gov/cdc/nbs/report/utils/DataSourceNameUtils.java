@@ -13,7 +13,7 @@ public class DataSourceNameUtils {
   @Getter @Setter Map<String, String> mappings;
 
   public String buildDataSourceName(String orgDataSourceName) {
-    Map<String, String> mappings = getMappings();
+    Map<String, String> dataSourceNameMappings = getMappings();
     String modifiedName = orgDataSourceName.trim().replace("[", "").replace("]", "");
 
     int orgDBNameIndex = modifiedName.indexOf(".");
@@ -24,13 +24,13 @@ public class DataSourceNameUtils {
 
     String orgDBName = modifiedName.substring(0, orgDBNameIndex);
 
-    if (!mappings.containsKey(orgDBName)
-        && mappings.values().stream().noneMatch(s -> s.equals(orgDBName))) {
+    if (!dataSourceNameMappings.containsKey(orgDBName)
+        && dataSourceNameMappings.values().stream().noneMatch(s -> s.equals(orgDBName))) {
       throw new IllegalArgumentException(
           String.format("No data source found for %s", orgDataSourceName));
     }
 
-    String standardizedDBName = mappings.getOrDefault(orgDBName, orgDBName);
+    String standardizedDBName = dataSourceNameMappings.getOrDefault(orgDBName, orgDBName);
     String dboStr = modifiedName.toLowerCase().contains(".dbo") ? "" : ".dbo";
     String standardizedDataSourceName = String.format("%s%s", standardizedDBName, dboStr);
     String regexStr = "\\b" + Pattern.quote(orgDBName) + "\\b";
