@@ -42,7 +42,7 @@ public class ReportService {
                             DataSourceColumn column = null;
 
                             if (dbReportFilter.getDataSourceColumn() != null) {
-                              new DataSourceColumn(
+                                column = new DataSourceColumn(
                                   dbReportFilter.getDataSourceColumn().getId(),
                                   dbReportFilter.getDataSourceColumn().getColumnMaxLength(),
                                   dbReportFilter.getDataSourceColumn().getColumnName(),
