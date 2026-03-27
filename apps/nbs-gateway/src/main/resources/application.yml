@@ -10,7 +10,7 @@ nbs:
       uri: ${nbs.gateway.classic}
       base: '/nbs/HomePage.do?method=loadHomePage'
     ui:
-      service: 'localhost:3000'
+      service: ${nbs.gateway.modernization.service}
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.ui.service}'
     modernization:
       service: 'localhost:8080'
@@ -48,12 +48,16 @@ nbs:
 
 logging:
   level:
+    redisratelimiter: ${nbs.gateway.log.level:INFO}
     reactor:
       netty: INFO
     org:
       springframework:
         security: ${nbs.gateway.security.log.level:INFO}
-        cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level:INFO}
+        cloud.gateway: ${nbs.gateway.log.level:INFO}
+        http.server.reactive: ${nbs.gateway.log.level:INFO}
+        web.reactive: ${nbs.gateway.log.level:INFO}
+        boot.autoconfigure.web: ${nbs.gateway.log.level:INFO}
 
 management:
   health:
