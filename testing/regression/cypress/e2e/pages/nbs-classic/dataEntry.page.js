@@ -1,21 +1,69 @@
+import { selectRandomDropdownValue } from "./utils";
+
 class LabReportPage {
-  dataEntryMenu = 'a[href="/nbs/LoadNavbar.do?ContextAction=DataEntry"]';
+  dataEntryNavigation = 'a[href="/nbs/LoadNavbar.do?ContextAction=DataEntry"]';
+  homeNavigation = 'a[href="/nbs/HomePage.do?method=loadHomePage"]';
   labReportLink = 'font.boldEightBlack';
   labReportTab = 'td#tabs0head1';
   reportingFacilityField = '#NBS_LAB365Text';
   quickCodeLookupButton = '#NBS_LAB365CodeLookupButton';
   sameAsReportingFacilityCheckbox = 'input[name="pageClientVO.answer(NBS_LAB267)"]';
-  jurisdictionField = 'input[name="INV107_textbox"]';
-  resultedTestField = 'input[name="NBS_LAB220_textbox"]';
-  codedResultField = 'input[name="NBS_LAB280_textbox"]';
+  jurisdictionField = 'select#INV107';
+  programAreaField = 'select#INV108';
+  resultedTestField = 'select#NBS_LAB220';
+  codedResultField = 'select#NBS_LAB280';
   numericResultField = '#NBS_LAB364';
   unitsField = 'input[name="LAB115_textbox"]';
   textResultField = '#NBS_LAB208';
   addButton = '#AddButtonToggleRESULTED_TEST_CONTAINER > td > input';
-  submitButton = 'input#SubmitTop';
+  patientSearchButton = 'input#NBS_UI_24L';
+  nextLink = 'a[href="javascript:navigateTab(\'next\')"]';
+  reportingFacilitySearchButton = 'input[id="NBS_LAB365Icon"]';
+  orderedTestSearchButton = 'input[id="NBS_LAB112Search"]';
+  resultedTestSearchButton = 'input[id="NBS_LAB220Search"]';
+  specimenCollectionDate = 'input[id="LAB163"]';
+  specimenSiteField = 'select#NBS_LAB166';
+  specimenSourceField = 'select#LAB165';
+
+  getLabReportCountForPatient() {
+    cy.log('Checking and saving lab report count');
+
+    // Get the count from the Lab Reports section header
+    cy.get('#subsect_Lab .bluebarsectName').then(($section) => {
+      // The section text will be something like "Lab Reports (1)"
+      const sectionText = $section.text();
+      cy.log(`Lab Reports section text: "${sectionText}"`);
+      
+      // Extract the number from parentheses using regex
+      const match = sectionText.match(/\((\d+)\)/);
+      
+      if (match && match[1]) {
+        const count = parseInt(match[1], 10);
+        cy.log(`Found lab report count: ${count}`);
+        
+        // Save the count as an alias for later use
+        cy.wrap(count).as('labReportCount');
+        
+        // Also save to a Cypress environment variable if needed
+        Cypress.env('labReportCount', count);
+        
+        // Return the count for chaining
+        return cy.wrap(count);
+      } else {
+        cy.log('No lab report count found in section header');
+        cy.wrap(0).as('labReportCount');
+        Cypress.env('labReportCount', 0);
+        return cy.wrap(0);
+      }
+    });
+  }
+
+  clickHome() {
+      cy.get(this.homeNavigation).click();
+  }
 
   clickDataEntry() {
-    cy.get(this.dataEntryMenu).click();
+    cy.get(this.dataEntryNavigation).click();
   }
 
   clickLabReport() {
@@ -38,17 +86,12 @@ class LabReportPage {
   checkSameAsReportingFacility() {
     cy.get(this.sameAsReportingFacilityCheckbox).check();
   }
-
-  selectJurisdiction() {
-    cy.get(this.jurisdictionField).type('{downarrow}{downarrow}{enter}');
-  }
-
   selectResultedTest() {
-    cy.get(this.resultedTestField).type('{downarrow}{downarrow}{downarrow}{downarrow}{downarrow}{enter}');
+    selectRandomDropdownValue(this.resultedTestField);
   }
 
   selectCodedResult() {
-    cy.get(this.codedResultField).type('{downarrow}{enter}');
+    selectRandomDropdownValue(this.codedResultField);
   }
 
   enterNumericResult(value) {
@@ -63,13 +106,220 @@ class LabReportPage {
     cy.get(this.textResultField).type(text);
   }
 
-  clickAddButton() {
+  clickAddButtonResultedTests() {
     cy.get(this.addButton).click();
   }
 
-  clickSubmitButton() {
-    cy.get(this.submitButton).first().click(); // Clicking the first submit button
+  searchForPatientInPopup() {
+    cy.log(`Directly populating patient Surma J Singh.`);
+    
+    // Store the main app URL (just in case)
+    cy.url().as('mainAppUrl');
+    
+    // Hardcoded MPR ID for Surma J Singh
+    const mprId = '10000001';
+    
+    // Wait for page to be fully loaded
+    cy.document().its('readyState').should('eq', 'complete');
+    
+    // Call populatePatient directly on the main window
+    cy.window().then((win) => {
+      cy.log(`Calling populatePatient with MPR ID: ${mprId}`);
+      
+      if (typeof win.populatePatient === 'function') {
+        win.populatePatient(mprId);
+        cy.log('populatePatient called successfully');
+      } else {
+        cy.log('populatePatient function not found!');
+      }
+    });
+    
+    // Wait for DWR calls to complete
+    cy.wait(2000);
+  
+  }
+
+
+  clickNext() {
+    cy.get(this.nextLink).first().click();
+  }
+
+  // Lab Report Tab - Facility and Provider Information
+  
+  searchForReportingFacility(quickCode) {
+    cy.get(this.reportingFacilityField).type(quickCode);
+    cy.get(this.quickCodeLookupButton).click();
+  }
+
+  //Order Details
+
+  selectProgramArea() {
+    selectRandomDropdownValue(this.programAreaField);
+  }
+
+  selectJurisdiction() {
+    selectRandomDropdownValue(this.jurisdictionField);
+  }
+
+  //Ordered Test
+
+  searchForOrderedTestInPopup() {
+    cy.log(`Directly populating ordered test Measles virus (Rubeola), antigen.`);
+    
+    // Hardcoded values for Measles virus (Rubeola), antigen
+    const description = 'Measles virus (Rubeola), antigen';
+    const testCode = 'T-14520';
+    const id = 'NBS_LAB112';
+    
+    // Wait for page to be fully loaded
+    cy.document().its('readyState').should('eq', 'complete');
+    
+    // Directly manipulate the DOM elements since populateCodedWithSearchValue is only accessible via the popup window
+    cy.window().then((win) => {
+      cy.log(`Directly populating fields for ${id}`);
+      
+      // Get the elements
+      const textbox = win.document.getElementById(id + '_textbox');
+      const codeInput = win.document.getElementById(id + 'CodeId');
+      const descriptionInput = win.document.getElementById(id + 'DescriptionId');
+      const displaySpan = win.document.getElementById(id + 'Description');
+      const selectElement = win.document.getElementById(id);
+      
+      // Set the visible textbox value
+      if (textbox) {
+        textbox.value = description;
+        cy.log(`Set textbox to: ${description}`);
+      }
+      
+      // Set the hidden code field
+      if (codeInput) {
+        codeInput.value = testCode;
+        cy.log(`Set code to: ${testCode}`);
+      }
+      
+      // Set the hidden description field
+      if (descriptionInput) {
+        descriptionInput.value = `${description} (${testCode})`;
+        cy.log(`Set description to: ${description} (${testCode})`);
+      }
+      
+      // Update the display span
+      if (displaySpan) {
+        displaySpan.textContent = description;
+        cy.log(`Set display span to: ${description}`);
+      }
+      
+      // Clear any selected value in the dropdown
+      if (selectElement) {
+        selectElement.value = '';
+      }
+      
+      // Hide the dropdown
+      if (textbox && textbox.parentElement) {
+        textbox.parentElement.style.display = 'none';
+      }
+      
+      // Hide the search button and show clear button
+      const searchBtn = win.document.getElementById(id + 'Search');
+      const clearBtn = win.document.getElementById(id + 'ClearButton');
+      
+      if (searchBtn) searchBtn.style.display = 'none';
+      if (clearBtn) clearBtn.style.display = 'inline-block';
+      
+      // Trigger any change events that might be needed
+      if (textbox) {
+        textbox.dispatchEvent(new Event('change', { bubbles: true }));
+        textbox.dispatchEvent(new Event('blur', { bubbles: true }));
+      }
+      
+      cy.log('Ordered test populated successfully');
+    });
+    
+    // Wait for any DWR calls to complete
+    cy.wait(2000);
+  }
+
+  selectSpecimenSource() {
+    selectRandomDropdownValue(this.specimenSourceField);
+  }
+  
+  selectSpecimenSite() {
+    selectRandomDropdownValue(this.specimenSiteField);
+  }
+
+  selectLabReportSpecimenSource(specimenSource) {
+    this._selectFromDropdown(this.specimenSourceField, specimenSource);
+  }
+
+  selectLabReportSpecimenSite(specimenSite) {
+    this._selectFromDropdown(this.specimenSiteField, specimenSite);
+  }
+
+  enterSpecimenCollectionDate(date) {
+    const [month, day, year] = date.split('/');
+    const formattedDate = `${month.padStart(2, '0')}${day.padStart(2, '0')}${year}`;
+    cy.get(this.specimenCollectionDate).type(formattedDate);
+  }
+
+  //Resulted Test
+
+  clickResultedTestSearchButton() {
+    cy.get(this.resultedTestSearchButton).click();
+  }
+
+  selectLabReportCodedResult(codedResult) {
+    this._selectFromDropdown(this.codedResultField, codedResult);
+  }
+
+  // Verification Steps
+  
+  verifyLabReportCountIncreased() {
+    // Verify that the lab report count increased by 1
+    cy.log('Verifying lab report count increased by 1');
+
+    // Get the new lab report count
+    cy.get('#subsect_Lab .bluebarsectName')
+      .should('be.visible')
+      .invoke('text')
+      .then((text) => {
+        // Extract number from parentheses - e.g., "Lab Reports (1)"
+        const match = text.match(/\((\d+)\)/);
+        const newCount = match ? parseInt(match[1], 10) : 0;
+        cy.log(`New lab report count: ${newCount}`);
+        
+        // Get the initial count from the alias and verify increase by 1
+        cy.get('@labReportCount').then((initialCount) => {
+          expect(newCount).to.equal(initialCount + 1);
+          cy.log(`✓ Lab report count increased from ${initialCount} to ${newCount} (expected increase of 1)`);
+        });
+      });
+  }
+
+  verifyLastLabReportHasMultipleResultedTests() {
+    cy.log('Verifying last lab report has multiple resulted tests associated with it');
+
+    cy.log('Finding the last lab report row');
+    cy.get('#eventLabReport tbody tr').last().as('lastLabReportRow');
+
+    cy.get('@lastLabReportRow').find('td').eq(3).within(() => {
+      cy.log('Checking test results in column 4');
+      
+      // Count the number of div elements containing test results
+      cy.get('div').should('have.length', 2);
+    });
+  }
+  
+
+    // Get the last lab report entry in the list
+//Helper Functions
+
+  // Dropdown selector
+  _selectFromDropdown(fieldSelector, value) {
+    cy.get(fieldSelector)
+      .clear()
+      .type(value + '{enter}');
   }
 }
 
 export const labReportPage = new LabReportPage();
+  
