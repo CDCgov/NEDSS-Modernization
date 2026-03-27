@@ -7,7 +7,7 @@ import type { FilterCode } from './FilterCode';
 import type { FilterValue } from './FilterValue';
 export type FilterConfiguration = {
     reportFilterUid: number;
-    dataSourceColumn: DataSourceColumn;
+    dataSourceColumn?: DataSourceColumn;
     filterCode: FilterCode;
     filterValues: Array<FilterValue>;
 };

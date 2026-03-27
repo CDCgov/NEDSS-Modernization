@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ReportFilter } from './ReportFilter';
 export type FilterValue = {
-    id?: number;
-    reportFilter?: ReportFilter;
+    id: number;
     sequenceNumber?: number;
     valueType?: string;
     columnUid?: number;
