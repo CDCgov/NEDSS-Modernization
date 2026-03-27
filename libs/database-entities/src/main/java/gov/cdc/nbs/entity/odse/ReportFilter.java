@@ -36,7 +36,7 @@ public class ReportFilter {
   @JoinColumn(name = "filter_uid")
   private FilterCode filterCode;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "column_uid")
   private DataSourceColumn dataSourceColumn;
 

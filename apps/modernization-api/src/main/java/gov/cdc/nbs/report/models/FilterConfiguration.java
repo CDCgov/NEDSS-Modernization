@@ -5,6 +5,6 @@ import java.util.List;
 
 public record FilterConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long reportFilterUid,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) DataSourceColumn dataSourceColumn,
+    DataSourceColumn dataSourceColumn,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) FilterCode filterCode,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<FilterValue> filterValues) {}

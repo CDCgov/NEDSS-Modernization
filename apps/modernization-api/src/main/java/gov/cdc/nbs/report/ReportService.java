@@ -39,18 +39,21 @@ public class ReportService {
                   report.getReportFilters().stream()
                       .map(
                           dbReportFilter -> {
-                            DataSourceColumn column =
-                                new DataSourceColumn(
-                                    dbReportFilter.getDataSourceColumn().getId(),
-                                    dbReportFilter.getDataSourceColumn().getColumnMaxLength(),
-                                    dbReportFilter.getDataSourceColumn().getColumnName(),
-                                    dbReportFilter.getDataSourceColumn().getColumnTitle(),
-                                    dbReportFilter.getDataSourceColumn().getColumnSourceTypeCode(),
-                                    dbReportFilter.getDataSourceColumn().getDescTxt(),
-                                    dbReportFilter.getDataSourceColumn().getDisplayable(),
-                                    dbReportFilter.getDataSourceColumn().getFilterable(),
-                                    dbReportFilter.getDataSourceColumn().getStatusCd(),
-                                    dbReportFilter.getDataSourceColumn().getStatusTime());
+                            DataSourceColumn column = null;
+
+                            if (dbReportFilter.getDataSourceColumn() != null) {
+                              new DataSourceColumn(
+                                  dbReportFilter.getDataSourceColumn().getId(),
+                                  dbReportFilter.getDataSourceColumn().getColumnMaxLength(),
+                                  dbReportFilter.getDataSourceColumn().getColumnName(),
+                                  dbReportFilter.getDataSourceColumn().getColumnTitle(),
+                                  dbReportFilter.getDataSourceColumn().getColumnSourceTypeCode(),
+                                  dbReportFilter.getDataSourceColumn().getDescTxt(),
+                                  dbReportFilter.getDataSourceColumn().getDisplayable(),
+                                  dbReportFilter.getDataSourceColumn().getFilterable(),
+                                  dbReportFilter.getDataSourceColumn().getStatusCd(),
+                                  dbReportFilter.getDataSourceColumn().getStatusTime());
+                            }
 
                             FilterCode filterCode =
                                 new FilterCode(
