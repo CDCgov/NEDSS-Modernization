@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class ReportFilterTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThatThrownBy(() -> new ReportFilter(null, null, null))
+    assertThatThrownBy(() -> new ReportFilter(null, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("report is marked non-null but is null");
   }
