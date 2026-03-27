@@ -125,7 +125,7 @@ class ReportServiceTest {
                                 .filter(f -> f.id().equals(dbFilterValue.getId()))
                                 .findAny();
 
-                        assertThat(optionalFilterValue.isPresent()).isTrue();
+                        assertThat(optionalFilterValue).isPresent();
                         gov.cdc.nbs.report.models.FilterValue matchingFilterValue =
                             optionalFilterValue.get();
 
