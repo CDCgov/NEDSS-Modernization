@@ -2,12 +2,14 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.Filter;
+import gov.cdc.nbs.report.models.FilterConfiguration;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import java.util.Arrays;
@@ -32,7 +34,8 @@ class ReportControllerTest {
     Long reportUid = 1L;
     Long dataSourceUid = 2L;
 
-    ReportConfiguration reportConfig = new ReportConfiguration("python");
+    FilterConfiguration filterConfig = mock(FilterConfiguration.class);
+    ReportConfiguration reportConfig = new ReportConfiguration("python", List.of(filterConfig));
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ResponseEntity<ReportConfiguration> response =
