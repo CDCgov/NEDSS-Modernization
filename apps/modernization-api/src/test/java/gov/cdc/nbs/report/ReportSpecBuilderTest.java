@@ -6,13 +6,18 @@ import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -22,7 +27,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ReportSpecBuilderTest {
 
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
+  @Mock private DataSourceNameUtils dataSourceNameUtils;
   @InjectMocks private ReportSpecBuilder specBuilder;
+
+  final String dataSourceName = "nbs_ods.PHCDemographic";
+  final String standardizedDataSourceName = "NBS_ODSE.dbo.PHCDemographic";
 
   private DataSourceColumn mockColumn(String columnName, String columnTitle) {
     DataSourceColumn column = Mockito.mock(DataSourceColumn.class);
@@ -34,22 +43,32 @@ class ReportSpecBuilderTest {
 
   @Test
   void should_build_hardcoded_report_spec() {
+    String libraryName = "nbs_sr_05";
     DataSourceColumn column1 = mockColumn("column1", "Column 1");
     DataSourceColumn column2 = mockColumn("column2", "Column 2");
     List<Long> columnUids = List.of(1L, 2L);
     when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column1, column2));
+    when(dataSourceNameUtils.buildDataSourceName(dataSourceName))
+        .thenReturn(standardizedDataSourceName);
 
-    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
+    ReportSpec reportSpec =
+        specBuilder
+            .setDataSourceName(dataSourceName)
+            .setColumns(columnUids)
+            .setLibraryName(libraryName)
+            .build();
 
     assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
     assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
-    assertThat(reportSpec.libraryName()).isEqualTo("nbs_custom");
-    assertThat(reportSpec.dataSourceName()).isEqualTo("nbs_rdb.investigation");
+    assertThat(reportSpec.libraryName()).isEqualTo("nbs_sr_05");
+    assertThat(reportSpec.dataSourceName()).isEqualTo(standardizedDataSourceName);
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
-            "SELECT [column1] AS \"Column 1\", [column2] AS \"Column 2\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+            String.format(
+                "SELECT [column1] AS \"Column 1\", [column2] AS \"Column 2\" FROM %s",
+                standardizedDataSourceName));
   }
 
   @Test
@@ -77,16 +96,39 @@ class ReportSpecBuilderTest {
     assertThat(result.getColumns()).containsExactly(column1, column2);
   }
 
-  @Test
-  void build_should_generate_correct_select_clause_for_single_column() {
-    DataSourceColumn column = mockColumn("column1", "Column 1");
+  @ParameterizedTest
+  @MethodSource("columnProvider")
+  void build_should_generate_correct_select_clause(Map<String, String> columns) {
+    DataSourceColumn column = mockColumn(columns.get("name"), columns.get("title"));
     List<Long> columnUids = List.of(1L);
     when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+    when(dataSourceNameUtils.buildDataSourceName(dataSourceName))
+        .thenReturn(standardizedDataSourceName);
 
-    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
+    ReportSpec reportSpec =
+        specBuilder.setDataSourceName(dataSourceName).setColumns(columnUids).build();
 
     assertThat(reportSpec.subsetQuery())
-        .isEqualTo("SELECT [column1] AS \"Column 1\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+        .isEqualTo(
+            String.format(
+                "SELECT [%s] AS \"%s\" FROM %s",
+                columns.get("name"), columns.get("title"), standardizedDataSourceName));
+  }
+
+  private static Stream<Map<String, String>> columnProvider() {
+    Map<String, String> col1 = new HashMap<>();
+    col1.put("name", "column1");
+    col1.put("title", "Column 1");
+
+    Map<String, String> col2 = new HashMap<>();
+    col1.put("name", "first column");
+    col1.put("title", "Column 1");
+
+    Map<String, String> col3 = new HashMap<>();
+    col1.put("name", "user");
+    col1.put("title", "User Column");
+
+    return Stream.of(col1, col2, col3);
   }
 
   @Test
@@ -98,53 +140,38 @@ class ReportSpecBuilderTest {
     List<Long> columnUids = List.of(1L, 2L, 3L);
     when(dataSourceColumnRepository.findAllById(columnUids))
         .thenReturn(List.of(column1, column2, column3));
+    when(dataSourceNameUtils.buildDataSourceName(dataSourceName))
+        .thenReturn(standardizedDataSourceName);
 
-    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
+    ReportSpec reportSpec =
+        specBuilder.setDataSourceName(dataSourceName).setColumns(columnUids).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
-            "SELECT [col1] AS \"Col 1\", [col2] AS \"Col 2\", [col3] AS \"Col 3\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+            String.format(
+                "SELECT [col1] AS \"Col 1\", [col2] AS \"Col 2\", [col3] AS \"Col 3\" FROM %s",
+                standardizedDataSourceName));
   }
 
   @Test
   void build_should_generate_correct_select_clause_for_no_columns() {
-    ReportSpec reportSpec1 = specBuilder.build();
+    when(dataSourceNameUtils.buildDataSourceName(dataSourceName))
+        .thenReturn(standardizedDataSourceName);
+    ReportSpec reportSpec1 = specBuilder.setDataSourceName(dataSourceName).build();
 
     assertThat(reportSpec1.subsetQuery())
-        .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+        .isEqualTo(String.format("SELECT * FROM %s", standardizedDataSourceName));
   }
 
   @Test
   void build_should_generate_correct_select_clause_for_no_empty_column_list() {
-    ReportSpec reportSpec1 = specBuilder.setColumns(new ArrayList<>()).build();
+    when(dataSourceNameUtils.buildDataSourceName(dataSourceName))
+        .thenReturn(standardizedDataSourceName);
+    ReportSpec reportSpec1 =
+        specBuilder.setDataSourceName(dataSourceName).setColumns(new ArrayList<>()).build();
 
     assertThat(reportSpec1.subsetQuery())
-        .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
-  }
-
-  @Test
-  void build_should_generate_correct_select_clause_for_column_names_with_spaces() {
-    DataSourceColumn column = mockColumn("first column", "Column 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
-
-    assertThat(reportSpec.subsetQuery())
-        .isEqualTo(
-            "SELECT [first column] AS \"Column 1\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
-  }
-
-  @Test
-  void build_should_generate_correct_select_clause_for_column_names_with_keywords() {
-    DataSourceColumn column = mockColumn("user", "User Column");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
-
-    assertThat(reportSpec.subsetQuery())
-        .isEqualTo("SELECT [user] AS \"User Column\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+        .isEqualTo(String.format("SELECT * FROM %s", standardizedDataSourceName));
   }
 
   @Test
@@ -195,27 +222,17 @@ class ReportSpecBuilderTest {
   }
 
   @Test
-  void setLibraryName_should_update_report_spec_libraryName() {
-    DataSourceColumn column = mockColumn("col1", "Col 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    ReportSpec reportSpec =
-        specBuilder.setLibraryName("custom_library").setColumns(columnUids).build();
-
-    assertThat(reportSpec.libraryName()).isEqualTo("custom_library");
+  void setLibraryName_should_throw_illegal_argument_when_empty_libraryname() {
+    assertThatThrownBy(() -> specBuilder.setLibraryName(""))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Report library name cannot be empty");
   }
 
   @Test
-  void setDataSourceName_should_update_report_spec_dataSourceName() {
-    DataSourceColumn column = mockColumn("col1", "Col 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    ReportSpec reportSpec =
-        specBuilder.setDataSourceName("custom.datasource").setColumns(columnUids).build();
-
-    assertThat(reportSpec.dataSourceName()).isEqualTo("custom.datasource");
+  void setDataSourceName_should_throw_illegal_argument_when_empty_data_source_name() {
+    assertThatThrownBy(() -> specBuilder.setDataSourceName(""))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Data source name cannot be empty");
   }
 
   @Test

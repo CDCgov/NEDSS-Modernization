@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
@@ -38,6 +39,7 @@ class ReportServiceTest {
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportSpecBuilder specBuilder;
   @Mock private ReportLibrary reportLibrary;
+  @Mock private DataSource dataSource;
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RequestBodySpec requestBodySpec;
@@ -48,22 +50,26 @@ class ReportServiceTest {
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
 
-  private void mockReport(ReportId id, String runner) {
+  private void mockReport(ReportId id, String runner, String dataSourceName, String libraryName) {
     Report report = mock(Report.class);
 
     when(report.getReportLibrary()).thenReturn(reportLibrary);
+    when(report.getDataSource()).thenReturn(dataSource);
+    when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
     when(reportLibrary.getRunner()).thenReturn(runner);
+    when(reportLibrary.getLibraryName()).thenReturn(libraryName);
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
   }
 
   @Test
   void getReport_should_return_configuration_when_report_exists() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "python");
+    mockReport(id, "python", "nbs_ods.PHCDemographic", "nbs_custom");
 
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
     assertThat(config.runner()).isEqualTo("python");
+    assertThat(config.dataSource().name()).isEqualTo("nbs_ods.PHCDemographic");
   }
 
   @Test
@@ -79,7 +85,7 @@ class ReportServiceTest {
   @Test
   void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "python");
+    mockReport(id, "python", "nbs_ods.PHCDemographic", "nbs_custom");
 
     ReportSpec spec =
         new ReportSpec(
@@ -88,9 +94,12 @@ class ReportServiceTest {
             true,
             "Test Report",
             "nbs_custom",
-            "nbs_rdb.investigation",
-            "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
+            "NBS_ODSE.dbo.PHCDemographic",
+            "SELECT * FROM NBS_ODSE.dbo.PHCDemographic",
             null);
+    when(specBuilder.setDataSourceName("nbs_ods.PHCDemographic")).thenReturn(specBuilder);
+    when(specBuilder.setColumns(List.of(16L))).thenReturn(specBuilder);
+    when(specBuilder.setLibraryName("nbs_custom")).thenReturn(specBuilder);
     when(specBuilder.build()).thenReturn(spec);
 
     when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
@@ -114,7 +123,7 @@ class ReportServiceTest {
   @Test
   void executeReport_should_throw_not_implemented_when_runner_not_python() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "java");
+    mockReport(id, "java", "nbs_rdb.V_CHALK_TALK", "nbs_custom");
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17L), List.of());

@@ -21,6 +21,10 @@ nbs:
       host: localhost
       port: 8001
       url: http://${nbs.report.execution.host}:${nbs.report.execution.port}
+    datasource:
+      mappings:
+        nbs_ods: NBS_ODSE
+        nbs_rdb: RDB
   datasource:
     server: localhost
     port: 1433

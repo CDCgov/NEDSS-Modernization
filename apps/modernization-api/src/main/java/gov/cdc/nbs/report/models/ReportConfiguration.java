@@ -3,7 +3,9 @@ package gov.cdc.nbs.report.models;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ReportConfiguration(
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String runner) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String runner,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportDataSource dataSource,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Library reportLibrary) {
 
   public boolean isPython() {
     return runner().equalsIgnoreCase("python");

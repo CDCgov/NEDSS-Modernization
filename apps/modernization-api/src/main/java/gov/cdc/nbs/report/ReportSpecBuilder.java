@@ -2,6 +2,7 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,14 +15,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReportSpecBuilder {
   private final DataSourceColumnRepository dataSourceColumnRepository;
+  private final DataSourceNameUtils dataSourceNameUtils;
 
-  //  TODO: Remove defaults once support has been established for these fields
+  //  TODO: Remove defaults once support has been established for these fields // NOSONAR
   @Getter private int version = 1;
   @Getter private Boolean isExport = true;
   @Getter private Boolean isBuiltin = true;
   @Getter private String reportTitle = "Test Report";
-  @Getter private String libraryName = "nbs_custom";
-  @Getter private String dataSourceName = "nbs_rdb.investigation";
+  @Getter private String libraryName;
+  @Getter private String dataSourceName;
   @Getter private Map<String, LocalDate> timeRange;
   @Getter private List<DataSourceColumn> columns = new ArrayList<>();
 
@@ -49,8 +51,12 @@ public class ReportSpecBuilder {
             .collect(Collectors.joining(", "));
   }
 
-  public ReportSpecBuilder(final DataSourceColumnRepository dataSourceColumnRepository) {
+  @SuppressWarnings("FieldCanBeLocal")
+  public ReportSpecBuilder(
+      final DataSourceColumnRepository dataSourceColumnRepository,
+      final DataSourceNameUtils dataSourceNameUtils) {
     this.dataSourceColumnRepository = dataSourceColumnRepository;
+    this.dataSourceNameUtils = dataSourceNameUtils;
   }
 
   public ReportSpecBuilder setVersion(int version) {
@@ -74,12 +80,20 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpecBuilder setLibraryName(String libraryName) {
+    if (libraryName.isEmpty()) {
+      throw new IllegalArgumentException("Report library name cannot be empty");
+    }
+
     this.libraryName = libraryName;
     return this;
   }
 
   public ReportSpecBuilder setDataSourceName(String dataSourceName) {
-    this.dataSourceName = dataSourceName;
+    if (dataSourceName.isEmpty()) {
+      throw new IllegalArgumentException("Data source name cannot be empty");
+    }
+
+    this.dataSourceName = dataSourceNameUtils.buildDataSourceName(dataSourceName);
     return this;
   }
 
@@ -100,7 +114,7 @@ public class ReportSpecBuilder {
 
   public ReportSpec build() {
     selectClause = buildSelectClause();
-    fromClause = "FROM [NBS_ODSE].[dbo].[NBS_configuration]";
+    fromClause = String.format("FROM %s", dataSourceName);
     whereClause = "";
     orderByClause = "";
 
