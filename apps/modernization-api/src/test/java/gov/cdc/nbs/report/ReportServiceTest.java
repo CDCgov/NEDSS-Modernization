@@ -15,7 +15,6 @@ import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -81,11 +80,11 @@ class ReportServiceTest {
               assertThat(
                       matchingReportFilter.get().getFilterValues().stream()
                           .map(FilterValue::getId)
-                          .collect(Collectors.toList()))
+                          .toList())
                   .containsAll(
                       filter.filterValues().stream()
                           .map(gov.cdc.nbs.report.models.FilterValue::id)
-                          .collect(Collectors.toList()));
+                          .toList());
             });
   }
 

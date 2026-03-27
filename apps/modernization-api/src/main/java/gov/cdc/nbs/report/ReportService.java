@@ -5,7 +5,6 @@ import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -78,7 +77,7 @@ public class ReportService {
                                                 dbFilterValue.getColumnUid(),
                                                 dbFilterValue.getOperator(),
                                                 dbFilterValue.getValueTxt()))
-                                    .collect(Collectors.toList());
+                                    .toList();
 
                             return new FilterConfiguration(
                                 dbReportFilter.getId(), column, filterCode, filterValues);

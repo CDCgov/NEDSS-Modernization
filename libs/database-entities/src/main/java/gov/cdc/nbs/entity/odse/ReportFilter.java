@@ -23,6 +23,7 @@ public class ReportFilter {
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
   // Report has a composite primary key
+  @SuppressWarnings("java:S1710")
   @JoinColumns({
     @JoinColumn(name = "report_uid", referencedColumnName = "report_uid", nullable = false),
     @JoinColumn(
