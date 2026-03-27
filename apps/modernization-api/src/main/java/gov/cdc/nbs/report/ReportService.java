@@ -2,12 +2,10 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.report.models.FilterConfiguration;
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,12 +38,45 @@ public class ReportService {
               List<FilterConfiguration> filters =
                   report.getReportFilters().stream()
                       .map(
-                          reportFilter ->
-                              new FilterConfiguration(
-                                  reportFilter.getId(),
-                                  reportFilter.getDataSourceColumn(),
-                                  reportFilter.getFilterCode(),
-                                  reportFilter.getFilterValues()))
+                          dbReportFilter -> {
+                            DataSourceColumn column =
+                                new DataSourceColumn(
+                                    dbReportFilter.getDataSourceColumn().getId(),
+                                    dbReportFilter.getDataSourceColumn().getColumnMaxLength(),
+                                    dbReportFilter.getDataSourceColumn().getColumnName(),
+                                    dbReportFilter.getDataSourceColumn().getColumnTitle(),
+                                    dbReportFilter.getDataSourceColumn().getColumnSourceTypeCode(),
+                                    dbReportFilter.getDataSourceColumn().getDescTxt(),
+                                    dbReportFilter.getDataSourceColumn().getDisplayable(),
+                                    dbReportFilter.getDataSourceColumn().getFilterable(),
+                                    dbReportFilter.getDataSourceColumn().getStatusCd(),
+                                    dbReportFilter.getDataSourceColumn().getStatusTime());
+
+                            FilterCode filterCode =
+                                new FilterCode(
+                                    dbReportFilter.getFilterCode().getId(),
+                                    dbReportFilter.getFilterCode().getCodeTable(),
+                                    dbReportFilter.getFilterCode().getDescTxt(),
+                                    dbReportFilter.getFilterCode().getCode(),
+                                    dbReportFilter.getFilterCode().getFilterCodeSetName(),
+                                    dbReportFilter.getFilterCode().getFilterType(),
+                                    dbReportFilter.getFilterCode().getFilterName());
+                            List<FilterValue> filterValues =
+                                dbReportFilter.getFilterValues().stream()
+                                    .map(
+                                        dbFilterValue ->
+                                            new FilterValue(
+                                                dbFilterValue.getId(),
+                                                dbFilterValue.getSequenceNumber(),
+                                                dbFilterValue.getValueType(),
+                                                dbFilterValue.getColumnUid(),
+                                                dbFilterValue.getOperator(),
+                                                dbFilterValue.getValueTxt()))
+                                    .collect(Collectors.toList());
+
+                            return new FilterConfiguration(
+                                dbReportFilter.getId(), column, filterCode, filterValues);
+                          })
                       .toList();
 
               return new ReportConfiguration(report.getReportLibrary().getRunner(), filters);
