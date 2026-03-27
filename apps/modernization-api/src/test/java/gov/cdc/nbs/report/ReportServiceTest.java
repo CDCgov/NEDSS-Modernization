@@ -7,10 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportFilter;
-import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
@@ -18,6 +15,7 @@ import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -76,11 +74,18 @@ class ReportServiceTest {
                       .findAny();
 
               assertThat(matchingReportFilter).isPresent();
-              assertThat(matchingReportFilter.get().getDataSourceColumn())
-                  .isEqualTo(filter.dataSourceColumn());
-              assertThat(matchingReportFilter.get().getFilterCode()).isEqualTo(filter.filterCode());
-              assertThat(matchingReportFilter.get().getFilterValues())
-                  .isEqualTo(filter.filterValues());
+              assertThat(matchingReportFilter.get().getDataSourceColumn().getId())
+                  .isEqualTo(filter.dataSourceColumn().id());
+              assertThat(matchingReportFilter.get().getFilterCode().getId())
+                  .isEqualTo(filter.filterCode().id());
+              assertThat(
+                      matchingReportFilter.get().getFilterValues().stream()
+                          .map(FilterValue::getId)
+                          .collect(Collectors.toList()))
+                  .containsAll(
+                      filter.filterValues().stream()
+                          .map(gov.cdc.nbs.report.models.FilterValue::id)
+                          .collect(Collectors.toList()));
             });
   }
 
