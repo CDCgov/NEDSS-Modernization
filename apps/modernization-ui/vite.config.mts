@@ -34,6 +34,6 @@ export default defineConfig(({ mode }) => {
                 '/login': { target: `http://localhost:${NBS_API_PORT}`, changeOrigin: true },
             },
         },
-        build: { outDir: 'build' },
+        build: { outDir: 'build', assetsDir: 'static' },
     };
 });
