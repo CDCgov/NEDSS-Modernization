@@ -21,13 +21,10 @@ public class ReportService {
   private final RestClient reportExecutionClient;
   private final ReportSpecBuilder specBuilder;
 
-  public ReportService(
-      final ReportRepository reportRepository,
-      RestClient reportExecutionClient,
-      ReportSpecBuilder specBuilder) {
+  public ReportService(final ReportRepository reportRepository, RestClient reportExecutionClient) {
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
-    this.specBuilder = specBuilder;
+    this.specBuilder = new ReportSpecBuilder();
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {

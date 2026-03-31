@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ReportSpecBuilder {
+
   private final DataSourceColumnRepository dataSourceColumnRepository;
 
   //  TODO: Remove defaults once support has been established for these fields
