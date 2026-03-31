@@ -2,44 +2,62 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
 
-import gov.cdc.nbs.entity.odse.DataSourceColumn;
+import gov.cdc.nbs.report.models.FilterConfiguration;
+import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
-import gov.cdc.nbs.repository.DataSourceColumnRepository;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ReportSpecBuilderTest {
 
-  @Mock private DataSourceColumnRepository dataSourceColumnRepository;
-  @InjectMocks private ReportSpecBuilder specBuilder;
+  private FilterConfiguration mockFilterConfiguration(
+      Long columnId, String columnName, String columnTitle) {
+    FilterConfiguration filterConfig = Mockito.mock(FilterConfiguration.class);
 
-  private DataSourceColumn mockColumn(String columnName, String columnTitle) {
-    DataSourceColumn column = Mockito.mock(DataSourceColumn.class);
-    Mockito.lenient().when(column.getColumnName()).thenReturn(columnName);
-    Mockito.lenient().when(column.getColumnTitle()).thenReturn(columnTitle);
+    gov.cdc.nbs.report.models.DataSourceColumn dataSourceColumn =
+        Mockito.mock(gov.cdc.nbs.report.models.DataSourceColumn.class);
+    Mockito.lenient().when(dataSourceColumn.id()).thenReturn(columnId);
+    Mockito.lenient().when(dataSourceColumn.columnName()).thenReturn(columnName);
+    Mockito.lenient().when(dataSourceColumn.columnTitle()).thenReturn(columnTitle);
 
-    return column;
+    Mockito.lenient().when(filterConfig.dataSourceColumn()).thenReturn(dataSourceColumn);
+
+    return filterConfig;
+  }
+
+  private ReportConfiguration mockReportConfiguration(List<FilterConfiguration> filters) {
+    ReportConfiguration reportConfiguration = Mockito.mock(ReportConfiguration.class);
+
+    Mockito.lenient().when(reportConfiguration.filters()).thenReturn(filters);
+
+    return reportConfiguration;
+  }
+
+  private ReportExecutionRequest mockReportExecutionRequest(List<Long> columnUids) {
+    ReportExecutionRequest request = Mockito.mock(ReportExecutionRequest.class);
+
+    Mockito.lenient().when(request.columnUids()).thenReturn(columnUids);
+
+    return request;
   }
 
   @Test
   void should_build_hardcoded_report_spec() {
-    DataSourceColumn column1 = mockColumn("column1", "Column 1");
-    DataSourceColumn column2 = mockColumn("column2", "Column 2");
-    List<Long> columnUids = List.of(1L, 2L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column1, column2));
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "column1", "Column 1");
+    FilterConfiguration filterConfig2 = mockFilterConfiguration(2L, "column2", "Column 2");
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(filterConfig1, filterConfig2));
 
-    ReportSpec reportSpec = specBuilder.fetchColumns(columnUids).build();
+    List<Long> columnUids = List.of(1L, 2L);
+    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
+
+    ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
 
     assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
@@ -54,36 +72,26 @@ class ReportSpecBuilderTest {
 
   @Test
   void setColumns_should_throw_illegal_argument_when_columns_not_found() {
-    List<Long> columnUids = List.of(1L, 2L);
-    DataSourceColumn column1 = mockColumn("column1", "Column 1");
-    when(dataSourceColumnRepository.findAllById(columnUids))
-        .thenReturn(List.of(column1)); // Only one found
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "column1", "Column 1");
+    ReportConfiguration reportConfig = mockReportConfiguration(List.of(filterConfig1));
 
-    assertThatThrownBy(() -> specBuilder.fetchColumns(columnUids))
+    List<Long> columnUids = List.of(1L, 2L);
+    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
+
+    assertThatThrownBy(() -> new ReportSpecBuilder(request, reportConfig).build())
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("One or more of the columns provided is invalid");
-  }
-
-  @Test
-  void setColumns_should_set_columns_when_all_found() {
-    DataSourceColumn column1 = mockColumn("column1", "Column 1");
-    DataSourceColumn column2 = mockColumn("column2", "Column 2");
-    List<Long> columnUids = List.of(1L, 2L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column1, column2));
-
-    ReportSpecBuilder result = specBuilder.fetchColumns(columnUids);
-
-    assertThat(result).isEqualTo(specBuilder);
-    assertThat(result.getColumns()).containsExactly(column1, column2);
+        .hasMessage("No filter column found for columnUid 2");
   }
 
   @Test
   void build_should_generate_correct_select_clause_for_single_column() {
-    DataSourceColumn column = mockColumn("column1", "Column 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "column1", "Column 1");
+    ReportConfiguration reportConfig = mockReportConfiguration(List.of(filterConfig1));
 
-    ReportSpec reportSpec = specBuilder.fetchColumns(columnUids).build();
+    List<Long> columnUids = List.of(1L);
+    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
+
+    ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT [column1] AS \"Column 1\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
@@ -91,15 +99,16 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_multiple_columns() {
-    DataSourceColumn column1 = mockColumn("col1", "Col 1");
-    DataSourceColumn column2 = mockColumn("col2", "Col 2");
-    DataSourceColumn column3 = mockColumn("col3", "Col 3");
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "col1", "Col 1");
+    FilterConfiguration filterConfig2 = mockFilterConfiguration(2L, "col2", "Col 2");
+    FilterConfiguration filterConfig3 = mockFilterConfiguration(3L, "col3", "Col 3");
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(filterConfig1, filterConfig2, filterConfig3));
 
     List<Long> columnUids = List.of(1L, 2L, 3L);
-    when(dataSourceColumnRepository.findAllById(columnUids))
-        .thenReturn(List.of(column1, column2, column3));
+    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
 
-    ReportSpec reportSpec = specBuilder.fetchColumns(columnUids).build();
+    ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
@@ -108,27 +117,28 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_no_columns() {
-    ReportSpec reportSpec1 = specBuilder.build();
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "col1", "Col 1");
+    FilterConfiguration filterConfig2 = mockFilterConfiguration(2L, "col2", "Col 2");
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(filterConfig1, filterConfig2));
 
-    assertThat(reportSpec1.subsetQuery())
-        .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
-  }
+    ReportExecutionRequest request = mockReportExecutionRequest(null);
 
-  @Test
-  void build_should_generate_correct_select_clause_for_no_empty_column_list() {
-    ReportSpec reportSpec1 = specBuilder.fetchColumns(new ArrayList<>()).build();
+    ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
 
-    assertThat(reportSpec1.subsetQuery())
+    assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
   }
 
   @Test
   void build_should_generate_correct_select_clause_for_column_names_with_spaces() {
-    DataSourceColumn column = mockColumn("first column", "Column 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "first column", "Column 1");
+    ReportConfiguration reportConfig = mockReportConfiguration(List.of(filterConfig1));
 
-    ReportSpec reportSpec = specBuilder.fetchColumns(columnUids).build();
+    List<Long> columnUids = List.of(1L);
+    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
+
+    ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
@@ -137,98 +147,15 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_column_names_with_keywords() {
-    DataSourceColumn column = mockColumn("user", "User Column");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "user", "User Column");
+    ReportConfiguration reportConfig = mockReportConfiguration(List.of(filterConfig1));
 
-    ReportSpec reportSpec = specBuilder.fetchColumns(columnUids).build();
+    List<Long> columnUids = List.of(1L);
+    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
+
+    ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT [user] AS \"User Column\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
-  }
-
-  @Test
-  void setVersion_should_update_report_spec_version() {
-    DataSourceColumn column = mockColumn("col1", "Col 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    ReportSpec reportSpec = specBuilder.setVersion(2).setColumns(columnUids).build();
-
-    assertThat(reportSpec.version()).isEqualTo(2);
-    assertThat(reportSpec.isExport()).isTrue();
-    assertThat(reportSpec.isBuiltin()).isTrue();
-  }
-
-  @Test
-  void setIsExport_should_update_report_spec_isExport() {
-    DataSourceColumn column = mockColumn("col1", "Col 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    ReportSpec reportSpec = specBuilder.setIsExport(false).setColumns(columnUids).build();
-
-    assertThat(reportSpec.isExport()).isFalse();
-  }
-
-  @Test
-  void setIsBuiltin_should_update_report_spec_isBuiltin() {
-    DataSourceColumn column = mockColumn("col1", "Col 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    ReportSpec reportSpec = specBuilder.setIsBuiltin(false).setColumns(columnUids).build();
-
-    assertThat(reportSpec.isBuiltin()).isFalse();
-  }
-
-  @Test
-  void setReportTitle_should_update_report_spec_reportTitle() {
-    DataSourceColumn column = mockColumn("col1", "Col 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    ReportSpec reportSpec =
-        specBuilder.setReportTitle("Custom Report").setColumns(columnUids).build();
-
-    assertThat(reportSpec.reportTitle()).isEqualTo("Custom Report");
-  }
-
-  @Test
-  void setLibraryName_should_update_report_spec_libraryName() {
-    DataSourceColumn column = mockColumn("col1", "Col 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    ReportSpec reportSpec =
-        specBuilder.setLibraryName("custom_library").setColumns(columnUids).build();
-
-    assertThat(reportSpec.libraryName()).isEqualTo("custom_library");
-  }
-
-  @Test
-  void setDataSourceName_should_update_report_spec_dataSourceName() {
-    DataSourceColumn column = mockColumn("col1", "Col 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    ReportSpec reportSpec =
-        specBuilder.setDataSourceName("custom.datasource").setColumns(columnUids).build();
-
-    assertThat(reportSpec.dataSourceName()).isEqualTo("custom.datasource");
-  }
-
-  @Test
-  void setTimeRange_should_update_report_spec_timeRange() {
-    DataSourceColumn column = mockColumn("col1", "Col 1");
-    List<Long> columnUids = List.of(1L);
-    when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
-
-    Map<String, LocalDate> timeRange =
-        Map.of("start", LocalDate.of(2024, 1, 1), "end", LocalDate.of(2024, 12, 31));
-
-    ReportSpec reportSpec = specBuilder.setTimeRange(timeRange).setColumns(columnUids).build();
-
-    assertThat(reportSpec.timeRange()).isEqualTo(timeRange);
   }
 }

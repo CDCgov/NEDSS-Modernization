@@ -5,7 +5,6 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,7 +21,7 @@ public class ReportSpecBuilder {
   }
 
   private String buildSelectClause(List<DataSourceColumn> columns) {
-    if (columns == null || columns.isEmpty()) {
+    if (columns == null) {
       return "SELECT *";
     }
 
@@ -33,6 +32,10 @@ public class ReportSpecBuilder {
   }
 
   public List<DataSourceColumn> fetchColumns() {
+    if (reportExecRequest.columnUids() == null || reportExecRequest.columnUids().isEmpty()) {
+      return null;
+    }
+
     List<DataSourceColumn> dataSourceColumns =
         reportExecRequest.columnUids().stream()
             .map(
@@ -56,12 +59,12 @@ public class ReportSpecBuilder {
 
   public ReportSpec build() {
     int version = 1;
-    boolean isExport = reportExecRequest.isExport();
+    boolean isExport = true;
     boolean isBuiltin = true;
     String reportTitle = "Test Report";
     String libraryName = "nbs_custom";
     String dataSourceName = "nbs_rdb.investigation";
-    Map<String, LocalDate> timeRange = new HashMap<>();
+    Map<String, LocalDate> timeRange = null;
     List<DataSourceColumn> columns = fetchColumns();
 
     String selectClause = buildSelectClause(columns);
