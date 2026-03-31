@@ -3,14 +3,13 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportSpec;
-import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.report.mappers.DataSourceColumnMapper;
 import gov.cdc.nbs.report.mappers.FilterCodeMapper;
 import gov.cdc.nbs.report.mappers.FilterValueMapper;
 import gov.cdc.nbs.report.models.*;
+import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
@@ -25,15 +24,10 @@ public class ReportService {
 
   private final ReportRepository reportRepository;
   private final RestClient reportExecutionClient;
-  private final ReportSpecBuilder specBuilder;
 
-  public ReportService(
-      final ReportRepository reportRepository,
-      RestClient reportExecutionClient,
-      DataSourceColumnRepository dataSourceColumnRepository) {
+  public ReportService(final ReportRepository reportRepository, RestClient reportExecutionClient) {
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
-    this.specBuilder = new ReportSpecBuilder(dataSourceColumnRepository);
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
@@ -92,7 +86,8 @@ public class ReportService {
           "Column UIDs cannot be empty - if omitting columns, use `null`");
     }
 
-    ReportSpec reportSpec = specBuilder.setColumns(request.columnUids()).build();
+    ReportSpecBuilder specBuilder = new ReportSpecBuilder(request, reportConfigResponse);
+    ReportSpec reportSpec = specBuilder.build();
 
     return reportExecutionClient
         .post()

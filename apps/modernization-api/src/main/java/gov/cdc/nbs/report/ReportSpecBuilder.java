@@ -1,106 +1,73 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.entity.odse.DataSourceColumn;
+import gov.cdc.nbs.report.models.DataSourceColumn;
+import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
-import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.Getter;
 
 public class ReportSpecBuilder {
+  @Getter private final ReportExecutionRequest reportExecRequest;
+  @Getter private final ReportConfiguration reportConfig;
 
-  private final DataSourceColumnRepository dataSourceColumnRepository;
+  public ReportSpecBuilder(final ReportExecutionRequest request, ReportConfiguration reportConfig) {
+    this.reportExecRequest = request;
+    this.reportConfig = reportConfig;
+  }
 
-  //  TODO: Remove defaults once support has been established for these fields
-  @Getter private int version = 1;
-  @Getter private Boolean isExport = true;
-  @Getter private Boolean isBuiltin = true;
-  @Getter private String reportTitle = "Test Report";
-  @Getter private String libraryName = "nbs_custom";
-  @Getter private String dataSourceName = "nbs_rdb.investigation";
-  @Getter private Map<String, LocalDate> timeRange;
-  @Getter private List<DataSourceColumn> columns = null;
-
-  @SuppressWarnings("FieldCanBeLocal")
-  private String selectClause;
-
-  @SuppressWarnings("FieldCanBeLocal")
-  private String fromClause;
-
-  @SuppressWarnings("FieldCanBeLocal")
-  private String whereClause;
-
-  @SuppressWarnings("FieldCanBeLocal")
-  private String orderByClause;
-
-  private String buildSelectClause() {
+  private String buildSelectClause(List<DataSourceColumn> columns) {
     if (columns == null || columns.isEmpty()) {
       return "SELECT *";
     }
 
     return "SELECT "
         + columns.stream()
-            .map(
-                column -> "[" + column.getColumnName() + "] AS \"" + column.getColumnTitle() + "\"")
+            .map(column -> "[" + column.columnName() + "] AS \"" + column.columnTitle() + "\"")
             .collect(Collectors.joining(", "));
   }
 
-  public ReportSpecBuilder(final DataSourceColumnRepository dataSourceColumnRepository) {
-    this.dataSourceColumnRepository = dataSourceColumnRepository;
-  }
+  public List<DataSourceColumn> fetchColumns() {
+    List<DataSourceColumn> dataSourceColumns =
+        reportExecRequest.columnUids().stream()
+            .map(
+                columnUid ->
+                    reportConfig.filters().stream()
+                        .flatMap(f -> Stream.of(f.dataSourceColumn()))
+                        .filter(column -> column.id().equals(columnUid))
+                        .findFirst()
+                        .orElseThrow(
+                            () ->
+                                new IllegalArgumentException(
+                                    "No filter column found for columnUid " + columnUid)))
+            .toList();
 
-  public ReportSpecBuilder setVersion(int version) {
-    this.version = version;
-    return this;
-  }
-
-  public ReportSpecBuilder setIsExport(Boolean isExport) {
-    this.isExport = isExport;
-    return this;
-  }
-
-  public ReportSpecBuilder setIsBuiltin(Boolean isBuiltin) {
-    this.isBuiltin = isBuiltin;
-    return this;
-  }
-
-  public ReportSpecBuilder setReportTitle(String reportTitle) {
-    this.reportTitle = reportTitle;
-    return this;
-  }
-
-  public ReportSpecBuilder setLibraryName(String libraryName) {
-    this.libraryName = libraryName;
-    return this;
-  }
-
-  public ReportSpecBuilder setDataSourceName(String dataSourceName) {
-    this.dataSourceName = dataSourceName;
-    return this;
-  }
-
-  public ReportSpecBuilder setTimeRange(Map<String, LocalDate> timeRange) {
-    this.timeRange = timeRange;
-    return this;
-  }
-
-  public ReportSpecBuilder setColumns(List<Long> columnUids) {
-    List<DataSourceColumn> dataSourceColumns = dataSourceColumnRepository.findAllById(columnUids);
-    if (dataSourceColumns.size() != columnUids.size()) {
+    if (dataSourceColumns.size() != reportExecRequest.columnUids().size()) {
       throw new IllegalArgumentException("One or more of the columns provided is invalid");
     }
 
-    columns = dataSourceColumns;
-    return this;
+    return dataSourceColumns;
   }
 
   public ReportSpec build() {
-    selectClause = buildSelectClause();
-    fromClause = "FROM [NBS_ODSE].[dbo].[NBS_configuration]";
-    whereClause = "";
-    orderByClause = "";
+    int version = 1;
+    boolean isExport = reportExecRequest.isExport();
+    boolean isBuiltin = true;
+    String reportTitle = "Test Report";
+    String libraryName = "nbs_custom";
+    String dataSourceName = "nbs_rdb.investigation";
+    Map<String, LocalDate> timeRange = new HashMap<>();
+    List<DataSourceColumn> columns = fetchColumns();
+
+    String selectClause = buildSelectClause(columns);
+    String fromClause = "FROM [NBS_ODSE].[dbo].[NBS_configuration]";
+    String whereClause = "";
+    String orderByClause = "";
 
     String subsetQuery =
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();

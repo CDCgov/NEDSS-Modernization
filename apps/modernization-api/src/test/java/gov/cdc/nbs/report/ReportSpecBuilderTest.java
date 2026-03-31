@@ -39,7 +39,7 @@ class ReportSpecBuilderTest {
     List<Long> columnUids = List.of(1L, 2L);
     when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column1, column2));
 
-    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
+    ReportSpec reportSpec = specBuilder.fetchColumns(columnUids).build();
 
     assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
@@ -59,7 +59,7 @@ class ReportSpecBuilderTest {
     when(dataSourceColumnRepository.findAllById(columnUids))
         .thenReturn(List.of(column1)); // Only one found
 
-    assertThatThrownBy(() -> specBuilder.setColumns(columnUids))
+    assertThatThrownBy(() -> specBuilder.fetchColumns(columnUids))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("One or more of the columns provided is invalid");
   }
@@ -71,7 +71,7 @@ class ReportSpecBuilderTest {
     List<Long> columnUids = List.of(1L, 2L);
     when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column1, column2));
 
-    ReportSpecBuilder result = specBuilder.setColumns(columnUids);
+    ReportSpecBuilder result = specBuilder.fetchColumns(columnUids);
 
     assertThat(result).isEqualTo(specBuilder);
     assertThat(result.getColumns()).containsExactly(column1, column2);
@@ -83,7 +83,7 @@ class ReportSpecBuilderTest {
     List<Long> columnUids = List.of(1L);
     when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
 
-    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
+    ReportSpec reportSpec = specBuilder.fetchColumns(columnUids).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT [column1] AS \"Column 1\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
@@ -99,7 +99,7 @@ class ReportSpecBuilderTest {
     when(dataSourceColumnRepository.findAllById(columnUids))
         .thenReturn(List.of(column1, column2, column3));
 
-    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
+    ReportSpec reportSpec = specBuilder.fetchColumns(columnUids).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
@@ -116,7 +116,7 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_no_empty_column_list() {
-    ReportSpec reportSpec1 = specBuilder.setColumns(new ArrayList<>()).build();
+    ReportSpec reportSpec1 = specBuilder.fetchColumns(new ArrayList<>()).build();
 
     assertThat(reportSpec1.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
@@ -128,7 +128,7 @@ class ReportSpecBuilderTest {
     List<Long> columnUids = List.of(1L);
     when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
 
-    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
+    ReportSpec reportSpec = specBuilder.fetchColumns(columnUids).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
@@ -141,7 +141,7 @@ class ReportSpecBuilderTest {
     List<Long> columnUids = List.of(1L);
     when(dataSourceColumnRepository.findAllById(columnUids)).thenReturn(List.of(column));
 
-    ReportSpec reportSpec = specBuilder.setColumns(columnUids).build();
+    ReportSpec reportSpec = specBuilder.fetchColumns(columnUids).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT [user] AS \"User Column\" FROM [NBS_ODSE].[dbo].[NBS_configuration]");
