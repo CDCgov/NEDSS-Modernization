@@ -19,6 +19,7 @@ export type { Clause } from './models/Clause';
 export type { ConceptOptionsResponse } from './models/ConceptOptionsResponse';
 export { Connector } from './models/Connector';
 export type { CreatedPatient } from './models/CreatedPatient';
+export type { DataSourceColumn } from './models/DataSourceColumn';
 export type { DisplayableAddress } from './models/DisplayableAddress';
 export type { DisplayableIdentification } from './models/DisplayableIdentification';
 export type { DisplayableName } from './models/DisplayableName';
@@ -35,6 +36,9 @@ export type { ExistingRaceCategoryValid } from './models/ExistingRaceCategoryVal
 export type { Expr } from './models/Expr';
 export type { Failure } from './models/Failure';
 export type { Filter } from './models/Filter';
+export type { FilterCode } from './models/FilterCode';
+export type { FilterConfiguration } from './models/FilterConfiguration';
+export type { FilterValue } from './models/FilterValue';
 export type { GenderDemographic } from './models/GenderDemographic';
 export type { GeneralInformationDemographic } from './models/GeneralInformationDemographic';
 export type { IdentificationDemographic } from './models/IdentificationDemographic';

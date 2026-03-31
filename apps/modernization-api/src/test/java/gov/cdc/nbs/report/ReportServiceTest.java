@@ -7,10 +7,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.report.mappers.DataSourceColumnMapper;
+import gov.cdc.nbs.report.mappers.FilterCodeMapper;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
@@ -38,6 +38,7 @@ class ReportServiceTest {
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportSpecBuilder specBuilder;
   @Mock private ReportLibrary reportLibrary;
+  @Mock private List<ReportFilter> dbReportFilters;
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RequestBodySpec requestBodySpec;
@@ -52,6 +53,7 @@ class ReportServiceTest {
     Report report = mock(Report.class);
 
     when(report.getReportLibrary()).thenReturn(reportLibrary);
+    when(report.getReportFilters()).thenReturn(dbReportFilters);
     when(reportLibrary.getRunner()).thenReturn(runner);
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
   }
@@ -64,6 +66,24 @@ class ReportServiceTest {
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
     assertThat(config.runner()).isEqualTo("python");
+    assertThat(config.filters())
+        .allSatisfy(
+            filter -> {
+              Optional<ReportFilter> matchingReportFilter =
+                  dbReportFilters.stream()
+                      .filter(f -> f.getId().equals(filter.reportFilterUid()))
+                      .findAny();
+
+              assertThat(matchingReportFilter).isPresent();
+
+              assertThat(filter.dataSourceColumn())
+                  .isEqualTo(
+                      DataSourceColumnMapper.fromDb(
+                          matchingReportFilter.get().getDataSourceColumn()));
+
+              assertThat(filter.filterCode())
+                  .isEqualTo(FilterCodeMapper.fromDb(matchingReportFilter.get().getFilterCode()));
+            });
   }
 
   @Test
