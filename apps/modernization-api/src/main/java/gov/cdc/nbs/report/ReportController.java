@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,8 +39,12 @@ public class ReportController {
 
   @PostMapping("/execute")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
-  public ResponseEntity<String> executeReport(@RequestBody ReportExecutionRequest request) {
-    // TODO: validate request // NOSONAR
+  public ResponseEntity<String> executeReport(
+      @Validated @RequestBody ReportExecutionRequest request, Errors validationErrors) {
+    if (validationErrors.hasErrors()) {
+      return ResponseEntity.unprocessableEntity().body(validationErrors.getAllErrors().toString());
+    }
+
     return reportService.executeReport(request);
   }
 }

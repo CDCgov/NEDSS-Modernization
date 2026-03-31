@@ -3,6 +3,7 @@ package gov.cdc.nbs.report.models;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
 import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -16,9 +17,9 @@ public sealed interface Filter {
               requiredMode = Schema.RequiredMode.REQUIRED,
               type = "boolean",
               allowableValues = {"true"})
-          boolean isBasic,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long reportFilterUid,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<String> values)
+          @NotNull @AssertTrue boolean isBasic,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Long reportFilterUid,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotEmpty List<String> values)
       implements Filter {}
 
   record AdvancedFilter(
@@ -26,8 +27,8 @@ public sealed interface Filter {
               requiredMode = Schema.RequiredMode.REQUIRED,
               type = "boolean",
               allowableValues = {"false"})
-          boolean isBasic,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Expr logic)
+          @NotNull @AssertFalse boolean isBasic,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Expr logic)
       implements Filter {}
 
   @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -37,18 +38,19 @@ public sealed interface Filter {
   })
   sealed interface Expr {
     record Clause(
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long columnUid,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterOperatorCode,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterValue)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Long columnUid,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String filterOperatorCode,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String filterValue)
         implements Expr {}
 
     record Connector(
         @Schema(
                 requiredMode = Schema.RequiredMode.REQUIRED,
                 allowableValues = {"OR", "AND"})
+            @NotNull @Pattern(regexp = "^(OR|AND)$")
             String operator,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Expr left,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Expr right)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Expr left,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Expr right)
         implements Expr {}
   }
 }
