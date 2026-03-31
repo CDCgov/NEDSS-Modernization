@@ -9,8 +9,8 @@ import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.report.mappers.DataSourceColumnMapper;
-import gov.cdc.nbs.report.mappers.FilterCodeMapper;
+import gov.cdc.nbs.report.mappers.FilterColumnMapper;
+import gov.cdc.nbs.report.mappers.FilterOptionMapper;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
@@ -76,13 +76,15 @@ class ReportServiceTest {
 
               assertThat(matchingReportFilter).isPresent();
 
-              assertThat(filter.dataSourceColumn())
+              assertThat(filter.filterColumn())
                   .isEqualTo(
-                      DataSourceColumnMapper.fromDb(
+                      FilterColumnMapper.fromDataSourceColumn(
                           matchingReportFilter.get().getDataSourceColumn()));
 
-              assertThat(filter.filterCode())
-                  .isEqualTo(FilterCodeMapper.fromDb(matchingReportFilter.get().getFilterCode()));
+              assertThat(filter.filterOption())
+                  .isEqualTo(
+                      FilterOptionMapper.fromFilterCode(
+                          matchingReportFilter.get().getFilterCode()));
             });
   }
 
