@@ -40,7 +40,7 @@ public class ReportService {
                   report.getReportFilters().stream()
                       .map(
                           dbReportFilter -> {
-                            DataSourceColumn column = null;
+                            FilterColumn column = null;
 
                             if (dbReportFilter.getDataSourceColumn() != null) {
                               column =
@@ -48,7 +48,7 @@ public class ReportService {
                                       dbReportFilter.getDataSourceColumn());
                             }
 
-                            FilterCode filterCode =
+                            FilterOption filterOption =
                                 FilterCodeMapper.fromDb(dbReportFilter.getFilterCode());
                             List<FilterValue> filterValues =
                                 dbReportFilter.getFilterValues().stream()
@@ -56,7 +56,7 @@ public class ReportService {
                                     .toList();
 
                             return new FilterConfiguration(
-                                dbReportFilter.getId(), column, filterCode, filterValues);
+                                dbReportFilter.getId(), column, filterOption, filterValues);
                           })
                       .toList();
 

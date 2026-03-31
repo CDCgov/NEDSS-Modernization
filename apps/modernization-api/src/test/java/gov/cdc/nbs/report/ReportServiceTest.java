@@ -76,12 +76,12 @@ class ReportServiceTest {
 
               assertThat(matchingReportFilter).isPresent();
 
-              assertThat(filter.dataSourceColumn())
+              assertThat(filter.filterColumn())
                   .isEqualTo(
                       DataSourceColumnMapper.fromDb(
                           matchingReportFilter.get().getDataSourceColumn()));
 
-              assertThat(filter.filterCode())
+              assertThat(filter.filterOption())
                   .isEqualTo(FilterCodeMapper.fromDb(matchingReportFilter.get().getFilterCode()));
             });
   }

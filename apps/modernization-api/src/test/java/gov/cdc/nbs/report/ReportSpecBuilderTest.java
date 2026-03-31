@@ -3,10 +3,7 @@ package gov.cdc.nbs.report;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import gov.cdc.nbs.report.models.FilterConfiguration;
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.*;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,13 +17,12 @@ class ReportSpecBuilderTest {
       Long columnId, String columnName, String columnTitle) {
     FilterConfiguration filterConfig = Mockito.mock(FilterConfiguration.class);
 
-    gov.cdc.nbs.report.models.DataSourceColumn dataSourceColumn =
-        Mockito.mock(gov.cdc.nbs.report.models.DataSourceColumn.class);
-    Mockito.lenient().when(dataSourceColumn.id()).thenReturn(columnId);
-    Mockito.lenient().when(dataSourceColumn.columnName()).thenReturn(columnName);
-    Mockito.lenient().when(dataSourceColumn.columnTitle()).thenReturn(columnTitle);
+    FilterColumn filterColumn = Mockito.mock(FilterColumn.class);
+    Mockito.lenient().when(filterColumn.id()).thenReturn(columnId);
+    Mockito.lenient().when(filterColumn.columnName()).thenReturn(columnName);
+    Mockito.lenient().when(filterColumn.columnTitle()).thenReturn(columnTitle);
 
-    Mockito.lenient().when(filterConfig.dataSourceColumn()).thenReturn(dataSourceColumn);
+    Mockito.lenient().when(filterConfig.filterColumn()).thenReturn(filterColumn);
 
     return filterConfig;
   }

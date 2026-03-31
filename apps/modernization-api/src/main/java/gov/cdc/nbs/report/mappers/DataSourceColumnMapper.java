@@ -1,13 +1,14 @@
 package gov.cdc.nbs.report.mappers;
 
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
+import gov.cdc.nbs.report.models.FilterColumn;
 
 public class DataSourceColumnMapper {
   private DataSourceColumnMapper() {}
 
-  public static gov.cdc.nbs.report.models.DataSourceColumn fromDb(DataSourceColumn dbColumn) {
+  public static FilterColumn fromDb(DataSourceColumn dbColumn) {
 
-    return new gov.cdc.nbs.report.models.DataSourceColumn(
+    return new FilterColumn(
         dbColumn.getId(),
         dbColumn.getColumnMaxLength(),
         dbColumn.getColumnName(),

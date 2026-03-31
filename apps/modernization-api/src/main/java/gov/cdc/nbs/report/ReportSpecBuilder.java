@@ -1,6 +1,6 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.report.models.DataSourceColumn;
+import gov.cdc.nbs.report.models.FilterColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
@@ -20,7 +20,7 @@ public class ReportSpecBuilder {
     this.reportConfig = reportConfig;
   }
 
-  private String buildSelectClause(List<DataSourceColumn> columns) {
+  private String buildSelectClause(List<FilterColumn> columns) {
     if (columns == null) {
       return "SELECT *";
     }
@@ -31,17 +31,17 @@ public class ReportSpecBuilder {
             .collect(Collectors.joining(", "));
   }
 
-  public List<DataSourceColumn> fetchColumns() {
+  public List<FilterColumn> fetchColumns() {
     if (reportExecRequest.columnUids() == null || reportExecRequest.columnUids().isEmpty()) {
       return null;
     }
 
-    List<DataSourceColumn> dataSourceColumns =
+    List<FilterColumn> filterColumns =
         reportExecRequest.columnUids().stream()
             .map(
                 columnUid ->
                     reportConfig.filters().stream()
-                        .flatMap(f -> Stream.of(f.dataSourceColumn()))
+                        .flatMap(f -> Stream.of(f.filterColumn()))
                         .filter(column -> column.id().equals(columnUid))
                         .findFirst()
                         .orElseThrow(
@@ -50,11 +50,11 @@ public class ReportSpecBuilder {
                                     "No filter column found for columnUid " + columnUid)))
             .toList();
 
-    if (dataSourceColumns.size() != reportExecRequest.columnUids().size()) {
+    if (filterColumns.size() != reportExecRequest.columnUids().size()) {
       throw new IllegalArgumentException("One or more of the columns provided is invalid");
     }
 
-    return dataSourceColumns;
+    return filterColumns;
   }
 
   public ReportSpec build() {
@@ -65,7 +65,7 @@ public class ReportSpecBuilder {
     String libraryName = "nbs_custom";
     String dataSourceName = "nbs_rdb.investigation";
     Map<String, LocalDate> timeRange = null;
-    List<DataSourceColumn> columns = fetchColumns();
+    List<FilterColumn> columns = fetchColumns();
 
     String selectClause = buildSelectClause(columns);
     String fromClause = "FROM [NBS_ODSE].[dbo].[NBS_configuration]";

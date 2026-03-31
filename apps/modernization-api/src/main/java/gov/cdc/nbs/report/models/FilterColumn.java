@@ -3,7 +3,7 @@ package gov.cdc.nbs.report.models;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
-public record DataSourceColumn(
+public record FilterColumn(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long id,
     Integer columnMaxLength,
     String columnName,
