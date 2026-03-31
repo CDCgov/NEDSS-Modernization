@@ -31,6 +31,11 @@ nbs:
   security:
     oidc:
       enabled: false
+  report:
+    execution:
+      host: report-execution
+      port: 8001
+      url: http://${nbs.report.execution.host}:${nbs.report.execution.port}
   ui:
     settings:
       defaults:
@@ -78,7 +83,10 @@ nbs:
       report:
         execution:
           enabled: true
-          
+# Currenly binding the enabling of liquibase to the enabling of the 
+# report execution feature, as it's currently the only module using it.
+# If the report execution feature is disabled, then there are no changelogs
+# to be managed, and thereby nothing for liquibase to actually do.
 spring:
   liquibase:
-    enabled: true
+    enabled: ${nbs.ui.features.report.execution.enabled}
