@@ -2,6 +2,9 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.report.mappers.DataSourceColumnMapper;
+import gov.cdc.nbs.report.mappers.FilterCodeMapper;
+import gov.cdc.nbs.report.mappers.FilterValueMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
@@ -42,41 +45,15 @@ public class ReportService {
 
                             if (dbReportFilter.getDataSourceColumn() != null) {
                               column =
-                                  new DataSourceColumn(
-                                      dbReportFilter.getDataSourceColumn().getId(),
-                                      dbReportFilter.getDataSourceColumn().getColumnMaxLength(),
-                                      dbReportFilter.getDataSourceColumn().getColumnName(),
-                                      dbReportFilter.getDataSourceColumn().getColumnTitle(),
-                                      dbReportFilter
-                                          .getDataSourceColumn()
-                                          .getColumnSourceTypeCode(),
-                                      dbReportFilter.getDataSourceColumn().getDescTxt(),
-                                      dbReportFilter.getDataSourceColumn().getDisplayable(),
-                                      dbReportFilter.getDataSourceColumn().getFilterable(),
-                                      dbReportFilter.getDataSourceColumn().getStatusCd(),
-                                      dbReportFilter.getDataSourceColumn().getStatusTime());
+                                  DataSourceColumnMapper.fromDb(
+                                      dbReportFilter.getDataSourceColumn());
                             }
 
                             FilterCode filterCode =
-                                new FilterCode(
-                                    dbReportFilter.getFilterCode().getId(),
-                                    dbReportFilter.getFilterCode().getCodeTable(),
-                                    dbReportFilter.getFilterCode().getDescTxt(),
-                                    dbReportFilter.getFilterCode().getCode(),
-                                    dbReportFilter.getFilterCode().getFilterCodeSetName(),
-                                    dbReportFilter.getFilterCode().getFilterType(),
-                                    dbReportFilter.getFilterCode().getFilterName());
+                                FilterCodeMapper.fromDb(dbReportFilter.getFilterCode());
                             List<FilterValue> filterValues =
                                 dbReportFilter.getFilterValues().stream()
-                                    .map(
-                                        dbFilterValue ->
-                                            new FilterValue(
-                                                dbFilterValue.getId(),
-                                                dbFilterValue.getSequenceNumber(),
-                                                dbFilterValue.getValueType(),
-                                                dbFilterValue.getColumnUid(),
-                                                dbFilterValue.getOperator(),
-                                                dbFilterValue.getValueTxt()))
+                                    .map(FilterValueMapper::fromDb)
                                     .toList();
 
                             return new FilterConfiguration(
