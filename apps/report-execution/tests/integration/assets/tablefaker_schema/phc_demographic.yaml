@@ -53,6 +53,22 @@ tables:
             return "47"
           else:
             return None
+      - column_name: county
+        type: string
+        data: random.choice(["Washington County", "Polk County"]) if random.random() < .95 else None
+      - column_name: cnty_cd
+        data: |
+          prefix = "" if state_cd is None else state_cd
+          if county == "Washington County":
+            return prefix + "001"
+          elif county == "Polk County":
+            return prefix + "002"
+          else:
+            return None
+      - column_name: cntry_cd
+        type: string
+        data: |
+          return "840" if random.random() < .95 else None
   
 # === Columns not needed for reports yet ===
 # adults_in_house_nbr smallint NULL,
@@ -83,9 +99,6 @@ tables:
 # confidentiality_desc_txt varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 # confirmation_method_cd varchar(300) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 # confirmation_method_time datetime NULL,
-# county varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-# cntry_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-# cnty_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 # curr_sex_cd char(1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 # deceased_ind_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 # deceased_time datetime NULL,

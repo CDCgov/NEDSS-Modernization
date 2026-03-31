@@ -152,7 +152,7 @@ def execute(
     header = 'SR5: Cases of Reportable Diseases by State'
     subheader = f'{", ".join(state_list)} | {today.strftime("%m/%d/%Y")}'
     description = (
-        '*<u>Report Content</u>*\n'
+        '*<u>Report content</u>*\n'
         '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
         '*Output:* Report demonstrates, in table form, the total number of '
         'Investigation(s) [both Individual and Summary] irrespective of Case Status.\n'
