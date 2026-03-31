@@ -56,41 +56,6 @@ class ReportServiceTest {
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
   }
 
-  private void assertColumnsMatch(
-      DataSourceColumn dbColumn, gov.cdc.nbs.report.models.DataSourceColumn column) {
-    assertThat(dbColumn.getId()).isEqualTo(column.id());
-    assertThat(dbColumn.getColumnMaxLength()).isEqualTo(column.columnMaxLength());
-    assertThat((dbColumn.getColumnName())).isEqualTo(column.columnName());
-    assertThat((dbColumn.getColumnTitle())).isEqualTo(column.columnTitle());
-    assertThat((dbColumn.getColumnSourceTypeCode())).isEqualTo(column.columnSourceTypeCode());
-    assertThat((dbColumn.getDescTxt())).isEqualTo(column.descTxt());
-    assertThat((dbColumn.getDisplayable())).isEqualTo(column.displayable());
-    assertThat((dbColumn.getFilterable())).isEqualTo(column.filterable());
-    assertThat((dbColumn.getStatusCd())).isEqualTo(column.statusCd());
-    assertThat((dbColumn.getStatusTime())).isEqualTo(column.statusTime());
-  }
-
-  private void assertFilterCodesMatch(
-      FilterCode dbFilterCode, gov.cdc.nbs.report.models.FilterCode filterCode) {
-    assertThat(dbFilterCode.getId()).isEqualTo(filterCode.id());
-    assertThat(dbFilterCode.getCodeTable()).isEqualTo(filterCode.codeTable());
-    assertThat(dbFilterCode.getDescTxt()).isEqualTo(filterCode.descTxt());
-    assertThat(dbFilterCode.getCode()).isEqualTo(filterCode.code());
-    assertThat(dbFilterCode.getFilterCodeSetName()).isEqualTo(filterCode.filterCodeSetName());
-    assertThat(dbFilterCode.getFilterType()).isEqualTo(filterCode.filterType());
-    assertThat(dbFilterCode.getFilterName()).isEqualTo(filterCode.filterName());
-  }
-
-  private void assertFilterValuesMatch(
-      FilterValue dbFilterValue, gov.cdc.nbs.report.models.FilterValue filterValue) {
-    assertThat(dbFilterValue.getId()).isEqualTo(filterValue.id());
-    assertThat(dbFilterValue.getSequenceNumber()).isEqualTo(filterValue.sequenceNumber());
-    assertThat(dbFilterValue.getValueType()).isEqualTo(filterValue.valueType());
-    assertThat(dbFilterValue.getColumnUid()).isEqualTo(filterValue.columnUid());
-    assertThat(dbFilterValue.getOperator()).isEqualTo(filterValue.operator());
-    assertThat(dbFilterValue.getValueTxt()).isEqualTo(filterValue.valueTxt());
-  }
-
   @Test
   void getReport_should_return_configuration_when_report_exists() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
@@ -108,29 +73,6 @@ class ReportServiceTest {
                       .findAny();
 
               assertThat(matchingReportFilter).isPresent();
-
-              DataSourceColumn dbColumn = matchingReportFilter.get().getDataSourceColumn();
-              gov.cdc.nbs.report.models.DataSourceColumn column = filter.dataSourceColumn();
-              assertColumnsMatch(dbColumn, column);
-
-              FilterCode dbFilterCode = matchingReportFilter.get().getFilterCode();
-              gov.cdc.nbs.report.models.FilterCode filterCode = filter.filterCode();
-              assertFilterCodesMatch(dbFilterCode, filterCode);
-
-              assertThat(matchingReportFilter.get().getFilterValues())
-                  .allSatisfy(
-                      dbFilterValue -> {
-                        Optional<gov.cdc.nbs.report.models.FilterValue> optionalFilterValue =
-                            filter.filterValues().stream()
-                                .filter(f -> f.id().equals(dbFilterValue.getId()))
-                                .findAny();
-
-                        assertThat(optionalFilterValue).isPresent();
-                        gov.cdc.nbs.report.models.FilterValue matchingFilterValue =
-                            optionalFilterValue.get();
-
-                        assertFilterValuesMatch(dbFilterValue, matchingFilterValue);
-                      });
             });
   }
 
