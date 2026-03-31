@@ -1,6 +1,9 @@
 package gov.cdc.nbs.report.mappers;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gov.cdc.nbs.entity.odse.FilterCode;
+import org.junit.jupiter.api.Test;
 
 class FilterCodeMapperTest {
 
