@@ -4,7 +4,6 @@ import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,7 +22,7 @@ public class ReportSpecBuilder {
   @Getter private String libraryName = "nbs_custom";
   @Getter private String dataSourceName = "nbs_rdb.investigation";
   @Getter private Map<String, LocalDate> timeRange;
-  @Getter private List<DataSourceColumn> columns = new ArrayList<>();
+  @Getter private List<DataSourceColumn> columns = null;
 
   @SuppressWarnings("FieldCanBeLocal")
   private String selectClause;

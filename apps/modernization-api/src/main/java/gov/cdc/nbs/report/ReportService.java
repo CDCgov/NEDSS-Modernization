@@ -2,6 +2,7 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
@@ -51,6 +52,11 @@ public class ReportService {
       throw new NotImplementedException(
           String.format("Report not implemented for %s", reportConfigResponse.runner()),
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
+    }
+
+    if (request.columnUids() != null && request.columnUids().isEmpty()) {
+      throw new UnprocessableEntityException(
+          "Column UIDs cannot be empty - if omitting columns, use `null`");
     }
 
     ReportSpec reportSpec = specBuilder.setColumns(request.columnUids()).build();
