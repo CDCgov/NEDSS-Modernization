@@ -37,7 +37,7 @@ public class ReportSpecBuilder {
   private String orderByClause;
 
   private String buildSelectClause() {
-    if (columns.isEmpty()) {
+    if (columns == null || columns.isEmpty()) {
       return "SELECT *";
     }
 
