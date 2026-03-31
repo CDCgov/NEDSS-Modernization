@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class FilterOptionMapperTest {
 
   @Test
-  void fromDb_should_map_all_fields() {
+  void fromFilterCode_should_map_all_fields() {
     FilterCode dbFilterCode =
         FilterCode.builder()
             .id(2L)
@@ -21,7 +21,7 @@ class FilterOptionMapperTest {
             .filterName("Filter Name")
             .build();
 
-    FilterOption mapped = FilterCodeMapper.fromDb(dbFilterCode);
+    FilterOption mapped = FilterOptionMapper.fromFilterCode(dbFilterCode);
 
     assertThat(mapped.id()).isEqualTo(dbFilterCode.getId());
     assertThat(mapped.codeTable()).isEqualTo(dbFilterCode.getCodeTable());

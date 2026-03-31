@@ -8,13 +8,14 @@ import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.report.models.FilterValueOption;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-class FilterValueMapperTest {
+class FilterValueOptionMapperTest {
 
   @Test
-  void fromDb_should_map_all_fields() {
+  void fromFilterValue_should_map_all_fields() {
     ReportLibrary reportLibrary = new ReportLibrary();
     reportLibrary.setId(10L);
     reportLibrary.setLibraryName("lib_name");
@@ -57,7 +58,7 @@ class FilterValueMapperTest {
             .valueTxt("text value")
             .build();
 
-    gov.cdc.nbs.report.models.FilterValue mapped = FilterValueMapper.fromDb(dbFilterValue);
+    FilterValueOption mapped = FilterValueOptionMapper.fromFilterValue(dbFilterValue);
 
     assertThat(mapped.id()).isEqualTo(dbFilterValue.getId());
     assertThat(mapped.sequenceNumber()).isEqualTo(dbFilterValue.getSequenceNumber());

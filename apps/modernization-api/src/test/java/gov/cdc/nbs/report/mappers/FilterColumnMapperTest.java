@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 class FilterColumnMapperTest {
 
   @Test
-  void fromDb_should_map_all_fields() {
+  void fromDataSourceColumn_should_map_all_fields() {
     DataSource dataSource = DataSource.builder().id(100L).statusCd('A').build();
     DataSourceColumn dbColumn =
         DataSourceColumn.builder()
@@ -28,7 +28,7 @@ class FilterColumnMapperTest {
             .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
             .build();
 
-    FilterColumn mapped = DataSourceColumnMapper.fromDb(dbColumn);
+    FilterColumn mapped = FilterColumnMapper.fromDataSourceColumn(dbColumn);
 
     assertThat(mapped.id()).isEqualTo(dbColumn.getId());
     assertThat(mapped.columnMaxLength()).isEqualTo(dbColumn.getColumnMaxLength());

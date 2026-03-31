@@ -3,9 +3,9 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
-import gov.cdc.nbs.report.mappers.DataSourceColumnMapper;
-import gov.cdc.nbs.report.mappers.FilterCodeMapper;
-import gov.cdc.nbs.report.mappers.FilterValueMapper;
+import gov.cdc.nbs.report.mappers.FilterColumnMapper;
+import gov.cdc.nbs.report.mappers.FilterOptionMapper;
+import gov.cdc.nbs.report.mappers.FilterValueOptionMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
@@ -44,19 +44,19 @@ public class ReportService {
 
                             if (dbReportFilter.getDataSourceColumn() != null) {
                               column =
-                                  DataSourceColumnMapper.fromDb(
+                                  FilterColumnMapper.fromDataSourceColumn(
                                       dbReportFilter.getDataSourceColumn());
                             }
 
                             FilterOption filterOption =
-                                FilterCodeMapper.fromDb(dbReportFilter.getFilterCode());
-                            List<FilterValue> filterValues =
+                                FilterOptionMapper.fromFilterCode(dbReportFilter.getFilterCode());
+                            List<FilterValueOption> filterValueOptions =
                                 dbReportFilter.getFilterValues().stream()
-                                    .map(FilterValueMapper::fromDb)
+                                    .map(FilterValueOptionMapper::fromFilterValue)
                                     .toList();
 
                             return new FilterConfiguration(
-                                dbReportFilter.getId(), column, filterOption, filterValues);
+                                dbReportFilter.getId(), column, filterOption, filterValueOptions);
                           })
                       .toList();
 
