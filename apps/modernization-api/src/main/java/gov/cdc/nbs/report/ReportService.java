@@ -3,7 +3,7 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
-import gov.cdc.nbs.report.mappers.FilterOptionMapper;
+import gov.cdc.nbs.report.mappers.FilterTypeMapper;
 import gov.cdc.nbs.report.mappers.FilterDefaultValueMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.ReportRepository;
@@ -49,15 +49,15 @@ public class ReportService {
                                       dbReportFilter.getDataSourceColumn());
                             }
 
-                            FilterOption filterOption =
-                                FilterOptionMapper.fromFilterCode(dbReportFilter.getFilterCode());
+                            FilterType filterType =
+                                FilterTypeMapper.fromFilterCode(dbReportFilter.getFilterCode());
                             List<FilterDefaultValue> filterDefaultValues =
                                 dbReportFilter.getFilterValues().stream()
                                     .map(FilterDefaultValueMapper::fromFilterValue)
                                     .toList();
 
                             return new FilterConfiguration(
-                                dbReportFilter.getId(), column, filterOption, filterDefaultValues);
+                                dbReportFilter.getId(), column, filterType, filterDefaultValues);
                           })
                       .toList();
 
