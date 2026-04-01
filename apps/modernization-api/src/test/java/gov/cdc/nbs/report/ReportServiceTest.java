@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.mappers.FilterTypeMapper;
-import gov.cdc.nbs.report.mappers.ReportColumnMapper;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
@@ -76,10 +75,8 @@ class ReportServiceTest {
 
               assertThat(matchingReportFilter).isPresent();
 
-              assertThat(filter.reportColumn())
-                  .isEqualTo(
-                      ReportColumnMapper.fromDataSourceColumn(
-                          matchingReportFilter.get().getDataSourceColumn()));
+              assertThat(filter.reportColumnUid())
+                  .isEqualTo(matchingReportFilter.get().getDataSourceColumn().getId());
 
               assertThat(filter.filterType())
                   .isEqualTo(
