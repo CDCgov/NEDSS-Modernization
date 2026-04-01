@@ -1,14 +1,14 @@
 import datetime
 
 from src.db_transaction import Transaction
-from src.models import ReportResult
+from src.models import ReportResult, TimeRange
 
 
 def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
-    time_range: dict | None = None,
+    time_range: TimeRange | None = None,
     **kwargs,
 ):
     """Standard Report 09: Monthly Cases by Disease and State.
