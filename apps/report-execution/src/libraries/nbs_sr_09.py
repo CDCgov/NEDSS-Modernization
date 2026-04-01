@@ -25,8 +25,8 @@ def execute(
 
     # Handle time range filtering
     if time_range:
-        start_date = time_range.get('start')
-        end_date = time_range.get('end')
+        start_date = time_range.start
+        end_date = time_range.end
     else:
         # Default to last 12 months if no time range specified
         start_date = (today.replace(day=1) - datetime.timedelta(days=365)).strftime('%Y-%m-%d')
@@ -83,10 +83,10 @@ def execute(
         '  FORMAT(event_date, \'MMM\'), \n'
         '  FORMAT(event_date, \'yyyyMM\')\n'
         'ORDER BY \n'
-        '  state, \n'
-        '  county, \n'
         '  phc_code_short_desc, \n'
-        '  month_code'
+        '  month_code, \n'
+        '  state, \n'
+        '  county'
     )
 
     # Get state(s) for subheader display

@@ -1,5 +1,5 @@
 import datetime
-
+from decimal import Decimal
 import pytest
 import yaml
 
@@ -69,7 +69,7 @@ class TestIntegrationNbsSr09Library:
             assert isinstance(row[col_index['disease']], str)
             assert isinstance(row[col_index['month_name']], str)
             assert isinstance(row[col_index['month_code']], str)
-            assert isinstance(row[col_index['cases']], (int, float))
+            assert isinstance(row[col_index['cases']], Decimal)
             
             # Cases should be non-negative
             assert row[col_index['cases']] >= 0
