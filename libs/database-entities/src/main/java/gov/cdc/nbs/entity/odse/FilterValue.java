@@ -30,7 +30,7 @@ public class FilterValue {
   @NonNull @Column(name = "value_type", length = 20)
   private String valueType;
 
-  @NonNull @Column(name = "column_uid")
+  @Column(name = "column_uid")
   private Long columnUid;
 
   @Column(name = "operator", length = 20)
