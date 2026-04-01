@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
-import gov.cdc.nbs.report.models.FilterColumn;
+import gov.cdc.nbs.report.models.ReportColumn;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-class FilterColumnMapperTest {
+class ReportColumnMapperTest {
 
   @Test
   void fromDataSourceColumn_should_map_all_fields() {
@@ -28,7 +28,7 @@ class FilterColumnMapperTest {
             .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
             .build();
 
-    FilterColumn mapped = FilterColumnMapper.fromDataSourceColumn(dbColumn);
+    ReportColumn mapped = ReportColumnMapper.fromDataSourceColumn(dbColumn);
 
     assertThat(mapped.id()).isEqualTo(dbColumn.getId());
     assertThat(mapped.columnMaxLength()).isEqualTo(dbColumn.getColumnMaxLength());

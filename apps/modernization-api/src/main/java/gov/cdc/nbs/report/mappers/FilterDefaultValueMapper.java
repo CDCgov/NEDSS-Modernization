@@ -1,13 +1,13 @@
 package gov.cdc.nbs.report.mappers;
 
 import gov.cdc.nbs.entity.odse.FilterValue;
-import gov.cdc.nbs.report.models.FilterValueOption;
+import gov.cdc.nbs.report.models.FilterDefaultValue;
 
-public class FilterValueOptionMapper {
-  private FilterValueOptionMapper() {}
+public class FilterDefaultValueMapper {
+  private FilterDefaultValueMapper() {}
 
-  public static FilterValueOption fromFilterValue(FilterValue filterValue) {
-    return new FilterValueOption(
+  public static FilterDefaultValue fromFilterValue(FilterValue filterValue) {
+    return new FilterDefaultValue(
         filterValue.getId(),
         filterValue.getSequenceNumber(),
         filterValue.getValueType(),

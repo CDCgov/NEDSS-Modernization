@@ -3,9 +3,8 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
-import gov.cdc.nbs.report.mappers.FilterColumnMapper;
-import gov.cdc.nbs.report.mappers.FilterOptionMapper;
-import gov.cdc.nbs.report.mappers.FilterValueOptionMapper;
+import gov.cdc.nbs.report.mappers.FilterDefaultValueMapper;
+import gov.cdc.nbs.report.mappers.FilterTypeMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
@@ -40,23 +39,21 @@ public class ReportService {
                   report.getReportFilters().stream()
                       .map(
                           dbReportFilter -> {
-                            FilterColumn column = null;
+                            Long columnUid = null;
 
                             if (dbReportFilter.getDataSourceColumn() != null) {
-                              column =
-                                  FilterColumnMapper.fromDataSourceColumn(
-                                      dbReportFilter.getDataSourceColumn());
+                              columnUid = dbReportFilter.getDataSourceColumn().getId();
                             }
 
-                            FilterOption filterOption =
-                                FilterOptionMapper.fromFilterCode(dbReportFilter.getFilterCode());
-                            List<FilterValueOption> filterValueOptions =
+                            FilterType filterType =
+                                FilterTypeMapper.fromFilterCode(dbReportFilter.getFilterCode());
+                            List<FilterDefaultValue> filterDefaultValues =
                                 dbReportFilter.getFilterValues().stream()
-                                    .map(FilterValueOptionMapper::fromFilterValue)
+                                    .map(FilterDefaultValueMapper::fromFilterValue)
                                     .toList();
 
                             return new FilterConfiguration(
-                                dbReportFilter.getId(), column, filterOption, filterValueOptions);
+                                dbReportFilter.getId(), columnUid, filterType, filterDefaultValues);
                           })
                       .toList();
 

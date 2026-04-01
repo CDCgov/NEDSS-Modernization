@@ -3,10 +3,10 @@ package gov.cdc.nbs.report.mappers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.cdc.nbs.entity.odse.FilterCode;
-import gov.cdc.nbs.report.models.FilterOption;
+import gov.cdc.nbs.report.models.FilterType;
 import org.junit.jupiter.api.Test;
 
-class FilterOptionMapperTest {
+class FilterTypeMapperTest {
 
   @Test
   void fromFilterCode_should_map_all_fields() {
@@ -21,7 +21,7 @@ class FilterOptionMapperTest {
             .filterName("Filter Name")
             .build();
 
-    FilterOption mapped = FilterOptionMapper.fromFilterCode(dbFilterCode);
+    FilterType mapped = FilterTypeMapper.fromFilterCode(dbFilterCode);
 
     assertThat(mapped.id()).isEqualTo(dbFilterCode.getId());
     assertThat(mapped.codeTable()).isEqualTo(dbFilterCode.getCodeTable());

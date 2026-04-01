@@ -2,13 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { DataSourceColumn } from './DataSourceColumn';
-import type { FilterCode } from './FilterCode';
-import type { FilterValue } from './FilterValue';
+import type { FilterDefaultValue } from './FilterDefaultValue';
+import type { FilterType } from './FilterType';
 export type FilterConfiguration = {
     reportFilterUid: number;
-    dataSourceColumn?: DataSourceColumn;
-    filterCode: FilterCode;
-    filterValues: Array<FilterValue>;
+    reportColumnUid?: number;
+    filterType: FilterType;
+    filterDefaultValues: Array<FilterDefaultValue>;
 };
 

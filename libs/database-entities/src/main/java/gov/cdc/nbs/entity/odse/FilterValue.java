@@ -24,19 +24,19 @@ public class FilterValue {
   @JoinColumn(name = "report_filter_uid", nullable = false)
   private ReportFilter reportFilter;
 
-  @NonNull @Column(name = "sequence_nbr")
+  @Column(name = "sequence_nbr")
   private Integer sequenceNumber;
 
-  @NonNull @Column(name = "value_type", length = 20)
+  @Column(name = "value_type", length = 20)
   private String valueType;
 
-  @NonNull @Column(name = "column_uid")
+  @Column(name = "column_uid")
   private Long columnUid;
 
-  @NonNull @Column(name = "operator", length = 20)
+  @Column(name = "operator", length = 20)
   private String operator;
 
-  @NonNull @Column(name = "value_txt", length = 2000)
+  @Column(name = "value_txt", length = 2000)
   private String valueTxt;
 
   protected FilterValue() {}
