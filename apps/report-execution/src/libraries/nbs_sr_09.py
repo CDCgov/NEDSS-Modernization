@@ -37,19 +37,6 @@ def execute(
         )
         end_date = today.strftime('%Y-%m-%d')
 
-    # Get distinct months in order for potential display ordering
-    months_query = trx.query(
-        f'WITH subset as ({subset_query})\n'
-        'SELECT DISTINCT\n'
-        '  FORMAT(event_date, \'MMM\') as monyr,\n'
-        '  FORMAT(event_date, \'yyyyMM\') as ord\n'
-        'FROM subset\n'
-        f'WHERE event_date >= \'{start_date}\'\n'
-        f'  AND event_date <= \'{end_date}\'\n'
-        '  AND event_date IS NOT NULL\n'
-        'ORDER BY ord'
-    )
-
     # Main query to get monthly aggregated data
     content = trx.query(
         f'WITH subset as ({subset_query})\n'
