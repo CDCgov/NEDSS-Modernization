@@ -21,6 +21,11 @@ const Fixture = ({ visible = true }) => {
     return <ImportConfigurationModal visible={visible} onCancel={onCancel} onImport={onImport} />;
 };
 describe('ImportConfigurationModal', () => {
+    beforeEach(() => {
+        onImport.mockClear();
+        onCancel.mockClear();
+    });
+
     it('should show proper heading', () => {
         const { getByText } = render(<Fixture />);
 
