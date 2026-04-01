@@ -219,8 +219,9 @@ class TestIntegrationNbsSr09Library:
         assert 'Measles' in result.subheader
 
     def test_execute_report_no_time_range(self):
-        """Test report works without explicit time range 
-        (defaults to last 12 months)."""
+        """Test report works without explicit time range
+        (defaults to last 12 months).
+        """
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
