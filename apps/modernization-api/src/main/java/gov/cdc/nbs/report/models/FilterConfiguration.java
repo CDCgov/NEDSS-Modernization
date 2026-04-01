@@ -8,4 +8,4 @@ public record FilterConfiguration(
     ReportColumn reportColumn,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) FilterOption filterOption,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        List<FilterValueOption> filterValueOptions) {}
+        List<FilterDefaultValue> filterDefaultValues) {}
