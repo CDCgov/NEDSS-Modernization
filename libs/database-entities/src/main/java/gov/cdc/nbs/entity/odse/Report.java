@@ -36,7 +36,7 @@ public class Report {
       updatable = false)
   private DataSource dataSource;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibrary;
 
