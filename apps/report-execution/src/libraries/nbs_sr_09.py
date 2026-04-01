@@ -18,6 +18,8 @@ def execute(
     Individual and Summary] for a given disease, by State, irrespective of Case 
     Status.'
 
+    NOTE: In python, we are only returning the underlying data for the graph in a 
+    tabular format, whereas the SAS version created the bar graph.
 
     """
     today = datetime.date.today()
