@@ -53,7 +53,7 @@ class TestIntegrationNbsSr09Library:
         for row in data:
             # Find the row index for each column (don't assume order)
             col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-            
+
             # Basic column presence checks
             assert 'state_cd' in col_index
             assert 'state' in col_index
@@ -62,7 +62,7 @@ class TestIntegrationNbsSr09Library:
             assert 'month_name' in col_index
             assert 'month_code' in col_index
             assert 'cases' in col_index
-            
+
             # Data type and value checks
             assert isinstance(row[col_index['state_cd']], str)
             assert isinstance(row[col_index['state']], str)
@@ -71,15 +71,15 @@ class TestIntegrationNbsSr09Library:
             assert isinstance(row[col_index['month_name']], str)
             assert isinstance(row[col_index['month_code']], str)
             assert isinstance(row[col_index['cases']], Decimal)
-            
+
             # Cases should be non-negative
             assert row[col_index['cases']] >= 0
-            
+
             # Month code should be 6-digit YYYYMM format
             month_code = row[col_index['month_code']]
             assert len(month_code) == 6
             assert month_code.isdigit()
-            
+
             # Month name should be 3 letters
             month_name = row[col_index['month_name']]
             assert len(month_name) in [3, 4]  # Some months like 'Sept' might be 4 chars
@@ -106,12 +106,12 @@ class TestIntegrationNbsSr09Library:
         # Verify only months in the specified range appear
         data = result.content.data
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-        
+
         valid_months = {'202403', '202404', '202405'}
         for row in data:
             month_code = row[col_index['month_code']]
             assert month_code in valid_months
-            
+
             # Verify month names match the codes
             month_map = {
                 '202403': 'Mar',
@@ -132,7 +132,7 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
-                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     "WHERE state = 'Georgia'"
                 ),
                 'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
@@ -145,10 +145,10 @@ class TestIntegrationNbsSr09Library:
         # Verify all records are for Georgia
         data = result.content.data
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-        
+
         for row in data:
             assert row[col_index['state']] == 'Georgia'
-            
+
         # Subheader should include Georgia
         assert 'Georgia' in result.subheader
 
@@ -163,7 +163,7 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
-                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     "WHERE phc_code_short_desc = 'Pertussis'"
                 ),
                 'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
@@ -176,10 +176,10 @@ class TestIntegrationNbsSr09Library:
         # Verify all records are for Pertussis
         data = result.content.data
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-        
+
         for row in data:
             assert row[col_index['disease']] == 'Pertussis'
-            
+
         # Subheader should include Pertussis
         assert 'Pertussis' in result.subheader
 
@@ -194,7 +194,7 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
-                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     "WHERE state = 'Tennessee' "
                     "AND phc_code_short_desc = 'Measles'"
                 ),
@@ -208,12 +208,12 @@ class TestIntegrationNbsSr09Library:
         # Verify all filters applied correctly
         data = result.content.data
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-        
+
         for row in data:
             assert row[col_index['state']] == 'Tennessee'
             assert row[col_index['disease']] == 'Measles'
             assert row[col_index['month_code']] == '202404'
-            
+
         # Subheader should include the filtered values
         assert 'Tennessee' in result.subheader
         assert 'Measles' in result.subheader
@@ -237,7 +237,7 @@ class TestIntegrationNbsSr09Library:
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-        
+
         # Should return data (may be empty if no data in last 12 months)
         # Check that subheader indicates last 12 months
         assert 'Last 12 Months' in result.subheader
@@ -261,11 +261,11 @@ class TestIntegrationNbsSr09Library:
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-        
+
         # Should return empty dataset but with correct column structure
         assert len(result.content.data) == 0
         # state_cd, state, county, disease, month_name, month_code, cases
-        assert len(result.content.columns) == 7 
+        assert len(result.content.columns) == 7
 
     def test_execute_report_check_column_order(self):
         """Verify column names and order match expected output."""
@@ -283,7 +283,7 @@ class TestIntegrationNbsSr09Library:
         )
 
         result = execute_report(report_spec)
-        
+
         # Expected column order (matching SQL query in the library)
         expected_columns = [
             'state_cd',
@@ -292,9 +292,9 @@ class TestIntegrationNbsSr09Library:
             'disease',
             'month_name',
             'month_code',
-            'cases'
+            'cases',
         ]
-        
+
         assert result.content.columns == expected_columns
 
     def test_execute_report_check_metadata(self):
@@ -313,24 +313,24 @@ class TestIntegrationNbsSr09Library:
         )
 
         result = execute_report(report_spec)
-        
+
         # Check header
         assert result.header == 'SR9: Monthly Cases by Disease and State'
-        
+
         # Check subheader contains expected elements
         assert 'State(s):' in result.subheader
         assert 'Disease(s):' in result.subheader
         assert 'Time Period:' in result.subheader
         assert '2024-01-01 to 2024-06-30' in result.subheader
         assert '06/24/2024' in result.subheader
-        
+
         # Check description contains required sections
         assert len(result.description) > 100
         assert 'Report Content' in result.description
         assert 'Data Source:' in result.description
         assert 'Total Monthly Cases' in result.description
         assert 'Event Date:' in result.description
-        
+
         assert result.content_type == 'table'
 
     def test_execute_report_with_county_data(self):
@@ -349,11 +349,11 @@ class TestIntegrationNbsSr09Library:
         )
 
         result = execute_report(report_spec)
-        
+
         # Verify county column exists and has values
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
         assert 'county' in col_index
-        
+
         # Check that counties are properly set
         counties = {row[col_index['county']] for row in result.content.data}
         assert len(counties) > 0
@@ -376,10 +376,10 @@ class TestIntegrationNbsSr09Library:
         )
 
         result = execute_report(report_spec)
-        
+
         # Group by disease and check month ordering
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-        
+
         # Group data by disease
         disease_data = {}
         for row in result.content.data:
@@ -387,7 +387,7 @@ class TestIntegrationNbsSr09Library:
             if disease not in disease_data:
                 disease_data[disease] = []
             disease_data[disease].append(row)
-        
+
         # For each disease, verify months are in order
         for _disease, rows in disease_data.items():
             month_codes = [row[col_index['month_code']] for row in rows]
