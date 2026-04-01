@@ -219,7 +219,8 @@ class TestIntegrationNbsSr09Library:
         assert 'Measles' in result.subheader
 
     def test_execute_report_no_time_range(self):
-        """Test report works without explicit time range (defaults to last 12 months)."""
+        """Test report works without explicit time range 
+        (defaults to last 12 months)."""
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -262,7 +263,8 @@ class TestIntegrationNbsSr09Library:
         
         # Should return empty dataset but with correct column structure
         assert len(result.content.data) == 0
-        assert len(result.content.columns) == 7  # state_cd, state, county, disease, month_name, month_code, cases
+        # state_cd, state, county, disease, month_name, month_code, cases
+        assert len(result.content.columns) == 7 
 
     def test_execute_report_check_column_order(self):
         """Verify column names and order match expected output."""
@@ -351,7 +353,7 @@ class TestIntegrationNbsSr09Library:
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
         assert 'county' in col_index
         
-        # Check that counties are properly set (shouldn't be all 'N/A' unless data missing)
+        # Check that counties are properly set
         counties = {row[col_index['county']] for row in result.content.data}
         assert len(counties) > 0
         # At least some counties should have real values (not all 'N/A')
@@ -386,7 +388,7 @@ class TestIntegrationNbsSr09Library:
             disease_data[disease].append(row)
         
         # For each disease, verify months are in order
-        for disease, rows in disease_data.items():
+        for _disease, rows in disease_data.items():
             month_codes = [row[col_index['month_code']] for row in rows]
             # Should be in ascending order
             assert month_codes == sorted(month_codes)
