@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type FilterCode = {
+export type FilterType = {
     id: number;
     codeTable?: string;
     descTxt?: string;

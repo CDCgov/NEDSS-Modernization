@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type FilterValue = {
+export type FilterDefaultValue = {
     id: number;
     sequenceNumber?: number;
     valueType?: string;
