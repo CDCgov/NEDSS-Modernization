@@ -1,12 +1,9 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.time.EffectiveTime;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +23,9 @@ public class DataSource {
   @Id
   @Column(name = "data_source_uid", nullable = false, updatable = false)
   private Long id;
+
+  @OneToMany(mappedBy = "dataSource", fetch = FetchType.LAZY)
+  private List<DataSourceColumn> dataSourceColumns;
 
   @Column(name = "column_max_len")
   private Integer columnMaxLen;

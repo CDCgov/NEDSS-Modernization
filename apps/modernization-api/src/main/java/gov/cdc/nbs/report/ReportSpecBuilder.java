@@ -1,6 +1,6 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.report.models.FilterColumn;
+import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.Getter;
 
 public class ReportSpecBuilder {
@@ -20,7 +19,7 @@ public class ReportSpecBuilder {
     this.reportConfig = reportConfig;
   }
 
-  private String buildSelectClause(List<FilterColumn> columns) {
+  private String buildSelectClause(List<ReportColumn> columns) {
     if (columns == null) {
       return "SELECT *";
     }
@@ -31,30 +30,28 @@ public class ReportSpecBuilder {
             .collect(Collectors.joining(", "));
   }
 
-  public List<FilterColumn> fetchColumns() {
+  private ReportColumn findMatchingColumn(Long columnUid) {
+    return reportConfig.columns().stream()
+        .filter(column -> column.id().equals(columnUid))
+        .findFirst()
+        .orElseThrow(
+            () ->
+                new IllegalArgumentException("No report column found for columnUid " + columnUid));
+  }
+
+  public List<ReportColumn> fetchColumns() {
     if (reportExecRequest.columnUids() == null || reportExecRequest.columnUids().isEmpty()) {
       return null;
     }
 
-    List<FilterColumn> filterColumns =
-        reportExecRequest.columnUids().stream()
-            .map(
-                columnUid ->
-                    reportConfig.filters().stream()
-                        .flatMap(f -> Stream.of(f.filterColumn()))
-                        .filter(column -> column.id().equals(columnUid))
-                        .findFirst()
-                        .orElseThrow(
-                            () ->
-                                new IllegalArgumentException(
-                                    "No filter column found for columnUid " + columnUid)))
-            .toList();
+    List<ReportColumn> reportColumns =
+        reportExecRequest.columnUids().stream().map(this::findMatchingColumn).toList();
 
-    if (filterColumns.size() != reportExecRequest.columnUids().size()) {
+    if (reportColumns.size() != reportExecRequest.columnUids().size()) {
       throw new IllegalArgumentException("One or more of the columns provided is invalid");
     }
 
-    return filterColumns;
+    return reportColumns;
   }
 
   public ReportSpec build() {
@@ -65,7 +62,7 @@ public class ReportSpecBuilder {
     String libraryName = "nbs_custom";
     String dataSourceName = "nbs_rdb.investigation";
     Map<String, LocalDate> timeRange = null;
-    List<FilterColumn> columns = fetchColumns();
+    List<ReportColumn> columns = fetchColumns();
 
     String selectClause = buildSelectClause(columns);
     String fromClause = "FROM [NBS_ODSE].[dbo].[NBS_configuration]";
