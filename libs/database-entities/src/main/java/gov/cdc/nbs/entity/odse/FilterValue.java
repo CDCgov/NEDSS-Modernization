@@ -36,7 +36,7 @@ public class FilterValue {
   @NonNull @Column(name = "operator", length = 20)
   private String operator;
 
-  @NonNull @Column(name = "value_txt", length = 2000)
+  @Column(name = "value_txt", length = 2000)
   private String valueTxt;
 
   protected FilterValue() {}
