@@ -2,7 +2,7 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.report.mappers.FilterColumnMapper;
+import gov.cdc.nbs.report.mappers.ReportColumnMapper;
 import gov.cdc.nbs.report.mappers.FilterOptionMapper;
 import gov.cdc.nbs.report.mappers.FilterValueOptionMapper;
 import gov.cdc.nbs.report.models.*;
@@ -41,11 +41,11 @@ public class ReportService {
                   report.getReportFilters().stream()
                       .map(
                           dbReportFilter -> {
-                            FilterColumn column = null;
+                            ReportColumn column = null;
 
                             if (dbReportFilter.getDataSourceColumn() != null) {
                               column =
-                                  FilterColumnMapper.fromDataSourceColumn(
+                                  ReportColumnMapper.fromDataSourceColumn(
                                       dbReportFilter.getDataSourceColumn());
                             }
 
