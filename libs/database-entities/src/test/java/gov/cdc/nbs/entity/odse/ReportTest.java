@@ -133,8 +133,7 @@ class ReportTest {
 
     assertThat(actual)
         .isNotNull()
-        .extracting(
-            "id", "sectionCd") // Extracts fields directly, bypassing getters
+        .extracting("id", "sectionCd") // Extracts fields directly, bypassing getters
         .containsOnlyNulls();
   }
 }
