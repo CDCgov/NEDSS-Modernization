@@ -24,7 +24,7 @@ public class FilterValue {
   @JoinColumn(name = "report_filter_uid", nullable = false)
   private ReportFilter reportFilter;
 
-  @NonNull @Column(name = "sequence_nbr")
+  @Column(name = "sequence_nbr")
   private Integer sequenceNumber;
 
   @Column(name = "value_type", length = 20)
