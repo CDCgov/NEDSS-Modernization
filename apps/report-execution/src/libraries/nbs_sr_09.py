@@ -13,13 +13,12 @@ def execute(
 ):
     """Standard Report 09: Monthly Cases by Disease and State.
 
-    Each row represents monthly case counts for a specific disease and state,
-    with columns for state, county, disease, month, and case count.
+    'SR9: Bar Graph of Selected Disease by Month.  Report demonstrates, using a 
+    vertical bar graph, the total number of monthly Investigation(s) [both 
+    Individual and Summary] for a given disease, by State, irrespective of Case 
+    Status.'
 
-    Conversion notes:
-    * Provides underlying data for bar graph visualization
-    * Returns monthly aggregated case counts
-    * Includes month name and sortable month code (YYYYMM)
+
     """
     today = datetime.date.today()
 
@@ -29,7 +28,11 @@ def execute(
         end_date = time_range.end
     else:
         # Default to last 12 months if no time range specified
-        start_date = (today.replace(day=1) - datetime.timedelta(days=365)).strftime('%Y-%m-%d')
+        start_date = (
+            today.replace(day=1) - datetime.timedelta(days=365)
+        ).strftime(
+            '%Y-%m-%d'
+        )
         end_date = today.strftime('%Y-%m-%d')
 
     # Get distinct months in order for potential display ordering
