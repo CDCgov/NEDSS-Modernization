@@ -13,24 +13,30 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ReportSpecBuilderTest {
 
-  private FilterConfiguration mockFilterConfiguration(
-      Long columnId, String columnName, String columnTitle) {
+  private FilterConfiguration mockFilterConfiguration(Long columnId) {
     FilterConfiguration filterConfig = Mockito.mock(FilterConfiguration.class);
 
-    FilterColumn filterColumn = Mockito.mock(FilterColumn.class);
-    Mockito.lenient().when(filterColumn.id()).thenReturn(columnId);
-    Mockito.lenient().when(filterColumn.columnName()).thenReturn(columnName);
-    Mockito.lenient().when(filterColumn.columnTitle()).thenReturn(columnTitle);
-
-    Mockito.lenient().when(filterConfig.filterColumn()).thenReturn(filterColumn);
+    Mockito.lenient().when(filterConfig.reportColumnUid()).thenReturn(columnId);
 
     return filterConfig;
   }
 
-  private ReportConfiguration mockReportConfiguration(List<FilterConfiguration> filters) {
+  private ReportColumn mockReportColumn(Long columnId, String columnName, String columnTitle) {
+    ReportColumn reportColumn = Mockito.mock(ReportColumn.class);
+
+    Mockito.lenient().when(reportColumn.id()).thenReturn(columnId);
+    Mockito.lenient().when(reportColumn.columnName()).thenReturn(columnName);
+    Mockito.lenient().when(reportColumn.columnTitle()).thenReturn(columnTitle);
+
+    return reportColumn;
+  }
+
+  private ReportConfiguration mockReportConfiguration(
+      List<FilterConfiguration> filters, List<ReportColumn> columns) {
     ReportConfiguration reportConfiguration = Mockito.mock(ReportConfiguration.class);
 
     Mockito.lenient().when(reportConfiguration.filters()).thenReturn(filters);
+    Mockito.lenient().when(reportConfiguration.reportColumns()).thenReturn(columns);
 
     return reportConfiguration;
   }
@@ -45,12 +51,20 @@ class ReportSpecBuilderTest {
 
   @Test
   void should_build_hardcoded_report_spec() {
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "column1", "Column 1");
-    FilterConfiguration filterConfig2 = mockFilterConfiguration(2L, "column2", "Column 2");
-    ReportConfiguration reportConfig =
-        mockReportConfiguration(List.of(filterConfig1, filterConfig2));
+    Long columnUid1 = 1L;
+    Long columnUid2 = 2L;
 
-    List<Long> columnUids = List.of(1L, 2L);
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
+    FilterConfiguration filterConfig2 = mockFilterConfiguration(columnUid2);
+
+    ReportColumn reportColumn1 = mockReportColumn(columnUid1, "column1", "Column 1");
+    ReportColumn reportColumn2 = mockReportColumn(columnUid2, "column2", "Column 2");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(
+            List.of(filterConfig1, filterConfig2), List.of(reportColumn1, reportColumn2));
+
+    List<Long> columnUids = List.of(columnUid1, columnUid2);
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
 
     ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
@@ -68,10 +82,16 @@ class ReportSpecBuilderTest {
 
   @Test
   void setColumns_should_throw_illegal_argument_when_columns_not_found() {
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "column1", "Column 1");
-    ReportConfiguration reportConfig = mockReportConfiguration(List.of(filterConfig1));
+    Long knownColumnUid = 1L;
+    Long unknownColumnUid = 2L;
 
-    List<Long> columnUids = List.of(1L, 2L);
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(knownColumnUid);
+    ReportColumn reportColumn1 = mockReportColumn(knownColumnUid, "column1", "Column 1");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
+
+    List<Long> columnUids = List.of(knownColumnUid, unknownColumnUid);
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
 
     assertThatThrownBy(() -> new ReportSpecBuilder(request, reportConfig).build())
@@ -81,10 +101,15 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_single_column() {
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "column1", "Column 1");
-    ReportConfiguration reportConfig = mockReportConfiguration(List.of(filterConfig1));
+    Long columnUid1 = 1L;
 
-    List<Long> columnUids = List.of(1L);
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
+    ReportColumn reportColumn1 = mockReportColumn(columnUid1, "column1", "Column 1");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
+
+    List<Long> columnUids = List.of(columnUid1);
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
 
     ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
@@ -95,13 +120,24 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_multiple_columns() {
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "col1", "Col 1");
-    FilterConfiguration filterConfig2 = mockFilterConfiguration(2L, "col2", "Col 2");
-    FilterConfiguration filterConfig3 = mockFilterConfiguration(3L, "col3", "Col 3");
-    ReportConfiguration reportConfig =
-        mockReportConfiguration(List.of(filterConfig1, filterConfig2, filterConfig3));
+    Long columnUid1 = 1L;
+    Long columnUid2 = 2L;
+    Long columnUid3 = 3L;
 
-    List<Long> columnUids = List.of(1L, 2L, 3L);
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
+    FilterConfiguration filterConfig2 = mockFilterConfiguration(columnUid2);
+    FilterConfiguration filterConfig3 = mockFilterConfiguration(columnUid3);
+
+    ReportColumn reportColumn1 = mockReportColumn(columnUid1, "col1", "Col 1");
+    ReportColumn reportColumn2 = mockReportColumn(columnUid2, "col2", "Col 2");
+    ReportColumn reportColumn3 = mockReportColumn(columnUid3, "col3", "Col 3");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(
+            List.of(filterConfig1, filterConfig2, filterConfig3),
+            List.of(reportColumn1, reportColumn2, reportColumn3));
+
+    List<Long> columnUids = List.of(columnUid1, columnUid2, columnUid3);
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
 
     ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
@@ -113,10 +149,15 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_no_columns() {
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "col1", "Col 1");
-    FilterConfiguration filterConfig2 = mockFilterConfiguration(2L, "col2", "Col 2");
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L);
+    FilterConfiguration filterConfig2 = mockFilterConfiguration(2L);
+
+    ReportColumn reportColumn1 = mockReportColumn(1L, "col1", "Col 1");
+    ReportColumn reportColumn2 = mockReportColumn(2L, "col2", "Col 2");
+
     ReportConfiguration reportConfig =
-        mockReportConfiguration(List.of(filterConfig1, filterConfig2));
+        mockReportConfiguration(
+            List.of(filterConfig1, filterConfig2), List.of(reportColumn1, reportColumn2));
 
     ReportExecutionRequest request = mockReportExecutionRequest(null);
 
@@ -128,10 +169,15 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_column_names_with_spaces() {
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "first column", "Column 1");
-    ReportConfiguration reportConfig = mockReportConfiguration(List.of(filterConfig1));
+    Long columnUid1 = 1L;
 
-    List<Long> columnUids = List.of(1L);
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
+    ReportColumn reportColumn1 = mockReportColumn(columnUid1, "first column", "Column 1");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
+
+    List<Long> columnUids = List.of(columnUid1);
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
 
     ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
@@ -143,10 +189,15 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_column_names_with_keywords() {
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L, "user", "User Column");
-    ReportConfiguration reportConfig = mockReportConfiguration(List.of(filterConfig1));
+    Long columnUid1 = 1L;
 
-    List<Long> columnUids = List.of(1L);
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
+    ReportColumn reportColumn1 = mockReportColumn(columnUid1, "user", "User Column");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
+
+    List<Long> columnUids = List.of(columnUid1);
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
 
     ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();

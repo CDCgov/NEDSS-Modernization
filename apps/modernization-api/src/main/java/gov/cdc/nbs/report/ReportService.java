@@ -94,7 +94,7 @@ public class ReportService {
 
     if (request.columnUids() != null && request.columnUids().isEmpty()) {
       throw new UnprocessableEntityException(
-          "Column UIDs cannot be empty - if omitting columns, use `null`");
+          "Column UIDs cannot be empty - if omitting reportColumns, use `null`");
     }
 
     ReportSpecBuilder specBuilder = new ReportSpecBuilder(request, reportConfigResponse);

@@ -31,7 +31,7 @@ public class ReportSpecBuilder {
   }
 
   private ReportColumn findMatchingColumn(Long columnUid) {
-    return reportConfig.columns().stream()
+    return reportConfig.reportColumns().stream()
         .filter(column -> column.id().equals(columnUid))
         .findFirst()
         .orElseThrow(
@@ -48,7 +48,7 @@ public class ReportSpecBuilder {
         reportExecRequest.columnUids().stream().map(this::findMatchingColumn).toList();
 
     if (reportColumns.size() != reportExecRequest.columnUids().size()) {
-      throw new IllegalArgumentException("One or more of the columns provided is invalid");
+      throw new IllegalArgumentException("One or more of the reportColumns provided is invalid");
     }
 
     return reportColumns;

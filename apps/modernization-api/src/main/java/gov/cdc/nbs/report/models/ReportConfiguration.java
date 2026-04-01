@@ -6,7 +6,7 @@ import java.util.List;
 public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String runner,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<FilterConfiguration> filters,
-    List<ReportColumn> columns) {
+    List<ReportColumn> reportColumns) {
 
   public boolean isPython() {
     return runner().equalsIgnoreCase("python");
