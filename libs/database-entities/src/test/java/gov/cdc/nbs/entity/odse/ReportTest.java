@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class ReportTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThatThrownBy(() -> new Report(null, null, null))
+    assertThatThrownBy(() -> new Report(null, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("id is marked non-null but is null");
   }
@@ -24,10 +24,9 @@ class ReportTest {
     Long reportId = 1L;
     Long dataSource = 2L;
     ReportId id = new ReportId(reportId, dataSource);
-    ReportLibrary reportLibrary = new ReportLibrary();
     String sectionCd = "1000";
 
-    Report actual = new Report(id, reportLibrary, sectionCd);
+    Report actual = new Report(id, sectionCd);
 
     assertThat(actual)
         .satisfies(report -> assertEquals(reportId, report.getId().getReportUid()))
@@ -46,7 +45,7 @@ class ReportTest {
         .satisfies(report -> assertNull(report.getAddReasonCd()))
         .satisfies(report -> assertNull(report.getAddTime()))
         .satisfies(report -> assertNull(report.getAddUserUid()))
-        .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
+        .satisfies(report -> assertNull(report.getReportLibrary()))
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()));
   }
 
@@ -138,8 +137,7 @@ class ReportTest {
 
     assertThat(actual)
         .isNotNull()
-        .extracting(
-            "id", "reportLibrary", "sectionCd") // Extracts fields directly, bypassing getters
+        .extracting("id", "sectionCd") // Extracts fields directly, bypassing getters
         .containsOnlyNulls();
   }
 }
