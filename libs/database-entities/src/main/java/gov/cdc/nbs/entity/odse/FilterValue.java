@@ -27,7 +27,7 @@ public class FilterValue {
   @NonNull @Column(name = "sequence_nbr")
   private Integer sequenceNumber;
 
-  @NonNull @Column(name = "value_type", length = 20)
+  @Column(name = "value_type", length = 20)
   private String valueType;
 
   @Column(name = "column_uid")
