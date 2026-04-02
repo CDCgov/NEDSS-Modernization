@@ -17,7 +17,6 @@ def execute(
     whereas the SAS version created the bar graph.
 
     """
-
     start_date = time_range.start
     end_date = time_range.end
 
