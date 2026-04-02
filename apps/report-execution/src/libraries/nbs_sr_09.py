@@ -12,8 +12,7 @@ def execute(
     **kwargs,
 ):
     """Standard Report 09: Monthly Cases by Disease and County for Selected State 
-    and Time Frame.
-
+    and Time Frame
 
     Conversion notes:
     * We are only returning the underlying data for the graph in a tabular format, 
@@ -75,8 +74,8 @@ def execute(
     disease_set = set()
     
     for row in content.data:
-        state = row[col_index['state']]
-        disease = row[col_index['disease']]
+        state = row[col_index['State']]
+        disease = row[col_index['Condition']]
         if state is not None:
             state_set.add(state)
         if disease is not None:

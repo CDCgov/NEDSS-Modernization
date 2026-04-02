@@ -1,7 +1,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - N/A
+  - null
   - Measles
   - Jan
   - '202401'
@@ -71,23 +71,23 @@
   - !!python/object/apply:decimal.Decimal
     - '37.00000'
 - !!python/tuple
-  - '13'
-  - Georgia
-  - N/A
-  - Measles
-  - May
-  - '202405'
-  - !!python/object/apply:decimal.Decimal
-    - '90.00000'
-- !!python/tuple
-  - N/A
-  - N/A
+  - null
+  - null
   - Polk County
   - Measles
   - May
   - '202405'
   - !!python/object/apply:decimal.Decimal
     - '8.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
+  - May
+  - '202405'
+  - !!python/object/apply:decimal.Decimal
+    - '90.00000'
 - !!python/tuple
   - '47'
   - Tennessee
@@ -179,6 +179,15 @@
   - !!python/object/apply:decimal.Decimal
     - '89.00000'
 - !!python/tuple
+  - null
+  - null
+  - null
+  - Pertussis
+  - Mar
+  - '202403'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
   - '13'
   - Georgia
   - Polk County
@@ -196,15 +205,6 @@
   - '202403'
   - !!python/object/apply:decimal.Decimal
     - '33.00000'
-- !!python/tuple
-  - N/A
-  - N/A
-  - N/A
-  - Pertussis
-  - Mar
-  - '202403'
-  - !!python/object/apply:decimal.Decimal
-    - '21.00000'
 - !!python/tuple
   - '47'
   - Tennessee
@@ -332,6 +332,15 @@
   - !!python/object/apply:decimal.Decimal
     - '66.00000'
 - !!python/tuple
+  - null
+  - null
+  - Polk County
+  - Salmonellosis
+  - Feb
+  - '202402'
+  - !!python/object/apply:decimal.Decimal
+    - '40.00000'
+- !!python/tuple
   - '13'
   - Georgia
   - Polk County
@@ -349,15 +358,6 @@
   - '202402'
   - !!python/object/apply:decimal.Decimal
     - '111.00000'
-- !!python/tuple
-  - N/A
-  - N/A
-  - Polk County
-  - Salmonellosis
-  - Feb
-  - '202402'
-  - !!python/object/apply:decimal.Decimal
-    - '40.00000'
 - !!python/tuple
   - '47'
   - Tennessee
