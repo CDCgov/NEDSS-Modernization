@@ -1,6 +1,6 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult, Table
-from src.libraries.nbs_sr_05 import execute
+from src.libraries.nbs_sr_05 import execute as execute_nbs_sr_05
 
 def execute(
     trx: Transaction,
@@ -21,7 +21,7 @@ def execute(
     * - subheader
     * - content (data is modified to fit expected table format of nbs_sr_07.py)
     """
-    nbs_sr_05_report_result = execute(trx, subset_query, data_source_name, **kwargs)
+    nbs_sr_05_report_result = execute_nbs_sr_05(trx, subset_query, data_source_name, **kwargs)
     nbs_sr_05_report_result_content = nbs_sr_05_report_result.content.data
 
     modified_table = Table(
@@ -31,8 +31,8 @@ def execute(
 
     for index, row in enumerate(nbs_sr_05_report_result_content):
         rows_to_add = [
-            (row[0], 'Five Year Median YTD', row[4]),
-            (row[0], 'Current YTD', row[2])
+            (row[3], 'Five Year Median YTD', row[6]),
+            (row[3], 'Current YTD', row[2])
         ]
         modified_table.data.extend(rows_to_add)
 
