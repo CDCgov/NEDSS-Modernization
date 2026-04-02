@@ -22,14 +22,14 @@ def execute(
     * - content (data is modified to fit expected table format of nbs_sr_07.py)
     """
     nbs_sr_05_report_result = execute_nbs_sr_05(trx, subset_query, data_source_name, **kwargs)
-    nbs_sr_05_report_result_content = nbs_sr_05_report_result.content.data
+    nbs_sr_05_report_result_rows = nbs_sr_05_report_result.content.data
 
     modified_table = Table(
         columns=['Disease', 'type', 'Number of Cases'],
         data=[]
     )
 
-    for index, row in enumerate(nbs_sr_05_report_result_content):
+    for index, row in enumerate(nbs_sr_05_report_result_rows):
         rows_to_add = [
             (row[3], 'Five Year Median YTD', row[6]),
             (row[3], 'Current YTD', row[2])
