@@ -11,31 +11,29 @@ def execute(
     time_range: TimeRange | None = None,
     **kwargs,
 ):
-    """Standard Report 09: Monthly Cases by Disease and State.
+    """Standard Report 09: Monthly Cases by Disease and County for Selected State 
+    and Time Frame.
 
-    'SR9: Bar Graph of Selected Disease by Month.  Report demonstrates, using a
-    vertical bar graph, the total number of monthly Investigation(s) [both
-    Individual and Summary] for a given disease, by State, irrespective of Case
-    Status.'
 
-    NOTE: In python, we are only returning the underlying data for the graph in a
-    tabular format, whereas the SAS version created the bar graph.
+    Conversion notes:
+    * We are only returning the underlying data for the graph in a tabular format, 
+    whereas the SAS version created the bar graph.
 
     """
-
+    # time_range will always be provided
     start_date = time_range.start
     end_date = time_range.end
 
-    # Main query to get monthly aggregated data
+    # Single query to get monthly aggregated data
     content = trx.query(
         f'WITH subset as ({subset_query})\n'
-        # Clean up NULL values (matching SAS behavior)
+        # Clean data
         ', cleaned_data as (\n'
         'SELECT \n'
-        "  COALESCE(state_cd, 'N/A') as state_cd,\n"
-        "  COALESCE(state, 'N/A') as state,\n"
-        "  COALESCE(county, 'N/A') as county,\n"
-        "  COALESCE(cnty_cd, 'N/A') as cnty_cd,\n"
+        '  state_cd,\n'
+        '  state,\n'
+        '  county,\n'
+        '  cnty_cd,\n'
         '  phc_code_short_desc,\n'
         '  event_date,\n'
         '  group_case_cnt\n'
@@ -46,15 +44,15 @@ def execute(
         '  AND phc_code_short_desc IS NOT NULL\n'
         "  AND phc_code_short_desc != ''\n"
         ')\n'
-        # Monthly aggregation
+        # Monthly aggregation with exact column names matching the export
         'SELECT \n'
-        '  state_cd,\n'
-        '  state,\n'
-        '  county,\n'
-        '  phc_code_short_desc as disease,\n'
-        "  FORMAT(event_date, 'MMM') as month_name,\n"
-        "  FORMAT(event_date, 'yyyyMM') as month_code,\n"
-        '  SUM(group_case_cnt) as cases\n'
+        '  state_cd as [State Code],\n'
+        '  state as [State],\n'
+        '  county as [County],\n'
+        '  phc_code_short_desc as [Condition],\n'
+        "  FORMAT(event_date, 'MMM') as monyr,\n"
+        "  FORMAT(event_date, 'yyyyMM') as ord,\n"
+        '  SUM(group_case_cnt) as Cases\n'
         'FROM cleaned_data\n'
         'GROUP BY \n'
         '  state_cd, \n'
@@ -65,51 +63,44 @@ def execute(
         "  FORMAT(event_date, 'yyyyMM')\n"
         'ORDER BY \n'
         '  phc_code_short_desc, \n'
-        '  month_code, \n'
+        '  ord, \n'
         '  state, \n'
         '  county'
     )
 
-    # Get state(s) for subheader display
-    states = trx.query(
-        f'WITH subset as ({subset_query})\n'
-        "SELECT DISTINCT COALESCE(state, 'N/A') as state\n"
-        'FROM subset\n'
-        "WHERE state IS NOT NULL AND state != ''\n"
-        'ORDER BY state'
-    )
-
-    state_list = [row[0] for row in states.data if row[0] != 'N/A']
-
-    # Get disease(s) for subheader display
-    diseases = trx.query(
-        f'WITH subset as ({subset_query})\n'
-        'SELECT DISTINCT phc_code_short_desc as disease\n'
-        'FROM subset\n'
-        'WHERE phc_code_short_desc IS NOT NULL\n'
-        "  AND phc_code_short_desc != ''\n"
-        'ORDER BY disease'
-    )
-
-    disease_list = [row[0] for row in diseases.data]
+    # Parse states and diseases from the content
+    col_index = {col: idx for idx, col in enumerate(content.columns)}
+    
+    state_set = set()
+    disease_set = set()
+    
+    for row in content.data:
+        state = row[col_index['state']]
+        disease = row[col_index['disease']]
+        if state is not None:
+            state_set.add(state)
+        if disease is not None:
+            disease_set.add(disease)
+    
+    state_list = sorted(state_set)
+    disease_list = sorted(disease_set)
 
     # Format the time period string
-    time_period_str = f'{start_date} to {end_date}' if time_range else 'Last 12 Months'
+    time_period_str = f'{start_date} to {end_date}'
 
-    header = 'SR9: Monthly Cases by Disease and State'
+    header = 'SR9: Monthly Cases by Disease, County, and State'
     subheader = (
         f'State(s): {", ".join(state_list) if state_list else "All"} | '
         f'Disease(s): {", ".join(disease_list) if disease_list else "All"} | '
-        f'Time Period: {time_period_str} | '
-        f'{today.strftime("%m/%d/%Y")}'
+        f'Time Period: {time_period_str}'
     )
 
     description = (
         '*<u>Report Content</u>*\n'
         '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
-        '*Output:* Report provides the underlying data for a vertical bar graph, '
-        'displaying the total number of monthly Investigation(s) [both Individual '
-        'and Summary] for selected disease(s) and state(s), irrespective of Case '
+        '*Output:* Report provides the total number of monthly Investigation(s) '
+        '[both Individual and Summary] for selected disease(s) and state(s), '
+        'irrespective of Case '
         'Status. Output:\n'
         '* Does not include Investigation(s) that have been logically deleted\n'
         '* Is filtered based on the state, disease(s), time frame and advanced '
