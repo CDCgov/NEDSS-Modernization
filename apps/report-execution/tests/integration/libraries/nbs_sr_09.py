@@ -39,7 +39,7 @@ class TestIntegrationNbsSr09Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) > 0
+        assert len(data) > 50
         assert len(data[0]) == len(result.content.columns)
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
