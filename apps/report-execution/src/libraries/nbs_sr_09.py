@@ -22,18 +22,9 @@ def execute(
     tabular format, whereas the SAS version created the bar graph.
 
     """
-    today = datetime.date.today()
 
-    # Handle time range filtering
-    if time_range:
-        start_date = time_range.start
-        end_date = time_range.end
-    else:
-        # Default to last 12 months if no time range specified
-        start_date = (today.replace(day=1) - datetime.timedelta(days=365)).strftime(
-            '%Y-%m-%d'
-        )
-        end_date = today.strftime('%Y-%m-%d')
+    start_date = time_range.start
+    end_date = time_range.end
 
     # Main query to get monthly aggregated data
     content = trx.query(

@@ -4,7 +4,7 @@ USE [NBS_ODSE]
 
 DECLARE @pyLib VARCHAR(50) = 'nbs_sr_09'
 DECLARE @sasLib VARCHAR(50) = 'NBSSR00009.SAS'
-DECLARE @desc VARCHAR(300) = 'SR9: Bar Graph of Selected Disease by Month.  Report demonstrates, using a vertical bar graph, the total number of monthly Investigation(s) [both Individual and Summary] for a given disease, by State, irrespective of Case Status.'
+DECLARE @desc VARCHAR(300) = 'SR9: Selected Disease by Month and County.  Report demonstrates the total number of monthly Investigation(s) [both Individual and Summary] for a given disease and State, by County, irrespective of Case Status.'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN
