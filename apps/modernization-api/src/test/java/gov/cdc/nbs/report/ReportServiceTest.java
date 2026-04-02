@@ -37,7 +37,8 @@ class ReportServiceTest {
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportSpecBuilder specBuilder;
   @Mock private ReportLibrary reportLibrary;
-  @Mock private List<ReportFilter> dbReportFilters;
+  @Mock private List<ReportFilter> reportFilters;
+  @Mock private DataSource dataSource;
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RequestBodySpec requestBodySpec;
@@ -52,7 +53,8 @@ class ReportServiceTest {
     Report report = mock(Report.class);
 
     when(report.getReportLibrary()).thenReturn(reportLibrary);
-    when(report.getReportFilters()).thenReturn(dbReportFilters);
+    when(report.getReportFilters()).thenReturn(reportFilters);
+    when(report.getDataSource()).thenReturn(dataSource);
     when(reportLibrary.getRunner()).thenReturn(runner);
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
   }
@@ -67,18 +69,18 @@ class ReportServiceTest {
     assertThat(config.runner()).isEqualTo("python");
     assertThat(config.filters())
         .allSatisfy(
-            filter -> {
+            filterConfig -> {
               Optional<ReportFilter> matchingReportFilter =
-                  dbReportFilters.stream()
-                      .filter(f -> f.getId().equals(filter.reportFilterUid()))
+                  reportFilters.stream()
+                      .filter(f -> f.getId().equals(filterConfig.reportFilterUid()))
                       .findAny();
 
               assertThat(matchingReportFilter).isPresent();
 
-              assertThat(filter.reportColumnUid())
+              assertThat(filterConfig.reportColumnUid())
                   .isEqualTo(matchingReportFilter.get().getDataSourceColumn().getId());
 
-              assertThat(filter.filterType())
+              assertThat(filterConfig.filterType())
                   .isEqualTo(
                       FilterTypeMapper.fromFilterCode(matchingReportFilter.get().getFilterCode()));
             });
