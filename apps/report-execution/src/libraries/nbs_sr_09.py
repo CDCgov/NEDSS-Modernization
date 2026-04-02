@@ -1,5 +1,3 @@
-import datetime
-
 from src.db_transaction import Transaction
 from src.models import ReportResult, TimeRange
 
@@ -8,18 +6,18 @@ def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
-    time_range: TimeRange | None = None,
+    time_range: TimeRange,
     **kwargs,
 ):
-    """Standard Report 09: Monthly Cases by Disease and County for Selected State 
-    and Time Frame
+    """Standard Report 09: Monthly Cases by Disease and County for Selected State
+    and Time Frame.
 
     Conversion notes:
-    * We are only returning the underlying data for the graph in a tabular format, 
+    * We are only returning the underlying data for the graph in a tabular format,
     whereas the SAS version created the bar graph.
 
     """
-    # time_range will always be provided
+
     start_date = time_range.start
     end_date = time_range.end
 
@@ -69,10 +67,10 @@ def execute(
 
     # Parse states and diseases from the content
     col_index = {col: idx for idx, col in enumerate(content.columns)}
-    
+
     state_set = set()
     disease_set = set()
-    
+
     for row in content.data:
         state = row[col_index['State']]
         disease = row[col_index['Condition']]
@@ -80,7 +78,7 @@ def execute(
             state_set.add(state)
         if disease is not None:
             disease_set.add(disease)
-    
+
     state_list = sorted(state_set)
     disease_list = sorted(disease_set)
 
