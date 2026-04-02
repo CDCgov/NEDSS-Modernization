@@ -35,6 +35,9 @@ export type { ExistingRaceCategoryValid } from './models/ExistingRaceCategoryVal
 export type { Expr } from './models/Expr';
 export type { Failure } from './models/Failure';
 export type { Filter } from './models/Filter';
+export type { FilterConfiguration } from './models/FilterConfiguration';
+export type { FilterDefaultValue } from './models/FilterDefaultValue';
+export type { FilterType } from './models/FilterType';
 export type { GenderDemographic } from './models/GenderDemographic';
 export type { GeneralInformationDemographic } from './models/GeneralInformationDemographic';
 export type { IdentificationDemographic } from './models/IdentificationDemographic';
