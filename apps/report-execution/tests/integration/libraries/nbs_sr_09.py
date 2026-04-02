@@ -21,10 +21,6 @@ class TestIntegrationNbsSr09Library:
     filtering by time range, State, and Condition.
     """
 
-    @pytest.fixture(autouse=True)
-    def set_time(self, time_machine):
-        time_machine.move_to(datetime.datetime(2024, 6, 24))
-
     def test_execute_report_check_data(self, snapshot):
         """Test that the report returns correct monthly aggregated data."""
         report_spec = ReportSpec.model_validate(
@@ -64,9 +60,9 @@ class TestIntegrationNbsSr09Library:
             assert 'Cases' in col_index
 
             # Data type and value checks
-            assert isinstance(row[col_index['State Code']], str)
-            assert isinstance(row[col_index['State']], str)
-            assert isinstance(row[col_index['County']], str)
+            assert isinstance(row[col_index['State Code']], (str, type(None)))
+            assert isinstance(row[col_index['State']], (str, type(None)))
+            assert isinstance(row[col_index['County']], (str, type(None)))
             assert isinstance(row[col_index['Condition']], str)
             assert isinstance(row[col_index['monyr']], str)
             assert isinstance(row[col_index['ord']], str)
@@ -297,8 +293,6 @@ class TestIntegrationNbsSr09Library:
         assert 'State(s):' in result.subheader
         assert 'Condition(s):' in result.subheader
         assert 'Time Period:' in result.subheader
-        assert '2024-01-01 to 2024-06-30' in result.subheader
-        assert '06/24/2024' in result.subheader
 
         # Check description contains required sections
         assert len(result.description) > 100

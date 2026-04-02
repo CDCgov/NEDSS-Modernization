@@ -90,7 +90,7 @@ def execute(
     header = 'SR9: Monthly Cases by Disease, County, and State'
     subheader = (
         f'State(s): {", ".join(state_list) if state_list else "All"} | '
-        f'Disease(s): {", ".join(disease_list) if disease_list else "All"} | '
+        f'Condition(s): {", ".join(disease_list) if disease_list else "All"} | '
         f'Time Period: {time_period_str}'
     )
 
