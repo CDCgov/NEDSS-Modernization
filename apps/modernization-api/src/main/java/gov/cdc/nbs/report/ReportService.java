@@ -2,10 +2,11 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.mappers.FilterDefaultValueMapper;
+import gov.cdc.nbs.report.mappers.FilterTypeMapper;
+import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.ReportRepository;
+import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,7 +34,32 @@ public class ReportService {
     ReportId id = new ReportId(reportUid, dataSourceUid);
     return reportRepository
         .findById(id)
-        .map(report -> new ReportConfiguration(report.getReportLibrary().getRunner()))
+        .map(
+            report -> {
+              List<FilterConfiguration> filters =
+                  report.getReportFilters().stream()
+                      .map(
+                          dbReportFilter -> {
+                            Long columnUid = null;
+
+                            if (dbReportFilter.getDataSourceColumn() != null) {
+                              columnUid = dbReportFilter.getDataSourceColumn().getId();
+                            }
+
+                            FilterType filterType =
+                                FilterTypeMapper.fromFilterCode(dbReportFilter.getFilterCode());
+                            List<FilterDefaultValue> filterDefaultValues =
+                                dbReportFilter.getFilterValues().stream()
+                                    .map(FilterDefaultValueMapper::fromFilterValue)
+                                    .toList();
+
+                            return new FilterConfiguration(
+                                dbReportFilter.getId(), columnUid, filterType, filterDefaultValues);
+                          })
+                      .toList();
+
+              return new ReportConfiguration(report.getReportLibrary().getRunner(), filters);
+            })
         .orElseThrow(
             () ->
                 new NotFoundException(
