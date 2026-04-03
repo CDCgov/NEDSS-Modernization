@@ -5,8 +5,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gov.cdc.nbs.report.models.*;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -94,28 +98,11 @@ class ReportSpecBuilderTest {
     List<Long> columnUids = List.of(knownColumnUid, unknownColumnUid);
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
 
-    assertThatThrownBy(() -> new ReportSpecBuilder(request, reportConfig).build())
+    ReportSpecBuilder reportSpecBuilder = new ReportSpecBuilder(request, reportConfig);
+
+    assertThatThrownBy(reportSpecBuilder::build)
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("No report column found for columnUid 2");
-  }
-
-  @Test
-  void build_should_generate_correct_select_clause_for_single_column() {
-    Long columnUid1 = 1L;
-
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
-    ReportColumn reportColumn1 = mockReportColumn(columnUid1, "column1", "Column 1");
-
-    ReportConfiguration reportConfig =
-        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
-
-    List<Long> columnUids = List.of(columnUid1);
-    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
-
-    ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
-
-    assertThat(reportSpec.subsetQuery())
-        .isEqualTo("SELECT [column1] AS [Column 1] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
   }
 
   @Test
@@ -167,12 +154,14 @@ class ReportSpecBuilderTest {
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
   }
 
-  @Test
-  void build_should_generate_correct_select_clause_for_column_names_with_spaces() {
+  @ParameterizedTest
+  @MethodSource("fetchSingleColumnTestParams")
+  public void build_should_generate_correct_select_clause_for_column_names(
+      String columnName, String columnTitle) {
     Long columnUid1 = 1L;
 
     FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
-    ReportColumn reportColumn1 = mockReportColumn(columnUid1, "first column", "Column 1");
+    ReportColumn reportColumn1 = mockReportColumn(columnUid1, columnName, columnTitle);
 
     ReportConfiguration reportConfig =
         mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
@@ -183,25 +172,19 @@ class ReportSpecBuilderTest {
     ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
 
     assertThat(reportSpec.subsetQuery())
-        .isEqualTo("SELECT [first column] AS [Column 1] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+        .isEqualTo(
+            "SELECT ["
+                + columnName
+                + "] AS ["
+                + columnTitle
+                + "] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
   }
 
-  @Test
-  void build_should_generate_correct_select_clause_for_column_names_with_keywords() {
-    Long columnUid1 = 1L;
-
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
-    ReportColumn reportColumn1 = mockReportColumn(columnUid1, "user", "User Column");
-
-    ReportConfiguration reportConfig =
-        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
-
-    List<Long> columnUids = List.of(columnUid1);
-    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
-
-    ReportSpec reportSpec = new ReportSpecBuilder(request, reportConfig).build();
-
-    assertThat(reportSpec.subsetQuery())
-        .isEqualTo("SELECT [user] AS [User Column] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+  private static Stream<Arguments> fetchSingleColumnTestParams() {
+    return Stream.of(
+        Arguments.of("column1", "Column 1"), //  Standard single column
+        Arguments.of("first column", "Column 1"), //  Column name with spaces
+        Arguments.of("user", "User Column") //  Column name with keywords
+        );
   }
 }

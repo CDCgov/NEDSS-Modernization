@@ -39,6 +39,7 @@ public class ReportSpecBuilder {
                 new IllegalArgumentException("No report column found for columnUid " + columnUid));
   }
 
+  @SuppressWarnings("java:S1168")
   public List<ReportColumn> fetchColumns() {
     if (reportExecRequest.columnUids() == null || reportExecRequest.columnUids().isEmpty()) {
       return null;
