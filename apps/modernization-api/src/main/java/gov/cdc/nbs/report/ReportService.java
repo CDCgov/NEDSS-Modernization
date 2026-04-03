@@ -7,9 +7,15 @@ import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.FilterDefaultValueMapper;
 import gov.cdc.nbs.report.mappers.FilterTypeMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
-import gov.cdc.nbs.report.models.*;
+import gov.cdc.nbs.report.models.FilterConfiguration;
+import gov.cdc.nbs.report.models.FilterDefaultValue;
+import gov.cdc.nbs.report.models.FilterType;
+import gov.cdc.nbs.report.models.Library;
+import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
@@ -71,7 +77,11 @@ public class ReportService {
               }
 
               return new ReportConfiguration(
-                  report.getReportLibrary().getRunner(), filters, reportColumns);
+                  report.getReportLibrary().getRunner(),
+                  new ReportDataSource(report.getDataSource()),
+                  new Library(report.getReportLibrary()),
+                  filters,
+                  reportColumns);
             })
         .orElseThrow(
             () ->
@@ -81,7 +91,7 @@ public class ReportService {
                         reportUid, dataSourceUid)));
   }
 
-  public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
+  public ResponseEntity<ReportResult> executeReport(ReportExecutionRequest request) {
     Long reportUid = request.reportUid();
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
@@ -106,6 +116,6 @@ public class ReportService {
         .contentType(MediaType.APPLICATION_JSON)
         .body(reportSpec)
         .retrieve()
-        .toEntity(String.class);
+        .toEntity(ReportResult.class);
   }
 }

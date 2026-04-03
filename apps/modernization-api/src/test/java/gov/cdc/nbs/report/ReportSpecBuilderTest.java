@@ -3,7 +3,11 @@ package gov.cdc.nbs.report;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import gov.cdc.nbs.report.models.*;
+import gov.cdc.nbs.report.models.FilterConfiguration;
+import gov.cdc.nbs.report.models.ReportColumn;
+import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import gov.cdc.nbs.report.models.ReportSpec;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;

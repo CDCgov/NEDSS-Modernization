@@ -4,6 +4,7 @@ import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -64,17 +65,19 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpec build() {
+    DataSourceNameUtils dataSourceNameUtils = new DataSourceNameUtils();
     int version = 1;
     boolean isExport = true;
     boolean isBuiltin = true;
     String reportTitle = "Test Report";
     String libraryName = "nbs_custom";
-    String dataSourceName = "nbs_rdb.investigation";
+    String dataSourceName =
+        dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     Map<String, LocalDate> timeRange = null;
     List<ReportColumn> columns = fetchColumns();
 
     String selectClause = buildSelectClause(columns);
-    String fromClause = "FROM [NBS_ODSE].[dbo].[NBS_configuration]";
+    String fromClause = String.format("FROM %s", dataSourceName);
     String whereClause = "";
     String orderByClause = "";
 

@@ -4,19 +4,20 @@
 /* eslint-disable */
 import type { ReportConfiguration } from '../models/ReportConfiguration';
 import type { ReportExecutionRequest } from '../models/ReportExecutionRequest';
+import type { ReportResult } from '../models/ReportResult';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class ReportControllerService {
     /**
-     * @returns string OK
+     * @returns ReportResult OK
      * @throws ApiError
      */
     public static executeReport({
         requestBody,
     }: {
         requestBody: ReportExecutionRequest,
-    }): CancelablePromise<string> {
+    }): CancelablePromise<ReportResult> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/api/report/execute',
