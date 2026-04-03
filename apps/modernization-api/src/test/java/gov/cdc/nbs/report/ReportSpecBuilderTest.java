@@ -96,7 +96,7 @@ class ReportSpecBuilderTest {
 
     assertThatThrownBy(() -> new ReportSpecBuilder(request, reportConfig).build())
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("No filter column found for columnUid 2");
+        .hasMessage("No report column found for columnUid 2");
   }
 
   @Test
