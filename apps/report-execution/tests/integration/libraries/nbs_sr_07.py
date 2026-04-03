@@ -74,7 +74,7 @@ class TestIntegrationNbsSr07Library:
         assert (
             result.header
             == 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected '
-               'Time Period'
+            'Time Period'
         )
         assert result.subheader == 'N/A, Georgia, Tennessee | 06/24/2024'
         assert len(result.description) > 100
