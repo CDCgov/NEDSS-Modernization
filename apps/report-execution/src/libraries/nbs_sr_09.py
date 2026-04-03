@@ -1,3 +1,4 @@
+from src.utils import gen_subheader
 from src.db_transaction import Transaction
 from src.models import ReportResult, TimeRange
 
@@ -64,30 +65,8 @@ def execute(
         '  county'
     )
 
-    # Parse states and diseases from the content
-    col_index = {col: idx for idx, col in enumerate(content.columns)}
-
-    state_set = set()
-    disease_set = set()
-
-    for row in content.data:
-        state = row[col_index['State']]
-        disease = row[col_index['Condition']]
-        if state is not None:
-            state_set.add(state)
-        if disease is not None:
-            disease_set.add(disease)
-
-    state_list = sorted(state_set)
-
-    # Format the time period string
-    time_period_str = f'{start_date} to {end_date}'
-
     header = 'SR9: Monthly Cases of Selected Disease by County, and State'
-    subheader = (
-        f'For {", ".join(state_list)}, '
-        f'From {time_period_str}'
-    )
+    subheader = gen_subheader(start_date, end_date, content)
 
     description = (
         '*<u>Report Content</u>*\n'
