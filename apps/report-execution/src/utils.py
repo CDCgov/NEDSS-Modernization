@@ -33,6 +33,7 @@ def get_int_env_or_default(env_var: str, default: int):
         )
         return default
 
+
 def gen_subheader(start_date, end_date, content):
     """Generate a subheader string based on the content and time range."""
     # Parse states and diseases from the content

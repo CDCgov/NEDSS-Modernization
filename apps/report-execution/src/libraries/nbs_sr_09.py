@@ -1,6 +1,6 @@
-from src.utils import gen_subheader
 from src.db_transaction import Transaction
 from src.models import ReportResult, TimeRange
+from src.utils import gen_subheader
 
 
 def execute(
