@@ -26,7 +26,7 @@ public class ReportSpecBuilder {
 
     return "SELECT "
         + columns.stream()
-            .map(column -> "[" + column.columnName() + "] AS \"" + column.columnTitle() + "\"")
+            .map(column -> "[" + column.columnName() + "] AS [" + column.columnTitle() + "]")
             .collect(Collectors.joining(", "));
   }
 
