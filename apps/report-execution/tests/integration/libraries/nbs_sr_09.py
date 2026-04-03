@@ -175,9 +175,6 @@ class TestIntegrationNbsSr09Library:
         for row in data:
             assert row[col_index['Condition']] == 'Pertussis'
 
-        # Subheader should include Pertussis
-        assert 'Pertussis' in result.subheader
-
     def test_execute_report_with_multiple_filters(self):
         """Test combining multiple filters (State, Condition, time range)."""
         report_spec = ReportSpec.model_validate(
@@ -211,7 +208,6 @@ class TestIntegrationNbsSr09Library:
 
         # Subheader should include the filtered values
         assert 'Tennessee' in result.subheader
-        assert 'Measles' in result.subheader
 
     def test_execute_report_empty_subset(self):
         """Test handling of empty result set."""
@@ -286,12 +282,11 @@ class TestIntegrationNbsSr09Library:
         result = execute_report(report_spec)
 
         # Check header
-        assert result.header == 'SR9: Monthly Cases by Disease, County, and State'
+        assert result.header == 'SR9: Monthly Cases of Selected Disease by County, and State'
 
         # Check subheader contains expected elements
-        assert 'State(s):' in result.subheader
-        assert 'Condition(s):' in result.subheader
-        assert 'Time Period:' in result.subheader
+        assert "Georgia" in result.subheader or "Tennessee" in result.subheader
+        assert "2024-01-01 to 2024-06-30" in result.subheader
 
         # Check description contains required sections
         assert len(result.description) > 100

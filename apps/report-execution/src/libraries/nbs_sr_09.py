@@ -79,16 +79,14 @@ def execute(
             disease_set.add(disease)
 
     state_list = sorted(state_set)
-    disease_list = sorted(disease_set)
 
     # Format the time period string
     time_period_str = f'{start_date} to {end_date}'
 
-    header = 'SR9: Monthly Cases by Disease, County, and State'
+    header = 'SR9: Monthly Cases of Selected Disease by County, and State'
     subheader = (
-        f'State(s): {", ".join(state_list) if state_list else "All"} | '
-        f'Condition(s): {", ".join(disease_list) if disease_list else "All"} | '
-        f'Time Period: {time_period_str}'
+        f'For {", ".join(state_list)}, '
+        f'From {time_period_str}'
     )
 
     description = (
