@@ -1,6 +1,7 @@
 from src.db_transaction import Transaction
-from src.models import ReportResult, Table
 from src.libraries.nbs_sr_05 import execute as execute_nbs_sr_05
+from src.models import ReportResult, Table
+
 
 def execute(
     trx: Transaction,
@@ -8,7 +9,9 @@ def execute(
     data_source_name: str,
     **kwargs,
 ):
-    """Standard Report 07: Cases of Selected Diseases vs. 5-Year Median for a specific state.
+    """Standard Report 07: Cases of Selected Diseases vs. 5-Year Median for a
+    specific state.
+
     Each row has columns for the:
     * Disease
     * type (e.g. Five Year Median YTD or Current YTD)
@@ -21,22 +24,23 @@ def execute(
     * - subheader
     * - content (data is modified to fit expected table format of nbs_sr_07.py)
     """
-    nbs_sr_05_report_result = execute_nbs_sr_05(trx, subset_query, data_source_name, **kwargs)
+    nbs_sr_05_report_result = execute_nbs_sr_05(
+        trx, subset_query, data_source_name, **kwargs
+    )
     nbs_sr_05_report_result_rows = nbs_sr_05_report_result.content.data
 
-    modified_table = Table(
-        columns=['Disease', 'type', 'Number of Cases'],
-        data=[]
-    )
+    modified_table = Table(columns=['Disease', 'type', 'Number of Cases'], data=[])
 
-    for index, row in enumerate(nbs_sr_05_report_result_rows):
+    for row in nbs_sr_05_report_result_rows:
         rows_to_add = [
             (row[3], 'Five Year Median YTD', row[6]),
-            (row[3], 'Current YTD', row[2])
+            (row[3], 'Current YTD', row[2]),
         ]
         modified_table.data.extend(rows_to_add)
 
-    header = 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected Time Period'
+    header = (
+        'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected Time Period'
+    )
     description = (
         '<u>Report content</u>\n'
         'Data Source: nbs_ods.PHCDemographic (publichealthcasefact)\n'

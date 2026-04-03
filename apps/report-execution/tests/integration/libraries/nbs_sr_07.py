@@ -14,8 +14,7 @@ faker_schema = 'phc_demographic.yaml'
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationNbsSr07Library:
-    """Integration tests for the nbs_sr_07 library.
-    """
+    """Integration tests for the nbs_sr_07 library."""
 
     @pytest.fixture(autouse=True)
     def set_time(self, time_machine):
@@ -72,7 +71,11 @@ class TestIntegrationNbsSr07Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected Time Period'
+        assert (
+            result.header
+            == 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected '
+               'Time Period'
+        )
         assert result.subheader == 'N/A, Georgia, Tennessee | 06/24/2024'
         assert len(result.description) > 100
         assert result.content_type == 'table'
