@@ -156,7 +156,7 @@ class ReportSpecBuilderTest {
 
   @ParameterizedTest
   @MethodSource("fetchSingleColumnTestParams")
-  public void build_should_generate_correct_select_clause_for_column_names(
+  void build_should_generate_correct_select_clause_for_column_names(
       String columnName, String columnTitle) {
     Long columnUid1 = 1L;
 
