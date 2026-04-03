@@ -123,7 +123,7 @@ class ReportServiceTest {
     when(responseSpec.toEntity(String.class)).thenReturn(expectedResponse);
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(16L), List.of());
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, null, List.of());
 
     ResponseEntity<String> response = service.executeReport(request);
 
