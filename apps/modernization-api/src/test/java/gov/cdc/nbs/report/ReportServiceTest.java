@@ -3,9 +3,7 @@ package gov.cdc.nbs.report;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
@@ -21,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,9 +34,9 @@ class ReportServiceTest {
 
   @Mock private ReportRepository reportRepository;
   @Mock private RestClient reportExecutionClient;
-  @Mock private ReportSpecBuilder specBuilder;
   @Mock private ReportLibrary reportLibrary;
-  @Mock private List<ReportFilter> dbReportFilters;
+  @Mock private List<ReportFilter> reportFilters;
+  @Mock private DataSource dataSource;
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RequestBodySpec requestBodySpec;
@@ -52,7 +51,8 @@ class ReportServiceTest {
     Report report = mock(Report.class);
 
     when(report.getReportLibrary()).thenReturn(reportLibrary);
-    when(report.getReportFilters()).thenReturn(dbReportFilters);
+    when(report.getReportFilters()).thenReturn(reportFilters);
+    when(report.getDataSource()).thenReturn(dataSource);
     when(reportLibrary.getRunner()).thenReturn(runner);
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
   }
@@ -67,18 +67,18 @@ class ReportServiceTest {
     assertThat(config.runner()).isEqualTo("python");
     assertThat(config.filters())
         .allSatisfy(
-            filter -> {
+            filterConfig -> {
               Optional<ReportFilter> matchingReportFilter =
-                  dbReportFilters.stream()
-                      .filter(f -> f.getId().equals(filter.reportFilterUid()))
+                  reportFilters.stream()
+                      .filter(f -> f.getId().equals(filterConfig.reportFilterUid()))
                       .findAny();
 
               assertThat(matchingReportFilter).isPresent();
 
-              assertThat(filter.reportColumnUid())
+              assertThat(filterConfig.reportColumnUid())
                   .isEqualTo(matchingReportFilter.get().getDataSourceColumn().getId());
 
-              assertThat(filter.filterType())
+              assertThat(filterConfig.filterType())
                   .isEqualTo(
                       FilterTypeMapper.fromFilterCode(matchingReportFilter.get().getFilterCode()));
             });
@@ -109,24 +109,29 @@ class ReportServiceTest {
             "nbs_rdb.investigation",
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
             null);
-    when(specBuilder.build()).thenReturn(spec);
 
-    when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
-    when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
-    when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
-    when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
-    when(requestBodySpec.retrieve()).thenReturn(responseSpec);
+    try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
+        mockConstruction(
+            ReportSpecBuilder.class,
+            (builder, context) -> when(builder.build()).thenReturn(spec))) {
+      when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
+      when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
+      when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
+      when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
+      when(requestBodySpec.retrieve()).thenReturn(responseSpec);
 
-    ResponseEntity<String> expectedResponse = new ResponseEntity<>("result", HttpStatus.OK);
-    when(responseSpec.toEntity(String.class)).thenReturn(expectedResponse);
+      ResponseEntity<String> expectedResponse = new ResponseEntity<>("result", HttpStatus.OK);
+      when(responseSpec.toEntity(String.class)).thenReturn(expectedResponse);
 
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(16L), List.of());
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, List.of());
 
-    ResponseEntity<String> response = service.executeReport(request);
+      ResponseEntity<String> response = service.executeReport(request);
 
-    assertThat(response).isEqualTo(expectedResponse);
-    verify(specBuilder).build();
+      assertThat(response).isEqualTo(expectedResponse);
+      ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
+      verify(specBuilder).build();
+    }
   }
 
   @Test
