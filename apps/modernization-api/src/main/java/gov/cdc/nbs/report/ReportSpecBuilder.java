@@ -22,10 +22,15 @@ import lombok.Getter;
 public class ReportSpecBuilder {
   @Getter private final ReportExecutionRequest reportExecRequest;
   @Getter private final ReportConfiguration reportConfig;
+  private final DataSourceNameUtils dataSourceNameUtils;
 
-  public ReportSpecBuilder(final ReportExecutionRequest request, ReportConfiguration reportConfig) {
+  public ReportSpecBuilder(
+      final ReportExecutionRequest request,
+      ReportConfiguration reportConfig,
+      DataSourceNameUtils dataSourceNameUtils) {
     this.reportExecRequest = request;
     this.reportConfig = reportConfig;
+    this.dataSourceNameUtils = dataSourceNameUtils;
   }
 
   private String buildSelectClause(List<ReportColumn> columns) {
@@ -65,12 +70,11 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpec build() {
-    DataSourceNameUtils dataSourceNameUtils = new DataSourceNameUtils();
     int version = 1;
     boolean isExport = true;
     boolean isBuiltin = true;
     String reportTitle = "Test Report";
-    String libraryName = "nbs_custom";
+    String libraryName = reportConfig.reportLibrary().libraryName();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     Map<String, LocalDate> timeRange = null;

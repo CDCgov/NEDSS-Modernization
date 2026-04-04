@@ -17,6 +17,7 @@ import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
@@ -31,6 +32,8 @@ public class ReportService {
 
   private final ReportRepository reportRepository;
   private final RestClient reportExecutionClient;
+  private final DataSourceNameUtils dataSourceNameUtils =
+      new DataSourceNameUtils(new DataSourceNameConfiguration());
 
   public ReportService(final ReportRepository reportRepository, RestClient reportExecutionClient) {
     this.reportRepository = reportRepository;
@@ -107,7 +110,8 @@ public class ReportService {
           "Column UIDs cannot be empty - if omitting reportColumns, use `null`");
     }
 
-    ReportSpecBuilder specBuilder = new ReportSpecBuilder(request, reportConfigResponse);
+    ReportSpecBuilder specBuilder =
+        new ReportSpecBuilder(request, reportConfigResponse, dataSourceNameUtils);
     ReportSpec reportSpec = specBuilder.build();
 
     return reportExecutionClient

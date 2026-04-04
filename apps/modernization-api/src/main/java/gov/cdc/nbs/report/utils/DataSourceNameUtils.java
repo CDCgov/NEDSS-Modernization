@@ -1,17 +1,17 @@
 package gov.cdc.nbs.report.utils;
 
+import gov.cdc.nbs.report.DataSourceNameConfiguration;
 import java.util.Map;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "nbs.report.datasource")
 public class DataSourceNameUtils {
-  @Getter @Setter Map<String, String> mappings;
-
   private static final String ERROR_MSG = "No data source found for %s";
+  private final DataSourceNameConfiguration config;
+
+  public DataSourceNameUtils(DataSourceNameConfiguration config) {
+    this.config = config;
+  }
 
   /**
    * Given a data source name (e.g. nbs.dbo.PHCDemographic), return the standardized data source
@@ -22,9 +22,9 @@ public class DataSourceNameUtils {
    */
   public String buildDataSourceName(String orgDataSourceName) {
     String standardizedDBName = buildDBName(orgDataSourceName);
-    String dboStr = ".[dbo].";
+    String dboStr = "[dbo]";
     String standardizedTableName = buildTableName(orgDataSourceName);
-    return String.format("%s%s%s", standardizedDBName, dboStr, standardizedTableName);
+    return String.format("%s.%s.%s", standardizedDBName, dboStr, standardizedTableName);
   }
 
   /**
@@ -37,23 +37,34 @@ public class DataSourceNameUtils {
    *     name, or an alias does not exist in the application.yml, or it is not a valid DB name
    */
   private String buildDBName(String orgDataSourceName) {
-    Map<String, String> dataSourceNameMappings = getMappings();
+    Map<String, String> dataSourceNameMappings = config.getMappings();
     String modifiedDataSourceName = removeBrackets(orgDataSourceName);
 
+    int dataSourceParts = modifiedDataSourceName.split("\\.").length;
     int orgDBNameIndex = modifiedDataSourceName.indexOf(".");
-    if (orgDBNameIndex <= 0) {
+    boolean isInvalidDataSourceName = dataSourceParts > 3 || orgDBNameIndex <= 0;
+    if (isInvalidDataSourceName) {
       throw new IllegalArgumentException(String.format(ERROR_MSG, orgDataSourceName));
     }
 
     String orgDBName = modifiedDataSourceName.substring(0, orgDBNameIndex);
+    String standardizedDBName = "";
+
+    // Check if it's an alias (key)
+    if (dataSourceNameMappings.containsKey(orgDBName)) {
+      standardizedDBName = dataSourceNameMappings.get(orgDBName);
+    }
+
+    // Check if it's already a valid standardized name (value)
+    if (dataSourceNameMappings.containsValue(orgDBName)) {
+      standardizedDBName = orgDBName;
+    }
 
     // check if DBName has an alias or is already a valid DB name
-    if (!dataSourceNameMappings.containsKey(orgDBName)
-        && dataSourceNameMappings.values().stream().noneMatch(s -> s.equals(orgDBName))) {
+    if (standardizedDBName.isEmpty()) {
       throw new IllegalArgumentException(String.format(ERROR_MSG, orgDataSourceName));
     }
 
-    String standardizedDBName = dataSourceNameMappings.getOrDefault(orgDBName, orgDBName);
     return String.format("[%s]", standardizedDBName);
   }
 
