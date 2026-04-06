@@ -1,3 +1,5 @@
+from itertools import chain
+
 from src.db_transaction import Transaction
 from src.libraries.nbs_sr_05 import execute as execute_nbs_sr_05
 from src.models import ReportResult, Table
@@ -31,12 +33,13 @@ def execute(
 
     modified_table = Table(columns=['Disease', 'type', 'Number of Cases'], data=[])
 
-    for row in nbs_sr_05_report_result_rows:
-        rows_to_add = [
-            (row[3], 'Five Year Median YTD', row[6]),
-            (row[3], 'Current YTD', row[2]),
-        ]
-        modified_table.data.extend(rows_to_add)
+    modified_rows = list(
+        chain.from_iterable(
+            ((row[3], 'Five Year Median YTD', row[6]), (row[3], 'Current YTD', row[2]))
+            for row in nbs_sr_05_report_result_rows
+        )
+    )
+    modified_table.data = modified_rows
 
     header = (
         'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected Time Period'
