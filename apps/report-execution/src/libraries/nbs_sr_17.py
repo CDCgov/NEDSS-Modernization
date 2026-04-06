@@ -16,20 +16,31 @@ def execute(
     """
     sql_query = f"""
     WITH subset AS ({subset_query}),
-    -- 1. Get the actual counts from the data
+    
+    -- Map codes to descriptions first to fix the scoping error
+    base_data AS (
+        SELECT 
+            phc_code_short_desc,
+            group_case_cnt,
+            (SELECT code_short_desc_txt 
+             FROM nbs_srte.dbo.code_value_general cvg 
+             WHERE phc.case_class_cd = cvg.code 
+             AND cvg.code_set_nm = 'PHC_CLASS') as case_class_desc
+        FROM subset phc
+    ),
+    
+    -- Get the actual counts from the data
     actual_counts AS (
         SELECT 
             phc_code_short_desc,
-            (SELECT code_short_desc_txt 
-             FROM nbs_srt.code_value_general cvg 
-             WHERE phc.case_class_cd = cvg.code 
-             AND cvg.code_set_nm = 'PHC_CLASS') as case_class_desc,
+            case_class_desc,
             SUM(group_case_cnt) as cases
-        FROM subset phc
+        FROM base_data
+        WHERE case_class_desc IS NOT NULL
         GROUP BY phc_code_short_desc, case_class_desc
     ),
     
-    -- 2. Define the static list of statuses (mimics SAS 'inv_status')
+    -- Define the static list of statuses (mimics SAS 'inv_status')
     status AS (
         SELECT 'Confirmed' as status_name UNION ALL
         SELECT 'Not a Case' UNION ALL
@@ -38,25 +49,24 @@ def execute(
         SELECT 'Unknown'
     ),
     
-    -- 3. Get unique conditions present in the subset
+    -- Get unique conditions present in the subset
     unique_conditions AS (
         SELECT DISTINCT phc_code_short_desc 
         FROM actual_counts
-        WHERE phc_code_short_desc IS NOT NULL
     ),
     
-    -- 4. Create the Cartesian product for Condition:Status
+    -- Create the Cartesian product for condition:status
     report_grid AS (
         SELECT c.phc_code_short_desc, s.status_name
         FROM unique_conditions c
         CROSS JOIN status s
     )
     
-    -- 5. Join actual counts to the grid, converting NULL to 0
+    -- Join actual counts to the grid, converting NULL to 0
     SELECT 
+        COALESCE(ac.cases, 0) as "Case Count",
         rg.phc_code_short_desc as "Condition",
-        rg.status_name as "Case Status",
-        COALESCE(ac.cases, 0) as "Case Count"
+        rg.status_name as "Case Status"
     FROM report_grid rg
     LEFT JOIN actual_counts ac 
         ON rg.phc_code_short_desc = ac.phc_code_short_desc 
@@ -67,10 +77,6 @@ def execute(
     content = trx.query(sql_query)
 
     header = 'SR17: Counts of Selected Diseases By Case Status'
-
-    subheader = None
-    if time_range is not None:
-        subheader += f' and From {time_range.start} To {time_range.end}'
 
     description = (
         '*<u>Report content</u>*\n'
@@ -91,6 +97,6 @@ def execute(
         content_type='table',
         content=content,
         header=header,
-        subheader=subheader,
+        subheader=None,
         description=description,
     )
