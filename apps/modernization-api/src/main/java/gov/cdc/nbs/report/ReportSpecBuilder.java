@@ -4,6 +4,7 @@ import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -21,10 +22,15 @@ import lombok.Getter;
 public class ReportSpecBuilder {
   @Getter private final ReportExecutionRequest reportExecRequest;
   @Getter private final ReportConfiguration reportConfig;
+  private final DataSourceNameUtils dataSourceNameUtils;
 
-  public ReportSpecBuilder(final ReportExecutionRequest request, ReportConfiguration reportConfig) {
+  public ReportSpecBuilder(
+      final ReportExecutionRequest request,
+      ReportConfiguration reportConfig,
+      DataSourceNameUtils dataSourceNameUtils) {
     this.reportExecRequest = request;
     this.reportConfig = reportConfig;
+    this.dataSourceNameUtils = dataSourceNameUtils;
   }
 
   private String buildSelectClause(List<ReportColumn> columns) {
@@ -68,13 +74,14 @@ public class ReportSpecBuilder {
     boolean isExport = true;
     boolean isBuiltin = true;
     String reportTitle = "Test Report";
-    String libraryName = "nbs_custom";
-    String dataSourceName = "nbs_rdb.investigation";
+    String libraryName = reportConfig.reportLibrary().libraryName();
+    String dataSourceName =
+        dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     Map<String, LocalDate> timeRange = null;
     List<ReportColumn> columns = fetchColumns();
 
     String selectClause = buildSelectClause(columns);
-    String fromClause = "FROM [NBS_ODSE].[dbo].[NBS_configuration]";
+    String fromClause = String.format("FROM %s", dataSourceName);
     String whereClause = "";
     String orderByClause = "";
 

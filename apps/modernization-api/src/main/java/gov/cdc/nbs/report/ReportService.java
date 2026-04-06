@@ -7,10 +7,17 @@ import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.FilterDefaultValueMapper;
 import gov.cdc.nbs.report.mappers.FilterTypeMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
-import gov.cdc.nbs.report.models.*;
+import gov.cdc.nbs.report.models.FilterConfiguration;
+import gov.cdc.nbs.report.models.FilterDefaultValue;
+import gov.cdc.nbs.report.models.FilterType;
+import gov.cdc.nbs.report.models.Library;
+import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
@@ -25,6 +32,8 @@ public class ReportService {
 
   private final ReportRepository reportRepository;
   private final RestClient reportExecutionClient;
+  private final DataSourceNameUtils dataSourceNameUtils =
+      new DataSourceNameUtils(new DataSourceNameConfiguration());
 
   public ReportService(final ReportRepository reportRepository, RestClient reportExecutionClient) {
     this.reportRepository = reportRepository;
@@ -71,7 +80,11 @@ public class ReportService {
               }
 
               return new ReportConfiguration(
-                  report.getReportLibrary().getRunner(), filters, reportColumns);
+                  report.getReportLibrary().getRunner(),
+                  new ReportDataSource(report.getDataSource()),
+                  new Library(report.getReportLibrary()),
+                  filters,
+                  reportColumns);
             })
         .orElseThrow(
             () ->
@@ -81,7 +94,7 @@ public class ReportService {
                         reportUid, dataSourceUid)));
   }
 
-  public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
+  public ResponseEntity<ReportResult> executeReport(ReportExecutionRequest request) {
     Long reportUid = request.reportUid();
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
@@ -97,7 +110,8 @@ public class ReportService {
           "Column UIDs cannot be empty - if omitting reportColumns, use `null`");
     }
 
-    ReportSpecBuilder specBuilder = new ReportSpecBuilder(request, reportConfigResponse);
+    ReportSpecBuilder specBuilder =
+        new ReportSpecBuilder(request, reportConfigResponse, dataSourceNameUtils);
     ReportSpec reportSpec = specBuilder.build();
 
     return reportExecutionClient
@@ -106,6 +120,6 @@ public class ReportService {
         .contentType(MediaType.APPLICATION_JSON)
         .body(reportSpec)
         .retrieve()
-        .toEntity(String.class);
+        .toEntity(ReportResult.class);
   }
 }
