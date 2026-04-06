@@ -44,9 +44,9 @@ class TestIntegrationNbsSr13Library:
         record = None
         for row in result.content.data:
             if (
-                    row[0] == Decimal('4877.00000')
-                    and row[1] == 'Measles'
-                    and row[2] == 'Confirmed'
+                row[0] == Decimal('4877.00000')
+                and row[1] == 'Measles'
+                and row[2] == 'Confirmed'
             ):
                 record = row
                 break

@@ -14,7 +14,7 @@ def execute(
     Conversion notes:
     TODO
     """
-    sql_query = f'''
+    sql_query = f"""
     SELECT 
         SUM(group_case_cnt) as "Case Count",
         phc_code_short_desc as "Condition",
@@ -26,7 +26,7 @@ def execute(
     WHERE cvg.code_short_desc_txt IS NOT NULL
     GROUP BY phc_code_short_desc, cvg.code_short_desc_txt
     ORDER BY phc_code_short_desc, cvg.code_short_desc_txt
-    '''
+    """
 
     content = trx.query(sql_query)
 
