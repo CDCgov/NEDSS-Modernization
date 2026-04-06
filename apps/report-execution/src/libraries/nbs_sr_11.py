@@ -18,26 +18,15 @@ def execute(
     """
     content = trx.query(
         f'WITH subset as ({subset_query})\n'
-        + 'SELECT state as State, state_cd as "State Code", county as County, phc_code_short_desc as Condition, year(datepart(event_date)) as Year,'
-        'sum(group_case_cnt) as Cases\n'
+        + 'SELECT state_cd as "State Code", state as State, county as County, '
+        + 'phc_code_short_desc as Condition, datepart(year, event_date) as year, '
+        + 'sum(group_case_cnt) as Cases\n'
         + 'FROM subset\n'
-        + 'GROUP BY state, county, phc_code_short_desc, year(datepart(event_date))\n'
-        + 'ORDER BY state, county, phc_code_short_desc, year(datepart(event_date))'
+        + 'GROUP BY state, state_cd, county, phc_code_short_desc, event_date\n'
+        + 'ORDER BY state, state_cd, county, phc_code_short_desc, event_date'
     )
-
-    # Get the unique state(s) in the data set for subheader display
-    state_list = list(
-        set([row[0] if row[0] is not None else 'N/A' for row in content.data])
-    )
-    state_list.sort()
 
     header = 'SR11: Cases of Selected Diseases By Year Over Time'
-
-    subheader = None
-    if len(state_list) > 0:
-        subheader = f'For {", ".join(state_list)}'
-        if time_range is not None:
-            subheader += f' and From {time_range.start} To {time_range.end}'
 
     description = (
         '*<u>Report content</u>*\n'
@@ -64,6 +53,5 @@ def execute(
         content_type='table',
         content=content,
         header=header,
-        subheader=subheader,
         description=description,
     )
