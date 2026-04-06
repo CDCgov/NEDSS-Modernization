@@ -5,13 +5,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.Filter;
 import gov.cdc.nbs.report.models.FilterConfiguration;
+import gov.cdc.nbs.report.models.Library;
+import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import gov.cdc.nbs.report.models.ReportResult;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
@@ -34,8 +38,18 @@ class ReportControllerTest {
     Long reportUid = 1L;
     Long dataSourceUid = 2L;
 
+    DataSource dataSourceEntity = mock(DataSource.class);
+    ReportLibrary reportLibraryEntity = mock(ReportLibrary.class);
+
     FilterConfiguration filterConfig = mock(FilterConfiguration.class);
-    ReportConfiguration reportConfig = new ReportConfiguration("python", List.of(filterConfig));
+    List<ReportColumn> columns = List.of(mock(ReportColumn.class));
+    ReportConfiguration reportConfig =
+        new ReportConfiguration(
+            "python",
+            new ReportDataSource(dataSourceEntity),
+            new Library(reportLibraryEntity),
+            List.of(filterConfig),
+            columns);
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ResponseEntity<ReportConfiguration> response =
@@ -75,7 +89,7 @@ class ReportControllerTest {
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
 
-    ResponseEntity<String> response = controller.executeReport(request);
+    ResponseEntity<ReportResult> response = controller.executeReport(request);
     assertEquals(getReportExecutionResponse(), response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }
@@ -122,16 +136,12 @@ class ReportControllerTest {
         .hasMessageContaining(errorMsg);
   }
 
-  private String getReportExecutionResponse() {
-    ObjectMapper mapper = new ObjectMapper();
-    ObjectNode objectNode = mapper.createObjectNode();
-
-    objectNode.put("content_type", "table");
-    objectNode.put(
-        "content",
-        "report_uid,data_source_uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time");
-    objectNode.put("description", "Custom Report For Table: nbs_ods.NBS_configuration");
-
-    return objectNode.toPrettyString();
+  private ReportResult getReportExecutionResponse() {
+    return new ReportResult(
+        "table",
+        "report_uid,data_source_uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time",
+        "result header",
+        "result subheader",
+        "result description");
   }
 }
