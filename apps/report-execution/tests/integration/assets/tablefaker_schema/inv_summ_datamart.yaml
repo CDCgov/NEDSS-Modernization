@@ -1,0 +1,28 @@
+config:
+  seed: 42
+
+tables:
+  - table_name: "[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]"
+    row_count: 1000
+    columns:
+      # Required for grouping and duplicate detection (from SAS code)
+      - column_name: PATIENT_LOCAL_ID
+        data: fake.random_int(1, 100)
+        null_percentage: 0.01
+      
+      - column_name: DISEASE_CD
+        data: random.choice(["10190", "10140", "502651", "10245", "10280", "10311"])
+        null_percentage: 0.01
+      
+      - column_name: EVENT_DATE
+        data: fake.date_between(start_date=date(2015, 1, 1), end_date=date(2025, 1, 5))
+        null_percentage: 0.02
+      
+      # Additional columns that appear in the output CSV (for completeness)
+      - column_name: INVESTIGATION_LOCAL_ID
+        data: fake.uuid4()[:15]
+        null_percentage: 0.01
+      
+      - column_name: CASE_STATUS
+        data: random.choice(["Confirmed", "Probable", "Suspect", "Not a Case", None])
+        null_percentage: 0.1
