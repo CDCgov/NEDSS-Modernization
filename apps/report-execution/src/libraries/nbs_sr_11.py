@@ -9,8 +9,7 @@ def execute(
     time_range: TimeRange | None = None,
     **kwargs,
 ):
-    """Standard Report 02: Cases of Reportable Diseases by County for Selected Time
-    Frame.
+    """Standard Report 11: Cases of Selected Diseases By Year Over Time.
 
     Conversion notes:
     * Matched export format without pivot
@@ -19,11 +18,11 @@ def execute(
     """
     content = trx.query(
         f'WITH subset as ({subset_query})\n'
-        + 'SELECT state as State, county as County, phc_code_short_desc as Condition, '
+        + 'SELECT state as State, state_cd as "State Code", county as County, phc_code_short_desc as Condition, year(datepart(event_date)) as Year,'
         'sum(group_case_cnt) as Cases\n'
         + 'FROM subset\n'
-        + 'GROUP BY state, county, phc_code_short_desc\n'
-        + 'ORDER BY state, county, phc_code_short_desc'
+        + 'GROUP BY state, county, phc_code_short_desc, year(datepart(event_date))\n'
+        + 'ORDER BY state, county, phc_code_short_desc, year(datepart(event_date))'
     )
 
     # Get the unique state(s) in the data set for subheader display
@@ -32,7 +31,7 @@ def execute(
     )
     state_list.sort()
 
-    header = 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
+    header = 'SR11: Cases of Selected Diseases By Year Over Time'
 
     subheader = None
     if len(state_list) > 0:
@@ -44,17 +43,21 @@ def execute(
         '*<u>Report content</u>*\n'
         '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
         '*Output:* Report demonstrates, in table form, the total number of '
-        'Investigation(s) [both Individual and Summary] by County irrespective of '
-        'Case Status.\n'
+        'Investigation(s) [both Individual and Summary] by calculated MMWR Year '
+        'irrespective of Case Status.\n'
         'Output:\n'
         '* Does not include Investigation(s) that have been logically deleted\n'
-        '* Is filtered based on the state, county(s), disease(s), time frame and '
+        '* Is filtered based on the state, disease(s), time frame and '
         'advanced criteria selected by user\n'
         '* Will not include Investigation(s) that do not have a value for the State '
         'selected by the user\n'
-        '* Will not include Investigation(s) that do not have a value for the '
-        'County(s) selected by the user\n'
+        'Is based on the year of the calculated Event Date (not the MMWR Year '
+        'defined by the user)\n'
         '* Is based on the calculated Event Date\n'
+        'Calculations:\n'
+        '*Event Date*: Derived using the hierarchy of Onset Date, Diagnosis Date, '
+        'Report to County, Report to State and Date the Investigation was created '
+        'in the NBS.\n'
     )
 
     return ReportResult(
