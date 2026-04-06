@@ -2,9 +2,9 @@
 
 USE [NBS_ODSE]
 
-DECLARE @pyLib VARCHAR(50) = 'nbs_sr_17'
+DECLARE @pyLib VARCHAR(50) = 'nbs_sr_13'
 DECLARE @sasLib VARCHAR(50) = 'NBSSR00017.SAS'
-DECLARE @desc VARCHAR(300) = 'SR17: Counts of Selected Diseases By Case Status'
+DECLARE @desc VARCHAR(300) = 'SR13: Counts of Selected Diseases By Case Status'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN

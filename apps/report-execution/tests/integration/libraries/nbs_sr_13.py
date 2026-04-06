@@ -13,7 +13,7 @@ faker_schema = 'phc_demographic.yaml'
 
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
-class TestIntegrationNbsSr17Library:
+class TestIntegrationNbsSr13Library:
     """Integration tests for the nbs_custom library."""
 
     def test_execute_report_check_data(self, snapshot):
@@ -22,8 +22,8 @@ class TestIntegrationNbsSr17Library:
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 17',
-                'library_name': 'nbs_sr_17',
+                'report_title': 'SR 13',
+                'library_name': 'nbs_sr_13',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
                 'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
@@ -34,7 +34,7 @@ class TestIntegrationNbsSr17Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 15  # two combinations with no data, zeros not filled
+        assert len(data) == 6  # two combinations with no data, zeros not filled
         assert len(data[0]) == 3
         assert len(data[0]) == len(result.content.columns)
 
@@ -44,9 +44,9 @@ class TestIntegrationNbsSr17Library:
         record = None
         for row in result.content.data:
             if (
-                row[0] == Decimal('4877.00000')
-                and row[1] == 'Measles'
-                and row[2] == 'Confirmed'
+                    row[0] == Decimal('4877.00000')
+                    and row[1] == 'Measles'
+                    and row[2] == 'Confirmed'
             ):
                 record = row
                 break
@@ -59,8 +59,8 @@ class TestIntegrationNbsSr17Library:
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 17',
-                'library_name': 'nbs_sr_17',
+                'report_title': 'SR 3',
+                'library_name': 'nbs_sr_13',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
@@ -86,8 +86,8 @@ class TestIntegrationNbsSr17Library:
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 17',
-                'library_name': 'nbs_sr_17',
+                'report_title': 'SR 13',
+                'library_name': 'nbs_sr_13',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
                 'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
@@ -95,7 +95,7 @@ class TestIntegrationNbsSr17Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'SR17: Counts of Selected Diseases By Case Status'
+        assert result.header == 'SR13: Counts of Selected Diseases By Case Status'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 
@@ -110,8 +110,8 @@ class TestIntegrationNbsSr17Library:
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 17',
-                'library_name': 'nbs_sr_17',
+                'report_title': 'SR 13',
+                'library_name': 'nbs_sr_13',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
@@ -121,7 +121,7 @@ class TestIntegrationNbsSr17Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'SR17: Counts of Selected Diseases By Case Status'
+        assert result.header == 'SR13: Counts of Selected Diseases By Case Status'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 
