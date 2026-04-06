@@ -1,12 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,17 +23,26 @@ public class ReportFilter {
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
   // Report has a composite primary key
-  @JoinColumn(name = "report_uid", nullable = false)
-  @JoinColumn(name = "data_source_uid", nullable = false)
+  @SuppressWarnings("java:S1710")
+  @JoinColumns({
+    @JoinColumn(name = "report_uid", referencedColumnName = "report_uid", nullable = false),
+    @JoinColumn(
+        name = "data_source_uid",
+        referencedColumnName = "data_source_uid",
+        nullable = false)
+  })
   private Report report;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "filter_uid")
   private FilterCode filterCode;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "column_uid")
   private DataSourceColumn dataSourceColumn;
+
+  @OneToMany(mappedBy = "reportFilter", fetch = FetchType.LAZY)
+  private List<FilterValue> filterValues;
 
   @Column(name = "status_cd")
   private Character statusCd;
