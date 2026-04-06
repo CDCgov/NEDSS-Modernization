@@ -12,14 +12,13 @@ def execute(
     """Standard Report 11: Cases of Selected Diseases By Year Over Time.
 
     Conversion notes:
-    * Matched export format without pivot
-    * Removed calculations section of descriptions as those were run-format specific
-    * Capitalized the `F` in `Time Frame`
+    * Matched export and run formats without pivot
+    * Capitalized the `Y` in `Year`
     """
     content = trx.query(
         f'WITH subset as ({subset_query})\n'
         + 'SELECT state_cd as "State Code", state as State, county as County, '
-        + 'phc_code_short_desc as Condition, datepart(year, event_date) as year, '
+        + 'phc_code_short_desc as Condition, datepart(year, event_date) as Year, '
         + 'sum(group_case_cnt) as Cases\n'
         + 'FROM subset\n'
         + 'GROUP BY state, state_cd, county, phc_code_short_desc, event_date\n'
