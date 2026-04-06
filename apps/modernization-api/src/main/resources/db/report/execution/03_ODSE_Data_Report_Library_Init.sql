@@ -38,7 +38,7 @@ BEGIN
         ('NBSSR00012.SAS', 'SR12: Cases of Selected Disease By County By Year. Report demonstrates, in table form, the total number of Investigation(s) [both Individual and Summary] by Year (calculated based on Event Date year) and by County.'),
         ('NBSSR00015.SAS', 'Bar chart of 5-Year Case Count, By Month, for Selected Diseases'),
         ('NBSSR00016.SAS', 'Number of Cases and Deaths by Disease, Year Count'),
-        ('NBSSR00017.SAS', 'Number of Deaths by disease during years. Bar chart of deaths by disease by month and year.'),
+        ('NBSSR00017.SAS', 'Number of Investigations by disease by disease and status.'),
         ('NBSSR00018.SAS', 'TB Case Verification Report. Computes statistics about TB cases.'),
         ('NBSSR00019.SAS', 'TB Record Count - Summary Report by Report Date. Count of cases by "countability" and month.'),
         ('NBSSR00020.SAS', 'TB Record Count - Summary Report by Count Date. Count of cases by "countability" and month.'),
