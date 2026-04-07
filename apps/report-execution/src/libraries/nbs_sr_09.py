@@ -65,7 +65,7 @@ def execute(
         '  county'
     )
 
-    header = 'SR9: Monthly Cases of Selected Disease by County, and State'
+    header = 'SR9: Monthly Cases of Selected Disease by County and State'
     subheader = gen_subheader(start_date, end_date, content)
 
     description = (
