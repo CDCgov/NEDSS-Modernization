@@ -31,41 +31,41 @@ def execute(
     )
     nbs_sr_05_report_result_rows = nbs_sr_05_report_result.content.data
 
-    modified_table = Table(columns=['Disease', 'type', 'Number of Cases'], data=[])
-
     modified_rows = list(
         chain.from_iterable(
             ((row[3], 'Five Year Median YTD', row[6]), (row[3], 'Current YTD', row[2]))
             for row in nbs_sr_05_report_result_rows
         )
     )
-    modified_table.data = modified_rows
+    modified_table = Table(
+        columns=['Disease', 'type', 'Number of Cases'], data=modified_rows
+    )
 
     header = (
         'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected Time Period'
     )
-    description = (
-        '<u>Report content</u>\n'
-        'Data Source: nbs_ods.PHCDemographic (publichealthcasefact)\n'
-        'Output: Report demonstrates, in table form, '
-        'Investigation(s) [both Individual and Summary] '
-        'by year-to-date, and 5-year median irrespective of Case Status.\n'
-        'Output:\n'
-        '1) Does not include Investigation(s) that have been logically deleted\n'
-        '2) Is filtered based on the state, disease(s) and advanced criteria selected '
-        'by user\n'
-        '3) Will not include Investigation(s) that do not have a value for the State '
-        'selected by the user\n'
-        '4) Is based on month and year of the calculated Event Date\n'
-        'Calculations:'
-        '1) Current Year Totals by disease: Total Investigation(s) [both Individual '
-        'and Summary] where the Year of the Event Date equal the current Year\n'
-        '2) 5-Year median: Median number of Investigation(s) [both Individual and '
-        'Summary] for the past five years\n'
-        '3) Event Date: Derived using the hierarchy of Onset Date, Diagnosis Date, '
-        'Report to County, Report to State and Date the Investigation was created in '
-        'the NBS.\n'
-    )
+    description = '''
+        <u>Report content</u>
+        Data Source: nbs_ods.PHCDemographic (publichealthcasefact)
+        Output: Report demonstrates, in table form, Investigation(s) \
+        [both Individual and Summary] by year-to-date, and 5-year \
+        median irrespective of Case Status.
+        Output:
+        1) Does not include Investigation(s) that have been logically deleted
+        2) Is filtered based on the state, disease(s) and advanced criteria selected \
+        by user
+        3) Will not include Investigation(s) that do not have a value for the State \
+        selected by the user
+        4) Is based on month and year of the calculated Event Date
+        Calculations:
+        1) Current Year Totals by disease: Total Investigation(s) [both Individual and \
+        Summary] where the Year of the Event Date equal the current Year
+        2) 5-Year median: Median number of Investigation(s) [both Individual and \
+        Summary] for the past five years
+        3) Event Date: Derived using the hierarchy of Onset Date, Diagnosis Date, \
+        Report to County, Report to State and Date the Investigation was created \
+        in the NBS.
+    '''
 
     return ReportResult(
         content_type='table',
