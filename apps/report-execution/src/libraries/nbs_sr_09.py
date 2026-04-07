@@ -26,10 +26,10 @@ def execute(
         -- Clean data
         , cleaned_data AS (
             SELECT 
-                state_cd,
-                state,
-                county,
-                cnty_cd,
+                COALESCE(state_cd, 'N/A') AS state_cd,
+                COALESCE(state, 'N/A') AS state,
+                COALESCE(county, 'N/A') AS county,
+                COALESCE(cnty_cd, 'N/A') AS cnty_cd,
                 phc_code_short_desc,
                 event_date,
                 group_case_cnt
