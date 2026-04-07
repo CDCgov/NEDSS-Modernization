@@ -16,7 +16,7 @@ def execute(
     * Capitalized the `Y` in `Year`
     """
     content = trx.query(
-        '''
+        """
         WITH subset as ({subset_query})
         SELECT state_cd as "State Code", state as State, county as County,
         phc_code_short_desc as Condition, datepart(year, event_date) as Year,
@@ -24,7 +24,7 @@ def execute(
         FROM subset
         GROUP BY state, state_cd, county, phc_code_short_desc, event_date
         ORDER BY state, state_cd, county, phc_code_short_desc, event_date
-        '''
+        """
     )
 
     header = 'SR11: Cases of Selected Diseases By Year Over Time'
