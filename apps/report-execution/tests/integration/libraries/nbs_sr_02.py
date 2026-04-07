@@ -4,8 +4,8 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
-db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
+db_table = 'NBS_ODSE.dbo.PublicHealthCaseFact'
+db_fk_tables = ['NBS_ODSE.dbo.SubjectRaceInfo']
 faker_schema = 'phc_demographic.yaml'
 
 
@@ -42,9 +42,9 @@ class TestIntegrationNbsSr02Library:
         record = None
         for row in result.content.data:
             if (
-                row[0] == 'Georgia'
-                and row[1] == 'Washington County'
-                and row[2] == 'Pertussis'
+                    row[0] == 'Georgia'
+                    and row[1] == 'Washington County'
+                    and row[2] == 'Pertussis'
             ):
                 record = row
                 break
@@ -95,12 +95,12 @@ class TestIntegrationNbsSr02Library:
 
         result = execute_report(report_spec)
         assert (
-            result.header
-            == 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
+                result.header
+                == 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
         )
         assert (
-            result.subheader
-            == 'For Georgia, N/A, Tennessee and From 2020-01-01 To 2024-12-31'
+                result.subheader
+                == 'For Georgia, N/A, Tennessee and From 2020-01-01 To 2024-12-31'
         )
         assert len(result.description) > 100
         assert result.content_type == 'table'
@@ -129,8 +129,8 @@ class TestIntegrationNbsSr02Library:
 
         result = execute_report(report_spec)
         assert (
-            result.header
-            == 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
+                result.header
+                == 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
         )
         assert result.subheader == 'For Georgia'
         assert len(result.description) > 100

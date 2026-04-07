@@ -6,8 +6,8 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
-db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
+db_table = 'NBS_ODSE.dbo.PublicHealthCaseFact'
+db_fk_tables = ['NBS_ODSE.dbo.SubjectRaceInfo']
 faker_schema = 'phc_demographic.yaml'
 
 

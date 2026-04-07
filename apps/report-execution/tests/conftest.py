@@ -162,7 +162,7 @@ def temp_name(table_name: str) -> str:
 
     Not using temp tables as the usage spans connections.
     """
-    return table_name[0:-1] + '_temp]'
+    return table_name[0:-1] + '_temp'
 
 
 @pytest.fixture(scope='module')
