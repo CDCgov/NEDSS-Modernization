@@ -8,12 +8,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.time.EffectiveTime;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ReportTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThatThrownBy(() -> new Report(null, null, null))
+    assertThatThrownBy(() -> new Report(null, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("id is marked non-null but is null");
   }
@@ -23,10 +24,9 @@ class ReportTest {
     Long reportId = 1L;
     Long dataSource = 2L;
     ReportId id = new ReportId(reportId, dataSource);
-    ReportLibrary reportLibrary = new ReportLibrary();
     String sectionCd = "1000";
 
-    Report actual = new Report(id, reportLibrary, sectionCd);
+    Report actual = new Report(id, sectionCd);
 
     assertThat(actual)
         .satisfies(report -> assertEquals(reportId, report.getId().getReportUid()))
@@ -45,7 +45,7 @@ class ReportTest {
         .satisfies(report -> assertNull(report.getAddReasonCd()))
         .satisfies(report -> assertNull(report.getAddTime()))
         .satisfies(report -> assertNull(report.getAddUserUid()))
-        .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
+        .satisfies(report -> assertNull(report.getReportLibrary()))
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()));
   }
 
@@ -56,6 +56,7 @@ class ReportTest {
     ReportId id = new ReportId(reportId, dataSource);
     DataSource dataSourceObj = new DataSource();
     ReportLibrary reportLibrary = new ReportLibrary();
+    List<ReportFilter> reportFilters = List.of(new ReportFilter(), new ReportFilter());
     String descTxt = "Counts of Reportable Diseases by County for Selected Time Frame";
     LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
     LocalDateTime effectiveToTime = LocalDateTime.parse("2020-03-04T10:15:30");
@@ -81,6 +82,7 @@ class ReportTest {
             id,
             dataSourceObj,
             reportLibrary,
+            reportFilters,
             descTxt,
             effectiveTime,
             filterMode,
@@ -120,6 +122,7 @@ class ReportTest {
         .satisfies(report -> assertEquals(shared, report.getShared()))
         .satisfies(report -> assertEquals(category, report.getCategory()))
         .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
+        .satisfies(report -> assertEquals(reportFilters, report.getReportFilters()))
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()))
         .satisfies(report -> assertEquals(addReasonCd, report.getAddReasonCd()))
         .satisfies(report -> assertEquals(addTime, report.getAddTime()))
@@ -134,8 +137,7 @@ class ReportTest {
 
     assertThat(actual)
         .isNotNull()
-        .extracting(
-            "id", "reportLibrary", "sectionCd") // Extracts fields directly, bypassing getters
+        .extracting("id", "sectionCd") // Extracts fields directly, bypassing getters
         .containsOnlyNulls();
   }
 }
