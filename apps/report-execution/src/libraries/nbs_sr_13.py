@@ -9,13 +9,13 @@ def execute(
         time_range: TimeRange | None = None,
         **kwargs,
 ):
-    """Standard Report 13: Counts of Selected Diseases By Case Status
+    """Standard Report 13: Counts of Selected Diseases By Case Status.
 
     Conversion notes:
     * Simplified report logic to only show existing data; removed SAS `inv_status`
-      zero-fill template for case status.
+      zero-fill template for case status
     * Integrated `nbs_srte` lookup via `LEFT JOIN` for better performance and
-      driver compatibility.
+      driver compatibility
     """
     sql_query = f"""
     SELECT 
