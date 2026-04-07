@@ -44,7 +44,7 @@ def execute(
     header = (
         'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected Time Period'
     )
-    description = '''
+    description = """
         <u>Report content</u>
         Data Source: nbs_ods.PHCDemographic (publichealthcasefact)
         Output: Report demonstrates, in table form, Investigation(s) \
@@ -65,7 +65,7 @@ def execute(
         3) Event Date: Derived using the hierarchy of Onset Date, Diagnosis Date, \
         Report to County, Report to State and Date the Investigation was created \
         in the NBS.
-    '''
+    """
 
     return ReportResult(
         content_type='table',
