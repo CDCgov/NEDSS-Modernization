@@ -9,8 +9,7 @@ def execute(
     time_range: TimeRange | None = None,
     **kwargs,
 ):
-    """Standard Report 12: Cases of Reportable Diseases by County for Selected Time
-    Frame.
+    """Standard Report 12: Cases of Reportable Diseases by County by Year.
 
     Conversion notes:
     * Matched export format without pivot
@@ -19,11 +18,11 @@ def execute(
     """
     content = trx.query(
         f'WITH subset as ({subset_query})\n'
-        + 'SELECT state as State, county as County, phc_code_short_desc as Condition, '
-        'sum(group_case_cnt) as Cases\n'
+        + 'SELECT state_cd as "State Code", state as State, county as County, phc_code_short_desc as Condition, '
+        + 'YEAR(event_date) as year, sum(group_case_cnt) as Cases\n'
         + 'FROM subset\n'
-        + 'GROUP BY state, county, phc_code_short_desc\n'
-        + 'ORDER BY state, county, phc_code_short_desc'
+        + 'GROUP BY state_cd, state, county, phc_code_short_desc, YEAR(event_date)\n'
+        + 'ORDER BY state_cd, state, county, phc_code_short_desc, YEAR(event_date)'
     )
 
     # Get the unique state(s) in the data set for subheader display

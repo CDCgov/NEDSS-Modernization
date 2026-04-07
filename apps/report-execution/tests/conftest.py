@@ -108,7 +108,7 @@ def setup_containers(request):
         env_file=['../sample.env', '../apps/report-execution/sample.env'],
         build=True,
     )
-    report_exec_url = 'http://0.0.0.0:8001/status'
+    report_exec_url = 'http://localhost:8001/status'
 
     def get_running_container(name):
         try:

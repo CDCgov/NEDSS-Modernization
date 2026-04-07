@@ -70,7 +70,7 @@ Or something similar to the following, if you're looking to run a specific test 
 uv run pytest src/main_test.py
 ```
 
-To run integration tests, ensure the `.env` is loaded or passed to `uv` and run
+To run integration tests, ensure the `.env` is loaded or passed to `uv`, **ensure host networking mode in docker is enabled** and run
 ```sh
 uv run pytest # all tests
 uv run pytest -m integration # just integration tests

@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 import yaml
 
@@ -11,7 +13,7 @@ faker_schema = 'phc_demographic.yaml'
 
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
-class TestIntegrationNbsSr02Library:
+class TestIntegrationNbsSr12Library:
     """Integration tests for the nbs_custom library."""
 
     def test_execute_report_check_data(self, snapshot):
@@ -30,6 +32,8 @@ class TestIntegrationNbsSr02Library:
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
+
+        logging.info(result)
 
         data = result.content.data
         assert len(data) == 25  # two combinations with no data, zeros not filled
