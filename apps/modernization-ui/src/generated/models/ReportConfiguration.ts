@@ -2,16 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { FilterConfiguration } from './FilterConfiguration';
-import type { Library } from './Library';
-import type { ReportColumn } from './ReportColumn';
-import type { ReportDataSource } from './ReportDataSource';
 export type ReportConfiguration = {
     runner: string;
-    dataSource: ReportDataSource;
-    reportLibrary: Library;
-    filters: Array<FilterConfiguration>;
-    reportColumns?: Array<ReportColumn>;
     python?: boolean;
 };
 
