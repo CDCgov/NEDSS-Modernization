@@ -1168,7 +1168,7 @@ wheels = [
 
 [[package]]
 name = "tablefaker"
-version = "1.8.0"
+version = "1.9.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "faker" },
@@ -1178,9 +1178,9 @@ dependencies = [
     { name = "psutil" },
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/12/26/fe0d1936c6c437dd3f8f81fa3658302aaf95c1bdb8fd66b88add0bcc4945/tablefaker-1.8.0.tar.gz", hash = "sha256:f6b74dfc45a42af3c8986512ffb77e50174188cd388992590b3813f00c805e3c", size = 51589, upload-time = "2025-10-10T19:06:16.069Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/78/95/0ce2b3aef47dd1fdc9108f57bafaae7e2b32bb1c826d7b5ad7727083cc3a/tablefaker-1.9.1.tar.gz", hash = "sha256:c3586805955eb65ade959a569a5082c009b3a5cba212f4b8a88f8c90f469aba9", size = 57189, upload-time = "2026-03-14T02:31:37.378Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4f/8a/4958c6a3bc47b618c0b7f5d470ce58af53ed33a350e32e02f91c44d6aeb6/tablefaker-1.8.0-py3-none-any.whl", hash = "sha256:901c23b003b13c7ba05d21e42807121b34aedc9e9781fda45aebaf51207e539e", size = 41188, upload-time = "2025-10-10T19:06:14.71Z" },
+    { url = "https://files.pythonhosted.org/packages/41/b9/299343ff77e02b8705c70520286f1d132676528695eb576d1e6bafcc16ec/tablefaker-1.9.1-py3-none-any.whl", hash = "sha256:1ebeb6947983728f9a0ddb3bd90aa2f5dea1525738b498bee58c2583bf02db39", size = 42640, upload-time = "2026-03-14T02:31:36.196Z" },
 ]
 
 [[package]]
