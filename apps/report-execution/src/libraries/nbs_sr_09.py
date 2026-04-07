@@ -82,7 +82,7 @@ def execute(
         'State selected by the user\n'
         '* Is based on the calculated Event Date\n'
         '*Calculations:*\n'
-        '* *Total Monthly Cases:* Total Investigation(s) [both Individual and '
+        '* *Cases:* Total Investigation(s) [both Individual and '
         'Summary] by state, county, and disease for each month over the selected '
         'time frame\n'
         '* *Event Date:* Derived using the hierarchy of Onset Date, Diagnosis '
