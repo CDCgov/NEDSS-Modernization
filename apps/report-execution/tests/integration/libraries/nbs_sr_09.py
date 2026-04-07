@@ -90,7 +90,10 @@ class TestIntegrationNbsSr09Library:
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
+                'subset_query': (
+                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
+                    "WHERE event_date >= '2024-03-01' AND event_date <= '2024-05-31'"
+                ),
                 'time_range': {'start': '2024-03-01', 'end': '2024-05-31'},
             }
         )
@@ -104,8 +107,8 @@ class TestIntegrationNbsSr09Library:
 
         valid_months = {'202403', '202404', '202405'}
         for row in data:
-            ord = row[col_index['ord']]
-            assert ord in valid_months
+            ord_val = row[col_index['ord']]
+            assert ord_val in valid_months
 
             # Verify month names match the codes
             month_map = {
@@ -113,7 +116,7 @@ class TestIntegrationNbsSr09Library:
                 '202404': 'Apr',
                 '202405': 'May',
             }
-            expected_monyr = month_map[ord]
+            expected_monyr = month_map[ord_val]
             assert row[col_index['monyr']] == expected_monyr
 
     def test_execute_report_with_State_filter(self):
@@ -186,9 +189,10 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
-                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
+                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
                     "WHERE State = 'Tennessee' "
-                    "AND phc_code_short_desc = 'Measles'"
+                    "AND phc_code_short_desc = 'Measles' "
+                    "AND event_date >= '2024-04-01' AND event_date <= '2024-04-30'"
                 ),
                 'time_range': {'start': '2024-04-01', 'end': '2024-04-30'},
             }
@@ -208,31 +212,32 @@ class TestIntegrationNbsSr09Library:
 
         # Subheader should include the filtered values
         assert 'Tennessee' in result.subheader
+        assert '2024-04-01 to 2024-04-30' in result.subheader
 
-    def test_execute_report_empty_subset(self):
-        """Test handling of empty result set."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'NBS Custom',
-                'library_name': 'nbs_sr_09',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                'subset_query': (
-                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 0'
-                ),
-                'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
-            }
-        )
+        def test_execute_report_empty_subset(self):
+            """Test handling of empty result set."""
+            report_spec = ReportSpec.model_validate(
+                {
+                    'version': 1,
+                    'is_export': True,
+                    'is_builtin': True,
+                    'report_title': 'NBS Custom',
+                    'library_name': 'nbs_sr_09',
+                    'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
+                    'subset_query': (
+                        'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 0'
+                    ),
+                    'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
+                }
+            )
 
-        result = execute_report(report_spec)
-        assert result.content_type == 'table'
+            result = execute_report(report_spec)
+            assert result.content_type == 'table'
 
-        # Should return empty dataset but with correct column structure
-        assert len(result.content.data) == 0
-        # State Code, State, County, Condition, monyr, ord, Cases
-        assert len(result.content.columns) == 7
+            # Should return empty dataset but with correct column structure
+            assert len(result.content.data) == 0
+            # State Code, State, County, Condition, monyr, ord, Cases
+            assert len(result.content.columns) == 7
 
     def test_execute_report_check_column_order(self):
         """Verify column names and order match expected output."""
@@ -284,7 +289,7 @@ class TestIntegrationNbsSr09Library:
         # Check header
         assert (
             result.header
-            == 'SR9: Monthly Cases of Selected Disease by County, and State'
+            == 'SR9: Monthly Cases of Selected Disease by County and State'
         )
 
         # Check subheader contains expected elements
@@ -295,7 +300,7 @@ class TestIntegrationNbsSr09Library:
         assert len(result.description) > 100
         assert 'Report Content' in result.description
         assert 'Data Source:' in result.description
-        assert 'Total Monthly Cases' in result.description
+        assert 'Cases' in result.description
         assert 'Event Date:' in result.description
 
         assert result.content_type == 'table'

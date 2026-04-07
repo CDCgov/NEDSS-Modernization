@@ -55,13 +55,12 @@ def execute(
             phc_code_short_desc,
             FORMAT(event_date, 'MMM'),
             FORMAT(event_date, 'yyyyMM')
+        HAVING SUM(group_case_cnt) > 0  -- Exclude rows with zero cases
         ORDER BY 
-            state_cd,
+            phc_code_short_desc,
+            ord,
             state,
-            county,
-            phc_short_code_desc,
-            FORMAT(event_date, 'MMM'),
-            FORMAT(event_date, 'yyyyMM')
+            county
         '''
     )
 
@@ -69,25 +68,24 @@ def execute(
     subheader = gen_subheader(time_range.start, time_range.end, content)
 
     description = '''
-*<u>Report Content</u>*
-*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)
-*Output:* Report provides the total number of monthly Investigation(s) 
-[both Individual and Summary] for selected disease(s) and state(s), 
-irrespective of Case Status. Output:
-* Does not include Investigation(s) that have been logically deleted
-* Is filtered based on the state, disease(s), time frame and advanced 
-filter criteria selected by the user
-* Will not include Investigation(s) that do not have a value for the 
-State selected by the user
-* Is based on the calculated Event Date
-*Calculations:*
-* *Total Monthly Cases:* Total Investigation(s) [both Individual and 
-Summary] by state, county, and disease for each month over the selected 
-time frame
-* *Event Date:* Derived using the hierarchy of Onset Date, Diagnosis 
-Date, Report to County, Report to State and Date the Investigation was 
-created in the NBS.
-'''
+    *<u>Report Content</u>*
+    *Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)
+    *Output:* Report provides the total number of monthly Investigation(s) 
+    [both Individual and Summary] for selected disease(s) and state(s), 
+    irrespective of Case Status. Output:
+    * Does not include Investigation(s) that have been logically deleted
+    * Is filtered based on the state, disease(s), time frame and advanced 
+    filter criteria selected by the user
+    * Will not include Investigation(s) that do not have a value for the 
+    State selected by the user
+    * Is based on the calculated Event Date
+    *Calculations:*
+    * *Cases:* Total Investigation(s) [both Individual and Summary] 
+    by state, county, and disease for each month over the selected time frame
+    * *Event Date:* Derived using the hierarchy of Onset Date, Diagnosis 
+    Date, Report to County, Report to State and Date the Investigation was 
+    created in the NBS.
+    '''
 
     return ReportResult(
         content_type='table',

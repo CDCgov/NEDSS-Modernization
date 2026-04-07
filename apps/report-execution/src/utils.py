@@ -2,6 +2,7 @@ import logging
 import os
 
 from . import errors
+from src.models import Table
 
 
 def get_env_or_error(env_var: str):
@@ -34,7 +35,7 @@ def get_int_env_or_default(env_var: str, default: int):
         return default
 
 
-def gen_subheader(start_date, end_date, content):
+def gen_subheader(start_date: str, end_date: str, content: Table):
     """Generate a subheader string based on the content and time range."""
     # Parse states and diseases from the content
     col_index = {col: idx for idx, col in enumerate(content.columns)}
