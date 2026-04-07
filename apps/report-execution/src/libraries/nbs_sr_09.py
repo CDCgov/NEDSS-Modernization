@@ -56,10 +56,12 @@ def execute(
             FORMAT(event_date, 'MMM'),
             FORMAT(event_date, 'yyyyMM')
         ORDER BY 
-            phc_code_short_desc,
-            ord,
+            state_cd,
             state,
-            county
+            county,
+            phc_short_code_desc,
+            FORMAT(event_date, 'MMM'),
+            FORMAT(event_date, 'yyyyMM')
         '''
     )
 
