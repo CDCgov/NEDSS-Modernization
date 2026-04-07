@@ -1,9 +1,8 @@
-package gov.cdc.nbs.report;
+package gov.cdc.nbs.report.models;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import gov.cdc.nbs.report.models.ReportSpec;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;

@@ -2,6 +2,7 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import gov.cdc.nbs.report.models.ReportResult;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class ReportController {
 
   @PostMapping("/execute")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
-  public ResponseEntity<String> executeReport(@RequestBody ReportExecutionRequest request) {
+  public ResponseEntity<ReportResult> executeReport(@RequestBody ReportExecutionRequest request) {
     // TODO: validate request // NOSONAR
     return reportService.executeReport(request);
   }
