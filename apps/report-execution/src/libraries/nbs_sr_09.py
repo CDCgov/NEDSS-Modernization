@@ -23,31 +23,17 @@ def execute(
     content = trx.query(
         f'''
         WITH subset AS ({subset_query})
-        -- Clean data
-        , cleaned_data AS (
-            SELECT 
-                COALESCE(state_cd, 'N/A') AS state_cd,
-                COALESCE(state, 'N/A') AS state,
-                COALESCE(county, 'N/A') AS county,
-                COALESCE(cnty_cd, 'N/A') AS cnty_cd,
-                phc_code_short_desc,
-                event_date,
-                group_case_cnt
-            FROM subset
-            WHERE event_date IS NOT NULL
-                AND phc_code_short_desc IS NOT NULL
-                AND phc_code_short_desc != ''
-        )
         -- Monthly aggregation with exact column names matching the export
         SELECT 
-            state_cd AS [State Code],
-            state AS [State],
-            county AS [County],
+            COALESCE(state_cd, 'N/A') AS [State Code],
+            COALESCE(state, 'N/A') AS [State],
+            COALESCE(county, 'N/A') AS [County],
             phc_code_short_desc AS [Condition],
             FORMAT(event_date, 'MMM') AS monyr,
             FORMAT(event_date, 'yyyyMM') AS ord,
             SUM(group_case_cnt) AS Cases
-        FROM cleaned_data
+        FROM subset
+        WHERE event_date IS NOT NULL
         GROUP BY 
             state_cd,
             state,
@@ -55,7 +41,7 @@ def execute(
             phc_code_short_desc,
             FORMAT(event_date, 'MMM'),
             FORMAT(event_date, 'yyyyMM')
-        HAVING SUM(group_case_cnt) > 0  -- Exclude rows with zero cases
+        HAVING SUM(group_case_cnt) > 0
         ORDER BY 
             phc_code_short_desc,
             ord,
