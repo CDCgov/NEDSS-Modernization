@@ -18,7 +18,9 @@ def execute_report(report_spec: models.ReportSpec):
 
     # set up database connection as read only and start a transaction
     conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+    
     with db_transaction(conn_string) as trx:
+        import pdb; pdb.set_trace()
         result = library.execute(
             trx,
             subset_query=report_spec.subset_query,
