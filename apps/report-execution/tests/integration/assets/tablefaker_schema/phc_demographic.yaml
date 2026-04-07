@@ -3,7 +3,7 @@ config:
 
 tables:
   # Table backing PHCDemographic view
-  - table_name: "[NBS_ODSE].[dbo].[PublicHealthCaseFact]"
+  - table_name: "NBS_ODSE.dbo.PublicHealthCaseFact"
     row_count: 1000
     columns:
       # required columns:
@@ -33,7 +33,7 @@ tables:
       - column_name: PHC_code_short_desc
         type: string
         data: PHC_code_desc
-      - column_name: event_date 
+      - column_name: event_date
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         null_percentage: 0.05
       - column_name: group_case_cnt
@@ -69,7 +69,7 @@ tables:
         type: string
         data: |
           return "840" if random.random() < .95 else None
-  
+
 # === Columns not needed for reports yet ===
 # adults_in_house_nbr smallint NULL,
 # ageInMonths smallint NULL,
