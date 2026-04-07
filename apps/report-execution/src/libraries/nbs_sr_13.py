@@ -3,11 +3,11 @@ from src.models import ReportResult, TimeRange
 
 
 def execute(
-    trx: Transaction,
-    subset_query: str,
-    data_source_name: str,
-    time_range: TimeRange | None = None,
-    **kwargs,
+        trx: Transaction,
+        subset_query: str,
+        data_source_name: str,
+        time_range: TimeRange | None = None,
+        **kwargs,
 ):
     """Standard Report 13: TODO
 
@@ -43,8 +43,10 @@ def execute(
         '* Will not include Investigation(s) that do not have a value for Case Status\n'
         '\n'
         '*Calculations:*\n'
-        '* *Total Count:* Total Investigations for each disease irrespective of case status\n'
-        '* *Total Count for all diseases:* Total Investigations for all diseases irrespective of case status\n'
+        '* *Total Count:* Total Investigations for each disease irrespective of case '
+        'status\n'
+        '* *Total Count for all diseases:* Total Investigations for all diseases '
+        'irrespective of case status\n'
     )
 
     return ReportResult(

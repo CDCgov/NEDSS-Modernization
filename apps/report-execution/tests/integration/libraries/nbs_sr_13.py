@@ -38,15 +38,15 @@ class TestIntegrationNbsSr13Library:
         assert len(data[0]) == 3
         assert len(data[0]) == len(result.content.columns)
 
-        # snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
         # Sanity check the result's shape beyond the snapshot
         record = None
         for row in result.content.data:
             if (
-                row[0] == Decimal('4877.00000')
-                and row[1] == 'Measles'
-                and row[2] == 'Confirmed'
+                    row[0] == Decimal('4877.00000')
+                    and row[1] == 'Measles'
+                    and row[2] == 'Confirmed'
             ):
                 record = row
                 break
