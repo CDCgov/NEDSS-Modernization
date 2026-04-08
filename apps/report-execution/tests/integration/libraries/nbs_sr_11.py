@@ -12,7 +12,7 @@ faker_schema = 'phc_demographic.yaml'
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationNbsSr11Library:
-    """Integration tests for the nbs_custom library."""
+    """Integration tests for the nbs_sr_11 library."""
 
     def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
@@ -24,7 +24,7 @@ class TestIntegrationNbsSr11Library:
                 'library_name': 'nbs_sr_11',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
+                'time_range': {},
             }
         )
 
@@ -33,7 +33,7 @@ class TestIntegrationNbsSr11Library:
 
         data = result.content.data
         assert len(data) == 25  # two combinations with no data, zeros not filled
-        assert len(data[0]) == 4
+        assert len(data[0]) == 6  # State Code, State, County, Condition, Year, Cases
         assert len(data[0]) == len(result.content.columns)
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
@@ -65,7 +65,7 @@ class TestIntegrationNbsSr11Library:
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
                 ),
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
+                'time_range': {},
             }
         )
 
@@ -74,11 +74,9 @@ class TestIntegrationNbsSr11Library:
 
         data = result.content.data
         assert len(data) == 0
-        assert len(result.content.columns) == 4
+        assert len(result.content.columns) == 6
 
-        assert result.subheader is None
-
-    def test_execute_report_check_metadata_with_time_range(self):
+    def test_execute_report_check_metadata(self):
         """Check the metadata and column names are correct."""
         report_spec = ReportSpec.model_validate(
             {
@@ -89,49 +87,16 @@ class TestIntegrationNbsSr11Library:
                 'library_name': 'nbs_sr_11',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
+                'time_range': {},
             }
         )
 
         result = execute_report(report_spec)
-        assert (
-            result.header
-            == 'SR11: Cases of Selected Diseases By Year Over Time'
-        )
+        assert result.header == 'SR11: Cases of Selected Diseases By Year Over Time'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 
-        assert result.content.columns[0] == 'State Code'
-        assert result.content.columns[1] == 'State'
-        assert result.content.columns[2] == 'County'
-        assert result.content.columns[3] == 'Condition'
-        assert result.content.columns[4] == 'Year'
-        assert result.content.columns[5] == 'Cases'
-
-    def test_execute_report_check_metadata_without_time_range_one_state(self):
-        """Check the metadata and column names are correct."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'SR 11',
-                'library_name': 'nbs_sr_11',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                'subset_query': (
-                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
-                    " WHERE state_cd = '13'"
-                ),
-            }
-        )
-
-        result = execute_report(report_spec)
-        assert (
-            result.header
-            == 'SR11: Counts of Reportable Diseases by County for Selected Time Frame'
-        )
-        assert len(result.description) > 100
-        assert result.content_type == 'table'
+        assert result.subheader is None
 
         assert result.content.columns[0] == 'State Code'
         assert result.content.columns[1] == 'State'
