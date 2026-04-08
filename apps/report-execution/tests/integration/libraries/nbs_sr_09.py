@@ -57,8 +57,8 @@ class TestIntegrationNbsSr09Library:
             assert isinstance(row[col_index['ord']], str)
             assert isinstance(row[col_index['Cases']], Decimal)
 
-            # Cases should be non-negative
-            assert row[col_index['Cases']] >= 0
+            # Cases should be positive
+            assert row[col_index['Cases']] > 0
 
             # Month code should be 6-digit YYYYMM format
             ord = row[col_index['ord']]
