@@ -30,18 +30,18 @@ class Table(BaseModel):
 
     columns: list[str]
     data: list[tuple[Any, ...]]
-    
+
     def get_column(self, col_name: str) -> list[Any]:
         """Extract a column by name. Raises an error if the column doesn't exist."""
-
         if col_name not in self.columns:
-            raise ValueError(f"Column '{col_name}' not found. Available columns: {self.columns}")
+            raise ValueError(
+                f"Column '{col_name}' not found. Available columns: {self.columns}"
+            )
         idx = self.columns.index(col_name)
         return [row[idx] for row in self.data]
-    
+
     def get_unique_column(self, col_name: str) -> list[Any]:
         """Extract unique values from a column."""
-        
         return list(set(self.get_column(col_name)))
 
 
