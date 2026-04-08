@@ -96,19 +96,17 @@ class TestIntegrationNbsSr11Library:
         result = execute_report(report_spec)
         assert (
             result.header
-            == 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
-        )
-        assert (
-            result.subheader
-            == 'For Georgia, N/A, Tennessee and From 2020-01-01 To 2024-12-31'
+            == 'SR11: Cases of Selected Diseases By Year Over Time'
         )
         assert len(result.description) > 100
         assert result.content_type == 'table'
 
-        assert result.content.columns[0] == 'State'
-        assert result.content.columns[1] == 'County'
-        assert result.content.columns[2] == 'Condition'
-        assert result.content.columns[3] == 'Cases'
+        assert result.content.columns[0] == 'State Code'
+        assert result.content.columns[1] == 'State'
+        assert result.content.columns[2] == 'County'
+        assert result.content.columns[3] == 'Condition'
+        assert result.content.columns[4] == 'Year'
+        assert result.content.columns[5] == 'Cases'
 
     def test_execute_report_check_metadata_without_time_range_one_state(self):
         """Check the metadata and column names are correct."""
@@ -132,11 +130,12 @@ class TestIntegrationNbsSr11Library:
             result.header
             == 'SR11: Counts of Reportable Diseases by County for Selected Time Frame'
         )
-        assert result.subheader == 'For Georgia'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 
-        assert result.content.columns[0] == 'State'
-        assert result.content.columns[1] == 'County'
-        assert result.content.columns[2] == 'Condition'
-        assert result.content.columns[3] == 'Cases'
+        assert result.content.columns[0] == 'State Code'
+        assert result.content.columns[1] == 'State'
+        assert result.content.columns[2] == 'County'
+        assert result.content.columns[3] == 'Condition'
+        assert result.content.columns[4] == 'Year'
+        assert result.content.columns[5] == 'Cases'

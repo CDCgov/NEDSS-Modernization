@@ -18,7 +18,8 @@ def execute(
     content = trx.query(
         f"""
         WITH subset as ({subset_query})
-        SELECT state_cd as "State Code", state as State, county as County,
+        SELECT COALESCE(state_cd, "N/A") as "State Code", 
+        COALESCE(state, "N/A") as State, COALESCE(county, "N/A") as County,
         phc_code_short_desc as Condition, datepart(year, event_date) as Year,
         sum(group_case_cnt) as Cases
         FROM subset
