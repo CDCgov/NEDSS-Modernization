@@ -42,10 +42,10 @@ class Table(BaseModel):
 
     def get_unique_column(self, col_name: str) -> list[Any]:
         """Extract unique values from a column, sorted with None at the beginning.
-        
+
         Args:
             col_name: Name of the column to extract
-        
+
         Returns:
             Sorted list of unique values with None placed first
         """
