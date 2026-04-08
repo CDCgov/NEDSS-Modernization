@@ -283,7 +283,7 @@ class TestIntegrationNbsSr09Library:
         )
 
         # Check subheader contains expected elements
-        assert 'Georgia' in result.subheader or 'Tennessee' in result.subheader
+        assert 'Georgia' in result.subheader and 'Tennessee' in result.subheader
         assert '2024-01-01 to 2024-06-30' in result.subheader
 
         # Check description contains required sections
