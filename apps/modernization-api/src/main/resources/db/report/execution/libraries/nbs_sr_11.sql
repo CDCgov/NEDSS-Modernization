@@ -1,9 +1,9 @@
--- Migrate the NBSSR000011.SAS library to the nbs_sr_11 python library
+-- Migrate the NBSSR00011.SAS library to the nbs_sr_11 python library
 
 USE [NBS_ODSE]
 
 DECLARE @pyLib VARCHAR(50) = 'nbs_sr_11'
-DECLARE @sasLib VARCHAR(50) = 'NBSSR000011.SAS'
+DECLARE @sasLib VARCHAR(50) = 'NBSSR00011.SAS'
 DECLARE @desc VARCHAR(300) = 'SR11: Cases of Selected Diseases By Year Over Time. Report demonstrates, in table form, the total number of Investigation(s) [both Individual and Summary] by calculated MMWR Year irrespective of Case Status.'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
