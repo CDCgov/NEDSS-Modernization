@@ -24,7 +24,7 @@ class TestIntegrationNbsSr11Library:
                 'library_name': 'nbs_sr_11',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {},
+                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -65,7 +65,7 @@ class TestIntegrationNbsSr11Library:
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
                 ),
-                'time_range': {},
+                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -87,7 +87,7 @@ class TestIntegrationNbsSr11Library:
                 'library_name': 'nbs_sr_11',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {},
+                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
