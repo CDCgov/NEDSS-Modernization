@@ -67,7 +67,7 @@ class TestIntegrationNbsSr09Library:
 
             # Month name should be 3 letters
             monyr = row[col_index['monyr']]
-            assert len(monyr) in [3, 4]  # Some months like 'Sept' might be 4 chars
+            assert len(monyr) == 3
             assert monyr.isalpha()
 
     def test_execute_report_with_time_range_filter(self):
