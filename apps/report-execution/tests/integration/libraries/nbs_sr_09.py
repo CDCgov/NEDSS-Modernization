@@ -202,7 +202,7 @@ class TestIntegrationNbsSr09Library:
 
         # Subheader should include the filtered values
         assert 'Tennessee' in result.subheader
-        assert '2024-04-01 to 2024-04-30' in result.subheader
+        assert '04/01/2024 to 04/30/2024' in result.subheader
 
         def test_execute_report_empty_subset(self):
             """Test handling of empty result set."""
@@ -284,7 +284,7 @@ class TestIntegrationNbsSr09Library:
 
         # Check subheader contains expected elements
         assert 'Georgia' in result.subheader and 'Tennessee' in result.subheader
-        assert '2024-01-01 to 2024-06-30' in result.subheader
+        assert '01/01/2024 to 06/30/2024' in result.subheader
 
         # Check description contains required sections
         assert len(result.description) > 100
