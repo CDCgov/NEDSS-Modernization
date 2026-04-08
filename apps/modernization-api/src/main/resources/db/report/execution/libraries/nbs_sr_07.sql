@@ -1,10 +1,10 @@
--- Migrate the NBSSR00005.SAS library to the nbs_sr_05 python library
+-- Migrate the NBSSR00007.SAS library to the nbs_sr_07 python library
 
 USE [NBS_ODSE]
 
-DECLARE @pyLib VARCHAR(50) = 'nbs_sr_05'
-DECLARE @sasLib VARCHAR(50) = 'NBSSR00005.SAS'
-DECLARE @desc VARCHAR(300) = 'SR5: Cases of Reportable Diseases by State. Report demonstrates, in table form, the total number of Investigation(s) [both Individual and Summary] by state irrespective of Case Status over various time periods.'
+DECLARE @pyLib VARCHAR(50) = 'nbs_sr_07'
+DECLARE @sasLib VARCHAR(50) = 'NBSSR00007.SAS'
+DECLARE @desc VARCHAR(300) = 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected Time Period. Report demonstrates, in table form, Investigation(s) [both Individual and Summary] by year-to-date, and 5-year median irrespective of Case Status'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN
