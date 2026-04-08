@@ -48,16 +48,6 @@ class TestIntegrationNbsSr09Library:
         for row in data:
             # Find the row index for each column (don't assume order)
             col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-
-            # Basic column presence checks
-            assert 'State Code' in col_index
-            assert 'State' in col_index
-            assert 'County' in col_index
-            assert 'Condition' in col_index
-            assert 'monyr' in col_index
-            assert 'ord' in col_index
-            assert 'Cases' in col_index
-
             # Data type and value checks
             assert isinstance(row[col_index['State Code']], (str, type(None)))
             assert isinstance(row[col_index['State']], (str, type(None)))
