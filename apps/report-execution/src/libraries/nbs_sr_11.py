@@ -16,7 +16,7 @@ def execute(
     * Capitalized the `Y` in `Year`
     """
     content = trx.query(
-        """
+        f"""
         WITH subset as ({subset_query})
         SELECT state_cd as "State Code", state as State, county as County,
         phc_code_short_desc as Condition, datepart(year, event_date) as Year,
