@@ -2,9 +2,9 @@ from datetime import date
 
 import pytest
 
-from src.models import TimeRange
 from src import utils
 from src.errors import InternalServerError
+from src.models import TimeRange
 
 
 class TestUtils:
@@ -65,8 +65,7 @@ class TestUtils:
     def test_gen_subheader_with_us_date_range(self):
         time_range = TimeRange(start='01/01/2024', end='12/31/2024')
         result = utils.gen_subheader(
-            states=['Georgia', 'Tennessee'],
-            time_range=time_range
+            states=['Georgia', 'Tennessee'], time_range=time_range
         )
         assert result == 'Georgia, Tennessee | 01/01/2024 to 12/31/2024'
 
@@ -75,6 +74,6 @@ class TestUtils:
         result = utils.gen_subheader(
             states=['Georgia', 'Alabama', None, '<FILLER>'],
             diseases=['Measles'],
-            time_range=time_range
+            time_range=time_range,
         )
         assert result == 'N/A, Alabama, Georgia | Measles | 01/01/2024 to 12/31/2024'

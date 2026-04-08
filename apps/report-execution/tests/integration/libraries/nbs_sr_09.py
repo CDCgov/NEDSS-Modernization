@@ -355,4 +355,3 @@ class TestIntegrationNbsSr09Library:
             ords = [row[col_index['ord']] for row in rows]
             # Should be in ascending order
             assert ords == sorted(ords)
-

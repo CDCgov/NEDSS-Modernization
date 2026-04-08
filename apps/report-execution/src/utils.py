@@ -1,7 +1,6 @@
 import logging
 import os
 from datetime import date, datetime
-from typing import List, Optional
 
 from src.models import TimeRange
 
@@ -49,24 +48,24 @@ def parse_date(date_str: str) -> datetime:
 
 
 def gen_subheader(
-        states: Optional[List[str]] = None,
-        time_range: Optional[TimeRange] = None,
-        date_obj: Optional[date] = None,
-        diseases: Optional[List[str]] = None,
-    ) -> str:
+    states: list[str | None] | None = None,
+    time_range: TimeRange | None = None,
+    date_obj: date | None = None,
+    diseases: list[str] | None = None,
+) -> str:
     """Generate a subheader for reports from various optional components.
-    
+
     Args:
         states: Optional list of state strings (duplicates will be removed)
         time_range: Optional TimeRange object with start/end dates
         date_obj: Optional date object for single date display
         diseases: Optional list of disease strings (duplicates will be removed)
-    
+
     Returns:
         Formatted subheader string
     """
     parts = []
-    
+
     # Add states if provided
     if states:
         has_none = any(s is None for s in states)
@@ -77,23 +76,25 @@ def gen_subheader(
             else:
                 sorted_states = sorted(clean_states)
             parts.append(', '.join(sorted_states))
-    
+
     # Add diseases if provided
     if diseases:
         clean_diseases = {d for d in diseases if d}
         if clean_diseases:
             parts.append(', '.join(sorted(clean_diseases)))
-    
+
     # Add date range if time_range provided
     if time_range:
         # Parse dates (handles both ISO and US formats)
         start_dt = parse_date(time_range.start)
         end_dt = parse_date(time_range.end)
         # Format as MM/DD/YYYY
-        parts.append(f'{start_dt.strftime("%m/%d/%Y")} to {end_dt.strftime("%m/%d/%Y")}')
-    
+        parts.append(
+            f'{start_dt.strftime("%m/%d/%Y")} to {end_dt.strftime("%m/%d/%Y")}'
+        )
+
     # Add single date if date_obj provided
     elif date_obj is not None:
-        parts.append(date_obj.strftime("%m/%d/%Y"))
-    
+        parts.append(date_obj.strftime('%m/%d/%Y'))
+
     return ' | '.join(parts)
