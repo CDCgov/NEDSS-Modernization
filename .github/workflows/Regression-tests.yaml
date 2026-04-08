@@ -44,6 +44,10 @@ jobs:
           CYPRESS_LOGIN_USERNAME: 'superuser'
           CYPRESS_LOGIN_PASSWORD: ''
 
+      - name: Install dependencies
+        working-directory: testing/regression/
+        run: npm ci
+        
       # Create cypress html report
       - name: Build report
         if: ${{ !cancelled() }}
