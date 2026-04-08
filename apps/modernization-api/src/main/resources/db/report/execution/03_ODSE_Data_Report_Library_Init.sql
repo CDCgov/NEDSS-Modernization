@@ -30,7 +30,7 @@ BEGIN
         ('NBSSR00004.SAS', 'Disease by month and YTD cumulative Totals'),
         ('NBSSR00005.SAS', 'SR5: Cases of Reportable Diseases by State. Report demonstrates, in table form, the total number of Investigation(s) [both Individual and Summary] by state irrespective of Case Status over various time periods.'),
         ('NBSSR00006.SAS', 'Cases of Selected Diseases by County'),
-        ('NBSSR00007.SAS', 'SR7: Bar Graph of Cases of Selected Diseases vs. 5-Year Median for Selected Time Period. Report demonstrates, using a horizontal bar graph, Investigation(s) [both Individual and Summary] by year-to-date, and 5-year median irrespective of Case Status'),
+        ('NBSSR00007.SAS', 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected Time Period. Report demonstrates, in table form, Investigation(s) [both Individual and Summary] by year-to-date, and 5-year median irrespective of Case Status'),
         ('NBSSR00008.SAS', 'SR8: State Map Report of Disease Cases Over Selected Time Period. Report demonstrates, using a choropleth map, the total number of Investigation(s) [both Individual and Summary] by County irrespective of Case Status.'),
         ('NBSSR00009.SAS', 'SR9: Selected Disease by Month and County.  Report demonstrates the total number of monthly Investigation(s) [both Individual and Summary] for a given disease and State, by County, irrespective of Case Status.''),
         ('NBSSR00010.SAS', 'SR10: Multi-Year Line Graph of Disease Cases. Report demonstrates, using a multi-year line graph, the total number of yearly Investigation(s) [both Individual and Summary] for a given disease, by State, irrespective of Case Status.'),

@@ -63,7 +63,7 @@ describe('when selecting a single item from a specific set of items', () => {
 });
 
 describe('when one of the options is clicked', () => {
-    it('should mark the option as checked', () => {
+    it('should mark the option as checked', async () => {
         const { getByRole } = render(
             <SingleSelect
                 id="test-id"
@@ -80,7 +80,7 @@ describe('when one of the options is clicked', () => {
         );
         const select = getByRole('combobox', { name: 'Test Label' });
 
-        userEvent.selectOptions(select, 'value-four');
+        await userEvent.selectOptions(select, 'value-four');
         const checked = getByRole('option', { selected: true });
 
         expect(checked).toHaveTextContent('name-four');
