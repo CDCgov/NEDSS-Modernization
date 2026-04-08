@@ -13,7 +13,6 @@ def execute(
 
     Conversion notes:
     * Matched export and run formats without pivot
-    * Capitalized the `Y` in `Year`
     """
     content = trx.query(
         f"""
