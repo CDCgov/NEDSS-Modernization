@@ -22,8 +22,8 @@ def execute(
         phc_code_short_desc as Condition, datepart(year, event_date) as Year,
         sum(group_case_cnt) as Cases
         FROM subset
-        GROUP BY state, state_cd, county, phc_code_short_desc, event_date
-        ORDER BY state, state_cd, county, phc_code_short_desc, event_date
+        GROUP BY state, state_cd, county, phc_code_short_desc, datepart(year, event_date)
+        ORDER BY state, state_cd, county, phc_code_short_desc, datepart(year, event_date)
         """
     )
 
