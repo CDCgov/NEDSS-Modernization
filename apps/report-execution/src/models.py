@@ -41,8 +41,22 @@ class Table(BaseModel):
         return [row[idx] for row in self.data]
 
     def get_unique_column(self, col_name: str) -> list[Any]:
-        """Extract unique values from a column."""
-        return list(set(self.get_column(col_name)))
+        """Extract unique values from a column, sorted with None at the beginning.
+        
+        Args:
+            col_name: Name of the column to extract
+        
+        Returns:
+            Sorted list of unique values with None placed first
+        """
+        if col_name not in self.columns:
+            raise ValueError(
+                f"Column '{col_name}' not found. Available columns: {self.columns}"
+            )
+        idx = self.columns.index(col_name)
+        values = {row[idx] for row in self.data}
+        # Sort with None first (False < True, so None comes before non-None)
+        return sorted(values, key=lambda x: (x is not None, x))
 
 
 def serialize_table(table: Table) -> str:
