@@ -18,7 +18,7 @@ def execute(
         f"""
         WITH subset as ({subset_query})
         SELECT state_cd as "State Code", state as State, county as County,
-        phc_code_short_desc as Condition, datepart(year, event_date) as Year,
+        phc_code_short_desc as Condition, datepart(year, event_date) as year,
         sum(group_case_cnt) as Cases
         FROM subset
         GROUP BY state, state_cd, county, phc_code_short_desc, 
