@@ -143,11 +143,6 @@ def execute(
     # Get the state(s) in the data set for subheader display
     states = trx.query('SELECT DISTINCT state FROM #base_data ORDER BY state')
     state_list = states.get_unique_column('state')
-    # state_list = [
-    #     row[0] if row[0] is not None else 'N/A'
-    #     for row in states.data
-    #     if row[0] != filler_state
-    # ]
 
     trx.execute('DROP TABLE #base_data')
 
