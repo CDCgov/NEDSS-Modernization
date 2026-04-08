@@ -21,7 +21,7 @@ def execute(
 
     """
     content = trx.query(
-        f'''
+        f"""
         WITH subset AS ({subset_query})
         -- Monthly aggregation with exact column names matching the export
         SELECT 
@@ -47,13 +47,13 @@ def execute(
             ord,
             state,
             county
-        '''
+        """
     )
 
     header = 'SR9: Monthly Cases of Selected Disease by County and State'
     subheader = gen_subheader(time_range.start, time_range.end, content)
 
-    description = '''
+    description = """
     *<u>Report Content</u>*
     *Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)
     *Output:* Report provides the total number of monthly Investigation(s) 
@@ -71,7 +71,7 @@ def execute(
     * *Event Date:* Derived using the hierarchy of Onset Date, Diagnosis 
     Date, Report to County, Report to State and Date the Investigation was 
     created in the NBS.
-    '''
+    """
 
     return ReportResult(
         content_type='table',

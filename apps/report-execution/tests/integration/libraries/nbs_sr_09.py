@@ -81,7 +81,7 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
-                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     "WHERE event_date >= '2024-03-01' AND event_date <= '2024-05-31'"
                 ),
                 'time_range': {'start': '2024-03-01', 'end': '2024-05-31'},
@@ -179,7 +179,7 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
-                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     "WHERE State = 'Tennessee' "
                     "AND phc_code_short_desc = 'Measles' "
                     "AND event_date >= '2024-04-01' AND event_date <= '2024-04-30'"

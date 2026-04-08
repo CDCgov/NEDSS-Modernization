@@ -1,8 +1,9 @@
 import logging
 import os
 
-from . import errors
 from src.models import Table
+
+from . import errors
 
 
 def get_env_or_error(env_var: str):
