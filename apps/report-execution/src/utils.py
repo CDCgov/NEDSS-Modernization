@@ -1,10 +1,11 @@
 import logging
 import os
+from datetime import date
+from typing import List, Optional
 
-from src.models import Table
+from src.models import Table, TimeRange
 
 from . import errors
-
 
 def get_env_or_error(env_var: str):
     """Gets an environment variable, if it isn't present throws an
@@ -36,21 +37,47 @@ def get_int_env_or_default(env_var: str, default: int):
         return default
 
 
-def gen_subheader(start_date: str, end_date: str, content: Table):
-    """Generate a subheader string based on the content and time range."""
-    # Parse states and diseases from the content
-    col_index = {col: idx for idx, col in enumerate(content.columns)}
-
-    state_set = set()
-
-    for row in content.data:
-        state = row[col_index['State']]
-        if state is not None:
-            state_set.add(state)
-
-    state_list = sorted(state_set)
-
-    # Format the time period string
-    time_period_str = f'{start_date} to {end_date}'
-
-    return f'For {", ".join(state_list)} | {time_period_str}'
+def gen_subheader(
+    states: Optional[List[str]] = None,
+    time_range: Optional[TimeRange] = None,
+    date_obj: Optional[date] = None,
+    diseases: Optional[List[str]] = None,
+) -> str:
+    """Generate a subheader for reports from various optional components.
+    
+    Args:
+        states: Optional list of state strings (duplicates will be removed)
+        time_range: Optional TimeRange object with start/end dates
+        date_obj: Optional date object for single date display
+        diseases: Optional list of disease strings (duplicates will be removed)
+    
+    Returns:
+        Formatted subheader string
+    """
+    parts = []
+    
+    # Add states if provided and not empty. Exclude <FILLER> and make None values 'N/A'
+    if states:
+        clean_states = {s for s in states if s and s != '<FILLER>'}
+        if clean_states:
+            if None in states:
+                sorted_states = ['N/A'] + sorted(clean_states)
+            else:
+                sorted_states = sorted(clean_states)
+            parts.append(', '.join(sorted_states))
+    
+    # Add diseases if provided and not empty
+    if diseases:
+        clean_diseases = {d for d in diseases if d}
+        if clean_diseases:
+            parts.append(', '.join(sorted(clean_diseases)))
+    
+    # Add date range if time_range provided
+    if time_range:
+        parts.append(f'{time_range.start} to {time_range.end}')
+    
+    # Add single date if date_obj provided
+    elif date_obj is not None:
+        parts.append(date_obj.strftime("%m/%d/%Y"))
+    
+    return ' | '.join(parts)

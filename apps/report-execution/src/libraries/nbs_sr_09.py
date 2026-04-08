@@ -51,7 +51,8 @@ def execute(
     )
 
     header = 'SR9: Monthly Cases of Selected Disease by County and State'
-    subheader = gen_subheader(time_range.start, time_range.end, content)
+    state_list = content.get_unique_column('State')
+    subheader = gen_subheader(states=state_list, time_range=time_range)
 
     description = """
     *<u>Report Content</u>*
