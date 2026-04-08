@@ -32,7 +32,7 @@ class TestIntegrationNbsSr11Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 25  # two combinations with no data, zeros not filled
+        assert len(data) == 159
         assert len(data[0]) == 6  # State Code, State, County, Condition, Year, Cases
         assert len(data[0]) == len(result.content.columns)
 
@@ -42,15 +42,16 @@ class TestIntegrationNbsSr11Library:
         record = None
         for row in result.content.data:
             if (
-                row[0] == 'Georgia'
-                and row[1] == 'Washington County'
-                and row[2] == 'Pertussis'
+                row[2] == 'Polk County'
+                and row[3] == 'Measles'
+                and row[4] == 2021
             ):
                 record = row
                 break
 
         assert record is not None
-        assert record[3] >= 1
+        # Case count for Polk County, Measles, 2021
+        assert record[5] == 146
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
