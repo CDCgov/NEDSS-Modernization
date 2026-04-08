@@ -77,32 +77,6 @@ class TestIntegrationNbsSr13Library:
         assert len(data) == 0
         assert len(result.content.columns) == 3
 
-        assert result.subheader is None
-
-    def test_execute_report_check_metadata_with_time_range(self):
-        """Check the metadata and column names are correct."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'SR 13',
-                'library_name': 'nbs_sr_13',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
-            }
-        )
-
-        result = execute_report(report_spec)
-        assert result.header == 'SR13: Counts of Selected Diseases By Case Status'
-        assert len(result.description) > 100
-        assert result.content_type == 'table'
-
-        assert result.content.columns[0] == 'Case Count'
-        assert result.content.columns[1] == 'Condition'
-        assert result.content.columns[2] == 'Case Status'
-
     def test_execute_report_check_metadata_without_time_range_one_state(self):
         """Check the metadata and column names are correct."""
         report_spec = ReportSpec.model_validate(

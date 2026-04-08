@@ -16,8 +16,10 @@ def execute(
       zero-fill template for case status
     * Integrated `nbs_srte` lookup via `LEFT JOIN` for better performance and
       driver compatibility
+    * Changed file name from NBSSR000017.sas to nbr_sr_13.py since 17 was
+      associated with label for 13
     """
-    sql_query = f"""
+    sql_query = f'''
     SELECT 
         SUM(group_case_cnt) as "Case Count",
         phc_code_short_desc as "Condition",
@@ -29,7 +31,7 @@ def execute(
     WHERE cvg.code_short_desc_txt IS NOT NULL
     GROUP BY phc_code_short_desc, cvg.code_short_desc_txt
     ORDER BY phc_code_short_desc, cvg.code_short_desc_txt
-    """
+    '''
 
     content = trx.query(sql_query)
 
@@ -46,10 +48,7 @@ def execute(
         '* Will not include Investigation(s) that do not have a value for Case Status\n'
         '\n'
         '*Calculations:*\n'
-        '* *Total Count:* Total Investigations for each disease irrespective of case '
-        'status\n'
-        '* *Total Count for all diseases:* Total Investigations for all diseases '
-        'irrespective of case status\n'
+        '* *Case Count:* Total Investigations for each disease by case\n'
     )
 
     return ReportResult(

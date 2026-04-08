@@ -36,7 +36,7 @@ BEGIN
         ('NBSSR00010.SAS', 'SR10: Multi-Year Line Graph of Disease Cases. Report demonstrates, using a multi-year line graph, the total number of yearly Investigation(s) [both Individual and Summary] for a given disease, by State, irrespective of Case Status.'),
         ('NBSSR00011.SAS', 'SR11: Cases of Selected Diseases By Year Over Time. Report demonstrates, in table form, the total number of Investigation(s) [both Individual and Summary] by calculated MMWR Year irrespective of Case Status.'),
         ('NBSSR00012.SAS', 'SR12: Cases of Selected Disease By County By Year. Report demonstrates, in table form, the total number of Investigation(s) [both Individual and Summary] by Year (calculated based on Event Date year) and by County.'),
-        ('NBSSR00013.SAS', 'Number of Investigations by disease by disease and status.'),
+        ('NBSSR00017.SAS', 'SR13: Counts of Selected Diseases By Case Status'),
         ('NBSSR00015.SAS', 'Bar chart of 5-Year Case Count, By Month, for Selected Diseases'),
         ('NBSSR00016.SAS', 'Number of Cases and Deaths by Disease, Year Count'),
         ('NBSSR00018.SAS', 'TB Case Verification Report. Computes statistics about TB cases.'),
