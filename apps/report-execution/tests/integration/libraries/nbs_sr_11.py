@@ -41,11 +41,7 @@ class TestIntegrationNbsSr11Library:
         # Sanity check the result's shape beyond the snapshot
         record = None
         for row in result.content.data:
-            if (
-                row[2] == 'Polk County'
-                and row[3] == 'Measles'
-                and row[4] == 2021
-            ):
+            if row[2] == 'Polk County' and row[3] == 'Measles' and row[4] == 2021:
                 record = row
                 break
 
