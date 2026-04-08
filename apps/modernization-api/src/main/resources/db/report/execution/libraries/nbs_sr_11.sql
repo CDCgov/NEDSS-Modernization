@@ -5,7 +5,6 @@ USE [NBS_ODSE]
 DECLARE @pyLib VARCHAR(50) = 'nbs_sr_11'
 DECLARE @sasLib VARCHAR(50) = 'NBSSR000011.SAS'
 DECLARE @desc VARCHAR(300) = 'SR11: Cases of Selected Diseases By Year Over Time. Report demonstrates, in table form, the total number of Investigation(s) [both Individual and Summary] by calculated MMWR Year irrespective of Case Status.'
-DECLARE @system_user_id INT = 99999999
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN
@@ -15,7 +14,7 @@ BEGIN
         runner = 'python',
         desc_txt = @desc,
         last_chg_time = CURRENT_TIMESTAMP,
-        last_chg_user_id = @system_user_id
+        last_chg_user_id = 99999999
     WHERE
         UPPER(library_name) = @sasLib;
 END
@@ -37,8 +36,8 @@ BEGIN
         'python',
         'Y',
         CURRENT_TIMESTAMP,
-        @system_user_id,
+        99999999,
         CURRENT_TIMESTAMP,
-        @system_user_id
+        99999999
     );
 END
