@@ -57,8 +57,7 @@ public class NbsPropertiesFinder {
   private RowMapper<AbstractMap.SimpleEntry<String, String>> mapper() {
     return new RowMapper<AbstractMap.SimpleEntry<String, String>>() {
       @Override
-      @Nullable
-      public AbstractMap.SimpleEntry<String, String> mapRow(ResultSet rs, int rowNum)
+      @Nullable public AbstractMap.SimpleEntry<String, String> mapRow(ResultSet rs, int rowNum)
           throws SQLException {
         return new AbstractMap.SimpleEntry<>(rs.getString(1), rs.getString(2));
       }

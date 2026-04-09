@@ -33,8 +33,7 @@ public class MergingResultSetExtractor<V> implements ResultSetExtractor<Optional
   }
 
   @Override
-  @Nullable
-  public Optional<V> extractData(final ResultSet resultSet)
+  @Nullable public Optional<V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
     V result = null;

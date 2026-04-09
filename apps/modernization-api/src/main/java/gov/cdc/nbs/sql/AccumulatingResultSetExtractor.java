@@ -41,8 +41,7 @@ public class AccumulatingResultSetExtractor<K, V> implements ResultSetExtractor<
   }
 
   @Override
-  @Nullable
-  public Collection<V> extractData(final ResultSet resultSet)
+  @Nullable public Collection<V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
     Map<K, V> map = new LinkedHashMap<>();
