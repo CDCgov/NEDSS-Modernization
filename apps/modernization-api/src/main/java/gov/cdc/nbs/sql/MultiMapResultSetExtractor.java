@@ -19,8 +19,8 @@ public class MultiMapResultSetExtractor<K, V> implements ResultSetExtractor<Mult
     this.valueMapper = valueMapper;
   }
 
-  @Override
-  @Nullable public Multimap<K, V> extractData(final ResultSet resultSet)
+  @Nullable @Override
+  public Multimap<K, V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
     ArrayListMultimap<K, V> multimap = ArrayListMultimap.create();
