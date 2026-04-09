@@ -20,7 +20,8 @@ class IncomingPatientRowMapper implements RowMapper<Optional<IncomingPatient>> {
   }
 
   @Override
-  @Nullable public Optional<IncomingPatient> mapRow(final ResultSet rs, final int row) throws SQLException {
+  public @Nullable Optional<IncomingPatient> mapRow(final ResultSet rs, final int row)
+      throws SQLException {
     String local = rs.getString(LOCAL_ID_COLUMN);
 
     try {

@@ -1,5 +1,6 @@
 package gov.cdc.nbs.sql;
 
+import jakarta.annotation.Nullable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -7,7 +8,6 @@ import java.util.function.BinaryOperator;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.lang.Nullable;
 
 /**
  * A {@link ResultSetExtractor} that takes a {@link ResultSet} of zero or more rows and returns an
@@ -33,7 +33,7 @@ public class MergingResultSetExtractor<V> implements ResultSetExtractor<Optional
   }
 
   @Override
-  @Nullable public Optional<V> extractData(final ResultSet resultSet)
+  public @Nullable Optional<V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
     V result = null;
