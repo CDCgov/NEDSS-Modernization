@@ -6,7 +6,7 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]'
+db_table = '[RDB].[dbo].[INV_SUMM_DATAMART]'
 db_fk_tables = []
 faker_schema = 'inv_summ_datamart.yaml'
 
@@ -30,8 +30,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'nbs_sr_dup_inv',
-                'data_source_name': '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 365,
             }
         )
@@ -84,13 +84,13 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'nbs_sr_dup_inv',
-                'data_source_name': '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 # No days_value provided
             }
         )
 
-        result = execute(report_spec)
+        result = execute_report(report_spec)
         assert result.content_type == 'table'
         assert result.header == 'Potential Duplicate Investigations'
         assert result.subheader is None
@@ -126,8 +126,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'nbs_sr_dup_inv',
-                'data_source_name': '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 30,
             }
         )
@@ -157,8 +157,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'nbs_sr_dup_inv',
-                'data_source_name': '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 3650,
             }
         )
@@ -176,8 +176,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'nbs_sr_dup_inv',
-                'data_source_name': '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 30,
             }
         )
@@ -195,9 +195,9 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'nbs_sr_dup_inv',
-                'data_source_name': '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': (
-                    "SELECT * FROM [NBS_ODSE].[dbo].[INV_SUMM_DATAMART] "
+                    "SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] "
                     "WHERE DISEASE_CD IN ('10190', '10140')"
                 ),
                 'days_value': 365,
@@ -222,9 +222,9 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'nbs_sr_dup_inv',
-                'data_source_name': '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': (
-                    "SELECT * FROM [NBS_ODSE].[dbo].[INV_SUMM_DATAMART] "
+                    "SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] "
                     "WHERE PATIENT_LOCAL_ID = 'PSN10067002GA01'"
                 ),
                 'days_value': 365,
@@ -248,8 +248,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'nbs_sr_dup_inv',
-                'data_source_name': '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[INV_SUMM_DATAMART] WHERE 1 = 0',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] WHERE 1 = 0',
                 'days_value': 365,
             }
         )
@@ -268,8 +268,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'nbs_sr_dup_inv',
-                'data_source_name': '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 365,
             }
         )
@@ -288,8 +288,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'nbs_sr_dup_inv',
-                'data_source_name': '[NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[INV_SUMM_DATAMART]',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 3650,
             }
         )
