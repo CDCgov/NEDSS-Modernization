@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/nbs/api/report")
@@ -43,7 +44,8 @@ public class ReportController {
   public ResponseEntity<ReportResult> executeReport(
       @Validated @RequestBody ReportExecutionRequest request, Errors validationErrors) {
     if (validationErrors.hasErrors()) {
-      return ResponseEntity.unprocessableEntity().body(validationErrors.getAllErrors().toString());
+      throw new ResponseStatusException(
+          HttpStatus.UNPROCESSABLE_ENTITY, validationErrors.getAllErrors().toString());
     }
 
     return reportService.executeReport(request);
