@@ -31,7 +31,8 @@ def execute(
 
     header = 'SR11: Cases of Selected Diseases By Year Over Time'
     state_list = content.get_unique_column('State')
-    subheader = gen_subheader(states=state_list, time_range=time_range)
+    condition_list = content.get_unique_column('Condition')
+    subheader = gen_subheader(states=state_list, time_range=time_range, diseases=condition_list)
 
     description = (
         '*<u>Report content</u>*\n'
