@@ -1,0 +1,27 @@
+- !!python/tuple
+  - Measles
+  - Five Year Median YTD
+  - 1016.0
+- !!python/tuple
+  - Measles
+  - Current YTD
+  - !!python/object/apply:decimal.Decimal
+    - '928.00000'
+- !!python/tuple
+  - Pertussis
+  - Five Year Median YTD
+  - 834.0
+- !!python/tuple
+  - Pertussis
+  - Current YTD
+  - !!python/object/apply:decimal.Decimal
+    - '1464.00000'
+- !!python/tuple
+  - Salmonellosis
+  - Five Year Median YTD
+  - 785.0
+- !!python/tuple
+  - Salmonellosis
+  - Current YTD
+  - !!python/object/apply:decimal.Decimal
+    - '1424.00000'
