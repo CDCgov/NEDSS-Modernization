@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +20,7 @@ class IncomingPatientRowMapper implements RowMapper<Optional<IncomingPatient>> {
   }
 
   @Override
+  @Nullable
   public Optional<IncomingPatient> mapRow(final ResultSet rs, final int row) throws SQLException {
     String local = rs.getString(LOCAL_ID_COLUMN);
 
