@@ -40,8 +40,7 @@ public class AccumulatingResultSetExtractor<K, V> implements ResultSetExtractor<
     this.merger = merger;
   }
 
-  @Nullable
-  @Override
+  @Nullable @Override
   public Collection<V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
