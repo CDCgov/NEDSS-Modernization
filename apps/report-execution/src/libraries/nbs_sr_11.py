@@ -36,7 +36,10 @@ def execute(
     state_list = content.get_unique_column('State')
     condition_list = content.get_unique_column('Condition')
     subheader = gen_subheader(
-        states=state_list, time_range=time_range, diseases=condition_list, date_format='%Y'
+        states=state_list,
+        time_range=time_range,
+        diseases=condition_list,
+        date_format='%Y',
     )
 
     description = (

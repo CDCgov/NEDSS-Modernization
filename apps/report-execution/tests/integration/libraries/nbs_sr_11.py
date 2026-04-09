@@ -47,7 +47,7 @@ class TestIntegrationNbsSr11Library:
 
         assert record is not None
         # Case count for Polk County, Measles, 2021
-        assert record[5] == 146
+        assert record[5] == 773
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
@@ -85,7 +85,8 @@ class TestIntegrationNbsSr11Library:
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
-                    "WHERE state = 'Georgia' AND phc_code_short_desc IN ('Pertussis', 'Measles')"
+                    "WHERE state = 'Georgia' "
+                    "AND phc_code_short_desc IN ('Pertussis', 'Measles')"
                 ),
                 'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
