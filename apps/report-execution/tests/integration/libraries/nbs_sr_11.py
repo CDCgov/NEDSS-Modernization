@@ -99,5 +99,5 @@ class TestIntegrationNbsSr11Library:
         assert result.content.columns[1] == 'State'
         assert result.content.columns[2] == 'County'
         assert result.content.columns[3] == 'Condition'
-        assert result.content.columns[4] == 'Year'
+        assert result.content.columns[4] == 'year'
         assert result.content.columns[5] == 'Cases'
