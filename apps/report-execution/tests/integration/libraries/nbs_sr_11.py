@@ -83,17 +83,20 @@ class TestIntegrationNbsSr11Library:
                 'report_title': 'SR 11',
                 'library_name': 'nbs_sr_11',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
+                'subset_query': (
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
+                    "WHERE state = 'Georgia'"
+                ),
+                'time_range': {'start': '2020', 'end': '2024'},
             }
         )
 
         result = execute_report(report_spec)
         assert result.header == 'SR11: Cases of Selected Diseases By Year Over Time'
+        assert result.subheader == 'Georgia | 2020 to 2024'
+
         assert len(result.description) > 100
         assert result.content_type == 'table'
-
-        assert result.subheader is None
 
         assert result.content.columns[0] == 'State Code'
         assert result.content.columns[1] == 'State'
