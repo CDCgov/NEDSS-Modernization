@@ -1,271 +1,7 @@
 - !!python/tuple
-  - null
-  - null
-  - null
-  - Pertussis
-  - 2024
-  - !!python/object/apply:decimal.Decimal
-    - '21.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Measles
-  - 2018
-  - !!python/object/apply:decimal.Decimal
-    - '64.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Measles
-  - 2019
-  - !!python/object/apply:decimal.Decimal
-    - '136.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Measles
-  - 2020
-  - !!python/object/apply:decimal.Decimal
-    - '23.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Measles
-  - 2021
-  - !!python/object/apply:decimal.Decimal
-    - '146.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Measles
-  - 2022
-  - !!python/object/apply:decimal.Decimal
-    - '71.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Measles
-  - 2023
-  - !!python/object/apply:decimal.Decimal
-    - '56.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Measles
-  - 2024
-  - !!python/object/apply:decimal.Decimal
-    - '8.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Pertussis
-  - null
-  - !!python/object/apply:decimal.Decimal
-    - '85.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Pertussis
-  - 2019
-  - !!python/object/apply:decimal.Decimal
-    - '131.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Pertussis
-  - 2020
-  - !!python/object/apply:decimal.Decimal
-    - '23.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Pertussis
-  - 2022
-  - !!python/object/apply:decimal.Decimal
-    - '110.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Pertussis
-  - 2023
-  - !!python/object/apply:decimal.Decimal
-    - '47.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Pertussis
-  - 2024
-  - !!python/object/apply:decimal.Decimal
-    - '17.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Salmonellosis
-  - 2018
-  - !!python/object/apply:decimal.Decimal
-    - '66.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Salmonellosis
-  - 2019
-  - !!python/object/apply:decimal.Decimal
-    - '8.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Salmonellosis
-  - 2020
-  - !!python/object/apply:decimal.Decimal
-    - '82.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Salmonellosis
-  - 2021
-  - !!python/object/apply:decimal.Decimal
-    - '5.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Salmonellosis
-  - 2022
-  - !!python/object/apply:decimal.Decimal
-    - '45.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Salmonellosis
-  - 2023
-  - !!python/object/apply:decimal.Decimal
-    - '9.00000'
-- !!python/tuple
-  - null
-  - null
-  - Polk County
-  - Salmonellosis
-  - 2024
-  - !!python/object/apply:decimal.Decimal
-    - '40.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Measles
-  - 2018
-  - !!python/object/apply:decimal.Decimal
-    - '1.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Measles
-  - 2021
-  - !!python/object/apply:decimal.Decimal
-    - '65.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Measles
-  - 2022
-  - !!python/object/apply:decimal.Decimal
-    - '197.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Measles
-  - 2023
-  - !!python/object/apply:decimal.Decimal
-    - '123.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Measles
-  - 2024
-  - !!python/object/apply:decimal.Decimal
-    - '115.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Pertussis
-  - 2018
-  - !!python/object/apply:decimal.Decimal
-    - '17.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Pertussis
-  - 2020
-  - !!python/object/apply:decimal.Decimal
-    - '56.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Pertussis
-  - 2022
-  - !!python/object/apply:decimal.Decimal
-    - '23.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Pertussis
-  - 2023
-  - !!python/object/apply:decimal.Decimal
-    - '73.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Salmonellosis
-  - 2019
-  - !!python/object/apply:decimal.Decimal
-    - '64.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Salmonellosis
-  - 2020
-  - !!python/object/apply:decimal.Decimal
-    - '23.00000'
-- !!python/tuple
-  - null
-  - null
-  - Washington County
-  - Salmonellosis
-  - 2022
-  - !!python/object/apply:decimal.Decimal
-    - '104.00000'
-- !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Measles
   - null
   - !!python/object/apply:decimal.Decimal
@@ -273,7 +9,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Measles
   - 2019
   - !!python/object/apply:decimal.Decimal
@@ -281,7 +17,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Measles
   - 2020
   - !!python/object/apply:decimal.Decimal
@@ -289,7 +25,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Measles
   - 2021
   - !!python/object/apply:decimal.Decimal
@@ -297,7 +33,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Measles
   - 2024
   - !!python/object/apply:decimal.Decimal
@@ -305,7 +41,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Pertussis
   - 2018
   - !!python/object/apply:decimal.Decimal
@@ -313,7 +49,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Pertussis
   - 2019
   - !!python/object/apply:decimal.Decimal
@@ -321,14 +57,14 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Pertussis
   - 2021
   - null
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Pertussis
   - 2022
   - !!python/object/apply:decimal.Decimal
@@ -336,7 +72,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Salmonellosis
   - null
   - !!python/object/apply:decimal.Decimal
@@ -344,7 +80,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Salmonellosis
   - 2018
   - !!python/object/apply:decimal.Decimal
@@ -352,7 +88,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Salmonellosis
   - 2019
   - !!python/object/apply:decimal.Decimal
@@ -360,7 +96,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Salmonellosis
   - 2020
   - !!python/object/apply:decimal.Decimal
@@ -368,7 +104,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Salmonellosis
   - 2022
   - !!python/object/apply:decimal.Decimal
@@ -376,7 +112,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Salmonellosis
   - 2023
   - !!python/object/apply:decimal.Decimal
@@ -384,7 +120,7 @@
 - !!python/tuple
   - '13'
   - Georgia
-  - null
+  - N/A
   - Salmonellosis
   - 2024
   - !!python/object/apply:decimal.Decimal
@@ -782,9 +518,273 @@
   - !!python/object/apply:decimal.Decimal
     - '647.00000'
 - !!python/tuple
+  - N/A
+  - N/A
+  - N/A
+  - Pertussis
+  - 2024
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Measles
+  - 2018
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Measles
+  - 2019
+  - !!python/object/apply:decimal.Decimal
+    - '136.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Measles
+  - 2020
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Measles
+  - 2021
+  - !!python/object/apply:decimal.Decimal
+    - '146.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Measles
+  - 2022
+  - !!python/object/apply:decimal.Decimal
+    - '71.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Measles
+  - 2023
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Measles
+  - 2024
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Pertussis
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Pertussis
+  - 2019
+  - !!python/object/apply:decimal.Decimal
+    - '131.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Pertussis
+  - 2020
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Pertussis
+  - 2022
+  - !!python/object/apply:decimal.Decimal
+    - '110.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Pertussis
+  - 2023
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Pertussis
+  - 2024
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Salmonellosis
+  - 2018
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Salmonellosis
+  - 2019
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Salmonellosis
+  - 2020
+  - !!python/object/apply:decimal.Decimal
+    - '82.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Salmonellosis
+  - 2021
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Salmonellosis
+  - 2022
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Salmonellosis
+  - 2023
+  - !!python/object/apply:decimal.Decimal
+    - '9.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Polk County
+  - Salmonellosis
+  - 2024
+  - !!python/object/apply:decimal.Decimal
+    - '40.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Measles
+  - 2018
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Measles
+  - 2021
+  - !!python/object/apply:decimal.Decimal
+    - '65.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Measles
+  - 2022
+  - !!python/object/apply:decimal.Decimal
+    - '197.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Measles
+  - 2023
+  - !!python/object/apply:decimal.Decimal
+    - '123.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Measles
+  - 2024
+  - !!python/object/apply:decimal.Decimal
+    - '115.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Pertussis
+  - 2018
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Pertussis
+  - 2020
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Pertussis
+  - 2022
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Pertussis
+  - 2023
+  - !!python/object/apply:decimal.Decimal
+    - '73.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Salmonellosis
+  - 2019
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Salmonellosis
+  - 2020
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - N/A
+  - N/A
+  - Washington County
+  - Salmonellosis
+  - 2022
+  - !!python/object/apply:decimal.Decimal
+    - '104.00000'
+- !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Measles
   - 2021
   - !!python/object/apply:decimal.Decimal
@@ -792,7 +792,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Measles
   - 2022
   - !!python/object/apply:decimal.Decimal
@@ -800,7 +800,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Measles
   - 2023
   - !!python/object/apply:decimal.Decimal
@@ -808,7 +808,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Pertussis
   - 2019
   - !!python/object/apply:decimal.Decimal
@@ -816,7 +816,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Pertussis
   - 2022
   - !!python/object/apply:decimal.Decimal
@@ -824,7 +824,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Pertussis
   - 2023
   - !!python/object/apply:decimal.Decimal
@@ -832,7 +832,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Pertussis
   - 2024
   - !!python/object/apply:decimal.Decimal
@@ -840,7 +840,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Salmonellosis
   - 2019
   - !!python/object/apply:decimal.Decimal
@@ -848,7 +848,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Salmonellosis
   - 2020
   - !!python/object/apply:decimal.Decimal
@@ -856,7 +856,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Salmonellosis
   - 2021
   - !!python/object/apply:decimal.Decimal
@@ -864,7 +864,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Salmonellosis
   - 2022
   - !!python/object/apply:decimal.Decimal
@@ -872,7 +872,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Salmonellosis
   - 2023
   - !!python/object/apply:decimal.Decimal
@@ -880,7 +880,7 @@
 - !!python/tuple
   - '47'
   - Tennessee
-  - null
+  - N/A
   - Salmonellosis
   - 2024
   - !!python/object/apply:decimal.Decimal

@@ -51,6 +51,7 @@ def gen_subheader(
     states: list[str | None] | None = None,
     time_range: TimeRange | None = None,
     date_obj: date | None = None,
+    date_format: str = '%m/%d/%Y',
     diseases: list[str] | None = None,
 ) -> str:
     """Generate a subheader for reports from various optional components.
@@ -59,6 +60,8 @@ def gen_subheader(
         states: Optional list of state strings (duplicates will be removed)
         time_range: Optional TimeRange object with start/end dates
         date_obj: Optional date object for single date display
+        date_format: Optional date format string specifying how dates should
+            be formatted in the subheader (default: '%m/%d/%Y')
         diseases: Optional list of disease strings (duplicates will be removed)
 
     Returns:
@@ -88,13 +91,12 @@ def gen_subheader(
         # Parse dates (handles both ISO and US formats)
         start_dt = parse_date(time_range.start)
         end_dt = parse_date(time_range.end)
-        # Format as MM/DD/YYYY
         parts.append(
-            f'{start_dt.strftime("%m/%d/%Y")} to {end_dt.strftime("%m/%d/%Y")}'
+            f'{start_dt.strftime(date_format)} to {end_dt.strftime(date_format)}'
         )
 
     # Add single date if date_obj provided
     elif date_obj is not None:
-        parts.append(date_obj.strftime('%m/%d/%Y'))
+        parts.append(date_obj.strftime(date_format))
 
     return ' | '.join(parts)

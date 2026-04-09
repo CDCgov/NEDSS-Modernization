@@ -18,9 +18,12 @@ def execute(
     content = trx.query(
         f"""
         WITH subset as ({subset_query})
-        SELECT state_cd as "State Code", state as State, county as County,
-        phc_code_short_desc as Condition, datepart(year, event_date) as year,
-        sum(group_case_cnt) as Cases
+        SELECT COALESCE(state_cd, 'N/A') as [State Code], 
+        COALESCE(state, 'N/A') as [State], 
+        COALESCE(county, 'N/A') as [County],
+        COALESCE(phc_code_short_desc, 'N/A') as [Condition], 
+        datepart(year, event_date) as [year],
+        sum(group_case_cnt) as [Cases]
         FROM subset
         GROUP BY state, state_cd, county, phc_code_short_desc, 
         datepart(year, event_date)
@@ -33,7 +36,7 @@ def execute(
     state_list = content.get_unique_column('State')
     condition_list = content.get_unique_column('Condition')
     subheader = gen_subheader(
-        states=state_list, time_range=time_range, diseases=condition_list
+        states=state_list, time_range=time_range, diseases=condition_list, date_format='%Y'
     )
 
     description = (
