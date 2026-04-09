@@ -26,6 +26,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.SimpleErrors;
 
 @ExtendWith(MockitoExtension.class)
 class ReportControllerTest {
@@ -89,7 +90,8 @@ class ReportControllerTest {
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
 
-    ResponseEntity<ReportResult> response = controller.executeReport(request);
+    ResponseEntity<ReportResult> response =
+        controller.executeReport(request, new SimpleErrors(controller));
     assertEquals(getReportExecutionResponse(), response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }
@@ -110,7 +112,7 @@ class ReportControllerTest {
 
     when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
-    assertThatThrownBy(() -> controller.executeReport(request))
+    assertThatThrownBy(() -> controller.executeReport(request, new SimpleErrors(controller)))
         .isInstanceOf(NotFoundException.class)
         .hasMessageContaining(errorMsg);
   }
@@ -131,7 +133,7 @@ class ReportControllerTest {
 
     when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
 
-    assertThatThrownBy(() -> controller.executeReport(request))
+    assertThatThrownBy(() -> controller.executeReport(request, new SimpleErrors(controller)))
         .isInstanceOf(NotImplementedException.class)
         .hasMessageContaining(errorMsg);
   }
