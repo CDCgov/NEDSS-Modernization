@@ -79,7 +79,7 @@ jobs:
           DATABASE_PASSWORD: ${{ env.test_database_password }}
           TOKEN_SECRET: ${{ env.token_secret }}
           PARAMETER_SECRET: ${{ env.parameter_secret }}
-        run: ./gradlew clean build codeCoverageReport sonar
+        run: ./gradlew clean build codeCoverageReport sonar -Dsonar.branch.name=jg/APP-379-part-two
 
       - name: Publish Testing Reports
         if: always()
