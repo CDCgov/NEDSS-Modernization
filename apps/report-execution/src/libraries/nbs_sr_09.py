@@ -43,10 +43,12 @@ def execute(
             FORMAT(event_date, 'yyyyMM')
         HAVING SUM(group_case_cnt) > 0
         ORDER BY 
+            state_cd,
+            state,
+            county,
             phc_code_short_desc,
             ord,
-            state,
-            county
+            monyr;
         """
     )
 
