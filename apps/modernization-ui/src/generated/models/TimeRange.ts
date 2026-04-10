@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Library = {
-    runner: string;
-    libraryName: string;
-    isBuiltin: boolean;
-    version: number;
+export type TimeRange = {
+    start: string;
+    end: string;
 };
 

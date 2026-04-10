@@ -87,6 +87,7 @@ export type { Selectable } from './models/Selectable';
 export type { SensitiveValue } from './models/SensitiveValue';
 export type { Specimen } from './models/Specimen';
 export type { Success } from './models/Success';
+export type { TimeRange } from './models/TimeRange';
 
 export { CodedResultOptionsService } from './services/CodedResultOptionsService';
 export { ConceptOptionsService } from './services/ConceptOptionsService';
