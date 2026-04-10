@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,9 +35,11 @@ class ReportSpecTest {
 
   @Test
   void should_create_report_spec_with_time_range() {
-    Map<String, LocalDate> timeRange = new HashMap<>();
-    timeRange.put("start", LocalDate.parse("1999-01-01"));
-    timeRange.put("end", LocalDate.parse("1999-01-10"));
+    String start = "1999-01-01";
+    String end = "1999-01-10";
+
+    ReportSpec.TimeRange timeRange =
+        new ReportSpec.TimeRange(LocalDate.parse(start), LocalDate.parse(end));
 
     ReportSpec reportSpec =
         new ReportSpec(
@@ -60,14 +60,13 @@ class ReportSpecTest {
     assertThat(reportSpec.dataSourceName()).isEqualTo("nbs_rdb.investigation");
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
-    assertThat(reportSpec.timeRange()).containsEntry("start", LocalDate.parse("1999-01-01"));
-    assertThat(reportSpec.timeRange()).containsEntry("end", LocalDate.parse("1999-01-10"));
-    assertThat(reportSpec.timeRange()).hasSize(2);
+    assertThat(reportSpec.timeRange().start().equals(LocalDate.parse(start)));
+    assertThat(reportSpec.timeRange().end().equals(LocalDate.parse(end)));
   }
 
   @ParameterizedTest
   @MethodSource("invalidTimeRangeProvider")
-  void should_throw_exception_with_invalid_time_range(Map<String, LocalDate> timeRange) {
+  void should_throw_exception_with_invalid_time_range(ReportSpec.TimeRange timeRange) {
     assertThatThrownBy(
             () ->
                 new ReportSpec(
@@ -79,21 +78,14 @@ class ReportSpecTest {
                     "nbs_rdb.investigation",
                     "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
                     timeRange))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("time_range must contain 'start' and 'end' keys");
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
-  private static Stream<Map<String, LocalDate>> invalidTimeRangeProvider() {
-    Map<String, LocalDate> timeRange1 = new HashMap<>();
-    timeRange1.put("effective_time", LocalDate.parse("1999-01-10"));
-
-    Map<String, LocalDate> timeRange2 = new HashMap<>();
-    timeRange2.put("start", LocalDate.parse("1999-01-01"));
-    timeRange2.put("effective_time", LocalDate.parse("1999-01-10"));
-
-    Map<String, LocalDate> timeRange3 = new HashMap<>();
-    timeRange3.put("end", LocalDate.parse("1999-01-01"));
-    timeRange3.put("effective_time", LocalDate.parse("1999-01-10"));
+  private static Stream<ReportSpec.TimeRange> invalidTimeRangeProvider() {
+    ReportSpec.TimeRange timeRange1 = new ReportSpec.TimeRange(LocalDate.parse("1999-01-01"), null);
+    ReportSpec.TimeRange timeRange2 = new ReportSpec.TimeRange(null, LocalDate.parse("1999-01-10"));
+    ReportSpec.TimeRange timeRange3 =
+        new ReportSpec.TimeRange(LocalDate.parse("1999-01-10"), LocalDate.parse("1999-01-01"));
 
     return Stream.of(timeRange1, timeRange2, timeRange3);
   }
