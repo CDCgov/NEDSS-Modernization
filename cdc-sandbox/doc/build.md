@@ -5,7 +5,6 @@
 - [Elasicsearch with Kibana](#elasicsearch-with-kibana)
 - [Traefik Reverse Proxy](#traefik-reverse-proxy)
 - [NiFi](#nifi)
-- [Kafka](#kafka)
 
 ## Clean Docker Environment
 
@@ -128,28 +127,3 @@ This configuration snippet defines a `router` that will catch requests matching 
 ```sh
 docker compose up nifi -d
 ```
-
-## Kafka
-
-Please follow the steps below to setup a Kafka  docker container environment that includes Kafka, Zookeeper, Schema-Registry and Kafka-UI
-
-Kafka
-
-[Zookeeper](https://zookeeper.apache.org/) ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services.
-
-[Schema-Registry](https://docs.confluent.io/platform/current/schema-registry/index.html#sr-overview) Confluent Schema Registry provides a serving layer for your metadata. It provides a RESTful interface for storing and retrieving your Avro®, JSON Schema, and Protobuf schemas. It stores a versioned history of all schemas based on a specified subject name strategy, provides multiple compatibility settings and allows evolution of schemas according to the configured compatibility settings and expanded support for these schema types.
-
-[Kafka-UI](https://github.com/provectus/kafka-ui) UI for Apache Kafka is a open source tool that makes data flows observable, helps find and troubleshoot issues , create/manage topics, and deliver optimal performance.  A lightweight dashboard makes it easy to track key metrics of your Kafka clusters - Brokers, Topics, Partitions, Production, and Consumption.
-
-1. Go to Kafka directory:
-```
-cd cdc-sandbox/kafka
-```
-
-2. Launch kafka Docker container environment. If you are on an ARM Environment you may use (docker-compose-arm64v8.yml) if you experience any performance issues but regular script should work fine.
-```
-docker compose  -f docker-compose.yml up -d
-```
-
-* Note: To create a topic you can open Zookeeper CLI and find the commands online. You can also open Kafka-UI in
-the browser and add a topic using the dashboard.
