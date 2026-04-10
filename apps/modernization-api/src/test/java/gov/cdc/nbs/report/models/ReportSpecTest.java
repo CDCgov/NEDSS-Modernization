@@ -63,24 +63,28 @@ class ReportSpecTest {
 
   @Test
   void should_throw_exception_with_time_range_missing_start_date() {
-    assertThatThrownBy(() -> new ReportSpec.TimeRange(null, LocalDate.parse("1999-12-31")))
+    LocalDate end = LocalDate.parse("1999-12-31");
+
+    assertThatThrownBy(() -> new ReportSpec.TimeRange(null, end))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Start and end values are required");
   }
 
   @Test
   void should_throw_exception_with_time_range_missing_end_date() {
-    assertThatThrownBy(() -> new ReportSpec.TimeRange(LocalDate.parse("1999-01-01"), null))
+    LocalDate start = LocalDate.parse("1999-01-01");
+
+    assertThatThrownBy(() -> new ReportSpec.TimeRange(start, null))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Start and end values are required");
   }
 
   @Test
   void should_throw_exception_with_time_range_end_before_start() {
-    assertThatThrownBy(
-            () ->
-                new ReportSpec.TimeRange(
-                    LocalDate.parse("1999-12-31"), LocalDate.parse("1999-01-01")))
+    LocalDate start = LocalDate.parse("1999-12-31");
+    LocalDate end = LocalDate.parse("1999-01-01");
+
+    assertThatThrownBy(() -> new ReportSpec.TimeRange(start, end))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Start date cannot be after end date");
   }
