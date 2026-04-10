@@ -13,7 +13,7 @@ def execute(
     """Standard Report 11: Cases of Selected Diseases By Year Over Time.
 
     Conversion notes:
-    * Matched export and run formats without pivot
+    * Matched export format without pivot
     """
     content = trx.query(
         f"""
