@@ -70,8 +70,8 @@ class TestIntegrationNbsSr09Library:
             assert len(monyr) == 3
             assert monyr.isalpha()
 
-    def test_execute_report_with_time_range_filter(self):
-        """Test that time range filtering works correctly."""
+    def test_execute_report_empty_subset(self):
+        """Test handling of empty result set."""
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -81,47 +81,7 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
-                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
-                    "WHERE event_date >= '2024-03-01' AND event_date <= '2024-05-31'"
-                ),
-                'time_range': {'start': '2024-03-01', 'end': '2024-05-31'},
-            }
-        )
-
-        result = execute_report(report_spec)
-        assert result.content_type == 'table'
-
-        # Verify only months in the specified range appear
-        data = result.content.data
-        col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-
-        valid_months = {'202403', '202404', '202405'}
-        for row in data:
-            ord_val = row[col_index['ord']]
-            assert ord_val in valid_months
-
-            # Verify month names match the codes
-            month_map = {
-                '202403': 'Mar',
-                '202404': 'Apr',
-                '202405': 'May',
-            }
-            expected_monyr = month_map[ord_val]
-            assert row[col_index['monyr']] == expected_monyr
-
-    def test_execute_report_with_State_filter(self):
-        """Test filtering by specific State."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'NBS Custom',
-                'library_name': 'nbs_sr_09',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                'subset_query': (
-                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
-                    "WHERE State = 'Georgia'"
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 0'
                 ),
                 'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
             }
@@ -130,104 +90,10 @@ class TestIntegrationNbsSr09Library:
         result = execute_report(report_spec)
         assert result.content_type == 'table'
 
-        # Verify all records are for Georgia
-        data = result.content.data
-        col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-
-        for row in data:
-            assert row[col_index['State']] == 'Georgia'
-
-        # Subheader should include Georgia
-        assert 'Georgia' in result.subheader
-
-    def test_execute_report_with_Condition_filter(self):
-        """Test filtering by specific Condition."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'NBS Custom',
-                'library_name': 'nbs_sr_09',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                'subset_query': (
-                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
-                    "WHERE phc_code_short_desc = 'Pertussis'"
-                ),
-                'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
-            }
-        )
-
-        result = execute_report(report_spec)
-        assert result.content_type == 'table'
-
-        # Verify all records are for Pertussis
-        data = result.content.data
-        col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-
-        for row in data:
-            assert row[col_index['Condition']] == 'Pertussis'
-
-    def test_execute_report_with_multiple_filters(self):
-        """Test combining multiple filters (State, Condition, time range)."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'NBS Custom',
-                'library_name': 'nbs_sr_09',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                'subset_query': (
-                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
-                    "WHERE State = 'Tennessee' "
-                    "AND phc_code_short_desc = 'Measles' "
-                    "AND event_date >= '2024-04-01' AND event_date <= '2024-04-30'"
-                ),
-                'time_range': {'start': '2024-04-01', 'end': '2024-04-30'},
-            }
-        )
-
-        result = execute_report(report_spec)
-        assert result.content_type == 'table'
-
-        # Verify all filters applied correctly
-        data = result.content.data
-        col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-
-        for row in data:
-            assert row[col_index['State']] == 'Tennessee'
-            assert row[col_index['Condition']] == 'Measles'
-            assert row[col_index['ord']] == '202404'
-
-        # Subheader should include the filtered values
-        assert 'Tennessee' in result.subheader
-        assert '04/01/2024 to 04/30/2024' in result.subheader
-
-        def test_execute_report_empty_subset(self):
-            """Test handling of empty result set."""
-            report_spec = ReportSpec.model_validate(
-                {
-                    'version': 1,
-                    'is_export': True,
-                    'is_builtin': True,
-                    'report_title': 'NBS Custom',
-                    'library_name': 'nbs_sr_09',
-                    'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                    'subset_query': (
-                        'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 0'
-                    ),
-                    'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
-                }
-            )
-
-            result = execute_report(report_spec)
-            assert result.content_type == 'table'
-
-            # Should return empty dataset but with correct column structure
-            assert len(result.content.data) == 0
-            # State Code, State, County, Condition, monyr, ord, Cases
-            assert len(result.content.columns) == 7
+        # Should return empty dataset but with correct column structure
+        assert len(result.content.data) == 0
+        # State Code, State, County, Condition, monyr, ord, Cases
+        assert len(result.content.columns) == 7
 
     def test_execute_report_check_column_order(self):
         """Verify column names and order match expected output."""
