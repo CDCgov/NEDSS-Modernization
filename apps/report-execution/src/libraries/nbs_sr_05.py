@@ -143,6 +143,7 @@ def execute(
     # Get the state(s) in the data set for subheader display
     states = trx.query('SELECT DISTINCT state FROM #base_data ORDER BY state')
     state_list = states.get_unique_column('state')
+    state_list = [s for s in state_list if s != filler_state]
 
     trx.execute('DROP TABLE #base_data')
 

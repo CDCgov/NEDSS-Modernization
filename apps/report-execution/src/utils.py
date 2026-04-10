@@ -72,9 +72,9 @@ def gen_subheader(
     """
     parts = []
     
-    # Add states if provided - replace None with 'N/A', filter out '<FILLER>'
+    # Add states if provided - replace None with 'N/A'
     if states:
-        clean_states = ['N/A' if s is None else s for s in states if s != '<FILLER>']
+        clean_states = ['N/A' if s is None else s for s in states]
         if clean_states:
             parts.append(', '.join(clean_states))
     

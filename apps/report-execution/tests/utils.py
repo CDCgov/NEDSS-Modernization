@@ -72,7 +72,7 @@ class TestUtils:
     def test_gen_subheader_with_states_diseases_and_date_range(self):
         time_range = TimeRange(start='2024-01-01', end='2024-12-31')
         result = utils.gen_subheader(
-            states=[None, 'Alabama','Georgia', '<FILLER>'],
+            states=[None, 'Alabama','Georgia'],
             diseases=['Measles'],
             time_range=time_range,
         )
