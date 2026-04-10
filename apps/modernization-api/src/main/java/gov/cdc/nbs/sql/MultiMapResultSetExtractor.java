@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 
 public class MultiMapResultSetExtractor<K, V> implements ResultSetExtractor<Multimap<K, V>> {
 
@@ -18,7 +19,7 @@ public class MultiMapResultSetExtractor<K, V> implements ResultSetExtractor<Mult
     this.valueMapper = valueMapper;
   }
 
-  @Override
+  @Nullable @Override
   public Multimap<K, V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 

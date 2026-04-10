@@ -27,3 +27,9 @@ databaseChangeLog:
         - sqlFile:
             path: db/report/execution/libraries/nbs_sr_07.sql
             splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/nbs_sr_09.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/nbs_sr_11.sql
+            splitStatements: false
