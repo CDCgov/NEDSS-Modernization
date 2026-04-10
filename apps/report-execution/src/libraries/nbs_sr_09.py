@@ -51,7 +51,7 @@ def execute(
             monyr;
         """
     )
-    
+
     header = 'SR9: Monthly Cases of Selected Disease by County and State'
     state_list = content.get_unique_column('State')
     subheader = gen_subheader(states=state_list, time_range=time_range)
