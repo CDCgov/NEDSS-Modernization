@@ -76,7 +76,9 @@ public class ReportSpecBuilder {
     boolean isExport = reportExecRequest.isExport();
 
     String reportTitle =
-        reportExecRequest.reportTitle().isEmpty() ? libraryName : reportExecRequest.reportTitle();
+        reportExecRequest.reportTitle() == null || reportExecRequest.reportTitle().isEmpty()
+            ? libraryName
+            : reportExecRequest.reportTitle();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
 

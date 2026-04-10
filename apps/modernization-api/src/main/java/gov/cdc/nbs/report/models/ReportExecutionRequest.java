@@ -20,7 +20,7 @@ public record ReportExecutionRequest(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String end) {
 
     public TimeRange {
-      if (start.isBlank() || end.isBlank()) {
+      if (start == null || start.isBlank() || end == null || end.isBlank()) {
         throw new IllegalArgumentException("time_range must contain 'start' and 'end' keys");
       }
 

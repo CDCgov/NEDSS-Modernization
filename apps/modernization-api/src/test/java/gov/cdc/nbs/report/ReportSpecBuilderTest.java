@@ -139,13 +139,21 @@ class ReportSpecBuilderTest {
         mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
 
     List<Long> columnUids = List.of(columnUid1);
-    ReportExecutionRequest request = mockReportExecutionRequest(columnUids, null, null);
 
-    ReportSpec reportSpec =
-        new ReportSpecBuilder(request, reportConfig, mockDataSourceNameUtils()).build();
+    ReportExecutionRequest requestWithNullTitle =
+        mockReportExecutionRequest(columnUids, null, null);
+    ReportExecutionRequest requestWithBlankTitle = mockReportExecutionRequest(columnUids, "", null);
 
-    assertThat(reportSpec.reportTitle()).isEqualTo(reportConfig.reportLibrary().libraryName());
-    ;
+    ReportSpec reportSpec1 =
+        new ReportSpecBuilder(requestWithNullTitle, reportConfig, mockDataSourceNameUtils())
+            .build();
+
+    ReportSpec reportSpec2 =
+        new ReportSpecBuilder(requestWithBlankTitle, reportConfig, mockDataSourceNameUtils())
+            .build();
+
+    assertThat(reportSpec1.reportTitle()).isEqualTo(reportConfig.reportLibrary().libraryName());
+    assertThat(reportSpec2.reportTitle()).isEqualTo(reportConfig.reportLibrary().libraryName());
   }
 
   @Test
