@@ -46,9 +46,6 @@ def execute(
         '* Does not include Investigation(s) that have been logically deleted\n'
         '* Is filtered based on the disease(s) and advanced criteria selected by user\n'
         '* Will not include Investigation(s) that do not have a value for Case Status\n'
-        '\n'
-        '*Calculations:*\n'
-        '* *Case Count:* Total Investigations for each disease by case\n'
     )
 
     return ReportResult(
