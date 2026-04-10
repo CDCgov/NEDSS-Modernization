@@ -22,7 +22,7 @@ def execute(
         COALESCE(state, 'N/A') as [State], 
         COALESCE(county, 'N/A') as [County],
         COALESCE(phc_code_short_desc, 'N/A') as [Condition], 
-        datepart(year, event_date) as [year],
+        YEAR(event_date) as [year],
         sum(group_case_cnt) as [Cases]
         FROM subset
         GROUP BY state, state_cd, county, phc_code_short_desc, 
