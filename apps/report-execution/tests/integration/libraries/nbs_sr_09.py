@@ -46,18 +46,26 @@ class TestIntegrationNbsSr09Library:
 
         # Verify data structure and basic sanity checks
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-        
+
         # Basic column presence checks
-        expected_columns = ['State Code', 'State', 'County', 'Condition', 'monyr', 'ord', 'Cases']
+        expected_columns = [
+            'State Code',
+            'State',
+            'County',
+            'Condition',
+            'monyr',
+            'ord',
+            'Cases',
+        ]
         for col in expected_columns:
             assert col in col_index
-        
+
         # County data check (folded in from test_execute_report_with_county_data)
         counties = {row[col_index['County']] for row in data}
         assert len(counties) > 0
         # At least some counties should have real values (not all 'N/A')
         assert any(county != 'N/A' for county in counties)
-        
+
         # Data type and value checks
         for row in data:
             assert isinstance(row[col_index['State']], str)
@@ -65,7 +73,7 @@ class TestIntegrationNbsSr09Library:
             assert isinstance(row[col_index['Condition']], str)
             assert isinstance(row[col_index['Cases']], Decimal)
             assert row[col_index['Cases']] >= 0
-            
+
             # Month code should be 6-digit YYYYMM format
             month_code = row[col_index['ord']]
             assert len(month_code) == 6
@@ -82,7 +90,7 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
-                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     "WHERE state = 'Georgia' "
                     "AND phc_code_short_desc = 'Pertussis'"
                 ),
@@ -185,7 +193,6 @@ class TestIntegrationNbsSr09Library:
 
         assert result.content_type == 'table'
 
-
     def test_execute_report_month_ordering(self):
         """Verify months are ordered correctly for a single state/county/disease."""
         report_spec = ReportSpec.model_validate(
@@ -197,7 +204,7 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
-                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     "WHERE state = 'Georgia' "
                     "AND county = 'Fulton County' "
                     "AND phc_code_short_desc = 'Pertussis'"
@@ -208,11 +215,9 @@ class TestIntegrationNbsSr09Library:
 
         result = execute_report(report_spec)
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
-        
+
         # Extract month codes - they should already be in order
         ord_values = [row[col_index['ord']] for row in result.content.data]
-        
-        # Verify months are in chronological order
-        assert ord_values == sorted(ord_values), \
-            f"Months not in order: {ord_values}"
 
+        # Verify months are in chronological order
+        assert ord_values == sorted(ord_values), f'Months not in order: {ord_values}'

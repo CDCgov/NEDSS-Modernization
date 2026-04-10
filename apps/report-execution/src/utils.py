@@ -1,11 +1,11 @@
 import logging
 import os
 from datetime import date, datetime
-from typing import List, Optional, Union
 
 from src.models import TimeRange
 
 from . import errors
+
 
 def get_env_or_error(env_var: str):
     """Gets an environment variable, if it isn't present throws an
@@ -49,39 +49,39 @@ def parse_date(date_str: str, date_format: str) -> datetime | None:
 
 
 def gen_subheader(
-    states: Optional[List[Optional[str]]] = None,
-    time_range: Optional[TimeRange] = None,
-    date_obj: Optional[Union[date, str]] = None,
-    diseases: Optional[List[str]] = None,
-    date_format: str = "%m/%d/%Y"
+    states: list[str | None] | None = None,
+    time_range: TimeRange | None = None,
+    date_obj: date | str | None = None,
+    diseases: list[str] | None = None,
+    date_format: str = '%m/%d/%Y',
 ) -> str:
     """Generate a subheader for reports from various optional components.
-    
+
     Note: Caller is responsible for sorting/deduplicating states and diseases.
-    
+
     Args:
         states: Optional list of state strings (already sorted and deduplicated)
         time_range: Optional TimeRange object with start/end dates
         date_obj: Optional date object or year string (e.g., '2024')
         diseases: Optional list of disease strings (already sorted and deduplicated)
-    
+
     Returns:
         Formatted subheader string
     """
     parts = []
-    
+
     # Add states if provided - replace None with 'N/A'
     if states:
         clean_states = ['N/A' if s is None else s for s in states]
         if clean_states:
             parts.append(', '.join(clean_states))
-    
+
     # Add diseases if provided - filter out None/empty
     if diseases:
         clean_diseases = [d for d in diseases if d]
         if clean_diseases:
             parts.append(', '.join(clean_diseases))
-    
+
     # Add date range if time_range provided
     if time_range:
         # Check if year-only format
@@ -91,11 +91,14 @@ def gen_subheader(
             start_dt = parse_date(time_range.start, date_format)
             end_dt = parse_date(time_range.end, date_format)
             if start_dt and end_dt:
-                parts.append(f'{start_dt.strftime(date_format)} to {end_dt.strftime(date_format)}')
+                parts.append(
+                    f'{start_dt.strftime(date_format)} to \
+                        {end_dt.strftime(date_format)}'
+                )
             else:
                 # Fallback to original strings if parsing failed
                 parts.append(f'{time_range.start} to {time_range.end}')
-    
+
     # Add single date if date_obj provided
     elif date_obj:
         if isinstance(date_obj, date):
@@ -103,5 +106,5 @@ def gen_subheader(
         else:
             # Try to parse as string
             parts.append(str(date_obj))
-    
+
     return ' | '.join(parts)

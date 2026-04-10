@@ -72,12 +72,12 @@ class TestUtils:
     def test_gen_subheader_with_states_diseases_and_date_range(self):
         time_range = TimeRange(start='2024-01-01', end='2024-12-31')
         result = utils.gen_subheader(
-            states=[None, 'Alabama','Georgia'],
+            states=[None, 'Alabama', 'Georgia'],
             diseases=['Measles'],
             time_range=time_range,
         )
         assert result == 'N/A, Alabama, Georgia | Measles | 01/01/2024 to 12/31/2024'
-    
+
     def test_gen_subheader_no_args(self):
         result = utils.gen_subheader()
         assert result == ''
