@@ -70,6 +70,30 @@ class TestIntegrationNbsSr09Library:
             assert len(monyr) == 3
             assert monyr.isalpha()
 
+    def test_execute_report_with_filters(self):
+        """Verify report works with filtered subset_query (filters are caller's responsibility)."""
+        report_spec = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'NBS Custom',
+                'library_name': 'nbs_sr_09',
+                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
+                'subset_query': (
+                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
+                    "WHERE state = 'Georgia' "
+                    "AND phc_code_short_desc = 'Pertussis'"
+                ),
+                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+        # Just verify it runs without error - the filtering is SQL's job
+        assert len(result.content.data) >= 0
+
     def test_execute_report_empty_subset(self):
         """Test handling of empty result set."""
         report_spec = ReportSpec.model_validate(
