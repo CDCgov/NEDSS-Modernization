@@ -80,12 +80,17 @@ public class ReportSpecBuilder {
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
 
-    LocalDate start =
-        LocalDate.parse(reportExecRequest.timeRange().start(), DateTimeFormatter.ISO_LOCAL_DATE);
-    LocalDate end =
-        LocalDate.parse(reportExecRequest.timeRange().end(), DateTimeFormatter.ISO_LOCAL_DATE);
+    ReportSpec.TimeRange timeRange = null;
 
-    ReportSpec.TimeRange timeRange = new ReportSpec.TimeRange(start, end);
+    if (reportExecRequest.timeRange() != null) {
+      LocalDate start =
+          LocalDate.parse(reportExecRequest.timeRange().start(), DateTimeFormatter.ISO_LOCAL_DATE);
+      LocalDate end =
+          LocalDate.parse(reportExecRequest.timeRange().end(), DateTimeFormatter.ISO_LOCAL_DATE);
+
+      timeRange = new ReportSpec.TimeRange(start, end);
+    }
+
     List<ReportColumn> columns = fetchColumns();
 
     String selectClause = buildSelectClause(columns);
