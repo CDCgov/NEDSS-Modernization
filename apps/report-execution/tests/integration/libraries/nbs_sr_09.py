@@ -181,6 +181,7 @@ class TestIntegrationNbsSr09Library:
         )
 
         # Check subheader contains expected elements
+
         assert 'Georgia' in result.subheader and 'Tennessee' in result.subheader
         assert '01/01/2024 to 06/30/2024' in result.subheader
 

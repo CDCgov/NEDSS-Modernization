@@ -92,8 +92,11 @@ def gen_subheader(
             end_dt = parse_date(time_range.end, date_format)
             if start_dt and end_dt:
                 parts.append(
-                    f'{start_dt.strftime(date_format)} to \
-                        {end_dt.strftime(date_format)}'
+                    f'{
+                        start_dt.strftime(date_format)
+                    } to {
+                        end_dt.strftime(date_format)
+                    }'
                 )
             else:
                 # Fallback to original strings if parsing failed
