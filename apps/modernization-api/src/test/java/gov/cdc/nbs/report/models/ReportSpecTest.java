@@ -4,10 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class ReportSpecTest {
   @Test
@@ -64,29 +61,27 @@ class ReportSpecTest {
     assertThat(reportSpec.timeRange().end().equals(LocalDate.parse(end)));
   }
 
-  @ParameterizedTest
-  @MethodSource("invalidTimeRangeProvider")
-  void should_throw_exception_with_invalid_time_range(ReportSpec.TimeRange timeRange) {
-    assertThatThrownBy(
-            () ->
-                new ReportSpec(
-                    1,
-                    true,
-                    true,
-                    "Test Report",
-                    "nbs_custom",
-                    "nbs_rdb.investigation",
-                    "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
-                    timeRange))
-        .isInstanceOf(IllegalArgumentException.class);
+  @Test
+  void should_throw_exception_with_time_range_missing_start_date() {
+    assertThatThrownBy(() -> new ReportSpec.TimeRange(null, LocalDate.parse("1999-12-31")))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Start and end values are required");
   }
 
-  private static Stream<ReportSpec.TimeRange> invalidTimeRangeProvider() {
-    ReportSpec.TimeRange timeRange1 = new ReportSpec.TimeRange(LocalDate.parse("1999-01-01"), null);
-    ReportSpec.TimeRange timeRange2 = new ReportSpec.TimeRange(null, LocalDate.parse("1999-01-10"));
-    ReportSpec.TimeRange timeRange3 =
-        new ReportSpec.TimeRange(LocalDate.parse("1999-01-10"), LocalDate.parse("1999-01-01"));
+  @Test
+  void should_throw_exception_with_time_range_missing_end_date() {
+    assertThatThrownBy(() -> new ReportSpec.TimeRange(LocalDate.parse("1999-01-01"), null))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Start and end values are required");
+  }
 
-    return Stream.of(timeRange1, timeRange2, timeRange3);
+  @Test
+  void should_throw_exception_with_time_range_end_before_start() {
+    assertThatThrownBy(
+            () ->
+                new ReportSpec.TimeRange(
+                    LocalDate.parse("1999-12-31"), LocalDate.parse("1999-01-01")))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Start date cannot be after end date");
   }
 }

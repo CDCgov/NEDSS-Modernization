@@ -20,7 +20,7 @@ public record ReportSpec(
 
     public TimeRange {
       if (start == null || end == null) {
-        throw new IllegalArgumentException("Start and end values are mandatory");
+        throw new IllegalArgumentException("Start and end values are required");
       }
 
       if (start.isAfter(end)) {
