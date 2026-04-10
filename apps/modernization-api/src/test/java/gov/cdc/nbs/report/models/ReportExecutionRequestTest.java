@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-public class ReportExecutionRequestTest {
+class ReportExecutionRequestTest {
 
   @Test
   void should_throw_exception_with_time_range_missing_start_date() {
