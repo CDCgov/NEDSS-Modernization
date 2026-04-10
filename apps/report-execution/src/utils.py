@@ -7,9 +7,6 @@ from src.models import TimeRange
 
 from . import errors
 
-# Date format constant
-US_DATE_FORMAT = "%m/%d/%Y"
-
 def get_env_or_error(env_var: str):
     """Gets an environment variable, if it isn't present throws an
     internal service error.
@@ -40,13 +37,13 @@ def get_int_env_or_default(env_var: str, default: int):
         return default
 
 
-def parse_date(date_str: str) -> datetime | None:
+def parse_date(date_str: str, date_format: str) -> datetime | None:
     """Parse a date string, trying ISO format first, then US format."""
     try:
         return datetime.fromisoformat(date_str)
     except ValueError:
         try:
-            return datetime.strptime(date_str, US_DATE_FORMAT)
+            return datetime.strptime(date_str, date_format)
         except ValueError:
             return None
 
@@ -56,6 +53,7 @@ def gen_subheader(
     time_range: Optional[TimeRange] = None,
     date_obj: Optional[Union[date, str]] = None,
     diseases: Optional[List[str]] = None,
+    date_format: str = "%m/%d/%Y"
 ) -> str:
     """Generate a subheader for reports from various optional components.
     
@@ -90,21 +88,18 @@ def gen_subheader(
         if len(time_range.start) == 4 and len(time_range.end) == 4:
             parts.append(f'{time_range.start} to {time_range.end}')
         else:
-            start_dt = parse_date(time_range.start)
-            end_dt = parse_date(time_range.end)
+            start_dt = parse_date(time_range.start, date_format)
+            end_dt = parse_date(time_range.end, date_format)
             if start_dt and end_dt:
-                parts.append(f'{start_dt.strftime(US_DATE_FORMAT)} to {end_dt.strftime(US_DATE_FORMAT)}')
+                parts.append(f'{start_dt.strftime(date_format)} to {end_dt.strftime(date_format)}')
             else:
                 # Fallback to original strings if parsing failed
                 parts.append(f'{time_range.start} to {time_range.end}')
     
     # Add single date if date_obj provided
     elif date_obj:
-        # Check if date_obj is a year string (e.g., '2024')
-        if isinstance(date_obj, str) and len(date_obj) == 4 and date_obj.isdigit():
-            parts.append(date_obj)
-        elif isinstance(date_obj, date):
-            parts.append(date_obj.strftime(US_DATE_FORMAT))
+        if isinstance(date_obj, date):
+            parts.append(date_obj.strftime(date_format))
         else:
             # Try to parse as string
             parts.append(str(date_obj))
