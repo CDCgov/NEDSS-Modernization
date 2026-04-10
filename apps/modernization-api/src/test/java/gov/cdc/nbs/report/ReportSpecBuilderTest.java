@@ -12,6 +12,7 @@ import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
@@ -73,11 +74,13 @@ class ReportSpecBuilderTest {
     return reportConfiguration;
   }
 
-  private ReportExecutionRequest mockReportExecutionRequest(List<Long> columnUids) {
+  private ReportExecutionRequest mockReportExecutionRequest(
+      List<Long> columnUids, String title, ReportExecutionRequest.TimeRange timeRange) {
     ReportExecutionRequest request = Mockito.mock(ReportExecutionRequest.class);
 
     Mockito.lenient().when(request.columnUids()).thenReturn(columnUids);
-    Mockito.lenient().when(request.reportTitle()).thenReturn("Test Title");
+    Mockito.lenient().when(request.reportTitle()).thenReturn(title);
+    Mockito.lenient().when(request.timeRange()).thenReturn(timeRange);
 
     return request;
   }
@@ -98,7 +101,13 @@ class ReportSpecBuilderTest {
             List.of(filterConfig1, filterConfig2), List.of(reportColumn1, reportColumn2));
 
     List<Long> columnUids = List.of(columnUid1, columnUid2);
-    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
+
+    String start = "1999-01-01";
+    String end = "1999-12-31";
+    ReportExecutionRequest.TimeRange timeRange = new ReportExecutionRequest.TimeRange(start, end);
+
+    ReportExecutionRequest request =
+        mockReportExecutionRequest(columnUids, "Test Title", timeRange);
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
@@ -111,9 +120,32 @@ class ReportSpecBuilderTest {
     assertThat(reportSpec.reportTitle()).isEqualTo(request.reportTitle());
     assertThat(reportSpec.libraryName()).isEqualTo(reportConfig.reportLibrary().libraryName());
     assertThat(reportSpec.dataSourceName()).isEqualTo("[NBS_ODSE].[dbo].[NBS_configuration]");
+    assertThat(reportSpec.timeRange()).isNotNull();
+    assertThat(reportSpec.timeRange().start()).isEqualTo(LocalDate.parse(start));
+    assertThat(reportSpec.timeRange().end()).isEqualTo(LocalDate.parse(end));
+
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
             "SELECT [column1] AS [Column 1], [column2] AS [Column 2] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+  }
+
+  @Test
+  void build_should_set_title_to_library_name_if_omitted() {
+    Long columnUid1 = 1L;
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
+    ReportColumn reportColumn1 = mockReportColumn(columnUid1, "column1", "Column 1");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
+
+    List<Long> columnUids = List.of(columnUid1);
+    ReportExecutionRequest request = mockReportExecutionRequest(columnUids, null, null);
+
+    ReportSpec reportSpec =
+        new ReportSpecBuilder(request, reportConfig, mockDataSourceNameUtils()).build();
+
+    assertThat(reportSpec.reportTitle()).isEqualTo(reportConfig.reportLibrary().libraryName());
+    ;
   }
 
   @Test
@@ -128,7 +160,7 @@ class ReportSpecBuilderTest {
         mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
 
     List<Long> columnUids = List.of(knownColumnUid, unknownColumnUid);
-    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
+    ReportExecutionRequest request = mockReportExecutionRequest(columnUids, "Test Title", null);
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
@@ -160,7 +192,7 @@ class ReportSpecBuilderTest {
             List.of(reportColumn1, reportColumn2, reportColumn3));
 
     List<Long> columnUids = List.of(columnUid1, columnUid2, columnUid3);
-    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
+    ReportExecutionRequest request = mockReportExecutionRequest(columnUids, "Test Title", null);
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
@@ -184,7 +216,7 @@ class ReportSpecBuilderTest {
         mockReportConfiguration(
             List.of(filterConfig1, filterConfig2), List.of(reportColumn1, reportColumn2));
 
-    ReportExecutionRequest request = mockReportExecutionRequest(null);
+    ReportExecutionRequest request = mockReportExecutionRequest(null, "Test Title", null);
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
@@ -208,7 +240,7 @@ class ReportSpecBuilderTest {
         mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
 
     List<Long> columnUids = List.of(columnUid1);
-    ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
+    ReportExecutionRequest request = mockReportExecutionRequest(columnUids, "Test Title", null);
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
