@@ -19,6 +19,10 @@ public record ReportSpec(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) LocalDate end) {
 
     public TimeRange {
+      if (start == null || end == null) {
+        throw new IllegalArgumentException("Start and end values are mandatory");
+      }
+
       if (start.isAfter(end)) {
         throw new IllegalArgumentException("Start date cannot be after end date");
       }

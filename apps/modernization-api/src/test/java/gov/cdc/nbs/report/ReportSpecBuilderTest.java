@@ -77,6 +77,7 @@ class ReportSpecBuilderTest {
     ReportExecutionRequest request = Mockito.mock(ReportExecutionRequest.class);
 
     Mockito.lenient().when(request.columnUids()).thenReturn(columnUids);
+    Mockito.lenient().when(request.reportTitle()).thenReturn("Test Title");
 
     return request;
   }
