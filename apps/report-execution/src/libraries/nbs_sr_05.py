@@ -2,6 +2,7 @@ import datetime
 
 from src.db_transaction import Transaction
 from src.models import ReportResult
+from src.utils import gen_subheader
 
 
 def execute(
@@ -141,16 +142,13 @@ def execute(
 
     # Get the state(s) in the data set for subheader display
     states = trx.query('SELECT DISTINCT state FROM #base_data ORDER BY state')
-    state_list = [
-        row[0] if row[0] is not None else 'N/A'
-        for row in states.data
-        if row[0] != filler_state
-    ]
+    state_list = states.get_unique_column('state')
+    state_list = [s for s in state_list if s != filler_state]
 
     trx.execute('DROP TABLE #base_data')
 
     header = 'SR5: Cases of Reportable Diseases by State'
-    subheader = f'{", ".join(state_list)} | {today.strftime("%m/%d/%Y")}'
+    subheader = gen_subheader(states=state_list, date_obj=today)
     description = (
         '*<u>Report content</u>*\n'
         '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
