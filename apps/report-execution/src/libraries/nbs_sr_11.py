@@ -56,7 +56,6 @@ def execute(
         'selected by the user\n'
         '* Is based on the year of the calculated Event Date (not the MMWR Year '
         'defined by the user)\n'
-        '* Is based on the calculated Event Date\n'
         'Calculations:\n'
         '*Event Date*: Derived using the hierarchy of Onset Date, Diagnosis Date, '
         'Report to County, Report to State and Date the Investigation was created '
