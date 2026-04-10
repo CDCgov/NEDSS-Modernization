@@ -82,7 +82,7 @@ class ReportSpecBuilderTest {
   }
 
   @Test
-  void should_build_hardcoded_report_spec() {
+  void build_should_set_all_fields_correctly() {
     Long columnUid1 = 1L;
     Long columnUid2 = 2L;
 
@@ -104,11 +104,11 @@ class ReportSpecBuilderTest {
     ReportSpec reportSpec =
         new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils).build();
 
-    assertThat(reportSpec.version()).isEqualTo(1);
-    assertThat(reportSpec.isBuiltin()).isTrue();
-    assertThat(reportSpec.isExport()).isTrue();
-    assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
-    assertThat(reportSpec.libraryName()).isEqualTo("nbs_custom");
+    assertThat(reportSpec.version()).isEqualTo(reportConfig.reportLibrary().version());
+    assertThat(reportSpec.isBuiltin()).isEqualTo(reportConfig.reportLibrary().isBuiltin());
+    assertThat(reportSpec.isExport()).isEqualTo(request.isExport());
+    assertThat(reportSpec.reportTitle()).isEqualTo(request.reportTitle());
+    assertThat(reportSpec.libraryName()).isEqualTo(reportConfig.reportLibrary().libraryName());
     assertThat(reportSpec.dataSourceName()).isEqualTo("[NBS_ODSE].[dbo].[NBS_configuration]");
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
