@@ -9,11 +9,11 @@ public record Library(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isBuiltin,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Integer version) {
 
-  public Library(ReportLibrary entity) {
+  public Library(ReportLibrary dbLibrary) {
     this(
-        entity.getRunner(),
-        entity.getLibraryName(),
-        entity.getIsBuiltinIndex().toString().equalsIgnoreCase("Y"),
-        entity.getVersion());
+        dbLibrary.getRunner(),
+        dbLibrary.getLibraryName(),
+        dbLibrary.getIsBuiltinIndex().toString().equalsIgnoreCase("Y"),
+        dbLibrary.getVersion());
   }
 }
