@@ -82,3 +82,23 @@ class TestUtils:
     def test_gen_subheader_no_args(self):
         result = utils.gen_subheader()
         assert result == ''
+
+    def test_gen_subheader_year_only_time_range(self):
+        time_range = TimeRange(start='2020', end='2024')
+        result = utils.gen_subheader(time_range=time_range)
+        assert result == '2020 to 2024'
+
+    def test_gen_subheader_year_only_date_obj(self):
+        """Test with year-only date_obj (e.g., '2024')."""
+        result = utils.gen_subheader(date_obj='2024')
+        assert result == '2024'
+
+    def test_gen_subheader_year_only_with_states_and_diseases(self):
+        """Test year-only time range with states and diseases."""
+        time_range = TimeRange(start='2024', end='2024')
+        result = utils.gen_subheader(
+            states=['N/A', 'Alabama', 'Georgia'],
+            diseases=['Measles'],
+            time_range=time_range
+        )
+        assert result == 'N/A, Alabama, Georgia | Measles | 2024 to 2024'
