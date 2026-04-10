@@ -64,6 +64,8 @@ def gen_subheader(
         time_range: Optional TimeRange object with start/end dates
         date_obj: Optional date object or year string (e.g., '2024')
         diseases: Optional list of disease strings (already sorted and deduplicated)
+        date_format: Optional date format string specifying how dates should
+            be formatted in the subheader (default: '%m/%d/%Y')
 
     Returns:
         Formatted subheader string
