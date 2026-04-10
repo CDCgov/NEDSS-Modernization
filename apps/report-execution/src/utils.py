@@ -37,66 +37,77 @@ def get_int_env_or_default(env_var: str, default: int):
         return default
 
 
-def parse_date(date_str: str) -> datetime:
+def parse_date(date_str: str, date_format: str) -> datetime | None:
     """Parse a date string, trying ISO format first, then US format."""
     try:
-        # Try ISO format (YYYY-MM-DD)
         return datetime.fromisoformat(date_str)
     except ValueError:
-        # Try US format (MM/DD/YYYY)
-        return datetime.strptime(date_str, '%m/%d/%Y')
+        try:
+            return datetime.strptime(date_str, date_format)
+        except ValueError:
+            return None
 
 
 def gen_subheader(
     states: list[str | None] | None = None,
     time_range: TimeRange | None = None,
-    date_obj: date | None = None,
-    date_format: str = '%m/%d/%Y',
+    date_obj: date | str | None = None,
     diseases: list[str] | None = None,
+    date_format: str = '%m/%d/%Y',
 ) -> str:
     """Generate a subheader for reports from various optional components.
 
+    Note: Caller is responsible for sorting/deduplicating states and diseases.
+
     Args:
-        states: Optional list of state strings (duplicates will be removed)
+        states: Optional list of state strings (already sorted and deduplicated)
         time_range: Optional TimeRange object with start/end dates
-        date_obj: Optional date object for single date display
+        date_obj: Optional date object or year string (e.g., '2024')
+        diseases: Optional list of disease strings (already sorted and deduplicated)
         date_format: Optional date format string specifying how dates should
             be formatted in the subheader (default: '%m/%d/%Y')
-        diseases: Optional list of disease strings (duplicates will be removed)
 
     Returns:
         Formatted subheader string
     """
     parts = []
 
-    # Add states if provided
+    # Add states if provided - replace None with 'N/A'
     if states:
-        has_none = any(s is None for s in states)
-        clean_states = {s for s in states if s and s != '<FILLER>'}
+        clean_states = ['N/A' if s is None else s for s in states]
         if clean_states:
-            if has_none:
-                sorted_states = ['N/A'] + sorted(clean_states)
-            else:
-                sorted_states = sorted(clean_states)
-            parts.append(', '.join(sorted_states))
+            parts.append(', '.join(clean_states))
 
-    # Add diseases if provided
+    # Add diseases if provided - filter out None/empty
     if diseases:
-        clean_diseases = {d for d in diseases if d}
+        clean_diseases = [d for d in diseases if d]
         if clean_diseases:
-            parts.append(', '.join(sorted(clean_diseases)))
+            parts.append(', '.join(clean_diseases))
 
     # Add date range if time_range provided
     if time_range:
-        # Parse dates (handles both ISO and US formats)
-        start_dt = parse_date(time_range.start)
-        end_dt = parse_date(time_range.end)
-        parts.append(
-            f'{start_dt.strftime(date_format)} to {end_dt.strftime(date_format)}'
-        )
+        # Check if year-only format
+        if len(time_range.start) == 4 and len(time_range.end) == 4:
+            parts.append(f'{time_range.start} to {time_range.end}')
+        else:
+            start_dt = parse_date(time_range.start, date_format)
+            end_dt = parse_date(time_range.end, date_format)
+            if start_dt and end_dt:
+                parts.append(
+                    f'{start_dt.strftime(date_format)} to {
+                        end_dt.strftime(date_format)
+                    }'
+                )
+            else:
+                # Fallback to original strings if parsing failed
+                parts.append(f'{time_range.start} to {time_range.end}')
 
     # Add single date if date_obj provided
-    elif date_obj is not None:
-        parts.append(date_obj.strftime(date_format))
+    elif date_obj:
+        if isinstance(date_obj, date):
+            parts.append(date_obj.strftime(date_format))
+        else:
+            # Try to parse as string
+            parts.append(str(date_obj))
 
     return ' | '.join(parts)

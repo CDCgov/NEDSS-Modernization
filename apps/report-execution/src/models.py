@@ -49,12 +49,7 @@ class Table(BaseModel):
         Returns:
             Sorted list of unique values with None placed first
         """
-        if col_name not in self.columns:
-            raise ValueError(
-                f"Column '{col_name}' not found. Available columns: {self.columns}"
-            )
-        idx = self.columns.index(col_name)
-        values = {row[idx] for row in self.data}
+        values = set(self.get_column(col_name))
         # Sort with None first (False < True, so None comes before non-None)
         return sorted(values, key=lambda x: (x is not None, x))
 

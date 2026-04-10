@@ -1,7 +1,10 @@
+from datetime import date
+
 import pytest
 
 from src import utils
 from src.errors import InternalServerError
+from src.models import TimeRange
 
 
 class TestUtils:
@@ -54,3 +57,47 @@ class TestUtils:
             res = utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_RUN', 100)
             assert res == 100
             assert len(caplog.records) == 0
+
+    def test_gen_subheader_with_single_date(self):
+        result = utils.gen_subheader(date_obj=date(2024, 6, 24))
+        assert result == '06/24/2024'
+
+    def test_gen_subheader_with_us_date_range(self):
+        time_range = TimeRange(start='01/01/2024', end='12/31/2024')
+        result = utils.gen_subheader(
+            states=['Georgia', 'Tennessee'], time_range=time_range
+        )
+        assert result == 'Georgia, Tennessee | 01/01/2024 to 12/31/2024'
+
+    def test_gen_subheader_with_states_diseases_and_date_range(self):
+        time_range = TimeRange(start='2024-01-01', end='2024-12-31')
+        result = utils.gen_subheader(
+            states=[None, 'Alabama', 'Georgia'],
+            diseases=['Measles'],
+            time_range=time_range,
+        )
+        assert result == 'N/A, Alabama, Georgia | Measles | 01/01/2024 to 12/31/2024'
+
+    def test_gen_subheader_no_args(self):
+        result = utils.gen_subheader()
+        assert result == ''
+
+    def test_gen_subheader_year_only_time_range(self):
+        time_range = TimeRange(start='2020', end='2024')
+        result = utils.gen_subheader(time_range=time_range)
+        assert result == '2020 to 2024'
+
+    def test_gen_subheader_year_only_date_obj(self):
+        """Test with year-only date_obj (e.g., '2024')."""
+        result = utils.gen_subheader(date_obj='2024')
+        assert result == '2024'
+
+    def test_gen_subheader_year_only_with_states_and_diseases(self):
+        """Test year-only time range with states and diseases."""
+        time_range = TimeRange(start='2024', end='2024')
+        result = utils.gen_subheader(
+            states=['N/A', 'Alabama', 'Georgia'],
+            diseases=['Measles'],
+            time_range=time_range,
+        )
+        assert result == 'N/A, Alabama, Georgia | Measles | 2024 to 2024'
