@@ -47,8 +47,7 @@ def execute(
             state,
             county,
             phc_code_short_desc,
-            ord,
-            monyr;
+            ord;
         """
     )
 

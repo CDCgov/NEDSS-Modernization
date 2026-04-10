@@ -323,7 +323,7 @@ class TestIntegrationNbsSr09Library:
         assert any(County != 'N/A' for County in counties)
 
     def test_execute_report_month_ordering(self):
-        """Verify months are ordered correctly using ord."""
+        """Verify months are ordered correctly for a single state/county/disease."""
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -332,26 +332,23 @@ class TestIntegrationNbsSr09Library:
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
+                'subset_query': (
+                    "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] "
+                    "WHERE state = 'Georgia' "
+                    "AND county = 'Fulton County' "
+                    "AND phc_code_short_desc = 'Pertussis'"
+                ),
                 'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
             }
         )
 
         result = execute_report(report_spec)
-
-        # Group by Condition and check month ordering
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
+        
+        # Extract month codes - they should already be in order
+        ord_values = [row[col_index['ord']] for row in result.content.data]
+        
+        # Verify months are in chronological order
+        assert ord_values == sorted(ord_values), \
+            f"Months not in order: {ord_values}"
 
-        # Group data by Condition
-        Condition_data = {}
-        for row in result.content.data:
-            Condition = row[col_index['Condition']]
-            if Condition not in Condition_data:
-                Condition_data[Condition] = []
-            Condition_data[Condition].append(row)
-
-        # For each Condition, verify months are in order
-        for _Condition, rows in Condition_data.items():
-            ords = [row[col_index['ord']] for row in rows]
-            # Should be in ascending order
-            assert ords == sorted(ords)
