@@ -44,9 +44,9 @@ class TestIntegrationNbsSr13Library:
         record = None
         for row in result.content.data:
             if (
-                row[0] == Decimal('4877.00000')
-                and row[1] == 'Measles'
-                and row[2] == 'Confirmed'
+                    row[0] == Decimal('4877.00000')
+                    and row[1] == 'Measles'
+                    and row[2] == 'Confirmed'
             ):
                 record = row
                 break
@@ -77,7 +77,7 @@ class TestIntegrationNbsSr13Library:
         assert len(data) == 0
         assert len(result.content.columns) == 3
 
-    def test_execute_report_check_metadata_without_time_range_one_state(self):
+    def test_execute_report_check_metadata(self):
         """Check the metadata and column names are correct."""
         report_spec = ReportSpec.model_validate(
             {
