@@ -54,7 +54,7 @@ def execute(
         'advanced criteria selected by user\n'
         '* Will not include Investigation(s) that do not have a value for the State '
         'selected by the user\n'
-        'Is based on the year of the calculated Event Date (not the MMWR Year '
+        '* Is based on the year of the calculated Event Date (not the MMWR Year '
         'defined by the user)\n'
         '* Is based on the calculated Event Date\n'
         'Calculations:\n'
