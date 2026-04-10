@@ -85,6 +85,7 @@ BEGIN
     -- actually used in the Report table today
     INSERT INTO [dbo].[Report_Library] (
         library_name,
+        version,
         desc_txt,
         runner,
         is_builtin_ind,
@@ -94,6 +95,7 @@ BEGIN
         last_chg_user_id
     ) SELECT
         COALESCE(l.location, tmp.library_name),
+        1,
         COALESCE(tmp.desc_txt, l.location),
         'sas',
         IIF(tmp.desc_txt IS NOT NULL, 'Y', 'N'),

@@ -1,9 +1,6 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.report.models.ReportColumn;
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import java.time.LocalDate;
 import java.util.List;
@@ -70,11 +67,16 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpec build() {
-    int version = 1;
-    boolean isExport = true;
-    boolean isBuiltin = true;
-    String reportTitle = "Test Report";
-    String libraryName = reportConfig.reportLibrary().libraryName();
+    Library reportLibrary = reportConfig.reportLibrary();
+
+    int version = reportLibrary.version();
+    boolean isBuiltin = reportLibrary.isBuiltin();
+    String libraryName = reportLibrary.libraryName();
+
+    boolean isExport = reportExecRequest.isExport();
+
+    String reportTitle =
+        reportExecRequest.reportTitle().isEmpty() ? libraryName : reportExecRequest.reportTitle();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     Map<String, LocalDate> timeRange = null;

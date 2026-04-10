@@ -26,6 +26,9 @@ public class ReportLibrary {
   @NonNull @Column(name = "library_name", length = 50, nullable = false)
   private String libraryName;
 
+  @NonNull @Column(name = "version", nullable = false)
+  private Integer version;
+
   @NonNull @Column(name = "desc_txt", length = 300, nullable = false)
   private String descTxt;
 

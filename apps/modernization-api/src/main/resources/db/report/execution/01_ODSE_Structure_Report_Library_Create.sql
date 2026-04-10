@@ -14,6 +14,7 @@ BEGIN
     CREATE TABLE [dbo].[Report_Library] (
         library_uid             bigint          IDENTITY(10000001,1)    NOT NULL,
         library_name            varchar(50)     NOT NULL,
+        version                 int             NOT NULL,
         desc_txt                varchar(300)    NOT NULL,
         runner                  varchar(10)     NOT NULL,
         is_builtin_ind          char(1)         NOT NULL,              
