@@ -57,8 +57,8 @@ class ReportSpecTest {
     assertThat(reportSpec.dataSourceName()).isEqualTo("nbs_rdb.investigation");
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
-    assertThat(reportSpec.timeRange().start().equals(LocalDate.parse(start)));
-    assertThat(reportSpec.timeRange().end().equals(LocalDate.parse(end)));
+    assertThat(reportSpec.timeRange().start()).isEqualTo(LocalDate.parse(start));
+    assertThat(reportSpec.timeRange().end()).isEqualTo(LocalDate.parse(end));
   }
 
   @Test
