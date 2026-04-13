@@ -13,8 +13,4 @@ faker_schema = sys.argv[1]
 
 conn_string = get_env_or_error('DATABASE_CONN_STRING')
 
-restore_original_data(
-    conn_string,
-    db_tables,
-    fk_tables
-)
+restore_original_data(conn_string, db_tables, fk_tables)

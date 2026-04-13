@@ -14,9 +14,4 @@ faker_sql = get_faker_sql(faker_schema)
 
 conn_string = get_env_or_error('DATABASE_CONN_STRING')
 
-insert_fake_data(
-    conn_string,
-    faker_sql,
-    db_tables,
-    fk_tables
-)
+insert_fake_data(conn_string, faker_sql, db_tables, fk_tables)
