@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 class ReportLibraryTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThatThrownBy(
-            () -> new ReportLibrary(null, null, null, null, null, null, null, null))
+    assertThatThrownBy(() -> new ReportLibrary(null, null, null, null, null, null, null, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("libraryName is marked non-null but is null");
   }
@@ -28,8 +27,7 @@ class ReportLibraryTest {
     LocalDateTime lastChgTime = LocalDateTime.parse("2020-02-28T09:15:30");
 
     ReportLibrary actual =
-        new ReportLibrary(
-            libName, descTxt, runner, builtIn, addTime, userId, lastChgTime, userId);
+        new ReportLibrary(libName, descTxt, runner, builtIn, addTime, userId, lastChgTime, userId);
 
     assertThat(actual)
         .satisfies(lib -> assertEquals(libName, lib.getLibraryName()))

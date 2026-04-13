@@ -112,7 +112,6 @@ class ReportServiceTest {
 
     ReportSpec spec =
         new ReportSpec(
-            1,
             true,
             true,
             "Test Report",
@@ -135,8 +134,7 @@ class ReportServiceTest {
       when(responseSpec.toEntity(ReportResult.class)).thenReturn(expectedResponse);
 
       ReportExecutionRequest request =
-          new ReportExecutionRequest(
-              reportUid, dataSourceUid, true, "Title", null, List.of(), null);
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, List.of());
 
       ResponseEntity<ReportResult> response = service.executeReport(request);
 
@@ -152,8 +150,7 @@ class ReportServiceTest {
     mockReport(id, "java", "nbs_rdb.V_CHALK_TALK");
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid, dataSourceUid, true, "Title", List.of(17L), List.of(), null);
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17L), List.of());
 
     assertThatThrownBy(() -> service.executeReport(request))
         .isInstanceOf(NotImplementedException.class)
@@ -167,8 +164,7 @@ class ReportServiceTest {
     when(reportRepository.findById(id)).thenReturn(Optional.empty());
 
     ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid, dataSourceUid, true, "Title", List.of(18L), List.of(), null);
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(18L), List.of());
 
     assertThatThrownBy(() -> service.executeReport(request))
         .isInstanceOf(NotFoundException.class)

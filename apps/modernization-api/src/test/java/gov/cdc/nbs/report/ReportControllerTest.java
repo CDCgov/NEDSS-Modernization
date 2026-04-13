@@ -48,6 +48,7 @@ class ReportControllerTest {
             "python",
             new ReportDataSource(dataSourceEntity),
             new Library(reportLibraryEntity),
+            "Report Title",
             List.of(filterConfig),
             columns);
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
@@ -76,9 +77,6 @@ class ReportControllerTest {
   void executeReport_should_return_executed_report() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
-    String title = "Title";
-    ReportExecutionRequest.TimeRange timeRange =
-        new ReportExecutionRequest.TimeRange("1999-01-01", "1999-12-31");
 
     Filter.Expr.Clause clause1 = new Filter.Expr.Clause(27L, "EQ", "47");
     Filter.Expr.Clause clause2 = new Filter.Expr.Clause(31L, "EQ", "35001");
@@ -87,13 +85,7 @@ class ReportControllerTest {
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            title,
-            Arrays.asList(27L, 31L),
-            List.of(advancedFilter),
-            timeRange);
+            reportUid, dataSourceUid, true, Arrays.asList(27L, 31L), List.of(advancedFilter));
 
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
@@ -110,18 +102,13 @@ class ReportControllerTest {
     String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
     String title = "Title";
 
-    ReportExecutionRequest.TimeRange timeRange =
-        new ReportExecutionRequest.TimeRange("1999-01-01", "1999-12-31");
-
     ReportExecutionRequest request =
         new ReportExecutionRequest(
             reportUid,
             dataSourceUid,
             true,
-            title,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))),
-            timeRange);
+            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
@@ -135,19 +122,14 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
     String errorMsg = "Report not implemented for python";
-    String title = "Title";
-    ReportExecutionRequest.TimeRange timeRange =
-        new ReportExecutionRequest.TimeRange("1999-01-01", "1999-12-31");
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
             reportUid,
             dataSourceUid,
             true,
-            title,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))),
-            timeRange);
+            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
 
