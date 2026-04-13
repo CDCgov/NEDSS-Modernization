@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import gov.cdc.nbs.time.EffectiveTime;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 class DataSourceTest {
@@ -39,6 +40,7 @@ class DataSourceTest {
     DataSource actual =
         new DataSource(
             id,
+            Collections.emptyList(),
             maxLen,
             conditionSecurity,
             jurisdictionSecurity,
