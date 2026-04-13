@@ -101,9 +101,6 @@ class ReportSpecBuilderTest {
 
     List<Long> columnUids = List.of(columnUid1, columnUid2);
 
-    String start = "1999-01-01";
-    String end = "1999-12-31";
-
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
