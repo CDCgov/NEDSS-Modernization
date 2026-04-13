@@ -100,7 +100,6 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
     String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
-    String title = "Title";
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
