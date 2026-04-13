@@ -19,7 +19,6 @@ class ReportLibraryTest {
   @Test
   void should_create_complete_report_library() {
     String libName = "MOCK_CA01_DIAGNOSIS.SAS";
-    Integer version = 1;
     String descTxt =
         "CA01: Chalk Talk Report: Case. This report includes information on the patients in the same Lot (Epi-linked group) for a specific disease.";
     String runner = "sas";
@@ -30,11 +29,10 @@ class ReportLibraryTest {
 
     ReportLibrary actual =
         new ReportLibrary(
-            libName, version, descTxt, runner, builtIn, addTime, userId, lastChgTime, userId);
+            libName, descTxt, runner, builtIn, addTime, userId, lastChgTime, userId);
 
     assertThat(actual)
         .satisfies(lib -> assertEquals(libName, lib.getLibraryName()))
-        .satisfies(lib -> assertEquals(version, lib.getVersion()))
         .satisfies(lib -> assertEquals(descTxt, lib.getDescTxt()))
         .satisfies(lib -> assertEquals(runner, lib.getRunner()))
         .satisfies(lib -> assertEquals(builtIn, lib.getIsBuiltinIndex()))
