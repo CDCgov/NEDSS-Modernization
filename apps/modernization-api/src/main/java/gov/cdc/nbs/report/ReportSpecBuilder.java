@@ -3,8 +3,8 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -69,29 +69,16 @@ public class ReportSpecBuilder {
   public ReportSpec build() {
     Library reportLibrary = reportConfig.reportLibrary();
 
-    int version = reportLibrary.version();
     boolean isBuiltin = reportLibrary.isBuiltin();
     String libraryName = reportLibrary.libraryName();
 
     boolean isExport = reportExecRequest.isExport();
 
-    String reportTitle =
-        reportExecRequest.reportTitle() == null || reportExecRequest.reportTitle().isEmpty()
-            ? libraryName
-            : reportExecRequest.reportTitle();
+    String reportTitle = reportConfig.reportTitle();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
 
-    ReportSpec.TimeRange timeRange = null;
-
-    if (reportExecRequest.timeRange() != null) {
-      LocalDate start =
-          LocalDate.parse(reportExecRequest.timeRange().start(), DateTimeFormatter.ISO_LOCAL_DATE);
-      LocalDate end =
-          LocalDate.parse(reportExecRequest.timeRange().end(), DateTimeFormatter.ISO_LOCAL_DATE);
-
-      timeRange = new ReportSpec.TimeRange(start, end);
-    }
+    Map<String, LocalDate> timeRange = null;
 
     List<ReportColumn> columns = fetchColumns();
 
@@ -104,7 +91,6 @@ public class ReportSpecBuilder {
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        version,
         isExport,
         isBuiltin,
         reportTitle,
