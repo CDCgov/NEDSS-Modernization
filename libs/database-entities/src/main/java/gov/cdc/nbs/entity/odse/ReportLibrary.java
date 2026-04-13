@@ -46,4 +46,8 @@ public class ReportLibrary {
 
   @NonNull @Column(name = "last_chg_user_id", nullable = false)
   private Long lastChgUserId;
+
+  public boolean isBuiltin () {
+    return getIsBuiltinIndex().toString().equalsIgnoreCase("Y");
+  }
 }

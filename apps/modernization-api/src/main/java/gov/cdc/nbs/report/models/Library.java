@@ -12,6 +12,6 @@ public record Library(
     this(
         dbLibrary.getRunner(),
         dbLibrary.getLibraryName(),
-        dbLibrary.getIsBuiltinIndex().toString().equalsIgnoreCase("Y"));
+        dbLibrary.isBuiltin());
   }
 }
