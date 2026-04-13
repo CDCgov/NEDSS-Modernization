@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -56,7 +57,7 @@ public class NbsPropertiesFinder {
   private RowMapper<AbstractMap.SimpleEntry<String, String>> mapper() {
     return new RowMapper<AbstractMap.SimpleEntry<String, String>>() {
       @Override
-      public AbstractMap.SimpleEntry<String, String> mapRow(ResultSet rs, int rowNum)
+      public @Nullable AbstractMap.SimpleEntry<String, String> mapRow(ResultSet rs, int rowNum)
           throws SQLException {
         return new AbstractMap.SimpleEntry<>(rs.getString(1), rs.getString(2));
       }

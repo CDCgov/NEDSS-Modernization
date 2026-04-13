@@ -9,6 +9,7 @@ import java.util.function.BinaryOperator;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 
 /**
  * A {@link ResultSetExtractor} that takes a {@link ResultSet} of zero or more rows and accumulates
@@ -40,7 +41,7 @@ public class AccumulatingResultSetExtractor<K, V> implements ResultSetExtractor<
   }
 
   @Override
-  public Collection<V> extractData(final ResultSet resultSet)
+  public @Nullable Collection<V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
     Map<K, V> map = new LinkedHashMap<>();

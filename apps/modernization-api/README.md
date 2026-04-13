@@ -106,15 +106,6 @@ to 8181 by executing.
 It assumes that Elasticsearch and MSSQL Server are running on `localhost`. Preconfigured containers are available in the
 `cdc-sandbox`.
 
-### With Kafka Enabled
-
-The Modernization API can connect to the Kafka instance defined in `cdc-sandbox/kafka` by starting the service with
-`kafka.enabled` set to `true`.
-
-```shell
-./gradlew :modernization-api:bootRun --args='--kafka.enabled'
-```
-
 ## 🧪 Tests
 
 ### Run all tests:
