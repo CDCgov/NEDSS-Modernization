@@ -31,7 +31,6 @@ services:
 
   sas:
     image: ghcr.io/cdcent/nbs7-sas-linux:v1.0.4
-    profiles: [sas]
     platform: linux/amd64
     ports:
       - 2323:2323
