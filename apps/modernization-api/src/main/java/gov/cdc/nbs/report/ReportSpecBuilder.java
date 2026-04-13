@@ -91,12 +91,6 @@ public class ReportSpecBuilder {
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        isExport,
-        isBuiltin,
-        reportTitle,
-        libraryName,
-        dataSourceName,
-        subsetQuery,
-        timeRange);
+        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery, timeRange);
   }
 }

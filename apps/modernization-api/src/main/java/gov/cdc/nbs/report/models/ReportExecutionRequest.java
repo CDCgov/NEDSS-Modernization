@@ -1,9 +1,6 @@
 package gov.cdc.nbs.report.models;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public record ReportExecutionRequest(
@@ -11,5 +8,4 @@ public record ReportExecutionRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long dataSourceUid,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean isExport,
     List<Long> columnUids,
-    List<Filter> filters) {
-  }
+    List<Filter> filters) {}
