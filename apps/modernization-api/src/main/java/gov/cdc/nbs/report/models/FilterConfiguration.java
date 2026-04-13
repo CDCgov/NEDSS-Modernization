@@ -8,4 +8,6 @@ public record FilterConfiguration(
     Long reportColumnUid,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) FilterType filterType,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        List<FilterDefaultValue> filterDefaultValues) {}
+        List<FilterDefaultValue> filterDefaultValues,
+    Integer maxValueCnt,
+    Integer minValueCnt) {}
