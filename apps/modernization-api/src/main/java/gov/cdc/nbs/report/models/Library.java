@@ -9,9 +9,6 @@ public record Library(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isBuiltin) {
 
   public Library(ReportLibrary dbLibrary) {
-    this(
-        dbLibrary.getRunner(),
-        dbLibrary.getLibraryName(),
-        dbLibrary.isBuiltin());
+    this(dbLibrary.getRunner(), dbLibrary.getLibraryName(), dbLibrary.isBuiltin());
   }
 }
