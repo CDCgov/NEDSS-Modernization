@@ -73,12 +73,9 @@ public class ReportSpecBuilder {
     boolean isBuiltin = reportLibrary.isBuiltin();
     String reportTitle = reportConfig.reportTitle();
     String libraryName = reportConfig.reportLibrary().libraryName();
-
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
-
     Map<String, LocalDate> timeRange = null;
-
     List<ReportColumn> columns = fetchColumns();
 
     String selectClause = buildSelectClause(columns);
