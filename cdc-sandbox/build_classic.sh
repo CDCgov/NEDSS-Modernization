@@ -15,6 +15,11 @@ fi
 echo "Starting NBS 6 DB and wildfly server"
 docker compose -f $BASE/docker-compose.yml up nbs-mssql wildfly --build -d
 
+if [[ "${ENABLE_SAS}" = "true" ]]; then
+    echo "Starting SAS server"
+    docker compose -f $BASE/docker-compose.yml up sas --build -d
+fi
+
 
 echo "**** Classic build complete ****"
 echo "http://localhost:7001/nbs/login"
