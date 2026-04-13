@@ -11,7 +11,6 @@ class ReportSpecTest {
   void should_create_report_spec_with_no_time_range() {
     ReportSpec reportSpec =
         new ReportSpec(
-            1,
             true,
             true,
             "Test Report",
@@ -20,7 +19,6 @@ class ReportSpecTest {
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
             null);
 
-    assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
     assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
