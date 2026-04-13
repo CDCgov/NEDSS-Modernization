@@ -40,8 +40,8 @@ public class AccumulatingResultSetExtractor<K, V> implements ResultSetExtractor<
     this.merger = merger;
   }
 
-  @Nullable @Override
-  public Collection<V> extractData(final ResultSet resultSet)
+  @Override
+  public @Nullable Collection<V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
     Map<K, V> map = new LinkedHashMap<>();
