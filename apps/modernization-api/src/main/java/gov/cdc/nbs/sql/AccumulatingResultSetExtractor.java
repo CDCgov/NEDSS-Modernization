@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BinaryOperator;
+
+import jakarta.validation.constraints.Null;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -40,8 +42,15 @@ public class AccumulatingResultSetExtractor<K, V> implements ResultSetExtractor<
     this.merger = merger;
   }
 
+  //  Suppressing java:S2638 (Method overrides should not change contracts), which was being
+  //  thrown because of "the incompatibility of the annotation @Nullable to honor @NonNullApi
+  //  at package level of the overridden method".  The parent method on `ResultSetExtractor` is
+  //  annotated with `@Nullable` just like this method, so it's unclear where the purported
+  //  incompatibility is stemming from.
+  @SuppressWarnings("java:S2638")
   @Override
-  public @Nullable Collection<V> extractData(final ResultSet resultSet)
+  @Nullable
+  public Collection<V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
     Map<K, V> map = new LinkedHashMap<>();

@@ -56,8 +56,15 @@ public class NbsPropertiesFinder {
 
   private RowMapper<AbstractMap.SimpleEntry<String, String>> mapper() {
     return new RowMapper<AbstractMap.SimpleEntry<String, String>>() {
+      //  Suppressing java:S2638 (Method overrides should not change contracts), which was being
+      //  thrown because of "the incompatibility of the annotation @Nullable to honor @NonNullApi
+      //  at package level of the overridden method".  The parent method on `RowMapper` is
+      //  annotated with `@Nullable` just like this method, so it's unclear where the purported
+      //  incompatibility is stemming from.
+      @SuppressWarnings("java:S2638")
       @Override
-      public @Nullable AbstractMap.SimpleEntry<String, String> mapRow(ResultSet rs, int rowNum)
+      @Nullable
+      public AbstractMap.SimpleEntry<String, String> mapRow(ResultSet rs, int rowNum)
           throws SQLException {
         return new AbstractMap.SimpleEntry<>(rs.getString(1), rs.getString(2));
       }
