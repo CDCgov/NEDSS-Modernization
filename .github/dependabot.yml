@@ -42,7 +42,6 @@ updates:
       - "/apps/modernization-api"
       - "/apps/nbs-gateway"
       - "/apps/question-bank"
-      - "/cdc-sandbox/nifi"
       - "/cdc-sandbox/kibana"
       - "/cdc-sandbox/elasticsearch"
       - "/cdc-sandbox/nbs6-win-container"
