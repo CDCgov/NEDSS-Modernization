@@ -63,8 +63,7 @@ public class NbsPropertiesFinder {
       //  incompatibility is stemming from.
       @SuppressWarnings("java:S2638")
       @Override
-      @Nullable
-      public AbstractMap.SimpleEntry<String, String> mapRow(ResultSet rs, int rowNum)
+      @Nullable public AbstractMap.SimpleEntry<String, String> mapRow(ResultSet rs, int rowNum)
           throws SQLException {
         return new AbstractMap.SimpleEntry<>(rs.getString(1), rs.getString(2));
       }

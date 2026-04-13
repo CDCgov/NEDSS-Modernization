@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BinaryOperator;
-
-import jakarta.validation.constraints.Null;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -49,8 +47,7 @@ public class AccumulatingResultSetExtractor<K, V> implements ResultSetExtractor<
   //  incompatibility is stemming from.
   @SuppressWarnings("java:S2638")
   @Override
-  @Nullable
-  public Collection<V> extractData(final ResultSet resultSet)
+  @Nullable public Collection<V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
     Map<K, V> map = new LinkedHashMap<>();

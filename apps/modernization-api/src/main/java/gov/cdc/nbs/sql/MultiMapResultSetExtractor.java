@@ -26,8 +26,7 @@ public class MultiMapResultSetExtractor<K, V> implements ResultSetExtractor<Mult
   //  incompatibility is stemming from.
   @SuppressWarnings("java:S2638")
   @Override
-  @Nullable
-  public Multimap<K, V> extractData(final ResultSet resultSet)
+  @Nullable public Multimap<K, V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
     ArrayListMultimap<K, V> multimap = ArrayListMultimap.create();
