@@ -43,7 +43,7 @@ tables:
       
       # datetime
       - column_name: EVENT_DATE
-        type: datetime
+        type: string
         data: fake.date_between(start_date=date(2015, 1, 1), end_date=date(2025, 1, 5))
         null_percentage: 0.02
       
