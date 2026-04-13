@@ -48,6 +48,13 @@ public class DateCoercing implements Coercing<LocalDate, String> {
     }
   }
 
+  //  Suppressing java:2637 ("@NonNull" values should not be set to null) because there is a known
+  //  issue regarding that Sonar rule throwing false positives in certain situations, which seems
+  //  to be the case here.  The `value.getValue() != null` check prior to invoking `parseValue`
+  //  guarantees the first parameter will never be null, and yet the issue is still triggered.
+  //
+  //  https://sonarsource.atlassian.net/browse/JAVASE-91
+  @SuppressWarnings("java:S2637")
   @Nonnull
   @Override
   public LocalDate parseLiteral(
