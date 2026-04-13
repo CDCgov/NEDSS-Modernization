@@ -24,8 +24,8 @@ When("I click on Lab Report", () => {
   labReportPage.clickLabReport();
 });
 
-When("I click on the Lab Report tab", () => {
-  labReportPage.clickLabReportTab();
+When("I click on the Events tab", () => {
+  labReportPage.clickEventsTab();
 });
 
 When("I enter {string} in the Reporting Facility field", (value) => {
@@ -65,7 +65,7 @@ When("I enter {string} in the Text Result field", (text) => {
 });
 
 When("I click the add button to add the lab report", () => {
-  labReportPage.clickAddButton();
+  labReportPage.clickAddButtonResultedTests();
 });
 
 When("I click the submit button", () => {

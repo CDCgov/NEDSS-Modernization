@@ -70,11 +70,6 @@ class LabReportPage {
     cy.get(this.labReportLink).contains('Lab Report').click();
   }
 
-  clickLabReportTab() {
-    cy.wait(500);
-    cy.get(this.labReportTab).first().click();
-  }
-
   enterReportingFacility(value) {
     cy.get(this.reportingFacilityField).type(value);
   }
@@ -108,6 +103,11 @@ class LabReportPage {
 
   clickAddButtonResultedTests() {
     cy.get(this.addButton).click();
+    
+    // Add wait for the add operation to complete
+    // Wait for the new resulted test row to appear
+    cy.get('#RESULTED_TEST_CONTAINER tr').should('have.length.greaterThan', 0);
+    cy.wait(500); // Small buffer for DOM updates
   }
 
   searchForPatientInPopup() {
@@ -125,13 +125,7 @@ class LabReportPage {
     // Call populatePatient directly on the main window
     cy.window().then((win) => {
       cy.log(`Calling populatePatient with MPR ID: ${mprId}`);
-      
-      if (typeof win.populatePatient === 'function') {
-        win.populatePatient(mprId);
-        cy.log('populatePatient called successfully');
-      } else {
-        cy.log('populatePatient function not found!');
-      }
+      win.populatePatient(mprId);
     });
     
     // Wait for DWR calls to complete
@@ -310,7 +304,6 @@ class LabReportPage {
   }
   
 
-    // Get the last lab report entry in the list
 //Helper Functions
 
   // Dropdown selector

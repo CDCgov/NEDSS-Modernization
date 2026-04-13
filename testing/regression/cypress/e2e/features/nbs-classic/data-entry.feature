@@ -5,7 +5,7 @@ Feature: Classic Data Entry
 
   Scenario: Create lab report and confirm association
     When I search for patient "Surma" "Singh"
-    And I click on the Lab Report tab
+    And I click on the Events tab
     And I check the Lab Report count
     And I click on Data Entry in the navigation bar
     And I click on Lab Report
@@ -61,12 +61,10 @@ Scenario: Create lab report with multiple results and confirm association
     And I enter the current date in the Date of Morbidity Report field
     And I enter "2" in the Facility and Provider Information field
     And I click on the Code Lookup button
-    # Still need to sample clinical information
     And I click the Submit button
     And I confirm the submission by clicking "Ok"
     Then the morbidity report should be submitted successfully
 
-  # Need another test with 2 lab reports
 
   Scenario: Create Morbidity Report with different condition type
     When I click on Data Entry in the navigation bar
@@ -79,7 +77,6 @@ Scenario: Create lab report with multiple results and confirm association
     And I enter "2" in the Facility and Provider Information field
     And I click on the Code Lookup button
     And I click the Submit button
-    # Still need to add 2 treatment results
     And I confirm the submission by clicking "Ok"
     Then the morbidity report should be submitted successfully
 

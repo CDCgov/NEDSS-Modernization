@@ -18,7 +18,7 @@ export function selectRandomDropdownValue(dropdownSelector) {
         
         if (optionCount === 0) {
           cy.log('No options found in dropdown');
-        return;
+          return;
         }
         
         cy.log(`Dropdown has ${optionCount} options`);
