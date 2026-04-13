@@ -4,7 +4,7 @@ Feature: Classic Data Entry
     Given I am logged in as secure user and stay on classic
 
   Scenario: Create lab report and confirm association
-    When I search for patient "Surma" "Singh"
+    Given the user navigate to the patient profile page for "63000"
     And I click on the Events tab
     And I check the Lab Report count
     And I click on Data Entry in the navigation bar
