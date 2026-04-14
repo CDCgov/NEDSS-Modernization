@@ -11,7 +11,6 @@ class TestExecuteReport:
     def test_execute_report_nbs_custom(self, mock_db_transaction):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Test Report',
@@ -33,7 +32,6 @@ class TestExecuteReport:
     def test_execute_report_missing_library(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Test Report',

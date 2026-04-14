@@ -56,7 +56,7 @@ public class DateCoercing implements Coercing<LocalDate, String> {
       @Nonnull final GraphQLContext context,
       @Nonnull final Locale locale)
       throws CoercingParseLiteralException {
-    if (input instanceof StringValue value) {
+    if (input instanceof StringValue value && value.getValue() != null) {
       return parseValue(value.getValue(), context, locale);
     } else {
       throw new CoercingParseLiteralException("Expected a StringValue.");
