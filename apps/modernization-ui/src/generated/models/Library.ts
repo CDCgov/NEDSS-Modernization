@@ -5,5 +5,6 @@
 export type Library = {
     runner: string;
     libraryName: string;
+    isBuiltin: boolean;
 };
 
