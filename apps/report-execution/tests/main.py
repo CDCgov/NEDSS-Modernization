@@ -36,7 +36,6 @@ class TestReportExecuteEndpoint:
     def test_execute_report_api_with_valid_spec(self, client, mock_db_transaction):
         """Test executing a report with a valid ReportSpec."""
         report_spec = {
-            'version': 1,
             'is_export': True,
             'is_builtin': True,
             'report_title': 'Test Report',
@@ -58,7 +57,6 @@ class TestReportExecuteEndpoint:
     def test_execute_report_api_with_time_range(self, client, mock_db_transaction):
         """Test executing a report with an optional time range."""
         report_spec = {
-            'version': 1,
             'is_export': False,
             'is_builtin': True,
             'report_title': 'Time-based Report',
@@ -75,7 +73,6 @@ class TestReportExecuteEndpoint:
     def test_execute_report_api_without_time_range(self, client, mock_db_transaction):
         """Test executing a report without providing time_range."""
         report_spec = {
-            'version': 2,
             'is_export': True,
             'is_builtin': True,
             'report_title': 'Simple Report',
@@ -91,7 +88,6 @@ class TestReportExecuteEndpoint:
     def test_execute_report_api_missing_required_fields(self, client):
         """Test that missing required fields return a validation error."""
         incomplete_spec = {
-            'version': 1,
             'report_title': 'Incomplete Report',
         }
         response = client.post('/report/execute', json=incomplete_spec)
@@ -101,7 +97,6 @@ class TestReportExecuteEndpoint:
     def test_execute_report_api_invalid_field_types(self, client):
         """Test that invalid field types return a validation error."""
         invalid_spec = {
-            'version': 'not_an_int',
             'is_export': True,
             'is_builtin': True,
             'report_title': 'Test Report',
@@ -116,7 +111,6 @@ class TestReportExecuteEndpoint:
     def test_execute_report_api_invalid_library_name(self, client):
         """Test that invalid name returns a validation error."""
         invalid_spec = {
-            'version': 1,
             'is_export': True,
             'is_builtin': True,
             'report_title': 'Test Report',

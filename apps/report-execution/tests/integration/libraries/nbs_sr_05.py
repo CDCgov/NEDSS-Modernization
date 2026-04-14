@@ -27,7 +27,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -70,7 +69,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_old_data_zeros(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -110,7 +108,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_no_current_year(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -149,7 +146,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_only_current_year(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -189,7 +185,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_empty_subset(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -211,7 +206,6 @@ class TestIntegrationNbsSr05Library:
         """Check the metadata and column names are correct with a frozen date."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
