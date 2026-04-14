@@ -19,7 +19,6 @@ class TestIntegrationNbsSr13Library:
     def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR 13',
@@ -56,7 +55,6 @@ class TestIntegrationNbsSr13Library:
     def test_execute_report_no_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR 3',
@@ -81,7 +79,6 @@ class TestIntegrationNbsSr13Library:
         """Check the metadata and column names are correct."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR 13',

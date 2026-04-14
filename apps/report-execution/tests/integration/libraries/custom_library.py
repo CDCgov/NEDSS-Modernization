@@ -11,7 +11,6 @@ class TestCustomLibrary:
 
     def test_custom_library_runs(self):
         report_spec = {
-            'version': 1,
             'is_export': True,
             'is_builtin': False,
             'report_title': 'Test Report',
