@@ -27,36 +27,15 @@ class LabReportPage {
 
   getLabReportCountForPatient() {
     cy.log('Checking and saving lab report count');
-
-    // Get the count from the Lab Reports section header
-    cy.get('#subsect_Lab .bluebarsectName').then(($section) => {
-      // The section text will be something like "Lab Reports (1)"
-      const sectionText = $section.text();
-      cy.log(`Lab Reports section text: "${sectionText}"`);
-      
-      // Extract the number from parentheses using regex
-      const match = sectionText.match(/\((\d+)\)/);
-      
-      if (match && match[1]) {
-        const count = parseInt(match[1], 10);
-        cy.log(`Found lab report count: ${count}`);
-        
-        // Save the count as an alias for later use
-        cy.wrap(count).as('labReportCount');
-        
-        // Also save to a Cypress environment variable if needed
-        Cypress.env('labReportCount', count);
-        
-        // Return the count for chaining
-        return cy.wrap(count);
-      } else {
-        cy.log('No lab report count found in section header');
-        cy.wrap(0).as('labReportCount');
-        Cypress.env('labReportCount', 0);
-        return cy.wrap(0);
-      }
-    });
-  }
+    cy.contains('span', 'Loading', { timeout: 30000 }).should('not.exist');
+    return cy.get('#laboratory-reports + div')
+      .invoke('text')
+      .then((count) => {
+        const labReportCount = parseInt(count.trim());
+        cy.wrap(labReportCount).as('labReportCount');
+        cy.log(`Current lab report count: ${labReportCount}`);
+      });
+    }
 
   clickHome() {
       cy.get(this.homeNavigation).click();
@@ -272,19 +251,17 @@ class LabReportPage {
     cy.log('Verifying lab report count increased by 1');
 
     // Get the new lab report count
-    cy.get('#subsect_Lab .bluebarsectName')
-      .should('be.visible')
+
+    cy.contains('span', 'Loading', { timeout: 30000 }).should('not.exist');
+    return cy.get('#laboratory-reports + div')
       .invoke('text')
-      .then((text) => {
-        // Extract number from parentheses - e.g., "Lab Reports (1)"
-        const match = text.match(/\((\d+)\)/);
-        const newCount = match ? parseInt(match[1], 10) : 0;
+      .then((count) => {
+        const newCount = parseInt(count.trim());
         cy.log(`New lab report count: ${newCount}`);
-        
         // Get the initial count from the alias and verify increase by 1
         cy.get('@labReportCount').then((initialCount) => {
           expect(newCount).to.equal(initialCount + 1);
-          cy.log(`✓ Lab report count increased from ${initialCount} to ${newCount} (expected increase of 1)`);
+          cy.log(`Lab report count increased from ${initialCount} to ${newCount} (expected increase of 1)`);
         });
       });
   }

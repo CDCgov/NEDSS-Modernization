@@ -1,11 +1,12 @@
 Feature: Classic Data Entry
 
   Background:
-    Given I am logged in as secure user and stay on classic
+    Given I am logged in as secure user
 
   Scenario: Create lab report and confirm association
-    Given the user navigate to the patient profile page for "63000"
-    And I click on the Events tab
+    And I search by last name as "Singh"
+    And I click on patient ID "63000" to view profile
+    And Click Events tab on Patient Profile Page
     And I check the Lab Report count
     And I click on Data Entry in the navigation bar
     And I click on Lab Report
@@ -23,8 +24,10 @@ Feature: Classic Data Entry
     And I click the Add button under Resulted Tests
     And I click the submit button
     And I go to the Home page
-    And I search for patient "Surma" "Singh"
-    And I click on the Lab Report tab
+    And Navigate to Patient Search pane
+    And I search by last name as "Singh"
+    And I click on patient ID "63000" to view profile
+    And Click Events tab on Patient Profile Page
     Then there should be one more Lab Report than before
 
 Scenario: Create lab report with multiple results and confirm association

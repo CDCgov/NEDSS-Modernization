@@ -1,11 +1,16 @@
 import { labReportPage } from '../../e2e/pages/nbs-classic/dataEntry.page';
 import { patientEntitySearch } from '../../e2e/pages/nbs-classic/patientEntitySearch.page';
+import { searchPage } from '../../e2e/pages/search.page';
 import { morbidityReportPage } from '../../e2e/pages/nbs-classic/morbidityReportPage';
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { clickSubmitButton, clickHome } from '../../e2e/pages/nbs-classic/utils';
 
 When("I search for patient {string} {string}", (patientFirstName, patientLastName) => {
   patientEntitySearch.getPatientByName({patientLastName, patientFirstName});
+});
+
+When("I click on patient ID {string} to view profile", (patientId) => {
+  searchPage.clickPatientId(patientId);
 });
 
 When("I check the Lab Report count", () => {
@@ -22,10 +27,6 @@ When('I click on Data Entry in the navigation bar', () => {
 
 When("I click on Lab Report", () => {
   labReportPage.clickLabReport();
-});
-
-When("I click on the Events tab", () => {
-  labReportPage.clickEventsTab();
 });
 
 When("I enter {string} in the Reporting Facility field", (value) => {
