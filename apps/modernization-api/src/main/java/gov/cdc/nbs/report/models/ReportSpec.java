@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.Map;
 
 public record ReportSpec(
-    @JsonProperty(value = "version", required = true) int version,
     @JsonProperty(value = "is_export", required = true) boolean isExport,
     @JsonProperty(value = "is_builtin", required = true) boolean isBuiltin,
     @JsonProperty(value = "report_title", required = true) String reportTitle,
