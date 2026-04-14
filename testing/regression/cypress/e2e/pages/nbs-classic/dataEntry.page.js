@@ -269,16 +269,14 @@ class LabReportPage {
   verifyLastLabReportHasMultipleResultedTests() {
     cy.log('Verifying last lab report has multiple resulted tests associated with it');
 
-    cy.log('Finding the last lab report row');
-    cy.get('#eventLabReport tbody tr').last().as('lastLabReportRow');
-
-    cy.get('@lastLabReportRow').find('td').eq(3).within(() => {
-      cy.log('Checking test results in column 4');
-      
-      // Count the number of div elements containing test results
-      cy.get('div').should('have.length', 2);
-    });
-  }
+    // Get the last row in the lab reports table and verify it has 2 test results
+    cy.get('#laboratory-reports-table tbody tr')
+      .last()
+      .find('td:nth-child(5)') // The 5th column contains the test results
+      .find('._test_tb2zz_1')
+      .should('have.length', 2);
+    };
+  
   
 
 //Helper Functions

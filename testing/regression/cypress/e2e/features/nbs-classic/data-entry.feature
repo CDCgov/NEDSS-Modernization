@@ -49,8 +49,10 @@ Scenario: Create lab report with multiple results and confirm association
     And I click the Add button under Resulted Tests
     And I click the submit button
     And I go to the Home page
-    And I search for patient "Surma" "Singh"
-    And I click on the Lab Report tab
+    And Navigate to Patient Search pane
+    And I search by last name as "Singh"
+    And I click on patient ID "63000" to view profile
+    And Click Events tab on Patient Profile Page
     And the last Lab Report should have multiple resulted tests associated with it
 
  
