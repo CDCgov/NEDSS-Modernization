@@ -14,7 +14,6 @@ class TimeRange(BaseModel):
 class ReportSpec(BaseModel):
     """Report request specification."""
 
-    version: int
     is_export: bool
     is_builtin: bool
     report_title: str
