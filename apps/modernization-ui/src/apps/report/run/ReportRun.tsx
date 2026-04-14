@@ -30,7 +30,7 @@ const ReportRun = () => {
                     setError('No content!');
                     return;
                 }
-                isExport ? openNewTab(<ResultDataPage result={res} />) : fileDownload(res.content, `${res.header}.csv`);
+                isExport ? fileDownload(res.content, `${res.header}.csv`): openNewTab(<ResultDataPage result={res} />);
             })
             .catch((err) => setError(JSON.stringify(err)));
     };
