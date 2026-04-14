@@ -5,7 +5,7 @@ description = "A FastAPI server for the management and execution of both standar
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "fastapi[standard]~=0.128",
+    "fastapi[standard]~=0.135",
     "mssql-python>=1.4.0",
     "pandas>=3.0.1",
     "pydantic>=2.13.0,<3.0.0",
