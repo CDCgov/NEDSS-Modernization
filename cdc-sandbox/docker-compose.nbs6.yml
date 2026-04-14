@@ -29,5 +29,20 @@ services:
       - 8787:8787
       - 9990:9990
 
+  sas:
+    image: ghcr.io/cdcent/nbs7-sas-linux:v1.0.4
+    platform: linux/amd64
+    ports:
+      - 2323:2323
+    environment:
+      - db_host=nbs-mssql
+      - rdb_user=nbs_rdb
+      - rdb_pass=rdb
+      - odse_user=nbs_ods
+      - odse_pass=ods
+      - sas_user_pass=n3dss4dm1n
+      - sas_encoding=latin1
+      - ADDITIONAL_SAS_FLAGS=-DEBUG
+
 volumes:
   nbs-mssql-data:
