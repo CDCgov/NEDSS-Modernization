@@ -12,7 +12,6 @@ class TestMainApp:
 
     def test_report_runs(self):
         report_spec = {
-            'version': 1,
             'is_export': True,
             'is_builtin': True,
             'report_title': 'Test Report',

@@ -39,7 +39,7 @@ class DirectionCoercing implements Coercing<Sort.Direction, String> {
       @Nonnull final GraphQLContext graphQLContext,
       @Nonnull final Locale locale)
       throws CoercingParseLiteralException {
-    return (input instanceof StringValue value)
+    return (input instanceof StringValue value && value.getValue() != null)
         ? parseValue(value.getValue(), graphQLContext, locale)
         : null;
   }

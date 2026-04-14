@@ -83,6 +83,7 @@ public class ReportService {
                   report.getReportLibrary().getRunner(),
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
+                  report.getReportTitle(),
                   filters,
                   reportColumns);
             })

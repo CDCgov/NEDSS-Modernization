@@ -112,7 +112,6 @@ class ReportServiceTest {
 
     ReportSpec spec =
         new ReportSpec(
-            1,
             true,
             true,
             "Test Report",
