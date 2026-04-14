@@ -32,12 +32,15 @@ public class ReportService {
 
   private final ReportRepository reportRepository;
   private final RestClient reportExecutionClient;
-  private final DataSourceNameUtils dataSourceNameUtils =
-      new DataSourceNameUtils(new DataSourceNameConfiguration());
+  private final DataSourceNameUtils dataSourceNameUtils;
 
-  public ReportService(final ReportRepository reportRepository, RestClient reportExecutionClient) {
+  public ReportService(
+      final ReportRepository reportRepository,
+      RestClient reportExecutionClient,
+      final DataSourceNameConfiguration dataSourceNameConfig) {
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
+    this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
