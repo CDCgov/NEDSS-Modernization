@@ -36,10 +36,19 @@ public class ReportController {
     return new ResponseEntity<>(reportConfigResponse, HttpStatus.OK);
   }
 
-  @PostMapping("/execute")
+  @PostMapping("/run")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
-  public ResponseEntity<ReportResult> executeReport(@RequestBody ReportExecutionRequest request) {
+  public ResponseEntity<ReportResult> runReport(@RequestBody ReportExecutionRequest request) {
     // TODO: validate request // NOSONAR
+    assert !request.isExport();
+    return reportService.executeReport(request);
+  }
+
+  @PostMapping("/export")
+  @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
+  public ResponseEntity<ReportResult> exportReport(@RequestBody ReportExecutionRequest request) {
+    // TODO: validate request // NOSONAR
+    assert request.isExport();
     return reportService.executeReport(request);
   }
 }

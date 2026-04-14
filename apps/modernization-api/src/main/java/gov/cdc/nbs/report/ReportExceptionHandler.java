@@ -24,4 +24,10 @@ public class ReportExceptionHandler {
   public ResponseEntity<String> handleUnprocessableEntity(IllegalArgumentException ex) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<String> handleUnexpectedError(Exception ex) {
+    System.err.println(ex);
+    return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }

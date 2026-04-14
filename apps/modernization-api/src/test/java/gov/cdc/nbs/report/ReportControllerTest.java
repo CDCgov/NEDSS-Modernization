@@ -74,7 +74,7 @@ class ReportControllerTest {
   }
 
   @Test
-  void executeReport_should_return_executed_report() {
+  void exportReport_should_return_executed_report() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
@@ -90,13 +90,13 @@ class ReportControllerTest {
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
 
-    ResponseEntity<ReportResult> response = controller.executeReport(request);
+    ResponseEntity<ReportResult> response = controller.exportReport(request);
     assertEquals(getReportExecutionResponse(), response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }
 
   @Test
-  void executeReport_should_return_400_status_code_when_report_not_found() {
+  void exportReport_should_return_400_status_code_when_report_not_found() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
     String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
@@ -111,13 +111,13 @@ class ReportControllerTest {
 
     when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
-    assertThatThrownBy(() -> controller.executeReport(request))
+    assertThatThrownBy(() -> controller.exportReport(request))
         .isInstanceOf(NotFoundException.class)
         .hasMessageContaining(errorMsg);
   }
 
   @Test
-  void executeReport_should_return_501_status_code_when_report_not_implemented() {
+  void exportReport_should_return_501_status_code_when_report_not_implemented() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
     String errorMsg = "Report not implemented for python";
@@ -132,8 +132,72 @@ class ReportControllerTest {
 
     when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
 
-    assertThatThrownBy(() -> controller.executeReport(request))
+    assertThatThrownBy(() -> controller.exportReport(request))
         .isInstanceOf(NotImplementedException.class)
+        .hasMessageContaining(errorMsg);
+  }
+
+  @Test
+  void exportReport_should_return_500_status_code_when_report_not_export() {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+    String errorMsg = "System Internal Error";
+
+    ReportExecutionRequest request =
+        new ReportExecutionRequest(
+            reportUid,
+            dataSourceUid,
+            false,
+            Arrays.asList(27L, 31L),
+            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+
+    when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
+
+    assertThatThrownBy(() -> controller.exportReport(request))
+        .isInstanceOf(AssertionError.class)
+        .hasMessageContaining(errorMsg);
+  }
+
+  @Test
+  void runReport_should_return_executed_report() {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+
+    Filter.Expr.Clause clause1 = new Filter.Expr.Clause(27L, "EQ", "47");
+    Filter.Expr.Clause clause2 = new Filter.Expr.Clause(31L, "EQ", "35001");
+    Filter.Expr.Connector connector = new Filter.Expr.Connector("OR", clause1, clause2);
+    Filter.AdvancedFilter advancedFilter = new Filter.AdvancedFilter(false, connector);
+
+    ReportExecutionRequest request =
+        new ReportExecutionRequest(
+            reportUid, dataSourceUid, false, Arrays.asList(27L, 31L), List.of(advancedFilter));
+
+    when(service.executeReport(request))
+        .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
+
+    ResponseEntity<ReportResult> response = controller.runReport(request);
+    assertEquals(getReportExecutionResponse(), response.getBody());
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+  }
+
+  @Test
+  void runReport_should_return_500_status_code_when_report_not_run() {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+    String errorMsg = "System Internal Error";
+
+    ReportExecutionRequest request =
+        new ReportExecutionRequest(
+            reportUid,
+            dataSourceUid,
+            true,
+            Arrays.asList(27L, 31L),
+            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+
+    when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
+
+    assertThatThrownBy(() -> controller.runReport(request))
+        .isInstanceOf(AssertionError.class)
         .hasMessageContaining(errorMsg);
   }
 
