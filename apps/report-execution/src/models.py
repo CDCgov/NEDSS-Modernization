@@ -14,7 +14,6 @@ class TimeRange(BaseModel):
 class ReportSpec(BaseModel):
     """Report request specification."""
 
-    version: int
     is_export: bool
     is_builtin: bool
     report_title: str
@@ -30,6 +29,28 @@ class Table(BaseModel):
 
     columns: list[str]
     data: list[tuple[Any, ...]]
+
+    def get_column(self, col_name: str) -> list[Any]:
+        """Extract a column by name. Raises an error if the column doesn't exist."""
+        if col_name not in self.columns:
+            raise ValueError(
+                f"Column '{col_name}' not found. Available columns: {self.columns}"
+            )
+        idx = self.columns.index(col_name)
+        return [row[idx] for row in self.data]
+
+    def get_unique_column(self, col_name: str) -> list[Any]:
+        """Extract unique values from a column, sorted with None at the beginning.
+
+        Args:
+            col_name: Name of the column to extract
+
+        Returns:
+            Sorted list of unique values with None placed first
+        """
+        values = set(self.get_column(col_name))
+        # Sort with None first (False < True, so None comes before non-None)
+        return sorted(values, key=lambda x: (x is not None, x))
 
 
 def serialize_table(table: Table) -> str:

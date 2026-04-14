@@ -35,9 +35,13 @@ export type { ExistingRaceCategoryValid } from './models/ExistingRaceCategoryVal
 export type { Expr } from './models/Expr';
 export type { Failure } from './models/Failure';
 export type { Filter } from './models/Filter';
+export type { FilterConfiguration } from './models/FilterConfiguration';
+export type { FilterDefaultValue } from './models/FilterDefaultValue';
+export type { FilterType } from './models/FilterType';
 export type { GenderDemographic } from './models/GenderDemographic';
 export type { GeneralInformationDemographic } from './models/GeneralInformationDemographic';
 export type { IdentificationDemographic } from './models/IdentificationDemographic';
+export type { Library } from './models/Library';
 export type { LoginRequest } from './models/LoginRequest';
 export type { LoginResponse } from './models/LoginResponse';
 export type { Me } from './models/Me';
@@ -72,8 +76,11 @@ export type { PatientSexBirthDemographic } from './models/PatientSexBirthDemogra
 export type { PatientVaccination } from './models/PatientVaccination';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
+export type { ReportColumn } from './models/ReportColumn';
 export type { ReportConfiguration } from './models/ReportConfiguration';
+export type { ReportDataSource } from './models/ReportDataSource';
 export type { ReportExecutionRequest } from './models/ReportExecutionRequest';
+export { ReportResult } from './models/ReportResult';
 export type { Restricted } from './models/Restricted';
 export type { ResultedTest } from './models/ResultedTest';
 export type { Selectable } from './models/Selectable';

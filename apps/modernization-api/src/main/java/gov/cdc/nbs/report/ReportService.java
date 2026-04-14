@@ -1,11 +1,25 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.mappers.FilterDefaultValueMapper;
+import gov.cdc.nbs.report.mappers.FilterTypeMapper;
+import gov.cdc.nbs.report.mappers.ReportColumnMapper;
+import gov.cdc.nbs.report.models.FilterConfiguration;
+import gov.cdc.nbs.report.models.FilterDefaultValue;
+import gov.cdc.nbs.report.models.FilterType;
+import gov.cdc.nbs.report.models.Library;
+import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import gov.cdc.nbs.repository.ReportRepository;
+import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,22 +32,61 @@ public class ReportService {
 
   private final ReportRepository reportRepository;
   private final RestClient reportExecutionClient;
-  private final ReportSpecBuilder specBuilder;
+  private final DataSourceNameUtils dataSourceNameUtils =
+      new DataSourceNameUtils(new DataSourceNameConfiguration());
 
-  public ReportService(
-      final ReportRepository reportRepository,
-      RestClient reportExecutionClient,
-      ReportSpecBuilder specBuilder) {
+  public ReportService(final ReportRepository reportRepository, RestClient reportExecutionClient) {
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
-    this.specBuilder = specBuilder;
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
     ReportId id = new ReportId(reportUid, dataSourceUid);
+
     return reportRepository
         .findById(id)
-        .map(report -> new ReportConfiguration(report.getReportLibrary().getRunner()))
+        .map(
+            report -> {
+              List<FilterConfiguration> filters =
+                  report.getReportFilters().stream()
+                      .map(
+                          dbReportFilter -> {
+                            Long columnUid = null;
+
+                            if (dbReportFilter.getDataSourceColumn() != null) {
+                              columnUid = dbReportFilter.getDataSourceColumn().getId();
+                            }
+
+                            FilterType filterType =
+                                FilterTypeMapper.fromFilterCode(dbReportFilter.getFilterCode());
+                            List<FilterDefaultValue> filterDefaultValues =
+                                dbReportFilter.getFilterValues().stream()
+                                    .map(FilterDefaultValueMapper::fromFilterValue)
+                                    .toList();
+
+                            return new FilterConfiguration(
+                                dbReportFilter.getId(), columnUid, filterType, filterDefaultValues);
+                          })
+                      .toList();
+
+              List<ReportColumn> reportColumns = null;
+              List<DataSourceColumn> dataSourceColumns =
+                  report.getDataSource().getDataSourceColumns();
+              if (dataSourceColumns != null) {
+                reportColumns =
+                    dataSourceColumns.stream()
+                        .map(ReportColumnMapper::fromDataSourceColumn)
+                        .toList();
+              }
+
+              return new ReportConfiguration(
+                  report.getReportLibrary().getRunner(),
+                  new ReportDataSource(report.getDataSource()),
+                  new Library(report.getReportLibrary()),
+                  report.getReportTitle(),
+                  filters,
+                  reportColumns);
+            })
         .orElseThrow(
             () ->
                 new NotFoundException(
@@ -42,7 +95,7 @@ public class ReportService {
                         reportUid, dataSourceUid)));
   }
 
-  public ResponseEntity<String> executeReport(ReportExecutionRequest request) {
+  public ResponseEntity<ReportResult> executeReport(ReportExecutionRequest request) {
     Long reportUid = request.reportUid();
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
@@ -53,13 +106,21 @@ public class ReportService {
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
     }
 
+    if (request.columnUids() != null && request.columnUids().isEmpty()) {
+      throw new UnprocessableEntityException(
+          "Column UIDs cannot be empty - if omitting reportColumns, use `null`");
+    }
+
+    ReportSpecBuilder specBuilder =
+        new ReportSpecBuilder(request, reportConfigResponse, dataSourceNameUtils);
     ReportSpec reportSpec = specBuilder.build();
+
     return reportExecutionClient
         .post()
         .uri("/report/execute")
         .contentType(MediaType.APPLICATION_JSON)
         .body(reportSpec)
         .retrieve()
-        .toEntity(String.class);
+        .toEntity(ReportResult.class);
   }
 }

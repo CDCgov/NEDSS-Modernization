@@ -12,7 +12,6 @@ class TestIntegrationNbsCustomLibrary:
     def test_execute_report_with_time_range(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -38,7 +37,6 @@ class TestIntegrationNbsCustomLibrary:
     def test_execute_report_without_time_range(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',

@@ -1,9 +1,8 @@
-package gov.cdc.nbs.report;
+package gov.cdc.nbs.report.models;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import gov.cdc.nbs.report.models.ReportSpec;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +16,6 @@ class ReportSpecTest {
   void should_create_report_spec_with_no_time_range() {
     ReportSpec reportSpec =
         new ReportSpec(
-            1,
             true,
             true,
             "Test Report",
@@ -26,7 +24,6 @@ class ReportSpecTest {
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
             null);
 
-    assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
     assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
@@ -44,7 +41,6 @@ class ReportSpecTest {
 
     ReportSpec reportSpec =
         new ReportSpec(
-            1,
             true,
             true,
             "Test Report",
@@ -53,7 +49,6 @@ class ReportSpecTest {
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
             timeRange);
 
-    assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
     assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
@@ -72,7 +67,6 @@ class ReportSpecTest {
     assertThatThrownBy(
             () ->
                 new ReportSpec(
-                    1,
                     true,
                     true,
                     "Test Report",
