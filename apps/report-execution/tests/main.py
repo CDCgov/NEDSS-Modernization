@@ -97,7 +97,7 @@ class TestReportExecuteEndpoint:
     def test_execute_report_api_invalid_field_types(self, client):
         """Test that invalid field types return a validation error."""
         invalid_spec = {
-            'is_export': True,
+            'is_export': 'not_a_boolean',
             'is_builtin': True,
             'report_title': 'Test Report',
             'library_name': 'nbs_custom',
