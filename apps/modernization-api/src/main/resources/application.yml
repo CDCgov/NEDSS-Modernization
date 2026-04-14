@@ -25,6 +25,8 @@ nbs:
       mappings:
         nbs_ods: NBS_ODSE
         nbs_rdb: RDB
+        nbs_srt: NBS_SRTE
+        nbs_msg: NBS_MSGOUTE
   datasource:
     server: localhost
     port: 1433

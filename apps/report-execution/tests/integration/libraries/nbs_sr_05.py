@@ -6,8 +6,6 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
-db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
 faker_schema = 'phc_demographic.yaml'
 
 
@@ -17,7 +15,7 @@ class TestIntegrationNbsSr05Library:
     """Integration tests for the nbs_sr_05 library.
 
     This library looks at the past five years of data and the date on the sql server
-    is not readily hardcoded, so the tests here are largely probabalistic.
+    is not readily hardcoded, so the tests here are largely probabilistic.
     """
 
     @pytest.fixture(autouse=True)
