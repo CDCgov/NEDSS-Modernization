@@ -23,7 +23,7 @@
         "react-router": "7.13.1",
         "react-select": "^5.10.2",
         "vite": "^8.0.5",
-        "web-vitals": "^4.2.3"
+        "web-vitals": "^5.2.0"
     },
     "overrides": {
         "react-refresh": "^0.14.2",
@@ -72,7 +72,7 @@
         "openapi-typescript-codegen": "^0.29.0",
         "prettier": "^3.2.5",
         "prop-types": "^15.8.1",
-        "sass": "^1.97.3",
+        "sass": "^1.99.0",
         "storybook": "^10.3.4",
         "typescript": "5.8.2",
         "typescript-plugin-css-modules": "^5.0.2",
