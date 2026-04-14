@@ -125,7 +125,7 @@ again to apply the changes.
    cd cdc-sandbox
    ```
 
-2. Run the `build_all.sh` script
+2. Run the `build_all.sh` script (set env var `ENABLE_SAS=true` to include SAS, requires access to NEDSSDev repo - see [its README](https://github.com/cdcent/NEDSSDev?tab=readme-ov-file#running-the-application-locally-1) for more details)
 
    ```sh
    ./build_all.sh
