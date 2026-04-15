@@ -6,8 +6,6 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
-db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
 faker_schema = 'phc_demographic.yaml'
 
 
@@ -24,7 +22,6 @@ class TestIntegrationNbsSr09Library:
         """Test that the report returns correct monthly aggregated data."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -83,7 +80,6 @@ class TestIntegrationNbsSr09Library:
         """Verify report works with filtered subset_query."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -106,7 +102,6 @@ class TestIntegrationNbsSr09Library:
         """Test handling of empty result set."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -131,7 +126,6 @@ class TestIntegrationNbsSr09Library:
         """Verify column names and order match expected output."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -161,7 +155,6 @@ class TestIntegrationNbsSr09Library:
         """Check the metadata is correctly formatted."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -198,7 +191,6 @@ class TestIntegrationNbsSr09Library:
         """Verify months are ordered correctly for a single state/county/disease."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',

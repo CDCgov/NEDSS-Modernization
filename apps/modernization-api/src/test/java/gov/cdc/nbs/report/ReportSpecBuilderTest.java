@@ -52,7 +52,7 @@ class ReportSpecBuilderTest {
   }
 
   private ReportConfiguration mockReportConfiguration(
-      List<FilterConfiguration> filters, List<ReportColumn> columns) {
+      List<FilterConfiguration> filters, List<ReportColumn> columns, String title) {
     ReportConfiguration reportConfiguration = Mockito.mock(ReportConfiguration.class);
 
     DataSourceNameConfiguration dataSourceNameConfiguration =
@@ -69,6 +69,7 @@ class ReportSpecBuilderTest {
 
     Mockito.lenient().when(reportConfiguration.filters()).thenReturn(filters);
     Mockito.lenient().when(reportConfiguration.reportColumns()).thenReturn(columns);
+    Mockito.lenient().when(reportConfiguration.reportTitle()).thenReturn(title);
 
     return reportConfiguration;
   }
@@ -82,7 +83,7 @@ class ReportSpecBuilderTest {
   }
 
   @Test
-  void should_build_hardcoded_report_spec() {
+  void build_should_set_all_fields_correctly() {
     Long columnUid1 = 1L;
     Long columnUid2 = 2L;
 
@@ -94,9 +95,12 @@ class ReportSpecBuilderTest {
 
     ReportConfiguration reportConfig =
         mockReportConfiguration(
-            List.of(filterConfig1, filterConfig2), List.of(reportColumn1, reportColumn2));
+            List.of(filterConfig1, filterConfig2),
+            List.of(reportColumn1, reportColumn2),
+            "Test Title");
 
     List<Long> columnUids = List.of(columnUid1, columnUid2);
+
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
@@ -104,12 +108,12 @@ class ReportSpecBuilderTest {
     ReportSpec reportSpec =
         new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils).build();
 
-    assertThat(reportSpec.version()).isEqualTo(1);
-    assertThat(reportSpec.isBuiltin()).isTrue();
-    assertThat(reportSpec.isExport()).isTrue();
-    assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
-    assertThat(reportSpec.libraryName()).isEqualTo("nbs_custom");
+    assertThat(reportSpec.isBuiltin()).isEqualTo(reportConfig.reportLibrary().isBuiltin());
+    assertThat(reportSpec.isExport()).isEqualTo(request.isExport());
+    assertThat(reportSpec.reportTitle()).isEqualTo(reportConfig.reportTitle());
+    assertThat(reportSpec.libraryName()).isEqualTo(reportConfig.reportLibrary().libraryName());
     assertThat(reportSpec.dataSourceName()).isEqualTo("[NBS_ODSE].[dbo].[NBS_configuration]");
+
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
             "SELECT [column1] AS [Column 1], [column2] AS [Column 2] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
@@ -124,7 +128,7 @@ class ReportSpecBuilderTest {
     ReportColumn reportColumn1 = mockReportColumn(knownColumnUid, "column1", "Column 1");
 
     ReportConfiguration reportConfig =
-        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
+        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1), "Test Title");
 
     List<Long> columnUids = List.of(knownColumnUid, unknownColumnUid);
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
@@ -156,7 +160,8 @@ class ReportSpecBuilderTest {
     ReportConfiguration reportConfig =
         mockReportConfiguration(
             List.of(filterConfig1, filterConfig2, filterConfig3),
-            List.of(reportColumn1, reportColumn2, reportColumn3));
+            List.of(reportColumn1, reportColumn2, reportColumn3),
+            "Test Title");
 
     List<Long> columnUids = List.of(columnUid1, columnUid2, columnUid3);
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);
@@ -181,7 +186,9 @@ class ReportSpecBuilderTest {
 
     ReportConfiguration reportConfig =
         mockReportConfiguration(
-            List.of(filterConfig1, filterConfig2), List.of(reportColumn1, reportColumn2));
+            List.of(filterConfig1, filterConfig2),
+            List.of(reportColumn1, reportColumn2),
+            "Test Title");
 
     ReportExecutionRequest request = mockReportExecutionRequest(null);
 
@@ -204,7 +211,7 @@ class ReportSpecBuilderTest {
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, columnName, columnTitle);
 
     ReportConfiguration reportConfig =
-        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1));
+        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1), "Test Title");
 
     List<Long> columnUids = List.of(columnUid1);
     ReportExecutionRequest request = mockReportExecutionRequest(columnUids);

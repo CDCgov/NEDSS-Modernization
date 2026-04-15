@@ -6,8 +6,6 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
-db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
 faker_schema = 'phc_demographic.yaml'
 
 
@@ -17,7 +15,7 @@ class TestIntegrationNbsSr05Library:
     """Integration tests for the nbs_sr_05 library.
 
     This library looks at the past five years of data and the date on the sql server
-    is not readily hardcoded, so the tests here are largely probabalistic.
+    is not readily hardcoded, so the tests here are largely probabilistic.
     """
 
     @pytest.fixture(autouse=True)
@@ -27,7 +25,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -70,7 +67,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_old_data_zeros(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -110,7 +106,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_no_current_year(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -149,7 +144,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_only_current_year(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -189,7 +183,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_empty_subset(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -211,7 +204,6 @@ class TestIntegrationNbsSr05Library:
         """Check the metadata and column names are correct with a frozen date."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',

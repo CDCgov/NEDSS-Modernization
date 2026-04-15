@@ -49,6 +49,7 @@ class ReportControllerTest {
             "python",
             new ReportDataSource(dataSourceEntity),
             new Library(reportLibraryEntity),
+            "Report Title",
             List.of(filterConfig),
             columns);
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);

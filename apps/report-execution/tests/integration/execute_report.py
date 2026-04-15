@@ -14,7 +14,6 @@ class TestIntegrationExecuteReport:
     def test_execute_report_valid(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Test Report',
@@ -44,7 +43,6 @@ class TestIntegrationExecuteReport:
     def test_execute_report_invalid_query_syntax(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Test Report',
@@ -65,7 +63,6 @@ class TestIntegrationExecuteReport:
             m.setenv('REPORT_MAX_ROW_LIMIT_RUN', '10')
             report_spec = ReportSpec.model_validate(
                 {
-                    'version': 1,
                     'is_export': False,
                     'is_builtin': True,
                     'report_title': 'Test Report',
@@ -88,7 +85,6 @@ class TestIntegrationExecuteReport:
             m.setenv('REPORT_MAX_ROW_LIMIT_EXPORT', '10')
             report_spec = ReportSpec.model_validate(
                 {
-                    'version': 1,
                     'is_export': True,
                     'is_builtin': True,
                     'report_title': 'Test Report',
