@@ -151,8 +151,6 @@ class ReportControllerTest {
             Arrays.asList(27L, 31L),
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
-    when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
-
     assertThatThrownBy(() -> controller.exportReport(request))
         .isInstanceOf(AssertionError.class)
         .hasMessageContaining(errorMsg);
@@ -193,8 +191,6 @@ class ReportControllerTest {
             true,
             Arrays.asList(27L, 31L),
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
-
-    when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
 
     assertThatThrownBy(() -> controller.runReport(request))
         .isInstanceOf(AssertionError.class)
