@@ -25,6 +25,7 @@ def execute_report(report_spec: models.ReportSpec):
             subset_query=report_spec.subset_query,
             data_source_name=report_spec.data_source_name,
             time_range=report_spec.time_range,
+            days_value=getattr(report_spec, 'days_value', None)
         )
 
     check_valid_result(result, report_spec.is_export)

@@ -21,6 +21,7 @@ class ReportSpec(BaseModel):
     data_source_name: str
     subset_query: str
     time_range: TimeRange | None = None
+    days_value: int | None = None
 
 
 # column names and values

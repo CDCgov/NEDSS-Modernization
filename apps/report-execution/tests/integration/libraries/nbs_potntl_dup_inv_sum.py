@@ -20,7 +20,6 @@ class TestIntegrationNbsSrDupInvLibrary:
     with the same disease within a user-specified number of days.
     """
 
-
     def test_execute_report_with_days_value(self, snapshot):
         """Test with a specific days value (e.g., 365 days)."""
         report_spec = ReportSpec.model_validate(
@@ -51,10 +50,17 @@ class TestIntegrationNbsSrDupInvLibrary:
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
         expected_columns = [
             'PATIENT_LOCAL_ID',
-            'DISEASE_CD',
-            'EVENT_DATE',
+            'PATIENT_FIRST_NAME',
+            'PATIENT_LAST_NAME',
+            'PATIENT_DOB',
             'INVESTIGATION_LOCAL_ID',
+            'DISEASE',
             'CASE_STATUS',
+            'EVENT_DATE',
+            'EVENT_DATE_TYPE',
+            'MMWR_YEAR',
+            'NOTIFICATION_STATUS',
+            'DISEASE_CD',
             'days_since_prev',
             'days_until_next',
             'event_count'
@@ -76,7 +82,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                 assert days_next <= 365
 
     def test_execute_report_no_days_value(self):
-        """Test with no days_value (returns all data without date filtering)."""
+        """Test with no days_value - should calculate date range from data."""
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -93,7 +99,12 @@ class TestIntegrationNbsSrDupInvLibrary:
         result = execute_report(report_spec)
         assert result.content_type == 'table'
         assert result.header == 'Potential Duplicate Investigations'
-        assert result.subheader is None
+        # Subheader should contain the calculated days from data range
+        assert 'Duplicate Investigations Time Frame:' in result.subheader
+        assert result.subheader is not None
+        # Extract and verify the number is a positive integer
+        days_str = result.subheader.replace('Duplicate Investigations Time Frame: ', '').replace(' Days', '')
+        assert int(days_str) > 0
 
         data = result.content.data
         assert len(data) >= 0
@@ -102,10 +113,17 @@ class TestIntegrationNbsSrDupInvLibrary:
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
         expected_columns = [
             'PATIENT_LOCAL_ID',
-            'DISEASE_CD',
-            'EVENT_DATE',
+            'PATIENT_FIRST_NAME',
+            'PATIENT_LAST_NAME',
+            'PATIENT_DOB',
             'INVESTIGATION_LOCAL_ID',
+            'DISEASE',
             'CASE_STATUS',
+            'EVENT_DATE',
+            'EVENT_DATE_TYPE',
+            'MMWR_YEAR',
+            'NOTIFICATION_STATUS',
+            'DISEASE_CD',
             'days_since_prev',
             'days_until_next',
             'event_count'
@@ -168,7 +186,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         assert result.subheader == 'Duplicate Investigations Time Frame: 3650 Days'
 
         # Should return more results than the 30-day test
-        data_30 = None
         spec_30 = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -257,7 +274,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         result = execute_report(report_spec)
         assert result.content_type == 'table'
         assert len(result.content.data) == 0
-        assert len(result.content.columns) == 8  # 8 expected columns
+        assert len(result.content.columns) == 15  # 15 expected columns
 
     def test_execute_report_check_metadata(self):
         """Check the metadata is correctly formatted."""
