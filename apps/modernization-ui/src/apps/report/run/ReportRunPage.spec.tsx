@@ -16,7 +16,7 @@ vi.mock('react-router', async () => {
         useParams: vi.fn(() => ({ reportUid: '2', dataSourceUid: '1' })), // Mock useParams to return a default value
     };
 });
-vi.mock('js-file-download', { spy: true })
+vi.mock('js-file-download', { spy: true });
 
 vi.mock('generated');
 
@@ -45,7 +45,7 @@ const MOCK_CONFIG: ReportConfiguration = {
 const MOCK_RESULT: generated.ReportResult = {
     header: 'Title',
     content: 'I am the result',
-}
+};
 
 const renderWithRouter = () => {
     const routes = [
@@ -78,7 +78,7 @@ describe('when given valid params', () => {
         const user = userEvent.setup();
         vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue(MOCK_CONFIG);
         const mockApi = vi.mocked(generated.ReportControllerService.runReport).mockResolvedValue(MOCK_RESULT);
-        const windowOpen = vi.spyOn(window, 'open')
+        const windowOpen = vi.spyOn(window, 'open');
 
         const { findByRole, findByText } = renderWithRouter();
 
@@ -95,7 +95,7 @@ describe('when given valid params', () => {
         const user = userEvent.setup();
         vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue(MOCK_CONFIG);
         const mockApi = vi.mocked(generated.ReportControllerService.exportReport).mockResolvedValue(MOCK_RESULT);
-        const windowOpen = vi.spyOn(window, 'open')
+        const windowOpen = vi.spyOn(window, 'open');
 
         const { findByRole, findByText } = renderWithRouter();
 

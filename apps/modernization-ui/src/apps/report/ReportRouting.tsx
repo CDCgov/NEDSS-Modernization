@@ -16,7 +16,8 @@ const routing: RouteObject[] = [
                 element: (
                     <Permitted
                         permission={permitsAny(permissions.reports.run, permissions.reports.export)}
-                        fallback={<RedirectHome />}>
+                        fallback={<RedirectHome />}
+                    >
                         <ReportRunPage />
                     </Permitted>
                 ),

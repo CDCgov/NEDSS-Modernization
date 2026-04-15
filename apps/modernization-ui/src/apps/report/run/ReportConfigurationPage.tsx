@@ -22,7 +22,8 @@ const ReportConfigurationPage = ({
                         <Button onClick={() => handleSubmit(true)}>Export</Button>
                     </Permitted>
                 </>
-            }>
+            }
+        >
             <div>
                 <p>Config:</p>
                 <p>{config ? JSON.stringify(config) : 'loading'}</p>

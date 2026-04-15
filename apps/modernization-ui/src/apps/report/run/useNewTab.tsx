@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-/** 
+/**
  * Open the provided content in a new tab.
- * 
+ *
  * The styles are copied over and the title is set.
-*/
+ */
 export const useNewTab = () => {
     const openNewTab = (content: ReactNode) => {
         let newWindow = window.open('', '_blank', '');
