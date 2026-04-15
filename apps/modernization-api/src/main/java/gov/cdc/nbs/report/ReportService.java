@@ -68,7 +68,12 @@ public class ReportService {
                                     .toList();
 
                             return new FilterConfiguration(
-                                dbReportFilter.getId(), columnUid, dbReportFilter.getMinValueCnt(), dbReportFilter.getMaxValueCnt(), filterType, filterDefaultValues);
+                                dbReportFilter.getId(),
+                                columnUid,
+                                dbReportFilter.getMinValueCnt(),
+                                dbReportFilter.getMaxValueCnt(),
+                                filterType,
+                                filterDefaultValues);
                           })
                       .toList();
 
