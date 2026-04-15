@@ -1,7 +1,7 @@
+from datetime import datetime
 from importlib import import_module
 
 from dateutil import parser
-from datetime import datetime
 
 from . import errors, models, utils
 from .db_transaction import db_transaction
@@ -35,7 +35,6 @@ def execute_report(report_spec: models.ReportSpec):
 
 def validate_spec(report_spec: models.ReportSpec):
     """Check if the report spec is valid."""
-
     start = parser.parse(report_spec.time_range.start)
     end = parser.parse(report_spec.time_range.end)
 

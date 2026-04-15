@@ -39,8 +39,8 @@ class InternalServerError(BaseReportExecutionError):
         logging.error(message)
         if orig_exc is not None:
             logging.error(orig_exc)
-        super().__init__('Internal Server Error', 500)\
-        
+        super().__init__('Internal Server Error', 500)
+
 
 class InvalidReportSpecError(BaseReportExecutionError):
     """The provided report specification is invalid."""
