@@ -150,8 +150,7 @@ class ReportControllerTest {
             Arrays.asList(27L, 31L),
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
-    assertThatThrownBy(() -> controller.exportReport(request))
-        .isInstanceOf(AssertionError.class);
+    assertThatThrownBy(() -> controller.exportReport(request)).isInstanceOf(AssertionError.class);
   }
 
   @Test
@@ -189,8 +188,7 @@ class ReportControllerTest {
             Arrays.asList(27L, 31L),
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
-    assertThatThrownBy(() -> controller.runReport(request))
-        .isInstanceOf(AssertionError.class);
+    assertThatThrownBy(() -> controller.runReport(request)).isInstanceOf(AssertionError.class);
   }
 
   private ReportResult getReportExecutionResponse() {
