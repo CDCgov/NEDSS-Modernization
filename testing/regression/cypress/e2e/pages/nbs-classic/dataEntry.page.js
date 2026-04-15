@@ -271,7 +271,7 @@ class LabReportPage {
 
     // Get the last row in the lab reports table and verify it has 2 test results
     cy.get('#laboratory-reports-table tbody tr')
-      .last()
+      .first()
       .find('td:nth-child(5)') // The 5th column contains the test results
       .find('._test_tb2zz_1')
       .should('have.length', 2);
