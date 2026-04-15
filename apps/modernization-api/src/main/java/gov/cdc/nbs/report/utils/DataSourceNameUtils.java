@@ -2,9 +2,7 @@ package gov.cdc.nbs.report.utils;
 
 import gov.cdc.nbs.report.DataSourceNameConfiguration;
 import java.util.Map;
-import org.springframework.stereotype.Component;
 
-@Component
 public class DataSourceNameUtils {
   private static final String ERROR_MSG = "No data source found for %s";
   private final DataSourceNameConfiguration config;

@@ -6,8 +6,6 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
-db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
 faker_schema = 'phc_demographic.yaml'
 
 
@@ -23,7 +21,6 @@ class TestIntegrationNbsSr07Library:
     def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR7',
@@ -59,7 +56,6 @@ class TestIntegrationNbsSr07Library:
         """Check the metadata and column names are correct with a frozen date."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',

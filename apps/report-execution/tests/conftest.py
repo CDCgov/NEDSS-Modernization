@@ -5,6 +5,7 @@ from contextlib import contextmanager
 import pytest
 import tablefaker
 import time_machine
+import yaml
 from testcontainers.compose import ContainerIsNotRunning, DockerCompose
 
 from src import utils
@@ -135,13 +136,7 @@ def setup_containers(request):
 
 def get_faker_sql(schema_name: str) -> str:
     """Process a fakertable schema and return the sql as a string."""
-    faker_path = os.path.join(
-        os.path.dirname(__file__),
-        'integration',
-        'assets',
-        'tablefaker_schema',
-        schema_name,
-    )
+    faker_path = _faker_schema_path(schema_name)
     target_file_path = os.path.join(os.path.dirname(__file__), 'fake.sql')
     tablefaker.to_sql(faker_path, target_file_path=target_file_path)
     with open(target_file_path) as f:
@@ -156,6 +151,29 @@ def get_faker_sql(schema_name: str) -> str:
     result = result.replace(' <NA>,', ' NULL,')
     result = result.replace(' <NA>)', ' NULL)')
     return result
+
+
+def get_tables_from_faker(schema_name: str) -> tuple[list[str], list[str]]:
+    """Given a faker schema name, parse out the db and fk tables."""
+    schema_path = _faker_schema_path(schema_name)
+
+    with open(schema_path) as f:
+        schema = yaml.safe_load(f.read())
+
+    db_tables = [t['table_name'] for t in schema['tables']]
+    fk_tables = schema['config']['nbs']['fk_tables']
+
+    return (db_tables, fk_tables)
+
+
+def _faker_schema_path(schema_name: str) -> str:
+    return os.path.join(
+        os.path.dirname(__file__),
+        'integration',
+        'assets',
+        'tablefaker_schema',
+        schema_name,
+    )
 
 
 def temp_name(table_name: str) -> str:
@@ -182,13 +200,30 @@ def fake_db_table(request):
     The table is replaced for the entire module and it is assumed at this point only
     one table with one set of fake data is needed per module.
     """
-    db_table = request.module.db_table
-    fk_tables = getattr(request.module, 'db_fk_tables', [])
     faker_schema = request.module.faker_schema
+    (db_tables, fk_tables) = get_tables_from_faker(faker_schema)
     faker_sql = get_faker_sql(faker_schema)
 
     conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
 
+    # swap out original data for fake data
+    insert_fake_data(conn_string, faker_sql, db_tables, fk_tables)
+
+    # avoid connection inside connection
+    yield
+
+    # restore the original data
+    restore_original_data(conn_string, db_tables, fk_tables)
+
+
+def insert_fake_data(
+    conn_string: str, sql: str, db_tables: list[str], fk_tables: list[str]
+):
+    """Run sql (inserts expected) into the database pointed to by the connection string.
+
+    Clears out the db_tables with contents to be replaced and the fk_tables that rely on
+    the current data in those db tables and saves the to temp tables
+    """
     # swap out original data for fake data
     with db_transaction(conn_string) as trx:
         # Tables with foreign keys pointing to the table we want to replace need to
@@ -203,25 +238,33 @@ def fake_db_table(request):
             trx.execute(f'DELETE {fk_table}')
             logging.info(f'cleared FK table: {fk_table}')
 
-        temp_db_table = temp_name(db_table)
-        trx.execute(
-            f"IF OBJECT_ID('{temp_db_table}') IS NOT NULL DROP TABLE {temp_db_table}"
-        )
-        trx.execute(f'SELECT * INTO {temp_db_table} FROM {db_table}')
-        trx.execute(f'DELETE {db_table}')
-        logging.info(f'cleared table: {db_table}')
-        trx.execute(faker_sql)
+        for db_table in db_tables:
+            tmp_db_table = temp_name(db_table)
+            trx.execute(
+                f"IF OBJECT_ID('{tmp_db_table}') IS NOT NULL DROP TABLE {tmp_db_table}"
+            )
+            trx.execute(f'SELECT * INTO {tmp_db_table} FROM {db_table}')
+            trx.execute(f'DELETE {db_table}')
+            logging.info(f'cleared table: {db_table}')
+
+        trx.execute(sql)
         logging.info(f'Inserted fake data: {db_table}')
 
-    # avoid connection inside connection
-    yield
 
+def restore_original_data(conn_string: str, db_tables: list[str], fk_tables: list[str]):
+    """Restore the original data temporarily stored while the fake data was inserted.
+
+    Intended to be run after `insert_fake_data`.
+    """
     # restore the original data
     with db_transaction(conn_string) as trx:
-        trx.execute(f'DELETE {db_table}')
-        trx.execute(f'INSERT INTO {db_table} SELECT * FROM {temp_db_table}')
-        logging.info(f'Restored table: {db_table}')
+        for db_table in db_tables:
+            trx.execute(f'DELETE {db_table}')
+            trx.execute(f'INSERT INTO {db_table} SELECT * FROM {temp_name(db_table)}')
+            trx.execute(f'DROP TABLE {temp_name(db_table)}')
+            logging.info(f'Restored table: {db_table}')
 
         for fk_table in fk_tables:
             trx.execute(f'INSERT INTO {fk_table} SELECT * FROM {temp_name(fk_table)}')
+            trx.execute(f'DROP TABLE {temp_name(fk_table)}')
             logging.info(f'Restored FK table: {fk_table}')
