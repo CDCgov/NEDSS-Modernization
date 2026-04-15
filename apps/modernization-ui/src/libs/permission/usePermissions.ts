@@ -13,8 +13,6 @@ const usePermissions = (): Interaction => {
         state: { user },
     } = useUser();
 
-    console.log({user});
-
     const permissions = useMemo(() => user?.permissions ?? [], [user?.identifier]);
     const allows = useCallback((permission: string) => permits(permission)(permissions), [user?.identifier]);
 

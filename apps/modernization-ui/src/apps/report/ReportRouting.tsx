@@ -1,8 +1,8 @@
 import { Navigate, RouteObject } from 'react-router';
-import { ReportRun } from './run';
+import { ReportRunPage } from './run';
 import { RedirectHome } from 'routes';
 import { FeatureLayout } from 'feature';
-import { Permitted } from 'libs/permission';
+import { permitsAny, permissions, Permitted } from 'libs/permission';
 
 const routing: RouteObject[] = [
     {
@@ -14,8 +14,10 @@ const routing: RouteObject[] = [
             {
                 path: 'run',
                 element: (
-                    <Permitted permission={'RUNREPORT-REPORTING'} fallback={<RedirectHome />}>
-                        <ReportRun />
+                    <Permitted
+                        permission={permitsAny(permissions.reports.run, permissions.reports.export)}
+                        fallback={<RedirectHome />}>
+                        <ReportRunPage />
                     </Permitted>
                 ),
             },

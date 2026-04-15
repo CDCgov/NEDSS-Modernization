@@ -161,7 +161,7 @@ def execute(
         '* Will not include Investigation(s) that do not have a value for the State '
         'selected by the user\n'
         '* Is based on month and year of the calculated Event Date\n'
-        '*Calculations:*'
+        '*Calculations:*\n'
         '* *Current Month Totals by disease:* Total Investigation(s) [both Individual '
         'and Summary] where the Year and Month of the Event Date equal the current '
         'Year and Month\n'
