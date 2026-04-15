@@ -1,5 +1,7 @@
 config:
   seed: 42
+  nbs:
+    fk_tables:
 
 tables:
   - table_name: "[RDB].[dbo].[INV_SUMM_DATAMART]"
@@ -61,31 +63,26 @@ tables:
       
       # datetime
       - column_name: INVESTIGATION_CREATE_DATE
-        type: datetime
         data: fake.date_between(start_date=date(2015, 1, 1), end_date=date(2025, 1, 5))
         null_percentage: 0.05
       
       # datetime
       - column_name: EARLIEST_RPT_TO_CNTY_DT
-        type: datetime
         data: fake.date_between(start_date=date(2015, 1, 1), end_date=date(2025, 1, 5))
         null_percentage: 0.1
       
       # datetime
       - column_name: EARLIEST_RPT_TO_STATE_DT
-        type: datetime
         data: fake.date_between(start_date=date(2015, 1, 1), end_date=date(2025, 1, 5))
         null_percentage: 0.1
       
       # datetime
       - column_name: DIAGNOSIS_DATE
-        type: datetime
         data: fake.date_between(start_date=date(2015, 1, 1), end_date=date(2025, 1, 5))
         null_percentage: 0.1
       
       # datetime
       - column_name: ILLNESS_ONSET_DATE
-        type: datetime
         data: fake.date_between(start_date=date(2015, 1, 1), end_date=date(2025, 1, 5))
         null_percentage: 0.1
       

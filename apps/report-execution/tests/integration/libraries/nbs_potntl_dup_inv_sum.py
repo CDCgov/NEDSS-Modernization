@@ -29,7 +29,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'nbs_sr_dup_inv',
+                'library_name': 'nbs_potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 365,
@@ -83,7 +83,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'nbs_sr_dup_inv',
+                'library_name': 'nbs_potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 # No days_value provided
@@ -125,14 +125,14 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'nbs_sr_dup_inv',
+                'library_name': 'nbs_potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 30,
             }
         )
 
-        result = execute(report_spec)
+        result = execute_report(report_spec)
         assert result.content_type == 'table'
         assert result.subheader == 'Duplicate Investigations Time Frame: 30 Days'
 
@@ -156,14 +156,14 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'nbs_sr_dup_inv',
+                'library_name': 'nbs_potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 3650,
             }
         )
 
-        result = execute(report_spec)
+        result = execute_report(report_spec)
         assert result.content_type == 'table'
         assert result.subheader == 'Duplicate Investigations Time Frame: 3650 Days'
 
@@ -175,13 +175,13 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'nbs_sr_dup_inv',
+                'library_name': 'nbs_potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 30,
             }
         )
-        result_30 = execute(spec_30)
+        result_30 = execute_report(spec_30)
         
         # 3650 days should potentially return more or equal rows than 30 days
         assert len(result.content.data) >= len(result_30.content.data)
@@ -194,7 +194,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'nbs_sr_dup_inv',
+                'library_name': 'nbs_potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': (
                     "SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] "
@@ -204,7 +204,7 @@ class TestIntegrationNbsSrDupInvLibrary:
             }
         )
 
-        result = execute(report_spec)
+        result = execute_report(report_spec)
         assert result.content_type == 'table'
 
         # Verify only selected diseases appear
@@ -221,7 +221,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'nbs_sr_dup_inv',
+                'library_name': 'nbs_potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': (
                     "SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] "
@@ -231,7 +231,7 @@ class TestIntegrationNbsSrDupInvLibrary:
             }
         )
 
-        result = execute(report_spec)
+        result = execute_report(report_spec)
         assert result.content_type == 'table'
 
         # Verify only the specified patient appears
@@ -247,14 +247,14 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'nbs_sr_dup_inv',
+                'library_name': 'nbs_potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] WHERE 1 = 0',
                 'days_value': 365,
             }
         )
 
-        result = execute(report_spec)
+        result = execute_report(report_spec)
         assert result.content_type == 'table'
         assert len(result.content.data) == 0
         assert len(result.content.columns) == 8  # 8 expected columns
@@ -267,14 +267,14 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'nbs_sr_dup_inv',
+                'library_name': 'nbs_potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 365,
             }
         )
 
-        result = execute(report_spec)
+        result = execute_report(report_spec)
         assert result.header == 'Potential Duplicate Investigations'
         assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
         assert result.content_type == 'table'
@@ -287,14 +287,14 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'nbs_sr_dup_inv',
+                'library_name': 'nbs_potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 3650,
             }
         )
 
-        result = execute(report_spec)
+        result = execute_report(report_spec)
         col_index = {col: idx for idx, col in enumerate(result.content.columns)}
         
         # Group by patient and disease to verify event_count > 1
