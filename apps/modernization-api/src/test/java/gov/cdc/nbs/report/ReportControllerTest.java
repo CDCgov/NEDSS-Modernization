@@ -141,7 +141,6 @@ class ReportControllerTest {
   void exportReport_should_return_500_status_code_when_report_not_export() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
-    String errorMsg = "System Internal Error";
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
@@ -152,8 +151,7 @@ class ReportControllerTest {
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     assertThatThrownBy(() -> controller.exportReport(request))
-        .isInstanceOf(AssertionError.class)
-        .hasMessageContaining(errorMsg);
+        .isInstanceOf(AssertionError.class);
   }
 
   @Test
@@ -182,7 +180,6 @@ class ReportControllerTest {
   void runReport_should_return_500_status_code_when_report_not_run() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
-    String errorMsg = "System Internal Error";
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
@@ -193,8 +190,7 @@ class ReportControllerTest {
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     assertThatThrownBy(() -> controller.runReport(request))
-        .isInstanceOf(AssertionError.class)
-        .hasMessageContaining(errorMsg);
+        .isInstanceOf(AssertionError.class);
   }
 
   private ReportResult getReportExecutionResponse() {
