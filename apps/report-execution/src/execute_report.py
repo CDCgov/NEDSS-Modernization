@@ -1,5 +1,8 @@
 from importlib import import_module
 
+from dateutil import parser
+from datetime import datetime
+
 from . import errors, models, utils
 from .db_transaction import db_transaction
 
@@ -8,8 +11,7 @@ def execute_report(report_spec: models.ReportSpec):
     """Execute a report spec by validating inputs, loading library, handling DB
     connection and transaction,and validating/processing results.
     """
-    if not is_valid_spec(report_spec):
-        raise errors.ToDoError('validation handling')
+    validate_spec(report_spec)
 
     # get the library defined in the spec as a python module
     library = get_library(report_spec.library_name, report_spec.is_builtin)
@@ -31,9 +33,20 @@ def execute_report(report_spec: models.ReportSpec):
     return result
 
 
-def is_valid_spec(report_spec: models.ReportSpec):
+def validate_spec(report_spec: models.ReportSpec):
     """Check if the report spec is valid."""
-    return True
+
+    start = parser.parse(report_spec.time_range.start)
+    end = parser.parse(report_spec.time_range.end)
+
+    if start > end:
+        raise errors.InvalidReportSpecError(
+            'Start date must be before end date in time range.'
+        )
+    if start > datetime.now():
+        raise errors.InvalidReportSpecError(
+            'Start date cannot take place in the future.'
+        )
 
 
 # TODO: what is the type that should go here? Part of spike  # noqa: FIX002
