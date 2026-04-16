@@ -61,14 +61,13 @@ public class WhereClauseUtils {
               StringBuilder clause = new StringBuilder();
 
               FilterType filterCode = filterConfig.filterType();
-              String filterType = filterCode.filterType();
               List<FilterDefaultValue> filterDefaultValues = filterConfig.filterDefaultValues();
 
-              if (BASIC_LIST_FILTER_TYPES.contains(filterType.toUpperCase())) {
+              if (BASIC_LIST_FILTER_TYPES.contains(filterCode.type().toUpperCase())) {
                 String dsColName = reportColumn.columnName();
                 String dsColTitle = reportColumn.columnTitle();
                 String dsColType = reportColumn.columnSourceTypeCode();
-                String fName = filterCode.filterName();
+                String fName = filterCode.name();
                 String fCode = filterCode.code();
                 Integer maxVal = filterConfig.maxValueCnt();
                 Integer minVal = filterConfig.minValueCnt();
@@ -81,18 +80,24 @@ public class WhereClauseUtils {
                     clause.append(dsColName).append(" in (");
                   }
 
-                  filterDefaultValues.forEach(
-                      (fdv) -> {
-                        if (ALLOW_NULLS.equals(fdv.operator())
-                            && !"none".equalsIgnoreCase(fdv.valueType())) {
-                          allowNulls.set(true);
+                    for (int i = 0; i < filterDefaultValues.size(); i++) {
+                        FilterDefaultValue fdv = filterDefaultValues.get(i);
+
+                        if (ALLOW_NULLS.equals(fdv.operator()) && !"none".equalsIgnoreCase(fdv.valueType())) {
+                            allowNulls.set(true);
                         }
 
                         if (includesNoneValues) {
-                          clause.append(dsColName).append(" IS NULL ");
-                          return;
+                            clause.append(dsColName).append(" IS NULL ");
+                            continue;
                         }
-                      });
+
+                        clause.append(formatField(dsColType, fdv.valueTxt()));
+
+                        if (i < filterDefaultValues.size() - 1) {
+                            clause.append(", ");
+                        }
+                    }
 
                   if (!includesNoneValues) {
                     clause.append(")");
