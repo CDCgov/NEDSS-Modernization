@@ -8,7 +8,6 @@ def execute_report(report_spec: models.ReportSpec):
     """Execute a report spec by validating inputs, loading library, handling DB
     connection and transaction,and validating/processing results.
     """
-
     # get the library defined in the spec as a python module
     library = get_library(report_spec.library_name, report_spec.is_builtin)
     if not is_valid_library(library):
