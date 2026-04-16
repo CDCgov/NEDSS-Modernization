@@ -40,8 +40,7 @@ public class ReportController {
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
   public ResponseEntity<ReportResult> runReport(@RequestBody ReportExecutionRequest request) {
     // TODO: validate request // NOSONAR
-    assert !request.isExport();
-    if (!request.isExport())
+    if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
     return reportService.executeReport(request);
   }
@@ -50,7 +49,7 @@ public class ReportController {
   @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
   public ResponseEntity<ReportResult> exportReport(@RequestBody ReportExecutionRequest request) {
     // TODO: validate request // NOSONAR
-    if (request.isExport())
+    if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");
     return reportService.executeReport(request);
   }
