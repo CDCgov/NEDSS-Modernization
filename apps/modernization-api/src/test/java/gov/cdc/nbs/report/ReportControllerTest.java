@@ -138,7 +138,7 @@ class ReportControllerTest {
   }
 
   @Test
-  void exportReport_should_return_500_status_code_when_report_not_export() {
+  void exportReport_should_return_422_status_code_when_report_not_export() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
@@ -150,7 +150,30 @@ class ReportControllerTest {
             Arrays.asList(27L, 31L),
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
-    assertThatThrownBy(() -> controller.exportReport(request)).isInstanceOf(AssertionError.class);
+    assertThatThrownBy(() -> controller.exportReport(request))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("isExport must be true when exporting a report");
+  }
+
+  @Test
+  void exportReport_should_return_500_status_code_when_unexpected_exception() {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+    String errorMsg = "Uh oh!";
+
+    ReportExecutionRequest request =
+        new ReportExecutionRequest(
+            reportUid,
+            dataSourceUid,
+            true,
+            Arrays.asList(27L, 31L),
+            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+
+    when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
+
+    assertThatThrownBy(() -> controller.exportReport(request))
+        .isInstanceOf(RuntimeException.class)
+        .hasMessageContaining(errorMsg);
   }
 
   @Test
@@ -176,7 +199,7 @@ class ReportControllerTest {
   }
 
   @Test
-  void runReport_should_return_500_status_code_when_report_not_run() {
+  void runReport_should_return_422_status_code_when_report_not_run() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
@@ -188,7 +211,9 @@ class ReportControllerTest {
             Arrays.asList(27L, 31L),
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
-    assertThatThrownBy(() -> controller.runReport(request)).isInstanceOf(AssertionError.class);
+    assertThatThrownBy(() -> controller.runReport(request))
+        .isInstanceOf(AssertionError.class)
+        .hasMessageContaining("isExport must be false when running a report");
   }
 
   private ReportResult getReportExecutionResponse() {
