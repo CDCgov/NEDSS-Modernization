@@ -1,8 +1,6 @@
 from datetime import datetime
 from importlib import import_module
 
-from dateutil import parser
-
 from . import errors, models, utils
 from .db_transaction import db_transaction
 
@@ -39,8 +37,8 @@ def validate_spec(report_spec: models.ReportSpec):
         return None
 
     try:
-        start = parser.parse(report_spec.time_range.start)
-        end = parser.parse(report_spec.time_range.end)
+        start = datetime.fromisoformat(report_spec.time_range.start)
+        end = datetime.fromisoformat(report_spec.time_range.end)
     except (ValueError, TypeError) as e:
         raise errors.InvalidReportSpecError(
             'Time range "start" and "end" must be valid ISO format dates.'

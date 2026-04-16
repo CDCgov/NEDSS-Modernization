@@ -38,7 +38,7 @@ def get_int_env_or_default(env_var: str, default: int):
 
 
 def parse_date(date_str: str, date_format: str) -> datetime | None:
-    """Parse a date string, trying ISO format first, then US format."""
+    """Parse a date string, trying ISO format first, then the date format specified."""
     try:
         return datetime.fromisoformat(date_str)
     except ValueError:
