@@ -19,7 +19,7 @@ class ReportSpec(BaseModel):
     report_title: str = Field(min_length=1)
     library_name: str = Field(min_length=1)
     data_source_name: str = Field(min_length=1)
-    subset_query: str
+    subset_query: str = Field(min_length=1)
     time_range: TimeRange | None = None
 
 
