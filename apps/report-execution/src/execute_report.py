@@ -35,6 +35,9 @@ def execute_report(report_spec: models.ReportSpec):
 
 def validate_spec(report_spec: models.ReportSpec):
     """Check if the report spec is valid."""
+    if report_spec.time_range is None:
+        return None
+
     try:
         start = parser.parse(report_spec.time_range.start)
         end = parser.parse(report_spec.time_range.end)
