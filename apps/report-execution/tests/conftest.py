@@ -264,8 +264,8 @@ def restore_original_data(conn_string: str, db_tables: list[str], fk_tables: lis
             trx.execute(f'INSERT INTO {db_table} SELECT * FROM {temp_name(db_table)}')
             trx.execute(f'DROP TABLE {temp_name(db_table)}')
             logging.info(f'Restored table: {db_table}')
-
-        for fk_table in fk_tables:
-            trx.execute(f'INSERT INTO {fk_table} SELECT * FROM {temp_name(fk_table)}')
-            trx.execute(f'DROP TABLE {temp_name(fk_table)}')
-            logging.info(f'Restored FK table: {fk_table}')
+        if fk_tables:
+            for fk_table in fk_tables:
+                trx.execute(f'INSERT INTO {fk_table} SELECT * FROM {temp_name(fk_table)}')
+                trx.execute(f'DROP TABLE {temp_name(fk_table)}')
+                logging.info(f'Restored FK table: {fk_table}')
