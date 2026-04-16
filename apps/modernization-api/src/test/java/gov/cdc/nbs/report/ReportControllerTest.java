@@ -212,7 +212,7 @@ class ReportControllerTest {
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     assertThatThrownBy(() -> controller.runReport(request))
-        .isInstanceOf(AssertionError.class)
+        .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("isExport must be false when running a report");
   }
 
