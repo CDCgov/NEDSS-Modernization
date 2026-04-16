@@ -40,8 +40,14 @@ public class AccumulatingResultSetExtractor<K, V> implements ResultSetExtractor<
     this.merger = merger;
   }
 
+  //  Suppressing java:S2638 (Method overrides should not change contracts), which was being
+  //  thrown because of "the incompatibility of the annotation @Nullable to honor @NonNullApi
+  //  at package level of the overridden method".  The parent method on `ResultSetExtractor` is
+  //  annotated with `@Nullable` just like this method, so it's unclear where the purported
+  //  incompatibility is stemming from.
+  @SuppressWarnings("java:S2638")
   @Override
-  public @Nullable Collection<V> extractData(final ResultSet resultSet)
+  @Nullable public Collection<V> extractData(final ResultSet resultSet)
       throws SQLException, DataAccessException {
 
     Map<K, V> map = new LinkedHashMap<>();
