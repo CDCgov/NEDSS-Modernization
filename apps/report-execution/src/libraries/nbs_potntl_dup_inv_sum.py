@@ -10,110 +10,110 @@ def execute(
     days_value: int | None = None,
     **kwargs,
 ):
-    """Potential Duplicate Investigations
+    """Potential Duplicate Investigations"""
     
-    Identifies potential duplicate investigations for the same patient with the
-    same disease within a user-specified number of days. Users can multi-select
-    diseases to filter the results.
-    """
     # Build the WHERE clause for date filtering if days_value is provided
     date_filter = ""
     if days_value:
-        date_filter = f'''
+        date_filter = f"""
           AND (
             (d.days_since_prev IS NOT NULL AND d.days_since_prev <= {days_value})
             OR (d.days_until_next IS NOT NULL AND d.days_until_next <= {days_value})
           )
-        '''
+        """
     
-    content = trx.query(
-        f'WITH subset AS ({subset_query})\n'
-        # Filter to only needed columns and clean data
-        ', clean_data AS (\n'
-        'SELECT \n'
-        '  PATIENT_LOCAL_ID,\n'
-        '  PATIENT_FIRST_NAME,\n'
-        '  PATIENT_LAST_NAME,\n'
-        '  PATIENT_DOB,\n'
-        '  INVESTIGATION_LOCAL_ID,\n'
-        '  DISEASE,\n'
-        '  CASE_STATUS,\n'
-        '  EVENT_DATE,\n'
-        '  EVENT_DATE_TYPE,\n'
-        '  MMWR_YEAR,\n'
-        '  NOTIFICATION_STATUS,\n'
-        '  DISEASE_CD\n'
-        'FROM subset\n'
-        'WHERE EVENT_DATE IS NOT NULL\n'
-        '  AND PATIENT_LOCAL_ID IS NOT NULL\n'
-        '  AND DISEASE_CD IS NOT NULL\n'
-        ')\n'
-        # Calculate days between consecutive events
-        ', datediff_calc AS (\n'
-        'SELECT \n'
-        '  *,\n'
-        '  DATEDIFF(day, \n'
-        '    LAG(EVENT_DATE) OVER (PARTITION BY PATIENT_LOCAL_ID, DISEASE_CD ORDER BY EVENT_DATE),\n'
-        '    EVENT_DATE\n'
-        '  ) AS days_since_prev,\n'
-        '  DATEDIFF(day, \n'
-        '    EVENT_DATE,\n'
-        '    LEAD(EVENT_DATE) OVER (PARTITION BY PATIENT_LOCAL_ID, DISEASE_CD ORDER BY EVENT_DATE)\n'
-        '  ) AS days_until_next\n'
-        'FROM clean_data\n'
-        ')\n'
-        # Count events per patient/disease
-        ', event_counts AS (\n'
-        'SELECT \n'
-        '  PATIENT_LOCAL_ID,\n'
-        '  DISEASE_CD,\n'
-        '  COUNT(*) AS event_count\n'
-        'FROM clean_data\n'
-        'GROUP BY PATIENT_LOCAL_ID, DISEASE_CD\n'
-        ')\n'
-        # Final selection - only potential duplicates
-        'SELECT \n'
-        '  d.PATIENT_LOCAL_ID,\n'
-        '  d.PATIENT_FIRST_NAME,\n'
-        '  d.PATIENT_LAST_NAME,\n'
-        '  d.PATIENT_DOB,\n'
-        '  d.INVESTIGATION_LOCAL_ID,\n'
-        '  d.DISEASE,\n'
-        '  d.CASE_STATUS,\n'
-        '  d.EVENT_DATE,\n'
-        '  d.EVENT_DATE_TYPE,\n'
-        '  d.MMWR_YEAR,\n'
-        '  d.NOTIFICATION_STATUS,\n'
-        '  d.DISEASE_CD,\n'
-        '  d.days_since_prev,\n'
-        '  d.days_until_next,\n'
-        '  c.event_count\n'
-        'FROM datediff_calc d\n'
-        'JOIN event_counts c \n'
-        '  ON d.PATIENT_LOCAL_ID = c.PATIENT_LOCAL_ID \n'
-        '  AND d.DISEASE_CD = c.DISEASE_CD\n'
-        'WHERE c.event_count > 1\n'  # Only patients with multiple events
-        f'{date_filter}'
-        'ORDER BY \n'
-        '  d.PATIENT_LOCAL_ID,\n'
-        '  d.DISEASE_CD,\n'
-        '  d.EVENT_DATE'
+    full_query = f"""
+    WITH subset AS ({subset_query})
+    -- Filter to only needed columns and clean data
+    , clean_data AS (
+        SELECT 
+            PATIENT_LOCAL_ID,
+            PATIENT_FIRST_NAME,
+            PATIENT_LAST_NAME,
+            PATIENT_DOB,
+            INVESTIGATION_LOCAL_ID,
+            DISEASE,
+            CASE_STATUS,
+            EVENT_DATE,
+            EVENT_DATE_TYPE,
+            MMWR_YEAR,
+            NOTIFICATION_STATUS,
+            DISEASE_CD
+        FROM subset
+        WHERE EVENT_DATE IS NOT NULL
+            AND PATIENT_LOCAL_ID IS NOT NULL
+            AND DISEASE_CD IS NOT NULL
     )
-
+    -- Calculate days between consecutive events
+    , datediff_calc AS (
+        SELECT 
+            *,
+            DATEDIFF(day, 
+                LAG(EVENT_DATE) OVER (PARTITION BY PATIENT_LOCAL_ID, DISEASE_CD ORDER BY EVENT_DATE),
+                EVENT_DATE
+            ) AS days_since_prev,
+            DATEDIFF(day, 
+                EVENT_DATE,
+                LEAD(EVENT_DATE) OVER (PARTITION BY PATIENT_LOCAL_ID, DISEASE_CD ORDER BY EVENT_DATE)
+            ) AS days_until_next
+        FROM clean_data
+    )
+    -- Count events per patient/disease
+    , event_counts AS (
+        SELECT 
+            PATIENT_LOCAL_ID,
+            DISEASE_CD,
+            COUNT(*) AS event_count
+        FROM clean_data
+        GROUP BY PATIENT_LOCAL_ID, DISEASE_CD
+    )
+    -- Final selection - column names exactly matching SAS output
+    SELECT 
+        d.PATIENT_LOCAL_ID AS [Patient Local ID],
+        d.PATIENT_FIRST_NAME AS [Patient First Name],
+        d.PATIENT_LAST_NAME AS [Patient Last Name],
+        d.PATIENT_DOB AS DOB,
+        d.INVESTIGATION_LOCAL_ID AS [Investigation Local ID],
+        d.DISEASE AS Disease,
+        d.CASE_STATUS AS [Case Status],
+        d.EVENT_DATE AS [Event Date],
+        d.EVENT_DATE_TYPE AS [Event Date Type],
+        d.MMWR_YEAR AS [MMWR Year],
+        d.NOTIFICATION_STATUS AS [Notification Record Status],
+        d.DISEASE_CD AS [Disease Code],
+        d.days_since_prev AS days_since_prev,
+        d.days_until_next AS days_until_next,
+        c.event_count AS event_count
+    FROM datediff_calc d
+    JOIN event_counts c 
+        ON d.PATIENT_LOCAL_ID = c.PATIENT_LOCAL_ID 
+        AND d.DISEASE_CD = c.DISEASE_CD
+    WHERE c.event_count > 1
+    {date_filter}
+    ORDER BY 
+        d.PATIENT_LOCAL_ID,
+        d.DISEASE_CD,
+        d.EVENT_DATE
+    """
+    
+    content = trx.query(full_query)
+    
     header = 'Potential Duplicate Investigations'
     subheader = None
     if days_value is not None:
         subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
     else:
         # Calculate date range from the data
-        date_range_result = trx.query(
-            f'WITH subset AS ({subset_query})\n'
-            'SELECT \n'
-            '  MIN(EVENT_DATE) AS min_date,\n'
-            '  MAX(EVENT_DATE) AS max_date\n'
-            'FROM subset\n'
-            'WHERE EVENT_DATE IS NOT NULL\n'
-        )
+        date_range_query = f"""
+        WITH subset AS ({subset_query})
+        SELECT 
+            MIN(EVENT_DATE) AS min_date,
+            MAX(EVENT_DATE) AS max_date
+        FROM subset
+        WHERE EVENT_DATE IS NOT NULL
+        """
+        
+        date_range_result = trx.query(date_range_query)
         
         if date_range_result.data and date_range_result.data[0][0] is not None:
             min_date = date_range_result.data[0][0]
