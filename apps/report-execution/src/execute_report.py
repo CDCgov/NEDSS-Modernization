@@ -39,7 +39,7 @@ def validate_spec(report_spec: models.ReportSpec):
     try:
         start = datetime.fromisoformat(report_spec.time_range.start)
         end = datetime.fromisoformat(report_spec.time_range.end)
-    except (ValueError, TypeError) as e:
+    except ValueError as e:
         raise errors.InvalidReportSpecError(
             'Time range "start" and "end" must be valid ISO format dates.'
         ) from e
