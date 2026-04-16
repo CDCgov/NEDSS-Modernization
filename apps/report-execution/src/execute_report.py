@@ -35,8 +35,13 @@ def execute_report(report_spec: models.ReportSpec):
 
 def validate_spec(report_spec: models.ReportSpec):
     """Check if the report spec is valid."""
-    start = parser.parse(report_spec.time_range.start)
-    end = parser.parse(report_spec.time_range.end)
+    try:
+        start = parser.parse(report_spec.time_range.start)
+        end = parser.parse(report_spec.time_range.end)
+    except (ValueError, TypeError) as e:
+        raise errors.InvalidReportSpecError(
+            'Time range "start" and "end" must be valid ISO format dates.'
+        ) from e
 
     if start > end:
         raise errors.InvalidReportSpecError(
@@ -46,6 +51,8 @@ def validate_spec(report_spec: models.ReportSpec):
         raise errors.InvalidReportSpecError(
             'Start date cannot take place in the future.'
         )
+
+    return None
 
 
 # TODO: what is the type that should go here? Part of spike  # noqa: FIX002
