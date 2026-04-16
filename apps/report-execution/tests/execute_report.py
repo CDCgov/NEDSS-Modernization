@@ -1,8 +1,6 @@
-from datetime import date, timedelta
-
 import pytest
 
-from src.errors import InvalidReportSpecError, MissingLibraryError
+from src.errors import MissingLibraryError
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
