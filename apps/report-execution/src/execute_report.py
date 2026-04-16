@@ -1,4 +1,5 @@
 from importlib import import_module
+import typing
 
 from . import errors, models, utils
 from .db_transaction import db_transaction
@@ -42,14 +43,17 @@ def is_valid_library(library):
     return True
 
 
-def check_valid_result(report_result: models.ReportResult, is_export: bool):
+def check_valid_result(report_result: typing.Any, is_export: bool):
     """Check if the returned result is valid."""
+    
+    result = models.ReportResult.model_validate(report_result)
+
     row_limit = (
         utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_EXPORT', 100000)
         if is_export
         else utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_RUN', 10000)
     )
-    num_rows = len(report_result.content.data)
+    num_rows = len(result.content.data)
     if num_rows > row_limit:
         raise errors.ResultTooBigError(is_export, row_limit, num_rows)
 
