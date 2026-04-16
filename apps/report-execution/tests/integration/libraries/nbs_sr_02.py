@@ -70,7 +70,7 @@ class TestIntegrationNbsSr02Library:
         assert len(data) == 0
         assert len(result.content.columns) == 4
 
-        assert result.subheader is None
+        assert result.subheader == ''
 
     def test_execute_report_check_metadata_one_state(self):
         """Check the metadata and column names are correct."""

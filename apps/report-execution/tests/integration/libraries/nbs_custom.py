@@ -26,7 +26,7 @@ class TestIntegrationNbsCustomLibrary:
         assert result.header == (
             'Custom Report For Table: [NBS_ODSE].[dbo].[Filter_operator]'
         )
-        assert result.subheader == '2024-01-01 - 2024-12-31'
+        assert result.subheader is None
         assert result.description is None
         assert result.content_type == 'table'
 
