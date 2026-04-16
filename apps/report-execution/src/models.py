@@ -7,8 +7,8 @@ from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
 class TimeRange(BaseModel):
     """Start and end time for a report."""
 
-    start: str = Field(min_length=1)  # Date in ISO format
-    end: str = Field(min_length=1)  # Date in ISO format
+    start: str  # Date in ISO format
+    end: str  # Date in ISO format
 
 
 class ReportSpec(BaseModel):
