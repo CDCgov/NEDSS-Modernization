@@ -10,7 +10,14 @@ def execute(
     days_value: int | None = None,
     **kwargs,
 ):
-    """Potential Duplicate Investigations"""
+    """Potential Duplicate Investigations
+
+    Conversion notes:
+    * SAS defaults to 3650 Days in the subheader if no days value is provided.
+    Here, we calculate what the actual date range is in the data and display
+    that in the subheader.
+    
+    """
     
     # Build the WHERE clause for date filtering if days_value is provided
     date_filter = ""
@@ -67,7 +74,7 @@ def execute(
         FROM clean_data
         GROUP BY PATIENT_LOCAL_ID, DISEASE_CD
     )
-    -- Final selection - column names exactly matching SAS output
+    -- Final selection - 
     SELECT 
         d.PATIENT_LOCAL_ID AS [Patient Local ID],
         d.PATIENT_FIRST_NAME AS [Patient First Name],
@@ -80,10 +87,7 @@ def execute(
         d.EVENT_DATE_TYPE AS [Event Date Type],
         d.MMWR_YEAR AS [MMWR Year],
         d.NOTIFICATION_STATUS AS [Notification Record Status],
-        d.DISEASE_CD AS [Disease Code],
-        d.days_since_prev AS days_since_prev,
-        d.days_until_next AS days_until_next,
-        c.event_count AS event_count
+        d.DISEASE_CD AS [Disease Code]
     FROM datediff_calc d
     JOIN event_counts c 
         ON d.PATIENT_LOCAL_ID = c.PATIENT_LOCAL_ID 
@@ -91,9 +95,9 @@ def execute(
     WHERE c.event_count > 1
     {date_filter}
     ORDER BY 
-        d.PATIENT_LOCAL_ID,
-        d.DISEASE_CD,
-        d.EVENT_DATE
+    d.PATIENT_LOCAL_ID,
+    d.DISEASE_CD,
+    d.EVENT_DATE
     """
     
     content = trx.query(full_query)

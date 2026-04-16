@@ -12,9 +12,6 @@
     - '2023'
   - PENDING
   - '10245'
-  - null
-  - 154
-  - 2
 - !!python/tuple
   - '1'
   - Patrick
@@ -29,9 +26,6 @@
     - '2020'
   - null
   - '10245'
-  - 154
-  - null
-  - 2
 - !!python/tuple
   - '1'
   - Danielle
@@ -46,9 +40,6 @@
     - '2020'
   - null
   - '502651'
-  - null
-  - 62
-  - 2
 - !!python/tuple
   - '1'
   - null
@@ -63,9 +54,6 @@
     - '2016'
   - null
   - '502651'
-  - 62
-  - null
-  - 2
 - !!python/tuple
   - '10'
   - Melissa
@@ -80,9 +68,6 @@
     - '2016'
   - COMPLETED
   - '10190'
-  - null
-  - 50
-  - 3
 - !!python/tuple
   - '10'
   - null
@@ -97,9 +82,6 @@
     - '2021'
   - null
   - '10190'
-  - 50
-  - 3208
-  - 3
 - !!python/tuple
   - '11'
   - null
@@ -114,9 +96,6 @@
     - '2017'
   - null
   - '10245'
-  - null
-  - 45
-  - 3
 - !!python/tuple
   - '11'
   - Andrew
@@ -130,9 +109,6 @@
   - null
   - REJECTED
   - '10245'
-  - 45
-  - 76
-  - 3
 - !!python/tuple
   - '11'
   - Mark
@@ -147,9 +123,6 @@
     - '2022'
   - null
   - '10245'
-  - 76
-  - null
-  - 3
 - !!python/tuple
   - '12'
   - null
@@ -164,9 +137,6 @@
     - '2022'
   - COMPLETED
   - '10280'
-  - null
-  - 126
-  - 5
 - !!python/tuple
   - '12'
   - Madeline
@@ -181,9 +151,6 @@
     - '2024'
   - COMPLETED
   - '10280'
-  - 126
-  - 320
-  - 5
 - !!python/tuple
   - '12'
   - Bradley
@@ -198,9 +165,6 @@
     - '2016'
   - COMPLETED
   - '10280'
-  - 320
-  - 383
-  - 5
 - !!python/tuple
   - '12'
   - James
@@ -215,9 +179,6 @@
     - '2025'
   - COMPLETED
   - '10280'
-  - 383
-  - 91
-  - 5
 - !!python/tuple
   - '12'
   - Scott
@@ -232,9 +193,6 @@
     - '2020'
   - PENDING
   - '10280'
-  - 91
-  - null
-  - 5
 - !!python/tuple
   - '13'
   - Brittney
@@ -249,9 +207,6 @@
     - '2022'
   - COMPLETED
   - '10140'
-  - null
-  - 301
-  - 4
 - !!python/tuple
   - '13'
   - Marissa
@@ -266,9 +221,6 @@
     - '2015'
   - PENDING
   - '10140'
-  - 301
-  - 1828
-  - 4
 - !!python/tuple
   - '14'
   - John
@@ -283,9 +235,6 @@
     - '2020'
   - REJECTED
   - '10311'
-  - 597
-  - 96
-  - 3
 - !!python/tuple
   - '14'
   - null
@@ -299,9 +248,6 @@
   - null
   - PENDING
   - '10311'
-  - 96
-  - null
-  - 3
 - !!python/tuple
   - '16'
   - Heather
@@ -316,9 +262,6 @@
     - '2016'
   - PENDING
   - '10311'
-  - 712
-  - 181
-  - 3
 - !!python/tuple
   - '16'
   - Stacy
@@ -333,9 +276,6 @@
     - '2015'
   - COMPLETED
   - '10311'
-  - 181
-  - null
-  - 3
 - !!python/tuple
   - '16'
   - Donna
@@ -350,9 +290,6 @@
     - '2024'
   - null
   - '502651'
-  - null
-  - 140
-  - 2
 - !!python/tuple
   - '16'
   - Alexander
@@ -367,9 +304,6 @@
     - '2019'
   - COMPLETED
   - '502651'
-  - 140
-  - null
-  - 2
 - !!python/tuple
   - '19'
   - Patrick
@@ -384,9 +318,6 @@
     - '2021'
   - PENDING
   - '10311'
-  - null
-  - 104
-  - 3
 - !!python/tuple
   - '19'
   - David
@@ -401,9 +332,6 @@
     - '2020'
   - REJECTED
   - '10311'
-  - 104
-  - 506
-  - 3
 - !!python/tuple
   - '2'
   - Robert
@@ -418,9 +346,6 @@
     - '2015'
   - null
   - '10140'
-  - 380
-  - 323
-  - 3
 - !!python/tuple
   - '2'
   - Erin
@@ -435,9 +360,6 @@
     - '2019'
   - PENDING
   - '10140'
-  - 323
-  - null
-  - 3
 - !!python/tuple
   - '20'
   - Sarah
@@ -452,9 +374,6 @@
     - '2022'
   - PENDING
   - '10190'
-  - null
-  - 45
-  - 4
 - !!python/tuple
   - '20'
   - Norman
@@ -469,9 +388,6 @@
     - '2019'
   - null
   - '10190'
-  - 45
-  - 90
-  - 4
 - !!python/tuple
   - '20'
   - Michael
@@ -486,9 +402,6 @@
     - '2017'
   - REJECTED
   - '10190'
-  - 90
-  - 563
-  - 4
 - !!python/tuple
   - '22'
   - Pamela
@@ -502,9 +415,6 @@
   - null
   - COMPLETED
   - '10140'
-  - 612
-  - 311
-  - 5
 - !!python/tuple
   - '22'
   - Nicholas
@@ -519,9 +429,6 @@
     - '2023'
   - REJECTED
   - '10140'
-  - 311
-  - 1195
-  - 5
 - !!python/tuple
   - '22'
   - null
@@ -536,9 +443,6 @@
     - '2016'
   - PENDING
   - '10190'
-  - null
-  - 361
-  - 2
 - !!python/tuple
   - '22'
   - Justin
@@ -552,9 +456,6 @@
   - null
   - COMPLETED
   - '10190'
-  - 361
-  - null
-  - 2
 - !!python/tuple
   - '23'
   - Elaine
@@ -569,9 +470,6 @@
     - '2022'
   - REJECTED
   - '10190'
-  - null
-  - 183
-  - 2
 - !!python/tuple
   - '23'
   - Tracy
@@ -585,9 +483,6 @@
   - null
   - null
   - '10190'
-  - 183
-  - null
-  - 2
 - !!python/tuple
   - '23'
   - Tonya
@@ -602,9 +497,6 @@
     - '2019'
   - null
   - '502651'
-  - null
-  - 281
-  - 4
 - !!python/tuple
   - '23'
   - Thomas
@@ -619,9 +511,6 @@
     - '2022'
   - COMPLETED
   - '502651'
-  - 281
-  - 1414
-  - 4
 - !!python/tuple
   - '25'
   - Jacqueline
@@ -636,9 +525,6 @@
     - '2015'
   - REJECTED
   - '10245'
-  - 738
-  - 170
-  - 5
 - !!python/tuple
   - '25'
   - Janice
@@ -653,9 +539,6 @@
     - '2015'
   - PENDING
   - '10245'
-  - 170
-  - null
-  - 5
 - !!python/tuple
   - '26'
   - Timothy
@@ -670,9 +553,6 @@
     - '2024'
   - REJECTED
   - '10190'
-  - 1066
-  - 307
-  - 4
 - !!python/tuple
   - '26'
   - Jacob
@@ -687,9 +567,6 @@
     - '2016'
   - null
   - '10190'
-  - 307
-  - null
-  - 4
 - !!python/tuple
   - '26'
   - Shannon
@@ -704,9 +581,6 @@
     - '2020'
   - COMPLETED
   - '10280'
-  - null
-  - 49
-  - 4
 - !!python/tuple
   - '26'
   - Tracey
@@ -721,9 +595,6 @@
     - '2018'
   - null
   - '10280'
-  - 49
-  - 1353
-  - 4
 - !!python/tuple
   - '27'
   - Douglas
@@ -738,9 +609,6 @@
     - '2024'
   - PENDING
   - '10190'
-  - null
-  - 102
-  - 2
 - !!python/tuple
   - '27'
   - Amber
@@ -755,9 +623,6 @@
     - '2024'
   - COMPLETED
   - '10190'
-  - 102
-  - null
-  - 2
 - !!python/tuple
   - '30'
   - Julie
@@ -772,9 +637,6 @@
     - '2023'
   - REJECTED
   - '10190'
-  - null
-  - 293
-  - 3
 - !!python/tuple
   - '30'
   - Caitlyn
@@ -789,9 +651,6 @@
     - '2024'
   - REJECTED
   - '10190'
-  - 293
-  - 473
-  - 3
 - !!python/tuple
   - '31'
   - Victor
@@ -805,9 +664,6 @@
   - null
   - null
   - '10245'
-  - 2104
-  - 48
-  - 3
 - !!python/tuple
   - '31'
   - Kyle
@@ -822,9 +678,6 @@
     - '2022'
   - REJECTED
   - '10245'
-  - 48
-  - null
-  - 3
 - !!python/tuple
   - '31'
   - Curtis
@@ -839,9 +692,6 @@
     - '2025'
   - PENDING
   - '10311'
-  - null
-  - 229
-  - 5
 - !!python/tuple
   - '31'
   - Kevin
@@ -855,9 +705,6 @@
   - null
   - null
   - '10311'
-  - 229
-  - 430
-  - 5
 - !!python/tuple
   - '32'
   - Paul
@@ -872,9 +719,6 @@
     - '2016'
   - null
   - '10140'
-  - null
-  - 157
-  - 2
 - !!python/tuple
   - '32'
   - Dylan
@@ -889,9 +733,6 @@
     - '2018'
   - COMPLETED
   - '10140'
-  - 157
-  - null
-  - 2
 - !!python/tuple
   - '34'
   - Jason
@@ -906,9 +747,6 @@
     - '2022'
   - null
   - '10190'
-  - null
-  - 267
-  - 4
 - !!python/tuple
   - '34'
   - Michael
@@ -923,9 +761,6 @@
     - '2025'
   - null
   - '10190'
-  - 267
-  - 326
-  - 4
 - !!python/tuple
   - '34'
   - Joel
@@ -940,9 +775,6 @@
     - '2020'
   - null
   - '10190'
-  - 326
-  - 833
-  - 4
 - !!python/tuple
   - '35'
   - Michael
@@ -957,9 +789,6 @@
     - '2016'
   - null
   - '502651'
-  - null
-  - 241
-  - 2
 - !!python/tuple
   - '35'
   - Robert
@@ -974,9 +803,6 @@
     - '2016'
   - PENDING
   - '502651'
-  - 241
-  - null
-  - 2
 - !!python/tuple
   - '36'
   - Donna
@@ -991,9 +817,6 @@
     - '2016'
   - PENDING
   - '502651'
-  - null
-  - 286
-  - 3
 - !!python/tuple
   - '36'
   - Steven
@@ -1008,9 +831,6 @@
     - '2025'
   - COMPLETED
   - '502651'
-  - 286
-  - 2427
-  - 3
 - !!python/tuple
   - '37'
   - Kiara
@@ -1025,9 +845,6 @@
     - '2019'
   - COMPLETED
   - '10140'
-  - 881
-  - 364
-  - 4
 - !!python/tuple
   - '37'
   - Debbie
@@ -1042,9 +859,6 @@
     - '2017'
   - REJECTED
   - '10140'
-  - 364
-  - 781
-  - 4
 - !!python/tuple
   - '39'
   - David
@@ -1059,9 +873,6 @@
     - '2017'
   - PENDING
   - '10245'
-  - 918
-  - 79
-  - 6
 - !!python/tuple
   - '39'
   - Erica
@@ -1076,9 +887,6 @@
     - '2023'
   - null
   - '10245'
-  - 79
-  - 14
-  - 6
 - !!python/tuple
   - '39'
   - Meagan
@@ -1093,9 +901,6 @@
     - '2023'
   - PENDING
   - '10245'
-  - 14
-  - null
-  - 6
 - !!python/tuple
   - '39'
   - Michelle
@@ -1110,9 +915,6 @@
     - '2017'
   - null
   - '10280'
-  - null
-  - 150
-  - 3
 - !!python/tuple
   - '39'
   - Travis
@@ -1127,9 +929,6 @@
     - '2025'
   - null
   - '10280'
-  - 150
-  - 2792
-  - 3
 - !!python/tuple
   - '40'
   - Michael
@@ -1144,9 +943,6 @@
     - '2023'
   - REJECTED
   - '10245'
-  - null
-  - 187
-  - 3
 - !!python/tuple
   - '40'
   - Steven
@@ -1161,9 +957,6 @@
     - '2017'
   - REJECTED
   - '10245'
-  - 187
-  - 1105
-  - 3
 - !!python/tuple
   - '40'
   - Brandy
@@ -1178,9 +971,6 @@
     - '2015'
   - COMPLETED
   - '10280'
-  - null
-  - 68
-  - 3
 - !!python/tuple
   - '40'
   - Tammy
@@ -1195,9 +985,6 @@
     - '2021'
   - PENDING
   - '10280'
-  - 68
-  - 975
-  - 3
 - !!python/tuple
   - '43'
   - Manuel
@@ -1212,9 +999,6 @@
     - '2021'
   - PENDING
   - '10245'
-  - 1045
-  - 46
-  - 4
 - !!python/tuple
   - '43'
   - Joseph
@@ -1229,9 +1013,6 @@
     - '2018'
   - REJECTED
   - '10245'
-  - 46
-  - null
-  - 4
 - !!python/tuple
   - '43'
   - Lisa
@@ -1246,9 +1027,6 @@
     - '2025'
   - null
   - '10280'
-  - 690
-  - 178
-  - 3
 - !!python/tuple
   - '43'
   - Alyssa
@@ -1263,9 +1041,6 @@
     - '2018'
   - REJECTED
   - '10280'
-  - 178
-  - null
-  - 3
 - !!python/tuple
   - '46'
   - Morgan
@@ -1279,9 +1054,6 @@
   - null
   - null
   - '10280'
-  - 2045
-  - 140
-  - 3
 - !!python/tuple
   - '46'
   - Kayla
@@ -1296,9 +1068,6 @@
     - '2024'
   - null
   - '10280'
-  - 140
-  - null
-  - 3
 - !!python/tuple
   - '48'
   - Anna
@@ -1313,9 +1082,6 @@
     - '2019'
   - REJECTED
   - '10140'
-  - 1172
-  - 318
-  - 3
 - !!python/tuple
   - '48'
   - William
@@ -1330,9 +1096,6 @@
     - '2021'
   - null
   - '10140'
-  - 318
-  - null
-  - 3
 - !!python/tuple
   - '49'
   - Ryan
@@ -1346,9 +1109,6 @@
   - null
   - REJECTED
   - '10140'
-  - 1112
-  - 280
-  - 3
 - !!python/tuple
   - '49'
   - Shane
@@ -1363,9 +1123,6 @@
     - '2017'
   - REJECTED
   - '10140'
-  - 280
-  - null
-  - 3
 - !!python/tuple
   - '49'
   - Emily
@@ -1380,9 +1137,6 @@
     - '2023'
   - null
   - '10190'
-  - 2539
-  - 161
-  - 3
 - !!python/tuple
   - '49'
   - Joseph
@@ -1397,9 +1151,6 @@
     - '2015'
   - REJECTED
   - '10190'
-  - 161
-  - null
-  - 3
 - !!python/tuple
   - '5'
   - Christopher
@@ -1414,9 +1165,6 @@
     - '2023'
   - REJECTED
   - '10245'
-  - null
-  - 56
-  - 3
 - !!python/tuple
   - '5'
   - Vicki
@@ -1430,9 +1178,6 @@
   - null
   - COMPLETED
   - '10245'
-  - 56
-  - 1290
-  - 3
 - !!python/tuple
   - '50'
   - Nathaniel
@@ -1447,9 +1192,6 @@
     - '2015'
   - PENDING
   - '10140'
-  - null
-  - 292
-  - 3
 - !!python/tuple
   - '50'
   - Heather
@@ -1464,9 +1206,6 @@
     - '2018'
   - COMPLETED
   - '10140'
-  - 292
-  - 123
-  - 3
 - !!python/tuple
   - '50'
   - Bryan
@@ -1481,9 +1220,6 @@
     - '2015'
   - null
   - '10140'
-  - 123
-  - null
-  - 3
 - !!python/tuple
   - '50'
   - Sarah
@@ -1498,9 +1234,6 @@
     - '2017'
   - REJECTED
   - '502651'
-  - null
-  - 128
-  - 3
 - !!python/tuple
   - '50'
   - John
@@ -1515,9 +1248,6 @@
     - '2018'
   - null
   - '502651'
-  - 128
-  - 838
-  - 3
 - !!python/tuple
   - '51'
   - Anthony
@@ -1531,9 +1261,6 @@
   - null
   - COMPLETED
   - '502651'
-  - null
-  - 300
-  - 3
 - !!python/tuple
   - '51'
   - Cheryl
@@ -1548,9 +1275,6 @@
     - '2023'
   - REJECTED
   - '502651'
-  - 300
-  - 765
-  - 3
 - !!python/tuple
   - '52'
   - Wanda
@@ -1565,9 +1289,6 @@
     - '2020'
   - REJECTED
   - '502651'
-  - null
-  - 132
-  - 5
 - !!python/tuple
   - '52'
   - null
@@ -1582,9 +1303,6 @@
     - '2018'
   - null
   - '502651'
-  - 132
-  - 290
-  - 5
 - !!python/tuple
   - '52'
   - Brian
@@ -1599,9 +1317,6 @@
     - '2022'
   - REJECTED
   - '502651'
-  - 290
-  - 626
-  - 5
 - !!python/tuple
   - '53'
   - Laura
@@ -1616,9 +1331,6 @@
     - '2024'
   - PENDING
   - '10245'
-  - 765
-  - 317
-  - 5
 - !!python/tuple
   - '53'
   - Andrew
@@ -1633,9 +1345,6 @@
     - '2025'
   - null
   - '10245'
-  - 317
-  - 161
-  - 5
 - !!python/tuple
   - '53'
   - Mark
@@ -1650,9 +1359,6 @@
     - '2017'
   - COMPLETED
   - '10245'
-  - 161
-  - 144
-  - 5
 - !!python/tuple
   - '53'
   - Tara
@@ -1667,9 +1373,6 @@
     - '2023'
   - null
   - '10245'
-  - 144
-  - null
-  - 5
 - !!python/tuple
   - '53'
   - Kathryn
@@ -1684,9 +1387,6 @@
     - '2023'
   - null
   - '10311'
-  - null
-  - 333
-  - 4
 - !!python/tuple
   - '53'
   - Daniel
@@ -1701,9 +1401,6 @@
     - '2020'
   - PENDING
   - '10311'
-  - 333
-  - 1792
-  - 4
 - !!python/tuple
   - '53'
   - Jordan
@@ -1718,9 +1415,6 @@
     - '2022'
   - COMPLETED
   - '502651'
-  - null
-  - 290
-  - 3
 - !!python/tuple
   - '53'
   - Emily
@@ -1735,9 +1429,6 @@
     - '2021'
   - null
   - '502651'
-  - 290
-  - 803
-  - 3
 - !!python/tuple
   - '54'
   - John
@@ -1752,9 +1443,6 @@
     - '2018'
   - REJECTED
   - '502651'
-  - null
-  - 198
-  - 2
 - !!python/tuple
   - '54'
   - Shawn
@@ -1769,9 +1457,6 @@
     - '2015'
   - REJECTED
   - '502651'
-  - 198
-  - null
-  - 2
 - !!python/tuple
   - '56'
   - Deanna
@@ -1786,9 +1471,6 @@
     - '2018'
   - COMPLETED
   - '10280'
-  - null
-  - 19
-  - 2
 - !!python/tuple
   - '56'
   - Amy
@@ -1803,9 +1485,6 @@
     - '2021'
   - PENDING
   - '10280'
-  - 19
-  - null
-  - 2
 - !!python/tuple
   - '56'
   - Alexandra
@@ -1819,9 +1498,6 @@
   - null
   - COMPLETED
   - '10311'
-  - 1847
-  - 347
-  - 4
 - !!python/tuple
   - '56'
   - Michael
@@ -1836,9 +1512,6 @@
     - '2018'
   - PENDING
   - '10311'
-  - 347
-  - null
-  - 4
 - !!python/tuple
   - '57'
   - Keith
@@ -1853,9 +1526,6 @@
     - '2024'
   - PENDING
   - '10311'
-  - null
-  - 213
-  - 2
 - !!python/tuple
   - '57'
   - James
@@ -1870,9 +1540,6 @@
     - '2017'
   - COMPLETED
   - '10311'
-  - 213
-  - null
-  - 2
 - !!python/tuple
   - '59'
   - Christina
@@ -1886,9 +1553,6 @@
   - null
   - COMPLETED
   - '10140'
-  - null
-  - 293
-  - 4
 - !!python/tuple
   - '59'
   - Christopher
@@ -1903,9 +1567,6 @@
     - '2016'
   - PENDING
   - '10140'
-  - 293
-  - 962
-  - 4
 - !!python/tuple
   - '59'
   - Raymond
@@ -1920,9 +1581,6 @@
     - '2025'
   - null
   - '10245'
-  - 629
-  - 121
-  - 3
 - !!python/tuple
   - '59'
   - Douglas
@@ -1937,9 +1595,6 @@
     - '2020'
   - REJECTED
   - '10245'
-  - 121
-  - null
-  - 3
 - !!python/tuple
   - '59'
   - Leslie
@@ -1954,9 +1609,6 @@
     - '2019'
   - REJECTED
   - '10280'
-  - null
-  - 36
-  - 3
 - !!python/tuple
   - '59'
   - Miguel
@@ -1971,9 +1623,6 @@
     - '2025'
   - null
   - '10280'
-  - 36
-  - 1581
-  - 3
 - !!python/tuple
   - '6'
   - null
@@ -1988,9 +1637,6 @@
     - '2021'
   - COMPLETED
   - '10311'
-  - 826
-  - 89
-  - 6
 - !!python/tuple
   - '6'
   - James
@@ -2005,9 +1651,6 @@
     - '2015'
   - COMPLETED
   - '10311'
-  - 89
-  - 28
-  - 6
 - !!python/tuple
   - '6'
   - John
@@ -2022,9 +1665,6 @@
     - '2018'
   - null
   - '10311'
-  - 28
-  - null
-  - 6
 - !!python/tuple
   - '61'
   - Ashley
@@ -2039,9 +1679,6 @@
     - '2024'
   - COMPLETED
   - '10190'
-  - null
-  - 120
-  - 3
 - !!python/tuple
   - '61'
   - Bradley
@@ -2056,9 +1693,6 @@
     - '2018'
   - null
   - '10190'
-  - 120
-  - 2958
-  - 3
 - !!python/tuple
   - '62'
   - Wesley
@@ -2073,9 +1707,6 @@
     - '2024'
   - REJECTED
   - '10280'
-  - null
-  - 99
-  - 4
 - !!python/tuple
   - '62'
   - Joshua
@@ -2090,9 +1721,6 @@
     - '2023'
   - null
   - '10280'
-  - 99
-  - 893
-  - 4
 - !!python/tuple
   - '64'
   - Billy
@@ -2107,9 +1735,6 @@
     - '2017'
   - REJECTED
   - '10311'
-  - null
-  - 287
-  - 2
 - !!python/tuple
   - '64'
   - Adam
@@ -2124,9 +1749,6 @@
     - '2017'
   - PENDING
   - '10311'
-  - 287
-  - null
-  - 2
 - !!python/tuple
   - '65'
   - Crystal
@@ -2141,9 +1763,6 @@
     - '2019'
   - PENDING
   - '10245'
-  - null
-  - 40
-  - 2
 - !!python/tuple
   - '65'
   - Daniel
@@ -2158,9 +1777,6 @@
     - '2025'
   - null
   - '10245'
-  - 40
-  - null
-  - 2
 - !!python/tuple
   - '65'
   - Anthony
@@ -2175,9 +1791,6 @@
     - '2019'
   - REJECTED
   - '502651'
-  - null
-  - 89
-  - 3
 - !!python/tuple
   - '65'
   - Kenneth
@@ -2192,9 +1805,6 @@
     - '2015'
   - REJECTED
   - '502651'
-  - 89
-  - 2618
-  - 3
 - !!python/tuple
   - '66'
   - Michael
@@ -2209,9 +1819,6 @@
     - '2018'
   - REJECTED
   - '10245'
-  - 1272
-  - 203
-  - 6
 - !!python/tuple
   - '66'
   - Daniel
@@ -2226,9 +1833,6 @@
     - '2021'
   - COMPLETED
   - '10245'
-  - 203
-  - 272
-  - 6
 - !!python/tuple
   - '66'
   - Danielle
@@ -2243,9 +1847,6 @@
     - '2016'
   - null
   - '10245'
-  - 272
-  - 828
-  - 6
 - !!python/tuple
   - '67'
   - Leslie
@@ -2260,9 +1861,6 @@
     - '2025'
   - REJECTED
   - '10190'
-  - null
-  - 335
-  - 3
 - !!python/tuple
   - '67'
   - Kathryn
@@ -2277,9 +1875,6 @@
     - '2017'
   - null
   - '10190'
-  - 335
-  - 133
-  - 3
 - !!python/tuple
   - '67'
   - Matthew
@@ -2294,9 +1889,6 @@
     - '2019'
   - null
   - '10190'
-  - 133
-  - null
-  - 3
 - !!python/tuple
   - '67'
   - Alex
@@ -2311,9 +1903,6 @@
     - '2021'
   - REJECTED
   - '502651'
-  - null
-  - 187
-  - 3
 - !!python/tuple
   - '67'
   - Joseph
@@ -2328,9 +1917,6 @@
     - '2019'
   - COMPLETED
   - '502651'
-  - 187
-  - 1049
-  - 3
 - !!python/tuple
   - '68'
   - Felicia
@@ -2345,9 +1931,6 @@
     - '2025'
   - PENDING
   - '10311'
-  - null
-  - 162
-  - 2
 - !!python/tuple
   - '68'
   - Mary
@@ -2361,9 +1944,6 @@
   - null
   - null
   - '10311'
-  - 162
-  - null
-  - 2
 - !!python/tuple
   - '68'
   - Richard
@@ -2378,9 +1958,6 @@
     - '2022'
   - PENDING
   - '502651'
-  - null
-  - 144
-  - 2
 - !!python/tuple
   - '68'
   - Nicholas
@@ -2395,9 +1972,6 @@
     - '2025'
   - null
   - '502651'
-  - 144
-  - null
-  - 2
 - !!python/tuple
   - '69'
   - Edward
@@ -2411,9 +1985,6 @@
   - null
   - null
   - '10190'
-  - 396
-  - 259
-  - 4
 - !!python/tuple
   - '69'
   - Edward
@@ -2428,9 +1999,6 @@
     - '2022'
   - PENDING
   - '10190'
-  - 259
-  - null
-  - 4
 - !!python/tuple
   - '70'
   - Thomas
@@ -2445,9 +2013,6 @@
     - '2019'
   - REJECTED
   - '10245'
-  - 2613
-  - 217
-  - 3
 - !!python/tuple
   - '70'
   - Jeffrey
@@ -2462,9 +2027,6 @@
     - '2024'
   - null
   - '10245'
-  - 217
-  - null
-  - 3
 - !!python/tuple
   - '71'
   - Roberta
@@ -2479,9 +2041,6 @@
     - '2024'
   - null
   - '10311'
-  - 667
-  - 274
-  - 4
 - !!python/tuple
   - '71'
   - Frederick
@@ -2496,9 +2055,6 @@
     - '2018'
   - null
   - '10311'
-  - 274
-  - 400
-  - 4
 - !!python/tuple
   - '71'
   - Richard
@@ -2513,9 +2069,6 @@
     - '2018'
   - null
   - '502651'
-  - null
-  - 311
-  - 5
 - !!python/tuple
   - '71'
   - Charles
@@ -2529,9 +2082,6 @@
   - null
   - null
   - '502651'
-  - 311
-  - 86
-  - 5
 - !!python/tuple
   - '71'
   - Jason
@@ -2546,9 +2096,6 @@
     - '2021'
   - null
   - '502651'
-  - 86
-  - 1375
-  - 5
 - !!python/tuple
   - '73'
   - null
@@ -2563,9 +2110,6 @@
     - '2023'
   - PENDING
   - '10280'
-  - null
-  - 252
-  - 5
 - !!python/tuple
   - '73'
   - Kimberly
@@ -2580,9 +2124,6 @@
     - '2021'
   - COMPLETED
   - '10280'
-  - 252
-  - 27
-  - 5
 - !!python/tuple
   - '73'
   - Francisco
@@ -2597,9 +2138,6 @@
     - '2022'
   - null
   - '10280'
-  - 27
-  - 1205
-  - 5
 - !!python/tuple
   - '73'
   - George
@@ -2614,9 +2152,6 @@
     - '2017'
   - null
   - '10280'
-  - 1205
-  - 24
-  - 5
 - !!python/tuple
   - '73'
   - Erika
@@ -2630,9 +2165,6 @@
   - null
   - REJECTED
   - '10280'
-  - 24
-  - null
-  - 5
 - !!python/tuple
   - '73'
   - Robert
@@ -2647,9 +2179,6 @@
     - '2024'
   - PENDING
   - '502651'
-  - null
-  - 200
-  - 6
 - !!python/tuple
   - '73'
   - Emily
@@ -2664,9 +2193,6 @@
     - '2024'
   - COMPLETED
   - '502651'
-  - 200
-  - 1451
-  - 6
 - !!python/tuple
   - '74'
   - Christopher
@@ -2680,9 +2206,6 @@
   - null
   - COMPLETED
   - '10140'
-  - null
-  - 364
-  - 2
 - !!python/tuple
   - '74'
   - Andres
@@ -2697,9 +2220,6 @@
     - '2020'
   - null
   - '10140'
-  - 364
-  - null
-  - 2
 - !!python/tuple
   - '74'
   - Michael
@@ -2714,9 +2234,6 @@
     - '2015'
   - null
   - '10245'
-  - null
-  - 141
-  - 4
 - !!python/tuple
   - '74'
   - Patrick
@@ -2731,9 +2248,6 @@
     - '2016'
   - REJECTED
   - '10245'
-  - 141
-  - 1202
-  - 4
 - !!python/tuple
   - '74'
   - William
@@ -2748,9 +2262,6 @@
     - '2024'
   - PENDING
   - '10311'
-  - null
-  - 45
-  - 4
 - !!python/tuple
   - '74'
   - Richard
@@ -2765,9 +2276,6 @@
     - '2020'
   - null
   - '10311'
-  - 45
-  - 3060
-  - 4
 - !!python/tuple
   - '74'
   - Jessica
@@ -2782,9 +2290,6 @@
     - '2019'
   - null
   - '10311'
-  - 3060
-  - 9
-  - 4
 - !!python/tuple
   - '74'
   - null
@@ -2799,9 +2304,6 @@
     - '2019'
   - COMPLETED
   - '10311'
-  - 9
-  - null
-  - 4
 - !!python/tuple
   - '76'
   - Jonathan
@@ -2816,9 +2318,6 @@
     - '2022'
   - null
   - '10311'
-  - 433
-  - 100
-  - 4
 - !!python/tuple
   - '76'
   - Joanne
@@ -2833,9 +2332,6 @@
     - '2017'
   - PENDING
   - '10311'
-  - 100
-  - 1621
-  - 4
 - !!python/tuple
   - '77'
   - Randy
@@ -2850,9 +2346,6 @@
     - '2020'
   - REJECTED
   - '10140'
-  - null
-  - 112
-  - 3
 - !!python/tuple
   - '77'
   - Kendra
@@ -2867,9 +2360,6 @@
     - '2021'
   - REJECTED
   - '10140'
-  - 112
-  - 82
-  - 3
 - !!python/tuple
   - '77'
   - Timothy
@@ -2884,9 +2374,6 @@
     - '2020'
   - PENDING
   - '10140'
-  - 82
-  - null
-  - 3
 - !!python/tuple
   - '78'
   - Amber
@@ -2901,9 +2388,6 @@
     - '2015'
   - COMPLETED
   - '502651'
-  - 1092
-  - 276
-  - 5
 - !!python/tuple
   - '78'
   - Lucas
@@ -2918,9 +2402,6 @@
     - '2020'
   - PENDING
   - '502651'
-  - 276
-  - 1170
-  - 5
 - !!python/tuple
   - '79'
   - Ashley
@@ -2935,9 +2416,6 @@
     - '2019'
   - PENDING
   - '10190'
-  - null
-  - 236
-  - 2
 - !!python/tuple
   - '79'
   - Connie
@@ -2952,9 +2430,6 @@
     - '2016'
   - COMPLETED
   - '10190'
-  - 236
-  - null
-  - 2
 - !!python/tuple
   - '79'
   - Cynthia
@@ -2968,9 +2443,6 @@
   - null
   - COMPLETED
   - '10280'
-  - null
-  - 303
-  - 3
 - !!python/tuple
   - '79'
   - Susan
@@ -2985,9 +2457,6 @@
     - '2020'
   - PENDING
   - '10280'
-  - 303
-  - 2887
-  - 3
 - !!python/tuple
   - '8'
   - Connie
@@ -3002,9 +2471,6 @@
     - '2019'
   - null
   - '10140'
-  - null
-  - 3
-  - 2
 - !!python/tuple
   - '8'
   - Angela
@@ -3019,9 +2485,6 @@
     - '2015'
   - null
   - '10140'
-  - 3
-  - null
-  - 2
 - !!python/tuple
   - '81'
   - Sherri
@@ -3036,9 +2499,6 @@
     - '2017'
   - PENDING
   - '502651'
-  - null
-  - 232
-  - 2
 - !!python/tuple
   - '81'
   - Debbie
@@ -3053,9 +2513,6 @@
     - '2019'
   - null
   - '502651'
-  - 232
-  - null
-  - 2
 - !!python/tuple
   - '82'
   - Christine
@@ -3070,9 +2527,6 @@
     - '2017'
   - null
   - '10140'
-  - 1444
-  - 171
-  - 3
 - !!python/tuple
   - '82'
   - Suzanne
@@ -3087,9 +2541,6 @@
     - '2016'
   - null
   - '10140'
-  - 171
-  - null
-  - 3
 - !!python/tuple
   - '83'
   - Kelli
@@ -3104,9 +2555,6 @@
     - '2025'
   - null
   - '10190'
-  - null
-  - 228
-  - 2
 - !!python/tuple
   - '83'
   - Justin
@@ -3121,9 +2569,6 @@
     - '2019'
   - REJECTED
   - '10190'
-  - 228
-  - null
-  - 2
 - !!python/tuple
   - '83'
   - Sue
@@ -3138,9 +2583,6 @@
     - '2015'
   - COMPLETED
   - '10311'
-  - null
-  - 153
-  - 4
 - !!python/tuple
   - '83'
   - Melissa
@@ -3155,9 +2597,6 @@
     - '2025'
   - COMPLETED
   - '10311'
-  - 153
-  - 957
-  - 4
 - !!python/tuple
   - '84'
   - David
@@ -3172,9 +2611,6 @@
     - '2017'
   - PENDING
   - '10311'
-  - null
-  - 35
-  - 3
 - !!python/tuple
   - '84'
   - Todd
@@ -3189,9 +2625,6 @@
     - '2021'
   - PENDING
   - '10311'
-  - 35
-  - 1318
-  - 3
 - !!python/tuple
   - '85'
   - James
@@ -3205,9 +2638,6 @@
   - null
   - null
   - '10311'
-  - null
-  - 147
-  - 3
 - !!python/tuple
   - '85'
   - Edward
@@ -3222,9 +2652,6 @@
     - '2020'
   - PENDING
   - '10311'
-  - 147
-  - 530
-  - 3
 - !!python/tuple
   - '86'
   - Michelle
@@ -3239,9 +2666,6 @@
     - '2020'
   - REJECTED
   - '10140'
-  - 648
-  - 120
-  - 5
 - !!python/tuple
   - '86'
   - Tammy
@@ -3256,9 +2680,6 @@
     - '2019'
   - REJECTED
   - '10140'
-  - 120
-  - 140
-  - 5
 - !!python/tuple
   - '86'
   - David
@@ -3273,9 +2694,6 @@
     - '2017'
   - COMPLETED
   - '10140'
-  - 140
-  - null
-  - 5
 - !!python/tuple
   - '88'
   - Brian
@@ -3290,9 +2708,6 @@
     - '2021'
   - null
   - '10245'
-  - null
-  - 201
-  - 2
 - !!python/tuple
   - '88'
   - Robert
@@ -3307,9 +2722,6 @@
     - '2024'
   - PENDING
   - '10245'
-  - 201
-  - null
-  - 2
 - !!python/tuple
   - '88'
   - Patrick
@@ -3324,9 +2736,6 @@
     - '2021'
   - REJECTED
   - '10311'
-  - null
-  - 222
-  - 3
 - !!python/tuple
   - '88'
   - Jeremiah
@@ -3341,9 +2750,6 @@
     - '2016'
   - REJECTED
   - '10311'
-  - 222
-  - 1363
-  - 3
 - !!python/tuple
   - '89'
   - Christopher
@@ -3358,9 +2764,6 @@
     - '2023'
   - COMPLETED
   - '10140'
-  - 534
-  - 50
-  - 5
 - !!python/tuple
   - '89'
   - Sandra
@@ -3374,9 +2777,6 @@
   - null
   - null
   - '10140'
-  - 50
-  - 2372
-  - 5
 - !!python/tuple
   - '89'
   - null
@@ -3391,9 +2791,6 @@
     - '2019'
   - COMPLETED
   - '10140'
-  - 2372
-  - 46
-  - 5
 - !!python/tuple
   - '89'
   - Raymond
@@ -3408,9 +2805,6 @@
     - '2025'
   - null
   - '10140'
-  - 46
-  - null
-  - 5
 - !!python/tuple
   - '9'
   - Paul
@@ -3425,9 +2819,6 @@
     - '2025'
   - REJECTED
   - '10140'
-  - 586
-  - 300
-  - 4
 - !!python/tuple
   - '9'
   - Stacy
@@ -3442,9 +2833,6 @@
     - '2023'
   - PENDING
   - '10140'
-  - 300
-  - null
-  - 4
 - !!python/tuple
   - '90'
   - April
@@ -3459,9 +2847,6 @@
     - '2025'
   - REJECTED
   - '10311'
-  - 2580
-  - 29
-  - 4
 - !!python/tuple
   - '90'
   - Sean
@@ -3475,9 +2860,6 @@
   - null
   - null
   - '10311'
-  - 29
-  - 257
-  - 4
 - !!python/tuple
   - '90'
   - Stacy
@@ -3492,9 +2874,6 @@
     - '2017'
   - REJECTED
   - '10311'
-  - 257
-  - null
-  - 4
 - !!python/tuple
   - '91'
   - Ryan
@@ -3509,9 +2888,6 @@
     - '2018'
   - PENDING
   - '10140'
-  - 2325
-  - 220
-  - 3
 - !!python/tuple
   - '91'
   - Peter
@@ -3526,9 +2902,6 @@
     - '2021'
   - null
   - '10140'
-  - 220
-  - null
-  - 3
 - !!python/tuple
   - '91'
   - Jared
@@ -3543,9 +2916,6 @@
     - '2019'
   - REJECTED
   - '10245'
-  - null
-  - 193
-  - 2
 - !!python/tuple
   - '91'
   - Tammy
@@ -3560,9 +2930,6 @@
     - '2018'
   - REJECTED
   - '10245'
-  - 193
-  - null
-  - 2
 - !!python/tuple
   - '91'
   - Julia
@@ -3576,9 +2943,6 @@
   - null
   - PENDING
   - '502651'
-  - null
-  - 26
-  - 3
 - !!python/tuple
   - '91'
   - Dennis
@@ -3593,9 +2957,6 @@
     - '2018'
   - PENDING
   - '502651'
-  - 26
-  - 589
-  - 3
 - !!python/tuple
   - '92'
   - Ronald
@@ -3609,9 +2970,6 @@
   - null
   - null
   - '10280'
-  - null
-  - 206
-  - 2
 - !!python/tuple
   - '92'
   - Joy
@@ -3626,9 +2984,6 @@
     - '2016'
   - COMPLETED
   - '10280'
-  - 206
-  - null
-  - 2
 - !!python/tuple
   - '93'
   - Spencer
@@ -3643,9 +2998,6 @@
     - '2017'
   - null
   - '10311'
-  - null
-  - 65
-  - 2
 - !!python/tuple
   - '93'
   - Kathy
@@ -3660,9 +3012,6 @@
     - '2018'
   - COMPLETED
   - '10311'
-  - 65
-  - null
-  - 2
 - !!python/tuple
   - '95'
   - Kimberly
@@ -3676,9 +3025,6 @@
   - null
   - COMPLETED
   - '10311'
-  - null
-  - 43
-  - 3
 - !!python/tuple
   - '95'
   - Carla
@@ -3693,9 +3039,6 @@
     - '2020'
   - REJECTED
   - '10311'
-  - 43
-  - 374
-  - 3
 - !!python/tuple
   - '96'
   - Erin
@@ -3710,9 +3053,6 @@
     - '2016'
   - REJECTED
   - '10140'
-  - null
-  - 14
-  - 3
 - !!python/tuple
   - '96'
   - Nathan
@@ -3727,9 +3067,6 @@
     - '2016'
   - REJECTED
   - '10140'
-  - 14
-  - 1883
-  - 3
 - !!python/tuple
   - '97'
   - Christine
@@ -3744,9 +3081,6 @@
     - '2019'
   - PENDING
   - '10311'
-  - null
-  - 153
-  - 5
 - !!python/tuple
   - '97'
   - James
@@ -3761,9 +3095,6 @@
     - '2019'
   - PENDING
   - '10311'
-  - 153
-  - 405
-  - 5
 - !!python/tuple
   - '99'
   - Robert
@@ -3777,9 +3108,6 @@
   - null
   - null
   - '10245'
-  - null
-  - 248
-  - 2
 - !!python/tuple
   - '99'
   - Brandy
@@ -3794,9 +3122,6 @@
     - '2015'
   - REJECTED
   - '10245'
-  - 248
-  - null
-  - 2
 - !!python/tuple
   - '99'
   - Hunter
@@ -3811,9 +3136,6 @@
     - '2024'
   - COMPLETED
   - '502651'
-  - 593
-  - 301
-  - 4
 - !!python/tuple
   - '99'
   - Brenda
@@ -3828,9 +3150,6 @@
     - '2018'
   - PENDING
   - '502651'
-  - 301
-  - 325
-  - 4
 - !!python/tuple
   - '99'
   - Christine
@@ -3845,6 +3164,3 @@
     - '2017'
   - PENDING
   - '502651'
-  - 325
-  - null
-  - 4
