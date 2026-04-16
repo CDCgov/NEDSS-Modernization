@@ -2,12 +2,20 @@ import { ReportConfiguration, ReportControllerService } from 'generated';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
+import { AdvancedFilter as AdvancedFilterType, BasicFilter as BasicFilterType } from 'generated';
 import { useNewTab } from './useNewTab';
 import { ResultDataPage } from './ResultDataPage';
 import fileDownload from 'js-file-download';
 import { ReportResultPage } from './ReportResultPage';
 import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
 import { LoadingIndicator } from 'libs/loading/indicator';
+import { useForm } from 'react-hook-form';
+
+export type ReportExecuteForm = {
+    basicFilter?: Record<string, BasicFilterType[]>;
+    advancedFilter?: AdvancedFilterType;
+    columns?: string[];
+};
 
 const ReportRunPage = () => {
     const params = useParams();
@@ -25,6 +33,23 @@ const ReportRunPage = () => {
             .then((value) => setConfig(value))
             .catch((err) => setError(JSON.stringify(err)));
     }, []);
+
+    const form = useForm<ReportExecuteForm>({
+        mode: 'onBlur',
+    });
+
+
+    const onSubmit = (e, isExport: boolean) => {
+        form.handleSubmit(
+            (data) => {
+                console.log({data});
+                handleSubmit(isExport);
+            },
+            (errors) => {
+                console.log({errors});
+            }
+        )(e);
+    };
 
     const handleSubmit = useCallback((isExport: boolean) => {
         setSubmitting(true);
@@ -48,7 +73,7 @@ const ReportRunPage = () => {
             <LoadingIndicator />
         </>
     ) : !hasResult && !submitting ? (
-        <ReportConfigurationPage config={config} handleSubmit={handleSubmit} />
+        <ReportConfigurationPage config={config} handleSubmit={onSubmit} formControl={form.control} />
     ) : (
         <ReportResultPage
             config={config}
