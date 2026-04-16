@@ -1,7 +1,5 @@
 config:
   seed: 42
-  nbs:
-    fk_tables:
 
 tables:
   - table_name: "[RDB].[dbo].[INV_SUMM_DATAMART]"

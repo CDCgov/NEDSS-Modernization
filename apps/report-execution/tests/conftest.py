@@ -161,7 +161,7 @@ def get_tables_from_faker(schema_name: str) -> tuple[list[str], list[str]]:
         schema = yaml.safe_load(f.read())
 
     db_tables = [t['table_name'] for t in schema['tables']]
-    fk_tables = schema['config']['nbs']['fk_tables']
+    fk_tables = schema['config'].get('nbs', {}).get('fk_tables', [])
 
     return (db_tables, fk_tables)
 
@@ -228,16 +228,16 @@ def insert_fake_data(
     with db_transaction(conn_string) as trx:
         # Tables with foreign keys pointing to the table we want to replace need to
         # be backed up and cleared out to avoid FK constraint violations
-        if fk_tables:
-            for fk_table in fk_tables:
-                temp_fk_table = temp_name(fk_table)
-                trx.execute(
-                    f"IF OBJECT_ID('{temp_fk_table}') IS NOT NULL "
-                    f'DROP TABLE {temp_fk_table}'
-                )
-                trx.execute(f'SELECT * INTO {temp_fk_table} FROM {fk_table}')
-                trx.execute(f'DELETE {fk_table}')
-                logging.info(f'cleared FK table: {fk_table}')
+
+        for fk_table in fk_tables:
+            temp_fk_table = temp_name(fk_table)
+            trx.execute(
+                f"IF OBJECT_ID('{temp_fk_table}') IS NOT NULL "
+                f'DROP TABLE {temp_fk_table}'
+            )
+            trx.execute(f'SELECT * INTO {temp_fk_table} FROM {fk_table}')
+            trx.execute(f'DELETE {fk_table}')
+            logging.info(f'cleared FK table: {fk_table}')
 
         for db_table in db_tables:
             tmp_db_table = temp_name(db_table)
@@ -264,8 +264,8 @@ def restore_original_data(conn_string: str, db_tables: list[str], fk_tables: lis
             trx.execute(f'INSERT INTO {db_table} SELECT * FROM {temp_name(db_table)}')
             trx.execute(f'DROP TABLE {temp_name(db_table)}')
             logging.info(f'Restored table: {db_table}')
-        if fk_tables:
-            for fk_table in fk_tables:
-                trx.execute(f'INSERT INTO {fk_table} SELECT * FROM {temp_name(fk_table)}')
-                trx.execute(f'DROP TABLE {temp_name(fk_table)}')
-                logging.info(f'Restored FK table: {fk_table}')
+            
+        for fk_table in fk_tables:
+            trx.execute(f'INSERT INTO {fk_table} SELECT * FROM {temp_name(fk_table)}')
+            trx.execute(f'DROP TABLE {temp_name(fk_table)}')
+            logging.info(f'Restored FK table: {fk_table}')

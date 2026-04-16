@@ -12,22 +12,11 @@ def execute(
 ):
     """Potential Duplicate Investigations
 
-    Conversion notes:
-    * SAS defaults to 3650 Days in the subheader if no days value is provided.
-    Here, we calculate what the actual date range is in the data and display
-    that in the subheader.
     
     """
-    
-    # Build the WHERE clause for date filtering if days_value is provided
-    date_filter = ""
-    if days_value:
-        date_filter = f"""
-          AND (
-            (d.days_since_prev IS NOT NULL AND d.days_since_prev <= {days_value})
-            OR (d.days_until_next IS NOT NULL AND d.days_until_next <= {days_value})
-          )
-        """
+    if not days_value:
+        days_value = 3650
+
     
     full_query = f"""
     WITH subset AS ({subset_query})
@@ -93,7 +82,10 @@ def execute(
         ON d.PATIENT_LOCAL_ID = c.PATIENT_LOCAL_ID 
         AND d.DISEASE_CD = c.DISEASE_CD
     WHERE c.event_count > 1
-    {date_filter}
+    AND (
+        (d.days_since_prev IS NOT NULL AND d.days_since_prev <= {days_value})
+        OR (d.days_until_next IS NOT NULL AND d.days_until_next <= {days_value})
+    )
     ORDER BY 
     d.PATIENT_LOCAL_ID,
     d.DISEASE_CD,
@@ -103,28 +95,8 @@ def execute(
     content = trx.query(full_query)
     
     header = 'Potential Duplicate Investigations'
-    subheader = None
-    if days_value is not None:
-        subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
-    else:
-        # Calculate date range from the data
-        date_range_query = f"""
-        WITH subset AS ({subset_query})
-        SELECT 
-            MIN(EVENT_DATE) AS min_date,
-            MAX(EVENT_DATE) AS max_date
-        FROM subset
-        WHERE EVENT_DATE IS NOT NULL
-        """
-        
-        date_range_result = trx.query(date_range_query)
-        
-        if date_range_result.data and date_range_result.data[0][0] is not None:
-            min_date = date_range_result.data[0][0]
-            max_date = date_range_result.data[0][1]
-            if min_date and max_date:
-                days_diff = (max_date - min_date).days
-                subheader = f'Duplicate Investigations Time Frame: {days_diff} Days'
+    subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
+
 
     return ReportResult(
         content_type='table', content=content, header=header, subheader=subheader
