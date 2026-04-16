@@ -4,13 +4,6 @@ from pandas import DataFrame
 from pydantic import BaseModel, ConfigDict, PlainSerializer
 
 
-class TimeRange(BaseModel):
-    """Start and end time for a report."""
-
-    start: str  # Date in ISO format
-    end: str  # Date in ISO format
-
-
 class ReportSpec(BaseModel):
     """Report request specification."""
 
@@ -20,7 +13,6 @@ class ReportSpec(BaseModel):
     library_name: str
     data_source_name: str
     subset_query: str
-    time_range: TimeRange | None = None
 
 
 # column names and values
