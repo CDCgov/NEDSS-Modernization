@@ -41,6 +41,8 @@ export const permissions = {
         reportingFacility: {
             view: 'VIEWREPORTREPORTINGFACILITY-REPORTING',
         },
+        run: 'RUNREPORT-REPORTING',
+        export: 'RUNREPORT-REPORTING',
     },
     summaryReports: {
         view: 'VIEW-SUMMARYREPORT',
