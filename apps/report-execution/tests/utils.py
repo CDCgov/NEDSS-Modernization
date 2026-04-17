@@ -55,7 +55,7 @@ class TestUtils:
             assert res == 100
             assert len(caplog.records) == 0
 
-    def test_gen_subheader_with_us_date_range(self):
+    def test_gen_subheader_with_us(self):
         result = utils.gen_subheader(states=['Georgia', 'Tennessee'])
         assert result == 'Georgia, Tennessee'
 
