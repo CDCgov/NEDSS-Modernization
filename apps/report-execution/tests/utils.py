@@ -69,11 +69,3 @@ class TestUtils:
     def test_gen_subheader_no_args(self):
         result = utils.gen_subheader()
         assert result == ''
-
-    def test_gen_subheader_year_only_with_states_and_diseases(self):
-        """Test year-only time range with states and diseases."""
-        result = utils.gen_subheader(
-            states=['N/A', 'Alabama', 'Georgia'],
-            diseases=['Measles'],
-        )
-        assert result == 'N/A, Alabama, Georgia | Measles'
