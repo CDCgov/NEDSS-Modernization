@@ -17,16 +17,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WhereClauseUtils {
   private static final String BAS_TXT = "BAS_TXT";
-  private static final String BAS_DAYS = "BAS_DAYS";
+//  private static final String BAS_DAYS = "BAS_DAYS";
   private static final String BAS_CVG_LIST = "BAS_CVG_LIST";
   private static final String BAS_STD_HIV_WRKR = "BAS_STD_HIV_WRKR";
   private static final String BAS_CON_LIST = "BAS_CON_LIST";
   private static final String BAS_JUR_LIST = "BAS_JUR_LIST";
   public static final String BAS_TIM_LIST = "BAS_TIM_LIST";
-  private static final String BAS_TIM_RANGE = "BAS_TIM_RANGE";
-  private static final String BAS_TIM_RANGE_CUSTOM = "BAS_TIM_RANGE_CUSTOM";
-  private static final String BAS_TIM_RANGE_LIST = "BAS_TIM_RANGE_LIST";
-  //    public static final String BAS_MM_YYYY_RANGE = "BAS_MM_YYYY_RANGE";
 
   private static final String ALLOW_NULLS = "ALLOW_NULLS";
 
@@ -42,12 +38,12 @@ public class WhereClauseUtils {
   // TODO: worked on translating directly from original then was going to go back and clean up
   public String buildBasicWhereClause(
       ReportConfiguration reportConfig, ReportExecutionRequest reportExecRequest) {
-    StringJoiner whereClause = new StringJoiner(" AND ", "WHERE ", "");
+//    StringJoiner whereClause = new StringJoiner(" AND ", "WHERE ", "");
     List<FilterConfiguration> filters = reportConfig.filters();
     if (filters.isEmpty()) {}
     filters.stream()
         .map(
-            (filterConfig) -> {
+            filterConfig -> {
               ReportColumn reportColumn =
                   reportConfig.reportColumns().stream()
                       .filter(rc -> Objects.equals(rc.id(), filterConfig.reportColumnUid()))
@@ -60,15 +56,12 @@ public class WhereClauseUtils {
               }
               StringBuilder clause = new StringBuilder();
 
-              FilterType filterCode = filterConfig.filterType();
+              FilterType filterType = filterConfig.filterType();
               List<FilterDefaultValue> filterDefaultValues = filterConfig.filterDefaultValues();
 
-              if (BASIC_LIST_FILTER_TYPES.contains(filterCode.type().toUpperCase())) {
+              if (BASIC_LIST_FILTER_TYPES.contains(filterType.type().toUpperCase())) {
                 String dsColName = reportColumn.columnName();
-                String dsColTitle = reportColumn.columnTitle();
                 String dsColType = reportColumn.columnSourceTypeCode();
-                String fName = filterCode.name();
-                String fCode = filterCode.code();
                 Integer maxVal = filterConfig.maxValueCnt();
                 Integer minVal = filterConfig.minValueCnt();
 
@@ -102,9 +95,7 @@ public class WhereClauseUtils {
                   if (!includesNoneValues) {
                     clause.append(")");
                   }
-                }
-
-                if (maxVal.equals(minVal)) {
+                }else if (maxVal.equals(minVal)) {
                   clause.append(dsColName).append(" = ");
                   filterDefaultValues.forEach(fdv -> {
                         if (ALLOW_NULLS.equals(fdv.operator())
@@ -114,7 +105,6 @@ public class WhereClauseUtils {
                         clause.append(formatField(dsColType, fdv.valueTxt()));
                         if (includesNoneValues) {
                           clause.append(dsColName).append(" IS NULL ");
-                          continue;
                         }
                       });
                 }
@@ -123,7 +113,7 @@ public class WhereClauseUtils {
                   clause.append(dsColName).append(" IS NULL ");
                 }
 
-                clause.append(")");
+                return clause.append(")");
               }
 
               return null;
@@ -167,6 +157,6 @@ public class WhereClauseUtils {
     return localDate.toString();
   }
 
-  private static String buildBasicListWhereClause(
-      ReportConfiguration reportConfig, ReportExecutionRequest reportExecRequest) {}
+//  private static String buildBasicListWhereClause(
+//      ReportConfiguration reportConfig, ReportExecutionRequest reportExecRequest) {}
 }
