@@ -106,8 +106,7 @@ public class WhereClauseUtils {
 
                 if (maxVal.equals(minVal)) {
                   clause.append(dsColName).append(" = ");
-                  filterDefaultValues.forEach(
-                      (fdv) -> {
+                  filterDefaultValues.forEach(fdv -> {
                         if (ALLOW_NULLS.equals(fdv.operator())
                             && !"none".equalsIgnoreCase(fdv.valueType())) {
                           allowNulls.set(true);
@@ -115,7 +114,7 @@ public class WhereClauseUtils {
                         clause.append(formatField(dsColType, fdv.valueTxt()));
                         if (includesNoneValues) {
                           clause.append(dsColName).append(" IS NULL ");
-                          return;
+                          continue;
                         }
                       });
                 }
@@ -124,8 +123,7 @@ public class WhereClauseUtils {
                   clause.append(dsColName).append(" IS NULL ");
                 }
 
-                //        Integer maxVal = filterConfig
-
+                clause.append(")");
               }
 
               return null;
