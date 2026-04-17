@@ -21,7 +21,6 @@ class TestIntegrationNbsSr11Library:
                 'library_name': 'nbs_sr_11',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -58,7 +57,6 @@ class TestIntegrationNbsSr11Library:
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
                 ),
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -83,13 +81,12 @@ class TestIntegrationNbsSr11Library:
                     "WHERE state = 'Georgia' "
                     "AND phc_code_short_desc IN ('Pertussis', 'Measles')"
                 ),
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
         result = execute_report(report_spec)
         assert result.header == 'SR11: Cases of Selected Diseases By Year Over Time'
-        assert result.subheader == 'Georgia | Measles, Pertussis | 2020 to 2024'
+        assert result.subheader == 'Georgia | Measles, Pertussis'
 
         assert len(result.description) > 100
         assert result.content_type == 'table'

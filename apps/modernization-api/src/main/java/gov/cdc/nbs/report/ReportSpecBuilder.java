@@ -2,9 +2,7 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -75,7 +73,6 @@ public class ReportSpecBuilder {
     String libraryName = reportConfig.reportLibrary().libraryName();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
-    Map<String, LocalDate> timeRange = null;
     List<ReportColumn> columns = fetchColumns();
 
     String selectClause = buildSelectClause(columns);
@@ -87,6 +84,6 @@ public class ReportSpecBuilder {
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery, timeRange);
+        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery);
   }
 }
