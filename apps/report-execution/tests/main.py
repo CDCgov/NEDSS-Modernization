@@ -55,7 +55,7 @@ class TestReportExecuteEndpoint:
         assert df.shape == (4, 2)
 
     def test_execute_report_api(self, client, mock_db_transaction):
-        """Test executing a report with an optional time range."""
+        """Test executing a report."""
         report_spec = {
             'is_export': False,
             'is_builtin': True,
