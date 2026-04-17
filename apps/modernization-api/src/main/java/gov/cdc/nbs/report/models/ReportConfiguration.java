@@ -10,7 +10,7 @@ public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String reportTitle,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<BasicFilterConfiguration> basicFilters,
-    AdvancedFilter advancedFilter,
+    AdvancedFilterConfiguration advancedFilter,
     List<ReportColumn> reportColumns) {
 
   public boolean isPython() {
