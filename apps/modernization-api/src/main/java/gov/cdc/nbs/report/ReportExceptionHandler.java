@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice(assignableTypes = {ReportController.class})
 public class ReportExceptionHandler {
 
+  private static final System.Logger LOGGER =
+      System.getLogger(ReportExceptionHandler.class.getName());
+
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<String> handleNotFound(NotFoundException ex) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
@@ -23,5 +26,11 @@ public class ReportExceptionHandler {
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<String> handleUnprocessableEntity(IllegalArgumentException ex) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<String> handleUnexpectedError(Exception ex) {
+    LOGGER.log(System.Logger.Level.ERROR, ex);
+    return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

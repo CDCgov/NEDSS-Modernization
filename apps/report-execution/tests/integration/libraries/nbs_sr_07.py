@@ -27,7 +27,6 @@ class TestIntegrationNbsSr07Library:
                 'library_name': 'nbs_sr_07',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -62,7 +61,6 @@ class TestIntegrationNbsSr07Library:
                 'library_name': 'nbs_sr_07',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -72,7 +70,7 @@ class TestIntegrationNbsSr07Library:
             == 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected '
             'Time Period'
         )
-        assert result.subheader == 'N/A, Georgia, Tennessee | 06/24/2024'
+        assert result.subheader == 'N/A, Georgia, Tennessee'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 

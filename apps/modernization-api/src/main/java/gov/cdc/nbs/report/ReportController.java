@@ -36,10 +36,21 @@ public class ReportController {
     return new ResponseEntity<>(reportConfigResponse, HttpStatus.OK);
   }
 
-  @PostMapping("/execute")
+  @PostMapping("/run")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
-  public ResponseEntity<ReportResult> executeReport(@RequestBody ReportExecutionRequest request) {
+  public ResponseEntity<ReportResult> runReport(@RequestBody ReportExecutionRequest request) {
     // TODO: validate request // NOSONAR
+    if (request.isExport())
+      throw new IllegalArgumentException("isExport must be false when running a report");
+    return reportService.executeReport(request);
+  }
+
+  @PostMapping("/export")
+  @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
+  public ResponseEntity<ReportResult> exportReport(@RequestBody ReportExecutionRequest request) {
+    // TODO: validate request // NOSONAR
+    if (!request.isExport())
+      throw new IllegalArgumentException("isExport must be true when exporting a report");
     return reportService.executeReport(request);
   }
 }

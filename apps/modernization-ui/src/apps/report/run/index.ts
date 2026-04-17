@@ -1,1 +1,1 @@
-export { ReportRun } from './ReportRun';
+export { ReportRunPage } from './ReportRunPage';
