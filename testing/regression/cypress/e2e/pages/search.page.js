@@ -80,7 +80,6 @@ class SearchPage {
   search() {
     cy.get('button').contains("Search").click();    
     cy.wait(100);
-    cy.get('header button').eq(2).click();
   }
 
   verifySearchPage() {
