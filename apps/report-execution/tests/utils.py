@@ -59,7 +59,7 @@ class TestUtils:
         result = utils.gen_subheader(states=['Georgia', 'Tennessee'])
         assert result == 'Georgia, Tennessee'
 
-    def test_gen_subheader_with_states_diseases_and_date_range(self):
+    def test_gen_subheader_with_states_and_diseases(self):
         result = utils.gen_subheader(
             states=[None, 'Alabama', 'Georgia'],
             diseases=['Measles'],
