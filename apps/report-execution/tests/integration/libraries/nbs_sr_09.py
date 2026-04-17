@@ -15,7 +15,7 @@ class TestIntegrationNbsSr09Library:
     """Integration tests for the nbs_sr_09 library.
 
     This library generates monthly case counts for bar graph data,
-    filtering by time range, State, and Condition.
+    filtering by State and Condition.
     """
 
     def test_execute_report_check_data(self, snapshot):
