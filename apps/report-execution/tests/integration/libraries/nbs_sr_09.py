@@ -15,7 +15,7 @@ class TestIntegrationNbsSr09Library:
     """Integration tests for the nbs_sr_09 library.
 
     This library generates monthly case counts for bar graph data,
-    filtering by time range, State, and Condition.
+    filtering by State and Condition.
     """
 
     def test_execute_report_check_data(self, snapshot):
@@ -28,7 +28,6 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
             }
         )
 
@@ -90,7 +89,6 @@ class TestIntegrationNbsSr09Library:
                     "WHERE state = 'Georgia' "
                     "AND phc_code_short_desc = 'Pertussis'"
                 ),
-                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -110,7 +108,6 @@ class TestIntegrationNbsSr09Library:
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 0'
                 ),
-                'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
             }
         )
 
@@ -132,7 +129,6 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
             }
         )
 
@@ -161,7 +157,6 @@ class TestIntegrationNbsSr09Library:
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
             }
         )
 
@@ -176,7 +171,6 @@ class TestIntegrationNbsSr09Library:
         # Check subheader contains expected elements
 
         assert 'Georgia' in result.subheader and 'Tennessee' in result.subheader
-        assert '01/01/2024 to 06/30/2024' in result.subheader
 
         # Check description contains required sections
         assert len(result.description) > 100
@@ -202,7 +196,6 @@ class TestIntegrationNbsSr09Library:
                     "AND county = 'Fulton County' "
                     "AND phc_code_short_desc = 'Pertussis'"
                 ),
-                'time_range': {'start': '2024-01-01', 'end': '2024-06-30'},
             }
         )
 
