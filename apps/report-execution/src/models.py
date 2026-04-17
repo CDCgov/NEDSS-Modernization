@@ -1,7 +1,7 @@
 from typing import Annotated, Any, Literal
 
 from pandas import DataFrame
-from pydantic import BaseModel, ConfigDict, PlainSerializer
+from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
 
 
 class ReportSpec(BaseModel):
@@ -9,10 +9,10 @@ class ReportSpec(BaseModel):
 
     is_export: bool
     is_builtin: bool
-    report_title: str
-    library_name: str
-    data_source_name: str
-    subset_query: str
+    report_title: str = Field(min_length=1)
+    library_name: str = Field(min_length=1)
+    data_source_name: str = Field(min_length=1)
+    subset_query: str = Field(min_length=1)
 
 
 # column names and values
