@@ -42,6 +42,13 @@ class InternalServerError(BaseReportExecutionError):
         super().__init__('Internal Server Error', 500)
 
 
+class InvalidReportSpecError(BaseReportExecutionError):
+    """The provided report specification is invalid."""
+
+    def __init__(self, message):
+        super().__init__(f'Invalid report specification: {message}', 422)
+
+
 class ToDoError(BaseReportExecutionError):
     """An error for a feature that hasn't been implemented yet."""
 
