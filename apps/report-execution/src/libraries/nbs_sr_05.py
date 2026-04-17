@@ -148,7 +148,7 @@ def execute(
     trx.execute('DROP TABLE #base_data')
 
     header = 'SR5: Cases of Reportable Diseases by State'
-    subheader = gen_subheader(states=state_list, date_obj=today)
+    subheader = gen_subheader(states=state_list)
     description = (
         '*<u>Report content</u>*\n'
         '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'

@@ -1,12 +1,11 @@
 from src.db_transaction import Transaction
-from src.models import ReportResult, TimeRange
+from src.models import ReportResult
 
 
 def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
-    time_range: TimeRange | None = None,
     **kwargs,
 ):
     """This is a stub custom library just to start to get the interface hooked up."""

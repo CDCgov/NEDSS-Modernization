@@ -1,5 +1,5 @@
 from src.db_transaction import Transaction
-from src.models import ReportResult, TimeRange
+from src.models import ReportResult
 from src.utils import gen_subheader
 
 
@@ -7,7 +7,6 @@ def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
-    time_range: TimeRange | None = None,
     **kwargs,
 ):
     """Standard Report 11: Cases of Selected Diseases By Year Over Time.
@@ -37,9 +36,7 @@ def execute(
     condition_list = content.get_unique_column('Condition')
     subheader = gen_subheader(
         states=state_list,
-        time_range=time_range,
         diseases=condition_list,
-        date_format='%Y',
     )
 
     description = (

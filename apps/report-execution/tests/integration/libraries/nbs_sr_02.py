@@ -21,7 +21,6 @@ class TestIntegrationNbsSr02Library:
                 'library_name': 'nbs_sr_02',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -61,7 +60,6 @@ class TestIntegrationNbsSr02Library:
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
                 ),
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -72,40 +70,9 @@ class TestIntegrationNbsSr02Library:
         assert len(data) == 0
         assert len(result.content.columns) == 4
 
-        assert result.subheader is None
+        assert result.subheader == ''
 
-    def test_execute_report_check_metadata_with_time_range(self):
-        """Check the metadata and column names are correct."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'SR 2',
-                'library_name': 'nbs_sr_02',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
-            }
-        )
-
-        result = execute_report(report_spec)
-        assert (
-            result.header
-            == 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
-        )
-        assert (
-            result.subheader
-            == 'For Georgia, N/A, Tennessee and From 2020-01-01 To 2024-12-31'
-        )
-        assert len(result.description) > 100
-        assert result.content_type == 'table'
-
-        assert result.content.columns[0] == 'State'
-        assert result.content.columns[1] == 'County'
-        assert result.content.columns[2] == 'Condition'
-        assert result.content.columns[3] == 'Cases'
-
-    def test_execute_report_check_metadata_without_time_range_one_state(self):
+    def test_execute_report_check_metadata_one_state(self):
         """Check the metadata and column names are correct."""
         report_spec = ReportSpec.model_validate(
             {
@@ -126,7 +93,7 @@ class TestIntegrationNbsSr02Library:
             result.header
             == 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
         )
-        assert result.subheader == 'For Georgia'
+        assert result.subheader == 'Georgia'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 
