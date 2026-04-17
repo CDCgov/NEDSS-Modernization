@@ -2,14 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Filter } from './Filter';
-export type BasicFilter = (Filter & {
-    isBasic?: boolean;
-    reportFilterUid?: number;
-    values?: Array<string>;
-} & {
-    isBasic: boolean;
+export type BasicFilter = {
     reportFilterUid: number;
     values: Array<string>;
-});
+};
 

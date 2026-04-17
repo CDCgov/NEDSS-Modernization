@@ -1,5 +1,5 @@
 import { Field } from 'design-system/field';
-import { FilterConfiguration, ReportColumn } from 'generated';
+import { BasicFilterConfiguration, ReportColumn } from 'generated';
 import { ReactNode, useId } from 'react';
 import { ReportExecuteForm } from '../ReportRunPage';
 import { Control, Controller } from 'react-hook-form';
@@ -7,7 +7,7 @@ import { validateRequiredRule } from 'validation/entry';
 import { TextFilter, getValueText } from './TextFilter';
 
 export type BasicFilterProps = {
-    filter: FilterConfiguration;
+    filter: BasicFilterConfiguration;
     id: string;
 } & Omit<Parameters<typeof Field>[0], 'htmlFor' | 'children'>;
 
@@ -15,7 +15,7 @@ export type BasicFilterComponent = (props: BasicFilterProps) => ReactNode;
 
 const FILTER_TYPE_MAP: Record<
     string,
-    { FilterComponent: BasicFilterComponent; getDefaultValue: (filter: FilterConfiguration) => any }
+    { FilterComponent: BasicFilterComponent; getDefaultValue: (filter: BasicFilterConfiguration) => any }
 > = {
     BAS_TXT: { FilterComponent: TextFilter, getDefaultValue: getValueText },
 };
@@ -26,19 +26,17 @@ const TEMP_DEFAULT_FILTER = {
             <p>{JSON.stringify(filter)}</p>
         </Field>
     ),
-    getDefaultValue: (_filter: FilterConfiguration) => null,
+    getDefaultValue: (_filter: BasicFilterConfiguration) => null,
 };
 
 const BasicFilter = ({
     filter,
     columns,
     formControl,
-    fieldIndex,
     ...remaining
 }: {
-    filter: FilterConfiguration;
+    filter: BasicFilterConfiguration;
     columns: ReportColumn[];
-    fieldIndex: number;
     formControl: Control<ReportExecuteForm>;
 }) => {
     const id = useId();
@@ -49,17 +47,18 @@ const BasicFilter = ({
     const helperText = label === filterDesc ? undefined : filterDesc;
 
     // Get the actual input handler for this filter type
-    const { FilterComponent, getDefaultValue } = FILTER_TYPE_MAP[filter.filterType.filterType || ''] ?? TEMP_DEFAULT_FILTER;
+    const { FilterComponent, getDefaultValue } =
+        FILTER_TYPE_MAP[filter.filterType.filterType || ''] ?? TEMP_DEFAULT_FILTER;
 
     // Don't validate required-ness for uninmplemented filtrs
     const isRequired = (filter.minValueCount ?? 1) > 0;
-    const hasFilter = !!FILTER_TYPE_MAP[filter.filterType.filterType || '']
+    const hasFilter = !!FILTER_TYPE_MAP[filter.filterType.filterType || ''];
     const isRequiredValidation = hasFilter && (filter.minValueCount ?? 1) > 0;
 
     return (
         <Controller
             control={formControl}
-            name={`basicFilter.${fieldIndex}`}
+            name={`basicFilter.${filter.reportFilterUid}`}
             rules={isRequiredValidation ? validateRequiredRule(label) : undefined}
             defaultValue={getDefaultValue(filter)}
             // ignoring the ref as it does not pass down well and isn't critical

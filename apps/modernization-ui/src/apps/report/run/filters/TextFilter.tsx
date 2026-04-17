@@ -1,16 +1,16 @@
 import { TextInputField } from 'design-system/input';
 import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
-import { FilterConfiguration } from 'generated';
+import { BasicFilterConfiguration } from 'generated';
 
 const TextFilter: BasicFilterComponent = ({ filter, ...remaining }: BasicFilterProps) => {
     return <TextInputField {...remaining} />;
 };
 
-const getValueText = (filter: FilterConfiguration) => {
-    if (filter.filterDefaultValues.length === 0) return null;
+const getValueText = (filter: BasicFilterConfiguration) => {
+    if (!filter.defaultValue || filter.defaultValue.length === 0) return null;
 
     // bas text filters only ever have one default and it needs no interpretation
-    return filter.filterDefaultValues[0].valueTxt
-}
+    return filter.defaultValue[0];
+};
 
 export { TextFilter, getValueText };

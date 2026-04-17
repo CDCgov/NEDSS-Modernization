@@ -14,6 +14,7 @@ export type { AdvancedFilter } from './models/AdvancedFilter';
 export type { Allowed } from './models/Allowed';
 export type { AssociatedInvestigation } from './models/AssociatedInvestigation';
 export type { BasicFilter } from './models/BasicFilter';
+export type { BasicFilterConfiguration } from './models/BasicFilterConfiguration';
 export type { BirthDemographic } from './models/BirthDemographic';
 export type { Clause } from './models/Clause';
 export type { ConceptOptionsResponse } from './models/ConceptOptionsResponse';
@@ -34,9 +35,6 @@ export type { ExistingRaceCategoryResponse } from './models/ExistingRaceCategory
 export type { ExistingRaceCategoryValid } from './models/ExistingRaceCategoryValid';
 export type { Expr } from './models/Expr';
 export type { Failure } from './models/Failure';
-export type { Filter } from './models/Filter';
-export type { FilterConfiguration } from './models/FilterConfiguration';
-export type { FilterDefaultValue } from './models/FilterDefaultValue';
 export type { FilterType } from './models/FilterType';
 export type { GenderDemographic } from './models/GenderDemographic';
 export type { GeneralInformationDemographic } from './models/GeneralInformationDemographic';

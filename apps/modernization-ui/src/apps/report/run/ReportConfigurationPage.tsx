@@ -17,7 +17,7 @@ const ReportConfigurationPage = ({
     handleSubmit: (e: React.BaseSyntheticEvent, isExport: boolean) => void;
     formControl: Control<ReportExecuteForm>;
 }) => {
-    const basicFilters = config.filters.filter((filter) => filter.filterType.filterType?.startsWith('BAS_'));
+    const basicFilters = config.basicFilters;
 
     return (
         <ReportRunLayout
@@ -31,7 +31,8 @@ const ReportConfigurationPage = ({
                         <Button onClick={(e) => handleSubmit(e, true)}>Export</Button>
                     </Permitted>
                 </>
-            }>
+            }
+        >
             <form>
                 {basicFilters.length > 0 && (
                     <Card id="basic-filters" title="Basic Filters" collapsible={true}>
@@ -39,7 +40,6 @@ const ReportConfigurationPage = ({
                             return (
                                 <BasicFilter
                                     key={`basic_filter_${i}`}
-                                    fieldIndex={i}
                                     filter={filter}
                                     columns={config.reportColumns ?? []}
                                     formControl={formControl}

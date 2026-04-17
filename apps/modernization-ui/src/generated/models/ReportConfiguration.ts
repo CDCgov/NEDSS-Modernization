@@ -2,7 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { FilterConfiguration } from './FilterConfiguration';
+import type { AdvancedFilter } from './AdvancedFilter';
+import type { BasicFilterConfiguration } from './BasicFilterConfiguration';
 import type { Library } from './Library';
 import type { ReportColumn } from './ReportColumn';
 import type { ReportDataSource } from './ReportDataSource';
@@ -11,7 +12,8 @@ export type ReportConfiguration = {
     dataSource: ReportDataSource;
     reportLibrary: Library;
     reportTitle: string;
-    filters: Array<FilterConfiguration>;
+    basicFilters: Array<BasicFilterConfiguration>;
+    advancedFilter?: AdvancedFilter;
     reportColumns?: Array<ReportColumn>;
     python?: boolean;
 };

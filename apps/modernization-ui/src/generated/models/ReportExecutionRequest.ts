@@ -9,6 +9,7 @@ export type ReportExecutionRequest = {
     dataSourceUid: number;
     isExport: boolean;
     columnUids?: Array<number>;
-    filters?: Array<(AdvancedFilter | BasicFilter)>;
+    basicFilters?: Array<BasicFilter>;
+    advancedFilter?: AdvancedFilter;
 };
 

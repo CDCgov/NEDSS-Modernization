@@ -1,4 +1,5 @@
-import { ReportConfiguration, ReportControllerService } from 'generated';
+import React from 'react';
+import { Filter, ReportConfiguration, ReportControllerService } from 'generated';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
@@ -12,7 +13,8 @@ import { LoadingIndicator } from 'libs/loading/indicator';
 import { useForm } from 'react-hook-form';
 
 export type ReportExecuteForm = {
-    basicFilter?: Record<string, BasicFilterType[]>;
+    // key is the report's ID
+    basicFilter?: Record<string, string[] | string>;
     advancedFilter?: AdvancedFilterType;
     columns?: string[];
 };
@@ -38,23 +40,35 @@ const ReportRunPage = () => {
         mode: 'onBlur',
     });
 
-
-    const onSubmit = (e, isExport: boolean) => {
+    const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {
         form.handleSubmit(
             (data) => {
-                console.log({data});
-                handleSubmit(isExport);
+                console.log({ data });
+                const basicFilters: BasicFilterType[] = Object.entries(data.basicFilter ?? {})
+                    .map(([id, value]) => {
+                        const values = typeof value === 'string' ? [value] : value;
+                        return {
+                            reportFilterUid: parseInt(id),
+                            isBasic: true,
+                            values,
+                        };
+                    })
+                    .filter((f) => !!f.values);
+                handleSubmit(isExport, basicFilters);
             },
             (errors) => {
-                console.log({errors});
+                console.log({ errors });
+                // TODO make this gather all errors
+                setError(Object.values(errors.basicFilter ?? {}).reduce((acc, cur) => `${acc}\n${cur}`, ''));
             }
-        )(e);
+        )(event);
     };
 
-    const handleSubmit = useCallback((isExport: boolean) => {
+    const handleSubmit = useCallback((isExport: boolean, basicFilters: BasicFilterType[]) => {
         setSubmitting(true);
+        setError('');
         const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
-        runner({ requestBody: { isExport, reportUid, dataSourceUid } })
+        runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters } })
             .then((res) => {
                 setHasResult(true);
                 if (!res.content) {
@@ -73,7 +87,10 @@ const ReportRunPage = () => {
             <LoadingIndicator />
         </>
     ) : !hasResult && !submitting ? (
-        <ReportConfigurationPage config={config} handleSubmit={onSubmit} formControl={form.control} />
+        <>
+            {error && <InlineErrorMessage id="report-config-error">{error}</InlineErrorMessage>}
+            <ReportConfigurationPage config={config} handleSubmit={onSubmit} formControl={form.control} />
+        </>
     ) : (
         <ReportResultPage
             config={config}
