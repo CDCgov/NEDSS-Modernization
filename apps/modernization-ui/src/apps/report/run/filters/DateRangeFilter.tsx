@@ -1,42 +1,17 @@
 import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 import { BasicFilterConfiguration } from 'generated';
-import { Field } from 'design-system/field';
-import { DatePicker } from 'design-system/date/picker';
-import { DateRangeField } from 'design-system/date/criteria/range';
+import { DatePickerRange } from 'design-system/date/range/DatePickerRange';
 
-const DateRangeFilter: BasicFilterComponent = ({
-    filter,
-    id,
-    orientation,
-    sizing,
-    label,
-    helperText,
-    required,
-    error,
-    value,
-    onChange,
-    onBlur,
-    ...remaining
-}: BasicFilterProps) => {
+// Don't need `filter` for this component, but don't want to pass it down
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const DateRangeFilter: BasicFilterComponent = ({ filter, value, onChange, ...remaining }: BasicFilterProps) => {
+    // TODO: validation isn't quite right for this component yet
     return (
-        <Field
-            orientation={orientation}
-            sizing={sizing}
-            label={label}
-            helperText={helperText}
-            htmlFor={id}
-            required={required}
-            error={error}
-        >
-            <DateRangeField
-                id={id}
-                value={{ between: { from: value?.[0], to: value?.[1] } }}
-                sizing={sizing}
-                onChange={(newValue) => onChange([newValue?.between?.from, newValue?.between.to])}
-                onBlur={onBlur}
-                label={label}
-            />
-        </Field>
+        <DatePickerRange
+            value={{ between: { from: value?.[0], to: value?.[1] } }}
+            onChange={(newValue) => onChange([newValue?.between?.from, newValue?.between.to])}
+            {...remaining}
+        />
     );
 };
 

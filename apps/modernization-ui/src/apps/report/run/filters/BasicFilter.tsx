@@ -2,7 +2,7 @@ import { Field } from 'design-system/field';
 import { BasicFilterConfiguration, ReportColumn } from 'generated';
 import { ReactNode, useId } from 'react';
 import { ReportExecuteForm } from '../ReportRunPage';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, ControllerRenderProps } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { TextFilter, getValueText } from './TextFilter';
 import { DateRangeFilter, getDateRange } from './DateRangeFilter';
@@ -10,7 +10,7 @@ import { DateRangeFilter, getDateRange } from './DateRangeFilter';
 export type BasicFilterProps = {
     filter: BasicFilterConfiguration;
     id: string;
-} & Omit<Parameters<typeof Field>[0], 'htmlFor' | 'children'>;
+} & Omit<Parameters<typeof Field>[0], 'htmlFor' | 'children'> & Omit<ControllerRenderProps, 'ref'>;
 
 export type BasicFilterComponent = (props: BasicFilterProps) => ReactNode;
 

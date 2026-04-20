@@ -62,7 +62,6 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }
             ref={dateRangePickerRef}
             className={classNames('usa-date-range-picker', styles['date-range-entry'])}
             aria-label={label}
-            onBlur={() => console.log(`${new Date()} blur!`)}
         >
             <div className={classNames(styles['range-wrapper'], 'from')}>
                 <label htmlFor={`${id}-from`}>From</label>
