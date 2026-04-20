@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type BasicFilter = {
+export type BasicFilterRequest = {
     reportFilterUid: number;
     values: Array<string>;
 };

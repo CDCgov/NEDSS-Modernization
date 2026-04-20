@@ -4,8 +4,11 @@
 /* eslint-disable */
 import type { Clause } from './Clause';
 import type { Connector } from './Connector';
-export type AdvancedFilter = {
+import type { FilterType } from './FilterType';
+export type AdvancedFilterConfiguration = {
     reportFilterUid: number;
-    logic: (Clause | Connector);
+    reportColumnUid?: number;
+    defaultValue?: (Clause | Connector);
+    filterType: FilterType;
 };
 

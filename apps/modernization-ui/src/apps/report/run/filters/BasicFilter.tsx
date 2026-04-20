@@ -2,24 +2,34 @@ import { Field } from 'design-system/field';
 import { BasicFilterConfiguration, ReportColumn } from 'generated';
 import { ReactNode, useId } from 'react';
 import { ReportExecuteForm } from '../ReportRunPage';
-import { Control, Controller, ControllerRenderProps } from 'react-hook-form';
+import { Control, Controller, ControllerRenderProps, RegisterOptions } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { TextFilter, getValueText } from './TextFilter';
-import { DateRangeFilter, getDateRange } from './DateRangeFilter';
+import { DateRangeFilter, dateRangeValidator, getDateRange } from './DateRangeFilter';
+import { Validator } from 'validation';
 
 export type BasicFilterProps = {
     filter: BasicFilterConfiguration;
     id: string;
-} & Omit<Parameters<typeof Field>[0], 'htmlFor' | 'children'> & Omit<ControllerRenderProps, 'ref'>;
+} & Omit<Parameters<typeof Field>[0], 'htmlFor' | 'children'> &
+    Omit<ControllerRenderProps, 'ref'>;
 
 export type BasicFilterComponent = (props: BasicFilterProps) => ReactNode;
 
 const FILTER_TYPE_MAP: Record<
     string,
-    { FilterComponent: BasicFilterComponent; getDefaultValue: (filter: BasicFilterConfiguration) => any }
+    {
+        FilterComponent: BasicFilterComponent;
+        getDefaultValue: (filter: BasicFilterConfiguration) => any;
+        validationRule?: <T>(filter: BasicFilterConfiguration, label: string) => Validator<T>;
+    }
 > = {
     BAS_TXT: { FilterComponent: TextFilter, getDefaultValue: getValueText },
-    BAS_TIM_RANGE: { FilterComponent: DateRangeFilter, getDefaultValue: getDateRange },
+    BAS_TIM_RANGE: {
+        FilterComponent: DateRangeFilter,
+        getDefaultValue: getDateRange,
+        validationRule: dateRangeValidator,
+    },
 };
 
 const TEMP_DEFAULT_FILTER = {
@@ -28,7 +38,7 @@ const TEMP_DEFAULT_FILTER = {
             <p>{JSON.stringify(filter)}</p>
         </Field>
     ),
-    getDefaultValue: (_filter: BasicFilterConfiguration) => null,
+    getDefaultValue: () => null,
 };
 
 const BasicFilter = ({
@@ -49,18 +59,26 @@ const BasicFilter = ({
     const helperText = label === filterDesc ? undefined : filterDesc;
 
     // Get the actual input handler for this filter type
-    const { FilterComponent, getDefaultValue } =
+    const { FilterComponent, getDefaultValue, validationRule } =
         FILTER_TYPE_MAP[filter.filterType.filterType || ''] ?? TEMP_DEFAULT_FILTER;
 
     // Don't validate required-ness for uninmplemented filtrs
     const hasFilter = !!FILTER_TYPE_MAP[filter.filterType.filterType || ''];
     const isRequiredValidation = hasFilter && filter.isRequired;
 
+    const rules: Pick<RegisterOptions, 'required' | 'validate'> = isRequiredValidation
+        ? validateRequiredRule(label)
+        : {};
+
+    if (validationRule) {
+        rules.validate = validationRule(filter, label);
+    }
+
     return (
         <Controller
             control={formControl}
             name={`basicFilter.${filter.reportFilterUid}`}
-            rules={isRequiredValidation ? validateRequiredRule(label) : undefined}
+            rules={rules}
             defaultValue={getDefaultValue(filter)}
             // ignoring the ref as it does not pass down well and isn't critical
             // eslint-disable-next-line @typescript-eslint/no-unused-vars

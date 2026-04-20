@@ -1,22 +1,21 @@
 import React from 'react';
-import { Filter, ReportConfiguration, ReportControllerService } from 'generated';
+import { ReportConfiguration, ReportControllerService } from 'generated';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
-import { AdvancedFilter as AdvancedFilterType, BasicFilter as BasicFilterType } from 'generated';
+import { AdvancedFilterRequest, BasicFilterRequest } from 'generated';
 import { useNewTab } from './useNewTab';
 import { ResultDataPage } from './ResultDataPage';
 import fileDownload from 'js-file-download';
 import { ReportResultPage } from './ReportResultPage';
-import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { useForm } from 'react-hook-form';
-import { ErrorMessage } from '@trussworks/react-uswds';
+import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 
 export type ReportExecuteForm = {
     // key is the report's ID
     basicFilter?: Record<string, string[] | string>;
-    advancedFilter?: AdvancedFilterType;
+    advancedFilter?: AdvancedFilterRequest;
     columns?: string[];
 };
 
@@ -45,12 +44,11 @@ const ReportRunPage = () => {
         form.handleSubmit(
             (data) => {
                 console.log({ data });
-                const basicFilters: BasicFilterType[] = Object.entries(data.basicFilter ?? {})
+                const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
                     .map(([id, value]) => {
                         const values = typeof value === 'string' ? [value] : value;
                         return {
                             reportFilterUid: parseInt(id),
-                            isBasic: true,
                             values,
                         };
                     })
@@ -60,12 +58,12 @@ const ReportRunPage = () => {
             (errors) => {
                 console.log({ errors });
                 // TODO make this gather all errors
-                setError(Object.values(errors.basicFilter ?? {}).reduce((acc, cur) => `${acc}\n${cur}`, ''));
+                setError(Object.values(errors.basicFilter ?? {}).reduce((acc, cur) => `${acc}\n${cur?.message}`, ''));
             }
         )(event);
     };
 
-    const handleSubmit = useCallback((isExport: boolean, basicFilters: BasicFilterType[]) => {
+    const handleSubmit = useCallback((isExport: boolean, basicFilters: BasicFilterRequest[]) => {
         setSubmitting(true);
         setError('');
         const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
@@ -84,12 +82,12 @@ const ReportRunPage = () => {
 
     return !config ? (
         <>
-            {error && <ErrorMessage id="report-config-error">{error}</ErrorMessage>}
+            {error && <AlertBanner type="error">{error}</AlertBanner>}
             <LoadingIndicator />
         </>
     ) : !hasResult && !submitting ? (
         <>
-            {error && <ErrorMessage id="report-config-error">{error}</ErrorMessage>}
+            {error && <AlertBanner type="error">{error}</AlertBanner>}
             <ReportConfigurationPage config={config} handleSubmit={onSubmit} formControl={form.control} />
         </>
     ) : (

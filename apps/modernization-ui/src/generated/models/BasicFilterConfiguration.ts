@@ -9,7 +9,7 @@ export type BasicFilterConfiguration = {
     defaultValue?: Array<string>;
     minValueCount?: number;
     maxValueCount?: number;
-    isRequired?: boolean;
+    isRequired: boolean;
     filterType: FilterType;
 };
 

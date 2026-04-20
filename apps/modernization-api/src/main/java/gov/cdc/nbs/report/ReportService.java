@@ -53,15 +53,13 @@ public class ReportService {
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
-              List<ReportColumn> reportColumns = null;
               List<DataSourceColumn> dataSourceColumns =
                   report.getDataSource().getDataSourceColumns();
-              if (dataSourceColumns != null) {
-                reportColumns =
-                    dataSourceColumns.stream()
-                        .map(ReportColumnMapper::fromDataSourceColumn)
-                        .toList();
+              if (dataSourceColumns == null) {
+                throw new IllegalArgumentException("Invalid data source");
               }
+              List<ReportColumn> reportColumns =
+                  dataSourceColumns.stream().map(ReportColumnMapper::fromDataSourceColumn).toList();
 
               return new ReportConfiguration(
                   report.getReportLibrary().getRunner(),

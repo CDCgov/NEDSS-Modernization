@@ -11,7 +11,7 @@ public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<BasicFilterConfiguration> basicFilters,
     AdvancedFilterConfiguration advancedFilter,
-    List<ReportColumn> reportColumns) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<ReportColumn> reportColumns) {
 
   public boolean isPython() {
     return runner().equalsIgnoreCase("python");
