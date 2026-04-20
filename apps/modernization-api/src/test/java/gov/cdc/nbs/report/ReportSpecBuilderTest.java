@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-import gov.cdc.nbs.report.models.FilterConfiguration;
+import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
@@ -33,12 +33,12 @@ class ReportSpecBuilderTest {
     return dataSourceNameUtils;
   }
 
-  private FilterConfiguration mockFilterConfiguration(Long columnId) {
-    FilterConfiguration filterConfig = Mockito.mock(FilterConfiguration.class);
+  private BasicFilterConfiguration mockBasicFilterConfiguration(Long columnId) {
+    BasicFilterConfiguration basicFilterConfig = Mockito.mock(BasicFilterConfiguration.class);
 
-    Mockito.lenient().when(filterConfig.reportColumnUid()).thenReturn(columnId);
+    Mockito.lenient().when(basicFilterConfig.reportColumnUid()).thenReturn(columnId);
 
-    return filterConfig;
+    return basicFilterConfig;
   }
 
   private ReportColumn mockReportColumn(Long columnId, String columnName, String columnTitle) {
@@ -52,7 +52,7 @@ class ReportSpecBuilderTest {
   }
 
   private ReportConfiguration mockReportConfiguration(
-      List<FilterConfiguration> filters, List<ReportColumn> columns, String title) {
+      List<BasicFilterConfiguration> filters, List<ReportColumn> columns, String title) {
     ReportConfiguration reportConfiguration = Mockito.mock(ReportConfiguration.class);
 
     DataSourceNameConfiguration dataSourceNameConfiguration =
@@ -67,7 +67,7 @@ class ReportSpecBuilderTest {
     Mockito.lenient().when(reportConfiguration.dataSource()).thenReturn(dataSource);
     Mockito.lenient().when(dataSource.name()).thenReturn("nbs_ods.NBS_configuration");
 
-    Mockito.lenient().when(reportConfiguration.filters()).thenReturn(filters);
+    Mockito.lenient().when(reportConfiguration.basicFilters()).thenReturn(filters);
     Mockito.lenient().when(reportConfiguration.reportColumns()).thenReturn(columns);
     Mockito.lenient().when(reportConfiguration.reportTitle()).thenReturn(title);
 
@@ -87,8 +87,8 @@ class ReportSpecBuilderTest {
     Long columnUid1 = 1L;
     Long columnUid2 = 2L;
 
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
-    FilterConfiguration filterConfig2 = mockFilterConfiguration(columnUid2);
+    BasicFilterConfiguration filterConfig1 = mockBasicFilterConfiguration(columnUid1);
+    BasicFilterConfiguration filterConfig2 = mockBasicFilterConfiguration(columnUid2);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, "column1", "Column 1");
     ReportColumn reportColumn2 = mockReportColumn(columnUid2, "column2", "Column 2");
@@ -124,7 +124,7 @@ class ReportSpecBuilderTest {
     Long knownColumnUid = 1L;
     Long unknownColumnUid = 2L;
 
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(knownColumnUid);
+    BasicFilterConfiguration filterConfig1 = mockBasicFilterConfiguration(knownColumnUid);
     ReportColumn reportColumn1 = mockReportColumn(knownColumnUid, "column1", "Column 1");
 
     ReportConfiguration reportConfig =
@@ -149,9 +149,9 @@ class ReportSpecBuilderTest {
     Long columnUid2 = 2L;
     Long columnUid3 = 3L;
 
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
-    FilterConfiguration filterConfig2 = mockFilterConfiguration(columnUid2);
-    FilterConfiguration filterConfig3 = mockFilterConfiguration(columnUid3);
+    BasicFilterConfiguration filterConfig1 = mockBasicFilterConfiguration(columnUid1);
+    BasicFilterConfiguration filterConfig2 = mockBasicFilterConfiguration(columnUid2);
+    BasicFilterConfiguration filterConfig3 = mockBasicFilterConfiguration(columnUid3);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, "col1", "Col 1");
     ReportColumn reportColumn2 = mockReportColumn(columnUid2, "col2", "Col 2");
@@ -178,8 +178,8 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_no_columns() {
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L);
-    FilterConfiguration filterConfig2 = mockFilterConfiguration(2L);
+    BasicFilterConfiguration filterConfig1 = mockBasicFilterConfiguration(1L);
+    BasicFilterConfiguration filterConfig2 = mockBasicFilterConfiguration(2L);
 
     ReportColumn reportColumn1 = mockReportColumn(1L, "col1", "Col 1");
     ReportColumn reportColumn2 = mockReportColumn(2L, "col2", "Col 2");
@@ -207,7 +207,7 @@ class ReportSpecBuilderTest {
       String columnName, String columnTitle) {
     Long columnUid1 = 1L;
 
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(columnUid1);
+    BasicFilterConfiguration filterConfig1 = mockBasicFilterConfiguration(columnUid1);
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, columnName, columnTitle);
 
     ReportConfiguration reportConfig =
