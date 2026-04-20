@@ -9,4 +9,5 @@ public record BasicFilterConfiguration(
     List<String> defaultValue,
     Integer minValueCount,
     Integer maxValueCount,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isRequired,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) FilterType filterType) {}

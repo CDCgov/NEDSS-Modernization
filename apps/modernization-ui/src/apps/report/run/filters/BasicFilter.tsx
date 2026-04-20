@@ -5,6 +5,7 @@ import { ReportExecuteForm } from '../ReportRunPage';
 import { Control, Controller } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { TextFilter, getValueText } from './TextFilter';
+import { DateRangeFilter, getDateRange } from './DateRangeFilter';
 
 export type BasicFilterProps = {
     filter: BasicFilterConfiguration;
@@ -18,6 +19,7 @@ const FILTER_TYPE_MAP: Record<
     { FilterComponent: BasicFilterComponent; getDefaultValue: (filter: BasicFilterConfiguration) => any }
 > = {
     BAS_TXT: { FilterComponent: TextFilter, getDefaultValue: getValueText },
+    BAS_TIM_RANGE: { FilterComponent: DateRangeFilter, getDefaultValue: getDateRange },
 };
 
 const TEMP_DEFAULT_FILTER = {
@@ -41,7 +43,7 @@ const BasicFilter = ({
 }) => {
     const id = useId();
     const column = columns.find((c) => c.id === filter.reportColumnUid);
-    const filterDesc = filter.filterType.descTxt;
+    const filterDesc = filter.filterType.filterName;
     // empty string not possible in practice, but appeases typescript
     const label = column?.columnTitle ?? column?.columnName ?? filterDesc ?? '';
     const helperText = label === filterDesc ? undefined : filterDesc;
@@ -51,9 +53,8 @@ const BasicFilter = ({
         FILTER_TYPE_MAP[filter.filterType.filterType || ''] ?? TEMP_DEFAULT_FILTER;
 
     // Don't validate required-ness for uninmplemented filtrs
-    const isRequired = (filter.minValueCount ?? 1) > 0;
     const hasFilter = !!FILTER_TYPE_MAP[filter.filterType.filterType || ''];
-    const isRequiredValidation = hasFilter && (filter.minValueCount ?? 1) > 0;
+    const isRequiredValidation = hasFilter && filter.isRequired;
 
     return (
         <Controller
@@ -68,7 +69,7 @@ const BasicFilter = ({
                     id={id}
                     orientation="horizontal"
                     sizing="medium"
-                    required={isRequired}
+                    required={filter.isRequired}
                     filter={filter}
                     label={label}
                     helperText={helperText}

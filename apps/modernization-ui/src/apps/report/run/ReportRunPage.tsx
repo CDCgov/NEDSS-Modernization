@@ -11,6 +11,7 @@ import { ReportResultPage } from './ReportResultPage';
 import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '@trussworks/react-uswds';
 
 export type ReportExecuteForm = {
     // key is the report's ID
@@ -83,12 +84,12 @@ const ReportRunPage = () => {
 
     return !config ? (
         <>
-            {error && <InlineErrorMessage id="report-config-error">{error}</InlineErrorMessage>}
+            {error && <ErrorMessage id="report-config-error">{error}</ErrorMessage>}
             <LoadingIndicator />
         </>
     ) : !hasResult && !submitting ? (
         <>
-            {error && <InlineErrorMessage id="report-config-error">{error}</InlineErrorMessage>}
+            {error && <ErrorMessage id="report-config-error">{error}</ErrorMessage>}
             <ReportConfigurationPage config={config} handleSubmit={onSubmit} formControl={form.control} />
         </>
     ) : (

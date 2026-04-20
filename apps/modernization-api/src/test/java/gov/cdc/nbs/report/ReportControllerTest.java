@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.report.models.Filter;
+import gov.cdc.nbs.report.models.BasicFilter;
 import gov.cdc.nbs.report.models.FilterConfiguration;
 import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.ReportColumn;
@@ -78,10 +78,10 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
-    Filter.Expr.Clause clause1 = new Filter.Expr.Clause(27L, "EQ", "47");
-    Filter.Expr.Clause clause2 = new Filter.Expr.Clause(31L, "EQ", "35001");
-    Filter.Expr.Connector connector = new Filter.Expr.Connector("OR", clause1, clause2);
-    Filter.AdvancedFilter advancedFilter = new Filter.AdvancedFilter(false, connector);
+    BasicFilter.Expr.Clause clause1 = new BasicFilter.Expr.Clause(27L, "EQ", "47");
+    BasicFilter.Expr.Clause clause2 = new BasicFilter.Expr.Clause(31L, "EQ", "35001");
+    BasicFilter.Expr.Connector connector = new BasicFilter.Expr.Connector("OR", clause1, clause2);
+    BasicFilter.AdvancedFilter advancedFilter = new BasicFilter.AdvancedFilter(false, connector);
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
@@ -107,7 +107,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+            List.of(new BasicFilter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
@@ -128,7 +128,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+            List.of(new BasicFilter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
 
@@ -148,7 +148,7 @@ class ReportControllerTest {
             dataSourceUid,
             false,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+            List.of(new BasicFilter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     assertThatThrownBy(() -> controller.exportReport(request))
         .isInstanceOf(IllegalArgumentException.class)
@@ -167,7 +167,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+            List.of(new BasicFilter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
 
@@ -181,10 +181,10 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
-    Filter.Expr.Clause clause1 = new Filter.Expr.Clause(27L, "EQ", "47");
-    Filter.Expr.Clause clause2 = new Filter.Expr.Clause(31L, "EQ", "35001");
-    Filter.Expr.Connector connector = new Filter.Expr.Connector("OR", clause1, clause2);
-    Filter.AdvancedFilter advancedFilter = new Filter.AdvancedFilter(false, connector);
+    BasicFilter.Expr.Clause clause1 = new BasicFilter.Expr.Clause(27L, "EQ", "47");
+    BasicFilter.Expr.Clause clause2 = new BasicFilter.Expr.Clause(31L, "EQ", "35001");
+    BasicFilter.Expr.Connector connector = new BasicFilter.Expr.Connector("OR", clause1, clause2);
+    BasicFilter.AdvancedFilter advancedFilter = new BasicFilter.AdvancedFilter(false, connector);
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
@@ -209,7 +209,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+            List.of(new BasicFilter.BasicFilter(true, 10066724L, List.of("35001"))));
 
     assertThatThrownBy(() -> controller.runReport(request))
         .isInstanceOf(IllegalArgumentException.class)
