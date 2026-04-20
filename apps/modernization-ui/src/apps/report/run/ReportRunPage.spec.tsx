@@ -39,7 +39,7 @@ const MOCK_CONFIG: ReportConfiguration = {
         libraryName: 'nbs_sr_99',
         isBuiltin: true,
     },
-    filters: [],
+    basicFilters: [],
 };
 
 const MOCK_RESULT: generated.ReportResult = {
@@ -71,7 +71,7 @@ describe('when given valid params', () => {
 
         expect(mockApi).toHaveBeenCalled();
 
-        expect(await findByText(/python/)).toBeVisible();
+        expect(await findByText(/Config/)).toBeVisible();
     });
 
     it('run button submits config and opens in new tab', async () => {
