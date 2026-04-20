@@ -34,10 +34,16 @@ public class ReportService {
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils =
       new DataSourceNameUtils(new DataSourceNameConfiguration());
+  private final WhereClauseService whereClauseService;
 
-  public ReportService(final ReportRepository reportRepository, RestClient reportExecutionClient) {
+  public ReportService(
+          final ReportRepository reportRepository,
+          RestClient reportExecutionClient,
+          WhereClauseService whereClauseService
+  ) {
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
+    this.whereClauseService = whereClauseService;
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
@@ -116,7 +122,7 @@ public class ReportService {
     }
 
     ReportSpecBuilder specBuilder =
-        new ReportSpecBuilder(request, reportConfigResponse, dataSourceNameUtils);
+        new ReportSpecBuilder(request, reportConfigResponse, dataSourceNameUtils, whereClauseService);
     ReportSpec reportSpec = specBuilder.build();
 
     return reportExecutionClient

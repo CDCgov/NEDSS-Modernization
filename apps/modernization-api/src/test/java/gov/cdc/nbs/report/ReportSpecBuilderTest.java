@@ -15,6 +15,8 @@ import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,6 +27,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ReportSpecBuilderTest {
+
+  private WhereClauseService whereClauseService;
+
+  @BeforeEach
+  void setUp() {
+    whereClauseService = Mockito.mock(WhereClauseService.class);
+  }
 
   private DataSourceNameUtils mockDataSourceNameUtils() {
     DataSourceNameUtils dataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
@@ -102,7 +111,7 @@ class ReportSpecBuilderTest {
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
     ReportSpec reportSpec =
-        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils).build();
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService).build();
 
     assertThat(reportSpec.version()).isEqualTo(1);
     assertThat(reportSpec.isBuiltin()).isTrue();
@@ -132,7 +141,7 @@ class ReportSpecBuilderTest {
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
     ReportSpecBuilder reportSpecBuilder =
-        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils);
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService);
 
     assertThatThrownBy(reportSpecBuilder::build)
         .isInstanceOf(IllegalArgumentException.class)
@@ -164,7 +173,7 @@ class ReportSpecBuilderTest {
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
     ReportSpec reportSpec =
-        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils).build();
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
@@ -188,7 +197,7 @@ class ReportSpecBuilderTest {
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
     ReportSpec reportSpec =
-        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils).build();
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
@@ -212,7 +221,7 @@ class ReportSpecBuilderTest {
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
     ReportSpec reportSpec =
-        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils).build();
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService).build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
