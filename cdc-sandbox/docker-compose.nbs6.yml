@@ -32,6 +32,7 @@ services:
   sas:
     image: ghcr.io/cdcent/nbs7-sas-linux:v1.0.4
     platform: linux/amd64
+    container_name: "${COMPOSE_PROJECT_NAME}-sas"
     ports:
       - 2323:2323
     environment:
