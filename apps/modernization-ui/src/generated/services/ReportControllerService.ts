@@ -13,14 +13,30 @@ export class ReportControllerService {
      * @returns ReportResult OK
      * @throws ApiError
      */
-    public static executeReport({
+    public static runReport({
         requestBody,
     }: {
         requestBody: ReportExecutionRequest,
     }): CancelablePromise<ReportResult> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/api/report/execute',
+            url: '/nbs/api/report/run',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @returns ReportResult OK
+     * @throws ApiError
+     */
+    public static exportReport({
+        requestBody,
+    }: {
+        requestBody: ReportExecutionRequest,
+    }): CancelablePromise<ReportResult> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/api/report/export',
             body: requestBody,
             mediaType: 'application/json',
         });

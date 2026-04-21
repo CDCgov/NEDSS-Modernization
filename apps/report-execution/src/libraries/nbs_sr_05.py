@@ -148,7 +148,7 @@ def execute(
     trx.execute('DROP TABLE #base_data')
 
     header = 'SR5: Cases of Reportable Diseases by State'
-    subheader = gen_subheader(states=state_list, date_obj=today)
+    subheader = gen_subheader(states=state_list)
     description = (
         '*<u>Report content</u>*\n'
         '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
@@ -161,7 +161,7 @@ def execute(
         '* Will not include Investigation(s) that do not have a value for the State '
         'selected by the user\n'
         '* Is based on month and year of the calculated Event Date\n'
-        '*Calculations:*'
+        '*Calculations:*\n'
         '* *Current Month Totals by disease:* Total Investigation(s) [both Individual '
         'and Summary] where the Year and Month of the Event Date equal the current '
         'Year and Month\n'

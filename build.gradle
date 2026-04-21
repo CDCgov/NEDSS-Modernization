@@ -17,7 +17,7 @@ buildscript {
 plugins {
     id 'java-library'
     id 'jacoco'
-    id 'org.sonarqube' version '6.2.0.5505'
+    id 'org.sonarqube' version '7.2.3.7755'
     id 'com.diffplug.spotless'  version '8.4.0'
 }
 
