@@ -190,9 +190,9 @@ class TestIntegrationExecuteReport:
                 'MockLibrary',
                 (),
                 {
-                    'execute': lambda self, trx, subset_query, data_source_name, time_range: {
+                    'execute': lambda self, trx, subset_query, data_source_name: {
                         'content_type': 'table',
-                        'header': 'Custom Report For Table: [NBS_ODSE].[dbo].[Filter_operator]',
+                        'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
                         'content': {},
                     }
                 },
@@ -214,7 +214,7 @@ class TestIntegrationExecuteReport:
                 execute_report(report_spec)
 
             assert exc_info.value.message == (
-                 "Invalid report result from library `nbs_custom`"
+                'Invalid report result from library `nbs_custom`'
             )
 
             root_error: ValidationError = exc_info.value.__cause__
