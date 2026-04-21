@@ -2,9 +2,10 @@
 
 USE [NBS_ODSE]
 
-DECLARE @pyLib VARCHAR(50) = 'nbs_potntl_dup_inv_sum'
-DECLARE @sasLib VARCHAR(50) = 'NBSSR0000POTNTL_DUP_INV_SUM.SAS'
-DECLARE @desc VARCHAR(300) = 'Potential Duplicate Investigations'
+DECLARE @pyLib VARCHAR(50) = 'potntl_dup_inv_sum'
+DECLARE @sasLib VARCHAR(50) = 'POTNTL_DUP_INV_SUM.SAS'
+DECLARE @desc VARCHAR(300) = 'Potential Duplicate Investigations - Identifies potential duplicate investigations for the same patient with the
+    same disease within a user-specified number of days.'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN
