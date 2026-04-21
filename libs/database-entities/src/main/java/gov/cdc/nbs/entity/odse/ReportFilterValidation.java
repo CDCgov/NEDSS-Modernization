@@ -1,6 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,9 @@ public class ReportFilterValidation {
 
   @Column(name = "status_cd")
   private Character statusCd;
+
+  @Column(name = "status_time")
+  private LocalDateTime statusTime;
 
   protected ReportFilterValidation() {}
 }
