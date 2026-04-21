@@ -50,7 +50,9 @@ class TestReportExecuteEndpoint:
         assert result
 
         # check we can round trip back to DF
-        str_io = io.StringIO(result['content'])
+        content = result['content']
+        assert '1,a' in content
+        str_io = io.StringIO(content)
         df = pd.read_csv(str_io)
         # check numbers kept precision, but not overly so
         assert df['id'][0] == 1
