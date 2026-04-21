@@ -1,22 +1,24 @@
 from src.db_transaction import Transaction
-from src.models import ReportResult, TimeRange
+from src.models import ReportResult
 
 
 def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
-    time_range: TimeRange | None = None,
     days_value: int | None = None,
     **kwargs,
 ):
     """Potential Duplicate Investigations
 
-    
+    Identifies potential duplicate investigations for the same patient with the
+    same disease within a user-specified number of days.
     """
-    if not days_value:
+    # Only use default if days_value is None (not provided)
+    # If days_value is 0, treat it as 0 (not default)
+    if days_value is None:
         days_value = 3650
-
+    
     
     full_query = f"""
     WITH subset AS ({subset_query})
@@ -63,7 +65,7 @@ def execute(
         FROM clean_data
         GROUP BY PATIENT_LOCAL_ID, DISEASE_CD
     )
-    -- Final selection - 
+    -- Final selection - only potential duplicates
     SELECT 
         d.PATIENT_LOCAL_ID AS [Patient Local ID],
         d.PATIENT_FIRST_NAME AS [Patient First Name],
@@ -87,16 +89,15 @@ def execute(
         OR (d.days_until_next IS NOT NULL AND d.days_until_next <= {days_value})
     )
     ORDER BY 
-    d.PATIENT_LOCAL_ID,
-    d.DISEASE_CD,
-    d.EVENT_DATE
+        d.PATIENT_LOCAL_ID,
+        d.DISEASE_CD,
+        d.EVENT_DATE
     """
     
     content = trx.query(full_query)
     
     header = 'Potential Duplicate Investigations'
     subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
-
 
     return ReportResult(
         content_type='table', content=content, header=header, subheader=subheader
