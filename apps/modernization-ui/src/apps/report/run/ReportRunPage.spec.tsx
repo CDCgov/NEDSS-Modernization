@@ -1,4 +1,4 @@
-import { findByLabelText, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -7,7 +7,6 @@ import { Layout } from 'layout';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { ReactNode } from 'react';
 import fileDownload from 'js-file-download';
-import { BasicFilter } from './filters/BasicFilter';
 import { axe } from 'jest-axe';
 
 vi.mock('react-router', async () => {
@@ -282,7 +281,7 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findByText, findByLabelText } = renderWithRouter();
+                const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -295,7 +294,7 @@ describe('report run page', () => {
                 await user.click(exportButton);
 
                 expect(input).toBeInvalid();
-                expect(await findByText('The Full Name is required.')).toBeVisible();
+                expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
                 expect(mockResultApi).not.toHaveBeenCalled();
             });
 
