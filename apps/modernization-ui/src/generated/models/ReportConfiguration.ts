@@ -10,6 +10,7 @@ export type ReportConfiguration = {
     runner: string;
     dataSource: ReportDataSource;
     reportLibrary: Library;
+    reportTitle: string;
     filters: Array<FilterConfiguration>;
     reportColumns?: Array<ReportColumn>;
     python?: boolean;

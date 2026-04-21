@@ -112,14 +112,12 @@ class ReportServiceTest {
 
     ReportSpec spec =
         new ReportSpec(
-            1,
             true,
             true,
             "Test Report",
             "nbs_custom",
             "[NBS_ODSE].[dbo].[PHCDemographic]",
-            "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
-            null);
+            "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]");
     try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
         mockConstruction(
             ReportSpecBuilder.class,

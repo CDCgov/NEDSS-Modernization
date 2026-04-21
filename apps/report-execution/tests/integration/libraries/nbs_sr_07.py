@@ -6,8 +6,6 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
-db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
 faker_schema = 'phc_demographic.yaml'
 
 
@@ -23,14 +21,12 @@ class TestIntegrationNbsSr07Library:
     def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR7',
                 'library_name': 'nbs_sr_07',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -59,14 +55,12 @@ class TestIntegrationNbsSr07Library:
         """Check the metadata and column names are correct with a frozen date."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_07',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -76,7 +70,7 @@ class TestIntegrationNbsSr07Library:
             == 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected '
             'Time Period'
         )
-        assert result.subheader == 'N/A, Georgia, Tennessee | 06/24/2024'
+        assert result.subheader == 'N/A, Georgia, Tennessee'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 

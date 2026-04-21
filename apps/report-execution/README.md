@@ -77,6 +77,22 @@ uv run pytest -m integration # just integration tests
 uv run --env-file .env pytest # pass env file to uv
 ```
 
+## Scripts
+
+### Loading/Unloading Fake Data
+
+A pair of scripts are available to load the data used in integration testing to a DB. This can be useful for debugging SQL, exploration, or comparison testing new and old libraries against the same data.
+
+The `DATABASE_CONN_STRING` environment variable is used to connect to the database (already running) where you want to load the fake data and must be set when running the script (or in an env file and the `--env-file` uv functionality used).
+
+Example:
+```bash
+# load data
+uv run ./scripts/load_fake_data.py phc_demographic.yaml
+# restore data
+uv run ./scripts/restore_original_data.py phc_demographic.yaml
+```
+
 ## Code Linting and Formatting
 
 Additionally, this project uses [Ruff](https://docs.astral.sh/ruff/) (also created by Astral, the makers of uv) for linting and formatting and [Pyrefly](https://pyrefly.org/) for type checking.

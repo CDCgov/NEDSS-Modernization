@@ -8,9 +8,6 @@ def execute_report(report_spec: models.ReportSpec):
     """Execute a report spec by validating inputs, loading library, handling DB
     connection and transaction,and validating/processing results.
     """
-    if not is_valid_spec(report_spec):
-        raise errors.ToDoError('validation handling')
-
     # get the library defined in the spec as a python module
     library = get_library(report_spec.library_name, report_spec.is_builtin)
     if not is_valid_library(library):
@@ -23,17 +20,11 @@ def execute_report(report_spec: models.ReportSpec):
             trx,
             subset_query=report_spec.subset_query,
             data_source_name=report_spec.data_source_name,
-            time_range=report_spec.time_range,
         )
 
     check_valid_result(result, report_spec.is_export)
 
     return result
-
-
-def is_valid_spec(report_spec: models.ReportSpec):
-    """Check if the report spec is valid."""
-    return True
 
 
 # TODO: what is the type that should go here? Part of spike  # noqa: FIX002

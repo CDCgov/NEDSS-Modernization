@@ -19,14 +19,12 @@ class TestIntegrationNbsSr13Library:
     def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR 13',
                 'library_name': 'nbs_sr_13',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -56,7 +54,6 @@ class TestIntegrationNbsSr13Library:
     def test_execute_report_no_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR 3',
@@ -66,7 +63,6 @@ class TestIntegrationNbsSr13Library:
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
                 ),
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -81,7 +77,6 @@ class TestIntegrationNbsSr13Library:
         """Check the metadata and column names are correct."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR 13',

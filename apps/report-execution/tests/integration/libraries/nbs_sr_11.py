@@ -4,8 +4,6 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
-db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
 faker_schema = 'phc_demographic.yaml'
 
 
@@ -17,14 +15,12 @@ class TestIntegrationNbsSr11Library:
     def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR 11',
                 'library_name': 'nbs_sr_11',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -52,7 +48,6 @@ class TestIntegrationNbsSr11Library:
     def test_execute_report_no_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR 11',
@@ -62,7 +57,6 @@ class TestIntegrationNbsSr11Library:
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
                 ),
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -77,7 +71,6 @@ class TestIntegrationNbsSr11Library:
         """Check the metadata and column names are correct."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'SR 11',
@@ -88,13 +81,12 @@ class TestIntegrationNbsSr11Library:
                     "WHERE state = 'Georgia' "
                     "AND phc_code_short_desc IN ('Pertussis', 'Measles')"
                 ),
-                'time_range': {'start': '2020-01-01', 'end': '2024-12-31'},
             }
         )
 
         result = execute_report(report_spec)
         assert result.header == 'SR11: Cases of Selected Diseases By Year Over Time'
-        assert result.subheader == 'Georgia | Measles, Pertussis | 2020 to 2024'
+        assert result.subheader == 'Georgia | Measles, Pertussis'
 
         assert len(result.description) > 100
         assert result.content_type == 'table'

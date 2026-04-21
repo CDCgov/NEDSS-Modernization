@@ -6,8 +6,6 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
-db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
 faker_schema = 'phc_demographic.yaml'
 
 
@@ -17,7 +15,7 @@ class TestIntegrationNbsSr05Library:
     """Integration tests for the nbs_sr_05 library.
 
     This library looks at the past five years of data and the date on the sql server
-    is not readily hardcoded, so the tests here are largely probabalistic.
+    is not readily hardcoded, so the tests here are largely probabilistic.
     """
 
     @pytest.fixture(autouse=True)
@@ -27,14 +25,12 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -70,7 +66,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_old_data_zeros(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -80,7 +75,6 @@ class TestIntegrationNbsSr05Library:
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     'WHERE YEAR(event_date) < (2024 - 5)'
                 ),
-                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
             }
         )
 
@@ -110,7 +104,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_no_current_year(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -149,7 +142,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_only_current_year(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -189,7 +181,6 @@ class TestIntegrationNbsSr05Library:
     def test_execute_report_empty_subset(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
@@ -211,20 +202,18 @@ class TestIntegrationNbsSr05Library:
         """Check the metadata and column names are correct with a frozen date."""
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-                'time_range': {'start': '2024-01-01', 'end': '2024-12-31'},
             }
         )
 
         result = execute_report(report_spec)
         assert result.header == 'SR5: Cases of Reportable Diseases by State'
-        assert result.subheader == 'N/A, Georgia, Tennessee | 06/24/2024'
+        assert result.subheader == 'N/A, Georgia, Tennessee'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 

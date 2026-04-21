@@ -1,13 +1,8 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.report.models.ReportColumn;
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -73,14 +68,14 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpec build() {
-    int version = 1;
-    boolean isExport = true;
-    boolean isBuiltin = true;
-    String reportTitle = "Test Report";
+    Library reportLibrary = reportConfig.reportLibrary();
+
+    boolean isExport = reportExecRequest.isExport();
+    boolean isBuiltin = reportLibrary.isBuiltin();
+    String reportTitle = reportConfig.reportTitle();
     String libraryName = reportConfig.reportLibrary().libraryName();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
-    Map<String, LocalDate> timeRange = null;
     List<ReportColumn> columns = fetchColumns();
 
     String selectClause = buildSelectClause(columns);
@@ -92,13 +87,6 @@ public class ReportSpecBuilder {
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        version,
-        isExport,
-        isBuiltin,
-        reportTitle,
-        libraryName,
-        dataSourceName,
-        subsetQuery,
-        timeRange);
+        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery);
   }
 }

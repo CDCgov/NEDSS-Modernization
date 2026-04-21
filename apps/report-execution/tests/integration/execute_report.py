@@ -1,3 +1,7 @@
+import http
+import json
+import os
+
 import mssql_python
 import pytest
 
@@ -14,7 +18,6 @@ class TestIntegrationExecuteReport:
     def test_execute_report_valid(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Test Report',
@@ -44,7 +47,6 @@ class TestIntegrationExecuteReport:
     def test_execute_report_invalid_query_syntax(self):
         report_spec = ReportSpec.model_validate(
             {
-                'version': 1,
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': 'Test Report',
@@ -65,7 +67,6 @@ class TestIntegrationExecuteReport:
             m.setenv('REPORT_MAX_ROW_LIMIT_RUN', '10')
             report_spec = ReportSpec.model_validate(
                 {
-                    'version': 1,
                     'is_export': False,
                     'is_builtin': True,
                     'report_title': 'Test Report',
@@ -88,7 +89,6 @@ class TestIntegrationExecuteReport:
             m.setenv('REPORT_MAX_ROW_LIMIT_EXPORT', '10')
             report_spec = ReportSpec.model_validate(
                 {
-                    'version': 1,
                     'is_export': True,
                     'is_builtin': True,
                     'report_title': 'Test Report',
@@ -105,3 +105,80 @@ class TestIntegrationExecuteReport:
                 'Report request resulted in 11 rows. The limit for exporting reports'
                 ' is 10 rows. Please refine your filter criteria.'
             )
+
+    @pytest.mark.parametrize(
+        'missing_prop',
+        [
+            'is_export',
+            'is_builtin',
+            'report_title',
+            'library_name',
+            'data_source_name',
+            'subset_query',
+        ],
+    )
+    def test_execute_report_missing_required_prop(self, missing_prop):
+        invalid_spec = {
+            'is_export': True,
+            'is_builtin': True,
+            'report_title': 'Test Report',
+            'library_name': 'nbs_custom',
+            'data_source_name': '[NBS_ODSE].[dbo].[Filter_code]',
+            'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
+        }
+        invalid_spec.pop(missing_prop)
+
+        connection = http.client.HTTPConnection(
+            f'localhost:{os.getenv("UVICORN_PORT", "8001")}'
+        )
+
+        headers = {'Content-type': 'application/json'}
+        body = json.dumps(invalid_spec)
+
+        connection.request('POST', '/report/execute', body, headers)
+
+        response = connection.getresponse()
+        assert response.status == 422
+
+        result = json.loads(response.read())
+
+        assert result['detail'][0]['loc'] == ['body', missing_prop]
+        assert result['detail'][0]['msg'] == 'Field required'
+
+    @pytest.mark.parametrize(
+        'empty_string_prop',
+        [
+            'report_title',
+            'library_name',
+            'data_source_name',
+            'subset_query',
+        ],
+    )
+    def test_execute_report_empty_string_prop(self, empty_string_prop):
+        invalid_spec = {
+            'is_export': True,
+            'is_builtin': True,
+            'report_title': 'Test Report',
+            'library_name': 'nbs_custom',
+            'data_source_name': '[NBS_ODSE].[dbo].[Filter_code]',
+            'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
+        }
+        invalid_spec.pop(empty_string_prop)
+        invalid_spec[empty_string_prop] = ''
+
+        connection = http.client.HTTPConnection(
+            f'localhost:{os.getenv("UVICORN_PORT", "8001")}'
+        )
+
+        headers = {'Content-type': 'application/json'}
+        body = json.dumps(invalid_spec)
+
+        connection.request('POST', '/report/execute', body, headers)
+
+        response = connection.getresponse()
+        assert response.status == 422
+
+        result = json.loads(response.read())
+
+        assert result['detail'][0]['loc'] == ['body', empty_string_prop]
+        assert result['detail'][0]['msg'] == 'String should have at least 1 character'

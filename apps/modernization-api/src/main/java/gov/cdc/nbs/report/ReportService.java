@@ -32,18 +32,19 @@ public class ReportService {
 
   private final ReportRepository reportRepository;
   private final RestClient reportExecutionClient;
-  private final DataSourceNameUtils dataSourceNameUtils =
-      new DataSourceNameUtils(new DataSourceNameConfiguration());
+  private final DataSourceNameUtils dataSourceNameUtils;
   private final WhereClauseService whereClauseService;
 
   public ReportService(
           final ReportRepository reportRepository,
           RestClient reportExecutionClient,
+          final DataSourceNameConfiguration dataSourceNameConfig,
           WhereClauseService whereClauseService
   ) {
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
-    this.whereClauseService = whereClauseService;
+    this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
+      this.whereClauseService = whereClauseService;
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
@@ -94,6 +95,7 @@ public class ReportService {
                   report.getReportLibrary().getRunner(),
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
+                  report.getReportTitle(),
                   filters,
                   reportColumns);
             })

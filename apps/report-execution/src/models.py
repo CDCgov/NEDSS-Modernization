@@ -1,27 +1,18 @@
 from typing import Annotated, Any, Literal
 
 from pandas import DataFrame
-from pydantic import BaseModel, ConfigDict, PlainSerializer
-
-
-class TimeRange(BaseModel):
-    """Start and end time for a report."""
-
-    start: str  # Date in ISO format
-    end: str  # Date in ISO format
+from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
 
 
 class ReportSpec(BaseModel):
     """Report request specification."""
 
-    version: int
     is_export: bool
     is_builtin: bool
-    report_title: str
-    library_name: str
-    data_source_name: str
-    subset_query: str
-    time_range: TimeRange | None = None
+    report_title: str = Field(min_length=1)
+    library_name: str = Field(min_length=1)
+    data_source_name: str = Field(min_length=1)
+    subset_query: str = Field(min_length=1)
 
 
 # column names and values

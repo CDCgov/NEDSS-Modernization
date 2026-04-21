@@ -1,12 +1,12 @@
 from src.db_transaction import Transaction
-from src.models import ReportResult, TimeRange
+from src.models import ReportResult
+from src.utils import gen_subheader
 
 
 def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
-    time_range: TimeRange | None = None,
     **kwargs,
 ):
     """Standard Report 02: Cases of Reportable Diseases by County for Selected Time
@@ -26,19 +26,11 @@ def execute(
         + 'ORDER BY state, county, phc_code_short_desc'
     )
 
-    # Get the unique state(s) in the data set for subheader display
-    state_list = list(
-        set([row[0] if row[0] is not None else 'N/A' for row in content.data])
-    )
-    state_list.sort()
-
     header = 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
 
-    subheader = None
-    if len(state_list) > 0:
-        subheader = f'For {", ".join(state_list)}'
-        if time_range is not None:
-            subheader += f' and From {time_range.start} To {time_range.end}'
+    # Get the unique state(s) in the data set for subheader display
+    state_list = content.get_unique_column('State')
+    subheader = gen_subheader(states=state_list)
 
     description = (
         '*<u>Report content</u>*\n'

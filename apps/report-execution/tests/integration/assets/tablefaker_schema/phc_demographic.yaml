@@ -1,5 +1,8 @@
 config:
   seed: 4
+  nbs:
+    fk_tables:
+      - '[NBS_ODSE].[dbo].[SubjectRaceInfo]'
 
 tables:
   # Table backing PHCDemographic view
