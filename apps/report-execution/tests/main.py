@@ -52,6 +52,11 @@ class TestReportExecuteEndpoint:
         # check we can round trip back to DF
         str_io = io.StringIO(result['content'])
         df = pd.read_csv(str_io)
+        # check numbers kept precision, but not overly so
+        assert df['id'][0] == 1
+        assert df['id'][1] == 2.5
+        assert df['id'][2] == 3
+        assert df['id'][3] == 3.5
         assert df.shape == (4, 2)
 
     def test_execute_report_api(self, client, mock_db_transaction):
