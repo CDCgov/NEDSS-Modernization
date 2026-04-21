@@ -1,5 +1,5 @@
-from importlib import import_module
 import typing
+from importlib import import_module
 
 from pydantic import ValidationError
 

@@ -41,11 +41,12 @@ class InternalServerError(BaseReportExecutionError):
             logging.error(orig_exc)
         super().__init__('Internal Server Error', 500)
 
+
 class InvalidResultError(BaseReportExecutionError):
     """The report result is invalid."""
 
     def __init__(self, library_name: str):
-        super().__init__(f'Invalid report result for library `{library_name}`', 422)
+        super().__init__(f'Invalid report result from library `{library_name}`', 422)
 
 
 class ToDoError(BaseReportExecutionError):
