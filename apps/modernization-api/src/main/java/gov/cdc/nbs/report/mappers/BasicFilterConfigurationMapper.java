@@ -29,8 +29,10 @@ public class BasicFilterConfigurationMapper {
 
     // For the future: A list of strings may end up being too simple for all use cases,
     // may need to evolve to be a small object with a key and value
-    List<String> defaultValue =
-        filter.getFilterValues().stream().map(r -> r.getValueTxt()).toList();
+    List<String> defaultValue = null;
+    if (filter.getFilterValues() != null) {
+      defaultValue = filter.getFilterValues().stream().map(r -> r.getValueTxt()).toList();
+    }
     return new BasicFilterConfiguration(
         filter.getId(),
         columnUid,
