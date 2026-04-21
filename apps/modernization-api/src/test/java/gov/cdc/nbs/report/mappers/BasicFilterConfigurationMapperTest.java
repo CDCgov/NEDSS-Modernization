@@ -79,7 +79,7 @@ class BasicFilterConfigurationMapperTest {
     assertThat(mapped.defaultValue()).isEqualTo(List.of("value"));
     assertThat(mapped.minValueCount()).isEqualTo(1);
     assertThat(mapped.maxValueCount()).isEqualTo(-1);
-    assertThat(mapped.isRequired()).isEqualTo(true);
+    assertThat(mapped.isRequired()).isTrue();
     assertThat(mapped.filterType()).isEqualTo(FilterTypeMapper.fromFilterCode(filterCode));
   }
 
@@ -98,7 +98,7 @@ class BasicFilterConfigurationMapperTest {
 
     BasicFilterConfiguration mapped = BasicFilterConfigurationMapper.fromReportFilter(reportFilter);
 
-    assertThat(mapped.isRequired()).isEqualTo(false);
+    assertThat(mapped.isRequired()).isFalse();
   }
 
   @Test

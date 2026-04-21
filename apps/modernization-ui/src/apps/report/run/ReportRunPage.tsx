@@ -43,7 +43,6 @@ const ReportRunPage = () => {
     const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {
         form.handleSubmit(
             (data) => {
-                console.log({ data });
                 const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
                     .map(([id, value]) => {
                         const values = typeof value === 'string' ? [value] : value;
@@ -56,8 +55,7 @@ const ReportRunPage = () => {
                 handleSubmit(isExport, basicFilters);
             },
             (errors) => {
-                console.log({ errors });
-                // TODO make this gather all errors
+                // TODO make this gather all errors and nicely format
                 setError(Object.values(errors.basicFilter ?? {}).reduce((acc, cur) => `${acc}\n${cur?.message}`, ''));
             }
         )(event);

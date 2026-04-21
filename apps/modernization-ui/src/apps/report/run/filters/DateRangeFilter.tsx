@@ -6,7 +6,6 @@ import { validateRequiredRule } from 'validation/entry';
 // Don't need `filter` for this component, but don't want to pass it down
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DateRangeFilter: BasicFilterComponent = ({ filter, value, onChange, ...remaining }: BasicFilterProps) => {
-    // TODO: validation isn't quite right for this component yet
     return (
         <DatePickerRange
             value={{ between: { from: value?.[0], to: value?.[1] } }}
