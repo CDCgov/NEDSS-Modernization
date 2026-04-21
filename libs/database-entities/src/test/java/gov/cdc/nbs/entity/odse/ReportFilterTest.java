@@ -45,6 +45,7 @@ class ReportFilterTest {
         .satisfies(rf -> assertEquals(filterCode, rf.getFilterCode()))
         .satisfies(rf -> assertEquals(dataSourceColumn, rf.getDataSourceColumn()))
         .satisfies(rf -> assertEquals(filterValues, rf.getFilterValues()))
+        .satisfies(rf -> assertEquals(filterValidation, rf.getFilterValidation()))
         .satisfies(rf -> assertEquals(statusCd, rf.getStatusCd()))
         .satisfies(rf -> assertEquals(maxValueCnt, rf.getMaxValueCnt()))
         .satisfies(rf -> assertEquals(minValueCnt, rf.getMinValueCnt()));
