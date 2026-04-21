@@ -184,7 +184,7 @@ class TestIntegrationExecuteReport:
         assert result['detail'][0]['loc'] == ['body', empty_string_prop]
         assert result['detail'][0]['msg'] == 'String should have at least 1 character'
 
-    def test_execute_report_result_missing_content(self, monkeypatch):
+    def test_execute_report_result_missing_content_data(self, monkeypatch):
         def get_mock_library(library_name: str, is_builtin: bool):
             return type(
                 'MockLibrary',
@@ -193,7 +193,9 @@ class TestIntegrationExecuteReport:
                     'execute': lambda self, trx, subset_query, data_source_name: {
                         'content_type': 'table',
                         'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
-                        'content': {},
+                        'content': {
+                            'columns': ['filter_operator_uid', 'filter_operator_code'],
+                        },
                     }
                 },
             )()
@@ -219,15 +221,54 @@ class TestIntegrationExecuteReport:
 
             root_error: ValidationError = exc_info.value.__cause__
             assert root_error is not None
-            assert root_error.error_count() == 2
+            assert root_error.error_count() == 1
 
-            columns_error = root_error.errors()[0]
-            data_error = root_error.errors()[1]
+            assert root_error.errors()[0]['type'] == 'missing'
+            assert root_error.errors()[0]['loc'] == ('content', 'data')
+            assert root_error.errors()[0]['msg'] == 'Field required'
 
-            assert columns_error['type'] == 'missing'
-            assert columns_error['loc'] == ('content', 'columns')
-            assert columns_error['msg'] == 'Field required'
+    def test_execute_report_result_missing_content_columns(self, monkeypatch):
+        def get_mock_library(library_name: str, is_builtin: bool):
+            return type(
+                'MockLibrary',
+                (),
+                {
+                    'execute': lambda self, trx, subset_query, data_source_name: {
+                        'content_type': 'table',
+                        'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
+                        'content': {
+                            'data': [
+                                (1, 'Code1'),
+                                (2, 'Code2'),
+                            ]
+                        },
+                    }
+                },
+            )()
 
-            assert data_error['type'] == 'missing'
-            assert data_error['loc'] == ('content', 'data')
-            assert data_error['msg'] == 'Field required'
+        with monkeypatch.context() as m:
+            m.setattr('src.execute_report.get_library', get_mock_library)
+            report_spec = ReportSpec.model_validate(
+                {
+                    'is_export': False,
+                    'is_builtin': True,
+                    'report_title': 'Test Report',
+                    'library_name': 'nbs_custom',
+                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
+                    'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
+                }
+            )
+            with pytest.raises(InvalidResultError) as exc_info:
+                execute_report(report_spec)
+
+            assert exc_info.value.message == (
+                'Invalid report result from library `nbs_custom`'
+            )
+
+            root_error: ValidationError = exc_info.value.__cause__
+            assert root_error is not None
+            assert root_error.error_count() == 1
+
+            assert root_error.errors()[0]['type'] == 'missing'
+            assert root_error.errors()[0]['loc'] == ('content', 'columns')
+            assert root_error.errors()[0]['msg'] == 'Field required'
