@@ -52,8 +52,11 @@ class InvalidReportSpecError(BaseReportExecutionError):
 class InvalidResultError(BaseReportExecutionError):
     """The report result from library execution is invalid."""
 
-    def __init__(self, library_name: str):
-        super().__init__(f'Invalid report result from library `{library_name}`', 422)
+    def __init__(self, library_name: str, message=None):
+        error_message = f'Invalid report result from library `{library_name}`'
+        if message:
+            error_message += f': {message}'
+        super().__init__(error_message, 422)
 
 
 class ToDoError(BaseReportExecutionError):

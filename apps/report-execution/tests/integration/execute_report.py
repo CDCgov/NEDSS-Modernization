@@ -184,8 +184,35 @@ class TestIntegrationExecuteReport:
         assert result['detail'][0]['loc'] == ['body', empty_string_prop]
         assert result['detail'][0]['msg'] == 'String should have at least 1 character'
 
+    def test_execute_report_missing_result(self, monkeypatch):
+        def get_lib_returning_none(library_name: str, is_builtin: bool):
+            return type(
+                'MockLibrary',
+                (),
+                {'execute': lambda self, trx, subset_query, data_source_name: None},
+            )()
+
+        with monkeypatch.context() as m:
+            m.setattr('src.execute_report.get_library', get_lib_returning_none)
+            report_spec = ReportSpec.model_validate(
+                {
+                    'is_export': False,
+                    'is_builtin': True,
+                    'report_title': 'Test Report',
+                    'library_name': 'nbs_custom',
+                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
+                    'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
+                }
+            )
+            with pytest.raises(InvalidResultError) as exc_info:
+                execute_report(report_spec)
+
+            assert exc_info.value.message == (
+                'Invalid report result from library `nbs_custom`: No result returned'
+            )
+
     def test_execute_report_result_missing_content_data(self, monkeypatch):
-        def get_mock_library(library_name: str, is_builtin: bool):
+        def get_lib_without_data(library_name: str, is_builtin: bool):
             return type(
                 'MockLibrary',
                 (),
@@ -201,7 +228,7 @@ class TestIntegrationExecuteReport:
             )()
 
         with monkeypatch.context() as m:
-            m.setattr('src.execute_report.get_library', get_mock_library)
+            m.setattr('src.execute_report.get_library', get_lib_without_data)
             report_spec = ReportSpec.model_validate(
                 {
                     'is_export': False,
@@ -228,7 +255,7 @@ class TestIntegrationExecuteReport:
             assert root_error.errors()[0]['msg'] == 'Field required'
 
     def test_execute_report_result_missing_content_columns(self, monkeypatch):
-        def get_mock_library(library_name: str, is_builtin: bool):
+        def get_lib_without_columns(library_name: str, is_builtin: bool):
             return type(
                 'MockLibrary',
                 (),
@@ -247,7 +274,7 @@ class TestIntegrationExecuteReport:
             )()
 
         with monkeypatch.context() as m:
-            m.setattr('src.execute_report.get_library', get_mock_library)
+            m.setattr('src.execute_report.get_library', get_lib_without_columns)
             report_spec = ReportSpec.model_validate(
                 {
                     'is_export': False,
