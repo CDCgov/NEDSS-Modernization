@@ -26,23 +26,26 @@ const ReportRunPage = () => {
             .catch((err) => setError(JSON.stringify(err)));
     }, []);
 
-    const handleSubmit = useCallback((isExport: boolean) => {
-        setSubmitting(true);
-        const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
-        runner({ requestBody: { isExport, reportUid, dataSourceUid } })
-            .then((res) => {
-                setHasResult(true);
-                if (!res.content) {
-                    setError('No content!');
-                    return;
-                }
-                isExport
-                    ? fileDownload(res.content, `${config?.reportTitle ?? 'ReportOutput'}.csv`)
-                    : openNewTab(<ResultDataPage result={res} />);
-            })
-            .catch((err) => setError(JSON.stringify(err)))
-            .finally(() => setSubmitting(false));
-    }, [config]);
+    const handleSubmit = useCallback(
+        (isExport: boolean) => {
+            setSubmitting(true);
+            const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
+            runner({ requestBody: { isExport, reportUid, dataSourceUid } })
+                .then((res) => {
+                    setHasResult(true);
+                    if (!res.content) {
+                        setError('No content!');
+                        return;
+                    }
+                    isExport
+                        ? fileDownload(res.content, `${config?.reportTitle ?? 'ReportOutput'}.csv`)
+                        : openNewTab(<ResultDataPage result={res} />);
+                })
+                .catch((err) => setError(JSON.stringify(err)))
+                .finally(() => setSubmitting(false));
+        },
+        [config]
+    );
 
     return !config ? (
         <>
