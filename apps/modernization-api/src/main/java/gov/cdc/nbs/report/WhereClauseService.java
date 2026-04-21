@@ -72,42 +72,41 @@ public class WhereClauseService {
     List<FilterDefaultValue> values = filterConfig.filterDefaultValues();
     if (values == null || values.isEmpty()) return "";
 
-    StringJoiner valueJoiner = new StringJoiner(", ");
-    boolean allowNulls = false;
+    boolean allowNulls =
+        values.stream()
+            .anyMatch(
+                v -> "none".equalsIgnoreCase(v.valueType()) || "ALLOW_NULLS".equals(v.operator()));
 
-    for (FilterDefaultValue fdv : values) {
-      // "none" type values indicate that NULL records should be included
-      boolean isNoneType = "none".equalsIgnoreCase(fdv.valueType());
-
-      // Check for explicit ALLOW_NULLS operator
-      if ("ALLOW_NULLS".equals(fdv.operator()) || isNoneType) {
-        allowNulls = true;
-      }
-      // Format and add valid values to the set (skipping "none" which is handled by IS NULL logic)
-      if (!isNoneType && fdv.valueTxt() != null) {
-        valueJoiner.add(fieldFormatter.formatField(column.columnSourceTypeCode(), fdv.valueTxt()));
-      }
-    }
+    List<String> formattedValues =
+        values.stream()
+            .filter(v -> !"none".equalsIgnoreCase(v.valueType()) && v.valueTxt() != null)
+            .map(v -> fieldFormatter.formatField(column.columnSourceTypeCode(), v.valueTxt()))
+            .toList();
 
     StringBuilder segment = new StringBuilder("(");
-    boolean hasValues = valueJoiner.length() > 0;
+    String colName = "[" + column.columnName() + "]"; // Wrap in brackets for SQL Server safety
+    boolean hasValues = !formattedValues.isEmpty();
 
     if (hasValues) {
-      // determine if there is only one value or a list of values
       if (isSingleValue(filterConfig)) {
-        segment.append(column.columnName()).append(" = ").append(valueJoiner);
+        segment.append(colName).append(" = ").append(formattedValues.getFirst());
       } else {
-        segment.append(column.columnName()).append(" IN (").append(valueJoiner).append(")");
+        segment
+            .append(colName)
+            .append(" IN (")
+            .append(String.join(", ", formattedValues))
+            .append(")");
       }
     }
 
     if (allowNulls) {
-      // If we have values and nulls, we need the "OR"
-      if (hasValues) {
-        segment.append(" OR ");
-      }
-      segment.append(column.columnName()).append(" IS NULL");
+      if (hasValues) segment.append(" OR ");
+      segment.append(colName).append(" IS NULL");
     }
+
+    // Safety: If no values and no nulls were processed, return empty to avoid "()"
+    if (!hasValues && !allowNulls) return "";
+
     return segment.append(")").toString();
   }
 
