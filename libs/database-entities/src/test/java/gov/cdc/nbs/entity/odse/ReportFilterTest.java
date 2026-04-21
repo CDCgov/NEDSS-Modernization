@@ -22,6 +22,7 @@ class ReportFilterTest {
     FilterCode filterCode = new FilterCode();
     DataSourceColumn dataSourceColumn = new DataSourceColumn();
     List<FilterValue> filterValues = List.of(new FilterValue(), new FilterValue());
+    ReportFilterValidation filterValidation = new ReportFilterValidation();
     Character statusCd = 'A';
     Integer maxValueCnt = 10;
     Integer minValueCnt = 1;
@@ -33,6 +34,7 @@ class ReportFilterTest {
             filterCode,
             dataSourceColumn,
             filterValues,
+            filterValidation,
             statusCd,
             maxValueCnt,
             minValueCnt);
