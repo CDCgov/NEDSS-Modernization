@@ -4,7 +4,6 @@ import os
 
 import mssql_python
 import pytest
-from pydantic import ValidationError
 
 from src.errors import InvalidResultError, ResultTooBigError
 from src.execute_report import execute_report
@@ -246,7 +245,7 @@ class TestIntegrationExecuteReport:
                 'Invalid report result from library `nbs_custom`'
             )
 
-            root_error: ValidationError = exc_info.value.__cause__
+            root_error = exc_info.value.__cause__
             assert root_error is not None
             assert root_error.error_count() == 1
 
@@ -292,7 +291,7 @@ class TestIntegrationExecuteReport:
                 'Invalid report result from library `nbs_custom`'
             )
 
-            root_error: ValidationError = exc_info.value.__cause__
+            root_error = exc_info.value.__cause__
             assert root_error is not None
             assert root_error.error_count() == 1
 
