@@ -10,7 +10,6 @@ import classNames from 'classnames';
 const ResultDataPage = ({ result: { header, subheader, description, content } }: { result: ReportResult }) => {
     const id = useId();
     const { data, errors, meta } = Papa.parse<Record<string, string>>(content, { header: true, skipEmptyLines: true });
-    console.log({ styles });
 
     return (
         <main>
