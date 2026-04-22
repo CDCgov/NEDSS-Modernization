@@ -17,8 +17,8 @@ export function selectRandomDropdownValue(dropdownSelector) {
         const optionCount = $options.length;
         
         if (optionCount === 0) {
-        cy.log('No options found in dropdown');
-        return;
+          cy.log('No options found in dropdown');
+          return;
         }
         
         cy.log(`Dropdown has ${optionCount} options`);
@@ -34,10 +34,14 @@ export function selectRandomDropdownValue(dropdownSelector) {
     });
 }
 export function clickSubmitButton() {
-  cy.get('input[name="Submit"][id="Submit"]').eq(0).click()
+  cy.get('input[name="Submit"]').eq(0).click()
   cy.wait(1000);
 }
 
 export function clickAddButton() {
   cy.get('#Add').eq(0).click()
+}
+
+export function clickHome() {
+  cy.get('a').contains('Home').click();
 }
