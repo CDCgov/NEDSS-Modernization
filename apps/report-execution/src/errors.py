@@ -49,6 +49,16 @@ class InvalidReportSpecError(BaseReportExecutionError):
         super().__init__(f'Invalid report specification: {message}', 422)
 
 
+class InvalidResultError(BaseReportExecutionError):
+    """The report result from library execution is invalid."""
+
+    def __init__(self, library_name: str, message=None):
+        error_message = f'Invalid report result from library `{library_name}`'
+        if message:
+            error_message += f': {message}'
+        super().__init__(error_message, 500)
+
+
 class ToDoError(BaseReportExecutionError):
     """An error for a feature that hasn't been implemented yet."""
 

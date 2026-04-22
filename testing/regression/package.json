@@ -29,7 +29,10 @@
     "cypress-xpath": "^2.0.1",
     "eslint": "^9.20.1",
     "eslint-plugin-cypress": "^4.3.0",
-    "multiple-cucumber-html-reporter": "^3.6.2"
+    "multiple-cucumber-html-reporter": "^3.6.2",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "vite": "^8.0.8"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": false,
