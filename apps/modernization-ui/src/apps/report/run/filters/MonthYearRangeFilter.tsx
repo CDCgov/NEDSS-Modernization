@@ -3,7 +3,7 @@ import { BasicFilterConfiguration } from 'generated';
 import { MonthYearPickerRange } from 'design-system/date/range/MonthYearPickerRange';
 import { validateRequiredRule } from 'validation/entry';
 
-const YEARS_BACK = 20;
+const YEARS_BACK = 100;
 const getThisYear = () => new Date().getFullYear();
 
 // Don't need `filter` for this component, but don't want to pass it down
