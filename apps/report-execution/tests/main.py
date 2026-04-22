@@ -52,6 +52,9 @@ class TestReportExecuteEndpoint:
         # check we can round trip back to DF
         content = result['content']
         assert '1,a' in content
+        assert '\r\n' in content
+        assert content.endswith('d')
+        assert not content.endswith('\r\n')
         str_io = io.StringIO(content)
         df = pd.read_csv(str_io)
         # check numbers kept precision, but not overly so
