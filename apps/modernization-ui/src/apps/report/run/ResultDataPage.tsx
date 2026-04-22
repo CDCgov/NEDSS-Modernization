@@ -19,10 +19,10 @@ const ResultDataPage = ({ result: { header, subheader, description, content } }:
                     <DataTable
                         id={id}
                         fullWidth={false}
-                        columns={meta.fields.map((c) => ({
-                            id: c,
-                            name: c,
-                            value: (row: Record<string, string>) => row[c],
+                        columns={meta.fields.map((colName) => ({
+                            id: colName,
+                            name: colName,
+                            value: (row: Record<string, string>) => row[colName],
                         }))}
                         data={data}
                     />
