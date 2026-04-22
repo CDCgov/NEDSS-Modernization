@@ -21,7 +21,7 @@ const FILTER_TYPE_MAP: Record<
     {
         FilterComponent: BasicFilterComponent;
         getDefaultValue: (filter: BasicFilterConfiguration) => any;
-        validationRule?: <T>(filter: BasicFilterConfiguration, label: string) => Validator<T>;
+        validationRule?: (filter: BasicFilterConfiguration, label: string) => Validator<any>;
     }
 > = {
     BAS_TXT: { FilterComponent: TextFilter, getDefaultValue: getValueText },
