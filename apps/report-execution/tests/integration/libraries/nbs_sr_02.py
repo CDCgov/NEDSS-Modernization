@@ -78,7 +78,10 @@ class TestIntegrationNbsSr02Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR2: Counts of Reportable Diseases by County for Selected Time Frame',
+                'report_title': (
+                    'SR2: Counts of Reportable Diseases by County for Selected '
+                    'Time Frame'
+                ),
                 'library_name': 'nbs_sr_02',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (

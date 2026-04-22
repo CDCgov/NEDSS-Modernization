@@ -153,7 +153,9 @@ class TestIntegrationNbsSr09Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR9: Monthly Cases of Selected Disease by County and State',
+                'report_title': (
+                    'SR9: Monthly Cases of Selected Disease by County and State'
+                ),
                 'library_name': 'nbs_sr_09',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
