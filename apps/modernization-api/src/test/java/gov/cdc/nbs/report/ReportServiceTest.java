@@ -14,6 +14,7 @@ import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.FilterTypeMapper;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
@@ -55,7 +56,7 @@ class ReportServiceTest {
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
 
-  private void mockReport(ReportId id, String runner, String dataSourceName) {
+  private Report mockReport(ReportId id, String runner, String dataSourceName) {
     Report report = mock(Report.class);
 
     when(report.getReportLibrary()).thenReturn(reportLibrary);
@@ -65,6 +66,8 @@ class ReportServiceTest {
     when(reportLibrary.getRunner()).thenReturn(runner);
     when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
     when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+
+    return report;
   }
 
   @Test
@@ -103,6 +106,38 @@ class ReportServiceTest {
     assertThatThrownBy(() -> service.getReport(reportUid, dataSourceUid))
         .isInstanceOf(NotFoundException.class)
         .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
+  }
+
+  @Test
+  void getReportRunner_should_return_runner_when_report_exists() {
+    ReportId id = new ReportId(reportUid, dataSourceUid);
+    mockReport(id, "python", "nbs_ods.PHCDemographic");
+
+    String runner = service.getReportRunner(reportUid, dataSourceUid);
+
+    assertThat(runner).isEqualTo("python");
+  }
+
+  @Test
+  void getReportRunner_should_throw_when_report_not_found() {
+    ReportId id = new ReportId(reportUid, dataSourceUid);
+    when(reportRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
+  }
+
+  @Test
+  void getReportRunner_should_throw_when_report_has_no_library() {
+    ReportId reportId = new ReportId(reportUid, dataSourceUid);
+    Report report = mockReport(reportId, "python", "nbs_ods.PHCDemographic");
+
+    when(report.getReportLibrary()).thenReturn(null);
+
+    assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
+            .isInstanceOf(UnprocessableEntityException.class)
+            .hasMessage("No report library exists for report " + reportId);
   }
 
   @Test

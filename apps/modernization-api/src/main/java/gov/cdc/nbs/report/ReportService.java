@@ -1,7 +1,9 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
+import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
+import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.FilterDefaultValueMapper;
@@ -96,6 +98,24 @@ public class ReportService {
                     String.format(
                         "Report not found for Report UID: %d and Data Source UID: %d",
                         reportUid, dataSourceUid)));
+  }
+
+  public String getReportRunner(Long reportUid, Long dataSourceUid) {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+
+      Report report = reportRepository.findById(id).orElseThrow(
+              () ->
+                      new NotFoundException(
+                              String.format(
+                                      "Report not found for Report UID: %d and Data Source UID: %d",
+                                      reportUid, dataSourceUid)));
+
+      ReportLibrary reportLibrary = report.getReportLibrary();
+      if (reportLibrary == null) {
+          throw new UnprocessableEntityException(String.format("No report library exists for report %d",  reportUid));
+      }
+
+      return reportLibrary.getRunner();
   }
 
   public ResponseEntity<ReportResult> executeReport(ReportExecutionRequest request) {
