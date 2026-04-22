@@ -17,7 +17,7 @@ When("I send a POST request to {string} with a valid report execution request", 
   }).as("apiResponse");
 });
 
-When("I send a POST request to {string} with missing reportUid", (endpoint) => {
+When("I send a POST request to "/nbs/api/report/execute" with missing reportUid", (endpoint) => {
   const invalidRequest = {
     dataSourceUid: 456,
     isExport: true
@@ -31,7 +31,7 @@ When("I send a POST request to {string} with missing reportUid", (endpoint) => {
   }).as("apiResponse");
 });
 
-When("I send a POST request to {string} with missing dataSourceUid", (endpoint) => {
+When("I send a POST request to "/nbs/api/report/execute" with missing dataSourceUid", (endpoint) => {
   const invalidRequest = {
     reportUid: 123,
     isExport: true
@@ -45,7 +45,7 @@ When("I send a POST request to {string} with missing dataSourceUid", (endpoint) 
   }).as("apiResponse");
 });
 
-When("I send a POST request to {string} with missing isExport", (endpoint) => {
+When("I send a POST request to "/nbs/api/report/execute" with missing isExport", (endpoint) => {
   const invalidRequest = {
     reportUid: 123,
     dataSourceUid: 456
@@ -59,7 +59,7 @@ When("I send a POST request to {string} with missing isExport", (endpoint) => {
   }).as("apiResponse");
 });
 
-When("I send a POST request to {string} with reportUid as string", (endpoint) => {
+When("I send a POST request to "/nbs/api/report/execute" with reportUid as string", (endpoint) => {
   const invalidRequest = {
     reportUid: "invalid",
     dataSourceUid: 456,
@@ -74,7 +74,7 @@ When("I send a POST request to {string} with reportUid as string", (endpoint) =>
   }).as("apiResponse");
 });
 
-When("I send a POST request to {string} with dataSourceUid as string", (endpoint) => {
+When("I send a POST request to "/nbs/api/report/execute" with dataSourceUid as string", (endpoint) => {
   const invalidRequest = {
     reportUid: 123,
     dataSourceUid: "invalid",
@@ -89,7 +89,7 @@ When("I send a POST request to {string} with dataSourceUid as string", (endpoint
   }).as("apiResponse");
 });
 
-When("I send a POST request to {string} with isExport as string", (endpoint) => {
+When("I send a POST request to "/nbs/api/report/execute" with isExport as string", (endpoint) => {
   const invalidRequest = {
     reportUid: 123,
     dataSourceUid: 456,
@@ -104,7 +104,7 @@ When("I send a POST request to {string} with isExport as string", (endpoint) => 
   }).as("apiResponse");
 });
 
-When("I send a POST request to {string} with invalid BasicFilter", (endpoint) => {
+When("I send a POST request to "/nbs/api/report/execute" with invalid BasicFilter", (endpoint) => {
   const invalidRequest = {
     reportUid: 123,
     dataSourceUid: 456,
@@ -125,7 +125,7 @@ When("I send a POST request to {string} with invalid BasicFilter", (endpoint) =>
   }).as("apiResponse");
 });
 
-When("I send a POST request to {string} with invalid AdvancedFilter", (endpoint) => {
+When("I send a POST request to "/nbs/api/report/execute" with invalid AdvancedFilter", (endpoint) => {
   const invalidRequest = {
     reportUid: 123,
     dataSourceUid: 456,
