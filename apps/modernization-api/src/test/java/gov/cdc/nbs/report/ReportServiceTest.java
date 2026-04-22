@@ -124,8 +124,8 @@ class ReportServiceTest {
     when(reportRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
-            .isInstanceOf(NotFoundException.class)
-            .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
+        .isInstanceOf(NotFoundException.class)
+        .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
   }
 
   @Test
@@ -136,8 +136,8 @@ class ReportServiceTest {
     when(report.getReportLibrary()).thenReturn(null);
 
     assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
-            .isInstanceOf(UnprocessableEntityException.class)
-            .hasMessage("No report library exists for report " + reportId);
+        .isInstanceOf(UnprocessableEntityException.class)
+        .hasMessage("No report library exists for report " + reportId);
   }
 
   @Test

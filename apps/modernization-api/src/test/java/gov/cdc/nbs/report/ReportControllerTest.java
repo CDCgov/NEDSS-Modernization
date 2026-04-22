@@ -21,10 +21,7 @@ import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportResult;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-
 import org.apache.commons.lang3.NotImplementedException;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -86,8 +83,7 @@ class ReportControllerTest {
 
     when(service.getReportRunner(reportUid, dataSourceUid)).thenReturn("python");
 
-    ResponseEntity<String> response =
-            controller.getReportRunner(reportUid, dataSourceUid);
+    ResponseEntity<String> response = controller.getReportRunner(reportUid, dataSourceUid);
 
     assertEquals("python", response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -100,11 +96,12 @@ class ReportControllerTest {
 
     String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
 
-    when(service.getReportRunner(reportUid, dataSourceUid)).thenThrow(new NotFoundException(errorMsg));
+    when(service.getReportRunner(reportUid, dataSourceUid))
+        .thenThrow(new NotFoundException(errorMsg));
 
     assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
-            .isInstanceOf(NotFoundException.class)
-            .hasMessageContaining(errorMsg);
+        .isInstanceOf(NotFoundException.class)
+        .hasMessageContaining(errorMsg);
   }
 
   @Test
@@ -120,8 +117,8 @@ class ReportControllerTest {
     when(report.getReportLibrary()).thenReturn(null);
 
     assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
-            .isInstanceOf(UnprocessableEntityException.class)
-            .hasMessageContaining("No report library exists for report " + reportId);
+        .isInstanceOf(UnprocessableEntityException.class)
+        .hasMessageContaining("No report library exists for report " + reportId);
   }
 
   @Test

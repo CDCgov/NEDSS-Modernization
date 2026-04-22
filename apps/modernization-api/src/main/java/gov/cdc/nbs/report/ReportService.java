@@ -101,21 +101,25 @@ public class ReportService {
   }
 
   public String getReportRunner(Long reportUid, Long dataSourceUid) {
-      ReportId id = new ReportId(reportUid, dataSourceUid);
+    ReportId id = new ReportId(reportUid, dataSourceUid);
 
-      Report report = reportRepository.findById(id).orElseThrow(
-              () ->
-                      new NotFoundException(
-                              String.format(
-                                      "Report not found for Report UID: %d and Data Source UID: %d",
-                                      reportUid, dataSourceUid)));
+    Report report =
+        reportRepository
+            .findById(id)
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        String.format(
+                            "Report not found for Report UID: %d and Data Source UID: %d",
+                            reportUid, dataSourceUid)));
 
-      ReportLibrary reportLibrary = report.getReportLibrary();
-      if (reportLibrary == null) {
-          throw new UnprocessableEntityException(String.format("No report library exists for report %d",  reportUid));
-      }
+    ReportLibrary reportLibrary = report.getReportLibrary();
+    if (reportLibrary == null) {
+      throw new UnprocessableEntityException(
+          String.format("No report library exists for report %d", reportUid));
+    }
 
-      return reportLibrary.getRunner();
+    return reportLibrary.getRunner();
   }
 
   public ResponseEntity<ReportResult> executeReport(ReportExecutionRequest request) {

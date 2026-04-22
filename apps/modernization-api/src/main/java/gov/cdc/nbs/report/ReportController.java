@@ -39,7 +39,7 @@ public class ReportController {
   @GetMapping("/runner/{reportUid}/{dataSourceUid}")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
   public ResponseEntity<String> getReportRunner(
-          @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
+      @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
     String runner = reportService.getReportRunner(reportUid, dataSourceUid);
     return new ResponseEntity<>(runner, HttpStatus.OK);
   }
