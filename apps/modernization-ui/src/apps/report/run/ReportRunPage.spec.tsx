@@ -333,17 +333,142 @@ describe('report run page', () => {
             });
         });
 
-        describe('BAS_TIM_RANGE', () => {
+        ['BAS_TIM_RANGE', 'BAS_TIM_RANGE_CUSTOM'].forEach((filterType) => {
+            describe(filterType, () => {
+                const MOCK_FILTER = {
+                    reportFilterUid: 1001,
+                    filterType: {
+                        id: 5,
+                        codeTable: undefined,
+                        descTxt: 'Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY',
+                        code: 'T_T01',
+                        filterCodeSetName: undefined,
+                        filterType: filterType,
+                        filterName: 'Time Range',
+                    },
+                    isRequired: true,
+                    reportColumnUid: 2001,
+                };
+
+                it('goes through happy path', async () => {
+                    const user = userEvent.setup();
+
+                    const mockConfigApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+
+                    const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findByLabelText('Full Name')).toBeVisible();
+                    const fromInput = await findByLabelText('From');
+                    const toInput = await findByLabelText('To');
+                    await userEvent.type(fromInput, '01/01/2025');
+                    await userEvent.type(toInput, '01/01/2026');
+
+                    expect(fromInput).toHaveValue('01/01/2025');
+                    expect(toInput).toHaveValue('01/01/2026');
+
+                    expect(await axe(container)).toHaveNoViolations();
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['01/01/2025', '01/01/2026'] }],
+                        }),
+                    });
+                });
+
+                it('does not submit on required', async () => {
+                    const user = userEvent.setup();
+
+                    const mockConfigApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+
+                    const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findByLabelText('Full Name')).toBeVisible();
+                    const fromInput = await findByLabelText('From');
+                    const toInput = await findByLabelText('To');
+
+                    expect(fromInput).toHaveValue('');
+                    expect(toInput).toHaveValue('');
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+
+                    expect(fromInput).toBeInvalid();
+                    expect(toInput).toBeInvalid();
+                    expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                    expect(mockResultApi).not.toHaveBeenCalled();
+                });
+
+                it('renders default value', async () => {
+                    const user = userEvent.setup();
+
+                    const mockConfigApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [{ ...MOCK_FILTER, defaultValue: ['01/01/2024', '01/01/2025'] }],
+                        });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+
+                    const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findByLabelText('Full Name')).toBeVisible();
+                    const fromInput = await findByLabelText('From');
+                    const toInput = await findByLabelText('To');
+
+                    expect(fromInput).toHaveValue('01/01/2024');
+                    expect(toInput).toHaveValue('01/01/2025');
+
+                    await userEvent.type(fromInput, '{backspace}3');
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['01/01/2023', '01/01/2025'] }],
+                        }),
+                    });
+                });
+            });
+        });
+        describe('BAS_TIM_RANGE_LIST', () => {
             const MOCK_FILTER = {
                 reportFilterUid: 1001,
                 filterType: {
                     id: 5,
                     codeTable: undefined,
                     descTxt: 'Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY',
-                    code: 'T_T01',
+                    code: 'T_T02',
                     filterCodeSetName: undefined,
-                    filterType: 'BAS_TIM_RANGE',
-                    filterName: 'Time Range',
+                    filterType: 'BAS_TIM_RANGE_LIST',
+                    filterName: 'Time Period',
                 },
                 isRequired: true,
                 reportColumnUid: 2001,
@@ -368,11 +493,11 @@ describe('report run page', () => {
                 expect(await findByLabelText('Full Name')).toBeVisible();
                 const fromInput = await findByLabelText('From');
                 const toInput = await findByLabelText('To');
-                await userEvent.type(fromInput, '01/01/2025');
-                await userEvent.type(toInput, '01/01/2026');
+                await userEvent.selectOptions(fromInput, '2025');
+                await userEvent.selectOptions(toInput, '2026');
 
-                expect(fromInput).toHaveValue('01/01/2025');
-                expect(toInput).toHaveValue('01/01/2026');
+                expect(fromInput).toHaveValue('2025');
+                expect(toInput).toHaveValue('2026');
 
                 expect(await axe(container)).toHaveNoViolations();
 
@@ -381,7 +506,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
-                        basicFilters: [{ reportFilterUid: 1001, values: ['01/01/2025', '01/01/2026'] }],
+                        basicFilters: [{ reportFilterUid: 1001, values: ['2025', '2026'] }],
                     }),
                 });
             });
@@ -406,6 +531,14 @@ describe('report run page', () => {
                 const fromInput = await findByLabelText('From');
                 const toInput = await findByLabelText('To');
 
+                const thisYear = new Date().getFullYear();
+
+                expect(fromInput).toHaveValue(`${thisYear - 20}`);
+                expect(toInput).toHaveValue(`${thisYear}`);
+
+                await userEvent.selectOptions(fromInput, '');
+                await userEvent.selectOptions(toInput, '');
+
                 expect(fromInput).toHaveValue('');
                 expect(toInput).toHaveValue('');
 
@@ -425,7 +558,7 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.getReportConfiguration)
                     .mockResolvedValue({
                         ...MOCK_CONFIG,
-                        basicFilters: [{ ...MOCK_FILTER, defaultValue: ['01/01/2024', '01/01/2025'] }],
+                        basicFilters: [{ ...MOCK_FILTER, defaultValue: ['2024', '2025'] }],
                     });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
@@ -441,17 +574,157 @@ describe('report run page', () => {
                 const fromInput = await findByLabelText('From');
                 const toInput = await findByLabelText('To');
 
-                expect(fromInput).toHaveValue('01/01/2024');
-                expect(toInput).toHaveValue('01/01/2025');
+                expect(fromInput).toHaveValue('2024');
+                expect(toInput).toHaveValue('2025');
 
-                await userEvent.type(fromInput, '{backspace}3');
+                await userEvent.selectOptions(fromInput, '2023');
 
                 const exportButton = await findByRole('button', { name: 'Export' });
                 await user.click(exportButton);
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
-                        basicFilters: [{ reportFilterUid: 1001, values: ['01/01/2023', '01/01/2025'] }],
+                        basicFilters: [{ reportFilterUid: 1001, values: ['2023', '2025'] }],
+                    }),
+                });
+            });
+        });
+
+        describe('BAS_MM_YYYY_RANGE', () => {
+            const MOCK_FILTER = {
+                reportFilterUid: 1001,
+                filterType: {
+                    id: 5,
+                    codeTable: undefined,
+                    descTxt: 'Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY',
+                    code: 'T_T01',
+                    filterCodeSetName: undefined,
+                    filterType: 'BAS_MM_YYYY_RANGE',
+                    filterName: 'Month Year Range',
+                },
+                isRequired: true,
+                reportColumnUid: 2001,
+            };
+
+            it('goes through happy path', async () => {
+                const user = userEvent.setup();
+
+                const mockConfigApi = vi
+                    .mocked(generated.ReportControllerService.getReportConfiguration)
+                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+
+                const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockConfigApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Full Name')).toBeVisible();
+                const fromMonthInput = await findByLabelText('From Month');
+                await userEvent.selectOptions(fromMonthInput, '1');
+                const fromYearInput = await findByLabelText('From Year');
+                await userEvent.selectOptions(fromYearInput, '2025');
+                const toMonthInput = await findByLabelText('To Month');
+                await userEvent.selectOptions(toMonthInput, '1');
+                const toYearInput = await findByLabelText('To Year');
+                await userEvent.selectOptions(toYearInput, '2026');
+
+                expect(fromMonthInput).toHaveValue('1');
+                expect(fromYearInput).toHaveValue('2025');
+                expect(toMonthInput).toHaveValue('1');
+                expect(toYearInput).toHaveValue('2026');
+
+                expect(await axe(container)).toHaveNoViolations();
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        basicFilters: [{ reportFilterUid: 1001, values: ['01/2025', '01/2026'] }],
+                    }),
+                });
+            });
+
+            it('does not submit on required', async () => {
+                const user = userEvent.setup();
+
+                const mockConfigApi = vi
+                    .mocked(generated.ReportControllerService.getReportConfiguration)
+                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+
+                const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockConfigApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Full Name')).toBeVisible();
+                const fromMonthInput = await findByLabelText('From Month');
+                const fromYearInput = await findByLabelText('From Year');
+                const toMonthInput = await findByLabelText('To Month');
+                const toYearInput = await findByLabelText('To Year');
+
+                expect(fromMonthInput).toHaveValue('');
+                expect(fromYearInput).toHaveValue('');
+                expect(toMonthInput).toHaveValue('');
+                expect(toYearInput).toHaveValue('');
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+
+                expect(fromMonthInput).toBeInvalid();
+                expect(fromYearInput).toBeInvalid();
+                expect(toMonthInput).toBeInvalid();
+                expect(toYearInput).toBeInvalid();
+                expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                expect(mockResultApi).not.toHaveBeenCalled();
+            });
+
+            it('renders default value', async () => {
+                const user = userEvent.setup();
+
+                const mockConfigApi = vi
+                    .mocked(generated.ReportControllerService.getReportConfiguration)
+                    .mockResolvedValue({
+                        ...MOCK_CONFIG,
+                        basicFilters: [{ ...MOCK_FILTER, defaultValue: ['01/2024', '01/2025'] }],
+                    });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+
+                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockConfigApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Full Name')).toBeVisible();
+                const fromMonthInput = await findByLabelText('From Month');
+                const fromYearInput = await findByLabelText('From Year');
+                const toMonthInput = await findByLabelText('To Month');
+                const toYearInput = await findByLabelText('To Year');
+
+                expect(fromMonthInput).toHaveValue('1');
+                expect(fromYearInput).toHaveValue('2024');
+                expect(toMonthInput).toHaveValue('1');
+                expect(toYearInput).toHaveValue('2025');
+
+                await userEvent.selectOptions(fromMonthInput, '3');
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        basicFilters: [{ reportFilterUid: 1001, values: ['03/2024', '01/2025'] }],
                     }),
                 });
             });

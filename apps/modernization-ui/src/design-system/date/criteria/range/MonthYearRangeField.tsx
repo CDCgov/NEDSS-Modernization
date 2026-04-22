@@ -9,9 +9,10 @@ import styles from './date-range-field.module.scss';
 
 type Field = keyof DateRange;
 
-// fromat to mm/yyyy string
+// format to mm/yyyy string
+const formatMonth = (n: number) => new Intl.NumberFormat('en-US', { minimumIntegerDigits: 2 }).format(n);
 const toDateString = ({ equals }: DateEqualsCriteria) =>
-    equals ? `${equals.month ?? 0}/${equals.year ?? 0}` : undefined;
+    equals ? `${formatMonth(equals.month ?? 0)}/${equals.year ?? 0}` : undefined;
 const parseDateString = (dtStr?: string) => {
     if (!dtStr) return undefined;
     const parts = dtStr.split('/');
