@@ -57,7 +57,8 @@ class TestIntegrationNbsSr07Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
+                'report_title': 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected '
+                'Time Period',
                 'library_name': 'nbs_sr_07',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',

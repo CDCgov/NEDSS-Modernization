@@ -79,7 +79,7 @@ class TestIntegrationNbsSr13Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 13',
+                'report_title': 'SR13: Counts of Selected Diseases By Case Status',
                 'library_name': 'nbs_sr_13',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (

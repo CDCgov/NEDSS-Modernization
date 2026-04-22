@@ -41,9 +41,6 @@ def execute(
         columns=['Disease', 'type', 'Number of Cases'], data=modified_rows
     )
 
-    header = (
-        'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected Time Period'
-    )
     description = """
         <u>Report content</u>
         Data Source: nbs_ods.PHCDemographic (publichealthcasefact)
@@ -70,7 +67,6 @@ def execute(
     return ReportResult(
         content_type='table',
         content=modified_table,
-        header=header,
         subheader=nbs_sr_05_report_result.subheader,
         description=description,
     )

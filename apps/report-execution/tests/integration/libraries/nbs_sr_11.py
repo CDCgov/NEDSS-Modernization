@@ -73,7 +73,7 @@ class TestIntegrationNbsSr11Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 11',
+                'report_title': 'SR11: Cases of Selected Diseases By Year Over Time',
                 'library_name': 'nbs_sr_11',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
