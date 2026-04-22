@@ -1,4 +1,7 @@
+import typing
 from importlib import import_module
+
+from pydantic import ValidationError
 
 from . import errors, models, utils
 from .db_transaction import db_transaction
@@ -22,7 +25,7 @@ def execute_report(report_spec: models.ReportSpec):
             data_source_name=report_spec.data_source_name,
         )
 
-    check_valid_result(result, report_spec.is_export)
+    check_valid_result(result, report_spec)
 
     return result
 
@@ -33,16 +36,24 @@ def is_valid_library(library):
     return True
 
 
-def check_valid_result(report_result: models.ReportResult, is_export: bool):
+def check_valid_result(report_result: typing.Any, report_spec: models.ReportSpec):
     """Check if the returned result is valid."""
+    if report_result is None:
+        raise errors.InvalidResultError(report_spec.library_name, 'No result returned')
+
+    try:
+        result = models.ReportResult.model_validate(report_result)
+    except ValidationError as e:
+        raise errors.InvalidResultError(report_spec.library_name) from e
+
     row_limit = (
         utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_EXPORT', 100000)
-        if is_export
+        if report_spec.is_export
         else utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_RUN', 10000)
     )
-    num_rows = len(report_result.content.data)
+    num_rows = len(result.content.data)
     if num_rows > row_limit:
-        raise errors.ResultTooBigError(is_export, row_limit, num_rows)
+        raise errors.ResultTooBigError(report_spec.is_export, row_limit, num_rows)
 
     return None
 
