@@ -13,7 +13,7 @@ public class FieldFormatter {
       case "STRING" -> "'" + value.replace("'", "''") + "'";
       case "DATE" -> convertToSQLDate(value);
       case "INTEGER", "NUMBER" -> value;
-      default -> throw new IllegalArgumentException("Unknown type: " + type);
+      default -> throw new IllegalArgumentException("Unexpected Column Type: " + type);
     };
   }
 
@@ -28,8 +28,9 @@ public class FieldFormatter {
         localDate = YearMonth.parse(date, DateTimeFormatter.ofPattern("MM/yyyy")).atDay(1);
       }
     } catch (DateTimeParseException e) {
-      throw new IllegalArgumentException("invalid date");
+      throw new IllegalArgumentException("Can't Convert Date!");
     }
-    return localDate.toString();
+    // Produces '2023-12-31'
+    return "'" + localDate.toString() + "'";
   }
 }
