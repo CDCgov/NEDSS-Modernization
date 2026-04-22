@@ -48,7 +48,6 @@ class ReportControllerTest {
     List<ReportColumn> columns = List.of(mock(ReportColumn.class));
     ReportConfiguration reportConfig =
         new ReportConfiguration(
-            "python",
             new ReportDataSource(dataSourceEntity),
             new Library(reportLibraryEntity),
             "Report Title",

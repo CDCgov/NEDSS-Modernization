@@ -85,7 +85,6 @@ public class ReportService {
               }
 
               return new ReportConfiguration(
-                  report.getReportLibrary().getRunner(),
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
                   report.getReportTitle(),
