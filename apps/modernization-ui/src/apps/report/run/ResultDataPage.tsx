@@ -4,9 +4,6 @@ import { ReportResult } from 'generated';
 import Papa from 'papaparse';
 import { useId } from 'react';
 
-import styles from './result-data-table.module.scss';
-import classNames from 'classnames';
-
 const ResultDataPage = ({ result: { header, subheader, description, content } }: { result: ReportResult }) => {
     const id = useId();
     const { data, errors, meta } = Papa.parse<Record<string, string>>(content, { header: true, skipEmptyLines: true });
@@ -19,9 +16,10 @@ const ResultDataPage = ({ result: { header, subheader, description, content } }:
             <h2>{subheader}</h2>
             <section>{description}</section>
             {meta.fields && (
-                <section className={classNames('overflow-auto', styles.table)}>
+                <section className="overflow-auto">
                     <DataTable
                         id={id}
+                        fullWidth={false}
                         columns={meta.fields.map((c) => ({
                             id: c,
                             name: c,
