@@ -3,7 +3,7 @@ config:
 
 tables:
   - table_name: "[RDB].[dbo].[INV_SUMM_DATAMART]"
-    row_count: 1000
+    row_count: 200
     columns:
       - column_name: INVESTIGATION_KEY
         type: int
@@ -17,7 +17,7 @@ tables:
       
       - column_name: PATIENT_LOCAL_ID
         type: string
-        data: f"PSN{fake.random_int(10000000, 99999999)}GA01"
+        data: f"PSN_DUP_{fake.random_int(1, 10)}_GA01"
         null_percentage: 0.02
       
       - column_name: INVESTIGATION_LOCAL_ID
@@ -27,12 +27,12 @@ tables:
       
       - column_name: DISEASE
         type: string
-        data: random.choice(["2019 Novel Coronavirus", "Syphilis, primary", "Syphilis, secondary", "HIV", "Gonorrhea", "Chlamydia trachomatis infection", "Hepatitis A, acute", "Hepatitis B, acute", "Tuberculosis", "Pertussis", "Measles", "COVID 2023", "Monkeypox", "Dengue", "Salmonellosis", "Listeriosis", "Campylobacteriosis"])
+        data: random.choice(["Syphilis, primary", "HIV", "Gonorrhea", "Chlamydia trachomatis infection", "Hepatitis A, acute", "2019 Novel Coronavirus"])
         null_percentage: 0.01
       
       - column_name: DISEASE_CD
         type: string
-        data: random.choice(["11065", "10311", "10312", "900", "10280", "10274", "10110", "10100", "102201", "10190", "10140", "COVID19223", "11801", "10680", "50265", "10640", "11020"])
+        data: random.choice(["10311", "900", "10280", "10274", "10110", "11065"])
         null_percentage: 0.01
       
       - column_name: PATIENT_FIRST_NAME
@@ -47,7 +47,7 @@ tables:
       
       - column_name: PATIENT_DOB
         type: string
-        data: fake.date_of_birth(minimum_age=0, maximum_age=100).strftime('%Y-%m-%d %H:%M:%S.000')
+        data: f"{fake.date_of_birth(minimum_age=0, maximum_age=100).strftime('%Y-%m-%d')} 00:00:00.000"
         null_percentage: 0.05
       
       - column_name: PATIENT_CURRENT_SEX
@@ -72,7 +72,7 @@ tables:
       
       - column_name: PATIENT_STREET_ADDRESS_2
         type: string
-        data: random.choice([fake.secondary_address(), None])
+        data: None
         null_percentage: 0.60
       
       - column_name: PATIENT_CITY
@@ -97,12 +97,12 @@ tables:
       
       - column_name: RACE_CALCULATED
         type: string
-        data: random.choice(["White", "Black or African American", "Asian", "Multi-Race", "American Indian or Alaska Native", "Native Hawaiian or Other Pacific Islander", "Unknown", None])
+        data: random.choice(["White", "Black or African American", "Asian", "Multi-Race", "Unknown", None])
         null_percentage: 0.15
       
       - column_name: RACE_CALC_DETAILS
         type: string
-        data: random.choice(["White", "Asian", "Black or African American", "American Indian or Alaska Native | Asian | White", "Asian | Black or African American", None])
+        data: random.choice(["White", "Asian", "Black or African American", None])
         null_percentage: 0.30
       
       - column_name: INVESTIGATION_STATUS
@@ -112,23 +112,23 @@ tables:
       
       - column_name: EARLIEST_RPT_TO_CNTY_DT
         type: string
-        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.3 else None
-        null_percentage: 0.30
+        data: None
+        null_percentage: 1.0
       
       - column_name: EARLIEST_RPT_TO_STATE_DT
         type: string
-        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.3 else None
-        null_percentage: 0.30
+        data: None
+        null_percentage: 1.0
       
       - column_name: DIAGNOSIS_DATE
         type: string
-        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.3 else None
-        null_percentage: 0.30
+        data: None
+        null_percentage: 1.0
       
       - column_name: ILLNESS_ONSET_DATE
         type: string
-        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.3 else None
-        null_percentage: 0.30
+        data: None
+        null_percentage: 1.0
       
       - column_name: CASE_STATUS
         type: string
@@ -147,8 +147,8 @@ tables:
       
       - column_name: INVESTIGATION_CREATE_DATE
         type: string
-        data: fake.date_time_between(start_date='-3y', end_date='now').strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
-        null_percentage: 0
+        data: None
+        null_percentage: 1.0
       
       - column_name: INVESTIGATION_CREATED_BY
         type: string
@@ -157,8 +157,8 @@ tables:
       
       - column_name: INVESTIGATION_LAST_UPDTD_DATE
         type: string
-        data: fake.date_time_between(start_date='-1y', end_date='now').strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
-        null_percentage: 0.05
+        data: None
+        null_percentage: 1.0
       
       - column_name: NOTIFICATION_STATUS
         type: string
@@ -167,12 +167,12 @@ tables:
       
       - column_name: EVENT_DATE
         type: string
-        data: fake.date_between(start_date='-3y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000')
+        data: f"{fake.date_between(start_date='-1y', end_date='today').strftime('%Y-%m-%d')} 12:00:00.000"
         null_percentage: 0.05
       
       - column_name: EVENT_DATE_TYPE
         type: string
-        data: random.choice(["Investigation Start Date", "Date of Report", "Specimen Collection Date of Earliest Associated Lab", "Illness Onset Date", "Date of Diagnosis", "Investigation Add Date", "Confirmation Date"])
+        data: random.choice(["Investigation Start Date", "Date of Report", "Specimen Collection Date of Earliest Associated Lab", "Illness Onset Date", "Date of Diagnosis"])
         null_percentage: 0.05
       
       - column_name: PROGRAM_AREA
@@ -192,18 +192,18 @@ tables:
       
       - column_name: NOTIFICATION_LOCAL_ID
         type: string
-        data: f"NOT{fake.random_int(10000000, 99999999)}GA01" if random.random() > 0.6 else None
+        data: f"NOT{fake.random_int(10000000, 99999999)}GA01"
         null_percentage: 0.60
       
       - column_name: NOTIFICATION_CREATE_DATE
         type: string
-        data: fake.date_between(start_date='-1y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.6 else None
-        null_percentage: 0.60
+        data: None
+        null_percentage: 1.0
       
       - column_name: NOTIFICATION_SENT_DATE
         type: string
-        data: fake.date_between(start_date='-6m', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.7 else None
-        null_percentage: 0.70
+        data: None
+        null_percentage: 1.0
       
       - column_name: NOTIFICATION_SUBMITTER
         type: string
@@ -212,8 +212,8 @@ tables:
       
       - column_name: NOTIFICATION_LAST_UPDATED_DATE
         type: string
-        data: fake.date_between(start_date='-6m', end_date='today').strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] if random.random() > 0.7 else None
-        null_percentage: 0.70
+        data: None
+        null_percentage: 1.0
       
       - column_name: NOTIFICATION_LAST_UPDATED_USER
         type: string
@@ -222,18 +222,18 @@ tables:
       
       - column_name: INV_RPT_DT
         type: string
-        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.4 else None
-        null_percentage: 0.40
+        data: None
+        null_percentage: 1.0
       
       - column_name: INV_START_DT
         type: string
-        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.3 else None
-        null_percentage: 0.30
+        data: None
+        null_percentage: 1.0
       
       - column_name: CONFIRMATION_DT
         type: string
-        data: fake.date_between(start_date='-1y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.6 else None
-        null_percentage: 0.60
+        data: None
+        null_percentage: 1.0
       
       - column_name: CONFIRMATION_METHOD
         type: string
@@ -242,8 +242,8 @@ tables:
       
       - column_name: HSPTL_ADMISSION_DT
         type: string
-        data: fake.date_between(start_date='-1y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.7 else None
-        null_percentage: 0.70
+        data: None
+        null_percentage: 1.0
       
       - column_name: CURR_PROCESS_STATE
         type: string
