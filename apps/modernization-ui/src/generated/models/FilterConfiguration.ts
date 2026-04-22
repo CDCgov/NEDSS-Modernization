@@ -9,5 +9,7 @@ export type FilterConfiguration = {
     reportColumnUid?: number;
     filterType: FilterType;
     filterDefaultValues: Array<FilterDefaultValue>;
+    maxValueCnt?: number;
+    minValueCnt?: number;
 };
 
