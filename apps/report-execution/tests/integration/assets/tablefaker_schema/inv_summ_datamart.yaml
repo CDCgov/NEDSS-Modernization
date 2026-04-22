@@ -12,12 +12,27 @@ tables:
       
       - column_name: PATIENT_KEY
         type: int
-        data: fake.random_int(1, 1000)
-        null_percentage: 0
+        data: fake.random_int(1, 1000000)
+        null_percentage: 0.05
       
       - column_name: PATIENT_LOCAL_ID
         type: string
-        data: str(fake.random_int(1, 100))
+        data: f"PSN{fake.random_int(10000000, 99999999)}GA01"
+        null_percentage: 0.02
+      
+      - column_name: INVESTIGATION_LOCAL_ID
+        type: string
+        data: f"CAS{fake.random_int(10000000, 99999999)}GA01"
+        null_percentage: 0.01
+      
+      - column_name: DISEASE
+        type: string
+        data: random.choice(["2019 Novel Coronavirus", "Syphilis, primary", "Syphilis, secondary", "HIV", "Gonorrhea", "Chlamydia trachomatis infection", "Hepatitis A, acute", "Hepatitis B, acute", "Tuberculosis", "Pertussis", "Measles", "COVID 2023", "Monkeypox", "Dengue", "Salmonellosis", "Listeriosis", "Campylobacteriosis"])
+        null_percentage: 0.01
+      
+      - column_name: DISEASE_CD
+        type: string
+        data: random.choice(["11065", "10311", "10312", "900", "10280", "10274", "10110", "10100", "102201", "10190", "10140", "COVID19223", "11801", "10680", "50265", "10640", "11020"])
         null_percentage: 0.01
       
       - column_name: PATIENT_FIRST_NAME
@@ -32,45 +47,215 @@ tables:
       
       - column_name: PATIENT_DOB
         type: string
-        data: fake.date_of_birth(minimum_age=0, maximum_age=100).strftime('%Y-%m-%d')
+        data: fake.date_of_birth(minimum_age=0, maximum_age=100).strftime('%Y-%m-%d %H:%M:%S.000')
         null_percentage: 0.05
       
-      - column_name: INVESTIGATION_LOCAL_ID
+      - column_name: PATIENT_CURRENT_SEX
         type: string
-        data: fake.uuid4()[:15]
-        null_percentage: 0.01
+        data: random.choice(["Male", "Female", "Unknown", None])
+        null_percentage: 0.10
       
-      - column_name: DISEASE
-        type: string
-        data: random.choice(["Pertussis", "Measles", "Salmonellosis", "COVID-19", "Hepatitis A"])
-        null_percentage: 0.01
+      - column_name: AGE_REPORTED
+        type: int
+        data: fake.random_int(0, 100)
+        null_percentage: 0.15
       
-      - column_name: DISEASE_CD
+      - column_name: AGE_REPORTED_UNIT
         type: string
-        data: random.choice(["10190", "10140", "502651", "10245", "10280", "10311"])
-        null_percentage: 0.01
+        data: random.choice(["Years", "Months", "Days", None])
+        null_percentage: 0.15
+      
+      - column_name: PATIENT_STREET_ADDRESS_1
+        type: string
+        data: fake.street_address()
+        null_percentage: 0.20
+      
+      - column_name: PATIENT_STREET_ADDRESS_2
+        type: string
+        data: random.choice([fake.secondary_address(), None])
+        null_percentage: 0.60
+      
+      - column_name: PATIENT_CITY
+        type: string
+        data: fake.city()
+        null_percentage: 0.15
+      
+      - column_name: PATIENT_STATE
+        type: string
+        data: random.choice(["Georgia", "Texas", "California", "Florida", "New York", "Indiana", "Pennsylvania", None])
+        null_percentage: 0.10
+      
+      - column_name: PATIENT_ZIP
+        type: string
+        data: fake.zipcode()
+        null_percentage: 0.20
+      
+      - column_name: PATIENT_ETHNICITY
+        type: string
+        data: random.choice(["Not Hispanic or Latino", "Hispanic or Latino", "Unknown", None])
+        null_percentage: 0.15
+      
+      - column_name: RACE_CALCULATED
+        type: string
+        data: random.choice(["White", "Black or African American", "Asian", "Multi-Race", "American Indian or Alaska Native", "Native Hawaiian or Other Pacific Islander", "Unknown", None])
+        null_percentage: 0.15
+      
+      - column_name: RACE_CALC_DETAILS
+        type: string
+        data: random.choice(["White", "Asian", "Black or African American", "American Indian or Alaska Native | Asian | White", "Asian | Black or African American", None])
+        null_percentage: 0.30
+      
+      - column_name: INVESTIGATION_STATUS
+        type: string
+        data: random.choice(["Open", "Closed", None])
+        null_percentage: 0.05
+      
+      - column_name: EARLIEST_RPT_TO_CNTY_DT
+        type: string
+        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.3 else None
+        null_percentage: 0.30
+      
+      - column_name: EARLIEST_RPT_TO_STATE_DT
+        type: string
+        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.3 else None
+        null_percentage: 0.30
+      
+      - column_name: DIAGNOSIS_DATE
+        type: string
+        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.3 else None
+        null_percentage: 0.30
+      
+      - column_name: ILLNESS_ONSET_DATE
+        type: string
+        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.3 else None
+        null_percentage: 0.30
       
       - column_name: CASE_STATUS
         type: string
         data: random.choice(["Confirmed", "Probable", "Suspect", "Not a Case", None])
-        null_percentage: 0.1
+        null_percentage: 0.10
       
-      - column_name: EVENT_DATE
-        type: string
-        data: fake.date_between(start_date=date(2015, 1, 1), end_date=date(2025, 1, 5)).strftime('%Y-%m-%d')
-        null_percentage: 0.02
-      
-      - column_name: EVENT_DATE_TYPE
-        type: string
-        data: random.choice(["Investigation Start Date", "Date of Report", "Specimen Collection Date", "Illness Onset Date"])
-        null_percentage: 0.1
+      - column_name: MMWR_WEEK
+        type: int
+        data: fake.random_int(1, 53)
+        null_percentage: 0.20
       
       - column_name: MMWR_YEAR
+        type: int
+        data: fake.random_int(2015, 2026)
+        null_percentage: 0.20
+      
+      - column_name: INVESTIGATION_CREATE_DATE
         type: string
-        data: str(fake.random_int(2015, 2025))
-        null_percentage: 0.1
+        data: fake.date_time_between(start_date='-3y', end_date='now').strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+        null_percentage: 0
+      
+      - column_name: INVESTIGATION_CREATED_BY
+        type: string
+        data: random.choice(["PKS, PKS", "user, demo", "Ward, Jennifer", None])
+        null_percentage: 0.10
+      
+      - column_name: INVESTIGATION_LAST_UPDTD_DATE
+        type: string
+        data: fake.date_time_between(start_date='-1y', end_date='now').strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+        null_percentage: 0.05
       
       - column_name: NOTIFICATION_STATUS
         type: string
-        data: random.choice(["COMPLETED", "PENDING", "REJECTED", None])
-        null_percentage: 0.1
+        data: random.choice(["COMPLETED", "APPROVED", "REJECTED", None])
+        null_percentage: 0.15
+      
+      - column_name: EVENT_DATE
+        type: string
+        data: fake.date_between(start_date='-3y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000')
+        null_percentage: 0.05
+      
+      - column_name: EVENT_DATE_TYPE
+        type: string
+        data: random.choice(["Investigation Start Date", "Date of Report", "Specimen Collection Date of Earliest Associated Lab", "Illness Onset Date", "Date of Diagnosis", "Investigation Add Date", "Confirmation Date"])
+        null_percentage: 0.05
+      
+      - column_name: PROGRAM_AREA
+        type: string
+        data: random.choice(["GCD", "STD", "TB", "HIV", "HEP", "VPD", "ARBO", "BMIRD", None])
+        null_percentage: 0.10
+      
+      - column_name: PHYSICIAN_LAST_NAME
+        type: string
+        data: random.choice(["Jones", "Smith", "Williams", "Brown", "Johnson", None])
+        null_percentage: 0.40
+      
+      - column_name: PHYSICIAN_FIRST_NAME
+        type: string
+        data: random.choice(["Indiana", "John", "Mary", "Robert", "Patricia", None])
+        null_percentage: 0.40
+      
+      - column_name: NOTIFICATION_LOCAL_ID
+        type: string
+        data: f"NOT{fake.random_int(10000000, 99999999)}GA01" if random.random() > 0.6 else None
+        null_percentage: 0.60
+      
+      - column_name: NOTIFICATION_CREATE_DATE
+        type: string
+        data: fake.date_between(start_date='-1y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.6 else None
+        null_percentage: 0.60
+      
+      - column_name: NOTIFICATION_SENT_DATE
+        type: string
+        data: fake.date_between(start_date='-6m', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.7 else None
+        null_percentage: 0.70
+      
+      - column_name: NOTIFICATION_SUBMITTER
+        type: string
+        data: random.choice(["PKS, PKS", "user, demo", "Ward, Jennifer", None])
+        null_percentage: 0.60
+      
+      - column_name: NOTIFICATION_LAST_UPDATED_DATE
+        type: string
+        data: fake.date_between(start_date='-6m', end_date='today').strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] if random.random() > 0.7 else None
+        null_percentage: 0.70
+      
+      - column_name: NOTIFICATION_LAST_UPDATED_USER
+        type: string
+        data: random.choice(["PKS, PKS", "user, demo", "Ward, Jennifer", None])
+        null_percentage: 0.70
+      
+      - column_name: INV_RPT_DT
+        type: string
+        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.4 else None
+        null_percentage: 0.40
+      
+      - column_name: INV_START_DT
+        type: string
+        data: fake.date_between(start_date='-2y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.3 else None
+        null_percentage: 0.30
+      
+      - column_name: CONFIRMATION_DT
+        type: string
+        data: fake.date_between(start_date='-1y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.6 else None
+        null_percentage: 0.60
+      
+      - column_name: CONFIRMATION_METHOD
+        type: string
+        data: random.choice(["Laboratory confirmed", "Clinical diagnosis", "Epidemiologically linked", "Active Surveillance", None])
+        null_percentage: 0.50
+      
+      - column_name: HSPTL_ADMISSION_DT
+        type: string
+        data: fake.date_between(start_date='-1y', end_date='today').strftime('%Y-%m-%d %H:%M:%S.000') if random.random() > 0.7 else None
+        null_percentage: 0.70
+      
+      - column_name: CURR_PROCESS_STATE
+        type: string
+        data: random.choice(["Open Case", "Closed Case", "Field Follow-up", "Awaiting Interview", "Surveillance Follow-up", None])
+        null_percentage: 0.20
+      
+      - column_name: PATIENT_COUNTY_CODE
+        type: string
+        data: random.choice(["13121", "13089", "13067", "13001", "13003", "13005", "13007", None])
+        null_percentage: 0.30
+      
+      - column_name: JURISDICTION_NM
+        type: string
+        data: random.choice(["Fulton County", "Dekalb County", "Clayton County", "Cobb County", "Gwinnett County", None])
+        null_percentage: 0.20
