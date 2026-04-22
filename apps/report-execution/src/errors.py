@@ -56,7 +56,7 @@ class InvalidResultError(BaseReportExecutionError):
         error_message = f'Invalid report result from library `{library_name}`'
         if message:
             error_message += f': {message}'
-        super().__init__(error_message, 422)
+        super().__init__(error_message, 500)
 
 
 class ToDoError(BaseReportExecutionError):
