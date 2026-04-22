@@ -39,7 +39,7 @@ const YearRangeField = ({
     required,
 }: YearRangeFieldProps) => {
     const years: Selectable[] = [];
-    for (let y = startYear; y <= endYear; y++) {
+    for (let y = endYear; y >= startYear; y--) {
         years.push(selectable(y));
     }
     const fromValue = value?.between?.from ? selectable(value.between.from) : undefined;
