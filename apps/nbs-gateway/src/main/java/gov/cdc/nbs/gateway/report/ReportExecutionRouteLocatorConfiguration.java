@@ -90,7 +90,7 @@ class ReportExecutionRouteLocatorConfiguration {
   private AsyncPredicate<ServerWebExchange> isModPredicate(final ModernizationService modService) {
     return exchange -> {
       String path =
-          UriComponentsBuilder.fromPath("/nbs/api/report/configuration/{reportUid}/{dataSourceUid}")
+          UriComponentsBuilder.fromPath("/nbs/api/report/runner/{reportUid}/{dataSourceUid}")
               .uri(modService.uri())
               .build()
               .expand(getParamsFromBody(exchange))
@@ -117,14 +117,9 @@ class ReportExecutionRouteLocatorConfiguration {
                 exchange.getResponse().getCookies().addAll(response.cookies());
 
                 return response
-                    .bodyToMono(JsonNode.class)
+                    .bodyToMono(String.class)
                     .flatMap(
-                        b -> {
-                          JsonNode runnerNode = b.get("runner");
-                          if (runnerNode == null) return Mono.just(false);
-                          String runner = runnerNode.textValue();
-                          return Mono.just(REPORT_MOD_RUNNER.equals(runner));
-                        });
+                        runner -> Mono.just(REPORT_MOD_RUNNER.equals(runner)));
               })
           .doOnError(
               err ->
