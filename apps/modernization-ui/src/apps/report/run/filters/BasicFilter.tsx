@@ -8,6 +8,8 @@ import { TextFilter, getValueText } from './TextFilter';
 import { DateRangeFilter, dateRangeValidator, getDateRange } from './DateRangeFilter';
 import { Validator } from 'validation';
 import { getValueList, ListFilter } from './ListFilter';
+import { getYearRange, YearRangeFilter } from './YearRangeFilter';
+import { getMonthYearRange, MonthYearRangeFilter, monthYearRangeValidator } from './MonthYearRangeFilter';
 
 export type BasicFilterProps = {
     filter: BasicFilterConfiguration;
@@ -31,6 +33,21 @@ const FILTER_TYPE_MAP: Record<
         FilterComponent: DateRangeFilter,
         getDefaultValue: getDateRange,
         validationRule: dateRangeValidator,
+    },
+    BAS_TIM_RANGE_CUSTOM: {
+        FilterComponent: DateRangeFilter,
+        getDefaultValue: getDateRange,
+        validationRule: dateRangeValidator,
+    },
+    BAS_TIM_RANGE_LIST: {
+        FilterComponent: YearRangeFilter,
+        getDefaultValue: getYearRange,
+        validationRule: dateRangeValidator,
+    },
+    BAS_MM_YYYY_RANGE: {
+        FilterComponent: MonthYearRangeFilter,
+        getDefaultValue: getMonthYearRange,
+        validationRule: monthYearRangeValidator,
     },
     BAS_JUR_LIST: {
         FilterComponent: ListFilter,
