@@ -29,6 +29,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -59,13 +60,13 @@ class ReportServiceTest {
   private Report mockReport(ReportId id, String runner, String dataSourceName) {
     Report report = mock(Report.class);
 
-    when(report.getReportLibrary()).thenReturn(reportLibrary);
-    when(report.getDataSource()).thenReturn(dataSource);
-    when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
-    when(report.getReportFilters()).thenReturn(reportFilters);
-    when(reportLibrary.getRunner()).thenReturn(runner);
-    when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
-    when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+    Mockito.lenient().when(report.getReportLibrary()).thenReturn(reportLibrary);
+    Mockito.lenient().when(report.getDataSource()).thenReturn(dataSource);
+    Mockito.lenient().when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
+    Mockito.lenient().when(report.getReportFilters()).thenReturn(reportFilters);
+    Mockito.lenient().when(reportLibrary.getRunner()).thenReturn(runner);
+    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
+    Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
 
     return report;
   }
