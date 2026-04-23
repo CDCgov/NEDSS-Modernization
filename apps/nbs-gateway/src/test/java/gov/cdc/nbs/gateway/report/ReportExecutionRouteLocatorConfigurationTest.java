@@ -19,8 +19,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
-import wiremock.com.fasterxml.jackson.databind.ObjectMapper;
-import wiremock.com.fasterxml.jackson.databind.node.ObjectNode;
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -45,13 +43,10 @@ class ReportExecutionRouteLocatorConfigurationTest {
 
   @Test
   void should_route_modernization_ui_for_run_if_modernized() {
-
-    String runner = "python";
-
     modApi.stubFor(
         get(urlPathMatching("/nbs/api/report/runner/2/1"))
             .willReturn(
-                ok().withBody(runner)
+                ok().withBody("python")
                     .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .withHeader("Set-Cookie", "nbs_token=blah")));
 
@@ -80,19 +75,14 @@ class ReportExecutionRouteLocatorConfigurationTest {
 
   @Test
   void should_route_classic_ui_for_run_if_not_modernized() {
-
-    ObjectMapper mapper = new ObjectMapper();
-    ObjectNode node = mapper.createObjectNode();
-    node.put("runner", "sas");
-
     classic.stubFor(
         post("/nbs/nfc")
             .willReturn(ok().withBody("{{request.body}}").withTransformers("response-template")));
 
     modApi.stubFor(
-        get(urlPathMatching("/nbs/api/report/configuration/2/1"))
+        get(urlPathMatching("/nbs/api/report/runner/2/1"))
             .willReturn(
-                ok().withJsonBody(node)
+                ok().withBody("sas")
                     .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)));
 
     MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
