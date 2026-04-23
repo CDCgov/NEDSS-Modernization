@@ -3,13 +3,16 @@
 @use 'styles/components';
 
 .table {
-    height: 100%;
-    width: 100%;
-
+    width: auto;
+    height: auto;
     table {
         border-collapse: separate;
         margin: 0;
         font-size: 14px;
+
+        &:global(.usa-table) {
+            width: auto;
+        }
 
         thead {
             &.sticky {
@@ -98,6 +101,15 @@
                     padding-left: 1rem;
                 }
             }
+        }
+    }
+
+    &.fullWidth {
+        height: 100%;
+        width: 100%;
+
+        table:global(.usa-table) {
+            width: 100%;
         }
     }
 }
