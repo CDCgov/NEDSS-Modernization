@@ -16,6 +16,7 @@ class LoginPage {
         }
         cy.get("#id_Submit_bottom_ToolbarButtonGraphic").click();
         cy.get("#homePageAdvancedSearch").click();
+        cy.url().should("include", "/search/patients");
       } else {
         cy.intercept("POST", "/graphql").as("loginRequest");
         cy.get("#username").type(user);
@@ -24,6 +25,7 @@ class LoginPage {
         }
         cy.get("#kc-login").click();
         cy.get("#homePageAdvancedSearch").click();
+        cy.url().should("include", "/search/patients");
       }
     });
   }
