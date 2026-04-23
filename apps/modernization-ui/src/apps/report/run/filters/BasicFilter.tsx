@@ -35,7 +35,7 @@ const FILTER_TYPE_MAP: Record<
     BAS_JUR_LIST: {
         FilterComponent: ListFilter,
         getDefaultValue: getValueList,
-    }
+    },
 };
 
 const TEMP_DEFAULT_FILTER = {
@@ -50,15 +50,13 @@ const TEMP_DEFAULT_FILTER = {
 const BasicFilter = ({
     filter,
     columns,
-    stateFilterId,
     ...remaining
 }: {
     filter: BasicFilterConfiguration;
     columns: ReportColumn[];
-    stateFilterId?: string;
 }) => {
     const id = useId();
-    const form = useFormContext()
+    const { control } = useFormContext();
     const column = columns.find((c) => c.id === filter.reportColumnUid);
     const filterDesc = filter.filterType.filterName;
     // empty string not possible in practice, but appeases typescript
@@ -83,7 +81,7 @@ const BasicFilter = ({
 
     return (
         <Controller
-            control={form.control}
+            control={control}
             name={`basicFilter.${filter.reportFilterUid}`}
             rules={rules}
             defaultValue={getDefaultValue(filter)}
@@ -96,7 +94,6 @@ const BasicFilter = ({
                     sizing="medium"
                     required={filter.isRequired}
                     filter={filter}
-                    stateFilterId={stateFilterId}
                     label={label}
                     helperText={helperText}
                     error={error?.message}

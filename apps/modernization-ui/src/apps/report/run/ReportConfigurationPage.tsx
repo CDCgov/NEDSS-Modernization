@@ -6,13 +6,11 @@ import { ReportConfiguration } from 'generated';
 import { BasicFilter } from './filters/BasicFilter';
 import { Card } from 'design-system/card';
 import { STATE_FILTER_CODE } from './filters/ListFilter';
-import { Control } from 'react-hook-form';
-import { ReportExecuteForm } from './ReportRunPage';
+import { CurrentStateProvider } from './filters/useCurrentState';
 
 const ReportConfigurationPage = ({
     config,
     handleSubmit,
-    formControl,
 }: {
     config: ReportConfiguration;
     handleSubmit: (e: React.BaseSyntheticEvent, isExport: boolean) => void;
@@ -38,18 +36,17 @@ const ReportConfigurationPage = ({
             }>
             <form>
                 {basicFilters.length > 0 && (
-                    <Card id="basic-filters" title="Basic Filters" collapsible={true}>
-                        {basicFilters.map((filter, i) => {
-                            return (
+                    <CurrentStateProvider stateFilterId={stateFilterId}>
+                        <Card id="basic-filters" title="Basic Filters" collapsible={true}>
+                            {basicFilters.map((filter, i) => (
                                 <BasicFilter
                                     key={`basic_filter_${i}`}
                                     filter={filter}
                                     columns={config.reportColumns ?? []}
-                                    stateFilterId={stateFilterId}
                                 />
-                            );
-                        })}
-                    </Card>
+                            ))}
+                        </Card>
+                    </CurrentStateProvider>
                 )}
                 <details>
                     <summary>

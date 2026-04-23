@@ -1,32 +1,33 @@
 import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 import { BasicFilterConfiguration } from 'generated';
-import { cachedSelectableResolver, Selectable, useSelectableOptions } from 'options';
-import Select from 'design-system/select/single/Select';
 import { MultiSelect } from 'design-system/select';
-import { SelectableOptionsSettings } from 'options/useSelectableOptions';
 import { useCountyOptions, useStateOptions } from 'options/location';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { useFormContext, useWatch } from 'react-hook-form';
 import { useEffect } from 'react';
+import { useRegionOptions } from 'options/location/region/useRegionOptions';
+import { useCurrentState } from './useCurrentState';
+import { Selectable } from 'options';
 
 export const STATE_FILTER_CODE = 'J_S01';
 export const COUNTY_FILTER_CODE = 'J_C01';
 export const REGION_FILTER_CODE = 'J_R01';
 
-const ListFilter: BasicFilterComponent = ({ filter, stateFilterId, value, ...remaining }: BasicFilterProps) => {
-    // const state = useWatch({name: `basicFilters.${stateFilterId}`})
-    const SelectComponent = filter.maxValueCount == 1 ? SelectInput : MultiSelect;
-    const options = HOOK_MAP[filter.filterType.code ?? '']?.(stateFilterId);
+const ListFilter: BasicFilterComponent = ({ filter, value, id, onChange, ...remaining }: BasicFilterProps) => {
+    const options = OPTIONS_HOOK_MAP[filter?.filterType?.code ?? '']?.();
 
-    return <SelectComponent options={options} value={value ?? undefined} {...remaining} />;
+    if (filter.maxValueCount === 1) {
+        return <SelectInput id={id} value={value ?? undefined} onChange={onChange} options={options} {...remaining} />;
+    } else {
+        const multiOnChange = (values: Selectable[]) => {
+            onChange(values.map((v) => v.value));
+        };
+        const multiValue = options.filter((selectable) => value?.includes(selectable.value)) ?? [];
+        return <MultiSelect id={id} value={multiValue} onChange={multiOnChange} options={options} {...remaining} />;
+    }
 };
 
-const useStateFilter = () => {
-    return useStateOptions();
-};
-
-const useCountyFilter = (stateFilterId?: string) => {
-    const state = useWatch({ name: `basicFilter.${stateFilterId}` });
+const useCurrentStateCountyOptions = () => {
+    const state = useCurrentState();
     const { options, load } = useCountyOptions();
 
     useEffect(() => {
@@ -36,10 +37,10 @@ const useCountyFilter = (stateFilterId?: string) => {
     return options;
 };
 
-const HOOK_MAP: Record<string, (stateId?: string) => Selectable[]> = {
-    [COUNTY_FILTER_CODE]: useCountyFilter,
-    [STATE_FILTER_CODE]: useStateFilter,
-    [REGION_FILTER_CODE]: '',
+const OPTIONS_HOOK_MAP: Record<string, (stateId?: string) => Selectable[]> = {
+    [COUNTY_FILTER_CODE]: useCurrentStateCountyOptions,
+    [STATE_FILTER_CODE]: useStateOptions,
+    [REGION_FILTER_CODE]: useRegionOptions,
 };
 
 const getValueList = (filter: BasicFilterConfiguration) => {
