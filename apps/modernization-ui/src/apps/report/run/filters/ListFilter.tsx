@@ -7,13 +7,17 @@ import { useEffect } from 'react';
 import { useRegionOptions } from 'options/location/region/useRegionOptions';
 import { useCurrentState } from './useCurrentState';
 import { Selectable } from 'options';
+import { validateRequiredRule } from 'validation/entry';
 
 export const STATE_FILTER_CODE = 'J_S01';
 export const COUNTY_FILTER_CODE = 'J_C01';
 export const REGION_FILTER_CODE = 'J_R01';
 
 const ListFilter: BasicFilterComponent = ({ filter, value, id, onChange, ...remaining }: BasicFilterProps) => {
-    const options = OPTIONS_HOOK_MAP[filter?.filterType?.code ?? '']?.();
+    const filterCodeFull = filter?.filterType?.code ?? '' // should never be empty in practice
+    // ignore include nulls indicator here
+    const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
+    const options = OPTIONS_HOOK_MAP[filterCode]?.();
 
     if (filter.maxValueCount === 1) {
         return <SelectInput id={id} value={value ?? undefined} onChange={onChange} options={options} {...remaining} />;
@@ -26,6 +30,7 @@ const ListFilter: BasicFilterComponent = ({ filter, value, id, onChange, ...rema
     }
 };
 
+// county options depend on the currently selected state basic filter
 const useCurrentStateCountyOptions = () => {
     const state = useCurrentState();
     const { options, load } = useCountyOptions();
@@ -50,4 +55,14 @@ const getValueList = (filter: BasicFilterConfiguration) => {
     return filter.maxValueCount == 1 ? filter.defaultValue[0] : filter.defaultValue;
 };
 
-export { ListFilter, getValueList };
+const listValidator = (filter: BasicFilterConfiguration, label: string) => {
+    return (value?: (string | undefined)[] | string) => {
+        if (typeof value === 'string') return true;
+        // Base required check doesn't work well with lists
+        if (!value || (!value.length)) {
+            return filter.isRequired ? validateRequiredRule(label).required.message : true;
+        }
+    }
+}
+
+export { ListFilter, getValueList, listValidator };
