@@ -51,6 +51,16 @@ class ReportSpecBuilderTest {
     return reportColumn;
   }
 
+  private WhereClauseService mockWhereClause(String result) {
+    WhereClauseService whereClauseService = Mockito.mock(WhereClauseService.class);
+    // We tell the mock to return a specific string (or empty) when called
+    Mockito.lenient()
+        .when(whereClauseService.buildBasicWhereClause(Mockito.any(ReportConfiguration.class)))
+        .thenReturn(result);
+
+    return whereClauseService;
+  }
+
   private ReportConfiguration mockReportConfiguration(
       List<FilterConfiguration> filters, List<ReportColumn> columns, String title) {
     ReportConfiguration reportConfiguration = Mockito.mock(ReportConfiguration.class);
@@ -105,8 +115,11 @@ class ReportSpecBuilderTest {
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
+    WhereClauseService whereClauseService = mockWhereClause("");
+
     ReportSpec reportSpec =
-        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils).build();
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
 
     assertThat(reportSpec.isBuiltin()).isEqualTo(reportConfig.reportLibrary().isBuiltin());
     assertThat(reportSpec.isExport()).isEqualTo(request.isExport());
@@ -135,8 +148,10 @@ class ReportSpecBuilderTest {
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
+    WhereClauseService whereClauseService = mockWhereClause("");
+
     ReportSpecBuilder reportSpecBuilder =
-        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils);
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService);
 
     assertThatThrownBy(reportSpecBuilder::build)
         .isInstanceOf(IllegalArgumentException.class)
@@ -168,8 +183,11 @@ class ReportSpecBuilderTest {
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
+    WhereClauseService whereClauseService = mockWhereClause("");
+
     ReportSpec reportSpec =
-        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils).build();
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
@@ -194,8 +212,11 @@ class ReportSpecBuilderTest {
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
+    WhereClauseService whereClauseService = mockWhereClause("");
+
     ReportSpec reportSpec =
-        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils).build();
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
@@ -218,8 +239,11 @@ class ReportSpecBuilderTest {
 
     DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
 
+    WhereClauseService whereClauseService = mockWhereClause("");
+
     ReportSpec reportSpec =
-        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils).build();
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
@@ -228,6 +252,31 @@ class ReportSpecBuilderTest {
                 + "] AS ["
                 + columnTitle
                 + "] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+  }
+
+  @Test
+  void build_should_include_where_clause_when_present() {
+    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L);
+
+    ReportColumn reportColumn1 = mockReportColumn(1L, "col1", "Col 1");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1), "Test Title");
+
+    ReportExecutionRequest request = mockReportExecutionRequest(null);
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    // MOCK THE SERVICE: Return a fake WHERE clause
+    WhereClauseService whereClauseService = mockWhereClause("WHERE ([col1] = 'Value')");
+
+    ReportSpec reportSpec =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
+
+    // ASSERT: Verify the WHERE clause is appended correctly with a space
+    assertThat(reportSpec.subsetQuery())
+        .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration] WHERE ([col1] = 'Value')");
   }
 
   private static Stream<Arguments> fetchSingleColumnTestParams() {

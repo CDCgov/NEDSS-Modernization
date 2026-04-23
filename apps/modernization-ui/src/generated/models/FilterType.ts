@@ -7,8 +7,8 @@ export type FilterType = {
     codeTable?: string;
     descTxt?: string;
     code?: string;
-    filterCodeSetName?: string;
-    filterType?: string;
-    filterName?: string;
+    codeSetName?: string;
+    type?: string;
+    name?: string;
 };
 
