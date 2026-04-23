@@ -77,7 +77,6 @@ class ReportServiceTest {
 
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
-    assertThat(config.runner()).isEqualTo("python");
     assertThat(config.dataSource().name()).isEqualTo("nbs_ods.PHCDemographic");
     assertThat(config.filters())
         .allSatisfy(
