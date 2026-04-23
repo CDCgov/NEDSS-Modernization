@@ -1,6 +1,5 @@
 package gov.cdc.nbs.gateway.report;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import gov.cdc.nbs.gateway.modernization.ModernizationService;
 import java.util.HashMap;
 import java.util.List;
@@ -118,8 +117,7 @@ class ReportExecutionRouteLocatorConfiguration {
 
                 return response
                     .bodyToMono(String.class)
-                    .flatMap(
-                        runner -> Mono.just(REPORT_MOD_RUNNER.equals(runner)));
+                    .flatMap(runner -> Mono.just(REPORT_MOD_RUNNER.equals(runner)));
               })
           .doOnError(
               err ->
