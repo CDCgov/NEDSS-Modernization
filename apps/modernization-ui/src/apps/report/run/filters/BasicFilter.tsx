@@ -2,14 +2,16 @@ import { Field } from 'design-system/field';
 import { BasicFilterConfiguration, ReportColumn } from 'generated';
 import { ReactNode, useId } from 'react';
 import { ReportExecuteForm } from '../ReportRunPage';
-import { Control, Controller, ControllerRenderProps, RegisterOptions } from 'react-hook-form';
+import { Control, Controller, ControllerRenderProps, RegisterOptions, useForm, useFormContext } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { TextFilter, getValueText } from './TextFilter';
 import { DateRangeFilter, dateRangeValidator, getDateRange } from './DateRangeFilter';
 import { Validator } from 'validation';
+import { getValueList, ListFilter } from './ListFilter';
 
 export type BasicFilterProps = {
     filter: BasicFilterConfiguration;
+    stateFilterId?: string;
     id: string;
 } & Omit<Parameters<typeof Field>[0], 'htmlFor' | 'children'> &
     Omit<ControllerRenderProps, 'ref'>;
@@ -30,6 +32,10 @@ const FILTER_TYPE_MAP: Record<
         getDefaultValue: getDateRange,
         validationRule: dateRangeValidator,
     },
+    BAS_JUR_LIST: {
+        FilterComponent: ListFilter,
+        getDefaultValue: getValueList,
+    }
 };
 
 const TEMP_DEFAULT_FILTER = {
@@ -44,14 +50,15 @@ const TEMP_DEFAULT_FILTER = {
 const BasicFilter = ({
     filter,
     columns,
-    formControl,
+    stateFilterId,
     ...remaining
 }: {
     filter: BasicFilterConfiguration;
     columns: ReportColumn[];
-    formControl: Control<ReportExecuteForm>;
+    stateFilterId?: string;
 }) => {
     const id = useId();
+    const form = useFormContext()
     const column = columns.find((c) => c.id === filter.reportColumnUid);
     const filterDesc = filter.filterType.filterName;
     // empty string not possible in practice, but appeases typescript
@@ -76,7 +83,7 @@ const BasicFilter = ({
 
     return (
         <Controller
-            control={formControl}
+            control={form.control}
             name={`basicFilter.${filter.reportFilterUid}`}
             rules={rules}
             defaultValue={getDefaultValue(filter)}
@@ -89,6 +96,7 @@ const BasicFilter = ({
                     sizing="medium"
                     required={filter.isRequired}
                     filter={filter}
+                    stateFilterId={stateFilterId}
                     label={label}
                     helperText={helperText}
                     error={error?.message}

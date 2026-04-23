@@ -64,6 +64,7 @@ export const MultiSelect = ({
                 onBlur={onBlur}
                 placeholder={placeholder}
                 isDisabled={disabled}
+                menuIsOpen={true}
                 className={classNames(
                     'multi-select',
                     { 'multi-select__medium': sizing === 'medium' },
