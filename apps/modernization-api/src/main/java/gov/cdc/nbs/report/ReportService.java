@@ -6,12 +6,9 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
-import gov.cdc.nbs.report.mappers.FilterDefaultValueMapper;
-import gov.cdc.nbs.report.mappers.FilterTypeMapper;
+import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
-import gov.cdc.nbs.report.models.FilterConfiguration;
-import gov.cdc.nbs.report.models.FilterDefaultValue;
-import gov.cdc.nbs.report.models.FilterType;
+import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
@@ -52,43 +49,26 @@ public class ReportService {
         .findById(id)
         .map(
             report -> {
-              List<FilterConfiguration> filters =
+              List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
-                      .map(
-                          dbReportFilter -> {
-                            Long columnUid = null;
-
-                            if (dbReportFilter.getDataSourceColumn() != null) {
-                              columnUid = dbReportFilter.getDataSourceColumn().getId();
-                            }
-
-                            FilterType filterType =
-                                FilterTypeMapper.fromFilterCode(dbReportFilter.getFilterCode());
-                            List<FilterDefaultValue> filterDefaultValues =
-                                dbReportFilter.getFilterValues().stream()
-                                    .map(FilterDefaultValueMapper::fromFilterValue)
-                                    .toList();
-
-                            return new FilterConfiguration(
-                                dbReportFilter.getId(), columnUid, filterType, filterDefaultValues);
-                          })
+                      .filter(f -> f.getFilterCode().getFilterType().startsWith("BAS_"))
+                      .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
-              List<ReportColumn> reportColumns = null;
               List<DataSourceColumn> dataSourceColumns =
                   report.getDataSource().getDataSourceColumns();
-              if (dataSourceColumns != null) {
-                reportColumns =
-                    dataSourceColumns.stream()
-                        .map(ReportColumnMapper::fromDataSourceColumn)
-                        .toList();
+              if (dataSourceColumns == null) {
+                throw new IllegalArgumentException("Invalid data source");
               }
+              List<ReportColumn> reportColumns =
+                  dataSourceColumns.stream().map(ReportColumnMapper::fromDataSourceColumn).toList();
 
               return new ReportConfiguration(
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
                   report.getReportTitle(),
-                  filters,
+                  basicFilters,
+                  null, // advanced filter
                   reportColumns);
             })
         .orElseThrow(

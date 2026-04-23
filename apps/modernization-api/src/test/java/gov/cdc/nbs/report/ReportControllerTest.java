@@ -10,8 +10,11 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
-import gov.cdc.nbs.report.models.Filter;
-import gov.cdc.nbs.report.models.FilterConfiguration;
+import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
+import gov.cdc.nbs.report.models.AdvancedFilterRequest;
+import gov.cdc.nbs.report.models.BasicFilterConfiguration;
+import gov.cdc.nbs.report.models.BasicFilterRequest;
+import gov.cdc.nbs.report.models.Expr;
 import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
@@ -43,14 +46,16 @@ class ReportControllerTest {
     DataSource dataSourceEntity = mock(DataSource.class);
     ReportLibrary reportLibraryEntity = mock(ReportLibrary.class);
 
-    FilterConfiguration filterConfig = mock(FilterConfiguration.class);
+    BasicFilterConfiguration basicFilterConfig = mock(BasicFilterConfiguration.class);
+    AdvancedFilterConfiguration advancedFilterConfig = mock(AdvancedFilterConfiguration.class);
     List<ReportColumn> columns = List.of(mock(ReportColumn.class));
     ReportConfiguration reportConfig =
         new ReportConfiguration(
             new ReportDataSource(dataSourceEntity),
             new Library(reportLibraryEntity),
             "Report Title",
-            List.of(filterConfig),
+            List.of(basicFilterConfig),
+            advancedFilterConfig,
             columns);
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
@@ -124,14 +129,21 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
-    Filter.Expr.Clause clause1 = new Filter.Expr.Clause(27L, "EQ", "47");
-    Filter.Expr.Clause clause2 = new Filter.Expr.Clause(31L, "EQ", "35001");
-    Filter.Expr.Connector connector = new Filter.Expr.Connector("OR", clause1, clause2);
-    Filter.AdvancedFilter advancedFilter = new Filter.AdvancedFilter(false, connector);
+    Expr.Clause clause1 = new Expr.Clause(27L, "EQ", "47");
+    Expr.Clause clause2 = new Expr.Clause(31L, "EQ", "35001");
+    Expr.Connector connector = new Expr.Connector("OR", clause1, clause2);
+    AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
+
+    BasicFilterRequest basicFilter = new BasicFilterRequest(4L, Arrays.asList("test"));
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
-            reportUid, dataSourceUid, true, Arrays.asList(27L, 31L), List.of(advancedFilter));
+            reportUid,
+            dataSourceUid,
+            true,
+            Arrays.asList(27L, 31L),
+            List.of(basicFilter),
+            advancedFilter);
 
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
@@ -153,7 +165,8 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            null);
 
     when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
@@ -174,7 +187,8 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            null);
 
     when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
 
@@ -194,7 +208,8 @@ class ReportControllerTest {
             dataSourceUid,
             false,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            null);
 
     assertThatThrownBy(() -> controller.exportReport(request))
         .isInstanceOf(IllegalArgumentException.class)
@@ -213,7 +228,8 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            null);
 
     when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
 
@@ -227,14 +243,14 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
-    Filter.Expr.Clause clause1 = new Filter.Expr.Clause(27L, "EQ", "47");
-    Filter.Expr.Clause clause2 = new Filter.Expr.Clause(31L, "EQ", "35001");
-    Filter.Expr.Connector connector = new Filter.Expr.Connector("OR", clause1, clause2);
-    Filter.AdvancedFilter advancedFilter = new Filter.AdvancedFilter(false, connector);
+    Expr.Clause clause1 = new Expr.Clause(27L, "EQ", "47");
+    Expr.Clause clause2 = new Expr.Clause(31L, "EQ", "35001");
+    Expr.Connector connector = new Expr.Connector("OR", clause1, clause2);
+    AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
-            reportUid, dataSourceUid, false, Arrays.asList(27L, 31L), List.of(advancedFilter));
+            reportUid, dataSourceUid, false, Arrays.asList(27L, 31L), List.of(), advancedFilter);
 
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
@@ -255,7 +271,8 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            null);
 
     assertThatThrownBy(() -> controller.runReport(request))
         .isInstanceOf(IllegalArgumentException.class)
