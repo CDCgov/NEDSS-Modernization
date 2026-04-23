@@ -136,7 +136,7 @@ class ReportServiceTest {
 
     assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
         .isInstanceOf(UnprocessableEntityException.class)
-        .hasMessage("No report library exists for report " + reportId);
+        .hasMessage("No report library exists for report %s", reportId);
   }
 
   @Test

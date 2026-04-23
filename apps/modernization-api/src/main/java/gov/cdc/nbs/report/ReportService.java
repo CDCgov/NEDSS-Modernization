@@ -100,11 +100,11 @@ public class ReportService {
   }
 
   public String getReportRunner(Long reportUid, Long dataSourceUid) {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
+    ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
     Report report =
         reportRepository
-            .findById(id)
+            .findById(reportId)
             .orElseThrow(
                 () ->
                     new NotFoundException(
@@ -115,7 +115,7 @@ public class ReportService {
     ReportLibrary reportLibrary = report.getReportLibrary();
     if (reportLibrary == null) {
       throw new UnprocessableEntityException(
-          String.format("No report library exists for report %d", reportUid));
+          String.format("No report library exists for report %s", reportId));
     }
 
     return reportLibrary.getRunner();
