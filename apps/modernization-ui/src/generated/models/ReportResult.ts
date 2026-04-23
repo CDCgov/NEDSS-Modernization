@@ -3,8 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export type ReportResult = {
-    content_type?: ReportResult.content_type;
-    content?: string;
+    content_type: ReportResult.content_type;
+    content: string;
     header?: string;
     subheader?: string;
     description?: string;
