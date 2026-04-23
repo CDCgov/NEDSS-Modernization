@@ -40,8 +40,6 @@ const ReportRunPage = () => {
         mode: 'onBlur',
     });
 
-    form.getValues();
-
     const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {
         form.handleSubmit(
             (data) => {
@@ -74,7 +72,9 @@ const ReportRunPage = () => {
                     setError('No content!');
                     return;
                 }
-                isExport ? fileDownload(res.content, `${res.header}.csv`) : openNewTab(<ResultDataPage result={res} />);
+                isExport
+                    ? fileDownload(res.content, `${res.header ?? 'ReportOutput'}.csv`)
+                    : openNewTab(<ResultDataPage result={res} />);
             })
             .catch((err) => setError(JSON.stringify(err)))
             .finally(() => setSubmitting(false));

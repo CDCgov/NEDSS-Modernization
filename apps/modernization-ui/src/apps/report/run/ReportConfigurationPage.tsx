@@ -6,10 +6,13 @@ import { ReportConfiguration } from 'generated';
 import { BasicFilter } from './filters/BasicFilter';
 import { Card } from 'design-system/card';
 import { STATE_FILTER_CODE } from './filters/ListFilter';
+import { Control } from 'react-hook-form';
+import { ReportExecuteForm } from './ReportRunPage';
 
 const ReportConfigurationPage = ({
     config,
     handleSubmit,
+    formControl,
 }: {
     config: ReportConfiguration;
     handleSubmit: (e: React.BaseSyntheticEvent, isExport: boolean) => void;
