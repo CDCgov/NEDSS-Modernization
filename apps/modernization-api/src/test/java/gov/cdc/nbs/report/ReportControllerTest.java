@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.entity.odse.DataSource;
-import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
@@ -110,10 +109,10 @@ class ReportControllerTest {
 
     ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
-    Report report = mock(Report.class);
+    String errorMsg = "No report library exists for report " + reportId;
 
-    when(report.getId()).thenReturn(reportId);
-    when(report.getReportLibrary()).thenReturn(null);
+    when(service.getReportRunner(reportUid, dataSourceUid))
+        .thenThrow(new UnprocessableEntityException(errorMsg));
 
     assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
         .isInstanceOf(UnprocessableEntityException.class)
