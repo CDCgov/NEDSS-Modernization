@@ -14,7 +14,7 @@ export const COUNTY_FILTER_CODE = 'J_C01';
 export const REGION_FILTER_CODE = 'J_R01';
 
 const ListFilter: BasicFilterComponent = ({ filter, value, id, onChange, ...remaining }: BasicFilterProps) => {
-    const filterCodeFull = filter?.filterType?.code ?? '' // should never be empty in practice
+    const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
     // ignore include nulls indicator here
     const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
     const options = OPTIONS_HOOK_MAP[filterCode]?.();
@@ -59,10 +59,10 @@ const listValidator = (filter: BasicFilterConfiguration, label: string) => {
     return (value?: (string | undefined)[] | string) => {
         if (typeof value === 'string') return true;
         // Base required check doesn't work well with lists
-        if (!value || (!value.length)) {
+        if (!value || !value.length) {
             return filter.isRequired ? validateRequiredRule(label).required.message : true;
         }
-    }
-}
+    };
+};
 
 export { ListFilter, getValueList, listValidator };
