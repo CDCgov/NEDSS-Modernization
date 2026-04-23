@@ -152,7 +152,7 @@ class ReportControllerTest {
             Arrays.asList(27L, 31L),
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
-    assertThatThrownBy(() -> controller.exportReport(request))
+    assertThatThrownBy(() -> controller.exportReport(request, new SimpleErrors(controller)))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("isExport must be true when exporting a report");
   }
@@ -173,7 +173,7 @@ class ReportControllerTest {
 
     when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
 
-    assertThatThrownBy(() -> controller.exportReport(request))
+    assertThatThrownBy(() -> controller.exportReport(request, new SimpleErrors(controller)))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining(errorMsg);
   }
@@ -195,7 +195,8 @@ class ReportControllerTest {
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
 
-    ResponseEntity<ReportResult> response = controller.runReport(request);
+    ResponseEntity<ReportResult> response =
+        controller.runReport(request, new SimpleErrors(controller));
     assertEquals(getReportExecutionResponse(), response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }
@@ -213,7 +214,7 @@ class ReportControllerTest {
             Arrays.asList(27L, 31L),
             List.of(new Filter.BasicFilter(true, 10066724L, List.of("35001"))));
 
-    assertThatThrownBy(() -> controller.runReport(request))
+    assertThatThrownBy(() -> controller.runReport(request, new SimpleErrors(controller)))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("isExport must be false when running a report");
   }
