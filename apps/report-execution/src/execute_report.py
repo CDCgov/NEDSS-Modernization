@@ -27,6 +27,10 @@ def execute_report(report_spec: models.ReportSpec):
 
     check_valid_result(result, report_spec)
 
+    # Most libraries won't have a specific header, so the report title is used
+    if result.header is None:
+        result.header = report_spec.report_title
+
     return result
 
 

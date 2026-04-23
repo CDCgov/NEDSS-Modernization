@@ -30,7 +30,6 @@ def execute(
         """
     )
 
-    header = 'SR11: Cases of Selected Diseases By Year Over Time'
     state_list = content.get_unique_column('State')
     condition_list = content.get_unique_column('Condition')
     subheader = gen_subheader(
@@ -61,7 +60,6 @@ def execute(
     return ReportResult(
         content_type='table',
         content=content,
-        header=header,
         subheader=subheader,
         description=description,
     )
