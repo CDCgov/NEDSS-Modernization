@@ -43,6 +43,7 @@ const MOCK_CONFIG: ReportConfiguration = {
 };
 
 const MOCK_RESULT: generated.ReportResult = {
+    content_type: generated.ReportResult.content_type.TABLE,
     header: 'Title',
     content: 'I am the result',
 };
