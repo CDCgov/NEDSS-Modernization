@@ -51,7 +51,6 @@ def execute(
         """
     )
 
-    header = 'SR9: Monthly Cases of Selected Disease by County and State'
     state_list = content.get_unique_column('State')
     subheader = gen_subheader(states=state_list)
 
@@ -78,7 +77,6 @@ def execute(
     return ReportResult(
         content_type='table',
         content=content,
-        header=header,
         subheader=subheader,
         description=description,
     )

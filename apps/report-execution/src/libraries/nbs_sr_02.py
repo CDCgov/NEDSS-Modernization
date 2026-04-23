@@ -26,8 +26,6 @@ def execute(
         + 'ORDER BY state, county, phc_code_short_desc'
     )
 
-    header = 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
-
     # Get the unique state(s) in the data set for subheader display
     state_list = content.get_unique_column('State')
     subheader = gen_subheader(states=state_list)
@@ -52,7 +50,6 @@ def execute(
     return ReportResult(
         content_type='table',
         content=content,
-        header=header,
         subheader=subheader,
         description=description,
     )
