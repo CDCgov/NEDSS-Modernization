@@ -39,3 +39,6 @@ databaseChangeLog:
         - sqlFile:
             path: db/report/execution/libraries/potntl_dup_inv_sum.sql
             splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/nbs_sr_12.sql
+            splitStatements: false

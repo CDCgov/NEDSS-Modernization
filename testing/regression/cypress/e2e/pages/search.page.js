@@ -36,6 +36,11 @@ class SearchPage {
   selectId() {
     cy.get("svg").eq(4).click();    
   }
+  
+  clickPatientId(patientId) {
+    cy.get('a[href="/patient/' + patientId + '"]').click();
+    cy.url().should("include", "/" + patientId + "/summary");
+  }
 
   enterIdType(type) {
     const elem = "#identificationType";
@@ -75,7 +80,6 @@ class SearchPage {
   search() {
     cy.get('button').contains("Search").click();    
     cy.wait(100);
-    cy.get('header button').eq(2).click();
   }
 
   verifySearchPage() {
