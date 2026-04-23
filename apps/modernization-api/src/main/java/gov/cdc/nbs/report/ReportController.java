@@ -56,7 +56,7 @@ public class ReportController {
   @PostMapping("/export")
   @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
   public ResponseEntity<ReportResult> exportReport(
-          @Valid @RequestBody ReportExecutionRequest request, Errors validationErrors) {
+      @Valid @RequestBody ReportExecutionRequest request, Errors validationErrors) {
     if (validationErrors.hasErrors()) {
       throw new ResponseStatusException(
           HttpStatus.UNPROCESSABLE_ENTITY, validationErrors.getAllErrors().toString());
