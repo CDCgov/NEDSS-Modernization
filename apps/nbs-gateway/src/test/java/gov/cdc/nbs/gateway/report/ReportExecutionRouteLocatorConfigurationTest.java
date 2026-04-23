@@ -46,14 +46,12 @@ class ReportExecutionRouteLocatorConfigurationTest {
   @Test
   void should_route_modernization_ui_for_run_if_modernized() {
 
-    ObjectMapper mapper = new ObjectMapper();
-    ObjectNode node = mapper.createObjectNode();
-    node.put("runner", "python");
+    String runner = "python";
 
     modApi.stubFor(
-        get(urlPathMatching("/nbs/api/report/configuration/2/1"))
+        get(urlPathMatching("/nbs/api/report/runner/2/1"))
             .willReturn(
-                ok().withJsonBody(node)
+                ok().withBody(runner)
                     .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .withHeader("Set-Cookie", "nbs_token=blah")));
 
