@@ -28,6 +28,7 @@ type DataTableProps<V> = {
     columns: Column<V>[];
     data: V[];
     sizing?: Sizing;
+    fullWidth?: boolean;
     onEmpty?: EmptyRenderer;
     features?: DataTableFeatures;
     options?: DataTableOptions;
@@ -39,6 +40,7 @@ const DataTable = <V,>({
     columns,
     data,
     sizing,
+    fullWidth = true,
     onEmpty = defaultEmptyHandler,
     features = {},
     options = {},
@@ -48,6 +50,7 @@ const DataTable = <V,>({
         [styles.small]: sizing === 'small',
         [styles.medium]: sizing === 'medium',
         [styles.large]: sizing === 'large',
+        [styles.fullWidth]: fullWidth,
     });
     return (
         <div id={id} className={resolvedClasses}>

@@ -133,8 +133,8 @@ dependencies {
     // itext pdf generation
     implementation libs.itextpdf
 
-    implementation 'org.apache.poi:poi:5.3.0'
-    implementation 'org.apache.poi:poi-ooxml:5.3.0'
+    implementation 'org.apache.poi:poi:5.5.1'
+    implementation 'org.apache.poi:poi-ooxml:5.5.1'
 
     constraints {
         implementation 'org.apache.commons:commons-compress:1.28.0'

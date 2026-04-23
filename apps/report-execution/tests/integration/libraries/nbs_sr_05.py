@@ -204,7 +204,7 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
+                'report_title': 'SR5: Cases of Reportable Diseases by State',
                 'library_name': 'nbs_sr_05',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',

@@ -147,7 +147,6 @@ def execute(
 
     trx.execute('DROP TABLE #base_data')
 
-    header = 'SR5: Cases of Reportable Diseases by State'
     subheader = gen_subheader(states=state_list)
     description = (
         '*<u>Report content</u>*\n'
@@ -181,7 +180,6 @@ def execute(
     return ReportResult(
         content_type='table',
         content=content,
-        header=header,
         subheader=subheader,
         description=description,
     )

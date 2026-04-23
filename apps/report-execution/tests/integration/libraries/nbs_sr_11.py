@@ -37,12 +37,12 @@ class TestIntegrationNbsSr11Library:
         # Sanity check the result's shape beyond the snapshot
         record = None
         for row in result.content.data:
-            if row[2] == 'Polk County' and row[3] == 'Measles' and row[4] == 2021:
+            if row[2] == 'Middlesex County' and row[3] == 'Measles' and row[4] == 2021:
                 record = row
                 break
 
         assert record is not None
-        # Case count for Polk County, Measles, 2021
+        # Case count for Middlesex County, Measles, 2021
         assert record[5] == 773
 
     def test_execute_report_no_data(self, snapshot):
@@ -73,7 +73,7 @@ class TestIntegrationNbsSr11Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 11',
+                'report_title': 'SR11: Cases of Selected Diseases By Year Over Time',
                 'library_name': 'nbs_sr_11',
                 'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
@@ -95,5 +95,5 @@ class TestIntegrationNbsSr11Library:
         assert result.content.columns[1] == 'State'
         assert result.content.columns[2] == 'County'
         assert result.content.columns[3] == 'Condition'
-        assert result.content.columns[4] == 'year'
+        assert result.content.columns[4] == 'Year'
         assert result.content.columns[5] == 'Cases'

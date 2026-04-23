@@ -2,14 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { FilterDefaultValue } from './FilterDefaultValue';
+import type { Clause } from './Clause';
+import type { Connector } from './Connector';
 import type { FilterType } from './FilterType';
-export type FilterConfiguration = {
+export type AdvancedFilterConfiguration = {
     reportFilterUid: number;
     reportColumnUid?: number;
+    defaultValue?: (Clause | Connector);
     filterType: FilterType;
-    filterDefaultValues: Array<FilterDefaultValue>;
-    maxValueCnt?: number;
-    minValueCnt?: number;
 };
 

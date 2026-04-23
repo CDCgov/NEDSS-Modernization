@@ -13,6 +13,7 @@ def execute(
 
     Conversion notes:
     * Matched export format without pivot
+    * Made "Year" header uppercase y to match SR12 output (and other columns)
     """
     content = trx.query(
         f"""
@@ -20,18 +21,15 @@ def execute(
         SELECT COALESCE(state_cd, 'N/A') as [State Code], 
         COALESCE(state, 'N/A') as [State], 
         COALESCE(county, 'N/A') as [County],
-        COALESCE(phc_code_short_desc, 'N/A') as [Condition], 
-        YEAR(event_date) as [year],
+        phc_code_short_desc as [Condition], 
+        YEAR(event_date) as [Year],
         SUM(group_case_cnt) as [Cases]
         FROM subset
-        GROUP BY state, state_cd, county, phc_code_short_desc, 
-        YEAR(event_date)
-        ORDER BY state, state_cd, county, phc_code_short_desc, 
-        YEAR(event_date)
+        GROUP BY state_cd, state, county, phc_code_short_desc, YEAR(event_date)
+        ORDER BY [State Code], [State], [County], phc_code_short_desc, YEAR(event_date)
         """
     )
 
-    header = 'SR11: Cases of Selected Diseases By Year Over Time'
     state_list = content.get_unique_column('State')
     condition_list = content.get_unique_column('Condition')
     subheader = gen_subheader(
@@ -62,7 +60,6 @@ def execute(
     return ReportResult(
         content_type='table',
         content=content,
-        header=header,
         subheader=subheader,
         description=description,
     )

@@ -14,16 +14,17 @@ type Field = keyof DateRange;
 const next = (field: Field, value: string | undefined) =>
     value ? withProperty<DateRange, string>(field, value) : withoutProperty<DateRange>(field);
 
-type DateRangeFieldProps = {
+export type DateRangeFieldProps = {
     id: string;
     value?: DateBetweenCriteria;
     sizing?: Sizing;
     onChange: (value?: DateBetweenCriteria) => void;
     onBlur?: () => void;
     label?: string;
+    required?: boolean;
 };
 
-const DateRangeField = ({ id, value, sizing, onChange, onBlur, label }: DateRangeFieldProps) => {
+const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }: DateRangeFieldProps) => {
     const [range, setRange] = useState<DateRange | undefined>(value?.between);
 
     useEffect(() => {
@@ -70,6 +71,7 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label }: DateRang
                     id={`${id}-from`}
                     value={range?.from}
                     onChange={handleFieldOnChange('from')}
+                    required={required}
                 />
             </div>
             <div className={classNames(styles['range-wrapper'])}>
@@ -81,6 +83,7 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label }: DateRang
                     minDate={range?.from}
                     value={range?.to}
                     onChange={handleFieldOnChange('to')}
+                    required={required}
                 />
             </div>
         </div>

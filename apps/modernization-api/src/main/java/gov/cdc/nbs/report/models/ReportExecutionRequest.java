@@ -8,4 +8,5 @@ public record ReportExecutionRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long dataSourceUid,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean isExport,
     List<Long> columnUids,
-    List<Filter> filters) {}
+    List<BasicFilterRequest> basicFilters,
+    AdvancedFilterRequest advancedFilter) {}

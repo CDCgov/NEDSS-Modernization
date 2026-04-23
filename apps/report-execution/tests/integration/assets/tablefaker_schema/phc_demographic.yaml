@@ -58,13 +58,13 @@ tables:
             return None
       - column_name: county
         type: string
-        data: random.choice(["Washington County", "Polk County"]) if random.random() < .95 else None
+        data: random.choice(["Washington County", "Middlesex County"]) if random.random() < .95 else None
       - column_name: cnty_cd
         data: |
           prefix = "" if state_cd is None else state_cd
           if county == "Washington County":
             return prefix + "001"
-          elif county == "Polk County":
+          elif county == "Middlesex County":
             return prefix + "002"
           else:
             return None

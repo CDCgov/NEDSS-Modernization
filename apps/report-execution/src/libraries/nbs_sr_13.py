@@ -34,8 +34,6 @@ def execute(
 
     content = trx.query(sql_query)
 
-    header = 'SR13: Counts of Selected Diseases By Case Status'
-
     description = (
         '*<u>Report content</u>*\n'
         '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
@@ -50,7 +48,6 @@ def execute(
     return ReportResult(
         content_type='table',
         content=content,
-        header=header,
         subheader=None,
         description=description,
     )

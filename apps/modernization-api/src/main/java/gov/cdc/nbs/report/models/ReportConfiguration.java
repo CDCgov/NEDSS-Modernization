@@ -8,8 +8,10 @@ public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportDataSource dataSource,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Library reportLibrary,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String reportTitle,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<FilterConfiguration> filters,
-    List<ReportColumn> reportColumns) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        List<BasicFilterConfiguration> basicFilters,
+    AdvancedFilterConfiguration advancedFilter,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<ReportColumn> reportColumns) {
 
   public boolean isPython() {
     return runner().equalsIgnoreCase("python");

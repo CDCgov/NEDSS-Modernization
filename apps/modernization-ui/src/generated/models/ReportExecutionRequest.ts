@@ -2,13 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AdvancedFilter } from './AdvancedFilter';
-import type { BasicFilter } from './BasicFilter';
+import type { AdvancedFilterRequest } from './AdvancedFilterRequest';
+import type { BasicFilterRequest } from './BasicFilterRequest';
 export type ReportExecutionRequest = {
     reportUid: number;
     dataSourceUid: number;
     isExport: boolean;
     columnUids?: Array<number>;
-    filters?: Array<(AdvancedFilter | BasicFilter)>;
+    basicFilters?: Array<BasicFilterRequest>;
+    advancedFilter?: AdvancedFilterRequest;
 };
 

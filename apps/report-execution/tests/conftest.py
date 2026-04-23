@@ -1,3 +1,4 @@
+import decimal
 import logging
 import os
 from contextlib import contextmanager
@@ -41,7 +42,13 @@ class MockTransaction:
 
     def query(self, query):
         return Table(
-            columns=['id', 'name'], data=[(1, 'a'), (2, 'b'), (3, 'c'), (4, 'd')]
+            columns=['id', 'name'],
+            data=[
+                (decimal.Decimal('1.00'), 'a'),
+                (2.5, 'b'),
+                (3, 'c'),
+                (decimal.Decimal('3.5000'), 'd'),
+            ],
         )
 
     def execute(self, query):
