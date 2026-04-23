@@ -41,7 +41,8 @@ public class ReportController {
 
   @PostMapping("/run")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
-  public ResponseEntity<ReportResult> runReport(@Validated @RequestBody ReportExecutionRequest request, Errors validationErrors) {
+  public ResponseEntity<ReportResult> runReport(
+      @Validated @RequestBody ReportExecutionRequest request, Errors validationErrors) {
     if (validationErrors.hasErrors()) {
       throw new ResponseStatusException(
           HttpStatus.UNPROCESSABLE_ENTITY, validationErrors.getAllErrors().toString());
@@ -54,7 +55,8 @@ public class ReportController {
 
   @PostMapping("/export")
   @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
-  public ResponseEntity<ReportResult> exportReport(@Validated @RequestBody ReportExecutionRequest request, Errors validationErrors) {
+  public ResponseEntity<ReportResult> exportReport(
+      @Validated @RequestBody ReportExecutionRequest request, Errors validationErrors) {
     if (validationErrors.hasErrors()) {
       throw new ResponseStatusException(
           HttpStatus.UNPROCESSABLE_ENTITY, validationErrors.getAllErrors().toString());
