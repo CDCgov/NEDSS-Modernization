@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext } from 'react';
 import { useWatch } from 'react-hook-form';
+import { ReportExecuteForm } from '../ReportRunPage';
 
 const CurrentStateContext = createContext<string | undefined>(undefined);
 
@@ -8,7 +9,7 @@ type Props = {
     children: ReactNode;
 };
 const CurrentStateProvider = ({ stateFilterId, children }: Props) => {
-    const stateVal = useWatch({ name: `basicFilter.${stateFilterId}` });
+    const stateVal = useWatch<ReportExecuteForm>({ name: `basicFilter.${stateFilterId}` });
 
     // get first state in case it is used in multi-select
     // The ways this is used downstream very much assume only one state (to match NBS 6 logic)

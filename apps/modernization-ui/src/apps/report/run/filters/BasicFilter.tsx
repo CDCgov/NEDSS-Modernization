@@ -2,7 +2,7 @@ import { Field } from 'design-system/field';
 import { BasicFilterConfiguration, ReportColumn } from 'generated';
 import { ReactNode, useId } from 'react';
 import { ReportExecuteForm } from '../ReportRunPage';
-import { Control, Controller, ControllerRenderProps, RegisterOptions, useForm, useFormContext } from 'react-hook-form';
+import { Controller, ControllerRenderProps, RegisterOptions, useFormContext } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { TextFilter, getValueText } from './TextFilter';
 import { DateRangeFilter, dateRangeValidator, getDateRange } from './DateRangeFilter';
@@ -56,7 +56,7 @@ const BasicFilter = ({
     columns: ReportColumn[];
 }) => {
     const id = useId();
-    const { control } = useFormContext();
+    const { control } = useFormContext<ReportExecuteForm>();
     const column = columns.find((c) => c.id === filter.reportColumnUid);
     const filterDesc = filter.filterType.filterName;
     // empty string not possible in practice, but appeases typescript
