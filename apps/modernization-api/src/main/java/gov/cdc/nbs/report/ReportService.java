@@ -1,7 +1,9 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
+import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
+import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
@@ -22,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
 @Service
@@ -62,7 +65,6 @@ public class ReportService {
                   dataSourceColumns.stream().map(ReportColumnMapper::fromDataSourceColumn).toList();
 
               return new ReportConfiguration(
-                  report.getReportLibrary().getRunner(),
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
                   report.getReportTitle(),
@@ -78,6 +80,29 @@ public class ReportService {
                         reportUid, dataSourceUid)));
   }
 
+  @Transactional(readOnly = true)
+  public String getReportRunner(Long reportUid, Long dataSourceUid) {
+    ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+    Report report =
+        reportRepository
+            .findById(reportId)
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        String.format(
+                            "Report not found for Report UID: %d and Data Source UID: %d",
+                            reportUid, dataSourceUid)));
+
+    ReportLibrary reportLibrary = report.getReportLibrary();
+    if (reportLibrary == null) {
+      throw new UnprocessableEntityException(
+          String.format("No report library exists for report %s", reportId));
+    }
+
+    return reportLibrary.getRunner();
+  }
+
   public ResponseEntity<ReportResult> executeReport(ReportExecutionRequest request) {
     Long reportUid = request.reportUid();
     Long dataSourceUid = request.dataSourceUid();
@@ -85,7 +110,8 @@ public class ReportService {
 
     if (!reportConfigResponse.isPython()) {
       throw new NotImplementedException(
-          String.format("Report not implemented for %s", reportConfigResponse.runner()),
+          String.format(
+              "Report not implemented for %s", reportConfigResponse.reportLibrary().runner()),
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
     }
 
