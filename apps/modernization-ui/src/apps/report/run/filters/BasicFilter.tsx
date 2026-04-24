@@ -2,16 +2,18 @@ import { Field } from 'design-system/field';
 import { BasicFilterConfiguration, ReportColumn } from 'generated';
 import { ReactNode, useId } from 'react';
 import { ReportExecuteForm } from '../ReportRunPage';
-import { Control, Controller, ControllerRenderProps, RegisterOptions } from 'react-hook-form';
+import { Controller, ControllerRenderProps, RegisterOptions, useFormContext } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { TextFilter, getValueText } from './TextFilter';
 import { DateRangeFilter, dateRangeValidator, getDateRange } from './DateRangeFilter';
 import { Validator } from 'validation';
+import { getValueList, OptionSelectFilter, optionSelectValidator } from './OptionSelectFilter';
 import { getYearRange, YearRangeFilter } from './YearRangeFilter';
 import { getMonthYearRange, MonthYearRangeFilter, monthYearRangeValidator } from './MonthYearRangeFilter';
 
 export type BasicFilterProps = {
     filter: BasicFilterConfiguration;
+    stateFilterId?: string;
     id: string;
 } & Omit<Parameters<typeof Field>[0], 'htmlFor' | 'children'> &
     Omit<ControllerRenderProps, 'ref'>;
@@ -47,6 +49,11 @@ const FILTER_TYPE_MAP: Record<
         getDefaultValue: getMonthYearRange,
         validationRule: monthYearRangeValidator,
     },
+    BAS_JUR_LIST: {
+        FilterComponent: OptionSelectFilter,
+        getDefaultValue: getValueList,
+        validationRule: optionSelectValidator,
+    },
 };
 
 const TEMP_DEFAULT_FILTER = {
@@ -61,14 +68,13 @@ const TEMP_DEFAULT_FILTER = {
 const BasicFilter = ({
     filter,
     columns,
-    formControl,
     ...remaining
 }: {
     filter: BasicFilterConfiguration;
     columns: ReportColumn[];
-    formControl: Control<ReportExecuteForm>;
 }) => {
     const id = useId();
+    const { control } = useFormContext<ReportExecuteForm>();
     const column = columns.find((c) => c.id === filter.reportColumnUid);
     const filterDesc = filter.filterType.filterName;
     // empty string not possible in practice, but appeases typescript
@@ -93,7 +99,7 @@ const BasicFilter = ({
 
     return (
         <Controller
-            control={formControl}
+            control={control}
             name={`basicFilter.${filter.reportFilterUid}`}
             rules={rules}
             defaultValue={getDefaultValue(filter)}

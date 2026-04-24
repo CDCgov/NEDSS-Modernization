@@ -157,7 +157,6 @@ export const AddNewPage = () => {
                                     options={eventType}
                                     error={error?.message}
                                     name={name}
-                                    htmlFor={name}
                                     id={name}
                                     required
                                 />

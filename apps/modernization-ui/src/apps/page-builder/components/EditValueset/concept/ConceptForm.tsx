@@ -281,7 +281,6 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             error={error?.message}
                             options={codeSystems}
                             name={name}
-                            htmlFor={name}
                             id={name}
                             required
                         />
