@@ -79,6 +79,7 @@ public class ReportService {
                         reportUid, dataSourceUid)));
   }
 
+  @Transactional(readOnly = true)
   public String getReportRunner(Long reportUid, Long dataSourceUid) {
     ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
