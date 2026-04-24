@@ -21,7 +21,7 @@ describe('OptionSelectFilter', () => {
         it('passes valid single value', () => {
             const validator = optionSelectValidator(MOCK_FILTER, MOCK_LABEL);
 
-            const result = validator('01');
+            const result = validator(['01']);
             expect(result).toBeTruthy();
         });
 

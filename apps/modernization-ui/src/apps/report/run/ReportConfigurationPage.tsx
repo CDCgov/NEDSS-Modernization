@@ -17,9 +17,9 @@ const ReportConfigurationPage = ({
 }) => {
     const basicFilters = config.basicFilters;
     // the state drives other filter options, so need to pull it out
-    const stateFilterId = config.basicFilters.find((f) =>
+    const stateFilter = config.basicFilters.find((f) =>
         f.filterType.code?.startsWith(STATE_FILTER_CODE)
-    )?.reportFilterUid;
+    );
 
     return (
         <ReportRunLayout
@@ -37,7 +37,7 @@ const ReportConfigurationPage = ({
         >
             <form>
                 {basicFilters.length > 0 && (
-                    <CurrentStateProvider stateFilterId={stateFilterId}>
+                    <CurrentStateProvider stateFilter={stateFilter}>
                         <Card id="basic-filters" title="Basic Filters" collapsible={true}>
                             {basicFilters.map((filter, i) => (
                                 <BasicFilter
