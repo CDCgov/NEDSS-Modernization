@@ -4,7 +4,6 @@ import { MultiSelect } from 'design-system/select';
 import { useCountyOptions, useStateOptions } from 'options/location';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useEffect } from 'react';
-import { useRegionOptions } from 'options/location/region/useRegionOptions';
 import { useCurrentState } from './useCurrentState';
 import { Selectable } from 'options';
 import { validateRequiredRule } from 'validation/entry';
@@ -42,10 +41,11 @@ const useCurrentStateCountyOptions = () => {
     return options;
 };
 
-const OPTIONS_HOOK_MAP: Record<string, (stateId?: string) => Selectable[]> = {
+const OPTIONS_HOOK_MAP: Record<string, () => Selectable[]> = {
     [COUNTY_FILTER_CODE]: useCurrentStateCountyOptions,
     [STATE_FILTER_CODE]: useStateOptions,
-    [REGION_FILTER_CODE]: useRegionOptions,
+    // this may be functionally dead code - needs more investigation
+    [REGION_FILTER_CODE]: () => [],
 };
 
 const getValueList = (filter: BasicFilterConfiguration) => {
