@@ -42,6 +42,26 @@ export class ReportControllerService {
         });
     }
     /**
+     * @returns string OK
+     * @throws ApiError
+     */
+    public static getReportRunner({
+        reportUid,
+        dataSourceUid,
+    }: {
+        reportUid: number,
+        dataSourceUid: number,
+    }): CancelablePromise<string> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/report/runner/{reportUid}/{dataSourceUid}',
+            path: {
+                'reportUid': reportUid,
+                'dataSourceUid': dataSourceUid,
+            },
+        });
+    }
+    /**
      * @returns ReportConfiguration OK
      * @throws ApiError
      */
