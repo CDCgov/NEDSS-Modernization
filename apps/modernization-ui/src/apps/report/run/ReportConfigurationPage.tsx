@@ -17,9 +17,7 @@ const ReportConfigurationPage = ({
 }) => {
     const basicFilters = config.basicFilters;
     // the state drives other filter options, so need to pull it out
-    const stateFilter = config.basicFilters.find((f) =>
-        f.filterType.code?.startsWith(STATE_FILTER_CODE)
-    );
+    const stateFilter = config.basicFilters.find((f) => f.filterType.code?.startsWith(STATE_FILTER_CODE));
 
     return (
         <ReportRunLayout
