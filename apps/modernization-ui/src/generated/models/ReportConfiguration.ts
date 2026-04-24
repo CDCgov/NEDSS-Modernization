@@ -14,6 +14,5 @@ export type ReportConfiguration = {
     basicFilters: Array<BasicFilterConfiguration>;
     advancedFilter?: AdvancedFilterConfiguration;
     reportColumns: Array<ReportColumn>;
-    python?: boolean;
 };
 
