@@ -13,6 +13,7 @@ class ReportSpec(BaseModel):
     library_name: str = Field(min_length=1)
     data_source_name: str = Field(min_length=1)
     subset_query: str = Field(min_length=1)
+    days_value: int | None = None 
 
 
 # column names and values
