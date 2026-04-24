@@ -5,7 +5,7 @@ import { ReportRunLayout } from './layout/ReportRunLayout';
 import { ReportConfiguration } from 'generated';
 import { BasicFilter } from './filters/BasicFilter';
 import { Card } from 'design-system/card';
-import { STATE_FILTER_CODE } from './filters/ListFilter';
+import { STATE_FILTER_CODE } from './filters/OptionSelectFilter';
 import { CurrentStateProvider } from './filters/useCurrentState';
 
 const ReportConfigurationPage = ({

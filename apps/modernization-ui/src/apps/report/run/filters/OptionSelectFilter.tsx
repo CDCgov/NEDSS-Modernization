@@ -13,7 +13,7 @@ export const STATE_FILTER_CODE = 'J_S01';
 export const COUNTY_FILTER_CODE = 'J_C01';
 export const REGION_FILTER_CODE = 'J_R01';
 
-const ListFilter: BasicFilterComponent = ({ filter, value, id, onChange, ...remaining }: BasicFilterProps) => {
+const OptionSelectFilter: BasicFilterComponent = ({ filter, value, id, onChange, ...remaining }: BasicFilterProps) => {
     const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
     // ignore include nulls indicator here
     const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
@@ -55,7 +55,7 @@ const getValueList = (filter: BasicFilterConfiguration) => {
     return filter.maxValueCount == 1 ? filter.defaultValue[0] : filter.defaultValue;
 };
 
-const listValidator = (filter: BasicFilterConfiguration, label: string) => {
+const optionSelectValidator = (filter: BasicFilterConfiguration, label: string) => {
     return (value?: (string | undefined)[] | string) => {
         if (typeof value === 'string') return true;
         // Base required check doesn't work well with lists
@@ -65,4 +65,4 @@ const listValidator = (filter: BasicFilterConfiguration, label: string) => {
     };
 };
 
-export { ListFilter, getValueList, listValidator };
+export { OptionSelectFilter, getValueList, optionSelectValidator };

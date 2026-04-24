@@ -7,7 +7,7 @@ import { validateRequiredRule } from 'validation/entry';
 import { TextFilter, getValueText } from './TextFilter';
 import { DateRangeFilter, dateRangeValidator, getDateRange } from './DateRangeFilter';
 import { Validator } from 'validation';
-import { getValueList, ListFilter } from './ListFilter';
+import { getValueList, OptionSelectFilter, optionSelectValidator } from './OptionSelectFilter';
 import { getYearRange, YearRangeFilter } from './YearRangeFilter';
 import { getMonthYearRange, MonthYearRangeFilter, monthYearRangeValidator } from './MonthYearRangeFilter';
 
@@ -50,8 +50,9 @@ const FILTER_TYPE_MAP: Record<
         validationRule: monthYearRangeValidator,
     },
     BAS_JUR_LIST: {
-        FilterComponent: ListFilter,
+        FilterComponent: OptionSelectFilter,
         getDefaultValue: getValueList,
+        validationRule: optionSelectValidator,
     },
 };
 
