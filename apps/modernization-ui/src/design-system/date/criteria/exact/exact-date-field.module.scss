@@ -7,6 +7,7 @@
         display: flex;
         gap: 0.25rem;
         flex-direction: column;
+        min-width: fit-content;
     }
 
     .month,

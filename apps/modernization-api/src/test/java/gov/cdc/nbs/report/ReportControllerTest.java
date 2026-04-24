@@ -6,8 +6,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
@@ -49,7 +51,6 @@ class ReportControllerTest {
     List<ReportColumn> columns = List.of(mock(ReportColumn.class));
     ReportConfiguration reportConfig =
         new ReportConfiguration(
-            "python",
             new ReportDataSource(dataSourceEntity),
             new Library(reportLibraryEntity),
             "Report Title",
@@ -66,7 +67,7 @@ class ReportControllerTest {
   }
 
   @Test
-  void getReport_should_return_400_status_code_when_report_not_found() {
+  void getReport_should_return_404_status_code_when_report_not_found() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
     String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
@@ -76,6 +77,51 @@ class ReportControllerTest {
     assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid))
         .isInstanceOf(NotFoundException.class)
         .hasMessageContaining(errorMsg);
+  }
+
+  @Test
+  void getReportRunner_should_return_report_lib_runner() {
+    Long reportUid = 1L;
+    Long dataSourceUid = 2L;
+
+    when(service.getReportRunner(reportUid, dataSourceUid)).thenReturn("python");
+
+    ResponseEntity<String> response = controller.getReportRunner(reportUid, dataSourceUid);
+
+    assertEquals("python", response.getBody());
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+  }
+
+  @Test
+  void getReportRunner_should_return_404_status_code_when_report_not_found() {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+
+    String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
+
+    when(service.getReportRunner(reportUid, dataSourceUid))
+        .thenThrow(new NotFoundException(errorMsg));
+
+    assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
+        .isInstanceOf(NotFoundException.class)
+        .hasMessageContaining(errorMsg);
+  }
+
+  @Test
+  void getReportRunner_should_return_422_status_code_when_report_has_no_library() {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+
+    ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+    String errorMsg = "No report library exists for report " + reportId;
+
+    when(service.getReportRunner(reportUid, dataSourceUid))
+        .thenThrow(new UnprocessableEntityException(errorMsg));
+
+    assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
+        .isInstanceOf(UnprocessableEntityException.class)
+        .hasMessageContaining("No report library exists for report " + reportId);
   }
 
   @Test
