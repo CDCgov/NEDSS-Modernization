@@ -62,7 +62,6 @@ export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, on
                                 }}
                                 id={name}
                                 name={name}
-                                htmlFor={name}
                                 options={[
                                     { name: 'Exact match', value: MatchMethod.EXACT },
                                     { name: 'JaroWinkler', value: MatchMethod.JAROWINKLER },

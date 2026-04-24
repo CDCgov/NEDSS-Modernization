@@ -55,7 +55,6 @@ export const TextFields = ({ maskOptions, editing = false, published = false }: 
                         error={error?.message}
                         name={name}
                         id={name}
-                        htmlFor={name}
                         required={!editing}
                         disabled={editing}
                     />

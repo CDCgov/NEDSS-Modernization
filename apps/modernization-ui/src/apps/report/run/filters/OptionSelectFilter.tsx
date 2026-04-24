@@ -12,20 +12,20 @@ export const STATE_FILTER_CODE = 'J_S01';
 export const COUNTY_FILTER_CODE = 'J_C01';
 export const REGION_FILTER_CODE = 'J_R01';
 
-const OptionSelectFilter: BasicFilterComponent = ({ filter, value, id, onChange, ...remaining }: BasicFilterProps) => {
+const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...remaining }: BasicFilterProps) => {
     const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
     // ignore include nulls indicator here
     const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
     const options = OPTIONS_HOOK_MAP[filterCode]?.();
 
     if (filter.maxValueCount === 1) {
-        return <SelectInput id={id} value={value ?? undefined} onChange={onChange} options={options} {...remaining} />;
+        return <SelectInput value={value ?? undefined} onChange={onChange} options={options} {...remaining} />;
     } else {
         const multiOnChange = (values: Selectable[]) => {
             onChange(values.map((v) => v.value));
         };
         const multiValue = options.filter((selectable) => value?.includes(selectable.value)) ?? [];
-        return <MultiSelect id={id} value={multiValue} onChange={multiOnChange} options={options} {...remaining} />;
+        return <MultiSelect value={multiValue} onChange={multiOnChange} options={options} {...remaining} />;
     }
 };
 
@@ -62,7 +62,7 @@ const optionSelectValidator = (filter: BasicFilterConfiguration, label: string) 
         if (!value || !value.length) {
             return filter.isRequired ? validateRequiredRule(label).required.message : true;
         }
-        
+
         return true;
     };
 };

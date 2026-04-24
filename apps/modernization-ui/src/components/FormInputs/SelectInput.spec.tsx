@@ -19,7 +19,6 @@ describe('SelectInput component tests', () => {
                         },
                     ]}
                     name="test-name"
-                    htmlFor="test-id"
                     defaultValue="DRIVERS_LICENSE_NUMBER"
                 />
             );
@@ -43,7 +42,6 @@ describe('SelectInput component tests', () => {
                         },
                     ]}
                     name="test-name"
-                    htmlFor="test-id"
                 />
             );
             expect(container.querySelector('option:checked')?.innerHTML).toBe('- Select -');
@@ -66,7 +64,6 @@ describe('SelectInput component tests', () => {
                         },
                     ]}
                     name="test-name"
-                    htmlFor="test-id"
                 />
             );
             // click on the option you want

@@ -1,11 +1,11 @@
 import { Select } from '@trussworks/react-uswds';
 
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
+import { useId } from 'react';
 
 export type Selectable = { name: string; value: string };
 
 type SelectProps = {
-    htmlFor?: string;
     label?: string;
     options: Selectable[];
     dataTestid?: string;
@@ -18,7 +18,7 @@ type SelectProps = {
     defaultValue?: string | number | undefined | null;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue'>;
 
-const renderOptions = (options: Selectable[]) => (
+const Options = ({ options }: { options: Selectable[] }) => (
     <>
         <option value="">- Select -</option>
         {options?.map((item, index) => (
@@ -31,7 +31,6 @@ const renderOptions = (options: Selectable[]) => (
 
 export const SelectInput = ({
     name,
-    htmlFor,
     label,
     id,
     options,
@@ -47,18 +46,20 @@ export const SelectInput = ({
     onBlur,
     ...props
 }: SelectProps) => {
+    const defaultId = useId();
     //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
     const Wrapped = () => (
         <Select
             data-testid={dataTestid || 'dropdown'}
-            id={id || ''}
+            id={id || defaultId}
             name={name || ''}
             defaultValue={defaultValue ?? undefined}
+            required={required}
             onChange={onChange}
             onBlur={onBlur}
             {...props}
         >
-            {renderOptions(options)}
+            <Options options={options} />
         </Select>
     );
 
@@ -66,7 +67,7 @@ export const SelectInput = ({
         <EntryWrapper
             orientation={flexBox ? 'horizontal' : orientation}
             label={label || ''}
-            htmlFor={htmlFor || ''}
+            htmlFor={id || defaultId}
             required={required}
             sizing={sizing}
             helperText={helperText}

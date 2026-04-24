@@ -13,6 +13,7 @@ type MultiSelectProps = {
     id: string;
     name: string;
     placeholder?: string;
+    required?: boolean;
     disabled?: boolean;
     options: Selectable[];
     value?: Selectable[];
@@ -31,6 +32,7 @@ export const MultiSelect = ({
     onBlur,
     placeholder = '- Select -',
     disabled = false,
+    required,
     sizing,
     asValue = asSelectableValue,
     asDisplay = (selectable: Selectable) => selectable.name,
@@ -51,7 +53,7 @@ export const MultiSelect = ({
     };
 
     return (
-        <Field htmlFor={id} {...remaining} sizing={sizing}>
+        <Field htmlFor={id} {...remaining} sizing={sizing} required={required}>
             <Select<Selectable, true>
                 theme={theme}
                 styles={styles}
@@ -64,6 +66,7 @@ export const MultiSelect = ({
                 onBlur={onBlur}
                 placeholder={placeholder}
                 isDisabled={disabled}
+                required={required}
                 // menuIsOpen={true}
                 className={classNames(
                     'multi-select',

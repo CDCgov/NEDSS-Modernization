@@ -166,7 +166,6 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         error={error?.message}
                         options={subgroups}
                         name={name}
-                        htmlFor={name}
                         id={name}
                         disabled={editing}
                         required
