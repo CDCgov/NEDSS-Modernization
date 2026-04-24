@@ -62,6 +62,8 @@ const optionSelectValidator = (filter: BasicFilterConfiguration, label: string) 
         if (!value || !value.length) {
             return filter.isRequired ? validateRequiredRule(label).required.message : true;
         }
+        
+        return true;
     };
 };
 
