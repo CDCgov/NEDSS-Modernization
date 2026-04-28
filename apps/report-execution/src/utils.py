@@ -76,3 +76,40 @@ def gen_subheader(
             parts.append(', '.join(clean_diseases))
 
     return ' | '.join(parts)
+
+
+def build_case_count_query(column_mapping: dict[str, str], subset_query: str):
+    """Build the case count DB query string for nbs_sr_02 and nbs_sr_08."""
+    valid_columns = {
+        'state_cd',
+        'state',
+        'county',
+        'phc_code_short_desc',
+        'event_date',
+        'cnty_cd',
+    }
+    if not subset_query:
+        raise ValueError('Subset query cannot be empty')
+
+    if not all(key in valid_columns for key in column_mapping):
+        raise ValueError('One or more columns are invalid')
+
+    select_fields = []
+    for db_col, alias in column_mapping.items():
+        if db_col == 'event_date':
+            select_fields.append(
+                f'''UPPER(FORMAT({db_col}, 'ddMMMyyyy:HH:mm:ss.fff')) AS "Event Date"'''
+            )
+        else:
+            select_fields.append(f'{db_col} AS "{alias}"')
+    select_field_query = ', '.join(select_fields)
+    group_cols = ', '.join(column_mapping.keys())
+    return (
+        f'WITH subset as ({subset_query})\n'
+        f'SELECT {select_field_query}, '
+        f'sum(group_case_cnt) as Cases\n'
+        f'FROM subset\n'
+        f'WHERE event_date IS NOT NULL\n'
+        f'GROUP BY {group_cols}\n'
+        f'ORDER BY {group_cols}'
+    )
