@@ -101,49 +101,31 @@ class WhereClauseServiceTest {
     assertThat(whereClause).isEqualTo("WHERE ([ColumnName] IN (condition1))");
   }
 
-  //
-  //  @Test
-  //  void should_handle_none_default_value_type() {
-  //
-  //    Long columnUid = 2L;
-  //
-  //    FilterDefaultValue filterDefaultValue =
-  //        new FilterDefaultValue(1L, 1, "none", 10L, "EQ", "condition1");
-  //
-  //    FilterConfiguration filterConfig =
-  //        mockBasicFilterConfiguration(List.of(filterDefaultValue), columnUid, 1, 1);
-  //
-  //    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
-  //
-  //    ReportConfiguration reportConfig =
-  //        createReportConfig(List.of(filterConfig), List.of(reportColumn));
-  //
-  //    String whereClause = mockWhereClauseService.buildBasicWhereClause(reportConfig);
-  //
-  //    assertThat(whereClause).isEqualTo("WHERE ([ColumnName] IS NULL)");
-  //  }
+  @Test
+  void should_combine_multiple_filters_with_and() {
+    Long filter1 = 101L;
+    Long col1 = 1L;
+    Long filter2 = 102L;
+    Long col2 = 2L;
 
-  //  @Test
-  //  void should_handle_actual_value_plus_none_type() {
-  //    Long columnUid = 2L;
-  //    FilterDefaultValue filterDefaultValue1 =
-  //        new FilterDefaultValue(1L, 1, "CLAUSE", 10L, "EQ", "condition1");
-  //    FilterDefaultValue filterDefaultValueNone =
-  //        new FilterDefaultValue(1L, 1, "none", 10L, "EQ", "condition1");
-  //
-  //    FilterConfiguration filterConfig =
-  //        mockBasicFilterConfiguration(
-  //            List.of(filterDefaultValue1, filterDefaultValueNone), columnUid, 1, -1);
-  //    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
-  //    ReportConfiguration reportConfig =
-  //        createReportConfig(List.of(filterConfig), List.of(reportColumn));
-  //
-  //    String whereClause = mockWhereClauseService.buildBasicWhereClause(reportConfig);
-  //
-  //    // Verifies the OR logic and that 'none' is not inside the IN clause
-  //    assertThat(whereClause)
-  //        .isEqualTo("WHERE ([ColumnName] IN (condition1) OR [ColumnName] IS NULL)");
-  //  }
+    ReportConfiguration reportConfig =
+        createReportConfig(
+            List.of(
+                createBasicFilterConfiguration(List.of(), filter1, col1, false),
+                createBasicFilterConfiguration(List.of(), filter2, col2, false)),
+            List.of(
+                mockReportColumn(col1, "STRING", "ColumnName1"),
+                mockReportColumn(col2, "STRING", "ColumnName2")));
+
+    List<BasicFilterRequest> request =
+        List.of(
+            new BasicFilterRequest(filter1, List.of("A"), false),
+            new BasicFilterRequest(filter2, List.of("B"), false));
+
+    String whereClause = mockWhereClauseService.buildBasicWhereClause(reportConfig, request);
+
+    assertThat(whereClause).isEqualTo("WHERE ([ColumnName1] IN (A)) AND ([ColumnName2] IN (B))");
+  }
 
   @Test
   void should_handle_allow_nulls_operator() {
@@ -173,6 +155,25 @@ class WhereClauseServiceTest {
   }
 
   @Test
+  void should_handle_only_nulls_requested() {
+    Long filterUid = 100L;
+    Long columnUid = 2L;
+
+    List<BasicFilterConfiguration> basicFilterConfigs =
+        List.of(createBasicFilterConfiguration(List.of(), filterUid, columnUid, true));
+    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
+    ReportConfiguration reportConfig =
+        createReportConfig(basicFilterConfigs, List.of(reportColumn));
+
+    // Request with empty values but includeNulls = true
+    List<BasicFilterRequest> request = List.of(new BasicFilterRequest(filterUid, List.of(), true));
+
+    String whereClause = mockWhereClauseService.buildBasicWhereClause(reportConfig, request);
+
+    assertThat(whereClause).isEqualTo("WHERE ([ColumnName] IS NULL)");
+  }
+
+  @Test
   void should_throw_exception_when_column_metadata_is_missing() {
 
     Long filterUid = 100L;
@@ -190,5 +191,15 @@ class WhereClauseServiceTest {
             () -> mockWhereClauseService.buildBasicWhereClause(reportConfig, basicFilterRequest))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("No report column found for columnUid: 2");
+  }
+
+  @Test
+  void should_throw_exception_when_filter_config_is_missing() {
+    ReportConfiguration reportConfig = createReportConfig(List.of(), List.of());
+    List<BasicFilterRequest> request = List.of(new BasicFilterRequest(999L, List.of("val"), false));
+
+    assertThatThrownBy(() -> mockWhereClauseService.buildBasicWhereClause(reportConfig, request))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("No basic filter configuration found for UID: 999");
   }
 }
