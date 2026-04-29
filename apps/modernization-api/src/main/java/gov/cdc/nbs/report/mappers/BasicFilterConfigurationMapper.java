@@ -17,7 +17,7 @@ public class BasicFilterConfigurationMapper {
 
     FilterType filterType = FilterTypeMapper.fromFilterCode(filter.getFilterCode());
 
-    if (!filterType.filterType().startsWith("BAS_")) {
+    if (!filterType.type().startsWith("BAS_")) {
       throw new IllegalArgumentException("Cannot create basic filter from advanced filter");
     }
 
@@ -30,8 +30,15 @@ public class BasicFilterConfigurationMapper {
     // For the future: A list of strings may end up being too simple for all use cases,
     // may need to evolve to be a small object with a key and value
     List<String> defaultValue = null;
+    Boolean defaultIncludeNulls = false;
     if (filter.getFilterValues() != null) {
-      defaultValue = filter.getFilterValues().stream().map(r -> r.getValueTxt()).toList();
+      defaultValue =
+          filter.getFilterValues().stream()
+              .filter(v -> v.getOperator().equals("ALLOW_NULLS"))
+              .map(r -> r.getValueTxt())
+              .toList();
+      defaultIncludeNulls =
+          filter.getFilterValues().stream().anyMatch(v -> v.getOperator().equals("ALLOW_NULLS"));
     }
     return new BasicFilterConfiguration(
         filter.getId(),
@@ -40,6 +47,7 @@ public class BasicFilterConfigurationMapper {
         filter.getMinValueCnt(),
         filter.getMaxValueCnt(),
         isRequired,
-        filterType);
+        filterType,
+        defaultIncludeNulls);
   }
 }

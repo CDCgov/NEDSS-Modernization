@@ -80,7 +80,8 @@ public class ReportSpecBuilder {
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
-    String whereClause = whereClauseService.buildBasicWhereClause(reportConfig);
+    String whereClause =
+        whereClauseService.buildBasicWhereClause(reportConfig, reportExecRequest.basicFilters());
     String orderByClause = "";
 
     String subsetQuery =

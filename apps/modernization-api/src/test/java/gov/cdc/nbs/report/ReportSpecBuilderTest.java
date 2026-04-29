@@ -33,12 +33,20 @@ class ReportSpecBuilderTest {
     return dataSourceNameUtils;
   }
 
-  private BasicFilterConfiguration mockBasicFilterConfiguration(Long columnId) {
-    BasicFilterConfiguration basicFilterConfig = Mockito.mock(BasicFilterConfiguration.class);
+  private BasicFilterConfiguration mockBasicFilterConfiguration(
+      List<String> filterDefaultValues, Long reportColumnUid, Boolean defaultIncludeNulls) {
+    BasicFilterConfiguration basicFilterConfiguration =
+        Mockito.mock(BasicFilterConfiguration.class);
 
-    Mockito.lenient().when(basicFilterConfig.reportColumnUid()).thenReturn(columnId);
+    Mockito.lenient()
+        .when(basicFilterConfiguration.defaultValues())
+        .thenReturn(filterDefaultValues);
+    Mockito.lenient().when(basicFilterConfiguration.reportColumnUid()).thenReturn(reportColumnUid);
+    Mockito.lenient()
+        .when(basicFilterConfiguration.defaultIncludeNulls())
+        .thenReturn(defaultIncludeNulls);
 
-    return basicFilterConfig;
+    return basicFilterConfiguration;
   }
 
   private ReportColumn mockReportColumn(Long columnId, String columnName, String columnTitle) {
@@ -55,7 +63,9 @@ class ReportSpecBuilderTest {
     WhereClauseService whereClauseService = Mockito.mock(WhereClauseService.class);
     // We tell the mock to return a specific string (or empty) when called
     Mockito.lenient()
-        .when(whereClauseService.buildBasicWhereClause(Mockito.any(ReportConfiguration.class)))
+        .when(
+            whereClauseService.buildBasicWhereClause(
+                Mockito.any(ReportConfiguration.class), Mockito.any()))
         .thenReturn(result);
 
     return whereClauseService;
@@ -94,11 +104,15 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_set_all_fields_correctly() {
+    List<String> filterDefaultValue = List.of("condition1");
+
     Long columnUid1 = 1L;
     Long columnUid2 = 2L;
 
-    BasicFilterConfiguration filterConfig1 = mockBasicFilterConfiguration(columnUid1);
-    BasicFilterConfiguration filterConfig2 = mockBasicFilterConfiguration(columnUid2);
+    BasicFilterConfiguration filterConfig1 =
+        mockBasicFilterConfiguration(filterDefaultValue, columnUid1, null);
+    BasicFilterConfiguration filterConfig2 =
+        mockBasicFilterConfiguration(filterDefaultValue, columnUid1, null);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, "column1", "Column 1");
     ReportColumn reportColumn2 = mockReportColumn(columnUid2, "column2", "Column 2");
@@ -134,10 +148,14 @@ class ReportSpecBuilderTest {
 
   @Test
   void setColumns_should_throw_illegal_argument_when_columns_not_found() {
+
+    List<String> filterDefaultValue = List.of("condition1");
+
     Long knownColumnUid = 1L;
     Long unknownColumnUid = 2L;
 
-    BasicFilterConfiguration filterConfig1 = mockBasicFilterConfiguration(knownColumnUid);
+    BasicFilterConfiguration filterConfig1 =
+        mockBasicFilterConfiguration(filterDefaultValue, knownColumnUid, null);
     ReportColumn reportColumn1 = mockReportColumn(knownColumnUid, "column1", "Column 1");
 
     ReportConfiguration reportConfig =
@@ -160,13 +178,19 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_multiple_columns() {
+
+    List<String> filterDefaultValue = List.of("condition1");
+
     Long columnUid1 = 1L;
     Long columnUid2 = 2L;
     Long columnUid3 = 3L;
 
-    BasicFilterConfiguration filterConfig1 = mockBasicFilterConfiguration(columnUid1);
-    BasicFilterConfiguration filterConfig2 = mockBasicFilterConfiguration(columnUid2);
-    BasicFilterConfiguration filterConfig3 = mockBasicFilterConfiguration(columnUid3);
+    BasicFilterConfiguration filterConfig1 =
+        mockBasicFilterConfiguration(filterDefaultValue, columnUid1, null);
+    BasicFilterConfiguration filterConfig2 =
+        mockBasicFilterConfiguration(filterDefaultValue, columnUid1, null);
+    BasicFilterConfiguration filterConfig3 =
+        mockBasicFilterConfiguration(filterDefaultValue, columnUid1, null);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, "col1", "Col 1");
     ReportColumn reportColumn2 = mockReportColumn(columnUid2, "col2", "Col 2");
@@ -196,8 +220,13 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_generate_correct_select_clause_for_no_columns() {
-    BasicFilterConfiguration filterConfig1 = mockBasicFilterConfiguration(1L);
-    BasicFilterConfiguration filterConfig2 = mockBasicFilterConfiguration(2L);
+
+    List<String> filterDefaultValue = List.of("condition1");
+
+    BasicFilterConfiguration filterConfig1 =
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, null);
+    BasicFilterConfiguration filterConfig2 =
+        mockBasicFilterConfiguration(filterDefaultValue, 2L, null);
 
     ReportColumn reportColumn1 = mockReportColumn(1L, "col1", "Col 1");
     ReportColumn reportColumn2 = mockReportColumn(2L, "col2", "Col 2");
@@ -226,9 +255,12 @@ class ReportSpecBuilderTest {
   @MethodSource("fetchSingleColumnTestParams")
   void build_should_generate_correct_select_clause_for_column_names(
       String columnName, String columnTitle) {
+
+    List<String> filterDefaultValue = List.of("condition1");
     Long columnUid1 = 1L;
 
-    BasicFilterConfiguration filterConfig1 = mockBasicFilterConfiguration(columnUid1);
+    BasicFilterConfiguration filterConfig1 =
+        mockBasicFilterConfiguration(filterDefaultValue, columnUid1, null);
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, columnName, columnTitle);
 
     ReportConfiguration reportConfig =
@@ -256,12 +288,16 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_include_where_clause_when_present() {
-    FilterConfiguration filterConfig1 = mockFilterConfiguration(1L);
+    List<String> filterDefaultValue = List.of("Value");
+
+    BasicFilterConfiguration basicFilterConfiguration =
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, null);
 
     ReportColumn reportColumn1 = mockReportColumn(1L, "col1", "Col 1");
 
     ReportConfiguration reportConfig =
-        mockReportConfiguration(List.of(filterConfig1), List.of(reportColumn1), "Test Title");
+        mockReportConfiguration(
+            List.of(basicFilterConfiguration), List.of(reportColumn1), "Test Title");
 
     ReportExecutionRequest request = mockReportExecutionRequest(null);
 

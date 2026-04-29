@@ -76,7 +76,7 @@ class BasicFilterConfigurationMapperTest {
 
     assertThat(mapped.reportFilterUid()).isEqualTo(reportFilter.getId());
     assertThat(mapped.reportColumnUid()).isEqualTo(column.getId());
-    assertThat(mapped.defaultValue()).isEqualTo(List.of("value"));
+    assertThat(mapped.defaultValues()).isEqualTo(List.of("value"));
     assertThat(mapped.minValueCount()).isEqualTo(1);
     assertThat(mapped.maxValueCount()).isEqualTo(-1);
     assertThat(mapped.isRequired()).isTrue();
@@ -157,7 +157,7 @@ class BasicFilterConfigurationMapperTest {
 
     BasicFilterConfiguration mapped = BasicFilterConfigurationMapper.fromReportFilter(reportFilter);
 
-    assertThat(mapped.defaultValue()).isNull();
+    assertThat(mapped.defaultValues()).isNull();
   }
 
   @Test
@@ -174,6 +174,6 @@ class BasicFilterConfigurationMapperTest {
 
     BasicFilterConfiguration mapped = BasicFilterConfigurationMapper.fromReportFilter(reportFilter);
 
-    assertThat(mapped.defaultValue()).isEmpty();
+    assertThat(mapped.defaultValues()).isEmpty();
   }
 }
