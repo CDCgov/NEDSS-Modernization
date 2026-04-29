@@ -4,12 +4,8 @@
 /* eslint-disable */
 import type { Clause } from './Clause';
 import type { Connector } from './Connector';
-import type { Filter } from './Filter';
-export type AdvancedFilter = (Filter & {
-    isBasic?: boolean;
-    logic?: (Clause | Connector);
-} & {
-    isBasic: boolean;
+export type AdvancedFilterRequest = {
+    reportFilterUid: number;
     logic: (Clause | Connector);
-});
+};
 
