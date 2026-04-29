@@ -39,7 +39,6 @@ class WhereClauseServiceTest {
   private ReportConfiguration createReportConfig(
       List<BasicFilterConfiguration> basicFilterConfigurations, List<ReportColumn> columns) {
     return new ReportConfiguration(
-        "python",
         Mockito.mock(ReportDataSource.class),
         Mockito.mock(Library.class),
         "Test Report",

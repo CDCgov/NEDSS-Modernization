@@ -53,6 +53,16 @@ class BasicFilterConfigurationMapperTest {
   FilterValue filterValue =
       FilterValue.builder()
           .id(6L)
+          .operator("EQ")
+          .valueType("CODE")
+          .valueTxt("value")
+          .reportFilter(emptyFilter)
+          .build();
+
+  FilterValue filterValueAllowNulls =
+      FilterValue.builder()
+          .id(6L)
+          .operator("ALLOW_NULLS")
           .valueType("CODE")
           .valueTxt("value")
           .reportFilter(emptyFilter)
@@ -77,6 +87,31 @@ class BasicFilterConfigurationMapperTest {
     assertThat(mapped.reportFilterUid()).isEqualTo(reportFilter.getId());
     assertThat(mapped.reportColumnUid()).isEqualTo(column.getId());
     assertThat(mapped.defaultValues()).isEqualTo(List.of("value"));
+    assertThat(mapped.minValueCount()).isEqualTo(1);
+    assertThat(mapped.maxValueCount()).isEqualTo(-1);
+    assertThat(mapped.isRequired()).isTrue();
+    assertThat(mapped.filterType()).isEqualTo(FilterTypeMapper.fromFilterCode(filterCode));
+  }
+
+  @Test
+  void fromReportFilter_should_map_all_fields_with_value_operator_allowsnulls() {
+    ReportFilter reportFilter =
+        ReportFilter.builder()
+            .id(2L)
+            .dataSourceColumn(column)
+            .filterValidation(filterValidation)
+            .filterCode(filterCode)
+            .filterValues(List.of(filterValueAllowNulls))
+            .minValueCnt(1)
+            .maxValueCnt(-1)
+            .report(emptyReport)
+            .build();
+
+    BasicFilterConfiguration mapped = BasicFilterConfigurationMapper.fromReportFilter(reportFilter);
+
+    assertThat(mapped.reportFilterUid()).isEqualTo(reportFilter.getId());
+    assertThat(mapped.reportColumnUid()).isEqualTo(column.getId());
+    assertThat(mapped.defaultValues()).isEqualTo(List.of());
     assertThat(mapped.minValueCount()).isEqualTo(1);
     assertThat(mapped.maxValueCount()).isEqualTo(-1);
     assertThat(mapped.isRequired()).isTrue();

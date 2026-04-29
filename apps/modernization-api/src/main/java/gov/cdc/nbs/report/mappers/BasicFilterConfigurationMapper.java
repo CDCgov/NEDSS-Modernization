@@ -34,7 +34,7 @@ public class BasicFilterConfigurationMapper {
     if (filter.getFilterValues() != null) {
       defaultValue =
           filter.getFilterValues().stream()
-              .filter(v -> v.getOperator().equals("ALLOW_NULLS"))
+              .filter(v -> !v.getOperator().equals("ALLOW_NULLS"))
               .map(r -> r.getValueTxt())
               .toList();
       defaultIncludeNulls =
