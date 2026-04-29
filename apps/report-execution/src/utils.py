@@ -91,8 +91,12 @@ def build_case_count_query(column_mapping: dict[str, str], subset_query: str):
     if not subset_query:
         raise ValueError('Subset query cannot be empty')
 
-    if not all(key in valid_columns for key in column_mapping):
-        raise ValueError('One or more columns are invalid')
+    invalid_columns = [key for key in column_mapping if key not in valid_columns]
+    if invalid_columns:
+        error_msg = (
+            f'Invalid {"column" if invalid_columns.count == 1 else "columns"} provided'
+        )
+        raise ValueError(f'{error_msg}: {", ".join(invalid_columns)}')
 
     select_fields = []
     for db_col, alias in column_mapping.items():

@@ -85,14 +85,18 @@ class TestUtils:
             )
 
     def test_build_case_count_query_with_invalid_column_mapping(self):
-        with pytest.raises(ValueError, match='One or more columns are invalid'):
+        with pytest.raises(
+            ValueError,
+            match='Invalid columns provided: state_code, phc_CODE_SHORT_desc, '
+                  'county_cd',
+        ):
             subset_query = 'SELECT * FROM [NBS_ODSE].[dbo].[PublicHealthCaseFact]'
             utils.build_case_count_query(
                 column_mapping={
                     'state_code': 'State Code',
                     'state': 'State',
                     'county': 'County',
-                    'phc_code_short_desc': 'Condition',
+                    'phc_CODE_SHORT_desc': 'Condition',
                     'event_date': 'Event Date',
                     'county_cd': 'County Code',
                 },
