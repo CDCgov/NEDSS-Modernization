@@ -104,12 +104,12 @@ def build_case_count_query(column_mapping: dict[str, str], subset_query: str):
             select_fields.append(f'{db_col} AS "{alias}"')
     select_field_query = ', '.join(select_fields)
     group_cols = ', '.join(column_mapping.keys())
-    return (
-        f'WITH subset as ({subset_query})\n'
-        f'SELECT {select_field_query}, '
-        f'sum(group_case_cnt) as Cases\n'
-        f'FROM subset\n'
-        f'WHERE event_date IS NOT NULL\n'
-        f'GROUP BY {group_cols}\n'
-        f'ORDER BY {group_cols}'
-    )
+    return f"""
+        WITH subset as ({subset_query})
+        SELECT
+            {select_field_query}, sum(group_case_cnt) as Cases
+        FROM subset
+        WHERE event_date IS NOT NULL
+        GROUP BY {group_cols}
+        ORDER BY {group_cols};
+        """

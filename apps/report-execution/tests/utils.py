@@ -112,17 +112,36 @@ class TestUtils:
             },
             subset_query=subset_query,
         )
-        expected = (
-            'WITH subset as (SELECT * FROM [NBS_ODSE].[dbo].[PublicHealthCaseFact])\n'
-            'SELECT state_cd AS "State Code", state AS "State", county AS "County", '
-            'phc_code_short_desc AS "Condition", '
-            """UPPER(FORMAT(event_date, 'ddMMMyyyy:HH:mm:ss.fff')) AS "Event Date", """
-            'cnty_cd AS "County Code", '
-            'sum(group_case_cnt) as Cases\n'
-            'FROM subset\n'
-            'WHERE event_date IS NOT NULL\n'
-            'GROUP BY state_cd, state, county, phc_code_short_desc, '
-            'event_date, cnty_cd\n'
-            'ORDER BY state_cd, state, county, phc_code_short_desc, event_date, cnty_cd'
+        expected = """
+        WITH subset as (SELECT * FROM [NBS_ODSE].[dbo].[PublicHealthCaseFact])
+        SELECT
+            state_cd AS "State Code", state AS "State", county AS "County", \
+phc_code_short_desc AS "Condition", \
+UPPER(FORMAT(event_date, 'ddMMMyyyy:HH:mm:ss.fff')) AS "Event Date", \
+cnty_cd AS "County Code", sum(group_case_cnt) as Cases
+        FROM subset
+        WHERE event_date IS NOT NULL
+        GROUP BY state_cd, state, county, phc_code_short_desc, event_date, cnty_cd
+        ORDER BY state_cd, state, county, phc_code_short_desc, event_date, cnty_cd;
+        """
+        assert result == expected
+
+    def test_build_case_count_query_with_one_valid_column(self):
+        subset_query = 'SELECT * FROM [NBS_ODSE].[dbo].[PublicHealthCaseFact]'
+        result = utils.build_case_count_query(
+            column_mapping={
+                'event_date': 'Event Date',
+            },
+            subset_query=subset_query,
         )
+        expected = """
+        WITH subset as (SELECT * FROM [NBS_ODSE].[dbo].[PublicHealthCaseFact])
+        SELECT
+            UPPER(FORMAT(event_date, 'ddMMMyyyy:HH:mm:ss.fff')) AS "Event Date", \
+sum(group_case_cnt) as Cases
+        FROM subset
+        WHERE event_date IS NOT NULL
+        GROUP BY event_date
+        ORDER BY event_date;
+        """
         assert result == expected
