@@ -88,7 +88,7 @@ class TestUtils:
         with pytest.raises(
             ValueError,
             match='Invalid columns provided: state_code, phc_CODE_SHORT_desc, '
-                  'county_cd',
+            'county_cd',
         ):
             subset_query = 'SELECT * FROM [NBS_ODSE].[dbo].[PublicHealthCaseFact]'
             utils.build_case_count_query(
