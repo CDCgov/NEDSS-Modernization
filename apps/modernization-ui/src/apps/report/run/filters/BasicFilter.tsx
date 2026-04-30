@@ -54,6 +54,11 @@ const FILTER_TYPE_MAP: Record<
         getDefaultValue: getValueList,
         validationRule: optionSelectValidator,
     },
+    BAS_CON_LIST: {
+        FilterComponent: OptionSelectFilter,
+        getDefaultValue: getValueList,
+        validationRule: optionSelectValidator,
+    },
 };
 
 const TEMP_DEFAULT_FILTER = {

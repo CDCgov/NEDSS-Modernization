@@ -7,10 +7,12 @@ import { useEffect } from 'react';
 import { useCurrentState } from './useCurrentState';
 import { Selectable } from 'options';
 import { validateRequiredRule } from 'validation/entry';
+import { useConditionOptions } from '../../../../options/condition';
 
 export const STATE_FILTER_CODE = 'J_S01';
 export const COUNTY_FILTER_CODE = 'J_C01';
 export const REGION_FILTER_CODE = 'J_R01';
+export const CONDITION_FILTER_CODE = 'C_D01';
 
 const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...remaining }: BasicFilterProps) => {
     const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
@@ -60,6 +62,7 @@ const OPTIONS_HOOK_MAP: Record<string, () => Selectable[]> = {
     [STATE_FILTER_CODE]: useStateOptions,
     // this may be functionally dead code - needs more investigation
     [REGION_FILTER_CODE]: () => [],
+    [CONDITION_FILTER_CODE]: useConditionOptions,
 };
 
 const getValueList = (filter: BasicFilterConfiguration) => {
