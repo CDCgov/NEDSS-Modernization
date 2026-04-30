@@ -99,7 +99,6 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         label="Template"
                         name={name}
                         defaultValue={value}
-                        htmlFor={name}
                         id={name}
                         aria-label={'select a template'}
                         onChange={onChange}
@@ -130,7 +129,6 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                     <SelectInput
                         label="Reporting mechanism"
                         name={name}
-                        htmlFor={name}
                         id={name}
                         aria-label={'select a reporting mechanism for the page'}
                         onChange={onChange}

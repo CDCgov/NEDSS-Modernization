@@ -97,7 +97,6 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                     <SelectInput
                         label="Reporting mechanism"
                         name={name}
-                        htmlFor={name}
                         id={name}
                         aria-label={'select a reporting mechanism for the page'}
                         onChange={onChange}

@@ -114,7 +114,6 @@ export const MessagingFields = () => {
                         onBlur={onBlur}
                         name={name}
                         id={name}
-                        htmlFor={name}
                         options={codeSystems}
                         disabled={!includedInMessage}
                         required={includedInMessage}
@@ -162,7 +161,6 @@ export const MessagingFields = () => {
                         error={error?.message}
                         name={name}
                         id={name}
-                        htmlFor={name}
                         disabled={!includedInMessage}
                         required={includedInMessage}
                         options={hl7Options}

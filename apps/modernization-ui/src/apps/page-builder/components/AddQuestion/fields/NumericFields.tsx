@@ -80,7 +80,6 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                         error={error?.message}
                         name={name}
                         id={name}
-                        htmlFor={name}
                         disabled={published}
                         required={!published}
                     />
@@ -220,7 +219,6 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                                 ]}
                                 name={name}
                                 id={name}
-                                htmlFor={name}
                                 error={error?.message}
                                 required={!published}
                                 disabled={published}
@@ -273,7 +271,6 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                                     error={error?.message}
                                     name={name}
                                     id={name}
-                                    htmlFor={name}
                                     required={!published}
                                     disabled={published}
                                 />
