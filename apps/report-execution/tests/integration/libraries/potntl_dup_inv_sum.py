@@ -193,7 +193,9 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] WHERE 1 = 0',
+                'subset_query': """
+                SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] WHERE 1 = 0
+                """,
                 'days_value': 365,
             }
         )
