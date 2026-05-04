@@ -66,7 +66,7 @@ export const AddSection = ({
 
     const onClose = () => {
         form.reset();
-        onCancel && onCancel();
+        if (onCancel) onCancel();
     };
 
     return (
