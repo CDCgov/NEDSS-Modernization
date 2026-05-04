@@ -9,17 +9,16 @@ def execute(
     days_value: int | None = None,
     **kwargs,
 ):
-    """Potential Duplicate Investigations
+    """Potential Duplicate Investigations.
 
-    Identifies potential duplicate investigations for the same patient with the
-    same disease within a user-specified number of days.
+    Identifies potential duplicate investigations for the same patient,
+    with the same disease, within a user-specified number of days.
     """
     # Only use default if days_value is None (not provided)
     # If days_value is 0, treat it as 0 (not default)
     if days_value is None:
         days_value = 3650
-    
-    
+
     full_query = f"""
     WITH subset AS ({subset_query})
     -- Capture SQL Server's physical row order
@@ -49,17 +48,26 @@ def execute(
             AND PATIENT_LOCAL_ID IS NOT NULL
             AND DISEASE_CD IS NOT NULL
     )
-    -- Calculate days since previous and until next event for the same patient and disease
+    -- Calculate days since previous and until next event
     , datediff_calc AS (
         SELECT 
             *,
             DATEDIFF(day, 
-                LAG(EVENT_DATE) OVER (PARTITION BY PATIENT_LOCAL_ID, DISEASE_CD ORDER BY EVENT_DATE, sas_row_num),
+                LAG(EVENT_DATE) OVER (
+                    PARTITION BY
+                    PATIENT_LOCAL_ID,
+                    DISEASE_CD 
+                    ORDER BY EVENT_DATE, sas_row_num
+                ),
                 EVENT_DATE
             ) AS days_since_prev,
             DATEDIFF(day, 
                 EVENT_DATE,
-                LEAD(EVENT_DATE) OVER (PARTITION BY PATIENT_LOCAL_ID, DISEASE_CD ORDER BY EVENT_DATE, sas_row_num)
+                LEAD(EVENT_DATE) OVER (
+                    PARTITION BY PATIENT_LOCAL_ID,
+                    DISEASE_CD 
+                    ORDER BY EVENT_DATE, sas_row_num
+                )
             ) AS days_until_next
         FROM clean_data
     )
@@ -101,7 +109,7 @@ def execute(
         d.EVENT_DATE,
         d.sas_row_num
     """
-    
+
     content = trx.query(full_query)
 
     header = 'Potential Duplicate Investigations'

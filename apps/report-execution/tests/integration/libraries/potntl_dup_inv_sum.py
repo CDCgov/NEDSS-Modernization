@@ -1,4 +1,3 @@
-import datetime
 from collections import Counter
 
 import pytest
@@ -33,7 +32,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         'Event Date Type',
         'MMWR Year',
         'Notification Record Status',
-        'Disease Code'
+        'Disease Code',
     ]
 
     def test_execute_report_with_days_value(self, snapshot):
@@ -85,9 +84,11 @@ class TestIntegrationNbsSrDupInvLibrary:
         assert result.header == 'Potential Duplicate Investigations'
         assert 'Duplicate Investigations Time Frame:' in result.subheader
         assert result.subheader is not None
-        
+
         # Extract and verify the number is a positive integer (calculated from data)
-        days_str = result.subheader.replace('Duplicate Investigations Time Frame: ', '').replace(' Days', '')
+        days_str = result.subheader.replace(
+            'Duplicate Investigations Time Frame: ', ''
+        ).replace(' Days', '')
         assert int(days_str) > 0
 
         data = result.content
@@ -152,7 +153,7 @@ class TestIntegrationNbsSrDupInvLibrary:
             }
         )
         result_30 = execute_report(spec_30)
-        
+
         # 3650 days should return more or equal rows than 30 days
         assert len(result.content.data) >= len(result_30.content.data)
 
@@ -167,7 +168,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'library_name': 'potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': (
-                    "SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] "
+                    'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] '
                     "WHERE DISEASE_CD IN ('10190', '10140')"
                 ),
                 'days_value': 365,
@@ -238,14 +239,14 @@ class TestIntegrationNbsSrDupInvLibrary:
         )
 
         result = execute_report(report_spec)
-        
+
         # Count occurrences per patient/disease pair
         patient_ids = result.content.get_column('Patient Local ID')
         disease_cds = result.content.get_column('Disease Code')
-        
-        pairs = list(zip(patient_ids, disease_cds))
+
+        pairs = list(zip(patient_ids, disease_cds, strict=False))
         counts = Counter(pairs)
-        
+
         # Each pair should appear at least twice
         for count in counts.values():
-            assert count >= 2, f"Patient/disease pair appears only {count} times"
+            assert count >= 2, f'Patient/disease pair appears only {count} times'
