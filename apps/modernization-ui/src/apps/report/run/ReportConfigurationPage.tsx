@@ -32,7 +32,8 @@ const ReportConfigurationPage = ({
                         <Button onClick={(e) => handleSubmit(e, true)}>Export</Button>
                     </Permitted>
                 </>
-            }>
+            }
+        >
             <form>
                 {basicFilters.length > 0 && (
                     <CurrentStateProvider stateFilter={stateFilter}>
