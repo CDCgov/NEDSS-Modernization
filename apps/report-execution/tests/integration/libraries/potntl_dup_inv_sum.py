@@ -214,7 +214,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'library_name': 'potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
-                'days_value': 365
+                'days_value': 365,
             }
         )
 
