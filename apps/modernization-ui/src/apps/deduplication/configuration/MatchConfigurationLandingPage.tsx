@@ -60,7 +60,9 @@ export const MatchConfigurationLandingPage = () => {
                 when={previewedAlgorithm === undefined}
                 fallback={
                     <ImportPreview
-                        previewedAlgorithm={previewedAlgorithm!.algorithm}
+                        // Because of the when in practice the algorithm will always be available when called
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                        previewedAlgorithm={previewedAlgorithm?.algorithm!}
                         onAccept={handleAlgorithmUpload}
                         onCancel={() => setPreviewedAlgorithm(undefined)}
                     />
