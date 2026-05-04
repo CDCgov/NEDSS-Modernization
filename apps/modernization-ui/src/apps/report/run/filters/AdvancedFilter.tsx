@@ -1,7 +1,15 @@
 /* eslint-disable no-redeclare */
 import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
 import { useController } from 'react-hook-form';
-import QueryBuilder, { Field, formatQuery, Operator, RuleGroupType, RuleType } from 'react-querybuilder';
+import QueryBuilder, {
+    Field,
+    formatQuery,
+    Operator,
+    QueryValidator,
+    RuleGroupType,
+    RuleType,
+    ValidationMap,
+} from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 import { ReportExecuteForm } from '../ReportRunPage';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
@@ -121,7 +129,37 @@ function translateOperators(rule: Expr, mapper: (op: string) => string): Expr {
 const queryToAdvancedFilterRequest = (query: RuleGroupType): RuleGroup =>
     translateOperators(query as RuleGroup, mapToNbsOp) as RuleGroup;
 
-const validateAdvancedFilter = (_value?: RuleGroup) => true;
+const validateAdvancedFilter = (value?: RuleGroup) => {
+    if (!value) return true;
+
+    // todo: validation
+    return Object.values(validator(value))
+        .filter((v) => !v.valid)
+        .reduce((acc, cur) => `${acc}\n${cur.reasons[0]}`, '');
+};
+
+const validator: QueryValidator = (q) => {
+    const result: ValidationMap = {};
+    q.rules.forEach((r) => validateRule(r, result));
+    return result;
+};
+
+const validateRule = (rule: RuleGroupType | RuleType, result: ValidationMap) => {
+    if ('operator' in rule) {
+        // default valid
+        result[rule.id] = { valid: true };
+
+        // check for exceptions
+        if (rule.operator === 'between' && (!rule.value || rule.value.includes('~'))) {
+            result[rule.id].valid = false;
+            result[rule.id].reasons = ['Both To and From Dates Required'];
+        }
+    } else if ('rules' in rule) {
+        rule.rules.forEach((r) => validateRule(r, result));
+    }
+};
+
+const EMPTY_QUERY: RuleGroup = { combinator: RuleGroup.combinator.AND, rules: [] };
 
 const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfiguration; columns: ReportColumn[] }) => {
     const {
@@ -131,13 +169,12 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
         name: 'advancedFilter',
         defaultValue: filter.defaultValue
             ? (translateOperators(filter.defaultValue, mapToQueryOp) as RuleGroup)
-            : undefined,
+            : EMPTY_QUERY,
         rules: { validate: validateAdvancedFilter },
     });
 
     const fields: Field[] = columns.map((c) => ({
-        id: c.id.toString(),
-        name: c.columnName!,
+        name: c.id.toString(),
         label: c.columnTitle!,
         operators: OPERATOR_MAP[c.columnSourceTypeCode ?? 'STRING'],
         inputType: INPUT_TYPE_MAP[c.columnSourceTypeCode ?? 'STRING'],
@@ -149,6 +186,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
             <QueryBuilder
                 fields={fields}
                 query={value}
+                validator={validator}
                 onQueryChange={onChange}
                 addRuleToNewGroups={true}
                 autoSelectField={false}

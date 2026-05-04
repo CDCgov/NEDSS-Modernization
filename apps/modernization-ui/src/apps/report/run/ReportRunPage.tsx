@@ -58,9 +58,9 @@ const ReportRunPage = () => {
                 handleSubmit(
                     isExport,
                     basicFilters,
-                    data.advancedFilter
+                    data.advancedFilter && config?.advancedFilter?.reportFilterUid
                         ? {
-                              reportFilterUid: config?.advancedFilter?.reportFilterUid!,
+                              reportFilterUid: config.advancedFilter.reportFilterUid,
                               value: queryToAdvancedFilterRequest(data.advancedFilter),
                           }
                         : undefined
