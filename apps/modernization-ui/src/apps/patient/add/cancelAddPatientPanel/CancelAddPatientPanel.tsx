@@ -30,7 +30,8 @@ export const CancelAddPatientPanel = ({ onClose, onConfirm }: CancelAddPatientPa
             onConfirm={handleConfirm}
             onCancel={() => {
                 if (onClose) onClose();
-            }}>
+            }}
+        >
             Canceling the form will result in the loss of all additional data entered. Are you sure you want to cancel?
             <Checkbox
                 label="Don't show again"

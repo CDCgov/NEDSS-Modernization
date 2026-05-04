@@ -101,7 +101,8 @@ const Autocomplete = <V,>({
                 label={label}
                 htmlFor={id}
                 required={required}
-                error={error}>
+                error={error}
+            >
                 <TextInput
                     inputRef={inputRef}
                     className="usa-input"

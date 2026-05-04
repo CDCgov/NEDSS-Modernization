@@ -311,7 +311,8 @@ export const BusinessRulesForm = ({
                                     outline
                                     onClick={handleOpenSourceQuestion}
                                     data-testid="searchSourceQuestionBtn"
-                                    className={styles.sourceBtn}>
+                                    className={styles.sourceBtn}
+                                >
                                     Search source question
                                 </Button>
                             ) : (
@@ -488,7 +489,8 @@ export const BusinessRulesForm = ({
                                             outline
                                             data-testid="targetQuestionEditBtn"
                                             onClick={handleOpenTargetQuestion}
-                                            className={styles.btn}>
+                                            className={styles.btn}
+                                        >
                                             <Icon.Edit />
                                             <span>Edit</span>
                                         </Button>
@@ -502,7 +504,8 @@ export const BusinessRulesForm = ({
                                     type="button"
                                     outline
                                     onClick={handleOpenTargetQuestion}
-                                    disabled={sourceQuestion === undefined}>
+                                    disabled={sourceQuestion === undefined}
+                                >
                                     Search target question
                                 </Button>
                             )}

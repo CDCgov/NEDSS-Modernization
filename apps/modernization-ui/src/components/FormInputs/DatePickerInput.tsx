@@ -71,7 +71,8 @@ export const DatePickerInput = (props: DatePickerProps) => {
             helperText={props.helperText}
             htmlFor={props.name || ''}
             required={props.required}
-            error={_error}>
+            error={_error}
+        >
             {props.defaultValue && (
                 <InternalDatePicker {...props} error={_error} onBlur={checkValidity} defaultValue={intialDefault} />
             )}
