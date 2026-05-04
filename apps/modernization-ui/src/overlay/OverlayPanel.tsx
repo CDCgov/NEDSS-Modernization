@@ -25,7 +25,7 @@ const OverlayPanel = ({ className, toggle, render, position, overlayVisible }: O
     const [openerElement, setOpenerElement] = useState<HTMLElement | null>(null);
 
     const handleToggle = (element?: React.MouseEvent<HTMLElement>) => {
-        element && setOpenerElement(element.currentTarget);
+        if (element) setOpenerElement(element.currentTarget);
         setVisible((existing) => !existing);
     };
     const handleClose = () => {

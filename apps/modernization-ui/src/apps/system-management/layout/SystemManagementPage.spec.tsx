@@ -11,7 +11,7 @@ vi.mock('libs/permission/usePermissions', () => ({
 }));
 
 vi.mock('./VisibleWrapper', () => {
-    const React = require('react');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { useEffect } = require('react');
 
     return {
