@@ -1,6 +1,6 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult
-from src.utils import build_case_count_query, gen_subheader
+from src.utils import gen_subheader
 
 
 def execute(
@@ -18,16 +18,22 @@ def execute(
     * SAS maps library uscounty dataset' in description
     * Removed calculations section of descriptions as those were run-format specific
     """
-    column_mapping = {
-        'state_cd': 'State Code',
-        'state': 'State',
-        'county': 'County',
-        'phc_code_short_desc': 'Condition',
-        'event_date': 'Event Date',
-        'cnty_cd': 'County Code',
-    }
     content = trx.query(
-        build_case_count_query(column_mapping, subset_query),
+        f"""
+        WITH subset AS ({subset_query})
+        SELECT 
+            state_cd AS [State Code],
+            state AS [State],
+            county AS [County],
+            phc_code_short_desc AS [Condition],
+            UPPER(FORMAT(event_date, 'ddMMMyyyy:HH:mm:ss.fff')) AS [Event Date],
+            cnty_cd AS [County Code],
+            sum(group_case_cnt) AS [Cases]
+        FROM subset
+        WHERE event_date IS NOT NULL
+        GROUP BY state_cd, state, county, phc_code_short_desc, event_date, cnty_cd
+        ORDER BY state_cd, state, county, phc_code_short_desc, event_date, cnty_cd;
+        """
     )
     # Get the unique state(s) in the data set for subheader display
     state_list = content.get_unique_column('State')

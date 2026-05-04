@@ -1,6 +1,6 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult
-from src.utils import build_case_count_query, gen_subheader
+from src.utils import gen_subheader
 
 
 def execute(
@@ -17,13 +17,19 @@ def execute(
     * Removed calculations section of descriptions as those were run-format specific
     * Capitalized the `F` in `Time Frame`
     """
-    column_mapping = {
-        'state': 'State',
-        'county': 'County',
-        'phc_code_short_desc': 'Condition',
-    }
     content = trx.query(
-        build_case_count_query(column_mapping, subset_query),
+        f"""
+        WITH subset AS ({subset_query})
+        SELECT 
+            state AS [State],
+            county AS [County],
+            phc_code_short_desc AS [Condition],
+            sum(group_case_cnt) AS [Cases]
+        FROM subset
+        WHERE event_date IS NOT NULL
+        GROUP BY state, county, phc_code_short_desc
+        ORDER BY state, county, phc_code_short_desc;
+        """
     )
 
     # Get the unique state(s) in the data set for subheader display
