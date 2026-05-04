@@ -59,7 +59,6 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                             <SelectInput
                                 id="select-column"
                                 name={name}
-                                htmlFor={name}
                                 label="Select a field"
                                 defaultValue={value}
                                 onBlur={onBlur}
@@ -79,7 +78,6 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                                 <SelectInput
                                     id="select-operator"
                                     name={name}
-                                    htmlFor={name}
                                     label="Operator"
                                     defaultValue={value}
                                     onBlur={onBlur}
