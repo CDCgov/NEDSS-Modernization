@@ -130,8 +130,7 @@ export const TargetQuestion = ({
                                     setActiveTab(tabKey);
                                     setActiveSection(0);
                                     setTargetList([]);
-                                }}
-                            >
+                                }}>
                                 {name}
                             </li>
                         ))}
@@ -169,12 +168,13 @@ export const TargetQuestion = ({
                                             className={styles.sectionToggle}
                                             data-testid="listedSectionsTarget"
                                             onClick={() => {
-                                                activeSection === section.id
-                                                    ? setActiveSection(0)
-                                                    : setActiveSection(section.id);
+                                                if (activeSection === section.id) {
+                                                    setActiveSection(0);
+                                                } else {
+                                                    setActiveSection(section.id);
+                                                }
                                                 setTargetList([]);
-                                            }}
-                                        >
+                                            }}>
                                             <Icon name={'group'} size={'m'} />
                                             <span className={activeSection === section.id ? styles.active : ''}>
                                                 {section.name}
@@ -196,14 +196,12 @@ export const TargetQuestion = ({
                                                             setActiveSubsection(subsection.id);
                                                             handleTargetQuestion(subsection.questions);
                                                         }
-                                                    }}
-                                                >
+                                                    }}>
                                                     <Icon name={'group'} size={'m'} />
                                                     <span
                                                         className={
                                                             activeSubsection === subsection.id ? styles.active : ''
-                                                        }
-                                                    >
+                                                        }>
                                                         {subsection.name}
                                                     </span>
                                                 </div>
@@ -247,8 +245,7 @@ export const TargetQuestion = ({
                     onClick={() => {
                         onReset?.();
                         onCancel?.();
-                    }}
-                >
+                    }}>
                     Cancel
                 </Button>
                 <Button
@@ -259,8 +256,7 @@ export const TargetQuestion = ({
                         onCancel?.();
                     }}
                     data-testid="targetQuestionModalContinueBtn"
-                    disabled={selectedList.length > 10}
-                >
+                    disabled={selectedList.length > 10}>
                     Continue
                 </Button>
             </div>

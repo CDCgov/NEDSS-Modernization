@@ -1,9 +1,9 @@
 import { ChangeEvent } from 'react';
-import { UseFormReturn } from 'react-hook-form/dist/types/form';
+import { UseFormReturn } from 'react-hook-form';
 
 export const handleChangeToDefaultValue = (
     form: UseFormReturn,
-    name: String,
+    name: string,
     value: any,
     e: ChangeEvent<HTMLSelectElement>,
     onChange: (event: ChangeEvent<HTMLSelectElement>) => void

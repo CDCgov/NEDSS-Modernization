@@ -93,9 +93,11 @@ export const BusinessRulesForm = ({
 
     useEffect(() => {
         setTargetQuestion(editTargetQuestions);
-        watch.targetType === Rule.targetType.SUBSECTION
-            ? setTargetDescription(editTargetSubsections?.map((qtn) => `${qtn.name} (${qtn.questionIdentifier})`) ?? [])
-            : setTargetDescription(editTargetQuestions?.map((qtn) => `${qtn.name} (${qtn.question})`) ?? []);
+        if (watch.targetType === Rule.targetType.SUBSECTION) {
+            setTargetDescription(editTargetSubsections?.map((qtn) => `${qtn.name} (${qtn.questionIdentifier})`) ?? []);
+        } else {
+            setTargetDescription(editTargetQuestions?.map((qtn) => `${qtn.name} (${qtn.question})`) ?? []);
+        }
     }, [JSON.stringify(editTargetQuestions)]);
 
     const handleTargetTypeChange = (value: Rule.targetType) => {
@@ -309,8 +311,7 @@ export const BusinessRulesForm = ({
                                     outline
                                     onClick={handleOpenSourceQuestion}
                                     data-testid="searchSourceQuestionBtn"
-                                    className={styles.sourceBtn}
-                                >
+                                    className={styles.sourceBtn}>
                                     Search source question
                                 </Button>
                             ) : (
@@ -487,8 +488,7 @@ export const BusinessRulesForm = ({
                                             outline
                                             data-testid="targetQuestionEditBtn"
                                             onClick={handleOpenTargetQuestion}
-                                            className={styles.btn}
-                                        >
+                                            className={styles.btn}>
                                             <Icon.Edit />
                                             <span>Edit</span>
                                         </Button>
@@ -502,8 +502,7 @@ export const BusinessRulesForm = ({
                                     type="button"
                                     outline
                                     onClick={handleOpenTargetQuestion}
-                                    disabled={sourceQuestion === undefined}
-                                >
+                                    disabled={sourceQuestion === undefined}>
                                     Search target question
                                 </Button>
                             )}

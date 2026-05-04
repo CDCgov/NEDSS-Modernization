@@ -25,7 +25,7 @@ const OverlayPanel = ({ className, toggle, render, position, overlayVisible }: O
     const [openerElement, setOpenerElement] = useState<HTMLElement | null>(null);
 
     const handleToggle = (element?: React.MouseEvent<HTMLElement>) => {
-        element && setOpenerElement(element.currentTarget);
+        if (element) setOpenerElement(element.currentTarget);
         setVisible((existing) => !existing);
     };
     const handleClose = () => {
@@ -77,8 +77,7 @@ const Dialog = ({ position, onClose, children }: DialogProps) => {
             aria-label="Overlay modal"
             open
             className={classNames({ [styles.right]: position === 'right', [styles.left]: position === 'left' })}
-            onKeyDown={handleKeyDown}
-        >
+            onKeyDown={handleKeyDown}>
             {children}
         </dialog>
     );

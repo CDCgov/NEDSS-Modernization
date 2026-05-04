@@ -33,13 +33,11 @@ export const ManageTabsTile = ({
                         snapshot.isDragging ? styles.dragging : ''
                     }`}
                     ref={provided.innerRef}
-                    {...provided.draggableProps}
-                >
+                    {...provided.draggableProps}>
                     <div className={styles.tabInfo}>
                         <div
                             className={`${styles.handle} ${selectedForDelete ? styles.inactive : ''}`}
-                            {...provided.dragHandleProps}
-                        >
+                            {...provided.dragHandleProps}>
                             {selectedForDelete ? (
                                 <IconComponent name="drag" color="inactive" />
                             ) : (
@@ -62,7 +60,8 @@ export const ManageTabsTile = ({
                         />
                         <Icon.Delete
                             onClick={() => {
-                                (reset(), setSelectedForDelete(tab));
+                                reset();
+                                setSelectedForDelete(tab);
                             }}
                             size={3}
                         />

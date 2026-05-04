@@ -85,7 +85,7 @@ const Autocomplete = <V,>({
     };
 
     useEffect(() => {
-        !value && setEntered('');
+        if (!value) setEntered('');
     }, [value]);
 
     const handleCancel = () => {
@@ -101,8 +101,7 @@ const Autocomplete = <V,>({
                 label={label}
                 htmlFor={id}
                 required={required}
-                error={error}
-            >
+                error={error}>
                 <TextInput
                     inputRef={inputRef}
                     className="usa-input"

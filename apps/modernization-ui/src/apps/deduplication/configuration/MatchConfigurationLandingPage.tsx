@@ -60,7 +60,7 @@ export const MatchConfigurationLandingPage = () => {
                 when={previewedAlgorithm === undefined}
                 fallback={
                     <ImportPreview
-                        previewedAlgorithm={previewedAlgorithm?.algorithm!}
+                        previewedAlgorithm={previewedAlgorithm!.algorithm}
                         onAccept={handleAlgorithmUpload}
                         onCancel={() => setPreviewedAlgorithm(undefined)}
                     />
