@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReportConfiguration, ReportControllerService } from 'generated';
+import { ReportConfiguration, ReportControllerService, RuleGroup } from 'generated';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
@@ -11,11 +11,12 @@ import { ReportResultPage } from './ReportResultPage';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
+import { queryToAdvancedFilterRequest } from './filters/AdvancedFilter';
 
 export type ReportExecuteForm = {
     // key is the report's ID
     basicFilter?: Record<string, string[] | string>;
-    advancedFilter?: AdvancedFilterRequest;
+    advancedFilter?: RuleGroup;
     columns?: string[];
 };
 
@@ -47,12 +48,23 @@ const ReportRunPage = () => {
                     .map(([id, value]) => {
                         const values = typeof value === 'string' ? [value] : value;
                         return {
-                            reportFilterUid: parseInt(id),
+                            // remove `id_` prefix
+                            reportFilterUid: parseInt(id.slice(3)),
                             values,
                         };
                     })
                     .filter((f) => !!f.values);
-                handleSubmit(isExport, basicFilters);
+
+                handleSubmit(
+                    isExport,
+                    basicFilters,
+                    data.advancedFilter
+                        ? {
+                              reportFilterUid: config?.advancedFilter?.reportFilterUid!,
+                              value: queryToAdvancedFilterRequest(data.advancedFilter),
+                          }
+                        : undefined
+                );
             },
             (errors) => {
                 // TODO make this gather all errors and nicely format
@@ -61,24 +73,27 @@ const ReportRunPage = () => {
         )(event);
     };
 
-    const handleSubmit = useCallback((isExport: boolean, basicFilters: BasicFilterRequest[]) => {
-        setSubmitting(true);
-        setError('');
-        const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
-        runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters } })
-            .then((res) => {
-                setHasResult(true);
-                if (!res.content) {
-                    setError('No content!');
-                    return;
-                }
-                isExport
-                    ? fileDownload(res.content, `${res.header ?? 'ReportOutput'}.csv`)
-                    : openNewTab(<ResultDataPage result={res} />);
-            })
-            .catch((err) => setError(JSON.stringify(err)))
-            .finally(() => setSubmitting(false));
-    }, []);
+    const handleSubmit = useCallback(
+        (isExport: boolean, basicFilters: BasicFilterRequest[], advancedFilter?: AdvancedFilterRequest) => {
+            setSubmitting(true);
+            setError('');
+            const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
+            runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter } })
+                .then((res) => {
+                    setHasResult(true);
+                    if (!res.content) {
+                        setError('No content!');
+                        return;
+                    }
+                    isExport
+                        ? fileDownload(res.content, `${res.header ?? 'ReportOutput'}.csv`)
+                        : openNewTab(<ResultDataPage result={res} />);
+                })
+                .catch((err) => setError(JSON.stringify(err)))
+                .finally(() => setSubmitting(false));
+        },
+        []
+    );
 
     return !config ? (
         <>

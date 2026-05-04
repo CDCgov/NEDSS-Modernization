@@ -65,14 +65,7 @@ const TEMP_DEFAULT_FILTER = {
     getDefaultValue: () => null,
 };
 
-const BasicFilter = ({
-    filter,
-    columns,
-    ...remaining
-}: {
-    filter: BasicFilterConfiguration;
-    columns: ReportColumn[];
-}) => {
+const BasicFilter = ({ filter, columns }: { filter: BasicFilterConfiguration; columns: ReportColumn[] }) => {
     const id = useId();
     const { control } = useFormContext<ReportExecuteForm>();
     const column = columns.find((c) => c.id === filter.reportColumnUid);
@@ -100,7 +93,8 @@ const BasicFilter = ({
     return (
         <Controller
             control={control}
-            name={`basicFilter.${filter.reportFilterUid}`}
+            // add `id_` prefix to make sure the id is treated as an object key and not array index
+            name={`basicFilter.id_${filter.reportFilterUid}`}
             rules={rules}
             defaultValue={getDefaultValue(filter)}
             // ignoring the ref as it does not pass down well and isn't critical
@@ -115,7 +109,6 @@ const BasicFilter = ({
                     label={label}
                     helperText={helperText}
                     error={error?.message}
-                    {...remaining}
                     {...fieldValues}
                 />
             )}

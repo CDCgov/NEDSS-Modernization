@@ -3,25 +3,27 @@ package gov.cdc.nbs.report.models;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = Expr.Clause.class, name = "Clause"),
-  @JsonSubTypes.Type(value = Expr.Connector.class, name = "Connector")
+  @JsonSubTypes.Type(value = Expr.RuleGroup.class, name = "RuleGroup"),
+  @JsonSubTypes.Type(value = Expr.Rule.class, name = "Rule")
 })
 public sealed interface Expr {
-  record Clause(
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long columnUid,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterOperatorCode,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String filterValue)
-      implements Expr {}
+  // Subset of https://react-querybuilder.js.org/docs/typescript#rules-and-groups
 
-  record Connector(
+  record RuleGroup(
       @Schema(
               requiredMode = Schema.RequiredMode.REQUIRED,
-              allowableValues = {"OR", "AND"})
-          String operator,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Expr left,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Expr right)
+              allowableValues = {"or", "and"})
+          String combinator,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<Expr> rules)
+      implements Expr {}
+
+  record Rule(
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String field, // column UID stringified
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String operator,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String value)
       implements Expr {}
 }

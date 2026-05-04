@@ -7,6 +7,7 @@ import { BasicFilter } from './filters/BasicFilter';
 import { Card } from 'design-system/card';
 import { STATE_FILTER_CODE } from './filters/OptionSelectFilter';
 import { CurrentStateProvider } from './filters/useCurrentState';
+import { AdvancedFilter } from './filters/AdvancedFilter';
 
 const ReportConfigurationPage = ({
     config,
@@ -31,21 +32,21 @@ const ReportConfigurationPage = ({
                         <Button onClick={(e) => handleSubmit(e, true)}>Export</Button>
                     </Permitted>
                 </>
-            }
-        >
+            }>
             <form>
                 {basicFilters.length > 0 && (
                     <CurrentStateProvider stateFilter={stateFilter}>
                         <Card id="basic-filters" title="Basic Filters" collapsible={true}>
                             {basicFilters.map((filter, i) => (
-                                <BasicFilter
-                                    key={`basic_filter_${i}`}
-                                    filter={filter}
-                                    columns={config.reportColumns ?? []}
-                                />
+                                <BasicFilter key={`basic_filter_${i}`} filter={filter} columns={config.reportColumns} />
                             ))}
                         </Card>
                     </CurrentStateProvider>
+                )}
+                {config.advancedFilter && (
+                    <Card id="advanced-filter" title="Advanced Filter" collapsible={true}>
+                        <AdvancedFilter filter={config.advancedFilter} columns={config.reportColumns} />
+                    </Card>
                 )}
                 <details>
                     <summary>
