@@ -50,7 +50,6 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
                         error={error?.message}
                         name={name}
                         id={name}
-                        htmlFor={name}
                         required={!published}
                         disabled={published}
                     />
@@ -73,7 +72,6 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
                                 error={error?.message}
                                 name={name}
                                 id={name}
-                                htmlFor={name}
                             />
                         )}
                     />
