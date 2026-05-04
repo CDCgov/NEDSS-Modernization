@@ -18,7 +18,6 @@ def execute_report(report_spec: models.ReportSpec):
 
     # set up database connection as read only and start a transaction
     conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
-    
     with db_transaction(conn_string) as trx:
         result = library.execute(
             trx,

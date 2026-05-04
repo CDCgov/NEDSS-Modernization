@@ -22,7 +22,13 @@ def execute(
     
     full_query = f"""
     WITH subset AS ({subset_query})
-    -- Filter to only needed columns and clean data
+    -- Capture SQL Server's physical row order
+    , source_order AS (
+        SELECT 
+            *,
+            ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS sas_row_num
+        FROM subset
+    )
     , clean_data AS (
         SELECT 
             PATIENT_LOCAL_ID,
@@ -36,27 +42,28 @@ def execute(
             EVENT_DATE_TYPE,
             MMWR_YEAR,
             NOTIFICATION_STATUS,
-            DISEASE_CD
-        FROM subset
+            DISEASE_CD,
+            sas_row_num
+        FROM source_order
         WHERE EVENT_DATE IS NOT NULL
             AND PATIENT_LOCAL_ID IS NOT NULL
             AND DISEASE_CD IS NOT NULL
     )
-    -- Calculate days between consecutive events
+    -- Calculate days since previous and until next event for the same patient and disease
     , datediff_calc AS (
         SELECT 
             *,
             DATEDIFF(day, 
-                LAG(EVENT_DATE) OVER (PARTITION BY PATIENT_LOCAL_ID, DISEASE_CD ORDER BY EVENT_DATE),
+                LAG(EVENT_DATE) OVER (PARTITION BY PATIENT_LOCAL_ID, DISEASE_CD ORDER BY EVENT_DATE, sas_row_num),
                 EVENT_DATE
             ) AS days_since_prev,
             DATEDIFF(day, 
                 EVENT_DATE,
-                LEAD(EVENT_DATE) OVER (PARTITION BY PATIENT_LOCAL_ID, DISEASE_CD ORDER BY EVENT_DATE)
+                LEAD(EVENT_DATE) OVER (PARTITION BY PATIENT_LOCAL_ID, DISEASE_CD ORDER BY EVENT_DATE, sas_row_num)
             ) AS days_until_next
         FROM clean_data
     )
-    -- Count events per patient/disease
+    -- Count events for each patient and disease to identify potential duplicates
     , event_counts AS (
         SELECT 
             PATIENT_LOCAL_ID,
@@ -65,7 +72,7 @@ def execute(
         FROM clean_data
         GROUP BY PATIENT_LOCAL_ID, DISEASE_CD
     )
-    -- Final selection - only potential duplicates
+    -- Final selection of potential duplicates based on days thresholds
     SELECT 
         d.PATIENT_LOCAL_ID AS [Patient Local ID],
         d.PATIENT_FIRST_NAME AS [Patient First Name],
@@ -91,7 +98,8 @@ def execute(
     ORDER BY 
         d.PATIENT_LOCAL_ID,
         d.DISEASE_CD,
-        d.EVENT_DATE
+        d.EVENT_DATE,
+        d.sas_row_num
     """
     
     content = trx.query(full_query)
