@@ -2,7 +2,7 @@ import { FocusEventHandler, useEffect, useState } from 'react';
 import ReactSelect, { MultiValue } from 'react-select';
 import { mapNonNull } from 'utils';
 import { Selectable, asValues, asValue, asName } from 'options';
-import { EntryWrapper } from 'components/Entry';
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 
 import { theme, styles, CheckboxOption } from 'design-system/select/multi';
 
@@ -16,7 +16,8 @@ type MultiSelectInputProps = {
     id?: string;
     name?: string;
     placeholder?: string;
-    orientation?: 'horizontal' | 'vertical';
+    orientation?: Orientation;
+    sizing?: Sizing;
     options?: Selectable[];
     value?: string[];
     onChange?: (value: any) => void;
@@ -38,6 +39,7 @@ export const MultiSelectInput = ({
     error,
     placeholder = '- Select -',
     orientation = 'vertical',
+    sizing,
     disabled = false,
 }: MultiSelectInputProps) => {
     const [selectedOptions, setSelectedOptions] = useState<Selectable[]>([]);
@@ -65,6 +67,7 @@ export const MultiSelectInput = ({
     return (
         <EntryWrapper
             orientation={orientation}
+            sizing={sizing}
             label={label ?? ''}
             htmlFor={id ?? ''}
             required={required}

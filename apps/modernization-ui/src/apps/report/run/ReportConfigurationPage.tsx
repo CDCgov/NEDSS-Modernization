@@ -5,19 +5,19 @@ import { ReportRunLayout } from './layout/ReportRunLayout';
 import { ReportConfiguration } from 'generated';
 import { BasicFilter } from './filters/BasicFilter';
 import { Card } from 'design-system/card';
-import { Control } from 'react-hook-form';
-import { ReportExecuteForm } from './ReportRunPage';
+import { STATE_FILTER_CODE } from './filters/OptionSelectFilter';
+import { CurrentStateProvider } from './filters/useCurrentState';
 
 const ReportConfigurationPage = ({
     config,
     handleSubmit,
-    formControl,
 }: {
     config: ReportConfiguration;
     handleSubmit: (e: React.BaseSyntheticEvent, isExport: boolean) => void;
-    formControl: Control<ReportExecuteForm>;
 }) => {
     const basicFilters = config.basicFilters;
+    // the state drives other filter options, so need to pull it out
+    const stateFilter = config.basicFilters.find((f) => f.filterType.code?.startsWith(STATE_FILTER_CODE));
 
     return (
         <ReportRunLayout
@@ -35,18 +35,17 @@ const ReportConfigurationPage = ({
         >
             <form>
                 {basicFilters.length > 0 && (
-                    <Card id="basic-filters" title="Basic Filters" collapsible={true}>
-                        {basicFilters.map((filter, i) => {
-                            return (
+                    <CurrentStateProvider stateFilter={stateFilter}>
+                        <Card id="basic-filters" title="Basic Filters" collapsible={true}>
+                            {basicFilters.map((filter, i) => (
                                 <BasicFilter
                                     key={`basic_filter_${i}`}
                                     filter={filter}
                                     columns={config.reportColumns ?? []}
-                                    formControl={formControl}
                                 />
-                            );
-                        })}
-                    </Card>
+                            ))}
+                        </Card>
+                    </CurrentStateProvider>
                 )}
                 <details>
                     <summary>
