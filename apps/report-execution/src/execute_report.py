@@ -19,11 +19,16 @@ def execute_report(report_spec: models.ReportSpec):
     # set up database connection as read only and start a transaction
     conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
     with db_transaction(conn_string) as trx:
+        execute_kwargs = {
+            'subset_query': report_spec.subset_query,
+            'data_source_name': report_spec.data_source_name
+        }
+        if report_spec.days_value:
+            execute_kwargs['days_value'] = report_spec.days_value
+            
         result = library.execute(
             trx,
-            subset_query=report_spec.subset_query,
-            data_source_name=report_spec.data_source_name,
-            days_value=getattr(report_spec, 'days_value', None),
+            **execute_kwargs
         )
 
     check_valid_result(result, report_spec)

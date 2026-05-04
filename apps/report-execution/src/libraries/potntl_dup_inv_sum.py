@@ -6,7 +6,6 @@ def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
-    days_value: int | None = None,
     **kwargs,
 ):
     """Potential Duplicate Investigations.
@@ -16,6 +15,7 @@ def execute(
     """
     # Only use default if days_value is None (not provided)
     # If days_value is 0, treat it as 0 (not default)
+    days_value = kwargs.get('days_value')
     if days_value is None:
         days_value = 3650
 
