@@ -98,9 +98,12 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                             className={styles.sectionToggle}
                                             data-testid="listedSections"
                                             onClick={() => {
-                                                activeSection === section.id
-                                                    ? setActiveSection(0)
-                                                    : setActiveSection(section.id);
+                                                if (activeSection === section.id) {
+                                                    setActiveSection(0);
+                                                } else {
+                                                    setActiveSection(section.id);
+                                                }
+
                                                 setSourceList([]);
                                             }}
                                         >

@@ -56,7 +56,7 @@ export const DatePickerInput = (props: DatePickerProps) => {
         const valid = isValid(currentVal) && (!props.disableFutureDates || !isFuture(new Date(currentVal)));
 
         setError(!valid);
-        props.onBlur && props.onBlur(event);
+        if (props.onBlur) props.onBlur(event);
     };
 
     const _error = error
@@ -102,7 +102,7 @@ const InternalDatePicker = ({
 
     const handleOnChange = (fn?: OnChange) => (changed?: string) => {
         const valid = isValid(changed);
-        valid && fn && fn(changed);
+        if (valid && fn) fn(changed);
     };
 
     //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
