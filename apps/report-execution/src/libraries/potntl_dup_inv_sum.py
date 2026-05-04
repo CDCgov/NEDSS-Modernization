@@ -104,8 +104,8 @@ def execute(
         OR (d.days_until_next IS NOT NULL AND d.days_until_next <= {days_value})
     )
     ORDER BY 
-        d.PATIENT_LOCAL_ID,
-        d.DISEASE_CD,
+        d.PATIENT_LOCAL_ID COLLATE Latin1_General_BIN,
+        d.DISEASE_CD COLLATE Latin1_General_BIN,
         d.EVENT_DATE,
         d.sas_row_num
     """
