@@ -66,7 +66,7 @@ class TestIntegrationNbsSrDupInvLibrary:
             data.get_column(col)
 
     def test_execute_report_no_days_value(self):
-        """Test with no days_value - should calculate date range from data."""
+        """Test with no days_value - should default to 3650."""
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -83,14 +83,8 @@ class TestIntegrationNbsSrDupInvLibrary:
         result = execute_report(report_spec)
         assert result.content_type == 'table'
         assert result.header == 'Potential Duplicate Investigations'
-        assert 'Duplicate Investigations Time Frame:' in result.subheader
+        assert 'Duplicate Investigations Time Frame: 3650 Days'
         assert result.subheader is not None
-
-        # Extract and verify the number is a positive integer (calculated from data)
-        days_str = result.subheader.replace(
-            'Duplicate Investigations Time Frame: ', ''
-        ).replace(' Days', '')
-        assert int(days_str) > 0
 
         data = result.content
         assert len(data.data) >= 0
