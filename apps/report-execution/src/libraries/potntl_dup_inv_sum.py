@@ -6,6 +6,7 @@ def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
+    days_value: None | int,
     **kwargs,
 ):
     """Potential Duplicate Investigations.
