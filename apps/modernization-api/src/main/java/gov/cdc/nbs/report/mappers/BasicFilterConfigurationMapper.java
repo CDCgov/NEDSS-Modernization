@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report.mappers;
 
+import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.FilterType;
@@ -35,7 +36,7 @@ public class BasicFilterConfigurationMapper {
       defaultValue =
           filter.getFilterValues().stream()
               .filter(v -> !v.getOperator().equals("ALLOW_NULLS"))
-              .map(r -> r.getValueTxt())
+              .map(FilterValue::getValueTxt)
               .toList();
       defaultIncludeNulls =
           filter.getFilterValues().stream().anyMatch(v -> v.getOperator().equals("ALLOW_NULLS"));

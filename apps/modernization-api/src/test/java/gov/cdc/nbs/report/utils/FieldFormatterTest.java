@@ -3,6 +3,7 @@ package gov.cdc.nbs.report.utils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class FieldFormatterTest {
@@ -29,20 +30,32 @@ class FieldFormatterTest {
 
   @Test
   void should_convert_date_to_sql_format() {
-    String dateWithDay = formatter.formatField("DATE", "12/31/2023");
+    // MM/dd/yyyy
+    assertThat(formatter.formatField("DATE", "12/31/2023")).isEqualTo("'2023-12-31'");
+  }
 
-    assertThat(dateWithDay).isEqualTo("'2023-12-31'");
+  @Test
+  void should_handle_date_ranges_with_month_and_year_defaults() {
+    // Test MM/yyyy Range
+    List<String> monthRange = List.of("02/2024", "02/2024");
+    List<String> monthResult = formatter.convertToSQLFromDateRange(monthRange);
 
-    String dateWithoutDay = formatter.formatField("DATE", "12/2023");
+    assertThat(monthResult.get(0)).isEqualTo("'2024-02-01'");
+    assertThat(monthResult.get(1)).isEqualTo("'2024-02-29'"); // Leap year check
 
-    assertThat(dateWithoutDay).isEqualTo("'2023-12-01'");
+    // Test yyyy Range
+    List<String> yearRange = List.of("2023", "2023");
+    List<String> yearResult = formatter.convertToSQLFromDateRange(yearRange);
+
+    assertThat(yearResult.get(0)).isEqualTo("'2023-01-01'");
+    assertThat(yearResult.get(1)).isEqualTo("'2023-12-31'");
   }
 
   @Test
   void should_throw_exception_with_correct_message_for_invalid_date() {
     assertThatThrownBy(() -> formatter.formatField("DATE", "not-a-date"))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Can't Convert Date!");
+        .hasMessage("Can't Convert Date: not-a-date");
   }
 
   @Test
@@ -57,5 +70,13 @@ class FieldFormatterTest {
     // Tests the .toUpperCase() logic in the switch expression
     assertThat(formatter.formatField("string", "test")).isEqualTo("'test'");
     assertThat(formatter.formatField("Date", "12/31/2023")).isEqualTo("'2023-12-31'");
+  }
+
+  @Test
+  void should_throw_exception_for_invalid_range_size() {
+    List<String> tooShort = List.of("2023");
+    assertThatThrownBy(() -> formatter.convertToSQLFromDateRange(tooShort))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Date range must contain exactly two values.");
   }
 }

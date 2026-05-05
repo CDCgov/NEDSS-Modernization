@@ -64,7 +64,7 @@ class ReportSpecBuilderTest {
     // We tell the mock to return a specific string (or empty) when called
     Mockito.lenient()
         .when(
-            whereClauseService.buildBasicWhereClause(
+            whereClauseService.buildBasicWhereFragment(
                 Mockito.any(ReportConfiguration.class), Mockito.any()))
         .thenReturn(result);
 

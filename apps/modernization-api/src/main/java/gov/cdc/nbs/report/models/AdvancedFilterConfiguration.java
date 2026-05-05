@@ -6,6 +6,4 @@ public record AdvancedFilterConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long reportFilterUid,
     Long reportColumnUid,
     Expr defaultValue,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) FilterType filterType,
-    Integer maxValueCnt,
-    Integer minValueCnt) {}
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) FilterType filterType) {}
