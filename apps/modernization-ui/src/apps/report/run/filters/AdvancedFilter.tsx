@@ -126,17 +126,36 @@ function mapExprRules(rule: Expr, mapper: (r: Rule) => Rule): Expr {
 
     return mapper(rule);
 }
+function filterExprRules(rule: Expr, filterer: (r: Rule) => boolean): Expr {
+    if ('rules' in rule) {
+        const { id, combinator, rules } = rule;
+        return {
+            id,
+            combinator,
+            rules: rules.filter((r) => (isRuleType(r) ? filterer(r) : true)).map((r) => filterExprRules(r, filterer)),
+        };
+    }
+
+    return rule;
+}
 
 const mapToQueryOp = (op: string) => ALL_OPERATORS.find(({ nbsCd }) => nbsCd === op)!.name;
 const mapToNbsOp = (op: string) => ALL_OPERATORS.find(({ name }) => name === op)!.nbsCd;
 
 // typescript is tricky to appease here, hence the casts, but the code does work as intended
-const queryToAdvancedFilterRequest = (query: RuleGroupType, columns: ReportColumn[]): RuleGroup => {
-    return mapExprRules(query as RuleGroup, ({ id, operator, field, value }) => {
+const queryToAdvancedFilterRequest = (query: RuleGroupType, columns: ReportColumn[]): RuleGroup | undefined => {
+    const nonEmptyQuery = filterExprRules(
+        query as RuleGroup,
+        (rule) => !!rule.field && rule.field !== '~'
+    ) as RuleGroup;
+    // no non-empty rules means there is functionally no filter
+    if (nonEmptyQuery.rules.length === 0) return undefined;
+
+    return mapExprRules(nonEmptyQuery, ({ id, operator, field, value }) => {
         return {
             id,
             operator: mapToNbsOp(operator)!,
-            field: columns.find(({ columnName }) => field === columnName)!.id.toString(),
+            field: columns.find(({ name }) => field === name)!.id.toString(),
             value: value.toString(),
         };
     }) as RuleGroup;
@@ -148,7 +167,7 @@ const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]):
         return {
             id,
             operator: mapToQueryOp(operator)!,
-            field: columns.find(({ id }) => field === id.toString())!.columnName!.toString(),
+            field: columns.find(({ id }) => field === id.toString())!.name!.toString(),
             value: value,
         };
     }) as RuleGroup;
@@ -158,9 +177,11 @@ const validateAdvancedFilter = (value?: RuleGroup) => {
     if (!value) return true;
 
     // todo: validation
-    return Object.values(validator(value))
-        .filter((v) => !v.valid)
-        .reduce((acc, cur) => `${acc}\n${cur.reasons[0]}`, '');
+    return (
+        Object.values(validator(value))
+            .filter((v) => !v.valid)
+            .reduce((acc, cur) => `${acc}\n${cur.reasons[0]}`, '') || true
+    );
 };
 
 // tighten the default type so it's just the object version
@@ -192,7 +213,18 @@ const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: Valida
             setInvalid(id, 'Must select an operator and value');
         } else if (rule.operator === 'between') {
             if (!rule.value || rule.value.includes('~')) {
-                setInvalid(id, 'Both To and From Dates Required');
+                setInvalid(id, 'Both low and high values required');
+            } else {
+                const parts: string[] = rule.value.split(',');
+                const [startInt, endInt] = parts.map((v) => parseInt(v));
+                if (!isNaN(startInt) && startInt > endInt) {
+                    setInvalid(id, 'High value must be greater than or equal to low value');
+                } else {
+                    const [startDt, endDt] = parts.map((v) => new Date(v));
+                    if (startDt > endDt) {
+                        setInvalid(id, 'High value must be greater than or equal to low value');
+                    }
+                }
             }
         } else if (BINARY_OPERATORS.find((name) => name === rule.operator)) {
             // 0 is fine, but falsey
@@ -227,10 +259,10 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
 
     const fields: Field[] = columns.map((c) => ({
         id: c.id.toString(),
-        name: c.columnName!,
-        label: c.columnTitle!,
-        operators: OPERATOR_MAP[c.columnSourceTypeCode ?? 'STRING'],
-        inputType: INPUT_TYPE_MAP[c.columnSourceTypeCode ?? 'STRING'],
+        name: c.name,
+        label: c.title,
+        operators: OPERATOR_MAP[c.sourceTypeCode ?? 'STRING'],
+        inputType: INPUT_TYPE_MAP[c.sourceTypeCode ?? 'STRING'],
     }));
 
     return (

@@ -55,16 +55,16 @@ const ReportRunPage = () => {
                     })
                     .filter((f) => !!f.values);
 
-                handleSubmit(
-                    isExport,
-                    basicFilters,
-                    data.advancedFilter && config?.advancedFilter?.reportFilterUid
-                        ? {
-                              reportFilterUid: config.advancedFilter.reportFilterUid,
-                              value: queryToAdvancedFilterRequest(data.advancedFilter, config.reportColumns),
-                          }
-                        : undefined
-                );
+                const advancedFilterQuery =
+                    data.advancedFilter && config
+                        ? queryToAdvancedFilterRequest(data.advancedFilter, config.reportColumns)
+                        : undefined;
+                const advancedFilter =
+                    advancedFilterQuery && config?.advancedFilter?.reportFilterUid
+                        ? { reportFilterUid: config.advancedFilter?.reportFilterUid, value: advancedFilterQuery }
+                        : undefined;
+
+                handleSubmit(isExport, basicFilters, advancedFilter);
             },
             (errors) => {
                 // TODO make this gather all errors and nicely format

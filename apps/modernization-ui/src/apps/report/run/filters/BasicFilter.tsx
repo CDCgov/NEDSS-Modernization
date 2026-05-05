@@ -71,7 +71,7 @@ const BasicFilter = ({ filter, columns }: { filter: BasicFilterConfiguration; co
     const column = columns.find((c) => c.id === filter.reportColumnUid);
     const filterDesc = filter.filterType.filterName;
     // empty string not possible in practice, but appeases typescript
-    const label = column?.columnTitle ?? column?.columnName ?? filterDesc ?? '';
+    const label = column?.title ?? filterDesc ?? '';
     const helperText = label === filterDesc ? undefined : filterDesc;
 
     // Get the actual input handler for this filter type

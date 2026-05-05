@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 
 public record ReportColumn(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long id,
-    Integer columnMaxLength,
-    String columnName,
-    String columnTitle,
-    String columnSourceTypeCode,
+    Integer maxLength,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String title,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String sourceTypeCode,
     String descTxt,
     Character displayable,
     Character filterable,
