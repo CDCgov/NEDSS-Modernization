@@ -35,8 +35,8 @@ public class WhereClauseService {
    *
    * @param reportConfig The metadata configuration for the report being executed.
    * @param executionRequest The specific filter values and columns requested by the user.
-   * @return A string starting with "WHERE " followed by the filter criteria,
-   * or an empty string if no filters are applied.
+   * @return A string starting with "WHERE " followed by the filter criteria, or an empty string if
+   *     no filters are applied.
    */
   public String buildWhereClause(
       ReportConfiguration reportConfig, ReportExecutionRequest executionRequest) {
@@ -57,8 +57,10 @@ public class WhereClauseService {
    * Processes a list of basic filter requests into a joined SQL fragment.
    *
    * @param reportConfig used to map filter UIDs to database columns.
-   * @param basicFilterRequests The list of filter UIDs and values provided in the execution request.
-   * @return A joined SQL string (e.g., "(col IN (...)) AND (col BETWEEN ...)") without the "WHERE" prefix.
+   * @param basicFilterRequests The list of filter UIDs and values provided in the execution
+   *     request.
+   * @return A joined SQL string (e.g., "(col IN (...)) AND (col BETWEEN ...)") without the "WHERE"
+   *     prefix.
    */
   public String buildBasicWhereFragment(
       ReportConfiguration reportConfig, List<BasicFilterRequest> basicFilterRequests) {
@@ -105,8 +107,8 @@ public class WhereClauseService {
   }
 
   /**
-   * Builds a standard multi-value SQL criteria using an IN clause.
-   * Result format: ([COLUMN_NAME] IN ('Val1', 'Val2') OR [COLUMN_NAME] IS NULL)
+   * Builds a standard multi-value SQL criteria using an IN clause. Result format: ([COLUMN_NAME] IN
+   * ('Val1', 'Val2') OR [COLUMN_NAME] IS NULL)
    *
    * @param basicFilterRequest The user-provided values.
    * @param column The metadata for the column being filtered.
@@ -152,8 +154,8 @@ public class WhereClauseService {
   }
 
   /**
-   * Builds an SQL date/time range criteria using a BETWEEN clause.
-   * Result format: (([COLUMN_NAME] BETWEEN 'Start' AND 'End') OR ([COLUMN_NAME] IS NULL))
+   * Builds an SQL date/time range criteria using a BETWEEN clause. Result format: (([COLUMN_NAME]
+   * BETWEEN 'Start' AND 'End') OR ([COLUMN_NAME] IS NULL))
    *
    * @param basicFilterRequest The user-provided date range values.
    * @param column The metadata for the column being filtered.
@@ -190,9 +192,7 @@ public class WhereClauseService {
     return criteria.append(")").toString();
   }
 
-  /**
-   * Retrieves the column metadata associated with a specific column UID.
-   */
+  /** Retrieves the column metadata associated with a specific column UID. */
   private Optional<ReportColumn> findColumn(
       ReportConfiguration reportConfig, Long reportColumnUid) {
     return reportConfig.reportColumns().stream()
@@ -200,9 +200,7 @@ public class WhereClauseService {
         .findFirst();
   }
 
-  /**
-   * Retrieves the filter configuration associated with a specific report filter UID.
-   */
+  /** Retrieves the filter configuration associated with a specific report filter UID. */
   private Optional<BasicFilterConfiguration> findBasicFilterConfiguration(
       ReportConfiguration reportConfig, Long reportFilterUid) {
     return reportConfig.basicFilters().stream()
