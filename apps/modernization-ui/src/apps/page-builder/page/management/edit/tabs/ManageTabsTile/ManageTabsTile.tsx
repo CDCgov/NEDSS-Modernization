@@ -62,7 +62,8 @@ export const ManageTabsTile = ({
                         />
                         <Icon.Delete
                             onClick={() => {
-                                (reset(), setSelectedForDelete(tab));
+                                reset();
+                                setSelectedForDelete(tab);
                             }}
                             size={3}
                         />

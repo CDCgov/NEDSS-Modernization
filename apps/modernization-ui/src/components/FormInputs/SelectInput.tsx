@@ -1,22 +1,24 @@
 import { Select } from '@trussworks/react-uswds';
 
-import { EntryWrapper, Orientation } from 'components/Entry';
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
+import { useId } from 'react';
 
 export type Selectable = { name: string; value: string };
 
 type SelectProps = {
-    htmlFor?: string;
     label?: string;
     options: Selectable[];
     dataTestid?: string;
     flexBox?: boolean;
     orientation?: Orientation;
+    sizing?: Sizing;
+    helperText?: string;
     error?: string;
     required?: boolean;
     defaultValue?: string | number | undefined | null;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue'>;
 
-const renderOptions = (options: Selectable[]) => (
+const Options = ({ options }: { options: Selectable[] }) => (
     <>
         <option value="">- Select -</option>
         {options?.map((item, index) => (
@@ -29,7 +31,6 @@ const renderOptions = (options: Selectable[]) => (
 
 export const SelectInput = ({
     name,
-    htmlFor,
     label,
     id,
     options,
@@ -37,34 +38,39 @@ export const SelectInput = ({
     defaultValue,
     dataTestid,
     flexBox,
+    orientation,
+    sizing,
+    helperText,
     error,
     required,
     onBlur,
     ...props
 }: SelectProps) => {
-    const orientation = flexBox ? 'horizontal' : props.orientation;
-
+    const defaultId = useId();
     //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
     const Wrapped = () => (
         <Select
             data-testid={dataTestid || 'dropdown'}
-            id={id || ''}
+            id={id || defaultId}
             name={name || ''}
-            defaultValue={defaultValue || undefined}
+            defaultValue={defaultValue ?? undefined}
+            required={required}
             onChange={onChange}
             onBlur={onBlur}
             {...props}
         >
-            {renderOptions(options)}
+            <Options options={options} />
         </Select>
     );
 
     return (
         <EntryWrapper
-            orientation={orientation}
+            orientation={flexBox ? 'horizontal' : orientation}
             label={label || ''}
-            htmlFor={htmlFor || ''}
+            htmlFor={id || defaultId}
             required={required}
+            sizing={sizing}
+            helperText={helperText}
             error={error}
         >
             {defaultValue && <Wrapped />}

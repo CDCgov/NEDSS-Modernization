@@ -29,7 +29,7 @@ export const CancelAddPatientPanel = ({ onClose, onConfirm }: CancelAddPatientPa
             forceAction={true}
             onConfirm={handleConfirm}
             onCancel={() => {
-                onClose && onClose();
+                if (onClose) onClose();
             }}
         >
             Canceling the form will result in the loss of all additional data entered. Are you sure you want to cancel?

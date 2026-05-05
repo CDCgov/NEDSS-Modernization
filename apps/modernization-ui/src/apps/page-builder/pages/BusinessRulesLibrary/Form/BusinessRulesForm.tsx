@@ -93,9 +93,11 @@ export const BusinessRulesForm = ({
 
     useEffect(() => {
         setTargetQuestion(editTargetQuestions);
-        watch.targetType === Rule.targetType.SUBSECTION
-            ? setTargetDescription(editTargetSubsections?.map((qtn) => `${qtn.name} (${qtn.questionIdentifier})`) ?? [])
-            : setTargetDescription(editTargetQuestions?.map((qtn) => `${qtn.name} (${qtn.question})`) ?? []);
+        if (watch.targetType === Rule.targetType.SUBSECTION) {
+            setTargetDescription(editTargetSubsections?.map((qtn) => `${qtn.name} (${qtn.questionIdentifier})`) ?? []);
+        } else {
+            setTargetDescription(editTargetQuestions?.map((qtn) => `${qtn.name} (${qtn.question})`) ?? []);
+        }
     }, [JSON.stringify(editTargetQuestions)]);
 
     const handleTargetTypeChange = (value: Rule.targetType) => {
