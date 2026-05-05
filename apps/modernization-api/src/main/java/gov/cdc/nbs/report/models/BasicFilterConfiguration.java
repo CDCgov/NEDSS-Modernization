@@ -11,4 +11,4 @@ public record BasicFilterConfiguration(
     Integer maxValueCount,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isRequired,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) FilterType filterType,
-    Boolean defaultIncludeNulls) {}
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean defaultIncludeNulls) {}

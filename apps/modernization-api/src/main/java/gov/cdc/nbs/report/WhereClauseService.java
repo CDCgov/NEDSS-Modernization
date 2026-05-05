@@ -22,6 +22,8 @@ public class WhereClauseService {
 
   private final FieldFormatter fieldFormatter;
 
+  private static final String SQL_AND = " AND ";
+
   private static final Set<String> BAS_TIME_RANGE_TYPES =
       Set.of("BAS_TIM_RANGE", "BAS_TIM_RANGE_CUSTOM", "BAS_TIM_RANGE_LIST", "BAS_MM_YYYY_RANGE");
 
@@ -29,15 +31,18 @@ public class WhereClauseService {
       Set.of("BAS_CON_LIST", "BAS_JUR_LIST", "BAS_CVG_LIST", "BAS_TXT", "BAS_STD_HIV_WRKR");
 
   /**
-   * @param reportConfig
-   * @param executionRequest
-   * @return
+   * Generates a complete SQL WHERE clause for a report execution.
+   *
+   * @param reportConfig The metadata configuration for the report being executed.
+   * @param executionRequest The specific filter values and columns requested by the user.
+   * @return A string starting with "WHERE " followed by the filter criteria,
+   * or an empty string if no filters are applied.
    */
   public String buildWhereClause(
       ReportConfiguration reportConfig, ReportExecutionRequest executionRequest) {
 
     // StringJoiner provides the "WHERE " prefix and " AND " delimiters between filter statements
-    StringJoiner finalWhere = new StringJoiner(" AND ", "WHERE ", "");
+    StringJoiner finalWhere = new StringJoiner(SQL_AND, "WHERE ", "");
 
     String basicWherefragment =
         buildBasicWhereFragment(reportConfig, executionRequest.basicFilters());
@@ -49,19 +54,17 @@ public class WhereClauseService {
   }
 
   /**
-   * Constructs WHERE clause based on the basic filters for a report. Each basic filter in the
-   * configuration is processed and joined with AND logic.
+   * Processes a list of basic filter requests into a joined SQL fragment.
    *
-   * @param reportConfig is the full configuration for the report. Most relevant here are the
-   *     columns and active filters.
-   * @return A formatted SQL string starting with WHERE. An empty string is returned if required
-   *     parts are empty
+   * @param reportConfig used to map filter UIDs to database columns.
+   * @param basicFilterRequests The list of filter UIDs and values provided in the execution request.
+   * @return A joined SQL string (e.g., "(col IN (...)) AND (col BETWEEN ...)") without the "WHERE" prefix.
    */
   public String buildBasicWhereFragment(
       ReportConfiguration reportConfig, List<BasicFilterRequest> basicFilterRequests) {
     if (basicFilterRequests == null || basicFilterRequests.isEmpty()) return "";
 
-    StringJoiner basicCriteria = new StringJoiner(" AND ");
+    StringJoiner basicCriteria = new StringJoiner(SQL_AND);
 
     for (BasicFilterRequest filterRequest : basicFilterRequests) {
       // Find the Filter Configuration
@@ -81,6 +84,7 @@ public class WhereClauseService {
                       new IllegalArgumentException(
                           "No report column found for columnUid: " + config.reportColumnUid()));
 
+      // Determine the formatting strategy
       String type =
           Optional.ofNullable(config.filterType())
               .map(FilterType::type)
@@ -101,19 +105,23 @@ public class WhereClauseService {
   }
 
   /**
-   * Builds the SQL criateria for date range(e.g., "(COL_NAME BETWEEN DATE1 AND DATE2)")
+   * Builds a standard multi-value SQL criteria using an IN clause.
+   * Result format: ([COLUMN_NAME] IN ('Val1', 'Val2') OR [COLUMN_NAME] IS NULL)
    *
-   * @param basicFilterRequest provides the filter values to the column with and the operators
-   * @param column provides the column name and type
-   * @return an SQL fragment or empty string
+   * @param basicFilterRequest The user-provided values.
+   * @param column The metadata for the column being filtered.
+   * @return A parenthesized SQL fragment.
    */
   private String buildBasicFilterCriteria(
       BasicFilterRequest basicFilterRequest, ReportColumn column) {
 
+    boolean includeNulls = basicFilterRequest.includeNulls();
+
     List<String> values =
         basicFilterRequest.values() == null ? List.of() : basicFilterRequest.values();
-    if (values.isEmpty() && !basicFilterRequest.includeNulls()) return "";
+    if (values.isEmpty() && !includeNulls) return "";
 
+    // Delegate type-specific escaping and quoting to the FieldFormatter
     List<String> formattedValues =
         values.stream()
             .map(v -> fieldFormatter.formatField(column.columnSourceTypeCode(), v))
@@ -132,7 +140,7 @@ public class WhereClauseService {
           .append(")");
     }
 
-    if (basicFilterRequest.includeNulls()) {
+    if (includeNulls) {
       // If we already have values, use OR to join them with the NULL check
       if (hasValues) {
         criteria.append(" OR ");
@@ -143,6 +151,14 @@ public class WhereClauseService {
     return criteria.append(")").toString();
   }
 
+  /**
+   * Builds an SQL date/time range criteria using a BETWEEN clause.
+   * Result format: (([COLUMN_NAME] BETWEEN 'Start' AND 'End') OR ([COLUMN_NAME] IS NULL))
+   *
+   * @param basicFilterRequest The user-provided date range values.
+   * @param column The metadata for the column being filtered.
+   * @return A parenthesized SQL fragment.
+   */
   private String buildBasicTimeRangeCriteria(
       BasicFilterRequest basicFilterRequest, ReportColumn column) {
     List<String> values = basicFilterRequest.values();
@@ -164,10 +180,10 @@ public class WhereClauseService {
         .append(colName)
         .append(" BETWEEN ")
         .append(formattedValues.get(0))
-        .append(" AND ")
+        .append(SQL_AND)
         .append(formattedValues.get(1));
 
-    if (basicFilterRequest.includeNulls()) {
+    if (includeNulls) {
       criteria.insert(0, "(").append(") OR (").append(colName).append(" IS NULL").append(")");
     }
 
@@ -175,11 +191,7 @@ public class WhereClauseService {
   }
 
   /**
-   * Finds the column definition targeted by the filterConfig configuration
-   *
-   * @param reportConfig holds the list of report columns
-   * @param reportColumnUid provides the column UID value
-   * @return a definition if found
+   * Retrieves the column metadata associated with a specific column UID.
    */
   private Optional<ReportColumn> findColumn(
       ReportConfiguration reportConfig, Long reportColumnUid) {
@@ -188,6 +200,9 @@ public class WhereClauseService {
         .findFirst();
   }
 
+  /**
+   * Retrieves the filter configuration associated with a specific report filter UID.
+   */
   private Optional<BasicFilterConfiguration> findBasicFilterConfiguration(
       ReportConfiguration reportConfig, Long reportFilterUid) {
     return reportConfig.basicFilters().stream()

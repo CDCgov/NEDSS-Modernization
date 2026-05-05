@@ -10,7 +10,5 @@ export type AdvancedFilterConfiguration = {
     reportColumnUid?: number;
     defaultValue?: (Clause | Connector);
     filterType: FilterType;
-    maxValueCnt?: number;
-    minValueCnt?: number;
 };
 
