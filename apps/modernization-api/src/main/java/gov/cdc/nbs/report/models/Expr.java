@@ -14,6 +14,7 @@ public sealed interface Expr {
   // Subset of https://react-querybuilder.js.org/docs/typescript#rules-and-groups
 
   record RuleGroup(
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String id, // uuid
       @Schema(
               requiredMode = Schema.RequiredMode.REQUIRED,
               allowableValues = {"or", "and"})

@@ -1,4 +1,3 @@
-/* eslint-disable no-redeclare */
 import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
 import { useController } from 'react-hook-form';
 import QueryBuilder, {
@@ -16,6 +15,9 @@ import QueryBuilder, {
 import 'react-querybuilder/dist/query-builder.css';
 import { ReportExecuteForm } from '../ReportRunPage';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
+import { QueryBuilderDnD } from '@react-querybuilder/dnd';
+import { createDndKitAdapter } from '@react-querybuilder/dnd/dnd-kit';
+import * as DndKit from '@dnd-kit/core';
 
 type NbsOperator = Operator & { nbsCd: string };
 
@@ -121,8 +123,8 @@ const mapToNbsOp = (op: string) => ALL_OPERATORS.find(({ name }) => name === op)
 // translate operator and remove any extraneous fields
 function translateOperators(rule: Expr, mapper: (op: string) => string): Expr {
     if ('rules' in rule) {
-        const { combinator, rules } = rule;
-        return { combinator, rules: rules.map((r) => translateOperators(r, mapper)) };
+        const { id, combinator, rules } = rule;
+        return { id, combinator, rules: rules.map((r) => translateOperators(r, mapper)) };
     }
 
     const { id, operator, field, value } = rule;
@@ -184,7 +186,10 @@ const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: Valida
     }
 };
 
+const dndKitAdapter = createDndKitAdapter(DndKit);
+
 const EMPTY_QUERY: RuleGroup = {
+    id: crypto.randomUUID(),
     combinator: RuleGroup.combinator.AND,
     rules: [{ id: crypto.randomUUID(), field: '~', operator: '~', value: '' }],
 };
@@ -211,16 +216,18 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     return (
         <div>
             {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
-            <QueryBuilder
-                fields={fields}
-                query={value}
-                validator={validator}
-                onQueryChange={onChange}
-                addRuleToNewGroups={true}
-                autoSelectField={false}
-                autoSelectOperator={false}
-                autoSelectValue={false}
-            />
+            <QueryBuilderDnD dnd={dndKitAdapter} updateWhileDragging={false}>
+                <QueryBuilder
+                    fields={fields}
+                    query={value}
+                    validator={validator}
+                    onQueryChange={onChange}
+                    addRuleToNewGroups={true}
+                    autoSelectField={false}
+                    autoSelectOperator={false}
+                    autoSelectValue={false}
+                />
+            </QueryBuilderDnD>
             <details>
                 <summary>Preview Where Statement</summary>
                 {value ? (

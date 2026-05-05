@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { Rule } from './Rule';
 export type RuleGroup = {
+    id: string;
     combinator: RuleGroup.combinator;
     rules: Array<(Rule | RuleGroup)>;
 };
