@@ -11,7 +11,7 @@
         "@trussworks/react-uswds": "^11",
         "@uswds/uswds": "3.13.0",
         "classnames": "^2.5.1",
-        "date-fns": "3.6.0",
+        "date-fns": "4.1.0",
         "globals": "^16.0.0",
         "graphql": "^16.13.0",
         "js-file-download": "^0.4.12",
