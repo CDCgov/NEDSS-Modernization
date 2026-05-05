@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, Optional
 
 from pandas import DataFrame
 from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
@@ -13,7 +13,7 @@ class ReportSpec(BaseModel):
     library_name: str = Field(min_length=1)
     data_source_name: str = Field(min_length=1)
     subset_query: str = Field(min_length=1)
-    days_value: int | None = None
+    days_value: Optional[int] = None  # Specific to potntl_dup_inv_sum, can be used by other libraries as needed
 
 
 # column names and values
