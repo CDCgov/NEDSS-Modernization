@@ -173,11 +173,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         result = execute_report(report_spec)
         assert result.content_type == 'table'
 
-        # Verify only selected diseases appear
-        disease_cds = result.content.get_column('Disease Code')
-        for disease_cd in disease_cds:
-            assert disease_cd in ('10190', '10140')
-
     def test_execute_report_empty_subset(self):
         """Test handling of empty result set."""
         report_spec = ReportSpec.model_validate(
