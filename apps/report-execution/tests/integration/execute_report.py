@@ -186,16 +186,16 @@ class TestIntegrationExecuteReport:
         assert result['detail'][0]['msg'] == 'String should have at least 1 character'
 
     def test_execute_report_missing_result(self, monkeypatch):
-        def get_lib_returning_none(library_name: str, is_builtin: bool, **kwargs: None):
-            return type(
+        def get_lib_returning_none(library_name: str, is_builtin: bool, **kwargs):
+            def execute_method(self, trx, subset_query, data_source_name, **kwargs):
+                return None
+
+            mock_library = type(
                 'MockLibrary',
                 (),
-                {
-                    'execute': lambda self, trx, subset_query, data_source_name, **kwargs: (
-                        None
-                    )
-                },
-            )()
+                {'execute': execute_method},
+            )
+            return mock_library()
 
         with monkeypatch.context() as m:
             m.setattr('src.execute_report.get_library', get_lib_returning_none)
@@ -218,19 +218,21 @@ class TestIntegrationExecuteReport:
 
     def test_execute_report_result_missing_content_data(self, monkeypatch):
         def get_lib_without_data(library_name: str, is_builtin: bool):
-            return type(
+            def execute_method(self, trx, subset_query, data_source_name, **kwargs):
+                return {
+                    'content_type': 'table',
+                    'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
+                    'content': {
+                        'columns': ['filter_operator_uid', 'filter_operator_code'],
+                    },
+                }
+
+            mock_library = type(
                 'MockLibrary',
                 (),
-                {
-                    'execute': lambda self, trx, subset_query, data_source_name, **kwargs: {
-                        'content_type': 'table',
-                        'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
-                        'content': {
-                            'columns': ['filter_operator_uid', 'filter_operator_code'],
-                        },
-                    }
-                },
-            )()
+                {'execute': execute_method},
+            )
+            return mock_library()
 
         with monkeypatch.context() as m:
             m.setattr('src.execute_report.get_library', get_lib_without_data)
@@ -261,22 +263,24 @@ class TestIntegrationExecuteReport:
 
     def test_execute_report_result_missing_content_columns(self, monkeypatch):
         def get_lib_without_columns(library_name: str, is_builtin: bool):
-            return type(
+            def execute_method(self, trx, subset_query, data_source_name, **kwargs):
+                return {
+                    'content_type': 'table',
+                    'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
+                    'content': {
+                        'data': [
+                            (1, 'Code1'),
+                            (2, 'Code2'),
+                        ]
+                    },
+                }
+
+            mock_library = type(
                 'MockLibrary',
                 (),
-                {
-                    'execute': lambda self, trx, subset_query, data_source_name, **kwargs: {
-                        'content_type': 'table',
-                        'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
-                        'content': {
-                            'data': [
-                                (1, 'Code1'),
-                                (2, 'Code2'),
-                            ]
-                        },
-                    }
-                },
-            )()
+                {'execute': execute_method},
+            )
+            return mock_library()
 
         with monkeypatch.context() as m:
             m.setattr('src.execute_report.get_library', get_lib_without_columns)
