@@ -61,7 +61,7 @@ const ReportRunPage = () => {
                     data.advancedFilter && config?.advancedFilter?.reportFilterUid
                         ? {
                               reportFilterUid: config.advancedFilter.reportFilterUid,
-                              value: queryToAdvancedFilterRequest(data.advancedFilter),
+                              value: queryToAdvancedFilterRequest(data.advancedFilter, config.reportColumns),
                           }
                         : undefined
                 );

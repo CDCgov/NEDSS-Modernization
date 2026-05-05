@@ -117,23 +117,42 @@ const INPUT_TYPE_MAP: Record<string, string> = {
 
 type Expr = RuleGroup | Rule;
 
+// translate operator and remove any extraneous fields
+function mapExprRules(rule: Expr, mapper: (r: Rule) => Rule): Expr {
+    if ('rules' in rule) {
+        const { id, combinator, rules } = rule;
+        return { id, combinator, rules: rules.map((r) => mapExprRules(r, mapper)) };
+    }
+
+    return mapper(rule);
+}
+
 const mapToQueryOp = (op: string) => ALL_OPERATORS.find(({ nbsCd }) => nbsCd === op)!.name;
 const mapToNbsOp = (op: string) => ALL_OPERATORS.find(({ name }) => name === op)!.nbsCd;
 
-// translate operator and remove any extraneous fields
-function translateOperators(rule: Expr, mapper: (op: string) => string): Expr {
-    if ('rules' in rule) {
-        const { id, combinator, rules } = rule;
-        return { id, combinator, rules: rules.map((r) => translateOperators(r, mapper)) };
-    }
-
-    const { id, operator, field, value } = rule;
-    return { id, field, value: value.toString(), operator: mapper(operator) };
-}
+// typescript is tricky to appease here, hence the casts, but the code does work as intended
+const queryToAdvancedFilterRequest = (query: RuleGroupType, columns: ReportColumn[]): RuleGroup => {
+    return mapExprRules(query as RuleGroup, ({ id, operator, field, value }) => {
+        return {
+            id,
+            operator: mapToNbsOp(operator)!,
+            field: columns.find(({ columnName }) => field === columnName)!.id.toString(),
+            value: value.toString(),
+        };
+    }) as RuleGroup;
+};
 
 // typescript is tricky to appease here, hence the casts, but the code does work as intended
-const queryToAdvancedFilterRequest = (query: RuleGroupType): RuleGroup =>
-    translateOperators(query as RuleGroup, mapToNbsOp) as RuleGroup;
+const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]): RuleGroupType => {
+    return mapExprRules(query as RuleGroup, ({ id, operator, field, value }) => {
+        return {
+            id,
+            operator: mapToQueryOp(operator)!,
+            field: columns.find(({ id }) => field === id.toString())!.columnName!.toString(),
+            value: value,
+        };
+    }) as RuleGroup;
+};
 
 const validateAdvancedFilter = (value?: RuleGroup) => {
     if (!value) return true;
@@ -201,13 +220,14 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     } = useController<ReportExecuteForm, 'advancedFilter'>({
         name: 'advancedFilter',
         defaultValue: filter.defaultValue
-            ? (translateOperators(filter.defaultValue, mapToQueryOp) as RuleGroup)
+            ? (advancedFilterConfigToQuery(filter.defaultValue, columns) as RuleGroup)
             : EMPTY_QUERY,
         rules: { validate: validateAdvancedFilter },
     });
 
     const fields: Field[] = columns.map((c) => ({
-        name: c.id.toString(),
+        id: c.id.toString(),
+        name: c.columnName!,
         label: c.columnTitle!,
         operators: OPERATOR_MAP[c.columnSourceTypeCode ?? 'STRING'],
         inputType: INPUT_TYPE_MAP[c.columnSourceTypeCode ?? 'STRING'],
@@ -230,11 +250,15 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
             </QueryBuilderDnD>
             <details>
                 <summary>Preview Where Statement</summary>
-                {value ? (
-                    <p className="font-mono-md">{formatQuery(value, 'sql')}</p>
-                ) : (
-                    'No advanced filter selections made'
-                )}
+                <p className="font-mono-md">
+                    {value
+                        ? formatQuery(value, {
+                              format: 'sql',
+                              preset: 'mssql',
+                              fallbackExpression: 'No advanced filter selections made',
+                          })
+                        : 'No advanced filter selections made'}
+                </p>
             </details>
         </div>
     );

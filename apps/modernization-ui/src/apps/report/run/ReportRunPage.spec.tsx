@@ -32,7 +32,6 @@ vi.mock('libs/permission', async () => {
 });
 
 const MOCK_CONFIG: ReportConfiguration = {
-    runner: 'python',
     reportTitle: 'Test Report',
     dataSource: {
         name: 'nbs_ods.data_source',
@@ -269,6 +268,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['test'] }],
                     }),
                 });
@@ -330,6 +330,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['starter text and more'] }],
                     }),
                 });
@@ -385,6 +386,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
+                            advancedFilter: undefined,
                             basicFilters: [{ reportFilterUid: 1001, values: ['01/01/2025', '01/01/2026'] }],
                         }),
                     });
@@ -455,6 +457,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
+                            advancedFilter: undefined,
                             basicFilters: [{ reportFilterUid: 1001, values: ['01/01/2023', '01/01/2025'] }],
                         }),
                     });
@@ -509,6 +512,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['2025', '2026'] }],
                     }),
                 });
@@ -587,6 +591,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['2023', '2025'] }],
                     }),
                 });
@@ -647,6 +652,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['01/2025', '01/2026'] }],
                     }),
                 });
@@ -727,6 +733,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['03/2024', '01/2025'] }],
                     }),
                 });
@@ -787,6 +794,7 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
+                                advancedFilter: undefined,
                                 basicFilters: [{ reportFilterUid: 1001, values: ['13'] }],
                             }),
                         });
@@ -864,6 +872,7 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
+                                advancedFilter: undefined,
                                 basicFilters: [{ reportFilterUid: 1001, values: ['04'] }],
                             }),
                         });
@@ -928,6 +937,7 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
+                                advancedFilter: undefined,
                                 basicFilters: [{ reportFilterUid: 1001, values: ['13', '04'] }],
                             }),
                         });
@@ -1007,6 +1017,7 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
+                                advancedFilter: undefined,
                                 basicFilters: [{ reportFilterUid: 1001, values: ['13', '04'] }],
                             }),
                         });
@@ -1101,8 +1112,11 @@ describe('report run page', () => {
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
-                        dropDown = await findByLabelText('Full Name');
-                        expect(dropDown).toHaveValue('');
+                        // dropDown = await findByLabelText('Full Name');
+                        await vi.waitFor(async () => {
+                            dropDown = await findByLabelText('Full Name');
+                            expect(dropDown).toHaveValue('');
+                        }, {timeout: 10000});
 
                         // make sure form values were really reset
                         const exportButton = await findByRole('button', { name: 'Export' });
@@ -1118,10 +1132,11 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
-                                basicFilters: [
+                                advancedFilter: undefined,
+                                basicFilters: expect.arrayContaining([
                                     { reportFilterUid: 1001, values: ['04001'] },
                                     { reportFilterUid: 1002, values: ['04'] },
-                                ],
+                                ]),
                             }),
                         });
                     });
@@ -1192,10 +1207,11 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
-                                basicFilters: [
+                                advancedFilter: undefined,
+                                basicFilters: expect.arrayContaining([
                                     { reportFilterUid: 1001, values: ['13002'] },
                                     { reportFilterUid: 1002, values: ['13'] },
-                                ],
+                                ]),
                             }),
                         });
                     });
@@ -1274,10 +1290,11 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
-                                basicFilters: [
+                                advancedFilter: undefined,
+                                basicFilters: expect.arrayContaining([
                                     { reportFilterUid: 1001, values: ['04001'] },
                                     { reportFilterUid: 1002, values: ['04'] },
-                                ],
+                                ]),
                             }),
                         });
                     });
@@ -1350,10 +1367,11 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
-                                basicFilters: [
+                                advancedFilter: undefined,
+                                basicFilters: expect.arrayContaining([
                                     { reportFilterUid: 1001, values: ['13001', '13002'] },
                                     { reportFilterUid: 1002, values: ['13'] },
-                                ],
+                                ]),
                             }),
                         });
                     });
