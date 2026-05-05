@@ -4,11 +4,14 @@ import { useController } from 'react-hook-form';
 import QueryBuilder, {
     Field,
     formatQuery,
+    isRuleGroupType,
+    isRuleType,
     Operator,
     QueryValidator,
     RuleGroupType,
+    RuleGroupTypeAny,
     RuleType,
-    ValidationMap,
+    ValidationResult,
 } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 import { ReportExecuteForm } from '../ReportRunPage';
@@ -94,6 +97,7 @@ const NUMERIC_OPERATORS: NbsOperator[] = [
 ];
 
 const ALL_OPERATORS = [...BASE_OPERATORS, ...STRING_OPERATORS, ...NUMERIC_OPERATORS];
+const BINARY_OPERATORS = ALL_OPERATORS.filter(({ arity }) => arity === 'binary').map(({ name }) => name);
 
 const OPERATOR_MAP: Record<string, Operator[]> = {
     STRING: [...BASE_OPERATORS, ...STRING_OPERATORS],
@@ -121,8 +125,8 @@ function translateOperators(rule: Expr, mapper: (op: string) => string): Expr {
         return { combinator, rules: rules.map((r) => translateOperators(r, mapper)) };
     }
 
-    const { operator, field, value } = rule;
-    return { field, value: value.toString(), operator: mapper(operator) };
+    const { id, operator, field, value } = rule;
+    return { id, field, value: value.toString(), operator: mapper(operator) };
 }
 
 // typescript is tricky to appease here, hence the casts, but the code does work as intended
@@ -138,28 +142,52 @@ const validateAdvancedFilter = (value?: RuleGroup) => {
         .reduce((acc, cur) => `${acc}\n${cur.reasons[0]}`, '');
 };
 
+// tighten the default type so it's just the object version
+type ValidationResultMap = Record<string, ValidationResult>;
+
 const validator: QueryValidator = (q) => {
-    const result: ValidationMap = {};
+    const result: ValidationResultMap = {};
     q.rules.forEach((r) => validateRule(r, result));
     return result;
 };
 
-const validateRule = (rule: RuleGroupType | RuleType, result: ValidationMap) => {
-    if ('operator' in rule) {
+const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: ValidationResultMap) => {
+    const setInvalid = (id: string, reason: string) => {
+        result[id].valid = false;
+        result[id].reasons = [reason];
+    };
+
+    if (isRuleType(rule)) {
+        const id = rule.id;
+        if (!id) return; // no key for the map, shouldn't happen in practice
         // default valid
-        result[rule.id] = { valid: true };
+        result[id] = { valid: true };
+
+        // empty rules are fine
+        if (!rule.field || rule.field === '~') return;
 
         // check for exceptions
-        if (rule.operator === 'between' && (!rule.value || rule.value.includes('~'))) {
-            result[rule.id].valid = false;
-            result[rule.id].reasons = ['Both To and From Dates Required'];
+        if (!rule.operator || rule.operator === '~') {
+            setInvalid(id, 'Must select an operator and value');
+        } else if (rule.operator === 'between') {
+            if (!rule.value || rule.value.includes('~')) {
+                setInvalid(id, 'Both To and From Dates Required');
+            }
+        } else if (BINARY_OPERATORS.find((name) => name === rule.operator)) {
+            // 0 is fine, but falsey
+            if (!rule.value || rule.value === 0) {
+                setInvalid(id, 'Value cannot be empty');
+            }
         }
-    } else if ('rules' in rule) {
+    } else if (isRuleGroupType(rule)) {
         rule.rules.forEach((r) => validateRule(r, result));
     }
 };
 
-const EMPTY_QUERY: RuleGroup = { combinator: RuleGroup.combinator.AND, rules: [] };
+const EMPTY_QUERY: RuleGroup = {
+    combinator: RuleGroup.combinator.AND,
+    rules: [{ id: crypto.randomUUID(), field: '~', operator: '~', value: '' }],
+};
 
 const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfiguration; columns: ReportColumn[] }) => {
     const {

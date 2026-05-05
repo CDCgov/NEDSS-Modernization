@@ -4,10 +4,12 @@
 /* eslint-disable */
 import type { Expr } from './Expr';
 export type Rule = (Expr & {
+    id?: string;
     field?: string;
     operator?: string;
     value?: string;
 } & {
+    id: string;
     field: string;
     operator: string;
     value: string;

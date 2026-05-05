@@ -38,7 +38,7 @@ const ReportRunPage = () => {
     }, []);
 
     const form = useForm<ReportExecuteForm>({
-        mode: 'onBlur',
+        mode: 'onSubmit',
     });
 
     const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {

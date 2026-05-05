@@ -22,6 +22,7 @@ public sealed interface Expr {
       implements Expr {}
 
   record Rule(
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String id, // uuid
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String field, // column UID stringified
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String operator,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String value)
