@@ -6,6 +6,7 @@ on:
   pull_request:
     paths:
       - "apps/modernization-ui/**"
+      - ".github/workflows/verify-modernization-ui.yaml"
 
 jobs:
   pipeline:
