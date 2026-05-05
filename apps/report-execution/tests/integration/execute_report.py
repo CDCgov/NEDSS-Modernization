@@ -186,13 +186,15 @@ class TestIntegrationExecuteReport:
         assert result['detail'][0]['msg'] == 'String should have at least 1 character'
 
     def test_execute_report_missing_result(self, monkeypatch):
-        def get_lib_returning_none(
-                library_name: str, is_builtin: bool, **kwargs: None
-            ):
+        def get_lib_returning_none(library_name: str, is_builtin: bool, **kwargs: None):
             return type(
                 'MockLibrary',
                 (),
-                {'execute': lambda self, trx, subset_query, data_source_name, **kwargs: None}
+                {
+                    'execute': lambda self, trx, subset_query, data_source_name, **kwargs: (
+                        None
+                    )
+                },
             )()
 
         with monkeypatch.context() as m:
@@ -209,7 +211,6 @@ class TestIntegrationExecuteReport:
             )
             with pytest.raises(InvalidResultError) as exc_info:
                 execute_report(report_spec)
-
 
             assert exc_info.value.message == (
                 'Invalid report result from library `nbs_custom`: No result returned'
