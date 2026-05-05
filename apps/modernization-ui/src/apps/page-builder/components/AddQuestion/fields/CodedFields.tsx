@@ -25,7 +25,7 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
 
     useEffect(() => {
         const selected = valueSets.find((v) => v.value === valueSet?.toString());
-        selected && fetch(selected.codeSetNm);
+        if (selected) fetch(selected.codeSetNm);
         form.setValue('defaultValue', undefined);
     }, [valueSet, JSON.stringify(valueSets)]);
 
@@ -50,7 +50,6 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
                         error={error?.message}
                         name={name}
                         id={name}
-                        htmlFor={name}
                         required={!published}
                         disabled={published}
                     />
@@ -73,7 +72,6 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
                                 error={error?.message}
                                 name={name}
                                 id={name}
-                                htmlFor={name}
                             />
                         )}
                     />

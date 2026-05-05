@@ -9,7 +9,7 @@ import { ResultDataPage } from './ResultDataPage';
 import fileDownload from 'js-file-download';
 import { ReportResultPage } from './ReportResultPage';
 import { LoadingIndicator } from 'libs/loading/indicator';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 
 export type ReportExecuteForm = {
@@ -72,9 +72,12 @@ const ReportRunPage = () => {
                     setError('No content!');
                     return;
                 }
-                isExport
-                    ? fileDownload(res.content, `${res.header ?? 'ReportOutput'}.csv`)
-                    : openNewTab(<ResultDataPage result={res} />);
+
+                if (isExport) {
+                    fileDownload(res.content, `${res.header ?? 'ReportOutput'}.csv`);
+                } else {
+                    openNewTab(<ResultDataPage result={res} />);
+                }
             })
             .catch((err) => setError(JSON.stringify(err)))
             .finally(() => setSubmitting(false));
@@ -88,7 +91,9 @@ const ReportRunPage = () => {
     ) : !hasResult && !submitting ? (
         <>
             {error && <AlertBanner type="error">{error}</AlertBanner>}
-            <ReportConfigurationPage config={config} handleSubmit={onSubmit} formControl={form.control} />
+            <FormProvider {...form}>
+                <ReportConfigurationPage config={config} handleSubmit={onSubmit} />
+            </FormProvider>
         </>
     ) : (
         <ReportResultPage

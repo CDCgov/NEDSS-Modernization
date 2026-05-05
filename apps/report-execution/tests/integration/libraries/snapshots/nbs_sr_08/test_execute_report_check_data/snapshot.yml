@@ -1,0 +1,8372 @@
+- !!python/tuple
+  - null
+  - null
+  - null
+  - Pertussis
+  - 20MAR2024:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 12SEP2018:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '26.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 15SEP2018:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '38.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 19NOV2019:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 27NOV2019:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 25MAR2020:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 28JUN2021:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 01OCT2021:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 22OCT2021:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 18NOV2022:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '71.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 10DEC2023:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Measles
+  - 09MAY2024:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Pertussis
+  - 07MAR2019:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Pertussis
+  - 27SEP2019:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '84.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Pertussis
+  - 28JAN2020:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Pertussis
+  - 28JUL2022:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Pertussis
+  - 25AUG2022:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '76.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Pertussis
+  - 31AUG2023:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Pertussis
+  - 14OCT2023:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '19.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Pertussis
+  - 18AUG2024:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Salmonellosis
+  - 10AUG2018:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Salmonellosis
+  - 29JUN2019:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Salmonellosis
+  - 21OCT2020:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '82.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Salmonellosis
+  - 01JAN2021:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Salmonellosis
+  - 15JUL2021:00:00:00.000
+  - '002'
+  - null
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Salmonellosis
+  - 06FEB2022:00:00:00.000
+  - '002'
+  - null
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Salmonellosis
+  - 17JUN2022:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Salmonellosis
+  - 07SEP2023:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '9.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Salmonellosis
+  - 22FEB2024:00:00:00.000
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '40.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 23OCT2018:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 08AUG2021:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 12AUG2021:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '32.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 16JAN2022:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 10FEB2022:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '73.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 03MAY2022:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 06MAY2022:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 15MAR2023:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 30MAY2023:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 21DEC2023:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 23SEP2024:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Measles
+  - 29DEC2024:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '74.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Pertussis
+  - 20OCT2018:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Pertussis
+  - 30MAR2020:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Pertussis
+  - 03OCT2022:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Pertussis
+  - 19OCT2022:00:00:00.000
+  - '001'
+  - null
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Pertussis
+  - 04MAY2023:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Pertussis
+  - 06AUG2023:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '40.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Salmonellosis
+  - 11JAN2019:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Salmonellosis
+  - 01AUG2020:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Salmonellosis
+  - 18JAN2022:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Salmonellosis
+  - 06SEP2022:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '42.00000'
+- !!python/tuple
+  - null
+  - null
+  - Washington County
+  - Salmonellosis
+  - 04NOV2022:00:00:00.000
+  - '001'
+  - !!python/object/apply:decimal.Decimal
+    - '52.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
+  - 07JUN2019:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '43.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
+  - 16JUL2020:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
+  - 19JUN2021:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
+  - 05SEP2021:00:00:00.000
+  - null
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
+  - 07OCT2021:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '58.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
+  - 18JAN2024:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
+  - 11MAY2024:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
+  - 16MAY2024:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
+  - 29AUG2024:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Pertussis
+  - 01OCT2018:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Pertussis
+  - 17MAR2019:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Pertussis
+  - 10APR2021:00:00:00.000
+  - null
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Pertussis
+  - 13APR2021:00:00:00.000
+  - null
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Pertussis
+  - 04FEB2022:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Pertussis
+  - 11AUG2022:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Salmonellosis
+  - 30NOV2018:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '15.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Salmonellosis
+  - 03JUL2019:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '73.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Salmonellosis
+  - 19FEB2020:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Salmonellosis
+  - 28FEB2020:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Salmonellosis
+  - 14OCT2020:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '74.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Salmonellosis
+  - 18JUN2022:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Salmonellosis
+  - 26MAY2023:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Salmonellosis
+  - 22AUG2024:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 20MAY2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '52.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 22JUN2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 04JUL2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 24JUL2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 07AUG2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '88.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 26AUG2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 01OCT2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 06NOV2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 22NOV2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '19.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 28NOV2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '70.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 02DEC2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 26JAN2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 23JUN2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '52.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 07JUL2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '3.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 27JUL2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '70.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 29SEP2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 28OCT2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '62.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 15NOV2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '30.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 17NOV2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 21NOV2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '71.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 17DEC2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 28DEC2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 04JAN2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '74.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 26FEB2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 15MAY2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '38.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 17JUN2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 20JUN2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 03JUL2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 09JUL2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '39.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 15AUG2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '74.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 06NOV2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 18JAN2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 27FEB2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '72.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 27MAR2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '89.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 08APR2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '37.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 19MAY2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '27.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 08JUL2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '46.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 21JUL2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 11AUG2021:00:00:00.000
+  - '13002'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 18AUG2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '72.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 19SEP2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '55.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 05OCT2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '49.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 25NOV2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '42.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 13DEC2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 23DEC2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 18MAR2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 03MAY2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 30MAY2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 06JUL2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 09JUL2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '79.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 24JUL2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 11OCT2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 30DEC2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '58.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 14JAN2023:00:00:00.000
+  - '13002'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 30JAN2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 03FEB2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 18MAR2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 18JUN2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '67.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 07JUL2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 01SEP2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '9.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 08SEP2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 09SEP2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 23SEP2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 13DEC2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 21DEC2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 05JAN2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '37.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 01FEB2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 05FEB2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '39.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 11MAR2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 23JUN2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 18SEP2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - 13NOV2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 25MAY2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '69.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 06JUL2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 03OCT2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '18.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 18NOV2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '60.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 13MAR2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 25MAR2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 05APR2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 23MAY2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 25JUN2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '3.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 09JUL2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 11JUL2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 27OCT2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '69.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 09NOV2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 21DEC2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 25FEB2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 26MAR2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 08APR2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 12APR2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 28MAY2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 21JUL2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 16OCT2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '42.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 16DEC2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 11JAN2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '84.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 18MAR2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '74.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 16JUN2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 02SEP2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 12SEP2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 05NOV2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '26.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 19NOV2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 21DEC2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 15APR2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '18.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 30MAY2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 09JUL2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 08SEP2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '26.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 28SEP2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 01NOV2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 10NOV2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '55.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 26NOV2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 06DEC2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 07DEC2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '19.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 10DEC2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '43.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 15FEB2023:00:00:00.000
+  - '13002'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 25FEB2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '38.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 16APR2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 03MAY2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 29JUN2023:00:00:00.000
+  - '13002'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 30JUL2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 19SEP2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 08OCT2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '7.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 11NOV2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '59.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 07DEC2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 01JAN2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '27.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 04JAN2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 18JAN2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '14.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 12MAR2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '54.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 26MAR2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 10APR2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 23MAY2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 13JUN2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 31AUG2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 17OCT2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 04NOV2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
+  - 04JAN2025:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 11MAY2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '71.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 08JUL2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 19JUL2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '65.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 17SEP2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 13OCT2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 15OCT2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '26.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 22NOV2018:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 14JAN2019:00:00:00.000
+  - '13002'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 20FEB2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 23MAR2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 30APR2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 03MAY2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 22MAY2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 08JUN2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 20JUL2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '46.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 28AUG2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '43.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 13SEP2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 26OCT2019:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '71.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 01FEB2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '76.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 26APR2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '42.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 17MAY2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 05JUL2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 18JUL2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '72.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 04AUG2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 19AUG2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 23SEP2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '72.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 29DEC2020:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 19APR2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '26.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 27APR2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 27JUL2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '9.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 28AUG2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '6.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 08SEP2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '89.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 02OCT2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '59.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 04OCT2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 19OCT2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 11NOV2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '84.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 15NOV2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 20DEC2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 21DEC2021:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 10FEB2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 03MAR2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 15JUN2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 21JUL2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 04AUG2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '62.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 13DEC2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 20DEC2022:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '73.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 30MAR2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '42.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 04MAY2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 20MAY2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '62.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 17JUL2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 24JUL2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '73.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 14OCT2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 24OCT2023:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '31.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 07FEB2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '43.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 21MAR2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '37.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 25MAR2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '69.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 26MAR2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 13APR2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 17JUN2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 27JUN2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 06AUG2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 05OCT2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '3.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 10OCT2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 23NOV2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 27DEC2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '52.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 28DEC2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - 31DEC2024:00:00:00.000
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 18JUN2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '37.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 16JUL2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '54.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 17JUL2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '18.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 13AUG2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 14SEP2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 19OCT2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '32.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 23OCT2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 12NOV2018:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 22NOV2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '37.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 07JAN2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '74.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 11FEB2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '49.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 29MAY2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '55.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 14JUN2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '32.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 03JUL2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 07AUG2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 09AUG2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 21SEP2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 02OCT2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '43.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 09OCT2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 13OCT2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '54.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 06DEC2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 16DEC2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '27.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 23JAN2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '43.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 09FEB2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 19APR2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 23APR2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 26JUN2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 13JUL2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 02AUG2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 29AUG2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '65.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 01OCT2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 04OCT2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 14OCT2020:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 04NOV2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '65.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 11JAN2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 13MAR2021:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 20MAR2021:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 02APR2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '18.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 15APR2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 11MAY2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '62.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 22MAY2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 02JUN2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '71.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 10OCT2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '69.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 22OCT2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 02DEC2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 14MAR2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 26MAR2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '3.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 05APR2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '16.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 08MAY2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 10MAY2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '79.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 22MAY2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '62.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 26MAY2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '18.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 31MAY2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '55.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 11JUN2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 28AUG2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 04NOV2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 05NOV2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 16DEC2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 06FEB2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 29APR2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '42.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 31MAY2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '15.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 29JUL2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 23AUG2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 14OCT2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '39.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 26OCT2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 15NOV2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 04MAR2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 11MAR2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '46.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 14MAR2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '74.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 12JUN2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 09AUG2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 06SEP2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 20SEP2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 11OCT2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 17OCT2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 16NOV2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - 24NOV2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '88.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 06MAY2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 23MAY2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 17JUN2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 25JUN2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '16.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 17AUG2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '90.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 02SEP2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '7.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 22OCT2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '88.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 08NOV2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '79.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 02DEC2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 25DEC2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 27DEC2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '27.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 26FEB2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 06MAR2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 10JUN2019:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 26JUL2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 31JUL2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '84.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 13AUG2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 14AUG2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 17SEP2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 20NOV2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 17JAN2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 18JAN2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 03FEB2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 05FEB2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 18MAR2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 18MAY2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '65.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 25MAY2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '65.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 28MAY2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '70.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 08JUL2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 14JUL2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '18.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 20AUG2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 03OCT2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 05MAR2021:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 26MAY2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 09JUN2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '84.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 26JUL2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 14SEP2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '30.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 02JAN2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '89.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 15FEB2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 09MAR2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 14APR2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '62.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 25AUG2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '2.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 29AUG2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 17NOV2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '7.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 24DEC2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '15.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 01APR2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 12APR2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '70.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 18APR2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 22APR2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 16JUN2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 07JUL2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '30.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 04AUG2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 22SEP2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '72.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 23SEP2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '30.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 19NOV2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 09DEC2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 12DEC2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '38.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 14DEC2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '49.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 06JAN2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 18JAN2024:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 05MAR2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 07APR2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '38.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 12JUL2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 14JUL2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 29JUL2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 02AUG2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 20AUG2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 08SEP2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 26SEP2024:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 13OCT2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 29OCT2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 04NOV2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '40.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
+  - 01DEC2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 10JUN2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '52.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 16AUG2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 01SEP2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '59.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 14SEP2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 06NOV2018:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 05FEB2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 10FEB2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '38.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 08MAR2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '59.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 02MAY2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '82.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 15MAY2019:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 08JUL2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 15JUL2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 21JUL2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '74.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 14AUG2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 04SEP2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '72.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 30SEP2019:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 02JAN2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 17APR2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 24APR2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '72.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 12JUN2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 21JUN2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 19AUG2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '6.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 05NOV2020:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 07DEC2020:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 11APR2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 14APR2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 26MAY2021:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 01JUN2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 04JUL2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '90.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 25AUG2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 02SEP2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '15.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 19SEP2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 09NOV2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 04DEC2021:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 28JAN2022:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 04FEB2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 28FEB2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 14APR2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 14MAY2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 27JUN2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 14SEP2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '6.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 16SEP2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 18OCT2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 10NOV2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 12NOV2022:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 15JAN2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 16JAN2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '40.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 22MAR2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '70.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 16JUN2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 21JUN2023:00:00:00.000
+  - '13001'
+  - null
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 06JUL2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '67.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 03AUG2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 19AUG2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 27AUG2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 06SEP2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 02OCT2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 10OCT2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 26DEC2023:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 18JAN2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '67.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 10FEB2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 13FEB2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '2.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 14FEB2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 22FEB2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '19.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 15APR2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '67.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 18APR2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '9.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 03MAY2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 26MAY2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '90.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 21JUN2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '6.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 29JUN2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '2.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 04JUL2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '37.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 29JUL2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '79.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 01AUG2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - 11OCT2024:00:00:00.000
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Measles
+  - 15FEB2021:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Measles
+  - 04DEC2022:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Measles
+  - 18FEB2023:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Measles
+  - 04MAR2023:00:00:00.000
+  - null
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Pertussis
+  - 22MAR2019:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '40.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Pertussis
+  - 06APR2019:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '6.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Pertussis
+  - 04AUG2019:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '84.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Pertussis
+  - 23MAR2022:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Pertussis
+  - 10JUL2022:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Pertussis
+  - 21MAR2023:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '27.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Pertussis
+  - 22OCT2024:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Salmonellosis
+  - 03JUN2019:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Salmonellosis
+  - 07OCT2020:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Salmonellosis
+  - 03MAR2021:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '27.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Salmonellosis
+  - 01JUL2022:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Salmonellosis
+  - 30APR2023:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - null
+  - Salmonellosis
+  - 11AUG2024:00:00:00.000
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 05JUN2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '29.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 02OCT2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 04NOV2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 08NOV2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 26JAN2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '60.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 02MAR2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '71.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 09MAR2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '7.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 12MAR2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 23MAR2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 24JUL2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 05AUG2019:00:00:00.000
+  - '47002'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 24AUG2019:00:00:00.000
+  - '47002'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 26SEP2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 23OCT2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 03DEC2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 24DEC2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 20JAN2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 03FEB2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '32.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 11MAR2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 03APR2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 12APR2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '88.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 26APR2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '73.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 12MAY2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '89.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 06JUL2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 01AUG2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 14OCT2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '9.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 19FEB2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 22FEB2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '9.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 03MAR2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 24MAR2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 19APR2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 14MAY2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '27.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 12JUL2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '31.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 31OCT2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 07DEC2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 23DEC2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '55.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 26DEC2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '27.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 20FEB2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 11MAR2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 14MAR2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 25APR2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 28MAY2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 28JUN2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 19JUL2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '74.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 29JUL2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 30JUL2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '73.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 06AUG2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '27.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 22FEB2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 09AUG2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 03DEC2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '39.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 04DEC2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 27MAY2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '74.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 31JUL2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 20AUG2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
+  - 04SEP2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 30MAY2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '90.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 21JUN2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 09JUL2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 01AUG2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 02AUG2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 05SEP2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 08DEC2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '71.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 22DEC2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '15.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 01FEB2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 13FEB2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 02APR2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '49.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 12APR2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 19APR2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '18.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 17MAY2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '42.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 15JUN2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 10JUL2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 11AUG2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 23AUG2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '55.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 29AUG2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 20OCT2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 21OCT2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '31.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 15JAN2020:00:00:00.000
+  - '47002'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 24JAN2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '69.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 03MAR2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '3.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 09APR2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '62.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 10JUN2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '54.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 28JUN2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '19.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 26JUL2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 10AUG2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 03SEP2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 06OCT2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '59.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 01JAN2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 14JAN2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 18MAY2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 24JUL2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 27JUL2021:00:00:00.000
+  - '47002'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 19SEP2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 21OCT2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 13NOV2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '79.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 17NOV2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 23JAN2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 28APR2022:00:00:00.000
+  - '47002'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 29APR2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '31.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 29MAY2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 22JUL2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 15AUG2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 16OCT2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 05NOV2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '29.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 18JAN2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '52.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 25FEB2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '147.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 02MAR2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '62.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 13AUG2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 01SEP2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 26NOV2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '76.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 08DEC2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 10DEC2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '30.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 29DEC2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 31DEC2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 26JAN2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 03FEB2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 13MAR2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '71.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 14MAR2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 17APR2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 08JUN2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '82.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 22JUL2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '29.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 24JUL2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 04AUG2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '49.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 21SEP2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '3.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 21NOV2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 26DEC2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - 27DEC2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 29JUN2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 15OCT2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '54.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 24OCT2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 30NOV2018:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 26FEB2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 06MAR2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '19.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 17MAY2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '9.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 25MAY2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 26MAY2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '75.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 22JUN2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '59.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 28JUN2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '62.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 30JUN2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 10JUL2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 02OCT2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 22OCT2019:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '32.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 25JAN2020:00:00:00.000
+  - '47002'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 25FEB2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '54.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 05MAY2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '55.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 17MAY2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '6.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 27MAY2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 29JUN2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '6.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 28SEP2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 01DEC2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 23DEC2020:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '37.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 13JAN2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 24MAR2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '32.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 26MAR2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 29MAR2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '76.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 08APR2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 13APR2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '82.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 02MAY2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 28JUL2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 21AUG2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 26SEP2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 03NOV2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '69.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 04DEC2021:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 23MAR2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 04APR2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '43.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 06MAY2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 24JUN2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '90.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 09AUG2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 10OCT2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 08NOV2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 17NOV2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 06DEC2022:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 05FEB2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '69.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 28FEB2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 31MAY2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 31AUG2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 14SEP2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 30OCT2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 15NOV2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 22NOV2023:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 02JAN2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '2.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 24JAN2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 20MAR2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '60.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 21MAR2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 24MAR2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 27MAR2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 18MAY2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '39.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 17SEP2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '123.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 03OCT2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 08OCT2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '6.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 09OCT2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 07NOV2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 07DEC2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
+  - 27DEC2024:00:00:00.000
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '89.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 11MAY2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 20JUN2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 30JUL2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 09AUG2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '42.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 16SEP2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 19SEP2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '76.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 01OCT2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 27OCT2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 01NOV2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 20NOV2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 15DEC2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 17FEB2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 08APR2019:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 15APR2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '30.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 11MAY2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 19MAY2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 08JUN2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '49.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 16JUN2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 27JUN2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 13AUG2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 04SEP2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '89.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 08SEP2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 10SEP2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 26SEP2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '39.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 06OCT2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 17OCT2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 21OCT2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '79.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 27OCT2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 28DEC2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 01JAN2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 18JAN2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 31JAN2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '60.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 12APR2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 14APR2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 27APR2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '46.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 01MAY2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '72.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 14SEP2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 18SEP2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '58.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 28SEP2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 14OCT2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '82.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 16OCT2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '16.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 19APR2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 26JUN2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 14JUL2021:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 05AUG2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '59.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 21AUG2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '16.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 13SEP2021:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 06OCT2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '29.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 20OCT2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 30OCT2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '69.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 23NOV2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 30MAR2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 17MAY2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 10JUL2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 09SEP2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '65.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 17SEP2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 11OCT2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '18.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 28DEC2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '59.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 16MAR2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '79.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 29MAR2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '72.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 26MAY2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '79.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 03JUL2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 18JUL2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '67.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 27JUL2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '73.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 26AUG2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '29.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 21OCT2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 06DEC2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 21DEC2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 23DEC2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 02FEB2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 14MAR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 19MAR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 07APR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '37.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 06MAY2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '89.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 03JUL2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 08SEP2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '88.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 03OCT2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '69.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 23OCT2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 16DEC2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 20DEC2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '56.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - 27DEC2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '88.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 29AUG2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 26DEC2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '49.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 16MAR2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 27MAR2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 23APR2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '47.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 13JUN2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 30JUL2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '58.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 06AUG2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 17AUG2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 22AUG2019:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 09SEP2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 14NOV2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 04DEC2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '63.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 07FEB2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 10FEB2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '52.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 10MAY2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '14.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 14MAY2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 25JUN2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '80.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 27JUN2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '28.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 29JUN2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '21.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 20JUL2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 18AUG2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 26SEP2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 26JAN2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '16.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 16FEB2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '86.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 30MAR2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '48.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 05APR2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 08MAY2021:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 28MAY2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '88.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 23AUG2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 24SEP2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '23.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 10OCT2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '37.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 20OCT2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 24OCT2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 11NOV2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 24NOV2021:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 14DEC2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '73.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 20DEC2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '60.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 18JAN2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '29.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 23JAN2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 19FEB2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '55.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 28FEB2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '71.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 04MAR2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 07APR2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 03MAY2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 21MAY2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '29.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 22MAY2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '70.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 15OCT2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 20OCT2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '83.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 31OCT2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 22NOV2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '52.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 13JAN2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '40.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 19JAN2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '69.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 29APR2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '13.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 14MAY2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 22MAY2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '43.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 30JUN2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '54.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 02JUL2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '18.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 04JUL2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '76.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 14JUL2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '67.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 01AUG2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '16.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 05AUG2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '40.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 27AUG2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 10NOV2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 30NOV2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '31.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 11JAN2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '78.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 17JAN2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 21JAN2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '73.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 23FEB2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '89.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 04MAR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '11.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 09MAR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '110.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 15APR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 18APR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 21APR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '38.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 04MAY2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '4.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 14JUN2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 18JUN2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '34.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 17AUG2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '42.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 26AUG2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '70.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 19SEP2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
+  - 23DEC2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '8.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 27MAY2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '50.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 19JUN2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 28JUL2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '42.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 20DEC2018:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '35.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 06FEB2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '41.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 14APR2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '1.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 23APR2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 25JUN2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 30JUN2019:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 06SEP2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '10.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 01NOV2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 01DEC2019:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 06DEC2019:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 31JAN2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 14MAR2020:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 25MAR2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 19APR2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 20JUL2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '2.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 08SEP2020:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 03OCT2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '52.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 08OCT2020:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '89.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 19JAN2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 11FEB2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '57.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 28JUN2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '52.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 01SEP2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 30NOV2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '15.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 27DEC2021:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 28JAN2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '89.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 17MAY2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '68.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 29JUL2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '26.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 05AUG2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '25.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 31AUG2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '16.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 29SEP2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '90.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 03OCT2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '17.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 23OCT2022:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 24OCT2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 01NOV2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 06NOV2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '64.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 26NOV2022:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '6.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 09JAN2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '20.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 27JAN2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '7.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 31JAN2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '5.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 02FEB2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '12.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 25MAR2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '87.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 27MAR2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '54.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 02APR2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '77.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 08JUN2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 19AUG2023:00:00:00.000
+  - '47001'
+  - null
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 24AUG2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '24.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 21OCT2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 30DEC2023:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '46.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 14JAN2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '66.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 16FEB2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '51.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 28MAR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '44.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 29MAR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '70.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 28APR2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '14.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 05MAY2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '22.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 13JUN2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '62.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 19JUN2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '76.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 06JUL2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '33.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 22JUL2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '36.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 17AUG2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '54.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - 02NOV2024:00:00:00.000
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '81.00000'
