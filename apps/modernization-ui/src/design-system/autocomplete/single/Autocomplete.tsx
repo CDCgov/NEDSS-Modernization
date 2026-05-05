@@ -85,7 +85,7 @@ const Autocomplete = <V,>({
     };
 
     useEffect(() => {
-        !value && setEntered('');
+        if (!value) setEntered('');
     }, [value]);
 
     const handleCancel = () => {

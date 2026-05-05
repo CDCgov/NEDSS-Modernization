@@ -169,9 +169,11 @@ export const TargetQuestion = ({
                                             className={styles.sectionToggle}
                                             data-testid="listedSectionsTarget"
                                             onClick={() => {
-                                                activeSection === section.id
-                                                    ? setActiveSection(0)
-                                                    : setActiveSection(section.id);
+                                                if (activeSection === section.id) {
+                                                    setActiveSection(0);
+                                                } else {
+                                                    setActiveSection(section.id);
+                                                }
                                                 setTargetList([]);
                                             }}
                                         >

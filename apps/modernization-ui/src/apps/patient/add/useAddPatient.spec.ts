@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react';
 import { AddPatientSettings, useAddPatient } from './useAddPatient';
 import { NewPatient } from './api';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type Example = {};
 
 const setup = (settings?: Partial<AddPatientSettings<Example>>) => {

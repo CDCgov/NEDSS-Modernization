@@ -3,7 +3,7 @@ import { useReducer } from 'react';
 import { mapIf } from 'utils';
 
 type Item = { selected: boolean; value: Selectable };
-type Selections = {} | { [key: string]: Item };
+type Selections = Record<string, Item>;
 type State = {
     items: Item[];
     selected: Selectable[];

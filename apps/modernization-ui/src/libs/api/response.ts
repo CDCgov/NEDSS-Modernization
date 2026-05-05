@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type SuccessResponse = {};
 type FailureResponse = { reason: string };
 
