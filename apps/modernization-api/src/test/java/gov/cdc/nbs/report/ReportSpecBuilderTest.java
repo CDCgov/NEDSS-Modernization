@@ -61,11 +61,12 @@ class ReportSpecBuilderTest {
 
   private WhereClauseService mockWhereClause(String result) {
     WhereClauseService whereClauseService = Mockito.mock(WhereClauseService.class);
-    // We tell the mock to return a specific string (or empty) when called
+
+    // Ensure the method name matches what SpecBuilder actually calls
     Mockito.lenient()
         .when(
-            whereClauseService.buildBasicWhereFragment(
-                Mockito.any(ReportConfiguration.class), Mockito.any()))
+            whereClauseService.buildWhereClause(
+                Mockito.any(ReportConfiguration.class), Mockito.any(ReportExecutionRequest.class)))
         .thenReturn(result);
 
     return whereClauseService;
