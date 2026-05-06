@@ -131,14 +131,14 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with isExport as stri
   }).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid BasicFilter", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid basic filters", () => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false,
-    filters: [{
-      reportFilterUid: "invalid-reportFilterUid",
-      values: []
+    basicFilters: [{
+      reportFilterUid: VALID_REPORT_UID,
+      values: []  //  Cannot be empty
     }]
   };
 
@@ -150,14 +150,15 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid BasicFil
   }).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid AdvancedFilter", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/run with an invalid advanced filter", () => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false,
-    filters: [{
-      reportFilterUid: "invalid-reportFilterUid"
-    }]
+    advancedFilter: {
+      reportFilterUid: VALID_REPORT_UID,
+      logic: null   // Logic cannot be null
+    }
   };
 
   cy.request({
@@ -183,6 +184,14 @@ Then("the response should contain a report result", () => {
 });
 
 Then("the response should contain validation error for {string}", (fieldName) => {
+  cy.get("@apiResponse").then((response) => {
+    expect(response.status).to.eq(422);
+    const bodyString = typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
+    expect(bodyString).to.include(fieldName);
+  });
+});
+
+Then("the response should contain serialization error for {string}", (fieldName) => {
   cy.get("@apiResponse").then((response) => {
     expect(response.status).to.eq(422);
     const bodyString = typeof response.body === 'string' ? response.body : JSON.stringify(response.body);

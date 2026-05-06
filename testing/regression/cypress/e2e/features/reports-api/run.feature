@@ -26,24 +26,24 @@ Feature: Run Report API Validation
   Scenario: Run report with invalid reportUid type
     When I send a POST request to /nbs/api/report/run with reportUid as string
     Then the response status should be 422
-    Then the response should contain validation error for "reportUid"
+    Then the response should contain serialization error for "reportUid"
 
   Scenario: Run report with invalid dataSourceUid type
     When I send a POST request to /nbs/api/report/run with dataSourceUid as string
     Then the response status should be 422
-    Then the response should contain validation error for "dataSourceUid"
+    Then the response should contain serialization error for "dataSourceUid"
 
   Scenario: Run report with invalid isExport type
     When I send a POST request to /nbs/api/report/run with isExport as string
     Then the response status should be 422
-    Then the response should contain validation error for "isExport"
+    Then the response should contain serialization error for "isExport"
 
-  Scenario: Run report with invalid BasicFilter structure
-    When I send a POST request to /nbs/api/report/run with invalid BasicFilter
+  Scenario: Run report with invalid basic filters
+    When I send a POST request to /nbs/api/report/run with invalid basic filters
     Then the response status should be 422
-    Then the response should contain validation error for "filters"
+    Then the response should contain validation error for "basicFilters"
 
-  Scenario: Run report with invalid AdvancedFilter structure
-    When I send a POST request to /nbs/api/report/run with invalid AdvancedFilter
+  Scenario: Run report with an invalid advanced filter
+    When I send a POST request to /nbs/api/report/run with an invalid advanced filter
     Then the response status should be 422
-    Then the response should contain validation error for "filters"
+    Then the response should contain validation error for "advancedFilter"
