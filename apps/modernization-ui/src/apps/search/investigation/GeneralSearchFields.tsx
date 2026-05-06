@@ -21,7 +21,7 @@ import { EntryFieldsProps } from 'design-system/entry';
 const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
     const { all: jurisdictions } = useJurisdictionOptions();
     const { all: programAreas } = useProgramAreaOptions();
-    const conditions = useConditionOptions();
+    const { options: conditions } = useConditionOptions();
 
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
     const watch = useWatch({ control: form.control });

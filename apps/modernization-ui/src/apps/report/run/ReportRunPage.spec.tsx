@@ -2,7 +2,7 @@ import { act, findAllByRole, render } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
-import { BasicFilterConfiguration, ReportConfiguration, Selectable} from 'generated';
+import { BasicFilterConfiguration, ReportConfiguration, Selectable } from 'generated';
 import { Layout } from 'layout';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { ReactNode } from 'react';
@@ -27,7 +27,6 @@ vi.mock('options/selectableResolver');
 vi.mock('options/concepts/useConceptOptions', () => ({
     useConceptOptions: vi.fn(),
 }));
-
 
 vi.mock('libs/permission', async () => {
     const actual = await vi.importActual<typeof import('libs/permission')>('libs/permission');
@@ -1402,11 +1401,11 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                      .mocked(generated.ReportControllerService.getReportConfiguration)
-                      .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
-                      .mocked(generated.ReportControllerService.exportReport)
-                      .mockResolvedValue(MOCK_RESULT);
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
@@ -1431,9 +1430,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [
-                                { reportFilterUid: 1001, values: ['11065'] },
-                            ],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['11065'] }],
                         }),
                     });
                 });
@@ -1442,11 +1439,11 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                      .mocked(generated.ReportControllerService.getReportConfiguration)
-                      .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
-                      .mocked(generated.ReportControllerService.exportReport)
-                      .mockResolvedValue(MOCK_RESULT);
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
@@ -1504,9 +1501,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [
-                                { reportFilterUid: 1001, values: ['10560'] }
-                            ],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['10560'] }],
                         }),
                     });
                 });
@@ -1569,9 +1564,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [
-                                { reportFilterUid: 1001, values: ['11065', "10560"] },
-                            ],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['11065', '10560'] }],
                         }),
                     });
                 });
@@ -1644,9 +1637,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [
-                                { reportFilterUid: 1001, values: ['11065', '10560'] }
-                            ],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['11065', '10560'] }],
                         }),
                     });
                 });
@@ -1656,8 +1647,8 @@ describe('report run page', () => {
         describe('BAS_CVG_LIST', () => {
             const mockOptionApiImpl: ConceptOptions = {
                 options: [
-                  { value: '100', name: '100 - Chancroid' },
-                  { value: '200', name: '200 - Chlamydia' }
+                    { value: '100', name: '100 - Chancroid' },
+                    { value: '200', name: '200 - Chlamydia' },
                 ],
                 load: vi.fn(),
             };
@@ -1700,7 +1691,7 @@ describe('report run page', () => {
 
                     expect(await findByRole('option', { name: '100 - Chancroid' })).toBeVisible();
 
-                    expect(useConceptOptions).toHaveBeenCalledWith("CASE_DIAGNOSIS_STD", {"lazy": false});
+                    expect(useConceptOptions).toHaveBeenCalledWith('CASE_DIAGNOSIS_STD', { lazy: false });
 
                     // component refreshes when options populates, so can't do this earlier
                     let dropDown = await findByLabelText('Full Name');
@@ -1716,9 +1707,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [
-                                { reportFilterUid: 1001, values: ['100'] },
-                            ],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['100'] }],
                         }),
                     });
                 });
@@ -1793,9 +1782,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [
-                                { reportFilterUid: 1001, values: ['200'] }
-                            ],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['200'] }],
                         }),
                     });
                 });
@@ -1860,9 +1847,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [
-                                { reportFilterUid: 1001, values: ['100', "200"] },
-                            ],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['100', '200'] }],
                         }),
                     });
                 });
@@ -1938,9 +1923,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [
-                                { reportFilterUid: 1001, values: ['200', '100'] }
-                            ],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['200', '100'] }],
                         }),
                     });
                 });

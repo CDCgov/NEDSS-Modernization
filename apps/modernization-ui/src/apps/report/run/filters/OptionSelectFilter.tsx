@@ -64,14 +64,16 @@ const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName: string) => Selectable
     [STATE_FILTER_CODE]: useStateOptions,
     // this may be functionally dead code - needs more investigation
     [REGION_FILTER_CODE]: () => [],
-    [CONDITION_FILTER_CODE]: useConditionOptions,
-    [DISEASE_FILTER_CODE]: (filterCodeSetName) => useDiseaseOptions(filterCodeSetName)
-}
+    [CONDITION_FILTER_CODE]: () => {
+        return useConditionOptions().options;
+    },
+    [DISEASE_FILTER_CODE]: (filterCodeSetName) => useDiseaseOptions(filterCodeSetName),
+};
 
 const useDiseaseOptions = (filterCodeSetName) => {
     const { options } = useConceptOptions(filterCodeSetName, { lazy: false });
     return options;
-}
+};
 
 const getValueList = (filter: BasicFilterConfiguration) => {
     if (!filter.defaultValue || filter.defaultValue.length === 0) return null;

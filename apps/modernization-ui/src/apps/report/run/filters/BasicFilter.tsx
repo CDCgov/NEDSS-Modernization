@@ -63,7 +63,7 @@ const FILTER_TYPE_MAP: Record<
         FilterComponent: OptionSelectFilter,
         getDefaultValue: getValueList,
         validationRule: optionSelectValidator,
-    }
+    },
 };
 
 const TEMP_DEFAULT_FILTER = {
