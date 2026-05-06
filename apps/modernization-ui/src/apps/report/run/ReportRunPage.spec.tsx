@@ -1,4 +1,4 @@
-import { findAllByPlaceholderText, findAllByTestId, findAllByTitle, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -1099,14 +1099,8 @@ describe('report run page', () => {
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
-                        // dropDown = await findByLabelText('Full Name');
-                        await vi.waitFor(
-                            async () => {
-                                dropDown = await findByLabelText('Full Name');
-                                expect(dropDown).toHaveValue('');
-                            },
-                            { timeout: 10000 }
-                        );
+                        dropDown = await findByLabelText('Full Name');
+                        expect(dropDown).toHaveValue('');
 
                         // make sure form values were really reset
                         const exportButton = await findByRole('button', { name: 'Export' });

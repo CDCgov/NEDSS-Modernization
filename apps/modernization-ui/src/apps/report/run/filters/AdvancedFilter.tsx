@@ -19,6 +19,14 @@ import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import { createDndKitAdapter } from '@react-querybuilder/dnd/dnd-kit';
 import * as DndKit from '@dnd-kit/core';
 
+// ============= Constants ============= /
+
+const EMPTY_QUERY: RuleGroup = {
+    id: crypto.randomUUID(),
+    combinator: RuleGroup.combinator.AND,
+    rules: [{ id: crypto.randomUUID(), field: '~', operator: '~', value: '' }],
+};
+
 type NbsOperator = Operator & { nbsCd: string };
 
 const BASE_OPERATORS: NbsOperator[] = [
@@ -115,9 +123,11 @@ const INPUT_TYPE_MAP: Record<string, string> = {
     DATETIME: 'date',
 };
 
+// ============= Translation NBS <--> Query Builder ============= /
+
 type Expr = RuleGroup | Rule;
 
-// translate operator and remove any extraneous fields
+// map rules and remove any extraneous fields
 function mapExprRules(rule: Expr, mapper: (r: Rule) => Rule): Expr {
     if ('rules' in rule) {
         const { id, combinator, rules } = rule;
@@ -126,6 +136,7 @@ function mapExprRules(rule: Expr, mapper: (r: Rule) => Rule): Expr {
 
     return mapper(rule);
 }
+// filter rules
 function filterExprRules(rule: Expr, filterer: (r: Rule) => boolean): Expr {
     if ('rules' in rule) {
         const { id, combinator, rules } = rule;
@@ -173,10 +184,11 @@ const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]):
     }) as RuleGroup;
 };
 
+// ============= Validation ============= /
+
 const validateAdvancedFilter = (value?: RuleGroup) => {
     if (!value) return true;
 
-    // todo: validation
     return (
         Object.values(validator(value))
             .filter((v) => !v.valid)
@@ -237,13 +249,11 @@ const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: Valida
     }
 };
 
+// ============= Drag And Drop ============= /
+
 const dndKitAdapter = createDndKitAdapter(DndKit);
 
-const EMPTY_QUERY: RuleGroup = {
-    id: crypto.randomUUID(),
-    combinator: RuleGroup.combinator.AND,
-    rules: [{ id: crypto.randomUUID(), field: '~', operator: '~', value: '' }],
-};
+// ============= Componentry ============= /
 
 const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfiguration; columns: ReportColumn[] }) => {
     const {
@@ -280,19 +290,27 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                     autoSelectValue={false}
                 />
             </QueryBuilderDnD>
-            <details>
-                <summary>Preview Where Statement</summary>
-                <p className="font-mono-md">
-                    {value
-                        ? formatQuery(value, {
-                              format: 'sql',
-                              preset: 'mssql',
-                              fallbackExpression: 'No advanced filter selections made',
-                          })
-                        : 'No advanced filter selections made'}
-                </p>
-            </details>
+            <PreviewWhere query={value} />
         </div>
+    );
+};
+
+const PreviewWhere = ({ query }: { query?: RuleGroup }) => {
+    const fallbackExpression = 'No advanced filter selections made';
+
+    return (
+        <details>
+            <summary>Preview Where Statement</summary>
+            <p className="font-mono-md">
+                {query
+                    ? formatQuery(query, {
+                          format: 'sql',
+                          preset: 'mssql',
+                          fallbackExpression,
+                      })
+                    : fallbackExpression}
+            </p>
+        </details>
     );
 };
 
