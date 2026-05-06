@@ -127,8 +127,8 @@ class TestIntegrationNbsSrDupInvLibrary:
         )
         result_30 = execute_report(spec_30)
 
-        # Our data should have more results with 3650 days_value than 30, but 
-        # with a new snapshot where all potential duplicates are within 30 days, 
+        # Our data should have more results with 3650 days_value than 30, but
+        # with a new snapshot where all potential duplicates are within 30 days,
         # this may not be the case.
         assert len(result.content.data) > len(result_30.content.data)
 
