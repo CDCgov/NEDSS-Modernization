@@ -152,6 +152,28 @@ class TestIntegrationNbsSrDupInvLibrary:
         # 3650 days should return more or equal rows than 30 days
         assert len(result.content.data) >= len(result_30.content.data)
 
+    def test_execute_report_with_negative_days_value(self):
+        """Test with a negative days value."""
+        report_spec = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'Potential Duplicate Investigations',
+                'library_name': 'potntl_dup_inv_sum',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
+                'days_value': -3650,
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+        assert result.subheader == 'Duplicate Investigations Time Frame: -3650 Days'
+
+        # Based on current implementation, this should not return any results.
+        assert len(result.content.data) == 0
+
     def test_execute_report_with_disease_filter(self):
         """Test filtering by specific diseases via subset_query."""
         report_spec = ReportSpec.model_validate(
