@@ -1,4 +1,4 @@
-import { findAllByPlaceholderText, findAllByTestId, render } from '@testing-library/react';
+import { findAllByPlaceholderText, findAllByTestId, findAllByTitle, render } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -1451,8 +1451,6 @@ describe('report run page', () => {
             const user = userEvent.setup();
             await user.click(exportButton);
 
-            // expect(await findByRole('alert')).not.toBeVisible();
-
             expect(mockResultApi).toHaveBeenCalledWith({
                 requestBody: expect.objectContaining({
                     isExport: true,
@@ -1556,6 +1554,128 @@ describe('report run page', () => {
                                     field: '2003',
                                     operator: 'BW',
                                     value: '10,20',
+                                },
+                            ],
+                        },
+                    },
+                    basicFilters: [],
+                }),
+            });
+        });
+
+        it('starts from default value', async () => {
+            const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                ...MOCK_CONFIG,
+                advancedFilter: {
+                    ...MOCK_FILTER,
+                    defaultValue: {
+                        id: '123-123-123',
+                        combinator: generated.RuleGroup.combinator.OR,
+                        rules: [
+                            {
+                                id: '124-124-124',
+                                field: '2001',
+                                operator: 'SW',
+                                value: 'prefix',
+                            },
+                            {
+                                id: '125-125-125',
+                                combinator: generated.RuleGroup.combinator.AND,
+                                rules: [
+                                    {
+                                        id: '126-126-126',
+                                        field: '2002',
+                                        operator: 'GT',
+                                        value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
+                                    },
+                                    {
+                                        id: '127-127-127',
+                                        field: '2003',
+                                        operator: 'BW',
+                                        value: '10,20',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                },
+            });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, findByText, findByRole, findAllByRole, findAllByTitle } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Advanced Filter')).toBeVisible();
+
+            const combinators = await findAllByRole('combobox', { name: 'Combinator' });
+            expect(combinators).toHaveLength(2);
+            expect(combinators[0]).toHaveValue('or');
+            expect(combinators[1]).toHaveValue('and');
+
+            const fields = await findAllByRole('combobox', { name: 'Field' });
+            expect(fields).toHaveLength(3);
+            expect(fields[0]).toHaveValue('FULL_NAME');
+            expect(fields[1]).toHaveValue('DATE_OF_BIRTH');
+            expect(fields[2]).toHaveValue('DAYS_OLD');
+
+            const operators = await findAllByRole('combobox', { name: 'Operator' });
+            expect(operators).toHaveLength(3);
+            expect(operators[0]).toHaveValue('beginswith');
+            expect(operators[1]).toHaveValue('>');
+            expect(operators[2]).toHaveValue('between');
+
+            const values = await findAllByTitle('Value');
+            expect(values).toHaveLength(3);
+            expect(values[0]).toHaveValue('prefix');
+            expect(values[1]).toHaveValue('2020-01-01');
+            const [low, high] = values[2].children;
+            expect(low).toHaveValue(10);
+            expect(high).toHaveValue(20);
+
+            const user = userEvent.setup();
+            await user.type(high, '1');
+            expect(high).toHaveValue(201);
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: {
+                        reportFilterUid: 1001,
+                        value: {
+                            id: '123-123-123',
+                            combinator: generated.RuleGroup.combinator.OR,
+                            rules: [
+                                {
+                                    id: '124-124-124',
+                                    field: '2001',
+                                    operator: 'SW',
+                                    value: 'prefix',
+                                },
+                                {
+                                    id: '125-125-125',
+                                    combinator: generated.RuleGroup.combinator.AND,
+                                    rules: [
+                                        {
+                                            id: '126-126-126',
+                                            field: '2002',
+                                            operator: 'GT',
+                                            // format should be mm/dd/yyyy when we switch components
+                                            value: '2020-01-01',
+                                        },
+                                        {
+                                            id: '127-127-127',
+                                            field: '2003',
+                                            operator: 'BW',
+                                            value: '10,201',
+                                        },
+                                    ],
                                 },
                             ],
                         },

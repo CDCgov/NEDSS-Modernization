@@ -217,8 +217,8 @@ const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: Valida
             } else {
                 const parts: string[] = rule.value.split(',');
                 const [startInt, endInt] = parts.map((v) => parseInt(v));
-                if (!isNaN(startInt) && startInt > endInt) {
-                    setInvalid(id, 'High value must be greater than or equal to low value');
+                if (!isNaN(startInt)) {
+                    if (startInt > endInt) setInvalid(id, 'High value must be greater than or equal to low value');
                 } else {
                     const [startDt, endDt] = parts.map((v) => new Date(v));
                     if (startDt > endDt) {
