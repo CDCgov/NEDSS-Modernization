@@ -51,7 +51,7 @@ def serialize_table(table: Table) -> str:
     # or serialize to CSV at a different location
     df = DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
     # remove trailing new line
-    return df.to_csv(index=False, float_format='%20g', lineterminator='\r\n')[:-2]
+    return df.to_csv(index=False, float_format='{:.20g}', lineterminator='\r\n')[:-2]
 
 
 # TODO: add other return types  # noqa: FIX002
