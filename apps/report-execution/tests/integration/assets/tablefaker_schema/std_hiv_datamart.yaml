@@ -1,11 +1,9 @@
 config:
   seed: 4
-  nbs:
-    fk_tables:
 
 tables:
   # Table backing PHCDemographic view
-  - table_name: "[NBS_RDB].[dbo].[STD_HIV_DATAMART]"
+  - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
     row_count: 1000
     columns:
       # required columns:
@@ -14,17 +12,17 @@ tables:
 
       # patient demographics
       - column_name: patient_name
-        data: random.choice(["Howard, Cooper", "Van Dam, Venus", "Freeman, Billy") < .95 else None
+        data: random.choice(["Howard, Cooper", "Van Dam, Venus", "Freeman, Billy"]) if random.random() < .95 else None
       - column_name: patient_age_reported
-        data: random.choice(["23", "64", "43"]) < .95 else None
+        data: random.choice(["23", "64", "43"]) if random.random() < .95 else None
       - column_name: patient_sex
-        data: random.choice(["F", "M", ""]) < .95 else None
+        data: random.choice(["F", "M", ""]) if random.random() < .95 else None
       - column_name: patient_race
-        data: random.choice(["B", "A", "AI", "W", ""]) < .95 else None
+        data: random.choice(["B", "A", "AI", "W", ""]) if random.random() < .95 else None
 
       # case information
       - column_name: diagnosis_cd
-        data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) < .95 else None
+        data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) if random.random() < .95 else None
       - column_name: field_record_number
         data: fake.random_int(10000000, 99999999)
         null_percentage: 0.05
@@ -40,6 +38,8 @@ tables:
       - column_name: ix_date_oi
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         null_percentage: 0.05
+      - column_name: ca_patient_intv_status
+        data: random.choice(["I - Interviewed"]) if random.random() < .1 else None
 
 
 # === Columns not needed for reports yet ===

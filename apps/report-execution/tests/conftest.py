@@ -167,7 +167,7 @@ def get_tables_from_faker(schema_name: str) -> tuple[list[str], list[str]]:
         schema = yaml.safe_load(f.read())
 
     db_tables = [t['table_name'] for t in schema['tables']]
-    fk_tables = schema['config']['nbs']['fk_tables']
+    fk_tables = schema['config'].get('nbs', {}).get('fk_tables', [])
 
     return (db_tables, fk_tables)
 

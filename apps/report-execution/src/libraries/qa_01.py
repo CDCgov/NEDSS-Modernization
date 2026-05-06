@@ -31,30 +31,30 @@ def execute(
         shd.diagnosis_cd as "DIAGNOSIS_CD",
         shd.field_record_number as "RECORD_FIELD_NUMBER",
         shd.investigator_interview_qc as "INVESTIGATOR_INTERVIEW_QC",
-        CASE 
-            WHEN shd.CC_CLOSED_DT IS NULL THEN 'Y' 
-            ELSE 'N' 
+        CASE
+            WHEN shd.CC_CLOSED_DT IS NULL THEN 'Y'
+            ELSE 'N'
         END AS Open_Status,
         CAST(shd.ca_interviewer_assign_dt as DATE) as "ASSIGNED_DT",
         CAST(shd.cc_closed_dt as DATE) as "CLOSED_DT",
         CAST(shd.ix_date_oi as DATE) as "IX_DATE_OI"
     FROM ({subset_query}) shd
-        LEFT OUTER JOIN 
+        LEFT OUTER JOIN
             (SELECT i.investigation_key, em.add_user_id, up.provider_quick_code
-            FROM rdb.dbo.investigation i 
-                JOIN rdb.dbo.event_metric em 
+            FROM rdb.dbo.investigation i
+                JOIN rdb.dbo.event_metric em
                     ON i.case_uid = em.event_uid
                 JOIN rdb.dbo.user_profile up
                     ON em.add_user_id = up.nedss_entry_id) inv
         ON shd.investigation_key = inv.investigation_key
-    WHERE shd.ca_patient_inv_status = 'I - Interviewed'
+    WHERE shd.ca_patient_intv_status = 'I - Interviewed'
         AND shd.diagnosis_cd IS NOT NULL
         AND shd.ix_date_oi IS NOT NULL
     """
 
     content = trx.query(sql_query)
 
-    description = 'TODO'
+    description = 'NEDSS STD Program Activity Report - QA01 Interview Record Listing Report'
 
     return ReportResult(
         content_type='table',
