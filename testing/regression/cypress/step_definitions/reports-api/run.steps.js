@@ -169,13 +169,13 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with an invalid advan
   }).as("apiResponse");
 });
 
-Then("the response status should be {int}", (statusCode) => {
+Then("the run response status should be {int}", (statusCode) => {
   cy.get("@apiResponse").then((response) => {
     expect(response.status).to.eq(statusCode);
   });
 });
 
-Then("the response should contain a report result", () => {
+Then("the run response should contain a report result", () => {
   cy.get("@apiResponse").then((response) => {
     expect(response.body).to.have.property("content_type");
     expect(response.body).to.have.property("content");
@@ -183,7 +183,7 @@ Then("the response should contain a report result", () => {
   });
 });
 
-Then("the response should contain validation error for {string}", (fieldName) => {
+Then("the run response should contain validation error for {string}", (fieldName) => {
   cy.get("@apiResponse").then((response) => {
     expect(response.status).to.eq(422);
     const bodyString = typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
@@ -191,7 +191,7 @@ Then("the response should contain validation error for {string}", (fieldName) =>
   });
 });
 
-Then("the response should contain serialization error for {string}", (fieldName) => {
+Then("the run response should contain serialization error for {string}", (fieldName) => {
   cy.get("@apiResponse").then((response) => {
     expect(response.status).to.eq(422);
     const bodyString = typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
