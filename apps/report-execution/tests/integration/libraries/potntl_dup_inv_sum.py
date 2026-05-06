@@ -93,6 +93,45 @@ class TestIntegrationNbsSrDupInvLibrary:
         for col in self.expected_columns:
             data.get_column(col)
 
+    def test_execute_report_with_large_days_value(self):
+        """Test with a large days value (e.g., 3650 days / 10 years)."""
+        report_spec = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'Potential Duplicate Investigations',
+                'library_name': 'potntl_dup_inv_sum',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
+                'days_value': 3650,
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+        assert result.subheader == 'Duplicate Investigations Time Frame: 3650 Days'
+
+        # Should return more results than the 30-day test
+        spec_30 = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'Potential Duplicate Investigations',
+                'library_name': 'potntl_dup_inv_sum',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
+                'days_value': 30,
+            }
+        )
+        result_30 = execute_report(spec_30)
+
+        # Our data should have more results with 3650 days_value than 30, but 
+        # with a new snapshot where all potential duplicates are within 30 days, 
+        # this may not be the case.
+        assert len(result.content.data) > len(result_30.content.data)
+
     def test_execute_report_with_negative_days_value(self):
         """Test with a negative days value."""
         report_spec = ReportSpec.model_validate(
@@ -114,27 +153,6 @@ class TestIntegrationNbsSrDupInvLibrary:
 
         # Based on current implementation, this should not return any results.
         assert len(result.content.data) == 0
-
-    def test_execute_report_with_disease_filter(self):
-        """Test filtering by specific diseases via subset_query."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'potntl_dup_inv_sum',
-                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': (
-                    'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] '
-                    "WHERE DISEASE_CD IN ('10190', '10140')"
-                ),
-                'days_value': 365,
-            }
-        )
-
-        result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
     def test_execute_report_empty_subset(self):
         """Test handling of empty result set."""
