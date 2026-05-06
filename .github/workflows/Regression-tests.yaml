@@ -28,10 +28,10 @@ jobs:
         with:
           node-version: 22.x
 
-      # Check graphql types are up to date
+      # Check graphql types are up to date (definition and usage)
       - name: Check Graphql generated types are still correct
         working-directory: apps/modernization-ui
-        run: npm ci && npm run generate && git diff --exit-code
+        run: npm ci && npm run generate && git diff --exit-code && npm run lint
 
       # Install npm dependencies, cache them, run tests
       - name: Cypress run
@@ -62,4 +62,3 @@ jobs:
         with:
           name: cypress-report
           path: testing/regression/cypress-report.zip
-
