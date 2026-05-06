@@ -7,7 +7,6 @@ import QueryBuilder, {
     isRuleType,
     Operator,
     QueryValidator,
-    regenerateID,
     RuleGroupType,
     RuleGroupTypeAny,
     RuleType,
