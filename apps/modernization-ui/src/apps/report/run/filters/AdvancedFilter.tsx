@@ -7,6 +7,7 @@ import QueryBuilder, {
     isRuleType,
     Operator,
     QueryValidator,
+    regenerateID,
     RuleGroupType,
     RuleGroupTypeAny,
     RuleType,
@@ -205,6 +206,8 @@ const validator: QueryValidator = (q) => {
     return result;
 };
 
+const isDate = (val: string) => !!val.match(/\d{4}-\d{2}-\d{2}/);
+
 const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: ValidationResultMap) => {
     const setInvalid = (id: string, reason: string) => {
         result[id].valid = false;
@@ -228,14 +231,14 @@ const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: Valida
                 setInvalid(id, 'Both low and high values required');
             } else {
                 const parts: string[] = rule.value.split(',');
-                const [startInt, endInt] = parts.map((v) => parseInt(v));
-                if (!isNaN(startInt)) {
-                    if (startInt > endInt) setInvalid(id, 'High value must be greater than or equal to low value');
-                } else {
+                if (isDate(parts[0])) {
                     const [startDt, endDt] = parts.map((v) => new Date(v));
                     if (startDt > endDt) {
                         setInvalid(id, 'High value must be greater than or equal to low value');
                     }
+                } else {
+                    const [startInt, endInt] = parts.map((v) => parseInt(v));
+                    if (startInt > endInt) setInvalid(id, 'High value must be greater than or equal to low value');
                 }
             }
         } else if (BINARY_OPERATORS.find((name) => name === rule.operator)) {

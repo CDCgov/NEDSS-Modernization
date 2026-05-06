@@ -129,9 +129,9 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
-    Expr.Clause clause1 = new Expr.Clause(27L, "EQ", "47");
-    Expr.Clause clause2 = new Expr.Clause(31L, "EQ", "35001");
-    Expr.Connector connector = new Expr.Connector("OR", clause1, clause2);
+    Expr.Rule rule1 = new Expr.Rule("123-123-123", "27", "EQ", "47");
+    Expr.Rule rule2 = new Expr.Rule("124-124-124", "31", "EQ", "35001");
+    Expr.RuleGroup connector = new Expr.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
     AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
     BasicFilterRequest basicFilter = new BasicFilterRequest(4L, Arrays.asList("test"));
@@ -243,9 +243,9 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
-    Expr.Clause clause1 = new Expr.Clause(27L, "EQ", "47");
-    Expr.Clause clause2 = new Expr.Clause(31L, "EQ", "35001");
-    Expr.Connector connector = new Expr.Connector("OR", clause1, clause2);
+    Expr.Rule rule1 = new Expr.Rule("123-123-123", "27", "EQ", "47");
+    Expr.Rule rule2 = new Expr.Rule("124-124-124", "31", "EQ", "35001");
+    Expr.RuleGroup connector = new Expr.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
     AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
     ReportExecutionRequest request =
