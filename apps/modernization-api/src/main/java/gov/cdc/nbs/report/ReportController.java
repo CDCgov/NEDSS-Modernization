@@ -58,6 +58,7 @@ public class ReportController {
 
     if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
+
     return reportService.executeReport(request);
   }
 

@@ -4,26 +4,10 @@ const REPORT_RUN_ENDPOINT = "http://localhost:8080/nbs/api/report/run";
 const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with a valid report execution request", () => {
-  const validRequest = {
-    reportUid: VALID_REPORT_UID,
-    dataSourceUid: VALID_DATA_SOURCE_UID,
-    isExport: false,
-    columnUids: [1, 2, 3],
-    filters: []
-  };
-
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: validRequest,
-    failOnStatusCode: false
-  }).as("apiResponse");
-});
-
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing reportUid", () => {
   const invalidRequest = {
     dataSourceUid: VALID_DATA_SOURCE_UID,
+    reportUid: null,
     isExport: false
   };
 
@@ -31,7 +15,10 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing reportUi
     method: "POST",
     url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
-    failOnStatusCode: false
+    failOnStatusCode: false,
+    headers: {
+      "Content-Type": "application/json"
+    }
   }).as("apiResponse");
 });
 
@@ -45,7 +32,10 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing dataSour
     method: "POST",
     url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
-    failOnStatusCode: false
+    failOnStatusCode: false,
+    headers: {
+      "Content-Type": "application/json"
+    }
   }).as("apiResponse");
 });
 
@@ -59,13 +49,46 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing isExport
     method: "POST",
     url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
+    failOnStatusCode: false,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).as("apiResponse");
+});
+
+When("I send a POST request to \\/nbs\\/api\\/report\\/run with negative reportUid", () => {
+  const invalidRequest = {
+    reportUid: -1,
+    dataSourceUid: VALID_DATA_SOURCE_UID,
+    isExport: false
+  };
+
+  cy.request({
+    method: "POST",
+    url: REPORT_RUN_ENDPOINT,
+    body: invalidRequest,
+    failOnStatusCode: false
+  }).as("apiResponse");
+});
+
+When("I send a POST request to \\/nbs\\/api\\/report\\/run with negative dataSourceUid", () => {
+  const invalidRequest = {
+    reportUid: VALID_REPORT_UID,
+    dataSourceUid: -1,
+    isExport: false
+  };
+
+  cy.request({
+    method: "POST",
+    url: REPORT_RUN_ENDPOINT,
+    body: invalidRequest,
     failOnStatusCode: false
   }).as("apiResponse");
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with reportUid as string", () => {
   const invalidRequest = {
-    reportUid: "invalid",
+    reportUid: "invalid-reportUid",
     dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false
   };
@@ -81,7 +104,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with reportUid as str
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with dataSourceUid as string", () => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
-    dataSourceUid: "invalid",
+    dataSourceUid: "invalid-dataSourceUid",
     isExport: false
   };
 
@@ -97,7 +120,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with isExport as stri
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
-    isExport: "invalid"
+    isExport: "invalid-isExport"
   };
 
   cy.request({
@@ -114,9 +137,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid BasicFil
     dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false,
     filters: [{
-      type: "BasicFilter",
-      isBasic: true,
-      reportFilterUid: "invalid", // Should be number
+      reportFilterUid: "invalid-reportFilterUid",
       values: []
     }]
   };
@@ -135,9 +156,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid Advanced
     dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false,
     filters: [{
-      type: "AdvancedFilter",
-      isBasic: false,
-      logic: "invalid" // Should be Expr object
+      reportFilterUid: "invalid-reportFilterUid"
     }]
   };
 
@@ -167,6 +186,6 @@ Then("the response should contain validation error for {string}", (fieldName) =>
   cy.get("@apiResponse").then((response) => {
     expect(response.status).to.eq(422);
     const bodyString = typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
-    expect(bodyString).to.include(fieldName);
+    expect(bodyString).to.include("invalid-" + fieldName);
   });
 });

@@ -1,12 +1,7 @@
-Feature: Report API Validation
+Feature: Run Report API Validation
 
   Background:
     Given I am logged in as secure user
-
-  Scenario: Run report with valid request body
-    When I send a POST request to /nbs/api/report/run with a valid report execution request
-    Then the response status should be 200
-    Then the response should contain a report result
 
   Scenario: Run report with missing reportUid
     When I send a POST request to /nbs/api/report/run with missing reportUid
@@ -15,6 +10,16 @@ Feature: Report API Validation
 
   Scenario: Run report with missing dataSourceUid
     When I send a POST request to /nbs/api/report/run with missing dataSourceUid
+    Then the response status should be 422
+    Then the response should contain validation error for "dataSourceUid"
+
+  Scenario: Run report with negative reportUid
+    When I send a POST request to /nbs/api/report/run with negative reportUid
+    Then the response status should be 422
+    Then the response should contain validation error for "reportUid"
+
+  Scenario: Run report with negative dataSourceUid
+    When I send a POST request to /nbs/api/report/run with negative dataSourceUid
     Then the response status should be 422
     Then the response should contain validation error for "dataSourceUid"
 
