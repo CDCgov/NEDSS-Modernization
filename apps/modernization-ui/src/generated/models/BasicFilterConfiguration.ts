@@ -6,10 +6,11 @@ import type { FilterType } from './FilterType';
 export type BasicFilterConfiguration = {
     reportFilterUid: number;
     reportColumnUid?: number;
-    defaultValue?: Array<string>;
+    defaultValues?: Array<string>;
     minValueCount?: number;
     maxValueCount?: number;
     isRequired: boolean;
     filterType: FilterType;
+    defaultIncludeNulls: boolean;
 };
 
