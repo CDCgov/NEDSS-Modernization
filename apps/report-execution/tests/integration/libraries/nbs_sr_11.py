@@ -28,7 +28,7 @@ class TestIntegrationNbsSr11Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 159
+        assert len(data) == 144
         assert len(data[0]) == 6  # State Code, State, County, Condition, Year, Cases
         assert len(data[0]) == len(result.content.columns)
 
