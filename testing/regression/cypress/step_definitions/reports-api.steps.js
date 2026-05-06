@@ -1,9 +1,13 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
+const REPORT_RUN_ENDPOINT = "http://localhost:8080/nbs/api/report/run";
+const VALID_REPORT_UID = 1;
+const VALID_DATA_SOURCE_UID = 1;
+
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with a valid report execution request", () => {
   const validRequest = {
-    reportUid: 123,
-    dataSourceUid: 456,
+    reportUid: VALID_REPORT_UID,
+    dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false,
     columnUids: [1, 2, 3],
     filters: []
@@ -11,7 +15,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with a valid report e
 
   cy.request({
     method: "POST",
-    url: "/nbs/api/report/run",
+    url: REPORT_RUN_ENDPOINT,
     body: validRequest,
     failOnStatusCode: false
   }).as("apiResponse");
@@ -19,13 +23,13 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with a valid report e
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing reportUid", () => {
   const invalidRequest = {
-    dataSourceUid: 456,
+    dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false
   };
 
   cy.request({
     method: "POST",
-    url: "/nbs/api/report/run",
+    url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
     failOnStatusCode: false
   }).as("apiResponse");
@@ -33,13 +37,13 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing reportUi
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing dataSourceUid", () => {
   const invalidRequest = {
-    reportUid: 123,
+    reportUid: VALID_REPORT_UID,
     isExport: false
   };
 
   cy.request({
     method: "POST",
-    url: "/nbs/api/report/run",
+    url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
     failOnStatusCode: false
   }).as("apiResponse");
@@ -47,13 +51,13 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing dataSour
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing isExport", () => {
   const invalidRequest = {
-    reportUid: 123,
-    dataSourceUid: 456
+    reportUid: VALID_REPORT_UID,
+    dataSourceUid: VALID_DATA_SOURCE_UID
   };
 
   cy.request({
     method: "POST",
-    url: "/nbs/api/report/run",
+    url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
     failOnStatusCode: false
   }).as("apiResponse");
@@ -62,13 +66,13 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing isExport
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with reportUid as string", () => {
   const invalidRequest = {
     reportUid: "invalid",
-    dataSourceUid: 456,
+    dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false
   };
 
   cy.request({
     method: "POST",
-    url: "/nbs/api/report/run",
+    url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
     failOnStatusCode: false
   }).as("apiResponse");
@@ -76,14 +80,14 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with reportUid as str
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with dataSourceUid as string", () => {
   const invalidRequest = {
-    reportUid: 123,
+    reportUid: VALID_REPORT_UID,
     dataSourceUid: "invalid",
     isExport: false
   };
 
   cy.request({
     method: "POST",
-    url: "/nbs/api/report/run",
+    url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
     failOnStatusCode: false
   }).as("apiResponse");
@@ -91,14 +95,14 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with dataSourceUid as
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with isExport as string", () => {
   const invalidRequest = {
-    reportUid: 123,
-    dataSourceUid: 456,
+    reportUid: VALID_REPORT_UID,
+    dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: "invalid"
   };
 
   cy.request({
     method: "POST",
-    url: "/nbs/api/report/run",
+    url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
     failOnStatusCode: false
   }).as("apiResponse");
@@ -106,8 +110,8 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with isExport as stri
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid BasicFilter", () => {
   const invalidRequest = {
-    reportUid: 123,
-    dataSourceUid: 456,
+    reportUid: VALID_REPORT_UID,
+    dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false,
     filters: [{
       type: "BasicFilter",
@@ -119,7 +123,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid BasicFil
 
   cy.request({
     method: "POST",
-    url: "/nbs/api/report/run",
+    url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
     failOnStatusCode: false
   }).as("apiResponse");
@@ -127,8 +131,8 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid BasicFil
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid AdvancedFilter", () => {
   const invalidRequest = {
-    reportUid: 123,
-    dataSourceUid: 456,
+    reportUid: VALID_REPORT_UID,
+    dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false,
     filters: [{
       type: "AdvancedFilter",
@@ -139,7 +143,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid Advanced
 
   cy.request({
     method: "POST",
-    url: "/nbs/api/report/run",
+    url: REPORT_RUN_ENDPOINT,
     body: invalidRequest,
     failOnStatusCode: false
   }).as("apiResponse");
