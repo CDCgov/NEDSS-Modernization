@@ -1,6 +1,6 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
-const REPORT_EXPORT_ENDPOINT = "http://localhost:8080/nbs/api/report/export";
+const REPORT_EXPORT_ENDPOINT = `${Cypress.config().baseUrl}nbs/api/report/export`;
 const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
 
