@@ -16,6 +16,16 @@ function buildRequest(body, action) {
   };
 }
 
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with a valid report execution request", (action) => {
+  const validRequest = {
+    reportUid: VALID_REPORT_UID,
+    dataSourceUid: VALID_DATA_SOURCE_UID,
+    isExport: false
+  };
+  
+  cy.request(buildRequest(validRequest, action)).as("apiResponse");
+});
+
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing reportUid", (action) => {
   const invalidRequest = {
     dataSourceUid: VALID_DATA_SOURCE_UID,

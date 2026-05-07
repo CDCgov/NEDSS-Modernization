@@ -3,6 +3,11 @@ Feature: Run Report API Validation
   Background:
     Given I am logged in as secure user
 
+  Scenario: Run report with valid request body
+    When I send a POST request to /nbs/api/report/run with a valid report execution request
+    Then the response status should be 200
+    Then the response should contain a report result
+
   Scenario: Run report with missing reportUid
     When I send a POST request to /nbs/api/report/run with missing reportUid
     Then the response status should be 422
