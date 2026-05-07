@@ -35,37 +35,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         'Disease Code',
     ]
 
-    def test_execute_report_with_days_value(self, snapshot):
-        """Test with a specific days value (e.g., 365 days)."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'potntl_dup_inv_sum',
-                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
-                'days_value': 365,
-            }
-        )
-
-        result = execute_report(report_spec)
-        assert result.content_type == 'table'
-        assert result.header == 'Potential Duplicate Investigations'
-        assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
-
-        data = result.content
-        assert len(data.data) >= 0
-        assert len(data.data[0]) == len(data.columns) if data.data else True
-
-        snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
-
-        # Verify column structure
-        for col in self.expected_columns:
-            data.get_column(col)
-
-    def test_execute_report_no_days_value(self):
+    def test_execute_report_check_data(self, snapshot):
         """Test with no days_value - should default to 3650."""
         report_spec = ReportSpec.model_validate(
             {
@@ -88,6 +58,36 @@ class TestIntegrationNbsSrDupInvLibrary:
 
         data = result.content
         assert len(data.data) >= 0
+
+        snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
+
+        # Verify column structure
+        for col in self.expected_columns:
+            data.get_column(col)
+
+    def test_execute_report_with_days_value(self):
+        """Test with a specific days value (e.g., 365 days)."""
+        report_spec = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'Potential Duplicate Investigations',
+                'library_name': 'potntl_dup_inv_sum',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
+                'days_value': 365,
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+        assert result.header == 'Potential Duplicate Investigations'
+        assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
+
+        data = result.content
+        assert len(data.data) >= 0
+        assert len(data.data[0]) == len(data.columns) if data.data else True
 
         # Verify column structure
         for col in self.expected_columns:
