@@ -1251,20 +1251,6 @@
   - '10110'
 - !!python/tuple
   - PSN_DUP_6_GA01
-  - Christopher
-  - Phillips
-  - 2000-11-03 00:00:00
-  - CAS27637794GA01
-  - 2019 Novel Coronavirus
-  - Probable
-  - 2025-10-24 12:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2016'
-  - null
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_6_GA01
   - Robert
   - Sanders
   - 1963-02-12 00:00:00
@@ -1276,6 +1262,20 @@
   - !!python/object/apply:decimal.Decimal
     - '2026'
   - COMPLETED
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Christopher
+  - Phillips
+  - 2000-11-03 00:00:00
+  - CAS27637794GA01
+  - 2019 Novel Coronavirus
+  - Probable
+  - 2025-10-24 12:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2016'
+  - null
   - '10110'
 - !!python/tuple
   - PSN_DUP_6_GA01
