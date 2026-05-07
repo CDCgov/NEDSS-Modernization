@@ -2,6 +2,7 @@ import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
+const VALID_REPORT_FILTER_UID = 1;
 
 function buildRequest(body, action) {
   return {
@@ -99,7 +100,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with invalid bas
     dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false,
     basicFilters: [{
-      reportFilterUid: VALID_REPORT_UID,
+      reportFilterUid: VALID_REPORT_FILTER_UID,
       values: null  //  Cannot be null
     }]
   };
@@ -113,7 +114,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with an invalid 
     dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false,
     advancedFilter: {
-      reportFilterUid: VALID_REPORT_UID,
+      reportFilterUid: VALID_REPORT_FILTER_UID,
       logic: null   // Logic cannot be null
     }
   };
