@@ -44,10 +44,10 @@ public class WhereClauseService {
     // StringJoiner provides the "WHERE " prefix and " AND " delimiters between filter statements
     StringJoiner finalWhere = new StringJoiner(SQL_AND, "WHERE ", "");
 
-    String basicWherefragment =
+    String basicWhereFragment =
         buildBasicWhereFragment(reportConfig, executionRequest.basicFilters());
 
-    finalWhere.add(basicWherefragment);
+    finalWhere.add(basicWhereFragment);
 
     // Only return the WHERE clause if it contains anything beyond the initial "WHERE " prefix
     return finalWhere.length() > 6 ? finalWhere.toString() : "";
