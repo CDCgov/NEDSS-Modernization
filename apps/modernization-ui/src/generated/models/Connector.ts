@@ -9,16 +9,9 @@ export type Connector = (Expr & {
     left?: (Clause | Connector);
     right?: (Clause | Connector);
 } & {
-    operator?: Connector.operator;
-    left?: any;
-    right?: any;
-} & {
     operator: Connector.operator;
     left: (Clause | Connector);
     right: (Clause | Connector);
-    operator: Connector.operator;
-    left: any;
-    right: any;
 });
 export namespace Connector {
     export enum operator {
