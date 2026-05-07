@@ -70,4 +70,4 @@ jobs:
 
       - name: Run tests
         working-directory: ./apps/report-execution
-        run: uv run --env-file sample.env pytest -m integration
+        run: uv run --env-file sample.env pytest -m integration --snapshot-update
