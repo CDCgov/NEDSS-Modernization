@@ -1,10 +1,12 @@
 import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
 import { useController } from 'react-hook-form';
 import QueryBuilder, {
+    DragHandleProps,
     Field,
     formatQuery,
     isRuleGroupType,
     isRuleType,
+    move,
     Operator,
     QueryValidator,
     RuleGroupType,
@@ -16,8 +18,15 @@ import 'react-querybuilder/dist/query-builder.css';
 import { ReportExecuteForm } from '../ReportRunPage';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
-import { createDndKitAdapter } from '@react-querybuilder/dnd/dnd-kit';
-import * as DndKit from '@dnd-kit/core';
+import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
+import {
+    draggable,
+    dropTargetForElements,
+    monitorForElements,
+} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
+import { forwardRef, ForwardRefExoticComponent, KeyboardEventHandler, RefAttributes, useEffect, useState } from 'react';
+import { ActiveIdProvider, useActiveId } from './useActiveId';
 
 // ============= Constants ============= /
 
@@ -127,9 +136,11 @@ const INPUT_TYPE_MAP: Record<string, string> = {
 
 type Expr = RuleGroup | Rule;
 
+const isRuleGroup = (e: Expr): e is RuleGroup => 'rules' in e;
+
 // map rules and remove any extraneous fields
 function mapExprRules(rule: Expr, mapper: (r: Rule) => Rule): Expr {
-    if ('rules' in rule) {
+    if (isRuleGroup(rule)) {
         const { id, combinator, rules } = rule;
         return { id, combinator, rules: rules.map((r) => mapExprRules(r, mapper)) };
     }
@@ -138,7 +149,7 @@ function mapExprRules(rule: Expr, mapper: (r: Rule) => Rule): Expr {
 }
 // filter rules
 function filterExprRules(rule: Expr, filterer: (r: Rule) => boolean): Expr {
-    if ('rules' in rule) {
+    if (isRuleGroup(rule)) {
         const { id, combinator, rules } = rule;
         return {
             id,
@@ -253,7 +264,79 @@ const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: Valida
 
 // ============= Drag And Drop ============= /
 
-const dndKitAdapter = createDndKitAdapter(DndKit);
+const pragmaticDndAdapter = createPragmaticDndAdapter({
+    draggable,
+    dropTargetForElements,
+    monitorForElements,
+    combine,
+});
+
+// custom drag handle to add shifting action on keyboard up down when space enabled
+const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttributes<HTMLSpanElement>> = forwardRef<
+    HTMLSpanElement,
+    DragHandleProps
+>((props, dragRef) => {
+    const { activeId, setActiveId } = useActiveId();
+    const id = props.ruleOrGroup.id!;
+    const [isActive, setIsActive] = useState<boolean>(activeId === id);
+    const { getQuery, dispatchQuery } = props.schema;
+
+    // When a rule group changes level, the component re-mounts and we need to move focus
+    // back to the drag handle
+    useEffect(() => {
+        if (isActive) {
+            const thisEl = document.querySelector<HTMLSpanElement>(`#drag-handle-${id}`);
+            thisEl?.focus();
+        }
+    }, []);
+
+    const handleKeyDown: KeyboardEventHandler = (event) => {
+        // space toggles, escape will turn off activity if active
+        if (event.code === 'Space') {
+            if (!isActive) {
+                setIsActive(true);
+                setActiveId(id);
+            } else {
+                setIsActive(false);
+                setActiveId(null);
+            }
+            return;
+        } else if (isActive && event.code === 'Escape') {
+            setIsActive(false);
+            setActiveId(null);
+            return;
+        }
+
+        if (!isActive) return;
+
+        let dir: 'up' | 'down' | undefined = undefined;
+        if (event.code === 'ArrowUp') {
+            dir = 'up';
+        } else if (event.code === 'ArrowDown') {
+            dir = 'down';
+        }
+
+        if (!dir) return;
+
+        // move the rule and update the query
+        const nextQuery = move(getQuery(), props.path, dir);
+        dispatchQuery(nextQuery);
+    };
+
+    return (
+        <span
+            id={`drag-handle-${id}`}
+            data-testid={`drag-handle-${id}`}
+            ref={dragRef}
+            className={props.className}
+            title={props.title}
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+        >
+            {props.label}
+        </span>
+    );
+});
 
 // ============= Componentry ============= /
 
@@ -280,18 +363,21 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     return (
         <div>
             {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
-            <QueryBuilderDnD dnd={dndKitAdapter} updateWhileDragging={false}>
-                <QueryBuilder
-                    fields={fields}
-                    query={value}
-                    validator={validator}
-                    onQueryChange={onChange}
-                    addRuleToNewGroups={true}
-                    autoSelectField={false}
-                    autoSelectOperator={false}
-                    autoSelectValue={false}
-                />
-            </QueryBuilderDnD>
+            <ActiveIdProvider>
+                <QueryBuilderDnD dnd={pragmaticDndAdapter} updateWhileDragging={false}>
+                    <QueryBuilder
+                        fields={fields}
+                        query={value}
+                        validator={validator}
+                        onQueryChange={onChange}
+                        addRuleToNewGroups={true}
+                        autoSelectField={false}
+                        autoSelectOperator={false}
+                        autoSelectValue={false}
+                        controlElements={{ dragHandle: ShiftableDragHandle }}
+                    />
+                </QueryBuilderDnD>
+            </ActiveIdProvider>
             <PreviewWhere query={value} />
         </div>
     );

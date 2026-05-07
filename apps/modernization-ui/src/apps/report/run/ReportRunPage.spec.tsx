@@ -1678,5 +1678,177 @@ describe('report run page', () => {
                 }),
             });
         });
+
+        it('has keyboard drag and drop', async () => {
+            const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                ...MOCK_CONFIG,
+                advancedFilter: {
+                    ...MOCK_FILTER,
+                    defaultValue: {
+                        id: '123-123-123',
+                        combinator: generated.RuleGroup.combinator.OR,
+                        rules: [
+                            {
+                                id: '124-124-124',
+                                field: '2001',
+                                operator: 'SW',
+                                value: 'prefix',
+                            },
+                            {
+                                id: '125-125-125',
+                                combinator: generated.RuleGroup.combinator.AND,
+                                rules: [
+                                    {
+                                        id: '127-127-127',
+                                        field: '2003',
+                                        operator: 'BW',
+                                        value: '10,20',
+                                    },
+                                ],
+                            },
+                            {
+                                id: '128-128-128',
+                                combinator: generated.RuleGroup.combinator.OR,
+                                rules: [
+                                    {
+                                        id: '129-129-129',
+                                        field: '2002',
+                                        operator: 'GT',
+                                        value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
+                                    },
+                                    {
+                                        id: '130-130-130',
+                                        field: '2003',
+                                        operator: 'BW',
+                                        value: '10,20',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                },
+            });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, findByText, findByRole, findByTestId, findAllByTestId } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Advanced Filter')).toBeVisible();
+
+            const user = userEvent.setup();
+            const ruleGroupHandle = async () => await findByTestId('drag-handle-128-128-128');
+
+            let ruleGroups = await findAllByTestId('rule-group');
+            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+            // activate handle and move up into above group
+            await user.type(await ruleGroupHandle(), ' ');
+            await user.type(await ruleGroupHandle(), '{ArrowUp}');
+
+            ruleGroups = await findAllByTestId('rule-group');
+            expect(await ruleGroupHandle()).toHaveFocus();
+            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+            // move back down and make sure restores
+            await user.type(await ruleGroupHandle(), '{ArrowDown}');
+
+            ruleGroups = await findAllByTestId('rule-group');
+            expect(await ruleGroupHandle()).toHaveFocus();
+            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+            // move back up and above rule and deactivate
+            await user.type(await ruleGroupHandle(), '{ArrowUp}{ArrowUp} ');
+
+            ruleGroups = await findAllByTestId('rule-group');
+            expect(await ruleGroupHandle()).toHaveFocus();
+            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+            // nothing should change, since not active
+            await user.type(await ruleGroupHandle(), '{ArrowUp}');
+
+            ruleGroups = await findAllByTestId('rule-group');
+            expect(await ruleGroupHandle()).toHaveFocus();
+            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+            // check escape handling works,
+            await user.type(await ruleGroupHandle(), ' {ArrowUp}{Escape}{ArrowDown}');
+
+            // groups 1 and 2 swap positions in order
+            ruleGroups = await findAllByTestId('rule-group');
+            expect(await ruleGroupHandle()).toHaveFocus();
+            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[2]).not.toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: {
+                        reportFilterUid: 1001,
+                        value: {
+                            id: '123-123-123',
+                            combinator: generated.RuleGroup.combinator.OR,
+                            rules: [
+                                {
+                                    id: '124-124-124',
+                                    field: '2001',
+                                    operator: 'SW',
+                                    value: 'prefix',
+                                },
+                                {
+                                    id: '128-128-128',
+                                    combinator: generated.RuleGroup.combinator.OR,
+                                    rules: [
+                                        {
+                                            id: '129-129-129',
+                                            field: '2002',
+                                            operator: 'GT',
+                                            // format should be mm/dd/yyyy when we switch components
+                                            value: '2020-01-01',
+                                        },
+                                        {
+                                            id: '130-130-130',
+                                            field: '2003',
+                                            operator: 'BW',
+                                            value: '10,20',
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: '125-125-125',
+                                    combinator: generated.RuleGroup.combinator.AND,
+                                    rules: [
+                                        {
+                                            id: '127-127-127',
+                                            field: '2003',
+                                            operator: 'BW',
+                                            value: '10,20',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                    basicFilters: [],
+                }),
+            });
+        });
     });
 });
