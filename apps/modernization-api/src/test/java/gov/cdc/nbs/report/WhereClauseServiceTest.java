@@ -365,4 +365,42 @@ class WhereClauseServiceTest {
         .isEqualTo(
             "WHERE ([ColumnName] IN ('A')) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL))");
   }
+
+  @Test
+  void should_throw_exception_when_values_mismatch_due_to_nulls() {
+    Long filterUid = 100L;
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, 2L, false, "BAS_TXT");
+    ReportColumn reportColumn = mockReportColumn(2L, "STRING", "ColumnName");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    // Request contains a null which is stripped by the stream, triggering the validation check
+    List<BasicFilterRequest> request =
+        List.of(new BasicFilterRequest(filterUid, java.util.Arrays.asList("Active", null), false));
+
+    assertThatThrownBy(() -> mockWhereClauseService.buildBasicWhereFragment(reportConfig, request))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("Expected 2 values but only 1 were successfully formatted");
+  }
+
+  @Test
+  void should_throw_exception_when_input_values_result_in_zero_formatted_values() {
+    Long filterUid = 100L;
+    Long columnUid = 2L;
+
+    // Setup config and column
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "BAS_TXT");
+    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    // Request with ONLY null values.
+    // The .filter(Objects::nonNull) will strip these, leaving formattedValues empty.
+    List<BasicFilterRequest> request =
+        List.of(new BasicFilterRequest(filterUid, java.util.Arrays.asList(null, null), false));
+
+    assertThatThrownBy(() -> mockWhereClauseService.buildBasicWhereFragment(reportConfig, request))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("No valid formatted values produced for column: ColumnName");
+  }
 }

@@ -130,6 +130,20 @@ public class WhereClauseService {
             .map(v -> fieldFormatter.formatField(column.columnSourceTypeCode(), v))
             .toList();
 
+    // Throw if no values were produced but values were expected
+    if (!values.isEmpty() && formattedValues.isEmpty()) {
+      throw new IllegalArgumentException(
+          "No valid formatted values produced for column: " + column.columnName());
+    }
+
+    // Throw if the count doesn't match (indicates nulls were filtered or mapping failed)
+    if (formattedValues.size() != values.size()) {
+      throw new IllegalStateException(
+          String.format(
+              "Value mismatch for column [%s]: Expected %d values but only %d were successfully formatted",
+              column.columnName(), values.size(), formattedValues.size()));
+    }
+
     StringBuilder criteria = new StringBuilder("(");
     String colName = "[" + column.columnName() + "]"; // Brackets protect against SQL reserved words
     boolean hasValues = !formattedValues.isEmpty();
