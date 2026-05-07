@@ -138,7 +138,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/export with invalid basic
     isExport: false,
     basicFilters: [{
       reportFilterUid: VALID_REPORT_UID,
-      values: []  //  Cannot be empty
+      values: null  //  Cannot be null
     }]
   };
 
