@@ -1,8 +1,20 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
-const REPORT_RUN_ENDPOINT = "http://localhost:8080/nbs/api/report/run";
+const REPORT_RUN_ENDPOINT = `${Cypress.config().baseUrl}nbs/api/report/run`;
 const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
+
+function buildRequest(body) {
+  return {
+    method: "POST",
+    url: REPORT_RUN_ENDPOINT,
+    body,
+    failOnStatusCode: false,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+}
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing reportUid", () => {
   const invalidRequest = {
@@ -11,15 +23,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing reportUi
     isExport: false
   };
 
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: invalidRequest,
-    failOnStatusCode: false,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).as("apiResponse");
+  cy.request(buildRequest(invalidRequest)).as("apiResponse");
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing dataSourceUid", () => {
@@ -28,15 +32,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing dataSour
     isExport: false
   };
 
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: invalidRequest,
-    failOnStatusCode: false,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).as("apiResponse");
+  cy.request(buildRequest(invalidRequest)).as("apiResponse");
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing isExport", () => {
@@ -45,15 +41,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing isExport
     dataSourceUid: VALID_DATA_SOURCE_UID
   };
 
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: invalidRequest,
-    failOnStatusCode: false,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).as("apiResponse");
+  cy.request(buildRequest(invalidRequest)).as("apiResponse");
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with negative reportUid", () => {
@@ -63,12 +51,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with negative reportU
     isExport: false
   };
 
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: invalidRequest,
-    failOnStatusCode: false
-  }).as("apiResponse");
+  cy.request(buildRequest(invalidRequest)).as("apiResponse");
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with negative dataSourceUid", () => {
@@ -78,12 +61,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with negative dataSou
     isExport: false
   };
 
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: invalidRequest,
-    failOnStatusCode: false
-  }).as("apiResponse");
+  cy.request(buildRequest(invalidRequest)).as("apiResponse");
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with reportUid as string", () => {
@@ -93,12 +71,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with reportUid as str
     isExport: false
   };
 
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: invalidRequest,
-    failOnStatusCode: false
-  }).as("apiResponse");
+  cy.request(buildRequest(invalidRequest)).as("apiResponse");
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with dataSourceUid as string", () => {
@@ -108,12 +81,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with dataSourceUid as
     isExport: false
   };
 
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: invalidRequest,
-    failOnStatusCode: false
-  }).as("apiResponse");
+  cy.request(buildRequest(invalidRequest)).as("apiResponse");
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/run with isExport as string", () => {
