@@ -70,11 +70,4 @@ jobs:
 
       - name: Run tests
         working-directory: ./apps/report-execution
-        run: uv run --env-file sample.env pytest -m integration --snapshot-update
-      
-      - name: Upload updated snapshots
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: updated-snapshots
-          path: apps/report-execution/tests/integration/libraries/snapshots/potntl_dup_inv_sum/snapshot.yml
+        run: uv run --env-file sample.env pytest -m integration
