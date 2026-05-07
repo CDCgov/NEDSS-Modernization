@@ -126,6 +126,7 @@ public class WhereClauseService {
     // Delegate type-specific escaping and quoting to the FieldFormatter
     List<String> formattedValues =
         values.stream()
+            .filter(Objects::nonNull)
             .map(v -> fieldFormatter.formatField(column.columnSourceTypeCode(), v))
             .toList();
 

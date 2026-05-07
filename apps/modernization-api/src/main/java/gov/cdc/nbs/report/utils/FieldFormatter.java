@@ -5,6 +5,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +14,7 @@ public class FieldFormatter {
     return switch (type.toUpperCase()) {
       case "STRING" -> "'" + value.replace("'", "''") + "'";
       case "DATE" -> convertToSQLDate(value);
-      case "INTEGER", "NUMBER" -> value;
+      case "INTEGER", "NUMBER" -> validateNumeric(value);
       default -> throw new IllegalArgumentException("Unexpected Column Type: " + type);
     };
   }
@@ -26,7 +27,7 @@ public class FieldFormatter {
     } catch (DateTimeParseException e) {
       throw new IllegalArgumentException("Can't Convert Date: " + date);
     }
-    // Produces '2023-12-31'
+    // Produces 'YYYY-MM-DD'
     return "'" + localDate.toString() + "'";
   }
 
@@ -67,5 +68,13 @@ public class FieldFormatter {
     } catch (DateTimeParseException e) {
       throw new IllegalArgumentException("Can't Convert Date: " + date);
     }
+  }
+
+  /** Validates that the input is a well-formed number to prevent SQL Injection. */
+  private String validateNumeric(String value) {
+    if (NumberUtils.isCreatable(value)) {
+      return value;
+    }
+    throw new IllegalArgumentException("Invalid numeric input: " + value);
   }
 }

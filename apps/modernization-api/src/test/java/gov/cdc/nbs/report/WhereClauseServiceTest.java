@@ -2,9 +2,6 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
@@ -20,24 +17,19 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class WhereClauseServiceTest {
 
-  @Mock private FieldFormatter fieldFormatter;
-
   private WhereClauseService mockWhereClauseService;
 
   @BeforeEach
   void setUp() {
+    // Instantiate the REAL formatter
+    FieldFormatter fieldFormatter = new FieldFormatter();
     mockWhereClauseService = new WhereClauseService(fieldFormatter);
-    // Default behavior for formatter: return value as is
-    Mockito.lenient()
-        .when(fieldFormatter.formatField(anyString(), anyString()))
-        .thenAnswer(ff -> ff.getArgument(1));
   }
 
   private ReportConfiguration createReportConfig(
@@ -66,11 +58,11 @@ class WhereClauseServiceTest {
         reportFilterUid,
         reportColumnUid,
         filterDefaultValues,
+        defaultIncludeNulls,
         null,
         null,
         null,
-        mockType,
-        defaultIncludeNulls);
+        mockType);
   }
 
   private ReportColumn mockReportColumn(Long id, String columnSourceTypeCode, String columnName) {
@@ -88,7 +80,6 @@ class WhereClauseServiceTest {
 
     Long filterUid = 100L;
     Long columnUid = 2L;
-
     String filterDefaultValue = "condition1";
 
     List<BasicFilterConfiguration> basicFilterConfigs =
@@ -107,7 +98,7 @@ class WhereClauseServiceTest {
     String whereFragment =
         mockWhereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequest);
 
-    assertThat(whereFragment).isEqualTo("([ColumnName] IN (condition1))");
+    assertThat(whereFragment).isEqualTo("([ColumnName] IN ('condition1'))");
   }
 
   @Test
@@ -133,7 +124,7 @@ class WhereClauseServiceTest {
 
     String whereFragment = mockWhereClauseService.buildBasicWhereFragment(reportConfig, request);
 
-    assertThat(whereFragment).isEqualTo("([ColumnName1] IN (A)) AND ([ColumnName2] IN (B))");
+    assertThat(whereFragment).isEqualTo("([ColumnName1] IN ('A')) AND ([ColumnName2] IN ('B'))");
   }
 
   @Test
@@ -159,7 +150,7 @@ class WhereClauseServiceTest {
     String whereFragment =
         mockWhereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequest);
 
-    assertThat(whereFragment).isEqualTo("([ColumnName] IN (condition1) OR [ColumnName] IS NULL)");
+    assertThat(whereFragment).isEqualTo("([ColumnName] IN ('condition1') OR [ColumnName] IS NULL)");
   }
 
   @Test
@@ -194,9 +185,6 @@ class WhereClauseServiceTest {
     ReportColumn reportColumn = mockReportColumn(columnUid, "DATE", "date_column");
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
 
-    when(fieldFormatter.convertToSQLFromDateRange(any()))
-        .thenReturn(List.of("'2023-01-01'", "'2023-01-31'"));
-
     List<BasicFilterRequest> request =
         List.of(new BasicFilterRequest(filterUid, List.of("01/2023", "01/2023"), false));
 
@@ -215,9 +203,6 @@ class WhereClauseServiceTest {
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "DATE", "date_column");
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
-
-    when(fieldFormatter.convertToSQLFromDateRange(any()))
-        .thenReturn(List.of("'2023-01-01'", "'2023-01-31'"));
 
     List<BasicFilterRequest> request =
         List.of(new BasicFilterRequest(filterUid, List.of("01/2023", "01/2023"), true));
@@ -285,13 +270,6 @@ class WhereClauseServiceTest {
     // The -- at the end comments out the rest of your generated query (the closing parentheses)
     String maliciousInput = "'); DROP TABLE Reports; --";
 
-    // We mock the FieldFormatter's job: it must escape the single quote
-    // Result: ''); DROP TABLE Reports; --'
-    String escapedInput = "''); DROP TABLE Reports; --'";
-
-    // We expect the formatter to turn the ' into ''
-    when(fieldFormatter.formatField(anyString(), eq(maliciousInput))).thenReturn(escapedInput);
-
     List<BasicFilterRequest> request =
         List.of(new BasicFilterRequest(filterUid, List.of("good_text", maliciousInput), false));
 
@@ -299,7 +277,7 @@ class WhereClauseServiceTest {
 
     // The output should treat the entire malicious string as a literal value
     assertThat(whereFragment)
-        .isEqualTo("([ColumnName] IN (good_text, ''); DROP TABLE Reports; --'))");
+        .isEqualTo("([ColumnName] IN ('good_text', '''); DROP TABLE Reports; --'))");
   }
 
   @Test
@@ -340,8 +318,7 @@ class WhereClauseServiceTest {
     // Create a config where filterType is null
     BasicFilterConfiguration config =
         new BasicFilterConfiguration(
-            filterUid, columnUid, List.of(), null, null, null, null, // FilterType is null
-            false);
+            filterUid, columnUid, List.of(), false, null, null, null, null);
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
@@ -374,21 +351,18 @@ class WhereClauseServiceTest {
     ReportConfiguration reportConfig =
         createReportConfig(List.of(config, config2), List.of(reportColumn, reportColumn2));
 
-    when(fieldFormatter.convertToSQLFromDateRange(any()))
-        .thenReturn(List.of("'2023-01-01'", "'2024-01-01'"));
-
     // Wrap in the execution request
     ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
     when(executionRequest.basicFilters())
         .thenReturn(
             List.of(
                 new BasicFilterRequest(filterUid, List.of("A"), false),
-                new BasicFilterRequest(filterUid2, List.of("2023-01-01", "2024-01-01"), true)));
+                new BasicFilterRequest(filterUid2, List.of("01/01/2023", "01/01/2024"), true)));
 
     String result = mockWhereClauseService.buildWhereClause(reportConfig, executionRequest);
 
     assertThat(result)
         .isEqualTo(
-            "WHERE ([ColumnName] IN (A)) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL))");
+            "WHERE ([ColumnName] IN ('A')) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL))");
   }
 }

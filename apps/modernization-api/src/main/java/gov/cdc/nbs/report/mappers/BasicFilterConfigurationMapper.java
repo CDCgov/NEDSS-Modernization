@@ -30,10 +30,10 @@ public class BasicFilterConfigurationMapper {
 
     // For the future: A list of strings may end up being too simple for all use cases,
     // may need to evolve to be a small object with a key and value
-    List<String> defaultValue = null;
+    List<String> defaultValues = null;
     Boolean defaultIncludeNulls = false;
     if (filter.getFilterValues() != null) {
-      defaultValue =
+      defaultValues =
           filter.getFilterValues().stream()
               .filter(v -> !v.getOperator().equals("ALLOW_NULLS"))
               .map(FilterValue::getValueTxt)
@@ -44,11 +44,11 @@ public class BasicFilterConfigurationMapper {
     return new BasicFilterConfiguration(
         filter.getId(),
         columnUid,
-        defaultValue,
+        defaultValues,
+        defaultIncludeNulls,
         filter.getMinValueCnt(),
         filter.getMaxValueCnt(),
         isRequired,
-        filterType,
-        defaultIncludeNulls);
+        filterType);
   }
 }

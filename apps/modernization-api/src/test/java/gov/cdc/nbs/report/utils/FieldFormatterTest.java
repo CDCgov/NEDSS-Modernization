@@ -44,11 +44,11 @@ class FieldFormatterTest {
     assertThat(monthResult.get(1)).isEqualTo("'2024-02-29'"); // Leap year check
 
     // Test yyyy Range
-    List<String> yearRange = List.of("2023", "2023");
+    List<String> yearRange = List.of("2023", "2024");
     List<String> yearResult = formatter.convertToSQLFromDateRange(yearRange);
 
     assertThat(yearResult.get(0)).isEqualTo("'2023-01-01'");
-    assertThat(yearResult.get(1)).isEqualTo("'2023-12-31'");
+    assertThat(yearResult.get(1)).isEqualTo("'2024-12-31'");
   }
 
   @Test
@@ -78,5 +78,21 @@ class FieldFormatterTest {
     assertThatThrownBy(() -> formatter.convertToSQLFromDateRange(tooShort))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Date range must contain exactly two values.");
+
+    List<String> tooLong = List.of("2023", "2024", "2025");
+    assertThatThrownBy(() -> formatter.convertToSQLFromDateRange(tooLong))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Date range must contain exactly two values.");
+  }
+
+  @Test
+  void should_throw_exception_for_malicious_numeric_input() {
+    assertThatThrownBy(() -> formatter.formatField("NUMBER", "1; DROP TABLE Reports"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Invalid numeric input");
+
+    assertThatThrownBy(() -> formatter.formatField("INTEGER", "1 OR 1=1"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Invalid numeric input");
   }
 }
