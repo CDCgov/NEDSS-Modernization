@@ -1,13 +1,12 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
-const REPORT_RUN_ENDPOINT = `${Cypress.config().baseUrl}nbs/api/report/run`;
 const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
 
-function buildRequest(body) {
+function buildRequest(body, action) {
   return {
     method: "POST",
-    url: REPORT_RUN_ENDPOINT,
+    url: `${Cypress.config().baseUrl}nbs/api/report/${action}`,
     body,
     failOnStatusCode: false,
     headers: {
@@ -16,90 +15,85 @@ function buildRequest(body) {
   };
 }
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing reportUid", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing reportUid", (action) => {
   const invalidRequest = {
     dataSourceUid: VALID_DATA_SOURCE_UID,
     reportUid: null,
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest)).as("apiResponse");
+  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing dataSourceUid", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing dataSourceUid", (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest)).as("apiResponse");
+  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with missing isExport", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing isExport", (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID
   };
 
-  cy.request(buildRequest(invalidRequest)).as("apiResponse");
+  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with negative reportUid", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with negative reportUid", (action) => {
   const invalidRequest = {
     reportUid: -1,
     dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest)).as("apiResponse");
+  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with negative dataSourceUid", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with negative dataSourceUid", (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: -1,
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest)).as("apiResponse");
+  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with reportUid as string", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with reportUid as string", (action) => {
   const invalidRequest = {
     reportUid: "invalid-reportUid",
     dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest)).as("apiResponse");
+  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with dataSourceUid as string", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with dataSourceUid as string", (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: "invalid-dataSourceUid",
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest)).as("apiResponse");
+  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with isExport as string", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with isExport as string", (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
     isExport: "invalid-isExport"
   };
 
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: invalidRequest,
-    failOnStatusCode: false
-  }).as("apiResponse");
+  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid basic filters", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with invalid basic filters", (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -110,15 +104,10 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with invalid basic fi
     }]
   };
 
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: invalidRequest,
-    failOnStatusCode: false
-  }).as("apiResponse");
+  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/run with an invalid advanced filter", () => {
+When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with an invalid advanced filter", (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -129,21 +118,16 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/run with an invalid advan
     }
   };
 
-  cy.request({
-    method: "POST",
-    url: REPORT_RUN_ENDPOINT,
-    body: invalidRequest,
-    failOnStatusCode: false
-  }).as("apiResponse");
+  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
 });
 
-Then("the run response status should be {int}", (statusCode) => {
+Then("the response status should be {int}", (statusCode) => {
   cy.get("@apiResponse").then((response) => {
     expect(response.status).to.eq(statusCode);
   });
 });
 
-Then("the run response should contain a report result", () => {
+Then("the response should contain a report result", () => {
   cy.get("@apiResponse").then((response) => {
     expect(response.body).to.have.property("content_type");
     expect(response.body).to.have.property("content");
@@ -151,7 +135,7 @@ Then("the run response should contain a report result", () => {
   });
 });
 
-Then("the run response should contain validation error for {string}", (fieldName) => {
+Then("the response should contain validation error for {string}", (fieldName) => {
   cy.get("@apiResponse").then((response) => {
     expect(response.status).to.eq(422);
     const bodyString = typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
@@ -159,7 +143,7 @@ Then("the run response should contain validation error for {string}", (fieldName
   });
 });
 
-Then("the run response should contain serialization error for {string}", (fieldName) => {
+Then("the response should contain serialization error for {string}", (fieldName) => {
   cy.get("@apiResponse").then((response) => {
     expect(response.status).to.eq(422);
     const bodyString = typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
