@@ -13,7 +13,7 @@ public class AdvancedFilterConfigurationMapper {
 
     if (!filterType.filterType().equals("ADV_WCB")) {
       throw new IllegalArgumentException(
-          "Cannot advanced filter from non-where clause builder filter");
+          "Cannot create advanced filter from non where clause builder filter");
     }
 
     // For the future: Populate this
