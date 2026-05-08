@@ -22,7 +22,7 @@ public sealed interface Expr {
       @Schema(
               requiredMode = Schema.RequiredMode.REQUIRED,
               allowableValues = {"OR", "AND"})
-          String operator,
+          @NotNull String operator,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Expr left,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Expr right)
       implements Expr {}
