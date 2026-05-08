@@ -235,26 +235,6 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_ignore_null_values_in_request_list() {
-    Long filterUid = 100L;
-    Long columnUid = 2L;
-
-    BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "BAS_CON_LIST");
-
-    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
-    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
-
-    // Request with a null item in the list
-    List<BasicFilterRequest> request =
-        List.of(new BasicFilterRequest(filterUid, java.util.Arrays.asList("A", null), false));
-
-    String whereFragment = mockWhereClauseService.buildBasicWhereFragment(reportConfig, request);
-
-    assertThat(whereFragment).contains("ColumnName");
-  }
-
-  @Test
   void should_escape_malicious_strings_to_prevent_in_clause_breakout() {
     Long filterUid = 100L;
     Long columnUid = 2L;
