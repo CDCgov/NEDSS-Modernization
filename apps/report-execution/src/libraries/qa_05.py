@@ -57,7 +57,7 @@ def execute(
         WHERE
             em.EVENT_TYPE in ('CONTACT')
         GROUP BY em.ADD_USER_ID
-        )
+        ),
         RESULT as (
             SELECT
                 COALESCE(
@@ -70,29 +70,31 @@ def execute(
                 COALESCE(CONTACT.PART_CLUS, 0) as PART_CLUS
             FROM INV
             FULL JOIN LAB_MORB on INV.ADD_USER_ID = LAB_MORB.ADD_USER_ID
-            FULL JOIN CONTACT on INV.ADD_USER_ID = CONTACT.ADD_USER_ID
+            FULL JOIN CONTACT on INV.ADD_USER_ID = CONTACT.ADD_USER_ID 
+                    or LAB_MORB.ADD_USER_ID = CONTACT.ADD_USER_ID
         )
         SELECT 
-            CONCAT(
-                user.PROVIDER_QUICK_CODE, ' - ', user.FIRST_NM, ' ', user.LAST_NM
-            ) as user_qc,
+            TRIM(CONCAT(
+                COALESCE(TRIM(usr.PROVIDER_QUICK_CODE), ' '),
+                ' - ',
+                COALESCE(TRIM(usr.FIRST_NM), ' '),
+                ' ',
+                COALESCE(TRIM(usr.LAST_NM), ' ')
+            )) as user_qc,
             RESULT.OOJ_REFF,
-            user.FIRST_NM,
-            user.LAST_NM,
-            user.PROVIDER_QUICK_CODE,
+            usr.FIRST_NM,
+            usr.LAST_NM,
+            usr.PROVIDER_QUICK_CODE,
             RESULT.ADD_USER_ID,
             RESULT.REACTOR,
             RESULT.PART_CLUS
         FROM RESULT
-        LEFT JOIN rdb.dbo.USER_PROFILE user on user.NEDSS_ENTRY_ID = RESULT.ADD_USER_ID
+        LEFT JOIN rdb.dbo.USER_PROFILE usr on usr.NEDSS_ENTRY_ID = RESULT.ADD_USER_ID
         ORDER BY user_qc
         """
     )
 
-    description = 'to do'
-
     return ReportResult(
         content_type='table',
         content=content,
-        description=description,
     )
