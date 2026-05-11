@@ -7,7 +7,7 @@ public record BasicFilterConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long reportFilterUid,
     Long reportColumnUid,
     List<String> defaultValues,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean defaultIncludeNulls,
+    Boolean defaultIncludeNulls,
     Integer minValueCount,
     Integer maxValueCount,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isRequired,

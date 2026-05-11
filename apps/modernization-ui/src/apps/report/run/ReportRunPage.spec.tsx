@@ -154,9 +154,9 @@ describe('report run page', () => {
                     codeTable: undefined,
                     descTxt: 'Basic Text Filter',
                     code: 'TXT_01',
-                    filterCodeSetName: undefined,
-                    filterType: 'BAS_TXT',
-                    filterName: 'Basic Text Filter',
+                    codeSetName: undefined,
+                    type: 'BAS_TXT',
+                    name: 'Basic Text Filter',
                 },
                 isRequired: false,
             };
@@ -238,9 +238,9 @@ describe('report run page', () => {
                     codeTable: undefined,
                     descTxt: 'Basic Text Filter',
                     code: 'TXT_01',
-                    filterCodeSetName: undefined,
-                    filterType: 'BAS_TXT',
-                    filterName: 'Basic Text Filter',
+                    codeSetName: undefined,
+                    type: 'BAS_TXT',
+                    name: 'Basic Text Filter',
                 },
                 isRequired: true,
                 reportColumnUid: 2001,
@@ -313,7 +313,7 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.getReportConfiguration)
                     .mockResolvedValue({
                         ...MOCK_CONFIG,
-                        basicFilters: [{ ...MOCK_FILTER, defaultValue: ['starter text'] }],
+                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['starter text'] }],
                     });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
@@ -350,9 +350,9 @@ describe('report run page', () => {
                         codeTable: undefined,
                         descTxt: 'Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY',
                         code: 'T_T01',
-                        filterCodeSetName: undefined,
-                        filterType: filterType,
-                        filterName: 'Time Range',
+                        codeSetName: undefined,
+                        type: filterType,
+                        name: 'Time Range',
                     },
                     isRequired: true,
                     reportColumnUid: 2001,
@@ -434,7 +434,7 @@ describe('report run page', () => {
                         .mocked(generated.ReportControllerService.getReportConfiguration)
                         .mockResolvedValue({
                             ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValue: ['01/01/2024', '01/01/2025'] }],
+                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['01/01/2024', '01/01/2025'] }],
                         });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
@@ -474,9 +474,9 @@ describe('report run page', () => {
                     codeTable: undefined,
                     descTxt: 'Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY',
                     code: 'T_T02',
-                    filterCodeSetName: undefined,
-                    filterType: 'BAS_TIM_RANGE_LIST',
-                    filterName: 'Time Period',
+                    codeSetName: undefined,
+                    type: 'BAS_TIM_RANGE_LIST',
+                    name: 'Time Period',
                 },
                 isRequired: true,
                 reportColumnUid: 2001,
@@ -566,7 +566,7 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.getReportConfiguration)
                     .mockResolvedValue({
                         ...MOCK_CONFIG,
-                        basicFilters: [{ ...MOCK_FILTER, defaultValue: ['2024', '2025'] }],
+                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['2024', '2025'] }],
                     });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
@@ -606,9 +606,9 @@ describe('report run page', () => {
                     codeTable: undefined,
                     descTxt: 'Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY',
                     code: 'T_T01',
-                    filterCodeSetName: undefined,
-                    filterType: 'BAS_MM_YYYY_RANGE',
-                    filterName: 'Month Year Range',
+                    codeSetName: undefined,
+                    type: 'BAS_MM_YYYY_RANGE',
+                    name: 'Month Year Range',
                 },
                 isRequired: true,
                 reportColumnUid: 2001,
@@ -702,7 +702,7 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.getReportConfiguration)
                     .mockResolvedValue({
                         ...MOCK_CONFIG,
-                        basicFilters: [{ ...MOCK_FILTER, defaultValue: ['01/2024', '01/2025'] }],
+                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['01/2024', '01/2025'] }],
                     });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
@@ -748,9 +748,9 @@ describe('report run page', () => {
                             codeTable: undefined,
                             descTxt: 'Basic State Filter',
                             code: 'J_S01_N',
-                            filterCodeSetName: undefined,
-                            filterType: 'BAS_JUR_LIST',
-                            filterName: 'State',
+                            codeSetName: undefined,
+                            type: 'BAS_JUR_LIST',
+                            name: 'State',
                         },
                         isRequired: true,
                         maxValueCount: 1,
@@ -839,7 +839,7 @@ describe('report run page', () => {
                             .mocked(generated.ReportControllerService.getReportConfiguration)
                             .mockResolvedValue({
                                 ...MOCK_CONFIG,
-                                basicFilters: [{ ...MOCK_FILTER, defaultValue: ['13'] }],
+                                basicFilters: [{ ...MOCK_FILTER, defaultValues: ['13'] }],
                             });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
@@ -883,9 +883,9 @@ describe('report run page', () => {
                             codeTable: undefined,
                             descTxt: 'Basic State Filter',
                             code: 'J_S01_N',
-                            filterCodeSetName: undefined,
-                            filterType: 'BAS_JUR_LIST',
-                            filterName: 'County',
+                            codeSetName: undefined,
+                            type: 'BAS_JUR_LIST',
+                            name: 'County',
                         },
                         isRequired: true,
                         maxValueCount: -1,
@@ -980,7 +980,7 @@ describe('report run page', () => {
                             .mocked(generated.ReportControllerService.getReportConfiguration)
                             .mockResolvedValue({
                                 ...MOCK_CONFIG,
-                                basicFilters: [{ ...MOCK_FILTER, defaultValue: ['13'] }],
+                                basicFilters: [{ ...MOCK_FILTER, defaultValues: ['13'] }],
                             });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
@@ -1026,13 +1026,13 @@ describe('report run page', () => {
                         codeTable: undefined,
                         descTxt: 'Basic State Filter',
                         code: 'J_S01_N',
-                        filterCodeSetName: undefined,
-                        filterType: 'BAS_JUR_LIST',
-                        filterName: 'State',
+                        codeSetName: undefined,
+                        type: 'BAS_JUR_LIST',
+                        name: 'State',
                     },
                     isRequired: true,
                     maxValueCount: 1,
-                    defaultValue: ['13'],
+                    defaultValues: ['13'],
                     reportColumnUid: 2002,
                 };
 
@@ -1064,9 +1064,9 @@ describe('report run page', () => {
                             codeTable: undefined,
                             descTxt: 'Basic County Filter',
                             code: 'J_C01_N',
-                            filterCodeSetName: undefined,
-                            filterType: 'BAS_JUR_LIST',
-                            filterName: 'County',
+                            codeSetName: undefined,
+                            type: 'BAS_JUR_LIST',
+                            name: 'County',
                         },
                         isRequired: true,
                         maxValueCount: 1,
@@ -1170,7 +1170,7 @@ describe('report run page', () => {
                             .mocked(generated.ReportControllerService.getReportConfiguration)
                             .mockResolvedValue({
                                 ...MOCK_CONFIG,
-                                basicFilters: [STATE_FILTER, { ...MOCK_FILTER, defaultValue: ['13001'] }],
+                                basicFilters: [STATE_FILTER, { ...MOCK_FILTER, defaultValues: ['13001'] }],
                             });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
@@ -1214,9 +1214,9 @@ describe('report run page', () => {
                             codeTable: undefined,
                             descTxt: 'Basic County Filter',
                             code: 'J_C01_N',
-                            filterCodeSetName: undefined,
-                            filterType: 'BAS_JUR_LIST',
-                            filterName: 'County',
+                            fcodeSetName: undefined,
+                            type: 'BAS_JUR_LIST',
+                            name: 'County',
                         },
                         isRequired: true,
                         maxValueCount: -1,
@@ -1326,7 +1326,7 @@ describe('report run page', () => {
                             .mocked(generated.ReportControllerService.getReportConfiguration)
                             .mockResolvedValue({
                                 ...MOCK_CONFIG,
-                                basicFilters: [STATE_FILTER, { ...MOCK_FILTER, defaultValue: ['13001'] }],
+                                basicFilters: [STATE_FILTER, { ...MOCK_FILTER, defaultValues: ['13001'] }],
                             });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
@@ -1386,14 +1386,14 @@ describe('report run page', () => {
                         codeTable: 'nbs_srt..code_value_general',
                         descTxt: 'Basic Condition Filter Including Nulls',
                         code: 'C_D01_N',
-                        filterCodeSetName: 'PHC_TYPE',
-                        filterType: 'BAS_CON_LIST',
-                        filterName: 'Diseases (Including NULLS)',
+                        codeSetName: 'PHC_TYPE',
+                        type: 'BAS_CON_LIST',
+                        name: 'Diseases (Including NULLS)',
                     },
                     isRequired: true,
                     minValueCount: 1,
                     maxValueCount: 1,
-                    defaultValue: [],
+                    defaultValues: [],
                     reportColumnUid: 2001,
                 };
 
@@ -1474,7 +1474,7 @@ describe('report run page', () => {
                         .mocked(generated.ReportControllerService.getReportConfiguration)
                         .mockResolvedValue({
                             ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValue: ['11065'] }],
+                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['11065'] }],
                         });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
@@ -1514,14 +1514,14 @@ describe('report run page', () => {
                         codeTable: 'nbs_srt..code_value_general',
                         descTxt: 'Basic Condition Filter',
                         code: 'C_D01',
-                        filterCodeSetName: 'PHC_TYPE',
-                        filterType: 'BAS_CON_LIST',
-                        filterName: 'Diseases',
+                        codeSetName: 'PHC_TYPE',
+                        type: 'BAS_CON_LIST',
+                        name: 'Diseases',
                     },
                     isRequired: true,
                     minValueCount: 1,
                     maxValueCount: -1,
-                    defaultValue: [],
+                    defaultValues: [],
                     reportColumnUid: 2001,
                 };
 
@@ -1608,7 +1608,7 @@ describe('report run page', () => {
                         .mocked(generated.ReportControllerService.getReportConfiguration)
                         .mockResolvedValue({
                             ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValue: ['11065'] }],
+                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['11065'] }],
                         });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
@@ -1661,14 +1661,14 @@ describe('report run page', () => {
                         codeTable: 'nbs_srte..code_value_general',
                         descTxt: 'Basic Diagnosis Code Filter',
                         code: 'CVG_CUSTOM_N01',
-                        filterCodeSetName: 'CASE_DIAGNOSIS_STD',
-                        filterType: 'BAS_CVG_LIST',
-                        filterName: 'STD Case Diagnosis',
+                        codeSetName: 'CASE_DIAGNOSIS_STD',
+                        type: 'BAS_CVG_LIST',
+                        name: 'STD Case Diagnosis',
                     },
                     isRequired: true,
                     minValueCount: 1,
                     maxValueCount: 1,
-                    defaultValue: [],
+                    defaultValues: [],
                     reportColumnUid: 2001,
                 };
 
@@ -1753,7 +1753,7 @@ describe('report run page', () => {
                         .mocked(generated.ReportControllerService.getReportConfiguration)
                         .mockResolvedValue({
                             ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValue: ['100'] }],
+                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['100'] }],
                         });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
@@ -1795,14 +1795,14 @@ describe('report run page', () => {
                         codeTable: 'nbs_srte..code_value_general',
                         descTxt: 'Basic Diagnosis Code Filter',
                         code: 'CVG_CUSTOM_N01',
-                        filterCodeSetName: 'CASE_DIAGNOSIS_STD',
-                        filterType: 'BAS_CVG_LIST',
-                        filterName: 'STD Case Diagnosis',
+                        codeSetName: 'CASE_DIAGNOSIS_STD',
+                        type: 'BAS_CVG_LIST',
+                        name: 'STD Case Diagnosis',
                     },
                     isRequired: true,
                     minValueCount: 1,
                     maxValueCount: -1,
-                    defaultValue: [],
+                    defaultValues: [],
                     reportColumnUid: 2001,
                 };
 
@@ -1892,7 +1892,7 @@ describe('report run page', () => {
                         .mocked(generated.ReportControllerService.getReportConfiguration)
                         .mockResolvedValue({
                             ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValue: ['200'] }],
+                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['200'] }],
                         });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)

@@ -13,7 +13,7 @@ const CurrentStateProvider = ({ stateFilter, children }: Props) => {
     const stateFilterId = stateFilter?.reportFilterUid;
     const stateVal = useWatch<ReportExecuteForm>({
         name: `basicFilter.${stateFilterId}`,
-        defaultValue: stateFilter?.defaultValue,
+        defaultValue: stateFilter?.defaultValues,
     });
 
     // get first state in case it is used in multi-select

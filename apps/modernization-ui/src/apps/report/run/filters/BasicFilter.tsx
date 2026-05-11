@@ -86,17 +86,17 @@ const BasicFilter = ({
     const id = useId();
     const { control } = useFormContext<ReportExecuteForm>();
     const column = columns.find((c) => c.id === filter.reportColumnUid);
-    const filterDesc = filter.filterType.filterName;
+    const filterDesc = filter.filterType.name;
     // empty string not possible in practice, but appeases typescript
     const label = column?.columnTitle ?? column?.columnName ?? filterDesc ?? '';
     const helperText = label === filterDesc ? undefined : filterDesc;
 
     // Get the actual input handler for this filter type
     const { FilterComponent, getDefaultValue, validationRule } =
-        FILTER_TYPE_MAP[filter.filterType.filterType || ''] ?? TEMP_DEFAULT_FILTER;
+        FILTER_TYPE_MAP[filter.filterType.type || ''] ?? TEMP_DEFAULT_FILTER;
 
     // Don't validate required-ness for uninmplemented filtrs
-    const hasFilter = !!FILTER_TYPE_MAP[filter.filterType.filterType || ''];
+    const hasFilter = !!FILTER_TYPE_MAP[filter.filterType.type || ''];
     const isRequiredValidation = hasFilter && filter.isRequired;
 
     const rules: Pick<RegisterOptions, 'required' | 'validate'> = isRequiredValidation
