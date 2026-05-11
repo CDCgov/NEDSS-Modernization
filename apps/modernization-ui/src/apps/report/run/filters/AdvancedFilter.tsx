@@ -300,10 +300,12 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
                 setIsActive(false);
                 setActiveId(null);
             }
+            event.preventDefault();
             return;
         } else if (isActive && event.code === 'Escape') {
             setIsActive(false);
             setActiveId(null);
+            event.preventDefault();
             return;
         }
 
@@ -321,6 +323,7 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
         // move the rule and update the query
         const nextQuery = move(getQuery(), props.path, dir);
         dispatchQuery(nextQuery);
+        event.preventDefault();
     };
 
     return (
