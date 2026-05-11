@@ -1,4 +1,4 @@
--- Migrate the NBSSR00011.SAS library to the nbs_sr_11 python library
+-- Migrate the NBSSR00012.SAS library to the nbs_sr_11 python library
 
 USE [NBS_ODSE]
 
