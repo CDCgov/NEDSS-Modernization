@@ -56,8 +56,7 @@ class TestIntegrationQa05Library:
                 'library_name': 'qa_05',
                 'data_source_name': '[RDB].[dbo].[V_EVENT_METRIC]',
                 'subset_query': (
-                    'SELECT * FROM [RDB].[dbo].[V_EVENT_METRIC] '
-                    'WHERE 1 = 2'
+                    'SELECT * FROM [RDB].[dbo].[V_EVENT_METRIC] WHERE 1 = 2'
                 ),
             }
         )
@@ -83,10 +82,7 @@ class TestIntegrationQa05Library:
         )
 
         result = execute_report(report_spec)
-        assert (
-            result.header
-            == 'QA05 Number of Records Entered by User ID'
-        )
+        assert result.header == 'QA05 Number of Records Entered by User ID'
         assert result.subheader is None
         assert result.description is None
         assert result.content_type == 'table'

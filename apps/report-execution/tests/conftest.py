@@ -142,7 +142,7 @@ def setup_containers(request):
     request.addfinalizer(teardown)
 
 
-def get_faker_sql(schema_name: str) -> [str]:
+def get_faker_sql(schema_name: str) -> list[str]:
     """Process a fakertable schema and return the sql as a string."""
     faker_path = _faker_schema_path(schema_name)
     target_file_path = os.path.join(os.path.dirname(__file__), 'fake_sql')
@@ -232,7 +232,7 @@ def fake_db_table(request):
 
 
 def insert_fake_data(
-    conn_string: str, sqls: [str], db_tables: list[str], fk_tables: list[str]
+    conn_string: str, sqls: list[str], db_tables: list[str], fk_tables: list[str]
 ):
     """Run sql (inserts expected) into the database pointed to by the connection string.
 
