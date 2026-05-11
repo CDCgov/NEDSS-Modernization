@@ -47,23 +47,14 @@ class ReportSpecBuilderTest {
   }
 
   private BasicFilterConfiguration mockBasicFilterConfiguration(
-      List<String> filterDefaultValues,
-      Long reportFilterUid,
-      Long reportColumnUid) {
+      List<String> filterDefaultValues, Long reportFilterUid, Long reportColumnUid) {
 
     // Mock the FilterType so the real WhereClauseService can route the logic correctly
     FilterType filterType = Mockito.mock(FilterType.class);
     Mockito.lenient().when(filterType.type()).thenReturn("BAS_TXT");
 
     return new BasicFilterConfiguration(
-        reportFilterUid,
-        reportColumnUid,
-        filterDefaultValues,
-            null,
-        null,
-        null,
-        null,
-        filterType);
+        reportFilterUid, reportColumnUid, filterDefaultValues, null, null, null, null, filterType);
   }
 
   private ReportColumn mockReportColumn(Long columnId, String columnName, String columnTitle) {
