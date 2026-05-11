@@ -8,7 +8,7 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
     HTMLSpanElement,
     DragHandleProps
 >((props, dragRef) => {
-    const { activeId, activate, reset, commit } = useKeyboardDnd();
+    const { activeId, activate, reset, drag, drop } = useKeyboardDnd();
     const id = props.ruleOrGroup.id!;
     const [isActive, setIsActive] = useState<boolean>(activeId === id);
     const { getQuery, dispatchQuery } = props.schema;
@@ -30,13 +30,13 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
                 activate(props.ruleOrGroup, props.path);
             } else {
                 setIsActive(false);
-                commit(props.path);
+                drop(props.path);
             }
             event.preventDefault();
             return;
         } else if (isActive && event.code === 'Escape') {
             setIsActive(false);
-            reset(getQuery(), dispatchQuery, props.path);
+            reset(getQuery(), dispatchQuery);
             event.preventDefault();
             return;
         }
@@ -57,8 +57,7 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
         if (!dir) return;
 
         // move the rule and update the query
-        const nextQuery = move(getQuery(), props.path, dir);
-        dispatchQuery(nextQuery);
+        drag(getQuery(), dispatchQuery, dir)
         event.preventDefault();
     };
 
@@ -68,8 +67,7 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
             data-testid={`drag-handle-${id}`}
             ref={dragRef}
             className={props.className}
-            title={`Drag handle for ${isRuleType(props.ruleOrGroup) ? 'rule' : 'group'} at 
-            path ${describeLocation(props.path)}`}
+            title={isActive ? 'Active drag handle' : 'Drag Handle'}
             aria-describedby="keyboard-dnd-instructions"
             role="button"
             tabIndex={0}

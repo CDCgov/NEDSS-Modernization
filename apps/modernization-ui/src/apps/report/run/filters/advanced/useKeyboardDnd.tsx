@@ -1,21 +1,23 @@
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { createContext, ReactNode, useCallback, useContext, useRef, useState } from 'react';
-import { isRuleType, move, Path, RuleGroupTypeAny, RuleType } from 'react-querybuilder';
+import { getPathOfID, isRuleType, move, Path, RuleGroupTypeAny, RuleType } from 'react-querybuilder';
 
 type RuleOrGroupType = RuleType | RuleGroupTypeAny;
 
 type KeyboardDndContextType = {
     activeId?: string;
     activate: (ruleOrGroup: RuleOrGroupType, path: Path) => void;
-    reset: (query: RuleGroupTypeAny, dispatchQuery: (q: RuleGroupTypeAny) => void, curPath: Path) => void;
-    commit: (curPath: Path) => void;
+    reset: (query: RuleGroupTypeAny, dispatchQuery: (q: RuleGroupTypeAny) => void) => void;
+    drop: (curPath: Path) => void;
+    drag: (query: RuleGroupTypeAny, dispatchQuery: (q: RuleGroupTypeAny) => void, dir: 'up' | 'down') => void;
 };
 
 const KeyboardDndContext = createContext<KeyboardDndContextType>({
     activeId: undefined,
     activate: () => {},
     reset: () => {},
-    commit: () => {},
+    drag: () => {},
+    drop: () => {},
 });
 
 type Props = {
@@ -27,31 +29,47 @@ const KeyboardDnDProvider = ({ children }: Props) => {
     const [startPath, setStartPath] = useState<Path | null>(null);
     const activeId = activeRuleOrGroup?.id;
 
-    const activate = (ruleOrGroup: RuleOrGroupType, path: Path) => {
+    const activate = useCallback((ruleOrGroup: RuleOrGroupType, path: Path) => {
         setActiveRuleOrGroup(ruleOrGroup);
         // make a copy to be safe
         setStartPath([...path]);
         announce(`You have lifted a ${isRuleType(ruleOrGroup) ? 'rule' : 'group'} at path ${describeLocation(path)}`);
-    };
+    }, []);
 
-    const reset = (query: RuleGroupTypeAny, dispatchQuery: (q: RuleGroupTypeAny) => void, curPath: Path) => {
-        if (activeRuleOrGroup && startPath) {
+    const reset = useCallback(
+        (query: RuleGroupTypeAny, dispatchQuery: (q: RuleGroupTypeAny) => void) => {
+            if (!activeId) return;
             setActiveRuleOrGroup(null);
             setStartPath(null);
-            const nextQuery = move(query, curPath, startPath);
+            const nextQuery = move(query, activeId, startPath ?? []);
             dispatchQuery(nextQuery);
             announce(`The ${isRuleType(activeRuleOrGroup) ? 'rule' : 'group'} has returned to its starting position`);
-        }
-    };
+        },
+        [activeId]
+    );
 
-    const commit = (curPath: Path) => {
+    const drag = useCallback(
+        (query: RuleGroupTypeAny, dispatchQuery: (q: RuleGroupTypeAny) => void, dir: 'up' | 'down') => {
+            if (!activeId) return;
+            const nextQuery = move(query, activeId, dir);
+            const nextPath = getPathOfID(activeId, nextQuery);
+            dispatchQuery(nextQuery);
+            announce(
+                `You have moved the ${isRuleType(activeRuleOrGroup) ? 'rule' : 'group'} ${dir} 
+                to path ${describeLocation(nextPath)}`
+            );
+        },
+        [activeId]
+    );
+
+    const drop = useCallback((curPath: Path) => {
         setActiveRuleOrGroup(null);
         setStartPath(null);
         announce(
-            `You have moved the ${isRuleType(activeRuleOrGroup) ? 'rule' : 'group'} from 
-            path ${describeLocation(startPath ?? [])} to path ${describeLocation(curPath)}`
+            `You have dropped the ${isRuleType(activeRuleOrGroup) ? 'rule' : 'group'} 
+            at path ${describeLocation(curPath)}`
         );
-    };
+    }, []);
 
     const announce = useCallback((message: string): void => {
         const el: HTMLSpanElement | null = ref.current;
@@ -71,14 +89,14 @@ const KeyboardDnDProvider = ({ children }: Props) => {
     }, []);
 
     return (
-        <KeyboardDndContext.Provider value={{ activeId, activate, reset, commit }}>
+        <KeyboardDndContext.Provider value={{ activeId, activate, reset, drag, drop }}>
             <VisuallyHidden id="keyboard-dnd-instructions">
-                Press space bar to start a drag. When dragging you can use the arrow keys to move the item around and
-                escape to cancel. Some screen readers may require you to be in focus mode or to use your pass through
-                key
+                Press space bar to start and stop a drag. When dragging you can use the arrow keys to move the item
+                around and escape to cancel. Some screen readers may require you to be in focus mode or to use your pass
+                through key
             </VisuallyHidden>
             <VisuallyHidden>
-                <span ref={ref} aira-live="assertive" aria-atomic="true"></span>
+                <span ref={ref} aria-live="assertive" aria-atomic="true"></span>
             </VisuallyHidden>
             {children}
         </KeyboardDndContext.Provider>
@@ -89,7 +107,8 @@ const useKeyboardDnd = () => {
     return useContext(KeyboardDndContext);
 };
 
-const describeLocation = (path: Path) => {
+const describeLocation = (path: Path | null) => {
+    if (!path) return 'unknown';
     return path.map((n) => n + 1).join('-');
 };
 
