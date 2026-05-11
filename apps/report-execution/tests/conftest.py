@@ -143,7 +143,7 @@ def setup_containers(request):
 
 
 def get_faker_sql(schema_name: str) -> list[str]:
-    """Process a fakertable schema and return the sql as a string."""
+    """Process a fakertable schema and return the sql statements as a list of strings."""
     faker_path = _faker_schema_path(schema_name)
     target_file_path = os.path.join(os.path.dirname(__file__), 'fake_sql')
     os.mkdir(target_file_path)
