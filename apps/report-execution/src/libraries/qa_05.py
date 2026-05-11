@@ -74,6 +74,7 @@ def execute(
                     or LAB_MORB.ADD_USER_ID = CONTACT.ADD_USER_ID
         )
         SELECT 
+            -- SAS trim leaves a ' ' behind if otherwise empty
             TRIM(CONCAT(
                 COALESCE(TRIM(usr.PROVIDER_QUICK_CODE), ' '),
                 ' - ',
