@@ -1,5 +1,5 @@
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import { createContext, ReactNode, useCallback, useContext, useRef, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
 import { getPathOfID, isRuleType, move, Path, RuleGroupTypeAny, RuleType } from 'react-querybuilder';
 
 type RuleOrGroupType = RuleType | RuleGroupTypeAny;
@@ -24,69 +24,51 @@ type Props = {
     children: ReactNode;
 };
 const KeyboardDnDProvider = ({ children }: Props) => {
-    const ref = useRef<HTMLSpanElement>(null);
     const [activeRuleOrGroup, setActiveRuleOrGroup] = useState<RuleOrGroupType | null>(null);
     const [startPath, setStartPath] = useState<Path | null>(null);
+    const [announcedMessage, setAnnouncedMessage] = useState<string>('');
     const activeId = activeRuleOrGroup?.id;
 
-    const activate = useCallback((ruleOrGroup: RuleOrGroupType, path: Path) => {
+    const activate = (ruleOrGroup: RuleOrGroupType, path: Path) => {
         setActiveRuleOrGroup(ruleOrGroup);
         // make a copy to be safe
         setStartPath([...path]);
         announce(`You have lifted a ${isRuleType(ruleOrGroup) ? 'rule' : 'group'} at path ${describeLocation(path)}`);
-    }, []);
+    };
 
-    const reset = useCallback(
-        (query: RuleGroupTypeAny, dispatchQuery: (q: RuleGroupTypeAny) => void) => {
-            if (!activeId) return;
-            setActiveRuleOrGroup(null);
-            setStartPath(null);
-            const nextQuery = move(query, activeId, startPath ?? []);
-            dispatchQuery(nextQuery);
-            announce(`The ${isRuleType(activeRuleOrGroup) ? 'rule' : 'group'} has returned to its starting position`);
-        },
-        [activeId]
-    );
+    const reset = (query: RuleGroupTypeAny, dispatchQuery: (q: RuleGroupTypeAny) => void) => {
+        if (!activeId) return;
+        setActiveRuleOrGroup(null);
+        setStartPath(null);
+        const nextQuery = move(query, activeId, startPath ?? []);
+        dispatchQuery(nextQuery);
+        announce(`The ${isRuleType(activeRuleOrGroup) ? 'rule' : 'group'} has returned to its starting position`);
+    };
 
-    const drag = useCallback(
-        (query: RuleGroupTypeAny, dispatchQuery: (q: RuleGroupTypeAny) => void, dir: 'up' | 'down') => {
-            if (!activeId) return;
-            const nextQuery = move(query, activeId, dir);
-            const nextPath = getPathOfID(activeId, nextQuery);
-            dispatchQuery(nextQuery);
-            announce(
-                `You have moved the ${isRuleType(activeRuleOrGroup) ? 'rule' : 'group'} ${dir} 
+    const drag = (query: RuleGroupTypeAny, dispatchQuery: (q: RuleGroupTypeAny) => void, dir: 'up' | 'down') => {
+        if (!activeId) return;
+        const nextQuery = move(query, activeId, dir);
+        const nextPath = getPathOfID(activeId, nextQuery);
+        dispatchQuery(nextQuery);
+        announce(
+            `You have moved the ${isRuleType(activeRuleOrGroup) ? 'rule' : 'group'} ${dir} 
                 to path ${describeLocation(nextPath)}`
-            );
-        },
-        [activeId]
-    );
+        );
+    };
 
-    const drop = useCallback((curPath: Path) => {
+    const drop = (curPath: Path) => {
         setActiveRuleOrGroup(null);
         setStartPath(null);
         announce(
             `You have dropped the ${isRuleType(activeRuleOrGroup) ? 'rule' : 'group'} 
             at path ${describeLocation(curPath)}`
         );
-    }, []);
+    };
 
-    const announce = useCallback((message: string): void => {
-        const el: HTMLSpanElement | null = ref.current;
-        if (el) {
-            el.textContent = message;
-            return;
-        }
-
-        // eslint-disable-next-line no-console
-        console.warn(`
-        A screen reader message was trying to be announced but it was unable to do so.
-
-        Message not passed to screen reader:
-
-        "${message}"
-        `);
-    }, []);
+    const announce = (message: string): void => {
+        // slight timeout improves screen reader flakiness
+        setTimeout(() => setAnnouncedMessage(message), 100);
+    };
 
     return (
         <KeyboardDndContext.Provider value={{ activeId, activate, reset, drag, drop }}>
@@ -95,9 +77,7 @@ const KeyboardDnDProvider = ({ children }: Props) => {
                 around and escape to cancel. Some screen readers may require you to be in focus mode or to use your pass
                 through key
             </VisuallyHidden>
-            <VisuallyHidden>
-                <span ref={ref} aria-live="assertive" aria-atomic="true"></span>
-            </VisuallyHidden>
+            <VisuallyHidden aria-live="assertive" data-testid="announcement">{announcedMessage}</VisuallyHidden>
             {children}
         </KeyboardDndContext.Provider>
     );
@@ -112,4 +92,4 @@ const describeLocation = (path: Path | null) => {
     return path.map((n) => n + 1).join('-');
 };
 
-export { KeyboardDnDProvider, useKeyboardDnd, describeLocation };
+export { KeyboardDnDProvider, useKeyboardDnd };

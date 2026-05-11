@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -1741,15 +1741,19 @@ describe('report run page', () => {
 
             const user = userEvent.setup();
             const ruleGroupHandle = async () => await findByTestId('drag-handle-128-128-128');
+            const announcementEl = await findByTestId('announcement');
 
             let ruleGroups = await findAllByTestId('rule-group');
             expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
             expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
             expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+            expect(announcementEl).toHaveTextContent('');
 
             // activate handle and move up into above group
             await user.type(await ruleGroupHandle(), ' ');
+            await waitFor(() => expect(announcementEl).toHaveTextContent('You have lifted a group at path 3'));
             await user.type(await ruleGroupHandle(), '{ArrowUp}');
+            await waitFor(() => expect(announcementEl).toHaveTextContent('You have moved the group up to path 2-2'));
 
             ruleGroups = await findAllByTestId('rule-group');
             expect(await ruleGroupHandle()).toHaveFocus();
@@ -1759,6 +1763,7 @@ describe('report run page', () => {
 
             // move back down and make sure restores
             await user.type(await ruleGroupHandle(), '{ArrowDown}');
+            await waitFor(() => expect(announcementEl).toHaveTextContent('You have moved the group down to path 3'));
 
             ruleGroups = await findAllByTestId('rule-group');
             expect(await ruleGroupHandle()).toHaveFocus();
@@ -1768,6 +1773,7 @@ describe('report run page', () => {
 
             // move back up and above rule and deactivate
             await user.type(await ruleGroupHandle(), '{ArrowUp}{ArrowUp} ');
+            await waitFor(() => expect(announcementEl).toHaveTextContent('You have dropped the group at path 2-1'));
 
             ruleGroups = await findAllByTestId('rule-group');
             expect(await ruleGroupHandle()).toHaveFocus();
@@ -1777,6 +1783,7 @@ describe('report run page', () => {
 
             // nothing should change, since not active
             await user.type(await ruleGroupHandle(), '{ArrowUp}');
+            expect(announcementEl).toHaveTextContent('You have dropped the group at path 2-1');
 
             ruleGroups = await findAllByTestId('rule-group');
             expect(await ruleGroupHandle()).toHaveFocus();
@@ -1784,15 +1791,17 @@ describe('report run page', () => {
             expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
             expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
 
-            // check escape handling works,
+            // check escape handling works, should not change from previous
             await user.type(await ruleGroupHandle(), ' {ArrowUp}{Escape}{ArrowDown}');
+            await waitFor(() =>
+                expect(announcementEl).toHaveTextContent('The group has returned to its starting position')
+            );
 
-            // groups 1 and 2 swap positions in order
             ruleGroups = await findAllByTestId('rule-group');
-            expect(await ruleGroupHandle()).toHaveFocus();
+            await waitFor(async () => expect(await ruleGroupHandle()).toHaveFocus());
             expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[2]).not.toContainElement(await ruleGroupHandle());
             expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
 
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
@@ -1813,28 +1822,28 @@ describe('report run page', () => {
                                     value: 'prefix',
                                 },
                                 {
-                                    id: '128-128-128',
-                                    combinator: generated.RuleGroup.combinator.OR,
-                                    rules: [
-                                        {
-                                            id: '129-129-129',
-                                            field: '2002',
-                                            operator: 'GT',
-                                            // format should be mm/dd/yyyy when we switch components
-                                            value: '2020-01-01',
-                                        },
-                                        {
-                                            id: '130-130-130',
-                                            field: '2003',
-                                            operator: 'BW',
-                                            value: '10,20',
-                                        },
-                                    ],
-                                },
-                                {
                                     id: '125-125-125',
                                     combinator: generated.RuleGroup.combinator.AND,
                                     rules: [
+                                        {
+                                            id: '128-128-128',
+                                            combinator: generated.RuleGroup.combinator.OR,
+                                            rules: [
+                                                {
+                                                    id: '129-129-129',
+                                                    field: '2002',
+                                                    operator: 'GT',
+                                                    // format should be mm/dd/yyyy when we switch components
+                                                    value: '2020-01-01',
+                                                },
+                                                {
+                                                    id: '130-130-130',
+                                                    field: '2003',
+                                                    operator: 'BW',
+                                                    value: '10,20',
+                                                },
+                                            ],
+                                        },
                                         {
                                             id: '127-127-127',
                                             field: '2003',

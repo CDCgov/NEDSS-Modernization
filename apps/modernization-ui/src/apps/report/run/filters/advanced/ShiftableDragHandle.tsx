@@ -1,6 +1,6 @@
 import { forwardRef, ForwardRefExoticComponent, KeyboardEventHandler, RefAttributes, useEffect, useState } from 'react';
-import { DragHandleProps, isRuleType, move } from 'react-querybuilder';
-import { describeLocation, useKeyboardDnd } from './useKeyboardDnd';
+import { DragHandleProps } from 'react-querybuilder';
+import { useKeyboardDnd } from './useKeyboardDnd';
 import { Icon } from 'design-system/icon';
 
 // custom drag handle to add shifting action on keyboard up down when space enabled
@@ -37,6 +37,11 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
         } else if (isActive && event.code === 'Escape') {
             setIsActive(false);
             reset(getQuery(), dispatchQuery);
+            // restore move focus to the drag handle that was moved back
+            setTimeout(() => {
+                const thisEl = document.querySelector<HTMLSpanElement>(`#drag-handle-${id}`);
+                thisEl?.focus();
+            }, 50)
             event.preventDefault();
             return;
         }
