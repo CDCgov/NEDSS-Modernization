@@ -4,8 +4,8 @@ const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
 const VALID_REPORT_FILTER_UID = 1;
 
-function buildRequest(body, action) {
-  return {
+function makeRequest(body, action) {
+  return cy.request({
     method: "POST",
     url: `${Cypress.config().baseUrl}nbs/api/report/${action}`,
     body,
@@ -13,7 +13,7 @@ function buildRequest(body, action) {
     headers: {
       "Content-Type": "application/json"
     }
-  };
+  }).as("apiResponse");
 }
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with a valid report execution request", (action) => {
@@ -23,7 +23,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with a valid rep
     isExport: false
   };
   
-  cy.request(buildRequest(validRequest, action)).as("apiResponse");
+  makeRequest(validRequest, action);
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing reportUid", (action) => {
@@ -33,7 +33,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing rep
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
+  makeRequest(invalidRequest, action);
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing dataSourceUid", (action) => {
@@ -42,7 +42,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing dat
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
+  makeRequest(invalidRequest, action);
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing isExport", (action) => {
@@ -51,7 +51,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing isE
     dataSourceUid: VALID_DATA_SOURCE_UID
   };
 
-  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
+  makeRequest(invalidRequest, action);
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with negative reportUid", (action) => {
@@ -61,7 +61,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with negative re
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
+  makeRequest(invalidRequest, action);
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with negative dataSourceUid", (action) => {
@@ -71,7 +71,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with negative da
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
+  makeRequest(invalidRequest, action);
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with reportUid as string", (action) => {
@@ -81,7 +81,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with reportUid a
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
+  makeRequest(invalidRequest, action);
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with dataSourceUid as string", (action) => {
@@ -91,7 +91,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with dataSourceU
     isExport: false
   };
 
-  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
+  makeRequest(invalidRequest, action);
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with isExport as string", (action) => {
@@ -101,7 +101,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with isExport as
     isExport: "invalid-isExport"
   };
 
-  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
+  makeRequest(invalidRequest, action);
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with invalid basic filters", (action) => {
@@ -115,7 +115,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with invalid bas
     }]
   };
 
-  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
+  makeRequest(invalidRequest, action);
 });
 
 When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with an invalid advanced filter", (action) => {
@@ -129,7 +129,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with an invalid 
     }
   };
 
-  cy.request(buildRequest(invalidRequest, action)).as("apiResponse");
+  makeRequest(invalidRequest, action);
 });
 
 Then("the response status should be {int}", (statusCode) => {
