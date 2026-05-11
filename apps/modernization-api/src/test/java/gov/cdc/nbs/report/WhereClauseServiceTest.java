@@ -80,12 +80,12 @@ class WhereClauseServiceTest {
 
     Long filterUid = 100L;
     Long columnUid = 2L;
-    String filterDefaultValue = "condition1";
+    List<String> filterDefaultValue = List.of("condition1", "condition2");
 
     List<BasicFilterConfiguration> basicFilterConfigs =
         List.of(
             createBasicFilterConfiguration(
-                List.of(filterDefaultValue), filterUid, columnUid, null, "BAS_TXT"));
+                filterDefaultValue, filterUid, columnUid, null, "BAS_TXT"));
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
 
@@ -93,12 +93,12 @@ class WhereClauseServiceTest {
         createReportConfig(basicFilterConfigs, List.of(reportColumn));
 
     List<BasicFilterRequest> basicFilterRequest =
-        List.of(new BasicFilterRequest(filterUid, List.of(filterDefaultValue), false));
+        List.of(new BasicFilterRequest(filterUid, filterDefaultValue, false));
 
     String whereFragment =
         mockWhereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequest);
 
-    assertThat(whereFragment).isEqualTo("([ColumnName] IN ('condition1'))");
+    assertThat(whereFragment).isEqualTo("([ColumnName] IN ('condition1', 'condition2'))");
   }
 
   @Test
@@ -130,27 +130,51 @@ class WhereClauseServiceTest {
   @Test
   void should_handle_allow_nulls_operator() {
     Long filterUid = 100L;
-    Long columnUid = 2L;
-
-    String filterDefaultValue = "condition1";
-
-    List<BasicFilterConfiguration> basicFilterConfigs =
-        List.of(
-            createBasicFilterConfiguration(
-                List.of(filterDefaultValue), filterUid, columnUid, true, "BAS_TXT"));
-
-    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
+    Long columnUid = 1L;
 
     ReportConfiguration reportConfig =
-        createReportConfig(basicFilterConfigs, List.of(reportColumn));
+        createReportConfig(
+            List.of(
+                createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, "BAS_TXT")),
+            List.of(mockReportColumn(columnUid, "STRING", "ColumnName")));
 
     List<BasicFilterRequest> basicFilterRequest =
-        List.of(new BasicFilterRequest(filterUid, List.of(filterDefaultValue), true));
+        List.of(new BasicFilterRequest(filterUid, List.of("condition1"), true));
 
     String whereFragment =
         mockWhereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequest);
 
     assertThat(whereFragment).isEqualTo("([ColumnName] IN ('condition1') OR [ColumnName] IS NULL)");
+  }
+
+  @Test
+  void should_handle_allow_nulls_operator_with_multiple_fields() {
+    Long filterUid = 100L;
+    Long columnUid = 1L;
+    Long filterUid2 = 101L;
+    Long columnUid2 = 2L;
+
+    ReportConfiguration reportConfig =
+        createReportConfig(
+            List.of(
+                createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, "BAS_TXT"),
+                createBasicFilterConfiguration(
+                    List.of(), filterUid2, columnUid2, false, "BAS_TXT")),
+            List.of(
+                mockReportColumn(columnUid, "STRING", "ColumnName"),
+                mockReportColumn(columnUid2, "STRING", "ColumnName2")));
+
+    List<BasicFilterRequest> basicFilterRequest =
+        List.of(
+            new BasicFilterRequest(filterUid, List.of("condition1"), true),
+            new BasicFilterRequest(filterUid2, List.of("condition2"), false));
+
+    String whereFragment =
+        mockWhereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequest);
+
+    assertThat(whereFragment)
+        .isEqualTo(
+            "([ColumnName] IN ('condition1') OR [ColumnName] IS NULL) AND ([ColumnName2] IN ('condition2'))");
   }
 
   @Test

@@ -23,6 +23,7 @@ public class WhereClauseService {
   private final FieldFormatter fieldFormatter;
 
   private static final String SQL_AND = " AND ";
+  private static final String SQL_WHERE = "WHERE ";
 
   private static final Set<String> BAS_TIME_RANGE_TYPES =
       Set.of("BAS_TIM_RANGE", "BAS_TIM_RANGE_CUSTOM", "BAS_TIM_RANGE_LIST", "BAS_MM_YYYY_RANGE");
@@ -42,7 +43,7 @@ public class WhereClauseService {
       ReportConfiguration reportConfig, ReportExecutionRequest executionRequest) {
 
     // StringJoiner provides the "WHERE " prefix and " AND " delimiters between filter statements
-    StringJoiner finalWhere = new StringJoiner(SQL_AND, "WHERE ", "");
+    StringJoiner finalWhere = new StringJoiner(SQL_AND, SQL_WHERE, "");
 
     String basicWhereFragment =
         buildBasicWhereFragment(reportConfig, executionRequest.basicFilters());
@@ -50,7 +51,7 @@ public class WhereClauseService {
     finalWhere.add(basicWhereFragment);
 
     // Only return the WHERE clause if it contains anything beyond the initial "WHERE " prefix
-    return finalWhere.length() > 6 ? finalWhere.toString() : "";
+    return finalWhere.toString().equals(SQL_WHERE) ? "" : finalWhere.toString();
   }
 
   /**
