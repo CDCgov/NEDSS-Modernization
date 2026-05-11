@@ -74,6 +74,9 @@ export default defineConfig([
             },
         },
         rules: {
+            ...tseslint.configs.recommended.rules,
+            ...js.configs.recommended.rules,
+            '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/no-unused-vars': 'off',
             'no-undef': 'off',
             'no-unused-vars': 'off',
