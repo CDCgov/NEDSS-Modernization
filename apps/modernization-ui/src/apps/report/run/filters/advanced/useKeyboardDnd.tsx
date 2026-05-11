@@ -1,5 +1,5 @@
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 import { getPathOfID, isRuleType, move, Path, RuleGroupTypeAny, RuleType } from 'react-querybuilder';
 
 type RuleOrGroupType = RuleType | RuleGroupTypeAny;
@@ -77,7 +77,9 @@ const KeyboardDnDProvider = ({ children }: Props) => {
                 around and escape to cancel. Some screen readers may require you to be in focus mode or to use your pass
                 through key
             </VisuallyHidden>
-            <VisuallyHidden aria-live="assertive" data-testid="announcement">{announcedMessage}</VisuallyHidden>
+            <VisuallyHidden aria-live="assertive" data-testid="announcement">
+                {announcedMessage}
+            </VisuallyHidden>
             {children}
         </KeyboardDndContext.Provider>
     );

@@ -41,7 +41,7 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
             setTimeout(() => {
                 const thisEl = document.querySelector<HTMLSpanElement>(`#drag-handle-${id}`);
                 thisEl?.focus();
-            }, 50)
+            }, 50);
             event.preventDefault();
             return;
         }
@@ -62,7 +62,7 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
         if (!dir) return;
 
         // move the rule and update the query
-        drag(getQuery(), dispatchQuery, dir)
+        drag(getQuery(), dispatchQuery, dir);
         event.preventDefault();
     };
 
@@ -76,7 +76,8 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
             aria-describedby="keyboard-dnd-instructions"
             role="button"
             tabIndex={0}
-            onKeyDown={handleKeyDown}>
+            onKeyDown={handleKeyDown}
+        >
             <Icon name="drag" />
         </span>
     );
