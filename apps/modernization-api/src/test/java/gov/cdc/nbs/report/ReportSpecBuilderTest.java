@@ -49,27 +49,21 @@ class ReportSpecBuilderTest {
   private BasicFilterConfiguration mockBasicFilterConfiguration(
       List<String> filterDefaultValues,
       Long reportFilterUid,
-      Long reportColumnUid,
-      Boolean defaultIncludeNulls,
-      String type) {
-    BasicFilterConfiguration basicFilterConfiguration =
-        Mockito.mock(BasicFilterConfiguration.class);
+      Long reportColumnUid) {
 
     // Mock the FilterType so the real WhereClauseService can route the logic correctly
     FilterType filterType = Mockito.mock(FilterType.class);
-    Mockito.lenient().when(basicFilterConfiguration.filterType()).thenReturn(filterType);
-    Mockito.lenient().when(filterType.type()).thenReturn(type);
+    Mockito.lenient().when(filterType.type()).thenReturn("BAS_TXT");
 
-    Mockito.lenient()
-        .when(basicFilterConfiguration.defaultValues())
-        .thenReturn(filterDefaultValues);
-    Mockito.lenient().when(basicFilterConfiguration.reportFilterUid()).thenReturn(reportFilterUid);
-    Mockito.lenient().when(basicFilterConfiguration.reportColumnUid()).thenReturn(reportColumnUid);
-    Mockito.lenient()
-        .when(basicFilterConfiguration.defaultIncludeNulls())
-        .thenReturn(defaultIncludeNulls);
-
-    return basicFilterConfiguration;
+    return new BasicFilterConfiguration(
+        reportFilterUid,
+        reportColumnUid,
+        filterDefaultValues,
+            null,
+        null,
+        null,
+        null,
+        filterType);
   }
 
   private ReportColumn mockReportColumn(Long columnId, String columnName, String columnTitle) {
@@ -122,9 +116,9 @@ class ReportSpecBuilderTest {
     Long columnUid2 = 2L;
 
     BasicFilterConfiguration filterConfig1 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1, null, "BAS_TXT");
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1);
     BasicFilterConfiguration filterConfig2 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1, null, "BAS_TXT");
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, "column1", "Column 1");
     ReportColumn reportColumn2 = mockReportColumn(columnUid2, "column2", "Column 2");
@@ -165,7 +159,7 @@ class ReportSpecBuilderTest {
     Long unknownColumnUid = 2L;
 
     BasicFilterConfiguration filterConfig1 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, knownColumnUid, null, "BAS_TXT");
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, knownColumnUid);
     ReportColumn reportColumn1 = mockReportColumn(knownColumnUid, "column1", "Column 1");
 
     ReportConfiguration reportConfig =
@@ -194,11 +188,11 @@ class ReportSpecBuilderTest {
     Long columnUid3 = 3L;
 
     BasicFilterConfiguration filterConfig1 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1, null, "BAS_TXT");
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1);
     BasicFilterConfiguration filterConfig2 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1, null, "BAS_TXT");
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1);
     BasicFilterConfiguration filterConfig3 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1, null, "BAS_TXT");
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, "col1", "Col 1");
     ReportColumn reportColumn2 = mockReportColumn(columnUid2, "col2", "Col 2");
@@ -230,9 +224,9 @@ class ReportSpecBuilderTest {
     List<String> filterDefaultValue = List.of("condition1");
 
     BasicFilterConfiguration filterConfig1 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, 1L, null, "BAS_TXT");
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, 1L);
     BasicFilterConfiguration filterConfig2 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, 2L, null, "BAS_TXT");
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, 2L);
 
     ReportColumn reportColumn1 = mockReportColumn(1L, "col1", "Col 1");
     ReportColumn reportColumn2 = mockReportColumn(2L, "col2", "Col 2");
@@ -264,7 +258,7 @@ class ReportSpecBuilderTest {
     Long columnUid1 = 1L;
 
     BasicFilterConfiguration filterConfig1 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1, null, "BAS_TXT");
+        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1);
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, columnName, columnTitle);
 
     ReportConfiguration reportConfig =
@@ -295,7 +289,7 @@ class ReportSpecBuilderTest {
     List<String> filterDefaultValue = List.of("Value");
 
     BasicFilterConfiguration basicFilterConfiguration =
-        mockBasicFilterConfiguration(filterDefaultValue, filterUid, columnUid, null, "BAS_TXT");
+        mockBasicFilterConfiguration(filterDefaultValue, filterUid, columnUid);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid, "col1", "Col 1");
 
