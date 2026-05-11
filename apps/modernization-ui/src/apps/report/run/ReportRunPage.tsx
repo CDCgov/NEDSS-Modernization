@@ -11,7 +11,7 @@ import { ReportResultPage } from './ReportResultPage';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
-import { queryToAdvancedFilterRequest } from './filters/AdvancedFilter';
+import { queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
 
 export type ReportExecuteForm = {
     // key is the report's ID

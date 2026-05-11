@@ -1,12 +1,10 @@
 import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
 import { useController } from 'react-hook-form';
 import QueryBuilder, {
-    DragHandleProps,
     Field,
     formatQuery,
     isRuleGroupType,
     isRuleType,
-    move,
     Operator,
     QueryValidator,
     RuleGroupType,
@@ -15,7 +13,7 @@ import QueryBuilder, {
     ValidationResult,
 } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
-import { ReportExecuteForm } from '../ReportRunPage';
+import { ReportExecuteForm } from '../../ReportRunPage';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
@@ -25,8 +23,8 @@ import {
     monitorForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
-import { forwardRef, ForwardRefExoticComponent, KeyboardEventHandler, RefAttributes, useEffect, useState } from 'react';
-import { ActiveIdProvider, useActiveId } from './useActiveId';
+import { KeyboardDnDProvider } from './useKeyboardDnd';
+import { ShiftableDragHandle } from './ShiftableDragHandle';
 
 // ============= Constants ============= /
 
@@ -271,76 +269,6 @@ const pragmaticDndAdapter = createPragmaticDndAdapter({
     combine,
 });
 
-// custom drag handle to add shifting action on keyboard up down when space enabled
-const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttributes<HTMLSpanElement>> = forwardRef<
-    HTMLSpanElement,
-    DragHandleProps
->((props, dragRef) => {
-    const { activeId, setActiveId } = useActiveId();
-    const id = props.ruleOrGroup.id!;
-    const [isActive, setIsActive] = useState<boolean>(activeId === id);
-    const { getQuery, dispatchQuery } = props.schema;
-
-    // When a rule group changes level, the component re-mounts and we need to move focus
-    // back to the drag handle
-    useEffect(() => {
-        if (isActive) {
-            const thisEl = document.querySelector<HTMLSpanElement>(`#drag-handle-${id}`);
-            thisEl?.focus();
-        }
-    }, []);
-
-    const handleKeyDown: KeyboardEventHandler = (event) => {
-        // space toggles, escape will turn off activity if active
-        if (event.code === 'Space') {
-            if (!isActive) {
-                setIsActive(true);
-                setActiveId(id);
-            } else {
-                setIsActive(false);
-                setActiveId(null);
-            }
-            event.preventDefault();
-            return;
-        } else if (isActive && event.code === 'Escape') {
-            setIsActive(false);
-            setActiveId(null);
-            event.preventDefault();
-            return;
-        }
-
-        if (!isActive) return;
-
-        let dir: 'up' | 'down' | undefined = undefined;
-        if (event.code === 'ArrowUp') {
-            dir = 'up';
-        } else if (event.code === 'ArrowDown') {
-            dir = 'down';
-        }
-
-        if (!dir) return;
-
-        // move the rule and update the query
-        const nextQuery = move(getQuery(), props.path, dir);
-        dispatchQuery(nextQuery);
-        event.preventDefault();
-    };
-
-    return (
-        <span
-            id={`drag-handle-${id}`}
-            data-testid={`drag-handle-${id}`}
-            ref={dragRef}
-            className={props.className}
-            title={props.title}
-            tabIndex={0}
-            onKeyDown={handleKeyDown}
-        >
-            {props.label}
-        </span>
-    );
-});
-
 // ============= Componentry ============= /
 
 const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfiguration; columns: ReportColumn[] }) => {
@@ -366,7 +294,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     return (
         <div>
             {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
-            <ActiveIdProvider>
+            <KeyboardDnDProvider>
                 <QueryBuilderDnD dnd={pragmaticDndAdapter} updateWhileDragging={false}>
                     <QueryBuilder
                         fields={fields}
@@ -380,7 +308,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                         controlElements={{ dragHandle: ShiftableDragHandle }}
                     />
                 </QueryBuilderDnD>
-            </ActiveIdProvider>
+            </KeyboardDnDProvider>
             <PreviewWhere query={value} />
         </div>
     );
