@@ -1214,7 +1214,7 @@ describe('report run page', () => {
                             codeTable: undefined,
                             descTxt: 'Basic County Filter',
                             code: 'J_C01_N',
-                            fcodeSetName: undefined,
+                            codeSetName: undefined,
                             type: 'BAS_JUR_LIST',
                             name: 'County',
                         },

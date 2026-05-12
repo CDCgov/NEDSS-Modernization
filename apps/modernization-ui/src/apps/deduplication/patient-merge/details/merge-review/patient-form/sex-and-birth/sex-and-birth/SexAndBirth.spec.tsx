@@ -40,7 +40,7 @@ describe('SexAndBirth', () => {
 
         const age = getByText('Current age');
         expect(age).toBeInTheDocument();
-        expect(within(age.parentElement!).getByText('5 years')).toBeInTheDocument();
+        expect(within(age.parentElement!).getByText('6 years')).toBeInTheDocument();
 
         const sex = getByText('Current sex');
         expect(sex).toBeInTheDocument();
