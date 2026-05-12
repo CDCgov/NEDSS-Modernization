@@ -16,6 +16,7 @@ def execute(
     content = trx.query(
         f"""
         WITH v_event_metric as ({subset_query}),
+        
         PROG_AREA as (
             SELECT DISTINCT PROG_AREA_CD
             FROM nbs_srte.dbo.condition_code
@@ -23,6 +24,7 @@ def execute(
                 condition_cd in ('10560', '900')
                 OR nnd_entity_identifier = 'STD_Case_Map_v1.0'
         ),
+
         INV as (
             SELECT DISTINCT 
                 count(*) as OOJ_REFF,
@@ -38,6 +40,7 @@ def execute(
                 AND adm.ADM_REFERRAL_BASIS_OOJ IS NOT NULL
             GROUP BY em.ADD_USER_ID
         ),
+
         LAB_MORB as (
             SELECT DISTINCT
                 COUNT (*) as REACTOR,
@@ -49,6 +52,7 @@ def execute(
                 AND em.ELECTRONIC_IND = 'N'
             GROUP BY em.ADD_USER_ID
         ),
+
         CONTACT as (
             SELECT COUNT (*) as PART_CLUS,
                 em.ADD_USER_ID
@@ -58,6 +62,7 @@ def execute(
             em.EVENT_TYPE in ('CONTACT')
         GROUP BY em.ADD_USER_ID
         ),
+
         RESULT as (
             SELECT
                 COALESCE(
@@ -73,6 +78,7 @@ def execute(
             FULL JOIN CONTACT on INV.ADD_USER_ID = CONTACT.ADD_USER_ID 
                     or LAB_MORB.ADD_USER_ID = CONTACT.ADD_USER_ID
         )
+
         SELECT 
             -- SAS trim leaves a ' ' behind if otherwise empty
             TRIM(CONCAT(
