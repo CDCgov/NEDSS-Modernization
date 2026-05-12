@@ -73,9 +73,10 @@ const KeyboardDnDProvider = ({ children }: Props) => {
     return (
         <KeyboardDndContext.Provider value={{ activeId, activate, reset, drag, drop }}>
             <VisuallyHidden id="keyboard-dnd-instructions">
-                Press space bar to start and stop a drag. When dragging you can use the arrow keys to move the item
-                around and escape to cancel. Some screen readers may require you to be in focus mode or to use your pass
-                through key
+                In the advanced filter builder below, you can drag and drop rules and groups to change the logic of how
+                statements are combined. When focused on a drag handle for a rule or group, press space bar to start and
+                stop a drag. When dragging you can use the arrow keys to move the item around and escape to cancel. Some
+                screen readers may require you to be in focus mode or to use your pass through key
             </VisuallyHidden>
             <VisuallyHidden aria-live="assertive" data-testid="announcement">
                 {announcedMessage}

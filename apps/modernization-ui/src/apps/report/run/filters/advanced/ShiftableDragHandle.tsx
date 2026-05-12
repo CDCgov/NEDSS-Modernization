@@ -73,7 +73,6 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
             ref={dragRef}
             className={props.className}
             title={isActive ? 'Active drag handle' : 'Drag Handle'}
-            aria-describedby="keyboard-dnd-instructions"
             role="button"
             tabIndex={0}
             onKeyDown={handleKeyDown}
