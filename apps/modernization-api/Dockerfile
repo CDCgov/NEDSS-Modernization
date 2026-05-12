@@ -1,4 +1,4 @@
-FROM node:22 AS ui-builder
+FROM node:26 AS ui-builder
 
 WORKDIR /usr/modernization-ui
 
