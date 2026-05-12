@@ -11,6 +11,8 @@ export type ReportColumn = {
     descTxt?: string;
     displayable?: string;
     filterable?: string;
+    codeDescCd?: string;
+    codesetNm?: string;
     statusCd?: string;
     statusTime?: string;
 };

@@ -14,5 +14,7 @@ public record ReportColumn(
     String descTxt,
     Character displayable,
     Character filterable,
+    String codeDescCd,
+    String codesetNm,
     Character statusCd,
     LocalDateTime statusTime) {}

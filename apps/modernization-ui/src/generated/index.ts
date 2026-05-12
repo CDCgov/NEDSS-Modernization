@@ -92,6 +92,7 @@ export { ConceptOptionsService } from './services/ConceptOptionsService';
 export { ConditionOptionsService } from './services/ConditionOptionsService';
 export { CountryOptionsService } from './services/CountryOptionsService';
 export { CountyOptionsService } from './services/CountyOptionsService';
+export { DistinctValuesService } from './services/DistinctValuesService';
 export { EncryptionControllerService } from './services/EncryptionControllerService';
 export { FacilityOptionsService } from './services/FacilityOptionsService';
 export { JurisdictionOptionsService } from './services/JurisdictionOptionsService';

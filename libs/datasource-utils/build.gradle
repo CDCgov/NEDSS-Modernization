@@ -18,14 +18,7 @@ testing {
 }
 
 dependencies {
-
-    implementation project(':audit')
-    implementation project(':authorization')
-    implementation project(':event-schema')
-
-    // Spring
-    implementation libs.bundles.jpa
-    annotationProcessor libs.springBoot.jpa
+    implementation libs.springBoot.web
 
     // lombok
     compileOnly libs.lombok

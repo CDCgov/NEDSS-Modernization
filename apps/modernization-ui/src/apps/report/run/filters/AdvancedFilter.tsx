@@ -6,6 +6,7 @@ import QueryBuilder, {
     isRuleGroupType,
     isRuleType,
     Operator,
+    OptionList,
     QueryValidator,
     RuleGroupType,
     RuleGroupTypeAny,
@@ -18,6 +19,7 @@ import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanne
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import { createDndKitAdapter } from '@react-querybuilder/dnd/dnd-kit';
 import * as DndKit from '@dnd-kit/core';
+import { useReportValueSet } from './useReportValueSet';
 
 // ============= Constants ============= /
 
@@ -114,6 +116,7 @@ const OPERATOR_MAP: Record<string, Operator[]> = {
     INTEGER: [...BASE_OPERATORS, ...NUMERIC_OPERATORS],
     NUMBER: [...BASE_OPERATORS, ...NUMERIC_OPERATORS],
     DATETIME: [...BASE_OPERATORS, ...NUMERIC_OPERATORS],
+    CODED: BASE_OPERATORS,
 };
 
 const INPUT_TYPE_MAP: Record<string, string> = {
@@ -121,6 +124,7 @@ const INPUT_TYPE_MAP: Record<string, string> = {
     INTEGER: 'number',
     NUMBER: 'number',
     DATETIME: 'date',
+    CODED: 'text',
 };
 
 // ============= Translation NBS <--> Query Builder ============= /
@@ -183,6 +187,19 @@ const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]):
         };
     }) as RuleGroup;
 };
+
+const translateColumnToField = (c: ReportColumn): Field => {
+    const sourceType = c.codeDescCd ? 'CODED' : c.sourceTypeCode
+    const valueEditorType = sourceType === 'CODED' ? 'multiselect': 'text'
+    return {
+        id: c.id.toString(),
+        name: c.name,
+        label: c.title,
+        operators: OPERATOR_MAP[sourceType],
+        inputType: INPUT_TYPE_MAP[sourceType],
+        valueEditorType,
+    };
+}
 
 // ============= Validation ============= /
 
@@ -268,14 +285,9 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
             : EMPTY_QUERY,
         rules: { validate: validateAdvancedFilter },
     });
-
-    const fields: Field[] = columns.map((c) => ({
-        id: c.id.toString(),
-        name: c.name,
-        label: c.title,
-        operators: OPERATOR_MAP[c.sourceTypeCode ?? 'STRING'],
-        inputType: INPUT_TYPE_MAP[c.sourceTypeCode ?? 'STRING'],
-    }));
+    
+    const fields = columns.map(translateColumnToField)
+    const getValues = useReportValueSet(columns);
 
     return (
         <div>
@@ -285,6 +297,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                     fields={fields}
                     query={value}
                     validator={validator}
+                    getValues={getValues}
                     onQueryChange={onChange}
                     addRuleToNewGroups={true}
                     autoSelectField={false}
