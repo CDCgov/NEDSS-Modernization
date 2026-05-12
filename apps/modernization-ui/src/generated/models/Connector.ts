@@ -2,15 +2,16 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Clause } from './Clause';
 import type { Expr } from './Expr';
 export type Connector = (Expr & {
     operator?: Connector.operator;
-    left?: any;
-    right?: any;
+    left?: (Clause | Connector);
+    right?: (Clause | Connector);
 } & {
     operator: Connector.operator;
-    left: any;
-    right: any;
+    left: (Clause | Connector);
+    right: (Clause | Connector);
 });
 export namespace Connector {
     export enum operator {
