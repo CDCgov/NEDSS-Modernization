@@ -32,6 +32,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.SimpleErrors;
+import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 class ReportControllerTest {
@@ -156,6 +157,30 @@ class ReportControllerTest {
   }
 
   @Test
+  void exportReport_returns_422_when_validation_errors_encountered() {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+    String errorMsg = "Invalid export report request test";
+
+    ReportExecutionRequest request =
+        new ReportExecutionRequest(
+            reportUid,
+            dataSourceUid,
+            true,
+            Arrays.asList(27L, 31L),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            null);
+
+    SimpleErrors errors = new SimpleErrors(controller);
+    errors.reject("TEST", errorMsg);
+
+    assertThatThrownBy(() -> controller.exportReport(request, errors))
+        .isInstanceOf(ResponseStatusException.class)
+        .hasFieldOrPropertyWithValue("status", HttpStatus.UNPROCESSABLE_ENTITY)
+        .hasMessageContaining(errorMsg);
+  }
+
+  @Test
   void exportReport_should_return_400_status_code_when_report_not_found() {
     long reportUid = 1L;
     long dataSourceUid = 2L;
@@ -265,6 +290,30 @@ class ReportControllerTest {
     ResponseEntity<ReportResult> response = controller.runReport(request, errors);
     assertEquals(getReportExecutionResponse(), response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
+  }
+
+  @Test
+  void runReport_returns_422_when_validation_errors_encountered() {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+    String errorMsg = "Invalid run report request test";
+
+    ReportExecutionRequest request =
+        new ReportExecutionRequest(
+            reportUid,
+            dataSourceUid,
+            true,
+            Arrays.asList(27L, 31L),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            null);
+
+    SimpleErrors errors = new SimpleErrors(controller);
+    errors.reject("TEST", errorMsg);
+
+    assertThatThrownBy(() -> controller.runReport(request, errors))
+        .isInstanceOf(ResponseStatusException.class)
+        .hasFieldOrPropertyWithValue("status", HttpStatus.UNPROCESSABLE_ENTITY)
+        .hasMessageContaining(errorMsg);
   }
 
   @Test
