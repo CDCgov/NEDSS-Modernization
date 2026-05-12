@@ -20,7 +20,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with a valid re
   const validRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
-    isExport: false
+    isExport: action === "export",
   };
   
   makeRequest(validRequest, action);
@@ -30,7 +30,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing re
   const invalidRequest = {
     dataSourceUid: VALID_DATA_SOURCE_UID,
     reportUid: null,
-    isExport: false
+    isExport: action === "export"
   };
 
   makeRequest(invalidRequest, action);
@@ -39,7 +39,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing re
 When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing dataSourceUid$/, (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
-    isExport: false
+    isExport: action === "export"
   };
 
   makeRequest(invalidRequest, action);
@@ -58,7 +58,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with negative r
   const invalidRequest = {
     reportUid: -1,
     dataSourceUid: VALID_DATA_SOURCE_UID,
-    isExport: false
+    isExport: action === "export"
   };
 
   makeRequest(invalidRequest, action);
@@ -68,7 +68,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with negative d
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: -1,
-    isExport: false
+    isExport: action === "export"
   };
 
   makeRequest(invalidRequest, action);
@@ -78,7 +78,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with reportUid 
   const invalidRequest = {
     reportUid: "invalid-reportUid",
     dataSourceUid: VALID_DATA_SOURCE_UID,
-    isExport: false
+    isExport: action === "export"
   };
 
   makeRequest(invalidRequest, action);
@@ -88,7 +88,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with dataSource
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: "invalid-dataSourceUid",
-    isExport: false
+    isExport: action === "export"
   };
 
   makeRequest(invalidRequest, action);
@@ -108,7 +108,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with invalid ba
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
-    isExport: false,
+    isExport: action === "export",
     basicFilters: [{
       reportFilterUid: VALID_REPORT_FILTER_UID,
       values: null  //  Cannot be null
@@ -122,7 +122,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with an invalid
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
-    isExport: false,
+    isExport: action === "export",
     advancedFilter: {
       reportFilterUid: VALID_REPORT_FILTER_UID,
       logic: null   // Logic cannot be null
