@@ -16,7 +16,7 @@ function makeRequest(body, action) {
   }).as("apiResponse");
 }
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with a valid report execution request", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with a valid report execution request$/, (action) => {
   const validRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -26,7 +26,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with a valid rep
   makeRequest(validRequest, action);
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing reportUid", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing reportUid$/, (action) => {
   const invalidRequest = {
     dataSourceUid: VALID_DATA_SOURCE_UID,
     reportUid: null,
@@ -36,7 +36,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing rep
   makeRequest(invalidRequest, action);
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing dataSourceUid", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing dataSourceUid$/, (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     isExport: false
@@ -45,7 +45,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing dat
   makeRequest(invalidRequest, action);
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing isExport", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing isExport$/, (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID
@@ -54,7 +54,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with missing isE
   makeRequest(invalidRequest, action);
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with negative reportUid", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with negative reportUid$/, (action) => {
   const invalidRequest = {
     reportUid: -1,
     dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -64,7 +64,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with negative re
   makeRequest(invalidRequest, action);
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with negative dataSourceUid", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with negative dataSourceUid$/, (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: -1,
@@ -74,7 +74,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with negative da
   makeRequest(invalidRequest, action);
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with reportUid as string", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with reportUid as string$/, (action) => {
   const invalidRequest = {
     reportUid: "invalid-reportUid",
     dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -84,7 +84,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with reportUid a
   makeRequest(invalidRequest, action);
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with dataSourceUid as string", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with dataSourceUid as string$/, (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: "invalid-dataSourceUid",
@@ -94,7 +94,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with dataSourceU
   makeRequest(invalidRequest, action);
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with isExport as string", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with isExport as string$/, (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -104,7 +104,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with isExport as
   makeRequest(invalidRequest, action);
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with invalid basic filters", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with invalid basic filters$/, (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -118,7 +118,7 @@ When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with invalid bas
   makeRequest(invalidRequest, action);
 });
 
-When("I send a POST request to \\/nbs\\/api\\/report\\/{string} with an invalid advanced filter", (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with an invalid advanced filter$/, (action) => {
   const invalidRequest = {
     reportUid: VALID_REPORT_UID,
     dataSourceUid: VALID_DATA_SOURCE_UID,

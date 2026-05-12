@@ -8,7 +8,6 @@ Feature: Export Report API Validation
     Then the response status should be 200
     Then the response should contain a report result
 
-
   Scenario: Export report with missing reportUid
     When I send a POST request to /nbs/api/report/export with missing reportUid
     Then the response status should be 422
