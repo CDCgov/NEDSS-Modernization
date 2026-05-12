@@ -83,7 +83,19 @@ const ValueSetSelector = (props: ValueEditorProps) => {
             return options;
         };
         if (ready) {
-            getValues().then(setOptions);
+            getValues()
+                .then((res) => {
+                    if ('options' in res) {
+                        // the /concepts endpoint breaks the general pattern
+                        setOptions(res.options as Selectable[]);
+                    } else {
+                        setOptions(res);
+                    }
+                })
+                .catch((error) => {
+                    console.error({ error });
+                    setOptions([]);
+                });
         }
     }, [ready, valueSetMap]);
 
