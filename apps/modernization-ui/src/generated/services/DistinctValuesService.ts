@@ -9,7 +9,7 @@ import { request as __request } from '../core/request';
 export class DistinctValuesService {
     /**
      * Distinct values in a report column
-     * Provides all distinc options for a specific report column.
+     * Provides all distinct options for a specific report column.
      * @returns Option OK
      * @throws ApiError
      */

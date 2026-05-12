@@ -18,7 +18,7 @@ class DistinctValuesController {
   @Operation(
       operationId = "distinct-values",
       summary = "Distinct values in a report column",
-      description = "Provides all distinc options for a specific report column.",
+      description = "Provides all distinct options for a specific report column.",
       tags = "DistinctValues")
   @GetMapping("nbs/api/options/report/distinct/{columnUid}")
   Collection<Option> distinctValues(@PathVariable final String columnUid) {

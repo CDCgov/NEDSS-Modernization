@@ -52,7 +52,7 @@ public class DistinctValuesFinder {
         .query()
         .singleColumn()
         .stream()
-        .map(o -> new Option(o.toString(), o.toString(), o.toString(), 0))
+        .map(o -> new Option(o.toString()))
         .toList();
   }
 }

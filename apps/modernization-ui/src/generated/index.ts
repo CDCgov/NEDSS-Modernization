@@ -17,6 +17,7 @@ export type { AssociatedInvestigation } from './models/AssociatedInvestigation';
 export type { BasicFilterConfiguration } from './models/BasicFilterConfiguration';
 export type { BasicFilterRequest } from './models/BasicFilterRequest';
 export type { BirthDemographic } from './models/BirthDemographic';
+export type { ConceptOption } from './models/ConceptOption';
 export type { ConceptOptionsResponse } from './models/ConceptOptionsResponse';
 export type { CreatedPatient } from './models/CreatedPatient';
 export type { DisplayableAddress } from './models/DisplayableAddress';
@@ -87,6 +88,7 @@ export type { SensitiveValue } from './models/SensitiveValue';
 export type { Specimen } from './models/Specimen';
 export type { Success } from './models/Success';
 
+export { ClinicalConceptOptionsService } from './services/ClinicalConceptOptionsService';
 export { CodedResultOptionsService } from './services/CodedResultOptionsService';
 export { ConceptOptionsService } from './services/ConceptOptionsService';
 export { ConditionOptionsService } from './services/ConditionOptionsService';

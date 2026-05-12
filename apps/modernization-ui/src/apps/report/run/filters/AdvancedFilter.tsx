@@ -6,7 +6,6 @@ import QueryBuilder, {
     isRuleGroupType,
     isRuleType,
     Operator,
-    OptionList,
     QueryValidator,
     RuleGroupType,
     RuleGroupTypeAny,
@@ -19,7 +18,7 @@ import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanne
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import { createDndKitAdapter } from '@react-querybuilder/dnd/dnd-kit';
 import * as DndKit from '@dnd-kit/core';
-import { useReportValueSet } from './useReportValueSet';
+import { ValueEditor } from './ValueEditor';
 
 // ============= Constants ============= /
 
@@ -189,8 +188,8 @@ const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]):
 };
 
 const translateColumnToField = (c: ReportColumn): Field => {
-    const sourceType = c.codeDescCd ? 'CODED' : c.sourceTypeCode
-    const valueEditorType = sourceType === 'CODED' ? 'multiselect': 'text'
+    const sourceType = c.codeDescCd ? 'CODED' : c.sourceTypeCode;
+    const valueEditorType = sourceType === 'CODED' ? 'multiselect' : 'text';
     return {
         id: c.id.toString(),
         name: c.name,
@@ -198,8 +197,13 @@ const translateColumnToField = (c: ReportColumn): Field => {
         operators: OPERATOR_MAP[sourceType],
         inputType: INPUT_TYPE_MAP[sourceType],
         valueEditorType,
+
+        // shoving in more metadata for value set fetching
+        codeDescCd: c.codeDescCd,
+        codesetNm: c.codesetNm,
+        columnUid: c.id,
     };
-}
+};
 
 // ============= Validation ============= /
 
@@ -285,9 +289,8 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
             : EMPTY_QUERY,
         rules: { validate: validateAdvancedFilter },
     });
-    
-    const fields = columns.map(translateColumnToField)
-    const getValues = useReportValueSet(columns);
+
+    const fields = columns.map(translateColumnToField);
 
     return (
         <div>
@@ -297,12 +300,14 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                     fields={fields}
                     query={value}
                     validator={validator}
-                    getValues={getValues}
                     onQueryChange={onChange}
                     addRuleToNewGroups={true}
                     autoSelectField={false}
                     autoSelectOperator={false}
                     autoSelectValue={false}
+                    controlElements={{
+                        valueEditor: ValueEditor,
+                    }}
                 />
             </QueryBuilderDnD>
             <PreviewWhere query={value} />
