@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import jakarta.validation.constraints.NotNull;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
@@ -14,18 +15,18 @@ public sealed interface Expr {
   // Subset of https://react-querybuilder.js.org/docs/typescript#rules-and-groups
 
   record RuleGroup(
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String id, // uuid
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String id, // uuid
       @Schema(
               requiredMode = Schema.RequiredMode.REQUIRED,
               allowableValues = {"or", "and"})
-          String combinator,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<Expr> rules)
+          @NotNull String combinator,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<Expr> rules)
       implements Expr {}
 
   record Rule(
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String id, // uuid
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String field, // column UID stringified
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String operator,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String value)
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String id, // uuid
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String field, // column UID stringified
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String operator,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String value)
       implements Expr {}
 }
