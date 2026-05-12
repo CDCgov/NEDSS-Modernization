@@ -77,6 +77,9 @@ project(':classic-interaction').projectDir = mkdir('libs/classic-interaction')
 include ':redirect'
 project(':redirect').projectDir = mkdir('libs/redirect')
 
+include ':es-indexing'
+project(':es-indexing').projectDir = mkdir('libs/es-indexing')
+
 //  testing libraries
 include ':testing-support'
 project(':testing-support').projectDir = mkdir('libs/testing/support')

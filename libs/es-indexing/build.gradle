@@ -1,0 +1,4 @@
+dependencies {
+    implementation libs.elasticsearch.java
+    implementation libs.springBoot
+}
