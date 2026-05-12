@@ -9,6 +9,7 @@ import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
+import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,7 +41,7 @@ class AdvancedFilterConfigurationMapperTest {
           .code("T_T01")
           .codeTable("NONE")
           .filterName("Test Filter")
-          .filterType("ADV_WCB")
+          .filterType(ReportConstants.ADV_FILTER_TYPE)
           .build();
 
   @Test
