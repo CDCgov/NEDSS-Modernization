@@ -21,12 +21,11 @@ def execute(
         f"""
         WITH subset AS ({subset_query})
         SELECT 
-            state AS [State],
-            county AS [County],
+            COALESCE(state, 'N/A') AS [State],
+            COALESCE(county, 'N/A') AS [County],
             phc_code_short_desc AS [Condition],
             sum(group_case_cnt) AS [Cases]
         FROM subset
-        WHERE event_date IS NOT NULL
         GROUP BY state, county, phc_code_short_desc
         ORDER BY state, county, phc_code_short_desc;
         """

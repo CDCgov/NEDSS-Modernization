@@ -13,6 +13,7 @@ def execute(
 
     Conversion notes:
     * Matched export format
+    * Allow null values for state_cd (original SAS report would error)
     * Removed references to 'State Map' or 'choropleth map'
     * Removed 'State and county boundaries are based on the
     * SAS maps library uscounty dataset' in description
@@ -30,7 +31,6 @@ def execute(
             cnty_cd AS [County Code],
             sum(group_case_cnt) AS [Cases]
         FROM subset
-        WHERE event_date IS NOT NULL
         GROUP BY state_cd, state, county, phc_code_short_desc, event_date, cnty_cd
         ORDER BY state_cd, state, county, phc_code_short_desc, event_date, cnty_cd;
         """

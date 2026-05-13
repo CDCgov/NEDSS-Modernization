@@ -111,6 +111,15 @@
   - null
   - Middlesex County
   - Pertussis
+  - null
+  - '002'
+  - !!python/object/apply:decimal.Decimal
+    - '85.00000'
+- !!python/tuple
+  - null
+  - null
+  - Middlesex County
+  - Pertussis
   - 07MAR2019:00:00:00.000
   - '002'
   - !!python/object/apply:decimal.Decimal
@@ -468,6 +477,15 @@
   - Georgia
   - null
   - Measles
+  - null
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '46.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Measles
   - 07JUN2019:00:00:00.000
   - null
   - !!python/object/apply:decimal.Decimal
@@ -600,6 +618,15 @@
   - Georgia
   - null
   - Salmonellosis
+  - null
+  - null
+  - !!python/object/apply:decimal.Decimal
+    - '45.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - null
+  - Salmonellosis
   - 30NOV2018:00:00:00.000
   - null
   - !!python/object/apply:decimal.Decimal
@@ -667,6 +694,15 @@
   - null
   - !!python/object/apply:decimal.Decimal
     - '25.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Measles
+  - null
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '124.00000'
 - !!python/tuple
   - '13'
   - Georgia
@@ -1318,6 +1354,15 @@
   - Georgia
   - Middlesex County
   - Pertussis
+  - null
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '53.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Pertussis
   - 25MAY2018:00:00:00.000
   - '13002'
   - !!python/object/apply:decimal.Decimal
@@ -1878,6 +1923,15 @@
   - '13002'
   - !!python/object/apply:decimal.Decimal
     - '24.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Middlesex County
+  - Salmonellosis
+  - null
+  - '13002'
+  - !!python/object/apply:decimal.Decimal
+    - '274.00000'
 - !!python/tuple
   - '13'
   - Georgia
@@ -2480,6 +2534,15 @@
   - '13002'
   - !!python/object/apply:decimal.Decimal
     - '75.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Measles
+  - null
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '105.00000'
 - !!python/tuple
   - '13'
   - Georgia
@@ -3174,6 +3237,15 @@
   - Georgia
   - Washington County
   - Pertussis
+  - null
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '7.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Pertussis
   - 06MAY2018:00:00:00.000
   - '13001'
   - !!python/object/apply:decimal.Decimal
@@ -3822,6 +3894,15 @@
   - '13001'
   - !!python/object/apply:decimal.Decimal
     - '81.00000'
+- !!python/tuple
+  - '13'
+  - Georgia
+  - Washington County
+  - Salmonellosis
+  - null
+  - '13001'
+  - !!python/object/apply:decimal.Decimal
+    - '119.00000'
 - !!python/tuple
   - '13'
   - Georgia
@@ -4631,6 +4712,15 @@
   - Tennessee
   - Middlesex County
   - Measles
+  - null
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '334.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Measles
   - 05JUN2018:00:00:00.000
   - '47002'
   - !!python/object/apply:decimal.Decimal
@@ -5119,6 +5209,15 @@
   - '47002'
   - !!python/object/apply:decimal.Decimal
     - '53.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Pertussis
+  - null
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '181.00000'
 - !!python/tuple
   - '47'
   - Tennessee
@@ -5760,6 +5859,15 @@
   - Tennessee
   - Middlesex County
   - Salmonellosis
+  - null
+  - '47002'
+  - !!python/object/apply:decimal.Decimal
+    - '202.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Middlesex County
+  - Salmonellosis
   - 29JUN2018:00:00:00.000
   - '47002'
   - !!python/object/apply:decimal.Decimal
@@ -6357,6 +6465,15 @@
   - '47002'
   - !!python/object/apply:decimal.Decimal
     - '89.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Measles
+  - null
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '61.00000'
 - !!python/tuple
   - '47'
   - Tennessee
@@ -7088,6 +7205,15 @@
   - Tennessee
   - Washington County
   - Pertussis
+  - null
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '227.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Pertussis
   - 29AUG2018:00:00:00.000
   - '47001'
   - !!python/object/apply:decimal.Decimal
@@ -7809,6 +7935,15 @@
   - '47001'
   - !!python/object/apply:decimal.Decimal
     - '8.00000'
+- !!python/tuple
+  - '47'
+  - Tennessee
+  - Washington County
+  - Salmonellosis
+  - null
+  - '47001'
+  - !!python/object/apply:decimal.Decimal
+    - '273.00000'
 - !!python/tuple
   - '47'
   - Tennessee

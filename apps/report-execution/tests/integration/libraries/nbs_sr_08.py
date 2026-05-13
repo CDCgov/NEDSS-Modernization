@@ -30,7 +30,7 @@ class TestIntegrationNbsSr08Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 935
+        assert len(data) == 950
         assert len(data[0]) == 7
         assert len(data[0]) == len(result.content.columns)
 
