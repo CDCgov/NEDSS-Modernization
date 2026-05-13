@@ -7,7 +7,9 @@
     },
     "dependencies": {
         "@apollo/client": "^3.11.8",
+        "@dnd-kit/core": "^6.3.1",
         "@hello-pangea/dnd": "^18.0.1",
+        "@react-querybuilder/dnd": "^8.16.0",
         "@trussworks/react-uswds": "^11",
         "@uswds/uswds": "3.13.0",
         "classnames": "^2.5.1",
@@ -22,6 +24,7 @@
         "react": "^18",
         "react-dom": "^18",
         "react-hook-form": "7.54.2",
+        "react-querybuilder": "^8.15.0",
         "react-router": "7.14.1",
         "react-select": "^5.10.2",
         "vite": "^8.0.5",
@@ -50,7 +53,7 @@
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.3.0",
         "@testing-library/user-event": "14.6.1",
-        "@types/jest": "^28.1.6",
+        "@types/jest": "^30.0.0",
         "@types/jest-axe": "^3.5.9",
         "@types/lodash.debounce": "^4.0.7",
         "@types/lodash.merge": "^4.0.7",
@@ -137,6 +140,6 @@
         ]
     },
     "optionalDependencies": {
-        "@rollup/rollup-linux-x64-gnu": "^4.46.2"
+        "@rollup/rollup-linux-x64-gnu": "^4.60.3"
     }
 }

@@ -1,0 +1,98 @@
+config:
+  seed: 4
+  nbs:
+    fk_tables: []
+
+tables:
+  # Table backing V_EVENT_METRIC view
+  - table_name: "[RDB].[dbo].[EVENT_METRIC]"
+    export_file_name: '1_event_metric'
+    row_count: 1000
+    columns:
+      # required columns:
+      - column_name: EVENT_TYPE
+        data: random.choice(["PHCInvForm", "LabReport", "MorbReport", "CONTACT", "Vaccination"])
+        is_primary_key: true
+      - column_name: EVENT_UID
+        data: row_id
+        is_primary_key: true
+
+      # used in library:
+      - column_name: ADD_USER_ID
+        # joins to USER_PROFILE
+        data: random.randrange(1, 99)
+        null_percentage: 0.05
+      - column_name: PROG_AREA_CD
+        data: random.choice(['HIV', 'STD', 'GCD'])
+        null_percentage: 0.05
+      - column_name: LOCAL_ID
+        # joins to STD_HIV_DATAMART sometimes
+        data: str(random.randrange(2000001, 2000999))
+      - column_name: ELECTRONIC_IND
+        data: random.choice(['Y', 'N'])
+        null_percentage: 0.05
+
+  # Table backing V_EVENT_METRIC view
+  - table_name: "[RDB].[dbo].[USER_PROFILE]"
+    export_file_name: '2_user_profile'
+    row_count: 200
+    columns:
+      # required columns:
+      - column_name: NEDSS_ENTRY_ID
+        # joins to EVENT_METRIC sometimes
+        data: row_id
+        is_primary_key: true
+      - column_name: PROVIDER_KEY
+        data: random.randrange(1000001, 1000099)
+
+      # used in library:
+      - column_name: FIRST_NM
+        data: fake.first_name()
+        null_percentage: 0.05
+      - column_name: LAST_NM
+        data: fake.last_name()
+        null_percentage: 0.05
+      - column_name: PROVIDER_QUICK_CODE
+        data: str(row_id)
+        null_percentage: 0.05
+
+  # Used in qa 05
+  - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
+    export_file_name: '3_std_hiv_datamart'
+    row_count: 1000
+    columns:
+      # no required columns
+
+      # used in library:
+      - column_name: INV_LOCAL_ID
+        # joins to EVENT_METRIC
+        data: str(random.randrange(2000001, 2000599))
+      - column_name: INVESTIGATION_KEY
+        data: row_id
+
+  # Used in qa 05
+  - table_name: "[RDB].[dbo].[F_STD_PAGE_CASE]"
+    export_file_name: '4_std_page_case'
+    row_count: 1000
+    columns:
+      # no required columns
+
+      # used in library:
+      - column_name: INVESTIGATION_KEY
+        data: row_id
+      - column_name: D_INV_ADMINISTRATIVE_KEY
+        data: row_id
+
+  # Used in qa 05
+  - table_name: "[RDB].[dbo].[D_INV_ADMINISTRATIVE]"
+    export_file_name: '5_inv_administrative'
+    row_count: 1000
+    columns:
+      # no required columns
+
+      # used in library:
+      - column_name: D_INV_ADMINISTRATIVE_KEY
+        data: row_id
+      - column_name: ADM_REFERRAL_BASIS_OOJ
+        data: random.choice(['a', 'b', 'c'])
+        null_percentage: 0.5

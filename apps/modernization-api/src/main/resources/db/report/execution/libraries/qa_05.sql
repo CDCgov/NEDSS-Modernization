@@ -1,10 +1,10 @@
--- Migrate the NBSCUSTOM.SAS library to the nbs_custom python library
+-- Migrate the QA05.SAS library to the qa_05 python library
 
 USE [NBS_ODSE]
 
-DECLARE @pyLib VARCHAR(50) = 'nbs_custom'
-DECLARE @sasLib VARCHAR(50) = 'NBSCUSTOM.SAS'
-DECLARE @desc VARCHAR(300) = 'Basic tabular report. Executes the query described by the data source and filters and returns the table'
+DECLARE @pyLib VARCHAR(50) = 'qa_05'
+DECLARE @sasLib VARCHAR(50) = 'QA05.SAS'
+DECLARE @desc VARCHAR(300) = 'QA05: Number of Records Entered by User ID. This report produces a table showing data entry user quick code by the number and type of records the user entered.'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN

@@ -11,11 +11,12 @@ import { ReportResultPage } from './ReportResultPage';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
+import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/AdvancedFilter';
 
 export type ReportExecuteForm = {
     // key is the report's ID
     basicFilter?: Record<string, string[] | string>;
-    advancedFilter?: AdvancedFilterRequest;
+    advancedFilter?: QbRuleGroup;
     columns?: string[];
 };
 
@@ -37,7 +38,7 @@ const ReportRunPage = () => {
     }, []);
 
     const form = useForm<ReportExecuteForm>({
-        mode: 'onBlur',
+        mode: 'onSubmit',
     });
 
     const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {
@@ -47,12 +48,23 @@ const ReportRunPage = () => {
                     .map(([id, value]) => {
                         const values = typeof value === 'string' ? [value] : value;
                         return {
-                            reportFilterUid: parseInt(id),
+                            // remove `id_` prefix
+                            reportFilterUid: parseInt(id.slice(3)),
                             values,
                         };
                     })
                     .filter((f) => !!f.values);
-                handleSubmit(isExport, basicFilters);
+
+                const advancedFilterQuery =
+                    data.advancedFilter && config
+                        ? queryToAdvancedFilterRequest(data.advancedFilter, config.reportColumns)
+                        : undefined;
+                const advancedFilter =
+                    advancedFilterQuery && config?.advancedFilter?.reportFilterUid
+                        ? { reportFilterUid: config.advancedFilter?.reportFilterUid, value: advancedFilterQuery }
+                        : undefined;
+
+                handleSubmit(isExport, basicFilters, advancedFilter);
             },
             (errors) => {
                 // TODO make this gather all errors and nicely format
@@ -61,27 +73,30 @@ const ReportRunPage = () => {
         )(event);
     };
 
-    const handleSubmit = useCallback((isExport: boolean, basicFilters: BasicFilterRequest[]) => {
-        setSubmitting(true);
-        setError('');
-        const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
-        runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters } })
-            .then((res) => {
-                setHasResult(true);
-                if (!res.content) {
-                    setError('No content!');
-                    return;
-                }
+    const handleSubmit = useCallback(
+        (isExport: boolean, basicFilters: BasicFilterRequest[], advancedFilter?: AdvancedFilterRequest) => {
+            setSubmitting(true);
+            setError('');
+            const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
+            runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter } })
+                .then((res) => {
+                    setHasResult(true);
+                    if (!res.content) {
+                        setError('No content!');
+                        return;
+                    }
 
-                if (isExport) {
-                    fileDownload(res.content, `${res.header ?? 'ReportOutput'}.csv`);
-                } else {
-                    openNewTab(<ResultDataPage result={res} />);
-                }
-            })
-            .catch((err) => setError(JSON.stringify(err)))
-            .finally(() => setSubmitting(false));
-    }, []);
+                    if (isExport) {
+                        fileDownload(res.content, `${res.header ?? 'ReportOutput'}.csv`);
+                    } else {
+                        openNewTab(<ResultDataPage result={res} />);
+                    }
+                })
+                .catch((err) => setError(JSON.stringify(err)))
+                .finally(() => setSubmitting(false));
+        },
+        []
+    );
 
     return !config ? (
         <>
