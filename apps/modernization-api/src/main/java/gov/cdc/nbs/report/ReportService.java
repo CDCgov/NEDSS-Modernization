@@ -60,7 +60,11 @@ public class ReportService {
 
               AdvancedFilterConfiguration advancedFilter =
                   report.getReportFilters().stream()
-                      .filter(f -> f.getFilterCode().getFilterType().equals("ADV_WCB"))
+                      .filter(
+                          f ->
+                              f.getFilterCode()
+                                  .getFilterType()
+                                  .equals(ReportConstants.ADV_FILTER_TYPE))
                       .map(AdvancedFilterConfigurationMapper::fromReportFilter)
                       .findFirst()
                       .orElse(null);

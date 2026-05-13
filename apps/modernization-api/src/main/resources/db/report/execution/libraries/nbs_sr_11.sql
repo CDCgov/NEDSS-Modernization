@@ -18,7 +18,7 @@ BEGIN
     WHERE
         UPPER(library_name) = @sasLib;
 END
-ELSE
+ELSE IF NOT EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE library_name = @pyLib)
 BEGIN
     -- Create a row for this library
     INSERT INTO [dbo].[Report_Library] (

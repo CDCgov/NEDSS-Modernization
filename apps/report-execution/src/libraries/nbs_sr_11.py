@@ -25,6 +25,7 @@ def execute(
         YEAR(event_date) as [Year],
         SUM(group_case_cnt) as [Cases]
         FROM subset
+        WHERE event_date IS NOT NULL
         GROUP BY state_cd, state, county, phc_code_short_desc, YEAR(event_date)
         ORDER BY [State Code], [State], [County], phc_code_short_desc, YEAR(event_date)
         """

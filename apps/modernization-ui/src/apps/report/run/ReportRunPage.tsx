@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReportConfiguration, ReportControllerService, RuleGroup } from 'generated';
+import { ReportConfiguration, ReportControllerService } from 'generated';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
@@ -11,12 +11,12 @@ import { ReportResultPage } from './ReportResultPage';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
-import { queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
+import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/AdvancedFilter';
 
 export type ReportExecuteForm = {
     // key is the report's ID
     basicFilter?: Record<string, string[] | string>;
-    advancedFilter?: RuleGroup;
+    advancedFilter?: QbRuleGroup;
     columns?: string[];
 };
 

@@ -26,4 +26,4 @@ const useConceptOptions = (valueSet: string, settings?: Settings): ConceptOption
     return useSelectableOptions({ resolver: resolver(valueSet), ...settings });
 };
 
-export { useConceptOptions };
+export { ConceptOptions, useConceptOptions };
