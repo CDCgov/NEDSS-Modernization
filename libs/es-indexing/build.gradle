@@ -1,4 +1,7 @@
 dependencies {
     implementation libs.elasticsearch.java
     implementation libs.springBoot
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 }
