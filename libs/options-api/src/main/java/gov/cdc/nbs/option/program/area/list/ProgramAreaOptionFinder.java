@@ -13,7 +13,7 @@ class ProgramAreaOptionFinder extends SQLBasedOptionFinder {
           prog_area_cd        as [value],
           prog_area_desc_txt  as [name],
           nbs_uid             as [order]
-      from [NBS_SRTE].[dbo].Program_area_code
+      from NBS_SRTE..Program_area_code
       where   status_cd = 'A'
       order by
           nbs_uid
