@@ -120,8 +120,7 @@ public class WhereClauseService {
 
     boolean includeNulls = basicFilterRequest.includeNulls();
 
-    List<String> values =
-        basicFilterRequest.values() == null ? List.of() : basicFilterRequest.values();
+    List<String> values = basicFilterRequest.values();
     if (values.isEmpty() && !includeNulls) return "";
 
     // Delegate type-specific escaping and quoting to the FieldFormatter
@@ -182,13 +181,10 @@ public class WhereClauseService {
     List<String> values = basicFilterRequest.values();
     boolean includeNulls = basicFilterRequest.includeNulls();
 
-    if ((values == null || values.size() != 2) && !includeNulls) return "";
-
-    // Standardize the values list to avoid NullPointer exception on stream
-    List<String> rawValues = (values == null) ? List.of() : values;
+    if (values.size() != 2 && !includeNulls) return "";
 
     // Transform raw client values into type-formatted strings
-    List<String> formattedValues = fieldFormatter.convertToSQLFromDateRange(rawValues);
+    List<String> formattedValues = fieldFormatter.convertToSQLFromDateRange(values);
 
     StringBuilder criteria = new StringBuilder("(");
 
