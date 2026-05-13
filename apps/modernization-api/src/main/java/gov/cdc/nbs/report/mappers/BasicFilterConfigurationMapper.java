@@ -1,6 +1,7 @@
 package gov.cdc.nbs.report.mappers;
 
 import gov.cdc.nbs.entity.odse.ReportFilter;
+import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.FilterType;
 import java.util.List;
@@ -17,7 +18,7 @@ public class BasicFilterConfigurationMapper {
 
     FilterType filterType = FilterTypeMapper.fromFilterCode(filter.getFilterCode());
 
-    if (!filterType.filterType().startsWith("BAS_")) {
+    if (!filterType.filterType().startsWith(ReportConstants.BASIC_FILTER_PREFIX)) {
       throw new IllegalArgumentException("Cannot create basic filter from advanced filter");
     }
 
