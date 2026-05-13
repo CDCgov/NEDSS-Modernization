@@ -1,6 +1,7 @@
 import decimal
 import logging
 import os
+import shutil
 from contextlib import contextmanager
 
 import pytest
@@ -141,22 +142,30 @@ def setup_containers(request):
     request.addfinalizer(teardown)
 
 
-def get_faker_sql(schema_name: str) -> str:
-    """Process a fakertable schema and return the sql as a string."""
+def get_faker_sql(schema_name: str) -> list[str]:
+    """Process a tablefaker schema and return sql statements as a list of strings."""
     faker_path = _faker_schema_path(schema_name)
-    target_file_path = os.path.join(os.path.dirname(__file__), 'fake.sql')
-    tablefaker.to_sql(faker_path, target_file_path=target_file_path)
-    with open(target_file_path) as f:
-        result = f.read()
+    target_file_path = os.path.join(os.path.dirname(__file__), 'fake_sql')
+    os.mkdir(target_file_path)
 
-    os.remove(target_file_path)
+    try:
+        tablefaker.to_sql(faker_path, target_file_path=target_file_path)
+        results = []
 
-    # KLUDGE: NULL writing is not always correct
-    result = result.replace(' nan,', ' NULL,')
-    result = result.replace(' nan)', ' NULL)')
-    result = result.replace(' <NA>,', ' NULL,')
-    result = result.replace(' <NA>)', ' NULL)')
-    return result
+        for file in os.listdir(target_file_path):
+            with open(os.path.join(target_file_path, file)) as f:
+                result = f.read()
+
+                # KLUDGE: NULL writing is not always correct
+                result = result.replace(' nan,', ' NULL,')
+                result = result.replace(' nan)', ' NULL)')
+                result = result.replace(' <NA>,', ' NULL,')
+                result = result.replace(' <NA>)', ' NULL)')
+                results.append(result)
+
+        return results
+    finally:
+        shutil.rmtree(target_file_path)
 
 
 def get_tables_from_faker(schema_name: str) -> tuple[list[str], list[str]]:
@@ -223,7 +232,7 @@ def fake_db_table(request):
 
 
 def insert_fake_data(
-    conn_string: str, sql: str, db_tables: list[str], fk_tables: list[str]
+    conn_string: str, sqls: list[str], db_tables: list[str], fk_tables: list[str]
 ):
     """Run sql (inserts expected) into the database pointed to by the connection string.
 
@@ -253,8 +262,10 @@ def insert_fake_data(
             trx.execute(f'DELETE {db_table}')
             logging.info(f'cleared table: {db_table}')
 
-        trx.execute(sql)
-        logging.info(f'Inserted fake data: {db_table}')
+        for sql in sqls:
+            trx.execute(sql)
+
+        logging.info('Inserted fake data')
 
 
 def restore_original_data(conn_string: str, db_tables: list[str], fk_tables: list[str]):

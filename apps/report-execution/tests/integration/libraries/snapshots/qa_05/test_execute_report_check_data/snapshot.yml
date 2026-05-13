@@ -1,0 +1,846 @@
+- !!python/tuple
+  - '- Bryan Perez'
+  - 0
+  - Bryan
+  - Perez
+  - null
+  - 34
+  - 1
+  - 1
+- !!python/tuple
+  - '- Christine Meyers'
+  - 1
+  - Christine
+  - Meyers
+  - null
+  - 44
+  - 1
+  - 3
+- !!python/tuple
+  - '- Nancy Wilson'
+  - 3
+  - Nancy
+  - Wilson
+  - null
+  - 91
+  - 0
+  - 0
+- !!python/tuple
+  - 1 - Joel Garcia
+  - 0
+  - Joel
+  - Garcia
+  - '1'
+  - 1
+  - 0
+  - 1
+- !!python/tuple
+  - 10 - Lauren Lee
+  - 1
+  - Lauren
+  - Lee
+  - '10'
+  - 10
+  - 2
+  - 1
+- !!python/tuple
+  - 11 - Kyle Sims
+  - 1
+  - Kyle
+  - Sims
+  - '11'
+  - 11
+  - 0
+  - 0
+- !!python/tuple
+  - 12 - Jessica Bond
+  - 0
+  - Jessica
+  - Bond
+  - '12'
+  - 12
+  - 1
+  - 0
+- !!python/tuple
+  - 13 - Nicole Miller
+  - 0
+  - Nicole
+  - Miller
+  - '13'
+  - 13
+  - 4
+  - 3
+- !!python/tuple
+  - 14 - Catherine Powers
+  - 0
+  - Catherine
+  - Powers
+  - '14'
+  - 14
+  - 3
+  - 1
+- !!python/tuple
+  - 15 - William Thompson
+  - 7
+  - William
+  - Thompson
+  - '15'
+  - 15
+  - 1
+  - 2
+- !!python/tuple
+  - 16 - Thomas Davis
+  - 1
+  - Thomas
+  - Davis
+  - '16'
+  - 16
+  - 1
+  - 0
+- !!python/tuple
+  - 17 - Sarah Glenn
+  - 0
+  - Sarah
+  - Glenn
+  - '17'
+  - 17
+  - 3
+  - 1
+- !!python/tuple
+  - 18 - Amy
+  - 1
+  - Amy
+  - null
+  - '18'
+  - 18
+  - 1
+  - 0
+- !!python/tuple
+  - 19 - Regina Armstrong
+  - 3
+  - Regina
+  - Armstrong
+  - '19'
+  - 19
+  - 2
+  - 2
+- !!python/tuple
+  - 2 - Randy Moore
+  - 0
+  - Randy
+  - Moore
+  - '2'
+  - 2
+  - 1
+  - 0
+- !!python/tuple
+  - 20 - Nicole Charles
+  - 0
+  - Nicole
+  - Charles
+  - '20'
+  - 20
+  - 4
+  - 2
+- !!python/tuple
+  - 21 - William Gutierrez
+  - 0
+  - William
+  - Gutierrez
+  - '21'
+  - 21
+  - 1
+  - 1
+- !!python/tuple
+  - 22 - Carol Jordan
+  - 1
+  - Carol
+  - Jordan
+  - '22'
+  - 22
+  - 0
+  - 4
+- !!python/tuple
+  - 23 - Evan
+  - 6
+  - Evan
+  - null
+  - '23'
+  - 23
+  - 1
+  - 0
+- !!python/tuple
+  - 24 - Lisa Williams
+  - 0
+  - Lisa
+  - Williams
+  - '24'
+  - 24
+  - 2
+  - 1
+- !!python/tuple
+  - 25 - Brandon Sims
+  - 2
+  - Brandon
+  - Sims
+  - '25'
+  - 25
+  - 1
+  - 1
+- !!python/tuple
+  - 26 -
+  - 3
+  - null
+  - null
+  - '26'
+  - 26
+  - 0
+  - 1
+- !!python/tuple
+  - 27 - Thomas Cooper
+  - 1
+  - Thomas
+  - Cooper
+  - '27'
+  - 27
+  - 1
+  - 1
+- !!python/tuple
+  - 28 - Wendy Gonzalez
+  - 2
+  - Wendy
+  - Gonzalez
+  - '28'
+  - 28
+  - 1
+  - 1
+- !!python/tuple
+  - 29 - Robert Harris
+  - 1
+  - Robert
+  - Harris
+  - '29'
+  - 29
+  - 1
+  - 3
+- !!python/tuple
+  - 3 - Carl Morales
+  - 0
+  - Carl
+  - Morales
+  - '3'
+  - 3
+  - 2
+  - 0
+- !!python/tuple
+  - 30 - Cynthia Hill
+  - 2
+  - Cynthia
+  - Hill
+  - '30'
+  - 30
+  - 1
+  - 1
+- !!python/tuple
+  - 31 - Michael Burgess
+  - 0
+  - Michael
+  - Burgess
+  - '31'
+  - 31
+  - 1
+  - 1
+- !!python/tuple
+  - 32 - Malik
+  - 3
+  - Malik
+  - null
+  - '32'
+  - 32
+  - 1
+  - 1
+- !!python/tuple
+  - 33 - Rebecca Garcia
+  - 1
+  - Rebecca
+  - Garcia
+  - '33'
+  - 33
+  - 1
+  - 0
+- !!python/tuple
+  - 35 - Kathy Gilbert
+  - 0
+  - Kathy
+  - Gilbert
+  - '35'
+  - 35
+  - 1
+  - 3
+- !!python/tuple
+  - 36 - John
+  - 0
+  - John
+  - null
+  - '36'
+  - 36
+  - 0
+  - 2
+- !!python/tuple
+  - 38 - Brad Terry
+  - 1
+  - Brad
+  - Terry
+  - '38'
+  - 38
+  - 0
+  - 1
+- !!python/tuple
+  - 39 - Paula Blevins
+  - 1
+  - Paula
+  - Blevins
+  - '39'
+  - 39
+  - 2
+  - 1
+- !!python/tuple
+  - 4 - Samantha Mcbride
+  - 2
+  - Samantha
+  - Mcbride
+  - '4'
+  - 4
+  - 1
+  - 2
+- !!python/tuple
+  - 40 - Jessica Moyer
+  - 0
+  - Jessica
+  - Moyer
+  - '40'
+  - 40
+  - 3
+  - 1
+- !!python/tuple
+  - 41 - Andrew Roberts
+  - 0
+  - Andrew
+  - Roberts
+  - '41'
+  - 41
+  - 1
+  - 1
+- !!python/tuple
+  - 42 - Tammy Rowe
+  - 3
+  - Tammy
+  - Rowe
+  - '42'
+  - 42
+  - 0
+  - 1
+- !!python/tuple
+  - 43 - Robert Harding
+  - 0
+  - Robert
+  - Harding
+  - '43'
+  - 43
+  - 1
+  - 1
+- !!python/tuple
+  - 45 - Kelly Lee
+  - 2
+  - Kelly
+  - Lee
+  - '45'
+  - 45
+  - 0
+  - 0
+- !!python/tuple
+  - 46 - Sean Taylor
+  - 0
+  - Sean
+  - Taylor
+  - '46'
+  - 46
+  - 0
+  - 2
+- !!python/tuple
+  - 47 - Patrick Nixon
+  - 1
+  - Patrick
+  - Nixon
+  - '47'
+  - 47
+  - 2
+  - 0
+- !!python/tuple
+  - 48 - Mark Smith
+  - 0
+  - Mark
+  - Smith
+  - '48'
+  - 48
+  - 2
+  - 1
+- !!python/tuple
+  - 5 - Kathy Walker
+  - 2
+  - Kathy
+  - Walker
+  - '5'
+  - 5
+  - 3
+  - 2
+- !!python/tuple
+  - 50 - Kristen Cox
+  - 0
+  - Kristen
+  - Cox
+  - '50'
+  - 50
+  - 2
+  - 0
+- !!python/tuple
+  - 51 - Kelly Davis
+  - 0
+  - Kelly
+  - Davis
+  - '51'
+  - 51
+  - 2
+  - 3
+- !!python/tuple
+  - 52 - Tina Coleman
+  - 0
+  - Tina
+  - Coleman
+  - '52'
+  - 52
+  - 1
+  - 0
+- !!python/tuple
+  - 53 - Jared Brown
+  - 0
+  - Jared
+  - Brown
+  - '53'
+  - 53
+  - 0
+  - 2
+- !!python/tuple
+  - 54 - Brian Jackson
+  - 0
+  - Brian
+  - Jackson
+  - '54'
+  - 54
+  - 3
+  - 1
+- !!python/tuple
+  - 55 - Erica Hernandez
+  - 0
+  - Erica
+  - Hernandez
+  - '55'
+  - 55
+  - 1
+  - 1
+- !!python/tuple
+  - 56 - Blake Henry
+  - 0
+  - Blake
+  - Henry
+  - '56'
+  - 56
+  - 0
+  - 1
+- !!python/tuple
+  - 57 - John Bright
+  - 0
+  - John
+  - Bright
+  - '57'
+  - 57
+  - 0
+  - 1
+- !!python/tuple
+  - 58 - David Moreno
+  - 6
+  - David
+  - Moreno
+  - '58'
+  - 58
+  - 0
+  - 2
+- !!python/tuple
+  - 59 - Kim Ortiz
+  - 3
+  - Kim
+  - Ortiz
+  - '59'
+  - 59
+  - 2
+  - 1
+- !!python/tuple
+  - 6 - Amanda Hill
+  - 0
+  - Amanda
+  - Hill
+  - '6'
+  - 6
+  - 3
+  - 0
+- !!python/tuple
+  - 60 - Vanessa Woods
+  - 0
+  - Vanessa
+  - Woods
+  - '60'
+  - 60
+  - 0
+  - 1
+- !!python/tuple
+  - 61 - John Jenkins
+  - 0
+  - John
+  - Jenkins
+  - '61'
+  - 61
+  - 3
+  - 4
+- !!python/tuple
+  - 62 - Benjamin Fisher
+  - 0
+  - Benjamin
+  - Fisher
+  - '62'
+  - 62
+  - 2
+  - 1
+- !!python/tuple
+  - 63 - John Small
+  - 3
+  - John
+  - Small
+  - '63'
+  - 63
+  - 0
+  - 1
+- !!python/tuple
+  - 64 - Mariah Jimenez
+  - 5
+  - Mariah
+  - Jimenez
+  - '64'
+  - 64
+  - 0
+  - 0
+- !!python/tuple
+  - 65 - Anthony
+  - 1
+  - Anthony
+  - null
+  - '65'
+  - 65
+  - 0
+  - 2
+- !!python/tuple
+  - 66 - John Clark
+  - 0
+  - John
+  - Clark
+  - '66'
+  - 66
+  - 1
+  - 3
+- !!python/tuple
+  - 67 -   Kane
+  - 3
+  - null
+  - Kane
+  - '67'
+  - 67
+  - 0
+  - 1
+- !!python/tuple
+  - 68 -   Williams
+  - 1
+  - null
+  - Williams
+  - '68'
+  - 68
+  - 0
+  - 3
+- !!python/tuple
+  - 69 - Sarah Cunningham
+  - 2
+  - Sarah
+  - Cunningham
+  - '69'
+  - 69
+  - 2
+  - 0
+- !!python/tuple
+  - 7 - Gerald Rodriguez
+  - 0
+  - Gerald
+  - Rodriguez
+  - '7'
+  - 7
+  - 1
+  - 0
+- !!python/tuple
+  - 70 -   Powell
+  - 3
+  - null
+  - Powell
+  - '70'
+  - 70
+  - 0
+  - 0
+- !!python/tuple
+  - 71 - Rachel Valdez
+  - 0
+  - Rachel
+  - Valdez
+  - '71'
+  - 71
+  - 0
+  - 2
+- !!python/tuple
+  - 72 - Krystal Garner
+  - 2
+  - Krystal
+  - Garner
+  - '72'
+  - 72
+  - 2
+  - 2
+- !!python/tuple
+  - 73 - Troy Davis
+  - 3
+  - Troy
+  - Davis
+  - '73'
+  - 73
+  - 0
+  - 3
+- !!python/tuple
+  - 74 - Jason Russo
+  - 0
+  - Jason
+  - Russo
+  - '74'
+  - 74
+  - 2
+  - 2
+- !!python/tuple
+  - 75 - Rachel Middleton
+  - 0
+  - Rachel
+  - Middleton
+  - '75'
+  - 75
+  - 1
+  - 3
+- !!python/tuple
+  - 76 - Matthew Sandoval
+  - 2
+  - Matthew
+  - Sandoval
+  - '76'
+  - 76
+  - 1
+  - 3
+- !!python/tuple
+  - 77 - Lauren Day
+  - 0
+  - Lauren
+  - Day
+  - '77'
+  - 77
+  - 1
+  - 0
+- !!python/tuple
+  - 78 - Lisa Rice
+  - 0
+  - Lisa
+  - Rice
+  - '78'
+  - 78
+  - 2
+  - 1
+- !!python/tuple
+  - 79 - Diana Parks
+  - 4
+  - Diana
+  - Parks
+  - '79'
+  - 79
+  - 2
+  - 2
+- !!python/tuple
+  - 8 - Jason Pennington
+  - 0
+  - Jason
+  - Pennington
+  - '8'
+  - 8
+  - 1
+  - 0
+- !!python/tuple
+  - 80 - Joseph Livingston
+  - 2
+  - Joseph
+  - Livingston
+  - '80'
+  - 80
+  - 1
+  - 2
+- !!python/tuple
+  - 81 - Stephanie Jones
+  - 0
+  - Stephanie
+  - Jones
+  - '81'
+  - 81
+  - 3
+  - 2
+- !!python/tuple
+  - 82 - Tasha Nixon
+  - 2
+  - Tasha
+  - Nixon
+  - '82'
+  - 82
+  - 2
+  - 3
+- !!python/tuple
+  - 83 - Elizabeth Williams
+  - 0
+  - Elizabeth
+  - Williams
+  - '83'
+  - 83
+  - 1
+  - 3
+- !!python/tuple
+  - 84 - Rachel Anderson
+  - 1
+  - Rachel
+  - Anderson
+  - '84'
+  - 84
+  - 0
+  - 2
+- !!python/tuple
+  - 85 - Tanya Contreras
+  - 0
+  - Tanya
+  - Contreras
+  - '85'
+  - 85
+  - 2
+  - 1
+- !!python/tuple
+  - 86 - Bruce Jackson
+  - 2
+  - Bruce
+  - Jackson
+  - '86'
+  - 86
+  - 1
+  - 1
+- !!python/tuple
+  - 88 - Julie Pennington
+  - 0
+  - Julie
+  - Pennington
+  - '88'
+  - 88
+  - 3
+  - 0
+- !!python/tuple
+  - 9 - Maria Roman
+  - 0
+  - Maria
+  - Roman
+  - '9'
+  - 9
+  - 2
+  - 0
+- !!python/tuple
+  - 90 -   Smith
+  - 0
+  - null
+  - Smith
+  - '90'
+  - 90
+  - 1
+  - 0
+- !!python/tuple
+  - 92 - Lisa Logan
+  - 1
+  - Lisa
+  - Logan
+  - '92'
+  - 92
+  - 2
+  - 1
+- !!python/tuple
+  - 93 - Natalie Pierce
+  - 3
+  - Natalie
+  - Pierce
+  - '93'
+  - 93
+  - 0
+  - 1
+- !!python/tuple
+  - 94 - Natasha Harris
+  - 0
+  - Natasha
+  - Harris
+  - '94'
+  - 94
+  - 2
+  - 5
+- !!python/tuple
+  - 95 -   Rivera
+  - 3
+  - null
+  - Rivera
+  - '95'
+  - 95
+  - 1
+  - 1
+- !!python/tuple
+  - 96 - Patricia Ayala
+  - 4
+  - Patricia
+  - Ayala
+  - '96'
+  - 96
+  - 1
+  - 1
+- !!python/tuple
+  - 97 - Thomas Fox
+  - 0
+  - Thomas
+  - Fox
+  - '97'
+  - 97
+  - 1
+  - 0
+- !!python/tuple
+  - 98 - Anthony Johnson
+  - 1
+  - Anthony
+  - Johnson
+  - '98'
+  - 98
+  - 0
+  - 0
