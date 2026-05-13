@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.report.models.CreateReportRequest;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportResult;
@@ -29,6 +30,19 @@ public class ReportController {
 
   public ReportController(ReportService reportService) {
     this.reportService = reportService;
+  }
+
+  @PostMapping("/configuration")
+  @PreAuthorize("hasAuthority('ADDREPORT-REPORTING')")
+  public ResponseEntity<ReportConfiguration> createReport(
+          @Valid @RequestBody CreateReportRequest request, Errors validationErrors) {
+    if (validationErrors.hasErrors()) {
+      throw new ResponseStatusException(
+              HttpStatus.UNPROCESSABLE_ENTITY, validationErrors.getAllErrors().toString());
+    }
+
+    ReportConfiguration reportConfigResponse = reportService.createReport(request);
+    return new ResponseEntity<>(reportConfigResponse, HttpStatus.OK);
   }
 
   @GetMapping("/configuration/{reportUid}/{dataSourceUid}")

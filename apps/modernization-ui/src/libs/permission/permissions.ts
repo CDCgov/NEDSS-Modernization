@@ -43,6 +43,7 @@ export const permissions = {
         },
         run: 'RUNREPORT-REPORTING',
         export: 'RUNREPORT-REPORTING',
+        add: 'ADDREPORT-REPORTING',
     },
     summaryReports: {
         view: 'VIEW-SUMMARYREPORT',
