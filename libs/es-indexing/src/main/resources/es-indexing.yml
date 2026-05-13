@@ -1,0 +1,6 @@
+nbs:
+  search:
+    patient:
+      index:
+        name: person
+        mapping: /search/patient/patient.index.json

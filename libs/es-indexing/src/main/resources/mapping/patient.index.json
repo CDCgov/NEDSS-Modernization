@@ -1,0 +1,361 @@
+{
+  "mappings": {
+    "properties": {
+      "cd": {
+        "type": "keyword"
+      },
+      "person_uid": {
+        "type": "long"
+      },
+      "local_id": {
+        "type": "keyword"
+      },
+      "short_id": {
+        "type": "keyword"
+      },
+      "record_status_cd": {
+        "type": "keyword"
+      },
+      "birth_time": {
+        "type": "date",
+        "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
+      },
+      "deceased_ind_cd": {
+        "type": "keyword"
+      },
+      "curr_sex_cd": {
+        "type": "keyword"
+      },
+      "ethnic_group_ind": {
+        "type": "keyword"
+      },
+      "name": {
+        "type": "nested",
+        "properties": {
+          "firstNm": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "firstNmSndx": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "lastNm": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "lastNmSndx": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "middleNm": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "nmSuffix": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "nm_use_cd": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "full" : {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "address": {
+        "type": "nested",
+        "properties": {
+          "city": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "cntryCd": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "cntryText": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "cntyCd": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "cntyText": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "state": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "stateText": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "streetAddr1": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "streetAddr2": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "zip": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "full" : {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "phone": {
+        "type": "nested",
+        "properties": {
+          "extensionTxt": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "telephoneNbr": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "typeCd": {
+            "type": "keyword"
+          },
+          "useCd": {
+            "type": "keyword"
+          }
+        }
+      },
+      "email": {
+        "type": "nested",
+        "properties": {
+          "emailAddress": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "race": {
+        "type": "nested",
+        "properties": {
+          "raceCategoryCd": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "raceCd": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "entity_id": {
+        "type": "nested",
+        "properties": {
+          "rootExtensionTxt": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "typeCd": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "document_ids": {
+        "type": "text"
+      },
+      "morbidity_report_ids": {
+        "type": "text"
+      },
+      "treatment_ids": {
+        "type": "text"
+      },
+      "vaccination_ids": {
+        "type": "text"
+      },
+      "abcs_case_ids": {
+        "type": "text"
+      },
+      "city_case_ids": {
+        "type": "text"
+      },
+      "state_case_ids": {
+        "type": "text"
+      },
+      "accession_ids": {
+        "type": "text"
+      },
+      "investigation_ids": {
+        "type": "text"
+      },
+      "lab_report_ids": {
+        "type": "text"
+      },
+      "notification_ids": {
+        "type": "text"
+      },
+      "sort": {
+        "properties" : {
+          "identification": {
+            "type": "keyword",
+            "index": false
+          },
+          "phone": {
+            "type": "keyword",
+            "index": false
+          },
+          "address": {
+            "type": "keyword",
+            "index": false
+          },
+          "email": {
+            "type": "keyword",
+            "index": false
+          },
+          "name": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      }
+    }
+  }
+}
