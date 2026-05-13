@@ -13,7 +13,7 @@ class JurisdictionOptionFinder extends SQLBasedOptionFinder {
           code                as [value],
           code_short_desc_txt as [name],
           indent_level_nbr    as [order]
-      from [NBS_SRTE].[dbo].Jurisdiction_code
+      from NBS_SRTE..Jurisdiction_code
       where   status_cd = 'A'
       order by
           indent_level_nbr
