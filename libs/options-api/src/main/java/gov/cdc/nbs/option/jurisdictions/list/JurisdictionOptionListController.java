@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("nbs/api/options/jurisdictions")
 class JurisdictionOptionListController {
 
-  private final JurisdictionOptionListResolver resolver;
+  private final JurisdictionOptionFinder resolver;
 
-  JurisdictionOptionListController(final JurisdictionOptionListResolver finder) {
+  JurisdictionOptionListController(final JurisdictionOptionFinder finder) {
     this.resolver = finder;
   }
 
