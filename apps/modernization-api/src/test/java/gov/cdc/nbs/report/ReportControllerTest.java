@@ -168,7 +168,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
             null);
 
     SimpleErrors errors = new SimpleErrors(controller);
@@ -304,7 +304,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
             null);
 
     SimpleErrors errors = new SimpleErrors(controller);
