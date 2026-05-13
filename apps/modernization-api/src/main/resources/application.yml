@@ -90,6 +90,8 @@ management:
       access: read_only
 
 spring:
+  config:
+    import: classpath:/es-indexing.yml
   profiles:
     include: ui,oidc
   graphql:
