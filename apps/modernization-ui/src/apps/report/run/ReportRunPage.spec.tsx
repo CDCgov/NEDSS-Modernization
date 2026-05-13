@@ -2,14 +2,13 @@ import { render } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
-import { BasicFilterConfiguration, ReportConfiguration, Selectable } from 'generated';
+import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { Layout } from 'layout';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { ReactNode } from 'react';
 import fileDownload from 'js-file-download';
 import { axe } from 'jest-axe';
 import * as options from 'options/selectableResolver';
-import { cache } from '../../../options/cache/cached.ts';
 import { ConceptOptions, useConceptOptions } from '../../../options/concepts';
 
 vi.mock('react-router', async () => {
@@ -2137,7 +2136,7 @@ describe('report run page', () => {
                         rules: [
                             {
                                 id: '124-124-124',
-                                field: '2001',
+                                columnId: 2001,
                                 operator: 'SW',
                                 value: 'prefix',
                             },
@@ -2147,13 +2146,13 @@ describe('report run page', () => {
                                 rules: [
                                     {
                                         id: '126-126-126',
-                                        field: '2002',
+                                        columnId: 2002,
                                         operator: 'GT',
                                         value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
                                     },
                                     {
                                         id: '127-127-127',
-                                        field: '2003',
+                                        columnId: 2003,
                                         operator: 'BW',
                                         value: '10,20',
                                     },
@@ -2217,7 +2216,7 @@ describe('report run page', () => {
                             rules: [
                                 {
                                     id: '124-124-124',
-                                    field: '2001',
+                                    columnId: 2001,
                                     operator: 'SW',
                                     value: 'prefix',
                                 },
@@ -2227,14 +2226,14 @@ describe('report run page', () => {
                                     rules: [
                                         {
                                             id: '126-126-126',
-                                            field: '2002',
+                                            columnId: 2002,
                                             operator: 'GT',
                                             // format should be mm/dd/yyyy when we switch components
                                             value: '2020-01-01',
                                         },
                                         {
                                             id: '127-127-127',
-                                            field: '2003',
+                                            columnId: 2003,
                                             operator: 'BW',
                                             value: '10,201',
                                         },
