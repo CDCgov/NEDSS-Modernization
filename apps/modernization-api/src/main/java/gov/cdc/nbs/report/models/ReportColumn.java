@@ -5,10 +5,12 @@ import java.time.LocalDateTime;
 
 public record ReportColumn(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long id,
-    Integer columnMaxLength,
-    String columnName,
-    String columnTitle,
-    String columnSourceTypeCode,
+    Integer maxLength,
+    // While these aren't required in the db schema, they are required in the UI and functionally
+    // necessary for the application to function, so making them required on the API side
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String title,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String sourceTypeCode,
     String descTxt,
     Character displayable,
     Character filterable,

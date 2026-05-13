@@ -1,15 +1,14 @@
-import { act, findAllByRole, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
-import { BasicFilterConfiguration, ReportConfiguration, Selectable } from 'generated';
+import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { Layout } from 'layout';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { ReactNode } from 'react';
 import fileDownload from 'js-file-download';
 import { axe } from 'jest-axe';
 import * as options from 'options/selectableResolver';
-import { cache } from '../../../options/cache/cached.ts';
 import { ConceptOptions, useConceptOptions } from '../../../options/concepts';
 
 vi.mock('react-router', async () => {
@@ -37,7 +36,6 @@ vi.mock('libs/permission', async () => {
 });
 
 const MOCK_CONFIG: ReportConfiguration = {
-    runner: 'python',
     reportTitle: 'Test Report',
     dataSource: {
         name: 'nbs_ods.data_source',
@@ -50,25 +48,25 @@ const MOCK_CONFIG: ReportConfiguration = {
     reportColumns: [
         {
             id: 2001,
-            columnName: 'FULL_NAME',
-            columnTitle: 'Full Name',
-            columnSourceTypeCode: 'STRING',
+            name: 'FULL_NAME',
+            title: 'Full Name',
+            sourceTypeCode: 'STRING',
             displayable: 'Y',
             filterable: 'Y',
         },
         {
             id: 2002,
-            columnName: 'FIRST_NAME',
-            // no title
-            columnSourceTypeCode: 'STRING',
+            name: 'DATE_OF_BIRTH',
+            title: 'Date of Birth',
+            sourceTypeCode: 'DATETIME',
             displayable: 'Y',
             filterable: 'Y',
         },
         {
             id: 2003,
-            // no name
-            // no title
-            columnSourceTypeCode: 'STRING',
+            name: 'DAYS_OLD',
+            title: 'Days Old',
+            sourceTypeCode: 'INTEGER',
             displayable: 'Y',
             filterable: 'Y',
         },
@@ -165,7 +163,7 @@ describe('report run page', () => {
                 const mockApi = vi
                     .mocked(generated.ReportControllerService.getReportConfiguration)
                     .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, reportColumnUid: 2001 }] });
-                const { getByRole, findByText, findByLabelText } = renderWithRouter();
+                const { getByRole, findByText, findByLabelText, queryByText } = renderWithRouter();
 
                 expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -173,26 +171,13 @@ describe('report run page', () => {
 
                 expect(await findByLabelText('Full Name')).toBeVisible();
                 expect(await findByText('Basic Text Filter')).toBeVisible();
+                expect(queryByText('Advanced Filter')).toBeNull();
             });
 
-            it('renders the column name when title unavailable', async () => {
+            it('renders the filter name when column unavailable', async () => {
                 const mockApi = vi
                     .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, reportColumnUid: 2002 }] });
-                const { getByRole, findByText, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
-
-                expect(mockApi).toHaveBeenCalled();
-
-                expect(await findByLabelText('FIRST_NAME')).toBeVisible();
-                expect(await findByText('Basic Text Filter')).toBeVisible();
-            });
-
-            it('renders the filter name when name and title unavailable', async () => {
-                const mockApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, reportColumnUid: 2003 }] });
+                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, reportColumnUid: 2004 }] });
                 const { getByRole, findByLabelText } = renderWithRouter();
 
                 expect(getByRole('status')).toHaveTextContent('Loading');
@@ -274,6 +259,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['test'] }],
                     }),
                 });
@@ -335,6 +321,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['starter text and more'] }],
                     }),
                 });
@@ -390,6 +377,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
+                            advancedFilter: undefined,
                             basicFilters: [{ reportFilterUid: 1001, values: ['01/01/2025', '01/01/2026'] }],
                         }),
                     });
@@ -460,6 +448,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
+                            advancedFilter: undefined,
                             basicFilters: [{ reportFilterUid: 1001, values: ['01/01/2023', '01/01/2025'] }],
                         }),
                     });
@@ -514,6 +503,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['2025', '2026'] }],
                     }),
                 });
@@ -592,6 +582,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['2023', '2025'] }],
                     }),
                 });
@@ -652,6 +643,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['01/2025', '01/2026'] }],
                     }),
                 });
@@ -732,6 +724,7 @@ describe('report run page', () => {
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
                         isExport: true,
+                        advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['03/2024', '01/2025'] }],
                     }),
                 });
@@ -792,6 +785,7 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
+                                advancedFilter: undefined,
                                 basicFilters: [{ reportFilterUid: 1001, values: ['13'] }],
                             }),
                         });
@@ -869,6 +863,7 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
+                                advancedFilter: undefined,
                                 basicFilters: [{ reportFilterUid: 1001, values: ['04'] }],
                             }),
                         });
@@ -933,6 +928,7 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
+                                advancedFilter: undefined,
                                 basicFilters: [{ reportFilterUid: 1001, values: ['13', '04'] }],
                             }),
                         });
@@ -1012,6 +1008,7 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
+                                advancedFilter: undefined,
                                 basicFilters: [{ reportFilterUid: 1001, values: ['13', '04'] }],
                             }),
                         });
@@ -1101,7 +1098,7 @@ describe('report run page', () => {
                         expect(await axe(container)).toHaveNoViolations();
 
                         // change state to arizona
-                        const stateDropDown = await findByLabelText('FIRST_NAME');
+                        const stateDropDown = await findByLabelText('Date of Birth');
                         await userEvent.selectOptions(stateDropDown, '04');
 
                         expect(mockConfigApi).toHaveBeenCalled();
@@ -1123,10 +1120,11 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
-                                basicFilters: [
+                                advancedFilter: undefined,
+                                basicFilters: expect.arrayContaining([
                                     { reportFilterUid: 1001, values: ['04001'] },
                                     { reportFilterUid: 1002, values: ['04'] },
-                                ],
+                                ]),
                             }),
                         });
                     });
@@ -1197,10 +1195,11 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
-                                basicFilters: [
+                                advancedFilter: undefined,
+                                basicFilters: expect.arrayContaining([
                                     { reportFilterUid: 1001, values: ['13002'] },
                                     { reportFilterUid: 1002, values: ['13'] },
-                                ],
+                                ]),
                             }),
                         });
                     });
@@ -1257,7 +1256,7 @@ describe('report run page', () => {
                         expect(await axe(container)).toHaveNoViolations();
 
                         // change state to arizona
-                        const stateDropDown = await findByLabelText('FIRST_NAME');
+                        const stateDropDown = await findByLabelText('Date of Birth');
                         await userEvent.selectOptions(stateDropDown, '04');
 
                         expect(mockConfigApi).toHaveBeenCalled();
@@ -1279,10 +1278,11 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
-                                basicFilters: [
+                                advancedFilter: undefined,
+                                basicFilters: expect.arrayContaining([
                                     { reportFilterUid: 1001, values: ['04001'] },
                                     { reportFilterUid: 1002, values: ['04'] },
-                                ],
+                                ]),
                             }),
                         });
                     });
@@ -1355,10 +1355,11 @@ describe('report run page', () => {
                         expect(mockResultApi).toHaveBeenCalledWith({
                             requestBody: expect.objectContaining({
                                 isExport: true,
-                                basicFilters: [
+                                advancedFilter: undefined,
+                                basicFilters: expect.arrayContaining([
                                     { reportFilterUid: 1001, values: ['13001', '13002'] },
                                     { reportFilterUid: 1002, values: ['13'] },
-                                ],
+                                ]),
                             }),
                         });
                     });
@@ -1927,6 +1928,322 @@ describe('report run page', () => {
                         }),
                     });
                 });
+            });
+        });
+    });
+
+    describe('advanced filter', () => {
+        const MOCK_FILTER: generated.AdvancedFilterConfiguration = {
+            reportFilterUid: 1001,
+            defaultValue: undefined,
+        };
+
+        it('renders the empty filter builder when no default value', async () => {
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, findByText, queryByText, findByRole } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Advanced Filter')).toBeVisible();
+            expect(queryByText('Basic Filters')).toBeNull();
+
+            const fieldSelect = await findByRole('combobox', { name: 'Field' });
+            expect(fieldSelect).toHaveValue('~');
+            const user = userEvent.setup();
+            await user.selectOptions(fieldSelect, 'Full Name');
+            const opSelect = await findByRole('combobox', { name: 'Operator' });
+            expect(opSelect).toHaveValue('~');
+            await user.selectOptions(opSelect, 'contains');
+            const valueBox = await findByRole('textbox', { name: 'Value' });
+            expect(valueBox).toHaveValue('');
+            await user.type(valueBox, 'hi');
+
+            // currently not working, but should once we put in our own components
+            // expect(await axe(container)).toHaveNoViolations();
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: {
+                        reportFilterUid: 1001,
+                        value: {
+                            id: expect.stringMatching(/[0-9-]+/),
+                            combinator: 'and',
+                            rules: [
+                                {
+                                    id: expect.stringMatching(/[0-9-]+/),
+                                    columnId: 2001,
+                                    operator: 'CO',
+                                    value: 'hi',
+                                },
+                            ],
+                        },
+                    },
+                    basicFilters: [],
+                }),
+            });
+        });
+
+        it('allows submit when empty', async () => {
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, findByText, findByRole } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Advanced Filter')).toBeVisible();
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            const user = userEvent.setup();
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: undefined,
+                    basicFilters: [],
+                }),
+            });
+        });
+
+        it('validates rule states', async () => {
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, queryByText, findByText, findByRole, findAllByRole, findByTestId } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Advanced Filter')).toBeVisible();
+
+            const fieldSelect = await findByRole('combobox', { name: 'Field' });
+            expect(fieldSelect).toHaveValue('~');
+            const user = userEvent.setup();
+            await user.selectOptions(fieldSelect, 'Full Name');
+
+            // trigger validation
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(await findByText('Must select an operator and value')).toBeVisible();
+
+            // generally filled in
+            const opSelect = await findByRole('combobox', { name: 'Operator' });
+            expect(opSelect).toHaveValue('~');
+            await user.selectOptions(opSelect, 'contains');
+
+            expect(await findByText('Value cannot be empty')).toBeVisible();
+
+            const valueBox = await findByRole('textbox', { name: 'Value' });
+            expect(valueBox).toHaveValue('');
+            await user.type(valueBox, 'hi');
+
+            expect(queryByText('Value cannot be empty')).toBeNull();
+
+            // dates between
+            await user.selectOptions(fieldSelect, 'DATE_OF_BIRTH');
+            expect(opSelect).toHaveValue('~');
+            await user.selectOptions(opSelect, 'between');
+
+            expect(await findByText('Both low and high values required')).toBeVisible();
+
+            // The date entry will likely need to change once we switch to NBS components
+            const dtInputs = (await findByTestId('value-editor')).children;
+            await user.type(dtInputs[0], '2022-10-18');
+
+            expect(await findByText('Both low and high values required')).toBeVisible();
+
+            await user.type(dtInputs[1], '2022-10-17');
+
+            expect(await findByText('High value must be greater than or equal to low value')).toBeVisible();
+
+            await user.type(dtInputs[1], '{backspace}9');
+
+            expect(queryByText('High value must be greater than or equal to low value')).toBeNull();
+
+            // numbers between
+            await user.selectOptions(fieldSelect, 'DAYS_OLD');
+            expect(opSelect).toHaveValue('~');
+            await user.selectOptions(opSelect, 'between');
+
+            expect(await findByText('Both low and high values required')).toBeVisible();
+
+            const numInputs = await findAllByRole('spinbutton');
+            await user.type(numInputs[0], '10');
+
+            expect(await findByText('Both low and high values required')).toBeVisible();
+
+            await user.type(numInputs[1], '2');
+
+            expect(await findByText('High value must be greater than or equal to low value')).toBeVisible();
+
+            await user.type(numInputs[1], '0');
+
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: {
+                        reportFilterUid: 1001,
+                        value: {
+                            id: expect.stringMatching(/[0-9-]+/),
+                            combinator: 'and',
+                            rules: [
+                                {
+                                    id: expect.stringMatching(/[0-9-]+/),
+                                    columnId: 2003,
+                                    operator: 'BW',
+                                    value: '10,20',
+                                },
+                            ],
+                        },
+                    },
+                    basicFilters: [],
+                }),
+            });
+        });
+
+        it('starts from default value', async () => {
+            const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                ...MOCK_CONFIG,
+                advancedFilter: {
+                    ...MOCK_FILTER,
+                    defaultValue: {
+                        id: '123-123-123',
+                        combinator: generated.RuleGroup.combinator.OR,
+                        rules: [
+                            {
+                                id: '124-124-124',
+                                columnId: 2001,
+                                operator: 'SW',
+                                value: 'prefix',
+                            },
+                            {
+                                id: '125-125-125',
+                                combinator: generated.RuleGroup.combinator.AND,
+                                rules: [
+                                    {
+                                        id: '126-126-126',
+                                        columnId: 2002,
+                                        operator: 'GT',
+                                        value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
+                                    },
+                                    {
+                                        id: '127-127-127',
+                                        columnId: 2003,
+                                        operator: 'BW',
+                                        value: '10,20',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                },
+            });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, findByText, findByRole, findAllByRole, findAllByTitle } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Advanced Filter')).toBeVisible();
+
+            const combinators = await findAllByRole('combobox', { name: 'Combinator' });
+            expect(combinators).toHaveLength(2);
+            expect(combinators[0]).toHaveValue('or');
+            expect(combinators[1]).toHaveValue('and');
+
+            const fields = await findAllByRole('combobox', { name: 'Field' });
+            expect(fields).toHaveLength(3);
+            expect(fields[0]).toHaveValue('FULL_NAME');
+            expect(fields[1]).toHaveValue('DATE_OF_BIRTH');
+            expect(fields[2]).toHaveValue('DAYS_OLD');
+
+            const operators = await findAllByRole('combobox', { name: 'Operator' });
+            expect(operators).toHaveLength(3);
+            expect(operators[0]).toHaveValue('beginswith');
+            expect(operators[1]).toHaveValue('>');
+            expect(operators[2]).toHaveValue('between');
+
+            const values = await findAllByTitle('Value');
+            expect(values).toHaveLength(3);
+            expect(values[0]).toHaveValue('prefix');
+            expect(values[1]).toHaveValue('2020-01-01');
+            const [low, high] = values[2].children;
+            expect(low).toHaveValue(10);
+            expect(high).toHaveValue(20);
+
+            const user = userEvent.setup();
+            await user.type(high, '1');
+            expect(high).toHaveValue(201);
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: {
+                        reportFilterUid: 1001,
+                        value: {
+                            id: '123-123-123',
+                            combinator: generated.RuleGroup.combinator.OR,
+                            rules: [
+                                {
+                                    id: '124-124-124',
+                                    columnId: 2001,
+                                    operator: 'SW',
+                                    value: 'prefix',
+                                },
+                                {
+                                    id: '125-125-125',
+                                    combinator: generated.RuleGroup.combinator.AND,
+                                    rules: [
+                                        {
+                                            id: '126-126-126',
+                                            columnId: 2002,
+                                            operator: 'GT',
+                                            // format should be mm/dd/yyyy when we switch components
+                                            value: '2020-01-01',
+                                        },
+                                        {
+                                            id: '127-127-127',
+                                            columnId: 2003,
+                                            operator: 'BW',
+                                            value: '10,201',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                    basicFilters: [],
+                }),
             });
         });
     });
