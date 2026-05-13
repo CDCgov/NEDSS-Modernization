@@ -20,7 +20,6 @@ public class NbsPropertiesFinder {
   public static final String STD_PROGRAM_AREAS = "STD_PROGRAM_AREAS";
   public static final String HIV_PROGRAM_AREAS = "HIV_PROGRAM_AREAS";
   public static final String CODE_BASE = "CODE_BASE";
-  public static final String NBS_STATE_CODE = "NBS_STATE_CODE";
 
   private final NamedParameterJdbcTemplate template;
 
@@ -41,7 +40,7 @@ public class NbsPropertiesFinder {
 
   // List of configs that will be exposed to the UI
   private static final List<String> exposedConfigs =
-      Arrays.asList(HIV_PROGRAM_AREAS, STD_PROGRAM_AREAS, CODE_BASE, NBS_STATE_CODE);
+      Arrays.asList(HIV_PROGRAM_AREAS, STD_PROGRAM_AREAS, CODE_BASE);
 
   // Grab the properties from the database and convert them into a map
   public Properties find() {

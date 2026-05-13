@@ -2,7 +2,6 @@ package gov.cdc.nbs.configuration.nbs;
 
 import static gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder.CODE_BASE;
 import static gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder.HIV_PROGRAM_AREAS;
-import static gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder.NBS_STATE_CODE;
 import static gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder.STD_PROGRAM_AREAS;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class PropertiesMapper {
   private PropertiesMapper() {}
 
   // entries from the database to be included in the exposed Properties object
-  private static final List<String> includedProperties = Arrays.asList(CODE_BASE, NBS_STATE_CODE);
+  private static final List<String> includedProperties = Arrays.asList(CODE_BASE);
 
   public static Properties toProperties(Map<String, String> map) {
     return new Properties(

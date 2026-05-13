@@ -8,7 +8,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -46,9 +45,6 @@ public class DataSourceColumn {
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "data_source_uid")
   private DataSource dataSource;
-
-  @OneToOne(mappedBy = "column", fetch = FetchType.LAZY)
-  private DataSourceCodeset codeset;
 
   @Column(name = "desc_txt", length = 300)
   private String descTxt;
