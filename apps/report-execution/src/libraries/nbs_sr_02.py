@@ -27,7 +27,7 @@ def execute(
             sum(group_case_cnt) AS [Cases]
         FROM subset
         GROUP BY state, county, phc_code_short_desc
-        ORDER BY state, county, phc_code_short_desc;
+        ORDER BY [State], [County], phc_code_short_desc;
         """
     )
 
