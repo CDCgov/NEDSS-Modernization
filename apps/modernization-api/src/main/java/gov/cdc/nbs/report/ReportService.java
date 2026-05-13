@@ -9,6 +9,8 @@ import gov.cdc.nbs.report.mappers.ReportColumnMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import gov.cdc.nbs.repository.DataSourceRepository;
+import gov.cdc.nbs.repository.ReportFilterRepository;
+import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
@@ -24,23 +26,42 @@ public class ReportService {
 
   private final ReportRepository reportRepository;
   private final DataSourceRepository dataSourceRepository;
+  private final ReportLibraryRepository reportLibraryRepository;
+  private final ReportFilterRepository reportFilterRepository;
+
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils;
 
   public ReportService(
       final ReportRepository reportRepository,
       final DataSourceRepository dataSourceRepository,
+      final ReportLibraryRepository reportLibraryRepository,
+      final ReportFilterRepository reportFilterRepository,
+
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig) {
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
+    this.reportLibraryRepository = reportLibraryRepository;
+    this.reportFilterRepository = reportFilterRepository;
+
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
   }
 
+  @Transactional
   public void createReport(CreateReportRequest request) {
     DataSource dataSource = dataSourceRepository.findById(request.dataSourceId()).orElseThrow(() -> new IllegalArgumentException("No data source found matching id provided"));
+    ReportLibrary reportLibrary = reportLibraryRepository.findById(request.libraryId()).orElseThrow(() -> new IllegalArgumentException("No report library found matching id provided"));
 
+    List<ReportFilter> reportFilters = null;
+    if (!request.filterIds().isEmpty()) {
+      reportFilters = reportFilterRepository.findAllById(request.filterIds());
+
+      if (reportFilters.size() != request.filterIds().size()) {
+        throw new IllegalArgumentException("Invalid filterId set provided");
+      }
+    }
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
