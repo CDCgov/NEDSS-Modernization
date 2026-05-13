@@ -2,10 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Clause } from './Clause';
-import type { Connector } from './Connector';
+import type { RuleGroup } from './RuleGroup';
 export type AdvancedFilterRequest = {
     reportFilterUid: number;
-    logic: (Clause | Connector);
+    value: RuleGroup;
 };
 

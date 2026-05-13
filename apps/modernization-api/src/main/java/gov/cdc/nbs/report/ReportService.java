@@ -8,8 +8,10 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
+import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.ReportColumn;
@@ -57,6 +59,17 @@ public class ReportService {
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
+              AdvancedFilterConfiguration advancedFilter =
+                  report.getReportFilters().stream()
+                      .filter(
+                          f ->
+                              f.getFilterCode()
+                                  .getFilterType()
+                                  .equals(ReportConstants.ADV_FILTER_TYPE))
+                      .map(AdvancedFilterConfigurationMapper::fromReportFilter)
+                      .findFirst()
+                      .orElse(null);
+
               List<DataSourceColumn> dataSourceColumns =
                   report.getDataSource().getDataSourceColumns();
               if (dataSourceColumns == null) {
@@ -70,7 +83,7 @@ public class ReportService {
                   new Library(report.getReportLibrary()),
                   report.getReportTitle(),
                   basicFilters,
-                  null, // advanced filter
+                  advancedFilter,
                   reportColumns);
             })
         .orElseThrow(

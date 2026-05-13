@@ -4,10 +4,10 @@
 /* eslint-disable */
 export type ReportColumn = {
     id: number;
-    columnMaxLength?: number;
-    columnName?: string;
-    columnTitle?: string;
-    columnSourceTypeCode?: string;
+    maxLength?: number;
+    name: string;
+    title: string;
+    sourceTypeCode: string;
     descTxt?: string;
     displayable?: string;
     filterable?: string;

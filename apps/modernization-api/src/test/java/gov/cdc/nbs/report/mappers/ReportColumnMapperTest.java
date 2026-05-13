@@ -31,10 +31,10 @@ class ReportColumnMapperTest {
     ReportColumn mapped = ReportColumnMapper.fromDataSourceColumn(dbColumn);
 
     assertThat(mapped.id()).isEqualTo(dbColumn.getId());
-    assertThat(mapped.columnMaxLength()).isEqualTo(dbColumn.getColumnMaxLength());
-    assertThat(mapped.columnName()).isEqualTo(dbColumn.getColumnName());
-    assertThat(mapped.columnTitle()).isEqualTo(dbColumn.getColumnTitle());
-    assertThat(mapped.columnSourceTypeCode()).isEqualTo(dbColumn.getColumnSourceTypeCode());
+    assertThat(mapped.maxLength()).isEqualTo(dbColumn.getColumnMaxLength());
+    assertThat(mapped.name()).isEqualTo(dbColumn.getColumnName());
+    assertThat(mapped.title()).isEqualTo(dbColumn.getColumnTitle());
+    assertThat(mapped.sourceTypeCode()).isEqualTo(dbColumn.getColumnSourceTypeCode());
     assertThat(mapped.descTxt()).isEqualTo(dbColumn.getDescTxt());
     assertThat(mapped.displayable()).isEqualTo(dbColumn.getDisplayable());
     assertThat(mapped.filterable()).isEqualTo(dbColumn.getFilterable());

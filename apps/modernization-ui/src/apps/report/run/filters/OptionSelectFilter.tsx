@@ -59,7 +59,7 @@ const useCurrentStateCountyOptions = () => {
     return options;
 };
 
-const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName: string) => Selectable[]> = {
+const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName?: string) => Selectable[]> = {
     [COUNTY_FILTER_CODE]: useCurrentStateCountyOptions,
     [STATE_FILTER_CODE]: useStateOptions,
     // this may be functionally dead code - needs more investigation
@@ -70,7 +70,8 @@ const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName: string) => Selectable
     [DISEASE_FILTER_CODE]: (filterCodeSetName) => useDiseaseOptions(filterCodeSetName),
 };
 
-const useDiseaseOptions = (filterCodeSetName) => {
+const useDiseaseOptions = (filterCodeSetName?: string) => {
+    if (!filterCodeSetName) return [];
     const { options } = useConceptOptions(filterCodeSetName, { lazy: false });
     return options;
 };
