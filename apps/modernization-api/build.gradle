@@ -33,6 +33,7 @@ dependencies {
     implementation(project(':id-generator'))
     implementation(project(':web'))
     implementation(project(':classic-interaction'))
+    implementation(project(':es-indexing'))
 
     //  feature modules
     implementation project(':me-api')
