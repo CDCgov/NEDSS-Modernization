@@ -8,6 +8,13 @@ import java.io.IOException;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
+/**
+ * Indexes {@link SimpleDocument} instances into Elasticsearch.
+ *
+ * <p>The document {@linkplain SimpleDocument#identifier() identifier} is used as the Elasticsearch
+ * document id, and the document {@linkplain SimpleDocument#payload() payload} is written as the
+ * indexed source. Indexing failures are logged and are not propagated to callers.
+ */
 @Component
 public class ElasticsearchSimpleDocumentIndexer {
 
@@ -16,10 +23,23 @@ public class ElasticsearchSimpleDocumentIndexer {
 
   private final ElasticsearchClient client;
 
+  /**
+   * Creates an indexer that writes documents through the provided Elasticsearch client.
+   *
+   * @param client the Elasticsearch client used for single-document and bulk indexing requests
+   */
   public ElasticsearchSimpleDocumentIndexer(final ElasticsearchClient client) {
     this.client = client;
   }
 
+  /**
+   * Indexes a single document into the given index.
+   *
+   * <p>The request refreshes the index immediately after the document is written.
+   *
+   * @param index the Elasticsearch index name
+   * @param document the document to index
+   */
   public void index(final String index, final SimpleDocument document) {
 
     try {
@@ -38,6 +58,15 @@ public class ElasticsearchSimpleDocumentIndexer {
     }
   }
 
+  /**
+   * Indexes a stream of documents into the given index using a bulk request.
+   *
+   * <p>The request waits for the indexed documents to become visible before returning. The provided
+   * stream is consumed while building the bulk request.
+   *
+   * @param index the Elasticsearch index name
+   * @param documents the documents to index
+   */
   public void index(final String index, final Stream<SimpleDocument> documents) {
     try {
       BulkRequest bulkRequest =

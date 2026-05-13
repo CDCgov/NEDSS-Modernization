@@ -1,11 +1,12 @@
 package gov.cdc.nbs.search;
 
 /**
- * A simple representation of an Elasticsearch index that contains a name and the {@code Path} to
- * the descriptor that defines it.
+ * Describes an Elasticsearch index managed by the indexing library.
  *
- * @param name The name of the index
- * @param location The location of the JSON file containing the {@code settings} and {@code
- *     mappings} of the index.
+ * <p>The {@code location} points to the JSON descriptor used to create the index when it does not
+ * already exist. The descriptor is expected to define the index settings and mappings.
+ *
+ * @param name the Elasticsearch index name
+ * @param location the classpath or resource location of the index descriptor JSON
  */
 public record SimpleIndex(String name, String location) {}
