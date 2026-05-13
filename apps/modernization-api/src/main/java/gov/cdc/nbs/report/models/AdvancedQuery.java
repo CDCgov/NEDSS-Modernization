@@ -8,10 +8,10 @@ import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = Expr.RuleGroup.class, name = "RuleGroup"),
-  @JsonSubTypes.Type(value = Expr.Rule.class, name = "Rule")
+  @JsonSubTypes.Type(value = AdvancedQuery.RuleGroup.class, name = "RuleGroup"),
+  @JsonSubTypes.Type(value = AdvancedQuery.Rule.class, name = "Rule")
 })
-public sealed interface Expr {
+public sealed interface AdvancedQuery {
   // Subset of https://react-querybuilder.js.org/docs/typescript#rules-and-groups
 
   record RuleGroup(
@@ -20,13 +20,13 @@ public sealed interface Expr {
               requiredMode = Schema.RequiredMode.REQUIRED,
               allowableValues = {"or", "and"})
           @NotNull String combinator,
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<Expr> rules)
-      implements Expr {}
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<AdvancedQuery> rules)
+      implements AdvancedQuery {}
 
   record Rule(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String id, // uuid
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String field, // column UID stringified
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Long columnId,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String operator,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String value)
-      implements Expr {}
+      implements AdvancedQuery {}
 }

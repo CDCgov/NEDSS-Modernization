@@ -21,7 +21,7 @@ import * as DndKit from '@dnd-kit/core';
 
 // ============= Constants ============= /
 
-const EMPTY_QUERY: RuleGroup = {
+const EMPTY_QUERY: QbRuleGroup = {
     id: crypto.randomUUID(),
     combinator: RuleGroup.combinator.AND,
     rules: [{ id: crypto.randomUUID(), field: '~', operator: '~', value: '' }],
@@ -125,25 +125,40 @@ const INPUT_TYPE_MAP: Record<string, string> = {
 
 // ============= Translation NBS <--> Query Builder ============= /
 
-type Expr = RuleGroup | Rule;
+type NbsQuery = RuleGroup | Rule;
+type QbRule = Omit<Rule, 'columnId'> & { field: string };
+export type QbRuleGroup = RuleGroupType<QbRule>;
+type QbQuery = QbRuleGroup | QbRule;
 
 // map rules and remove any extraneous fields
-function mapExprRules(rule: Expr, mapper: (r: Rule) => Rule): Expr {
+function mapNbsRules(rule: NbsQuery, mapper: (r: Rule) => QbRule): QbQuery {
     if ('rules' in rule) {
         const { id, combinator, rules } = rule;
-        return { id, combinator, rules: rules.map((r) => mapExprRules(r, mapper)) };
+        return { id, combinator, rules: rules.map((r) => mapNbsRules(r, mapper)) };
     }
 
     return mapper(rule);
 }
+
+function mapQbRules(rule: QbQuery, mapper: (r: QbRule) => Rule): NbsQuery {
+    if ('rules' in rule) {
+        const { id, combinator, rules } = rule;
+        // @ts-expect-error the rule group types overlap, but can't convince ts
+        return { id, combinator, rules: rules.map((r) => mapQbRules(r, mapper)) };
+    }
+
+    return mapper(rule);
+}
+
 // filter rules
-function filterExprRules(rule: Expr, filterer: (r: Rule) => boolean): Expr {
+function filterQbRules(rule: QbQuery, filterer: (r: QbRule) => boolean): QbQuery {
     if ('rules' in rule) {
         const { id, combinator, rules } = rule;
         return {
             id,
             combinator,
-            rules: rules.filter((r) => (isRuleType(r) ? filterer(r) : true)).map((r) => filterExprRules(r, filterer)),
+            // @ts-expect-error the rule group types overlap, but can't convince ts
+            rules: rules.filter((r) => (isRuleType(r) ? filterer(r) : true)).map((r) => filterQbRules(r, filterer)),
         };
     }
 
@@ -154,39 +169,36 @@ const mapToQueryOp = (op: string) => ALL_OPERATORS.find(({ nbsCd }) => nbsCd ===
 const mapToNbsOp = (op: string) => ALL_OPERATORS.find(({ name }) => name === op)!.nbsCd;
 
 // typescript is tricky to appease here, hence the casts, but the code does work as intended
-const queryToAdvancedFilterRequest = (query: RuleGroupType, columns: ReportColumn[]): RuleGroup | undefined => {
-    const nonEmptyQuery = filterExprRules(
-        query as RuleGroup,
-        (rule) => !!rule.field && rule.field !== '~'
-    ) as RuleGroup;
+const queryToAdvancedFilterRequest = (query: QbRuleGroup, columns: ReportColumn[]): RuleGroup | undefined => {
+    const nonEmptyQuery = filterQbRules(query, (rule) => !!rule.field && rule.field !== '~') as QbRuleGroup;
     // no non-empty rules means there is functionally no filter
     if (nonEmptyQuery.rules.length === 0) return undefined;
 
-    return mapExprRules(nonEmptyQuery, ({ id, operator, field, value }) => {
+    return mapQbRules(nonEmptyQuery, ({ id, operator, field, value }) => {
         return {
             id,
             operator: mapToNbsOp(operator)!,
-            field: columns.find(({ name }) => field === name)!.id.toString(),
+            columnId: columns.find(({ name }) => field === name)!.id,
             value: value.toString(),
         };
     }) as RuleGroup;
 };
 
 // typescript is tricky to appease here, hence the casts, but the code does work as intended
-const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]): RuleGroupType => {
-    return mapExprRules(query as RuleGroup, ({ id, operator, field, value }) => {
+const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]): QbRuleGroup => {
+    return mapNbsRules(query, ({ id, operator, columnId, value }) => {
         return {
             id,
             operator: mapToQueryOp(operator)!,
-            field: columns.find(({ id }) => field === id.toString())!.name!.toString(),
+            field: columns.find(({ id }) => columnId === id)!.name!.toString(),
             value: value,
         };
-    }) as RuleGroup;
+    }) as QbRuleGroup;
 };
 
 // ============= Validation ============= /
 
-const validateAdvancedFilter = (value?: RuleGroup) => {
+const validateAdvancedFilter = (value?: QbRuleGroup) => {
     if (!value) return true;
 
     return (
@@ -263,9 +275,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
         fieldState: { error },
     } = useController<ReportExecuteForm, 'advancedFilter'>({
         name: 'advancedFilter',
-        defaultValue: filter.defaultValue
-            ? (advancedFilterConfigToQuery(filter.defaultValue, columns) as RuleGroup)
-            : EMPTY_QUERY,
+        defaultValue: filter.defaultValue ? advancedFilterConfigToQuery(filter.defaultValue, columns) : EMPTY_QUERY,
         rules: { validate: validateAdvancedFilter },
     });
 
@@ -297,7 +307,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     );
 };
 
-const PreviewWhere = ({ query }: { query?: RuleGroup }) => {
+const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
     const fallbackExpression = 'No advanced filter selections made';
 
     return (

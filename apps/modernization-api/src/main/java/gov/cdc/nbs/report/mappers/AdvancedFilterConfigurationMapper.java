@@ -3,7 +3,7 @@ package gov.cdc.nbs.report.mappers;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
-import gov.cdc.nbs.report.models.Expr;
+import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.FilterType;
 
 public class AdvancedFilterConfigurationMapper {
@@ -20,7 +20,7 @@ public class AdvancedFilterConfigurationMapper {
 
     // For the future: Populate this
     // https://cdc-nbs.atlassian.net/browse/APP-505
-    Expr.RuleGroup defaultValue = null;
+    AdvancedQuery.RuleGroup defaultValue = null;
 
     return new AdvancedFilterConfiguration(filter.getId(), defaultValue);
   }
