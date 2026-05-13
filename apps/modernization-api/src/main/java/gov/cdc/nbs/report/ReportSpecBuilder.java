@@ -1,7 +1,7 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
-import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -35,7 +35,7 @@ public class ReportSpecBuilder {
 
     return "SELECT "
         + columns.stream()
-            .map(column -> "[" + column.columnName() + "] AS [" + column.columnTitle() + "]")
+            .map(column -> "[" + column.name() + "] AS [" + column.title() + "]")
             .collect(Collectors.joining(", "));
   }
 
