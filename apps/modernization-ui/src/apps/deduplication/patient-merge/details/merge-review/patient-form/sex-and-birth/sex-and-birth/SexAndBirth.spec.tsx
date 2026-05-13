@@ -2,6 +2,7 @@ import { MergeSexAndBirth } from 'apps/deduplication/api/model/MergeCandidate';
 import { SexAndBirth } from './SexAndBirth';
 import { render, within } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { differenceInYears } from 'date-fns/differenceInYears';
 
 const data: MergeSexAndBirth = {
     asOf: '2025-05-27T00:00:00',
@@ -38,9 +39,14 @@ describe('SexAndBirth', () => {
         expect(dob).toBeInTheDocument();
         expect(within(dob.parentElement!).getByText('05/12/2020')).toBeInTheDocument();
 
+        const today = new Date();
+        const dateOfBirth = new Date(data.dateOfBirth!);
+
+        const ageInYears = differenceInYears(today, dateOfBirth);
+
         const age = getByText('Current age');
         expect(age).toBeInTheDocument();
-        expect(within(age.parentElement!).getByText('6 years')).toBeInTheDocument();
+        expect(within(age.parentElement!).getByText(`${ageInYears} years`)).toBeInTheDocument();
 
         const sex = getByText('Current sex');
         expect(sex).toBeInTheDocument();
