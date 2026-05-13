@@ -27,7 +27,7 @@ class NbsTestDatabaseInitializer
             .withUsername(username)
             .withPassword(credential)
             .withEnv("DB_VERSION", "6.0.19.1")
-            .withImagePullPolicy(PullPolicy.defaultPolicy());
+            .withImagePullPolicy(PullPolicy.alwaysPull());
 
     container.start();
 
