@@ -37,7 +37,14 @@ def execute(
         END AS Open_Status,
         CAST(shd.ca_interviewer_assign_dt as DATE) as "ASSIGNED_DT",
         CAST(shd.cc_closed_dt as DATE) as "CLOSED_DT",
-        CAST(shd.ix_date_oi as DATE) as "IX_DATE_OI"
+        LOWER(shd.patient_name) as name_l,
+        CASE
+            WHEN shd.patient_race IS NOT NULL THEN 'XXX'
+            ELSE ''
+        END AS race,
+        '' as sex,
+        '13' as i,
+        shd.patient_age_reported as age
     FROM ({subset_query}) shd
         LEFT OUTER JOIN
             (SELECT i.investigation_key, em.add_user_id, up.provider_quick_code
@@ -50,6 +57,7 @@ def execute(
     WHERE shd.ca_patient_intv_status = 'I - Interviewed'
         AND shd.diagnosis_cd IS NOT NULL
         AND shd.ix_date_oi IS NOT NULL
+    ORDER BY shd.patient_name
     """
 
     content = trx.query(sql_query)

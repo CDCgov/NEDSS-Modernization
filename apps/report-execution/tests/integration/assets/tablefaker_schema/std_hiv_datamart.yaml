@@ -40,6 +40,8 @@ tables:
         null_percentage: 0.05
       - column_name: ca_patient_intv_status
         data: random.choice(["I - Interviewed"]) if random.random() < .1 else None
+      - column_name: program_jurisdiction_oid
+        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
 
 
 # === Columns not needed for reports yet ===
