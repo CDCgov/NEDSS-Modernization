@@ -59,13 +59,6 @@ public class ReportService {
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
-              AdvancedFilterConfiguration advancedFilter =
-                  report.getReportFilters().stream()
-                      .filter(f -> f.getFilterCode().getFilterType().equals("ADV_WCB"))
-                      .map(AdvancedFilterConfigurationMapper::fromReportFilter)
-                      .findFirst()
-                      .orElse(null);
-
               List<DataSourceColumn> dataSourceColumns =
                   report.getDataSource().getDataSourceColumns();
               if (dataSourceColumns == null) {
@@ -79,7 +72,7 @@ public class ReportService {
                   new Library(report.getReportLibrary()),
                   report.getReportTitle(),
                   basicFilters,
-                  advancedFilter,
+                  null, // advanced filter
                   reportColumns);
             })
         .orElseThrow(
