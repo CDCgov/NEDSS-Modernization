@@ -1982,7 +1982,7 @@ describe('report run page', () => {
                             rules: [
                                 {
                                     id: expect.stringMatching(/[0-9-]+/),
-                                    field: '2001',
+                                    columnId: 2001,
                                     operator: 'CO',
                                     value: 'hi',
                                 },
@@ -2113,7 +2113,7 @@ describe('report run page', () => {
                             rules: [
                                 {
                                     id: expect.stringMatching(/[0-9-]+/),
-                                    field: '2003',
+                                    columnId: 2003,
                                     operator: 'BW',
                                     value: '10,20',
                                 },

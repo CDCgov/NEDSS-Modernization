@@ -116,7 +116,7 @@ class ReportServiceTest {
             filterConfig -> {
               assertThat(filterConfig.reportFilterUid()).isEqualTo(3L);
 
-              assertThat(filterConfig.filterType()).isEqualTo("J_S01");
+              assertThat(filterConfig.filterType().code()).isEqualTo("J_S01");
             });
     assertThat(config.advancedFilter().reportFilterUid()).isEqualTo(6L);
   }
