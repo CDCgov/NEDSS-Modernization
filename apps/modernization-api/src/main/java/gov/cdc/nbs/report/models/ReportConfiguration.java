@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public record ReportConfiguration(
     AdvancedFilterConfiguration advancedFilter,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<ReportColumn> reportColumns) {
 
+  @JsonIgnore
   public boolean isPython() {
     return reportLibrary().runner().equalsIgnoreCase("python");
   }

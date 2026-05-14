@@ -106,9 +106,16 @@ class ClassicHomePage {
   }
 
   createRunReports() {
+    // Navigate to QA07 Duplicate Cases (30 Days) report
     cy.get("#Public a").contains("Expand Subsections").eq(0).click()
-    cy.get("table#Public2 a").contains("Run").eq(0).click()
-    cy.get("#id_C_D01").select("AIDS", {force: true})
+    cy.get("table#Public4 a").filter(':contains("Run")').eq(27).click()
+
+    //  Set values for all filters
+    cy.get("#id_cvg_select_all").eq(0).click()
+    cy.get("#id_T_T01a").eq(0).type("01/01/2000")
+    cy.get("#id_T_T01b").eq(0).type("05/01/2026")
+
+    //  Run report
     cy.get("td").contains("Run").eq(0).click()
   }
 
