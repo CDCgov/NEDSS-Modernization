@@ -39,7 +39,7 @@ dependencies {
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux:4.3.3'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux:4.3.4'
     implementation libs.bundles.security
     implementation libs.bundles.oidc
     implementation 'org.springframework.security:spring-security-oauth2-client'
@@ -51,8 +51,20 @@ dependencies {
             because("CVE-2025-58056")
             because("CVE-2025-55163")
         }
-        implementation("io.netty:netty-codec-http2:4.1.127.Final") {
-            because("CVE-2025-8916")
+        implementation("io.netty:netty-transport-native-epoll:4.2.13.Final") {
+            because("CVE-2026-42577")
+        }
+        implementation("io.netty:netty-codec-http3:4.2.13.Final") {
+            because("CVE-2026-42582")
+        }
+        implementation("io.netty:netty-codec-http2:4.2.13.Final") {
+            because("CVE-2026-42587")
+        }
+        implementation("io.netty:netty-codec-http:4.2.13.Final") {
+            because("CVE-2026-42587")
+        }
+        implementation("io.netty:netty-resolver-dns:4.2.13.Final") {
+            because("CVE-2026-42579")
         }
     }
 }
