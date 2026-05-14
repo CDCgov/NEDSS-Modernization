@@ -3,20 +3,15 @@ from src.models import ReportResult
 
 
 def execute(
-        trx: Transaction,
-        subset_query: str,
-        data_source_name: str,
-        **kwargs,
+    trx: Transaction,
+    subset_query: str,
+    data_source_name: str,
+    **kwargs,
 ):
-
     """QA01 STD Program Report: Interview Record Listing
 
     Conversion notes:
-    * Did not convert columns: name_l, race, sex, i, age
-        * all dropped columns were either duplicate or remnants of errant SAS code
-    * Did not sort by PATIENT_NAME
-    * Did not convert NULL to empty string
-    * Add IX_DATE_OI to the output
+    * Data format is YYYY-MM-DD
     """
 
     sql_query = f"""
@@ -58,7 +53,9 @@ def execute(
 
     content = trx.query(sql_query)
 
-    description = 'NEDSS STD Program Activity Report - QA01 Interview Record Listing Report'
+    description = (
+        'NEDSS STD Program Activity Report - QA01'
+    )
 
     return ReportResult(
         content_type='table',

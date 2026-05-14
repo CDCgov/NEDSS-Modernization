@@ -12,7 +12,6 @@ faker_schema = 'std_hiv_datamart.yaml'
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationNbsQa01Library:
-
     # Helper to generate common spec base
     @staticmethod
     def create_spec(**overrides):
@@ -28,6 +27,7 @@ class TestIntegrationNbsQa01Library:
         return ReportSpec.model_validate(base)
 
     """Integration tests for the nbs_custom library."""
+
     def test_execute_report_check_data(self, snapshot):
         report_spec = self.create_spec()
 
@@ -44,11 +44,7 @@ class TestIntegrationNbsQa01Library:
         # Sanity check the result's shape beyond the snapshot
         record = None
         for row in result.content.data:
-            if (
-                    row[0] == 45481149
-                    and row[3] == 'Van Dam, Venus'
-                    and row[4] == '43'
-            ):
+            if row[0] == 45481149 and row[3] == 'Van Dam, Venus' and row[4] == '43':
                 record = row
                 break
 
@@ -69,11 +65,24 @@ class TestIntegrationNbsQa01Library:
     def test_execute_report_check_metadata(self):
         """Check the metadata and column names are correct."""
         expected_columns = [
-            'INVESTIGATION_KEY', 'ADD_USER_ID', 'PROVIDER_QUICK_CODE',
-            'PATIENT_NAME', 'PATIENT_AGE_REPORTED', 'PATIENT_SEX',
-            'PATIENT_RACE', 'DIAGNOSIS_CD', 'FIELD_RECORD_NUMBER',
-            'INVESTIGATOR_INTERVIEW_QC', 'Open_Status', 'ASSIGNED_DT',
-            'CLOSED_DT', 'name_l', 'race', 'sex', 'i', 'age'
+            'INVESTIGATION_KEY',
+            'ADD_USER_ID',
+            'PROVIDER_QUICK_CODE',
+            'PATIENT_NAME',
+            'PATIENT_AGE_REPORTED',
+            'PATIENT_SEX',
+            'PATIENT_RACE',
+            'DIAGNOSIS_CD',
+            'FIELD_RECORD_NUMBER',
+            'INVESTIGATOR_INTERVIEW_QC',
+            'Open_Status',
+            'ASSIGNED_DT',
+            'CLOSED_DT',
+            'name_l',
+            'race',
+            'sex',
+            'i',
+            'age',
         ]
 
         report_spec = self.create_spec(report_title='QA01 Interview Record List')
