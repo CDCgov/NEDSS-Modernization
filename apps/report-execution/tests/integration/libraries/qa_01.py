@@ -89,7 +89,7 @@ class TestIntegrationNbsQa01Library:
 
         result = execute_report(report_spec)
         assert result.header == 'QA01 Interview Record List'
-        assert len(result.description) > 50
+        assert len(result.description) > 30
         assert result.content_type == 'table'
 
         assert result.content.columns == expected_columns

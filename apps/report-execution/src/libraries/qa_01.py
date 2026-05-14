@@ -53,9 +53,7 @@ def execute(
 
     content = trx.query(sql_query)
 
-    description = (
-        'NEDSS STD Program Activity Report - QA01'
-    )
+    description = 'NEDSS STD Program Activity Report - QA01'
 
     return ReportResult(
         content_type='table',
