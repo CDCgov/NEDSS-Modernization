@@ -5,7 +5,6 @@ import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
-
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import gov.cdc.nbs.repository.DataSourceRepository;
@@ -37,7 +36,6 @@ public class ReportService {
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
       final ReportFilterRepository reportFilterRepository,
-
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig) {
     this.reportRepository = reportRepository;
@@ -50,18 +48,43 @@ public class ReportService {
   }
 
   @Transactional
-  public void createReport(CreateReportRequest request) {
-    DataSource dataSource = dataSourceRepository.findById(request.dataSourceId()).orElseThrow(() -> new IllegalArgumentException("No data source found matching id provided"));
-    ReportLibrary reportLibrary = reportLibraryRepository.findById(request.libraryId()).orElseThrow(() -> new IllegalArgumentException("No report library found matching id provided"));
+  public Report createReport(CreateReportRequest request) {
+    DataSource dataSource =
+        dataSourceRepository
+            .findById(request.dataSourceId())
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "No data source found for ID " + request.dataSourceId()));
+
+    ReportLibrary reportLibrary =
+        reportLibraryRepository
+            .findById(request.libraryId())
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "No report library found for ID " + request.libraryId()));
 
     List<ReportFilter> reportFilters = null;
     if (!request.filterIds().isEmpty()) {
       reportFilters = reportFilterRepository.findAllById(request.filterIds());
 
       if (reportFilters.size() != request.filterIds().size()) {
-        throw new IllegalArgumentException("Invalid filterId set provided");
+        throw new IllegalArgumentException(
+            "One or more filter IDs are invalid in filterId list " + request.filterIds());
       }
     }
+
+    Report newReport =
+        Report.builder()
+            .dataSource(dataSource)
+            .reportLibrary(reportLibrary)
+            .reportTitle(request.reportTitle())
+            .reportFilters(reportFilters)
+            .sectionCd(request.sectionCode())
+            .build();
+
+    return reportRepository.save(newReport);
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {

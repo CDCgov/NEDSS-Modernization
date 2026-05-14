@@ -3,10 +3,7 @@ package gov.cdc.nbs.report;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockConstruction;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.Report;
@@ -16,10 +13,10 @@ import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.FilterTypeMapper;
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportResult;
-import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.*;
+import gov.cdc.nbs.repository.DataSourceRepository;
+import gov.cdc.nbs.repository.ReportFilterRepository;
+import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +40,10 @@ import org.springframework.web.client.RestClient.ResponseSpec;
 class ReportServiceTest {
 
   @Mock private ReportRepository reportRepository;
+  @Mock private DataSourceRepository dataSourceRepository;
+  @Mock private ReportLibraryRepository reportLibraryRepository;
+  @Mock private ReportFilterRepository reportFilterRepository;
+
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;
@@ -56,6 +57,7 @@ class ReportServiceTest {
 
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
+  private final Long libraryId = 20L;
 
   private Report mockReport(ReportId id, String runner, String dataSourceName) {
     Report report = mock(Report.class);
@@ -69,6 +71,179 @@ class ReportServiceTest {
     Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
 
     return report;
+  }
+
+  @Test
+  void createReport_should_create_and_return_report_when_all_inputs_are_valid() {
+    // Arrange
+    DataSource mockDataSource = mock(DataSource.class);
+    ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
+    List<Long> filterIds = List.of(1L, 2L, 3L);
+    List<ReportFilter> mockFilters =
+        List.of(mock(ReportFilter.class), mock(ReportFilter.class), mock(ReportFilter.class));
+
+    when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.of(mockDataSource));
+    when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.of(mockReportLibrary));
+    when(reportFilterRepository.findAllById(filterIds)).thenReturn(mockFilters);
+
+    Report savedReport = mock(Report.class);
+    when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
+
+    CreateReportRequest request =
+        new CreateReportRequest(
+            dataSourceUid,
+            libraryId,
+            "Test Report Title",
+            filterIds,
+            "Test Report Description",
+            "Test Owner Id",
+            "123");
+
+    // Act
+    Report result = service.createReport(request);
+
+    // Assert
+    assertThat(result).isEqualTo(savedReport);
+    verify(dataSourceRepository).findById(dataSourceUid);
+    verify(reportLibraryRepository).findById(libraryId);
+    verify(reportFilterRepository).findAllById(filterIds);
+    verify(reportRepository).save(any(Report.class));
+  }
+
+  @Test
+  void createReport_should_create_report_when_filter_ids_are_empty() {
+    // Arrange
+    DataSource mockDataSource = mock(DataSource.class);
+    ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
+    List<Long> emptyFilterIds = List.of();
+
+    when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.of(mockDataSource));
+    when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.of(mockReportLibrary));
+
+    Report savedReport = mock(Report.class);
+    when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
+
+    CreateReportRequest request =
+        new CreateReportRequest(
+            dataSourceUid,
+            libraryId,
+            "Test Report Title",
+            emptyFilterIds,
+            "Test Report Description",
+            "Test Owner Id",
+            "123");
+
+    // Act
+    Report result = service.createReport(request);
+
+    // Assert
+    assertThat(result).isEqualTo(savedReport);
+    verify(dataSourceRepository).findById(dataSourceUid);
+    verify(reportLibraryRepository).findById(libraryId);
+    verify(reportFilterRepository, never()).findAllById(any());
+
+    // Assert that the report was saved
+    verify(reportRepository).save(any(Report.class));
+  }
+
+  @Test
+  void createReport_should_throw_when_data_source_not_found() {
+    // Arrange
+    List<Long> filterIds = List.of(1L, 2L);
+
+    when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.empty());
+
+    CreateReportRequest request =
+        new CreateReportRequest(
+            dataSourceUid,
+            libraryId,
+            "Test Report Title",
+            filterIds,
+            "Test Report Description",
+            "Test Owner Id",
+            "123");
+
+    // Act & Assert
+    assertThatThrownBy(() -> service.createReport(request))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("No data source found for ID " + dataSourceUid);
+
+    verify(dataSourceRepository).findById(dataSourceUid);
+    verify(reportLibraryRepository, never()).findById(any());
+    verify(reportFilterRepository, never()).findAllById(any());
+
+    // Assert that the report was not saved
+    verify(reportRepository, never()).save(any());
+  }
+
+  @Test
+  void createReport_should_throw_when_report_library_not_found() {
+    // Arrange
+    DataSource mockDataSource = mock(DataSource.class);
+    List<Long> filterIds = List.of(1L, 2L);
+
+    when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.of(mockDataSource));
+    when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.empty());
+
+    CreateReportRequest request =
+        new CreateReportRequest(
+            dataSourceUid,
+            libraryId,
+            "Test Report Title",
+            filterIds,
+            "Test Report Description",
+            "Test Owner Id",
+            "123");
+
+    // Act & Assert
+    assertThatThrownBy(() -> service.createReport(request))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("No report library found for ID " + libraryId);
+
+    verify(dataSourceRepository).findById(dataSourceUid);
+    verify(reportLibraryRepository).findById(libraryId);
+    verify(reportFilterRepository, never()).findAllById(any());
+
+    // Assert that the report was not saved
+    verify(reportRepository, never()).save(any());
+  }
+
+  @Test
+  void createReport_should_throw_when_filter_ids_are_invalid() {
+    // Arrange
+    DataSource mockDataSource = mock(DataSource.class);
+    ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
+    List<Long> requestedFilterIds = List.of(1L, 2L, 3L);
+    List<ReportFilter> returnedFilters =
+        List.of(
+            mock(ReportFilter.class),
+            mock(ReportFilter.class)); // Only 2 filters returned instead of 3
+
+    when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.of(mockDataSource));
+    when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.of(mockReportLibrary));
+    when(reportFilterRepository.findAllById(requestedFilterIds)).thenReturn(returnedFilters);
+
+    CreateReportRequest request =
+        new CreateReportRequest(
+            dataSourceUid,
+            libraryId,
+            "Test Report Title",
+            requestedFilterIds,
+            "Test Report Description",
+            "Test Owner Id",
+            "123");
+
+    // Act & Assert
+    assertThatThrownBy(() -> service.createReport(request))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("One or more filter IDs are invalid in filterId list " + requestedFilterIds);
+
+    verify(dataSourceRepository).findById(dataSourceUid);
+    verify(reportLibraryRepository).findById(libraryId);
+    verify(reportFilterRepository).findAllById(requestedFilterIds);
+
+    // Assert that the report was not saved
+    verify(reportRepository, never()).save(any());
   }
 
   @Test
