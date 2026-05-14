@@ -32,7 +32,8 @@ def execute(
         shd.field_record_number AS [FIELD_RECORD_NUMBER],
         shd.investigator_interview_qc AS [INVESTIGATOR_INTERVIEW_QC],
         IIF(shd.cc_closed_dt IS NULL, 'Y', 'N') AS [Open_Status],
-        FORMAT(CAST(shd.ca_interviewer_assign_dt AS DATE), 'MM/dd/yyyy') AS [ASSIGNED_DT],
+        FORMAT(CAST(shd.ca_interviewer_assign_dt AS DATE), 'MM/dd/yyyy') 
+            AS [ASSIGNED_DT],
         FORMAT(CAST(shd.cc_closed_dt AS DATE), 'MM/dd/yyyy') AS [CLOSED_DT],
         LOWER(shd.patient_name) AS [name_l],
         IIF(
