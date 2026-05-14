@@ -125,11 +125,6 @@ tables:
         data: None
         null_percentage: 1.0
       
-      - column_name: ILLNESS_ONSET_DATE
-        type: string
-        data: None
-        null_percentage: 1.0
-      
       - column_name: CASE_STATUS
         type: string
         data: random.choice(["Confirmed", "Probable", "Suspect", "Not a Case", None])
@@ -167,21 +162,11 @@ tables:
       
       - column_name: EVENT_DATE
         type: string
-        data: f"{fake.date_between(start_date='-1y', end_date='today').strftime('%Y-%m-%d')} 12:00:00.000"
-        null_percentage: 0.05
+        data: f"{fake.date_between(start_date='-1y', end_date='today').strftime('%Y-%m-%d')} 12:00:00.000" if random.random() > 0.05 else None
       
       - column_name: EVENT_DATE_TYPE
         type: string
-        data: |
-          (
-            lambda ed: None if ed is None else random.choice([
-              "Investigation Start Date", 
-              "Date of Report", 
-              "Specimen Collection Date of Earliest Associated Lab", 
-              "Illness Onset Date", 
-              "Date of Diagnosis"
-            ])
-          )(EVENT_DATE)
+        data: None if EVENT_DATE is None else random.choice(["Investigation Start Date", "Date of Report", "Specimen Collection Date of Earliest Associated Lab", "Illness Onset Date", "Date of Diagnosis"])
         null_percentage: 0
       
       - column_name: PROGRAM_AREA
