@@ -1,0 +1,77 @@
+config:
+  seed: 4
+  nbs:
+    fk_tables: []
+
+tables:
+  rdb.dbo.investigation:
+    rows: 50
+    columns:
+      - name: INVESTIGATION_KEY
+        type: integer
+        unique: true
+        min: 1000
+        max: 9999
+      - name: INV_CASE_STATUS
+        type: categorical
+        values: ["Probable", "Confirmed", "Suspect", "Not a Case"]
+        weights: [0.4, 0.4, 0.1, 0.1]
+
+  rdb.dbo.LAB_TEST_RESULT:
+    rows: 35
+    columns:
+      - name: LAB_TEST_KEY
+        type: integer
+        unique: true
+        min: 10000
+        max: 99999
+      - name: INVESTIGATION_KEY
+        type: foreign_key
+        table: rdb.dbo.investigation
+        column: INVESTIGATION_KEY
+
+  rdb.dbo.TREATMENT_EVENT:
+    rows: 30
+    columns:
+      - name: TREATMENT_KEY
+        type: integer
+        unique: true
+        min: 20000
+        max: 99999
+      - name: INVESTIGATION_KEY
+        type: foreign_key
+        table: rdb.dbo.investigation
+        column: INVESTIGATION_KEY
+
+  rdb.dbo.STD_HIV_DATAMART:
+    rows: 50
+    columns:
+      - name: PATIENT_LOCAL_ID
+        type: string
+        pattern: "P[0-9]{10}"
+      - name: PATIENT_NAME
+        type: person_name
+      - name: DIAGNOSIS_CD
+        type: categorical
+        values: ["A500", "A501", "A502", "A509", "B200", "B201"]
+      - name: INV_LOCAL_ID
+        type: string
+        pattern: "INV[0-9]{8}"
+      - name: INVESTIGATION_KEY
+        type: foreign_key
+        table: rdb.dbo.investigation
+        column: INVESTIGATION_KEY
+      - name: CONFIRMATION_DT
+        type: date
+        min: "2020-01-01"
+        max: "2025-12-31"
+      - name: LAB_TEST_KEY
+        type: integer
+        null_probability: 0.4
+        min: 10000
+        max: 99999
+      - name: TREATMENT_KEY
+        type: integer
+        null_probability: 0.4
+        min: 20000
+        max: 99999
