@@ -108,7 +108,7 @@ class ClassicHomePage {
   createRunReports() {
     // Navigate to PA05 Worker Interview Activity (Case Close Date)
     cy.get("#Public a").contains("Expand Subsections").eq(0).click()
-    cy.get("table#Public4 a").filter(':contains("Run")').eq(18).click()
+    cy.get("table#Public6 a").filter(':contains("Run")').eq(18).click()
 
     //  Set values for all filters
     cy.get("#id_cvg_select_all").eq(0).click()
