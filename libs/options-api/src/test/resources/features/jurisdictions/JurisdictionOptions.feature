@@ -35,3 +35,10 @@ Feature: Jurisdiction Options REST API
   Scenario: I cannot find specific concepts that do not exist
     When I am trying to find jurisdictions that start with "zzzzzzzzz"
     Then there aren't any options available
+    
+  Scenario: I can list all of the jurisdictions
+    When I am retrieving all the jurisdictions
+    Then there are 24 options included
+    And the option named "wive" is included
+    And the option named "Cobb County" is included
+    And the option named "1and2" is not included

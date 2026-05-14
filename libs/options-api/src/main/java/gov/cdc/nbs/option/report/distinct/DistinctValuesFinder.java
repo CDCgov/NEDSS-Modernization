@@ -4,7 +4,9 @@ import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.option.Option;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +15,8 @@ public class DistinctValuesFinder {
 
   private static final String DATA_QUERY =
       """
-      select distinct ? as [value]
-      from ?
+      select distinct [%s] as [value]
+      from %s
       order by
           value
       """;
@@ -39,21 +41,28 @@ public class DistinctValuesFinder {
   }
 
   Collection<Option> find(final String columnUid) {
-    Map<String, Object> column =
-        this.client.sql(DATA_SOURCE_QUERY).param(columnUid).query().singleRow();
+    try {
+      Map<String, Object> column =
+          this.client.sql(DATA_SOURCE_QUERY).param(Long.valueOf(columnUid)).query().singleRow();
 
-    String columnName = column.get("column_name").toString();
-    String dataSourceName =
-        dataSourceNameUtils.buildDataSourceName(column.get("data_source_name").toString());
+      String columnName = column.get("column_name").toString();
+      String dataSourceName =
+          dataSourceNameUtils.buildDataSourceName(column.get("data_source_name").toString());
 
-    return this.client
-        .sql(DATA_QUERY)
-        .param(columnName)
-        .param(dataSourceName)
-        .query()
-        .singleColumn()
-        .stream()
-        .map(o -> new Option(o.toString()))
-        .toList();
+      return this.client
+          .sql(DATA_QUERY.formatted(columnName, dataSourceName))
+          .query()
+          .singleColumn()
+          .stream()
+          .map(o -> new Option(o.toString()))
+          .toList();
+
+    } catch (NumberFormatException e) {
+      // report column uid not a number
+      return List.of();
+    } catch (EmptyResultDataAccessException e) {
+      // column not found
+      return List.of();
+    }
   }
 }

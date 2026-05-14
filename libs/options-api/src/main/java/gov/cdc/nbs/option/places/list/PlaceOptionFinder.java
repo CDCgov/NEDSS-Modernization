@@ -10,9 +10,9 @@ class PlaceOptionFinder extends SQLBasedOptionFinder {
   private static final String QUERY =
       """
       select
-          root_extension_txt                                 as [value],
-          nm                                                 as [name],
-          row_number() over(order by [root_extension_txt])   as [order]
+          ei.root_extension_txt                                 as [value],
+          p.nm                                                  as [name],
+          row_number() over(order by [ei.root_extension_txt])   as [order]
       from NBS_ODSE..Place  p
       inner join NBS_ODSE..Entity_id ei on
           p.place_uid = ei.entity_uid
