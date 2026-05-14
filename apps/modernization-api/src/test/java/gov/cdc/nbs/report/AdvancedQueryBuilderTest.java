@@ -98,33 +98,13 @@ public class AdvancedQueryBuilderTest {
     void build_should_create_rule_group_with_nested_rule_group() {
         // Arrange: Create a ReportFilter with a group FilterValue, a clause, an operator, and another clause
         ReportFilter filter = ReportFilter.builder().build();
-        FilterValue groupValue = FilterValue.builder()
-                .id(1L)
-                .reportFilter(filter)
-                .valueType("and")
-                .build();
-        FilterValue clauseValue1 = FilterValue.builder()
-                .id(2L)
-                .reportFilter(filter)
-                .valueType("CLAUSE")
-                .columnUid(100L)
-                .operator("equals")
-                .valueTxt("value1")
-                .build();
-        FilterValue operatorValue = FilterValue.builder()
-                .id(3L)
-                .reportFilter(filter)
-                .valueType("OPERATOR")
-                .build();  // Note: For operators, valueType is "OPERATOR", but in the code it's used as combinator
-        FilterValue clauseValue2 = FilterValue.builder()
-                .id(4L)
-                .reportFilter(filter)
-                .valueType("CLAUSE")
-                .columnUid(200L)
-                .operator("notEquals")
-                .valueTxt("value2")
-                .build();
-        filter.setFilterValues(List.of(groupValue, clauseValue1, operatorValue, clauseValue2));
+
+        FilterValue andValue = buildOperatorValue(1L, filter, 1, "AND");
+        FilterValue clauseValue1 = buildClauseValue(2L, filter, 2, "equals", 100L, "value1");
+        FilterValue orValue = buildOperatorValue(3L, filter, 3, "OR");
+        FilterValue clauseValue2 = buildClauseValue(4L, filter, 4, "notEquals", 200L, "value2");
+
+        filter.setFilterValues(List.of(andValue, clauseValue1, orValue, clauseValue2));
 
         AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter);
 
