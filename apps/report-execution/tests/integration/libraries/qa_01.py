@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 import pytest
 import yaml
 
@@ -12,6 +10,8 @@ faker_schema = 'std_hiv_datamart.yaml'
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationNbsQa01Library:
+    """Integration tests for the nbs_sr_02 library."""
+
     # Helper to generate common spec base
     @staticmethod
     def create_spec(**overrides):
@@ -52,7 +52,11 @@ class TestIntegrationNbsQa01Library:
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = self.create_spec(
-            subset_query="SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE patient_name = 'Russell, Lee'"
+            subset_query=t"""
+                         SELECT * 
+                         FROM [RDB].[dbo].[STD_HIV_DATAMART] 
+                         WHERE patient_name = 'Russell, Lee'
+                        """
         )
 
         result = execute_report(report_spec)

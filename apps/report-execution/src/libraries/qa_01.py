@@ -9,11 +9,9 @@ def execute(
     **kwargs,
 ):
     """QA01 STD Program Report: Interview Record Listing
-
     Conversion notes:
-    * Data format is YYYY-MM-DD
+    * Data format is YYYY-MM-DD.
     """
-
     sql_query = f"""
     WITH Shd_Filtered AS (
     SELECT *
@@ -37,7 +35,9 @@ def execute(
         CAST(shd.ca_interviewer_assign_dt AS DATE) AS [ASSIGNED_DT],
         CAST(shd.cc_closed_dt AS DATE) AS [CLOSED_DT],
         LOWER(shd.patient_name) AS [name_l],
-        IIF(shd.patient_race IS NOT NULL AND shd.patient_race <> '', 'XXX', '') AS [race],
+        IIF(
+            shd.patient_race IS NOT NULL AND shd.patient_race <> '', 'XXX', ''
+            ) AS [race],
         '' AS [sex],
         '13' AS [i],
         shd.patient_age_reported AS [age]
