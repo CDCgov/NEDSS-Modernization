@@ -26,7 +26,7 @@ Feature: Jurisdiction Options REST API
     Then there are options available
     And the option named "regrate" is included
     And the option named "regulus" is included
-    And the option named "regreet" is not included
+    And the option named "wive" is not included
 
   Scenario: I can find a specific number of jurisdictions
     When I am trying to find at most 4 jurisdictions that start with "w"

@@ -17,6 +17,7 @@ class ClinicalConceptRequester {
   }
 
   ResultActions request(final String valueSet) throws Exception {
-    return mvc.perform(get("/nbs/api/options/counties/{valueSet}", valueSet)).andDo(print());
+    return mvc.perform(get("/nbs/api/options/clinical/concepts/{valueSet}", valueSet))
+        .andDo(print());
   }
 }

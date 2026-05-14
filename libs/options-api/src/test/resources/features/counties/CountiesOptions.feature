@@ -32,7 +32,7 @@ Feature: County Options REST API
     Then there are options available
     And the option named "regrate" is included
     And the option named "regulus" is included
-    And the option named "regreet" is not included
+    And the option named "waulk" is not included
 
   Scenario: I can find a specific number of counties
     When I am trying to find at most 4 counties that start with "w" for New York state
@@ -45,4 +45,3 @@ Feature: County Options REST API
   Scenario: I cannot find specific counties in the wrong state
     When I am trying to find counties that start with "reg" for Missouri state
     Then there aren't any options available
-

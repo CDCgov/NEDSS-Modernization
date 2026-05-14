@@ -32,7 +32,6 @@ dependencies {
     implementation libs.springBoot.jdbc
     implementation libs.bundles.swagger
 
-    implementation project(':database-entities')
     implementation project(':datasource-utils')
 }
 

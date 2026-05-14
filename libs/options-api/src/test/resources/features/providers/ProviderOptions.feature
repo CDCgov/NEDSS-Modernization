@@ -20,7 +20,7 @@ Feature: Provider Options REST API
     And the option named "Tyler Tomkins" is included
     And the option named "Atom Moon" is not included
     And the option named "Tommy Callahan III" is included
-    And the option named "Tommy Pickles" is not included
+    And the option named "Vince Nior" is not included
 
   Scenario: I can find a specific number of providers
     When I am trying to find at most 4 providers that start with "t"
