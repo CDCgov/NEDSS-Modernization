@@ -12,6 +12,7 @@ testing {
 
             dependencies {
                 implementation.bundle(libs.bundles.testing)
+                implementation 'org.mockito:mockito-junit-jupiter:5.17.0'
             }
         }
     }
