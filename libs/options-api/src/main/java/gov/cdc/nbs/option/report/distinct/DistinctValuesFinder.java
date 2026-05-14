@@ -57,11 +57,8 @@ public class DistinctValuesFinder {
           .map(o -> new Option(o.toString()))
           .toList();
 
-    } catch (NumberFormatException e) {
-      // report column uid not a number
-      return List.of();
-    } catch (EmptyResultDataAccessException e) {
-      // column not found
+    } catch (NumberFormatException | EmptyResultDataAccessException e) {
+      // report column uid not a number or  column not found
       return List.of();
     }
   }
