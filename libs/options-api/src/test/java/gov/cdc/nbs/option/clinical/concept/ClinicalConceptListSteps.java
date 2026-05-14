@@ -14,8 +14,8 @@ public class ClinicalConceptListSteps {
     this.response = response;
   }
 
-  @When("I request all clinical concepts for {valueSet} valueSet")
-  public void counties(final String valueSet) throws Exception {
+  @When("I request all clinical concepts for the {string} value set")
+  public void concepts(final String valueSet) throws Exception {
     response.active(this.requester.request(valueSet));
   }
 }
