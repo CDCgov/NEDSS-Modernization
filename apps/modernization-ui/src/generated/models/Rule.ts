@@ -14,3 +14,4 @@ export type Rule = (AdvancedQuery & {
     operator: string;
     value: string;
 });
+
