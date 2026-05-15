@@ -162,7 +162,7 @@ tables:
       
       - column_name: EVENT_DATE
         type: string
-        data: f"{fake.date_between(start_date='-1y', end_date='today').strftime('%Y-%m-%d')} 12:00:00.000" if random.random() > 0.05 else None
+        data: f"{fake.date_between(start_date=datetime(2010, 1, 1), end_date=datetime(2024, 6, 24)).strftime('%Y-%m-%d')}" if random.random() > 0.05 else None
       
       - column_name: EVENT_DATE_TYPE
         type: string
