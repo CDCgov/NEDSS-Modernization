@@ -8,9 +8,11 @@ def execute(
     data_source_name: str,
     **kwargs,
 ):
-    """QA01 STD Program Report: Interview Record Listing
+    """QA01 STD Program Report: Interview Record Listing.
+
     Conversion notes:
-    * Data format is YYYY-MM-DD.
+    * Did not include logging of run time
+    * Hardcode i to "13" instead of the count of the columns
     """
     sql_query = f"""
     WITH Shd_Filtered AS (
@@ -40,7 +42,7 @@ def execute(
             shd.patient_race IS NOT NULL AND shd.patient_race <> '', 'XXX', ''
             ) AS [race],
         '' AS [sex],
-        '13' AS [i],
+        '13' AS [i], -- the sas library included a column with the count of the columns
         shd.patient_age_reported AS [age]
     FROM Shd_Filtered shd
         LEFT JOIN rdb.dbo.investigation i 
@@ -54,11 +56,4 @@ def execute(
 
     content = trx.query(sql_query)
 
-    description = 'NEDSS STD Program Activity Report - QA01'
-
-    return ReportResult(
-        content_type='table',
-        content=content,
-        subheader=None,
-        description=description,
-    )
+    return ReportResult(content_type='table', content=content)

@@ -10,7 +10,7 @@ faker_schema = 'std_hiv_datamart.yaml'
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationNbsQa01Library:
-    """Integration tests for the nbs_sr_02 library."""
+    """Integration tests for the qa_01 library."""
 
     # Helper to generate common spec base
     @staticmethod
@@ -25,8 +25,6 @@ class TestIntegrationNbsQa01Library:
         }
         base.update(overrides)
         return ReportSpec.model_validate(base)
-
-    """Integration tests for the nbs_custom library."""
 
     def test_execute_report_check_data(self, snapshot):
         report_spec = self.create_spec()
