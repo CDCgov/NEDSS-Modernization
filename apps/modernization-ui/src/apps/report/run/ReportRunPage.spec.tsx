@@ -608,7 +608,7 @@ describe('report run page', () => {
                 isRequired: true,
                 reportColumnUid: 2001,
                 defaultIncludeNulls: false,
-        };
+            };
 
             it('goes through happy path', async () => {
                 const user = userEvent.setup();
