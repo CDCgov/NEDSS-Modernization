@@ -4,7 +4,7 @@ USE [NBS_ODSE]
 
 DECLARE @pyLib VARCHAR(50) = 'qa_04'
 DECLARE @sasLib VARCHAR(50) = 'QA04.SAS'
-DECLARE @desc VARCHAR(300) = 'QA04: Cases Missing Lab and/or Treatment. This report generates a list, by name, of individuals with cases that are not linked to a positive lab test record (for this reported case) or to a treatment record.'
+DECLARE @desc VARCHAR(300) = 'QA04: Cases Missing Lab or Treatment. This report generates a list, by name, of individuals with cases that are not linked to a positive lab test record (for this reported case) or to a treatment record.'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN
