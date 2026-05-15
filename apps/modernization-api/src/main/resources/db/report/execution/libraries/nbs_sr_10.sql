@@ -7,7 +7,7 @@ USE [NBS_ODSE]
 DECLARE @pyLib VARCHAR(50) = 'nbs_sr_11'
 DECLARE @sasLib VARCHAR(50) = 'NBSSR00010.SAS'
 
-IF EXISTS ((SELECT library_uid FROM [dbo].[Report_Library] WHERE library_name = @sasLib))
+IF EXISTS (SELECT library_uid FROM [dbo].[Report_Library] WHERE library_name = @sasLib)
 BEGIN
 
   DECLARE @sr11Id BIGINT = (SELECT library_uid FROM [dbo].[Report_Library] WHERE library_name = @pyLib)

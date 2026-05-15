@@ -61,9 +61,9 @@ class ReportSpecBuilderTest {
     ReportColumn reportColumn = Mockito.mock(ReportColumn.class);
 
     Mockito.lenient().when(reportColumn.id()).thenReturn(columnId);
-    Mockito.lenient().when(reportColumn.columnName()).thenReturn(columnName);
-    Mockito.lenient().when(reportColumn.columnTitle()).thenReturn(columnTitle);
-    Mockito.lenient().when(reportColumn.columnSourceTypeCode()).thenReturn("STRING");
+    Mockito.lenient().when(reportColumn.name()).thenReturn(columnName);
+    Mockito.lenient().when(reportColumn.title()).thenReturn(columnTitle);
+      Mockito.lenient().when(reportColumn.sourceTypeCode()).thenReturn("STRING");
 
     return reportColumn;
   }

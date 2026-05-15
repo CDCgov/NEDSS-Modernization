@@ -7,4 +7,4 @@ import jakarta.validation.constraints.Positive;
 
 public record AdvancedFilterRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Positive Long reportFilterUid,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Valid Expr logic) {}
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Valid AdvancedQuery.RuleGroup value) {}
