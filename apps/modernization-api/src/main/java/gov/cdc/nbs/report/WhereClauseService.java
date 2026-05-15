@@ -127,13 +127,13 @@ public class WhereClauseService {
     List<String> formattedValues =
         values.stream()
             .filter(Objects::nonNull)
-            .map(v -> fieldFormatter.formatField(column.columnSourceTypeCode(), v))
+            .map(v -> fieldFormatter.formatField(column.sourceTypeCode(), v))
             .toList();
 
     // Throw if no values were produced but values were expected
     if (!values.isEmpty() && formattedValues.isEmpty()) {
       throw new IllegalArgumentException(
-          "No valid formatted values produced for column: " + column.columnName());
+          "No valid formatted values produced for column: " + column.name());
     }
 
     // Throw if the count doesn't match (indicates nulls were filtered or mapping failed)
@@ -141,11 +141,11 @@ public class WhereClauseService {
       throw new IllegalStateException(
           String.format(
               "Value mismatch for column [%s]: Expected %d values but only %d were successfully formatted",
-              column.columnName(), values.size(), formattedValues.size()));
+              column.name(), values.size(), formattedValues.size()));
     }
 
     StringBuilder criteria = new StringBuilder("(");
-    String colName = "[" + column.columnName() + "]"; // Brackets protect against SQL reserved words
+    String colName = "[" + column.name() + "]"; // Brackets protect against SQL reserved words
     boolean hasValues = !formattedValues.isEmpty();
 
     // Append the IN clause if actual data values were provided
@@ -188,7 +188,7 @@ public class WhereClauseService {
 
     StringBuilder criteria = new StringBuilder("(");
 
-    String colName = "[" + column.columnName() + "]";
+    String colName = "[" + column.name() + "]";
 
     criteria
         .append(colName)

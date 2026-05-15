@@ -69,8 +69,8 @@ class WhereClauseServiceTest {
     ReportColumn reportColumn = Mockito.mock(ReportColumn.class);
 
     Mockito.lenient().when(reportColumn.id()).thenReturn(id);
-    Mockito.lenient().when(reportColumn.columnSourceTypeCode()).thenReturn(columnSourceTypeCode);
-    Mockito.lenient().when(reportColumn.columnName()).thenReturn(columnName);
+    Mockito.lenient().when(reportColumn.sourceTypeCode()).thenReturn(columnSourceTypeCode);
+    Mockito.lenient().when(reportColumn.name()).thenReturn(columnName);
 
     return reportColumn;
   }
