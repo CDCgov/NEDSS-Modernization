@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
@@ -13,10 +14,13 @@ import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.FilterTypeMapper;
-import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
+import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import gov.cdc.nbs.report.models.ReportResult;
+import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +51,6 @@ class ReportServiceTest {
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;
-  @Mock private List<ReportFilter> reportFilters;
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RequestBodySpec requestBodySpec;
@@ -59,7 +62,8 @@ class ReportServiceTest {
   private final Long dataSourceUid = 2L;
   private final Long libraryId = 20L;
 
-  private Report mockReport(ReportId id, String runner, String dataSourceName) {
+  private Report mockReport(
+      ReportId id, String runner, String dataSourceName, List<ReportFilter> reportFilters) {
     Report report = mock(Report.class);
 
     Mockito.lenient().when(report.getReportLibrary()).thenReturn(reportLibrary);
@@ -249,28 +253,51 @@ class ReportServiceTest {
   @Test
   void getReport_should_return_configuration_when_report_exists() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "python", "nbs_ods.PHCDemographic");
+    List<ReportFilter> reportFilters =
+        List.of(
+            new ReportFilter(
+                3L,
+                mock(Report.class),
+                new FilterCode(4L, "NONE", null, null, "J_S01", null, "BAS_JUR_LIST", null, null),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null),
+            new ReportFilter(
+                6L,
+                mock(Report.class),
+                new FilterCode(
+                    5L,
+                    "NONE",
+                    null,
+                    null,
+                    "A_W01",
+                    null,
+                    ReportConstants.ADV_FILTER_TYPE,
+                    null,
+                    null),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
+    mockReport(id, "python", "nbs_ods.PHCDemographic", reportFilters);
 
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
     assertThat(config.dataSource().name()).isEqualTo("nbs_ods.PHCDemographic");
     assertThat(config.basicFilters())
+        .hasSize(1)
         .allSatisfy(
             filterConfig -> {
-              Optional<ReportFilter> matchingReportFilter =
-                  reportFilters.stream()
-                      .filter(f -> f.getId().equals(filterConfig.reportFilterUid()))
-                      .findAny();
+              assertThat(filterConfig.reportFilterUid()).isEqualTo(3L);
 
-              assertThat(matchingReportFilter).isPresent();
-
-              assertThat(filterConfig.reportColumnUid())
-                  .isEqualTo(matchingReportFilter.get().getDataSourceColumn().getId());
-
-              assertThat(filterConfig.filterType())
-                  .isEqualTo(
-                      FilterTypeMapper.fromFilterCode(matchingReportFilter.get().getFilterCode()));
+              assertThat(filterConfig.filterType().code()).isEqualTo("J_S01");
             });
+    assertThat(config.advancedFilter().reportFilterUid()).isEqualTo(6L);
   }
 
   @Test
@@ -286,7 +313,7 @@ class ReportServiceTest {
   @Test
   void getReportRunner_should_return_runner_when_report_exists() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "python", "nbs_ods.PHCDemographic");
+    mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
 
     String runner = service.getReportRunner(reportUid, dataSourceUid);
 
@@ -306,7 +333,7 @@ class ReportServiceTest {
   @Test
   void getReportRunner_should_throw_when_report_has_no_library() {
     ReportId reportId = new ReportId(reportUid, dataSourceUid);
-    Report report = mockReport(reportId, "python", "nbs_ods.PHCDemographic");
+    Report report = mockReport(reportId, "python", "nbs_ods.PHCDemographic", List.of());
 
     when(report.getReportLibrary()).thenReturn(null);
 
@@ -318,7 +345,7 @@ class ReportServiceTest {
   @Test
   void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "python", "nbs_ods.PHCDemographic");
+    mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
 
     ReportSpec spec =
         new ReportSpec(
@@ -356,7 +383,7 @@ class ReportServiceTest {
   @Test
   void executeReport_should_throw_not_implemented_when_runner_not_python() {
     ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "java", "nbs_rdb.V_CHALK_TALK");
+    mockReport(id, "java", "nbs_rdb.V_CHALK_TALK", List.of());
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17L), List.of(), null);

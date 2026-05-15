@@ -12,14 +12,14 @@ type Props = {
 const CurrentStateProvider = ({ stateFilter, children }: Props) => {
     const stateFilterId = stateFilter?.reportFilterUid;
     const stateVal = useWatch<ReportExecuteForm>({
-        name: `basicFilter.${stateFilterId}`,
+        name: `basicFilter.id_${stateFilterId}`,
         defaultValue: stateFilter?.defaultValue,
     });
 
     // get first state in case it is used in multi-select
     // The ways this is used downstream very much assume only one state (to match NBS 6 logic)
     // in the future, may want to consider how to support more states being selected
-    const state = stateVal?.[0];
+    const state = (stateVal as undefined | string[])?.[0];
 
     return <CurrentStateContext.Provider value={state}>{children}</CurrentStateContext.Provider>;
 };

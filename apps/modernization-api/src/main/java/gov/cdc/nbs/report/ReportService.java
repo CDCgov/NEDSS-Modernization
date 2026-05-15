@@ -3,9 +3,18 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
-import gov.cdc.nbs.report.models.*;
+import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
+import gov.cdc.nbs.report.models.BasicFilterConfiguration;
+import gov.cdc.nbs.report.models.Library;
+import gov.cdc.nbs.report.models.ReportColumn;
+import gov.cdc.nbs.report.models.ReportConfiguration;
+import gov.cdc.nbs.report.models.ReportDataSource;
+import gov.cdc.nbs.report.models.ReportExecutionRequest;
+import gov.cdc.nbs.report.models.ReportResult;
+import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportFilterRepository;
@@ -100,6 +109,17 @@ public class ReportService {
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
+              AdvancedFilterConfiguration advancedFilter =
+                  report.getReportFilters().stream()
+                      .filter(
+                          f ->
+                              f.getFilterCode()
+                                  .getFilterType()
+                                  .equals(ReportConstants.ADV_FILTER_TYPE))
+                      .map(AdvancedFilterConfigurationMapper::fromReportFilter)
+                      .findFirst()
+                      .orElse(null);
+
               List<DataSourceColumn> dataSourceColumns =
                   report.getDataSource().getDataSourceColumns();
               if (dataSourceColumns == null) {
@@ -113,7 +133,7 @@ public class ReportService {
                   new Library(report.getReportLibrary()),
                   report.getReportTitle(),
                   basicFilters,
-                  null, // advanced filter
+                  advancedFilter,
                   reportColumns);
             })
         .orElseThrow(

@@ -12,9 +12,9 @@ import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
+import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
-import gov.cdc.nbs.report.models.Expr;
 import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
@@ -131,9 +131,10 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
-    Expr.Clause clause1 = new Expr.Clause(27L, "EQ", "47");
-    Expr.Clause clause2 = new Expr.Clause(31L, "EQ", "35001");
-    Expr.Connector connector = new Expr.Connector("OR", clause1, clause2);
+    AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
+    AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
+    AdvancedQuery.RuleGroup connector =
+        new AdvancedQuery.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
     AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
     BasicFilterRequest basicFilter = new BasicFilterRequest(4L, Arrays.asList("test"));
@@ -274,9 +275,10 @@ class ReportControllerTest {
     long reportUid = 1L;
     long dataSourceUid = 2L;
 
-    Expr.Clause clause1 = new Expr.Clause(27L, "EQ", "47");
-    Expr.Clause clause2 = new Expr.Clause(31L, "EQ", "35001");
-    Expr.Connector connector = new Expr.Connector("OR", clause1, clause2);
+    AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
+    AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
+    AdvancedQuery.RuleGroup connector =
+        new AdvancedQuery.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
     AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
     ReportExecutionRequest request =
