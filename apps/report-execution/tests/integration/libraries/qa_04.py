@@ -1,11 +1,12 @@
-"""Integration tests for QA04 Cases Missing Lab and/or Treatment report."""
-
 import pytest
 import yaml
 from src.models import ReportSpec
 from src.execute_report import execute_report
 
+faker_schema = 'std_hiv_datamart.yaml'
 
+@pytest.mark.usefixtures('setup_containers', 'fake_db_table')
+@pytest.mark.integration
 class TestIntegrationQa04Library:
     """Test suite for qa_04 library."""
 
@@ -24,13 +25,13 @@ class TestIntegrationQa04Library:
         )
 
         result = execute_report(report_spec)
+
         assert result.content_type == 'table'
         assert result.header == 'QA04 Cases Missing Lab and/or Treatment'
-
         data = result.content
-        assert len(data.data) >= 0
+        assert len(data.data) > 0
         assert len(data.data[0]) == len(data.columns) if data.data else True
-
+        
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
 
     def test_execute_report_empty_subset(self):
