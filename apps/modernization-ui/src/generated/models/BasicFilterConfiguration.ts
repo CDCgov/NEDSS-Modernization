@@ -7,7 +7,7 @@ export type BasicFilterConfiguration = {
     reportFilterUid: number;
     reportColumnUid?: number;
     defaultValues?: Array<string>;
-    defaultIncludeNulls?: boolean;
+    defaultIncludeNulls: boolean;
     minValueCount?: number;
     maxValueCount?: number;
     isRequired: boolean;

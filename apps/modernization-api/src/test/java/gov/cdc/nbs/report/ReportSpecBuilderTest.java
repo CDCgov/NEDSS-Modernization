@@ -101,15 +101,15 @@ class ReportSpecBuilderTest {
 
   @Test
   void build_should_set_all_fields_correctly() {
-    List<String> filterDefaultValue = List.of("condition1");
+    List<String> filterDefaultValues = List.of("condition1");
 
     Long columnUid1 = 1L;
     Long columnUid2 = 2L;
 
     BasicFilterConfiguration filterConfig1 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1);
+        mockBasicFilterConfiguration(filterDefaultValues, 1L, columnUid1);
     BasicFilterConfiguration filterConfig2 =
-        mockBasicFilterConfiguration(filterDefaultValue, 1L, columnUid1);
+        mockBasicFilterConfiguration(filterDefaultValues, 1L, columnUid1);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid1, "column1", "Column 1");
     ReportColumn reportColumn2 = mockReportColumn(columnUid2, "column2", "Column 2");

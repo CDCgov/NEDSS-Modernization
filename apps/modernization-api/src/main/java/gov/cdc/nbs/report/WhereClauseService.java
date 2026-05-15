@@ -51,7 +51,7 @@ public class WhereClauseService {
     finalWhere.add(basicWhereFragment);
 
     // Only return the WHERE clause if it contains anything beyond the initial "WHERE " prefix
-    return finalWhere.toString().equals(SQL_WHERE) ? "" : finalWhere.toString();
+    return finalWhere.length() > SQL_WHERE.length() ? finalWhere.toString() : "";
   }
 
   /**

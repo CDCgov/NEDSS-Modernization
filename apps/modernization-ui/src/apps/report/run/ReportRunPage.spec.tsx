@@ -37,7 +37,6 @@ vi.mock('libs/permission', async () => {
 });
 
 const MOCK_CONFIG: ReportConfiguration = {
-    runner: 'python',
     reportTitle: 'Test Report',
     dataSource: {
         name: 'nbs_ods.data_source',
@@ -159,6 +158,7 @@ describe('report run page', () => {
                     name: 'Basic Text Filter',
                 },
                 isRequired: false,
+                defaultIncludeNulls: false,
             };
 
             it('renders the column title when available', async () => {
@@ -244,6 +244,7 @@ describe('report run page', () => {
                 },
                 isRequired: true,
                 reportColumnUid: 2001,
+                defaultIncludeNulls: false,
             };
 
             it('goes through happy path', async () => {
@@ -356,6 +357,7 @@ describe('report run page', () => {
                     },
                     isRequired: true,
                     reportColumnUid: 2001,
+                    defaultIncludeNulls: false,
                 };
 
                 it('goes through happy path', async () => {
@@ -480,6 +482,7 @@ describe('report run page', () => {
                 },
                 isRequired: true,
                 reportColumnUid: 2001,
+                defaultIncludeNulls: false,
             };
 
             it('goes through happy path', async () => {
@@ -612,7 +615,8 @@ describe('report run page', () => {
                 },
                 isRequired: true,
                 reportColumnUid: 2001,
-            };
+                defaultIncludeNulls: false,
+        };
 
             it('goes through happy path', async () => {
                 const user = userEvent.setup();
@@ -755,6 +759,7 @@ describe('report run page', () => {
                         isRequired: true,
                         maxValueCount: 1,
                         reportColumnUid: 2001,
+                        defaultIncludeNulls: false,
                     };
                     it('goes through happy path', async () => {
                         const user = userEvent.setup();
@@ -890,6 +895,7 @@ describe('report run page', () => {
                         isRequired: true,
                         maxValueCount: -1,
                         reportColumnUid: 2001,
+                        defaultIncludeNulls: false,
                     };
 
                     it('goes through happy path', async () => {
@@ -1033,6 +1039,7 @@ describe('report run page', () => {
                     isRequired: true,
                     maxValueCount: 1,
                     defaultValues: ['13'],
+                    defaultIncludeNulls: false,
                     reportColumnUid: 2002,
                 };
 
@@ -1071,6 +1078,7 @@ describe('report run page', () => {
                         isRequired: true,
                         maxValueCount: 1,
                         reportColumnUid: 2001,
+                        defaultIncludeNulls: false,
                     };
                     it('goes through happy path', async () => {
                         const user = userEvent.setup();
@@ -1221,6 +1229,7 @@ describe('report run page', () => {
                         isRequired: true,
                         maxValueCount: -1,
                         reportColumnUid: 2001,
+                        defaultIncludeNulls: false,
                     };
 
                     it('goes through happy path', async () => {
@@ -1395,6 +1404,7 @@ describe('report run page', () => {
                     maxValueCount: 1,
                     defaultValues: [],
                     reportColumnUid: 2001,
+                    defaultIncludeNulls: false,
                 };
 
                 it('goes through happy path', async () => {
@@ -1523,6 +1533,7 @@ describe('report run page', () => {
                     maxValueCount: -1,
                     defaultValues: [],
                     reportColumnUid: 2001,
+                    defaultIncludeNulls: false,
                 };
 
                 it('goes through happy path', async () => {
@@ -1803,6 +1814,7 @@ describe('report run page', () => {
                     minValueCount: 1,
                     maxValueCount: -1,
                     defaultValues: [],
+                    defaultIncludeNulls: false,
                     reportColumnUid: 2001,
                 };
 
