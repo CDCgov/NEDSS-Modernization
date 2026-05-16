@@ -4,6 +4,7 @@ import { MultiSelect } from 'design-system/select';
 import { useCountyOptions, useStateOptions } from 'options/location';
 import { useConditionOptions } from 'options/condition';
 import { useConceptOptions } from 'options/concepts';
+import { usePersonNamesOptions } from 'options/person/names';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useEffect } from 'react';
 import { useCurrentState } from './useCurrentState';
@@ -15,6 +16,7 @@ export const COUNTY_FILTER_CODE = 'J_C01';
 export const REGION_FILTER_CODE = 'J_R01';
 export const CONDITION_FILTER_CODE = 'C_D01';
 export const DISEASE_FILTER_CODE = 'CVG_CUSTOM_N01';
+export const STD_HIV_WORKERS_FILTER_CODE = 'STD_HIV_WRKR';
 
 const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...remaining }: BasicFilterProps) => {
     const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
@@ -68,6 +70,7 @@ const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName?: string) => Selectabl
         return useConditionOptions().options;
     },
     [DISEASE_FILTER_CODE]: (filterCodeSetName) => useDiseaseOptions(filterCodeSetName),
+    [STD_HIV_WORKERS_FILTER_CODE]: usePersonNamesOptions,
 };
 
 const useDiseaseOptions = (filterCodeSetName?: string) => {

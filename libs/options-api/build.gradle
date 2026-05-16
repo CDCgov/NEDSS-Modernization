@@ -33,6 +33,7 @@ dependencies {
     implementation libs.bundles.swagger
 
     implementation project(':datasource-utils')
+    implementation project(':configuration-api')
 }
 
 test {
