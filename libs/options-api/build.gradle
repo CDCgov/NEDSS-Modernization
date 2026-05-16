@@ -30,6 +30,8 @@ dependencies {
     implementation libs.springBoot.web
     implementation libs.springBoot.jdbc
     implementation libs.bundles.swagger
+
+    implementation project(':configuration-api')
 }
 
 test {
@@ -37,4 +39,3 @@ test {
         systemProperty "testing.database.image", System.getProperty("testing.database.image")
     }
 }
-

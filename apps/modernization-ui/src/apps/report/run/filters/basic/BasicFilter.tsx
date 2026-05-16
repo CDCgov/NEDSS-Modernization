@@ -64,6 +64,11 @@ const FILTER_TYPE_MAP: Record<
         getDefaultValue: getValueList,
         validationRule: optionSelectValidator,
     },
+    BAS_STD_HIV_WRKR: {
+        FilterComponent: OptionSelectFilter,
+        getDefaultValue: getValueList,
+        validationRule: optionSelectValidator,
+    },
 };
 
 const TEMP_DEFAULT_FILTER = {
