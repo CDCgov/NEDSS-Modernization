@@ -4,6 +4,7 @@ import { useKeyboardDnd } from './useKeyboardDnd';
 import { Icon } from 'design-system/icon';
 import * as keyCodes from './keyCodes';
 import supportedPageVisibilityEventName from './supportedPageVisibilityEventName';
+import { AnyEventBinding, EventBinding } from './eventTypes';
 
 // custom drag handle to add shifting action on keyboard up down when space enabled
 const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttributes<HTMLSpanElement>> = forwardRef<
@@ -59,12 +60,16 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
         if (isActive) {
             const bindings = getDraggingBindings((dir) => drag(getQuery(), dispatchQuery, dir), cancel);
 
-            bindings.forEach(({ eventName, fn, options = {} }) =>
-                window.addEventListener(eventName, fn, { capture: true, passive: false, ...options })
+            (bindings as EventBinding[]).forEach(({ eventName, fn, options = {} }) =>
+                window.addEventListener(eventName, fn, {
+                    capture: true,
+                    passive: false,
+                    ...options,
+                })
             );
 
             return () =>
-                bindings.forEach(({ eventName, fn, options = {} }) =>
+                (bindings as EventBinding[]).forEach(({ eventName, fn, options = {} }) =>
                     window.removeEventListener(eventName, fn, { capture: true, passive: false, ...options })
                 );
         }
@@ -86,10 +91,11 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
     );
 });
 
-// Adapted from https://github.com/hello-pangea/dnd/blob/main/src/view/use-sensor-marshal/sensors/use-keyboard-sensor.ts#L23-L139
+// Adapted from
+// https://github.com/hello-pangea/dnd/blob/main/src/view/use-sensor-marshal/sensors/use-keyboard-sensor.ts#L23-L139
 // to match behavior of other dnd in the app
 interface KeyMap {
-    [key: number]: true;
+    [key: string]: true;
 }
 const preventedKeys: KeyMap = {
     // submission
@@ -105,12 +111,12 @@ const preventedKeys: KeyMap = {
     [keyCodes.end]: true,
 };
 
-function getDraggingBindings(move: (dir: 'up' | 'down') => void, cancel: () => void) {
+function getDraggingBindings(move: (dir: 'up' | 'down') => void, cancel: () => void): AnyEventBinding[] {
     return [
         {
             eventName: 'keydown',
             fn: (event: KeyboardEvent) => {
-                if (event.keyCode === keyCodes.escape) {
+                if (event.code === keyCodes.escape) {
                     event.preventDefault();
                     cancel();
                     return;
@@ -118,19 +124,19 @@ function getDraggingBindings(move: (dir: 'up' | 'down') => void, cancel: () => v
 
                 // Movement
 
-                if (event.keyCode === keyCodes.arrowDown) {
+                if (event.code === keyCodes.arrowDown) {
                     event.preventDefault();
                     move('down');
                     return;
                 }
 
-                if (event.keyCode === keyCodes.arrowUp) {
+                if (event.code === keyCodes.arrowUp) {
                     event.preventDefault();
                     move('up');
                     return;
                 }
 
-                if (preventedKeys[event.keyCode]) {
+                if (preventedKeys[event.code]) {
                     event.preventDefault();
                     return;
                 }
