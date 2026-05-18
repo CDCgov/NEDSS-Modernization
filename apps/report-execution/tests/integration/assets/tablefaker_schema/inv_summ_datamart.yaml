@@ -47,7 +47,7 @@ tables:
       
       - column_name: PATIENT_DOB
         type: string
-        data: f"{fake.date_of_birth(minimum_age=0, maximum_age=100).strftime('%Y-%m-%d')} 00:00:00.000"
+        data: fake.date_between(start_date="-100y", end_date=datetime(2024, 6, 24)).strftime('%Y-%m-%d')
         null_percentage: 0.05
       
       - column_name: PATIENT_CURRENT_SEX
