@@ -8,7 +8,7 @@ def execute(
     data_source_name: str,
     **kwargs,
 ):
-    """QA04 Cases Missing Lab and/or Treatment
+    """QA04 Cases Missing Lab and/or Treatment.
 
     Cases Missing Lab or Treatment. This report generates a list, by name,
     of individuals with cases that are not linked to a positive lab test record

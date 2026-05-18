@@ -239,7 +239,6 @@ def insert_fake_data(
     Clears out the db_tables with contents to be replaced and the fk_tables that rely on
     the current data in those db tables and saves the to temp tables
     """
-    
     # swap out original data for fake data
     with db_transaction(conn_string) as trx:
         # Tables with foreign keys pointing to the table we want to replace need to
@@ -247,7 +246,7 @@ def insert_fake_data(
 
         for fk_table in fk_tables:
             temp_fk_table = temp_name(fk_table)
-            
+
             trx.execute(
                 f"IF OBJECT_ID('{temp_fk_table}') IS NOT NULL "
                 f'DROP TABLE {temp_fk_table}'
@@ -279,7 +278,6 @@ def restore_original_data(conn_string: str, db_tables: list[str], fk_tables: lis
     # restore the original data
     with db_transaction(conn_string) as trx:
         for db_table in db_tables:
-            
             trx.execute(f'DELETE {db_table}')
             trx.execute(f'INSERT INTO {db_table} SELECT * FROM {temp_name(db_table)}')
             trx.execute(f'DROP TABLE {temp_name(db_table)}')
