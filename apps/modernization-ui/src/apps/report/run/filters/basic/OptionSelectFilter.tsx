@@ -2,13 +2,13 @@ import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 import { BasicFilterConfiguration } from 'generated';
 import { MultiSelect } from 'design-system/select';
 import { useCountyOptions, useStateOptions } from 'options/location';
+import { useConditionOptions } from 'options/condition';
+import { useConceptOptions } from 'options/concepts';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useEffect } from 'react';
 import { useCurrentState } from './useCurrentState';
 import { Selectable } from 'options';
 import { validateRequiredRule } from 'validation/entry';
-import { useConditionOptions } from '../../../../options/condition';
-import { useConceptOptions } from '../../../../options/concepts';
 
 export const STATE_FILTER_CODE = 'J_S01';
 export const COUNTY_FILTER_CODE = 'J_C01';
