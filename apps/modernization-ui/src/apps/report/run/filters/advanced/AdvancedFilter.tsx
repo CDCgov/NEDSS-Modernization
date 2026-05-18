@@ -25,6 +25,7 @@ import {
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { KeyboardDnDProvider } from './useKeyboardDnd';
 import { ShiftableDragHandle } from './ShiftableDragHandle';
+import { ValueEditor } from './ValueEditor';
 
 // ============= Constants ============= /
 
@@ -203,6 +204,24 @@ const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]):
     }) as QbRuleGroup;
 };
 
+const translateColumnToField = (c: ReportColumn): Field => {
+    const sourceType = c.codeDescCd ? 'CODED' : c.sourceTypeCode;
+    const valueEditorType = sourceType === 'CODED' ? 'multiselect' : 'text';
+    return {
+        id: c.id.toString(),
+        name: c.name,
+        label: c.title,
+        operators: OPERATOR_MAP[sourceType],
+        inputType: INPUT_TYPE_MAP[sourceType],
+        valueEditorType,
+
+        // shoving in more metadata for value set fetching
+        codeDescCd: c.codeDescCd,
+        codesetNm: c.codesetNm,
+        columnUid: c.id,
+    };
+};
+
 // ============= Validation ============= /
 
 const validateAdvancedFilter = (value?: QbRuleGroup) => {
@@ -291,13 +310,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
         rules: { validate: validateAdvancedFilter },
     });
 
-    const fields: Field[] = columns.map((c) => ({
-        id: c.id.toString(),
-        name: c.name,
-        label: c.title,
-        operators: OPERATOR_MAP[c.sourceTypeCode ?? 'STRING'],
-        inputType: INPUT_TYPE_MAP[c.sourceTypeCode ?? 'STRING'],
-    }));
+    const fields = columns.filter(c => c.filterable).map(translateColumnToField);
 
     return (
         <div>
@@ -313,7 +326,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                         autoSelectField={false}
                         autoSelectOperator={false}
                         autoSelectValue={false}
-                        controlElements={{ dragHandle: ShiftableDragHandle }}
+                        controlElements={{ dragHandle: ShiftableDragHandle, valueEditor: ValueEditor }}
                     />
                 </QueryBuilderDnD>
             </KeyboardDnDProvider>
