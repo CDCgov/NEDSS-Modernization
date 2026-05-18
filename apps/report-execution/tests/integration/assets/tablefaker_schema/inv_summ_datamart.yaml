@@ -52,8 +52,7 @@ tables:
       
       - column_name: AGE_REPORTED
         type: int
-        data: fake.random_int(0, 100)
-        null_percentage: 0.15
+        data: fake.random_int(0, 100) if random.random() < .85 else None
 
       - column_name: PATIENT_DOB
         type: string
