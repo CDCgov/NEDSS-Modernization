@@ -3,9 +3,6 @@ config:
   nbs:
     fk_tables:
       - '[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]'
-      - '[RDB].[dbo].[LAB_TEST_RESULT]'
-      - '[RDB].[dbo].[TREATMENT_EVENT]'
-      - '[RDB].[dbo].[STD_HIV_DATAMART]'
 
 tables:
   - table_name: "[RDB].[dbo].[investigation]"
