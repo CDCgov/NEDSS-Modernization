@@ -10,8 +10,8 @@ def execute(
 ):
     """QA04 Cases Missing Lab and/or Treatment
 
-    Cases Missing Lab or Treatment. This report generates a list, by name, 
-    of individuals with cases that are not linked to a positive lab test record 
+    Cases Missing Lab or Treatment. This report generates a list, by name,
+    of individuals with cases that are not linked to a positive lab test record
     (for this reported case) or to a treatment record.
     """
     full_query = f"""

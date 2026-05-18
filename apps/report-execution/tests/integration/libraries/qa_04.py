@@ -1,9 +1,11 @@
 import pytest
 import yaml
-from src.models import ReportSpec
+
 from src.execute_report import execute_report
+from src.models import ReportSpec
 
 faker_schema = 'std_hiv_datamart.yaml'
+
 
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
@@ -31,7 +33,7 @@ class TestIntegrationQa04Library:
         data = result.content
         assert len(data.data) > 0
         assert len(data.data[0]) == len(data.columns) if data.data else True
-        
+
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
 
     def test_execute_report_empty_subset(self):
@@ -112,12 +114,12 @@ class TestIntegrationQa04Library:
                 'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
                 'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
-                'subset_query': '''
+                'subset_query': """
                     SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]
                     UNION ALL
                     SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]
                     WHERE INV_CASE_STATUS = 'Suspect'
-                ''',
+                """,
             }
         )
 
@@ -146,11 +148,8 @@ class TestIntegrationQa04Library:
         data = result.content
 
         # Check for duplicates by creating a set of unique keys
-        keys = [
-            (row[0], row[1], row[2], row[3], row[4], row[5])
-            for row in data.data
-        ]
-        assert len(keys) == len(set(keys)), "Duplicate rows found in output"
+        keys = [(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data.data]
+        assert len(keys) == len(set(keys)), 'Duplicate rows found in output'
 
     def test_execute_report_column_order(self):
         """Test that columns are in the expected order."""
