@@ -13,11 +13,18 @@ import QueryBuilder, {
     ValidationResult,
 } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
-import { ReportExecuteForm } from '../ReportRunPage';
+import { ReportExecuteForm } from '../../ReportRunPage';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
-import { createDndKitAdapter } from '@react-querybuilder/dnd/dnd-kit';
-import * as DndKit from '@dnd-kit/core';
+import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
+import {
+    draggable,
+    dropTargetForElements,
+    monitorForElements,
+} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
+import { KeyboardDnDProvider } from './useKeyboardDnd';
+import { ShiftableDragHandle } from './ShiftableDragHandle';
 
 // ============= Constants ============= /
 
@@ -265,7 +272,12 @@ const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: Valida
 
 // ============= Drag And Drop ============= /
 
-const dndKitAdapter = createDndKitAdapter(DndKit);
+const pragmaticDndAdapter = createPragmaticDndAdapter({
+    draggable,
+    dropTargetForElements,
+    monitorForElements,
+    combine,
+});
 
 // ============= Componentry ============= /
 
@@ -290,18 +302,21 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     return (
         <div>
             {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
-            <QueryBuilderDnD dnd={dndKitAdapter} updateWhileDragging={false}>
-                <QueryBuilder
-                    fields={fields}
-                    query={value}
-                    validator={validator}
-                    onQueryChange={onChange}
-                    addRuleToNewGroups={true}
-                    autoSelectField={false}
-                    autoSelectOperator={false}
-                    autoSelectValue={false}
-                />
-            </QueryBuilderDnD>
+            <KeyboardDnDProvider>
+                <QueryBuilderDnD dnd={pragmaticDndAdapter} updateWhileDragging={false}>
+                    <QueryBuilder
+                        fields={fields}
+                        query={value}
+                        validator={validator}
+                        onQueryChange={onChange}
+                        addRuleToNewGroups={true}
+                        autoSelectField={false}
+                        autoSelectOperator={false}
+                        autoSelectValue={false}
+                        controlElements={{ dragHandle: ShiftableDragHandle }}
+                    />
+                </QueryBuilderDnD>
+            </KeyboardDnDProvider>
             <PreviewWhere query={value} />
         </div>
     );
