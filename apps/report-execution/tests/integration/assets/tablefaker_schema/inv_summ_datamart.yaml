@@ -166,7 +166,6 @@ tables:
       - column_name: EVENT_DATE_TYPE
         type: string
         data: None if EVENT_DATE is None else random.choice(["Investigation Start Date", "Date of Report", "Specimen Collection Date of Earliest Associated Lab", "Illness Onset Date", "Date of Diagnosis"])
-        null_percentage: 0
       
       - column_name: PROGRAM_AREA
         type: string
