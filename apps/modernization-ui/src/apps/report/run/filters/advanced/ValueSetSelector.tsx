@@ -3,7 +3,8 @@ import { MultiSelect } from 'design-system/select';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { cachedSelectableResolver, Selectable } from 'options';
 import { useEffect, useId, useState } from 'react';
-import { ValueEditorProps } from 'react-querybuilder';
+import { FullField, ValueEditorProps } from 'react-querybuilder';
+import { ValueSetMetadata } from './AdvancedFilter';
 
 const getValueSetMap = (state: string): Record<string, string> => {
     return {
@@ -24,7 +25,7 @@ const getValueSetMap = (state: string): Record<string, string> => {
     };
 };
 
-const ValueSetSelector = (props: ValueEditorProps) => {
+const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>) => {
     const id = useId();
     const [options, setOptions] = useState<Selectable[] | null>(null);
     const { ready, properties } = useConfiguration();
@@ -38,17 +39,13 @@ const ValueSetSelector = (props: ValueEditorProps) => {
 
     useEffect(() => {
         const getValues = async (): Promise<Selectable[]> => {
-            const field: Record<string, unknown> = props.schema.fieldMap[props.field] ?? {};
-            // we shoved in this extra metadata, so need to tell typescript about it
-            const codeDescCd = field.codeDescCd as string | undefined;
-            const codesetNm = field.codesetNm as string | undefined;
-            const columnUid = field.columnUid as number;
+            const { codeDescCd, codesetNm, columnUid } = props.schema.fieldMap[props.field] ?? {};
 
             let cacheId = `report.valueset.${codeDescCd}.${codesetNm}`;
 
             let endpoint = '';
             if (codeDescCd?.toLowerCase() === 'h') {
-                endpoint = `/report/distinct/${columnUid}`;
+                endpoint = `/report/distinct-values/${columnUid}`;
                 // code set desc/name not valid for the column content-based values
                 cacheId = `report.valueset.${columnUid}`;
             } else if (codesetNm?.includes('.')) {
@@ -63,16 +60,13 @@ const ValueSetSelector = (props: ValueEditorProps) => {
                 }
             } else if (codesetNm?.toLowerCase() ?? '' in valueSetMap) {
                 endpoint = valueSetMap[codesetNm?.toLowerCase() ?? ''];
-            } else {
+            }
+
+            if (!endpoint) {
                 console.error(
                     `unable to determine value set for column ${columnUid} with codesetNm ${codesetNm}, 
                     returning no options for ${props.field} `
                 );
-
-                return [];
-            }
-
-            if (!endpoint) {
                 return [];
             }
 

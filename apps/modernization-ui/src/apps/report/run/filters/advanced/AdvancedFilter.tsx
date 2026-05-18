@@ -204,7 +204,9 @@ const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]):
     }) as QbRuleGroup;
 };
 
-const translateColumnToField = (c: ReportColumn): Field => {
+export type ValueSetMetadata = { codeDescCd?: string; codesetNm?: string; columnUid: number };
+
+const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
     const sourceType = c.codeDescCd ? 'CODED' : c.sourceTypeCode;
     const valueEditorType = sourceType === 'CODED' ? 'multiselect' : 'text';
     return {
@@ -310,7 +312,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
         rules: { validate: validateAdvancedFilter },
     });
 
-    const fields = columns.filter(c => c.filterable).map(translateColumnToField);
+    const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
 
     return (
         <div>
