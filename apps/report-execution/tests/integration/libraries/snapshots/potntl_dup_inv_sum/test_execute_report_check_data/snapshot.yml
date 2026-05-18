@@ -1,792 +1,474 @@
 - !!python/tuple
   - PSN_DUP_10_GA01
-  - Jenna
-  - Butler
-  - null
-  - CAS64280720GA01
-  - HIV
+  - Jeffrey
+  - Franklin
+  - 1985-07-04 00:00:00
+  - CAS11135982GA01
+  - 2019 Novel Coronavirus
+  - Suspect
+  - 2016-12-22 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2016'
+  - APPROVED
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - Rebecca
+  - Arnold
+  - 1955-07-12 00:00:00
+  - CAS38556255GA01
+  - 2019 Novel Coronavirus
   - Not a Case
-  - 2011-02-08 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
+  - 2019-11-27 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2024'
+  - null
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - Kenneth
+  - Gonzalez
+  - 1995-07-02 00:00:00
+  - CAS66046380GA01
+  - 2019 Novel Coronavirus
+  - Not a Case
+  - 2024-05-03 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2023'
+  - COMPLETED
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - Marcia
+  - Johnson
+  - 2019-06-26 00:00:00
+  - CAS15529005GA01
+  - Gonorrhea
+  - Suspect
+  - 2016-05-13 00:00:00
+  - Date of Report
   - !!python/object/apply:decimal.Decimal
     - '2017'
   - REJECTED
   - '10274'
 - !!python/tuple
   - PSN_DUP_10_GA01
-  - Donna
-  - Smith
-  - 1978-08-03 00:00:00
-  - CAS74854563GA01
-  - HIV
-  - Not a Case
-  - 2013-08-27 00:00:00
-  - Date of Report
   - null
+  - null
+  - 1940-07-15 00:00:00
+  - CAS49711319GA01
+  - 2019 Novel Coronavirus
+  - Confirmed
+  - 2019-11-10 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2025'
+  - null
+  - '10274'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - Michael
+  - Scott
+  - 2011-06-28 00:00:00
+  - CAS32398441GA01
+  - Chlamydia trachomatis infection
+  - Not a Case
+  - 2020-09-21 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2026'
   - COMPLETED
   - '10274'
 - !!python/tuple
   - PSN_DUP_10_GA01
-  - Rachel
-  - Miller
-  - 1951-01-22 00:00:00
-  - CAS97689346GA01
+  - Laura
+  - Knight
+  - 2019-06-26 00:00:00
+  - CAS26247735GA01
+  - Gonorrhea
+  - null
+  - 2023-12-24 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2023'
+  - REJECTED
+  - '10274'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - Lorraine
+  - Foster
+  - 2021-06-25 00:00:00
+  - CAS68137264GA01
+  - Hepatitis A, acute
+  - Confirmed
+  - 2010-11-19 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2022'
+  - COMPLETED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - Jacob
+  - Conrad
+  - 1974-07-07 00:00:00
+  - CAS36296134GA01
+  - Gonorrhea
+  - Probable
+  - 2011-12-13 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2023'
+  - null
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - Michael
+  - Vega
+  - 1927-07-19 00:00:00
+  - CAS66487347GA01
   - Syphilis, primary
+  - null
+  - 2017-10-14 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2023'
+  - COMPLETED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - Barbara
+  - Bush
+  - 2019-06-26 00:00:00
+  - CAS58537831GA01
+  - Hepatitis A, acute
+  - Confirmed
+  - 2020-02-29 00:00:00
+  - Investigation Start Date
+  - null
+  - null
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - Samantha
+  - Gonzales
+  - 1965-07-09 00:00:00
+  - CAS86397676GA01
+  - Hepatitis A, acute
   - Not a Case
-  - 2020-05-21 00:00:00
+  - 2023-10-07 00:00:00
   - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
     - '2024'
-  - APPROVED
-  - '10274'
+  - null
+  - '10280'
 - !!python/tuple
-  - PSN_DUP_1_GA01
-  - Tracey
-  - Garcia
-  - 1965-11-16 00:00:00
-  - CAS97705310GA01
-  - Hepatitis A, acute
-  - Confirmed
-  - 2011-06-02 00:00:00
+  - PSN_DUP_10_GA01
+  - Lauren
+  - Marquez
+  - 2014-06-27 00:00:00
+  - CAS49645162GA01
+  - 2019 Novel Coronavirus
+  - null
+  - 2017-06-02 00:00:00
+  - Investigation Start Date
+  - null
+  - COMPLETED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - Kristi
+  - Dillon
+  - 1980-07-05 00:00:00
+  - CAS23554707GA01
+  - HIV
+  - Suspect
+  - 2020-10-18 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2015'
+  - APPROVED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_10_GA01
+  - null
+  - Moore
+  - 1959-07-11 00:00:00
+  - CAS51971886GA01
+  - HIV
+  - Suspect
+  - 2022-04-07 00:00:00
   - Illness Onset Date
   - null
-  - REJECTED
-  - '10110'
+  - APPROVED
+  - '10311'
 - !!python/tuple
   - PSN_DUP_1_GA01
-  - Eric
-  - Williamson
-  - 1992-06-29 00:00:00
-  - CAS30881581GA01
-  - Chlamydia trachomatis infection
-  - null
-  - 2014-06-19 00:00:00
-  - Investigation Start Date
+  - Gabrielle
+  - Ramirez
+  - 1955-07-12 00:00:00
+  - CAS19978827GA01
+  - Gonorrhea
+  - Suspect
+  - 2014-10-21 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
-    - '2025'
+    - '2023'
   - COMPLETED
   - '10110'
 - !!python/tuple
   - PSN_DUP_1_GA01
-  - Carlos
-  - Johnson
-  - 1958-10-17 00:00:00
-  - CAS40728046GA01
-  - Syphilis, primary
-  - null
-  - 2016-02-18 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2020'
-  - REJECTED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Brandon
-  - Cox
-  - 2016-08-26 00:00:00
-  - CAS42823140GA01
-  - Chlamydia trachomatis infection
-  - null
-  - 2017-04-08 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2016'
-  - null
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Jean
-  - Armstrong
-  - 1945-01-04 00:00:00
-  - CAS88252116GA01
+  - Lisa
+  - Turner
+  - 1989-07-03 00:00:00
+  - CAS55347617GA01
   - HIV
   - Probable
-  - 2020-07-01 00:00:00
+  - 2022-07-22 00:00:00
   - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
-    - '2019'
+    - '2023'
   - REJECTED
   - '10110'
 - !!python/tuple
   - PSN_DUP_1_GA01
-  - Breanna
-  - Shaw
-  - 2010-01-11 00:00:00
-  - CAS16729990GA01
-  - Gonorrhea
-  - Probable
-  - 2010-07-30 00:00:00
+  - Nancy
+  - Harris
+  - 1947-07-14 00:00:00
+  - CAS98369672GA01
+  - Chlamydia trachomatis infection
+  - null
+  - 2024-04-15 00:00:00
   - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
-    - '2024'
+    - '2015'
   - null
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_1_GA01
+  - Keith
+  - Campbell
+  - 1966-07-09 00:00:00
+  - CAS41068214GA01
+  - 2019 Novel Coronavirus
+  - Probable
+  - 2011-01-13 00:00:00
+  - Date of Report
+  - null
+  - REJECTED
   - '10274'
 - !!python/tuple
   - PSN_DUP_1_GA01
-  - James
-  - Melton
-  - 2010-10-15 00:00:00
-  - CAS43734435GA01
-  - 2019 Novel Coronavirus
-  - Probable
-  - 2017-06-10 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
+  - Eric
+  - Robinson
+  - 1929-07-18 00:00:00
+  - CAS73617549GA01
+  - Syphilis, primary
+  - Not a Case
+  - 2020-09-25 00:00:00
+  - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
     - '2026'
   - APPROVED
   - '10274'
 - !!python/tuple
   - PSN_DUP_1_GA01
+  - Megan
+  - Rivera
+  - 1926-07-19 00:00:00
+  - CAS39919562GA01
+  - 2019 Novel Coronavirus
+  - Probable
+  - 2021-11-24 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
   - null
-  - null
-  - 2015-08-12 00:00:00
-  - CAS87789079GA01
+  - APPROVED
+  - '10274'
+- !!python/tuple
+  - PSN_DUP_1_GA01
+  - Erin
+  - Herrera
+  - 1990-07-03 00:00:00
+  - CAS25374874GA01
   - 2019 Novel Coronavirus
   - Confirmed
-  - 2020-06-26 00:00:00
+  - 2023-04-19 00:00:00
   - Date of Report
   - !!python/object/apply:decimal.Decimal
-    - '2025'
-  - APPROVED
+    - '2023'
+  - null
   - '10274'
 - !!python/tuple
   - PSN_DUP_1_GA01
   - Helen
   - null
-  - 1941-08-19 00:00:00
+  - 2005-06-29 00:00:00
   - CAS31429110GA01
   - Hepatitis A, acute
   - Suspect
-  - 2011-01-03 00:00:00
+  - 2011-02-21 00:00:00
   - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
-    - '2026'
-  - COMPLETED
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Lisa
-  - Sawyer
-  - 2009-12-25 00:00:00
-  - CAS23396125GA01
-  - Chlamydia trachomatis infection
-  - Suspect
-  - 2012-08-25 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2020'
+    - '2021'
   - null
   - '10280'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - April
-  - Torres
-  - 1942-04-08 00:00:00
-  - CAS26664623GA01
-  - Gonorrhea
-  - Suspect
-  - 2017-04-11 00:00:00
-  - Illness Onset Date
-  - null
-  - COMPLETED
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - William
-  - Martinez
-  - 1996-02-20 00:00:00
-  - CAS89147232GA01
-  - Gonorrhea
-  - Confirmed
-  - 2020-02-29 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2022'
-  - REJECTED
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Melissa
-  - Hawkins
-  - 1980-05-06 00:00:00
-  - CAS64276605GA01
-  - Chlamydia trachomatis infection
-  - Confirmed
-  - 2023-01-25 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2018'
-  - null
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Lindsay
-  - Nelson
-  - 1932-08-23 00:00:00
-  - CAS54964418GA01
-  - Gonorrhea
-  - Not a Case
-  - 2011-09-02 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2026'
-  - APPROVED
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Melissa
-  - Chan
-  - 1947-05-28 00:00:00
-  - CAS31865061GA01
-  - Chlamydia trachomatis infection
-  - Not a Case
-  - 2013-03-29 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - null
-  - null
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Jessica
-  - Stanley
-  - 2018-08-20 00:00:00
-  - CAS26782572GA01
-  - Chlamydia trachomatis infection
-  - Not a Case
-  - 2012-04-01 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2024'
-  - null
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Eric
-  - Robinson
-  - 1999-08-20 00:00:00
-  - CAS73617549GA01
-  - Chlamydia trachomatis infection
-  - null
-  - 2020-09-25 00:00:00
-  - Date of Diagnosis
-  - null
-  - APPROVED
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - James
-  - Dougherty
-  - 2001-08-27 00:00:00
-  - CAS11031743GA01
-  - Chlamydia trachomatis infection
-  - Probable
-  - 2023-05-04 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2022'
-  - REJECTED
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Robert
-  - Garcia
-  - 1977-06-03 00:00:00
-  - CAS50415166GA01
-  - Gonorrhea
-  - Confirmed
-  - 2015-03-08 00:00:00
-  - Investigation Start Date
-  - null
-  - null
-  - '900'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Wendy
-  - Wilson
-  - 1949-05-31 00:00:00
-  - CAS50851122GA01
-  - HIV
-  - Suspect
-  - 2015-05-14 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2026'
-  - COMPLETED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Angela
-  - Silva
-  - 1997-01-04 00:00:00
-  - CAS45000508GA01
-  - 2019 Novel Coronavirus
-  - Confirmed
-  - 2017-02-07 00:00:00
-  - Date of Diagnosis
-  - null
-  - null
-  - '900'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - William
-  - Hale
-  - 1986-09-23 00:00:00
-  - CAS90465529GA01
-  - HIV
-  - null
-  - 2020-03-09 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2026'
-  - COMPLETED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Sara
-  - Allison
-  - 1942-09-11 00:00:00
-  - CAS22517517GA01
-  - Chlamydia trachomatis infection
-  - Confirmed
-  - 2020-08-26 00:00:00
-  - Date of Report
-  - null
-  - COMPLETED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Keith
-  - Campbell
-  - 2010-09-15 00:00:00
-  - CAS41068214GA01
-  - 2019 Novel Coronavirus
-  - Probable
-  - 2021-12-07 00:00:00
-  - Date of Report
-  - null
-  - null
-  - '900'
-- !!python/tuple
-  - PSN_DUP_1_GA01
-  - Brian
-  - Adams
-  - 2003-06-10 00:00:00
-  - CAS99959993GA01
-  - Hepatitis A, acute
-  - Not a Case
-  - 2023-11-08 00:00:00
-  - Date of Diagnosis
-  - null
-  - REJECTED
-  - '900'
 - !!python/tuple
   - PSN_DUP_1_GA01
   - Tyler
   - Clark
-  - 2017-12-01 00:00:00
+  - 1963-07-10 00:00:00
   - CAS83569939GA01
-  - HIV
-  - Not a Case
-  - 2024-04-25 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2022'
-  - null
-  - '900'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Stacey
-  - Holland
-  - 1941-06-26 00:00:00
-  - CAS71934487GA01
-  - Syphilis, primary
+  - Gonorrhea
   - Suspect
-  - 2013-11-13 00:00:00
+  - 2011-06-12 00:00:00
   - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2023'
   - null
-  - '10110'
+  - COMPLETED
+  - '10280'
 - !!python/tuple
-  - PSN_DUP_2_GA01
-  - Jeffery
-  - Brock
-  - 1994-08-25 00:00:00
-  - CAS67062156GA01
-  - Hepatitis A, acute
-  - null
-  - 2022-12-01 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2026'
-  - null
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Andrew
-  - Edwards
-  - 1941-03-27 00:00:00
-  - CAS35606639GA01
+  - PSN_DUP_1_GA01
+  - Amy
+  - Fritz
+  - 2011-06-28 00:00:00
+  - CAS69239219GA01
   - HIV
   - null
-  - 2023-11-07 00:00:00
+  - 2022-06-20 00:00:00
   - Date of Diagnosis
   - !!python/object/apply:decimal.Decimal
     - '2020'
+  - APPROVED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_1_GA01
+  - Kristina
+  - Johnson
+  - 1978-07-06 00:00:00
+  - CAS51464269GA01
+  - 2019 Novel Coronavirus
+  - Not a Case
+  - 2024-01-03 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2022'
+  - APPROVED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_1_GA01
+  - Richard
+  - null
+  - 1964-07-09 00:00:00
+  - CAS22549425GA01
+  - Hepatitis A, acute
+  - null
+  - 2013-01-22 00:00:00
+  - Date of Diagnosis
+  - null
+  - APPROVED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_1_GA01
+  - Sarah
+  - Koch
+  - 1985-07-04 00:00:00
+  - CAS25014631GA01
+  - Hepatitis A, acute
+  - Suspect
+  - 2017-08-22 00:00:00
+  - Illness Onset Date
+  - null
   - COMPLETED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_1_GA01
+  - Martin
+  - Martinez
+  - 1977-07-06 00:00:00
+  - CAS98010774GA01
+  - Hepatitis A, acute
+  - null
+  - 2011-06-27 00:00:00
+  - Investigation Start Date
+  - null
+  - REJECTED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_1_GA01
+  - Stacey
+  - Elliott
+  - 1952-07-12 00:00:00
+  - null
+  - Hepatitis A, acute
+  - null
+  - 2012-12-01 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2024'
+  - COMPLETED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_1_GA01
+  - Savannah
+  - Roberson
+  - 1963-07-10 00:00:00
+  - CAS84252780GA01
+  - 2019 Novel Coronavirus
+  - Not a Case
+  - 2021-01-14 00:00:00
+  - Illness Onset Date
+  - null
+  - APPROVED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - Stephanie
+  - Burton
+  - 1965-07-09 00:00:00
+  - CAS33776150GA01
+  - 2019 Novel Coronavirus
+  - Suspect
+  - 2010-10-28 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2015'
+  - null
   - '10110'
 - !!python/tuple
   - PSN_DUP_2_GA01
-  - Jonathan
-  - Ramsey
-  - 1928-10-20 00:00:00
-  - CAS61791391GA01
-  - Chlamydia trachomatis infection
-  - null
-  - 2010-12-13 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2025'
-  - REJECTED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Kenneth
-  - Fowler
-  - 1986-02-13 00:00:00
-  - CAS93926371GA01
-  - 2019 Novel Coronavirus
-  - Confirmed
-  - 2011-11-10 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2017'
-  - REJECTED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Samantha
-  - Hall
-  - 2014-10-17 00:00:00
-  - CAS80888325GA01
-  - Syphilis, primary
+  - Brooke
+  - Austin
+  - 1963-07-10 00:00:00
+  - CAS55358959GA01
+  - HIV
   - Not a Case
-  - 2012-05-09 00:00:00
+  - 2013-11-03 00:00:00
   - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2019'
   - null
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Benjamin
-  - Harris
-  - 2003-12-27 00:00:00
-  - CAS71428713GA01
-  - Gonorrhea
-  - null
-  - 2016-05-14 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2026'
   - REJECTED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Deborah
-  - Smith
-  - 1967-08-03 00:00:00
-  - CAS77908907GA01
-  - Gonorrhea
-  - null
-  - 2021-12-15 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2021'
-  - REJECTED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Anthony
-  - Ortiz
-  - 2001-10-25 00:00:00
-  - CAS73360324GA01
-  - Hepatitis A, acute
-  - Confirmed
-  - 2024-03-02 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2015'
-  - REJECTED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Wesley
-  - Torres
-  - 1932-10-13 00:00:00
-  - CAS61479273GA01
-  - Gonorrhea
-  - Not a Case
-  - 2013-04-01 00:00:00
-  - Investigation Start Date
-  - null
-  - null
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Charlene
-  - Jones
-  - 1953-05-11 00:00:00
-  - CAS53233116GA01
-  - 2019 Novel Coronavirus
-  - Probable
-  - 2015-10-10 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2022'
-  - null
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - David
-  - Dunlap
-  - 1931-05-07 00:00:00
-  - CAS54499873GA01
-  - 2019 Novel Coronavirus
-  - Probable
-  - 2018-12-07 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2024'
-  - null
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Shane
-  - Cox
-  - 1984-08-13 00:00:00
-  - CAS73920651GA01
-  - Chlamydia trachomatis infection
-  - Not a Case
-  - 2020-04-25 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2022'
-  - COMPLETED
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - null
-  - Schneider
-  - 1958-08-08 00:00:00
-  - CAS51551377GA01
-  - Gonorrhea
-  - null
-  - 2024-06-23 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2018'
-  - REJECTED
-  - '10280'
+  - '10110'
 - !!python/tuple
   - PSN_DUP_2_GA01
   - Brandon
-  - Schultz
-  - 1992-04-25 00:00:00
-  - CAS65629268GA01
-  - 2019 Novel Coronavirus
-  - null
-  - 2011-07-02 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2017'
-  - null
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Audrey
-  - Nichols
-  - 1997-04-26 00:00:00
-  - CAS97550053GA01
-  - Hepatitis A, acute
-  - null
-  - 2011-07-22 00:00:00
-  - Date of Report
-  - null
-  - COMPLETED
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Samantha
-  - Lowe
-  - 1991-06-18 00:00:00
-  - CAS26089818GA01
+  - Smith
+  - 2007-06-29 00:00:00
+  - CAS99686372GA01
   - Syphilis, primary
-  - Probable
-  - 2020-11-10 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2018'
-  - null
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Melanie
-  - Davis
-  - 1997-06-17 00:00:00
-  - CAS70369365GA01
-  - Chlamydia trachomatis infection
-  - null
-  - 2013-01-25 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2015'
-  - COMPLETED
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Kelli
-  - Conley
-  - 2013-01-25 00:00:00
-  - CAS78140959GA01
-  - 2019 Novel Coronavirus
-  - null
-  - 2020-11-22 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2019'
-  - REJECTED
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Michael
-  - Ellis
-  - 1943-04-22 00:00:00
-  - CAS56697654GA01
-  - 2019 Novel Coronavirus
-  - Confirmed
-  - 2012-09-09 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2021'
-  - APPROVED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Michael
-  - Flores
-  - 1988-10-15 00:00:00
-  - CAS41943272GA01
-  - 2019 Novel Coronavirus
-  - null
-  - 2015-02-01 00:00:00
-  - Date of Diagnosis
-  - null
-  - REJECTED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_2_GA01
-  - Darren
-  - Salazar
-  - null
-  - CAS68315400GA01
-  - Hepatitis A, acute
   - Not a Case
-  - 2020-08-11 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2019'
-  - null
-  - '900'
-- !!python/tuple
-  - PSN_DUP_3_GA01
-  - Chad
-  - Reyes
-  - 1998-01-24 00:00:00
-  - CAS74115841GA01
-  - Hepatitis A, acute
-  - Suspect
-  - 2012-05-17 00:00:00
-  - Date of Diagnosis
-  - null
-  - COMPLETED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_3_GA01
-  - Colin
-  - Barnett
-  - 2005-08-29 00:00:00
-  - CAS99586100GA01
-  - Syphilis, primary
-  - null
-  - 2015-09-19 00:00:00
-  - Date of Diagnosis
-  - null
-  - null
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_3_GA01
-  - Christina
-  - Ramos
-  - 1947-09-10 00:00:00
-  - CAS65258766GA01
-  - Hepatitis A, acute
-  - Confirmed
-  - 2022-09-06 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2025'
-  - COMPLETED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_3_GA01
-  - Lindsey
-  - Rogers
-  - 1988-04-22 00:00:00
-  - CAS95977279GA01
-  - Chlamydia trachomatis infection
-  - Confirmed
-  - 2023-12-24 00:00:00
-  - Date of Diagnosis
+  - 2015-12-16 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
     - '2023'
-  - COMPLETED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_3_GA01
-  - Catherine
-  - Adkins
-  - 1937-08-13 00:00:00
-  - CAS91321540GA01
-  - Syphilis, primary
-  - null
-  - 2015-01-11 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2015'
-  - COMPLETED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_3_GA01
-  - Victoria
-  - Cooper
-  - null
-  - CAS28436852GA01
-  - 2019 Novel Coronavirus
-  - Suspect
-  - 2017-02-01 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2017'
   - APPROVED
   - '10274'
 - !!python/tuple
-  - PSN_DUP_3_GA01
-  - Caleb
-  - Russell
-  - 1979-08-11 00:00:00
-  - CAS38716269GA01
+  - PSN_DUP_2_GA01
+  - Rick
+  - Daniels
+  - 1971-07-08 00:00:00
+  - CAS65682626GA01
   - Syphilis, primary
   - Not a Case
   - 2017-11-27 00:00:00
@@ -796,1161 +478,1477 @@
   - null
   - '10274'
 - !!python/tuple
-  - PSN_DUP_3_GA01
-  - Jennifer
-  - Sellers
-  - 2009-03-15 00:00:00
-  - CAS55735904GA01
-  - HIV
-  - Not a Case
-  - 2024-02-17 00:00:00
-  - Illness Onset Date
+  - PSN_DUP_2_GA01
+  - null
+  - Reed
+  - 2012-06-27 00:00:00
+  - CAS77215278GA01
+  - 2019 Novel Coronavirus
+  - Probable
+  - 2019-11-04 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
     - '2017'
+  - null
+  - '10274'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - Kimberly
+  - Henson
+  - 1972-07-07 00:00:00
+  - CAS57469942GA01
+  - 2019 Novel Coronavirus
+  - Not a Case
+  - 2022-08-18 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2021'
+  - COMPLETED
+  - '10274'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - Kenneth
+  - null
+  - 1986-07-04 00:00:00
+  - CAS36054020GA01
+  - HIV
+  - Probable
+  - 2011-06-27 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2022'
+  - APPROVED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - Charlene
+  - Jones
+  - 1989-07-03 00:00:00
+  - CAS53233116GA01
+  - 2019 Novel Coronavirus
+  - Confirmed
+  - 2015-10-10 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2022'
+  - COMPLETED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - William
+  - Estrada
+  - 1983-07-05 00:00:00
+  - CAS50308572GA01
+  - Hepatitis A, acute
+  - Confirmed
+  - 2016-03-23 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2018'
+  - REJECTED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - Garrett
+  - Evans
+  - 2021-06-25 00:00:00
+  - CAS69549527GA01
+  - Syphilis, primary
+  - null
+  - 2018-10-28 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2016'
+  - null
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - Johnathan
+  - Wright
+  - 1944-07-14 00:00:00
+  - CAS58469365GA01
+  - Chlamydia trachomatis infection
+  - Probable
+  - 2014-05-08 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2017'
+  - REJECTED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - Jeffrey
+  - Lewis
+  - 1982-07-05 00:00:00
+  - CAS56896070GA01
+  - Hepatitis A, acute
+  - Confirmed
+  - 2019-11-19 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2015'
+  - APPROVED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - Jeffrey
+  - Miller
+  - 2020-06-25 00:00:00
+  - CAS45311610GA01
+  - Gonorrhea
+  - null
+  - 2010-06-27 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2018'
+  - COMPLETED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - Jonathan
+  - Ramsey
+  - 2021-06-25 00:00:00
+  - CAS61791391GA01
+  - 2019 Novel Coronavirus
+  - Confirmed
+  - 2010-12-13 00:00:00
+  - Date of Report
+  - null
+  - REJECTED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - null
+  - Baker
+  - 1980-07-05 00:00:00
+  - CAS82160068GA01
+  - Syphilis, primary
+  - Confirmed
+  - 2013-10-30 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2017'
+  - REJECTED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_2_GA01
+  - Philip
+  - Dunn
+  - 1962-07-10 00:00:00
+  - CAS16661956GA01
+  - 2019 Novel Coronavirus
+  - Not a Case
+  - 2014-06-19 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2016'
+  - null
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - April
+  - Mcintyre
+  - 2009-06-28 00:00:00
+  - CAS76980546GA01
+  - Chlamydia trachomatis infection
+  - Suspect
+  - 2010-12-10 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2026'
+  - null
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Adriana
+  - null
+  - 1989-07-03 00:00:00
+  - CAS98612211GA01
+  - Gonorrhea
+  - null
+  - 2012-02-29 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2021'
+  - REJECTED
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Omar
+  - Padilla
+  - 1960-07-10 00:00:00
+  - CAS27339011GA01
+  - HIV
+  - Confirmed
+  - 2016-08-29 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2024'
+  - REJECTED
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Cole
+  - null
+  - 1946-07-14 00:00:00
+  - CAS91270313GA01
+  - Chlamydia trachomatis infection
+  - Suspect
+  - 2022-09-01 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2020'
+  - COMPLETED
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Terrance
+  - Costa
+  - 1981-07-05 00:00:00
+  - CAS20043277GA01
+  - Syphilis, primary
+  - null
+  - 2016-04-13 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2016'
   - APPROVED
   - '10274'
 - !!python/tuple
   - PSN_DUP_3_GA01
+  - Tina
+  - Mendoza
+  - 2001-06-30 00:00:00
+  - CAS72360629GA01
+  - Syphilis, primary
   - null
-  - Warner
-  - 1986-05-21 00:00:00
-  - CAS68812137GA01
+  - 2020-11-27 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2015'
+  - null
+  - '10274'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Cynthia
+  - Steele
+  - 1942-07-15 00:00:00
+  - CAS75319770GA01
   - Syphilis, primary
   - Confirmed
-  - 2012-12-12 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
+  - 2012-10-28 00:00:00
+  - Illness Onset Date
+  - null
+  - APPROVED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Juan
+  - Clark
+  - 1981-07-05 00:00:00
+  - CAS46553958GA01
+  - Chlamydia trachomatis infection
+  - Suspect
+  - 2021-03-01 00:00:00
+  - Date of Diagnosis
+  - null
+  - REJECTED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Melissa
+  - Kramer
+  - 1937-07-16 00:00:00
+  - CAS85986307GA01
+  - Chlamydia trachomatis infection
+  - Confirmed
+  - 2022-08-29 00:00:00
+  - Illness Onset Date
   - !!python/object/apply:decimal.Decimal
-    - '2020'
+    - '2017'
+  - COMPLETED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Nicole
+  - Thompson
+  - 2020-06-25 00:00:00
+  - CAS66087572GA01
+  - Syphilis, primary
+  - Not a Case
+  - 2012-10-16 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2019'
+  - APPROVED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Christina
+  - Ramos
+  - 1997-07-01 00:00:00
+  - CAS65258766GA01
+  - Gonorrhea
+  - Not a Case
+  - 2018-09-08 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - null
+  - APPROVED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Donald
+  - Clark
+  - 1998-07-01 00:00:00
+  - CAS92698414GA01
+  - Syphilis, primary
+  - Not a Case
+  - 2011-12-18 00:00:00
+  - Illness Onset Date
+  - null
   - REJECTED
   - '11065'
 - !!python/tuple
   - PSN_DUP_3_GA01
-  - Tammie
-  - Martinez
-  - 2021-01-29 00:00:00
-  - CAS76481885GA01
+  - null
+  - Knight
+  - 2006-06-29 00:00:00
+  - CAS34044459GA01
   - Gonorrhea
-  - Not a Case
-  - 2020-01-12 00:00:00
-  - Date of Report
-  - null
-  - null
+  - Probable
+  - 2014-09-10 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2025'
+  - REJECTED
   - '11065'
 - !!python/tuple
   - PSN_DUP_3_GA01
-  - Javier
+  - Jessica
+  - Martin
+  - 1976-07-06 00:00:00
+  - CAS81691040GA01
+  - Hepatitis A, acute
   - null
-  - 1997-06-17 00:00:00
-  - CAS35708194GA01
-  - Chlamydia trachomatis infection
+  - 2017-03-24 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
   - null
-  - 2011-06-27 00:00:00
+  - REJECTED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Christopher
+  - Alvarado
+  - 1980-07-05 00:00:00
+  - CAS54743095GA01
+  - 2019 Novel Coronavirus
+  - null
+  - 2023-10-09 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2017'
+  - REJECTED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Brian
+  - Hernandez
+  - 1934-07-17 00:00:00
+  - CAS53431355GA01
+  - 2019 Novel Coronavirus
+  - null
+  - 2023-11-28 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2025'
+  - COMPLETED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Tony
+  - Welch
+  - 2002-06-30 00:00:00
+  - CAS20846331GA01
+  - HIV
+  - Not a Case
+  - 2015-07-20 00:00:00
   - Illness Onset Date
   - !!python/object/apply:decimal.Decimal
     - '2022'
-  - REJECTED
+  - COMPLETED
   - '900'
 - !!python/tuple
   - PSN_DUP_3_GA01
-  - Mark
-  - Meyer
-  - 1937-10-13 00:00:00
-  - CAS32083803GA01
-  - Gonorrhea
-  - Confirmed
-  - 2016-02-19 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2015'
-  - REJECTED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_3_GA01
-  - Garrett
-  - Roberts
-  - 1944-09-25 00:00:00
-  - CAS84479105GA01
-  - null
-  - Not a Case
-  - 2017-01-28 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2022'
-  - null
-  - '900'
-- !!python/tuple
-  - PSN_DUP_3_GA01
-  - Destiny
-  - Walker
-  - 1948-04-15 00:00:00
-  - CAS55047826GA01
+  - Larry
+  - Hunter
+  - 2007-06-29 00:00:00
+  - CAS18806960GA01
   - Hepatitis A, acute
   - null
-  - 2017-09-02 00:00:00
+  - 2019-03-15 00:00:00
   - Date of Report
+  - null
+  - COMPLETED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_3_GA01
+  - Crystal
+  - Williams
+  - 1951-07-13 00:00:00
+  - CAS28082355GA01
+  - HIV
+  - Probable
+  - 2022-07-23 00:00:00
+  - Date of Diagnosis
   - !!python/object/apply:decimal.Decimal
-    - '2021'
+    - '2022'
   - COMPLETED
   - '900'
 - !!python/tuple
   - PSN_DUP_4_GA01
-  - null
-  - Walker
-  - 1954-09-12 00:00:00
-  - CAS49203644GA01
-  - Gonorrhea
+  - Tracy
+  - Griffin
+  - 1964-07-09 00:00:00
+  - CAS59991642GA01
+  - 2019 Novel Coronavirus
   - Suspect
-  - 2014-04-24 00:00:00
-  - Illness Onset Date
+  - 2010-02-17 00:00:00
+  - Date of Report
   - !!python/object/apply:decimal.Decimal
-    - '2018'
-  - null
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_4_GA01
-  - David
-  - Allen
-  - 1989-01-22 00:00:00
-  - CAS50419829GA01
-  - Hepatitis A, acute
-  - null
-  - 2017-07-31 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2016'
-  - REJECTED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_4_GA01
-  - Jesse
-  - Garcia
-  - 1958-10-13 00:00:00
-  - CAS95623471GA01
-  - Gonorrhea
-  - Not a Case
-  - 2014-02-18 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2020'
-  - null
+    - '2025'
+  - APPROVED
   - '10274'
 - !!python/tuple
   - PSN_DUP_4_GA01
-  - Mary
-  - Harris
-  - 2007-09-05 00:00:00
-  - CAS66936428GA01
+  - Holly
+  - Wang
+  - 2003-06-30 00:00:00
+  - CAS72415804GA01
   - Syphilis, primary
   - null
-  - 2015-08-14 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2021'
+  - 2020-02-04 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
   - null
+  - COMPLETED
   - '10274'
 - !!python/tuple
   - PSN_DUP_4_GA01
-  - Jennifer
-  - Parks
-  - 2016-09-30 00:00:00
-  - CAS93774355GA01
-  - HIV
-  - null
-  - 2017-07-27 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2015'
-  - REJECTED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_4_GA01
-  - Lauren
-  - Guerra
-  - 1933-03-01 00:00:00
-  - CAS68848427GA01
+  - Leon
+  - Oconnell
+  - 1984-07-04 00:00:00
+  - CAS74291599GA01
   - 2019 Novel Coronavirus
-  - Not a Case
-  - 2018-08-07 00:00:00
+  - null
+  - 2010-05-23 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2023'
+  - COMPLETED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_4_GA01
+  - Lance
+  - Smith
+  - 1972-07-07 00:00:00
+  - CAS31257157GA01
+  - Hepatitis A, acute
+  - Confirmed
+  - 2012-02-04 00:00:00
   - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
     - '2023'
   - null
-  - '10274'
+  - '10280'
 - !!python/tuple
   - PSN_DUP_4_GA01
   - Kim
   - Kramer
-  - 1984-11-04 00:00:00
+  - 1948-07-13 00:00:00
   - CAS54098516GA01
   - 2019 Novel Coronavirus
   - Probable
-  - 2011-11-02 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
+  - 2012-07-10 00:00:00
+  - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
     - '2015'
-  - REJECTED
-  - '10311'
+  - null
+  - '10280'
 - !!python/tuple
   - PSN_DUP_4_GA01
-  - Elizabeth
-  - Jackson
-  - 1986-06-25 00:00:00
-  - CAS98261798GA01
+  - null
+  - Warren
+  - 1946-07-14 00:00:00
+  - CAS68754920GA01
+  - Gonorrhea
+  - null
+  - 2014-02-11 00:00:00
+  - Illness Onset Date
+  - null
+  - REJECTED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_4_GA01
+  - Ruth
+  - Flores
+  - 2015-06-27 00:00:00
+  - CAS65869014GA01
   - Chlamydia trachomatis infection
-  - Probable
-  - 2014-12-30 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2017'
-  - REJECTED
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_4_GA01
-  - Tammy
-  - Mueller
-  - 2015-01-22 00:00:00
-  - CAS51536077GA01
-  - HIV
   - Confirmed
-  - 2018-01-11 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2020'
-  - REJECTED
-  - '10311'
+  - 2021-05-11 00:00:00
+  - Date of Report
+  - null
+  - null
+  - '10280'
 - !!python/tuple
   - PSN_DUP_4_GA01
-  - Nancy
-  - Edwards
-  - 1990-09-05 00:00:00
-  - CAS86125617GA01
-  - Hepatitis A, acute
-  - null
-  - 2012-04-25 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2025'
-  - null
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_4_GA01
-  - Debbie
-  - Henry
-  - 2004-03-01 00:00:00
-  - CAS73900135GA01
+  - Mary
+  - Harris
+  - 1935-07-17 00:00:00
+  - CAS66936428GA01
   - 2019 Novel Coronavirus
-  - null
-  - 2012-10-15 00:00:00
-  - Date of Report
-  - null
-  - REJECTED
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_4_GA01
-  - Joshua
-  - Hayes
-  - 2000-01-01 00:00:00
-  - CAS21631697GA01
-  - Chlamydia trachomatis infection
-  - null
-  - 2020-06-04 00:00:00
-  - Date of Diagnosis
-  - null
-  - APPROVED
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_4_GA01
-  - Cory
-  - Jennings
-  - 1979-10-16 00:00:00
-  - CAS58678896GA01
-  - Syphilis, primary
-  - Confirmed
-  - 2012-12-31 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2023'
-  - null
-  - '900'
-- !!python/tuple
-  - PSN_DUP_4_GA01
-  - null
-  - Fry
-  - 1965-06-03 00:00:00
-  - CAS15345470GA01
-  - Chlamydia trachomatis infection
-  - null
-  - 2020-07-27 00:00:00
+  - Not a Case
+  - 2015-08-14 00:00:00
   - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
     - '2021'
   - null
-  - '900'
+  - '11065'
 - !!python/tuple
-  - PSN_DUP_5_GA01
-  - Andrew
-  - Martinez
-  - 2011-06-20 00:00:00
-  - CAS56189726GA01
-  - Chlamydia trachomatis infection
-  - Confirmed
-  - 2014-02-24 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2024'
-  - APPROVED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_5_GA01
+  - PSN_DUP_4_GA01
+  - David
+  - Allen
+  - 1943-07-15 00:00:00
+  - CAS50419829GA01
+  - Hepatitis A, acute
   - null
-  - Brown
-  - 1969-01-08 00:00:00
-  - CAS46024950GA01
+  - 2017-07-31 00:00:00
+  - Date of Report
+  - null
+  - REJECTED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_4_GA01
+  - null
+  - Johnson
+  - 1994-07-02 00:00:00
+  - CAS92569402GA01
+  - HIV
+  - Confirmed
+  - 2022-01-05 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - null
+  - null
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Laurie
+  - Edwards
+  - 1930-07-18 00:00:00
+  - CAS58347193GA01
   - 2019 Novel Coronavirus
   - Probable
-  - 2016-03-27 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
+  - 2012-08-25 00:00:00
+  - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
     - '2020'
-  - APPROVED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_5_GA01
-  - Joshua
-  - Woodard
-  - 2009-12-02 00:00:00
-  - CAS96267144GA01
-  - Chlamydia trachomatis infection
-  - Probable
-  - 2024-04-23 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
   - null
-  - COMPLETED
-  - '10274'
+  - '10110'
 - !!python/tuple
   - PSN_DUP_5_GA01
-  - Samantha
-  - Miller
-  - 2007-12-06 00:00:00
-  - CAS65831276GA01
-  - 2019 Novel Coronavirus
-  - Confirmed
-  - 2010-08-25 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2019'
-  - COMPLETED
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_5_GA01
-  - Bethany
-  - Keller
-  - 2011-04-06 00:00:00
-  - CAS88777447GA01
+  - Kathryn
+  - Nelson
+  - 1959-07-11 00:00:00
+  - CAS21257528GA01
   - Hepatitis A, acute
-  - Confirmed
-  - 2016-11-06 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2026'
   - null
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_5_GA01
-  - Joseph
-  - Martin
-  - 2009-05-16 00:00:00
-  - CAS84705402GA01
-  - Gonorrhea
-  - Probable
-  - 2017-07-15 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
+  - 2014-08-13 00:00:00
+  - Date of Diagnosis
   - !!python/object/apply:decimal.Decimal
-    - '2017'
-  - null
-  - '10280'
+    - '2015'
+  - APPROVED
+  - '10110'
 - !!python/tuple
   - PSN_DUP_5_GA01
   - Dale
   - Romero
-  - 1941-07-23 00:00:00
+  - 2005-06-29 00:00:00
   - CAS57197152GA01
-  - 2019 Novel Coronavirus
-  - Confirmed
+  - Chlamydia trachomatis infection
+  - null
   - 2020-03-04 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
+  - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
     - '2019'
-  - null
-  - '10280'
+  - COMPLETED
+  - '10110'
 - !!python/tuple
   - PSN_DUP_5_GA01
-  - Melissa
-  - Delacruz
-  - 1963-09-02 00:00:00
-  - CAS20709497GA01
+  - David
+  - Cline
+  - 1993-07-02 00:00:00
+  - CAS98032908GA01
+  - Hepatitis A, acute
+  - Suspect
+  - 2021-07-03 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2025'
+  - COMPLETED
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Shawn
+  - Freeman
+  - 1950-07-13 00:00:00
+  - CAS59535894GA01
   - Hepatitis A, acute
   - Confirmed
-  - 2021-08-28 00:00:00
-  - Investigation Start Date
-  - null
+  - 2021-12-29 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2020'
   - COMPLETED
-  - '10280'
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Catherine
+  - Lee
+  - 1973-07-07 00:00:00
+  - CAS40372869GA01
+  - Chlamydia trachomatis infection
+  - Confirmed
+  - 2013-08-15 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - null
+  - null
+  - '10274'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Linda
+  - Taylor
+  - 1947-07-14 00:00:00
+  - CAS70779921GA01
+  - Chlamydia trachomatis infection
+  - Suspect
+  - 2018-04-06 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2024'
+  - REJECTED
+  - '10274'
 - !!python/tuple
   - PSN_DUP_5_GA01
   - Carrie
-  - Dominguez
-  - 1973-05-15 00:00:00
-  - CAS53038948GA01
-  - 2019 Novel Coronavirus
+  - Simmons
+  - 1936-07-16 00:00:00
   - null
-  - 2010-05-23 00:00:00
-  - Investigation Start Date
-  - null
+  - Chlamydia trachomatis infection
+  - Confirmed
+  - 2010-07-04 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2022'
   - COMPLETED
   - '10311'
 - !!python/tuple
   - PSN_DUP_5_GA01
-  - Chad
-  - Lee
-  - 1974-01-15 00:00:00
-  - CAS93150000GA01
-  - Hepatitis A, acute
-  - Confirmed
-  - 2011-12-12 00:00:00
-  - Date of Report
+  - null
+  - Harris
+  - 2005-06-29 00:00:00
+  - CAS20606094GA01
+  - Gonorrhea
+  - Probable
+  - 2011-12-27 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
-    - '2020'
+    - '2026'
+  - null
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Beth
+  - Hudson
+  - 1976-07-06 00:00:00
+  - CAS45341684GA01
+  - HIV
+  - Confirmed
+  - 2012-05-25 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2022'
   - APPROVED
   - '10311'
 - !!python/tuple
-  - PSN_DUP_6_GA01
-  - Donald
-  - Payne
-  - 1944-06-07 00:00:00
-  - CAS32718459GA01
+  - PSN_DUP_5_GA01
+  - David
+  - Rhodes
+  - 1976-07-06 00:00:00
+  - CAS48626436GA01
+  - Hepatitis A, acute
+  - null
+  - 2020-09-22 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2024'
+  - COMPLETED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Hannah
+  - Mendoza
+  - 1971-07-08 00:00:00
+  - CAS61769856GA01
   - 2019 Novel Coronavirus
-  - Suspect
-  - 2016-08-08 00:00:00
+  - null
+  - 2022-06-28 00:00:00
+  - Date of Diagnosis
+  - null
+  - REJECTED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Kathryn
+  - Diaz
+  - 1973-07-07 00:00:00
+  - CAS59093843GA01
+  - Syphilis, primary
+  - Probable
+  - 2011-09-21 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2024'
+  - APPROVED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Edward
+  - Moore
+  - 1947-07-14 00:00:00
+  - CAS38389345GA01
+  - 2019 Novel Coronavirus
+  - Confirmed
+  - 2013-07-12 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2015'
+  - null
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Alejandro
+  - Vaughan
+  - 2014-06-27 00:00:00
+  - CAS84597009GA01
+  - 2019 Novel Coronavirus
+  - null
+  - 2015-11-09 00:00:00
+  - Date of Report
+  - null
+  - REJECTED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - John
+  - Hoffman
+  - 1991-07-03 00:00:00
+  - CAS28740864GA01
+  - HIV
+  - null
+  - 2017-08-29 00:00:00
+  - Date of Report
+  - null
+  - null
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Fernando
+  - Donovan
+  - 1996-07-01 00:00:00
+  - CAS32099899GA01
+  - Chlamydia trachomatis infection
+  - null
+  - 2019-07-16 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2017'
+  - COMPLETED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Melissa
+  - Howe
+  - 1974-07-07 00:00:00
+  - CAS45029610GA01
+  - 2019 Novel Coronavirus
+  - Probable
+  - 2023-12-19 00:00:00
   - Illness Onset Date
   - !!python/object/apply:decimal.Decimal
-    - '2023'
+    - '2020'
+  - null
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Jamie
+  - Bird
+  - 1971-07-08 00:00:00
+  - CAS23951801GA01
+  - Hepatitis A, acute
+  - Probable
+  - 2010-11-26 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2024'
+  - null
+  - '900'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - Tiffany
+  - Smith
+  - 1935-07-17 00:00:00
+  - CAS81905550GA01
+  - Syphilis, primary
+  - null
+  - 2013-04-09 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2026'
+  - null
+  - '900'
+- !!python/tuple
+  - PSN_DUP_5_GA01
+  - John
+  - Leblanc
+  - 1968-07-08 00:00:00
+  - CAS72092888GA01
+  - Chlamydia trachomatis infection
+  - Confirmed
+  - 2013-11-03 00:00:00
+  - Date of Report
+  - null
+  - COMPLETED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Patrick
+  - Bradley
+  - 1947-07-14 00:00:00
+  - CAS58607028GA01
+  - Chlamydia trachomatis infection
+  - null
+  - 2013-08-12 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2019'
+  - COMPLETED
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Zachary
+  - null
+  - 1991-07-03 00:00:00
+  - CAS80196591GA01
+  - Gonorrhea
+  - Probable
+  - 2016-08-04 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2022'
   - null
   - '10110'
 - !!python/tuple
   - PSN_DUP_6_GA01
   - Devin
   - Mitchell
-  - 2007-10-12 00:00:00
+  - 1964-07-09 00:00:00
   - CAS29602406GA01
   - Hepatitis A, acute
   - null
   - 2017-08-22 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2024'
-  - APPROVED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Maria
-  - Brandt
-  - 1955-01-09 00:00:00
-  - CAS57665946GA01
-  - 2019 Novel Coronavirus
-  - Probable
-  - 2021-12-09 00:00:00
   - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
-    - '2022'
-  - null
+    - '2024'
+  - REJECTED
   - '10110'
 - !!python/tuple
   - PSN_DUP_6_GA01
-  - William
-  - Frazier
-  - 2009-02-21 00:00:00
-  - CAS96098221GA01
-  - Syphilis, primary
-  - Probable
-  - 2012-10-02 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2024'
-  - null
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Emily
-  - Floyd
-  - 1957-08-24 00:00:00
-  - CAS96344420GA01
-  - 2019 Novel Coronavirus
-  - Probable
-  - 2013-07-08 00:00:00
-  - Illness Onset Date
+  - Sheila
+  - Fischer
+  - 1999-07-01 00:00:00
+  - CAS84870921GA01
+  - HIV
+  - Not a Case
+  - 2024-05-05 00:00:00
+  - Date of Diagnosis
   - !!python/object/apply:decimal.Decimal
     - '2021'
   - COMPLETED
-  - '10280'
+  - '10110'
 - !!python/tuple
   - PSN_DUP_6_GA01
-  - Keith
-  - Adams
-  - 2010-07-20 00:00:00
-  - CAS49276764GA01
+  - Kathleen
+  - Gray
+  - 1928-07-18 00:00:00
+  - CAS55298556GA01
   - Syphilis, primary
-  - null
-  - 2018-05-12 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2017'
-  - APPROVED
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Angela
-  - King
-  - 1956-06-17 00:00:00
-  - CAS85040303GA01
-  - HIV
-  - Confirmed
-  - 2010-01-28 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2025'
-  - APPROVED
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Shelley
-  - null
-  - 1993-01-21 00:00:00
-  - CAS84227466GA01
-  - Hepatitis A, acute
-  - null
-  - 2011-06-25 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2019'
-  - APPROVED
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Leonard
-  - Ramirez
-  - 2020-08-09 00:00:00
-  - null
-  - Chlamydia trachomatis infection
-  - Confirmed
-  - 2011-10-11 00:00:00
+  - Not a Case
+  - 2011-10-30 00:00:00
   - Illness Onset Date
   - !!python/object/apply:decimal.Decimal
     - '2018'
-  - COMPLETED
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_6_GA01
   - null
-  - Hicks
-  - 1975-06-09 00:00:00
-  - CAS29363237GA01
-  - HIV
-  - null
-  - 2021-12-28 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2023'
-  - null
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Adam
-  - Reyes
-  - 1970-03-15 00:00:00
-  - CAS43292316GA01
-  - Syphilis, primary
-  - Not a Case
-  - 2023-04-07 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2025'
-  - APPROVED
-  - '10311'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Jeffery
-  - Huang
-  - 2002-10-02 00:00:00
-  - CAS90143600GA01
-  - 2019 Novel Coronavirus
-  - Probable
-  - 2012-07-20 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2017'
-  - null
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Jessica
-  - Jacobs
-  - 1935-02-20 00:00:00
-  - CAS46160937GA01
-  - 2019 Novel Coronavirus
-  - null
-  - 2012-10-16 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2017'
-  - REJECTED
-  - '11065'
+  - '10274'
 - !!python/tuple
   - PSN_DUP_6_GA01
   - Christopher
-  - Beck
-  - 1990-01-14 00:00:00
-  - CAS43606680GA01
-  - Syphilis, primary
-  - Not a Case
-  - 2014-12-22 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2026'
-  - null
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Scott
-  - Mcknight
-  - 2002-06-20 00:00:00
-  - CAS21674661GA01
+  - George
+  - 1983-07-05 00:00:00
+  - CAS84386123GA01
   - 2019 Novel Coronavirus
-  - Suspect
-  - 2017-09-15 00:00:00
-  - Investigation Start Date
   - null
+  - 2013-12-30 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2021'
   - REJECTED
-  - '11065'
+  - '10274'
 - !!python/tuple
   - PSN_DUP_6_GA01
-  - Anthony
-  - Haynes
-  - 2019-05-02 00:00:00
-  - CAS89398174GA01
+  - Steven
+  - Howard
+  - 1985-07-04 00:00:00
+  - CAS74418331GA01
+  - Syphilis, primary
+  - null
+  - 2021-10-07 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2015'
+  - null
+  - '10274'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Teresa
+  - Cuevas
+  - 1925-07-19 00:00:00
+  - CAS89415412GA01
+  - 2019 Novel Coronavirus
+  - Probable
+  - 2010-01-08 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2020'
+  - null
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Jose
+  - Dawson
+  - 1941-07-15 00:00:00
+  - CAS47162866GA01
   - Gonorrhea
-  - Confirmed
-  - 2010-01-04 00:00:00
+  - Not a Case
+  - 2018-06-11 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2015'
+  - null
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Patricia
+  - Sherman
+  - 1957-07-11 00:00:00
+  - CAS11889398GA01
+  - Chlamydia trachomatis infection
+  - Suspect
+  - 2020-07-15 00:00:00
   - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
     - '2022'
-  - APPROVED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Michael
-  - Ingram
-  - 1997-02-06 00:00:00
-  - CAS83319550GA01
-  - HIV
-  - Suspect
-  - 2011-10-07 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
   - null
-  - REJECTED
-  - '900'
+  - '10280'
 - !!python/tuple
   - PSN_DUP_6_GA01
   - Perry
   - Wilson
-  - 1926-12-16 00:00:00
+  - 2024-06-24 00:00:00
   - CAS12267067GA01
-  - 2019 Novel Coronavirus
-  - Suspect
-  - 2021-01-29 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2019'
-  - COMPLETED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_6_GA01
-  - Jonathan
-  - Mckay
-  - 1993-10-03 00:00:00
-  - CAS99269266GA01
   - Syphilis, primary
   - Probable
-  - 2022-07-27 00:00:00
+  - 2021-01-29 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2019'
+  - REJECTED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Gina
+  - Little
+  - 1964-07-09 00:00:00
+  - CAS39845082GA01
+  - Gonorrhea
+  - Confirmed
+  - 2022-08-14 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2026'
+  - null
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Angela
+  - White
+  - 1984-07-04 00:00:00
+  - CAS20204415GA01
+  - Chlamydia trachomatis infection
+  - Not a Case
+  - 2011-09-26 00:00:00
+  - Date of Diagnosis
+  - null
+  - null
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Douglas
+  - Hensley
+  - 1984-07-04 00:00:00
+  - CAS91424562GA01
+  - Hepatitis A, acute
+  - Not a Case
+  - 2013-08-05 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2021'
+  - APPROVED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Howard
+  - Thomas
+  - 1940-07-15 00:00:00
+  - CAS10819505GA01
+  - Chlamydia trachomatis infection
+  - Probable
+  - 2016-06-01 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2019'
+  - REJECTED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Paul
+  - Long
+  - 2010-06-28 00:00:00
+  - CAS90124068GA01
+  - 2019 Novel Coronavirus
+  - Suspect
+  - 2018-08-20 00:00:00
   - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
     - '2021'
+  - REJECTED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - null
+  - Beck
+  - 1941-07-15 00:00:00
+  - CAS43606680GA01
+  - Chlamydia trachomatis infection
+  - null
+  - 2010-02-12 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2015'
+  - null
+  - '900'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Emily
+  - Ruiz
+  - 1945-07-14 00:00:00
+  - CAS24541967GA01
+  - Syphilis, primary
+  - Confirmed
+  - 2016-07-26 00:00:00
+  - Date of Report
+  - null
+  - null
+  - '900'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Connor
+  - Bowen
+  - 1967-07-09 00:00:00
+  - CAS73909453GA01
+  - null
+  - Not a Case
+  - 2019-02-13 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2021'
+  - null
+  - '900'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Taylor
+  - Jones
+  - 1928-07-18 00:00:00
+  - CAS25457816GA01
+  - HIV
+  - Suspect
+  - 2019-09-26 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2026'
   - COMPLETED
   - '900'
 - !!python/tuple
   - PSN_DUP_6_GA01
-  - Nicole
-  - Barnes
-  - 1986-02-13 00:00:00
-  - CAS77660514GA01
-  - HIV
-  - Confirmed
-  - 2023-07-18 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - null
-  - APPROVED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Ruben
-  - Patterson
-  - 1973-03-18 00:00:00
-  - CAS95025258GA01
-  - 2019 Novel Coronavirus
-  - null
-  - 2013-04-11 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2018'
-  - null
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Betty
-  - Best
-  - 1998-11-13 00:00:00
-  - CAS72104107GA01
-  - 2019 Novel Coronavirus
-  - Suspect
-  - 2017-07-27 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2023'
-  - COMPLETED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Nathan
-  - Sullivan
-  - 1981-10-21 00:00:00
-  - CAS20605783GA01
-  - 2019 Novel Coronavirus
-  - Not a Case
-  - 2019-05-04 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2021'
-  - COMPLETED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Jennifer
-  - Olson
-  - 1973-05-08 00:00:00
-  - CAS54322017GA01
-  - null
-  - null
-  - 2010-10-23 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - null
-  - null
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Michelle
-  - Cochran
-  - 1952-07-21 00:00:00
-  - CAS99913412GA01
-  - 2019 Novel Coronavirus
-  - Not a Case
-  - 2014-01-13 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - null
-  - COMPLETED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Charles
-  - Norton
-  - 2001-10-21 00:00:00
-  - CAS70665302GA01
+  - Brandi
+  - Berry
+  - 1991-07-03 00:00:00
+  - CAS50526484GA01
   - Gonorrhea
-  - Not a Case
-  - 2014-09-04 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2019'
   - null
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Karen
-  - Decker
-  - 1951-02-16 00:00:00
-  - CAS47346970GA01
-  - Syphilis, primary
-  - Not a Case
-  - 2016-09-25 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2018'
-  - null
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Robert
-  - Estes
-  - 2014-11-23 00:00:00
-  - CAS92594562GA01
-  - Gonorrhea
-  - Suspect
-  - 2018-08-26 00:00:00
-  - Date of Report
+  - 2020-10-29 00:00:00
+  - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
     - '2022'
   - REJECTED
-  - '10274'
+  - '900'
+- !!python/tuple
+  - PSN_DUP_6_GA01
+  - Jorge
+  - Carter
+  - 2009-06-28 00:00:00
+  - CAS59886371GA01
+  - Gonorrhea
+  - Confirmed
+  - 2024-04-17 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2021'
+  - null
+  - '900'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - Benjamin
+  - Miller
+  - 1992-07-02 00:00:00
+  - CAS83832717GA01
+  - Syphilis, primary
+  - Suspect
+  - 2017-01-07 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2026'
+  - null
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - Reginald
+  - Hernandez
+  - 1936-07-16 00:00:00
+  - CAS76354180GA01
+  - Hepatitis A, acute
+  - null
+  - 2018-08-15 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2023'
+  - null
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - null
+  - Mendez
+  - 1999-07-01 00:00:00
+  - CAS63094168GA01
+  - Gonorrhea
+  - Suspect
+  - 2019-09-17 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2019'
+  - null
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - Carrie
+  - Russo
+  - 2000-06-30 00:00:00
+  - CAS91197624GA01
+  - 2019 Novel Coronavirus
+  - null
+  - 2020-03-10 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2024'
+  - null
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - David
+  - Irwin
+  - 2024-06-24 00:00:00
+  - CAS80980044GA01
+  - 2019 Novel Coronavirus
+  - Probable
+  - 2010-06-20 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2016'
+  - COMPLETED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - James
+  - Martinez
+  - 1966-07-09 00:00:00
+  - CAS47028180GA01
+  - Chlamydia trachomatis infection
+  - Not a Case
+  - 2012-12-31 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2023'
+  - COMPLETED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - Douglas
+  - Aguilar
+  - 1926-07-19 00:00:00
+  - CAS90643207GA01
+  - Hepatitis A, acute
+  - Probable
+  - 2017-07-27 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2018'
+  - null
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - Robert
+  - Nichols
+  - 1964-07-09 00:00:00
+  - CAS80139805GA01
+  - Chlamydia trachomatis infection
+  - Not a Case
+  - 2011-10-30 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - null
+  - REJECTED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - Stephen
+  - Martinez
+  - 1958-07-11 00:00:00
+  - CAS33461307GA01
+  - Gonorrhea
+  - null
+  - 2012-08-30 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2020'
+  - REJECTED
+  - '10311'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - Nicole
+  - Snyder
+  - 1976-07-06 00:00:00
+  - CAS32325567GA01
+  - Chlamydia trachomatis infection
+  - Probable
+  - 2012-04-30 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2021'
+  - REJECTED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - Melissa
+  - Hopkins
+  - 1929-07-18 00:00:00
+  - CAS28531242GA01
+  - Syphilis, primary
+  - Confirmed
+  - 2016-10-30 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2017'
+  - null
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - Tim
+  - Perez
+  - 2013-06-27 00:00:00
+  - CAS27740248GA01
+  - Hepatitis A, acute
+  - Not a Case
+  - 2012-05-17 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2025'
+  - null
+  - '900'
+- !!python/tuple
+  - PSN_DUP_7_GA01
+  - Dawn
+  - Robles
+  - 1993-07-02 00:00:00
+  - CAS36770773GA01
+  - 2019 Novel Coronavirus
+  - null
+  - 2013-03-04 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2024'
+  - REJECTED
+  - '900'
 - !!python/tuple
   - PSN_DUP_7_GA01
   - Daniel
-  - Harris
-  - 2010-09-15 00:00:00
-  - CAS27745355GA01
+  - Brown
+  - 1967-07-09 00:00:00
+  - CAS80610004GA01
   - Syphilis, primary
+  - Probable
+  - 2020-04-25 00:00:00
+  - Investigation Start Date
   - null
-  - 2022-09-01 00:00:00
-  - Date of Report
+  - COMPLETED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_8_GA01
+  - Katherine
+  - Ali
+  - 1966-07-09 00:00:00
+  - CAS42651583GA01
+  - Chlamydia trachomatis infection
+  - Confirmed
+  - 2014-02-28 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2018'
+  - COMPLETED
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_8_GA01
+  - Amber
+  - Cummings
+  - 1951-07-13 00:00:00
+  - CAS38754377GA01
+  - Hepatitis A, acute
+  - Confirmed
+  - 2017-10-06 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2018'
+  - REJECTED
+  - '10110'
+- !!python/tuple
+  - PSN_DUP_8_GA01
+  - Joshua
+  - Fischer
+  - 2010-06-28 00:00:00
+  - CAS65590800GA01
+  - HIV
+  - Not a Case
+  - 2011-09-27 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
     - '2020'
   - null
   - '10274'
 - !!python/tuple
-  - PSN_DUP_7_GA01
-  - Shawn
-  - Barker
-  - 1941-11-20 00:00:00
-  - CAS49920898GA01
-  - Chlamydia trachomatis infection
-  - null
-  - 2012-01-15 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2018'
-  - COMPLETED
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Sheila
-  - Johnson
-  - 1960-06-13 00:00:00
-  - CAS74199033GA01
-  - Syphilis, primary
-  - null
-  - 2012-09-16 00:00:00
-  - Date of Report
-  - null
-  - null
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - null
-  - Brock
-  - 1966-06-27 00:00:00
-  - CAS97851693GA01
-  - Gonorrhea
-  - Probable
-  - 2017-12-29 00:00:00
+  - PSN_DUP_8_GA01
+  - Linda
+  - Taylor
+  - 2023-06-25 00:00:00
+  - CAS23677772GA01
+  - HIV
+  - Not a Case
+  - 2011-10-10 00:00:00
   - Illness Onset Date
   - !!python/object/apply:decimal.Decimal
-    - '2021'
-  - REJECTED
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Charles
-  - Velazquez
-  - 1973-02-16 00:00:00
-  - CAS55901507GA01
-  - Gonorrhea
-  - Confirmed
-  - 2022-02-09 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2018'
+    - '2020'
   - APPROVED
-  - '11065'
+  - '10274'
 - !!python/tuple
-  - PSN_DUP_7_GA01
-  - Caitlin
-  - Mcdonald
+  - PSN_DUP_8_GA01
+  - Nicholas
+  - Frye
+  - 1966-07-09 00:00:00
+  - CAS80528349GA01
+  - Gonorrhea
+  - Not a Case
+  - 2014-08-04 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2022'
   - null
-  - CAS61220073GA01
-  - HIV
-  - null
-  - 2024-01-27 00:00:00
-  - Date of Report
+  - '10274'
+- !!python/tuple
+  - PSN_DUP_8_GA01
+  - Gail
+  - Perry
+  - 1968-07-08 00:00:00
+  - CAS64913082GA01
+  - Gonorrhea
+  - Not a Case
+  - 2021-03-22 00:00:00
+  - Date of Diagnosis
   - !!python/object/apply:decimal.Decimal
     - '2019'
   - null
-  - '11065'
+  - '10274'
 - !!python/tuple
-  - PSN_DUP_7_GA01
-  - Martin
-  - Campos
-  - 1940-02-09 00:00:00
-  - CAS82553061GA01
-  - Syphilis, primary
+  - PSN_DUP_8_GA01
+  - Bill
+  - Mcfarland
+  - 1948-07-13 00:00:00
+  - CAS30777669GA01
+  - HIV
   - null
-  - 2013-12-16 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2025'
-  - null
-  - '900'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Frederick
-  - Preston
-  - 1941-10-16 00:00:00
-  - null
-  - Hepatitis A, acute
-  - null
-  - 2014-04-07 00:00:00
-  - Date of Diagnosis
-  - null
-  - COMPLETED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_7_GA01
-  - Timothy
-  - Miller
-  - 1963-12-15 00:00:00
-  - CAS83912181GA01
-  - Hepatitis A, acute
-  - Probable
-  - 2014-08-28 00:00:00
-  - Date of Report
+  - 2012-04-22 00:00:00
+  - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
     - '2023'
-  - COMPLETED
-  - '900'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Lisa
-  - Ponce
-  - 2023-02-28 00:00:00
-  - CAS21783073GA01
-  - Chlamydia trachomatis infection
   - null
-  - 2010-05-19 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2022'
-  - COMPLETED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Heather
-  - null
-  - null
-  - CAS42560305GA01
-  - Gonorrhea
-  - null
-  - 2018-02-22 00:00:00
-  - Date of Diagnosis
-  - null
-  - REJECTED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Michael
-  - Ballard
-  - 2015-06-10 00:00:00
-  - CAS61168696GA01
-  - 2019 Novel Coronavirus
-  - Not a Case
-  - 2018-05-15 00:00:00
-  - Date of Diagnosis
-  - null
-  - APPROVED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Angela
-  - Russell
-  - null
-  - CAS84757265GA01
-  - Gonorrhea
-  - Suspect
-  - 2019-12-03 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - !!python/object/apply:decimal.Decimal
-    - '2017'
-  - COMPLETED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - David
-  - Henson
-  - null
-  - CAS84040798GA01
-  - Chlamydia trachomatis infection
-  - Suspect
-  - 2021-02-12 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2017'
-  - null
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Anna
-  - null
-  - 2000-09-08 00:00:00
-  - CAS60610858GA01
-  - Chlamydia trachomatis infection
-  - null
-  - 2022-01-18 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2026'
-  - COMPLETED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Paige
-  - Alexander
-  - 1932-08-04 00:00:00
-  - CAS25158211GA01
-  - Hepatitis A, acute
-  - Not a Case
-  - 2019-04-26 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2015'
-  - APPROVED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Richard
-  - Herrera
-  - 2021-01-03 00:00:00
-  - CAS52148834GA01
-  - Chlamydia trachomatis infection
-  - Not a Case
-  - 2019-10-21 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2015'
-  - COMPLETED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Michael
-  - Salinas
-  - 1952-07-18 00:00:00
-  - CAS76776459GA01
-  - Syphilis, primary
-  - null
-  - 2020-07-10 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2015'
-  - REJECTED
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Holly
-  - Bender
-  - 1975-06-23 00:00:00
-  - CAS50814428GA01
-  - 2019 Novel Coronavirus
-  - Probable
-  - 2024-06-07 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2017'
-  - null
-  - '10274'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Billy
-  - Juarez
-  - null
-  - CAS58156722GA01
-  - Syphilis, primary
-  - Probable
-  - 2012-07-08 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2024'
-  - REJECTED
   - '10280'
 - !!python/tuple
   - PSN_DUP_8_GA01
   - Joshua
   - Tucker
-  - 1964-07-11 00:00:00
+  - 1975-07-07 00:00:00
   - CAS39450273GA01
   - Chlamydia trachomatis infection
   - Suspect
-  - 2016-08-01 00:00:00
+  - 2013-10-07 00:00:00
   - Date of Report
   - !!python/object/apply:decimal.Decimal
-    - '2018'
+    - '2015'
   - REJECTED
   - '10280'
 - !!python/tuple
   - PSN_DUP_8_GA01
-  - Scott
-  - null
-  - 1931-06-03 00:00:00
-  - CAS74251933GA01
-  - HIV
-  - Probable
-  - 2018-10-12 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2021'
-  - null
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Theodore
-  - Ortiz
-  - 1957-11-16 00:00:00
-  - CAS22246348GA01
-  - Hepatitis A, acute
-  - Not a Case
-  - 2019-07-10 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2015'
-  - null
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Logan
-  - Mann
-  - 1981-07-05 00:00:00
-  - CAS97131500GA01
-  - Hepatitis A, acute
-  - Confirmed
-  - 2023-07-25 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2016'
-  - COMPLETED
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Debra
-  - Mcdaniel
-  - 1942-05-03 00:00:00
-  - CAS87585294GA01
+  - Michael
+  - Silva
+  - 1995-07-02 00:00:00
+  - CAS81059199GA01
   - 2019 Novel Coronavirus
-  - null
-  - 2024-04-07 00:00:00
+  - Suspect
+  - 2014-08-09 00:00:00
   - Illness Onset Date
   - !!python/object/apply:decimal.Decimal
     - '2024'
@@ -1958,320 +1956,405 @@
   - '10280'
 - !!python/tuple
   - PSN_DUP_8_GA01
-  - Matthew
-  - White
-  - 1967-12-20 00:00:00
-  - CAS92286747GA01
-  - Gonorrhea
-  - null
-  - 2012-03-01 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2026'
-  - COMPLETED
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_8_GA01
-  - Collin
-  - Clark
-  - 1988-12-26 00:00:00
-  - CAS36799898GA01
-  - 2019 Novel Coronavirus
-  - null
-  - 2013-04-11 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
+  - Jonathan
+  - Lopez
+  - 1930-07-18 00:00:00
+  - CAS97011385GA01
+  - Chlamydia trachomatis infection
+  - Confirmed
+  - 2015-07-22 00:00:00
+  - Date of Diagnosis
   - !!python/object/apply:decimal.Decimal
     - '2019'
   - COMPLETED
-  - '11065'
+  - '10280'
 - !!python/tuple
   - PSN_DUP_8_GA01
+  - Kevin
+  - Pope
+  - 1995-07-02 00:00:00
+  - CAS56930359GA01
+  - Syphilis, primary
   - null
-  - Atkinson
-  - 1977-02-04 00:00:00
-  - CAS28048483GA01
-  - HIV
-  - Confirmed
-  - 2013-10-05 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
+  - 2022-09-12 00:00:00
+  - Date of Report
   - !!python/object/apply:decimal.Decimal
-    - '2020'
+    - '2016'
+  - APPROVED
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_8_GA01
+  - Rhonda
+  - Bush
+  - 1942-07-15 00:00:00
+  - CAS40272606GA01
+  - Chlamydia trachomatis infection
   - null
+  - 2012-04-30 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2017'
+  - APPROVED
   - '11065'
 - !!python/tuple
   - PSN_DUP_8_GA01
   - Michael
-  - Torres
-  - 1980-06-30 00:00:00
-  - CAS69774935GA01
-  - 2019 Novel Coronavirus
+  - Ballard
+  - 1927-07-19 00:00:00
+  - CAS61168696GA01
+  - Gonorrhea
   - Confirmed
-  - 2017-12-26 00:00:00
-  - Date of Report
+  - 2018-05-15 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
     - '2015'
+  - APPROVED
+  - '11065'
+- !!python/tuple
+  - PSN_DUP_8_GA01
+  - Scott
+  - Lopez
+  - 2018-06-26 00:00:00
+  - CAS74251933GA01
+  - Chlamydia trachomatis infection
+  - null
+  - 2018-10-12 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2021'
   - REJECTED
   - '11065'
 - !!python/tuple
   - PSN_DUP_8_GA01
-  - Ryan
-  - Brown
-  - 1948-02-19 00:00:00
-  - CAS90563579GA01
+  - Amanda
+  - Collins
+  - 1924-07-19 00:00:00
+  - CAS41407343GA01
   - 2019 Novel Coronavirus
-  - Confirmed
-  - 2022-04-25 00:00:00
+  - Suspect
+  - 2020-04-19 00:00:00
   - Investigation Start Date
   - !!python/object/apply:decimal.Decimal
-    - '2018'
-  - null
+    - '2016'
+  - COMPLETED
   - '11065'
 - !!python/tuple
   - PSN_DUP_8_GA01
-  - Kimberly
-  - Diaz
-  - 1948-04-14 00:00:00
-  - CAS97766064GA01
-  - 2019 Novel Coronavirus
-  - Not a Case
-  - 2022-08-18 00:00:00
-  - Investigation Start Date
+  - Leslie
+  - Hooper
+  - 1929-07-18 00:00:00
+  - CAS70004467GA01
+  - Hepatitis A, acute
+  - null
+  - 2016-08-09 00:00:00
+  - Date of Diagnosis
   - !!python/object/apply:decimal.Decimal
     - '2025'
+  - REJECTED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_8_GA01
+  - Melissa
+  - Davis
+  - 1937-07-16 00:00:00
+  - CAS45568761GA01
+  - Gonorrhea
+  - Confirmed
+  - 2018-01-18 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2022'
+  - APPROVED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_8_GA01
+  - Paige
+  - Alexander
+  - 2016-06-26 00:00:00
+  - CAS25158211GA01
+  - HIV
+  - Confirmed
+  - 2019-10-17 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2025'
+  - APPROVED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_8_GA01
+  - Christina
+  - Lowe
+  - 1953-07-12 00:00:00
+  - CAS23754633GA01
+  - 2019 Novel Coronavirus
+  - Suspect
+  - 2020-10-07 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2015'
+  - COMPLETED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_9_GA01
+  - Jennifer
+  - Ross
+  - 1939-07-16 00:00:00
+  - CAS36998038GA01
+  - Syphilis, primary
   - null
-  - '11065'
+  - 2011-01-10 00:00:00
+  - Investigation Start Date
+  - !!python/object/apply:decimal.Decimal
+    - '2020'
+  - REJECTED
+  - '10110'
 - !!python/tuple
   - PSN_DUP_9_GA01
   - Dana
+  - Williams
+  - 1972-07-07 00:00:00
+  - CAS40289135GA01
+  - Chlamydia trachomatis infection
   - null
-  - 1984-06-11 00:00:00
-  - CAS27919925GA01
-  - Gonorrhea
-  - Probable
-  - 2011-07-31 00:00:00
-  - Illness Onset Date
+  - 2013-05-12 00:00:00
+  - Date of Diagnosis
   - !!python/object/apply:decimal.Decimal
     - '2024'
   - APPROVED
   - '10110'
 - !!python/tuple
   - PSN_DUP_9_GA01
-  - Troy
-  - Mays
-  - 2009-11-13 00:00:00
-  - CAS80372842GA01
-  - Chlamydia trachomatis infection
+  - Kristin
+  - Walker
+  - 1949-07-13 00:00:00
+  - CAS92370625GA01
+  - Syphilis, primary
   - null
-  - 2019-09-10 00:00:00
+  - 2014-08-10 00:00:00
   - Date of Diagnosis
   - !!python/object/apply:decimal.Decimal
-    - '2021'
-  - APPROVED
-  - '10110'
-- !!python/tuple
-  - PSN_DUP_9_GA01
-  - Rebecca
-  - Bailey
-  - 1997-09-25 00:00:00
-  - CAS36025314GA01
-  - HIV
-  - Confirmed
-  - 2021-01-01 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
+    - '2024'
   - null
-  - REJECTED
   - '10110'
 - !!python/tuple
   - PSN_DUP_9_GA01
-  - Julie
-  - Phillips
-  - 1931-09-25 00:00:00
-  - CAS35319707GA01
-  - Chlamydia trachomatis infection
-  - Confirmed
-  - 2010-03-30 00:00:00
-  - Illness Onset Date
+  - Kimberly
+  - James
+  - 1956-07-11 00:00:00
+  - CAS53166435GA01
+  - HIV
+  - null
+  - 2010-03-27 00:00:00
+  - Date of Report
   - !!python/object/apply:decimal.Decimal
-    - '2016'
+    - '2017'
   - COMPLETED
-  - '10280'
+  - '10274'
 - !!python/tuple
   - PSN_DUP_9_GA01
   - Eugene
   - Walker
-  - 2008-04-07 00:00:00
+  - 1992-07-02 00:00:00
   - CAS29120002GA01
-  - HIV
-  - Not a Case
+  - null
+  - null
   - 2011-11-10 00:00:00
-  - Investigation Start Date
+  - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
     - '2020'
   - null
-  - '10280'
+  - '10274'
 - !!python/tuple
   - PSN_DUP_9_GA01
-  - Phyllis
-  - Manning
-  - 1972-12-11 00:00:00
-  - CAS69849511GA01
-  - 2019 Novel Coronavirus
+  - William
+  - Mcneil
+  - 1954-07-12 00:00:00
+  - CAS83025444GA01
+  - Gonorrhea
   - null
-  - 2012-01-02 00:00:00
-  - Investigation Start Date
-  - !!python/object/apply:decimal.Decimal
-    - '2016'
+  - 2011-12-07 00:00:00
+  - Illness Onset Date
   - null
-  - '10280'
+  - REJECTED
+  - '10274'
 - !!python/tuple
   - PSN_DUP_9_GA01
-  - Charles
-  - Landry
-  - 2023-04-08 00:00:00
-  - CAS31203129GA01
+  - Natalie
+  - Henderson
+  - 2023-06-25 00:00:00
+  - CAS48376603GA01
   - Syphilis, primary
-  - Suspect
-  - 2013-12-22 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2021'
   - null
-  - '10280'
+  - 2012-12-14 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2019'
+  - null
+  - '10274'
 - !!python/tuple
   - PSN_DUP_9_GA01
-  - Amanda
-  - null
-  - 1950-08-29 00:00:00
-  - CAS66925500GA01
+  - Katherine
+  - Pham
+  - 1997-07-01 00:00:00
+  - CAS73193474GA01
   - Hepatitis A, acute
-  - Suspect
-  - 2015-10-29 00:00:00
-  - Illness Onset Date
-  - !!python/object/apply:decimal.Decimal
-    - '2015'
-  - null
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_9_GA01
-  - John
-  - Odonnell
-  - 1931-05-13 00:00:00
-  - CAS75569635GA01
-  - Chlamydia trachomatis infection
-  - null
-  - 2017-12-31 00:00:00
-  - Date of Diagnosis
+  - Confirmed
+  - 2017-10-08 00:00:00
+  - Date of Report
   - !!python/object/apply:decimal.Decimal
     - '2024'
   - REJECTED
-  - '10280'
+  - '10274'
 - !!python/tuple
   - PSN_DUP_9_GA01
-  - Christopher
-  - Foster
-  - 1952-04-28 00:00:00
-  - CAS59093496GA01
-  - 2019 Novel Coronavirus
-  - Not a Case
-  - 2019-05-27 00:00:00
-  - Date of Diagnosis
+  - Jennifer
+  - Moore
+  - 1987-07-04 00:00:00
+  - CAS98834863GA01
+  - Gonorrhea
+  - Probable
+  - 2018-08-13 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
   - !!python/object/apply:decimal.Decimal
-    - '2019'
-  - APPROVED
-  - '10280'
-- !!python/tuple
-  - PSN_DUP_9_GA01
-  - Stephanie
-  - Jones
-  - 1972-01-02 00:00:00
-  - CAS16164431GA01
-  - Syphilis, primary
+    - '2016'
   - null
-  - 2021-01-04 00:00:00
-  - Date of Report
-  - !!python/object/apply:decimal.Decimal
-    - '2023'
-  - COMPLETED
-  - '10280'
+  - '10274'
 - !!python/tuple
   - PSN_DUP_9_GA01
-  - Michael
-  - Richmond
-  - 1953-07-03 00:00:00
-  - CAS88239864GA01
+  - Brandon
+  - Vang
+  - 1940-07-15 00:00:00
+  - CAS93635734GA01
   - Hepatitis A, acute
-  - Probable
-  - 2021-10-09 00:00:00
-  - Date of Diagnosis
+  - Not a Case
+  - 2019-02-16 00:00:00
+  - Illness Onset Date
+  - !!python/object/apply:decimal.Decimal
+    - '2025'
   - null
-  - null
-  - '10280'
+  - '10274'
 - !!python/tuple
   - PSN_DUP_9_GA01
-  - Sally
-  - Smith
-  - 1995-02-02 00:00:00
-  - CAS71492815GA01
-  - Chlamydia trachomatis infection
-  - Probable
-  - 2010-07-18 00:00:00
+  - Brian
+  - Schneider
+  - 2004-06-29 00:00:00
+  - CAS92263926GA01
+  - HIV
+  - null
+  - 2021-08-08 00:00:00
   - Date of Report
   - !!python/object/apply:decimal.Decimal
     - '2022'
   - REJECTED
-  - '11065'
+  - '10274'
 - !!python/tuple
   - PSN_DUP_9_GA01
-  - Justin
-  - Hines
-  - 1953-02-20 00:00:00
-  - CAS26733967GA01
+  - Maria
+  - Kelley
+  - 2004-06-29 00:00:00
+  - CAS67276174GA01
   - 2019 Novel Coronavirus
-  - Suspect
-  - 2014-08-13 00:00:00
+  - null
+  - 2013-05-07 00:00:00
   - Investigation Start Date
+  - null
+  - null
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_9_GA01
+  - Darren
+  - null
+  - 1950-07-13 00:00:00
+  - CAS69302835GA01
+  - Hepatitis A, acute
+  - Suspect
+  - 2016-02-19 00:00:00
+  - Illness Onset Date
   - !!python/object/apply:decimal.Decimal
     - '2015'
-  - COMPLETED
+  - null
+  - '10280'
+- !!python/tuple
+  - PSN_DUP_9_GA01
+  - Steven
+  - Petersen
+  - 1949-07-13 00:00:00
+  - CAS74893936GA01
+  - Chlamydia trachomatis infection
+  - null
+  - 2014-12-05 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2019'
+  - APPROVED
   - '11065'
 - !!python/tuple
   - PSN_DUP_9_GA01
-  - Erica
-  - Oliver
-  - null
-  - CAS86703472GA01
+  - Michelle
+  - Hill
+  - 1971-07-08 00:00:00
+  - CAS28321839GA01
   - Gonorrhea
-  - Probable
-  - 2015-10-03 00:00:00
-  - Specimen Collection Date of Earliest Associated Lab
-  - null
+  - Not a Case
+  - 2023-07-04 00:00:00
+  - Date of Report
+  - !!python/object/apply:decimal.Decimal
+    - '2022'
   - null
   - '11065'
 - !!python/tuple
   - PSN_DUP_9_GA01
   - Shannon
   - Ramos
-  - 2010-10-05 00:00:00
+  - 1949-07-13 00:00:00
   - CAS61053474GA01
-  - Chlamydia trachomatis infection
-  - null
+  - 2019 Novel Coronavirus
+  - Probable
   - 2016-07-10 00:00:00
-  - Date of Diagnosis
-  - !!python/object/apply:decimal.Decimal
-    - '2021'
-  - REJECTED
-  - '11065'
-- !!python/tuple
-  - PSN_DUP_9_GA01
-  - William
-  - Mcneil
-  - 1980-09-27 00:00:00
-  - CAS83025444GA01
-  - Hepatitis A, acute
-  - null
-  - 2016-12-05 00:00:00
   - Date of Report
   - !!python/object/apply:decimal.Decimal
-    - '2026'
+    - '2021'
+  - APPROVED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_9_GA01
+  - Beverly
+  - Johnston
+  - 1967-07-09 00:00:00
+  - CAS84892608GA01
+  - 2019 Novel Coronavirus
+  - Confirmed
+  - 2016-08-04 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2020'
+  - APPROVED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_9_GA01
+  - John
+  - Perez
+  - 1934-07-17 00:00:00
+  - CAS73554620GA01
+  - 2019 Novel Coronavirus
+  - Confirmed
+  - 2017-10-03 00:00:00
+  - Date of Diagnosis
+  - !!python/object/apply:decimal.Decimal
+    - '2016'
+  - APPROVED
+  - '900'
+- !!python/tuple
+  - PSN_DUP_9_GA01
+  - Amanda
+  - Erickson
+  - 1986-07-04 00:00:00
+  - CAS78412668GA01
+  - HIV
+  - Suspect
+  - 2019-02-09 00:00:00
+  - Specimen Collection Date of Earliest Associated Lab
+  - !!python/object/apply:decimal.Decimal
+    - '2023'
   - REJECTED
-  - '11065'
+  - '900'

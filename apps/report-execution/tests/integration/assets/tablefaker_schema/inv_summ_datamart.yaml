@@ -45,11 +45,6 @@ tables:
         data: fake.last_name()
         null_percentage: 0.05
       
-      - column_name: PATIENT_DOB
-        type: string
-        data: fake.date_between(start_date="-100y", end_date=datetime(2024, 6, 24)).strftime('%Y-%m-%d')
-        null_percentage: 0.05
-      
       - column_name: PATIENT_CURRENT_SEX
         type: string
         data: random.choice(["Male", "Female", "Unknown", None])
@@ -59,6 +54,10 @@ tables:
         type: int
         data: fake.random_int(0, 100)
         null_percentage: 0.15
+
+      - column_name: PATIENT_DOB
+        type: string
+        data: None if AGE_REPORTED is None else (datetime(2024, 6, 24) - timedelta(days=AGE_REPORTED * 365)).strftime('%Y-%m-%d')
       
       - column_name: AGE_REPORTED_UNIT
         type: string
