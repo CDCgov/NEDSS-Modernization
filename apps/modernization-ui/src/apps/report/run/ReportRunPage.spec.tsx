@@ -2563,139 +2563,13 @@ describe('report run page', () => {
             });
         });
 
-        it('has keyboard drag and drop', async () => {
-            const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
-                ...MOCK_CONFIG,
-                advancedFilter: {
-                    ...MOCK_FILTER,
-                    defaultValue: {
-                        id: '123-123-123',
-                        combinator: generated.RuleGroup.combinator.OR,
-                        rules: [
-                            {
-                                id: '124-124-124',
-                                columnId: 2001,
-                                operator: 'SW',
-                                value: 'prefix',
-                            },
-                            {
-                                id: '125-125-125',
-                                combinator: generated.RuleGroup.combinator.AND,
-                                rules: [
-                                    {
-                                        id: '127-127-127',
-                                        columnId: 2003,
-                                        operator: 'BW',
-                                        value: '10,20',
-                                    },
-                                ],
-                            },
-                            {
-                                id: '128-128-128',
-                                combinator: generated.RuleGroup.combinator.OR,
-                                rules: [
-                                    {
-                                        id: '129-129-129',
-                                        columnId: 2002,
-                                        operator: 'GT',
-                                        value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
-                                    },
-                                    {
-                                        id: '130-130-130',
-                                        columnId: 2003,
-                                        operator: 'BW',
-                                        value: '10,20',
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                },
-            });
-            const mockResultApi = vi
-                .mocked(generated.ReportControllerService.exportReport)
-                .mockResolvedValue(MOCK_RESULT);
-            const { getByRole, findByText, findByRole, findByTestId, findAllByTestId } = renderWithRouter();
-
-            expect(getByRole('status')).toHaveTextContent('Loading');
-
-            expect(mockApi).toHaveBeenCalled();
-
-            expect(await findByText('Advanced Filter')).toBeVisible();
-
-            const user = userEvent.setup();
-            const ruleGroupHandle = async () => await findByTestId('drag-handle-128-128-128');
-            const announcementEl = await findByTestId('announcement');
-
-            let ruleGroups = await findAllByTestId('rule-group');
-            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
-            expect(announcementEl).toHaveTextContent('');
-
-            // activate handle and move up into above group
-            await user.type(await ruleGroupHandle(), ' ');
-            await waitFor(() => expect(announcementEl).toHaveTextContent('You have lifted a group at path 3'));
-            await user.type(await ruleGroupHandle(), '{ArrowUp}');
-            await waitFor(() => expect(announcementEl).toHaveTextContent('You have moved the group up to path 2-2'));
-
-            ruleGroups = await findAllByTestId('rule-group');
-            expect(await ruleGroupHandle()).toHaveFocus();
-            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
-
-            // move back down and make sure restores
-            await user.type(await ruleGroupHandle(), '{ArrowDown}');
-            await waitFor(() => expect(announcementEl).toHaveTextContent('You have moved the group down to path 3'));
-
-            ruleGroups = await findAllByTestId('rule-group');
-            expect(await ruleGroupHandle()).toHaveFocus();
-            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
-
-            // move back up and above rule and deactivate
-            await user.type(await ruleGroupHandle(), '{ArrowUp}{ArrowUp} ');
-            await waitFor(() => expect(announcementEl).toHaveTextContent('You have dropped the group at path 2-1'));
-
-            ruleGroups = await findAllByTestId('rule-group');
-            expect(await ruleGroupHandle()).toHaveFocus();
-            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
-
-            // nothing should change, since not active
-            await user.type(await ruleGroupHandle(), '{ArrowUp}');
-            expect(announcementEl).toHaveTextContent('You have dropped the group at path 2-1');
-
-            ruleGroups = await findAllByTestId('rule-group');
-            expect(await ruleGroupHandle()).toHaveFocus();
-            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
-
-            // check escape handling works, should not change from previous
-            await user.type(await ruleGroupHandle(), ' {ArrowUp}{Escape}{ArrowDown}');
-            await waitFor(() =>
-                expect(announcementEl).toHaveTextContent('The group has returned to its starting position')
-            );
-
-            ruleGroups = await findAllByTestId('rule-group');
-            await waitFor(async () => expect(await ruleGroupHandle()).toHaveFocus());
-            expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
-            expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
-
-            const exportButton = await findByRole('button', { name: 'Export' });
-            await user.click(exportButton);
-
-            expect(mockResultApi).toHaveBeenCalledWith({
-                requestBody: expect.objectContaining({
-                    isExport: true,
+        describe('keyboard drag and drop', () => {
+            it('happy path', async () => {
+                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                    ...MOCK_CONFIG,
                     advancedFilter: {
-                        reportFilterUid: 1001,
-                        value: {
+                        ...MOCK_FILTER,
+                        defaultValue: {
                             id: '123-123-123',
                             combinator: generated.RuleGroup.combinator.OR,
                             rules: [
@@ -2710,26 +2584,25 @@ describe('report run page', () => {
                                     combinator: generated.RuleGroup.combinator.AND,
                                     rules: [
                                         {
-                                            id: '128-128-128',
-                                            combinator: generated.RuleGroup.combinator.OR,
-                                            rules: [
-                                                {
-                                                    id: '129-129-129',
-                                                    columnId: 2002,
-                                                    operator: 'GT',
-                                                    // format should be mm/dd/yyyy when we switch components
-                                                    value: '2020-01-01',
-                                                },
-                                                {
-                                                    id: '130-130-130',
-                                                    columnId: 2003,
-                                                    operator: 'BW',
-                                                    value: '10,20',
-                                                },
-                                            ],
+                                            id: '127-127-127',
+                                            columnId: 2003,
+                                            operator: 'BW',
+                                            value: '10,20',
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: '128-128-128',
+                                    combinator: generated.RuleGroup.combinator.OR,
+                                    rules: [
+                                        {
+                                            id: '129-129-129',
+                                            columnId: 2002,
+                                            operator: 'GT',
+                                            value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
                                         },
                                         {
-                                            id: '127-127-127',
+                                            id: '130-130-130',
                                             columnId: 2003,
                                             operator: 'BW',
                                             value: '10,20',
@@ -2739,8 +2612,224 @@ describe('report run page', () => {
                             ],
                         },
                     },
-                    basicFilters: [],
-                }),
+                });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+                const { getByRole, findByText, findByRole, findByTestId, findAllByTestId } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByText('Advanced Filter')).toBeVisible();
+
+                const user = userEvent.setup();
+                const ruleGroupHandle = async () => await findByTestId('drag-handle-128-128-128');
+                const announcementEl = await findByTestId('announcement');
+
+                let ruleGroups = await findAllByTestId('rule-group');
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+                expect(announcementEl).toHaveTextContent('');
+
+                // activate handle and move up into above group
+                await user.type(await ruleGroupHandle(), ' ');
+                await waitFor(() => expect(announcementEl).toHaveTextContent('You have lifted a group at path 3'));
+                await user.keyboard('{ArrowUp}');
+                await waitFor(() =>
+                    expect(announcementEl).toHaveTextContent('You have moved the group up to path 2-2')
+                );
+
+                ruleGroups = await findAllByTestId('rule-group');
+                expect(await ruleGroupHandle()).toHaveFocus();
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+                // move back down and make sure restores
+                await user.keyboard('{ArrowDown}');
+                await waitFor(() =>
+                    expect(announcementEl).toHaveTextContent('You have moved the group down to path 3')
+                );
+
+                ruleGroups = await findAllByTestId('rule-group');
+                expect(await ruleGroupHandle()).toHaveFocus();
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+                // move back up and above rule and deactivate
+                await user.keyboard('{ArrowUp}{ArrowUp} ');
+                await waitFor(() => expect(announcementEl).toHaveTextContent('You have dropped the group at path 2-1'));
+
+                ruleGroups = await findAllByTestId('rule-group');
+                expect(await ruleGroupHandle()).toHaveFocus();
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+                // nothing should change, since not active
+                await user.keyboard('{ArrowUp}');
+                expect(announcementEl).toHaveTextContent('You have dropped the group at path 2-1');
+
+                ruleGroups = await findAllByTestId('rule-group');
+                expect(await ruleGroupHandle()).toHaveFocus();
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+                // check escape handling works, should not change from previous
+                await user.keyboard(' {ArrowUp}{Escape}{ArrowDown}');
+                await waitFor(() =>
+                    expect(announcementEl).toHaveTextContent('The group has returned to its starting position')
+                );
+
+                ruleGroups = await findAllByTestId('rule-group');
+                await waitFor(async () => expect(await ruleGroupHandle()).toHaveFocus());
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: {
+                            reportFilterUid: 1001,
+                            value: {
+                                id: '123-123-123',
+                                combinator: generated.RuleGroup.combinator.OR,
+                                rules: [
+                                    {
+                                        id: '124-124-124',
+                                        columnId: 2001,
+                                        operator: 'SW',
+                                        value: 'prefix',
+                                    },
+                                    {
+                                        id: '125-125-125',
+                                        combinator: generated.RuleGroup.combinator.AND,
+                                        rules: [
+                                            {
+                                                id: '128-128-128',
+                                                combinator: generated.RuleGroup.combinator.OR,
+                                                rules: [
+                                                    {
+                                                        id: '129-129-129',
+                                                        columnId: 2002,
+                                                        operator: 'GT',
+                                                        // format should be mm/dd/yyyy when we switch components
+                                                        value: '2020-01-01',
+                                                    },
+                                                    {
+                                                        id: '130-130-130',
+                                                        columnId: 2003,
+                                                        operator: 'BW',
+                                                        value: '10,20',
+                                                    },
+                                                ],
+                                            },
+                                            {
+                                                id: '127-127-127',
+                                                columnId: 2003,
+                                                operator: 'BW',
+                                                value: '10,20',
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        },
+                        basicFilters: [],
+                    }),
+                });
+            });
+
+            it('cancels on mouse interaction', async () => {
+                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                    ...MOCK_CONFIG,
+                    advancedFilter: {
+                        ...MOCK_FILTER,
+                        defaultValue: {
+                            id: '123-123-123',
+                            combinator: generated.RuleGroup.combinator.OR,
+                            rules: [
+                                {
+                                    id: '124-124-124',
+                                    columnId: 2001,
+                                    operator: 'SW',
+                                    value: 'prefix',
+                                },
+                                {
+                                    id: '125-125-125',
+                                    combinator: generated.RuleGroup.combinator.AND,
+                                    rules: [
+                                        {
+                                            id: '127-127-127',
+                                            columnId: 2003,
+                                            operator: 'BW',
+                                            value: '10,20',
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: '128-128-128',
+                                    combinator: generated.RuleGroup.combinator.OR,
+                                    rules: [
+                                        {
+                                            id: '129-129-129',
+                                            columnId: 2002,
+                                            operator: 'GT',
+                                            value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
+                                        },
+                                        {
+                                            id: '130-130-130',
+                                            columnId: 2003,
+                                            operator: 'BW',
+                                            value: '10,20',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                });
+                const { getByRole, findByText, findAllByRole, findByTestId, findAllByTestId } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByText('Advanced Filter')).toBeVisible();
+
+                const user = userEvent.setup();
+                const ruleGroupHandle = async () => await findByTestId('drag-handle-128-128-128');
+                const announcementEl = await findByTestId('announcement');
+
+                let ruleGroups = await findAllByTestId('rule-group');
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+                expect(announcementEl).toHaveTextContent('');
+
+                // activate handle and move up into above group
+                await user.type(await ruleGroupHandle(), ' ');
+                await waitFor(() => expect(announcementEl).toHaveTextContent('You have lifted a group at path 3'));
+                await user.keyboard('{ArrowUp}');
+                await waitFor(() =>
+                    expect(announcementEl).toHaveTextContent('You have moved the group up to path 2-2')
+                );
+
+                const addRuleBtn = (await findAllByRole('button', { name: '+ Rule' }))[0];
+                await user.click(addRuleBtn);
+                await waitFor(() =>
+                    expect(announcementEl).toHaveTextContent('The group has returned to its starting position')
+                );
+                expect(addRuleBtn).toHaveFocus();
             });
         });
     });
