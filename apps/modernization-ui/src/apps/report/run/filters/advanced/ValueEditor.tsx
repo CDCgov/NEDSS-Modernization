@@ -1,7 +1,8 @@
-import { ValueEditor as DefaultValueEditor, ValueEditorProps } from 'react-querybuilder';
+import { ValueEditor as DefaultValueEditor, FullField, ValueEditorProps } from 'react-querybuilder';
 import { ValueSetSelector } from './ValueSetSelector';
+import { ValueSetMetadata } from './AdvancedFilter';
 
-const ValueEditor = (props: ValueEditorProps) => {
+const ValueEditor = (props: ValueEditorProps<ValueSetMetadata & FullField>) => {
     switch (props.type) {
         case 'select':
         case 'multiselect':

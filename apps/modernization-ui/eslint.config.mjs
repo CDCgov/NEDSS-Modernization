@@ -65,9 +65,9 @@ export default defineConfig([
             },
         },
     },
-    // Test files overrides
+    // Test and story files overrides
     {
-        files: ['**/*.spec.{js,jsx,ts,tsx}', '**/*.test.{js,jsx,ts,tsx}'],
+        files: ['**/*.spec.{js,jsx,ts,tsx}', '**/*.test.{js,jsx,ts,tsx}', '**/*.stories.{js,jsx,ts,tsx}'],
         languageOptions: {
             globals: {
                 vi: 'readonly',
@@ -80,6 +80,7 @@ export default defineConfig([
             '@typescript-eslint/no-unused-vars': 'off',
             'no-undef': 'off',
             'no-unused-vars': 'off',
+            'no-console': 'off',
         },
     },
 ]);

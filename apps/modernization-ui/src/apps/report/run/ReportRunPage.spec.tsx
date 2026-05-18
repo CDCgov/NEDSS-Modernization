@@ -8,8 +8,8 @@ import { createMemoryRouter, RouterProvider } from 'react-router';
 import { ReactNode } from 'react';
 import fileDownload from 'js-file-download';
 import { axe } from 'jest-axe';
-import * as options from 'options/selectableResolver';
-import { ConceptOptions, useConceptOptions } from '../../../options/concepts';
+import * as options from 'options';
+import { ConceptOptions, useConceptOptions } from 'options/concepts';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
@@ -22,7 +22,7 @@ vi.mock('react-router', async () => {
 vi.mock('js-file-download', { spy: true });
 
 vi.mock('generated');
-vi.mock('options/selectableResolver');
+vi.mock('options');
 vi.mock('options/concepts/useConceptOptions', () => ({
     useConceptOptions: vi.fn(),
 }));
@@ -32,6 +32,12 @@ vi.mock('libs/permission', async () => {
     return {
         ...actual,
         Permitted: vi.fn(({ children }: { children: ReactNode }) => <>{children}</>),
+    };
+});
+
+vi.mock('configuration', () => {
+    return {
+        useConfiguration: () => ({ ready: true, properties: { entries: { NBS_STATE_CODE: '13' } } }),
     };
 });
 
@@ -51,24 +57,42 @@ const MOCK_CONFIG: ReportConfiguration = {
             name: 'FULL_NAME',
             title: 'Full Name',
             sourceTypeCode: 'STRING',
-            displayable: 'Y',
-            filterable: 'Y',
+            isDisplayable: true,
+            isFilterable: true,
         },
         {
             id: 2002,
             name: 'DATE_OF_BIRTH',
             title: 'Date of Birth',
             sourceTypeCode: 'DATETIME',
-            displayable: 'Y',
-            filterable: 'Y',
+            isDisplayable: true,
+            isFilterable: true,
         },
         {
             id: 2003,
             name: 'DAYS_OLD',
             title: 'Days Old',
             sourceTypeCode: 'INTEGER',
-            displayable: 'Y',
-            filterable: 'Y',
+            isDisplayable: true,
+            isFilterable: true,
+        },
+        {
+            id: 2004,
+            name: 'SECRET_COLUMN',
+            title: 'Secret Column',
+            sourceTypeCode: 'INTEGER',
+            isDisplayable: false,
+            isFilterable: false,
+        },
+        {
+            id: 2005,
+            name: 'CONDITION',
+            title: 'Condition Code',
+            sourceTypeCode: 'STRING',
+            isDisplayable: false,
+            isFilterable: true,
+            codeDescCd: 'D',
+            codesetNm: 'RACE_CODE',
         },
     ],
     basicFilters: [],
@@ -2029,7 +2053,22 @@ describe('report run page', () => {
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
                 .mockResolvedValue(MOCK_RESULT);
-            const { getByRole, queryByText, findByText, findByRole, findAllByRole, findByTestId } = renderWithRouter();
+            const codedValueGetter = vi.mocked(options.cachedSelectableResolver).mockReturnValue(() =>
+                Promise.resolve([
+                    { value: '123', name: 'Terrible disease' },
+                    { value: '456', name: 'Not so awful disease' },
+                ])
+            );
+            const {
+                getByRole,
+                queryByText,
+                getByText,
+                findByText,
+                findByLabelText,
+                findByRole,
+                findAllByRole,
+                findByTestId,
+            } = renderWithRouter();
 
             expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -2048,7 +2087,7 @@ describe('report run page', () => {
 
             expect(await findByText('Must select an operator and value')).toBeVisible();
 
-            // generally filled in
+            // generally filled in value
             const opSelect = await findByRole('combobox', { name: 'Operator' });
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'contains');
@@ -2058,6 +2097,24 @@ describe('report run page', () => {
             const valueBox = await findByRole('textbox', { name: 'Value' });
             expect(valueBox).toHaveValue('');
             await user.type(valueBox, 'hi');
+
+            expect(queryByText('Value cannot be empty')).toBeNull();
+
+            // generally filled in coded list
+            await user.selectOptions(fieldSelect, 'Condition Code');
+            expect(opSelect).toHaveValue('~');
+            await user.selectOptions(opSelect, 'in');
+
+            expect(await findByText('Value cannot be empty')).toBeVisible();
+
+            await waitFor(() =>
+                expect(codedValueGetter).toHaveBeenCalledWith(`report.valueset.d.race_code`, `/nbs/api/options/races`)
+            );
+
+            const dropDown = await findByLabelText('Value');
+            expect(dropDown).toBeVisible();
+            await userEvent.click(dropDown);
+            await userEvent.click(getByText('Terrible disease'));
 
             expect(queryByText('Value cannot be empty')).toBeNull();
 
