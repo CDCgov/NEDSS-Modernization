@@ -45,7 +45,7 @@ const ReportRunPage = () => {
         form.handleSubmit(
             (data) => {
                 const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
-                    .map(([id, {value, includeNulls}]) => {
+                    .map(([id, { value, includeNulls }]) => {
                         const values = typeof value === 'string' ? [value] : value;
                         return {
                             // remove `id_` prefix
@@ -69,7 +69,9 @@ const ReportRunPage = () => {
             },
             (errors) => {
                 // TODO make this gather all errors and nicely format
-                setError(Object.values(errors.basicFilter ?? {}).reduce((acc, cur) => `${acc}\n${cur?.message}`, ''));
+                setError(
+                    Object.values(errors.basicFilter ?? {}).reduce((acc, cur) => `${acc}\n${cur?.value?.message}`, '')
+                );
             }
         )(event);
     };

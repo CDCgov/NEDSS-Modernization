@@ -142,12 +142,14 @@ const BasicFilter = ({ filter, columns }: { filter: BasicFilterConfiguration; co
                                 orientation="horizontal"
                                 sizing="medium"
                                 label="Include Nulls"
-                                className="height-full">
+                                className="height-full"
+                            >
                                 <Checkbox
                                     id={`${id}-include-nulls`}
                                     aria-label={`Include Nulls for ${label}`}
                                     selected={value}
-                                    onChange={onChange}></Checkbox>
+                                    onChange={onChange}
+                                ></Checkbox>
                             </Field>
                         )}
                     />
