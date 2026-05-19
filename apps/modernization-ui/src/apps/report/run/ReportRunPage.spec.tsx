@@ -2375,7 +2375,8 @@ describe('report run page', () => {
                                             id: '129-129-129',
                                             columnId: 2002,
                                             operator: 'GT',
-                                            value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
+                                            // format should be mm/dd/yyyy when we switch components
+                                            value: '2020-01-01',
                                         },
                                         {
                                             id: '130-130-130',
@@ -2560,7 +2561,8 @@ describe('report run page', () => {
                                             id: '129-129-129',
                                             columnId: 2002,
                                             operator: 'GT',
-                                            value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
+                                            // format should be mm/dd/yyyy when we switch components
+                                            value: '2020-01-01',
                                         },
                                         {
                                             id: '130-130-130',
