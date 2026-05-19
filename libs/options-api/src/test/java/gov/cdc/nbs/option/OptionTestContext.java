@@ -2,6 +2,7 @@ package gov.cdc.nbs.option;
 
 import javax.sql.DataSource;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
+@ConfigurationPropertiesScan({"gov.cdc.nbs.option", "gov.cdc.nbs.datasource.utils"})
 public class OptionTestContext {
 
   @Bean
