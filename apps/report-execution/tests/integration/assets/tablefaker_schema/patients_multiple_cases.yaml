@@ -1,5 +1,7 @@
 config:
   seed: 19
+  nbs:
+    fk_tables: []
 
 tables:
   - table_name: "[RDB].[dbo].[LAB_TEST]"
@@ -15,7 +17,7 @@ tables:
       - column_name: SPECIMEN_COLLECTION_DT
         data: fake.date_between(start_date='-19w')
   - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
-    export_file_name: "1_lab_test_result"
+    export_file_name: "2_lab_test_result"
     row_count: 100
     columns:
       # required columns
@@ -53,3 +55,34 @@ tables:
         data: random.randint(1000, 10000)
       - column_name: TEST_RESULT_GRP_KEY
         data: random.randint(1000, 10000)
+  - table_name: "[RDB].[dbo].[USER_PROFILE]"
+    export_file_name: '3_user_profile'
+    row_count: 200
+    columns:
+      # required columns:
+      - column_name: NEDSS_ENTRY_ID
+        data: row_id
+        is_primary_key: true
+      - column_name: PROVIDER_KEY
+        data: random.randrange(1000001, 1000099)
+
+      # used in library:
+      - column_name: PROVIDER_QUICK_CODE
+        data: str(row_id)
+        # seems to be creating SQL insert values of "<NA>" (I think this is a pandas issue)
+        #null_percentage: 0.05
+  - table_name: "[RDB].[dbo].[EVENT_METRIC]"
+    export_file_name: '4_event_metric'
+    row_count: 1000
+    columns:
+      # required columns:
+      - column_name: EVENT_TYPE
+        data: random.choice(["PHCInvForm", "LabReport", "MorbReport", "CONTACT", "Vaccination"])
+        is_primary_key: true
+      - column_name: EVENT_UID
+        data: row_id
+        is_primary_key: true
+
+      # used in library:
+      - column_name: ADD_USER_ID
+        data: foreign_key("[RDB].[dbo].[USER_PROFILE]", "NEDSS_ENTRY_ID")
