@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DistinctValuesFinder {
 
+  private static final System.Logger LOGGER =
+      System.getLogger(DistinctValuesFinder.class.getName());
+
   private static final String DATA_QUERY =
       """
       select distinct [%s] as [value]
@@ -59,6 +62,7 @@ public class DistinctValuesFinder {
 
     } catch (NumberFormatException | EmptyResultDataAccessException e) {
       // report column uid not a number or  column not found
+      LOGGER.log(System.Logger.Level.INFO, "Report column UID %s not found".formatted(columnUid));
       return List.of();
     }
   }
