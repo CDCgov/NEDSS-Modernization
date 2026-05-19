@@ -58,7 +58,7 @@ tables:
       - column_name: PATIENT_DOB
         type: string
         data: (datetime(2024, 6, 24) - timedelta(days=AGE_REPORTED * 365)).strftime('%Y-%m-%d')
-        null_percentage: 0.15
+        null_percentage: 0.15 # AGE_REPORTED and PATIENT_DOB should be null together, but to get around int datatype non-null constraint, we are treating them independently here.
       
       - column_name: AGE_REPORTED_UNIT
         type: string
