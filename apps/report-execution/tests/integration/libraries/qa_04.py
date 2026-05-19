@@ -47,7 +47,7 @@ class TestIntegrationQa04Library:
                 'library_name': 'qa_04',
                 'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': '''
-                    SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1=0'
+                    SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1=0
                 '''
             }
         )

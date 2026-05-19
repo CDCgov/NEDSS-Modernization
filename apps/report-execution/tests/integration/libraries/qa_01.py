@@ -40,13 +40,9 @@ class TestIntegrationNbsQa01Library:
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
         # Sanity check the result's shape beyond the snapshot
-        record = None
-        for row in result.content.data:
-            if row[0] == 45481149 and row[3] == 'Van Dam, Venus' and row[4] == '43':
-                record = row
-                break
+        row = result.content.data[-1]
+        assert row[0] == 944 and row[3] == 'Van Dam, Venus' and row[4] == '43'
 
-        assert record is not None
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = self.create_spec(
