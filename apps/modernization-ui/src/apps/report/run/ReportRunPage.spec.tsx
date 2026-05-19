@@ -2104,7 +2104,7 @@ describe('report run page', () => {
 
             expect(await findByText('Must select an operator and value')).toBeVisible();
 
-            // generally filled in value
+            // generally filled in text value
             const opSelect = await findByRole('combobox', { name: 'Operator' });
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'contains');
@@ -2114,6 +2114,19 @@ describe('report run page', () => {
             const valueBox = await findByRole('textbox', { name: 'Value' });
             expect(valueBox).toHaveValue('');
             await user.type(valueBox, 'hi');
+
+            expect(queryByText('Value cannot be empty')).toBeNull();
+
+            // generally filled in number value
+            await user.selectOptions(fieldSelect, 'DAYS_OLD');
+            expect(opSelect).toHaveValue('~');
+            await user.selectOptions(opSelect, '=');
+
+            expect(await findByText('Value cannot be empty')).toBeVisible();
+
+            const numberBox = await findByRole('spinbutton', { name: 'Value' });
+            expect(numberBox).toHaveValue(null);
+            await user.type(numberBox, '0');
 
             expect(queryByText('Value cannot be empty')).toBeNull();
 
@@ -2166,11 +2179,11 @@ describe('report run page', () => {
 
             expect(await findByText('Both low and high values required')).toBeVisible();
 
-            await user.type(numInputs[1], '2');
+            await user.type(numInputs[1], '0');
 
             expect(await findByText('High value must be greater than or equal to low value')).toBeVisible();
 
-            await user.type(numInputs[1], '0');
+            await user.type(numInputs[1], '{backspace}20');
 
             await user.click(exportButton);
 
