@@ -16,8 +16,8 @@ public class ReportColumnMapper {
       codesetNm = codeset.getCodesetNm();
     }
 
-    Boolean isDisplayable = 'Y' == dataSourceColumn.getDisplayable();
-    Boolean isFilterable = 'Y' == dataSourceColumn.getFilterable();
+    Boolean isDisplayable = Character.valueOf('Y').equals(dataSourceColumn.getDisplayable());
+    Boolean isFilterable = Character.valueOf('Y').equals(dataSourceColumn.getFilterable());
 
     return new ReportColumn(
         dataSourceColumn.getId(),
