@@ -14,7 +14,7 @@ const CurrentStateProvider = ({ stateFilter, children }: Props) => {
     const { setValue } = useFormContext<ReportExecuteForm>();
     const { ready, properties } = useConfiguration();
     const stateFilterId = stateFilter?.reportFilterUid;
-    const formName: `basicFilter.${string}` = `basicFilter.id_${stateFilterId}`
+    const formName: `basicFilter.${string}` = `basicFilter.id_${stateFilterId}`;
     const stateVal = useWatch<ReportExecuteForm>({
         name: formName,
         defaultValue: stateFilter?.defaultValue,
@@ -28,9 +28,9 @@ const CurrentStateProvider = ({ stateFilter, children }: Props) => {
     // If there isn't a state set when the config first loads, set it to the default state
     useEffect(() => {
         if (ready && stateFilterId && !state && properties.entries.NBS_STATE_CODE) {
-            setValue(formName, [properties.entries.NBS_STATE_CODE])
+            setValue(formName, [properties.entries.NBS_STATE_CODE]);
         }
-    }, [ready])
+    }, [ready]);
 
     return <CurrentStateContext.Provider value={state}>{children}</CurrentStateContext.Provider>;
 };

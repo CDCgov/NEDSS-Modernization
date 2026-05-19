@@ -43,19 +43,18 @@ vi.mock('configuration', () => {
 
 // don't actually let the cache cache
 const localStorageMock: Storage = {
-        getItem: (): string | null => null,
-        setItem: (): void => {},
-        removeItem: (): void => {},
-        clear: (): void => {},
-        key: (): string | null => "",
-        length: 0
-    };
+    getItem: (): string | null => null,
+    setItem: (): void => {},
+    removeItem: (): void => {},
+    clear: (): void => {},
+    key: (): string | null => '',
+    length: 0,
+};
 
 let originalLocalStorage: Storage;
 beforeAll((): void => {
     originalLocalStorage = window.localStorage;
     (window as any).localStorage = localStorageMock;
-
 });
 
 afterAll((): void => {
@@ -63,8 +62,8 @@ afterAll((): void => {
 });
 
 afterEach(() => {
-  vi.restoreAllMocks()
-})
+    vi.restoreAllMocks();
+});
 
 const MOCK_CONFIG: ReportConfiguration = {
     reportTitle: 'Test Report',

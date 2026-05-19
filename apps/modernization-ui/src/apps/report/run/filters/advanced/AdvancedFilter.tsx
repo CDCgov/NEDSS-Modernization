@@ -164,7 +164,7 @@ const INPUT_TYPE_MAP: Record<string, string> = {
 type NbsQuery = RuleGroup | Rule;
 // to match `RuleType` more closely
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type QbRule = Omit<Rule, 'columnId' | 'value'> & { field: string, value: any };
+type QbRule = Omit<Rule, 'columnId' | 'value'> & { field: string; value: any };
 export type QbRuleGroup = RuleGroupType<QbRule>;
 type QbQuery = QbRuleGroup | QbRule;
 
@@ -224,9 +224,7 @@ const queryToAdvancedFilterRequest = (query: QbRuleGroup, columns: ReportColumn[
             id,
             operator: mapToNbsOp(operator)!,
             columnId: columns.find(({ name }) => field === name)!.id,
-            value: LIST_OPERATORS.find(({ name }) => name === operator)
-                ? joinWith(value, '|')
-                : value.toString(),
+            value: LIST_OPERATORS.find(({ name }) => name === operator) ? joinWith(value, '|') : value.toString(),
         };
     }) as RuleGroup;
 };

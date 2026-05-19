@@ -7,4 +7,4 @@ export const logErrorToUserConsole: typeof console.error = (...args) => {
     // This function is used to explicitly opt in to sending logs to the end user
     // eslint-disable-next-line no-console
     console.error(...args);
-}
+};
