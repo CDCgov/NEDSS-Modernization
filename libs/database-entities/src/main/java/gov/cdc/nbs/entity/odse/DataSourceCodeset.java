@@ -11,12 +11,9 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @Getter
 @Setter
@@ -28,7 +25,7 @@ public class DataSourceCodeset {
   @Column(name = "data_source_codeset_uid", nullable = false)
   private Long id;
 
-  @NonNull @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "column_uid")
   private DataSourceColumn column;
 
@@ -39,7 +36,7 @@ public class DataSourceCodeset {
   private String codesetNm;
 
   //  TODO: add a converter? Or Separate Status class? // NOSONAR
-  @Column(name = "status_cd", nullable = false)
+  @Column(name = "status_cd")
   private Character statusCd;
 
   @Column(name = "status_time")
