@@ -17,7 +17,7 @@ const CurrentStateProvider = ({ stateFilter, children }: Props) => {
     const formName: `basicFilter.${string}` = `basicFilter.id_${stateFilterId}`;
     const stateVal = useWatch<ReportExecuteForm>({
         name: formName,
-        defaultValue: stateFilter?.defaultValue,
+        defaultValue: stateFilter?.defaultValues,
     });
 
     // get first state in case it is used in multi-select
