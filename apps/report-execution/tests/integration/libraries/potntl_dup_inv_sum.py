@@ -1,5 +1,4 @@
 from collections import Counter
-from datetime import datetime
 
 import pytest
 import yaml
