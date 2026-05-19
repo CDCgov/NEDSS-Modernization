@@ -34,9 +34,9 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
 
     useEffect(() => {
         const getValues = async (): Promise<Selectable[]> => {
-            const valueSetMap = getValueSetMap(properties.entries.NBS_STATE_CODE)
+            const valueSetMap = getValueSetMap(properties.entries.NBS_STATE_CODE);
 
-            let cacheId = `report.valueset.${codeDescCd}.${codesetNm ?? columnUid}`.toLowerCase();
+            let cacheId = `report.valueset.${codesetNm ?? columnUid}`.toLowerCase();
 
             let endpoint = '';
             if (codeDescCd?.toLowerCase() === 'h') {
@@ -83,13 +83,14 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
                 });
         }
     }, [ready]);
-    
+
     // 'c' = code, 'd' = description
-    const getValue = (v: Selectable) => codeDescCd?.toLowerCase() === 'c' ? v.value : v.name
+    const getValue = (v: Selectable) => (codeDescCd?.toLowerCase() === 'c' ? v.value : v.name);
 
     const handleOnChange = (values: Selectable[]) => {
-        props.handleOnChange(values.map(getValue))
-    }
+        props.handleOnChange(values.map(getValue));
+    };
+
     const value = options?.filter((selectable) => props.value?.includes(getValue(selectable))) ?? [];
 
     return options === null ? (
@@ -100,7 +101,7 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
             label="Value"
             name="Value"
             orientation="vertical"
-            sizing='medium'
+            sizing="medium"
             options={options ?? []}
             value={value}
             onChange={handleOnChange}

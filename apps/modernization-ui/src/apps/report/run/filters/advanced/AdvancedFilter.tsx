@@ -206,7 +206,7 @@ function filterQbRules(rule: QbQuery, filterer: (r: QbRule) => boolean): QbQuery
 const mapToQueryOp = (op: string, isCoded: boolean) => {
     // "EQ" and "NE" are translated to "in" and "notIn" if this is a coded value
     if (isCoded) {
-        const listOp = LIST_OPERATORS.find(({ name }) => name === op);
+        const listOp = LIST_OPERATORS.find(({ nbsCd }) => nbsCd === op);
         if (listOp) return listOp.name;
     }
     return ALL_OPERATORS.find(({ nbsCd }) => nbsCd === op)!.name;
