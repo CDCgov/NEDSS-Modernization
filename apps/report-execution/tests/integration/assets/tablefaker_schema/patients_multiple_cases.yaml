@@ -1,0 +1,55 @@
+config:
+  seed: 19
+
+tables:
+  - table_name: "[RDB].[dbo].[LAB_TEST]"
+    export_file_name: "1_lab_test"
+    row_count: 100
+    columns:
+      # required columns
+      - column_name: LAB_TEST_KEY
+        data: row_id
+        is_primary_key: true
+      - column_name: RECORD_STATUS_CD
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+      - column_name: SPECIMEN_COLLECTION_DT
+        data: fake.date_between(start_date='-19w')
+  - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
+    export_file_name: "1_lab_test_result"
+    row_count: 100
+    columns:
+      # required columns
+      - column_name: LAB_TEST_KEY
+        data: foreign_key("[RDB].[dbo].[LAB_TEST]", "LAB_TEST_KEY")
+      - column_name: RECORD_STATUS_CD
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+      - column_name: CONDITION_KEY
+        data: random.randint(1000, 10000)
+      - column_name: COPY_TO_PROVIDER_KEY
+        data: random.randint(1000, 10000)
+      - column_name: INVESTIGATION_KEY
+        data: random.randint(1000, 10000)
+      - column_name: LAB_RPT_DT_KEY
+        data: random.randint(1000, 10000)
+      - column_name: LAB_TEST_TECHNICIAN_KEY
+        data: random.randint(1000, 10000)
+      - column_name: LDF_GROUP_KEY
+        data: random.randint(1000, 10000)
+      - column_name: MORB_RPT_KEY
+        data: random.randint(1000, 10000)
+      - column_name: ORDERING_ORG_KEY
+        data: random.randint(1000, 10000)
+      - column_name: ORDERING_PROVIDER_KEY
+        data: random.randint(1000, 10000)
+      - column_name: PATIENT_KEY
+        data: random.randint(1000, 10000)
+      - column_name: PERFORMING_LAB_KEY
+        data: random.randint(1000, 10000)
+      - column_name: REPORTING_LAB_KEY
+        data: random.randint(1000, 10000)
+      - column_name: RESULT_COMMENT_GRP_KEY
+        data: random.randint(1000, 10000)
+      - column_name: SPECIMEN_COLLECTOR_KEY
+        data: random.randint(1000, 10000)
+      - column_name: TEST_RESULT_GRP_KEY
+        data: random.randint(1000, 10000)
