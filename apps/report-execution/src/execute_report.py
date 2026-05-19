@@ -23,6 +23,7 @@ def execute_report(report_spec: models.ReportSpec):
             trx,
             subset_query=report_spec.subset_query,
             data_source_name=report_spec.data_source_name,
+            days_value=report_spec.days_value,
         )
 
     check_valid_result(result, report_spec)
