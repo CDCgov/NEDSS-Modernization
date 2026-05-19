@@ -3,6 +3,7 @@ package gov.cdc.nbs.report.mappers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.DataSourceCodeset;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportColumn;
 import java.time.LocalDateTime;
@@ -26,6 +27,8 @@ class ReportColumnMapperTest {
             .filterable('N')
             .statusCd('A')
             .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
+            .codeset(
+                DataSourceCodeset.builder().id(2L).codeDescCd("D").codesetNm("RACE_CODE").build())
             .build();
 
     ReportColumn mapped = ReportColumnMapper.fromDataSourceColumn(dbColumn);
@@ -36,9 +39,43 @@ class ReportColumnMapperTest {
     assertThat(mapped.title()).isEqualTo(dbColumn.getColumnTitle());
     assertThat(mapped.sourceTypeCode()).isEqualTo(dbColumn.getColumnSourceTypeCode());
     assertThat(mapped.descTxt()).isEqualTo(dbColumn.getDescTxt());
-    assertThat(mapped.displayable()).isEqualTo(dbColumn.getDisplayable());
-    assertThat(mapped.filterable()).isEqualTo(dbColumn.getFilterable());
+    assertThat(mapped.isDisplayable()).isEqualTo(true);
+    assertThat(mapped.isFilterable()).isEqualTo(false);
     assertThat(mapped.statusCd()).isEqualTo(dbColumn.getStatusCd());
     assertThat(mapped.statusTime()).isEqualTo(dbColumn.getStatusTime());
+    assertThat(mapped.codesetNm()).isEqualTo(dbColumn.getCodeset().getCodesetNm());
+    assertThat(mapped.codeDescCd()).isEqualTo(dbColumn.getCodeset().getCodeDescCd());
+  }
+
+  @Test
+  void fromDataSourceColumn_should_default_when_missing_expected_fields() {
+    DataSource dataSource = DataSource.builder().id(100L).statusCd('A').build();
+    DataSourceColumn dbColumn =
+        DataSourceColumn.builder()
+            .id(1L)
+            .columnMaxLength(255)
+            .columnName("column_name")
+            .columnTitle("Column Title")
+            .columnSourceTypeCode("VARCHAR")
+            .dataSource(dataSource)
+            .descTxt("Some description")
+            .statusCd('A')
+            .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
+            .build();
+
+    ReportColumn mapped = ReportColumnMapper.fromDataSourceColumn(dbColumn);
+
+    assertThat(mapped.id()).isEqualTo(dbColumn.getId());
+    assertThat(mapped.maxLength()).isEqualTo(dbColumn.getColumnMaxLength());
+    assertThat(mapped.name()).isEqualTo(dbColumn.getColumnName());
+    assertThat(mapped.title()).isEqualTo(dbColumn.getColumnTitle());
+    assertThat(mapped.sourceTypeCode()).isEqualTo(dbColumn.getColumnSourceTypeCode());
+    assertThat(mapped.descTxt()).isEqualTo(dbColumn.getDescTxt());
+    assertThat(mapped.isDisplayable()).isEqualTo(false);
+    assertThat(mapped.isFilterable()).isEqualTo(false);
+    assertThat(mapped.statusCd()).isEqualTo(dbColumn.getStatusCd());
+    assertThat(mapped.statusTime()).isEqualTo(dbColumn.getStatusTime());
+    assertThat(mapped.codesetNm()).isNull();
+    assertThat(mapped.codeDescCd()).isNull();
   }
 }

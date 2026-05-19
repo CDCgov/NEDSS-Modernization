@@ -12,3 +12,4 @@ export { useMultiSelection } from './useMultiSelection';
 export { pregnancyStatusOptions } from './pregnancyStatusOptions';
 
 export { cachedSelectableResolver } from './cache/cachedSelectableResolver';
+export { selectableResolver } from './selectableResolver';
