@@ -52,11 +52,13 @@ tables:
       
       - column_name: AGE_REPORTED
         type: int
-        data: fake.random_int(0, 100) if random.random() < .85 else None
+        data: fake.random_int(0, 100)
+        null_percentage: 0.15
 
       - column_name: PATIENT_DOB
         type: string
-        data: None if AGE_REPORTED is None else (datetime(2024, 6, 24) - timedelta(days=AGE_REPORTED * 365)).strftime('%Y-%m-%d')
+        data: (datetime(2024, 6, 24) - timedelta(days=AGE_REPORTED * 365)).strftime('%Y-%m-%d')
+        null_percentage: 0.15
       
       - column_name: AGE_REPORTED_UNIT
         type: string
