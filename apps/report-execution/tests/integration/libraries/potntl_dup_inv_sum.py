@@ -21,10 +21,6 @@ class TestIntegrationNbsSrDupInvLibrary:
     with the same disease within a user-specified number of days.
     """
 
-    @pytest.fixture(autouse=True)
-    def set_time(self, time_machine):
-        time_machine.move_to(datetime(2024, 6, 24))
-
     expected_columns = [
         'Patient Local ID',
         'Patient First Name',
