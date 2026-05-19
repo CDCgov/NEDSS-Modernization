@@ -118,7 +118,8 @@ public class WhereClauseService {
   private String buildBasicFilterCriteria(
       BasicFilterRequest basicFilterRequest, ReportColumn column) {
 
-    boolean includeNulls = basicFilterRequest.includeNulls() != null && basicFilterRequest.includeNulls();
+    boolean includeNulls =
+        basicFilterRequest.includeNulls() != null && basicFilterRequest.includeNulls();
 
     List<String> values = basicFilterRequest.values();
     if (values.isEmpty() && !includeNulls) return "";
