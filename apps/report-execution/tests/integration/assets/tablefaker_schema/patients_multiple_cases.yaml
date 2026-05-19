@@ -59,7 +59,7 @@ tables:
     export_file_name: '3_user_profile'
     row_count: 200
     columns:
-      # required columns:
+      # required columns
       - column_name: NEDSS_ENTRY_ID
         data: row_id
         is_primary_key: true
@@ -75,7 +75,7 @@ tables:
     export_file_name: '4_event_metric'
     row_count: 1000
     columns:
-      # required columns:
+      # required columns
       - column_name: EVENT_TYPE
         data: random.choice(["PHCInvForm", "LabReport", "MorbReport", "CONTACT", "Vaccination"])
         is_primary_key: true
@@ -86,3 +86,20 @@ tables:
       # used in library:
       - column_name: ADD_USER_ID
         data: foreign_key("[RDB].[dbo].[USER_PROFILE]", "NEDSS_ENTRY_ID")
+  - table_name: "[RDB].[dbo].[INVESTIGATION]"
+    export_file_name: "5_investigation"
+    row_count: 100
+    columns:
+      # required columns
+      - column_name: INVESTIGATION_KEY
+        data: row_id
+        is_primary_key: true
+      - column_name: RECORD_STATUS_CD
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+
+      # used by library
+      - column_name: INV_CASE_STATUS
+        data: random.choice(['Probable', 'Confirmed'])
+      - column_name: REFERRAL_BASIS
+        data: r"T1 - Positive Test"
+
