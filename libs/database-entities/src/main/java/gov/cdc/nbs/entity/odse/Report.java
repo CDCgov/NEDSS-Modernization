@@ -20,7 +20,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "Report", catalog = "NBS_ODSE")
 public class Report {
-  @NonNull @EmbeddedId private ReportId id;
+  @EmbeddedId private ReportId id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(

@@ -1,24 +1,16 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.entity.odse.DataSourceColumn;
-import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
-import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
-import gov.cdc.nbs.report.models.BasicFilterConfiguration;
-import gov.cdc.nbs.report.models.Library;
-import gov.cdc.nbs.report.models.ReportColumn;
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportDataSource;
-import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportResult;
-import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
+import gov.cdc.nbs.repository.DataSourceRepository;
+import gov.cdc.nbs.repository.ReportFilterRepository;
+import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
@@ -33,16 +25,67 @@ import org.springframework.web.client.RestClient;
 public class ReportService {
 
   private final ReportRepository reportRepository;
+  private final DataSourceRepository dataSourceRepository;
+  private final ReportLibraryRepository reportLibraryRepository;
+  private final ReportFilterRepository reportFilterRepository;
+
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils;
 
   public ReportService(
       final ReportRepository reportRepository,
+      final DataSourceRepository dataSourceRepository,
+      final ReportLibraryRepository reportLibraryRepository,
+      final ReportFilterRepository reportFilterRepository,
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig) {
     this.reportRepository = reportRepository;
+    this.dataSourceRepository = dataSourceRepository;
+    this.reportLibraryRepository = reportLibraryRepository;
+    this.reportFilterRepository = reportFilterRepository;
+
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
+  }
+
+  @Transactional
+  public Report createReport(CreateReportRequest request) {
+    DataSource dataSource =
+        dataSourceRepository
+            .findById(request.dataSourceId())
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "No data source found for ID " + request.dataSourceId()));
+
+    ReportLibrary reportLibrary =
+        reportLibraryRepository
+            .findById(request.libraryId())
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "No report library found for ID " + request.libraryId()));
+
+    List<ReportFilter> reportFilters = null;
+    if (!request.filterIds().isEmpty()) {
+      reportFilters = reportFilterRepository.findAllById(request.filterIds());
+
+      if (reportFilters.size() != request.filterIds().size()) {
+        throw new IllegalArgumentException(
+            "One or more filter IDs are invalid in filterId list " + request.filterIds());
+      }
+    }
+
+    Report newReport =
+        Report.builder()
+            .dataSource(dataSource)
+            .reportLibrary(reportLibrary)
+            .reportTitle(request.reportTitle())
+            .reportFilters(reportFilters)
+            .sectionCd(request.sectionCode())
+            .build();
+
+    return reportRepository.save(newReport);
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {

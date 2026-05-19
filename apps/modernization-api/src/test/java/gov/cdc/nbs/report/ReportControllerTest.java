@@ -31,8 +31,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.SimpleErrors;
-import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 class ReportControllerTest {
@@ -151,34 +149,9 @@ class ReportControllerTest {
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
 
-    SimpleErrors errors = new SimpleErrors(controller);
-    ResponseEntity<ReportResult> response = controller.exportReport(request, errors);
+    ResponseEntity<ReportResult> response = controller.exportReport(request);
     assertEquals(getReportExecutionResponse(), response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
-  }
-
-  @Test
-  void exportReport_returns_422_when_validation_errors_encountered() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-    String errorMsg = "Invalid export report request test";
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
-            null);
-
-    SimpleErrors errors = new SimpleErrors(controller);
-    errors.reject("TEST", errorMsg);
-
-    assertThatThrownBy(() -> controller.exportReport(request, errors))
-        .isInstanceOf(ResponseStatusException.class)
-        .hasFieldOrPropertyWithValue("status", HttpStatus.UNPROCESSABLE_ENTITY)
-        .hasMessageContaining(errorMsg);
   }
 
   @Test
@@ -198,8 +171,7 @@ class ReportControllerTest {
 
     when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
-    SimpleErrors errors = new SimpleErrors(controller);
-    assertThatThrownBy(() -> controller.exportReport(request, errors))
+    assertThatThrownBy(() -> controller.exportReport(request))
         .isInstanceOf(NotFoundException.class)
         .hasMessageContaining(errorMsg);
   }
@@ -221,8 +193,7 @@ class ReportControllerTest {
 
     when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
 
-    SimpleErrors errors = new SimpleErrors(controller);
-    assertThatThrownBy(() -> controller.exportReport(request, errors))
+    assertThatThrownBy(() -> controller.exportReport(request))
         .isInstanceOf(NotImplementedException.class)
         .hasMessageContaining(errorMsg);
   }
@@ -241,8 +212,7 @@ class ReportControllerTest {
             List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
             null);
 
-    SimpleErrors errors = new SimpleErrors(controller);
-    assertThatThrownBy(() -> controller.exportReport(request, errors))
+    assertThatThrownBy(() -> controller.exportReport(request))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("isExport must be true when exporting a report");
   }
@@ -264,8 +234,7 @@ class ReportControllerTest {
 
     when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
 
-    SimpleErrors errors = new SimpleErrors(controller);
-    assertThatThrownBy(() -> controller.exportReport(request, errors))
+    assertThatThrownBy(() -> controller.exportReport(request))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining(errorMsg);
   }
@@ -288,34 +257,9 @@ class ReportControllerTest {
     when(service.executeReport(request))
         .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
 
-    SimpleErrors errors = new SimpleErrors(controller);
-    ResponseEntity<ReportResult> response = controller.runReport(request, errors);
+    ResponseEntity<ReportResult> response = controller.runReport(request);
     assertEquals(getReportExecutionResponse(), response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
-  }
-
-  @Test
-  void runReport_returns_422_when_validation_errors_encountered() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-    String errorMsg = "Invalid run report request test";
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
-            null);
-
-    SimpleErrors errors = new SimpleErrors(controller);
-    errors.reject("TEST", errorMsg);
-
-    assertThatThrownBy(() -> controller.runReport(request, errors))
-        .isInstanceOf(ResponseStatusException.class)
-        .hasFieldOrPropertyWithValue("status", HttpStatus.UNPROCESSABLE_ENTITY)
-        .hasMessageContaining(errorMsg);
   }
 
   @Test
@@ -332,8 +276,7 @@ class ReportControllerTest {
             List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
             null);
 
-    SimpleErrors errors = new SimpleErrors(controller);
-    assertThatThrownBy(() -> controller.runReport(request, errors))
+    assertThatThrownBy(() -> controller.runReport(request))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("isExport must be false when running a report");
   }
