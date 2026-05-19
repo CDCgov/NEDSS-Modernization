@@ -3,11 +3,11 @@ import { Button } from 'design-system/button';
 import { permissions, Permitted } from 'libs/permission';
 import { ReportRunLayout } from './layout/ReportRunLayout';
 import { ReportConfiguration } from 'generated';
-import { BasicFilter } from './filters/BasicFilter';
+import { BasicFilter } from './filters/basic/BasicFilter';
 import { Card } from 'design-system/card';
-import { STATE_FILTER_CODE } from './filters/OptionSelectFilter';
-import { CurrentStateProvider } from './filters/useCurrentState';
-import { AdvancedFilter } from './filters/AdvancedFilter';
+import { STATE_FILTER_CODE } from './filters/basic/OptionSelectFilter';
+import { CurrentStateProvider } from './filters/basic/useCurrentState';
+import { AdvancedFilter } from './filters/advanced/AdvancedFilter';
 
 const ReportConfigurationPage = ({
     config,
