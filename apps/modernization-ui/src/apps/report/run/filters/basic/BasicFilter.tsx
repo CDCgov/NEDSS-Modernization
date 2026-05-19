@@ -10,6 +10,7 @@ import { Validator } from 'validation';
 import { getValueList, OptionSelectFilter, optionSelectValidator } from './OptionSelectFilter';
 import { getYearRange, YearRangeFilter } from './YearRangeFilter';
 import { getMonthYearRange, MonthYearRangeFilter, monthYearRangeValidator } from './MonthYearRangeFilter';
+import {getNumericValue, NumericFilter, numericValidator} from "./NumericFilter.tsx";
 
 export type BasicFilterProps = {
     filter: BasicFilterConfiguration;
@@ -64,6 +65,11 @@ const FILTER_TYPE_MAP: Record<
         getDefaultValue: getValueList,
         validationRule: optionSelectValidator,
     },
+    BAS_DAYS: {
+        FilterComponent: NumericFilter,
+        getDefaultValue: getNumericValue,
+        validationRule: numericValidator,
+    }
 };
 
 const TEMP_DEFAULT_FILTER = {
