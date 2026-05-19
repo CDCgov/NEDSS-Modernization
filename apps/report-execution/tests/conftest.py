@@ -243,8 +243,10 @@ def insert_fake_data(
     with db_transaction(conn_string) as trx:
         # Tables with foreign keys pointing to the table we want to replace need to
         # be backed up and cleared out to avoid FK constraint violations
+
         for fk_table in fk_tables:
             temp_fk_table = temp_name(fk_table)
+
             trx.execute(
                 f"IF OBJECT_ID('{temp_fk_table}') IS NOT NULL "
                 f'DROP TABLE {temp_fk_table}'
