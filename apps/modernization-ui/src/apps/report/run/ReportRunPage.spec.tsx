@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -2257,6 +2257,592 @@ describe('report run page', () => {
                     },
                     basicFilters: [],
                 }),
+            });
+        });
+    });
+
+    describe('advanced filter', () => {
+        const MOCK_FILTER: generated.AdvancedFilterConfiguration = {
+            reportFilterUid: 1001,
+            defaultValue: undefined,
+        };
+
+        it('renders the empty filter builder when no default value', async () => {
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, findByText, queryByText, findByRole } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Advanced Filter')).toBeVisible();
+            expect(queryByText('Basic Filters')).toBeNull();
+
+            const fieldSelect = await findByRole('combobox', { name: 'Field' });
+            expect(fieldSelect).toHaveValue('~');
+            const user = userEvent.setup();
+            await user.selectOptions(fieldSelect, 'Full Name');
+            const opSelect = await findByRole('combobox', { name: 'Operator' });
+            expect(opSelect).toHaveValue('~');
+            await user.selectOptions(opSelect, 'contains');
+            const valueBox = await findByRole('textbox', { name: 'Value' });
+            expect(valueBox).toHaveValue('');
+            await user.type(valueBox, 'hi');
+
+            // currently not working, but should once we put in our own components
+            // expect(await axe(container)).toHaveNoViolations();
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: {
+                        reportFilterUid: 1001,
+                        value: {
+                            id: expect.stringMatching(/[0-9-]+/),
+                            combinator: 'and',
+                            rules: [
+                                {
+                                    id: expect.stringMatching(/[0-9-]+/),
+                                    columnId: 2001,
+                                    operator: 'CO',
+                                    value: 'hi',
+                                },
+                            ],
+                        },
+                    },
+                    basicFilters: [],
+                }),
+            });
+        });
+
+        it('allows submit when empty', async () => {
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, findByText, findByRole } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Advanced Filter')).toBeVisible();
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            const user = userEvent.setup();
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: undefined,
+                    basicFilters: [],
+                }),
+            });
+        });
+
+        it('validates rule states', async () => {
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, queryByText, findByText, findByRole, findAllByRole, findByTestId } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Advanced Filter')).toBeVisible();
+
+            const fieldSelect = await findByRole('combobox', { name: 'Field' });
+            expect(fieldSelect).toHaveValue('~');
+            const user = userEvent.setup();
+            await user.selectOptions(fieldSelect, 'Full Name');
+
+            // trigger validation
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(await findByText('Must select an operator and value')).toBeVisible();
+
+            // generally filled in
+            const opSelect = await findByRole('combobox', { name: 'Operator' });
+            expect(opSelect).toHaveValue('~');
+            await user.selectOptions(opSelect, 'contains');
+
+            expect(await findByText('Value cannot be empty')).toBeVisible();
+
+            const valueBox = await findByRole('textbox', { name: 'Value' });
+            expect(valueBox).toHaveValue('');
+            await user.type(valueBox, 'hi');
+
+            expect(queryByText('Value cannot be empty')).toBeNull();
+
+            // dates between
+            await user.selectOptions(fieldSelect, 'DATE_OF_BIRTH');
+            expect(opSelect).toHaveValue('~');
+            await user.selectOptions(opSelect, 'between');
+
+            expect(await findByText('Both low and high values required')).toBeVisible();
+
+            // The date entry will likely need to change once we switch to NBS components
+            const dtInputs = (await findByTestId('value-editor')).children;
+            await user.type(dtInputs[0], '2022-10-18');
+
+            expect(await findByText('Both low and high values required')).toBeVisible();
+
+            await user.type(dtInputs[1], '2022-10-17');
+
+            expect(await findByText('High value must be greater than or equal to low value')).toBeVisible();
+
+            await user.type(dtInputs[1], '{backspace}9');
+
+            expect(queryByText('High value must be greater than or equal to low value')).toBeNull();
+
+            // numbers between
+            await user.selectOptions(fieldSelect, 'DAYS_OLD');
+            expect(opSelect).toHaveValue('~');
+            await user.selectOptions(opSelect, 'between');
+
+            expect(await findByText('Both low and high values required')).toBeVisible();
+
+            const numInputs = await findAllByRole('spinbutton');
+            await user.type(numInputs[0], '10');
+
+            expect(await findByText('Both low and high values required')).toBeVisible();
+
+            await user.type(numInputs[1], '2');
+
+            expect(await findByText('High value must be greater than or equal to low value')).toBeVisible();
+
+            await user.type(numInputs[1], '0');
+
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: {
+                        reportFilterUid: 1001,
+                        value: {
+                            id: expect.stringMatching(/[0-9-]+/),
+                            combinator: 'and',
+                            rules: [
+                                {
+                                    id: expect.stringMatching(/[0-9-]+/),
+                                    columnId: 2003,
+                                    operator: 'BW',
+                                    value: '10,20',
+                                },
+                            ],
+                        },
+                    },
+                    basicFilters: [],
+                }),
+            });
+        });
+
+        it('starts from default value', async () => {
+            const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                ...MOCK_CONFIG,
+                advancedFilter: {
+                    ...MOCK_FILTER,
+                    defaultValue: {
+                        id: '123-123-123',
+                        combinator: generated.RuleGroup.combinator.OR,
+                        rules: [
+                            {
+                                id: '124-124-124',
+                                columnId: 2001,
+                                operator: 'SW',
+                                value: 'prefix',
+                            },
+                            {
+                                id: '125-125-125',
+                                combinator: generated.RuleGroup.combinator.AND,
+                                rules: [
+                                    {
+                                        id: '126-126-126',
+                                        columnId: 2002,
+                                        operator: 'GT',
+                                        value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
+                                    },
+                                    {
+                                        id: '127-127-127',
+                                        columnId: 2003,
+                                        operator: 'BW',
+                                        value: '10,20',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                },
+            });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, findByText, findByRole, findAllByRole, findAllByTitle } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Advanced Filter')).toBeVisible();
+
+            const combinators = await findAllByRole('combobox', { name: 'Combinator' });
+            expect(combinators).toHaveLength(2);
+            expect(combinators[0]).toHaveValue('or');
+            expect(combinators[1]).toHaveValue('and');
+
+            const fields = await findAllByRole('combobox', { name: 'Field' });
+            expect(fields).toHaveLength(3);
+            expect(fields[0]).toHaveValue('FULL_NAME');
+            expect(fields[1]).toHaveValue('DATE_OF_BIRTH');
+            expect(fields[2]).toHaveValue('DAYS_OLD');
+
+            const operators = await findAllByRole('combobox', { name: 'Operator' });
+            expect(operators).toHaveLength(3);
+            expect(operators[0]).toHaveValue('beginswith');
+            expect(operators[1]).toHaveValue('>');
+            expect(operators[2]).toHaveValue('between');
+
+            const values = await findAllByTitle('Value');
+            expect(values).toHaveLength(3);
+            expect(values[0]).toHaveValue('prefix');
+            expect(values[1]).toHaveValue('2020-01-01');
+            const [low, high] = values[2].children;
+            expect(low).toHaveValue(10);
+            expect(high).toHaveValue(20);
+
+            const user = userEvent.setup();
+            await user.type(high, '1');
+            expect(high).toHaveValue(201);
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: {
+                        reportFilterUid: 1001,
+                        value: {
+                            id: '123-123-123',
+                            combinator: generated.RuleGroup.combinator.OR,
+                            rules: [
+                                {
+                                    id: '124-124-124',
+                                    columnId: 2001,
+                                    operator: 'SW',
+                                    value: 'prefix',
+                                },
+                                {
+                                    id: '125-125-125',
+                                    combinator: generated.RuleGroup.combinator.AND,
+                                    rules: [
+                                        {
+                                            id: '126-126-126',
+                                            columnId: 2002,
+                                            operator: 'GT',
+                                            // format should be mm/dd/yyyy when we switch components
+                                            value: '2020-01-01',
+                                        },
+                                        {
+                                            id: '127-127-127',
+                                            columnId: 2003,
+                                            operator: 'BW',
+                                            value: '10,201',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                    basicFilters: [],
+                }),
+            });
+        });
+
+        describe('keyboard drag and drop', () => {
+            it('happy path', async () => {
+                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                    ...MOCK_CONFIG,
+                    advancedFilter: {
+                        ...MOCK_FILTER,
+                        defaultValue: {
+                            id: '123-123-123',
+                            combinator: generated.RuleGroup.combinator.OR,
+                            rules: [
+                                {
+                                    id: '124-124-124',
+                                    columnId: 2001,
+                                    operator: 'SW',
+                                    value: 'prefix',
+                                },
+                                {
+                                    id: '125-125-125',
+                                    combinator: generated.RuleGroup.combinator.AND,
+                                    rules: [
+                                        {
+                                            id: '127-127-127',
+                                            columnId: 2003,
+                                            operator: 'BW',
+                                            value: '10,20',
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: '128-128-128',
+                                    combinator: generated.RuleGroup.combinator.OR,
+                                    rules: [
+                                        {
+                                            id: '129-129-129',
+                                            columnId: 2002,
+                                            operator: 'GT',
+                                            value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
+                                        },
+                                        {
+                                            id: '130-130-130',
+                                            columnId: 2003,
+                                            operator: 'BW',
+                                            value: '10,20',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+                const { getByRole, findByText, findByRole, findByTestId, findAllByTestId } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByText('Advanced Filter')).toBeVisible();
+
+                const user = userEvent.setup();
+                const ruleGroupHandle = async () => await findByTestId('drag-handle-128-128-128');
+                const announcementEl = await findByTestId('announcement');
+
+                let ruleGroups = await findAllByTestId('rule-group');
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+                expect(announcementEl).toHaveTextContent('');
+
+                // activate handle and move up into above group
+                await user.type(await ruleGroupHandle(), ' ');
+                await waitFor(() => expect(announcementEl).toHaveTextContent('You have lifted a group at path 3'));
+                await user.keyboard('{ArrowUp}');
+                await waitFor(() =>
+                    expect(announcementEl).toHaveTextContent('You have moved the group up to path 2-2')
+                );
+
+                ruleGroups = await findAllByTestId('rule-group');
+                expect(await ruleGroupHandle()).toHaveFocus();
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+                // move back down and make sure restores
+                await user.keyboard('{ArrowDown}');
+                await waitFor(() =>
+                    expect(announcementEl).toHaveTextContent('You have moved the group down to path 3')
+                );
+
+                ruleGroups = await findAllByTestId('rule-group');
+                expect(await ruleGroupHandle()).toHaveFocus();
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+                // move back up and above rule and deactivate
+                await user.keyboard('{ArrowUp}{ArrowUp} ');
+                await waitFor(() => expect(announcementEl).toHaveTextContent('You have dropped the group at path 2-1'));
+
+                ruleGroups = await findAllByTestId('rule-group');
+                expect(await ruleGroupHandle()).toHaveFocus();
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+                // nothing should change, since not active
+                await user.keyboard('{ArrowUp}');
+                expect(announcementEl).toHaveTextContent('You have dropped the group at path 2-1');
+
+                ruleGroups = await findAllByTestId('rule-group');
+                expect(await ruleGroupHandle()).toHaveFocus();
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+                // check escape handling works, should not change from previous
+                await user.keyboard(' {ArrowUp}{Escape}{ArrowDown}');
+                await waitFor(() =>
+                    expect(announcementEl).toHaveTextContent('The group has returned to its starting position')
+                );
+
+                ruleGroups = await findAllByTestId('rule-group');
+                await waitFor(async () => expect(await ruleGroupHandle()).toHaveFocus());
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: {
+                            reportFilterUid: 1001,
+                            value: {
+                                id: '123-123-123',
+                                combinator: generated.RuleGroup.combinator.OR,
+                                rules: [
+                                    {
+                                        id: '124-124-124',
+                                        columnId: 2001,
+                                        operator: 'SW',
+                                        value: 'prefix',
+                                    },
+                                    {
+                                        id: '125-125-125',
+                                        combinator: generated.RuleGroup.combinator.AND,
+                                        rules: [
+                                            {
+                                                id: '128-128-128',
+                                                combinator: generated.RuleGroup.combinator.OR,
+                                                rules: [
+                                                    {
+                                                        id: '129-129-129',
+                                                        columnId: 2002,
+                                                        operator: 'GT',
+                                                        // format should be mm/dd/yyyy when we switch components
+                                                        value: '2020-01-01',
+                                                    },
+                                                    {
+                                                        id: '130-130-130',
+                                                        columnId: 2003,
+                                                        operator: 'BW',
+                                                        value: '10,20',
+                                                    },
+                                                ],
+                                            },
+                                            {
+                                                id: '127-127-127',
+                                                columnId: 2003,
+                                                operator: 'BW',
+                                                value: '10,20',
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        },
+                        basicFilters: [],
+                    }),
+                });
+            });
+
+            it('cancels on mouse interaction', async () => {
+                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                    ...MOCK_CONFIG,
+                    advancedFilter: {
+                        ...MOCK_FILTER,
+                        defaultValue: {
+                            id: '123-123-123',
+                            combinator: generated.RuleGroup.combinator.OR,
+                            rules: [
+                                {
+                                    id: '124-124-124',
+                                    columnId: 2001,
+                                    operator: 'SW',
+                                    value: 'prefix',
+                                },
+                                {
+                                    id: '125-125-125',
+                                    combinator: generated.RuleGroup.combinator.AND,
+                                    rules: [
+                                        {
+                                            id: '127-127-127',
+                                            columnId: 2003,
+                                            operator: 'BW',
+                                            value: '10,20',
+                                        },
+                                    ],
+                                },
+                                {
+                                    id: '128-128-128',
+                                    combinator: generated.RuleGroup.combinator.OR,
+                                    rules: [
+                                        {
+                                            id: '129-129-129',
+                                            columnId: 2002,
+                                            operator: 'GT',
+                                            value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
+                                        },
+                                        {
+                                            id: '130-130-130',
+                                            columnId: 2003,
+                                            operator: 'BW',
+                                            value: '10,20',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                });
+                const { getByRole, findByText, findAllByRole, findByTestId, findAllByTestId } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByText('Advanced Filter')).toBeVisible();
+
+                const user = userEvent.setup();
+                const ruleGroupHandle = async () => await findByTestId('drag-handle-128-128-128');
+                const announcementEl = await findByTestId('announcement');
+
+                let ruleGroups = await findAllByTestId('rule-group');
+                expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
+                expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
+                expect(announcementEl).toHaveTextContent('');
+
+                // activate handle and move up into above group
+                await user.type(await ruleGroupHandle(), ' ');
+                await waitFor(() => expect(announcementEl).toHaveTextContent('You have lifted a group at path 3'));
+                await user.keyboard('{ArrowUp}');
+                await waitFor(() =>
+                    expect(announcementEl).toHaveTextContent('You have moved the group up to path 2-2')
+                );
+
+                const addRuleBtn = (await findAllByRole('button', { name: '+ Rule' }))[0];
+                await user.click(addRuleBtn);
+                await waitFor(() =>
+                    expect(announcementEl).toHaveTextContent('The group has returned to its starting position')
+                );
+                expect(addRuleBtn).toHaveFocus();
             });
         });
     });
