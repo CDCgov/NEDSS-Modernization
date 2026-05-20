@@ -47,6 +47,9 @@ project(':options-api').projectDir = mkdir('libs/options-api')
 include ':database-entities'
 project(':database-entities').projectDir = mkdir('libs/database-entities')
 
+include ':datasource-utils'
+project(':datasource-utils').projectDir = mkdir('libs/datasource-utils')
+
 include ':event-schema'
 project(':event-schema').projectDir = mkdir('libs/event-schema')
 

@@ -1,10 +1,9 @@
-package gov.cdc.nbs.report.utils;
+package gov.cdc.nbs.datasource.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-import gov.cdc.nbs.report.DataSourceNameConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
