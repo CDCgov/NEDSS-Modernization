@@ -9,7 +9,6 @@ import gov.cdc.nbs.report.mappers.ReportColumnMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import gov.cdc.nbs.repository.*;
-
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
@@ -81,20 +80,23 @@ public class ReportService {
     Report savedReport = reportRepository.save(newReport);
 
     if (!request.reportFilters().isEmpty()) {
-      List<ReportFilter> reportFilters = request.reportFilters().stream()
+      List<ReportFilter> reportFilters =
+          request.reportFilters().stream()
               .map(
-                      filterRequest ->
-                              ReportFilter.builder()
-                                      .report(savedReport)
-                                      .filterCode(filterCodeRepository.getReferenceById(filterRequest.filterCodeUid()))
-                                      .dataSourceColumn(
-                                              filterRequest.columnUid() != null
-                                                      ? dataSourceColumnRepository.getReferenceById(filterRequest.columnUid())
-                                                      : null)
-                                      .build())
+                  filterRequest ->
+                      ReportFilter.builder()
+                          .report(savedReport)
+                          .filterCode(
+                              filterCodeRepository.getReferenceById(filterRequest.filterCodeUid()))
+                          .dataSourceColumn(
+                              filterRequest.columnUid() != null
+                                  ? dataSourceColumnRepository.getReferenceById(
+                                      filterRequest.columnUid())
+                                  : null)
+                          .build())
               .toList();
 
-        reportFilterRepository.saveAll(reportFilters);
+      reportFilterRepository.saveAll(reportFilters);
     }
 
     return savedReport;
