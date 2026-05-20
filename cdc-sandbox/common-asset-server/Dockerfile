@@ -1,4 +1,4 @@
-FROM nginx:1.29.4-alpine
+FROM nginx:1.31.0-alpine
 
 RUN mkdir /usr/share/nginx/css; \
     mkdir /usr/share/nginx/images; \

@@ -22,10 +22,10 @@ const YearRangeFilter: BasicFilterComponent = ({ filter, value, onChange, ...rem
 
 const getYearRange = (filter: BasicFilterConfiguration) => {
     const thisYear = getThisYear();
-    if (!filter.defaultValue || filter.defaultValue.length !== 2) return [`${thisYear - YEARS_BACK}`, `${thisYear}`];
+    if (!filter.defaultValues || filter.defaultValues.length !== 2) return [`${thisYear - YEARS_BACK}`, `${thisYear}`];
 
     // bas time range filters have two items
-    return [filter.defaultValue[0], filter.defaultValue[1]];
+    return [filter.defaultValues[0], filter.defaultValues[1]];
 };
 
 export { YearRangeFilter, getYearRange };
