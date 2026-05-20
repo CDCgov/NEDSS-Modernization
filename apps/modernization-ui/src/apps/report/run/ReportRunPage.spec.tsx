@@ -298,7 +298,7 @@ describe('report run page', () => {
                         requestBody: expect.objectContaining({
                             isExport: true,
                             advancedFilter: undefined,
-                            basicFilters: [{ reportFilterUid: 1001, values: [], includeNulls: true }],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['13'], includeNulls: true }],
                         }),
                     });
                 });
@@ -333,7 +333,7 @@ describe('report run page', () => {
                         requestBody: expect.objectContaining({
                             isExport: true,
                             advancedFilter: undefined,
-                            basicFilters: [{ reportFilterUid: 1001, values: [], includeNulls: false }],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['13'], includeNulls: false }],
                         }),
                     });
                 });
