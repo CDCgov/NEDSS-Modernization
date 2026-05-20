@@ -5,19 +5,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import gov.cdc.nbs.entity.odse.DataSource;
-import gov.cdc.nbs.entity.odse.FilterCode;
-import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportFilter;
-import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.*;
-import gov.cdc.nbs.repository.DataSourceRepository;
-import gov.cdc.nbs.repository.ReportFilterRepository;
-import gov.cdc.nbs.repository.ReportLibraryRepository;
-import gov.cdc.nbs.repository.ReportRepository;
+import gov.cdc.nbs.repository.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang3.NotImplementedException;
@@ -45,6 +38,8 @@ class ReportServiceTest {
   @Mock private DataSourceRepository dataSourceRepository;
   @Mock private ReportLibraryRepository reportLibraryRepository;
   @Mock private ReportFilterRepository reportFilterRepository;
+  @Mock private FilterCodeRepository filterCodeRepository;
+  @Mock private DataSourceColumnRepository dataSourceColumnRepository;
 
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportLibrary reportLibrary;
@@ -76,8 +71,38 @@ class ReportServiceTest {
   }
 
   @Nested
-  class CreateReportTest {
-    private CreateReportRequest buildCreateReportRequest(List<CreateFilterRequest> filters) {
+  class CreateReport {
+    private final Long filterCodeUid = 7L;
+    private final Long columnUid = 8L;
+
+    @BeforeEach
+    void setup() {
+      DataSource mockDataSource = mock(DataSource.class);
+      ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
+
+      FilterCode mockFilterCode = mock(FilterCode.class);
+      Mockito.lenient().when(mockFilterCode.getId()).thenReturn(filterCodeUid);
+
+      DataSourceColumn mockColumn = mock(DataSourceColumn.class);
+      Mockito.lenient().when(mockColumn.getId()).thenReturn(columnUid);
+
+      Mockito.lenient()
+          .when(dataSourceRepository.findById(dataSourceUid))
+          .thenReturn(Optional.of(mockDataSource));
+      Mockito.lenient()
+          .when(reportLibraryRepository.findById(libraryId))
+          .thenReturn(Optional.of(mockReportLibrary));
+      Mockito.lenient()
+          .when(filterCodeRepository.findAllById(any()))
+          .thenReturn(List.of(mockFilterCode));
+      Mockito.lenient()
+          .when(dataSourceColumnRepository.findAllById(any()))
+          .thenReturn(List.of(mockColumn));
+    }
+
+    private CreateReportRequest buildCreateReportRequest(Boolean includeFilters) {
+      List<CreateFilterRequest> filters =
+          includeFilters ? List.of(new CreateFilterRequest(filterCodeUid, columnUid, null)) : null;
       return new CreateReportRequest(
           dataSourceUid,
           libraryId,
@@ -88,30 +113,15 @@ class ReportServiceTest {
           filters);
     }
 
-    @BeforeEach
-    void setup() {
-      DataSource mockDataSource = mock(DataSource.class);
-      ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
-
-      Mockito.lenient()
-          .when(dataSourceRepository.findById(dataSourceUid))
-          .thenReturn(Optional.of(mockDataSource));
-      Mockito.lenient()
-          .when(reportLibraryRepository.findById(libraryId))
-          .thenReturn(Optional.of(mockReportLibrary));
-    }
-
     @Test
     void createReport_should_create_and_return_report_when_all_inputs_are_valid() {
       Report savedReport = mock(Report.class);
       when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
-      CreateReportRequest request = buildCreateReportRequest(null);
+      CreateReportRequest request = buildCreateReportRequest(true);
 
-      // Act
       Report result = service.createReport(request);
 
-      // Assert
       assertThat(result).isEqualTo(savedReport);
       verify(dataSourceRepository).findById(dataSourceUid);
       verify(reportLibraryRepository).findById(libraryId);
@@ -123,12 +133,10 @@ class ReportServiceTest {
       Report savedReport = mock(Report.class);
       when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
-      CreateReportRequest request = buildCreateReportRequest(null);
+      CreateReportRequest request = buildCreateReportRequest(false);
 
-      // Act
       Report result = service.createReport(request);
 
-      // Assert
       assertThat(result).isEqualTo(savedReport);
       verify(dataSourceRepository).findById(dataSourceUid);
       verify(reportLibraryRepository).findById(libraryId);
@@ -141,59 +149,77 @@ class ReportServiceTest {
     void createReport_should_throw_when_data_source_not_found() {
       when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.empty());
 
-      CreateReportRequest request = buildCreateReportRequest(null);
+      CreateReportRequest request = buildCreateReportRequest(true);
 
-      // Act & Assert
       assertThatThrownBy(() -> service.createReport(request))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No data source found for ID " + dataSourceUid);
 
       verify(dataSourceRepository).findById(dataSourceUid);
       verify(reportLibraryRepository, never()).findById(any());
-      verify(reportFilterRepository, never()).findAllById(any());
 
-      // Assert that the report was not saved
       verify(reportRepository, never()).save(any());
+      verify(reportFilterRepository, never()).findAllById(any());
     }
 
     @Test
     void createReport_should_throw_when_report_library_not_found() {
       when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.empty());
 
-      CreateReportRequest request = buildCreateReportRequest(null);
+      CreateReportRequest request = buildCreateReportRequest(true);
 
-      // Act & Assert
       assertThatThrownBy(() -> service.createReport(request))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No report library found for ID " + libraryId);
 
       verify(dataSourceRepository).findById(dataSourceUid);
       verify(reportLibraryRepository).findById(libraryId);
-      verify(reportFilterRepository, never()).saveAll(any());
 
-      // Assert that the report was not saved
       verify(reportRepository, never()).save(any());
+      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
-    void createReport_should_throw_when_filter_s_are_invalid() {
-      CreateReportRequest request = buildCreateReportRequest(null);
+    void createReport_should_throw_when_filter_has_unknown_filter_code() {
+      Report savedReport = mock(Report.class);
+      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
-      // Act & Assert
+      when(filterCodeRepository.findAllById(any())).thenReturn(Collections.emptyList());
+
+      CreateReportRequest request = buildCreateReportRequest(true);
+
       assertThatThrownBy(() -> service.createReport(request))
           .isInstanceOf(IllegalArgumentException.class)
-          .hasMessage("One or more filter IDs are invalid in filterId list ");
+          .hasMessage("Unknown filterCodeUid provided: " + filterCodeUid);
 
       verify(dataSourceRepository).findById(dataSourceUid);
       verify(reportLibraryRepository).findById(libraryId);
 
-      // Assert that the report was not saved
-      verify(reportRepository, never()).save(any());
+      verify(reportFilterRepository, never()).saveAll(any());
+    }
+
+    @Test
+    void createReport_should_throw_when_filter_has_unknown_column() {
+      Report savedReport = mock(Report.class);
+      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
+
+      when(dataSourceColumnRepository.findAllById(any())).thenReturn(Collections.emptyList());
+
+      CreateReportRequest request = buildCreateReportRequest(true);
+
+      assertThatThrownBy(() -> service.createReport(request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("Unknown columnUid provided: " + columnUid);
+
+      verify(dataSourceRepository).findById(dataSourceUid);
+      verify(reportLibraryRepository).findById(libraryId);
+
+      verify(reportFilterRepository, never()).saveAll(any());
     }
   }
 
   @Nested
-  class GetReportTest {
+  class GetReport {
     @Test
     void getReport_should_return_configuration_when_report_exists() {
       ReportId id = new ReportId(reportUid, dataSourceUid);
@@ -256,7 +282,7 @@ class ReportServiceTest {
   }
 
   @Nested
-  class GetReportRunnerTest {
+  class GetReportRunner {
     @Test
     void getReportRunner_should_return_runner_when_report_exists() {
       ReportId id = new ReportId(reportUid, dataSourceUid);
@@ -291,7 +317,7 @@ class ReportServiceTest {
   }
 
   @Nested
-  class ExecuteReportTest {
+  class ExecuteReport {
     @Test
     void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
       ReportId id = new ReportId(reportUid, dataSourceUid);

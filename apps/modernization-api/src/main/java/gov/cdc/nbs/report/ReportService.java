@@ -11,6 +11,8 @@ import gov.cdc.nbs.report.mappers.ReportColumnMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -193,20 +195,44 @@ public class ReportService {
   }
 
   private void createReportFilters(Report report, List<CreateFilterRequest> filtersToCreate) {
+    List<Long> filterCodeUids =
+        filtersToCreate.stream().map(CreateFilterRequest::filterCodeUid).toList();
+
+    Map<Long, FilterCode> filterCodeMap =
+        filterCodeRepository.findAllById(filterCodeUids).stream()
+            .collect(Collectors.toMap(FilterCode::getId, f -> f));
+
+    List<Long> columnUids = filtersToCreate.stream().map(CreateFilterRequest::columnUid).toList();
+
+    Map<Long, DataSourceColumn> columnMap =
+        dataSourceColumnRepository.findAllById(columnUids).stream()
+            .collect(Collectors.toMap(DataSourceColumn::getId, c -> c));
+
     List<ReportFilter> reportFilters =
         filtersToCreate.stream()
             .map(
-                filterRequest ->
-                    ReportFilter.builder()
-                        .report(report)
-                        .filterCode(
-                            filterCodeRepository.getReferenceById(filterRequest.filterCodeUid()))
-                        .dataSourceColumn(
-                            filterRequest.columnUid() != null
-                                ? dataSourceColumnRepository.getReferenceById(
-                                    filterRequest.columnUid())
-                                : null)
-                        .build())
+                filterRequest -> {
+                  FilterCode filterCode = filterCodeMap.get(filterRequest.filterCodeUid());
+                  if (filterCode == null) {
+                    throw new IllegalArgumentException(
+                        "Unknown filterCodeUid provided: " + filterRequest.filterCodeUid());
+                  }
+
+                  DataSourceColumn dataSourceColumn = null;
+                  if (filterRequest.columnUid() != null) {
+                    dataSourceColumn = columnMap.get(filterRequest.columnUid());
+                    if (dataSourceColumn == null) {
+                      throw new IllegalArgumentException(
+                          "Unknown columnUid provided: " + filterRequest.columnUid());
+                    }
+                  }
+
+                  return ReportFilter.builder()
+                      .report(report)
+                      .filterCode(filterCode)
+                      .dataSourceColumn(dataSourceColumn)
+                      .build();
+                })
             .toList();
 
     reportFilterRepository.saveAll(reportFilters);
