@@ -49,11 +49,6 @@ const ReportConfigurationPage = ({
                         <AdvancedFilter filter={config.advancedFilter} columns={config.columns} />
                     </Card>
                 )}
-                {config.library.allowColumnSelection && (
-                    <Card id="advanced-filter" title="Advanced Filter" collapsible={true}>
-                        <AdvancedFilter filter={config.advancedFilter} columns={config.columns} />
-                    </Card>
-                )}
                 <details>
                     <summary>
                         <p>Config:</p>
