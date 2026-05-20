@@ -80,23 +80,7 @@ public class ReportService {
     Report savedReport = reportRepository.save(newReport);
 
     if (!request.reportFilters().isEmpty()) {
-      List<ReportFilter> reportFilters =
-          request.reportFilters().stream()
-              .map(
-                  filterRequest ->
-                      ReportFilter.builder()
-                          .report(savedReport)
-                          .filterCode(
-                              filterCodeRepository.getReferenceById(filterRequest.filterCodeUid()))
-                          .dataSourceColumn(
-                              filterRequest.columnUid() != null
-                                  ? dataSourceColumnRepository.getReferenceById(
-                                      filterRequest.columnUid())
-                                  : null)
-                          .build())
-              .toList();
-
-      reportFilterRepository.saveAll(reportFilters);
+      createReportFilters(savedReport, request.reportFilters());
     }
 
     return savedReport;
@@ -201,5 +185,25 @@ public class ReportService {
         .body(reportSpec)
         .retrieve()
         .toEntity(ReportResult.class);
+  }
+
+  private List<ReportFilter> createReportFilters(Report report, List<CreateReportFilterRequest> filtersToCreate) {
+    List<ReportFilter> reportFilters =
+            filtersToCreate.stream()
+                    .map(
+                            filterRequest ->
+                                    ReportFilter.builder()
+                                            .report(report)
+                                            .filterCode(
+                                                    filterCodeRepository.getReferenceById(filterRequest.filterCodeUid()))
+                                            .dataSourceColumn(
+                                                    filterRequest.columnUid() != null
+                                                            ? dataSourceColumnRepository.getReferenceById(
+                                                            filterRequest.columnUid())
+                                                            : null)
+                                            .build())
+                    .toList();
+
+    return reportFilterRepository.saveAll(reportFilters);
   }
 }
