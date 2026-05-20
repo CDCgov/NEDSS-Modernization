@@ -1,4 +1,4 @@
--- Migrate the QA05.SAS library to the qa_05 python library
+-- Migrate the QA04.SAS library to the qa_04 python library
 
 USE [NBS_ODSE]
 
