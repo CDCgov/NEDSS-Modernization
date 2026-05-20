@@ -43,7 +43,6 @@ class TestIntegrationNbsQa01Library:
         row = result.content.data[-1]
         assert row[0] == 944 and row[3] == 'Van Dam, Venus' and row[4] == '43'
 
-
     def test_execute_report_no_data(self, snapshot):
         report_spec = self.create_spec(
             subset_query="""

@@ -35,7 +35,7 @@ class TestIntegrationQa04Library:
         assert len(data.data[0]) == len(data.columns) if data.data else True
 
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
-        
+
         assert data.columns == [
             'INV_LOCAL_ID',
             'PATIENT_NAME',
@@ -56,9 +56,9 @@ class TestIntegrationQa04Library:
                 'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
                 'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
-                'subset_query': '''
+                'subset_query': """
                     SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1=0
-                '''
+                """,
             }
         )
 
@@ -162,4 +162,3 @@ class TestIntegrationQa04Library:
         # Check for duplicates by creating a set of unique keys
         keys = [(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data.data]
         assert len(keys) == len(set(keys)), 'Duplicate rows found in output'
-
