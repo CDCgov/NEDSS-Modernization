@@ -6,15 +6,15 @@ import java.util.List;
 
 public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportDataSource dataSource,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Library reportLibrary,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String reportTitle,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Library library,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String title,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<BasicFilterConfiguration> basicFilters,
     AdvancedFilterConfiguration advancedFilter,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<ReportColumn> reportColumns) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<ReportColumn> columns) {
 
   @JsonIgnore
   public boolean isPython() {
-    return reportLibrary().runner().equalsIgnoreCase("python");
+    return library().runner().equalsIgnoreCase("python");
   }
 }

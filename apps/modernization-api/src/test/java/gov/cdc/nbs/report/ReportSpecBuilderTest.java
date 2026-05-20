@@ -77,7 +77,7 @@ class ReportSpecBuilderTest {
     Mockito.lenient().when(dataSourceNameConfiguration.getMappings()).thenReturn(new HashMap<>());
 
     Library library = Mockito.mock(Library.class);
-    Mockito.lenient().when(reportConfiguration.reportLibrary()).thenReturn(library);
+    Mockito.lenient().when(reportConfiguration.library()).thenReturn(library);
     Mockito.lenient().when(library.libraryName()).thenReturn("nbs_custom");
 
     ReportDataSource dataSource = Mockito.mock(ReportDataSource.class);
@@ -85,8 +85,8 @@ class ReportSpecBuilderTest {
     Mockito.lenient().when(dataSource.name()).thenReturn("nbs_ods.NBS_configuration");
 
     Mockito.lenient().when(reportConfiguration.basicFilters()).thenReturn(filters);
-    Mockito.lenient().when(reportConfiguration.reportColumns()).thenReturn(columns);
-    Mockito.lenient().when(reportConfiguration.reportTitle()).thenReturn(title);
+    Mockito.lenient().when(reportConfiguration.columns()).thenReturn(columns);
+    Mockito.lenient().when(reportConfiguration.title()).thenReturn(title);
 
     return reportConfiguration;
   }
@@ -130,10 +130,10 @@ class ReportSpecBuilderTest {
         new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
             .build();
 
-    assertThat(reportSpec.isBuiltin()).isEqualTo(reportConfig.reportLibrary().isBuiltin());
+    assertThat(reportSpec.isBuiltin()).isEqualTo(reportConfig.library().isBuiltin());
     assertThat(reportSpec.isExport()).isEqualTo(request.isExport());
-    assertThat(reportSpec.reportTitle()).isEqualTo(reportConfig.reportTitle());
-    assertThat(reportSpec.libraryName()).isEqualTo(reportConfig.reportLibrary().libraryName());
+    assertThat(reportSpec.reportTitle()).isEqualTo(reportConfig.title());
+    assertThat(reportSpec.libraryName()).isEqualTo(reportConfig.library().libraryName());
     assertThat(reportSpec.dataSourceName()).isEqualTo("[NBS_ODSE].[dbo].[NBS_configuration]");
 
     assertThat(reportSpec.subsetQuery())
