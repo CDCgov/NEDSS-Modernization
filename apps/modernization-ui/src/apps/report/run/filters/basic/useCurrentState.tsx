@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext } from 'react';
 import { useWatch } from 'react-hook-form';
-import { ReportExecuteForm } from '../ReportRunPage';
+import { ReportExecuteForm } from '../../ReportRunPage';
 import { BasicFilterConfiguration } from 'generated';
 
 const CurrentStateContext = createContext<string | undefined>(undefined);
@@ -12,7 +12,7 @@ type Props = {
 const CurrentStateProvider = ({ stateFilter, children }: Props) => {
     const stateFilterId = stateFilter?.reportFilterUid;
     const stateVal = useWatch<ReportExecuteForm>({
-        name: `basicFilter.id_${stateFilterId}`,
+        name: `basicFilter.id_${stateFilterId}.value`,
         defaultValue: stateFilter?.defaultValues,
     });
 
