@@ -17,10 +17,11 @@ def execute(
     full_query = f"""
     WITH subset AS ({subset_query})
     SELECT DISTINCT
-        SUBSTRING(a.PATIENT_LOCAL_ID, 4, 8) - 10000000 AS [Patient ID],
-        a.PATIENT_NAME AS [Name],
-        a.DIAGNOSIS_CD AS [Dx],
-        a.INV_LOCAL_ID AS [Case ID],
+        a.INV_LOCAL_ID,
+        a.PATIENT_NAME,
+        a.PATIENT_LOCAL_ID,
+        a.DIAGNOSIS_CD,
+        CONVERT(varchar(10), a.CONFIRMATION_DT, 101) AS CONFIRMATION_DT,
         CASE
             WHEN b.LAB_TEST_KEY IS NULL AND c.TREATMENT_KEY IS NULL
                 THEN 'No Treatment or Lab'
@@ -29,8 +30,8 @@ def execute(
             WHEN c.TREATMENT_KEY IS NULL
                 THEN 'No Treatment'
             ELSE 'N/A'
-        END AS [Error Explanation],
-        CAST(a.CONFIRMATION_DT AS DATE) AS [Confirmation Date]
+        END AS ERROR_TXT,
+        SUBSTRING(a.PATIENT_LOCAL_ID, 4, 8) - 10000000 AS PATIENTID
     FROM subset a
     INNER JOIN rdb.dbo.investigation e
         ON a.INVESTIGATION_KEY = e.INVESTIGATION_KEY
@@ -44,7 +45,7 @@ def execute(
             b.LAB_TEST_KEY IS NULL
             OR c.TREATMENT_KEY IS NULL
         )
-    ORDER BY [Name]
+    ORDER BY a.PATIENT_NAME
     """
 
     content = trx.query(full_query)

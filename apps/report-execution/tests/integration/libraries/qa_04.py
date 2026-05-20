@@ -35,6 +35,16 @@ class TestIntegrationQa04Library:
         assert len(data.data[0]) == len(data.columns) if data.data else True
 
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
+        
+        assert data.columns == [
+            'INV_LOCAL_ID',
+            'PATIENT_NAME',
+            'PATIENT_LOCAL_ID',
+            'DIAGNOSIS_CD',
+            'CONFIRMATION_DT',
+            'ERROR_TXT',
+            'PATIENTID',
+        ]
 
     def test_execute_report_empty_subset(self):
         """Test that the report handles an empty subset gracefully."""
@@ -97,7 +107,7 @@ class TestIntegrationQa04Library:
         data = result.content
 
         # Verify no 'N/A' values in Error Explanation column
-        error_col_idx = data.columns.index('Error Explanation')
+        error_col_idx = data.columns.index('ERROR_TXT')
         for row in data.data:
             assert row[error_col_idx] != 'N/A'
             assert row[error_col_idx] in (
@@ -153,28 +163,3 @@ class TestIntegrationQa04Library:
         keys = [(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data.data]
         assert len(keys) == len(set(keys)), 'Duplicate rows found in output'
 
-    def test_execute_report_column_order(self):
-        """Test that columns are in the expected order."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'QA04 Cases Missing Lab and/or Treatment',
-                'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
-                'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
-            }
-        )
-
-        result = execute_report(report_spec)
-        data = result.content
-
-        assert data.columns == [
-            'Patient ID',
-            'Name',
-            'Dx',
-            'Case ID',
-            'Error Explanation',
-            'Confirmation Date',
-        ]
