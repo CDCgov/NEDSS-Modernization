@@ -1,0 +1,27 @@
+plugins {
+    alias libs.plugins.springBoot apply false
+}
+
+group = 'gov.cdc'
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation.bundle(libs.bundles.testing)
+                implementation libs.spring.test
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation libs.springBoot.web
+
+    // lombok
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+}

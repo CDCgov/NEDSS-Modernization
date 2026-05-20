@@ -8,6 +8,18 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class ProgramAreaOptionsService {
     /**
+     * NBS Program Area Options
+     * Provides options for all program areas.
+     * @returns Option OK
+     * @throws ApiError
+     */
+    public static programAreaList(): CancelablePromise<Array<Option>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/options/program-areas',
+        });
+    }
+    /**
      * NBS Program Area Option Autocomplete
      * Provides options from Facilities that have a name matching a criteria.
      * @returns Option OK
