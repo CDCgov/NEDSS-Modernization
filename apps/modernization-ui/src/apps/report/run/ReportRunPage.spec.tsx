@@ -1277,7 +1277,7 @@ describe('report run page', () => {
                         // make sure form values were really reset
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
-                        expect(await findAllByText('The Full Name is required.')).toBeVisible(); // county is required
+                        expect(await findAllByText('The Full Name is required.')).toHaveLength(2); // county is required
 
                         dropDown = await findByLabelText('Full Name');
                         await userEvent.click(dropDown);
