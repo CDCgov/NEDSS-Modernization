@@ -1,5 +1,5 @@
 import { Card } from 'design-system/card';
-import { Checkbox, CheckboxGroup, SelectableCheckbox } from 'design-system/checkbox';
+import { Checkbox } from 'design-system/checkbox';
 import { ReportColumn } from 'generated';
 import { Selectable } from 'options';
 
@@ -9,6 +9,7 @@ import { validateRequiredRule } from 'validation/entry';
 import { useController } from 'react-hook-form';
 import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from '@hello-pangea/dnd';
 import { Icon } from 'design-system/icon';
+import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 
 const ColumnSelector = ({ columns }: { columns: ReportColumn[] }) => {
     const {
@@ -17,7 +18,7 @@ const ColumnSelector = ({ columns }: { columns: ReportColumn[] }) => {
     } = useController<ReportExecuteForm, 'columns'>({
         name: 'columns',
         defaultValue: [], // TODO
-        rules: validateRequiredRule('Columns'),
+        rules: validateRequiredRule('column selection'),
     });
 
     const options: Selectable[] = columns
@@ -33,32 +34,33 @@ const ColumnSelector = ({ columns }: { columns: ReportColumn[] }) => {
     };
 
     return (
-        <div className={styles.layout}>
-            <Card id="available-columns" title="Available columns" collapsible={false}>
-                <div className={styles.card}>
-                    {options.map((o) => (
-                        <Checkbox
-                            key={o.value}
-                            className={styles.option}
-                            label={o.name}
-                            selected={value?.includes(o.value)}
-                            onChange={handleOnAvailableChange(o)}
-                        />
-                    ))}
-                </div>
-            </Card>
-            <Card id="selected-columns" title="Selected columns" collapsible={false}>
-                <div className={styles.card}>
-                    {(value?.length ?? 0) === 0 ? (
-                        <div className="display-flex flex-align-center flex-justify-center minh-full width-full">
-                            <p>Select a column from "Available columns"</p>
-                        </div>
-                    ) : (
-                        <SelectedColumnsList value={value} options={options} onChange={onChange} />
-                    )}
-                </div>
-            </Card>
-        </div>
+        <>
+            {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
+            <div className={styles.layout}>
+                <Card id="available-columns" title="Available columns" collapsible={false}>
+                    <div className={styles.card}>
+                        {options.map((o) => (
+                            <Checkbox
+                                key={o.value}
+                                className={styles.option}
+                                label={o.name}
+                                selected={value?.includes(o.value)}
+                                onChange={handleOnAvailableChange(o)}
+                            />
+                        ))}
+                    </div>
+                </Card>
+                <Card id="selected-columns" title="Selected columns" collapsible={false}>
+                    <div className={styles.card}>
+                        {(value?.length ?? 0) === 0 ? (
+                            <p className={styles.center}>Select a column from "Available columns"</p>
+                        ) : (
+                            <SelectedColumnsList value={value} options={options} onChange={onChange} />
+                        )}
+                    </div>
+                </Card>
+            </div>
+        </>
     );
 };
 
@@ -92,7 +94,8 @@ const SelectedColumnsList = ({
                                     <div
                                         className={styles.option}
                                         ref={draggable.innerRef}
-                                        {...draggable.draggableProps}>
+                                        {...draggable.draggableProps}
+                                    >
                                         <span className={styles.handle} {...draggable.dragHandleProps}>
                                             <Icon name="drag" />
                                         </span>

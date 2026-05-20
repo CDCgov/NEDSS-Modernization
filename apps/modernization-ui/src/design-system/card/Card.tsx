@@ -14,6 +14,7 @@ type CardProps = {
     collapsible?: boolean;
     open?: boolean;
     footer?: ReactNode;
+    required?: boolean;
 } & Omit<CardHeaderProps, 'control'> &
     JSX.IntrinsicElements['section'];
 
@@ -29,6 +30,7 @@ const Card = ({
     collapsible = false,
     open = true,
     footer,
+    required = false,
     children,
     ...remaining
 }: CardProps) => {
@@ -47,7 +49,7 @@ const Card = ({
         >
             <CardHeader
                 id={id}
-                title={title}
+                title={required ? <span className={styles.required}>{title}</span> : title}
                 level={level}
                 flair={flair}
                 subtext={subtext}

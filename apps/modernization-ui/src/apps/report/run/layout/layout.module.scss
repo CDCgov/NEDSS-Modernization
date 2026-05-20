@@ -1,6 +1,23 @@
+@use 'styles/colors';
+
 .columnContent {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+
+    & > header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        nav {
+            background-color: colors.$base-white;
+        }
+    }
 }
