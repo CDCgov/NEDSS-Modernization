@@ -12,7 +12,9 @@ public record ReportColumn(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String title,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String sourceTypeCode,
     String descTxt,
-    Character displayable,
-    Character filterable,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isDisplayable,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isFilterable,
+    String codeDescCd,
+    String codesetNm,
     Character statusCd,
     LocalDateTime statusTime) {}

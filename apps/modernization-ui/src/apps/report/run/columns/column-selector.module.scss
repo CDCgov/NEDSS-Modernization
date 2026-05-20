@@ -1,0 +1,40 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    background-color: colors.$base-lightest;
+    
+    .card {
+        max-height: clamp(15rem, 50vh, 45rem);
+        overflow: auto;
+
+        .option {
+            width: 100%;
+            box-sizing: border-box;
+
+            border-left-width: 4px;
+            border-left-style: solid;
+            border-left-color: colors.$clear;
+
+            padding: 0.5rem 1.5rem;
+            gap: 2rem;
+            // keeps the checkbox and dnd options about the same height
+            min-height: 2.6rem;
+
+            @extend %thin-bottom;
+            
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+
+            .label {
+                color: colors.$base-darkest;
+                line-height: 125%;
+            }
+        }
+    }
+}

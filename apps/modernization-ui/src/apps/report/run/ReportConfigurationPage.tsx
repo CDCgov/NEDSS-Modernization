@@ -8,7 +8,9 @@ import { Card } from 'design-system/card';
 import { STATE_FILTER_CODE } from './filters/basic/OptionSelectFilter';
 import { CurrentStateProvider } from './filters/basic/useCurrentState';
 import { AdvancedFilter } from './filters/advanced/AdvancedFilter';
-import { ColumnSelector } from './ColumnSelector';
+import { ColumnSelector } from './columns/ColumnSelector';
+
+import layoutStyles from './layout/layout.module.scss'
 
 const ReportConfigurationPage = ({
     config,
@@ -35,12 +37,12 @@ const ReportConfigurationPage = ({
                 </>
             }
         >
-            <form>
+            <form className={layoutStyles.content}>
                 {basicFilters.length > 0 && (
                     <CurrentStateProvider stateFilter={stateFilter}>
                         <Card id="basic-filters" title="Basic Filters" collapsible={true}>
                             {basicFilters.map((filter, i) => (
-                                <BasicFilter key={`basic_filter_${i}`} filter={filter} columns={config.reportColumns} />
+                                <BasicFilter key={`basic_filter_${i}`} filter={filter} columns={config.columns} />
                             ))}
                         </Card>
                     </CurrentStateProvider>
@@ -51,7 +53,7 @@ const ReportConfigurationPage = ({
                     </Card>
                 )}
                 {config.library.allowColumnSelection && (
-                    <Card id="column-selection" title="Select Columns" collapsible={true}>
+                    <Card id="column-selection" title="Column selection" collapsible={true}>
                         <ColumnSelector columns={config.columns} />
                     </Card>
                 )}
