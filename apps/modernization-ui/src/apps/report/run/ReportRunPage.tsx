@@ -46,7 +46,7 @@ const ReportRunPage = () => {
             (data) => {
                 const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
                     .map(([id, { value, includeNulls }]) => {
-                        const values = typeof value === 'string' ? [value] : value ?? [];
+                        const values = typeof value === 'string' ? [value] : (value ?? []);
                         return {
                             // remove `id_` prefix
                             reportFilterUid: parseInt(id.slice(3)),

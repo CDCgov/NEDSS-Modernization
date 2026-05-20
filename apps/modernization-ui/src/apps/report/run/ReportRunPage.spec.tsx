@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { findByLabelText, render, waitFor } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -213,6 +213,82 @@ describe('report run page', () => {
 
                 expect(await findByText('Basic Text Filter')).toHaveClass('required');
                 expect(await findByRole('textbox')).toBeRequired();
+            });
+
+            describe('include nulls', () => {
+                const NULLABLE_MOCK_FILTER = {
+                    ...MOCK_FILTER,
+                    filterType: { ...MOCK_FILTER.filterType, code: 'J_S01_N' },
+                };
+                it('renders the include nulls checkbox when appropriate', async () => {
+                    const mockApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [NULLABLE_MOCK_FILTER],
+                        });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    const { container, getByRole, findByLabelText, findByRole } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockApi).toHaveBeenCalled();
+
+                    const checkbox = await findByLabelText('Include Nulls for Basic Text Filter');
+                    expect(checkbox).not.toBeChecked();
+                    const user = userEvent.setup();
+                    await user.click(checkbox);
+                    expect(checkbox).toBeChecked();
+
+                    expect(await axe(container)).toHaveNoViolations();
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            advancedFilter: undefined,
+                            basicFilters: [{ reportFilterUid: 1001, values: [], includeNulls: true }],
+                        }),
+                    });
+                });
+
+                it('starts from default value', async () => {
+                    const mockApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [{ ...NULLABLE_MOCK_FILTER, defaultIncludeNulls: true }],
+                        });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    const { container, getByRole, findByLabelText, findByRole } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockApi).toHaveBeenCalled();
+
+                    const checkbox = await findByLabelText('Include Nulls for Basic Text Filter');
+                    expect(checkbox).toBeChecked();
+                    const user = userEvent.setup();
+                    await user.click(checkbox);
+                    expect(checkbox).not.toBeChecked();
+
+                    expect(await axe(container)).toHaveNoViolations();
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            advancedFilter: undefined,
+                            basicFilters: [{ reportFilterUid: 1001, values: [], includeNulls: false }],
+                        }),
+                    });
+                });
             });
         });
 
