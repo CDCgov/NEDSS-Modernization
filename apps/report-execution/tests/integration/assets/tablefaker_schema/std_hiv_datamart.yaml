@@ -69,7 +69,8 @@ tables:
       - column_name: patient_local_id
         data: |
           id_num = fake.unique.random_int(10000, 99999)
-          return f"PSN100{id_num}GA01"
+          pre_id_num = random.choice([100, 200, 300])
+          return f"PSN{pre_id_num}{id_num}GA01"
       # case information
       - column_name: diagnosis_cd
         data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) if random.random() < .95 else None

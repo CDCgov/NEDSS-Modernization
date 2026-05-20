@@ -42,10 +42,15 @@ class TestIntegrationNbsQa03Library:
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
         # Sanity check the result's shape beyond the snapshot
-        row = result.content.data[-1]
-        assert row[0] == 'CAS10078848GA01' and row[2] == 'PSN10057362GA01'
-
-        assert row is not None
+        record = result.content.data[-1]
+        assert record is not None
+        assert record[0].startswith('CAS')
+        assert record[2].startswith('PSN')
+        assert int(record[3]) >= 100
+        assert len(record[5]) == 10
+        assert len(record[7]) > 0
+        assert len(record[8]) > 0
+        assert record[9] >= 10000
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = self.create_spec(

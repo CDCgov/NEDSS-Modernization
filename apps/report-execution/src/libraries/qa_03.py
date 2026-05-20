@@ -37,7 +37,7 @@ def execute(
                     ', ',
                     dp.provider_name_suffix))
         ) AS [PROVIDER],
-       SUBSTRING(shd.PATIENT_LOCAL_ID, 7, 5) AS [PATIENTID]
+       CAST(SUBSTRING(PATIENT_LOCAL_ID, 4, 8) AS INT) - 10000000 AS PATIENTID
     FROM shd
     INNER JOIN 
         [RDB].[dbo].[INVESTIGATION] i ON shd.INVESTIGATION_KEY = i.INVESTIGATION_KEY
