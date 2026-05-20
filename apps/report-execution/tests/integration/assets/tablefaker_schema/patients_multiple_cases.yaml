@@ -52,7 +52,7 @@ tables:
       - column_name: INV_CASE_STATUS
         data: random.choice(['Probable', 'Confirmed', 'Not a Case', 'Suspect'])
       - column_name: REFERRAL_BASIS
-        data: random.choice([r"T1 - Positive Test", r"T2 - Morbidity Report", r"C1- Cohort", r"A1 - Associate 1", r"A2 - Associate 2", r"A3 - Associate 3", r"P1 - Partner, Sex", r"P2 - Partner, Needle-Sharing", r"M1 - Congenital Infant Followup"])
+        data: random.choice(["T1 - Positive Test", "T2 - Morbidity Report", "C1- Cohort", "A1 - Associate 1", "A2 - Associate 2", "A3 - Associate 3", "P1 - Partner, Sex", "P2 - Partner, Needle-Sharing", "M1 - Congenital Infant Followup"])
   - table_name: "[RDB].[dbo].[LAB_TEST]"
     export_file_name: "4_lab_test"
     row_count: 10
@@ -105,4 +105,49 @@ tables:
         data: random.randint(1000, 10000)
       - column_name: TEST_RESULT_GRP_KEY
         data: random.randint(1000, 10000)
+  - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
+    row_count: 10
+    columns:
+      # required columns:
+      - column_name: investigation_key
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INVESTIGATION_KEY")
+
+      # used by library
+      - column_name: inv_local_id
+        data: random.choice(["CAS10022028GA01", "CAS10021036GA01", "CAS10005241GA01", "CAS10010008GA01"])
+      - column_name: diagnosis
+        data: random.choice(["710 - Syphilis, primary", "200 - Chlamydia", "300 - Gonorrhea", "790 - Syphilis, Congenital", "730 - Syphilis, Early Non-Primary, Non-Secondary"])
+
+      # patient demographics
+      - column_name: patient_name
+        data: random.choice(["Howard, Cooper", "Van Dam, Venus", "Freeman, Billy"]) if random.random() < .95 else None
+      - column_name: patient_age_reported
+        data: random.choice(["23", "64", "43"]) if random.random() < .95 else None
+      - column_name: patient_sex
+        data: random.choice(["F", "M", ""]) if random.random() < .95 else None
+      - column_name: patient_race
+        data: random.choice(["B", "A", "AI", "W", ""]) if random.random() < .95 else None
+
+      # case information
+      - column_name: diagnosis_cd
+        data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) if random.random() < .95 else None
+      - column_name: field_record_number
+        data: fake.random_int(10000000, 99999999)
+        null_percentage: 0.05
+      - column_name: investigator_interview_qc
+        data: fake.random_int(10000000, 99999999)
+        null_percentage: 0.05
+      - column_name: ca_interviewer_assign_dt
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.05
+      - column_name: cc_closed_dt
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.05
+      - column_name: ix_date_oi
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.05
+      - column_name: ca_patient_intv_status
+        data: random.choice(["I - Interviewed"]) if random.random() < .1 else None
+      - column_name: program_jurisdiction_oid
+        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
 
