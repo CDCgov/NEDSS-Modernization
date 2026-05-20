@@ -1,12 +1,11 @@
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -15,9 +14,9 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
-  DateTime: { input: any; output: any; }
-  Direction: { input: any; output: any; }
+  Date: { input: unknown; output: unknown; }
+  DateTime: { input: unknown; output: unknown; }
+  Direction: { input: unknown; output: unknown; }
 };
 
 export type AssociatedInvestigation = {
@@ -590,44 +589,355 @@ export enum UserType {
   Internal = 'INTERNAL'
 }
 
+export type CaseStatus =
+  | 'CONFIRMED'
+  | 'NOT_A_CASE'
+  | 'PROBABLE'
+  | 'SUSPECT'
+  | 'UNASSIGNED'
+  | 'UNKNOWN';
+
+export type DateBetweenCriteria = {
+  from?: unknown;
+  to?: unknown;
+};
+
+export type DateCriteria = {
+  between?: DateBetweenCriteria | null | undefined;
+  equals?: DateEqualsCriteria | null | undefined;
+};
+
+export type DateEqualsCriteria = {
+  day?: number | null | undefined;
+  month?: number | null | undefined;
+  year?: number | null | undefined;
+};
+
+export type Deceased =
+  | 'N'
+  | 'UNK'
+  | 'Y';
+
+export type EntryMethod =
+  | 'ELECTRONIC'
+  | 'MANUAL';
+
+export type EventId = {
+  id: string;
+  investigationEventType: InvestigationEventIdType;
+};
+
+export type EventStatus =
+  | 'NEW'
+  | 'UPDATE';
+
+export type Filter = {
+  address?: string | null | undefined;
+  ageOrDateOfBirth?: string | null | undefined;
+  email?: string | null | undefined;
+  id?: string | null | undefined;
+  identification?: string | null | undefined;
+  name?: string | null | undefined;
+  phone?: string | null | undefined;
+  sex?: string | null | undefined;
+};
+
+export type IdentificationCriteria = {
+  assigningAuthority?: string | null | undefined;
+  identificationNumber?: string | null | undefined;
+  identificationType?: string | null | undefined;
+};
+
+export type InvestigationEventDateSearch = {
+  from: unknown;
+  to: unknown;
+  type: InvestigationEventDateType;
+};
+
+export type InvestigationEventDateType =
+  | 'DATE_OF_REPORT'
+  | 'INVESTIGATION_CLOSED_DATE'
+  | 'INVESTIGATION_CREATE_DATE'
+  | 'INVESTIGATION_START_DATE'
+  | 'LAST_UPDATE_DATE'
+  | 'NOTIFICATION_CREATE_DATE';
+
+export type InvestigationEventIdType =
+  | 'ABCS_CASE_ID'
+  | 'CITY_COUNTY_CASE_ID'
+  | 'INVESTIGATION_ID'
+  | 'NOTIFICATION_ID'
+  | 'STATE_CASE_ID';
+
+export type InvestigationFilter = {
+  caseStatuses?: Array<CaseStatus> | null | undefined;
+  conditions?: Array<string> | null | undefined;
+  createdBy?: string | null | undefined;
+  eventDate?: InvestigationEventDateSearch | null | undefined;
+  eventId?: EventId | null | undefined;
+  investigationStatus?: InvestigationStatus | null | undefined;
+  investigatorId?: number | null | undefined;
+  jurisdictions?: Array<number> | null | undefined;
+  lastUpdatedBy?: string | null | undefined;
+  notificationStatuses?: Array<NotificationStatus | null | undefined> | null | undefined;
+  outbreakNames?: Array<string | null | undefined> | null | undefined;
+  patientId?: number | null | undefined;
+  pregnancyStatus?: PregnancyStatus | null | undefined;
+  processingStatuses?: Array<ProcessingStatus | null | undefined> | null | undefined;
+  programAreas?: Array<string> | null | undefined;
+  providerFacilitySearch?: ProviderFacilitySearch | null | undefined;
+  reportingFacilityId?: string | null | undefined;
+  reportingProviderId?: string | null | undefined;
+};
+
+export type InvestigationStatus =
+  | 'CLOSED'
+  | 'OPEN';
+
+export type LabReportEventId = {
+  labEventId: string;
+  labEventType: LaboratoryEventIdType;
+};
+
+export type LabReportFilter = {
+  codedResult?: string | null | undefined;
+  createdBy?: number | null | undefined;
+  enteredBy?: Array<UserType> | null | undefined;
+  entryMethods?: Array<EntryMethod> | null | undefined;
+  eventDate?: LaboratoryEventDateSearch | null | undefined;
+  eventId?: LabReportEventId | null | undefined;
+  eventStatus?: Array<EventStatus> | null | undefined;
+  jurisdictions?: Array<number> | null | undefined;
+  lastUpdatedBy?: number | null | undefined;
+  orderingLabId?: number | null | undefined;
+  orderingProviderId?: number | null | undefined;
+  patientId?: number | null | undefined;
+  pregnancyStatus?: PregnancyStatus | null | undefined;
+  processingStatus?: Array<LaboratoryReportStatus> | null | undefined;
+  programAreas?: Array<string> | null | undefined;
+  providerSearch?: LabReportProviderSearch | null | undefined;
+  reportingLabId?: number | null | undefined;
+  resultedTest?: string | null | undefined;
+};
+
+export type LabReportProviderSearch = {
+  providerId: string | number;
+  providerType: ProviderType;
+};
+
+export type LaboratoryEventDateSearch = {
+  from: unknown;
+  to: unknown;
+  type: LaboratoryReportEventDateType;
+};
+
+export type LaboratoryEventIdType =
+  | 'ACCESSION_NUMBER'
+  | 'LAB_ID';
+
+export type LaboratoryReportEventDateType =
+  | 'DATE_OF_REPORT'
+  | 'DATE_OF_SPECIMEN_COLLECTION'
+  | 'DATE_RECEIVED_BY_PUBLIC_HEALTH'
+  | 'LAB_REPORT_CREATE_DATE'
+  | 'LAST_UPDATE_DATE';
+
+export type LaboratoryReportStatus =
+  | 'PROCESSED'
+  | 'UNPROCESSED';
+
+export type LocationCriteria = {
+  city?: TextCriteria | null | undefined;
+  street?: TextCriteria | null | undefined;
+};
+
+export type NotificationStatus =
+  | 'APPROVED'
+  | 'COMPLETED'
+  | 'MESSAGE_FAILED'
+  | 'PENDING_APPROVAL'
+  | 'REJECTED'
+  | 'UNASSIGNED';
+
+export type Operator =
+  | 'AFTER'
+  | 'BEFORE'
+  | 'EQUAL';
+
+export type Page = {
+  pageNumber: number;
+  pageSize: number;
+};
+
+export type PatientNameCriteria = {
+  first?: TextCriteria | null | undefined;
+  last?: TextCriteria | null | undefined;
+};
+
+export type PersonFilter = {
+  abcCase?: string | null | undefined;
+  accessionNumber?: string | null | undefined;
+  address?: string | null | undefined;
+  bornOn?: DateCriteria | null | undefined;
+  city?: string | null | undefined;
+  cityCountyCase?: string | null | undefined;
+  country?: string | null | undefined;
+  dateOfBirth?: unknown;
+  dateOfBirthOperator?: Operator | null | undefined;
+  deceased?: Deceased | null | undefined;
+  disableSoundex?: boolean | null | undefined;
+  document?: string | null | undefined;
+  email?: string | null | undefined;
+  ethnicity?: string | null | undefined;
+  filter?: Filter | null | undefined;
+  firstName?: string | null | undefined;
+  gender?: string | null | undefined;
+  id?: string | null | undefined;
+  identification?: IdentificationCriteria | null | undefined;
+  investigation?: string | null | undefined;
+  labReport?: string | null | undefined;
+  lastName?: string | null | undefined;
+  location?: LocationCriteria | null | undefined;
+  morbidity?: string | null | undefined;
+  mortalityStatus?: string | null | undefined;
+  name?: PatientNameCriteria | null | undefined;
+  notification?: string | null | undefined;
+  phoneNumber?: string | null | undefined;
+  race?: string | null | undefined;
+  recordStatus: Array<RecordStatus>;
+  state?: string | null | undefined;
+  stateCase?: string | null | undefined;
+  treatment?: string | null | undefined;
+  vaccination?: string | null | undefined;
+  zip?: string | null | undefined;
+};
+
+export type PregnancyStatus =
+  | 'NO'
+  | 'UNKNOWN'
+  | 'YES';
+
+export type ProcessingStatus =
+  | 'AWAITING_INTERVIEW'
+  | 'CLOSED_CASE'
+  | 'FIELD_FOLLOW_UP'
+  | 'NO_FOLLOW_UP'
+  | 'OPEN_CASE'
+  | 'SURVEILLANCE_FOLLOW_UP'
+  | 'UNASSIGNED';
+
+export type ProviderFacilitySearch = {
+  entityType: ReportingEntityType;
+  id: string | number;
+};
+
+export type ProviderType =
+  | 'ORDERING_FACILITY'
+  | 'ORDERING_PROVIDER'
+  | 'REPORTING_FACILITY';
+
+export type RecordStatus =
+  | 'ACTIVE'
+  | 'INACTIVE'
+  | 'LOG_DEL'
+  | 'SUPERCEDED';
+
+export type ReportingEntityType =
+  | 'FACILITY'
+  | 'PROVIDER';
+
+export type Sort = {
+  direction: unknown;
+  property: string;
+};
+
+export type SortDirection =
+  | 'ASC'
+  | 'DESC';
+
+export type SortField =
+  | 'address'
+  | 'birthTime'
+  | 'city'
+  | 'condition'
+  | 'country'
+  | 'county'
+  | 'email'
+  | 'firstNm'
+  | 'id'
+  | 'identification'
+  | 'investigationId'
+  | 'investigator'
+  | 'jurisdiction'
+  | 'lastNm'
+  | 'local_id'
+  | 'notification'
+  | 'phoneNumber'
+  | 'relevance'
+  | 'sex'
+  | 'startDate'
+  | 'state'
+  | 'status'
+  | 'zip';
+
+export type SortablePage = {
+  pageNumber?: number | null | undefined;
+  pageSize?: number | null | undefined;
+  sort?: Sort | null | undefined;
+  sortDirection?: SortDirection | null | undefined;
+  sortField?: SortField | null | undefined;
+};
+
+export type TextCriteria = {
+  contains?: string | null | undefined;
+  equals?: string | null | undefined;
+  not?: string | null | undefined;
+  soundsLike?: string | null | undefined;
+  startsWith?: string | null | undefined;
+};
+
+export type UserType =
+  | 'EXTERNAL'
+  | 'INTERNAL';
+
 export type FindAllJurisdictionsQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
+  page?: Page | null | undefined;
 }>;
 
 
-export type FindAllJurisdictionsQuery = { __typename?: 'Query', findAllJurisdictions: Array<{ __typename?: 'Jurisdiction', id: string, typeCd: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, stateDomainCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeqNum?: number | null, nbsUid?: string | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null, exportInd?: string | null } | null> };
+export type FindAllJurisdictionsQuery = { findAllJurisdictions: Array<{ id: string, typeCd: string, assigningAuthorityCd: string | null, assigningAuthorityDescTxt: string | null, codeDescTxt: string | null, codeShortDescTxt: string | null, effectiveFromTime: unknown, effectiveToTime: unknown, indentLevelNbr: number | null, isModifiableInd: string | null, parentIsCd: string | null, stateDomainCd: string | null, statusCd: string | null, statusTime: unknown, codeSetNm: string | null, codeSeqNum: number | null, nbsUid: string | null, sourceConceptId: string | null, codeSystemCd: string | null, codeSystemDescTxt: string | null, exportInd: string | null } | null> };
 
 export type FindAllProgramAreasQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
+  page?: Page | null | undefined;
 }>;
 
 
-export type FindAllProgramAreasQuery = { __typename?: 'Query', findAllProgramAreas: Array<{ __typename?: 'ProgramAreaCode', id: string, progAreaDescTxt?: string | null, nbsUid?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeq?: number | null } | null> };
+export type FindAllProgramAreasQuery = { findAllProgramAreas: Array<{ id: string, progAreaDescTxt: string | null, nbsUid: string | null, statusCd: string | null, statusTime: unknown, codeSetNm: string | null, codeSeq: number | null } | null> };
 
 export type FindInvestigationsByFilterQueryVariables = Exact<{
   filter: InvestigationFilter;
-  page?: InputMaybe<SortablePage>;
+  page?: SortablePage | null | undefined;
 }>;
 
 
-export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, page: number, size: number, content: Array<{ __typename?: 'Investigation', relevance: number, id?: string | null, cdDescTxt?: string | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, startedOn?: any | null, investigationStatusCd?: string | null, notificationRecordStatusCd?: string | null, investigatorLastName?: string | null, personParticipations: Array<{ __typename?: 'InvestigationPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd: string, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }> }> } };
+export type FindInvestigationsByFilterQuery = { findInvestigationsByFilter: { total: number, page: number, size: number, content: Array<{ relevance: number, id: string | null, cdDescTxt: string | null, jurisdictionCodeDescTxt: string | null, localId: string | null, addTime: unknown, startedOn: unknown, investigationStatusCd: string | null, notificationRecordStatusCd: string | null, investigatorLastName: string | null, personParticipations: Array<{ birthTime: unknown, currSexCd: string | null, typeCd: string, firstName: string | null, lastName: string | null, personCd: string, personParentUid: number | null, shortId: number | null }> }> } };
 
 export type FindLabReportsByFilterQueryVariables = Exact<{
   filter: LabReportFilter;
-  page?: InputMaybe<SortablePage>;
+  page?: SortablePage | null | undefined;
 }>;
 
 
-export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, page: number, size: number, content: Array<{ __typename?: 'LabReport', relevance: number, id: string, jurisdictionCd: number, localId: string, addTime: any, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd: string, name: string }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt: string, localId: string }>, tests: Array<{ __typename?: 'LabTestSummary', name?: string | null, status?: string | null, coded?: string | null, numeric?: number | null, high?: string | null, low?: string | null, unit?: string | null }> }> } };
+export type FindLabReportsByFilterQuery = { findLabReportsByFilter: { total: number, page: number, size: number, content: Array<{ relevance: number, id: string, jurisdictionCd: number, localId: string, addTime: unknown, personParticipations: Array<{ birthTime: unknown, currSexCd: string | null, typeCd: string | null, firstName: string | null, lastName: string | null, personCd: string, personParentUid: number | null, shortId: number | null }>, organizationParticipations: Array<{ typeCd: string, name: string }>, observations: Array<{ cdDescTxt: string | null, statusCd: string | null, altCd: string | null, displayName: string | null }>, associatedInvestigations: Array<{ cdDescTxt: string, localId: string }>, tests: Array<{ name: string | null, status: string | null, coded: string | null, numeric: number | null, high: string | null, low: string | null, unit: string | null }> }> } };
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
-  page?: InputMaybe<SortablePage>;
-  share?: InputMaybe<Scalars['String']['input']>;
+  page?: SortablePage | null | undefined;
+  share?: string | null | undefined;
 }>;
 
 
-export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, page: number, size: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', type?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', type?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', type?: string | null, use?: string | null, address?: string | null, address2?: string | null, city?: string | null, county?: string | null, state?: string | null, zipcode?: string | null }>, detailedPhones: Array<{ __typename?: 'PatientSearchResultPhone', type: string, use: string, number?: string | null }> }> } };
+export type FindPatientsByFilterQuery = { findPatientsByFilter: { total: number, page: number, size: number, content: Array<{ patient: number, birthday: unknown, age: number | null, gender: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName: { type: string | null, first: string | null, middle: string | null, last: string | null, suffix: string | null } | null, names: Array<{ type: string | null, first: string | null, middle: string | null, last: string | null, suffix: string | null }>, identification: Array<{ type: string, value: string }>, addresses: Array<{ type: string | null, use: string | null, address: string | null, address2: string | null, city: string | null, county: string | null, state: string | null, zipcode: string | null }>, detailedPhones: Array<{ type: string, use: string, number: string | null }> }> } };
 
 
 export const FindAllJurisdictionsDocument = gql`
