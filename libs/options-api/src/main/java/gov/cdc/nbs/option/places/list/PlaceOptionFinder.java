@@ -12,7 +12,7 @@ class PlaceOptionFinder extends SQLBasedOptionFinder {
       select
           ei.root_extension_txt                                 as [value],
           p.nm                                                  as [name],
-          row_number() over(order by [ei.root_extension_txt])   as [order]
+          row_number() over(order by [ei].[root_extension_txt])   as [order]
       from NBS_ODSE..Place  p
       inner join NBS_ODSE..Entity_id ei on
           p.place_uid = ei.entity_uid
