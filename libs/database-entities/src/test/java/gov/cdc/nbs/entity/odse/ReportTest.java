@@ -13,24 +13,13 @@ import org.junit.jupiter.api.Test;
 
 class ReportTest {
   @Test
-  void should_throw_exception_with_null_values() {
-    assertThatThrownBy(() -> new Report(null, null))
-        .isInstanceOf(NullPointerException.class)
-        .hasMessageContaining("id is marked non-null but is null");
-  }
-
-  @Test
   void should_create_report() {
-    Long reportId = 1L;
-    Long dataSource = 2L;
-    ReportId id = new ReportId(reportId, dataSource);
     String sectionCd = "1000";
 
-    Report actual = new Report(id, sectionCd);
+    Report actual = new Report(sectionCd);
 
     assertThat(actual)
-        .satisfies(report -> assertEquals(reportId, report.getId().getReportUid()))
-        .satisfies(report -> assertEquals(dataSource, report.getId().getDataSourceUid()))
+        .satisfies(report -> assertNull(report.getId()))
         .satisfies(report -> assertNull(report.getDescTxt()))
         .satisfies(report -> assertNull(report.getEffectiveTime()))
         .satisfies(report -> assertNull(report.getFilterMode()))
