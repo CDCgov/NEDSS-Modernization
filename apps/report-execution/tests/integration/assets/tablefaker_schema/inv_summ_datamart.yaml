@@ -252,3 +252,45 @@ tables:
         type: string
         data: random.choice(["Fulton County", "Dekalb County", "Clayton County", "Cobb County", "Gwinnett County", None])
         null_percentage: 0.20
+
+      # NEW COLUMNS ADDED FROM EXAMPLE DATA BELOW
+      
+      - column_name: PATIENT_COUNTY
+        type: string
+        data: random.choice(["Fulton County", "Dekalb County", "Clayton County", "Cobb County", "Gwinnett County", "Appling County", "Baker County", "Atkinson County", "Randolph County", "Marion County", "Travis County", "El Dorado County", None])
+        null_percentage: 0.35
+      
+      - column_name: ILLNESS_ONSET_DATE
+        type: string
+        data: f"{fake.date_between(start_date=datetime(2010, 1, 1), end_date=datetime(2026, 12, 31)).strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}" if random.random() > 0.85 else None
+        null_percentage: 0.85
+      
+      - column_name: LABORATORY_INFORMATION
+        type: string
+        data: None  # Complex HTML-like string; set to None to match existing pattern, can be configured separately
+        null_percentage: 0.80
+      
+      - column_name: PROGRAM_JURISDICTION_OID
+        type: string
+        data: random.choice(["1300400009", "1300500009", "1300600015", "1300100015", "1300100009", "1300600016", "1300500015", "1300700015", None])
+        null_percentage: 0.40
+      
+      - column_name: FIRST_POSITIVE_CULTURE_DT
+        type: string
+        data: None
+        null_percentage: 0.95
+      
+      - column_name: EARLIEST_SPECIMEN_COLLECT_DATE
+        type: string
+        data: f"{fake.date_between(start_date=datetime(2015, 1, 1), end_date=datetime(2026, 12, 31)).strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}" if random.random() > 0.70 else None
+        null_percentage: 0.70
+      
+      - column_name: INVESTIGATION_LAST_UPDTD_BY
+        type: string
+        data: random.choice(["PKS, PKS", "user, demo", "Ward, Jennifer", "investigator, local", "Epidemiologist, STI", "LocalUser, DIS", "LocalUser, Fulton", "PKS", "Ward, Jennifer", None])
+        null_percentage: 0.70
+      
+      - column_name: INIT_NND_NOT_DT
+        type: string
+        data: f"{fake.date_between(start_date=datetime(2023, 1, 1), end_date=datetime(2026, 12, 31)).strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}" if random.random() > 0.90 else None
+        null_percentage: 0.90
