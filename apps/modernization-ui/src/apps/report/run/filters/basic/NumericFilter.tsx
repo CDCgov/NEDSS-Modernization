@@ -24,6 +24,10 @@ const numericValidator = (_filter: BasicFilterConfiguration, label: string) => {
             return `${label} must not be negative.`;
         }
 
+        if (value > 999) {
+            return `${label} must not be greater than 999.`;
+        }
+
         return true;
     };
 };

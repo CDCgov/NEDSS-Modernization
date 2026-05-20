@@ -2083,6 +2083,32 @@ describe('report run page', () => {
             });
         });
 
+        it('does not submit on four digit value input value', async () => {
+            const user = userEvent.setup();
+
+            const mockConfigApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+
+            const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockConfigApi).toHaveBeenCalled();
+
+            const input = await findByLabelText('Duplicate Investigations Time Frame');
+
+            fireEvent.change(input, { target: { value: '2000' } });
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(await findAllByText('Duplicate Investigations Time Frame must not be greater than 999.')).toHaveLength(2);
+            expect(mockResultApi).not.toHaveBeenCalled();
+        });
+
         it('renders default value', async () => {
             const user = userEvent.setup();
 
