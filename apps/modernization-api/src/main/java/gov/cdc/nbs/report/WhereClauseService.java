@@ -180,7 +180,8 @@ public class WhereClauseService {
   private String buildBasicTimeRangeCriteria(
       BasicFilterRequest basicFilterRequest, ReportColumn column) {
     List<String> values = basicFilterRequest.values();
-    boolean includeNulls = basicFilterRequest.includeNulls();
+    boolean includeNulls =
+        basicFilterRequest.includeNulls() != null && basicFilterRequest.includeNulls();
 
     if (values.size() != 2 && !includeNulls) return "";
 
