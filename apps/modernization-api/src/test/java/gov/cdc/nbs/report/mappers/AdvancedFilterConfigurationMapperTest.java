@@ -8,7 +8,6 @@ import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
-import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import java.time.LocalDateTime;
@@ -18,7 +17,7 @@ import org.junit.jupiter.api.Test;
 class AdvancedFilterConfigurationMapperTest {
   // JPA creates circular references, which are tedious to construct properly and
   // we don't really care here
-  Report emptyReport = new Report(new ReportId(9L, 8L), "section");
+  Report emptyReport = new Report("section");
   ReportFilter emptyFilter = new ReportFilter(emptyReport, new FilterCode("NONE"));
   DataSource dataSource = DataSource.builder().id(100L).statusCd('A').build();
   DataSourceColumn column =

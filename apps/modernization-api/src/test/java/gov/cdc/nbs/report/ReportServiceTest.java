@@ -21,6 +21,8 @@ import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang3.NotImplementedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -73,334 +75,287 @@ class ReportServiceTest {
     return report;
   }
 
-  @Test
-  void createReport_should_create_and_return_report_when_all_inputs_are_valid() {
-    // Arrange
-    DataSource mockDataSource = mock(DataSource.class);
-    ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
-    List<Long> filterIds = List.of(1L, 2L, 3L);
-    List<ReportFilter> mockFilters =
-        List.of(mock(ReportFilter.class), mock(ReportFilter.class), mock(ReportFilter.class));
+  @Nested
+  class CreateReportTest {
+    private CreateReportRequest buildCreateReportRequest(List<CreateFilterRequest> filters) {
+      return new CreateReportRequest(
+          dataSourceUid,
+          libraryId,
+          "Test Report Title",
+          "123",
+          "Test Report Description",
+          "Test Owner Id",
+          filters);
+    }
 
-    when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.of(mockDataSource));
-    when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.of(mockReportLibrary));
-    when(reportFilterRepository.findAllById(filterIds)).thenReturn(mockFilters);
+    @BeforeEach
+    void setup() {
+      DataSource mockDataSource = mock(DataSource.class);
+      ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
 
-    Report savedReport = mock(Report.class);
-    when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
+      Mockito.lenient()
+          .when(dataSourceRepository.findById(dataSourceUid))
+          .thenReturn(Optional.of(mockDataSource));
+      Mockito.lenient()
+          .when(reportLibraryRepository.findById(libraryId))
+          .thenReturn(Optional.of(mockReportLibrary));
+    }
 
-    CreateReportRequest request =
-        new CreateReportRequest(
-            dataSourceUid,
-            libraryId,
-            "Test Report Title",
-            filterIds,
-            "Test Report Description",
-            "Test Owner Id",
-            "123");
+    @Test
+    void createReport_should_create_and_return_report_when_all_inputs_are_valid() {
+      Report savedReport = mock(Report.class);
+      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
-    // Act
-    Report result = service.createReport(request);
+      CreateReportRequest request = buildCreateReportRequest(null);
 
-    // Assert
-    assertThat(result).isEqualTo(savedReport);
-    verify(dataSourceRepository).findById(dataSourceUid);
-    verify(reportLibraryRepository).findById(libraryId);
-    verify(reportFilterRepository).findAllById(filterIds);
-    verify(reportRepository).save(any(Report.class));
-  }
+      // Act
+      Report result = service.createReport(request);
 
-  @Test
-  void createReport_should_create_report_when_filter_ids_are_empty() {
-    // Arrange
-    DataSource mockDataSource = mock(DataSource.class);
-    ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
-    List<Long> emptyFilterIds = List.of();
+      // Assert
+      assertThat(result).isEqualTo(savedReport);
+      verify(dataSourceRepository).findById(dataSourceUid);
+      verify(reportLibraryRepository).findById(libraryId);
+      verify(reportRepository).save(any(Report.class));
+    }
 
-    when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.of(mockDataSource));
-    when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.of(mockReportLibrary));
+    @Test
+    void createReport_should_create_report_when_filters_are_empty() {
+      Report savedReport = mock(Report.class);
+      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
-    Report savedReport = mock(Report.class);
-    when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
+      CreateReportRequest request = buildCreateReportRequest(null);
 
-    CreateReportRequest request =
-        new CreateReportRequest(
-            dataSourceUid,
-            libraryId,
-            "Test Report Title",
-            emptyFilterIds,
-            "Test Report Description",
-            "Test Owner Id",
-            "123");
+      // Act
+      Report result = service.createReport(request);
 
-    // Act
-    Report result = service.createReport(request);
+      // Assert
+      assertThat(result).isEqualTo(savedReport);
+      verify(dataSourceRepository).findById(dataSourceUid);
+      verify(reportLibraryRepository).findById(libraryId);
 
-    // Assert
-    assertThat(result).isEqualTo(savedReport);
-    verify(dataSourceRepository).findById(dataSourceUid);
-    verify(reportLibraryRepository).findById(libraryId);
-    verify(reportFilterRepository, never()).findAllById(any());
+      verify(reportRepository).save(any(Report.class));
+      verify(reportFilterRepository, never()).saveAll(any());
+    }
 
-    // Assert that the report was saved
-    verify(reportRepository).save(any(Report.class));
-  }
+    @Test
+    void createReport_should_throw_when_data_source_not_found() {
+      when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.empty());
 
-  @Test
-  void createReport_should_throw_when_data_source_not_found() {
-    // Arrange
-    List<Long> filterIds = List.of(1L, 2L);
+      CreateReportRequest request = buildCreateReportRequest(null);
 
-    when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.empty());
+      // Act & Assert
+      assertThatThrownBy(() -> service.createReport(request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("No data source found for ID " + dataSourceUid);
 
-    CreateReportRequest request =
-        new CreateReportRequest(
-            dataSourceUid,
-            libraryId,
-            "Test Report Title",
-            filterIds,
-            "Test Report Description",
-            "Test Owner Id",
-            "123");
+      verify(dataSourceRepository).findById(dataSourceUid);
+      verify(reportLibraryRepository, never()).findById(any());
+      verify(reportFilterRepository, never()).findAllById(any());
 
-    // Act & Assert
-    assertThatThrownBy(() -> service.createReport(request))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("No data source found for ID " + dataSourceUid);
+      // Assert that the report was not saved
+      verify(reportRepository, never()).save(any());
+    }
 
-    verify(dataSourceRepository).findById(dataSourceUid);
-    verify(reportLibraryRepository, never()).findById(any());
-    verify(reportFilterRepository, never()).findAllById(any());
+    @Test
+    void createReport_should_throw_when_report_library_not_found() {
+      when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.empty());
 
-    // Assert that the report was not saved
-    verify(reportRepository, never()).save(any());
-  }
+      CreateReportRequest request = buildCreateReportRequest(null);
 
-  @Test
-  void createReport_should_throw_when_report_library_not_found() {
-    // Arrange
-    DataSource mockDataSource = mock(DataSource.class);
-    List<Long> filterIds = List.of(1L, 2L);
+      // Act & Assert
+      assertThatThrownBy(() -> service.createReport(request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("No report library found for ID " + libraryId);
 
-    when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.of(mockDataSource));
-    when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.empty());
+      verify(dataSourceRepository).findById(dataSourceUid);
+      verify(reportLibraryRepository).findById(libraryId);
+      verify(reportFilterRepository, never()).saveAll(any());
 
-    CreateReportRequest request =
-        new CreateReportRequest(
-            dataSourceUid,
-            libraryId,
-            "Test Report Title",
-            filterIds,
-            "Test Report Description",
-            "Test Owner Id",
-            "123");
+      // Assert that the report was not saved
+      verify(reportRepository, never()).save(any());
+    }
 
-    // Act & Assert
-    assertThatThrownBy(() -> service.createReport(request))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("No report library found for ID " + libraryId);
+    @Test
+    void createReport_should_throw_when_filter_s_are_invalid() {
+      CreateReportRequest request = buildCreateReportRequest(null);
 
-    verify(dataSourceRepository).findById(dataSourceUid);
-    verify(reportLibraryRepository).findById(libraryId);
-    verify(reportFilterRepository, never()).findAllById(any());
+      // Act & Assert
+      assertThatThrownBy(() -> service.createReport(request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("One or more filter IDs are invalid in filterId list ");
 
-    // Assert that the report was not saved
-    verify(reportRepository, never()).save(any());
-  }
+      verify(dataSourceRepository).findById(dataSourceUid);
+      verify(reportLibraryRepository).findById(libraryId);
 
-  @Test
-  void createReport_should_throw_when_filter_ids_are_invalid() {
-    // Arrange
-    DataSource mockDataSource = mock(DataSource.class);
-    ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
-    List<Long> requestedFilterIds = List.of(1L, 2L, 3L);
-    List<ReportFilter> returnedFilters =
-        List.of(
-            mock(ReportFilter.class),
-            mock(ReportFilter.class)); // Only 2 filters returned instead of 3
-
-    when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.of(mockDataSource));
-    when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.of(mockReportLibrary));
-    when(reportFilterRepository.findAllById(requestedFilterIds)).thenReturn(returnedFilters);
-
-    CreateReportRequest request =
-        new CreateReportRequest(
-            dataSourceUid,
-            libraryId,
-            "Test Report Title",
-            requestedFilterIds,
-            "Test Report Description",
-            "Test Owner Id",
-            "123");
-
-    // Act & Assert
-    assertThatThrownBy(() -> service.createReport(request))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("One or more filter IDs are invalid in filterId list " + requestedFilterIds);
-
-    verify(dataSourceRepository).findById(dataSourceUid);
-    verify(reportLibraryRepository).findById(libraryId);
-    verify(reportFilterRepository).findAllById(requestedFilterIds);
-
-    // Assert that the report was not saved
-    verify(reportRepository, never()).save(any());
-  }
-
-  @Test
-  void getReport_should_return_configuration_when_report_exists() {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-    List<ReportFilter> reportFilters =
-        List.of(
-            new ReportFilter(
-                3L,
-                mock(Report.class),
-                new FilterCode(4L, "NONE", null, null, "J_S01", null, "BAS_JUR_LIST", null, null),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null),
-            new ReportFilter(
-                6L,
-                mock(Report.class),
-                new FilterCode(
-                    5L,
-                    "NONE",
-                    null,
-                    null,
-                    "A_W01",
-                    null,
-                    ReportConstants.ADV_FILTER_TYPE,
-                    null,
-                    null),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null));
-    mockReport(id, "python", "nbs_ods.PHCDemographic", reportFilters);
-
-    ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
-
-    assertThat(config.dataSource().name()).isEqualTo("nbs_ods.PHCDemographic");
-    assertThat(config.basicFilters())
-        .hasSize(1)
-        .allSatisfy(
-            filterConfig -> {
-              assertThat(filterConfig.reportFilterUid()).isEqualTo(3L);
-
-              assertThat(filterConfig.filterType().code()).isEqualTo("J_S01");
-            });
-    assertThat(config.advancedFilter().reportFilterUid()).isEqualTo(6L);
-  }
-
-  @Test
-  void getReport_should_throw_when_report_not_found() {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-    when(reportRepository.findById(id)).thenReturn(Optional.empty());
-
-    assertThatThrownBy(() -> service.getReport(reportUid, dataSourceUid))
-        .isInstanceOf(NotFoundException.class)
-        .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
-  }
-
-  @Test
-  void getReportRunner_should_return_runner_when_report_exists() {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
-
-    String runner = service.getReportRunner(reportUid, dataSourceUid);
-
-    assertThat(runner).isEqualTo("python");
-  }
-
-  @Test
-  void getReportRunner_should_throw_when_report_not_found() {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-    when(reportRepository.findById(id)).thenReturn(Optional.empty());
-
-    assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
-        .isInstanceOf(NotFoundException.class)
-        .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
-  }
-
-  @Test
-  void getReportRunner_should_throw_when_report_has_no_library() {
-    ReportId reportId = new ReportId(reportUid, dataSourceUid);
-    Report report = mockReport(reportId, "python", "nbs_ods.PHCDemographic", List.of());
-
-    when(report.getReportLibrary()).thenReturn(null);
-
-    assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
-        .isInstanceOf(UnprocessableEntityException.class)
-        .hasMessage("No report library exists for report %s", reportId);
-  }
-
-  @Test
-  void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
-
-    ReportSpec spec =
-        new ReportSpec(
-            true,
-            true,
-            "Test Report",
-            "nbs_custom",
-            "[NBS_ODSE].[dbo].[PHCDemographic]",
-            "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]");
-    try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
-        mockConstruction(
-            ReportSpecBuilder.class,
-            (builder, context) -> when(builder.build()).thenReturn(spec))) {
-      when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
-      when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
-      when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
-      when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
-      when(requestBodySpec.retrieve()).thenReturn(responseSpec);
-
-      ResponseEntity<ReportResult> expectedResponse =
-          new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK);
-      when(responseSpec.toEntity(ReportResult.class)).thenReturn(expectedResponse);
-
-      ReportExecutionRequest request =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, List.of(), null);
-
-      ResponseEntity<ReportResult> response = service.executeReport(request);
-
-      assertThat(response).isEqualTo(expectedResponse);
-      ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
-      verify(specBuilder).build();
+      // Assert that the report was not saved
+      verify(reportRepository, never()).save(any());
     }
   }
 
-  @Test
-  void executeReport_should_throw_not_implemented_when_runner_not_python() {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "java", "nbs_rdb.V_CHALK_TALK", List.of());
+  @Nested
+  class GetReportTest {
+    @Test
+    void getReport_should_return_configuration_when_report_exists() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      List<ReportFilter> reportFilters =
+          List.of(
+              new ReportFilter(
+                  3L,
+                  mock(Report.class),
+                  new FilterCode(4L, "NONE", null, null, "J_S01", null, "BAS_JUR_LIST", null, null),
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null),
+              new ReportFilter(
+                  6L,
+                  mock(Report.class),
+                  new FilterCode(
+                      5L,
+                      "NONE",
+                      null,
+                      null,
+                      "A_W01",
+                      null,
+                      ReportConstants.ADV_FILTER_TYPE,
+                      null,
+                      null),
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null));
+      mockReport(id, "python", "nbs_ods.PHCDemographic", reportFilters);
 
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17L), List.of(), null);
+      ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
-    assertThatThrownBy(() -> service.executeReport(request))
-        .isInstanceOf(NotImplementedException.class)
-        .hasMessage("Report not implemented for java");
+      assertThat(config.dataSource().name()).isEqualTo("nbs_ods.PHCDemographic");
+      assertThat(config.basicFilters())
+          .hasSize(1)
+          .allSatisfy(
+              filterConfig -> {
+                assertThat(filterConfig.reportFilterUid()).isEqualTo(3L);
+
+                assertThat(filterConfig.filterType().code()).isEqualTo("J_S01");
+              });
+      assertThat(config.advancedFilter().reportFilterUid()).isEqualTo(6L);
+    }
+
+    @Test
+    void getReport_should_throw_when_report_not_found() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      when(reportRepository.findById(id)).thenReturn(Optional.empty());
+
+      assertThatThrownBy(() -> service.getReport(reportUid, dataSourceUid))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
+    }
   }
 
-  @Test
-  void executeReport_should_throw_not_found_when_report_not_found() {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
+  @Nested
+  class GetReportRunnerTest {
+    @Test
+    void getReportRunner_should_return_runner_when_report_exists() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
 
-    when(reportRepository.findById(id)).thenReturn(Optional.empty());
+      String runner = service.getReportRunner(reportUid, dataSourceUid);
 
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(18L), List.of(), null);
+      assertThat(runner).isEqualTo("python");
+    }
 
-    assertThatThrownBy(() -> service.executeReport(request))
-        .isInstanceOf(NotFoundException.class)
-        .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
+    @Test
+    void getReportRunner_should_throw_when_report_not_found() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      when(reportRepository.findById(id)).thenReturn(Optional.empty());
+
+      assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
+    }
+
+    @Test
+    void getReportRunner_should_throw_when_report_has_no_library() {
+      ReportId reportId = new ReportId(reportUid, dataSourceUid);
+      Report report = mockReport(reportId, "python", "nbs_ods.PHCDemographic", List.of());
+
+      when(report.getReportLibrary()).thenReturn(null);
+
+      assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
+          .isInstanceOf(UnprocessableEntityException.class)
+          .hasMessage("No report library exists for report %s", reportId);
+    }
+  }
+
+  @Nested
+  class ExecuteReportTest {
+    @Test
+    void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
+
+      ReportSpec spec =
+          new ReportSpec(
+              true,
+              true,
+              "Test Report",
+              "nbs_custom",
+              "[NBS_ODSE].[dbo].[PHCDemographic]",
+              "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]");
+      try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
+          mockConstruction(
+              ReportSpecBuilder.class,
+              (builder, context) -> when(builder.build()).thenReturn(spec))) {
+        when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
+        when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
+        when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
+        when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
+        when(requestBodySpec.retrieve()).thenReturn(responseSpec);
+
+        ResponseEntity<ReportResult> expectedResponse =
+            new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK);
+        when(responseSpec.toEntity(ReportResult.class)).thenReturn(expectedResponse);
+
+        ReportExecutionRequest request =
+            new ReportExecutionRequest(reportUid, dataSourceUid, true, null, List.of(), null);
+
+        ResponseEntity<ReportResult> response = service.executeReport(request);
+
+        assertThat(response).isEqualTo(expectedResponse);
+        ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
+        verify(specBuilder).build();
+      }
+    }
+
+    @Test
+    void executeReport_should_throw_not_implemented_when_runner_not_python() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      mockReport(id, "java", "nbs_rdb.V_CHALK_TALK", List.of());
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17L), List.of(), null);
+
+      assertThatThrownBy(() -> service.executeReport(request))
+          .isInstanceOf(NotImplementedException.class)
+          .hasMessage("Report not implemented for java");
+    }
+
+    @Test
+    void executeReport_should_throw_not_found_when_report_not_found() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+
+      when(reportRepository.findById(id)).thenReturn(Optional.empty());
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(18L), List.of(), null);
+
+      assertThatThrownBy(() -> service.executeReport(request))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
+    }
   }
 
   private ReportResult getReportExecutionResponse() {

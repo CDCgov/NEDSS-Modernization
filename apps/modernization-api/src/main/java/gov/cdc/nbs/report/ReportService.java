@@ -83,7 +83,7 @@ public class ReportService {
 
     Report savedReport = reportRepository.save(newReport);
 
-    if (!request.reportFilters().isEmpty()) {
+    if (request.reportFilters() != null && !request.reportFilters().isEmpty()) {
       createReportFilters(savedReport, request.reportFilters());
     }
 
