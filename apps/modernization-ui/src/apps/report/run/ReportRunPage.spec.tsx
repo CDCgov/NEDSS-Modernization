@@ -36,16 +36,17 @@ vi.mock('libs/permission', async () => {
 });
 
 const MOCK_CONFIG: ReportConfiguration = {
-    reportTitle: 'Test Report',
+    title: 'Test Report',
     dataSource: {
         name: 'nbs_ods.data_source',
     },
-    reportLibrary: {
+    library: {
         runner: 'python',
         libraryName: 'nbs_sr_99',
         isBuiltin: true,
+        allowColumnSelection: false,
     },
-    reportColumns: [
+    columns: [
         {
             id: 2001,
             name: 'FULL_NAME',

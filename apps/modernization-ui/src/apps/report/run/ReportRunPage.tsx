@@ -57,7 +57,7 @@ const ReportRunPage = () => {
 
                 const advancedFilterQuery =
                     data.advancedFilter && config
-                        ? queryToAdvancedFilterRequest(data.advancedFilter, config.reportColumns)
+                        ? queryToAdvancedFilterRequest(data.advancedFilter, config.columns)
                         : undefined;
                 const advancedFilter =
                     advancedFilterQuery && config?.advancedFilter?.reportFilterUid
