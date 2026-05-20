@@ -90,7 +90,7 @@ class TestIntegrationQa04Library:
         assert result.description is None
 
     def test_execute_report_error_explanations(self):
-        """Test that only cases with errors are returned (no 'N/A')."""
+        """Test that only cases with errors are returned."""
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -105,11 +105,8 @@ class TestIntegrationQa04Library:
 
         result = execute_report(report_spec)
         data = result.content
-
-        # Verify no 'N/A' values in Error Explanation column
         error_col_idx = data.columns.index('ERROR_TXT')
         for row in data.data:
-            assert row[error_col_idx] != 'N/A'
             assert row[error_col_idx] in (
                 'No Treatment or Lab',
                 'No Lab',
@@ -128,8 +125,6 @@ class TestIntegrationQa04Library:
                 'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': """
                     SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]
-                    UNION ALL
-                    SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]
                     WHERE INV_CASE_STATUS = 'Suspect'
                 """,
             }
@@ -140,7 +135,7 @@ class TestIntegrationQa04Library:
 
         # All returned rows should be from the main subset
         # (the UNION ALL with Suspect should be excluded)
-        assert len(data.data) >= 0
+        assert len(data.data) == 0
 
     def test_execute_report_duplicate_handling(self):
         """Test that duplicate rows are removed."""
