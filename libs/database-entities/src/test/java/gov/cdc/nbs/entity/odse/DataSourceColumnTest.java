@@ -24,6 +24,7 @@ class DataSourceColumnTest {
     String columnTitle = "Investigation ID";
     String columnSourceTypeCode = "INTEGER";
     DataSource dataSource = new DataSource();
+    DataSourceCodeset dataSourceCodeset = new DataSourceCodeset();
     String descTxt = "Investigation ID";
     Character displayable = 'Y';
     LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
@@ -41,6 +42,7 @@ class DataSourceColumnTest {
             columnTitle,
             columnSourceTypeCode,
             dataSource,
+            dataSourceCodeset,
             descTxt,
             displayable,
             effectiveTime,

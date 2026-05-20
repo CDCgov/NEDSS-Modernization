@@ -9,8 +9,10 @@ export type ReportColumn = {
     title: string;
     sourceTypeCode: string;
     descTxt?: string;
-    displayable?: string;
-    filterable?: string;
+    isDisplayable: boolean;
+    isFilterable: boolean;
+    codeDescCd?: string;
+    codesetNm?: string;
     statusCd?: string;
     statusTime?: string;
 };
