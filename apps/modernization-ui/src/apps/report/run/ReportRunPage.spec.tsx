@@ -1932,6 +1932,119 @@ describe('report run page', () => {
         });
     });
 
+    describe('BAS_DAYS', () => {
+        const MOCK_FILTER = {
+            reportFilterUid: 1001,
+            filterType: {
+                id: 23,
+                codeTable: undefined,
+                descTxt: 'Days Filter for duplicate events',
+                code: 'D_01',
+                filterCodeSetName: undefined,
+                filterType: 'BAS_DAYS',
+                filterName: 'Duplicate Investigations Time Frame',
+            },
+            isRequired: true,
+            reportColumnUid: 2001,
+        };
+
+        it('goes through happy path', async () => {
+            const user = userEvent.setup();
+
+            const mockConfigApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+
+            const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockConfigApi).toHaveBeenCalled();
+
+            const input = await findByLabelText('Days');
+            await userEvent.type(input, '5');
+
+            expect(input).toHaveValue('5');
+
+            expect(await axe(container)).toHaveNoViolations();
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: undefined,
+                    basicFilters: [{ reportFilterUid: 1001, values: ['5'] }],
+                }),
+            });
+        });
+
+        it('does not submit on required', async () => {
+            const user = userEvent.setup();
+
+            const mockConfigApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+
+            const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockConfigApi).toHaveBeenCalled();
+
+            const input = await findByLabelText('Full Name');
+            expect(input).toHaveValue('');
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(input).toBeInvalid();
+            expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+            expect(mockResultApi).not.toHaveBeenCalled();
+        });
+
+        it('renders default value', async () => {
+            const user = userEvent.setup();
+
+            const mockConfigApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({
+                    ...MOCK_CONFIG,
+                    basicFilters: [{ ...MOCK_FILTER, defaultValue: ['starter text'] }],
+                });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+
+            const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockConfigApi).toHaveBeenCalled();
+
+            const input = await findByLabelText('Full Name');
+            expect(input).toHaveValue('starter text');
+
+            await userEvent.type(input, ' and more');
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: undefined,
+                    basicFilters: [{ reportFilterUid: 1001, values: ['starter text and more'] }],
+                }),
+            });
+        });
+    });
+
     describe('advanced filter', () => {
         const MOCK_FILTER: generated.AdvancedFilterConfiguration = {
             reportFilterUid: 1001,
