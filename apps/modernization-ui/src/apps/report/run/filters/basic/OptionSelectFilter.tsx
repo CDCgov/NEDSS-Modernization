@@ -20,7 +20,7 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
     const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
     // ignore include nulls indicator here
     const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
-    const options = OPTIONS_HOOK_MAP[filterCode]?.(filter?.filterType?.filterCodeSetName) ?? [];
+    const options = OPTIONS_HOOK_MAP[filterCode]?.(filter?.filterType?.codeSetName ?? '') ?? [];
 
     useEffect(() => {
         // options have changed and the value is no longer in the option set
@@ -77,9 +77,9 @@ const useDiseaseOptions = (filterCodeSetName?: string) => {
 };
 
 const getValueList = (filter: BasicFilterConfiguration) => {
-    if (!filter.defaultValue || filter.defaultValue.length === 0) return null;
+    if (!filter.defaultValues || filter.defaultValues.length === 0) return null;
 
-    return filter.defaultValue;
+    return filter.defaultValues;
 };
 
 const optionSelectValidator = (filter: BasicFilterConfiguration, label: string) => {
