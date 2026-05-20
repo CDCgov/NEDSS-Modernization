@@ -12,16 +12,10 @@ def execute(
 
     Conversion notes:
     """
-    content = trx.query(
-        """
-        WITH LAB AS
-        (
-          SELECT ltr.INVESTIGATION_KEY,
-                 MAX(lt.SPECIMEN_COLLECTION_DT) AS SPECIMEN_COLLECTION_DT
-          FROM [RDB].[dbo].[LAB_TEST_RESULT] ltr
-            INNER JOIN [RDB].[dbo].[lab_test] lt ON ltr.lab_test_key = lt.lab_test_key
-          GROUP BY ltr.INVESTIGATION_KEY
-        ),
+    query = f"""
+        WITH STD_HIV_DATAMART AS ({subset_query}),
+
+        -- gets information about each investigation
         INV AS (
           SELECT INVESTIGATION.INVESTIGATION_KEY,
                  INVESTIGATION.INV_CASE_STATUS,
@@ -29,16 +23,40 @@ def execute(
                  EVENT_METRIC.ADD_USER_ID,
                  USER_PROFILE.PROVIDER_QUICK_CODE
           FROM [RDB].[dbo].[INVESTIGATION]
-            JOIN [RDB].[dbo].[EVENT_METRIC] 
+            JOIN [RDB].[dbo].[EVENT_METRIC]
                 ON INVESTIGATION.CASE_UID = EVENT_METRIC.EVENT_UID
-            JOIN [RDB].[dbo].[USER_PROFILE] 
+            JOIN [RDB].[dbo].[USER_PROFILE]
                 ON EVENT_METRIC.ADD_USER_ID = USER_PROFILE.NEDSS_ENTRY_ID
+        ),
+
+        -- gets the most recent speciment collection date for each investigation
+        LAB AS
+        (
+          SELECT ltr.INVESTIGATION_KEY,
+                 MAX(lt.SPECIMEN_COLLECTION_DT) AS SPECIMEN_COLLECTION_DT
+          FROM [RDB].[dbo].[LAB_TEST_RESULT] ltr
+            INNER JOIN [RDB].[dbo].[lab_test] lt ON ltr.lab_test_key = lt.lab_test_key
+          GROUP BY ltr.INVESTIGATION_KEY
         )
-        SELECT *
-        FROM INV i
-        LEFT JOIN LAB l ON l.INVESTIGATION_KEY = i.INVESTIGATION_KEY;
+
+        SELECT DISTINCT SHD.PATIENT_NAME,
+            SHD.PATIENT_LOCAL_ID,
+            SHD.INV_LOCAL_ID,
+            INV.REFERRAL_BASIS,
+            INV.PROVIDER_QUICK_CODE,
+            SHD.DIAGNOSIS,
+            SHD.CMP_PID_IND,
+            SHD.CONFIRMATION_DT,
+            SHD.FL_FUP_EXAM_DT,
+            LAB.SPECIMEN_COLLECTION_DT
+        FROM STD_HIV_DATAMART SHD
+          INNER JOIN INV ON SHD.INVESTIGATION_KEY = INV.INVESTIGATION_KEY
+          LEFT OUTER JOIN LAB ON SHD.INVESTIGATION_KEY = LAB.INVESTIGATION_KEY
+        WHERE SHD.INV_LOCAL_ID IS NOT NULL
+          AND SHD.DIAGNOSIS IS NOT NULL
+          AND INV.INV_CASE_STATUS IN ('Probable', 'Confirmed');
         """
-    )
+    content = trx.query(query)
 
     return ReportResult(
         content_type='table',

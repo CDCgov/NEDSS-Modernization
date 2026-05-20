@@ -19,12 +19,11 @@ class TestIntegrationQa05Library:
                 'report_title': 'QA 6',
                 'library_name': 'qa_06',
                 'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
-                'subset_query': 'SELECT 1'
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]'
             }
         )
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-
         # data = result.content.data
         # breakpoint()
