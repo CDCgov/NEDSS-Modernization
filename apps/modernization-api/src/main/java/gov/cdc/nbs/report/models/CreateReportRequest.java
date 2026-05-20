@@ -10,4 +10,4 @@ public record CreateReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String sectionCode,
     String description,
     String ownerId,
-    List<CreateReportFilterRequest> reportFilters) {}
+    List<CreateFilterRequest> reportFilters) {}

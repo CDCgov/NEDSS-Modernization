@@ -187,7 +187,7 @@ public class ReportService {
         .toEntity(ReportResult.class);
   }
 
-  private List<ReportFilter> createReportFilters(Report report, List<CreateReportFilterRequest> filtersToCreate) {
+  private void createReportFilters(Report report, List<CreateFilterRequest> filtersToCreate) {
     List<ReportFilter> reportFilters =
             filtersToCreate.stream()
                     .map(
@@ -204,6 +204,6 @@ public class ReportService {
                                             .build())
                     .toList();
 
-    return reportFilterRepository.saveAll(reportFilters);
+    reportFilterRepository.saveAll(reportFilters);
   }
 }
