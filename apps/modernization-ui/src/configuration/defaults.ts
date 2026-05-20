@@ -74,6 +74,7 @@ const defaultFeatures: Features = {
 const defaultProperties: Properties = {
     hivProgramAreas: [],
     stdProgramAreas: [],
+    entries: {},
 };
 
 const defaultSettings: Settings = {
