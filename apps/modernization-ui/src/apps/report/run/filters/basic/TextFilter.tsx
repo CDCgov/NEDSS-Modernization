@@ -9,10 +9,10 @@ const TextFilter: BasicFilterComponent = ({ filter, ...remaining }: BasicFilterP
 };
 
 const getValueText = (filter: BasicFilterConfiguration) => {
-    if (!filter.defaultValue || filter.defaultValue.length === 0) return null;
+    if (!filter.defaultValues || filter.defaultValues.length === 0) return null;
 
     // bas text filters only ever have one default and it needs no interpretation
-    return filter.defaultValue[0];
+    return filter.defaultValues[0];
 };
 
 export { TextFilter, getValueText };

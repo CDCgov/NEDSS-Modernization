@@ -22,10 +22,10 @@ const MonthYearRangeFilter: BasicFilterComponent = ({ filter, value, onChange, .
 };
 
 const getMonthYearRange = (filter: BasicFilterConfiguration) => {
-    if (!filter.defaultValue || filter.defaultValue.length !== 2) return null;
+    if (!filter.defaultValues || filter.defaultValues.length !== 2) return null;
 
     // bas time range filters have two items
-    return [filter.defaultValue[0], filter.defaultValue[1]];
+    return [filter.defaultValues[0], filter.defaultValues[1]];
 };
 
 const toDateParts = (dtStr: string) => dtStr.split('/').map((v) => parseInt(v));
