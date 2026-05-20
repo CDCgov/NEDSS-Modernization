@@ -39,8 +39,8 @@ class ReportColumnMapperTest {
     assertThat(mapped.title()).isEqualTo(dbColumn.getColumnTitle());
     assertThat(mapped.sourceTypeCode()).isEqualTo(dbColumn.getColumnSourceTypeCode());
     assertThat(mapped.descTxt()).isEqualTo(dbColumn.getDescTxt());
-    assertThat(mapped.isDisplayable()).isEqualTo(true);
-    assertThat(mapped.isFilterable()).isEqualTo(false);
+    assertThat(mapped.isDisplayable()).isTrue();
+    assertThat(mapped.isFilterable()).isFalse();
     assertThat(mapped.statusCd()).isEqualTo(dbColumn.getStatusCd());
     assertThat(mapped.statusTime()).isEqualTo(dbColumn.getStatusTime());
     assertThat(mapped.codesetNm()).isEqualTo(dbColumn.getCodeset().getCodesetNm());
@@ -71,8 +71,8 @@ class ReportColumnMapperTest {
     assertThat(mapped.title()).isEqualTo(dbColumn.getColumnTitle());
     assertThat(mapped.sourceTypeCode()).isEqualTo(dbColumn.getColumnSourceTypeCode());
     assertThat(mapped.descTxt()).isEqualTo(dbColumn.getDescTxt());
-    assertThat(mapped.isDisplayable()).isEqualTo(false);
-    assertThat(mapped.isFilterable()).isEqualTo(false);
+    assertThat(mapped.isDisplayable()).isFalse();
+    assertThat(mapped.isFilterable()).isFalse();
     assertThat(mapped.statusCd()).isEqualTo(dbColumn.getStatusCd());
     assertThat(mapped.statusTime()).isEqualTo(dbColumn.getStatusTime());
     assertThat(mapped.codesetNm()).isNull();
