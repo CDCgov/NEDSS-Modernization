@@ -2,18 +2,18 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
-import gov.cdc.nbs.entity.odse.DataSourceColumn;
-import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
+import gov.cdc.nbs.report.models.*;
+import gov.cdc.nbs.repository.*;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -194,20 +194,20 @@ public class ReportService {
 
   private void createReportFilters(Report report, List<CreateFilterRequest> filtersToCreate) {
     List<ReportFilter> reportFilters =
-            filtersToCreate.stream()
-                    .map(
-                            filterRequest ->
-                                    ReportFilter.builder()
-                                            .report(report)
-                                            .filterCode(
-                                                    filterCodeRepository.getReferenceById(filterRequest.filterCodeUid()))
-                                            .dataSourceColumn(
-                                                    filterRequest.columnUid() != null
-                                                            ? dataSourceColumnRepository.getReferenceById(
-                                                            filterRequest.columnUid())
-                                                            : null)
-                                            .build())
-                    .toList();
+        filtersToCreate.stream()
+            .map(
+                filterRequest ->
+                    ReportFilter.builder()
+                        .report(report)
+                        .filterCode(
+                            filterCodeRepository.getReferenceById(filterRequest.filterCodeUid()))
+                        .dataSourceColumn(
+                            filterRequest.columnUid() != null
+                                ? dataSourceColumnRepository.getReferenceById(
+                                    filterRequest.columnUid())
+                                : null)
+                        .build())
+            .toList();
 
     reportFilterRepository.saveAll(reportFilters);
   }
