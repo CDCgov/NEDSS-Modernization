@@ -6,7 +6,6 @@ import gov.cdc.nbs.option.Option;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
@@ -28,7 +27,7 @@ public class PersonNamesListFinder {
           AND au.auth_user_uid = aur.auth_user_uid
           AND root_extension_txt IS NOT NULL
           AND root_extension_txt !=''
-          AND aur.prog_area_cd IN (%s);
+          AND aur.prog_area_cd IN (:programAreas);
       """;
 
   private final JdbcClient client;
@@ -41,19 +40,21 @@ public class PersonNamesListFinder {
     this.mapper = new PersonNamesListRowMapper();
   }
 
-  private String buildProgramAreasValue() {
+  private List<String> buildProgramAreasValue() {
     Properties nbsProperties = nbsPropertiesFinder.find();
     List<String> hivProgramAreas = nbsProperties.hivProgramAreas();
     List<String> stdProgramAreas = nbsProperties.stdProgramAreas();
     List<String> stdHivProgramAreas = new ArrayList<>(hivProgramAreas);
     stdHivProgramAreas.addAll(stdProgramAreas);
-    return stdHivProgramAreas.stream()
-        .map(item -> "'" + item + "'")
-        .collect(Collectors.joining(", "));
+    return stdHivProgramAreas;
   }
 
   public Collection<Option> find() {
-    String programAreasValue = buildProgramAreasValue();
-    return this.client.sql(QUERY.formatted(programAreasValue)).query(this.mapper).list();
+    List<String> programAreasValue = buildProgramAreasValue();
+    return this.client
+        .sql(QUERY)
+        .param("programAreas", programAreasValue)
+        .query(this.mapper)
+        .list();
   }
 }
