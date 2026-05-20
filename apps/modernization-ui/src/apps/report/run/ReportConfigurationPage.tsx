@@ -8,6 +8,7 @@ import { Card } from 'design-system/card';
 import { STATE_FILTER_CODE } from './filters/basic/OptionSelectFilter';
 import { CurrentStateProvider } from './filters/basic/useCurrentState';
 import { AdvancedFilter } from './filters/advanced/AdvancedFilter';
+import { ColumnSelector } from './ColumnSelector';
 
 const ReportConfigurationPage = ({
     config,
@@ -46,7 +47,12 @@ const ReportConfigurationPage = ({
                 )}
                 {config.advancedFilter && (
                     <Card id="advanced-filter" title="Advanced Filter" collapsible={true}>
-                        <AdvancedFilter filter={config.advancedFilter} columns={config.reportColumns} />
+                        <AdvancedFilter filter={config.advancedFilter} columns={config.columns} />
+                    </Card>
+                )}
+                {config.library.allowColumnSelection && (
+                    <Card id="column-selection" title="Select Columns" collapsible={true}>
+                        <ColumnSelector columns={config.columns} />
                     </Card>
                 )}
                 <details>
