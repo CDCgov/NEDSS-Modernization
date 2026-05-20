@@ -7,7 +7,7 @@ public record CreateReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long dataSourceId,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long libraryId,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String reportTitle,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<Long> filterIds,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String sectionCode,
     String description,
-    String ownerId) {}
+    String ownerId,
+    List<CreateReportFilterRequest> reportFilters) {}

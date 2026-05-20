@@ -8,10 +8,8 @@ import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.report.utils.DataSourceNameUtils;
-import gov.cdc.nbs.repository.DataSourceRepository;
-import gov.cdc.nbs.repository.ReportFilterRepository;
-import gov.cdc.nbs.repository.ReportLibraryRepository;
-import gov.cdc.nbs.repository.ReportRepository;
+import gov.cdc.nbs.repository.*;
+
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
@@ -28,6 +26,8 @@ public class ReportService {
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
   private final ReportFilterRepository reportFilterRepository;
+  private final DataSourceColumnRepository dataSourceColumnRepository;
+  private final FilterCodeRepository filterCodeRepository;
 
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils;
@@ -37,12 +37,16 @@ public class ReportService {
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
       final ReportFilterRepository reportFilterRepository,
+      final DataSourceColumnRepository dataSourceColumnRepository,
+      final FilterCodeRepository filterCodeRepository,
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig) {
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
     this.reportFilterRepository = reportFilterRepository;
+    this.dataSourceColumnRepository = dataSourceColumnRepository;
+    this.filterCodeRepository = filterCodeRepository;
 
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
@@ -66,26 +70,34 @@ public class ReportService {
                     new IllegalArgumentException(
                         "No report library found for ID " + request.libraryId()));
 
-    List<ReportFilter> reportFilters = null;
-    if (!request.filterIds().isEmpty()) {
-      reportFilters = reportFilterRepository.findAllById(request.filterIds());
-
-      if (reportFilters.size() != request.filterIds().size()) {
-        throw new IllegalArgumentException(
-            "One or more filter IDs are invalid in filterId list " + request.filterIds());
-      }
-    }
-
     Report newReport =
         Report.builder()
             .dataSource(dataSource)
             .reportLibrary(reportLibrary)
             .reportTitle(request.reportTitle())
-            .reportFilters(reportFilters)
             .sectionCd(request.sectionCode())
             .build();
 
-    return reportRepository.save(newReport);
+    Report savedReport = reportRepository.save(newReport);
+
+    if (!request.reportFilters().isEmpty()) {
+      List<ReportFilter> reportFilters = request.reportFilters().stream()
+              .map(
+                      filterRequest ->
+                              ReportFilter.builder()
+                                      .report(savedReport)
+                                      .filterCode(filterCodeRepository.getReferenceById(filterRequest.filterCodeUid()))
+                                      .dataSourceColumn(
+                                              filterRequest.columnUid() != null
+                                                      ? dataSourceColumnRepository.getReferenceById(filterRequest.columnUid())
+                                                      : null)
+                                      .build())
+              .toList();
+
+        reportFilterRepository.saveAll(reportFilters);
+    }
+
+    return savedReport;
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
