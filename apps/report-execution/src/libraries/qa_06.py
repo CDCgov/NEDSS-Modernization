@@ -30,8 +30,7 @@ def execute(
         ),
 
         -- gets the most recent speciment collection date for each investigation
-        LAB AS
-        (
+        LAB AS (
           SELECT ltr.INVESTIGATION_KEY,
                  MAX(lt.SPECIMEN_COLLECTION_DT) AS SPECIMEN_COLLECTION_DT
           FROM [RDB].[dbo].[LAB_TEST_RESULT] ltr
