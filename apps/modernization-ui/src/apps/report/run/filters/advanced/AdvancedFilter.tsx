@@ -5,11 +5,13 @@ import QueryBuilder, {
     formatQuery,
     isRuleGroupType,
     isRuleType,
+    joinWith,
     Operator,
     QueryValidator,
     RuleGroupType,
     RuleGroupTypeAny,
     RuleType,
+    splitBy,
     ValidationResult,
 } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
@@ -25,6 +27,7 @@ import {
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { KeyboardDnDProvider } from './useKeyboardDnd';
 import { ShiftableDragHandle } from './ShiftableDragHandle';
+import { ValueEditor } from './ValueEditor';
 
 // ============= Constants ============= /
 
@@ -36,7 +39,7 @@ const EMPTY_QUERY: QbRuleGroup = {
 
 type NbsOperator = Operator & { nbsCd: string };
 
-const BASE_OPERATORS: NbsOperator[] = [
+const EQ_OPERATORS: NbsOperator[] = [
     {
         name: '=',
         nbsCd: 'EQ',
@@ -49,6 +52,24 @@ const BASE_OPERATORS: NbsOperator[] = [
         label: 'Not Equals',
         arity: 'binary',
     },
+];
+
+const LIST_OPERATORS: NbsOperator[] = [
+    {
+        name: 'in',
+        nbsCd: 'EQ',
+        label: 'Equals',
+        arity: 'binary',
+    },
+    {
+        name: 'notIn',
+        nbsCd: 'NE',
+        label: 'Not Equals',
+        arity: 'binary',
+    },
+];
+
+const NULL_OPERATORS: NbsOperator[] = [
     {
         name: 'null',
         nbsCd: 'IN',
@@ -113,14 +134,21 @@ const NUMERIC_OPERATORS: NbsOperator[] = [
     },
 ];
 
-const ALL_OPERATORS = [...BASE_OPERATORS, ...STRING_OPERATORS, ...NUMERIC_OPERATORS];
+const ALL_OPERATORS = [
+    ...EQ_OPERATORS,
+    ...NULL_OPERATORS,
+    ...LIST_OPERATORS,
+    ...STRING_OPERATORS,
+    ...NUMERIC_OPERATORS,
+];
 const BINARY_OPERATORS = ALL_OPERATORS.filter(({ arity }) => arity === 'binary').map(({ name }) => name);
 
-const OPERATOR_MAP: Record<string, Operator[]> = {
-    STRING: [...BASE_OPERATORS, ...STRING_OPERATORS],
-    INTEGER: [...BASE_OPERATORS, ...NUMERIC_OPERATORS],
-    NUMBER: [...BASE_OPERATORS, ...NUMERIC_OPERATORS],
-    DATETIME: [...BASE_OPERATORS, ...NUMERIC_OPERATORS],
+const OPERATOR_MAP: Record<string, NbsOperator[]> = {
+    STRING: [...EQ_OPERATORS, ...NULL_OPERATORS, ...STRING_OPERATORS],
+    INTEGER: [...EQ_OPERATORS, ...NULL_OPERATORS, ...NUMERIC_OPERATORS],
+    NUMBER: [...EQ_OPERATORS, ...NULL_OPERATORS, ...NUMERIC_OPERATORS],
+    DATETIME: [...EQ_OPERATORS, ...NULL_OPERATORS, ...NUMERIC_OPERATORS],
+    CODED: [...LIST_OPERATORS, ...NULL_OPERATORS],
 };
 
 const INPUT_TYPE_MAP: Record<string, string> = {
@@ -128,12 +156,15 @@ const INPUT_TYPE_MAP: Record<string, string> = {
     INTEGER: 'number',
     NUMBER: 'number',
     DATETIME: 'date',
+    CODED: 'text',
 };
 
 // ============= Translation NBS <--> Query Builder ============= /
 
 type NbsQuery = RuleGroup | Rule;
-type QbRule = Omit<Rule, 'columnId'> & { field: string };
+// to match `RuleType` more closely
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type QbRule = Omit<Rule, 'columnId' | 'value'> & { field: string; value: any };
 export type QbRuleGroup = RuleGroupType<QbRule>;
 type QbQuery = QbRuleGroup | QbRule;
 
@@ -172,7 +203,14 @@ function filterQbRules(rule: QbQuery, filterer: (r: QbRule) => boolean): QbQuery
     return rule;
 }
 
-const mapToQueryOp = (op: string) => ALL_OPERATORS.find(({ nbsCd }) => nbsCd === op)!.name;
+const mapToQueryOp = (op: string, isCoded: boolean) => {
+    // "EQ" and "NE" are translated to "in" and "notIn" if this is a coded value
+    if (isCoded) {
+        const listOp = LIST_OPERATORS.find(({ nbsCd }) => nbsCd === op);
+        if (listOp) return listOp.name;
+    }
+    return ALL_OPERATORS.find(({ nbsCd }) => nbsCd === op)!.name;
+};
 const mapToNbsOp = (op: string) => ALL_OPERATORS.find(({ name }) => name === op)!.nbsCd;
 
 // typescript is tricky to appease here, hence the casts, but the code does work as intended
@@ -186,7 +224,7 @@ const queryToAdvancedFilterRequest = (query: QbRuleGroup, columns: ReportColumn[
             id,
             operator: mapToNbsOp(operator)!,
             columnId: columns.find(({ name }) => field === name)!.id,
-            value: value.toString(),
+            value: LIST_OPERATORS.find(({ name }) => name === operator) ? joinWith(value, '|') : value.toString(),
         };
     }) as RuleGroup;
 };
@@ -194,13 +232,35 @@ const queryToAdvancedFilterRequest = (query: QbRuleGroup, columns: ReportColumn[
 // typescript is tricky to appease here, hence the casts, but the code does work as intended
 const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]): QbRuleGroup => {
     return mapNbsRules(query, ({ id, operator, columnId, value }) => {
+        const column = columns.find(({ id }) => columnId === id)!;
+        const qbOperator = mapToQueryOp(operator, !!column.codeDescCd)!;
         return {
             id,
-            operator: mapToQueryOp(operator)!,
-            field: columns.find(({ id }) => columnId === id)!.name!.toString(),
-            value: value,
+            operator: qbOperator,
+            field: column.name!.toString(),
+            value: LIST_OPERATORS.find(({ name }) => name === qbOperator) ? splitBy(value, '|') : value,
         };
     }) as QbRuleGroup;
+};
+
+export type ValueSetMetadata = { codeDescCd?: string; codesetNm?: string; columnUid: number };
+
+const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
+    const sourceType = c.codeDescCd ? 'CODED' : c.sourceTypeCode;
+    const valueEditorType = sourceType === 'CODED' ? 'multiselect' : 'text';
+    return {
+        id: c.id.toString(),
+        name: c.name,
+        label: c.title,
+        operators: OPERATOR_MAP[sourceType],
+        inputType: INPUT_TYPE_MAP[sourceType],
+        valueEditorType,
+
+        // shoving in more metadata for value set fetching
+        codeDescCd: c.codeDescCd,
+        codesetNm: c.codesetNm,
+        columnUid: c.id,
+    };
 };
 
 // ============= Validation ============= /
@@ -261,7 +321,7 @@ const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: Valida
             }
         } else if (BINARY_OPERATORS.find((name) => name === rule.operator)) {
             // 0 is fine, but falsey
-            if (!rule.value || rule.value === 0) {
+            if ((!rule.value && rule.value !== 0) || !rule.value.length) {
                 setInvalid(id, 'Value cannot be empty');
             }
         }
@@ -291,13 +351,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
         rules: { validate: validateAdvancedFilter },
     });
 
-    const fields: Field[] = columns.map((c) => ({
-        id: c.id.toString(),
-        name: c.name,
-        label: c.title,
-        operators: OPERATOR_MAP[c.sourceTypeCode ?? 'STRING'],
-        inputType: INPUT_TYPE_MAP[c.sourceTypeCode ?? 'STRING'],
-    }));
+    const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
 
     return (
         <div>
@@ -313,7 +367,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                         autoSelectField={false}
                         autoSelectOperator={false}
                         autoSelectValue={false}
-                        controlElements={{ dragHandle: ShiftableDragHandle }}
+                        controlElements={{ dragHandle: ShiftableDragHandle, valueEditor: ValueEditor }}
                     />
                 </QueryBuilderDnD>
             </KeyboardDnDProvider>

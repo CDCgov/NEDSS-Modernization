@@ -15,6 +15,7 @@ class ConditionOptionFinder extends SQLBasedOptionFinder {
           indent_level_nbr    as [order]
       from NBS_SRTE..Condition_code
           where status_cd = 'A'
+            and condition_codeset_nm = 'PHC_TYPE'
       order by
           indent_level_nbr,
           condition_short_nm

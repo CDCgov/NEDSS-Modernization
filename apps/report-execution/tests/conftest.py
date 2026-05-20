@@ -159,8 +159,6 @@ def get_faker_sql(schema_name: str) -> list[str]:
                 # KLUDGE: NULL writing is not always correct
                 result = result.replace(' nan,', ' NULL,')
                 result = result.replace(' nan)', ' NULL)')
-                result = result.replace(' <NA>,', ' NULL,')
-                result = result.replace(' <NA>)', ' NULL)')
                 results.append(result)
 
         return results

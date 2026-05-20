@@ -97,6 +97,7 @@ type Features = {
 type Properties = {
     hivProgramAreas: Array<string>;
     stdProgramAreas: Array<string>;
+    entries: Record<string, string>;
 };
 
 type Configuration = {

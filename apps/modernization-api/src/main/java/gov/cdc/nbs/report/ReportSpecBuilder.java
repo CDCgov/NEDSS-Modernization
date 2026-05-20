@@ -1,7 +1,7 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
-import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;

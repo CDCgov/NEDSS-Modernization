@@ -16,7 +16,7 @@ Feature: User Options REST API
     Then there are options available
     And the option named "Tommy Oliver" is included
     And the option named "Tommy Callahan III" is included
-    And the option named "Tommy Pickles" is not included
+    And the option named "Vince Nior" is not included
 
   Scenario: I can find a specific number of users
     When I am trying to find at most 4 users that start with "t"
