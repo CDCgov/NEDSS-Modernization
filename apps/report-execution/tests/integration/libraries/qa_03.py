@@ -63,7 +63,7 @@ class TestIntegrationNbsQa03Library:
     def test_execute_report_no_data(self, snapshot):
         report_spec = self.create_spec(
             subset_query='SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] '
-            "WHERE patient_name = 'Russell, Lee'"
+            "WHERE patient_name = 'Not a name'"
         )
 
         result = execute_report(report_spec)
