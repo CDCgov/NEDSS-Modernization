@@ -3,7 +3,7 @@ import pytest
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-faker_schema = 'patients_multiple_cases.yaml'
+faker_schema = 'qa_06.yaml'
 
 
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
