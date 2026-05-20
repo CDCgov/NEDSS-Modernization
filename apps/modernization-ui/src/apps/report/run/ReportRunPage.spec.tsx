@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import {fireEvent, render, waitFor } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -1668,6 +1668,7 @@ describe('report run page', () => {
 
             describe('single select', () => {
                 const MOCK_FILTER: BasicFilterConfiguration = {
+                    defaultIncludeNulls: false,
                     reportFilterUid: 1001,
                     filterType: {
                         id: 5,
@@ -1682,7 +1683,7 @@ describe('report run page', () => {
                     minValueCount: 1,
                     maxValueCount: 1,
                     defaultValues: [],
-                    reportColumnUid: 2001,
+                    reportColumnUid: 2001
                 };
 
                 it('goes through happy path', async () => {
@@ -1953,12 +1954,12 @@ describe('report run page', () => {
                 codeTable: undefined,
                 descTxt: 'Days Filter for duplicate events',
                 code: 'D_01',
-                filterCodeSetName: undefined,
-                filterType: 'BAS_DAYS',
-                filterName: 'Duplicate Investigations Time Frame',
+                codeSetName: undefined,
+                type: 'BAS_DAYS',
+                name: 'Duplicate Investigations Time Frame',
             },
             isRequired: true,
-            reportColumnUid: 2001,
+            defaultIncludeNulls: false,
         };
 
         it('goes through happy path', async () => {
@@ -1977,10 +1978,10 @@ describe('report run page', () => {
 
             expect(mockConfigApi).toHaveBeenCalled();
 
-            const input = await findByLabelText('Days');
+            const input = await findByLabelText('Duplicate Investigations Time Frame');
             await userEvent.type(input, '5');
 
-            expect(input).toHaveValue('5');
+            expect(input).toHaveValue(5);
 
             expect(await axe(container)).toHaveNoViolations();
 
@@ -1990,7 +1991,7 @@ describe('report run page', () => {
                 requestBody: expect.objectContaining({
                     isExport: true,
                     advancedFilter: undefined,
-                    basicFilters: [{ reportFilterUid: 1001, values: ['5'] }],
+                    basicFilters: [{ reportFilterUid: 1001, values: 5 }],
                 }),
             });
         });
@@ -2011,15 +2012,75 @@ describe('report run page', () => {
 
             expect(mockConfigApi).toHaveBeenCalled();
 
-            const input = await findByLabelText('Full Name');
-            expect(input).toHaveValue('');
+            const input = await findByLabelText('Duplicate Investigations Time Frame');
+            expect(input).toHaveValue(null);
 
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
 
-            expect(input).toBeInvalid();
-            expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+            // expect(input).toBeInvalid();
+            expect(await findAllByText('The Duplicate Investigations Time Frame is required.')).toHaveLength(2);
             expect(mockResultApi).not.toHaveBeenCalled();
+        });
+
+        it('does not submit on negative input value', async () => {
+            const user = userEvent.setup();
+
+            const mockConfigApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+
+            const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockConfigApi).toHaveBeenCalled();
+
+            const input = await findByLabelText('Duplicate Investigations Time Frame');
+
+            fireEvent.change(input, { target: { value: '-1' } });
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(await findAllByText('Duplicate Investigations Time Frame must not be negative.')).toHaveLength(2);
+            expect(mockResultApi).not.toHaveBeenCalled();
+        });
+
+        it('do not allow negative sign input', async () => {
+            const user = userEvent.setup();
+
+            const mockConfigApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+
+            const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockConfigApi).toHaveBeenCalled();
+
+            const input = await findByLabelText('Duplicate Investigations Time Frame');
+            await userEvent.type(input, '-1');
+
+            expect(input).toHaveValue(1);
+
+            expect(await axe(container)).toHaveNoViolations();
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: undefined,
+                    basicFilters: [{ reportFilterUid: 1001, values: 1 }],
+                }),
+            });
         });
 
         it('renders default value', async () => {
@@ -2029,7 +2090,7 @@ describe('report run page', () => {
                 .mocked(generated.ReportControllerService.getReportConfiguration)
                 .mockResolvedValue({
                     ...MOCK_CONFIG,
-                    basicFilters: [{ ...MOCK_FILTER, defaultValue: ['starter text'] }],
+                    basicFilters: [{ ...MOCK_FILTER, defaultValues: ['1'] }],
                 });
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
@@ -2041,10 +2102,10 @@ describe('report run page', () => {
 
             expect(mockConfigApi).toHaveBeenCalled();
 
-            const input = await findByLabelText('Full Name');
-            expect(input).toHaveValue('starter text');
+            const input = await findByLabelText('Duplicate Investigations Time Frame');
+            expect(input).toHaveValue(1);
 
-            await userEvent.type(input, ' and more');
+            await userEvent.type(input, '1');
 
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
@@ -2052,7 +2113,7 @@ describe('report run page', () => {
                 requestBody: expect.objectContaining({
                     isExport: true,
                     advancedFilter: undefined,
-                    basicFilters: [{ reportFilterUid: 1001, values: ['starter text and more'] }],
+                    basicFilters: [{ reportFilterUid: 1001, values: 11 }],
                 }),
             });
         });

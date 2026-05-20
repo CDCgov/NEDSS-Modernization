@@ -9,10 +9,10 @@ const NumericFilter: BasicFilterComponent = ({ filter, ...remaining }: BasicFilt
 };
 
 const getNumericValue = (filter: BasicFilterConfiguration) => {
-    if (!filter.defaultValue || filter.defaultValue.length === 0) return null;
+    if (!filter.defaultValues || filter.defaultValues.length === 0) return null;
 
     // bas days filters only ever have one default and it needs no interpretation
-    return filter.defaultValue[0];
+    return filter.defaultValues[0];
 };
 
 const numericValidator = (_filter: BasicFilterConfiguration, label: string) => {
@@ -21,7 +21,7 @@ const numericValidator = (_filter: BasicFilterConfiguration, label: string) => {
         if (value === undefined || value === null) return true;
 
         if (value < 0) {
-            return `${label} must not be negative`;
+            return `${label} must not be negative.`;
         }
 
         return true;
