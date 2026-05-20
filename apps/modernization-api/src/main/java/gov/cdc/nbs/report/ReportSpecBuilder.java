@@ -1,7 +1,7 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
-import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -18,14 +18,17 @@ public class ReportSpecBuilder {
   @Getter private final ReportExecutionRequest reportExecRequest;
   @Getter private final ReportConfiguration reportConfig;
   private final DataSourceNameUtils dataSourceNameUtils;
+  private final WhereClauseService whereClauseService;
 
   public ReportSpecBuilder(
       final ReportExecutionRequest request,
       ReportConfiguration reportConfig,
-      DataSourceNameUtils dataSourceNameUtils) {
+      DataSourceNameUtils dataSourceNameUtils,
+      WhereClauseService whereClauseService) {
     this.reportExecRequest = request;
     this.reportConfig = reportConfig;
     this.dataSourceNameUtils = dataSourceNameUtils;
+    this.whereClauseService = whereClauseService;
   }
 
   private String buildSelectClause(List<ReportColumn> columns) {
@@ -77,7 +80,7 @@ public class ReportSpecBuilder {
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
-    String whereClause = "";
+    String whereClause = whereClauseService.buildWhereClause(reportConfig, reportExecRequest);
     String orderByClause = "";
 
     String subsetQuery =

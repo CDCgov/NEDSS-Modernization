@@ -1,18 +1,19 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.entity.odse.*;
+import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
+import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.entity.odse.DataSourceColumn;
+import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportId;
+import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
-import gov.cdc.nbs.report.models.*;
-import gov.cdc.nbs.report.utils.DataSourceNameUtils;
-import gov.cdc.nbs.repository.*;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class ReportService {
 
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils;
+  private final WhereClauseService whereClauseService;
 
   public ReportService(
       final ReportRepository reportRepository,
@@ -39,7 +41,8 @@ public class ReportService {
       final DataSourceColumnRepository dataSourceColumnRepository,
       final FilterCodeRepository filterCodeRepository,
       RestClient reportExecutionClient,
-      final DataSourceNameConfiguration dataSourceNameConfig) {
+      final DataSourceNameConfiguration dataSourceNameConfig,
+      WhereClauseService whereClauseService) {
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
@@ -49,6 +52,7 @@ public class ReportService {
 
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
+    this.whereClauseService = whereClauseService;
   }
 
   @Transactional
@@ -175,7 +179,8 @@ public class ReportService {
     }
 
     ReportSpecBuilder specBuilder =
-        new ReportSpecBuilder(request, reportConfigResponse, dataSourceNameUtils);
+        new ReportSpecBuilder(
+            request, reportConfigResponse, dataSourceNameUtils, whereClauseService);
     ReportSpec reportSpec = specBuilder.build();
 
     return reportExecutionClient
