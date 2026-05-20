@@ -16,6 +16,7 @@ BEGIN
         library_name            varchar(50)     NOT NULL,
         desc_txt                varchar(300)    NOT NULL,
         runner                  varchar(10)     NOT NULL,
+        column_select_ind       char(1)         NOT NULL,
         is_builtin_ind          char(1)         NOT NULL,              
         add_time                datetime        NOT NULL,
         add_user_id             bigint          NOT NULL,
