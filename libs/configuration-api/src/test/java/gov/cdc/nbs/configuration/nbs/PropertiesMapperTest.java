@@ -14,6 +14,7 @@ class PropertiesMapperTest {
     map.put(NbsPropertiesFinder.STD_PROGRAM_AREAS, "STD,   SomethingElse ");
     map.put(NbsPropertiesFinder.HIV_PROGRAM_AREAS, "HIV");
     map.put(NbsPropertiesFinder.CODE_BASE, "nbs 6");
+    map.put(NbsPropertiesFinder.NBS_STATE_CODE, "13");
     map.put("dontInclude", "AnyValue");
 
     Properties props = PropertiesMapper.toProperties(map);
@@ -21,6 +22,7 @@ class PropertiesMapperTest {
     assertThat(props.stdProgramAreas()).containsExactly("STD", "SOMETHINGELSE");
     assertThat(props.hivProgramAreas()).containsExactly("HIV");
     assertThat(props.entries()).containsEntry(NbsPropertiesFinder.CODE_BASE, "nbs 6");
+    assertThat(props.entries()).containsEntry(NbsPropertiesFinder.NBS_STATE_CODE, "13");
     assertThat(props.entries()).doesNotContainKey("dontInclude");
   }
 
