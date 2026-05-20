@@ -20,7 +20,7 @@ class ClinicalConceptController {
       summary = "Clinical concept options by value set",
       description = "Provides options from clinical concepts grouped into a value set.",
       tags = "ClinicalConceptOptions")
-  @GetMapping("nbs/api/options/clinical/concepts/{name}")
+  @GetMapping("/nbs/api/options/clinical/concepts/{name}")
   Collection<ConceptOption> distinctValues(@PathVariable final String name) {
     return finder.find(name);
   }
