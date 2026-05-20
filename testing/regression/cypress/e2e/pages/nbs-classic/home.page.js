@@ -106,12 +106,13 @@ class ClassicHomePage {
   }
 
   createRunReports() {
-    // Navigate to QA07 Duplicate Cases (30 Days) report
+    // Navigate to PA05 Worker Interview Activity (Case Close Date)
     cy.get("#Public a").contains("Expand Subsections").eq(0).click()
-    cy.get("table#Public4 a").filter(':contains("Run")').eq(27).click()
+    cy.get("table#Public4 a").filter(':contains("Run")').eq(18).click()
 
     //  Set values for all filters
     cy.get("#id_cvg_select_all").eq(0).click()
+    cy.get("#id_wrkr_select_all").eq(0).click()
     cy.get("#id_T_T01a").eq(0).type("01/01/2000")
     cy.get("#id_T_T01b").eq(0).type("05/01/2026")
 
