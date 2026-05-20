@@ -31,18 +31,7 @@ def execute(
     )
     , clean_data AS (
         SELECT 
-            PATIENT_LOCAL_ID,
-            PATIENT_FIRST_NAME,
-            PATIENT_LAST_NAME,
-            PATIENT_DOB,
-            INVESTIGATION_LOCAL_ID,
-            DISEASE,
-            CASE_STATUS,
-            EVENT_DATE,
-            EVENT_DATE_TYPE,
-            MMWR_YEAR,
-            NOTIFICATION_STATUS,
-            DISEASE_CD,
+            *,
             sas_row_num
         FROM source_order
         WHERE EVENT_DATE IS NOT NULL
@@ -95,6 +84,45 @@ def execute(
         d.MMWR_YEAR AS [MMWR Year],
         d.NOTIFICATION_STATUS AS [Notification Record Status],
         d.DISEASE_CD AS [Disease Code]
+        d.AGE_REPORTED as [Age Reported],
+        d.AGE_REPORTED_UNIT as [Age Reported Unit],
+        d.CONFIRMATION_DATE as [Confirmation Date],
+        -- figure out Date of Report field
+        d.DIAGNOSIS_DATE as [Diagnosis Date],
+        d.EARLIEST_RPT_T_CNTY_DATE as [Earliest Date Reported to County],
+        d.EARLIEST_RPT_STATE_DATE as [Earliest Date Reported to State],
+        d.EARLIEST_SPECIMEN_COLLECTION_DATE as [Earliest Specimen Collection Date],
+        d.PATIENT_ETHNICITY as [Ethnicity],
+        d.FIRST_POSITIVE_CULTURE_DT as [First Positive Culture Date],
+        d.HSPTL_ADMISSION_DATE as [Hospital Admission Date],
+        d.ILLNESS_ONSET_DATE as [Illness Onset Date],
+        d.INVESTIGATION_CREATE_DATE as [Investigation Create Date],
+        d.INVESTIGATION_CREATED_BY as [Investigation Created By User],
+        d.CURR_PROCESS_STATE as [Investigation Current Process Stage],
+        d.INVESTIGATION_KEY as [Investigation Key],
+        d.INVESTIGATION_LAST_UPDTD_BY as [Investigation Last Updated By User],
+        d.INVESTIGATION_LAST_UPDTD_DATE as [Investigation Last Updated Date],
+        d.INV_START_DT as [Investigation Start Date],
+        -- figure out Investigation Status field,
+        -- figure out Jurisdiction Code field,
+        d.LABORATORY_INFORMATION as [Laboratory Information],
+        d.MMWR_WEEK as [MMWR Week],
+        d.NOTIFICATION_CREATE_DATE as [Notification Create Date],
+        d.NOTIFICATION_LAST_UPDATED_USER as [Notification Last Updated By User],
+        d.NOTIFICATION_LAST_UPDATED_DATE as [Notification Last Updated Date],
+        d.NOTIFICATION_LOCAL_ID as [Notification Local ID],
+        d.NOTIFICATION_SUBMITTER as [Notification Submitter],
+        d.PATIENT_STREET_ADDRESS_1 as [Patient Address 1],
+        d.PATIENT_STREET_ADDRESS_2 as [Patient Address 2],
+        d.PATIENT_CITY as [Patient City],
+        d.PATIENT_STATE as [Patient State],
+        d.PATIENT_ZIP as [Patient Zip],
+        d.PHYSICIAN_FIRST_NAME as [Physician First Name],
+        d.PHYSICIAN_LAST_NAME as [Physician Last Name],
+        d.PROGRAM_AREA as [Program Area],
+        d.RACE_CALCULATED as [Race - Calculated],
+        d.RACE_CALC_DETAILS as [Race - Calculated Details],
+        d.PATIENT_CURRENT_SEX as [Sex]
     FROM datediff_calc d
     JOIN event_counts c 
         ON d.PATIENT_LOCAL_ID = c.PATIENT_LOCAL_ID 
