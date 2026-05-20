@@ -8,7 +8,7 @@ faker_schema = 'patients_multiple_cases.yaml'
 
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
-class TestIntegrationQa05Library:
+class TestIntegrationQa06Library:
     """Integration tests for the qa_06 library."""
 
     def test_execute_report_check_data(self, snapshot):
