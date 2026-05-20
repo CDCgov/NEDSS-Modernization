@@ -1,6 +1,5 @@
-package gov.cdc.nbs.report.utils;
+package gov.cdc.nbs.datasource.utils;
 
-import gov.cdc.nbs.report.DataSourceNameConfiguration;
 import java.util.Map;
 
 public class DataSourceNameUtils {

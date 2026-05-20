@@ -5,5 +5,6 @@
 export type BasicFilterRequest = {
     reportFilterUid: number;
     values: Array<string>;
+    includeNulls?: boolean;
 };
 
