@@ -17,7 +17,6 @@ const getNumericValue = (filter: BasicFilterConfiguration) => {
 
 const numericValidator = (_filter: BasicFilterConfiguration, label: string) => {
     return (value?: number | null) => {
-
         if (value === undefined || value === null) return true;
 
         if (value < 0) {

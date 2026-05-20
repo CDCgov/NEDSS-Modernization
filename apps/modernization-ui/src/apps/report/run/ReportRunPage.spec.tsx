@@ -1,4 +1,4 @@
-import {fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -2148,7 +2148,9 @@ describe('report run page', () => {
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
 
-            expect(await findAllByText('Duplicate Investigations Time Frame must not be greater than 999.')).toHaveLength(2);
+            expect(
+                await findAllByText('Duplicate Investigations Time Frame must not be greater than 999.')
+            ).toHaveLength(2);
             expect(mockResultApi).not.toHaveBeenCalled();
         });
 
