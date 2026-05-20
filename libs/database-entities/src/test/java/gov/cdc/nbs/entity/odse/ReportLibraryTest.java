@@ -37,7 +37,7 @@ class ReportLibraryTest {
         .satisfies(lib -> assertEquals(libName, lib.getLibraryName()))
         .satisfies(lib -> assertEquals(descTxt, lib.getDescTxt()))
         .satisfies(lib -> assertEquals(runner, lib.getRunner()))
-        .satisfies(lib -> assertEquals(columnSelect, lib.allowColumnSelection()))
+        .satisfies(lib -> assertEquals(columnSelect, lib.getColumnSelectInd()))
         .satisfies(lib -> assertEquals(builtIn, lib.getIsBuiltinInd()))
         .satisfies(lib -> assertEquals(addTime, lib.getAddTime()))
         .satisfies(lib -> assertEquals(userId, lib.getAddUserId()))
