@@ -26,6 +26,12 @@ const getValueSetMap = (state: string): Record<string, string> => {
     };
 };
 
+const CODE_DESC_CD = {
+    HARD_CODED: 'h',
+    CODE: 'c',
+    DESCRIPTION: 'd',
+};
+
 const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>) => {
     const id = useId();
     const [options, setOptions] = useState<Selectable[] | null>(null);
@@ -39,7 +45,7 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
             let cacheId = `report.valueset.${codesetNm ?? columnUid}`.toLowerCase();
 
             let endpoint = '';
-            if (codeDescCd?.toLowerCase() === 'h') {
+            if (codeDescCd?.toLowerCase() === CODE_DESC_CD.HARD_CODED) {
                 endpoint = `/report/distinct-values/${columnUid}`;
             } else if (codesetNm?.includes('.')) {
                 const [table, valueSet] = codesetNm.split('.');
@@ -84,8 +90,7 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
         }
     }, [ready]);
 
-    // 'c' = code, 'd' = description
-    const getValue = (v: Selectable) => (codeDescCd?.toLowerCase() === 'c' ? v.value : v.name);
+    const getValue = (v: Selectable) => (codeDescCd?.toLowerCase() === CODE_DESC_CD.CODE ? v.value : v.name);
 
     const handleOnChange = (values: Selectable[]) => {
         props.handleOnChange(values.map(getValue));
