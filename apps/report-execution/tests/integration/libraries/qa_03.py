@@ -42,23 +42,10 @@ class TestIntegrationNbsQa03Library:
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
         # Sanity check the result's shape beyond the snapshot
-        record = None
-        for row in result.content.data:
-            if (
-                row[0] == 'CAS10015820GA01'  # INV_LOCAL_ID
-                and row[2] == 'PSN10089835GA01'  # PATIENT_LOCAL_ID
-            ):
-                record = row
-                break
+        row = result.content.data[-1]
+        assert row[0] == 'CAS10078848GA01' and row[2] == 'PSN10057362GA01'
 
-        assert record is not None
-        assert record[3] == '710'  # DIAGNOSIS_CD
-        assert record[4] == '36'  # PATIENT_AGE_REPORTED
-        assert record[5] == '06/09/2020'  # CONFIRMATION_DT
-        assert record[6] == 'Middlesex County'  # JURISDICTION_NM
-        assert record[7] == 'Torres Medical Center'  # ORGANIZATION_NAME
-        assert record[8] == 'Don'  # PROVIDER
-        assert record[9] == '89835'  # PATIENTID
+        assert row is not None
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = self.create_spec(

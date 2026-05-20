@@ -25,14 +25,18 @@ def execute(
             AS [CONFIRMATION_DT],
         shd.JURISDICTION_NM,
         o.ORGANIZATION_NAME,
-        LTRIM(
-        RTRIM(
-        CONCAT(
-            dp.provider_first_name,
-            ' ',
-            dp.provider_last_name,
-            ' ',
-            dp.provider_name_suffix))) AS [PROVIDER],
+        IIF(PROVIDER_NAME_SUFFIX IS NULL,
+            TRIM(CONCAT(
+                        dp.provider_first_name,
+                        ' ',
+                        dp.provider_last_name)),
+            TRIM(CONCAT(
+                    dp.provider_first_name,
+                    ' ',
+                    dp.provider_last_name,
+                    ', ',
+                    dp.provider_name_suffix))
+        ) AS [PROVIDER],
        SUBSTRING(shd.PATIENT_LOCAL_ID, 7, 5) AS [PATIENTID]
     FROM shd
     INNER JOIN 
