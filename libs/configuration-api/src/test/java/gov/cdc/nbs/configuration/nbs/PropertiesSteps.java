@@ -20,6 +20,7 @@ public class PropertiesSteps {
   @ParameterType(name = "property", value = ".*")
   public String property(final String value) {
     return switch (value.toLowerCase()) {
+      case "state code" -> "properties.entries.NBS_STATE_CODE";
       case "code base" -> "properties.entries.CODE_BASE";
       case "std program areas", "stdprogramareas" -> "properties.stdProgramAreas";
       case "hiv program areas", "hivprogramareas" -> "properties.hivProgramAreas";

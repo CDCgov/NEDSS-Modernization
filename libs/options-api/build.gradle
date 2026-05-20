@@ -27,9 +27,12 @@ testing {
 
 dependencies {
     implementation libs.guava
+    implementation libs.bundles.jpa
     implementation libs.springBoot.web
     implementation libs.springBoot.jdbc
     implementation libs.bundles.swagger
+
+    implementation project(':datasource-utils')
 }
 
 test {
@@ -37,4 +40,3 @@ test {
         systemProperty "testing.database.image", System.getProperty("testing.database.image")
     }
 }
-

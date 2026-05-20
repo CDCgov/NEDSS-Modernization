@@ -1,4 +1,4 @@
-package gov.cdc.nbs.report;
+package gov.cdc.nbs.datasource.utils;
 
 import java.util.Map;
 import lombok.Getter;
