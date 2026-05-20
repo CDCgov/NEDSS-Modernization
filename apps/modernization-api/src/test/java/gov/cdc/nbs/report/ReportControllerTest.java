@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
@@ -15,6 +16,7 @@ import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
+import gov.cdc.nbs.report.models.CreateReportRequest;
 import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
@@ -76,6 +78,46 @@ class ReportControllerTest {
 
     assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid))
         .isInstanceOf(NotFoundException.class)
+        .hasMessageContaining(errorMsg);
+  }
+
+  @Test
+  void createReport_should_return_created_report_response() {
+    CreateReportRequest request =
+        new CreateReportRequest(2L, 3L, "Test Report", "SEC", "Description", "owner-1", List.of());
+    Report expectedReport = mock(Report.class);
+
+    when(service.createReport(request)).thenReturn(expectedReport);
+
+    ResponseEntity<Report> response = controller.createReport(request);
+
+    assertEquals(expectedReport, response.getBody());
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+  }
+
+  @Test
+  void createReport_should_return_422_exception_when_data_source_not_found() {
+    CreateReportRequest request =
+        new CreateReportRequest(2L, 3L, "Test Report", "SEC", "Description", "owner-1", List.of());
+    String errorMsg = "No data source found for ID " + request.dataSourceId();
+
+    when(service.createReport(request)).thenThrow(new IllegalArgumentException(errorMsg));
+
+    assertThatThrownBy(() -> controller.createReport(request))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining(errorMsg);
+  }
+
+  @Test
+  void createReport_should_return_422_when_report_library_invalid() {
+    CreateReportRequest request =
+        new CreateReportRequest(2L, 3L, "Test Report", "SEC", "Description", "owner-1", List.of());
+    String errorMsg = "No report library found for ID " + request.libraryId();
+
+    when(service.createReport(request)).thenThrow(new IllegalArgumentException(errorMsg));
+
+    assertThatThrownBy(() -> controller.createReport(request))
+        .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(errorMsg);
   }
 
