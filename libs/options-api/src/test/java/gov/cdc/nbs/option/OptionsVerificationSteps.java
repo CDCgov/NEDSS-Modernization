@@ -30,7 +30,7 @@ public class OptionsVerificationSteps {
   public void the_option_named_is_not_included(final String concept) throws Exception {
     this.response
         .active()
-        .andExpect(jsonPath("$.[*].name", hasItem(not(equalToIgnoringCase(concept)))));
+        .andExpect(jsonPath("$.[*].name", not(hasItem(equalToIgnoringCase(concept)))));
   }
 
   @Then("there are options available")
