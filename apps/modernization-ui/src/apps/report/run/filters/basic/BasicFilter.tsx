@@ -25,8 +25,11 @@ const FILTER_TYPE_MAP: Record<
     string,
     {
         FilterComponent: BasicFilterComponent;
-        getDefaultValue: (filter: BasicFilterConfiguration) => any;
-        validationRule?: (filter: BasicFilterConfiguration, label: string) => Validator<any>;
+        getDefaultValue: (filter: BasicFilterConfiguration) => string | string[] | null;
+        validationRule?: (
+            filter: BasicFilterConfiguration,
+            label: string
+        ) => Validator<undefined | (string | undefined)[]>;
     }
 > = {
     BAS_TXT: { FilterComponent: TextFilter, getDefaultValue: getValueText },
@@ -135,7 +138,6 @@ const BasicFilter = ({ filter, columns }: { filter: BasicFilterConfiguration; co
                         name={`basicFilter.id_${filter.reportFilterUid}.includeNulls`}
                         defaultValue={filter.defaultIncludeNulls ?? null}
                         // ignoring the ref as it does not pass down well and isn't critical
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
                         render={({ field: { value, onChange } }) => (
                             <Field
                                 htmlFor={`${id}-include-nulls`}

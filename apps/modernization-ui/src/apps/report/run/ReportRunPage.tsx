@@ -15,7 +15,7 @@ import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/Ad
 
 export type ReportExecuteForm = {
     // key is the report's ID
-    basicFilter?: Record<string, { value: string[] | string; includeNulls: boolean }>;
+    basicFilter?: Record<string, { value: string[] | string | null; includeNulls: boolean }>;
     advancedFilter?: QbRuleGroup;
     columns?: string[];
 };
@@ -46,7 +46,7 @@ const ReportRunPage = () => {
             (data) => {
                 const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
                     .map(([id, { value, includeNulls }]) => {
-                        const values = typeof value === 'string' ? [value] : value;
+                        const values = typeof value === 'string' ? [value] : value ?? [];
                         return {
                             // remove `id_` prefix
                             reportFilterUid: parseInt(id.slice(3)),
