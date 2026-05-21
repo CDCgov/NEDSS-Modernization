@@ -252,8 +252,6 @@ tables:
         type: string
         data: random.choice(["Fulton County", "Dekalb County", "Clayton County", "Cobb County", "Gwinnett County", None])
         null_percentage: 0.20
-
-      # NEW COLUMNS ADDED FROM EXAMPLE DATA BELOW
       
       - column_name: PATIENT_COUNTY
         type: string
@@ -267,7 +265,7 @@ tables:
       
       - column_name: LABORATORY_INFORMATION
         type: string
-        data: None  # Complex HTML-like string; set to None to match existing pattern, can be configured separately
+        data: None
         null_percentage: 0.80
       
       - column_name: PROGRAM_JURISDICTION_OID
