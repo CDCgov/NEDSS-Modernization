@@ -89,9 +89,9 @@ class ReportControllerTest {
 
     when(service.createReport(request)).thenReturn(expectedReport);
 
-    ResponseEntity<Report> response = controller.createReport(request);
+    ResponseEntity<ReportId> response = controller.createReport(request);
 
-    assertEquals(expectedReport, response.getBody());
+    assertEquals(expectedReport.getId(), response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }
 

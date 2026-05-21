@@ -1,6 +1,7 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.report.models.CreateReportRequest;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
@@ -33,9 +34,9 @@ public class ReportController {
 
   @PostMapping("/configuration")
   @PreAuthorize("hasAuthority('ADDREPORT-REPORTING')")
-  public ResponseEntity<Report> createReport(@Valid @RequestBody CreateReportRequest request) {
+  public ResponseEntity<ReportId> createReport(@Valid @RequestBody CreateReportRequest request) {
     Report report = reportService.createReport(request);
-    return new ResponseEntity<>(report, HttpStatus.OK);
+    return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 
   @GetMapping("/configuration/{reportUid}/{dataSourceUid}")
