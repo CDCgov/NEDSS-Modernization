@@ -1,25 +1,76 @@
 config:
   seed: 4
+  nbs:
+    fk_tables:
+      - '[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]'
 
 tables:
+  - table_name: "[RDB].[dbo].[INVESTIGATION]"
+    row_count: 1000
+    columns:
+      - column_name: investigation_key
+        data: row_id
+        is_primary_key: true
+      - column_name: inv_case_status
+        data: fake.random_element(["Confirmed", "Probable", "Suspect", "Unknown"])
+      - column_name: record_status_cd
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
+        null_percentage: 0
+      - column_name: inv_local_id
+        data: |
+          id_num = fake.unique.random_int(10000, 99999)
+          return f"CAS100{id_num}GA01"
+
+  - table_name: "[RDB].[dbo].[D_PROVIDER]"
+    row_count: 250
+    columns:
+      - column_name: provider_key
+        data: row_id
+        is_primary_key: true
+      - column_name: provider_first_name
+        data: fake.first_name()
+        null_percentage: 0.05
+      - column_name: provider_last_name
+        data: fake.last_name()
+        null_percentage: 0.05
+      - column_name: provider_name_suffix
+        data: fake.random_element(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
+        null_percentage: 0.98
+  - table_name: "[RDB].[dbo].[D_ORGANIZATION]"
+    row_count: 50
+    columns:
+      - column_name: organization_key
+        data: row_id
+        is_primary_key: true
+      - column_name: organization_name
+        type: string
+        data: |
+          return f"{fake.last_name()} Medical Center"
+
   # Table backing PHCDemographic view
   - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
     row_count: 1000
     columns:
       # required columns:
       - column_name: investigation_key
-        data: fake.random_int(10000000, 99999999)
-
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
       # patient demographics
       - column_name: patient_name
-        data: random.choice(["Howard, Cooper", "Van Dam, Venus", "Freeman, Billy"]) if random.random() < .95 else None
+        data: |
+          return f"{fake.last_name()}, {fake.first_name()}"
+        null_percentage: 0.05
       - column_name: patient_age_reported
-        data: random.choice(["23", "64", "43"]) if random.random() < .95 else None
+        data: fake.random_int(1, 99)
+        null_percentage: 0.05
       - column_name: patient_sex
         data: random.choice(["F", "M", ""]) if random.random() < .95 else None
       - column_name: patient_race
         data: random.choice(["B", "A", "AI", "W", ""]) if random.random() < .95 else None
-
+      - column_name: patient_local_id
+        data: |
+          id_num = fake.unique.random_int(10000, 99999)
+          pre_id_num = random.choice([100, 200, 300])
+          return f"PSN{pre_id_num}{id_num}GA01"
       # case information
       - column_name: diagnosis_cd
         data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) if random.random() < .95 else None
@@ -42,6 +93,20 @@ tables:
         data: random.choice(["I - Interviewed"]) if random.random() < .1 else None
       - column_name: program_jurisdiction_oid
         data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
+      - column_name: confirmation_dt
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.05
+      - column_name: jurisdiction_nm
+        type: string
+        data: random.choice(["Washington County", "Middlesex County"]) if random.random() < .95 else None
+      - column_name: physician_key
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
+      - column_name: inv_local_id
+        data: |
+          id_num = fake.unique.random_int(10000, 99999)
+          return f"CAS100{id_num}GA01"
+      - column_name: ordering_facility_key
+        data: foreign_key("[RDB].[dbo].[D_ORGANIZATION]", "organization_key")
 
 
 # === Columns not needed for reports yet ===
@@ -119,7 +184,6 @@ tables:
 #INV_ASSIGNED_DT datetime NULL,
 #INV_CASE_STATUS varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #INV_CLOSE_DT datetime NULL,
-#INV_LOCAL_ID varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #INV_RPT_DT datetime NULL,
 #INV_START_DT datetime NULL,
 #INVESTIGATION_DEATH_DATE datetime NULL,
@@ -157,7 +221,6 @@ tables:
 #IPO_TYPE_OF_INSTITUTITION varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #IPO_TYPE_OF_RESIDENCE varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #JURISDICTION_CD varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#JURISDICTION_NM varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #LAB_HIV_SPECIMEN_COLL_DT date NULL,
 #LAB_NONTREP_SYPH_RSLT_QNT varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #LAB_NONTREP_SYPH_RSLT_QUA varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -174,7 +237,6 @@ tables:
 #OOJ_INITG_AGNCY_OUTC_DUE_DATE datetime NULL,
 #OOJ_INITG_AGNCY_OUTC_SNT_DATE datetime NULL,
 #OOJ_INITG_AGNCY_RECD_DATE datetime NULL,
-#ORDERING_FACILITY_KEY bigint NULL,
 #OUTBREAK_IND varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #OUTBREAK_NAME varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #PATIENT_ADDL_GENDER_INFO varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -194,7 +256,6 @@ tables:
 #PATIENT_DOB datetime NULL,
 #PATIENT_EMAIL varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #PATIENT_ETHNICITY varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_LOCAL_ID varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #PATIENT_MARITAL_STATUS varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #PATIENT_PHONE_CELL varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #PATIENT_PHONE_HOME varchar(105) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -215,7 +276,6 @@ tables:
 #PBI_PREG_IN_LAST_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #PBI_PREG_OUTCOME varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #PHYSICIAN_FL_FUP_KEY bigint NULL,
-#PHYSICIAN_KEY bigint NULL,
 #PROGRAM_AREA_CD varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #PROGRAM_JURISDICTION_OID bigint NULL,
 #REPORTING_ORG_KEY bigint NULL,
