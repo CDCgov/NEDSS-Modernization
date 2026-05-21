@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report.models;
 
+import gov.cdc.nbs.report.ReportConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
@@ -8,6 +9,12 @@ public record CreateReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long libraryId,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String reportTitle,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String sectionCode,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long ownerId,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportConstants.ReportGroup group,
     String description,
-    String ownerId,
-    List<CreateFilterRequest> reportFilters) {}
+    ReportExecutionConfiguration reportExecRequest) {
+  public record ReportExecutionConfiguration(
+      List<Long> columnUids,
+      List<BasicFilterRequest> basicFilters,
+      AdvancedFilterRequest advancedFilter) {}
+}

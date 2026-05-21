@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.entity.odse.*;
@@ -8,6 +9,7 @@ import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
+import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
 import java.util.List;
@@ -58,7 +60,7 @@ public class ReportService {
   }
 
   @Transactional
-  public Report createReport(CreateReportRequest request) {
+  public Report createReport(CreateReportRequest request, NbsUserDetails user) {
     DataSource dataSource =
         dataSourceRepository
             .findById(request.dataSourceId())
@@ -75,19 +77,13 @@ public class ReportService {
                     new IllegalArgumentException(
                         "No report library found for ID " + request.libraryId()));
 
-    Report newReport =
-        Report.builder()
-            .dataSource(dataSource)
-            .reportLibrary(reportLibrary)
-            .reportTitle(request.reportTitle())
-            .sectionCd(request.sectionCode())
-            .build();
+    Report savedReport =
+        reportRepository.save(
+            ReportMapper.fromCreateReportRequest(request, user, reportLibrary, dataSource));
 
-    Report savedReport = reportRepository.save(newReport);
-
-    if (request.reportFilters() != null && !request.reportFilters().isEmpty()) {
-      createReportFilters(savedReport, request.reportFilters());
-    }
+    //    if (request.reportFilters() != null && !request.reportFilters().isEmpty()) {
+    //      createReportFilters(savedReport, request.reportFilters());
+    //    }
 
     return savedReport;
   }

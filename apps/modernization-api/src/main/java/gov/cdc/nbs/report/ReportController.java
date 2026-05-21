@@ -1,22 +1,16 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.report.models.CreateReportRequest;
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportResult;
+import gov.cdc.nbs.report.models.*;
 import jakarta.validation.Valid;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/nbs/api/report")
@@ -28,15 +22,51 @@ public class ReportController {
 
   private final ReportService reportService;
 
+  //  TODO: Use existing perms, don't add
   public ReportController(ReportService reportService) {
     this.reportService = reportService;
   }
 
   @PostMapping("/configuration")
   @PreAuthorize("hasAuthority('ADDREPORT-REPORTING')")
-  public ResponseEntity<ReportId> createReport(@Valid @RequestBody CreateReportRequest request) {
-    Report report = reportService.createReport(request);
+  public ResponseEntity<ReportId> createReport(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @Valid @RequestBody CreateReportRequest request) {
+    Report report = reportService.createReport(request, user);
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
+  }
+
+  @PutMapping("/configuration/{reportUid}/{dataSourceUid}")
+  @PreAuthorize("hasAuthority('EDITREPORT-REPORTING')")
+  public ResponseEntity<ReportId> editReport(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long reportUid,
+      @PathVariable Long dataSourceUid,
+      @Valid @RequestBody AdminEditReportRequest request) {
+    //  @TODO: Fill in
+    return null;
+  }
+
+  @PutMapping("/configuration/{reportUid}/{dataSourceUid}/save")
+  @PreAuthorize("hasAuthority('SAVEREPORT-REPORTING')")
+  public ResponseEntity<ReportId> saveReport(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long reportUid,
+      @PathVariable Long dataSourceUid,
+      @Valid @RequestBody ReportExecutionRequest request) {
+    //  @TODO: Fill in
+    return null;
+  }
+
+  @PostMapping("/configuration/{reportUid}/{dataSourceUid}/save-as")
+  @PreAuthorize("hasAuthority('SAVEASREPORT-REPORTING')")
+  public ResponseEntity<ReportId> saveAsReport(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long reportUid,
+      @PathVariable Long dataSourceUid,
+      @Valid @RequestBody SaveAsReportRequest request) {
+    //  @TODO: Fill in
+    return null;
   }
 
   @GetMapping("/configuration/{reportUid}/{dataSourceUid}")
