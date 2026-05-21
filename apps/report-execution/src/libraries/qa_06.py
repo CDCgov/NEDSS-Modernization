@@ -19,7 +19,7 @@ def execute(
         INV AS (
           SELECT INVESTIGATION.INVESTIGATION_KEY,
                  INVESTIGATION.INV_CASE_STATUS,
-                 REFERRAL_BASIS,
+                 INVESTIGATION.REFERRAL_BASIS,
                  EVENT_METRIC.ADD_USER_ID,
                  USER_PROFILE.PROVIDER_QUICK_CODE
           FROM [RDB].[dbo].[INVESTIGATION]
@@ -58,10 +58,10 @@ def execute(
             ON MR.MORB_RPT_KEY = MRE.MORB_RPT_KEY
         WHERE SHD.INV_LOCAL_ID IS NOT NULL
           AND SHD.DIAGNOSIS IS NOT NULL
-          AND INV.INV_CASE_STATUS IN ('Probable', 'Confirmed');
+          AND INV.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+        ORDER BY SHD.PATIENT_NAME;
         """
 
-    # ORDER BY SHD.PATIENT_NAME;
     breakpoint()
     content = trx.query(query)
 

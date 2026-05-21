@@ -6,107 +6,108 @@ config:
 tables:
   - table_name: "[RDB].[dbo].[USER_PROFILE]"
     export_file_name: '1_user_profile'
-    row_count: 10
+    row_count: 50
     columns:
       # required columns
-      - column_name: NEDSS_ENTRY_ID
+      - column_name: nedss_entry_id
         data: row_id
         is_primary_key: true
-      - column_name: PROVIDER_KEY
+      - column_name: provider_key
         data: random.randrange(1000001, 1000099)
 
       # used in library:
-      - column_name: PROVIDER_QUICK_CODE
-        data: random.choice(["local", "pks", "provider_quick_code", "state"])
-        # seems to be creating SQL insert values of "<NA>" (I think this is a pandas issue)
-        # null_percentage: 0.5
+      - column_name: provider_quick_code
+        data: random.choice(["dekalb", "fulton", "JLJ", "local", "pks", "state"])
+        null_percentage: 0.8
   - table_name: "[RDB].[dbo].[EVENT_METRIC]"
     export_file_name: '2_event_metric'
-    row_count: 10
+    row_count: 1000
     columns:
       # required columns
-      - column_name: EVENT_TYPE
+      - column_name: event_type
         data: random.choice(["PHCInvForm", "LabReport", "MorbReport", "CONTACT", "Vaccination"])
         is_primary_key: true
-      - column_name: EVENT_UID
+      - column_name: event_uid
         data: row_id
         is_primary_key: true
 
       # used in library:
-      - column_name: ADD_USER_ID
+      - column_name: add_user_id
         data: foreign_key("[RDB].[dbo].[USER_PROFILE]", "NEDSS_ENTRY_ID")
   - table_name: "[RDB].[dbo].[INVESTIGATION]"
     export_file_name: "3_investigation"
-    row_count: 10
+    row_count: 800
     columns:
       # required columns
-      - column_name: INVESTIGATION_KEY
+      - column_name: investigation_key
         data: row_id
         is_primary_key: true
-      - column_name: RECORD_STATUS_CD
+      - column_name: record_status_cd
         data: random.choice(['ACTIVE', 'INACTIVE'])
-      - column_name: CASE_UID
-        data: foreign_key("[RDB].[dbo].[EVENT_METRIC]", "EVENT_UID")
 
       # used by library
-      - column_name: INV_CASE_STATUS
+      - column_name: case_uid
+        data: foreign_key("[RDB].[dbo].[EVENT_METRIC]", "EVENT_UID")
+      - column_name: inv_case_status
         data: random.choice(['Probable', 'Confirmed', 'Not a Case', 'Suspect'])
-      - column_name: REFERRAL_BASIS
+      - column_name: referral_basis
         data: random.choice(["T1 - Positive Test", "T2 - Morbidity Report", "C1- Cohort", "A1 - Associate 1", "A2 - Associate 2", "A3 - Associate 3", "P1 - Partner, Sex", "P2 - Partner, Needle-Sharing", "M1 - Congenital Infant Followup"])
   - table_name: "[RDB].[dbo].[LAB_TEST]"
     export_file_name: "4_lab_test"
-    row_count: 10
+    row_count: 1000
     columns:
       # required columns
-      - column_name: LAB_TEST_KEY
+      - column_name: lab_test_key
         data: row_id
         is_primary_key: true
-      - column_name: RECORD_STATUS_CD
+      - column_name: record_status_cd
         data: random.choice(['ACTIVE', 'INACTIVE'])
-      - column_name: SPECIMEN_COLLECTION_DT
+
+      # used by library
+      - column_name: specimen_collection_dt
         data: fake.date_between(start_date='-19w')
   - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
     export_file_name: "5_lab_test_result"
-    row_count: 10
+    row_count: 1000
     columns:
       # required columns
-      - column_name: LAB_TEST_KEY
+      - column_name: lab_test_key
         data: foreign_key("[RDB].[dbo].[LAB_TEST]", "LAB_TEST_KEY")
-      - column_name: RECORD_STATUS_CD
-        data: random.choice(['ACTIVE', 'INACTIVE'])
-      - column_name: CONDITION_KEY
-        data: random.randint(1000, 10000)
-      - column_name: COPY_TO_PROVIDER_KEY
-        data: random.randint(1000, 10000)
-      - column_name: INVESTIGATION_KEY
-        # data: random.randint(1000, 10000)
+      - column_name: investigation_key
         data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INVESTIGATION_KEY")
-      - column_name: LAB_RPT_DT_KEY
+      - column_name: record_status_cd
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+      - column_name: condition_key
         data: random.randint(1000, 10000)
-      - column_name: LAB_TEST_TECHNICIAN_KEY
+      - column_name: copy_to_provider_key
         data: random.randint(1000, 10000)
-      - column_name: LDF_GROUP_KEY
+      - column_name: lab_rpt_dt_key
         data: random.randint(1000, 10000)
-      - column_name: MORB_RPT_KEY
+      - column_name: lab_test_technician_key
         data: random.randint(1000, 10000)
-      - column_name: ORDERING_ORG_KEY
+      - column_name: ldf_group_key
         data: random.randint(1000, 10000)
-      - column_name: ORDERING_PROVIDER_KEY
+      - column_name: morb_rpt_key
         data: random.randint(1000, 10000)
-      - column_name: PATIENT_KEY
+      - column_name: ordering_org_key
         data: random.randint(1000, 10000)
-      - column_name: PERFORMING_LAB_KEY
+      - column_name: ordering_provider_key
         data: random.randint(1000, 10000)
-      - column_name: REPORTING_LAB_KEY
+      - column_name: patient_key
         data: random.randint(1000, 10000)
-      - column_name: RESULT_COMMENT_GRP_KEY
+      - column_name: performing_lab_key
         data: random.randint(1000, 10000)
-      - column_name: SPECIMEN_COLLECTOR_KEY
+      - column_name: reporting_lab_key
         data: random.randint(1000, 10000)
-      - column_name: TEST_RESULT_GRP_KEY
+      - column_name: result_comment_grp_key
+        data: random.randint(1000, 10000)
+      - column_name: specimen_collector_key
+        data: random.randint(1000, 10000)
+      - column_name: test_result_grp_key
         data: random.randint(1000, 10000)
   - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
-    row_count: 10
+    export_file_name: "5_std_hiv_datamart"
+    row_count: 200
     columns:
       # required columns:
       - column_name: investigation_key
@@ -117,37 +118,16 @@ tables:
         data: random.choice(["CAS10022028GA01", "CAS10021036GA01", "CAS10005241GA01", "CAS10010008GA01"])
       - column_name: diagnosis
         data: random.choice(["710 - Syphilis, primary", "200 - Chlamydia", "300 - Gonorrhea", "790 - Syphilis, Congenital", "730 - Syphilis, Early Non-Primary, Non-Secondary"])
-
-      # patient demographics
+      - column_name: patient_local_id
+        data: random.choice(["PSN10067002GA01", "PSN10076044GA01", "PSN10082059GA01", "PSN10087055GA01", "PSN10087069GA01", "PSN10087071GA01", "PSN10088042GA01", "PSN10089067GA01", "PSN10089161GA01", "PSN10094077GA01", "PSN10094080GA01"])
+      - column_name: cmp_pid_ind
+        data: r"No"
+        null_percentage: 0.75
+      - column_name: confirmation_dt
+        data: fake.date_between(start_date='-19w')
+        null_percentage: 0.75
+      - column_name: fl_fup_exam_dt 
+        data: fake.date_between(start_date='-19w')
+        null_percentage: 0.75
       - column_name: patient_name
-        data: random.choice(["Howard, Cooper", "Van Dam, Venus", "Freeman, Billy"]) if random.random() < .95 else None
-      - column_name: patient_age_reported
-        data: random.choice(["23", "64", "43"]) if random.random() < .95 else None
-      - column_name: patient_sex
-        data: random.choice(["F", "M", ""]) if random.random() < .95 else None
-      - column_name: patient_race
-        data: random.choice(["B", "A", "AI", "W", ""]) if random.random() < .95 else None
-
-      # case information
-      - column_name: diagnosis_cd
-        data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) if random.random() < .95 else None
-      - column_name: field_record_number
-        data: fake.random_int(10000000, 99999999)
-        null_percentage: 0.05
-      - column_name: investigator_interview_qc
-        data: fake.random_int(10000000, 99999999)
-        null_percentage: 0.05
-      - column_name: ca_interviewer_assign_dt
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
-        null_percentage: 0.05
-      - column_name: cc_closed_dt
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
-        null_percentage: 0.05
-      - column_name: ix_date_oi
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
-        null_percentage: 0.05
-      - column_name: ca_patient_intv_status
-        data: random.choice(["I - Interviewed"]) if random.random() < .1 else None
-      - column_name: program_jurisdiction_oid
-        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
-
+        data: random.choice(["Walowitz, Howard", "Van Dam, Jean Claude", "Freeman, Gordon", "Stantz, Raymond", "Solo, Han", "Torrance, Jack", "Bowman, Dave"]) if random.random() < .95 else None
