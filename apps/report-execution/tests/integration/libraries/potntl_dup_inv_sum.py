@@ -42,7 +42,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         assert result.subheader is not None
 
         data = result.content
-        assert len(data.columns) == 64
+        assert len(data.columns) == 58
         assert len(data.data) >= 0
 
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
@@ -193,8 +193,8 @@ class TestIntegrationNbsSrDupInvLibrary:
         result = execute_report(report_spec)
 
         # Count occurrences per patient/disease pair
-        patient_ids = result.content.get_column('Patient Local ID')
-        disease_cds = result.content.get_column('Disease Code')
+        patient_ids = result.content.get_column('PATIENT_LOCAL_ID')
+        disease_cds = result.content.get_column('DISEASE_CD')
 
         pairs = list(zip(patient_ids, disease_cds, strict=False))
         counts = Counter(pairs)

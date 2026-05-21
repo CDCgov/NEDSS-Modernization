@@ -71,7 +71,64 @@ def execute(
     )
     -- Final selection of potential duplicates based on days thresholds
     SELECT 
-        *
+        INVESTIGATION_KEY,
+        PATIENT_KEY,
+        d.PATIENT_LOCAL_ID as PATIENT_LOCAL_ID,
+        INVESTIGATION_LOCAL_ID,
+        DISEASE,
+        d.DISEASE_CD as DISEASE_CD,
+        PATIENT_FIRST_NAME,
+        PATIENT_LAST_NAME,
+        PATIENT_DOB,
+        PATIENT_CURRENT_SEX,
+        AGE_REPORTED,
+        AGE_REPORTED_UNIT,
+        PATIENT_STREET_ADDRESS_1,
+        PATIENT_STREET_ADDRESS_2,
+        PATIENT_CITY,
+        PATIENT_STATE,
+        PATIENT_ZIP,
+        PATIENT_COUNTY, 
+        PATIENT_ETHNICITY,
+        RACE_CALCULATED,
+        RACE_CALC_DETAILS,
+        INVESTIGATION_STATUS,
+        EARLIEST_RPT_TO_CNTY_DT,
+        EARLIEST_RPT_TO_STATE_DT,
+        DIAGNOSIS_DATE,
+        ILLNESS_ONSET_DATE, 
+        CASE_STATUS,
+        MMWR_WEEK,
+        MMWR_YEAR,
+        INVESTIGATION_CREATE_DATE,
+        INVESTIGATION_CREATED_BY,
+        INVESTIGATION_LAST_UPDTD_DATE,
+        NOTIFICATION_STATUS,
+        INVESTIGATION_LAST_UPDTD_BY,
+        PROGRAM_JURISDICTION_OID,
+        EVENT_DATE,
+        EVENT_DATE_TYPE,
+        LABORATORY_INFORMATION,
+        FIRST_POSITIVE_CULTURE_DT,
+        EARLIEST_SPECIMEN_COLLECT_DATE,
+        PROGRAM_AREA,
+        PHYSICIAN_LAST_NAME, 
+        PHYSICIAN_FIRST_NAME,
+        NOTIFICATION_LOCAL_ID,
+        NOTIFICATION_CREATE_DATE,
+        NOTIFICATION_SENT_DATE,
+        NOTIFICATION_SUBMITTER,
+        NOTIFICATION_LAST_UPDATED_DATE,
+        NOTIFICATION_LAST_UPDATED_USER,
+        INV_RPT_DT,
+        INV_START_DT,
+        CONFIRMATION_DT,
+        CONFIRMATION_METHOD,
+        HSPTL_ADMISSION_DT,
+        CURR_PROCESS_STATE,
+        PATIENT_COUNTY_CODE,
+        JURISDICTION_NM,
+        INIT_NND_NOT_DT
     FROM datediff_calc d
     JOIN event_counts c 
         ON d.PATIENT_LOCAL_ID = c.PATIENT_LOCAL_ID 
@@ -89,7 +146,7 @@ def execute(
     """
 
     content = trx.query(full_query)
-
+    
     header = 'Potential Duplicate Investigations'
     subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
 
