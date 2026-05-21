@@ -47,8 +47,6 @@ class TestIntegrationNbsSrDupInvLibrary:
 
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
 
-
-
     def test_execute_report_with_days_value(self):
         """Test with a specific days value (e.g., 365 days)."""
         report_spec = ReportSpec.model_validate(

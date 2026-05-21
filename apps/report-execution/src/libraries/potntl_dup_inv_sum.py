@@ -146,7 +146,7 @@ def execute(
     """
 
     content = trx.query(full_query)
-    
+
     header = 'Potential Duplicate Investigations'
     subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
 
