@@ -1,7 +1,7 @@
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, Union
 
-from pandas import DataFrame
-from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
+import pandas as pd
+from pydantic import BaseModel, ConfigDict, Field, PlainSerializer, Optional
 
 
 class ReportSpec(BaseModel):
@@ -19,10 +19,22 @@ class ReportSpec(BaseModel):
 # column names and values
 class Table(BaseModel):
     """Basic tabular data format."""
-
+    
     columns: list[str]
     data: list[tuple[Any, ...]]
-
+    
+    def __init__(self, 
+                 columns: Union[list[str], DataFrame, None] = None,
+                 data: Optional[list[tuple[Any, ...]]] = None,
+                 **kwargs):
+        """Initialize Table with either columns+data or a DataFrame."""
+        if isinstance(columns, pd.DataFrame):
+            # Called with Table(df)
+            df = columns
+            columns = df.columns.tolist()
+            data = [tuple(row) for row in df.to_numpy()]
+        super().__init__(columns=columns, data=data, **kwargs)
+    
     def get_column(self, col_name: str) -> list[Any]:
         """Extract a column by name. Raises an error if the column doesn't exist."""
         if col_name not in self.columns:
@@ -31,7 +43,7 @@ class Table(BaseModel):
             )
         idx = self.columns.index(col_name)
         return [row[idx] for row in self.data]
-
+    
     def get_unique_column(self, col_name: str) -> list[Any]:
         """Extract unique values from a column, sorted with None at the beginning.
 
@@ -44,6 +56,16 @@ class Table(BaseModel):
         values = set(self.get_column(col_name))
         # Sort with None first (False < True, so None comes before non-None)
         return sorted(values, key=lambda x: (x is not None, x))
+    
+    def to_pandas(self) -> DataFrame:
+        """Convert the Table to a pandas DataFrame."""
+        return pd.DataFrame.from_records(
+            self.data, columns=self.columns, coerce_float=True
+        )
+    
+    class Config:
+        """Pydantic configuration."""
+        arbitrary_types_allowed = True
 
 
 def serialize_table(table: Table) -> str:
