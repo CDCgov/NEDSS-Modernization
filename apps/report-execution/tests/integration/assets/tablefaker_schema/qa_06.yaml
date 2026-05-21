@@ -33,7 +33,7 @@ tables:
 
       # used in library:
       - column_name: add_user_id
-        data: foreign_key("[RDB].[dbo].[USER_PROFILE]", "NEDSS_ENTRY_ID")
+        data: foreign_key("[RDB].[dbo].[USER_PROFILE]", "nedss_entry_id")
   - table_name: "[RDB].[dbo].[INVESTIGATION]"
     export_file_name: "3_investigation"
     row_count: 800
@@ -47,7 +47,7 @@ tables:
 
       # used by library
       - column_name: case_uid
-        data: foreign_key("[RDB].[dbo].[EVENT_METRIC]", "EVENT_UID")
+        data: foreign_key("[RDB].[dbo].[EVENT_METRIC]", "event_uid")
       - column_name: inv_case_status
         data: random.choice(['Probable', 'Confirmed', 'Not a Case', 'Suspect'])
       - column_name: referral_basis
@@ -72,9 +72,9 @@ tables:
     columns:
       # required columns
       - column_name: lab_test_key
-        data: foreign_key("[RDB].[dbo].[LAB_TEST]", "LAB_TEST_KEY")
+        data: foreign_key("[RDB].[dbo].[LAB_TEST]", "lab_test_key")
       - column_name: investigation_key
-        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INVESTIGATION_KEY")
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
       - column_name: record_status_cd
         data: random.choice(['ACTIVE', 'INACTIVE'])
       - column_name: condition_key
@@ -111,7 +111,7 @@ tables:
     columns:
       # required columns:
       - column_name: investigation_key
-        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INVESTIGATION_KEY")
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
 
       # used by library
       - column_name: inv_local_id
@@ -131,3 +131,55 @@ tables:
         null_percentage: 0.75
       - column_name: patient_name
         data: random.choice(["Walowitz, Howard", "Van Dam, Jean Claude", "Freeman, Gordon", "Stantz, Raymond", "Solo, Han", "Torrance, Jack", "Bowman, Dave"]) if random.random() < .95 else None
+  - table_name: "[RDB].[dbo].[MORBIDITY_REPORT_EVENT]"
+    export_file_name: "6_morbidity_report_event"
+    row_count: 100
+    columns:
+      # required columns
+      - column_name: morb_rpt_key
+        data: row_id
+        is_primary_key: true
+      - column_name: record_status_cd
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+      - column_name: investigation_key
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+      - column_name: condition_key
+        data: random.randint(1000, 10000)
+      - column_name: health_care_key
+        data: random.randint(1000, 10000)
+      - column_name: hsptl_discharge_dt_key
+        data: random.randint(1000, 10000)
+      - column_name: hsptl_key
+        data: random.randint(1000, 10000)
+      - column_name: illness_onset_dt_key
+        data: random.randint(1000, 10000)
+      - column_name: ldf_group_key
+        data: random.randint(1000, 10000)
+      - column_name: morb_rpt_create_dt_key
+        data: random.randint(1000, 10000)
+      - column_name: morb_rpt_dt_key
+        data: random.randint(1000, 10000)
+      - column_name: morb_rpt_src_org_key
+        data: random.randint(1000, 10000)
+      - column_name: nursing_home_key
+        data: random.randint(1000, 10000)
+      - column_name: patient_key
+        data: random.randint(1000, 10000)
+      - column_name: physician_key
+        data: random.randint(1000, 10000)
+      - column_name: reporter_key
+        data: random.randint(1000, 10000)
+  - table_name: "[RDB].[dbo].[MORBIDITY_REPORT]"
+    export_file_name: "7_morbidity_report"
+    row_count: 100
+    columns:
+      # required columns
+      - column_name: morb_rpt_key
+        data: foreign_key("[RDB].[dbo].[MORBIDITY_REPORT_EVENT]", "morb_rpt_key")
+        data: row_id
+      - column_name: record_status_cd
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+
+      # used by library
+      - column_name: diagnosis_dt
+        data: fake.date_between(start_date='-19w')
