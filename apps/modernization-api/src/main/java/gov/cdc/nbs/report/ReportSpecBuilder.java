@@ -5,6 +5,7 @@ import gov.cdc.nbs.report.models.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import java.util.Map;
 
 /**
  * The ReportSpecBuilder is responsible for constructing a ReportSpec object based on the provided
@@ -77,6 +78,10 @@ public class ReportSpecBuilder {
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     List<ReportColumn> columns = fetchColumns();
+    Map<String, String> columnMap = null;
+    if (columns != null) {
+      columnMap = columns.stream().collect(Collectors.toMap(ReportColumn::name, ReportColumn::title));
+    }
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
@@ -87,6 +92,6 @@ public class ReportSpecBuilder {
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery);
+        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery, columnMap);
   }
 }
