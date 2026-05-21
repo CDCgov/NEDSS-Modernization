@@ -19,12 +19,15 @@ const numericValidator = (_filter: BasicFilterConfiguration, label: string) => {
     return (value?: number | null) => {
         if (value === undefined || value === null) return true;
 
-        if (value < 0) {
-            return `${label} must not be negative.`;
+        const min = 0;
+        const max = 999;
+
+        if (value < min) {
+            return `${label} must be at least ${min}.`;
         }
 
-        if (value > 999) {
-            return `${label} must not be greater than 999.`;
+        if (value > max) {
+            return `${label} must not be greater than ${max}.`;
         }
 
         return true;
