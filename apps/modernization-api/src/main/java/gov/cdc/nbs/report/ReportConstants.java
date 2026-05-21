@@ -18,7 +18,7 @@ public final class ReportConstants {
 
   public enum ReportGroup {
     PRIVATE("Private"),
-    REPORTING_FACILITY("Reporting Facility"), // with a space
+    REPORTING_FACILITY("Reporting Facility"),
     PUBLIC("Public"),
     TEMPLATE("Template");
 

@@ -9,4 +9,4 @@ public record AdminEditReportRequest(
     String description,
     Long ownerId, //  TODO: Should an admin be able to edit ownerId?
     ReportConstants.ReportGroup group,
-    CreateReportRequest.ReportExecutionConfiguration executionRequest) {}
+    CreateFilterRequest filterRequest) {}
