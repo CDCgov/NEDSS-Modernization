@@ -21,4 +21,8 @@ class PersonNamesListRequester {
             get("/nbs/api/options/person/stdHivWorker/names").param("programAreas", "HIV", "STD"))
         .andDo(print());
   }
+
+  ResultActions requestWithoutParams() throws Exception {
+    return mvc.perform(get("/nbs/api/options/person/stdHivWorker/names")).andDo(print());
+  }
 }

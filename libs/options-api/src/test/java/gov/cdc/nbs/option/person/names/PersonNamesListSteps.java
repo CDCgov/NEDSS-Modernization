@@ -18,4 +18,10 @@ public class PersonNamesListSteps {
   public void i_am_retrieving_all_the_person_names() throws Exception {
     response.active(this.requester.request());
   }
+
+  @When("I am retrieving all the person names without program areas specified")
+  public void i_am_retrieving_all_the_person_names_without_program_areas_specified()
+      throws Exception {
+    response.active(this.requester.requestWithoutParams());
+  }
 }
