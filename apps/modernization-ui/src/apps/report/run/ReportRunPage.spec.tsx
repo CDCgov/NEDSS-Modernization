@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { findByLabelText, render, waitFor } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -261,6 +261,82 @@ describe('report run page', () => {
 
                 expect(await findByText('Basic Text Filter')).toHaveClass('required');
                 expect(await findByRole('textbox')).toBeRequired();
+            });
+
+            describe('include nulls', () => {
+                const NULLABLE_MOCK_FILTER = {
+                    ...MOCK_FILTER,
+                    filterType: { ...MOCK_FILTER.filterType, code: 'J_S01_N' },
+                };
+                it('renders the include nulls checkbox when appropriate', async () => {
+                    const mockApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [NULLABLE_MOCK_FILTER],
+                        });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    const { container, getByRole, findByLabelText, findByRole } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockApi).toHaveBeenCalled();
+
+                    const checkbox = await findByLabelText('Include Nulls for Basic Text Filter');
+                    expect(checkbox).not.toBeChecked();
+                    const user = userEvent.setup();
+                    await user.click(checkbox);
+                    expect(checkbox).toBeChecked();
+
+                    expect(await axe(container)).toHaveNoViolations();
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            advancedFilter: undefined,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['13'], includeNulls: true }],
+                        }),
+                    });
+                });
+
+                it('starts from default value', async () => {
+                    const mockApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [{ ...NULLABLE_MOCK_FILTER, defaultIncludeNulls: true }],
+                        });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    const { container, getByRole, findByLabelText, findByRole } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockApi).toHaveBeenCalled();
+
+                    const checkbox = await findByLabelText('Include Nulls for Basic Text Filter');
+                    expect(checkbox).toBeChecked();
+                    const user = userEvent.setup();
+                    await user.click(checkbox);
+                    expect(checkbox).not.toBeChecked();
+
+                    expect(await axe(container)).toHaveNoViolations();
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            advancedFilter: undefined,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['13'], includeNulls: false }],
+                        }),
+                    });
+                });
             });
         });
 
@@ -840,7 +916,7 @@ describe('report run page', () => {
                             requestBody: expect.objectContaining({
                                 isExport: true,
                                 advancedFilter: undefined,
-                                basicFilters: [{ reportFilterUid: 1001, values: ['13'] }],
+                                basicFilters: [{ reportFilterUid: 1001, values: ['13'], includeNulls: false }],
                             }),
                         });
                     });
@@ -919,7 +995,7 @@ describe('report run page', () => {
                             requestBody: expect.objectContaining({
                                 isExport: true,
                                 advancedFilter: undefined,
-                                basicFilters: [{ reportFilterUid: 1001, values: ['04'] }],
+                                basicFilters: [{ reportFilterUid: 1001, values: ['04'], includeNulls: false }],
                             }),
                         });
                     });
@@ -984,7 +1060,7 @@ describe('report run page', () => {
                             requestBody: expect.objectContaining({
                                 isExport: true,
                                 advancedFilter: undefined,
-                                basicFilters: [{ reportFilterUid: 1001, values: ['13', '04'] }],
+                                basicFilters: [{ reportFilterUid: 1001, values: ['13', '04'], includeNulls: false }],
                             }),
                         });
                     });
@@ -1059,7 +1135,7 @@ describe('report run page', () => {
                             requestBody: expect.objectContaining({
                                 isExport: true,
                                 advancedFilter: undefined,
-                                basicFilters: [{ reportFilterUid: 1001, values: ['04', '13'] }],
+                                basicFilters: [{ reportFilterUid: 1001, values: ['04', '13'], includeNulls: false }],
                             }),
                         });
                     });
@@ -1072,7 +1148,7 @@ describe('report run page', () => {
                         id: 5,
                         codeTable: undefined,
                         descTxt: 'Basic State Filter',
-                        code: 'J_S01_N',
+                        code: 'J_S01',
                         codeSetName: undefined,
                         type: 'BAS_JUR_LIST',
                         name: 'State',
@@ -1174,7 +1250,7 @@ describe('report run page', () => {
                                 isExport: true,
                                 advancedFilter: undefined,
                                 basicFilters: expect.arrayContaining([
-                                    { reportFilterUid: 1001, values: ['04001'] },
+                                    { reportFilterUid: 1001, values: ['04001'], includeNulls: false },
                                     { reportFilterUid: 1002, values: ['04'] },
                                 ]),
                             }),
@@ -1249,7 +1325,7 @@ describe('report run page', () => {
                                 isExport: true,
                                 advancedFilter: undefined,
                                 basicFilters: expect.arrayContaining([
-                                    { reportFilterUid: 1001, values: ['13002'] },
+                                    { reportFilterUid: 1001, values: ['13002'], includeNulls: false },
                                     { reportFilterUid: 1002, values: ['13'] },
                                 ]),
                             }),
@@ -1286,7 +1362,8 @@ describe('report run page', () => {
                             .mockResolvedValue(MOCK_RESULT);
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                        const { getByRole, getByText, findByRole, findByLabelText, container } = renderWithRouter();
+                        const { getByRole, getByText, findAllByText, findByRole, findByLabelText, container } =
+                            renderWithRouter();
 
                         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -1319,7 +1396,7 @@ describe('report run page', () => {
                         // make sure form values were really reset
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
-                        expect(await findByRole('alert')).toBeVisible(); // county is required
+                        expect(await findAllByText('The Full Name is required.')).toHaveLength(2); // county is required
 
                         dropDown = await findByLabelText('Full Name');
                         await userEvent.click(dropDown);
@@ -1333,7 +1410,7 @@ describe('report run page', () => {
                                 isExport: true,
                                 advancedFilter: undefined,
                                 basicFilters: expect.arrayContaining([
-                                    { reportFilterUid: 1001, values: ['04001'] },
+                                    { reportFilterUid: 1001, values: ['04001'], includeNulls: false },
                                     { reportFilterUid: 1002, values: ['04'] },
                                 ]),
                             }),
@@ -1410,7 +1487,7 @@ describe('report run page', () => {
                                 isExport: true,
                                 advancedFilter: undefined,
                                 basicFilters: expect.arrayContaining([
-                                    { reportFilterUid: 1001, values: ['13001', '13002'] },
+                                    { reportFilterUid: 1001, values: ['13001', '13002'], includeNulls: false },
                                     { reportFilterUid: 1002, values: ['13'] },
                                 ]),
                             }),
@@ -1485,7 +1562,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [{ reportFilterUid: 1001, values: ['11065'] }],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['11065'], includeNulls: false }],
                         }),
                     });
                 });
@@ -1556,7 +1633,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [{ reportFilterUid: 1001, values: ['10560'] }],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['10560'], includeNulls: false }],
                         }),
                     });
                 });
