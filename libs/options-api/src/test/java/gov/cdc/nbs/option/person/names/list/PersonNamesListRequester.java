@@ -17,6 +17,6 @@ class PersonNamesListRequester {
   }
 
   ResultActions request() throws Exception {
-    return mvc.perform(get("/nbs/api/options/person/names")).andDo(print());
+    return mvc.perform(get("/nbs/api/options/person/stdHivWorker/names")).andDo(print());
   }
 }

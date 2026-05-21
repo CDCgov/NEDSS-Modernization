@@ -1,17 +1,11 @@
 package gov.cdc.nbs.option.person.names.list;
 
-import gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder;
-import gov.cdc.nbs.configuration.nbs.Properties;
-import gov.cdc.nbs.option.Option;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.JdbcClient;
+import gov.cdc.nbs.option.jdbc.SQLBasedOptionFinder;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PersonNamesListFinder {
+public class PersonNamesListFinder extends SQLBasedOptionFinder {
 
   private static final String QUERY =
       """
@@ -30,31 +24,7 @@ public class PersonNamesListFinder {
           AND aur.prog_area_cd IN (:programAreas);
       """;
 
-  private final JdbcClient client;
-  private final NbsPropertiesFinder nbsPropertiesFinder;
-  private final RowMapper<Option> mapper;
-
-  PersonNamesListFinder(final JdbcClient client, final NbsPropertiesFinder nbsPropertiesFinder) {
-    this.client = client;
-    this.nbsPropertiesFinder = nbsPropertiesFinder;
-    this.mapper = new PersonNamesListRowMapper();
-  }
-
-  private List<String> buildProgramAreasValue() {
-    Properties nbsProperties = nbsPropertiesFinder.find();
-    List<String> hivProgramAreas = nbsProperties.hivProgramAreas();
-    List<String> stdProgramAreas = nbsProperties.stdProgramAreas();
-    List<String> stdHivProgramAreas = new ArrayList<>(hivProgramAreas);
-    stdHivProgramAreas.addAll(stdProgramAreas);
-    return stdHivProgramAreas;
-  }
-
-  public Collection<Option> find() {
-    List<String> programAreasValue = buildProgramAreasValue();
-    return this.client
-        .sql(QUERY)
-        .param("programAreas", programAreasValue)
-        .query(this.mapper)
-        .list();
+  PersonNamesListFinder(final JdbcTemplate template) {
+    super(QUERY, template);
   }
 }

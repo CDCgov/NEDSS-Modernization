@@ -6,17 +6,17 @@ import type { Option } from '../models/Option';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class WorkerOptionsService {
+export class StdWorkerNameOptionsService {
     /**
-     * STD HIV Workers
-     * Provides all STD HIV Workers.
+     * STD HIV Worker Name Option
+     * Provides all STD HIV program area worker names.
      * @returns Option OK
      * @throws ApiError
      */
-    public static personNames(): CancelablePromise<Array<Option>> {
+    public static stdHivWorkerNames(): CancelablePromise<Array<Option>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/api/options/person/names',
+            url: '/nbs/api/options/person/stdHivWorker/names',
         });
     }
 }
