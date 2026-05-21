@@ -11,13 +11,13 @@ import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } 
 import { Icon } from 'design-system/icon';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 
-const ColumnSelector = ({ columns }: { columns: ReportColumn[] }) => {
+const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; defaultColumns?: number[] }) => {
     const {
         field: { onChange, value },
         fieldState: { error },
     } = useController<ReportExecuteForm, 'columns'>({
         name: 'columns',
-        defaultValue: [], // TODO
+        defaultValue: defaultColumns?.map((c) => c.toString()) ?? [],
         rules: validateRequiredRule('column selection'),
     });
 

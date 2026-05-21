@@ -58,7 +58,8 @@ class ReportControllerTest {
             "Report Title",
             List.of(basicFilterConfig),
             advancedFilterConfig,
-            columns);
+            columns,
+            null);
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ResponseEntity<ReportConfiguration> response =
