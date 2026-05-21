@@ -89,7 +89,7 @@ public class ReportService {
     }
 
     if (request.filterRequest().advancedQuery() != null) {
-      //  TODO: Add advanced filters
+      //  TODO: Translate AdvancedQuery to ReportFilter; APP-505
     }
 
     reportFilterRepository.saveAll(reportFilters);
