@@ -2,7 +2,6 @@ package gov.cdc.nbs.report.models;
 
 import gov.cdc.nbs.report.ReportConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 
 public record CreateReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long dataSourceId,
@@ -12,9 +11,4 @@ public record CreateReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long ownerId,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportConstants.ReportGroup group,
     String description,
-    ReportExecutionConfiguration reportExecRequest) {
-  public record ReportExecutionConfiguration(
-      List<Long> columnUids,
-      List<BasicFilterRequest> basicFilters,
-      AdvancedFilterRequest advancedFilter) {}
-}
+    CreateFilterRequest filterRequest) {}

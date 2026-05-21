@@ -6,15 +6,11 @@ import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
-import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
-import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
-import gov.cdc.nbs.report.mappers.ReportColumnMapper;
-import gov.cdc.nbs.report.mappers.ReportMapper;
+import gov.cdc.nbs.report.mappers.*;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,33 +26,30 @@ public class ReportService {
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
   private final ReportFilterRepository reportFilterRepository;
-  private final DataSourceColumnRepository dataSourceColumnRepository;
-  private final FilterCodeRepository filterCodeRepository;
 
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils;
   private final WhereClauseService whereClauseService;
+  private final ReportFilterBuilder reportFilterBuilder;
 
   public ReportService(
       final ReportRepository reportRepository,
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
       final ReportFilterRepository reportFilterRepository,
-      final DataSourceColumnRepository dataSourceColumnRepository,
-      final FilterCodeRepository filterCodeRepository,
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig,
-      WhereClauseService whereClauseService) {
+      WhereClauseService whereClauseService,
+      ReportFilterBuilder reportFilterBuilder) {
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
     this.reportFilterRepository = reportFilterRepository;
-    this.dataSourceColumnRepository = dataSourceColumnRepository;
-    this.filterCodeRepository = filterCodeRepository;
 
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
     this.whereClauseService = whereClauseService;
+    this.reportFilterBuilder = reportFilterBuilder;
   }
 
   @Transactional
@@ -81,9 +74,25 @@ public class ReportService {
         reportRepository.save(
             ReportMapper.fromCreateReportRequest(request, user, reportLibrary, dataSource));
 
-    //    if (request.reportFilters() != null && !request.reportFilters().isEmpty()) {
-    //      createReportFilters(savedReport, request.reportFilters());
-    //    }
+    List<ReportFilter> reportFilters = new ArrayList<>();
+
+    if (request.filterRequest().basicFilters() != null
+        && !request.filterRequest().basicFilters().isEmpty()) {
+
+      List<ReportFilter> basicFiltersToCreate =
+          request.filterRequest().basicFilters().stream()
+              .map(
+                  f ->
+                      reportFilterBuilder.buildBasicReportFilter(f, savedReport))
+              .toList();
+      reportFilters.addAll(basicFiltersToCreate);
+    }
+
+    if (request.filterRequest().advancedQuery() != null) {
+      //  TODO: Add advanced filters
+    }
+
+    reportFilterRepository.saveAll(reportFilters);
 
     return savedReport;
   }
@@ -188,49 +197,5 @@ public class ReportService {
         .body(reportSpec)
         .retrieve()
         .toEntity(ReportResult.class);
-  }
-
-  private void createReportFilters(Report report, List<CreateFilterRequest> filtersToCreate) {
-    List<Long> filterCodeUids =
-        filtersToCreate.stream().map(CreateFilterRequest::filterCodeUid).toList();
-
-    Map<Long, FilterCode> filterCodeMap =
-        filterCodeRepository.findAllById(filterCodeUids).stream()
-            .collect(Collectors.toMap(FilterCode::getId, f -> f));
-
-    List<Long> columnUids = filtersToCreate.stream().map(CreateFilterRequest::columnUid).toList();
-
-    Map<Long, DataSourceColumn> columnMap =
-        dataSourceColumnRepository.findAllById(columnUids).stream()
-            .collect(Collectors.toMap(DataSourceColumn::getId, c -> c));
-
-    List<ReportFilter> reportFilters =
-        filtersToCreate.stream()
-            .map(
-                filterRequest -> {
-                  FilterCode filterCode = filterCodeMap.get(filterRequest.filterCodeUid());
-                  if (filterCode == null) {
-                    throw new IllegalArgumentException(
-                        "Unknown filterCodeUid provided: " + filterRequest.filterCodeUid());
-                  }
-
-                  DataSourceColumn dataSourceColumn = null;
-                  if (filterRequest.columnUid() != null) {
-                    dataSourceColumn = columnMap.get(filterRequest.columnUid());
-                    if (dataSourceColumn == null) {
-                      throw new IllegalArgumentException(
-                          "Unknown columnUid provided: " + filterRequest.columnUid());
-                    }
-                  }
-
-                  return ReportFilter.builder()
-                      .report(report)
-                      .filterCode(filterCode)
-                      .dataSourceColumn(dataSourceColumn)
-                      .build();
-                })
-            .toList();
-
-    reportFilterRepository.saveAll(reportFilters);
   }
 }
