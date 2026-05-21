@@ -30,6 +30,10 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
         .filter(({ isDisplayable }) => isDisplayable)
         .map((c) => ({ value: c.id.toString(), name: c.title }));
 
+    const availableOptions = options.filter(
+        (o) => !searchText || o.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+
     const handleOnAvailableChange = (option: Selectable) => (checked: boolean) => {
         if (checked) {
             onChange([...value!, option.value]);
@@ -40,9 +44,9 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
 
     const handleSelectAll = (checked: boolean) => {
         if (checked) {
-            onChange([...value!, ...options.filter((o) => !value?.includes(o.value)).map((o) => o.value)]);
+            onChange([...value!, ...availableOptions.filter((o) => !value?.includes(o.value)).map((o) => o.value)]);
         } else {
-            const optionValues = options.map((o) => o.value);
+            const optionValues = availableOptions.map((o) => o.value);
             onChange(value!.filter((v) => !optionValues.includes(v)));
         }
     };
@@ -63,7 +67,7 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                             selected={options.length === value?.length}
                             onChange={handleSelectAll}
                         />
-                        {options.map((o) => (
+                        {availableOptions.map((o) => (
                             <Checkbox
                                 key={o.value}
                                 className={styles.option}
