@@ -93,7 +93,8 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                         <Button disabled={noneSelected} onClick={() => onChange([])}>
                             Clear selections
                         </Button>
-                    }>
+                    }
+                >
                     <div className={styles.card}>
                         {noneSelected ? (
                             <p className={styles.center}>Select a column from "Available columns"</p>
@@ -133,19 +134,28 @@ const SelectedColumnsList = ({
                     <div {...droppable.droppableProps} ref={droppable.innerRef} className={styles.preferences}>
                         {value?.map((id, index) => (
                             <Draggable key={id} draggableId={id} index={index} disableInteractiveElementBlocking>
-                                {(draggable: DraggableProvided) => (
-                                    <div
-                                        className={styles.option}
-                                        ref={draggable.innerRef}
-                                        {...draggable.draggableProps}>
-                                        <span className={styles.handle} {...draggable.dragHandleProps}>
-                                            <Icon name="drag" />
-                                        </span>
-                                        <span className={styles.label}>
-                                            {options.find(({ value }) => value === id)?.name}
-                                        </span>
-                                    </div>
-                                )}
+                                {(draggable: DraggableProvided) => {
+                                    const optionName = options.find(({ value }) => value === id)?.name;
+                                    return (
+                                        <div
+                                            className={styles.option}
+                                            ref={draggable.innerRef}
+                                            {...draggable.draggableProps}
+                                        >
+                                            <span className={styles.handle} {...draggable.dragHandleProps}>
+                                                <Icon name="drag" />
+                                            </span>
+                                            <span className={styles.label}>{optionName}</span>
+                                            <Button
+                                                aria-label={`Remove ${optionName}`}
+                                                icon="close"
+                                                secondary={true}
+                                                sizing="small"
+                                                onClick={() => onChange(value.filter((v) => v !== id))}
+                                            />
+                                        </div>
+                                    );
+                                }}
                             </Draggable>
                         ))}
                         {droppable.placeholder}

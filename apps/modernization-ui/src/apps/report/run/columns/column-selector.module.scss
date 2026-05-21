@@ -1,5 +1,6 @@
-@use 'styles/colors';
 @use 'styles/borders';
+@use 'styles/buttons';
+@use 'styles/colors';
 
 .layout {
     display: grid;
@@ -7,16 +8,21 @@
     gap: 2rem;
     padding: 2rem;
     background-color: colors.$base-lightest;
-    
+
+    section {
+        height: clamp(15rem, 50vh, 45rem);
+    }
+
     .search {
         background-color: colors.$primary-lightest;
         width: 100%;
         padding: 1rem;
+        height: fit-content;
     }
 
     .card {
-        max-height: clamp(15rem, 50vh, 45rem);
         overflow: auto;
+        height: 100%;
 
         &:has(.center) {
             display: grid;
@@ -31,20 +37,28 @@
             border-left-style: solid;
             border-left-color: colors.$clear;
 
-            padding: 0.5rem 1.5rem;
+            padding: 0.25rem 1.5rem;
             gap: 2rem;
             // keeps the checkbox and dnd options about the same height
-            min-height: 2.6rem;
+            min-height: 3rem;
 
             @extend %thin-bottom;
 
             display: flex;
             flex-direction: row;
+            align-items: center;
             gap: 0.5rem;
 
             .label {
                 color: colors.$base-darkest;
                 line-height: 125%;
+                flex: 1 1 0%;
+            }
+
+            button {
+                border: none;
+                box-shadow: none;
+                color: colors.$base;
             }
         }
     }

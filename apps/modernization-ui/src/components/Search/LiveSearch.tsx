@@ -23,7 +23,7 @@ const LiveSearch = (props: SearchProps) => {
             <label className="usa-sr-only" htmlFor={props.id}>
                 Search
             </label>
-            <Icon.Search size={3} name="Search" aria-label='search'/>
+            <Icon.Search size={3} name="Search" aria-label="search" />
             <TextInput
                 placeholder={props.placeholder ?? 'Search...'}
                 type="search"

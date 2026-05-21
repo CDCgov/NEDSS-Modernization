@@ -56,7 +56,7 @@ const Card = ({
                 info={info}
                 actions={actions}
                 control={
-                    <Shown when={collapsible}>
+                    collapsible && (
                         <Button
                             className={classNames(styles.toggle, { [styles.collapsed]: collapsed })}
                             sizing={remaining.sizing}
@@ -67,7 +67,7 @@ const Card = ({
                             aria-expanded={!collapsed}
                             onClick={() => setCollapsed((current) => !current)}
                         />
-                    </Shown>
+                    )
                 }
             />
 

@@ -62,7 +62,7 @@ const ReportConfigurationPage = ({
                         actions={<Required />}
                         collapsible={true}
                     >
-                        <ColumnSelector columns={config.columns} />
+                        <ColumnSelector columns={config.columns} defaultColumns={config.defaultColumnUids} />
                     </Card>
                 )}
                 <details>
