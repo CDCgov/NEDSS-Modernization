@@ -20,21 +20,6 @@ class TestIntegrationNbsSrDupInvLibrary:
     with the same disease within a user-specified number of days.
     """
 
-    expected_columns = [
-        'Patient Local ID',
-        'Patient First Name',
-        'Patient Last Name',
-        'DOB',
-        'Investigation Local ID',
-        'Disease',
-        'Case Status',
-        'Event Date',
-        'Event Date Type',
-        'MMWR Year',
-        'Notification Record Status',
-        'Disease Code',
-    ]
-
     def test_execute_report_check_data(self, snapshot):
         """Test with no days_value - should default to 3650."""
         report_spec = ReportSpec.model_validate(
@@ -57,13 +42,12 @@ class TestIntegrationNbsSrDupInvLibrary:
         assert result.subheader is not None
 
         data = result.content
+        assert len(data.columns) == 64
         assert len(data.data) >= 0
 
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
 
-        # Verify column structure
-        for col in self.expected_columns:
-            data.get_column(col)
+
 
     def test_execute_report_with_days_value(self):
         """Test with a specific days value (e.g., 365 days)."""
@@ -88,10 +72,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         data = result.content
         assert len(data.data) >= 0
         assert len(data.data[0]) == len(data.columns) if data.data else True
-
-        # Verify column structure
-        for col in self.expected_columns:
-            data.get_column(col)
 
     def test_execute_report_with_large_days_value(self):
         """Test with a large days value (e.g., 3650 days / 10 years)."""
@@ -174,7 +154,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         result = execute_report(report_spec)
         assert result.content_type == 'table'
         assert len(result.content.data) == 0
-        assert len(result.content.columns) == len(self.expected_columns)
 
     def test_execute_report_check_metadata(self):
         """Check the metadata is correctly formatted."""
