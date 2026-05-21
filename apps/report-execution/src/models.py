@@ -14,6 +14,7 @@ class ReportSpec(BaseModel):
     data_source_name: str = Field(min_length=1)
     subset_query: str = Field(min_length=1)
     days_value: int | None = None  # Specific to potntl_dup_inv_sum
+    column_map: dict[str, str] | None = None  # Maps column names to user-friendly titles
 
 
 # column names and values
@@ -24,7 +25,7 @@ class Table(BaseModel):
     data: list[tuple[Any, ...]]
     
     def __init__(self, 
-                 columns: Union[list[str], DataFrame, None] = None,
+                 columns: Union[list[str], pd.DataFrame, None] = None,
                  data: Optional[list[tuple[Any, ...]]] = None,
                  **kwargs):
         """Initialize Table with either columns+data or a DataFrame."""

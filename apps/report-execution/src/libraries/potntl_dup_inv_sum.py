@@ -7,6 +7,7 @@ def execute(
     subset_query: str,
     data_source_name: str,
     days_value: None | int,
+    column_map: dict[str, str],
     **kwargs,
 ):
     """Potential Duplicate Investigations.
@@ -30,32 +31,31 @@ def execute(
         FROM subset
     )
     , clean_data AS (
-        SELECT 
-            *
-        FROM source_order
-        WHERE EVENT_DATE IS NOT NULL
-            AND PATIENT_LOCAL_ID IS NOT NULL
-            AND DISEASE_CD IS NOT NULL
+        SELECT *
+        FROM source_order 
+        WHERE [{column_map['EVENT_DATE']}] IS NOT NULL
+            AND [{column_map['PATIENT_LOCAL_ID']}] IS NOT NULL
+            AND [{column_map['DISEASE_CD']}] IS NOT NULL
     )
     -- Calculate days since previous and until next event
     , datediff_calc AS (
         SELECT 
             *,
             DATEDIFF(day, 
-                LAG(EVENT_DATE) OVER (
+                LAG([{column_map['EVENT_DATE']}]) OVER (
                     PARTITION BY
-                    PATIENT_LOCAL_ID,
-                    DISEASE_CD 
-                    ORDER BY EVENT_DATE, sas_row_num
+                    [{column_map['PATIENT_LOCAL_ID']}],
+                    [{column_map['DISEASE_CD']}] 
+                    ORDER BY [{column_map['EVENT_DATE']}], sas_row_num
                 ),
-                EVENT_DATE
+                [{column_map['EVENT_DATE']}]
             ) AS days_since_prev,
             DATEDIFF(day, 
-                EVENT_DATE,
-                LEAD(EVENT_DATE) OVER (
-                    PARTITION BY PATIENT_LOCAL_ID,
-                    DISEASE_CD 
-                    ORDER BY EVENT_DATE, sas_row_num
+                [{column_map['EVENT_DATE']}],
+                LEAD([{column_map['EVENT_DATE']}]) OVER (
+                    PARTITION BY [{column_map['PATIENT_LOCAL_ID']}],
+                    [{column_map['DISEASE_CD']}] 
+                    ORDER BY [{column_map['EVENT_DATE']}], sas_row_num
                 )
             ) AS days_until_next
         FROM clean_data
@@ -63,41 +63,31 @@ def execute(
     -- Count events for each patient and disease to identify potential duplicates
     , event_counts AS (
         SELECT 
-            PATIENT_LOCAL_ID,
-            DISEASE_CD,
+            [{column_map['PATIENT_LOCAL_ID']}],
+            [{column_map['DISEASE_CD']}],
             COUNT(*) AS event_count
         FROM clean_data
-        GROUP BY PATIENT_LOCAL_ID, DISEASE_CD
+        GROUP BY [{column_map['PATIENT_LOCAL_ID']}], [{column_map['DISEASE_CD']}]
     )
     -- Final selection of potential duplicates based on days thresholds
-    SELECT *
+    SELECT [{column_map.keys().join(', ')}]
     FROM datediff_calc d
     JOIN event_counts c 
-        ON d.PATIENT_LOCAL_ID = c.PATIENT_LOCAL_ID 
-        AND d.DISEASE_CD = c.DISEASE_CD
+        ON d.[{column_map['PATIENT_LOCAL_ID']}] = c.[{column_map['PATIENT_LOCAL_ID']}] 
+        AND d.[{column_map['DISEASE_CD']}] = c.[{column_map['DISEASE_CD']}]
     WHERE c.event_count > 1
     AND (
         (d.days_since_prev IS NOT NULL AND d.days_since_prev <= {days_value})
         OR (d.days_until_next IS NOT NULL AND d.days_until_next <= {days_value})
     )
     ORDER BY 
-        d.PATIENT_LOCAL_ID COLLATE Latin1_General_BIN,
-        d.DISEASE_CD COLLATE Latin1_General_BIN,
-        d.EVENT_DATE,
+        d.[{column_map['PATIENT_LOCAL_ID']}] COLLATE Latin1_General_BIN,
+        d.[{column_map['DISEASE_CD']}] COLLATE Latin1_General_BIN,
+        d.[{column_map['EVENT_DATE']}],
         d.sas_row_num
     """
 
     content = trx.query(full_query)
-
-    #Remove any unnecessary columns from the result before returning
-    df = content.to_pandas()
-    df = df.loc[:, ~df.columns.duplicated()]
-    df.drop(
-        columns=[
-            'sas_row_num', 'days_since_prev', 'days_until_next', 'event_count'
-        ], inplace=True, errors='ignore'
-    )
-    content = Table(df)
 
     header = 'Potential Duplicate Investigations'
     subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
