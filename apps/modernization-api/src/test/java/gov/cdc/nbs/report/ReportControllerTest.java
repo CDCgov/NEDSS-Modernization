@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
@@ -84,12 +85,21 @@ class ReportControllerTest {
   @Test
   void createReport_should_return_created_report_response() {
     CreateReportRequest request =
-        new CreateReportRequest(2L, 3L, "Test Report", "SEC", "Description", "owner-1", List.of());
+        new CreateReportRequest(
+            2L,
+            3L,
+            "Test Report",
+            "SEC",
+            0L,
+            ReportConstants.ReportGroup.REPORTING_FACILITY,
+            "Description",
+            null);
     Report expectedReport = mock(Report.class);
+    NbsUserDetails user = mock(NbsUserDetails.class);
 
-    when(service.createReport(request)).thenReturn(expectedReport);
+    when(service.createReport(request, user)).thenReturn(expectedReport);
 
-    ResponseEntity<ReportId> response = controller.createReport(request);
+    ResponseEntity<ReportId> response = controller.createReport(user, request);
 
     assertEquals(expectedReport.getId(), response.getBody());
     assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -98,12 +108,22 @@ class ReportControllerTest {
   @Test
   void createReport_should_return_422_exception_when_data_source_not_found() {
     CreateReportRequest request =
-        new CreateReportRequest(2L, 3L, "Test Report", "SEC", "Description", "owner-1", List.of());
+        new CreateReportRequest(
+            2L,
+            3L,
+            "Test Report",
+            "SEC",
+            0L,
+            ReportConstants.ReportGroup.REPORTING_FACILITY,
+            "Description",
+            null);
+    NbsUserDetails user = mock(NbsUserDetails.class);
+
     String errorMsg = "No data source found for ID " + request.dataSourceId();
 
-    when(service.createReport(request)).thenThrow(new IllegalArgumentException(errorMsg));
+    when(service.createReport(request, user)).thenThrow(new IllegalArgumentException(errorMsg));
 
-    assertThatThrownBy(() -> controller.createReport(request))
+    assertThatThrownBy(() -> controller.createReport(user, request))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(errorMsg);
   }
@@ -111,12 +131,22 @@ class ReportControllerTest {
   @Test
   void createReport_should_return_422_when_report_library_invalid() {
     CreateReportRequest request =
-        new CreateReportRequest(2L, 3L, "Test Report", "SEC", "Description", "owner-1", List.of());
+        new CreateReportRequest(
+            2L,
+            3L,
+            "Test Report",
+            "SEC",
+            0L,
+            ReportConstants.ReportGroup.REPORTING_FACILITY,
+            "Description",
+            null);
+    NbsUserDetails user = mock(NbsUserDetails.class);
+
     String errorMsg = "No report library found for ID " + request.libraryId();
 
-    when(service.createReport(request)).thenThrow(new IllegalArgumentException(errorMsg));
+    when(service.createReport(request, user)).thenThrow(new IllegalArgumentException(errorMsg));
 
-    assertThatThrownBy(() -> controller.createReport(request))
+    assertThatThrownBy(() -> controller.createReport(user, request))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(errorMsg);
   }

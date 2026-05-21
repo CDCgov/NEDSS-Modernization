@@ -81,9 +81,7 @@ public class ReportService {
 
       List<ReportFilter> basicFiltersToCreate =
           request.filterRequest().basicFilters().stream()
-              .map(
-                  f ->
-                      reportFilterBuilder.buildBasicReportFilter(f, savedReport))
+              .map(f -> reportFilterBuilder.buildBasicReportFilter(f, savedReport))
               .toList();
       reportFilters.addAll(basicFiltersToCreate);
     }

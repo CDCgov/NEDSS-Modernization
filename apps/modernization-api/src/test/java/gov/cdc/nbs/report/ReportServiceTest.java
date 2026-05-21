@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
@@ -75,10 +76,13 @@ class ReportServiceTest {
     private final Long filterCodeUid = 7L;
     private final Long columnUid = 8L;
 
+    private NbsUserDetails user;
+
     @BeforeEach
     void setup() {
       DataSource mockDataSource = mock(DataSource.class);
       ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
+      user = mock(NbsUserDetails.class);
 
       FilterCode mockFilterCode = mock(FilterCode.class);
       Mockito.lenient().when(mockFilterCode.getId()).thenReturn(filterCodeUid);
@@ -101,16 +105,24 @@ class ReportServiceTest {
     }
 
     private CreateReportRequest buildCreateReportRequest(Boolean includeFilters) {
-      List<CreateFilterRequest> filters =
-          includeFilters ? List.of(new CreateFilterRequest(filterCodeUid, columnUid, null)) : null;
+      CreateFilterRequest filterRequest =
+          includeFilters
+              ? new CreateFilterRequest(
+                  List.of(columnUid),
+                  List.of(
+                      new CreateFilterRequest.BasicFilter(
+                          7L, columnUid, true, ReportConstants.FilterType.MS, false)),
+                  null)
+              : null;
       return new CreateReportRequest(
           dataSourceUid,
           libraryId,
           "Test Report Title",
           "123",
+          0L,
+          ReportConstants.ReportGroup.REPORTING_FACILITY,
           "Test Report Description",
-          "Test Owner Id",
-          filters);
+          filterRequest);
     }
 
     @Test
@@ -120,7 +132,7 @@ class ReportServiceTest {
 
       CreateReportRequest request = buildCreateReportRequest(true);
 
-      Report result = service.createReport(request);
+      Report result = service.createReport(request, user);
 
       assertThat(result).isEqualTo(savedReport);
       verify(dataSourceRepository).findById(dataSourceUid);
@@ -135,7 +147,7 @@ class ReportServiceTest {
 
       CreateReportRequest request = buildCreateReportRequest(false);
 
-      Report result = service.createReport(request);
+      Report result = service.createReport(request, user);
 
       assertThat(result).isEqualTo(savedReport);
       verify(dataSourceRepository).findById(dataSourceUid);
@@ -151,7 +163,7 @@ class ReportServiceTest {
 
       CreateReportRequest request = buildCreateReportRequest(true);
 
-      assertThatThrownBy(() -> service.createReport(request))
+      assertThatThrownBy(() -> service.createReport(request, user))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No data source found for ID " + dataSourceUid);
 
@@ -168,7 +180,7 @@ class ReportServiceTest {
 
       CreateReportRequest request = buildCreateReportRequest(true);
 
-      assertThatThrownBy(() -> service.createReport(request))
+      assertThatThrownBy(() -> service.createReport(request, user))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No report library found for ID " + libraryId);
 
@@ -188,7 +200,7 @@ class ReportServiceTest {
 
       CreateReportRequest request = buildCreateReportRequest(true);
 
-      assertThatThrownBy(() -> service.createReport(request))
+      assertThatThrownBy(() -> service.createReport(request, user))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("Unknown filterCodeUid provided: " + filterCodeUid);
 
@@ -207,7 +219,7 @@ class ReportServiceTest {
 
       CreateReportRequest request = buildCreateReportRequest(true);
 
-      assertThatThrownBy(() -> service.createReport(request))
+      assertThatThrownBy(() -> service.createReport(request, user))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("Unknown columnUid provided: " + columnUid);
 
