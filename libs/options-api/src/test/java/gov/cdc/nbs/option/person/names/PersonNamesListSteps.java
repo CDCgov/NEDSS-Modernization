@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.person.names.list;
+package gov.cdc.nbs.option.person.names;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.When;

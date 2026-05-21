@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.person.names.list;
+package gov.cdc.nbs.option.person.names;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -17,6 +17,8 @@ class PersonNamesListRequester {
   }
 
   ResultActions request() throws Exception {
-    return mvc.perform(get("/nbs/api/options/person/stdHivWorker/names")).andDo(print());
+    return mvc.perform(
+            get("/nbs/api/options/person/stdHivWorker/names").param("programAreas", "HIV", "STD"))
+        .andDo(print());
   }
 }

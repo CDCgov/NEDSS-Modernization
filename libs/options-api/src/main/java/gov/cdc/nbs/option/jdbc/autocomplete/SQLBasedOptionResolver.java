@@ -41,6 +41,10 @@ public class SQLBasedOptionResolver {
     return resolve(keyword, "", limit);
   }
 
+  public Collection<Option> resolve(Map<String, Object> params) {
+    return this.template.query(this.query, params, this.mapper);
+  }
+
   private String withWildcard(final String value) {
     return value + SQL_WILDCARD;
   }

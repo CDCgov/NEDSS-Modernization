@@ -1990,7 +1990,7 @@ describe('report run page', () => {
 
         describe('BAS_STD_HIV_WRKR', () => {
             const mockOptionApiImpl = (url: string) => {
-                if (url.includes('person/names')) {
+                if (url.includes('person/stdHivWorker/names')) {
                     return Promise.resolve([
                         { value: 'erso', name: 'Jyn Erso' },
                         { value: 'andor', name: 'Cassian Andor' },
@@ -2015,7 +2015,7 @@ describe('report run page', () => {
                     isRequired: true,
                     minValueCount: 1,
                     maxValueCount: 1,
-                    defaultValue: [],
+                    defaultValues: [],
                     defaultIncludeNulls: false,
                     reportColumnUid: 2001,
                 };
@@ -2144,7 +2144,7 @@ describe('report run page', () => {
                     isRequired: true,
                     minValueCount: 1,
                     maxValueCount: -1,
-                    defaultValue: [],
+                    defaultValues: [],
                     defaultIncludeNulls: false,
                     reportColumnUid: 2001,
                 };

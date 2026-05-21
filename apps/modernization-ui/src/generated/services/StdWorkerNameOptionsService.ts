@@ -13,10 +13,17 @@ export class StdWorkerNameOptionsService {
      * @returns Option OK
      * @throws ApiError
      */
-    public static stdHivWorkerNames(): CancelablePromise<Array<Option>> {
+    public static stdHivWorkerNames({
+        programAreas,
+    }: {
+        programAreas?: Array<string>,
+    }): CancelablePromise<Array<Option>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/options/person/stdHivWorker/names',
+            query: {
+                'programAreas': programAreas,
+            },
         });
     }
 }

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.person.names.list;
+package gov.cdc.nbs.option.person.names;
 
 import gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder;
 import gov.cdc.nbs.configuration.nbs.Properties;
@@ -9,16 +9,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-class PersonNamesListController {
-  private final PersonNamesListFinder finder;
+class PersonNamesOptionController {
+  private final PersonNamesOptionResolver resolver;
   private final NbsPropertiesFinder nbsPropertiesFinder;
 
-  PersonNamesListController(
-      final PersonNamesListFinder finder, NbsPropertiesFinder nbsPropertiesFinder) {
-    this.finder = finder;
+  PersonNamesOptionController(
+      final PersonNamesOptionResolver resolver, NbsPropertiesFinder nbsPropertiesFinder) {
+    this.resolver = resolver;
     this.nbsPropertiesFinder = nbsPropertiesFinder;
   }
 
@@ -28,9 +29,11 @@ class PersonNamesListController {
       description = "Provides all STD HIV program area worker names.",
       tags = "STDWorkerNameOptions")
   @GetMapping("nbs/api/options/person/stdHivWorker/names")
-  Collection<Option> workers() {
-    List<String> programAreas = buildProgramAreasValue();
-    return finder.findWithParams(Map.of("programAreas", programAreas));
+  Collection<Option> workers(@RequestParam(required = false) final List<String> programAreas) {
+    List<String> programAreasParam =
+        programAreas != null && !programAreas.isEmpty() ? programAreas : buildProgramAreasValue();
+    Map<String, Object> params = Map.of("programAreas", programAreasParam);
+    return resolver.resolve(params);
   }
 
   private List<String> buildProgramAreasValue() {
