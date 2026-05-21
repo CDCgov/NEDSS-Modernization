@@ -58,7 +58,14 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
             {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
             <div className={styles.layout}>
                 <Card id="available-columns" title="Available columns" collapsible={false}>
-                    <LiveSearch name="column-search" value={searchText} onChange={setSearchText} />
+                    <div className={styles.search}>
+                        <LiveSearch
+                            name="column-search"
+                            value={searchText}
+                            onChange={setSearchText}
+                            className="width-full"
+                        />
+                    </div>
                     <div className={styles.card}>
                         <Checkbox
                             key="select-all"

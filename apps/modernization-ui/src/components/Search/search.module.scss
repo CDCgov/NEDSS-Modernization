@@ -17,3 +17,14 @@
         border-bottom-left-radius: 0;
     }
 }
+
+.livesearch {
+    display: flex;
+
+    input {
+        height: auto;
+        border: none;
+        background-color: inherit;
+    }
+
+}

@@ -7,6 +7,12 @@
     gap: 2rem;
     padding: 2rem;
     background-color: colors.$base-lightest;
+    
+    .search {
+        background-color: colors.$primary-lightest;
+        width: 100%;
+        padding: 1rem;
+    }
 
     .card {
         max-height: clamp(15rem, 50vh, 45rem);

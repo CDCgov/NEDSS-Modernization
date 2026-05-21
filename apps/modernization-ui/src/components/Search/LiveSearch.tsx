@@ -19,11 +19,11 @@ const LiveSearch = (props: SearchProps) => {
     const defaultId = useId();
 
     return (
-        <search className={classNames(styles.search, props.className)}>
+        <search className={classNames(styles.livesearch, props.className)}>
             <label className="usa-sr-only" htmlFor={props.id}>
                 Search
             </label>
-            <Icon.Search size={3} name="Search" />
+            <Icon.Search size={3} name="Search" aria-label='search'/>
             <TextInput
                 placeholder={props.placeholder ?? 'Search...'}
                 type="search"
@@ -33,6 +33,7 @@ const LiveSearch = (props: SearchProps) => {
                 value={props.value}
                 onChange={(value) => props.onChange(value ?? '')}
                 maxLength={50}
+                clearable={true}
             />
         </search>
     );
