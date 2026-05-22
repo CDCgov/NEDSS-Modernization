@@ -32,6 +32,12 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': None,
+                'column_map': {
+                    'EVENT_DATE': 'Event Date',
+                    'PATIENT_LOCAL_ID': 'Patient Local Id',
+                    'DISEASE_CD': 'Disease Code',
+                    'INVESTIGATION_ID': 'Investigation Id'
+                }
             }
         )
 
@@ -58,6 +64,12 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 365,
+                'column_map': {
+                    'EVENT_DATE': 'Event Date',
+                    'PATIENT_LOCAL_ID': 'Patient Local Id',
+                    'DISEASE_CD': 'Disease Code',
+                    'INVESTIGATION_ID': 'Investigation Id'
+                }
             }
         )
 
@@ -82,6 +94,12 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 3650,
+                'column_map': {
+                    'EVENT_DATE': 'Event Date',
+                    'PATIENT_LOCAL_ID': 'Patient Local Id',
+                    'DISEASE_CD': 'Disease Code',
+                    'INVESTIGATION_ID': 'Investigation Id'
+                }
             }
         )
 
@@ -100,6 +118,12 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 30,
+                'column_map': {
+                    'EVENT_DATE': 'Event Date',
+                    'PATIENT_LOCAL_ID': 'Patient Local Id',
+                    'DISEASE_CD': 'Disease Code',
+                    'INVESTIGATION_ID': 'Investigation Id'
+                }
             }
         )
         result_30 = execute_report(spec_30)
@@ -121,6 +145,12 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': -3650,
+                'column_map': {
+                    'EVENT_DATE': 'Event Date',
+                    'PATIENT_LOCAL_ID': 'Patient Local Id',
+                    'DISEASE_CD': 'Disease Code',
+                    'INVESTIGATION_ID': 'Investigation Id'
+                }
             }
         )
 
@@ -145,6 +175,12 @@ class TestIntegrationNbsSrDupInvLibrary:
                 SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART] WHERE 1 = 0
                 """,
                 'days_value': 365,
+                'column_map': {
+                    'EVENT_DATE': 'Event Date',
+                    'PATIENT_LOCAL_ID': 'Patient Local Id',
+                    'DISEASE_CD': 'Disease Code',
+                    'INVESTIGATION_ID': 'Investigation Id'
+                }
             }
         )
 
@@ -164,6 +200,12 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 365,
+                'column_map': {
+                    'EVENT_DATE': 'Event Date',
+                    'PATIENT_LOCAL_ID': 'Patient Local Id',
+                    'DISEASE_CD': 'Disease Code',
+                    'INVESTIGATION_ID': 'Investigation Id'
+                }
             }
         )
 
@@ -184,6 +226,12 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
                 'days_value': 3650,
+                'column_map': {
+                    'EVENT_DATE': 'Event Date',
+                    'PATIENT_LOCAL_ID': 'Patient Local Id',
+                    'DISEASE_CD': 'Disease Code',
+                    'INVESTIGATION_ID': 'Investigation Id'
+                }
             }
         )
 
@@ -217,9 +265,15 @@ class TestIntegrationNbsSrDupInvLibrary:
                     DISEASE_CD as [Disease Code],
                     INVESTIGATION_ID as [Investigation Id]
                     FROM [RDB].[dbo].[INV_SUMM_DATAMART]
-                    ORDER BY --TEST SOMETHING OUT! MAKE SURE IT MATCHES NBS 6.
+                    ORDER BY DISEASE_CD
                     ''',
                 'days_value': 3650,
+                'column_map': {
+                    'EVENT_DATE': 'Event Date',
+                    'PATIENT_LOCAL_ID': 'Patient Local Id',
+                    'DISEASE_CD': 'Disease Code',
+                    'INVESTIGATION_ID': 'Investigation Id'
+                }
             }
         )
 

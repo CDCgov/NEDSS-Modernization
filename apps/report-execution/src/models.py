@@ -1,7 +1,7 @@
-from typing import Annotated, Any, Literal, Union
+from typing import Annotated, Any, Literal, Union, Optional
 
 import pandas as pd
-from pydantic import BaseModel, ConfigDict, Field, PlainSerializer, Optional
+from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
 
 
 class ReportSpec(BaseModel):
