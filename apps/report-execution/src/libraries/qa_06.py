@@ -53,7 +53,8 @@ def execute(
               SHD.CMP_PID_IND,
               CONVERT(varchar, SHD.CONFIRMATION_DT, 101) AS CONFIRMATION_DT,
               CONVERT(varchar, SHD.FL_FUP_EXAM_DT, 101) AS FL_FUP_EXAM_DT,
-              CONVERT(varchar, LAB.SPECIMEN_COLLECTION_DT, 101) AS SPECIMEN_COLLECTION_DT,
+              CONVERT(varchar, LAB.SPECIMEN_COLLECTION_DT, 101)
+                AS SPECIMEN_COLLECTION_DT,
               CONVERT(varchar, MR.DIAGNOSIS_DT, 101) AS DIAGNOSIS_DT
           FROM STD_HIV_DATAMART SHD
             INNER JOIN INV ON SHD.INVESTIGATION_KEY = INV.INVESTIGATION_KEY
@@ -96,7 +97,10 @@ def execute(
           PC.SPECIMEN_COLLECTION_DT,
           PC.DIAGNOSIS_DT,
           CC.CASE_COUNT AS COUNT,
-          CAST (TRY_CONVERT(int, SUBSTRING(PC.PATIENT_LOCAL_ID, 4, 8)) - 10000000 AS varchar(10)) AS PATIENTID
+          CAST(
+            TRY_CONVERT(int, SUBSTRING(PC.PATIENT_LOCAL_ID, 4, 8)) - 10000000
+                AS varchar(10)
+          ) AS PATIENTID
         FROM PATIENT_CASES PC
         INNER JOIN CASE_COUNTS CC
           ON PC.PATIENT_NAME = CC.PATIENT_NAME
@@ -118,7 +122,6 @@ def execute(
     # COUNT
     # PATIENTID
 
-    breakpoint()
     content = trx.query(query)
 
     return ReportResult(

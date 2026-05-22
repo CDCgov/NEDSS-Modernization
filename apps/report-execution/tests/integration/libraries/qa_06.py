@@ -27,5 +27,8 @@ class TestIntegrationQa06Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert data is not None
+        assert len(data) == 117
+        assert len(data[0]) == 14
+        assert len(data[0]) == len(result.content.columns)
+        data = result.content.data
         breakpoint()
