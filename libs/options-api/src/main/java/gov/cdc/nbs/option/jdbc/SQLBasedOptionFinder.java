@@ -2,7 +2,6 @@ package gov.cdc.nbs.option.jdbc;
 
 import gov.cdc.nbs.option.Option;
 import java.util.Collection;
-import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -20,9 +19,5 @@ public class SQLBasedOptionFinder {
 
   public Collection<Option> find() {
     return this.template.query(query, this.mapper);
-  }
-
-  public Collection<Option> findWithParams(Map<String, Object> params) {
-    return this.template.query(query, this.mapper, params);
   }
 }
