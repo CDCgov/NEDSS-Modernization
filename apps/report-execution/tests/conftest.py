@@ -264,7 +264,7 @@ def insert_fake_data(
 
         for sql in sqls:
             trx.execute(sql)
-
+            
         logging.info('Inserted fake data')
 
 

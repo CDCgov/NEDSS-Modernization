@@ -56,8 +56,6 @@ tables:
           column: INVESTIGATION_KEY
 
       # patient demographics
-      - column_name: PATIENT_LOCAL_ID
-        data: f"P{row_id + 1000000000}"
       - column_name: patient_name
         data: |
           return f"{fake.last_name()}, {fake.first_name()}"
@@ -80,8 +78,6 @@ tables:
       - column_name: field_record_number
         data: fake.random_int(10000000, 99999999)
         null_percentage: 0.05
-      - column_name: INV_LOCAL_ID
-        data: f"INV{row_id + 10000000}"
       - column_name: investigator_interview_qc
         data: fake.random_int(10000000, 99999999)
         null_percentage: 0.05
@@ -98,21 +94,21 @@ tables:
         data: random.choice(["I - Interviewed"]) if random.random() < .1 else None
       - column_name: program_jurisdiction_oid
         data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
-      - column_name: CONFIRMATION_DT
+      - column_name: confirmation_dt
         data: fake.date_between(start_date=date(2020, 1, 1), end_date=date(2025, 12, 31))
+      - column_name: jurisdiction_nm
+        type: string
+        data: random.choice(["Washington County", "Middlesex County"]) if random.random() < .95 else None
+      - column_name: physician_key
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
+      - column_name: inv_local_id
+        data: |
+          id_num = fake.unique.random_int(10000, 99999)
+          return f"CAS100{id_num}GA01"
+      - column_name: ordering_facility_key
+        data: foreign_key("[RDB].[dbo].[D_ORGANIZATION]", "organization_key")
 
   # Join tables needed for qa04
-  - table_name: "[RDB].[dbo].[investigation]"
-    row_count: 335
-    columns:
-      - column_name: INVESTIGATION_KEY
-        data: row_id
-        is_primary_key: true
-      - column_name: RECORD_STATUS_CD
-        data: random.choice(["ACTIVE", "INACTIVE"])
-      - column_name: INV_CASE_STATUS
-        data: random.choice(["Not a Case", "Confirmed", "Suspect", "Probable", "Unknown"])
-        weights: [0.4269, 0.3493, 0.1134, 0.0866, 0.0239]
 
   - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
     row_count: 200
@@ -182,20 +178,7 @@ tables:
       - column_name: CONDITION_KEY
         data: row_id + 130000
       - column_name: LDF_GROUP_KEY
-        data: row_id + 160000      - column_name: confirmation_dt
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
-        null_percentage: 0.05
-      - column_name: jurisdiction_nm
-        type: string
-        data: random.choice(["Washington County", "Middlesex County"]) if random.random() < .95 else None
-      - column_name: physician_key
-        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
-      - column_name: inv_local_id
-        data: |
-          id_num = fake.unique.random_int(10000, 99999)
-          return f"CAS100{id_num}GA01"
-      - column_name: ordering_facility_key
-        data: foreign_key("[RDB].[dbo].[D_ORGANIZATION]", "organization_key")
+        data: row_id + 160000
 
 
 # === Columns not needed for reports yet ===
