@@ -8,9 +8,13 @@ def execute(
     data_source_name: str,
     **kwargs,
 ):
-    """QA Report 06: Patients with Multiple Cases.
+    """QA Report 06: Patients with Multiple Cases. This report generates a list,
+    by name, of individuals who have multiple occasions of cases within a time
+    period.
 
     Conversion notes:
+    * MSSQL Datetime conversions use constants, "101" is for mm/dd/yyyy
+    * FL_FUP_EXAM_DT logic in SELECT is the equivalent of SAS in orig. script
     """
     query = f"""
         WITH STD_HIV_DATAMART AS ({subset_query}),
@@ -47,10 +51,10 @@ def execute(
               INV.PROVIDER_QUICK_CODE,
               SHD.DIAGNOSIS,
               SHD.CMP_PID_IND,
-              SHD.CONFIRMATION_DT,
-              SHD.FL_FUP_EXAM_DT,
-              LAB.SPECIMEN_COLLECTION_DT,
-              MR.DIAGNOSIS_DT
+              CONVERT(varchar, SHD.CONFIRMATION_DT, 101) AS CONFIRMATION_DT,
+              CONVERT(varchar, SHD.FL_FUP_EXAM_DT, 101) AS FL_FUP_EXAM_DT,
+              CONVERT(varchar, LAB.SPECIMEN_COLLECTION_DT, 101) AS SPECIMEN_COLLECTION_DT,
+              CONVERT(varchar, MR.DIAGNOSIS_DT, 101) AS DIAGNOSIS_DT
           FROM STD_HIV_DATAMART SHD
             INNER JOIN INV ON SHD.INVESTIGATION_KEY = INV.INVESTIGATION_KEY
             LEFT OUTER JOIN LAB ON SHD.INVESTIGATION_KEY = LAB.INVESTIGATION_KEY
@@ -61,12 +65,58 @@ def execute(
           WHERE SHD.INV_LOCAL_ID IS NOT NULL
             AND SHD.DIAGNOSIS IS NOT NULL
             AND INV.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+        ),
+
+        -- calculate case counts per patient
+        CASE_COUNTS AS (
+          SELECT PATIENT_NAME,
+            COUNT(*) AS CASE_COUNT
+          FROM PATIENT_CASES
+          GROUP BY PATIENT_NAME
         )
 
-        SELECT *
-        FROM PATIENT_CASES;
+        SELECT PC.PATIENT_NAME,
+          PC.PATIENT_LOCAL_ID,
+          PC.INV_LOCAL_ID,
+          PC.REFERRAL_BASIS,
+          PC.PROVIDER_QUICK_CODE,
+          PC.DIAGNOSIS,
+          PC.CMP_PID_IND,
+          PC.CONFIRMATION_DT,
+          PC.FL_FUP_EXAM_DT,
+          CASE
+            WHEN PC.FL_FUP_EXAM_DT IS NULL
+            AND PC.REFERRAL_BASIS = 'T1 - Positive Test'
+              THEN PC.SPECIMEN_COLLECTION_DT
+            WHEN PC.FL_FUP_EXAM_DT IS NULL
+            AND PC.REFERRAL_BASIS = 'T2 - Morbidity Report'
+              THEN PC.DIAGNOSIS_DT
+            ELSE PC.FL_FUP_EXAM_DT
+          END AS FL_FUP_EXAM_DT,
+          PC.SPECIMEN_COLLECTION_DT,
+          PC.DIAGNOSIS_DT,
+          CC.CASE_COUNT AS COUNT,
+          CAST (TRY_CONVERT(int, SUBSTRING(PC.PATIENT_LOCAL_ID, 4, 8)) - 10000000 AS varchar(10)) AS PATIENTID
+        FROM PATIENT_CASES PC
+        INNER JOIN CASE_COUNTS CC
+          ON PC.PATIENT_NAME = CC.PATIENT_NAME
+        WHERE CASE_COUNT > 1;
+
         """
-    # PATIENT_NAME,PATIENT_LOCAL_ID,INV_LOCAL_ID,REFERRAL_BASIS,PROVIDER_QUICK_CODE,DIAGNOSIS,CMP_PID_IND,CONFIRMATION_DT,FL_FUP_EXAM_DT,SPECIMEN_COLLECTION_DT,DIAGNOSIS_DT,COUNT,PATIENTID
+    # columns from nbs7demo output csv:
+    # PATIENT_NAME
+    # PATIENT_LOCAL_ID
+    # INV_LOCAL_ID
+    # REFERRAL_BASIS
+    # PROVIDER_QUICK_CODE
+    # DIAGNOSIS
+    # CMP_PID_IND
+    # CONFIRMATION_DT
+    # FL_FUP_EXAM_DT
+    # SPECIMEN_COLLECTION_DT
+    # DIAGNOSIS_DT
+    # COUNT
+    # PATIENTID
 
     breakpoint()
     content = trx.query(query)
