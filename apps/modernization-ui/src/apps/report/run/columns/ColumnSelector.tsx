@@ -2,8 +2,6 @@ import { Card } from 'design-system/card';
 import { Checkbox } from 'design-system/checkbox';
 import { ReportColumn } from 'generated';
 import { Selectable } from 'options';
-
-import styles from './column-selector.module.scss';
 import { ReportExecuteForm } from '../ReportRunPage';
 import { validateRequiredRule } from 'validation/entry';
 import { useController } from 'react-hook-form';
@@ -13,6 +11,8 @@ import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanne
 import { Button } from 'design-system/button';
 import { useState } from 'react';
 import { LiveSearch } from 'components/Search/LiveSearch';
+
+import styles from './column-selector.module.scss';
 
 const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; defaultColumns?: number[] }) => {
     const {
@@ -93,8 +93,7 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                         <Button disabled={noneSelected} onClick={() => onChange([])}>
                             Clear selections
                         </Button>
-                    }
-                >
+                    }>
                     <div className={styles.card}>
                         {noneSelected ? (
                             <p className={styles.center}>Select a column from "Available columns"</p>
@@ -140,13 +139,11 @@ const SelectedColumnsList = ({
                                         <div
                                             className={styles.option}
                                             ref={draggable.innerRef}
-                                            {...draggable.draggableProps}
-                                        >
+                                            {...draggable.draggableProps}>
                                             <span
                                                 className={styles.handle}
                                                 aria-label={`Drag handle for ${optionName}`}
-                                                {...draggable.dragHandleProps}
-                                            >
+                                                {...draggable.dragHandleProps}>
                                                 <Icon name="drag" />
                                             </span>
                                             <span className={styles.label}>{optionName}</span>
