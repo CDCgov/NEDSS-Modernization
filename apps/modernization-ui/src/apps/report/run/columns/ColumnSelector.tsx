@@ -93,7 +93,8 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                         <Button disabled={noneSelected} onClick={() => onChange([])}>
                             Clear selections
                         </Button>
-                    }>
+                    }
+                >
                     <div className={styles.card}>
                         {noneSelected ? (
                             <p className={styles.center}>Select a column from "Available columns"</p>
@@ -139,11 +140,13 @@ const SelectedColumnsList = ({
                                         <div
                                             className={styles.option}
                                             ref={draggable.innerRef}
-                                            {...draggable.draggableProps}>
+                                            {...draggable.draggableProps}
+                                        >
                                             <span
                                                 className={styles.handle}
                                                 aria-label={`Drag handle for ${optionName}`}
-                                                {...draggable.dragHandleProps}>
+                                                {...draggable.dragHandleProps}
+                                            >
                                                 <Icon name="drag" />
                                             </span>
                                             <span className={styles.label}>{optionName}</span>
