@@ -58,20 +58,20 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
             {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
             <div className={styles.layout}>
                 <Card id="available-columns" title="Available columns" collapsible={false}>
-                    <div className={styles.search}>
-                        <LiveSearch
-                            name="column-search"
-                            value={searchText}
-                            onChange={setSearchText}
-                            className="width-full"
-                        />
-                    </div>
                     <div className={styles.card}>
+                        <div className={styles.search}>
+                            <LiveSearch
+                                name="column-search"
+                                value={searchText}
+                                onChange={setSearchText}
+                                className="width-full"
+                            />
+                        </div>
                         <Checkbox
                             key="select-all"
                             className={styles.option}
                             label={searchText ? 'Select search results' : 'Select all'}
-                            selected={options.length === value?.length}
+                            selected={availableOptions.every((o) => value?.includes(o.value))}
                             onChange={handleSelectAll}
                         />
                         {availableOptions.map((o) => (
@@ -142,7 +142,11 @@ const SelectedColumnsList = ({
                                             ref={draggable.innerRef}
                                             {...draggable.draggableProps}
                                         >
-                                            <span className={styles.handle} {...draggable.dragHandleProps}>
+                                            <span
+                                                className={styles.handle}
+                                                aria-label={`Drag handle for ${optionName}`}
+                                                {...draggable.dragHandleProps}
+                                            >
                                                 <Icon name="drag" />
                                             </span>
                                             <span className={styles.label}>{optionName}</span>

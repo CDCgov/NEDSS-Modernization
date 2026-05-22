@@ -1,4 +1,4 @@
-import { findByLabelText, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -2713,6 +2713,106 @@ describe('report run page', () => {
                     expect(announcementEl).toHaveTextContent('The group has returned to its starting position')
                 );
                 expect(addRuleBtn).toHaveFocus();
+            });
+        });
+    });
+
+    describe('column selection', () => {
+        const MOCK_SELECTABLE_CONFIG: ReportConfiguration = {
+            ...MOCK_CONFIG,
+            library: { ...MOCK_CONFIG.library, allowColumnSelection: true },
+        };
+
+        it('happy path', async () => {
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue(MOCK_SELECTABLE_CONFIG);
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { container, getByRole, findByText, queryByText, findByRole, findAllByRole, findByLabelText } =
+                renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Column selection')).toBeVisible();
+            expect(queryByText('Basic Filters')).toBeNull();
+            expect(queryByText('Advanced Filters')).toBeNull();
+
+            // starts unselected
+            expect(await findByText('Select a column from "Available columns"')).toBeVisible();
+            expect(await findByRole('button', { name: 'Clear selections' })).toBeDisabled();
+
+            const options = () => findAllByRole('checkbox');
+            expect(await options()).toHaveLength(MOCK_CONFIG.columns.length - 1); // -2 for non-displayable +1 for select all
+            (await options()).forEach((option) => expect(option).not.toBeChecked());
+
+            const user = userEvent.setup();
+
+            await user.click((await options())[0]); // select all
+            (await options()).forEach((option) => expect(option).toBeChecked());
+            await user.click((await options())[0]); // de-select all
+            (await options()).forEach((option) => expect(option).not.toBeChecked());
+
+            const search = await findByLabelText('Search');
+            await user.type(search, 'name');
+            expect(await options()).toHaveLength(2); // Full Name + select all
+            await user.click(await findByLabelText('Select search results'));
+            await waitFor(async () => (await options()).forEach((option) => expect(option).toBeChecked()));
+            await user.clear(search);
+            expect((await options()).filter((o) => (o as HTMLInputElement).checked)).toHaveLength(1);
+            expect(await findByRole('checkbox', { name: 'Full Name' })).toBeChecked();
+            expect(await findByLabelText('Remove Full Name')).toBeVisible(); // in ordering panel
+            await user.click(await findByLabelText('Remove Full Name'));
+            await waitFor(async () => (await options()).forEach((option) => expect(option).not.toBeChecked()));
+
+            // trigger validation
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(await findByText('The column selection is required.')).toBeVisible();
+
+            await user.click(await findByLabelText('Select all'));
+
+            expect(queryByText('The column selection is required.')).toBeNull();
+
+            await user.click(await findByRole('button', { name: 'Clear selections' }));
+
+            expect(await findByText('The column selection is required.')).toBeVisible();
+
+            // check drag and drop, the library uses keycodes (deprecated) instead of names,
+            // so requires this kinda hacky workaround vs user events
+            const fireDnDEvent = (keyCode: number) => {
+                fireEvent.keyDown(dragHandle, {
+                    keyCode,
+                });
+            };
+            await user.click(await findByLabelText('Select all'));
+            const dragHandle = await findByLabelText('Drag handle for Full Name');
+            dragHandle.focus();
+            fireDnDEvent(32); // space
+            fireDnDEvent(40); // down
+            fireDnDEvent(40); // down
+            fireDnDEvent(32); // space
+            expect(await findByLabelText('Drag handle for Full Name')).toHaveFocus();
+
+            expect(
+                await findByText(/You have dropped the item\. You have moved the item from position 1 to position 3/)
+            ).toBeVisible();
+
+            expect(await axe(container)).toHaveNoViolations();
+
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: undefined,
+                    basicFilters: [],
+                    columnUids: [2002, 2003, 2001],
+                }),
             });
         });
     });
