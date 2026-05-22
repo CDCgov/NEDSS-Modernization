@@ -2815,5 +2815,42 @@ describe('report run page', () => {
                 }),
             });
         });
+
+        it('starts from default values', async () => {
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_SELECTABLE_CONFIG, defaultColumnUids: [2003, 2002] });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            const user = userEvent.setup();
+
+            // starts selected
+            expect(await findByLabelText('Days Old')).toBeChecked();
+            expect(await findByLabelText('Date of Birth')).toBeChecked();
+            expect(await findByLabelText('Full Name')).not.toBeChecked();
+
+            await user.click(await findByLabelText('Full Name'));
+            await user.click(await findByLabelText('Remove Date of Birth'));
+            await user.click(await findByLabelText('Date of Birth')); // make sure adds to the end
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: undefined,
+                    basicFilters: [],
+                    columnUids: [2003, 2001, 2002],
+                }),
+            });
+        });
     });
 });
