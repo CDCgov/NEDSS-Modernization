@@ -5,6 +5,7 @@ import { BasicFilterConfiguration } from 'generated';
 const MIN_VALUE = 0;
 const MAX_VALUE = 999;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const NumericFilter: BasicFilterComponent = ({ filter, ...remaining }: BasicFilterProps) => {
     return <NumericInput min={MIN_VALUE} max={MAX_VALUE} {...remaining} />;
 };
