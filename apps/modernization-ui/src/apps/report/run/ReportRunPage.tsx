@@ -20,6 +20,16 @@ export type ReportExecuteForm = {
     columns?: string[];
 };
 
+const normalizeFormValueToStringArray = (value: unknown): string[] => {
+    if (value === undefined || value === null) {
+        return [];
+    }
+    if (Array.isArray(value)) {
+        return value.map(String);
+    }
+    return [String(value)];
+};
+
 const ReportRunPage = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
@@ -46,10 +56,10 @@ const ReportRunPage = () => {
             (data) => {
                 const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
                     .map(([id, value]) => {
-                        const values = typeof value === 'string' ? [value] : value;
+                        const values = normalizeFormValueToStringArray(value);
                         return {
                             // remove `id_` prefix
-                            reportFilterUid: parseInt(id.slice(3)),
+                            reportFilterUid: Number.parseInt(id.slice(3)),
                             values,
                         };
                     })

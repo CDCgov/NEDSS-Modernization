@@ -2021,7 +2021,7 @@ describe('report run page', () => {
                 expect(mockConfigApi).toHaveBeenCalled();
 
                 const input = await findByLabelText('Duplicate Investigations Time Frame');
-                await userEvent.type(input, '5');
+                await user.type(input, '5');
 
                 expect(input).toHaveValue(5);
 
@@ -2033,7 +2033,7 @@ describe('report run page', () => {
                     requestBody: expect.objectContaining({
                         isExport: true,
                         advancedFilter: undefined,
-                        basicFilters: [{ reportFilterUid: 1001, values: 5 }],
+                        basicFilters: [{ reportFilterUid: 1001, values: ['5'] }],
                     }),
                 });
             });
@@ -2120,7 +2120,7 @@ describe('report run page', () => {
                     requestBody: expect.objectContaining({
                         isExport: true,
                         advancedFilter: undefined,
-                        basicFilters: [{ reportFilterUid: 1001, values: 1 }],
+                        basicFilters: [{ reportFilterUid: 1001, values: ['1'] }],
                     }),
                 });
             });
@@ -2183,7 +2183,7 @@ describe('report run page', () => {
                     requestBody: expect.objectContaining({
                         isExport: true,
                         advancedFilter: undefined,
-                        basicFilters: [{ reportFilterUid: 1001, values: 11 }],
+                        basicFilters: [{ reportFilterUid: 1001, values: ['11'] }],
                     }),
                 });
             });
