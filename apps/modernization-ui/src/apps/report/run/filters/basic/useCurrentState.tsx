@@ -14,7 +14,7 @@ const CurrentStateProvider = ({ stateFilter, children }: Props) => {
     const { setValue } = useFormContext<ReportExecuteForm>();
     const { ready, properties } = useConfiguration();
     const stateFilterId = stateFilter?.reportFilterUid;
-    const formName: `basicFilter.${string}` = `basicFilter.id_${stateFilterId}`;
+    const formName: `basicFilter.${string}.value` = `basicFilter.id_${stateFilterId}.value`;
     const stateVal = useWatch<ReportExecuteForm>({
         name: formName,
         defaultValue: stateFilter?.defaultValues,
