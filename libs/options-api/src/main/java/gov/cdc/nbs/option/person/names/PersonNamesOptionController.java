@@ -1,10 +1,8 @@
 package gov.cdc.nbs.option.person.names;
 
 import gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder;
-import gov.cdc.nbs.configuration.nbs.Properties;
 import gov.cdc.nbs.option.Option;
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +16,7 @@ class PersonNamesOptionController {
   private final NbsPropertiesFinder nbsPropertiesFinder;
 
   PersonNamesOptionController(
-      final PersonNamesOptionResolver resolver, NbsPropertiesFinder nbsPropertiesFinder) {
+      final PersonNamesOptionResolver resolver, final NbsPropertiesFinder nbsPropertiesFinder) {
     this.resolver = resolver;
     this.nbsPropertiesFinder = nbsPropertiesFinder;
   }
@@ -31,17 +29,10 @@ class PersonNamesOptionController {
   @GetMapping("nbs/api/options/person/stdHivWorker/names")
   Collection<Option> workers(@RequestParam(required = false) final List<String> programAreas) {
     List<String> programAreasParam =
-        programAreas != null && !programAreas.isEmpty() ? programAreas : buildProgramAreasValue();
+        programAreas != null && !programAreas.isEmpty()
+            ? programAreas
+            : StdHivProgramAreaFinder.values(nbsPropertiesFinder);
     Map<String, Object> params = Map.of("programAreas", programAreasParam);
     return resolver.resolve(params);
-  }
-
-  private List<String> buildProgramAreasValue() {
-    Properties nbsProperties = nbsPropertiesFinder.find();
-    List<String> hivProgramAreas = nbsProperties.hivProgramAreas();
-    List<String> stdProgramAreas = nbsProperties.stdProgramAreas();
-    List<String> stdHivProgramAreas = new ArrayList<>(hivProgramAreas);
-    stdHivProgramAreas.addAll(stdProgramAreas);
-    return stdHivProgramAreas;
   }
 }
