@@ -1,7 +1,7 @@
 import { Field } from 'design-system/field';
 import { BasicFilterConfiguration, ReportColumn } from 'generated';
 import { ReactNode, useId } from 'react';
-import { ReportExecuteForm } from '../ReportRunPage';
+import { ReportExecuteForm } from '../../ReportRunPage';
 import { Controller, ControllerRenderProps, RegisterOptions, useFormContext } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { TextFilter, getValueText } from './TextFilter';
@@ -11,6 +11,7 @@ import { getValueList, OptionSelectFilter, optionSelectValidator } from './Optio
 import { getYearRange, YearRangeFilter } from './YearRangeFilter';
 import { getMonthYearRange, MonthYearRangeFilter, monthYearRangeValidator } from './MonthYearRangeFilter';
 import { getNumericValue, NumericFilter, numericValidator } from './NumericFilter.tsx';
+import { Checkbox } from 'design-system/checkbox';
 
 export type BasicFilterProps = {
     filter: BasicFilterConfiguration;
@@ -25,8 +26,11 @@ const FILTER_TYPE_MAP: Record<
     string,
     {
         FilterComponent: BasicFilterComponent;
-        getDefaultValue: (filter: BasicFilterConfiguration) => any;
-        validationRule?: (filter: BasicFilterConfiguration, label: string) => Validator<any>;
+        getDefaultValue: (filter: BasicFilterConfiguration) => string | string[] | null;
+        validationRule?: (
+            filter: BasicFilterConfiguration,
+            label: string
+        ) => Validator<undefined | (string | undefined)[]>;
     }
 > = {
     BAS_TXT: { FilterComponent: TextFilter, getDefaultValue: getValueText },
@@ -107,28 +111,59 @@ const BasicFilter = ({ filter, columns }: { filter: BasicFilterConfiguration; co
     }
 
     return (
-        <Controller
-            control={control}
-            // add `id_` prefix to make sure the id is treated as an object key and not array index
-            name={`basicFilter.id_${filter.reportFilterUid}`}
-            rules={rules}
-            defaultValue={getDefaultValue(filter)}
-            // ignoring the ref as it does not pass down well and isn't critical
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            render={({ field: { ref, ...fieldValues }, fieldState: { error } }) => (
-                <FilterComponent
-                    id={id}
-                    orientation="horizontal"
-                    sizing="medium"
-                    required={filter.isRequired}
-                    filter={filter}
-                    label={label}
-                    helperText={helperText}
-                    error={error?.message}
-                    {...fieldValues}
+        <div className="display-flex flex-row">
+            <div className="flex-3">
+                <Controller
+                    control={control}
+                    // add `id_` prefix to make sure the id is treated as an object key and not array index
+                    name={`basicFilter.id_${filter.reportFilterUid}.value`}
+                    rules={rules}
+                    defaultValue={getDefaultValue(filter)}
+                    // ignoring the ref as it does not pass down well and isn't critical
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    render={({ field: { ref, ...fieldValues }, fieldState: { error } }) => (
+                        <FilterComponent
+                            id={id}
+                            orientation="horizontal"
+                            sizing="medium"
+                            required={filter.isRequired}
+                            filter={filter}
+                            label={label}
+                            helperText={helperText}
+                            error={error?.message}
+                            {...fieldValues}
+                        />
+                    )}
                 />
+            </div>
+            {filter.filterType.code?.endsWith('_N') && (
+                <div className="flex-1">
+                    <Controller
+                        control={control}
+                        // add `id_` prefix to make sure the id is treated as an object key and not array index
+                        name={`basicFilter.id_${filter.reportFilterUid}.includeNulls`}
+                        defaultValue={filter.defaultIncludeNulls ?? null}
+                        // ignoring the ref as it does not pass down well and isn't critical
+                        render={({ field: { value, onChange } }) => (
+                            <Field
+                                htmlFor={`${id}-include-nulls`}
+                                orientation="horizontal"
+                                sizing="medium"
+                                label="Include Nulls"
+                                className="height-full"
+                            >
+                                <Checkbox
+                                    id={`${id}-include-nulls`}
+                                    aria-label={`Include Nulls for ${label}`}
+                                    selected={value}
+                                    onChange={onChange}
+                                ></Checkbox>
+                            </Field>
+                        )}
+                    />
+                </div>
             )}
-        />
+        </div>
     );
 };
 
