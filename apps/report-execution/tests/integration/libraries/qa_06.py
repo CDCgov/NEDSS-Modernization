@@ -1,4 +1,5 @@
 import pytest
+import yaml
 
 from src.execute_report import execute_report
 from src.models import ReportSpec
@@ -30,5 +31,5 @@ class TestIntegrationQa06Library:
         assert len(data) == 117
         assert len(data[0]) == 14
         assert len(data[0]) == len(result.content.columns)
-        data = result.content.data
-        breakpoint()
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
