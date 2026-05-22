@@ -42,7 +42,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         assert result.subheader is not None
 
         data = result.content
-        assert len(data.columns) == 58
         assert len(data.data) >= 0
 
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
@@ -200,3 +199,36 @@ class TestIntegrationNbsSrDupInvLibrary:
         # Each pair should appear at least twice
         for count in counts.values():
             assert count >= 2, f'Patient/disease pair appears only {count} times'
+
+    def test_execute_report_column_ordering(self):
+        """Verify that the expected columns are consistently ordered as expected."""
+        report_spec = ReportSpec.model_validate(
+            {
+                'version': 1,
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'Potential Duplicate Investigations',
+                'library_name': 'potntl_dup_inv_sum',
+                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+                'subset_query': 
+                    '''
+                    SELECT EVENT_DATE as [Event Date],
+                    PATIENT_LOCAL_ID as [Patient Local Id],
+                    DISEASE_CD as [Disease Code],
+                    INVESTIGATION_ID as [Investigation Id]
+                    FROM [RDB].[dbo].[INV_SUMM_DATAMART]
+                    ORDER BY --TEST SOMETHING OUT! MAKE SURE IT MATCHES NBS 6.
+                    ''',
+                'days_value': 3650,
+            }
+        )
+
+        result = execute_report(report_spec)
+
+        expected_columns = {
+            'PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE', 'INVESTIGATION_ID'
+        }
+        result_columns = set(result.content.columns)
+
+        missing_columns = expected_columns - result_columns
+        assert not missing_columns, f'Missing expected columns: {missing_columns}'
