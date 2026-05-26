@@ -11,7 +11,7 @@ type ReportRunHeaderProps = {
 export const ReportRunHeader = ({ config, actions }: ReportRunHeaderProps) => {
     return (
         <div>
-            <Heading level={1}>Run Report: {config.reportTitle}</Heading>
+            <Heading level={1}>Run Report: {config.title}</Heading>
             <div>{actions}</div>
         </div>
     );
