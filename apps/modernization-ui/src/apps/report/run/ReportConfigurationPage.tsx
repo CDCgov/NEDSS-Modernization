@@ -39,14 +39,14 @@ const ReportConfigurationPage = ({
                     <CurrentStateProvider stateFilter={stateFilter}>
                         <Card id="basic-filters" title="Basic Filters" collapsible={true}>
                             {basicFilters.map((filter, i) => (
-                                <BasicFilter key={`basic_filter_${i}`} filter={filter} columns={config.reportColumns} />
+                                <BasicFilter key={`basic_filter_${i}`} filter={filter} columns={config.columns} />
                             ))}
                         </Card>
                     </CurrentStateProvider>
                 )}
                 {config.advancedFilter && (
                     <Card id="advanced-filter" title="Advanced Filter" collapsible={true}>
-                        <AdvancedFilter filter={config.advancedFilter} columns={config.reportColumns} />
+                        <AdvancedFilter filter={config.advancedFilter} columns={config.columns} />
                     </Card>
                 )}
                 <details>

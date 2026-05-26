@@ -127,8 +127,7 @@ public class ReportService {
 
     if (!reportConfigResponse.isPython()) {
       throw new NotImplementedException(
-          String.format(
-              "Report not implemented for %s", reportConfigResponse.reportLibrary().runner()),
+          String.format("Report not implemented for %s", reportConfigResponse.library().runner()),
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
     }
 

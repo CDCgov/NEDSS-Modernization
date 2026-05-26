@@ -6,9 +6,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record Library(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String runner,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String libraryName,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isBuiltin) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isBuiltin,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean allowColumnSelection) {
 
   public Library(ReportLibrary dbLibrary) {
-    this(dbLibrary.getRunner(), dbLibrary.getLibraryName(), dbLibrary.isBuiltin());
+    this(
+        dbLibrary.getRunner(),
+        dbLibrary.getLibraryName(),
+        dbLibrary.isBuiltin(),
+        dbLibrary.allowColumnSelection());
   }
 }
