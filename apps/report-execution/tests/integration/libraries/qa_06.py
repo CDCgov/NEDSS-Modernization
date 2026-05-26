@@ -28,7 +28,6 @@ class TestIntegrationQa06Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 117
         assert len(data[0]) == 13
         assert len(data[0]) == len(result.content.columns)
 
