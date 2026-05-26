@@ -1,9 +1,8 @@
 import React from 'react';
-import { ReportConfiguration, ReportControllerService } from 'generated';
+import { AdvancedFilterRequest, BasicFilterRequest, ReportConfiguration, ReportControllerService } from 'generated';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
-import { AdvancedFilterRequest, BasicFilterRequest } from 'generated';
 import { useNewTab } from './useNewTab';
 import { ResultDataPage } from './ResultDataPage';
 import fileDownload from 'js-file-download';
@@ -25,9 +24,9 @@ const normalizeFormValueToStringArray = (value: unknown): string[] => {
         return [];
     }
     if (Array.isArray(value)) {
-        return value.map(String);
+        return value;
     }
-    return [String(value)];
+    return [value.toString()];
 };
 
 const ReportRunPage = () => {

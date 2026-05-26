@@ -2137,7 +2137,6 @@ describe('report run page', () => {
                 const exportButton = await findByRole('button', { name: 'Export' });
                 await user.click(exportButton);
 
-                // expect(input).toBeInvalid();
                 expect(await findAllByText('The Duplicate Investigations Time Frame is required.')).toHaveLength(2);
                 expect(mockResultApi).not.toHaveBeenCalled();
             });
@@ -2160,6 +2159,8 @@ describe('report run page', () => {
 
                 const input = await findByLabelText('Duplicate Investigations Time Frame');
 
+                // Using fireEvent.change because user.type cannot reliably simulate
+                // typing negative signs into inputs with type="number"
                 fireEvent.change(input, { target: { value: '-1' } });
                 const exportButton = await findByRole('button', { name: 'Export' });
                 await user.click(exportButton);

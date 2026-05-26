@@ -6,18 +6,22 @@ const MIN_VALUE = 0;
 const MAX_VALUE = 999;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const NumericFilter: BasicFilterComponent = ({ filter, ...remaining }: BasicFilterProps) => {
-    return <NumericInput min={MIN_VALUE} max={MAX_VALUE} {...remaining} />;
+const NumericFilter: BasicFilterComponent = ({ filter, value, onChange, ...remaining }: BasicFilterProps) => {
+
+    const numericValue = value ? Number(value) : value;
+
+    const numericOnChange = (v: number | null | undefined) => onChange((v || v === 0) ? v.toString() : v);
+
+    return <NumericInput min={MIN_VALUE} max={MAX_VALUE} value={numericValue} onChange={numericOnChange} {...remaining} />;
 };
 
 const getNumericValue = (filter: BasicFilterConfiguration) => {
     if (!filter.defaultValues || filter.defaultValues.length === 0) return null;
 
     // bas days filters only ever have one default and it needs no interpretation
-    const rawValue = filter.defaultValues[0];
-
-    return rawValue !== undefined && rawValue !== null ? Number(rawValue) : null;
+    return filter.defaultValues[0];
 };
+
 
 const numericValidator = (_filter: BasicFilterConfiguration, label: string) => {
     return (value?: number | null) => {
