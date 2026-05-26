@@ -58,17 +58,21 @@ public class ReportService {
   @Transactional
   public Report upsertReport(
       AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
-    //  TODO: Do we need to support updating an existing report's data source?
-    Long dataSourceIdToFetch =
-        existingReportId != null ? existingReportId.getDataSourceUid() : request.dataSourceId();
+    if (existingReportId != null && !reportRepository.existsById(existingReportId)) {
+      throw new NotFoundException(
+          String.format(
+              "Report not found for Report UID: %d and Data Source UID: %d",
+              existingReportId.getReportUid(), existingReportId.getDataSourceUid()));
+    }
 
     DataSource dataSource =
         dataSourceRepository
-            .findById(dataSourceIdToFetch)
+            .findById(request.dataSourceId())
             .orElseThrow(
                 () ->
                     new IllegalArgumentException(
                         "No data source found for ID " + dataSourceIdToFetch));
+                        "No data source found for ID " + request.dataSourceId()));
 
     ReportLibrary reportLibrary =
         reportLibraryRepository
