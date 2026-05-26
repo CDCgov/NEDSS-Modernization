@@ -71,7 +71,6 @@ public class ReportService {
             .orElseThrow(
                 () ->
                     new IllegalArgumentException(
-                        "No data source found for ID " + dataSourceIdToFetch));
                         "No data source found for ID " + request.dataSourceId()));
 
     ReportLibrary reportLibrary =
