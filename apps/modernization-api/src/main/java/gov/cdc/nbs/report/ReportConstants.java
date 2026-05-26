@@ -3,17 +3,9 @@ package gov.cdc.nbs.report;
 public final class ReportConstants {
   public static final String ADV_FILTER_TYPE = "ADV_WCB";
 
-  /**
-   * Represents the types of filters available for reports.
-   *
-   * <ul>
-   *   <li>SS: Single Select
-   *   <li>MS: Multi Select
-   * </ul>
-   */
-  public enum FilterType {
-    SS,
-    MS
+  public enum SelectType {
+    SINGLE,
+    MULTI
   }
 
   public enum ReportGroup {

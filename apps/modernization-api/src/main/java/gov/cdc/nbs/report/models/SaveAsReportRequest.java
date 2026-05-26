@@ -7,5 +7,5 @@ public record SaveAsReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String reportTitle,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String sectionCode,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportConstants.ReportGroup group,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) CreateFilterRequest filterRequest,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportExecutionRequest filterRequest,
     String description) {}

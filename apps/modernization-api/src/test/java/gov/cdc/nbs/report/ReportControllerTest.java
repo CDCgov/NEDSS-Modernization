@@ -12,12 +12,12 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.models.AdminReportRequest;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
-import gov.cdc.nbs.report.models.CreateReportRequest;
 import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
@@ -25,6 +25,7 @@ import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportResult;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
@@ -84,20 +85,20 @@ class ReportControllerTest {
 
   @Test
   void createReport_should_return_created_report_response() {
-    CreateReportRequest request =
-        new CreateReportRequest(
+    AdminReportRequest request =
+        new AdminReportRequest(
             2L,
             3L,
             "Test Report",
             "SEC",
             0L,
             ReportConstants.ReportGroup.REPORTING_FACILITY,
-            "Description",
-            null);
+            Collections.emptyList(),
+            "Description");
     Report expectedReport = mock(Report.class);
     NbsUserDetails user = mock(NbsUserDetails.class);
 
-    when(service.createReport(request, user)).thenReturn(expectedReport);
+    when(service.upsertReport(request, user, null)).thenReturn(expectedReport);
 
     ResponseEntity<ReportId> response = controller.createReport(user, request);
 
@@ -107,21 +108,22 @@ class ReportControllerTest {
 
   @Test
   void createReport_should_return_422_exception_when_data_source_not_found() {
-    CreateReportRequest request =
-        new CreateReportRequest(
+    AdminReportRequest request =
+        new AdminReportRequest(
             2L,
             3L,
             "Test Report",
             "SEC",
             0L,
             ReportConstants.ReportGroup.REPORTING_FACILITY,
-            "Description",
-            null);
+            Collections.emptyList(),
+            "Description");
     NbsUserDetails user = mock(NbsUserDetails.class);
 
     String errorMsg = "No data source found for ID " + request.dataSourceId();
 
-    when(service.createReport(request, user)).thenThrow(new IllegalArgumentException(errorMsg));
+    when(service.upsertReport(request, user, null))
+        .thenThrow(new IllegalArgumentException(errorMsg));
 
     assertThatThrownBy(() -> controller.createReport(user, request))
         .isInstanceOf(IllegalArgumentException.class)
@@ -130,21 +132,22 @@ class ReportControllerTest {
 
   @Test
   void createReport_should_return_422_when_report_library_invalid() {
-    CreateReportRequest request =
-        new CreateReportRequest(
+    AdminReportRequest request =
+        new AdminReportRequest(
             2L,
             3L,
             "Test Report",
             "SEC",
             0L,
             ReportConstants.ReportGroup.REPORTING_FACILITY,
-            "Description",
-            null);
+            Collections.emptyList(),
+            "Description");
     NbsUserDetails user = mock(NbsUserDetails.class);
 
     String errorMsg = "No report library found for ID " + request.libraryId();
 
-    when(service.createReport(request, user)).thenThrow(new IllegalArgumentException(errorMsg));
+    when(service.upsertReport(request, user, null))
+        .thenThrow(new IllegalArgumentException(errorMsg));
 
     assertThatThrownBy(() -> controller.createReport(user, request))
         .isInstanceOf(IllegalArgumentException.class)

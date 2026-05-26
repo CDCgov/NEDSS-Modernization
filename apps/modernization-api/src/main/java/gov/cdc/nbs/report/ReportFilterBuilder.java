@@ -19,8 +19,7 @@ public class ReportFilterBuilder {
     this.filterCodeRepository = filterCodeRepository;
   }
 
-  public ReportFilter buildBasicReportFilter(
-      CreateFilterRequest.BasicFilter filter, Report report) {
+  public ReportFilter build(CreateFilterRequest filter, Report report) {
     Character statusCd = 'A';
     LocalDateTime now = LocalDateTime.now();
 
@@ -38,25 +37,23 @@ public class ReportFilterBuilder {
             .orElseThrow(
                 () ->
                     new IllegalArgumentException(
-                        "Filter code not found for type: " + filter.filterCodeUid()));
-
-    if (!filterCode.getFilterType().startsWith("BAS_")) {
-      throw new IllegalArgumentException("Cannot create basic filter from advanced filter");
-    }
+                        "Filter code not found for selectType: " + filter.filterCodeUid()));
 
     int minValueCount;
     int maxValueCount;
 
-    switch (filter.type()) {
-      case ReportConstants.FilterType.MS -> {
+    switch (filter.selectType()) {
+      case ReportConstants.SelectType.MULTI -> {
         minValueCount = 1;
         maxValueCount = -1;
       }
-      case ReportConstants.FilterType.SS -> {
+      case ReportConstants.SelectType.SINGLE -> {
         minValueCount = 1;
         maxValueCount = 1;
       }
-      default -> throw new IllegalArgumentException("Unsupported filter type: " + filter.type());
+      default ->
+          throw new IllegalArgumentException(
+              "Unsupported filter selectType: " + filter.selectType());
     }
 
     ReportFilter.ReportFilterBuilder filterBuilder =

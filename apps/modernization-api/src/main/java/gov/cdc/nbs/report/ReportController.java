@@ -22,33 +22,33 @@ public class ReportController {
 
   private final ReportService reportService;
 
-  //  TODO: Use existing perms, don't add
   public ReportController(ReportService reportService) {
     this.reportService = reportService;
   }
 
   @PostMapping("/configuration")
-  @PreAuthorize("hasAuthority('ADDREPORT-REPORTING')")
+  @PreAuthorize("hasAuthority('REPORTADMIN-SYSTEM')")
   public ResponseEntity<ReportId> createReport(
       @AuthenticationPrincipal NbsUserDetails user,
-      @Valid @RequestBody CreateReportRequest request) {
-    Report report = reportService.createReport(request, user);
+      @Valid @RequestBody AdminReportRequest request) {
+    Report report = reportService.upsertReport(request, user, null);
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 
   @PutMapping("/configuration/{reportUid}/{dataSourceUid}")
-  @PreAuthorize("hasAuthority('EDITREPORT-REPORTING')")
+  @PreAuthorize("hasAuthority('REPORTADMIN-SYSTEM')")
   public ResponseEntity<ReportId> editReport(
       @AuthenticationPrincipal NbsUserDetails user,
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
-      @Valid @RequestBody AdminEditReportRequest request) {
-    //  @TODO: Fill in
-    return null;
+      @Valid @RequestBody AdminReportRequest request) {
+    Report report =
+        reportService.upsertReport(request, user, new ReportId(reportUid, dataSourceUid));
+    return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 
   @PutMapping("/configuration/{reportUid}/{dataSourceUid}/save")
-  @PreAuthorize("hasAuthority('SAVEREPORT-REPORTING')")
+  //  TODO: Figure out permissions
   public ResponseEntity<ReportId> saveReport(
       @AuthenticationPrincipal NbsUserDetails user,
       @PathVariable Long reportUid,
@@ -59,7 +59,7 @@ public class ReportController {
   }
 
   @PostMapping("/configuration/{reportUid}/{dataSourceUid}/save-as")
-  @PreAuthorize("hasAuthority('SAVEASREPORT-REPORTING')")
+  //  TODO: Figure out permissions
   public ResponseEntity<ReportId> saveAsReport(
       @AuthenticationPrincipal NbsUserDetails user,
       @PathVariable Long reportUid,

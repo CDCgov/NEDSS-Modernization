@@ -9,7 +9,6 @@ import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.*;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
@@ -52,15 +51,24 @@ public class ReportService {
     this.reportFilterBuilder = reportFilterBuilder;
   }
 
+  /**
+   * Either create a new report or update an existing report, depending on whether an existing
+   * ReportId is supplied.
+   */
   @Transactional
-  public Report createReport(CreateReportRequest request, NbsUserDetails user) {
+  public Report upsertReport(
+      AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
+    //  TODO: Do we need to support updating an existing report's data source?
+    Long dataSourceIdToFetch =
+        existingReportId != null ? existingReportId.getDataSourceUid() : request.dataSourceId();
+
     DataSource dataSource =
         dataSourceRepository
-            .findById(request.dataSourceId())
+            .findById(dataSourceIdToFetch)
             .orElseThrow(
                 () ->
                     new IllegalArgumentException(
-                        "No data source found for ID " + request.dataSourceId()));
+                        "No data source found for ID " + dataSourceIdToFetch));
 
     ReportLibrary reportLibrary =
         reportLibraryRepository
@@ -72,25 +80,18 @@ public class ReportService {
 
     Report savedReport =
         reportRepository.save(
-            ReportMapper.fromCreateReportRequest(request, user, reportLibrary, dataSource));
+            ReportMapper.fromAdminReportRequest(
+                request, user, reportLibrary, dataSource, existingReportId));
 
-    List<ReportFilter> reportFilters = new ArrayList<>();
-
-    if (request.filterRequest().basicFilters() != null
-        && !request.filterRequest().basicFilters().isEmpty()) {
-
-      List<ReportFilter> basicFiltersToCreate =
-          request.filterRequest().basicFilters().stream()
-              .map(f -> reportFilterBuilder.buildBasicReportFilter(f, savedReport))
+    //  TODO: How should we handle existing filters for an edit report request?
+    if (!request.filterRequests().isEmpty()) {
+      List<ReportFilter> reportFilters =
+          request.filterRequests().stream()
+              .map(f -> reportFilterBuilder.build(f, savedReport))
               .toList();
-      reportFilters.addAll(basicFiltersToCreate);
-    }
 
-    if (request.filterRequest().advancedQuery() != null) {
-      //  TODO: Translate AdvancedQuery to ReportFilter; APP-505
+      reportFilterRepository.saveAll(reportFilters);
     }
-
-    reportFilterRepository.saveAll(reportFilters);
 
     return savedReport;
   }

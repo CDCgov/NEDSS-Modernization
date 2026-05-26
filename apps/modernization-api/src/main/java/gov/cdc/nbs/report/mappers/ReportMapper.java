@@ -4,22 +4,30 @@ import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.report.ReportConstants;
-import gov.cdc.nbs.report.models.CreateReportRequest;
+import gov.cdc.nbs.report.models.AdminReportRequest;
 import java.time.LocalDateTime;
 
 public class ReportMapper {
   private ReportMapper() {}
 
-  public static Report fromCreateReportRequest(
-      CreateReportRequest request,
+  public static Report fromAdminReportRequest(
+      AdminReportRequest request,
       NbsUserDetails user,
       ReportLibrary reportLibrary,
-      DataSource dataSource) {
+      DataSource dataSource,
+      ReportId existingReportId) {
     LocalDateTime now = LocalDateTime.now();
 
-    return Report.builder()
+    Report.ReportBuilder builder = Report.builder();
+
+    if (existingReportId != null) {
+      builder = builder.id(existingReportId);
+    }
+
+    return builder
         .dataSource(dataSource)
         .addTime(now)
         .addUserUid(user.getId())

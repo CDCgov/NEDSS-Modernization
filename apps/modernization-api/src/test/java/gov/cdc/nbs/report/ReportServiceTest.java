@@ -104,25 +104,21 @@ class ReportServiceTest {
           .thenReturn(List.of(mockColumn));
     }
 
-    private CreateReportRequest buildCreateReportRequest(Boolean includeFilters) {
-      CreateFilterRequest filterRequest =
+    private AdminReportRequest buildAdminReportRequest(Boolean includeFilters) {
+      List<CreateFilterRequest> filterRequests =
           includeFilters
-              ? new CreateFilterRequest(
-                  List.of(columnUid),
-                  List.of(
-                      new CreateFilterRequest.BasicFilter(
-                          7L, columnUid, true, ReportConstants.FilterType.MS, false)),
-                  null)
-              : null;
-      return new CreateReportRequest(
+              ? List.of(
+                  new CreateFilterRequest(7L, columnUid, ReportConstants.SelectType.MULTI, false))
+              : Collections.emptyList();
+      return new AdminReportRequest(
           dataSourceUid,
           libraryId,
           "Test Report Title",
           "123",
           0L,
           ReportConstants.ReportGroup.REPORTING_FACILITY,
-          "Test Report Description",
-          filterRequest);
+          filterRequests,
+          "Test Report Description");
     }
 
     @Test
@@ -130,9 +126,9 @@ class ReportServiceTest {
       Report savedReport = mock(Report.class);
       when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
-      CreateReportRequest request = buildCreateReportRequest(true);
+      AdminReportRequest request = buildAdminReportRequest(true);
 
-      Report result = service.createReport(request, user);
+      Report result = service.upsertReport(request, user, null);
 
       assertThat(result).isEqualTo(savedReport);
       verify(dataSourceRepository).findById(dataSourceUid);
@@ -145,9 +141,9 @@ class ReportServiceTest {
       Report savedReport = mock(Report.class);
       when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
-      CreateReportRequest request = buildCreateReportRequest(false);
+      AdminReportRequest request = buildAdminReportRequest(false);
 
-      Report result = service.createReport(request, user);
+      Report result = service.upsertReport(request, user, null);
 
       assertThat(result).isEqualTo(savedReport);
       verify(dataSourceRepository).findById(dataSourceUid);
@@ -161,9 +157,9 @@ class ReportServiceTest {
     void createReport_should_throw_when_data_source_not_found() {
       when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.empty());
 
-      CreateReportRequest request = buildCreateReportRequest(true);
+      AdminReportRequest request = buildAdminReportRequest(true);
 
-      assertThatThrownBy(() -> service.createReport(request, user))
+      assertThatThrownBy(() -> service.upsertReport(request, user, null))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No data source found for ID " + dataSourceUid);
 
@@ -178,9 +174,9 @@ class ReportServiceTest {
     void createReport_should_throw_when_report_library_not_found() {
       when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.empty());
 
-      CreateReportRequest request = buildCreateReportRequest(true);
+      AdminReportRequest request = buildAdminReportRequest(true);
 
-      assertThatThrownBy(() -> service.createReport(request, user))
+      assertThatThrownBy(() -> service.upsertReport(request, user, null))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No report library found for ID " + libraryId);
 
@@ -198,9 +194,9 @@ class ReportServiceTest {
 
       when(filterCodeRepository.findAllById(any())).thenReturn(Collections.emptyList());
 
-      CreateReportRequest request = buildCreateReportRequest(true);
+      AdminReportRequest request = buildAdminReportRequest(true);
 
-      assertThatThrownBy(() -> service.createReport(request, user))
+      assertThatThrownBy(() -> service.upsertReport(request, user, null))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("Unknown filterCodeUid provided: " + filterCodeUid);
 
@@ -217,9 +213,9 @@ class ReportServiceTest {
 
       when(dataSourceColumnRepository.findAllById(any())).thenReturn(Collections.emptyList());
 
-      CreateReportRequest request = buildCreateReportRequest(true);
+      AdminReportRequest request = buildAdminReportRequest(true);
 
-      assertThatThrownBy(() -> service.createReport(request, user))
+      assertThatThrownBy(() -> service.upsertReport(request, user, null))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("Unknown columnUid provided: " + columnUid);
 
