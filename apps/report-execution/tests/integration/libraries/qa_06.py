@@ -20,7 +20,7 @@ class TestIntegrationQa06Library:
                 'report_title': 'QA06',
                 'library_name': 'qa_06',
                 'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
-                'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]'
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
 
