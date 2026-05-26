@@ -86,7 +86,6 @@ public class ReportService {
             ReportMapper.fromAdminReportRequest(
                 request, user, reportLibrary, dataSource, existingReportId));
 
-    //  TODO: How should we handle existing filters for an edit report request?
     if (!request.filterRequests().isEmpty()) {
       List<ReportFilter> reportFilters =
           request.filterRequests().stream()
