@@ -37,10 +37,16 @@ databaseChangeLog:
             path: db/report/execution/libraries/nbs_sr_13.sql
             splitStatements: false
         - sqlFile:
+            path: db/report/execution/libraries/potntl_dup_inv_sum.sql
+            splitStatements: false
+        - sqlFile:
             path: db/report/execution/libraries/nbs_sr_12.sql
             splitStatements: false
         - sqlFile:
             path: db/report/execution/libraries/nbs_sr_08.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/qa_01.sql
             splitStatements: false
         - sqlFile:
             path: db/report/execution/libraries/qa_05.sql
@@ -49,5 +55,5 @@ databaseChangeLog:
             path: db/report/execution/libraries/nbs_sr_10.sql
             splitStatements: false
         - sqlFile:
-            path: db/report/execution/libraries/qa_10.sql
+            path: db/report/execution/libraries/qa_03.sql
             splitStatements: false

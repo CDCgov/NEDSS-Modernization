@@ -7,6 +7,6 @@ public record FilterType(
     String codeTable,
     String descTxt,
     String code,
-    String filterCodeSetName,
-    String filterType,
-    String filterName) {}
+    String codeSetName,
+    String type,
+    String name) {}

@@ -7,4 +7,5 @@ import java.util.List;
 
 public record BasicFilterRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Positive Long reportFilterUid,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<String> values) {}
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<String> values,
+    boolean includeNulls) {}

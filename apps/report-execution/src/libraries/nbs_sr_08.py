@@ -30,9 +30,9 @@ def execute(
             cnty_cd AS [County Code],
             sum(group_case_cnt) AS [Cases]
         FROM subset
-        WHERE event_date IS NOT NULL
+        WHERE state_cd IS NOT NULL
         GROUP BY state_cd, state, county, phc_code_short_desc, event_date, cnty_cd
-        ORDER BY state_cd, state, county, phc_code_short_desc, event_date, cnty_cd;
+        ORDER BY state, county;
         """
     )
     # Get the unique state(s) in the data set for subheader display

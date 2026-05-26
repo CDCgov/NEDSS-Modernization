@@ -4,6 +4,13 @@ nbs:
     port: 1433
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
+  report:
+    datasource:
+      mappings:
+        nbs_ods: NBS_ODSE
+        nbs_rdb: RDB
+        nbs_srt: NBS_SRTE
+        nbs_msg: NBS_MSGOUTE
 
 spring:
   datasource:

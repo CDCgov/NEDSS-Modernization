@@ -27,6 +27,7 @@ dependencies {
     implementation(project(':accumulation'))
     implementation(project(':change'))
     implementation(project(':database-entities'))
+    implementation(project(':datasource-utils'))
     implementation(project(':event-schema'))
     implementation(project(':authentication'))
     implementation(project(':authorization'))
@@ -104,7 +105,7 @@ testing {
                 implementation libs.spring.test
                 implementation libs.spring.security.test
                 implementation.bundle(libs.bundles.testcontainers.elasticsearch)
-                implementation 'net.datafaker:datafaker:2.5.4' 
+                implementation 'net.datafaker:datafaker:2.5.4'
 
                 implementation libs.awaitility
 

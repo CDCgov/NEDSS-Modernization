@@ -19,7 +19,7 @@ tables:
       - column_name: inv_local_id
         data: |
           id_num = fake.unique.random_int(10000, 99999)
-          return f"CAS100{id_num}GA01"
+          return f"CAS100{id_num}GA01"  
 
   - table_name: "[RDB].[dbo].[D_PROVIDER]"
     row_count: 250

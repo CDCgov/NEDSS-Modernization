@@ -27,8 +27,8 @@ class FilterTypeMapperTest {
     assertThat(mapped.codeTable()).isEqualTo(dbFilterCode.getCodeTable());
     assertThat(mapped.descTxt()).isEqualTo(dbFilterCode.getDescTxt());
     assertThat(mapped.code()).isEqualTo(dbFilterCode.getCode());
-    assertThat(mapped.filterCodeSetName()).isEqualTo(dbFilterCode.getFilterCodeSetName());
-    assertThat(mapped.filterType()).isEqualTo(dbFilterCode.getFilterType());
-    assertThat(mapped.filterName()).isEqualTo(dbFilterCode.getFilterName());
+    assertThat(mapped.codeSetName()).isEqualTo(dbFilterCode.getFilterCodeSetName());
+    assertThat(mapped.type()).isEqualTo(dbFilterCode.getFilterType());
+    assertThat(mapped.name()).isEqualTo(dbFilterCode.getFilterName());
   }
 }
