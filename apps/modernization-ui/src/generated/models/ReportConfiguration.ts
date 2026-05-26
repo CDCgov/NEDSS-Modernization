@@ -16,3 +16,4 @@ export type ReportConfiguration = {
     columns: Array<ReportColumn>;
     defaultColumnUids?: Array<number>;
 };
+
