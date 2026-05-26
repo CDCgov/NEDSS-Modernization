@@ -2187,7 +2187,7 @@ describe('report run page', () => {
                 expect(mockConfigApi).toHaveBeenCalled();
 
                 const input = await findByLabelText('Duplicate Investigations Time Frame');
-                await userEvent.type(input, '-1');
+                await user.type(input, '-1');
 
                 expect(input).toHaveValue(1);
 

@@ -24,14 +24,16 @@ const getNumericValue = (filter: BasicFilterConfiguration) => {
 };
 
 const numericValidator = (_filter: BasicFilterConfiguration, label: string) => {
-    return (value?: number | null) => {
+    return (value?: string | null) => {
         if (value === undefined || value === null) return true;
 
-        if (value < MIN_VALUE) {
+        const numericValue = Number(value);
+
+        if (numericValue < MIN_VALUE) {
             return `${label} must be at least ${MIN_VALUE}.`;
         }
 
-        if (value > MAX_VALUE) {
+        if (numericValue > MAX_VALUE) {
             return `${label} must not be greater than ${MAX_VALUE}.`;
         }
 
