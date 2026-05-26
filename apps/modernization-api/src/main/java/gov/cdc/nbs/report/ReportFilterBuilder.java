@@ -39,31 +39,53 @@ public class ReportFilterBuilder {
                     new IllegalArgumentException(
                         "Filter code not found for selectType: " + filter.filterCodeUid()));
 
-    int minValueCount;
-    int maxValueCount;
+    Integer minValueCount = null;
+    Integer maxValueCount = null;
 
-    switch (filter.selectType()) {
-      case ReportConstants.SelectType.MULTI -> {
-        minValueCount = 1;
+    switch (filter.filterCodeUid().intValue()) {
+      // WhereClause Builder
+      case 7 -> {
+        minValueCount = 0;
         maxValueCount = -1;
       }
-      case ReportConstants.SelectType.SINGLE -> {
+      // TimeRange & TimePeriod
+      case 5, 6, 12, 13, 14, 15, 17, 18 -> {
         minValueCount = 1;
-        maxValueCount = 1;
+        maxValueCount = 2;
       }
-      default ->
-          throw new IllegalArgumentException(
-              "Unsupported filter selectType: " + filter.selectType());
+
+      // Disease, State & County
+      case 1, 2, 3, 8, 9, 10, 16, 19, 20, 21 -> {
+        switch (filter.selectType()) {
+          case ReportConstants.SelectType.MULTI -> {
+            minValueCount = 1;
+            maxValueCount = -1;
+          }
+          case ReportConstants.SelectType.SINGLE -> {
+            minValueCount = 1;
+            maxValueCount = 1;
+          }
+          default ->
+              throw new IllegalArgumentException(
+                  "Unsupported filter selectType: " + filter.selectType());
+        }
+      }
     }
 
     ReportFilter.ReportFilterBuilder filterBuilder =
         ReportFilter.builder()
             .report(report)
             .dataSourceColumn(dataSourceColumn)
-            .minValueCnt(minValueCount)
-            .maxValueCnt(maxValueCount)
             .filterCode(filterCode)
             .statusCd(statusCd);
+
+    if (minValueCount != null) {
+      filterBuilder.minValueCnt(minValueCount);
+    }
+
+    if (maxValueCount != null) {
+      filterBuilder.maxValueCnt(maxValueCount);
+    }
 
     if (filter.isRequired()) {
       filterBuilder.filterValidation(

@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -42,318 +43,417 @@ class ReportControllerTest {
   @Mock private ReportService service;
   @InjectMocks private ReportController controller;
 
-  @Test
-  void getReport_should_return_report_configuration_response() {
-    Long reportUid = 1L;
-    Long dataSourceUid = 2L;
+  @Nested
+  class CreateReport {
+    @Test
+    void createReport_should_return_created_report_response() {
+      AdminReportRequest request =
+          new AdminReportRequest(
+              2L,
+              3L,
+              "Test Report",
+              "SEC",
+              0L,
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
+              Collections.emptyList(),
+              "Description");
+      Report expectedReport = mock(Report.class);
+      NbsUserDetails user = mock(NbsUserDetails.class);
 
-    DataSource dataSourceEntity = mock(DataSource.class);
-    ReportLibrary reportLibraryEntity = mock(ReportLibrary.class);
+      when(service.upsertReport(request, user, null)).thenReturn(expectedReport);
 
-    BasicFilterConfiguration basicFilterConfig = mock(BasicFilterConfiguration.class);
-    AdvancedFilterConfiguration advancedFilterConfig = mock(AdvancedFilterConfiguration.class);
-    List<ReportColumn> columns = List.of(mock(ReportColumn.class));
-    ReportConfiguration reportConfig =
-        new ReportConfiguration(
-            new ReportDataSource(dataSourceEntity),
-            new Library(reportLibraryEntity),
-            "Report Title",
-            List.of(basicFilterConfig),
-            advancedFilterConfig,
-            columns);
-    when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
+      ResponseEntity<ReportId> response = controller.createReport(user, request);
 
-    ResponseEntity<ReportConfiguration> response =
-        controller.getReportConfiguration(reportUid, dataSourceUid);
+      assertEquals(expectedReport.getId(), response.getBody());
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 
-    assertEquals(reportConfig, response.getBody());
-    assertEquals(HttpStatus.OK, response.getStatusCode());
+    @Test
+    void createReport_should_return_422_exception_when_data_source_not_found() {
+      AdminReportRequest request =
+          new AdminReportRequest(
+              2L,
+              3L,
+              "Test Report",
+              "SEC",
+              0L,
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
+              Collections.emptyList(),
+              "Description");
+      NbsUserDetails user = mock(NbsUserDetails.class);
+
+      String errorMsg = "No data source found for ID " + request.dataSourceId();
+
+      when(service.upsertReport(request, user, null))
+          .thenThrow(new IllegalArgumentException(errorMsg));
+
+      assertThatThrownBy(() -> controller.createReport(user, request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining(errorMsg);
+    }
+
+    @Test
+    void createReport_should_return_422_when_report_library_invalid() {
+      AdminReportRequest request =
+          new AdminReportRequest(
+              2L,
+              3L,
+              "Test Report",
+              "SEC",
+              0L,
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
+              Collections.emptyList(),
+              "Description");
+      NbsUserDetails user = mock(NbsUserDetails.class);
+
+      String errorMsg = "No report library found for ID " + request.libraryId();
+
+      when(service.upsertReport(request, user, null))
+          .thenThrow(new IllegalArgumentException(errorMsg));
+
+      assertThatThrownBy(() -> controller.createReport(user, request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining(errorMsg);
+    }
   }
 
-  @Test
-  void getReport_should_return_404_status_code_when_report_not_found() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-    String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
+  @Nested
+  class EditReport {
+    @Test
+    void editReport_should_return_updated_report_response() {
+      Long reportUid = 1L;
+      Long dataSourceUid = 2L;
+      AdminReportRequest request =
+          new AdminReportRequest(
+              2L,
+              3L,
+              "Updated Report",
+              "SEC",
+              0L,
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
+              Collections.emptyList(),
+              "Updated Description");
+      Report expectedReport = mock(Report.class);
+      NbsUserDetails user = mock(NbsUserDetails.class);
+      ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
-    when(service.getReport(reportUid, dataSourceUid)).thenThrow(new NotFoundException(errorMsg));
+      when(service.upsertReport(request, user, reportId)).thenReturn(expectedReport);
 
-    assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid))
-        .isInstanceOf(NotFoundException.class)
-        .hasMessageContaining(errorMsg);
+      ResponseEntity<ReportId> response =
+          controller.editReport(user, reportUid, dataSourceUid, request);
+
+      assertEquals(expectedReport.getId(), response.getBody());
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void editReport_should_return_422_exception_when_data_source_not_found() {
+      Long reportUid = 1L;
+      Long dataSourceUid = 2L;
+      AdminReportRequest request =
+          new AdminReportRequest(
+              2L,
+              3L,
+              "Updated Report",
+              "SEC",
+              0L,
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
+              Collections.emptyList(),
+              "Updated Description");
+      NbsUserDetails user = mock(NbsUserDetails.class);
+      ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+      String errorMsg = "No data source found for ID " + request.dataSourceId();
+
+      when(service.upsertReport(request, user, reportId))
+          .thenThrow(new IllegalArgumentException(errorMsg));
+
+      assertThatThrownBy(() -> controller.editReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining(errorMsg);
+    }
+
+    @Test
+    void editReport_should_return_422_when_report_library_invalid() {
+      Long reportUid = 1L;
+      Long dataSourceUid = 2L;
+      AdminReportRequest request =
+          new AdminReportRequest(
+              2L,
+              3L,
+              "Updated Report",
+              "SEC",
+              0L,
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
+              Collections.emptyList(),
+              "Updated Description");
+      NbsUserDetails user = mock(NbsUserDetails.class);
+      ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+      String errorMsg = "No report library found for ID " + request.libraryId();
+
+      when(service.upsertReport(request, user, reportId))
+          .thenThrow(new IllegalArgumentException(errorMsg));
+
+      assertThatThrownBy(() -> controller.editReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining(errorMsg);
+    }
   }
 
-  @Test
-  void createReport_should_return_created_report_response() {
-    AdminReportRequest request =
-        new AdminReportRequest(
-            2L,
-            3L,
-            "Test Report",
-            "SEC",
-            0L,
-            ReportConstants.ReportGroup.REPORTING_FACILITY,
-            Collections.emptyList(),
-            "Description");
-    Report expectedReport = mock(Report.class);
-    NbsUserDetails user = mock(NbsUserDetails.class);
+  @Nested
+  class GetReport {
+    @Test
+    void getReport_should_return_report_configuration_response() {
+      Long reportUid = 1L;
+      Long dataSourceUid = 2L;
 
-    when(service.upsertReport(request, user, null)).thenReturn(expectedReport);
+      DataSource dataSourceEntity = mock(DataSource.class);
+      ReportLibrary reportLibraryEntity = mock(ReportLibrary.class);
 
-    ResponseEntity<ReportId> response = controller.createReport(user, request);
+      BasicFilterConfiguration basicFilterConfig = mock(BasicFilterConfiguration.class);
+      AdvancedFilterConfiguration advancedFilterConfig = mock(AdvancedFilterConfiguration.class);
+      List<ReportColumn> columns = List.of(mock(ReportColumn.class));
+      ReportConfiguration reportConfig =
+          new ReportConfiguration(
+              new ReportDataSource(dataSourceEntity),
+              new Library(reportLibraryEntity),
+              "Report Title",
+              List.of(basicFilterConfig),
+              advancedFilterConfig,
+              columns);
+      when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
-    assertEquals(expectedReport.getId(), response.getBody());
-    assertEquals(HttpStatus.OK, response.getStatusCode());
+      ResponseEntity<ReportConfiguration> response =
+          controller.getReportConfiguration(reportUid, dataSourceUid);
+
+      assertEquals(reportConfig, response.getBody());
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void getReport_should_return_404_status_code_when_report_not_found() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
+      String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
+
+      when(service.getReport(reportUid, dataSourceUid)).thenThrow(new NotFoundException(errorMsg));
+
+      assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessageContaining(errorMsg);
+    }
   }
 
-  @Test
-  void createReport_should_return_422_exception_when_data_source_not_found() {
-    AdminReportRequest request =
-        new AdminReportRequest(
-            2L,
-            3L,
-            "Test Report",
-            "SEC",
-            0L,
-            ReportConstants.ReportGroup.REPORTING_FACILITY,
-            Collections.emptyList(),
-            "Description");
-    NbsUserDetails user = mock(NbsUserDetails.class);
+  @Nested
+  class GetReportRunner {
+    @Test
+    void getReportRunner_should_return_report_lib_runner() {
+      Long reportUid = 1L;
+      Long dataSourceUid = 2L;
 
-    String errorMsg = "No data source found for ID " + request.dataSourceId();
+      when(service.getReportRunner(reportUid, dataSourceUid)).thenReturn("python");
 
-    when(service.upsertReport(request, user, null))
-        .thenThrow(new IllegalArgumentException(errorMsg));
+      ResponseEntity<String> response = controller.getReportRunner(reportUid, dataSourceUid);
 
-    assertThatThrownBy(() -> controller.createReport(user, request))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining(errorMsg);
+      assertEquals("python", response.getBody());
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void getReportRunner_should_return_404_status_code_when_report_not_found() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
+
+      String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
+
+      when(service.getReportRunner(reportUid, dataSourceUid))
+          .thenThrow(new NotFoundException(errorMsg));
+
+      assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessageContaining(errorMsg);
+    }
+
+    @Test
+    void getReportRunner_should_return_422_status_code_when_report_has_no_library() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
+
+      ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+      String errorMsg = "No report library exists for report " + reportId;
+
+      when(service.getReportRunner(reportUid, dataSourceUid))
+          .thenThrow(new UnprocessableEntityException(errorMsg));
+
+      assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
+          .isInstanceOf(UnprocessableEntityException.class)
+          .hasMessageContaining("No report library exists for report " + reportId);
+    }
   }
 
-  @Test
-  void createReport_should_return_422_when_report_library_invalid() {
-    AdminReportRequest request =
-        new AdminReportRequest(
-            2L,
-            3L,
-            "Test Report",
-            "SEC",
-            0L,
-            ReportConstants.ReportGroup.REPORTING_FACILITY,
-            Collections.emptyList(),
-            "Description");
-    NbsUserDetails user = mock(NbsUserDetails.class);
+  @Nested
+  class ExportReport {
+    @Test
+    void exportReport_should_return_executed_report() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
 
-    String errorMsg = "No report library found for ID " + request.libraryId();
+      AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
+      AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
+      AdvancedQuery.RuleGroup connector =
+          new AdvancedQuery.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
+      AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
-    when(service.upsertReport(request, user, null))
-        .thenThrow(new IllegalArgumentException(errorMsg));
+      BasicFilterRequest basicFilter = new BasicFilterRequest(4L, Arrays.asList("test"), true);
 
-    assertThatThrownBy(() -> controller.createReport(user, request))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining(errorMsg);
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid,
+              dataSourceUid,
+              true,
+              Arrays.asList(27L, 31L),
+              List.of(basicFilter),
+              advancedFilter);
+
+      when(service.executeReport(request))
+          .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
+
+      ResponseEntity<ReportResult> response = controller.exportReport(request);
+      assertEquals(getReportExecutionResponse(), response.getBody());
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void exportReport_should_return_400_status_code_when_report_not_found() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
+      String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid,
+              dataSourceUid,
+              true,
+              Arrays.asList(27L, 31L),
+              List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
+              null);
+
+      when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
+
+      assertThatThrownBy(() -> controller.exportReport(request))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessageContaining(errorMsg);
+    }
+
+    @Test
+    void exportReport_should_return_501_status_code_when_report_not_implemented() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
+      String errorMsg = "Report not implemented for python";
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid,
+              dataSourceUid,
+              true,
+              Arrays.asList(27L, 31L),
+              List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
+              null);
+
+      when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
+
+      assertThatThrownBy(() -> controller.exportReport(request))
+          .isInstanceOf(NotImplementedException.class)
+          .hasMessageContaining(errorMsg);
+    }
+
+    @Test
+    void exportReport_should_return_422_status_code_when_report_not_export() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid,
+              dataSourceUid,
+              false,
+              Arrays.asList(27L, 31L),
+              List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
+              null);
+
+      assertThatThrownBy(() -> controller.exportReport(request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("isExport must be true when exporting a report");
+    }
+
+    @Test
+    void exportReport_should_return_500_status_code_when_unexpected_exception() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
+      String errorMsg = "Uh oh!";
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid,
+              dataSourceUid,
+              true,
+              Arrays.asList(27L, 31L),
+              List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
+              null);
+
+      when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
+
+      assertThatThrownBy(() -> controller.exportReport(request))
+          .isInstanceOf(RuntimeException.class)
+          .hasMessageContaining(errorMsg);
+    }
   }
 
-  @Test
-  void getReportRunner_should_return_report_lib_runner() {
-    Long reportUid = 1L;
-    Long dataSourceUid = 2L;
+  @Nested
+  class RunReport {
+    @Test
+    void runReport_should_return_executed_report() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
 
-    when(service.getReportRunner(reportUid, dataSourceUid)).thenReturn("python");
+      AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
+      AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
+      AdvancedQuery.RuleGroup connector =
+          new AdvancedQuery.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
+      AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
-    ResponseEntity<String> response = controller.getReportRunner(reportUid, dataSourceUid);
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid, dataSourceUid, false, Arrays.asList(27L, 31L), List.of(), advancedFilter);
 
-    assertEquals("python", response.getBody());
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-  }
+      when(service.executeReport(request))
+          .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
 
-  @Test
-  void getReportRunner_should_return_404_status_code_when_report_not_found() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
+      ResponseEntity<ReportResult> response = controller.runReport(request);
+      assertEquals(getReportExecutionResponse(), response.getBody());
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 
-    String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
+    @Test
+    void runReport_should_return_422_status_code_when_report_not_run() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
 
-    when(service.getReportRunner(reportUid, dataSourceUid))
-        .thenThrow(new NotFoundException(errorMsg));
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid,
+              dataSourceUid,
+              true,
+              Arrays.asList(27L, 31L),
+              List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
+              null);
 
-    assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
-        .isInstanceOf(NotFoundException.class)
-        .hasMessageContaining(errorMsg);
-  }
-
-  @Test
-  void getReportRunner_should_return_422_status_code_when_report_has_no_library() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-
-    ReportId reportId = new ReportId(reportUid, dataSourceUid);
-
-    String errorMsg = "No report library exists for report " + reportId;
-
-    when(service.getReportRunner(reportUid, dataSourceUid))
-        .thenThrow(new UnprocessableEntityException(errorMsg));
-
-    assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
-        .isInstanceOf(UnprocessableEntityException.class)
-        .hasMessageContaining("No report library exists for report " + reportId);
-  }
-
-  @Test
-  void exportReport_should_return_executed_report() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-
-    AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
-    AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
-    AdvancedQuery.RuleGroup connector =
-        new AdvancedQuery.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
-    AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
-
-    BasicFilterRequest basicFilter = new BasicFilterRequest(4L, Arrays.asList("test"), true);
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(basicFilter),
-            advancedFilter);
-
-    when(service.executeReport(request))
-        .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
-
-    ResponseEntity<ReportResult> response = controller.exportReport(request);
-    assertEquals(getReportExecutionResponse(), response.getBody());
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-  }
-
-  @Test
-  void exportReport_should_return_400_status_code_when_report_not_found() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-    String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
-            null);
-
-    when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
-
-    assertThatThrownBy(() -> controller.exportReport(request))
-        .isInstanceOf(NotFoundException.class)
-        .hasMessageContaining(errorMsg);
-  }
-
-  @Test
-  void exportReport_should_return_501_status_code_when_report_not_implemented() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-    String errorMsg = "Report not implemented for python";
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
-            null);
-
-    when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
-
-    assertThatThrownBy(() -> controller.exportReport(request))
-        .isInstanceOf(NotImplementedException.class)
-        .hasMessageContaining(errorMsg);
-  }
-
-  @Test
-  void exportReport_should_return_422_status_code_when_report_not_export() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            false,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
-            null);
-
-    assertThatThrownBy(() -> controller.exportReport(request))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("isExport must be true when exporting a report");
-  }
-
-  @Test
-  void exportReport_should_return_500_status_code_when_unexpected_exception() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-    String errorMsg = "Uh oh!";
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
-            null);
-
-    when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
-
-    assertThatThrownBy(() -> controller.exportReport(request))
-        .isInstanceOf(RuntimeException.class)
-        .hasMessageContaining(errorMsg);
-  }
-
-  @Test
-  void runReport_should_return_executed_report() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-
-    AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
-    AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
-    AdvancedQuery.RuleGroup connector =
-        new AdvancedQuery.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
-    AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid, dataSourceUid, false, Arrays.asList(27L, 31L), List.of(), advancedFilter);
-
-    when(service.executeReport(request))
-        .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
-
-    ResponseEntity<ReportResult> response = controller.runReport(request);
-    assertEquals(getReportExecutionResponse(), response.getBody());
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-  }
-
-  @Test
-  void runReport_should_return_422_status_code_when_report_not_run() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
-            null);
-
-    assertThatThrownBy(() -> controller.runReport(request))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("isExport must be false when running a report");
+      assertThatThrownBy(() -> controller.runReport(request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("isExport must be false when running a report");
+    }
   }
 
   private ReportResult getReportExecutionResponse() {

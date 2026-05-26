@@ -72,7 +72,7 @@ class ReportServiceTest {
   }
 
   @Nested
-  class CreateReport {
+  class UpsetReport {
     private final Long filterCodeUid = 7L;
     private final Long columnUid = 8L;
 
@@ -122,7 +122,7 @@ class ReportServiceTest {
     }
 
     @Test
-    void createReport_should_create_and_return_report_when_all_inputs_are_valid() {
+    void upsertReport_should_create_and_return_report_when_all_inputs_are_valid() {
       Report savedReport = mock(Report.class);
       when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
@@ -137,7 +137,7 @@ class ReportServiceTest {
     }
 
     @Test
-    void createReport_should_create_report_when_filters_are_empty() {
+    void upsertReport_should_create_report_when_filters_are_empty() {
       Report savedReport = mock(Report.class);
       when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
@@ -154,7 +154,7 @@ class ReportServiceTest {
     }
 
     @Test
-    void createReport_should_throw_when_data_source_not_found() {
+    void upsertReport_should_throw_when_data_source_not_found() {
       when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.empty());
 
       AdminReportRequest request = buildAdminReportRequest(true);
@@ -171,7 +171,7 @@ class ReportServiceTest {
     }
 
     @Test
-    void createReport_should_throw_when_report_library_not_found() {
+    void upsertReport_should_throw_when_report_library_not_found() {
       when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.empty());
 
       AdminReportRequest request = buildAdminReportRequest(true);
@@ -188,7 +188,7 @@ class ReportServiceTest {
     }
 
     @Test
-    void createReport_should_throw_when_filter_has_unknown_filter_code() {
+    void upsertReport_should_throw_when_filter_has_unknown_filter_code() {
       Report savedReport = mock(Report.class);
       when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
@@ -207,7 +207,7 @@ class ReportServiceTest {
     }
 
     @Test
-    void createReport_should_throw_when_filter_has_unknown_column() {
+    void upsertReport_should_throw_when_filter_has_unknown_column() {
       Report savedReport = mock(Report.class);
       when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
