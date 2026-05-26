@@ -40,7 +40,8 @@ class WhereClauseServiceTest {
         "Test Report",
         basicFilterConfigurations,
         null,
-        columns);
+        columns,
+        null);
   }
 
   private BasicFilterConfiguration createBasicFilterConfiguration(
