@@ -7,6 +7,6 @@ public record AdminEditReportRequest(
     String reportTitle,
     String sectionCode,
     String description,
-    Long ownerId, //  TODO: Should an admin be able to edit ownerId?
+    Long ownerId,
     ReportConstants.ReportGroup group,
     CreateFilterRequest filterRequest) {}
