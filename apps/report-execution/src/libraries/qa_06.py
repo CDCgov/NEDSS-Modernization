@@ -14,7 +14,10 @@ def execute(
 
     Conversion notes:
     * MSSQL Datetime conversions use constants, "101" is for mm/dd/yyyy
-    * FL_FUP_EXAM_DT logic in SELECT is the equivalent of SAS in orig. script
+    * FL_FUP_EXAM_DT logic in final SELECT is the equivalent of SAS in orig. script
+    * NULL filtering for PATIENT_NAME does not match SAS script (since script
+      joins by PATIENT_NAME, it doesn't make sense in SQL to join on NULL
+      values in this instance)
     """
     query = f"""
         WITH STD_HIV_DATAMART AS ({subset_query}),
@@ -71,8 +74,9 @@ def execute(
         -- calculate case counts per patient
         CASE_COUNTS AS (
           SELECT PATIENT_NAME,
-            COUNT(*) AS CASE_COUNT
+            COUNT(PATIENT_LOCAL_ID) AS CASE_COUNT
           FROM PATIENT_CASES
+          WHERE PATIENT_NAME IS NOT NULL
           GROUP BY PATIENT_NAME
         )
 
@@ -84,7 +88,6 @@ def execute(
           PC.DIAGNOSIS,
           PC.CMP_PID_IND,
           PC.CONFIRMATION_DT,
-          PC.FL_FUP_EXAM_DT,
           CASE
             WHEN PC.FL_FUP_EXAM_DT IS NULL
             AND PC.REFERRAL_BASIS = 'T1 - Positive Test'
@@ -104,8 +107,8 @@ def execute(
         FROM PATIENT_CASES PC
         INNER JOIN CASE_COUNTS CC
           ON PC.PATIENT_NAME = CC.PATIENT_NAME
-        WHERE CASE_COUNT > 1;
-
+        WHERE CASE_COUNT > 1
+        ORDER BY PC.PATIENT_NAME;
         """
     # columns from nbs7demo output csv:
     # PATIENT_NAME
