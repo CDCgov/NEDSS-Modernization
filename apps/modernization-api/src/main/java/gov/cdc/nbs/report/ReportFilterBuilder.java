@@ -43,19 +43,34 @@ public class ReportFilterBuilder {
     Integer maxValueCount = null;
 
     switch (filter.filterCodeUid().intValue()) {
-      // WhereClause Builder
-      case 7 -> {
+      case 7 // Where Clause Builder
+          -> {
         minValueCount = 0;
         maxValueCount = -1;
       }
-      // TimeRange & TimePeriod
-      case 5, 6, 12, 13, 14, 15, 17, 18 -> {
+      case 5, // Time Range
+          6, // Time Period
+          12, // Time Range (Including NULLS)
+          13, // Time Period (Including NULLS)
+          14, // Month Year Range
+          15, // Month Year Range (Including NULLS)
+          17, // Time Range Custom
+          18 // Basic Text Filter
+          -> {
         minValueCount = 1;
         maxValueCount = 2;
       }
-
-      // Disease, State & County
-      case 1, 2, 3, 8, 9, 10, 16, 19, 20, 21 -> {
+      case 1, // Diseases
+          2, // States
+          3, // Counties
+          8, // Diseases (Including NULLS)
+          9, // States (Including NULLS)
+          10, // Counties (Including NULLS)
+          16, // Case Diagnosis
+          19, // STD Case Diagnosis
+          20, // HIV Case Diagnosis
+          21 // STD HIV Workers
+          -> {
         switch (filter.selectType()) {
           case ReportConstants.SelectType.MULTI -> {
             minValueCount = 1;
@@ -65,9 +80,6 @@ public class ReportFilterBuilder {
             minValueCount = 1;
             maxValueCount = 1;
           }
-          default ->
-              throw new IllegalArgumentException(
-                  "Unsupported filter selectType: " + filter.selectType());
         }
       }
     }
