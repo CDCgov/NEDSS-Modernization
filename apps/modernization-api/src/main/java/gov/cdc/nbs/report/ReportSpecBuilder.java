@@ -83,10 +83,31 @@ public class ReportSpecBuilder {
     String whereClause = whereClauseService.buildWhereClause(reportConfig, reportExecRequest);
     String orderByClause = "";
 
+    String daysValue = extractDaysValue();
+
     String subsetQuery =
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery);
+        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery, daysValue);
+  }
+
+  private String extractDaysValue() {
+    if (reportExecRequest.basicFilters() == null || reportConfig.basicFilters() == null) {
+      return null;
+    }
+
+    // Find the UIDs of any filters configured as "BAS_DAYS"
+    List<Long> basDaysFilterUids = reportConfig.basicFilters().stream()
+            .filter(filterConfig -> filterConfig.filterType() != null && "BAS_DAYS".equals(filterConfig.filterType().type()))
+            .map(BasicFilterConfiguration::reportFilterUid)
+            .toList();
+
+    // Find the matching runtime request value
+    return reportExecRequest.basicFilters().stream()
+            .filter(filterRequest -> basDaysFilterUids.contains(filterRequest.reportFilterUid()))
+            .flatMap(filterRequest -> filterRequest.values().stream())
+            .findFirst()
+            .orElse(null);
   }
 }
