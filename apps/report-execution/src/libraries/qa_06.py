@@ -110,20 +110,6 @@ def execute(
         WHERE CASE_COUNT > 1
         ORDER BY PC.PATIENT_NAME;
         """
-    # columns from nbs7demo output csv:
-    # PATIENT_NAME
-    # PATIENT_LOCAL_ID
-    # INV_LOCAL_ID
-    # REFERRAL_BASIS
-    # PROVIDER_QUICK_CODE
-    # DIAGNOSIS
-    # CMP_PID_IND
-    # CONFIRMATION_DT
-    # FL_FUP_EXAM_DT
-    # SPECIMEN_COLLECTION_DT
-    # DIAGNOSIS_DT
-    # COUNT
-    # PATIENTID
 
     content = trx.query(query)
 
