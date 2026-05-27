@@ -24,7 +24,7 @@ const getNumericValue = (filter: BasicFilterConfiguration) => {
 };
 
 const numericValidator = (_filter: BasicFilterConfiguration, label: string) => {
-    return (value?: string | null) => {
+    return (value?: (string | undefined)[]) => {
         if (value === undefined || value === null) return true;
 
         const numericValue = Number(value);
