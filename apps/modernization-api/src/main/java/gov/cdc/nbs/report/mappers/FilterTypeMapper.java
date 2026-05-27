@@ -1,9 +1,7 @@
 package gov.cdc.nbs.report.mappers;
 
-import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.report.models.FilterType;
-import java.time.LocalDateTime;
 
 public class FilterTypeMapper {
   private FilterTypeMapper() {}

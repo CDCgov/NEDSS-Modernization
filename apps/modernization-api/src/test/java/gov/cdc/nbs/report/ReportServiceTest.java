@@ -5,13 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import gov.cdc.nbs.entity.odse.DataSource;
-import gov.cdc.nbs.entity.odse.DisplayColumn;
-import gov.cdc.nbs.entity.odse.FilterCode;
-import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportFilter;
-import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.*;
@@ -290,6 +285,7 @@ class ReportServiceTest {
                 assertThat(filterConfig.filterType().code()).isEqualTo("J_S01");
               });
       assertThat(config.advancedFilter().reportFilterUid()).isEqualTo(6L);
+      assertThat(config.defaultColumnUids()).isEqualTo(List.of(columnBId, columnAId));
     }
 
     @Test

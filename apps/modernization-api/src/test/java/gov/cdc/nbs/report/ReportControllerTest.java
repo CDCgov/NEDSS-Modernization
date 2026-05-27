@@ -221,7 +221,8 @@ class ReportControllerTest {
               "Report Title",
               List.of(basicFilterConfig),
               advancedFilterConfig,
-              columns);
+              columns,
+              null);
       when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
       ResponseEntity<ReportConfiguration> response =
@@ -337,7 +338,7 @@ class ReportControllerTest {
               dataSourceUid,
               true,
               Arrays.asList(27L, 31L),
-              List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
+              List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
       when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
@@ -359,7 +360,7 @@ class ReportControllerTest {
               dataSourceUid,
               true,
               Arrays.asList(27L, 31L),
-              List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
+              List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
       when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
@@ -367,25 +368,6 @@ class ReportControllerTest {
       assertThatThrownBy(() -> controller.exportReport(request))
           .isInstanceOf(NotImplementedException.class)
           .hasMessageContaining(errorMsg);
-    }
-
-    @Test
-    void exportReport_should_return_422_status_code_when_report_not_export() {
-      long reportUid = 1L;
-      long dataSourceUid = 2L;
-
-      ReportExecutionRequest request =
-          new ReportExecutionRequest(
-              reportUid,
-              dataSourceUid,
-              false,
-              Arrays.asList(27L, 31L),
-              List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
-              null);
-
-      assertThatThrownBy(() -> controller.exportReport(request))
-          .isInstanceOf(IllegalArgumentException.class)
-          .hasMessageContaining("isExport must be true when exporting a report");
     }
 
     @Test
@@ -400,7 +382,7 @@ class ReportControllerTest {
               dataSourceUid,
               true,
               Arrays.asList(27L, 31L),
-              List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
+              List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
       when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
@@ -408,6 +390,25 @@ class ReportControllerTest {
       assertThatThrownBy(() -> controller.exportReport(request))
           .isInstanceOf(RuntimeException.class)
           .hasMessageContaining(errorMsg);
+    }
+
+    @Test
+    void exportReport_should_return_422_status_code_when_report_not_export() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid,
+              dataSourceUid,
+              false,
+              Arrays.asList(27L, 31L),
+              List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
+              null);
+
+      assertThatThrownBy(() -> controller.exportReport(request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("isExport must be true when exporting a report");
     }
   }
 
@@ -447,182 +448,13 @@ class ReportControllerTest {
               dataSourceUid,
               true,
               Arrays.asList(27L, 31L),
-              List.of(new BasicFilterRequest(10066724L, List.of("35001"), null)),
+              List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
-            null);
-
-    SimpleErrors errors = new SimpleErrors(controller);
-    errors.reject("TEST", errorMsg);
-
-    assertThatThrownBy(() -> controller.exportReport(request, errors))
-        .isInstanceOf(ResponseStatusException.class)
-        .hasFieldOrPropertyWithValue("status", HttpStatus.UNPROCESSABLE_ENTITY)
-        .hasMessageContaining(errorMsg);
-  }
-
-  @Test
-  void exportReport_should_return_400_status_code_when_report_not_found() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-    String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
-            null);
-
-    when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
-
-    SimpleErrors errors = new SimpleErrors(controller);
-    assertThatThrownBy(() -> controller.exportReport(request, errors))
-        .isInstanceOf(NotFoundException.class)
-        .hasMessageContaining(errorMsg);
-  }
-
-  @Test
-  void exportReport_should_return_501_status_code_when_report_not_implemented() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-    String errorMsg = "Report not implemented for python";
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
-            null);
-
-    when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
-
-    SimpleErrors errors = new SimpleErrors(controller);
-    assertThatThrownBy(() -> controller.exportReport(request, errors))
-        .isInstanceOf(NotImplementedException.class)
-        .hasMessageContaining(errorMsg);
-  }
-
-  @Test
-  void exportReport_should_return_422_status_code_when_report_not_export() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            false,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
-            null);
-
-    SimpleErrors errors = new SimpleErrors(controller);
-    assertThatThrownBy(() -> controller.exportReport(request, errors))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("isExport must be true when exporting a report");
-  }
-
-  @Test
-  void exportReport_should_return_500_status_code_when_unexpected_exception() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-    String errorMsg = "Uh oh!";
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
-            null);
-
-    when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
-
-    SimpleErrors errors = new SimpleErrors(controller);
-    assertThatThrownBy(() -> controller.exportReport(request, errors))
-        .isInstanceOf(RuntimeException.class)
-        .hasMessageContaining(errorMsg);
-  }
-
-  @Test
-  void runReport_should_return_executed_report() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-
-    AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
-    AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
-    AdvancedQuery.RuleGroup connector =
-        new AdvancedQuery.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
-    AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid, dataSourceUid, false, Arrays.asList(27L, 31L), List.of(), advancedFilter);
-
-    when(service.executeReport(request))
-        .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
-
-    SimpleErrors errors = new SimpleErrors(controller);
-    ResponseEntity<ReportResult> response = controller.runReport(request, errors);
-    assertEquals(getReportExecutionResponse(), response.getBody());
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-  }
-
-  @Test
-  void runReport_returns_422_when_validation_errors_encountered() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-    String errorMsg = "Invalid run report request test";
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
-            null);
-
-    SimpleErrors errors = new SimpleErrors(controller);
-    errors.reject("TEST", errorMsg);
-
-    assertThatThrownBy(() -> controller.runReport(request, errors))
-        .isInstanceOf(ResponseStatusException.class)
-        .hasFieldOrPropertyWithValue("status", HttpStatus.UNPROCESSABLE_ENTITY)
-        .hasMessageContaining(errorMsg);
-  }
-
-  @Test
-  void runReport_should_return_422_status_code_when_report_not_run() {
-    long reportUid = 1L;
-    long dataSourceUid = 2L;
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid,
-            dataSourceUid,
-            true,
-            Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
-            null);
-
-    SimpleErrors errors = new SimpleErrors(controller);
-    assertThatThrownBy(() -> controller.runReport(request, errors))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("isExport must be false when running a report");
+      assertThatThrownBy(() -> controller.runReport(request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("isExport must be false when running a report");
+    }
   }
 
   private ReportResult getReportExecutionResponse() {
