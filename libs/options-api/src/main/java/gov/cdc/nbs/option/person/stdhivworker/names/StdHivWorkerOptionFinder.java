@@ -9,7 +9,6 @@ public class StdHivWorkerOptionFinder extends SQLBasedOptionFinder {
 
   private static final String QUERY =
       """
-      WITH std_hiv_workers AS (
       SELECT DISTINCT
           root_extension_txt AS [key],
           CONCAT(first_nm, ' ', last_nm) AS [value],
@@ -28,10 +27,7 @@ public class StdHivWorkerOptionFinder extends SQLBasedOptionFinder {
             FROM dbo.NBS_Configuration
             WHERE config_key IN ('HIV_PROGRAM_AREAS', 'STD_PROGRAM_AREAS')
           )
-      )
-      SELECT [key], [value], [order]
-      FROM std_hiv_workers
-      ORDER BY [value];
+        ORDER BY [value];
       """;
 
   StdHivWorkerOptionFinder(final JdbcTemplate template) {
