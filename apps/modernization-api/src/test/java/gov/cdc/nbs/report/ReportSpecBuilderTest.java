@@ -47,7 +47,6 @@ class ReportSpecBuilderTest {
     return dataSourceNameUtils;
   }
 
-  // 1. Existing signature: Keeps all old tests passing without modifications
   private BasicFilterConfiguration mockBasicFilterConfiguration(
       List<String> filterDefaultValues, Long reportFilterUid, Long reportColumnUid) {
 
@@ -56,7 +55,7 @@ class ReportSpecBuilderTest {
         filterDefaultValues, reportFilterUid, reportColumnUid, "BAS_TXT");
   }
 
-  // 2. Overloaded signature: Use this one explicitly for your new "BAS_DAYS" tests
+  // For use with "BAS_DAYS" tests
   private BasicFilterConfiguration mockBasicFilterConfiguration(
       List<String> filterDefaultValues,
       Long reportFilterUid,
