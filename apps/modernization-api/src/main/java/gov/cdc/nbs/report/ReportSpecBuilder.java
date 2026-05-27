@@ -83,7 +83,7 @@ public class ReportSpecBuilder {
     String whereClause = whereClauseService.buildWhereClause(reportConfig, reportExecRequest);
     String orderByClause = "";
 
-    String daysValue = extractDaysValue();
+    Integer daysValue = extractDaysValue();
 
     String subsetQuery =
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
@@ -92,22 +92,38 @@ public class ReportSpecBuilder {
         isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery, daysValue);
   }
 
-  private String extractDaysValue() {
+  private Integer extractDaysValue() {
     if (reportExecRequest.basicFilters() == null || reportConfig.basicFilters() == null) {
       return null;
     }
 
-    // Find the UIDs of any filters configured as "BAS_DAYS"
-    List<Long> basDaysFilterUids = reportConfig.basicFilters().stream()
-            .filter(filterConfig -> filterConfig.filterType() != null && "BAS_DAYS".equals(filterConfig.filterType().type()))
+    // Find the UIDs of any filters with type = "BAS_DAYS"
+    List<Long> basDaysFilterUids =
+        reportConfig.basicFilters().stream()
+            .filter(
+                filterConfig ->
+                    filterConfig.filterType() != null
+                        && ReportConstants.BAS_DAYS.equals(filterConfig.filterType().type()))
             .map(BasicFilterConfiguration::reportFilterUid)
             .toList();
 
-    // Find the matching runtime request value
-    return reportExecRequest.basicFilters().stream()
-            .filter(filterRequest -> basDaysFilterUids.contains(filterRequest.reportFilterUid()))
-            .flatMap(filterRequest -> filterRequest.values().stream())
+    // Find the matching request filter and value
+    String rawDaysValue =
+        reportExecRequest.basicFilters().stream()
+            .filter(request -> basDaysFilterUids.contains(request.reportFilterUid()))
+            .flatMap(request -> request.values().stream())
             .findFirst()
             .orElse(null);
+
+    if (rawDaysValue == null || rawDaysValue.isBlank()) {
+      return null;
+    }
+
+    try {
+      return Integer.valueOf(rawDaysValue);
+    } catch (NumberFormatException e) {
+      throw new IllegalArgumentException(
+          "The requested filter value must be a valid integer: " + rawDaysValue);
+    }
   }
 }

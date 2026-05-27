@@ -1,5 +1,10 @@
 package gov.cdc.nbs.report;
 
+import static gov.cdc.nbs.report.ReportConstants.BAS_TIME_RANGE_TYPES;
+import static gov.cdc.nbs.report.ReportConstants.BAS_TYPES;
+import static gov.cdc.nbs.report.ReportConstants.SQL_AND;
+import static gov.cdc.nbs.report.ReportConstants.SQL_WHERE;
+
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.FilterType;
@@ -10,7 +15,6 @@ import gov.cdc.nbs.report.utils.FieldFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.StringJoiner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,15 +25,6 @@ import org.springframework.stereotype.Service;
 public class WhereClauseService {
 
   private final FieldFormatter fieldFormatter;
-
-  private static final String SQL_AND = " AND ";
-  private static final String SQL_WHERE = "WHERE ";
-
-  private static final Set<String> BAS_TIME_RANGE_TYPES =
-      Set.of("BAS_TIM_RANGE", "BAS_TIM_RANGE_CUSTOM", "BAS_TIM_RANGE_LIST", "BAS_MM_YYYY_RANGE");
-
-  private static final Set<String> BAS_TYPES =
-      Set.of("BAS_CON_LIST", "BAS_JUR_LIST", "BAS_CVG_LIST", "BAS_TXT", "BAS_STD_HIV_WRKR");
 
   /**
    * Generates a complete SQL WHERE clause for a report execution.
