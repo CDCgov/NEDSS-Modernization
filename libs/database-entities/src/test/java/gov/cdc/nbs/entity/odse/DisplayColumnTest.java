@@ -18,6 +18,7 @@ class DisplayColumnTest {
   @Test
   void should_create_complete_display_column() {
     Long id = 1L;
+    Long columnId = 2L;
     DataSourceColumn dataSourceColumn = new DataSourceColumn();
     Report report = new Report();
     Integer sequenceNumber = 10;
@@ -25,11 +26,13 @@ class DisplayColumnTest {
     LocalDateTime statusTime = LocalDateTime.parse("2020-03-03T10:15:30");
 
     DisplayColumn actual =
-        new DisplayColumn(id, dataSourceColumn, report, sequenceNumber, statusCd, statusTime);
+        new DisplayColumn(
+            id, dataSourceColumn, columnId, report, sequenceNumber, statusCd, statusTime);
 
     assertThat(actual)
         .satisfies(dc -> assertEquals(id, dc.getId()))
         .satisfies(dc -> assertEquals(dataSourceColumn, dc.getDataSourceColumn()))
+        .satisfies(dc -> assertEquals(columnId, dc.getDataSourceColumnId()))
         .satisfies(dc -> assertEquals(report, dc.getReport()))
         .satisfies(dc -> assertEquals(sequenceNumber, dc.getSequenceNumber()))
         .satisfies(dc -> assertEquals(statusCd, dc.getStatusCd()))
