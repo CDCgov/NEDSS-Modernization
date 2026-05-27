@@ -1,10 +1,10 @@
--- Migrate the NBSSR00009.SAS' library to the nbs_sr_09 python library
+-- Migrate the QA03.SAS library to the qa_03 python library
 
 USE [NBS_ODSE]
 
-DECLARE @pyLib VARCHAR(50) = 'nbs_sr_09'
-DECLARE @sasLib VARCHAR(50) = 'NBSSR00009.SAS'
-DECLARE @desc VARCHAR(300) = 'SR9: Selected Disease by Month and County.  Report demonstrates the total number of monthly Investigation(s) [both Individual and Summary] for a given disease and State, by County, irrespective of Case Status.'
+DECLARE @pyLib VARCHAR(50) = 'qa_03'
+DECLARE @sasLib VARCHAR(50) = 'QA03.SAS'
+DECLARE @desc VARCHAR(300) = 'QA03: Case Listing. This report generates a list, by name, of individuals with cases within a designated time period.'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN

@@ -5,8 +5,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.entity.odse.*;
+import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.DisplayColumn;
+import gov.cdc.nbs.entity.odse.FilterCode;
+import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportFilter;
+import gov.cdc.nbs.entity.odse.ReportId;
+import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.*;
@@ -49,12 +54,16 @@ class ReportServiceTest {
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RequestBodySpec requestBodySpec;
   @Mock private ResponseSpec responseSpec;
+  @Mock private DisplayColumn columnA;
+  @Mock private DisplayColumn columnB;
 
   @InjectMocks private ReportService service;
 
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
   private final Long libraryId = 20L;
+  private final Long columnAId = 3L;
+  private final Long columnBId = 4L;
 
   private Report mockReport(
       ReportId id, String runner, String dataSourceName, List<ReportFilter> reportFilters) {
@@ -64,6 +73,11 @@ class ReportServiceTest {
     Mockito.lenient().when(report.getDataSource()).thenReturn(dataSource);
     Mockito.lenient().when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
     Mockito.lenient().when(report.getReportFilters()).thenReturn(reportFilters);
+    Mockito.lenient().when(report.getDisplayColumns()).thenReturn(List.of(columnA, columnB));
+    Mockito.lenient().when(columnA.getDataSourceColumnId()).thenReturn(columnAId);
+    Mockito.lenient().when(columnB.getDataSourceColumnId()).thenReturn(columnBId);
+    Mockito.lenient().when(columnA.getSequenceNumber()).thenReturn(2);
+    Mockito.lenient().when(columnB.getSequenceNumber()).thenReturn(1);
     Mockito.lenient().when(reportLibrary.getRunner()).thenReturn(runner);
     Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
     Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));

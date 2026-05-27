@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -66,16 +66,17 @@ afterEach(() => {
 });
 
 const MOCK_CONFIG: ReportConfiguration = {
-    reportTitle: 'Test Report',
+    title: 'Test Report',
     dataSource: {
         name: 'nbs_ods.data_source',
     },
-    reportLibrary: {
+    library: {
         runner: 'python',
         libraryName: 'nbs_sr_99',
         isBuiltin: true,
+        allowColumnSelection: false,
     },
-    reportColumns: [
+    columns: [
         {
             id: 2001,
             name: 'FULL_NAME',
@@ -261,6 +262,82 @@ describe('report run page', () => {
 
                 expect(await findByText('Basic Text Filter')).toHaveClass('required');
                 expect(await findByRole('textbox')).toBeRequired();
+            });
+
+            describe('include nulls', () => {
+                const NULLABLE_MOCK_FILTER = {
+                    ...MOCK_FILTER,
+                    filterType: { ...MOCK_FILTER.filterType, code: 'J_S01_N' },
+                };
+                it('renders the include nulls checkbox when appropriate', async () => {
+                    const mockApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [NULLABLE_MOCK_FILTER],
+                        });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    const { container, getByRole, findByLabelText, findByRole } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockApi).toHaveBeenCalled();
+
+                    const checkbox = await findByLabelText('Include Nulls for Basic Text Filter');
+                    expect(checkbox).not.toBeChecked();
+                    const user = userEvent.setup();
+                    await user.click(checkbox);
+                    expect(checkbox).toBeChecked();
+
+                    expect(await axe(container)).toHaveNoViolations();
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            advancedFilter: undefined,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['13'], includeNulls: true }],
+                        }),
+                    });
+                });
+
+                it('starts from default value', async () => {
+                    const mockApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [{ ...NULLABLE_MOCK_FILTER, defaultIncludeNulls: true }],
+                        });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    const { container, getByRole, findByLabelText, findByRole } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockApi).toHaveBeenCalled();
+
+                    const checkbox = await findByLabelText('Include Nulls for Basic Text Filter');
+                    expect(checkbox).toBeChecked();
+                    const user = userEvent.setup();
+                    await user.click(checkbox);
+                    expect(checkbox).not.toBeChecked();
+
+                    expect(await axe(container)).toHaveNoViolations();
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            advancedFilter: undefined,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['13'], includeNulls: false }],
+                        }),
+                    });
+                });
             });
         });
 
@@ -840,7 +917,7 @@ describe('report run page', () => {
                             requestBody: expect.objectContaining({
                                 isExport: true,
                                 advancedFilter: undefined,
-                                basicFilters: [{ reportFilterUid: 1001, values: ['13'] }],
+                                basicFilters: [{ reportFilterUid: 1001, values: ['13'], includeNulls: false }],
                             }),
                         });
                     });
@@ -919,7 +996,7 @@ describe('report run page', () => {
                             requestBody: expect.objectContaining({
                                 isExport: true,
                                 advancedFilter: undefined,
-                                basicFilters: [{ reportFilterUid: 1001, values: ['04'] }],
+                                basicFilters: [{ reportFilterUid: 1001, values: ['04'], includeNulls: false }],
                             }),
                         });
                     });
@@ -984,7 +1061,7 @@ describe('report run page', () => {
                             requestBody: expect.objectContaining({
                                 isExport: true,
                                 advancedFilter: undefined,
-                                basicFilters: [{ reportFilterUid: 1001, values: ['13', '04'] }],
+                                basicFilters: [{ reportFilterUid: 1001, values: ['13', '04'], includeNulls: false }],
                             }),
                         });
                     });
@@ -1059,7 +1136,7 @@ describe('report run page', () => {
                             requestBody: expect.objectContaining({
                                 isExport: true,
                                 advancedFilter: undefined,
-                                basicFilters: [{ reportFilterUid: 1001, values: ['04', '13'] }],
+                                basicFilters: [{ reportFilterUid: 1001, values: ['04', '13'], includeNulls: false }],
                             }),
                         });
                     });
@@ -1072,7 +1149,7 @@ describe('report run page', () => {
                         id: 5,
                         codeTable: undefined,
                         descTxt: 'Basic State Filter',
-                        code: 'J_S01_N',
+                        code: 'J_S01',
                         codeSetName: undefined,
                         type: 'BAS_JUR_LIST',
                         name: 'State',
@@ -1174,7 +1251,7 @@ describe('report run page', () => {
                                 isExport: true,
                                 advancedFilter: undefined,
                                 basicFilters: expect.arrayContaining([
-                                    { reportFilterUid: 1001, values: ['04001'] },
+                                    { reportFilterUid: 1001, values: ['04001'], includeNulls: false },
                                     { reportFilterUid: 1002, values: ['04'] },
                                 ]),
                             }),
@@ -1249,7 +1326,7 @@ describe('report run page', () => {
                                 isExport: true,
                                 advancedFilter: undefined,
                                 basicFilters: expect.arrayContaining([
-                                    { reportFilterUid: 1001, values: ['13002'] },
+                                    { reportFilterUid: 1001, values: ['13002'], includeNulls: false },
                                     { reportFilterUid: 1002, values: ['13'] },
                                 ]),
                             }),
@@ -1286,7 +1363,8 @@ describe('report run page', () => {
                             .mockResolvedValue(MOCK_RESULT);
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                        const { getByRole, getByText, findByRole, findByLabelText, container } = renderWithRouter();
+                        const { getByRole, getByText, findAllByText, findByRole, findByLabelText, container } =
+                            renderWithRouter();
 
                         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -1319,7 +1397,7 @@ describe('report run page', () => {
                         // make sure form values were really reset
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
-                        expect(await findByRole('alert')).toBeVisible(); // county is required
+                        expect(await findAllByText('The Full Name is required.')).toHaveLength(2); // county is required
 
                         dropDown = await findByLabelText('Full Name');
                         await userEvent.click(dropDown);
@@ -1333,7 +1411,7 @@ describe('report run page', () => {
                                 isExport: true,
                                 advancedFilter: undefined,
                                 basicFilters: expect.arrayContaining([
-                                    { reportFilterUid: 1001, values: ['04001'] },
+                                    { reportFilterUid: 1001, values: ['04001'], includeNulls: false },
                                     { reportFilterUid: 1002, values: ['04'] },
                                 ]),
                             }),
@@ -1410,7 +1488,7 @@ describe('report run page', () => {
                                 isExport: true,
                                 advancedFilter: undefined,
                                 basicFilters: expect.arrayContaining([
-                                    { reportFilterUid: 1001, values: ['13001', '13002'] },
+                                    { reportFilterUid: 1001, values: ['13001', '13002'], includeNulls: false },
                                     { reportFilterUid: 1002, values: ['13'] },
                                 ]),
                             }),
@@ -1485,7 +1563,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [{ reportFilterUid: 1001, values: ['11065'] }],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['11065'], includeNulls: false }],
                         }),
                     });
                 });
@@ -1556,7 +1634,7 @@ describe('report run page', () => {
                     expect(mockResultApi).toHaveBeenCalledWith({
                         requestBody: expect.objectContaining({
                             isExport: true,
-                            basicFilters: [{ reportFilterUid: 1001, values: ['10560'] }],
+                            basicFilters: [{ reportFilterUid: 1001, values: ['10560'], includeNulls: false }],
                         }),
                     });
                 });
@@ -2635,6 +2713,143 @@ describe('report run page', () => {
                     expect(announcementEl).toHaveTextContent('The group has returned to its starting position')
                 );
                 expect(addRuleBtn).toHaveFocus();
+            });
+        });
+    });
+
+    describe('column selection', () => {
+        const MOCK_SELECTABLE_CONFIG: ReportConfiguration = {
+            ...MOCK_CONFIG,
+            library: { ...MOCK_CONFIG.library, allowColumnSelection: true },
+        };
+
+        it('happy path', async () => {
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue(MOCK_SELECTABLE_CONFIG);
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { container, getByRole, findByText, queryByText, findByRole, findAllByRole, findByLabelText } =
+                renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('Column selection')).toBeVisible();
+            expect(queryByText('Basic Filters')).toBeNull();
+            expect(queryByText('Advanced Filters')).toBeNull();
+
+            // starts unselected
+            expect(await findByText('Select a column from "Available columns"')).toBeVisible();
+            expect(await findByRole('button', { name: 'Clear selections' })).toBeDisabled();
+
+            const options = () => findAllByRole('checkbox');
+            expect(await options()).toHaveLength(MOCK_CONFIG.columns.length - 1); // -2 for non-displayable +1 for select all
+            (await options()).forEach((option) => expect(option).not.toBeChecked());
+
+            const user = userEvent.setup();
+
+            await user.click((await options())[0]); // select all
+            (await options()).forEach((option) => expect(option).toBeChecked());
+            await user.click((await options())[0]); // de-select all
+            (await options()).forEach((option) => expect(option).not.toBeChecked());
+
+            const search = await findByLabelText('Search');
+            await user.type(search, 'name');
+            expect(await options()).toHaveLength(2); // Full Name + select all
+            await user.click(await findByLabelText('Select search results'));
+            await waitFor(async () => (await options()).forEach((option) => expect(option).toBeChecked()));
+            await user.clear(search);
+            expect((await options()).filter((o) => (o as HTMLInputElement).checked)).toHaveLength(1);
+            expect(await findByRole('checkbox', { name: 'Full Name' })).toBeChecked();
+            expect(await findByLabelText('Remove Full Name')).toBeVisible(); // in ordering panel
+            await user.click(await findByLabelText('Remove Full Name'));
+            await waitFor(async () => (await options()).forEach((option) => expect(option).not.toBeChecked()));
+
+            // trigger validation
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(await findByText('The column selection is required.')).toBeVisible();
+
+            await user.click(await findByLabelText('Select all'));
+
+            expect(queryByText('The column selection is required.')).toBeNull();
+
+            await user.click(await findByRole('button', { name: 'Clear selections' }));
+
+            expect(await findByText('The column selection is required.')).toBeVisible();
+
+            // check drag and drop, the library uses keycodes (deprecated) instead of names,
+            // so requires this kinda hacky workaround vs user events
+            const fireDnDEvent = (keyCode: number) => {
+                fireEvent.keyDown(dragHandle, {
+                    keyCode,
+                });
+            };
+            await user.click(await findByLabelText('Select all'));
+            const dragHandle = await findByLabelText('Drag handle for Full Name');
+            dragHandle.focus();
+            fireDnDEvent(32); // space
+            fireDnDEvent(40); // down
+            fireDnDEvent(40); // down
+            fireDnDEvent(32); // space
+            expect(await findByLabelText('Drag handle for Full Name')).toHaveFocus();
+
+            expect(
+                await findByText(/You have dropped the item\. You have moved the item from position 1 to position 3/)
+            ).toBeVisible();
+
+            expect(await axe(container)).toHaveNoViolations();
+
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: undefined,
+                    basicFilters: [],
+                    columnUids: [2002, 2003, 2001],
+                }),
+            });
+        });
+
+        it('starts from default values', async () => {
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.getReportConfiguration)
+                .mockResolvedValue({ ...MOCK_SELECTABLE_CONFIG, defaultColumnUids: [2003, 2002] });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+
+            expect(getByRole('status')).toHaveTextContent('Loading');
+
+            expect(mockApi).toHaveBeenCalled();
+
+            const user = userEvent.setup();
+
+            // starts selected
+            expect(await findByLabelText('Days Old')).toBeChecked();
+            expect(await findByLabelText('Date of Birth')).toBeChecked();
+            expect(await findByLabelText('Full Name')).not.toBeChecked();
+
+            await user.click(await findByLabelText('Full Name'));
+            await user.click(await findByLabelText('Remove Date of Birth'));
+            await user.click(await findByLabelText('Date of Birth')); // make sure adds to the end
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            await user.click(exportButton);
+
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    advancedFilter: undefined,
+                    basicFilters: [],
+                    columnUids: [2003, 2001, 2002],
+                }),
             });
         });
     });

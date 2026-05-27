@@ -45,6 +45,7 @@ class ReportTest {
     DataSource dataSourceObj = new DataSource();
     ReportLibrary reportLibrary = new ReportLibrary();
     List<ReportFilter> reportFilters = List.of(new ReportFilter(), new ReportFilter());
+    List<DisplayColumn> displayColumns = List.of(new DisplayColumn(), new DisplayColumn());
     String descTxt = "Counts of Reportable Diseases by County for Selected Time Frame";
     LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
     LocalDateTime effectiveToTime = LocalDateTime.parse("2020-03-04T10:15:30");
@@ -71,6 +72,7 @@ class ReportTest {
             dataSourceObj,
             reportLibrary,
             reportFilters,
+            displayColumns,
             descTxt,
             effectiveTime,
             filterMode,
@@ -111,6 +113,7 @@ class ReportTest {
         .satisfies(report -> assertEquals(category, report.getCategory()))
         .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
         .satisfies(report -> assertEquals(reportFilters, report.getReportFilters()))
+        .satisfies(report -> assertEquals(displayColumns, report.getDisplayColumns()))
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()))
         .satisfies(report -> assertEquals(addReasonCd, report.getAddReasonCd()))
         .satisfies(report -> assertEquals(addTime, report.getAddTime()))

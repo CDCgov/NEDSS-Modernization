@@ -31,6 +31,10 @@ public class DisplayColumn {
   @JoinColumn(name = "column_uid", nullable = false)
   private DataSourceColumn dataSourceColumn;
 
+  // Make the ID readable without needing to fetch the data source column
+  @Column(name = "column_uid", insertable = false, updatable = false)
+  private Long dataSourceColumnId;
+
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
   // Report has a composite primary key
   @JoinColumn(name = "report_uid", nullable = false)

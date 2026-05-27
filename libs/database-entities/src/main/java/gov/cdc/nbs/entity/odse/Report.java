@@ -37,6 +37,9 @@ public class Report {
   @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
   private List<ReportFilter> reportFilters;
 
+  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
+  private List<DisplayColumn> displayColumns;
+
   @Column(name = "desc_txt", length = 300)
   private String descTxt;
 
