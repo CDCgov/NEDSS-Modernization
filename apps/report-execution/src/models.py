@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Literal, Union, Optional
+from typing import Annotated, Any, Literal
 
 import pandas as pd
 from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
@@ -14,20 +14,22 @@ class ReportSpec(BaseModel):
     data_source_name: str = Field(min_length=1)
     subset_query: str = Field(min_length=1)
     days_value: int | None = None  # Specific to potntl_dup_inv_sum
-    column_map: dict[str, str] | None = None  # Maps column names to user-friendly titles
+    column_map: dict[str, str] | None = None
 
 
 # column names and values
 class Table(BaseModel):
     """Basic tabular data format."""
-    
+
     columns: list[str]
     data: list[tuple[Any, ...]]
-    
-    def __init__(self, 
-                 columns: Union[list[str], pd.DataFrame, None] = None,
-                 data: Optional[list[tuple[Any, ...]]] = None,
-                 **kwargs):
+
+    def __init__(
+        self,
+        columns: list[str] | pd.DataFrame | None = None,
+        data: list[tuple[Any, ...]] | None = None,
+        **kwargs,
+    ):
         """Initialize Table with either columns+data or a DataFrame."""
         if isinstance(columns, pd.DataFrame):
             # Called with Table(df)
@@ -35,7 +37,7 @@ class Table(BaseModel):
             columns = df.columns.tolist()
             data = [tuple(row) for row in df.to_numpy()]
         super().__init__(columns=columns, data=data, **kwargs)
-    
+
     def get_column(self, col_name: str) -> list[Any]:
         """Extract a column by name. Raises an error if the column doesn't exist."""
         if col_name not in self.columns:
@@ -44,7 +46,7 @@ class Table(BaseModel):
             )
         idx = self.columns.index(col_name)
         return [row[idx] for row in self.data]
-    
+
     def get_unique_column(self, col_name: str) -> list[Any]:
         """Extract unique values from a column, sorted with None at the beginning.
 
@@ -57,15 +59,16 @@ class Table(BaseModel):
         values = set(self.get_column(col_name))
         # Sort with None first (False < True, so None comes before non-None)
         return sorted(values, key=lambda x: (x is not None, x))
-    
-    def to_pandas(self) -> DataFrame:
+
+    def to_pandas(self) -> pd.DataFrame:
         """Convert the Table to a pandas DataFrame."""
         return pd.DataFrame.from_records(
             self.data, columns=self.columns, coerce_float=True
         )
-    
+
     class Config:
         """Pydantic configuration."""
+
         arbitrary_types_allowed = True
 
 
@@ -73,7 +76,7 @@ def serialize_table(table: Table) -> str:
     """Turn a Table into a CSV for returning to the user."""
     # Short cut to valid CSV - can swap out later if performance dictates
     # or serialize to CSV at a different location
-    df = DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
+    df = pd.DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
     # remove trailing new line
     return df.to_csv(index=False, float_format='{:.20g}', lineterminator='\r\n')[:-2]
 

@@ -1,5 +1,5 @@
 from src.db_transaction import Transaction
-from src.models import ReportResult, Table
+from src.models import ReportResult
 
 
 def execute(
@@ -16,20 +16,17 @@ def execute(
     with the same disease, within a user-specified number of days.
     """
     assert all(
-        x in column_map.keys() for x in [
-            'PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE'
-        ]), (
-        "Required columns are missing from column_map"
-    )
+        x in column_map for x in ['PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE']
+    ), 'Required columns are missing from column_map'
     # Only use default if days_value is None (not provided)
     # If days_value is 0, treat it as 0 (not default)
     # days_value = kwargs.get('days_value')
     if days_value is None:
         days_value = 3650
 
-    select_clause = ', '.join([
-        f'd.{key} AS [{item}]' for key, item in column_map.items()
-    ])
+    select_clause = ', '.join(
+        [f'd.{key} AS [{item}]' for key, item in column_map.items()]
+    )
 
     full_query = f"""
     WITH subset AS ({subset_query})

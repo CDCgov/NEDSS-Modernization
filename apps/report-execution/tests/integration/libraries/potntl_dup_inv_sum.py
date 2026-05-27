@@ -19,7 +19,8 @@ class TestIntegrationNbsSrDupInvLibrary:
     This report identifies potential duplicate investigations for the same patient
     with the same disease within a user-specified number of days.
     """
-        # Helper to generate common spec base
+
+    # Helper to generate common spec base
     @staticmethod
     def create_spec(**overrides):
         base = {
@@ -35,8 +36,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'EVENT_DATE': 'Event Date',
                 'PATIENT_LOCAL_ID': 'Patient Local Id',
                 'DISEASE_CD': 'Disease Code',
-                'INVESTIGATION_LOCAL_ID': 'Investigation Id'
-            }
+                'INVESTIGATION_LOCAL_ID': 'Investigation Id',
+            },
         }
         base.update(overrides)
         return ReportSpec.model_validate(base)
@@ -72,8 +73,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
-                }
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id',
+                },
             }
         )
 
@@ -102,8 +103,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
-                }
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id',
+                },
             }
         )
 
@@ -126,8 +127,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
-                }
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id',
+                },
             }
         )
         result_30 = execute_report(spec_30)
@@ -153,8 +154,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
-                }
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id',
+                },
             }
         )
 
@@ -183,8 +184,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
-                }
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id',
+                },
             }
         )
 
@@ -208,8 +209,8 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
-                }
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id',
+                },
             }
         )
 
@@ -236,7 +237,9 @@ class TestIntegrationNbsSrDupInvLibrary:
             assert count >= 2, f'Patient/disease pair appears only {count} times'
 
     def test_execute_report_missing_column_error(self):
-        """Verify that an error is raised if required columns are missing from column_map."""
+        """Verify that an error is raised if required columns are missing from
+        column_map.
+        """
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -250,15 +253,15 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'column_map': {
                     # Missing required columns
                     'EVENT_DATE': 'Event Date',
-                    'PATIENT_LOCAL_ID': 'Patient Local Id'
-                }
+                    'PATIENT_LOCAL_ID': 'Patient Local Id',
+                },
             }
         )
 
         with pytest.raises(AssertionError) as exc_info:
             execute_report(report_spec)
 
-        assert "Required columns are missing from column_map" in str(exc_info.value)
+        assert 'Required columns are missing from column_map' in str(exc_info.value)
 
     def test_execute_report_column_ordering(self):
         """Verify that the expected columns are consistently ordered as expected."""
@@ -267,7 +270,10 @@ class TestIntegrationNbsSrDupInvLibrary:
         result = execute_report(report_spec)
 
         expected_columns = {
-            'Patient Local Id', 'Disease Code', 'Event Date', 'Investigation Id'
+            'Patient Local Id',
+            'Disease Code',
+            'Event Date',
+            'Investigation Id',
         }
         result_columns = set(result.content.columns)
 
