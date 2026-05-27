@@ -374,7 +374,7 @@ class ReportSpecBuilderTest {
 
     assertThatThrownBy(reportSpec::build)
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("The requested filter value must be a valid integer: not_number");
+        .hasMessage("The 'Days Filter' filter value must be a valid integer: not_number");
   }
 
   @Test
