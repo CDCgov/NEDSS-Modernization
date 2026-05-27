@@ -19,27 +19,31 @@ class TestIntegrationNbsSrDupInvLibrary:
     This report identifies potential duplicate investigations for the same patient
     with the same disease within a user-specified number of days.
     """
+        # Helper to generate common spec base
+    @staticmethod
+    def create_spec(**overrides):
+        base = {
+            'version': 1,
+            'is_export': True,
+            'is_builtin': True,
+            'report_title': 'Potential Duplicate Investigations',
+            'library_name': 'potntl_dup_inv_sum',
+            'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
+            'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
+            'days_value': None,
+            'column_map': {
+                'EVENT_DATE': 'Event Date',
+                'PATIENT_LOCAL_ID': 'Patient Local Id',
+                'DISEASE_CD': 'Disease Code',
+                'INVESTIGATION_LOCAL_ID': 'Investigation Id'
+            }
+        }
+        base.update(overrides)
+        return ReportSpec.model_validate(base)
 
     def test_execute_report_check_data(self, snapshot):
         """Test with no days_value - should default to 3650."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'potntl_dup_inv_sum',
-                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
-                'days_value': None,
-                'column_map': {
-                    'EVENT_DATE': 'Event Date',
-                    'PATIENT_LOCAL_ID': 'Patient Local Id',
-                    'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
-                }
-            }
-        )
+        report_spec = self.create_spec()
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
@@ -216,24 +220,7 @@ class TestIntegrationNbsSrDupInvLibrary:
 
     def test_execute_report_verify_no_single_events(self):
         """Verify that patients with only one event are filtered out."""
-        report_spec = ReportSpec.model_validate(
-            {
-                'version': 1,
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': 'Potential Duplicate Investigations',
-                'library_name': 'potntl_dup_inv_sum',
-                'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
-                'days_value': 3650,
-                'column_map': {
-                    'EVENT_DATE': 'Event Date',
-                    'PATIENT_LOCAL_ID': 'Patient Local Id',
-                    'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
-                }
-            }
-        )
+        report_spec = self.create_spec()
 
         result = execute_report(report_spec)
 
@@ -248,8 +235,8 @@ class TestIntegrationNbsSrDupInvLibrary:
         for count in counts.values():
             assert count >= 2, f'Patient/disease pair appears only {count} times'
 
-    def test_execute_report_column_ordering(self):
-        """Verify that the expected columns are consistently ordered as expected."""
+    def test_execute_report_missing_column_error(self):
+        """Verify that an error is raised if required columns are missing from column_map."""
         report_spec = ReportSpec.model_validate(
             {
                 'version': 1,
@@ -258,28 +245,29 @@ class TestIntegrationNbsSrDupInvLibrary:
                 'report_title': 'Potential Duplicate Investigations',
                 'library_name': 'potntl_dup_inv_sum',
                 'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
-                'subset_query': 
-                    '''
-                    SELECT EVENT_DATE as [Event Date],
-                    PATIENT_LOCAL_ID as [Patient Local Id],
-                    DISEASE_CD as [Disease Code],
-                    INVESTIGATION_LOCAL_ID as [Investigation Id]
-                    FROM [RDB].[dbo].[INV_SUMM_DATAMART]
-                    ''',
-                'days_value': 3650,
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[INV_SUMM_DATAMART]',
+                'days_value': 365,
                 'column_map': {
+                    # Missing required columns
                     'EVENT_DATE': 'Event Date',
-                    'PATIENT_LOCAL_ID': 'Patient Local Id',
-                    'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
+                    'PATIENT_LOCAL_ID': 'Patient Local Id'
                 }
             }
         )
 
+        with pytest.raises(AssertionError) as exc_info:
+            execute_report(report_spec)
+
+        assert "Required columns are missing from column_map" in str(exc_info.value)
+
+    def test_execute_report_column_ordering(self):
+        """Verify that the expected columns are consistently ordered as expected."""
+        report_spec = self.create_spec()
+
         result = execute_report(report_spec)
 
         expected_columns = {
-            'PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE', 'INVESTIGATION_LOCAL_ID'
+            'Patient Local Id', 'Disease Code', 'Event Date', 'Investigation Id'
         }
         result_columns = set(result.content.columns)
 
