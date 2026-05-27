@@ -9,11 +9,10 @@ import type { ReportColumn } from './ReportColumn';
 import type { ReportDataSource } from './ReportDataSource';
 export type ReportConfiguration = {
     dataSource: ReportDataSource;
-    library: Library;
-    title: string;
+    reportLibrary: Library;
+    reportTitle: string;
     basicFilters: Array<BasicFilterConfiguration>;
     advancedFilter?: AdvancedFilterConfiguration;
-    columns: Array<ReportColumn>;
-    defaultColumnUids?: Array<number>;
+    reportColumns: Array<ReportColumn>;
 };
 
