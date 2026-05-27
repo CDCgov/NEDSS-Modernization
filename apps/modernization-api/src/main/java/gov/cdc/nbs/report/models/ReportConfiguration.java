@@ -11,7 +11,8 @@ public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<BasicFilterConfiguration> basicFilters,
     AdvancedFilterConfiguration advancedFilter,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<ReportColumn> columns) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<ReportColumn> columns,
+    List<Long> defaultColumnUids) {
 
   @JsonIgnore
   public boolean isPython() {
