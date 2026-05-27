@@ -202,7 +202,7 @@ public class WhereClauseService {
   /** Retrieves the column metadata associated with a specific column UID. */
   private Optional<ReportColumn> findColumn(
       ReportConfiguration reportConfig, Long reportColumnUid) {
-    return reportConfig.reportColumns().stream()
+    return reportConfig.columns().stream()
         .filter(rc -> Objects.equals(rc.id(), reportColumnUid))
         .findFirst();
   }

@@ -32,8 +32,11 @@ public class ReportLibrary {
   @NonNull @Column(name = "runner", length = 10, nullable = false)
   private String runner;
 
+  @NonNull @Column(name = "column_select_ind", length = 1, nullable = false)
+  private Character columnSelectInd;
+
   @NonNull @Column(name = "is_builtin_ind", length = 1, nullable = false)
-  private Character isBuiltinIndex;
+  private Character isBuiltinInd;
 
   @NonNull @Column(name = "add_time", nullable = false)
   private LocalDateTime addTime;
@@ -48,6 +51,10 @@ public class ReportLibrary {
   private Long lastChgUserId;
 
   public boolean isBuiltin() {
-    return getIsBuiltinIndex().toString().equalsIgnoreCase("Y");
+    return getIsBuiltinInd().toString().equalsIgnoreCase("Y");
+  }
+
+  public boolean allowColumnSelection() {
+    return getColumnSelectInd().toString().equalsIgnoreCase("Y");
   }
 }

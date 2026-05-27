@@ -43,7 +43,7 @@ public class ReportSpecBuilder {
   }
 
   private ReportColumn findMatchingColumn(Long columnUid) {
-    return reportConfig.reportColumns().stream()
+    return reportConfig.columns().stream()
         .filter(column -> column.id().equals(columnUid))
         .findFirst()
         .orElseThrow(
@@ -68,12 +68,12 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpec build() {
-    Library reportLibrary = reportConfig.reportLibrary();
+    Library reportLibrary = reportConfig.library();
 
     boolean isExport = reportExecRequest.isExport();
     boolean isBuiltin = reportLibrary.isBuiltin();
-    String reportTitle = reportConfig.reportTitle();
-    String libraryName = reportConfig.reportLibrary().libraryName();
+    String reportTitle = reportConfig.title();
+    String libraryName = reportConfig.library().libraryName();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     List<ReportColumn> columns = fetchColumns();
