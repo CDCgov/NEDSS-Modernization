@@ -173,6 +173,22 @@ class ReportFilterBuilderTest {
     assertThat(result.getDataSourceColumn()).isEqualTo(column);
   }
 
+  @Test
+  void build_should_set_default_values_on_success() {
+    CreateFilterRequest filter =
+        new CreateFilterRequest(5L, null, ReportConstants.SelectType.SINGLE, false);
+    Report report = mock(Report.class);
+    FilterCode filterCode = mock(FilterCode.class);
+
+    when(filterCodeRepository.findById(5L)).thenReturn(Optional.of(filterCode));
+
+    ReportFilter result = builder.build(filter, report);
+
+    assertThat(result.getStatusCd()).isEqualTo('A');
+    assertThat(result.getReport()).isEqualTo(report);
+    assertThat(result.getFilterCode()).isEqualTo(filterCode);
+  }
+
   private static Stream<Arguments> fetchMinMaxTimeRangeTestParams() {
     return Stream.of(
         Arguments.of(5L),
