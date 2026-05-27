@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.person.names;
+package gov.cdc.nbs.option.person.stdhivworker.names;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -8,21 +8,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @Component
-class PersonNamesListRequester {
+class StdHivWorkerOptionRequester {
 
   private final MockMvc mvc;
 
-  PersonNamesListRequester(final MockMvc mvc) {
+  StdHivWorkerOptionRequester(final MockMvc mvc) {
     this.mvc = mvc;
   }
 
   ResultActions request() throws Exception {
-    return mvc.perform(
-            get("/nbs/api/options/person/stdHivWorker/names").param("programAreas", "HIV", "STD"))
-        .andDo(print());
-  }
-
-  ResultActions requestWithoutParams() throws Exception {
-    return mvc.perform(get("/nbs/api/options/person/stdHivWorker/names")).andDo(print());
+    return mvc.perform(get("/nbs/api/options/person/std-hiv-worker/names")).andDo(print());
   }
 }

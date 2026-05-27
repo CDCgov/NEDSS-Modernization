@@ -1,1 +1,1 @@
-export { usePersonNamesOptions } from './usePersonNamesOptions.ts';
+export { useStdHivWorkerNameOptions } from './useStdHivWorkerNameOptions.ts';

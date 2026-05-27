@@ -1,11 +1,11 @@
-package gov.cdc.nbs.option.person.names;
+package gov.cdc.nbs.option.person.stdhivworker.names;
 
-import gov.cdc.nbs.option.jdbc.autocomplete.SQLBasedOptionResolver;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import gov.cdc.nbs.option.jdbc.SQLBasedOptionFinder;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PersonNamesOptionResolver extends SQLBasedOptionResolver {
+public class StdHivWorkerOptionFinder extends SQLBasedOptionFinder {
 
   private static final String QUERY =
       """
@@ -22,14 +22,18 @@ public class PersonNamesOptionResolver extends SQLBasedOptionResolver {
           AND au.auth_user_uid = aur.auth_user_uid
           AND root_extension_txt IS NOT NULL
           AND root_extension_txt !=''
-          AND aur.prog_area_cd IN (:programAreas)
+          AND aur.prog_area_cd IN (
+            SELECT config_value
+            FROM dbo.NBS_Configuration
+            WHERE config_key IN ('HIV_PROGRAM_AREAS', 'STD_PROGRAM_AREAS')
+          )
       )
       SELECT [key], [value], ROW_NUMBER() OVER(ORDER BY [key]) AS [order_clause]
       FROM std_hiv_workers
       GROUP BY [key], [value];
       """;
 
-  PersonNamesOptionResolver(final NamedParameterJdbcTemplate template) {
+  StdHivWorkerOptionFinder(final JdbcTemplate template) {
     super(QUERY, template);
   }
 }

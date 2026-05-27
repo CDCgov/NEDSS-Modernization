@@ -4,7 +4,7 @@ import { MultiSelect } from 'design-system/select';
 import { useCountyOptions, useStateOptions } from 'options/location';
 import { useConditionOptions } from 'options/condition';
 import { useConceptOptions } from 'options/concepts';
-import { usePersonNamesOptions } from 'options/person/names';
+import { useStdHivWorkerNameOptions } from 'options/person/names';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useEffect } from 'react';
 import { useCurrentState } from './useCurrentState';
@@ -70,7 +70,7 @@ const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName?: string) => Selectabl
         return useConditionOptions().options;
     },
     [DISEASE_FILTER_CODE]: (filterCodeSetName) => useDiseaseOptions(filterCodeSetName),
-    [STD_HIV_WORKERS_FILTER_CODE]: usePersonNamesOptions,
+    [STD_HIV_WORKERS_FILTER_CODE]: useStdHivWorkerNameOptions,
 };
 
 const useDiseaseOptions = (filterCodeSetName?: string) => {
