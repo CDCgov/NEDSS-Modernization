@@ -1,5 +1,6 @@
-from src.db_transaction import Transaction
 from src.errors import MissingColumnError
+
+from src.db_transaction import Transaction
 from src.models import ReportResult
 
 
@@ -16,20 +17,23 @@ def execute(
     Identifies potential duplicate investigations for the same patient,
     with the same disease, within a user-specified number of days.
     """
+
     missing_columns = []
     for col in ['PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE']:
-        if col not in column_map:
+        if col not in column_map.keys():
             missing_columns.append(col)
     if missing_columns:
         raise MissingColumnError(missing_columns)
-
+    
     # Only use default if days_value is None (not provided)
     # If days_value is 0, treat it as 0 (not default)
     # days_value = kwargs.get('days_value')
     if days_value is None:
         days_value = 3650
 
-    select_clause = ', '.join([f'd.[{item}]' for item in column_map.values()])
+    select_clause = ', '.join(
+        [f'd.[{item}]' for item in column_map.values()]
+    )
 
     full_query = f"""
     WITH subset AS ({subset_query})

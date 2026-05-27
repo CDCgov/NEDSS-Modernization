@@ -164,9 +164,12 @@ class TestIntegrationNbsSrDupInvLibrary:
     def test_execute_report_empty_subset(self):
         """Test handling of empty result set."""
         # Take the base subset_query and add WHERE 1=0 to force empty results
-        empty_subset_query = f'{self.subset_query} WHERE 1 = 0'
-
-        report_spec = self.create_spec(days_value=365, subset_query=empty_subset_query)
+        empty_subset_query = f"{self.subset_query} WHERE 1 = 0"
+        
+        report_spec = self.create_spec(
+            days_value=365,
+            subset_query=empty_subset_query
+        )
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
@@ -199,21 +202,19 @@ class TestIntegrationNbsSrDupInvLibrary:
             assert count >= 2, f'Patient/disease pair appears only {count} times'
 
     def test_execute_report_missing_column_error(self):
-        """Verify that an error is raised if required columns are missing from
-        column_map.
-        """
+        """Verify that an error is raised if required columns are missing from column_map."""
         report_spec = self.create_spec(
             days_value=365,
             column_map={
                 'EVENT_DATE': 'Event Date',
                 'PATIENT_LOCAL_ID': 'Patient Local Id',
                 # Missing DISEASE_CD
-            },
+            }
         )
 
         with pytest.raises(MissingColumnError) as exc_info:
             execute_report(report_spec)
-
+        
         # Verify the error contains the missing column
         assert 'DISEASE_CD' in str(exc_info.value)
 
