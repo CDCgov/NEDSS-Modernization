@@ -36,7 +36,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_ID': 'Investigation Id'
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
                 }
             }
         )
@@ -68,7 +68,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_ID': 'Investigation Id'
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
                 }
             }
         )
@@ -98,7 +98,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_ID': 'Investigation Id'
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
                 }
             }
         )
@@ -122,7 +122,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_ID': 'Investigation Id'
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
                 }
             }
         )
@@ -149,7 +149,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_ID': 'Investigation Id'
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
                 }
             }
         )
@@ -179,7 +179,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_ID': 'Investigation Id'
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
                 }
             }
         )
@@ -204,7 +204,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_ID': 'Investigation Id'
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
                 }
             }
         )
@@ -230,7 +230,7 @@ class TestIntegrationNbsSrDupInvLibrary:
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_ID': 'Investigation Id'
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
                 }
             }
         )
@@ -238,8 +238,8 @@ class TestIntegrationNbsSrDupInvLibrary:
         result = execute_report(report_spec)
 
         # Count occurrences per patient/disease pair
-        patient_ids = result.content.get_column('PATIENT_LOCAL_ID')
-        disease_cds = result.content.get_column('DISEASE_CD')
+        patient_ids = result.content.get_column('Patient Local Id')
+        disease_cds = result.content.get_column('Disease Code')
 
         pairs = list(zip(patient_ids, disease_cds, strict=False))
         counts = Counter(pairs)
@@ -263,16 +263,15 @@ class TestIntegrationNbsSrDupInvLibrary:
                     SELECT EVENT_DATE as [Event Date],
                     PATIENT_LOCAL_ID as [Patient Local Id],
                     DISEASE_CD as [Disease Code],
-                    INVESTIGATION_ID as [Investigation Id]
+                    INVESTIGATION_LOCAL_ID as [Investigation Id]
                     FROM [RDB].[dbo].[INV_SUMM_DATAMART]
-                    ORDER BY DISEASE_CD
                     ''',
                 'days_value': 3650,
                 'column_map': {
                     'EVENT_DATE': 'Event Date',
                     'PATIENT_LOCAL_ID': 'Patient Local Id',
                     'DISEASE_CD': 'Disease Code',
-                    'INVESTIGATION_ID': 'Investigation Id'
+                    'INVESTIGATION_LOCAL_ID': 'Investigation Id'
                 }
             }
         )
@@ -280,7 +279,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         result = execute_report(report_spec)
 
         expected_columns = {
-            'PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE', 'INVESTIGATION_ID'
+            'PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE', 'INVESTIGATION_LOCAL_ID'
         }
         result_columns = set(result.content.columns)
 

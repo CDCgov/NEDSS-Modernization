@@ -15,11 +15,21 @@ def execute(
     Identifies potential duplicate investigations for the same patient,
     with the same disease, within a user-specified number of days.
     """
+    assert all(
+        x in column_map.keys() for x in [
+            'PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE'
+        ]), (
+        "Required columns are missing from column_map"
+    )
     # Only use default if days_value is None (not provided)
     # If days_value is 0, treat it as 0 (not default)
     # days_value = kwargs.get('days_value')
     if days_value is None:
         days_value = 3650
+
+    select_clause = ', '.join([
+        f'd.{key} AS [{item}]' for key, item in column_map.items()
+    ])
 
     full_query = f"""
     WITH subset AS ({subset_query})
@@ -70,7 +80,7 @@ def execute(
         GROUP BY PATIENT_LOCAL_ID, DISEASE_CD
     )
     -- Final selection of potential duplicates based on days thresholds
-    SELECT {', '.join(key + ' AS ' + '[' + item + ']' for key, item in column_map.items())}
+    SELECT {select_clause}
     FROM datediff_calc d
     JOIN event_counts c 
         ON d.PATIENT_LOCAL_ID = c.PATIENT_LOCAL_ID
