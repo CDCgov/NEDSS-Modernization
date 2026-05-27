@@ -18,19 +18,4 @@ public class FilterTypeMapper {
         filterCode.getFilterType(),
         filterCode.getFilterName());
   }
-
-  public static FilterCode toFilterCode(FilterType filterType) {
-    LocalDateTime now = LocalDateTime.now();
-
-    return FilterCode.builder()
-        .id(filterType.id())
-        .codeTable(filterType.codeTable())
-        .descTxt(filterType.descTxt())
-        .code(filterType.code())
-        .filterCodeSetName(filterType.codeSetName())
-        .filterType(filterType.type())
-        .filterName(filterType.name())
-        .status(new Status('A', now))
-        .build();
-  }
 }

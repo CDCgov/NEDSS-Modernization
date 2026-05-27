@@ -25,13 +25,13 @@ public class ReportFilterBuilder {
 
     DataSourceColumn dataSourceColumn = null;
     if (filter.columnUid() != null) {
-        dataSourceColumn =
-                dataSourceColumnRepository
-                        .findById(filter.columnUid())
-                        .orElseThrow(
-                                () ->
-                                        new IllegalArgumentException(
-                                                "Data source column not found for UID: " + filter.columnUid()));
+      dataSourceColumn =
+          dataSourceColumnRepository
+              .findById(filter.columnUid())
+              .orElseThrow(
+                  () ->
+                      new IllegalArgumentException(
+                          "Data source column not found for UID: " + filter.columnUid()));
     }
 
     FilterCode filterCode =
