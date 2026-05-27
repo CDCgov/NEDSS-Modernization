@@ -4,7 +4,7 @@ import { MultiSelect } from 'design-system/select';
 import { useCountyOptions, useStateOptions } from 'options/location';
 import { useConditionOptions } from 'options/condition';
 import { useConceptOptions } from 'options/concepts';
-import { useStdHivWorkerNameOptions } from 'options/person/names';
+import { useStdHivWorkerNameOptions } from 'options/person';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useEffect } from 'react';
 import { useCurrentState } from './useCurrentState';

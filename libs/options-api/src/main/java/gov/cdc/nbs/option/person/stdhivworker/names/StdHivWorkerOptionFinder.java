@@ -13,7 +13,7 @@ public class StdHivWorkerOptionFinder extends SQLBasedOptionFinder {
       SELECT DISTINCT
           root_extension_txt AS [key],
           CONCAT(first_nm, ' ', last_nm) AS [value],
-          0 AS [order],
+          0 AS [order]
         FROM
           dbo.person_name pn, dbo.entity_id ei, dbo.auth_user au, dbo.auth_user_role aur
         WHERE
@@ -29,9 +29,9 @@ public class StdHivWorkerOptionFinder extends SQLBasedOptionFinder {
             WHERE config_key IN ('HIV_PROGRAM_AREAS', 'STD_PROGRAM_AREAS')
           )
       )
-      SELECT [key], [value], ROW_NUMBER() OVER(ORDER BY [key]) AS [order_clause]
+      SELECT [key], [value], [order]
       FROM std_hiv_workers
-      GROUP BY [key], [value];
+      ORDER BY [value];
       """;
 
   StdHivWorkerOptionFinder(final JdbcTemplate template) {

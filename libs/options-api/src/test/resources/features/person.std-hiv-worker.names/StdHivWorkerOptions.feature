@@ -11,3 +11,4 @@ Feature: STD HIV Worker Options REST API
     And the option named "DIS LocalUser" is included
     And the option named "PKS PKS" is included
     And the option named "Supervisor StateUser" is included
+    And the option named "Superuser Superuser" is not included
