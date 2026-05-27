@@ -23,13 +23,16 @@ public class ReportFilterBuilder {
     Character statusCd = 'A';
     LocalDateTime now = LocalDateTime.now();
 
-    DataSourceColumn dataSourceColumn =
-        dataSourceColumnRepository
-            .findById(filter.columnUid())
-            .orElseThrow(
-                () ->
-                    new IllegalArgumentException(
-                        "Data source column not found for UID: " + filter.columnUid()));
+    DataSourceColumn dataSourceColumn = null;
+    if (filter.columnUid() != null) {
+        dataSourceColumn =
+                dataSourceColumnRepository
+                        .findById(filter.columnUid())
+                        .orElseThrow(
+                                () ->
+                                        new IllegalArgumentException(
+                                                "Data source column not found for UID: " + filter.columnUid()));
+    }
 
     FilterCode filterCode =
         filterCodeRepository

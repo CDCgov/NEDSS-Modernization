@@ -26,7 +26,7 @@ public class ReportMapper {
     if (existingReportId != null) {
       builder = builder.id(existingReportId);
     }
-
+    
     return builder
         .dataSource(dataSource)
         .addTime(now)
