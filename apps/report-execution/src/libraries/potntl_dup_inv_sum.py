@@ -88,7 +88,7 @@ def execute(
     FROM datediff_calc d
     JOIN event_counts c 
         ON d.[{column_map['PATIENT_LOCAL_ID']}] = c.[{column_map['PATIENT_LOCAL_ID']}]
-        AND d.[{column_map['DISEASE_CD']}] = c.[{column_map['DISEASE_CD']}]]
+        AND d.[{column_map['DISEASE_CD']}] = c.[{column_map['DISEASE_CD']}]
     WHERE c.event_count > 1
     AND (
         (d.days_since_prev IS NOT NULL AND d.days_since_prev <= {days_value})

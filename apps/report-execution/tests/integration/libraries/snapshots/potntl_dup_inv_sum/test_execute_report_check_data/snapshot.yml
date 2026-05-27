@@ -1,618 +1,638 @@
 - !!python/tuple
-  - 2012-03-23 00:00:00
-  - PSN_DUP_10_GA01
-  - '10274'
-  - CAS36369633GA01
-- !!python/tuple
-  - 2013-03-08 00:00:00
-  - PSN_DUP_10_GA01
-  - '10274'
-  - CAS18487605GA01
-- !!python/tuple
-  - 2015-01-31 00:00:00
-  - PSN_DUP_10_GA01
-  - '10274'
-  - CAS71753160GA01
-- !!python/tuple
-  - 2020-06-25 00:00:00
-  - PSN_DUP_10_GA01
-  - '10274'
-  - CAS81202356GA01
-- !!python/tuple
-  - 2010-11-19 00:00:00
-  - PSN_DUP_10_GA01
-  - '10311'
-  - CAS68137264GA01
-- !!python/tuple
-  - 2012-10-02 00:00:00
-  - PSN_DUP_10_GA01
-  - '10311'
-  - CAS87337818GA01
-- !!python/tuple
-  - 2014-08-12 00:00:00
-  - PSN_DUP_10_GA01
-  - '10311'
-  - CAS92012822GA01
-- !!python/tuple
-  - 2015-03-23 00:00:00
-  - PSN_DUP_10_GA01
-  - '10311'
-  - CAS98837400GA01
-- !!python/tuple
-  - 2019-03-19 00:00:00
-  - PSN_DUP_10_GA01
-  - '10311'
-  - null
-- !!python/tuple
-  - 2010-02-19 00:00:00
-  - PSN_DUP_10_GA01
-  - '11065'
-  - CAS43046464GA01
-- !!python/tuple
-  - 2013-01-01 00:00:00
-  - PSN_DUP_10_GA01
-  - '11065'
-  - CAS61028283GA01
-- !!python/tuple
-  - 2013-12-07 00:00:00
-  - PSN_DUP_10_GA01
-  - '900'
-  - CAS82905845GA01
-- !!python/tuple
-  - 2017-01-13 00:00:00
-  - PSN_DUP_10_GA01
-  - '900'
-  - CAS17299874GA01
-- !!python/tuple
-  - 2017-05-18 00:00:00
-  - PSN_DUP_10_GA01
-  - '900'
-  - CAS61543890GA01
-- !!python/tuple
-  - 2011-06-12 00:00:00
-  - PSN_DUP_1_GA01
-  - '10274'
-  - CAS83569939GA01
-- !!python/tuple
-  - 2011-06-26 00:00:00
-  - PSN_DUP_1_GA01
-  - '10274'
-  - CAS80159631GA01
-- !!python/tuple
-  - 2021-09-05 00:00:00
-  - PSN_DUP_1_GA01
-  - '10274'
-  - CAS50785405GA01
-- !!python/tuple
-  - 2022-01-01 00:00:00
-  - PSN_DUP_1_GA01
-  - '10274'
-  - CAS94676162GA01
-- !!python/tuple
-  - 2012-05-09 00:00:00
-  - PSN_DUP_1_GA01
-  - '10280'
-  - CAS40838737GA01
-- !!python/tuple
-  - 2016-03-15 00:00:00
-  - PSN_DUP_1_GA01
-  - '10280'
-  - CAS40742311GA01
-- !!python/tuple
-  - 2012-01-20 00:00:00
-  - PSN_DUP_1_GA01
-  - '10311'
-  - CAS23234748GA01
-- !!python/tuple
-  - 2015-05-24 00:00:00
-  - PSN_DUP_1_GA01
-  - '10311'
-  - CAS33318633GA01
-- !!python/tuple
-  - 2019-10-01 00:00:00
-  - PSN_DUP_1_GA01
-  - '900'
-  - CAS42823140GA01
-- !!python/tuple
-  - 2020-07-27 00:00:00
-  - PSN_DUP_1_GA01
-  - '900'
-  - CAS63415303GA01
-- !!python/tuple
-  - 2021-01-04 00:00:00
-  - PSN_DUP_1_GA01
-  - '900'
-  - CAS63811222GA01
-- !!python/tuple
-  - 2022-06-20 00:00:00
-  - PSN_DUP_1_GA01
-  - '900'
-  - CAS69239219GA01
-- !!python/tuple
-  - 2010-06-27 00:00:00
-  - PSN_DUP_2_GA01
-  - '10110'
-  - CAS45311610GA01
-- !!python/tuple
-  - 2014-05-13 00:00:00
-  - PSN_DUP_2_GA01
-  - '10110'
-  - CAS46521025GA01
-- !!python/tuple
-  - 2020-04-25 00:00:00
-  - PSN_DUP_2_GA01
-  - '10110'
-  - CAS73920651GA01
-- !!python/tuple
-  - 2020-08-17 00:00:00
-  - PSN_DUP_2_GA01
-  - '10110'
-  - CAS80638102GA01
-- !!python/tuple
-  - 2010-05-19 00:00:00
-  - PSN_DUP_2_GA01
-  - '10280'
-  - CAS70672142GA01
-- !!python/tuple
-  - 2011-10-10 00:00:00
-  - PSN_DUP_2_GA01
-  - '10280'
-  - CAS18041391GA01
-- !!python/tuple
-  - 2012-05-21 00:00:00
-  - PSN_DUP_2_GA01
-  - '10280'
-  - CAS61479273GA01
-- !!python/tuple
-  - 2018-03-12 00:00:00
-  - PSN_DUP_2_GA01
-  - '10280'
-  - CAS97742922GA01
-- !!python/tuple
-  - 2020-08-11 00:00:00
-  - PSN_DUP_2_GA01
-  - '10280'
-  - CAS68315400GA01
-- !!python/tuple
-  - 2011-07-22 00:00:00
-  - PSN_DUP_2_GA01
-  - '10311'
-  - CAS97550053GA01
-- !!python/tuple
-  - 2016-03-19 00:00:00
-  - PSN_DUP_2_GA01
-  - '10311'
-  - CAS12550658GA01
-- !!python/tuple
-  - 2016-09-27 00:00:00
-  - PSN_DUP_2_GA01
-  - '10311'
-  - CAS34800912GA01
-- !!python/tuple
-  - 2017-06-18 00:00:00
-  - PSN_DUP_2_GA01
-  - '10311'
-  - CAS88101741GA01
-- !!python/tuple
-  - 2011-04-18 00:00:00
-  - PSN_DUP_2_GA01
-  - '11065'
-  - CAS22775337GA01
-- !!python/tuple
-  - 2013-08-29 00:00:00
-  - PSN_DUP_2_GA01
-  - '11065'
-  - CAS85678734GA01
-- !!python/tuple
-  - 2013-10-30 00:00:00
-  - PSN_DUP_2_GA01
-  - '11065'
-  - CAS82160068GA01
-- !!python/tuple
-  - 2015-08-22 00:00:00
-  - PSN_DUP_2_GA01
-  - '11065'
-  - CAS30636590GA01
-- !!python/tuple
-  - 2015-12-16 00:00:00
-  - PSN_DUP_2_GA01
-  - '11065'
-  - CAS99686372GA01
-- !!python/tuple
-  - 2016-05-05 00:00:00
-  - PSN_DUP_2_GA01
-  - '11065'
-  - CAS75228535GA01
-- !!python/tuple
-  - 2017-05-17 00:00:00
-  - PSN_DUP_2_GA01
-  - '11065'
-  - CAS61343880GA01
-- !!python/tuple
-  - 2023-09-20 00:00:00
-  - PSN_DUP_2_GA01
-  - '11065'
-  - CAS43266810GA01
-- !!python/tuple
-  - 2014-06-04 00:00:00
-  - PSN_DUP_3_GA01
-  - '10110'
-  - CAS69228397GA01
-- !!python/tuple
-  - 2017-11-13 00:00:00
-  - PSN_DUP_3_GA01
-  - '10110'
-  - CAS82292089GA01
-- !!python/tuple
-  - 2011-10-10 00:00:00
-  - PSN_DUP_3_GA01
-  - '10274'
-  - CAS26301180GA01
-- !!python/tuple
-  - 2011-11-02 00:00:00
-  - PSN_DUP_3_GA01
-  - '10274'
-  - CAS89991301GA01
-- !!python/tuple
-  - 2017-10-03 00:00:00
-  - PSN_DUP_3_GA01
-  - '10274'
-  - CAS82199509GA01
-- !!python/tuple
-  - 2018-02-16 00:00:00
-  - PSN_DUP_3_GA01
-  - '10274'
-  - CAS90683906GA01
-- !!python/tuple
   - 2011-01-03 00:00:00
   - PSN_DUP_3_GA01
   - '10280'
   - CAS66722344GA01
-- !!python/tuple
-  - 2012-04-02 00:00:00
-  - PSN_DUP_3_GA01
-  - '10280'
-  - CAS29226889GA01
-- !!python/tuple
-  - 2018-03-26 00:00:00
-  - PSN_DUP_3_GA01
-  - '10280'
-  - CAS30024960GA01
-- !!python/tuple
-  - 2022-07-23 00:00:00
-  - PSN_DUP_3_GA01
-  - '10280'
-  - CAS28082355GA01
-- !!python/tuple
-  - 2022-07-31 00:00:00
-  - PSN_DUP_3_GA01
-  - '10280'
-  - CAS53231088GA01
-- !!python/tuple
-  - 2010-01-12 00:00:00
-  - PSN_DUP_3_GA01
-  - '10311'
-  - CAS47385696GA01
-- !!python/tuple
-  - 2012-06-29 00:00:00
-  - PSN_DUP_3_GA01
-  - '10311'
-  - CAS29891032GA01
-- !!python/tuple
-  - 2012-10-28 00:00:00
-  - PSN_DUP_3_GA01
-  - '10311'
-  - CAS75319770GA01
-- !!python/tuple
-  - 2014-05-31 00:00:00
-  - PSN_DUP_3_GA01
-  - '10311'
-  - CAS28634797GA01
-- !!python/tuple
-  - 2022-05-05 00:00:00
-  - PSN_DUP_3_GA01
-  - '10311'
-  - CAS76481885GA01
-- !!python/tuple
-  - 2022-08-18 00:00:00
-  - PSN_DUP_3_GA01
-  - '10311'
-  - CAS59099345GA01
-- !!python/tuple
-  - 2022-09-01 00:00:00
-  - PSN_DUP_3_GA01
-  - '10311'
-  - CAS91270313GA01
-- !!python/tuple
-  - 2023-09-18 00:00:00
-  - PSN_DUP_3_GA01
-  - '10311'
-  - CAS34272734GA01
-- !!python/tuple
-  - 2012-08-30 00:00:00
-  - PSN_DUP_3_GA01
-  - '11065'
-  - CAS71363812GA01
-- !!python/tuple
-  - 2015-03-04 00:00:00
-  - PSN_DUP_3_GA01
-  - '11065'
-  - CAS99170406GA01
-- !!python/tuple
-  - 2022-06-12 00:00:00
-  - PSN_DUP_4_GA01
-  - '10110'
-  - CAS93955206GA01
-- !!python/tuple
-  - 2022-08-11 00:00:00
-  - PSN_DUP_4_GA01
-  - '10110'
-  - CAS57685330GA01
-- !!python/tuple
-  - 2013-02-06 00:00:00
-  - PSN_DUP_4_GA01
-  - '10274'
-  - CAS40158366GA01
 - !!python/tuple
   - 2013-03-07 00:00:00
   - PSN_DUP_4_GA01
   - '10274'
   - CAS23556182GA01
 - !!python/tuple
-  - 2023-01-27 00:00:00
-  - PSN_DUP_4_GA01
-  - '10274'
-  - CAS58884978GA01
-- !!python/tuple
-  - 2016-01-17 00:00:00
-  - PSN_DUP_4_GA01
+  - 2016-03-15 00:00:00
+  - PSN_DUP_1_GA01
   - '10280'
-  - CAS93774355GA01
-- !!python/tuple
-  - 2016-06-07 00:00:00
-  - PSN_DUP_4_GA01
-  - '10280'
-  - CAS27610141GA01
+  - CAS40742311GA01
 - !!python/tuple
   - 2019-11-14 00:00:00
   - PSN_DUP_4_GA01
   - '10280'
   - CAS28566572GA01
 - !!python/tuple
-  - 2024-04-24 00:00:00
-  - PSN_DUP_4_GA01
-  - '10280'
-  - CAS52399610GA01
+  - 2013-06-20 00:00:00
+  - PSN_DUP_5_GA01
+  - '10274'
+  - CAS68353204GA01
 - !!python/tuple
-  - 2020-02-04 00:00:00
+  - 2016-05-05 00:00:00
+  - PSN_DUP_2_GA01
+  - '11065'
+  - CAS75228535GA01
+- !!python/tuple
+  - 2013-02-06 00:00:00
   - PSN_DUP_4_GA01
+  - '10274'
+  - CAS40158366GA01
+- !!python/tuple
+  - 2012-10-02 00:00:00
+  - PSN_DUP_10_GA01
   - '10311'
-  - CAS72415804GA01
+  - CAS87337818GA01
 - !!python/tuple
-  - 2022-11-19 00:00:00
-  - PSN_DUP_4_GA01
+  - 2010-01-12 00:00:00
+  - PSN_DUP_3_GA01
   - '10311'
-  - CAS31831387GA01
+  - CAS47385696GA01
 - !!python/tuple
-  - 2010-11-11 00:00:00
-  - PSN_DUP_4_GA01
-  - '11065'
-  - CAS76065552GA01
-- !!python/tuple
-  - 2012-11-20 00:00:00
-  - PSN_DUP_4_GA01
-  - '11065'
-  - CAS16813620GA01
-- !!python/tuple
-  - 2012-12-30 00:00:00
-  - PSN_DUP_4_GA01
-  - '11065'
-  - CAS64932613GA01
-- !!python/tuple
-  - 2020-02-23 00:00:00
-  - PSN_DUP_4_GA01
-  - '11065'
-  - CAS55588495GA01
-- !!python/tuple
-  - 2013-02-22 00:00:00
-  - PSN_DUP_4_GA01
+  - 2018-08-13 00:00:00
+  - PSN_DUP_8_GA01
   - '900'
-  - CAS25145751GA01
+  - CAS48285503GA01
 - !!python/tuple
-  - 2013-08-15 00:00:00
-  - PSN_DUP_4_GA01
-  - '900'
-  - CAS91384718GA01
+  - 2010-02-19 00:00:00
+  - PSN_DUP_10_GA01
+  - '11065'
+  - CAS43046464GA01
 - !!python/tuple
-  - 2014-09-06 00:00:00
-  - PSN_DUP_4_GA01
-  - '900'
-  - CAS23798190GA01
+  - 2013-10-30 00:00:00
+  - PSN_DUP_2_GA01
+  - '11065'
+  - CAS82160068GA01
 - !!python/tuple
   - 2017-11-25 00:00:00
   - PSN_DUP_4_GA01
   - '900'
   - CAS56020613GA01
 - !!python/tuple
-  - 2020-04-02 00:00:00
-  - PSN_DUP_4_GA01
-  - '900'
-  - CAS52352128GA01
-- !!python/tuple
-  - 2023-09-17 00:00:00
-  - PSN_DUP_4_GA01
-  - '900'
-  - CAS56059101GA01
-- !!python/tuple
-  - 2023-09-23 00:00:00
-  - PSN_DUP_4_GA01
-  - '900'
-  - CAS21631697GA01
-- !!python/tuple
-  - 2011-05-16 00:00:00
-  - PSN_DUP_5_GA01
-  - '10110'
-  - CAS90973889GA01
-- !!python/tuple
-  - 2016-01-11 00:00:00
-  - PSN_DUP_5_GA01
-  - '10110'
-  - CAS41428626GA01
+  - 2017-05-17 00:00:00
+  - PSN_DUP_2_GA01
+  - '11065'
+  - CAS61343880GA01
 - !!python/tuple
   - 2016-04-24 00:00:00
   - PSN_DUP_5_GA01
   - '10110'
   - CAS33966966GA01
 - !!python/tuple
-  - 2022-08-23 00:00:00
-  - PSN_DUP_5_GA01
+  - 2023-01-27 00:00:00
+  - PSN_DUP_4_GA01
+  - '10274'
+  - CAS58884978GA01
+- !!python/tuple
+  - 2021-09-05 00:00:00
+  - PSN_DUP_1_GA01
+  - '10274'
+  - CAS50785405GA01
+- !!python/tuple
+  - 2014-08-18 00:00:00
+  - PSN_DUP_9_GA01
+  - '11065'
+  - CAS85017682GA01
+- !!python/tuple
+  - 2020-08-20 00:00:00
+  - PSN_DUP_7_GA01
+  - '900'
+  - CAS30509175GA01
+- !!python/tuple
+  - 2013-10-07 00:00:00
+  - PSN_DUP_8_GA01
   - '10110'
-  - CAS25759274GA01
+  - CAS39450273GA01
 - !!python/tuple
-  - 2013-06-20 00:00:00
-  - PSN_DUP_5_GA01
-  - '10274'
-  - CAS68353204GA01
-- !!python/tuple
-  - 2013-07-12 00:00:00
-  - PSN_DUP_5_GA01
-  - '10274'
-  - CAS38389345GA01
-- !!python/tuple
-  - 2018-04-21 00:00:00
-  - PSN_DUP_5_GA01
-  - '10274'
-  - CAS54039837GA01
-- !!python/tuple
-  - 2020-10-27 00:00:00
-  - PSN_DUP_5_GA01
-  - '10274'
-  - CAS40885967GA01
-- !!python/tuple
-  - 2022-12-25 00:00:00
-  - PSN_DUP_5_GA01
-  - '10274'
-  - CAS28405182GA01
-- !!python/tuple
-  - 2024-05-03 00:00:00
-  - PSN_DUP_5_GA01
-  - '10274'
-  - CAS30456313GA01
-- !!python/tuple
-  - 2019-05-07 00:00:00
-  - PSN_DUP_5_GA01
+  - 2012-03-16 00:00:00
+  - PSN_DUP_7_GA01
   - '10280'
-  - CAS88405961GA01
+  - CAS47346970GA01
 - !!python/tuple
-  - 2023-07-15 00:00:00
-  - PSN_DUP_5_GA01
-  - '10280'
-  - CAS61091554GA01
-- !!python/tuple
-  - 2015-10-20 00:00:00
-  - PSN_DUP_5_GA01
-  - '11065'
-  - CAS26948946GA01
-- !!python/tuple
-  - 2021-01-18 00:00:00
-  - PSN_DUP_5_GA01
-  - '11065'
-  - CAS95828117GA01
-- !!python/tuple
-  - 2024-05-03 00:00:00
-  - PSN_DUP_5_GA01
-  - '11065'
-  - CAS12300840GA01
-- !!python/tuple
-  - 2010-09-15 00:00:00
-  - PSN_DUP_5_GA01
-  - '900'
-  - CAS61559717GA01
-- !!python/tuple
-  - 2010-09-29 00:00:00
-  - PSN_DUP_5_GA01
-  - '900'
-  - CAS89688374GA01
-- !!python/tuple
-  - 2011-06-25 00:00:00
-  - PSN_DUP_6_GA01
-  - '10274'
-  - CAS84227466GA01
-- !!python/tuple
-  - 2015-06-08 00:00:00
-  - PSN_DUP_6_GA01
-  - '10274'
-  - CAS69945655GA01
-- !!python/tuple
-  - 2016-06-13 00:00:00
-  - PSN_DUP_6_GA01
-  - '10274'
-  - CAS20482769GA01
-- !!python/tuple
-  - 2014-09-20 00:00:00
-  - PSN_DUP_6_GA01
-  - '10280'
-  - CAS69085720GA01
-- !!python/tuple
-  - 2019-09-28 00:00:00
-  - PSN_DUP_6_GA01
-  - '10280'
-  - CAS81249799GA01
-- !!python/tuple
-  - 2020-03-04 00:00:00
-  - PSN_DUP_6_GA01
-  - '10280'
-  - CAS23905032GA01
-- !!python/tuple
-  - 2022-07-27 00:00:00
-  - PSN_DUP_6_GA01
-  - '10280'
-  - CAS99269266GA01
-- !!python/tuple
-  - 2011-09-26 00:00:00
-  - PSN_DUP_6_GA01
+  - 2020-02-04 00:00:00
+  - PSN_DUP_4_GA01
   - '10311'
-  - CAS20204415GA01
+  - CAS72415804GA01
+- !!python/tuple
+  - 2023-09-23 00:00:00
+  - PSN_DUP_4_GA01
+  - '900'
+  - CAS21631697GA01
+- !!python/tuple
+  - 2016-07-27 00:00:00
+  - PSN_DUP_9_GA01
+  - '10110'
+  - CAS42255732GA01
+- !!python/tuple
+  - 2020-04-02 00:00:00
+  - PSN_DUP_4_GA01
+  - '900'
+  - CAS52352128GA01
 - !!python/tuple
   - 2016-07-26 00:00:00
   - PSN_DUP_6_GA01
   - '10311'
   - CAS24541967GA01
 - !!python/tuple
+  - 2023-01-21 00:00:00
+  - PSN_DUP_9_GA01
+  - '10280'
+  - CAS66254240GA01
+- !!python/tuple
+  - 2012-12-31 00:00:00
+  - PSN_DUP_7_GA01
+  - '10110'
+  - CAS47028180GA01
+- !!python/tuple
+  - 2011-11-02 00:00:00
+  - PSN_DUP_3_GA01
+  - '10274'
+  - CAS89991301GA01
+- !!python/tuple
+  - 2020-04-25 00:00:00
+  - PSN_DUP_2_GA01
+  - '10110'
+  - CAS73920651GA01
+- !!python/tuple
+  - 2022-07-27 00:00:00
+  - PSN_DUP_6_GA01
+  - '10280'
+  - CAS99269266GA01
+- !!python/tuple
+  - 2020-03-04 00:00:00
+  - PSN_DUP_6_GA01
+  - '10280'
+  - CAS23905032GA01
+- !!python/tuple
+  - 2012-04-02 00:00:00
+  - PSN_DUP_3_GA01
+  - '10280'
+  - CAS29226889GA01
+- !!python/tuple
+  - 2014-05-13 00:00:00
+  - PSN_DUP_2_GA01
+  - '10110'
+  - CAS46521025GA01
+- !!python/tuple
+  - 2018-04-21 00:00:00
+  - PSN_DUP_5_GA01
+  - '10274'
+  - CAS54039837GA01
+- !!python/tuple
+  - 2015-01-31 00:00:00
+  - PSN_DUP_10_GA01
+  - '10274'
+  - CAS71753160GA01
+- !!python/tuple
+  - 2014-09-06 00:00:00
+  - PSN_DUP_4_GA01
+  - '900'
+  - CAS23798190GA01
+- !!python/tuple
+  - 2015-07-27 00:00:00
+  - PSN_DUP_8_GA01
+  - '10110'
+  - CAS19165226GA01
+- !!python/tuple
+  - 2015-04-09 00:00:00
+  - PSN_DUP_8_GA01
+  - '900'
+  - CAS86726461GA01
+- !!python/tuple
+  - 2022-01-01 00:00:00
+  - PSN_DUP_1_GA01
+  - '10274'
+  - CAS94676162GA01
+- !!python/tuple
+  - 2023-09-18 00:00:00
+  - PSN_DUP_3_GA01
+  - '10311'
+  - CAS34272734GA01
+- !!python/tuple
+  - 2012-02-19 00:00:00
+  - PSN_DUP_7_GA01
+  - '11065'
+  - CAS77498993GA01
+- !!python/tuple
+  - 2016-10-16 00:00:00
+  - PSN_DUP_8_GA01
+  - '11065'
+  - CAS56920514GA01
+- !!python/tuple
+  - 2016-03-19 00:00:00
+  - PSN_DUP_2_GA01
+  - '10311'
+  - CAS12550658GA01
+- !!python/tuple
+  - 2015-03-04 00:00:00
+  - PSN_DUP_3_GA01
+  - '11065'
+  - CAS99170406GA01
+- !!python/tuple
+  - 2017-06-18 00:00:00
+  - PSN_DUP_2_GA01
+  - '10311'
+  - CAS88101741GA01
+- !!python/tuple
+  - 2020-07-10 00:00:00
+  - PSN_DUP_9_GA01
+  - '10110'
+  - CAS45798645GA01
+- !!python/tuple
+  - 2021-01-18 00:00:00
+  - PSN_DUP_5_GA01
+  - '11065'
+  - CAS95828117GA01
+- !!python/tuple
   - 2020-01-18 00:00:00
   - PSN_DUP_6_GA01
   - '10311'
   - null
 - !!python/tuple
-  - 2021-03-23 00:00:00
+  - 2010-05-19 00:00:00
+  - PSN_DUP_2_GA01
+  - '10280'
+  - CAS70672142GA01
+- !!python/tuple
+  - 2016-06-13 00:00:00
   - PSN_DUP_6_GA01
+  - '10274'
+  - CAS20482769GA01
+- !!python/tuple
+  - 2015-12-03 00:00:00
+  - PSN_DUP_9_GA01
+  - '10280'
+  - CAS65757342GA01
+- !!python/tuple
+  - 2021-12-02 00:00:00
+  - PSN_DUP_7_GA01
+  - '11065'
+  - CAS60259293GA01
+- !!python/tuple
+  - 2013-02-22 00:00:00
+  - PSN_DUP_4_GA01
+  - '900'
+  - CAS25145751GA01
+- !!python/tuple
+  - 2016-01-11 00:00:00
+  - PSN_DUP_5_GA01
+  - '10110'
+  - CAS41428626GA01
+- !!python/tuple
+  - 2017-10-03 00:00:00
+  - PSN_DUP_3_GA01
+  - '10274'
+  - CAS82199509GA01
+- !!python/tuple
+  - 2020-03-10 00:00:00
+  - PSN_DUP_7_GA01
   - '10311'
-  - CAS79029393GA01
+  - CAS91197624GA01
 - !!python/tuple
-  - 2012-07-22 00:00:00
-  - PSN_DUP_6_GA01
-  - '900'
-  - CAS58999937GA01
+  - 2023-07-15 00:00:00
+  - PSN_DUP_5_GA01
+  - '10280'
+  - CAS61091554GA01
 - !!python/tuple
-  - 2017-02-01 00:00:00
+  - 2024-05-03 00:00:00
+  - PSN_DUP_5_GA01
+  - '10274'
+  - CAS30456313GA01
+- !!python/tuple
+  - 2015-12-16 00:00:00
+  - PSN_DUP_2_GA01
+  - '11065'
+  - CAS99686372GA01
+- !!python/tuple
+  - 2024-05-03 00:00:00
+  - PSN_DUP_5_GA01
+  - '11065'
+  - CAS12300840GA01
+- !!python/tuple
+  - 2018-03-12 00:00:00
+  - PSN_DUP_2_GA01
+  - '10280'
+  - CAS97742922GA01
+- !!python/tuple
+  - 2012-05-09 00:00:00
+  - PSN_DUP_1_GA01
+  - '10280'
+  - CAS40838737GA01
+- !!python/tuple
+  - 2013-12-16 00:00:00
+  - PSN_DUP_9_GA01
+  - '10311'
+  - CAS54524025GA01
+- !!python/tuple
+  - 2011-06-25 00:00:00
   - PSN_DUP_6_GA01
-  - '900'
-  - CAS64920799GA01
+  - '10274'
+  - CAS84227466GA01
+- !!python/tuple
+  - 2018-04-13 00:00:00
+  - PSN_DUP_8_GA01
+  - '10110'
+  - CAS84757265GA01
+- !!python/tuple
+  - 2014-05-31 00:00:00
+  - PSN_DUP_3_GA01
+  - '10311'
+  - CAS28634797GA01
+- !!python/tuple
+  - 2014-09-20 00:00:00
+  - PSN_DUP_6_GA01
+  - '10280'
+  - CAS69085720GA01
+- !!python/tuple
+  - 2013-08-29 00:00:00
+  - PSN_DUP_2_GA01
+  - '11065'
+  - CAS85678734GA01
+- !!python/tuple
+  - 2019-05-13 00:00:00
+  - PSN_DUP_7_GA01
+  - '10311'
+  - CAS19927432GA01
+- !!python/tuple
+  - 2012-01-20 00:00:00
+  - PSN_DUP_1_GA01
+  - '10311'
+  - CAS23234748GA01
 - !!python/tuple
   - 2018-08-20 00:00:00
   - PSN_DUP_6_GA01
   - '900'
   - CAS90124068GA01
 - !!python/tuple
+  - 2012-10-28 00:00:00
+  - PSN_DUP_3_GA01
+  - '10311'
+  - CAS75319770GA01
+- !!python/tuple
+  - 2021-03-22 00:00:00
+  - PSN_DUP_8_GA01
+  - '900'
+  - CAS64913082GA01
+- !!python/tuple
+  - 2022-06-20 00:00:00
+  - PSN_DUP_1_GA01
+  - '900'
+  - CAS69239219GA01
+- !!python/tuple
+  - 2022-07-31 00:00:00
+  - PSN_DUP_3_GA01
+  - '10280'
+  - CAS53231088GA01
+- !!python/tuple
   - 2021-05-08 00:00:00
   - PSN_DUP_6_GA01
   - '900'
   - CAS18500100GA01
 - !!python/tuple
-  - 2012-12-31 00:00:00
-  - PSN_DUP_7_GA01
+  - 2014-06-04 00:00:00
+  - PSN_DUP_3_GA01
   - '10110'
-  - CAS47028180GA01
+  - CAS69228397GA01
+- !!python/tuple
+  - 2011-04-18 00:00:00
+  - PSN_DUP_2_GA01
+  - '11065'
+  - CAS22775337GA01
+- !!python/tuple
+  - 2022-12-25 00:00:00
+  - PSN_DUP_5_GA01
+  - '10274'
+  - CAS28405182GA01
+- !!python/tuple
+  - 2017-05-18 00:00:00
+  - PSN_DUP_10_GA01
+  - '900'
+  - CAS61543890GA01
+- !!python/tuple
+  - 2020-07-27 00:00:00
+  - PSN_DUP_1_GA01
+  - '900'
+  - CAS63415303GA01
+- !!python/tuple
+  - 2020-08-11 00:00:00
+  - PSN_DUP_2_GA01
+  - '10280'
+  - CAS68315400GA01
+- !!python/tuple
+  - 2011-09-02 00:00:00
+  - PSN_DUP_7_GA01
+  - '10280'
+  - CAS46504617GA01
+- !!python/tuple
+  - 2019-10-01 00:00:00
+  - PSN_DUP_1_GA01
+  - '900'
+  - CAS42823140GA01
+- !!python/tuple
+  - 2021-01-04 00:00:00
+  - PSN_DUP_1_GA01
+  - '900'
+  - CAS63811222GA01
+- !!python/tuple
+  - 2011-05-07 00:00:00
+  - PSN_DUP_7_GA01
+  - '11065'
+  - CAS13209180GA01
+- !!python/tuple
+  - 2013-11-02 00:00:00
+  - PSN_DUP_7_GA01
+  - '900'
+  - CAS53788744GA01
+- !!python/tuple
+  - 2011-05-16 00:00:00
+  - PSN_DUP_5_GA01
+  - '10110'
+  - CAS90973889GA01
+- !!python/tuple
+  - 2015-10-20 00:00:00
+  - PSN_DUP_5_GA01
+  - '11065'
+  - CAS26948946GA01
+- !!python/tuple
+  - 2018-03-26 00:00:00
+  - PSN_DUP_3_GA01
+  - '10280'
+  - CAS30024960GA01
+- !!python/tuple
+  - 2022-06-12 00:00:00
+  - PSN_DUP_4_GA01
+  - '10110'
+  - CAS93955206GA01
+- !!python/tuple
+  - 2024-06-07 00:00:00
+  - PSN_DUP_9_GA01
+  - '10311'
+  - CAS82475098GA01
+- !!python/tuple
+  - 2015-11-28 00:00:00
+  - PSN_DUP_8_GA01
+  - '11065'
+  - CAS65465150GA01
+- !!python/tuple
+  - 2016-11-06 00:00:00
+  - PSN_DUP_9_GA01
+  - '10110'
+  - CAS45859307GA01
+- !!python/tuple
+  - 2022-05-05 00:00:00
+  - PSN_DUP_3_GA01
+  - '10311'
+  - CAS76481885GA01
+- !!python/tuple
+  - 2018-03-12 00:00:00
+  - PSN_DUP_8_GA01
+  - '10311'
+  - CAS82613940GA01
+- !!python/tuple
+  - 2019-04-02 00:00:00
+  - PSN_DUP_7_GA01
+  - '10311'
+  - CAS93176117GA01
+- !!python/tuple
+  - 2020-10-27 00:00:00
+  - PSN_DUP_5_GA01
+  - '10274'
+  - CAS40885967GA01
+- !!python/tuple
+  - 2019-09-28 00:00:00
+  - PSN_DUP_6_GA01
+  - '10280'
+  - CAS81249799GA01
+- !!python/tuple
+  - 2017-04-11 00:00:00
+  - PSN_DUP_9_GA01
+  - '10280'
+  - CAS17437386GA01
+- !!python/tuple
+  - 2011-10-10 00:00:00
+  - PSN_DUP_2_GA01
+  - '10280'
+  - CAS18041391GA01
+- !!python/tuple
+  - 2010-09-15 00:00:00
+  - PSN_DUP_5_GA01
+  - '900'
+  - CAS61559717GA01
+- !!python/tuple
+  - 2016-07-09 00:00:00
+  - PSN_DUP_8_GA01
+  - '10311'
+  - CAS48352498GA01
+- !!python/tuple
+  - 2014-08-12 00:00:00
+  - PSN_DUP_10_GA01
+  - '10311'
+  - CAS92012822GA01
+- !!python/tuple
+  - 2010-09-29 00:00:00
+  - PSN_DUP_5_GA01
+  - '900'
+  - CAS89688374GA01
+- !!python/tuple
+  - 2013-01-01 00:00:00
+  - PSN_DUP_10_GA01
+  - '11065'
+  - CAS61028283GA01
+- !!python/tuple
+  - 2014-08-04 00:00:00
+  - PSN_DUP_9_GA01
+  - '10280'
+  - CAS60576565GA01
+- !!python/tuple
+  - 2013-12-07 00:00:00
+  - PSN_DUP_10_GA01
+  - '900'
+  - CAS82905845GA01
+- !!python/tuple
+  - 2012-11-20 00:00:00
+  - PSN_DUP_4_GA01
+  - '11065'
+  - CAS16813620GA01
+- !!python/tuple
+  - 2011-07-22 00:00:00
+  - PSN_DUP_2_GA01
+  - '10311'
+  - CAS97550053GA01
+- !!python/tuple
+  - 2017-06-17 00:00:00
+  - PSN_DUP_9_GA01
+  - '10311'
+  - CAS80372842GA01
+- !!python/tuple
+  - 2016-09-27 00:00:00
+  - PSN_DUP_2_GA01
+  - '10311'
+  - CAS34800912GA01
+- !!python/tuple
+  - 2022-08-23 00:00:00
+  - PSN_DUP_5_GA01
+  - '10110'
+  - CAS25759274GA01
+- !!python/tuple
+  - 2015-05-24 00:00:00
+  - PSN_DUP_1_GA01
+  - '10311'
+  - CAS33318633GA01
+- !!python/tuple
+  - 2018-02-16 00:00:00
+  - PSN_DUP_3_GA01
+  - '10274'
+  - CAS90683906GA01
+- !!python/tuple
+  - 2023-09-17 00:00:00
+  - PSN_DUP_4_GA01
+  - '900'
+  - CAS56059101GA01
+- !!python/tuple
+  - 2022-08-11 00:00:00
+  - PSN_DUP_4_GA01
+  - '10110'
+  - CAS57685330GA01
+- !!python/tuple
+  - 2017-02-01 00:00:00
+  - PSN_DUP_6_GA01
+  - '900'
+  - CAS64920799GA01
+- !!python/tuple
+  - 2013-04-11 00:00:00
+  - PSN_DUP_7_GA01
+  - '10311'
+  - CAS64142556GA01
+- !!python/tuple
+  - 2012-05-21 00:00:00
+  - PSN_DUP_2_GA01
+  - '10280'
+  - CAS61479273GA01
+- !!python/tuple
+  - 2016-06-07 00:00:00
+  - PSN_DUP_4_GA01
+  - '10280'
+  - CAS27610141GA01
+- !!python/tuple
+  - 2011-06-12 00:00:00
+  - PSN_DUP_1_GA01
+  - '10274'
+  - CAS83569939GA01
+- !!python/tuple
+  - 2022-06-28 00:00:00
+  - PSN_DUP_8_GA01
+  - '10110'
+  - CAS66604960GA01
+- !!python/tuple
+  - 2013-08-07 00:00:00
+  - PSN_DUP_7_GA01
+  - '10280'
+  - CAS69148126GA01
+- !!python/tuple
+  - 2017-12-21 00:00:00
+  - PSN_DUP_7_GA01
+  - '900'
+  - CAS29952062GA01
+- !!python/tuple
+  - 2016-08-09 00:00:00
+  - PSN_DUP_8_GA01
+  - '10280'
+  - CAS69618021GA01
 - !!python/tuple
   - 2020-01-07 00:00:00
   - PSN_DUP_7_GA01
@@ -624,242 +644,222 @@
   - '10110'
   - CAS98251083GA01
 - !!python/tuple
-  - 2011-09-02 00:00:00
-  - PSN_DUP_7_GA01
+  - 2016-01-17 00:00:00
+  - PSN_DUP_4_GA01
   - '10280'
-  - CAS46504617GA01
+  - CAS93774355GA01
 - !!python/tuple
-  - 2012-03-16 00:00:00
-  - PSN_DUP_7_GA01
-  - '10280'
-  - CAS47346970GA01
-- !!python/tuple
-  - 2013-08-07 00:00:00
-  - PSN_DUP_7_GA01
-  - '10280'
-  - CAS69148126GA01
-- !!python/tuple
-  - 2013-04-11 00:00:00
-  - PSN_DUP_7_GA01
-  - '10311'
-  - CAS64142556GA01
-- !!python/tuple
-  - 2016-10-30 00:00:00
-  - PSN_DUP_7_GA01
-  - '10311'
-  - CAS28531242GA01
-- !!python/tuple
-  - 2019-04-02 00:00:00
-  - PSN_DUP_7_GA01
-  - '10311'
-  - CAS93176117GA01
-- !!python/tuple
-  - 2019-05-13 00:00:00
-  - PSN_DUP_7_GA01
-  - '10311'
-  - CAS19927432GA01
-- !!python/tuple
-  - 2020-03-10 00:00:00
-  - PSN_DUP_7_GA01
-  - '10311'
-  - CAS91197624GA01
-- !!python/tuple
-  - 2011-05-07 00:00:00
-  - PSN_DUP_7_GA01
-  - '11065'
-  - CAS13209180GA01
-- !!python/tuple
-  - 2012-02-19 00:00:00
-  - PSN_DUP_7_GA01
-  - '11065'
-  - CAS77498993GA01
-- !!python/tuple
-  - 2017-07-27 00:00:00
-  - PSN_DUP_7_GA01
-  - '11065'
-  - CAS90643207GA01
-- !!python/tuple
-  - 2019-01-08 00:00:00
-  - PSN_DUP_7_GA01
-  - '11065'
-  - CAS20518444GA01
-- !!python/tuple
-  - 2021-12-02 00:00:00
-  - PSN_DUP_7_GA01
-  - '11065'
-  - CAS60259293GA01
-- !!python/tuple
-  - 2013-11-02 00:00:00
-  - PSN_DUP_7_GA01
-  - '900'
-  - CAS53788744GA01
-- !!python/tuple
-  - 2017-12-21 00:00:00
-  - PSN_DUP_7_GA01
-  - '900'
-  - CAS29952062GA01
-- !!python/tuple
-  - 2020-08-20 00:00:00
-  - PSN_DUP_7_GA01
-  - '900'
-  - CAS30509175GA01
-- !!python/tuple
-  - 2024-01-28 00:00:00
-  - PSN_DUP_7_GA01
-  - '900'
-  - CAS89151743GA01
-- !!python/tuple
-  - 2013-10-07 00:00:00
-  - PSN_DUP_8_GA01
-  - '10110'
-  - CAS39450273GA01
-- !!python/tuple
-  - 2015-07-27 00:00:00
-  - PSN_DUP_8_GA01
-  - '10110'
-  - CAS19165226GA01
-- !!python/tuple
-  - 2018-04-13 00:00:00
-  - PSN_DUP_8_GA01
-  - '10110'
-  - CAS84757265GA01
-- !!python/tuple
-  - 2022-06-28 00:00:00
-  - PSN_DUP_8_GA01
-  - '10110'
-  - CAS66604960GA01
-- !!python/tuple
-  - 2016-08-09 00:00:00
-  - PSN_DUP_8_GA01
-  - '10280'
-  - CAS69618021GA01
-- !!python/tuple
-  - 2018-05-15 00:00:00
-  - PSN_DUP_8_GA01
-  - '10280'
-  - CAS61168696GA01
-- !!python/tuple
-  - 2019-08-31 00:00:00
-  - PSN_DUP_8_GA01
-  - '10280'
-  - CAS25503345GA01
-- !!python/tuple
-  - 2016-07-09 00:00:00
-  - PSN_DUP_8_GA01
-  - '10311'
-  - CAS48352498GA01
-- !!python/tuple
-  - 2018-03-12 00:00:00
-  - PSN_DUP_8_GA01
-  - '10311'
-  - CAS82613940GA01
-- !!python/tuple
-  - 2015-11-28 00:00:00
-  - PSN_DUP_8_GA01
-  - '11065'
-  - CAS65465150GA01
-- !!python/tuple
-  - 2016-10-16 00:00:00
-  - PSN_DUP_8_GA01
-  - '11065'
-  - CAS56920514GA01
-- !!python/tuple
-  - 2019-03-05 00:00:00
-  - PSN_DUP_8_GA01
-  - '11065'
-  - CAS58156722GA01
-- !!python/tuple
-  - 2015-04-09 00:00:00
-  - PSN_DUP_8_GA01
-  - '900'
-  - CAS86726461GA01
-- !!python/tuple
-  - 2018-08-13 00:00:00
-  - PSN_DUP_8_GA01
-  - '900'
-  - CAS48285503GA01
-- !!python/tuple
-  - 2021-03-22 00:00:00
-  - PSN_DUP_8_GA01
-  - '900'
-  - CAS64913082GA01
-- !!python/tuple
-  - 2016-07-27 00:00:00
-  - PSN_DUP_9_GA01
-  - '10110'
-  - CAS42255732GA01
-- !!python/tuple
-  - 2016-11-06 00:00:00
-  - PSN_DUP_9_GA01
-  - '10110'
-  - CAS45859307GA01
-- !!python/tuple
-  - 2020-07-10 00:00:00
-  - PSN_DUP_9_GA01
-  - '10110'
-  - CAS45798645GA01
-- !!python/tuple
-  - 2014-08-04 00:00:00
-  - PSN_DUP_9_GA01
-  - '10280'
-  - CAS60576565GA01
-- !!python/tuple
-  - 2015-12-03 00:00:00
-  - PSN_DUP_9_GA01
-  - '10280'
-  - CAS65757342GA01
-- !!python/tuple
-  - 2017-04-11 00:00:00
-  - PSN_DUP_9_GA01
-  - '10280'
-  - CAS17437386GA01
+  - 2011-06-26 00:00:00
+  - PSN_DUP_1_GA01
+  - '10274'
+  - CAS80159631GA01
 - !!python/tuple
   - 2020-04-10 00:00:00
   - PSN_DUP_9_GA01
   - '10280'
   - CAS62195484GA01
 - !!python/tuple
-  - 2023-01-21 00:00:00
-  - PSN_DUP_9_GA01
-  - '10280'
-  - CAS66254240GA01
+  - 2012-03-23 00:00:00
+  - PSN_DUP_10_GA01
+  - '10274'
+  - CAS36369633GA01
 - !!python/tuple
-  - 2013-12-16 00:00:00
-  - PSN_DUP_9_GA01
+  - 2015-03-23 00:00:00
+  - PSN_DUP_10_GA01
   - '10311'
-  - CAS54524025GA01
+  - CAS98837400GA01
 - !!python/tuple
-  - 2017-06-17 00:00:00
-  - PSN_DUP_9_GA01
-  - '10311'
-  - CAS80372842GA01
+  - 2020-06-25 00:00:00
+  - PSN_DUP_10_GA01
+  - '10274'
+  - CAS81202356GA01
 - !!python/tuple
-  - 2017-08-31 00:00:00
-  - PSN_DUP_9_GA01
+  - 2021-03-23 00:00:00
+  - PSN_DUP_6_GA01
   - '10311'
-  - CAS43440045GA01
+  - CAS79029393GA01
 - !!python/tuple
-  - 2018-01-27 00:00:00
-  - PSN_DUP_9_GA01
-  - '10311'
-  - CAS81669929GA01
+  - 2015-08-22 00:00:00
+  - PSN_DUP_2_GA01
+  - '11065'
+  - CAS30636590GA01
 - !!python/tuple
-  - 2024-06-07 00:00:00
-  - PSN_DUP_9_GA01
-  - '10311'
-  - CAS82475098GA01
+  - 2013-03-08 00:00:00
+  - PSN_DUP_10_GA01
+  - '10274'
+  - CAS18487605GA01
 - !!python/tuple
   - 2012-08-30 00:00:00
   - PSN_DUP_9_GA01
   - '11065'
   - CAS49591339GA01
 - !!python/tuple
-  - 2014-08-18 00:00:00
-  - PSN_DUP_9_GA01
+  - 2017-01-13 00:00:00
+  - PSN_DUP_10_GA01
+  - '900'
+  - CAS17299874GA01
+- !!python/tuple
+  - 2019-05-07 00:00:00
+  - PSN_DUP_5_GA01
+  - '10280'
+  - CAS88405961GA01
+- !!python/tuple
+  - 2017-11-13 00:00:00
+  - PSN_DUP_3_GA01
+  - '10110'
+  - CAS82292089GA01
+- !!python/tuple
+  - 2022-08-18 00:00:00
+  - PSN_DUP_3_GA01
+  - '10311'
+  - CAS59099345GA01
+- !!python/tuple
+  - 2019-03-05 00:00:00
+  - PSN_DUP_8_GA01
   - '11065'
-  - CAS85017682GA01
+  - CAS58156722GA01
 - !!python/tuple
   - 2022-10-09 00:00:00
   - PSN_DUP_9_GA01
   - '11065'
   - CAS86525600GA01
+- !!python/tuple
+  - 2013-07-12 00:00:00
+  - PSN_DUP_5_GA01
+  - '10274'
+  - CAS38389345GA01
+- !!python/tuple
+  - 2022-07-23 00:00:00
+  - PSN_DUP_3_GA01
+  - '10280'
+  - CAS28082355GA01
+- !!python/tuple
+  - 2017-07-27 00:00:00
+  - PSN_DUP_7_GA01
+  - '11065'
+  - CAS90643207GA01
+- !!python/tuple
+  - 2022-09-01 00:00:00
+  - PSN_DUP_3_GA01
+  - '10311'
+  - CAS91270313GA01
+- !!python/tuple
+  - 2018-05-15 00:00:00
+  - PSN_DUP_8_GA01
+  - '10280'
+  - CAS61168696GA01
+- !!python/tuple
+  - 2024-04-24 00:00:00
+  - PSN_DUP_4_GA01
+  - '10280'
+  - CAS52399610GA01
+- !!python/tuple
+  - 2016-10-30 00:00:00
+  - PSN_DUP_7_GA01
+  - '10311'
+  - CAS28531242GA01
+- !!python/tuple
+  - 2010-06-27 00:00:00
+  - PSN_DUP_2_GA01
+  - '10110'
+  - CAS45311610GA01
+- !!python/tuple
+  - 2013-08-15 00:00:00
+  - PSN_DUP_4_GA01
+  - '900'
+  - CAS91384718GA01
+- !!python/tuple
+  - 2020-02-23 00:00:00
+  - PSN_DUP_4_GA01
+  - '11065'
+  - CAS55588495GA01
+- !!python/tuple
+  - 2011-09-26 00:00:00
+  - PSN_DUP_6_GA01
+  - '10311'
+  - CAS20204415GA01
+- !!python/tuple
+  - 2012-08-30 00:00:00
+  - PSN_DUP_3_GA01
+  - '11065'
+  - CAS71363812GA01
+- !!python/tuple
+  - 2012-07-22 00:00:00
+  - PSN_DUP_6_GA01
+  - '900'
+  - CAS58999937GA01
+- !!python/tuple
+  - 2018-01-27 00:00:00
+  - PSN_DUP_9_GA01
+  - '10311'
+  - CAS81669929GA01
+- !!python/tuple
+  - 2011-10-10 00:00:00
+  - PSN_DUP_3_GA01
+  - '10274'
+  - CAS26301180GA01
+- !!python/tuple
+  - 2010-11-19 00:00:00
+  - PSN_DUP_10_GA01
+  - '10311'
+  - CAS68137264GA01
+- !!python/tuple
+  - 2017-08-31 00:00:00
+  - PSN_DUP_9_GA01
+  - '10311'
+  - CAS43440045GA01
+- !!python/tuple
+  - 2023-09-20 00:00:00
+  - PSN_DUP_2_GA01
+  - '11065'
+  - CAS43266810GA01
+- !!python/tuple
+  - 2010-11-11 00:00:00
+  - PSN_DUP_4_GA01
+  - '11065'
+  - CAS76065552GA01
+- !!python/tuple
+  - 2020-08-17 00:00:00
+  - PSN_DUP_2_GA01
+  - '10110'
+  - CAS80638102GA01
+- !!python/tuple
+  - 2019-03-19 00:00:00
+  - PSN_DUP_10_GA01
+  - '10311'
+  - null
+- !!python/tuple
+  - 2015-06-08 00:00:00
+  - PSN_DUP_6_GA01
+  - '10274'
+  - CAS69945655GA01
+- !!python/tuple
+  - 2022-11-19 00:00:00
+  - PSN_DUP_4_GA01
+  - '10311'
+  - CAS31831387GA01
+- !!python/tuple
+  - 2012-12-30 00:00:00
+  - PSN_DUP_4_GA01
+  - '11065'
+  - CAS64932613GA01
+- !!python/tuple
+  - 2019-08-31 00:00:00
+  - PSN_DUP_8_GA01
+  - '10280'
+  - CAS25503345GA01
+- !!python/tuple
+  - 2024-01-28 00:00:00
+  - PSN_DUP_7_GA01
+  - '900'
+  - CAS89151743GA01
+- !!python/tuple
+  - 2019-01-08 00:00:00
+  - PSN_DUP_7_GA01
+  - '11065'
+  - CAS20518444GA01
+- !!python/tuple
+  - 2012-06-29 00:00:00
+  - PSN_DUP_3_GA01
+  - '10311'
+  - CAS29891032GA01
