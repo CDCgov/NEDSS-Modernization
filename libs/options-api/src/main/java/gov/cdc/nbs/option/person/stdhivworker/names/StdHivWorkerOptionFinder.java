@@ -10,9 +10,10 @@ public class StdHivWorkerOptionFinder extends SQLBasedOptionFinder {
   private static final String QUERY =
       """
       WITH std_hiv_workers AS (
-      SELECT
-          DISTINCT root_extension_txt AS [key],
-          CONCAT(first_nm, ' ', last_nm) AS [value]
+      SELECT DISTINCT
+          root_extension_txt AS [key],
+          CONCAT(first_nm, ' ', last_nm) AS [value],
+          0 AS [order],
         FROM
           dbo.person_name pn, dbo.entity_id ei, dbo.auth_user au, dbo.auth_user_role aur
         WHERE
