@@ -21,7 +21,7 @@ tables:
         null_percentage: 0.8
   - table_name: "[RDB].[dbo].[EVENT_METRIC]"
     export_file_name: '2_event_metric'
-    row_count: 250
+    row_count: 50
     columns:
       # required columns
       - column_name: event_type
@@ -36,8 +36,7 @@ tables:
         data: foreign_key("[RDB].[dbo].[USER_PROFILE]", "nedss_entry_id")
   - table_name: "[RDB].[dbo].[INVESTIGATION]"
     export_file_name: "3_investigation"
-    start_row_id: 100000
-    row_count: 250
+    row_count: 50
     columns:
       # required columns
       - column_name: investigation_key
@@ -55,7 +54,7 @@ tables:
         data: random.choice(["T1 - Positive Test", "T2 - Morbidity Report", "C1- Cohort", "A1 - Associate 1", "A2 - Associate 2", "A3 - Associate 3", "P1 - Partner, Sex", "P2 - Partner, Needle-Sharing", "M1 - Congenital Infant Followup"])
   - table_name: "[RDB].[dbo].[LAB_TEST]"
     export_file_name: "4_lab_test"
-    row_count: 250
+    row_count: 50
     columns:
       # required columns
       - column_name: lab_test_key
@@ -69,7 +68,7 @@ tables:
         data: fake.date_between(start_date='-19w')
   - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
     export_file_name: "5_lab_test_result"
-    row_count: 250
+    row_count: 50
     columns:
       # required columns
       - column_name: lab_test_key
@@ -108,7 +107,7 @@ tables:
         data: random.randint(1000, 10000)
   - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
     export_file_name: "6_std_hiv_datamart"
-    row_count: 200
+    row_count: 50
     columns:
       # required columns
       - column_name: investigation_key
@@ -132,9 +131,11 @@ tables:
         null_percentage: 0.75
       - column_name: patient_name
         data: random.choice(["Walowitz, Howard", "Van Dam, Jean Claude", "Freeman, Gordon", "Stantz, Raymond", "Solo, Han", "Torrance, Jack", "Bowman, Dave"]) if random.random() < .95 else None
+      - column_name: program_jurisdiction_oid
+        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
   - table_name: "[RDB].[dbo].[MORBIDITY_REPORT_EVENT]"
     export_file_name: "7_morbidity_report_event"
-    row_count: 100
+    row_count: 50
     columns:
       # required columns
       - column_name: morb_rpt_key
@@ -172,7 +173,7 @@ tables:
         data: random.randint(1000, 10000)
   - table_name: "[RDB].[dbo].[MORBIDITY_REPORT]"
     export_file_name: "8_morbidity_report"
-    row_count: 100
+    row_count: 50
     columns:
       # required columns
       - column_name: morb_rpt_key
