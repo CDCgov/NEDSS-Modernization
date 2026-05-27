@@ -93,37 +93,40 @@ public class ReportSpecBuilder {
   }
 
   private Integer extractDaysValue() {
+    // Guard clause: Return early if either the execution request or the report configuration contain no basic filters.
     if (reportExecRequest.basicFilters() == null || reportConfig.basicFilters() == null) {
       return null;
     }
 
-    // Find the UIDs of any filters with type = "BAS_DAYS"
+    // Find all UIDs for filters with filter type = "BAS_DAYS"
     List<Long> basDaysFilterUids =
-        reportConfig.basicFilters().stream()
-            .filter(
-                filterConfig ->
-                    filterConfig.filterType() != null
-                        && ReportConstants.BAS_DAYS.equals(filterConfig.filterType().type()))
-            .map(BasicFilterConfiguration::reportFilterUid)
-            .toList();
+            reportConfig.basicFilters().stream()
+                    .filter(
+                            filterConfig ->
+                                    filterConfig.filterType() != null
+                                            && ReportConstants.BAS_DAYS.equals(filterConfig.filterType().type()))
+                    .map(BasicFilterConfiguration::reportFilterUid)
+                    .toList();
 
-    // Find the matching request filter and value
+    // Inspect the runtime execution request to find the user-submitted filter matching
+    // the targeted "BAS_DAYS" UIDs
     String rawDaysValue =
-        reportExecRequest.basicFilters().stream()
-            .filter(request -> basDaysFilterUids.contains(request.reportFilterUid()))
-            .flatMap(request -> request.values().stream())
-            .findFirst()
-            .orElse(null);
+            reportExecRequest.basicFilters().stream()
+                    .filter(request -> basDaysFilterUids.contains(request.reportFilterUid()))
+                    .flatMap(request -> request.values().stream())
+                    .findFirst()
+                    .orElse(null);
 
     if (rawDaysValue == null || rawDaysValue.isBlank()) {
       return null;
     }
 
+    // Parse the text value into an Int. Malformed entries will bubble up as an argument validation failure.
     try {
       return Integer.valueOf(rawDaysValue);
     } catch (NumberFormatException e) {
       throw new IllegalArgumentException(
-          "The requested filter value must be a valid integer: " + rawDaysValue);
+              "The requested filter value must be a valid integer: " + rawDaysValue);
     }
   }
 }
