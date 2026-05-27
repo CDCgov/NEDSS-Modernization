@@ -103,9 +103,7 @@ public class ReportSpecBuilder {
     BasicFilterConfiguration basDaysConfig =
         reportConfig.basicFilters().stream()
             .filter(
-                filterConfig ->
-                    filterConfig.filterType() != null
-                        && ReportConstants.BAS_DAYS.equals(filterConfig.filterType().type()))
+                filterConfig -> ReportConstants.BAS_DAYS.equals(filterConfig.filterType().type()))
             .findFirst()
             .orElse(null);
 
