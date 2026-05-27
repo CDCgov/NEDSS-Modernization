@@ -99,24 +99,29 @@ public class ReportSpecBuilder {
       return null;
     }
 
-    // Find all UIDs for filters with filter type = "BAS_DAYS"
-    List<Long> basDaysFilterUids =
-        reportConfig.basicFilters().stream()
-            .filter(
-                filterConfig ->
-                    filterConfig.filterType() != null
-                        && ReportConstants.BAS_DAYS.equals(filterConfig.filterType().type()))
-            .map(BasicFilterConfiguration::reportFilterUid)
-            .toList();
+    // Find the basic filter configuration for "BAS_DAYS" if it exists.
+    BasicFilterConfiguration basDaysConfig =
+            reportConfig.basicFilters().stream()
+                    .filter(
+                            filterConfig ->
+                                    filterConfig.filterType() != null
+                                            && ReportConstants.BAS_DAYS.equals(filterConfig.filterType().type()))
+                    .findFirst()
+                    .orElse(null);
+
+    // If no "BAS_DAYS" filter is configured for this report, there's nothing to extract.
+    if (basDaysConfig == null) {
+      return null;
+    }
 
     // Inspect the runtime execution request to find the user-submitted filter matching
     // the targeted "BAS_DAYS" UIDs
     String rawDaysValue =
-        reportExecRequest.basicFilters().stream()
-            .filter(request -> basDaysFilterUids.contains(request.reportFilterUid()))
-            .flatMap(request -> request.values().stream())
-            .findFirst()
-            .orElse(null);
+            reportExecRequest.basicFilters().stream()
+                    .filter(request -> basDaysConfig.reportFilterUid().equals(request.reportFilterUid()))
+                    .flatMap(request -> request.values().stream())
+                    .findFirst()
+                    .orElse(null);
 
     if (rawDaysValue == null || rawDaysValue.isBlank()) {
       return null;
@@ -127,8 +132,13 @@ public class ReportSpecBuilder {
     try {
       return Integer.valueOf(rawDaysValue);
     } catch (NumberFormatException e) {
+      // Safely extract the description, fallback to a default if it happens to be missing/null
+      String description = (basDaysConfig.filterType().descTxt() != null)
+              ? basDaysConfig.filterType().descTxt()
+              : "Days Filter";
+
       throw new IllegalArgumentException(
-          "The requested filter value must be a valid integer: " + rawDaysValue);
+              String.format("The '%s' filter value must be a valid integer: %s", description, rawDaysValue));
     }
   }
 }
