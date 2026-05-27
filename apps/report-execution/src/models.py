@@ -1,6 +1,5 @@
 from typing import Annotated, Any, Literal
 
-import pandas as pd
 from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
 
 
@@ -24,20 +23,6 @@ class Table(BaseModel):
     columns: list[str]
     data: list[tuple[Any, ...]]
 
-    def __init__(
-        self,
-        columns: list[str] | pd.DataFrame | None = None,
-        data: list[tuple[Any, ...]] | None = None,
-        **kwargs,
-    ):
-        """Initialize Table with either columns+data or a DataFrame."""
-        if isinstance(columns, pd.DataFrame):
-            # Called with Table(df)
-            df = columns
-            columns = df.columns.tolist()
-            data = [tuple(row) for row in df.to_numpy()]
-        super().__init__(columns=columns, data=data, **kwargs)
-
     def get_column(self, col_name: str) -> list[Any]:
         """Extract a column by name. Raises an error if the column doesn't exist."""
         if col_name not in self.columns:
@@ -60,16 +45,7 @@ class Table(BaseModel):
         # Sort with None first (False < True, so None comes before non-None)
         return sorted(values, key=lambda x: (x is not None, x))
 
-    def to_pandas(self) -> pd.DataFrame:
-        """Convert the Table to a pandas DataFrame."""
-        return pd.DataFrame.from_records(
-            self.data, columns=self.columns, coerce_float=True
-        )
 
-    class Config:
-        """Pydantic configuration."""
-
-        arbitrary_types_allowed = True
 
 
 def serialize_table(table: Table) -> str:
