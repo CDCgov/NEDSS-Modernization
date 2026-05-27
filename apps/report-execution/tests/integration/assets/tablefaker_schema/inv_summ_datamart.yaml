@@ -193,11 +193,6 @@ tables:
         data: None
         null_percentage: 1.0
       
-      - column_name: NOTIFICATION_SENT_DATE
-        type: string
-        data: None
-        null_percentage: 1.0
-      
       - column_name: NOTIFICATION_SUBMITTER
         type: string
         data: random.choice(["PKS, PKS", "user, demo", "Ward, Jennifer", None])
@@ -228,11 +223,6 @@ tables:
         data: None
         null_percentage: 1.0
       
-      - column_name: CONFIRMATION_METHOD
-        type: string
-        data: random.choice(["Laboratory confirmed", "Clinical diagnosis", "Epidemiologically linked", "Active Surveillance", None])
-        null_percentage: 0.50
-      
       - column_name: HSPTL_ADMISSION_DT
         type: string
         data: None
@@ -241,16 +231,6 @@ tables:
       - column_name: CURR_PROCESS_STATE
         type: string
         data: random.choice(["Open Case", "Closed Case", "Field Follow-up", "Awaiting Interview", "Surveillance Follow-up", None])
-        null_percentage: 0.20
-      
-      - column_name: PATIENT_COUNTY_CODE
-        type: string
-        data: random.choice(["13121", "13089", "13067", "13001", "13003", "13005", "13007", None])
-        null_percentage: 0.30
-      
-      - column_name: JURISDICTION_NM
-        type: string
-        data: random.choice(["Fulton County", "Dekalb County", "Clayton County", "Cobb County", "Gwinnett County", None])
         null_percentage: 0.20
       
       - column_name: PATIENT_COUNTY
@@ -287,8 +267,3 @@ tables:
         type: string
         data: random.choice(["PKS, PKS", "user, demo", "Ward, Jennifer", "investigator, local", "Epidemiologist, STI", "LocalUser, DIS", "LocalUser, Fulton", "PKS", "Ward, Jennifer", None])
         null_percentage: 0.70
-      
-      - column_name: INIT_NND_NOT_DT
-        type: string
-        data: f"{fake.date_between(start_date=datetime(2023, 1, 1), end_date=datetime(2026, 12, 31)).strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}" if random.random() > 0.90 else None
-        null_percentage: 0.90
