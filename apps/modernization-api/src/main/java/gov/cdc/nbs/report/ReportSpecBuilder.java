@@ -101,13 +101,13 @@ public class ReportSpecBuilder {
 
     // Find the basic filter configuration for "BAS_DAYS" if it exists.
     BasicFilterConfiguration basDaysConfig =
-            reportConfig.basicFilters().stream()
-                    .filter(
-                            filterConfig ->
-                                    filterConfig.filterType() != null
-                                            && ReportConstants.BAS_DAYS.equals(filterConfig.filterType().type()))
-                    .findFirst()
-                    .orElse(null);
+        reportConfig.basicFilters().stream()
+            .filter(
+                filterConfig ->
+                    filterConfig.filterType() != null
+                        && ReportConstants.BAS_DAYS.equals(filterConfig.filterType().type()))
+            .findFirst()
+            .orElse(null);
 
     // If no "BAS_DAYS" filter is configured for this report, there's nothing to extract.
     if (basDaysConfig == null) {
@@ -117,11 +117,11 @@ public class ReportSpecBuilder {
     // Inspect the runtime execution request to find the user-submitted filter matching
     // the targeted "BAS_DAYS" UIDs
     String rawDaysValue =
-            reportExecRequest.basicFilters().stream()
-                    .filter(request -> basDaysConfig.reportFilterUid().equals(request.reportFilterUid()))
-                    .flatMap(request -> request.values().stream())
-                    .findFirst()
-                    .orElse(null);
+        reportExecRequest.basicFilters().stream()
+            .filter(request -> basDaysConfig.reportFilterUid().equals(request.reportFilterUid()))
+            .flatMap(request -> request.values().stream())
+            .findFirst()
+            .orElse(null);
 
     if (rawDaysValue == null || rawDaysValue.isBlank()) {
       return null;
@@ -133,12 +133,14 @@ public class ReportSpecBuilder {
       return Integer.valueOf(rawDaysValue);
     } catch (NumberFormatException e) {
       // Safely extract the description, fallback to a default if it happens to be missing/null
-      String description = (basDaysConfig.filterType().descTxt() != null)
+      String description =
+          (basDaysConfig.filterType().descTxt() != null)
               ? basDaysConfig.filterType().descTxt()
               : "Days Filter";
 
       throw new IllegalArgumentException(
-              String.format("The '%s' filter value must be a valid integer: %s", description, rawDaysValue));
+          String.format(
+              "The '%s' filter value must be a valid integer: %s", description, rawDaysValue));
     }
   }
 }
