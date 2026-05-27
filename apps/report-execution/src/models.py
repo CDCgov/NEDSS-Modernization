@@ -1,5 +1,6 @@
 from typing import Annotated, Any, Literal
 
+from pandas import DataFrame
 from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
 
 
@@ -46,13 +47,11 @@ class Table(BaseModel):
         return sorted(values, key=lambda x: (x is not None, x))
 
 
-
-
 def serialize_table(table: Table) -> str:
     """Turn a Table into a CSV for returning to the user."""
     # Short cut to valid CSV - can swap out later if performance dictates
     # or serialize to CSV at a different location
-    df = pd.DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
+    df = DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
     # remove trailing new line
     return df.to_csv(index=False, float_format='{:.20g}', lineterminator='\r\n')[:-2]
 

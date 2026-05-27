@@ -17,11 +17,14 @@ class MissingLibraryError(BaseReportExecutionError):
         message = f'Library `{library_name}` (is_builtin: {is_builtin}) not found'
         super().__init__(message, 422)
 
+
 class MissingColumnError(BaseReportExecutionError):
     """Required columns are missing."""
 
     def __init__(self, missing_columns: list[str]):
-        message = f'Required columns {', '.join(missing_columns)} are missing from column_map'
+        message = (
+            f'Required columns {", ".join(missing_columns)} are missing from column_map'
+        )
         super().__init__(message, 422)
 
 
