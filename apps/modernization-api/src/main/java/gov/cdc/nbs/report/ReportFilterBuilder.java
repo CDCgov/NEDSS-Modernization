@@ -40,7 +40,7 @@ public class ReportFilterBuilder {
             .orElseThrow(
                 () ->
                     new IllegalArgumentException(
-                        "Filter code not found for selectType: " + filter.filterCodeUid()));
+                        "Filter code not found for UID: " + filter.filterCodeUid()));
 
     Integer minValueCount = null;
     Integer maxValueCount = null;

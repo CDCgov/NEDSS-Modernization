@@ -15,6 +15,7 @@ import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 class ReportMapperTest {
 
@@ -35,7 +36,7 @@ class ReportMapperTest {
 
   @BeforeEach
   void setUp() {
-    org.mockito.Mockito.lenient().when(user.getId()).thenReturn(userId);
+    Mockito.lenient().when(user.getId()).thenReturn(userId);
   }
 
   @Test
