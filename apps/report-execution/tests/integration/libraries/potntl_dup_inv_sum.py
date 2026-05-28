@@ -51,6 +51,11 @@ class TestIntegrationNbsSrDupInvLibrary:
             }
             FROM [RDB].[dbo].[INV_SUMM_DATAMART]
             """
+        if base.subset_query == '':
+           base.subset_query = f"""
+           SELECT {f'{key} as [{alias}]' for key, alias in base.column_map.items()}
+           FROM [RDB].[dbo].[INV_SUMM_DATAMART]
+           """
         return ReportSpec.model_validate(base)
 
     def test_execute_report_check_data(self, snapshot):
