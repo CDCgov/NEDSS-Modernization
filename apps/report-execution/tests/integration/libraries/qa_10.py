@@ -17,7 +17,7 @@ class TestIntegrationQa10Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA10 STD Program Report: Interviews - Pregnant/Recent Birth Report',
+                'report_title': 'QA10',
                 'library_name': 'qa_10',
                 'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
@@ -46,7 +46,7 @@ class TestIntegrationQa10Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA10 STD Program Report: Interviews - Pregnant/Recent Birth Report',
+                'report_title': 'QA10',
                 'library_name': 'qa_10',
                 'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': (
@@ -68,7 +68,7 @@ class TestIntegrationQa10Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA10 STD Program Report: Interviews - Pregnant/Recent Birth Report',
+                'report_title': 'QA10',
                 'library_name': 'qa_10',
                 'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
@@ -76,7 +76,7 @@ class TestIntegrationQa10Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'QA10 STD Program Report: Interviews - Pregnant/Recent Birth Report'
+        assert result.header == 'QA10'
         assert result.subheader is None
         assert result.description is None
         assert result.content_type == 'table'

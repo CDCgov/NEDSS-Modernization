@@ -1,4 +1,3 @@
-import time
 
 from src.db_transaction import Transaction
 from src.models import ReportResult
@@ -16,7 +15,6 @@ def execute(
     * Did not include logging of run time
     * Hardcode i to "14" instead of the count of the columns
     """
-
     sql_query = f"""
     WITH shd AS (
     SELECT *
@@ -33,7 +31,9 @@ def execute(
         NULLIF(INVESTIGATOR_INTERVIEW_QC, 'NULL') AS [INVESTIGATOR_INTERVIEW_QC],
         FORMAT(CAST(a.cc_closed_dt AS DATE), 'MM/dd/yyyy') as CLOSED_DT,
         CASE WHEN a.CC_CLOSED_DT IS NULL THEN 'Y' ELSE 'N' END as Open_Status, 
-        SUBSTRING(NULLIF(a.PATIENT_PREGNANT_IND, 'NULL'), 1, 1) AS [PATIENT_PREGNANT_IND],
+        SUBSTRING(
+            NULLIF(a.PATIENT_PREGNANT_IND, 'NULL'), 1, 1
+        ) AS [PATIENT_PREGNANT_IND],
         NULLIF(PBI_PREG_IN_LAST_12MO_IND, 'NULL') AS [PBI_PREG_IN_LAST_12MO_IND],
         NULLIF(a.PBI_PREG_AT_EXAM_IND, 'NULL') AS [PBI_PREG_AT_EXAM_IND],
         NULLIF(PBI_PREG_AT_IX_IND, 'NULL') AS [PBI_PREG_AT_IX_IND],
