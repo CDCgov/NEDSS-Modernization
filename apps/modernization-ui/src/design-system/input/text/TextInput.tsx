@@ -15,6 +15,7 @@ type TextInputProps = {
     onBlur?: () => void;
     onClear?: () => void;
     clearable?: boolean;
+    fullWidth?: boolean;
 } & Omit<
     JSX.IntrinsicElements['input'],
     'defaultValue' | 'onChange' | 'onBlur' | 'value' | 'type' | 'inputMode' | 'autoComplete'
@@ -30,6 +31,7 @@ const TextInput = ({
     onBlur,
     className,
     clearable = false,
+    fullWidth = false,
     onClear,
     ...props
 }: TextInputProps) => {
@@ -46,7 +48,7 @@ const TextInput = ({
     };
 
     return (
-        <span className={classNames({ [styles.grouped]: clearable })}>
+        <span className={classNames({ [styles.grouped]: clearable, [styles.fullWidth]: fullWidth })}>
             <input
                 autoComplete="off"
                 id={id}

@@ -15,7 +15,8 @@ class ReportSpecTest {
             "Test Report",
             "nbs_custom",
             "nbs_rdb.investigation",
-            "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+            "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
+            11);
 
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
@@ -24,5 +25,6 @@ class ReportSpecTest {
     assertThat(reportSpec.dataSourceName()).isEqualTo("nbs_rdb.investigation");
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+    assertThat(reportSpec.daysValue()).isEqualTo(11);
   }
 }

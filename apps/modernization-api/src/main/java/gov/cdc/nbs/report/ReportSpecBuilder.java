@@ -43,7 +43,7 @@ public class ReportSpecBuilder {
   }
 
   private ReportColumn findMatchingColumn(Long columnUid) {
-    return reportConfig.reportColumns().stream()
+    return reportConfig.columns().stream()
         .filter(column -> column.id().equals(columnUid))
         .findFirst()
         .orElseThrow(
@@ -68,12 +68,12 @@ public class ReportSpecBuilder {
   }
 
   public ReportSpec build() {
-    Library reportLibrary = reportConfig.reportLibrary();
+    Library reportLibrary = reportConfig.library();
 
     boolean isExport = reportExecRequest.isExport();
     boolean isBuiltin = reportLibrary.isBuiltin();
-    String reportTitle = reportConfig.reportTitle();
-    String libraryName = reportConfig.reportLibrary().libraryName();
+    String reportTitle = reportConfig.title();
+    String libraryName = reportConfig.library().libraryName();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     List<ReportColumn> columns = fetchColumns();
@@ -83,10 +83,62 @@ public class ReportSpecBuilder {
     String whereClause = whereClauseService.buildWhereClause(reportConfig, reportExecRequest);
     String orderByClause = "";
 
+    Integer daysValue = extractDaysValue();
+
     String subsetQuery =
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery);
+        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery, daysValue);
+  }
+
+  private Integer extractDaysValue() {
+    // Guard clause: Return early if either the execution request or the report configuration
+    // contain no basic filters.
+    if (reportExecRequest.basicFilters() == null || reportConfig.basicFilters() == null) {
+      return null;
+    }
+
+    // Find the basic filter configuration for "BAS_DAYS" if it exists.
+    BasicFilterConfiguration basDaysConfig =
+        reportConfig.basicFilters().stream()
+            .filter(
+                filterConfig -> ReportConstants.BAS_DAYS.equals(filterConfig.filterType().type()))
+            .findFirst()
+            .orElse(null);
+
+    // If no "BAS_DAYS" filter is configured for this report, there's nothing to extract.
+    if (basDaysConfig == null) {
+      return null;
+    }
+
+    // Inspect the runtime execution request to find the user-submitted filter matching
+    // the targeted "BAS_DAYS" UIDs
+    String rawDaysValue =
+        reportExecRequest.basicFilters().stream()
+            .filter(request -> basDaysConfig.reportFilterUid().equals(request.reportFilterUid()))
+            .flatMap(request -> request.values().stream())
+            .findFirst()
+            .orElse(null);
+
+    if (rawDaysValue == null || rawDaysValue.isBlank()) {
+      return null;
+    }
+
+    // Parse the text value into an Int. Malformed entries will bubble up as an argument validation
+    // failure.
+    try {
+      return Integer.valueOf(rawDaysValue);
+    } catch (NumberFormatException e) {
+      // Safely extract the description, fallback to a default if it happens to be missing/null
+      String description =
+          (basDaysConfig.filterType().descTxt() != null)
+              ? basDaysConfig.filterType().descTxt()
+              : "Days Filter";
+
+      throw new IllegalArgumentException(
+          String.format(
+              "The '%s' filter value must be a valid integer: %s", description, rawDaysValue));
+    }
   }
 }
