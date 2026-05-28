@@ -19,7 +19,7 @@ function makeRequest(body, action) {
 
 When(/^I send a POST request to \/nbs\/api\/report\/configuration with a valid report$/, () => {
   const validReport = {
-    dataSourceUid: VALID_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Test Report Title",
     sectionCode: "Test Section Code",
@@ -34,7 +34,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/configuration with a valid r
 
 When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing dataSourceId$/, () => {
   const validReport = {
-    dataSourceUid: null,
+    dataSourceId: null,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Test Report Title",
     sectionCode: "Test Section Code",
@@ -49,7 +49,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing d
 
 When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing libraryId$/, () => {
   const validReport = {
-    dataSourceUid: VALID_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: null,
     reportTitle: "Test Report Title",
     sectionCode: "Test Section Code",
@@ -64,7 +64,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing l
 
 When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing reportTitle$/, () => {
   const validReport = {
-    dataSourceUid: VALID_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: null,
     sectionCode: "Test Section Code",
@@ -79,7 +79,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing r
 
 When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing sectionCode$/, () => {
   const validReport = {
-    dataSourceUid: VALID_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Test Report Title",
     sectionCode: null,
@@ -94,7 +94,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing s
 
 When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing ownerId$/, () => {
   const validReport = {
-    dataSourceUid: VALID_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Test Report Title",
     sectionCode: "Test Section Code",
@@ -109,7 +109,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing o
 
 When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing group$/, () => {
   const validReport = {
-    dataSourceUid: VALID_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Test Report Title",
     sectionCode: "Test Section Code",
