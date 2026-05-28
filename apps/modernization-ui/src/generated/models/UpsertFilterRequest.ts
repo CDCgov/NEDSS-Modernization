@@ -2,13 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateFilterRequest = {
+export type UpsertFilterRequest = {
+    id?: number;
     filterCodeUid: number;
     columnUid?: number;
-    selectType?: CreateFilterRequest.selectType;
+    selectType?: UpsertFilterRequest.selectType;
     isRequired: boolean;
 };
-export namespace CreateFilterRequest {
+export namespace UpsertFilterRequest {
     export enum selectType {
         SINGLE = 'SINGLE',
         MULTI = 'MULTI',

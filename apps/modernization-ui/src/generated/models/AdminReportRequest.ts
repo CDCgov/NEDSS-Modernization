@@ -2,23 +2,15 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateFilterRequest } from './CreateFilterRequest';
+import type { UpsertFilterRequest } from './UpsertFilterRequest';
 export type AdminReportRequest = {
     dataSourceId: number;
     libraryId: number;
     reportTitle: string;
     sectionCode: string;
     ownerId: number;
-    group: AdminReportRequest.group;
-    filterRequests: Array<CreateFilterRequest>;
+    group: string;
+    filterRequests: Array<UpsertFilterRequest>;
     description?: string;
 };
-export namespace AdminReportRequest {
-    export enum group {
-        PRIVATE = 'Private',
-        REPORTING_FACILITY = 'Reporting Facility',
-        PUBLIC = 'Public',
-        TEMPLATE = 'Template',
-    }
-}
 

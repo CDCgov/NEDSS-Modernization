@@ -7,7 +7,7 @@ export type SaveAsReportRequest = {
     reportTitle: string;
     sectionCode: string;
     group: SaveAsReportRequest.group;
-    filterRequest: ReportExecutionRequest;
+    executionRequest: ReportExecutionRequest;
     description?: string;
 };
 export namespace SaveAsReportRequest {
