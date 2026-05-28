@@ -90,7 +90,6 @@ public class ReportFilterBuilder {
     ReportFilter.ReportFilterBuilder filterBuilder =
         ReportFilter.builder()
             .report(report)
-            .dataSourceColumn(dataSourceColumn)
             .filterCode(filterCode)
             .statusCd(statusCd);
 
@@ -100,6 +99,10 @@ public class ReportFilterBuilder {
 
     if (maxValueCount != null) {
       filterBuilder.maxValueCnt(maxValueCount);
+    }
+
+    if (dataSourceColumn != null) {
+        filterBuilder.dataSourceColumn(dataSourceColumn);
     }
 
     if (filter.isRequired()) {
