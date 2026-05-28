@@ -42,8 +42,7 @@ public class ReportController {
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody AdminReportRequest request) {
-    Report report =
-        reportService.editReport(request, user, new ReportId(reportUid, dataSourceUid));
+    Report report = reportService.editReport(request, user, new ReportId(reportUid, dataSourceUid));
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 

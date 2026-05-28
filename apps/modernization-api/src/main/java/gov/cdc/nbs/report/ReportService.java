@@ -59,28 +59,13 @@ public class ReportService {
   }
 
   @Transactional
-  public Report createReport(
-      AdminReportRequest request, NbsUserDetails user) {
-    DataSource dataSource =
-        dataSourceRepository
-            .findById(request.dataSourceId())
-            .orElseThrow(
-                () ->
-                    new IllegalArgumentException(
-                        "No data source found for ID " + request.dataSourceId()));
-
-    ReportLibrary reportLibrary =
-        reportLibraryRepository
-            .findById(request.libraryId())
-            .orElseThrow(
-                () ->
-                    new IllegalArgumentException(
-                        "No report library found for ID " + request.libraryId()));
+  public Report createReport(AdminReportRequest request, NbsUserDetails user) {
+    ReportMetadata metadata = fetchReportMetadata(request);
 
     Report savedReport =
         reportRepository.save(
             ReportMapper.fromAdminReportRequest(
-                request, user, reportLibrary, dataSource, null));
+                request, user, metadata.reportLibrary, metadata.dataSource, null));
 
     if (!request.filterRequests().isEmpty()) {
       List<ReportFilter> reportFilters =
@@ -96,42 +81,33 @@ public class ReportService {
 
   @Transactional
   public Report editReport(
-          AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
+      AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
     if (existingReportId != null && !reportRepository.existsById(existingReportId)) {
       throw new NotFoundException(
-              String.format(
-                      "Report not found for Report UID: %d and Data Source UID: %d",
-                      existingReportId.getReportUid(), existingReportId.getDataSourceUid()));
+          String.format(
+              "Report not found for Report UID: %d and Data Source UID: %d",
+              existingReportId.getReportUid(), existingReportId.getDataSourceUid()));
     }
 
-    DataSource dataSource =
-            dataSourceRepository
-                    .findById(request.dataSourceId())
-                    .orElseThrow(
-                            () ->
-                                    new IllegalArgumentException(
-                                            "No data source found for ID " + request.dataSourceId()));
-
-    ReportLibrary reportLibrary =
-            reportLibraryRepository
-                    .findById(request.libraryId())
-                    .orElseThrow(
-                            () ->
-                                    new IllegalArgumentException(
-                                            "No report library found for ID " + request.libraryId()));
+    ReportMetadata metadata = fetchReportMetadata(request);
 
     Report savedReport =
-            reportRepository.save(
-                    ReportMapper.fromAdminReportRequest(
-                            request, user, reportLibrary, dataSource, existingReportId));
+        reportRepository.save(
+            ReportMapper.fromAdminReportRequest(
+                request, user, metadata.reportLibrary, metadata.dataSource, existingReportId));
 
     List<ReportFilter> existingFilters = savedReport.getReportFilters();
 
-    List<ReportFilter> filtersToDelete = existingFilters.stream()
-            .filter(f -> request.filterRequests().stream().noneMatch(fr -> fr.id() != null && fr.id().equals(f.getId())))
+    List<ReportFilter> filtersToDelete =
+        existingFilters.stream()
+            .filter(
+                f ->
+                    request.filterRequests().stream()
+                        .noneMatch(fr -> fr.id() != null && fr.id().equals(f.getId())))
             .toList();
 
-    List<ReportFilter> filtersToUpsert = request.filterRequests().stream()
+    List<ReportFilter> filtersToUpsert =
+        request.filterRequests().stream()
             .map(f -> reportFilterBuilder.build(f, savedReport))
             .toList();
 
@@ -247,5 +223,27 @@ public class ReportService {
         .body(reportSpec)
         .retrieve()
         .toEntity(ReportResult.class);
+  }
+
+  private record ReportMetadata(DataSource dataSource, ReportLibrary reportLibrary) {}
+
+  private ReportMetadata fetchReportMetadata(AdminReportRequest request) {
+    DataSource dataSource =
+        dataSourceRepository
+            .findById(request.dataSourceId())
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "No data source found for ID " + request.dataSourceId()));
+
+    ReportLibrary reportLibrary =
+        reportLibraryRepository
+            .findById(request.libraryId())
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "No report library found for ID " + request.libraryId()));
+
+    return new ReportMetadata(dataSource, reportLibrary);
   }
 }

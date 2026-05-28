@@ -88,10 +88,7 @@ public class ReportFilterBuilder {
     }
 
     ReportFilter.ReportFilterBuilder filterBuilder =
-        ReportFilter.builder()
-            .report(report)
-            .filterCode(filterCode)
-            .statusCd(statusCd);
+        ReportFilter.builder().report(report).filterCode(filterCode).statusCd(statusCd);
 
     if (minValueCount != null) {
       filterBuilder.minValueCnt(minValueCount);
@@ -102,7 +99,7 @@ public class ReportFilterBuilder {
     }
 
     if (dataSourceColumn != null) {
-        filterBuilder.dataSourceColumn(dataSourceColumn);
+      filterBuilder.dataSourceColumn(dataSourceColumn);
     }
 
     if (filter.isRequired()) {
@@ -113,12 +110,12 @@ public class ReportFilterBuilder {
               .statusTime(now)
               .build());
     } else {
-        filterBuilder.filterValidation(null);
+      filterBuilder.filterValidation(null);
     }
 
-      if (filter.id() != null) {
-          filterBuilder.id(filter.id());
-      }
+    if (filter.id() != null) {
+      filterBuilder.id(filter.id());
+    }
 
     return filterBuilder.build();
   }
