@@ -3,7 +3,7 @@ import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
 const VALID_REPORT_FILTER_UID = 1;
-const VALID_REPORT_LIBRARY_ID = 1;
+const VALID_REPORT_LIBRARY_ID = 10000001;
 
 function makeRequest(body, action) {
   return cy.request({
