@@ -3,6 +3,7 @@ import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
 const VALID_REPORT_FILTER_UID = 1;
+const VALID_REPORT_LIBRARY_ID = 1;
 
 function makeRequest(body, action) {
   return cy.request({
@@ -15,6 +16,111 @@ function makeRequest(body, action) {
     }
   }).as("apiResponse");
 }
+
+When(/^I send a POST request to \/nbs\/api\/report\/configuration with a valid report$/, () => {
+  const validReport = {
+    dataSourceUid: VALID_DATA_SOURCE_UID,
+    libraryId: VALID_REPORT_LIBRARY_ID,
+    reportTitle: "Test Report Title",
+    sectionCode: "Test Section Code",
+    ownerId: 0,
+    group: "Private",
+    filterRequests: [],
+    description: "Test Description",
+  };
+  
+  makeRequest(validReport, "configuration");
+});
+
+When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing dataSourceId$/, () => {
+  const validReport = {
+    dataSourceUid: null,
+    libraryId: VALID_REPORT_LIBRARY_ID,
+    reportTitle: "Test Report Title",
+    sectionCode: "Test Section Code",
+    ownerId: 0,
+    group: "Private",
+    filterRequests: [],
+    description: "Test Description",
+  };
+  
+  makeRequest(validReport, "configuration");
+});
+
+When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing libraryId$/, () => {
+  const validReport = {
+    dataSourceUid: VALID_DATA_SOURCE_UID,
+    libraryId: null,
+    reportTitle: "Test Report Title",
+    sectionCode: "Test Section Code",
+    ownerId: 0,
+    group: "Private",
+    filterRequests: [],
+    description: "Test Description",
+  };
+  
+  makeRequest(validReport, "configuration");
+});
+
+When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing reportTitle$/, () => {
+  const validReport = {
+    dataSourceUid: VALID_DATA_SOURCE_UID,
+    libraryId: VALID_REPORT_LIBRARY_ID,
+    reportTitle: null,
+    sectionCode: "Test Section Code",
+    ownerId: 0,
+    group: "Private",
+    filterRequests: [],
+    description: "Test Description",
+  };
+  
+  makeRequest(validReport, "configuration");
+});
+
+When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing sectionCode$/, () => {
+  const validReport = {
+    dataSourceUid: VALID_DATA_SOURCE_UID,
+    libraryId: VALID_REPORT_LIBRARY_ID,
+    reportTitle: "Test Report Title",
+    sectionCode: null,
+    ownerId: 0,
+    group: "Private",
+    filterRequests: [],
+    description: "Test Description",
+  };
+  
+  makeRequest(validReport, "configuration");
+});
+
+When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing ownerId$/, () => {
+  const validReport = {
+    dataSourceUid: VALID_DATA_SOURCE_UID,
+    libraryId: VALID_REPORT_LIBRARY_ID,
+    reportTitle: "Test Report Title",
+    sectionCode: "Test Section Code",
+    ownerId: null,
+    group: "Private",
+    filterRequests: [],
+    description: "Test Description",
+  };
+  
+  makeRequest(validReport, "configuration");
+});
+
+When(/^I send a POST request to \/nbs\/api\/report\/configuration with missing group$/, () => {
+  const validReport = {
+    dataSourceUid: VALID_DATA_SOURCE_UID,
+    libraryId: VALID_REPORT_LIBRARY_ID,
+    reportTitle: "Test Report Title",
+    sectionCode: "Test Section Code",
+    ownerId: 0,
+    group: null,
+    filterRequests: [],
+    description: "Test Description",
+  };
+  
+  makeRequest(validReport, "configuration");
+});
 
 When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with a valid report execution request$/, (action) => {
   const validRequest = {
