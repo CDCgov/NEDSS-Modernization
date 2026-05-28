@@ -112,6 +112,8 @@ public class ReportFilterBuilder {
               .statusCd(statusCd)
               .statusTime(now)
               .build());
+    } else {
+        filterBuilder.filterValidation(null);
     }
 
       if (filter.id() != null) {

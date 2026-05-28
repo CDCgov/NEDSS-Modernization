@@ -44,7 +44,7 @@ public class ReportFilter {
   @OneToMany(mappedBy = "reportFilter", fetch = FetchType.LAZY)
   private List<FilterValue> filterValues;
 
-  @OneToOne(mappedBy = "reportFilter", fetch = FetchType.LAZY)
+  @OneToOne(mappedBy = "reportFilter", fetch = FetchType.LAZY, orphanRemoval = true)
   private ReportFilterValidation filterValidation;
 
   @Column(name = "status_cd")
