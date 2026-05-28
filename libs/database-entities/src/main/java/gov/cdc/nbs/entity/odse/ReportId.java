@@ -4,6 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.Setter;
 public class ReportId implements Serializable {
 
   @Column(name = "report_uid", nullable = false)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long reportUid;
 
   @Column(name = "data_source_uid", nullable = false)
