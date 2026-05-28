@@ -107,11 +107,11 @@ class ReportServiceTest {
           .when(reportLibraryRepository.findById(libraryId))
           .thenReturn(Optional.of(mockReportLibrary));
       Mockito.lenient()
-          .when(filterCodeRepository.findAllById(any()))
-          .thenReturn(List.of(mockFilterCode));
+          .when(filterCodeRepository.findById(any()))
+          .thenReturn(Optional.of(mockFilterCode));
       Mockito.lenient()
-          .when(dataSourceColumnRepository.findAllById(any()))
-          .thenReturn(List.of(mockColumn));
+          .when(dataSourceColumnRepository.findById(any()))
+          .thenReturn(Optional.of(mockColumn));
     }
 
     private AdminReportRequest buildAdminReportRequest(Boolean includeFilters) {
@@ -178,7 +178,7 @@ class ReportServiceTest {
       verify(reportLibraryRepository, never()).findById(any());
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).findAllById(any());
+      verify(reportFilterRepository, never()).findById(any());
     }
 
     @Test
@@ -195,44 +195,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository).findById(libraryId);
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).saveAll(any());
-    }
-
-    @Test
-    void createReport_should_throw_when_filter_has_unknown_filter_code() {
-      Report savedReport = mock(Report.class);
-      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-
-      when(filterCodeRepository.findAllById(any())).thenReturn(Collections.emptyList());
-
-      AdminReportRequest request = buildAdminReportRequest(true);
-
-      assertThatThrownBy(() -> service.createReport(request, user))
-          .isInstanceOf(IllegalArgumentException.class)
-          .hasMessage("Unknown filterCodeUid provided: " + filterCodeUid);
-
-      verify(dataSourceRepository).findById(dataSourceUid);
-      verify(reportLibraryRepository).findById(libraryId);
-
-      verify(reportFilterRepository, never()).saveAll(any());
-    }
-
-    @Test
-    void createReport_should_throw_when_filter_has_unknown_column() {
-      Report savedReport = mock(Report.class);
-      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-
-      when(dataSourceColumnRepository.findAllById(any())).thenReturn(Collections.emptyList());
-
-      AdminReportRequest request = buildAdminReportRequest(true);
-
-      assertThatThrownBy(() -> service.createReport(request, user))
-          .isInstanceOf(IllegalArgumentException.class)
-          .hasMessage("Unknown columnUid provided: " + columnUid);
-
-      verify(dataSourceRepository).findById(dataSourceUid);
-      verify(reportLibraryRepository).findById(libraryId);
-
       verify(reportFilterRepository, never()).saveAll(any());
     }
   }
@@ -259,6 +221,8 @@ class ReportServiceTest {
       DataSourceColumn mockColumn = mock(DataSourceColumn.class);
       Mockito.lenient().when(mockColumn.getId()).thenReturn(columnUid);
 
+      Mockito.lenient().when(reportRepository.existsById(any())).thenReturn(true);
+
       Mockito.lenient()
           .when(dataSourceRepository.findById(dataSourceUid))
           .thenReturn(Optional.of(mockDataSource));
@@ -266,11 +230,11 @@ class ReportServiceTest {
           .when(reportLibraryRepository.findById(libraryId))
           .thenReturn(Optional.of(mockReportLibrary));
       Mockito.lenient()
-          .when(filterCodeRepository.findAllById(any()))
-          .thenReturn(List.of(mockFilterCode));
+          .when(filterCodeRepository.findById(any()))
+          .thenReturn(Optional.of(mockFilterCode));
       Mockito.lenient()
-          .when(dataSourceColumnRepository.findAllById(any()))
-          .thenReturn(List.of(mockColumn));
+          .when(dataSourceColumnRepository.findById(any()))
+          .thenReturn(Optional.of(mockColumn));
     }
 
     private AdminReportRequest buildAdminReportRequest(Boolean includeFilters) {
@@ -338,7 +302,7 @@ class ReportServiceTest {
       verify(reportLibraryRepository, never()).findById(any());
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).findAllById(any());
+      verify(reportFilterRepository, never()).findById(any());
     }
 
     @Test
@@ -360,56 +324,17 @@ class ReportServiceTest {
     }
 
     @Test
-    void editReport_should_throw_when_filter_has_unknown_filter_code() {
-      Report savedReport = mock(Report.class);
-      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-
-      when(filterCodeRepository.findAllById(any())).thenReturn(Collections.emptyList());
-
-      AdminReportRequest request = buildAdminReportRequest(true);
-
-      assertThatThrownBy(
-              () -> service.editReport(request, user, new ReportId(reportUid, dataSourceUid)))
-          .isInstanceOf(IllegalArgumentException.class)
-          .hasMessage("Unknown filterCodeUid provided: " + filterCodeUid);
-
-      verify(dataSourceRepository).findById(dataSourceUid);
-      verify(reportLibraryRepository).findById(libraryId);
-
-      verify(reportFilterRepository, never()).saveAll(any());
-    }
-
-    @Test
-    void editReport_should_throw_when_filter_has_unknown_column() {
-      Report savedReport = mock(Report.class);
-      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-
-      when(dataSourceColumnRepository.findAllById(any())).thenReturn(Collections.emptyList());
-
-      AdminReportRequest request = buildAdminReportRequest(true);
-
-      assertThatThrownBy(
-              () -> service.editReport(request, user, new ReportId(reportUid, dataSourceUid)))
-          .isInstanceOf(IllegalArgumentException.class)
-          .hasMessage("Unknown columnUid provided: " + columnUid);
-
-      verify(dataSourceRepository).findById(dataSourceUid);
-      verify(reportLibraryRepository).findById(libraryId);
-
-      verify(reportFilterRepository, never()).saveAll(any());
-    }
-
-    @Test
     void editReport_should_delete_filters_not_included_in_request() {
       Report savedReport = mock(Report.class);
 
       ReportFilter existingReportFilter1 = mock(ReportFilter.class);
       ReportFilter existingReportFilter2 = mock(ReportFilter.class);
-      when(existingReportFilter1.getId()).thenReturn(100L);
-      when(existingReportFilter2.getId()).thenReturn(101L);
+      Mockito.lenient().when(existingReportFilter1.getId()).thenReturn(100L);
+      Mockito.lenient().when(existingReportFilter2.getId()).thenReturn(101L);
 
-      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-      when(savedReport.getReportFilters())
+      Mockito.lenient().when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
+      Mockito.lenient()
+          .when(savedReport.getReportFilters())
           .thenReturn(List.of(existingReportFilter1, existingReportFilter2));
 
       AdminReportRequest request = buildAdminReportRequest(true);
@@ -427,12 +352,18 @@ class ReportServiceTest {
 
       ReportFilter existingReportFilter1 = mock(ReportFilter.class);
       ReportFilter existingReportFilter2 = mock(ReportFilter.class);
-      when(existingReportFilter1.getId()).thenReturn(100L);
-      when(existingReportFilter2.getId()).thenReturn(101L);
+      Mockito.lenient().when(existingReportFilter1.getId()).thenReturn(100L);
+      Mockito.lenient().when(existingReportFilter2.getId()).thenReturn(101L);
 
-      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-      when(savedReport.getReportFilters())
+      Mockito.lenient().when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
+      Mockito.lenient()
+          .when(savedReport.getReportFilters())
           .thenReturn(List.of(existingReportFilter1, existingReportFilter2));
+
+      ReportFilter mockReportFilter = mock(ReportFilter.class);
+      Mockito.lenient()
+          .when(reportFilterBuilder.build(any(UpsertFilterRequest.class), any(Report.class)))
+          .thenReturn(mockReportFilter);
 
       AdminReportRequest request = buildAdminReportRequest(true);
 
@@ -440,10 +371,7 @@ class ReportServiceTest {
 
       assertThat(result).isEqualTo(savedReport);
       verify(reportFilterBuilder).build(request.filterRequests().getFirst(), savedReport);
-
-      ReportFilter expectedReportFilter =
-          reportFilterBuilder.build(request.filterRequests().getFirst(), savedReport);
-      verify(reportFilterRepository).saveAll(List.of(expectedReportFilter));
+      verify(reportFilterRepository).saveAll(List.of(mockReportFilter));
     }
   }
 

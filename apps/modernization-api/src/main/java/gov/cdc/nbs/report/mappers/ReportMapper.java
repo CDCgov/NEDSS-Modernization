@@ -9,6 +9,7 @@ import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdminReportRequest;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class ReportMapper {
   private ReportMapper() {}
@@ -29,13 +30,20 @@ public class ReportMapper {
       builder = builder.addTime(now).addUserUid(user.getId());
     }
 
+    ReportConstants.ReportGroup group =
+        Arrays.stream(ReportConstants.ReportGroup.values())
+            .filter(g -> g.toString().equals(request.group()))
+            .findFirst()
+            .orElseThrow(
+                () -> new IllegalArgumentException("Invalid report group: " + request.group()));
+
     return builder
         .dataSource(dataSource)
         .descTxt(request.description())
         .isModifiableIndicator('N') // consistently "N" in DB, so just continuing that pattern
         .ownerUid(request.ownerId())
         .reportTitle(request.reportTitle())
-        .shared(reportGroupToDbChar(ReportConstants.ReportGroup.valueOf(request.group())))
+        .shared(reportGroupToDbChar(group))
         .status(new Status(Status.ACTIVE_CODE, now))
         .sectionCd(request.sectionCode())
         .reportLibrary(reportLibrary)

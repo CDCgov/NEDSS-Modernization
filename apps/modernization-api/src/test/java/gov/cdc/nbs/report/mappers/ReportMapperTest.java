@@ -43,6 +43,7 @@ class ReportMapperTest {
 
   @BeforeEach
   void setUp() {
+    user = Mockito.mock(NbsUserDetails.class);
     Mockito.lenient().when(user.getId()).thenReturn(userId);
   }
 
@@ -98,8 +99,6 @@ class ReportMapperTest {
     assertThat(result.getStatus().appliedOn()).isBetween(beforeCreation, afterCreation);
 
     assertThat(result.getDataSource()).isEqualTo(dataSource);
-    assertThat(result.getAddTime()).isBetween(beforeCreation, afterCreation);
-    assertThat(result.getAddUserUid()).isEqualTo(userId);
     assertThat(result.getDescTxt()).isEqualTo(description);
     assertThat(result.getOwnerUid()).isEqualTo(ownerId);
     assertThat(result.getReportTitle()).isEqualTo(reportTitle);

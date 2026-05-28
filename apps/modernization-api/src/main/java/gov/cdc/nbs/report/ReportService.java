@@ -111,8 +111,13 @@ public class ReportService {
             .map(f -> reportFilterBuilder.build(f, savedReport))
             .toList();
 
-    reportFilterRepository.deleteAll(filtersToDelete);
-    reportFilterRepository.saveAll(filtersToUpsert);
+    if (!filtersToDelete.isEmpty()) {
+      reportFilterRepository.deleteAll(filtersToDelete);
+    }
+
+    if (!filtersToUpsert.isEmpty()) {
+      reportFilterRepository.saveAll(filtersToUpsert);
+    }
 
     return savedReport;
   }
