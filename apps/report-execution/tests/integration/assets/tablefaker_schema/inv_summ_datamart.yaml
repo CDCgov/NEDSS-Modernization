@@ -1,5 +1,5 @@
 config:
-  seed: 42
+  seed: 4
 
 tables:
   - table_name: "[RDB].[dbo].[INV_SUMM_DATAMART]"
