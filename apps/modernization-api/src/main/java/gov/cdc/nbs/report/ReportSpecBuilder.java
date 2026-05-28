@@ -3,7 +3,6 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -78,10 +77,9 @@ public class ReportSpecBuilder {
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     List<ReportColumn> columns = fetchColumns();
-    Map<String, String> columnMap = null;
+    List<List<String>> columnMap = null;
     if (columns != null) {
-      columnMap =
-          columns.stream().collect(Collectors.toMap(ReportColumn::name, ReportColumn::title));
+      columnMap = columns.stream().map(c -> List.of(c.name(), c.title())).toList();
     }
 
     String selectClause = buildSelectClause(columns);
