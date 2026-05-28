@@ -46,7 +46,9 @@ class TestIntegrationNbsSrDupInvLibrary:
         base.update(overrides)
         if base['subset_query'] == '':
             base['subset_query'] = f"""
-            SELECT {', '.join(f'{item[0]} as [{item[1]}]' for item in base['column_map'])}
+            SELECT {
+                ', '.join(f'{item[0]} as [{item[1]}]' for item in base['column_map'])
+            }
             FROM [RDB].[dbo].[INV_SUMM_DATAMART]
             """
         return ReportSpec.model_validate(base)
@@ -111,7 +113,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         """Test handling of empty result set."""
         # Take the base subset_query and add WHERE 1=0 to force empty results
         report_spec = self.create_spec(days_value=365)
-        report_spec.subset_query += " WHERE 1 = 0"
+        report_spec.subset_query += ' WHERE 1 = 0'
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
