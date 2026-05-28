@@ -15,9 +15,8 @@ def execute(
     Conversion notes:
     * MSSQL Datetime conversions use constants, "101" is for mm/dd/yyyy
     * FL_FUP_EXAM_DT logic in final SELECT is the equivalent of SAS in orig. script
-    * NULL filtering for PATIENT_NAME does not match SAS script (since script
-      joins by PATIENT_NAME, it doesn't make sense in SQL to join on NULL
-      values in this instance)
+    * TODO sorting differences
+    * TODO update comparison confluence with way to compare
     """
     query = f"""
         WITH STD_HIV_DATAMART AS ({subset_query}),
@@ -76,7 +75,6 @@ def execute(
           SELECT PATIENT_NAME,
             COUNT(PATIENT_LOCAL_ID) AS CASE_COUNT
           FROM PATIENT_CASES
-          WHERE PATIENT_NAME IS NOT NULL
           GROUP BY PATIENT_NAME
         )
 
@@ -106,7 +104,7 @@ def execute(
           ) AS PATIENTID
         FROM PATIENT_CASES PC
         INNER JOIN CASE_COUNTS CC
-          ON PC.PATIENT_NAME = CC.PATIENT_NAME
+          ON ((PC.PATIENT_NAME = CC.PATIENT_NAME) OR (PC.PATIENT_NAME IS NULL AND CC.PATIENT_NAME IS NULL))
         WHERE CASE_COUNT > 1
         ORDER BY PC.PATIENT_NAME;
         """
