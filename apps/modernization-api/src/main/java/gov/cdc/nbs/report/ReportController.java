@@ -47,24 +47,24 @@ public class ReportController {
   }
 
   @PutMapping("/configuration/{reportUid}/{dataSourceUid}/save")
-  //  TODO: Figure out how to handle permissions more granularly
+  //  TODO: Figure out how to handle permissions more granularly NOSONAR
   public ResponseEntity<ReportId> saveReport(
       @AuthenticationPrincipal NbsUserDetails user,
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody ReportExecutionRequest request) {
-    //  @TODO: Fill in
+    //  @TODO: Finish implementation NOSONAR
     return null;
   }
 
   @PostMapping("/configuration/{reportUid}/{dataSourceUid}/save-as")
-  //  TODO: Figure out how to handle permissions more granularly
+  //  TODO: Figure out how to handle permissions more granularly NOSONAR
   public ResponseEntity<ReportId> saveAsReport(
       @AuthenticationPrincipal NbsUserDetails user,
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody SaveAsReportRequest request) {
-    //  @TODO: Fill in
+    //  @TODO: Finish implementation NOSONAR
     return null;
   }
 
