@@ -3,13 +3,7 @@ package gov.cdc.nbs.report.mappers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import gov.cdc.nbs.entity.odse.DataSource;
-import gov.cdc.nbs.entity.odse.DataSourceColumn;
-import gov.cdc.nbs.entity.odse.FilterCode;
-import gov.cdc.nbs.entity.odse.FilterValue;
-import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportFilter;
-import gov.cdc.nbs.entity.odse.ReportFilterValidation;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +12,7 @@ import org.junit.jupiter.api.Test;
 class BasicFilterConfigurationMapperTest {
   // JPA creates circular references, which are tedious to construct properly and
   // we don't really care here
-  Report emptyReport = new Report("section");
+  Report emptyReport = new Report(new ReportId(), "section");
   ReportFilter emptyFilter = new ReportFilter(emptyReport, new FilterCode("NONE"));
   DataSource dataSource = DataSource.builder().id(100L).statusCd('A').build();
   DataSourceColumn column =

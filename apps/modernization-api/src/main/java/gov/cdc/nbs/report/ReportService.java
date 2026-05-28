@@ -32,6 +32,7 @@ public class ReportService {
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
   private final ReportFilterRepository reportFilterRepository;
+  private final ReportMapper reportMapper;
 
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils;
@@ -51,6 +52,7 @@ public class ReportService {
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
     this.reportFilterRepository = reportFilterRepository;
+    this.reportMapper = new ReportMapper(reportRepository);
 
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
@@ -64,7 +66,7 @@ public class ReportService {
 
     Report savedReport =
         reportRepository.save(
-            ReportMapper.fromAdminReportRequest(
+            reportMapper.fromAdminReportRequest(
                 request, user, metadata.reportLibrary, metadata.dataSource, null));
 
     if (!request.filterRequests().isEmpty()) {
@@ -93,7 +95,7 @@ public class ReportService {
 
     Report savedReport =
         reportRepository.save(
-            ReportMapper.fromAdminReportRequest(
+            reportMapper.fromAdminReportRequest(
                 request, user, metadata.reportLibrary, metadata.dataSource, existingReportId));
 
     List<ReportFilter> existingFilters = savedReport.getReportFilters();

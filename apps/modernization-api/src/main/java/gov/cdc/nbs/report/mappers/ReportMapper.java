@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class ReportMapper {
   private final ReportRepository reportRepository;
 
-  private ReportMapper(ReportRepository reportRepository) {
+  public ReportMapper(ReportRepository reportRepository) {
     this.reportRepository = reportRepository;
   }
 

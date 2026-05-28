@@ -10,28 +10,36 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdminReportRequest;
+import gov.cdc.nbs.repository.ReportRepository;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ReportMapperTest {
 
   @Mock private NbsUserDetails user;
   @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;
+  private final ReportRepository reportRepository = Mockito.mock(ReportRepository.class);
 
   private final Long userId = 123L;
   private final Long ownerId = 456L;
+  private final Long dataSourceId = 789L;
   private final String reportTitle = "Test Report";
   private final String sectionCd = "SEC";
   private final String description = "Test Description";
 
+  private final ReportMapper reportMapper = new ReportMapper(reportRepository);
+
   private AdminReportRequest buildAdminReportRequest(ReportConstants.ReportGroup group) {
     return new AdminReportRequest(
-        2L,
+        dataSourceId,
         1L,
         reportTitle,
         sectionCd,
@@ -45,6 +53,8 @@ class ReportMapperTest {
   void setUp() {
     user = Mockito.mock(NbsUserDetails.class);
     Mockito.lenient().when(user.getId()).thenReturn(userId);
+
+    Mockito.lenient().when(dataSource.getId()).thenReturn(dataSourceId);
   }
 
   @Test
@@ -53,11 +63,18 @@ class ReportMapperTest {
         buildAdminReportRequest(ReportConstants.ReportGroup.REPORTING_FACILITY);
 
     LocalDateTime beforeCreation = LocalDateTime.now();
+
+    Long nextReportId = 100L;
+    Mockito.lenient().when(reportRepository.getNextReportId()).thenReturn(nextReportId);
+
     Report result =
-        ReportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
+        reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
     LocalDateTime afterCreation = LocalDateTime.now();
 
-    assertThat(result.getId()).isNull();
+    assertThat(result.getId()).isNotNull();
+    assertThat(result.getId().getDataSourceUid()).isEqualTo(request.dataSourceId());
+    Mockito.verify(reportRepository).getNextReportId();
+    assertThat(result.getId().getReportUid()).isEqualTo(nextReportId);
 
     // Should always be set to 'N'
     assertThat(result.getIsModifiableIndicator()).isEqualTo('N');
@@ -85,7 +102,7 @@ class ReportMapperTest {
 
     LocalDateTime beforeCreation = LocalDateTime.now();
     Report result =
-        ReportMapper.fromAdminReportRequest(
+        reportMapper.fromAdminReportRequest(
             request, user, reportLibrary, dataSource, existingReportId);
     LocalDateTime afterCreation = LocalDateTime.now();
 
@@ -112,7 +129,7 @@ class ReportMapperTest {
     AdminReportRequest request = buildAdminReportRequest(ReportConstants.ReportGroup.PRIVATE);
 
     Report result =
-        ReportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
+        reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
 
     assertThat(result.getShared()).isEqualTo('P');
   }
@@ -123,7 +140,7 @@ class ReportMapperTest {
         buildAdminReportRequest(ReportConstants.ReportGroup.REPORTING_FACILITY);
 
     Report result =
-        ReportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
+        reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
 
     assertThat(result.getShared()).isEqualTo('R');
   }
@@ -133,7 +150,7 @@ class ReportMapperTest {
     AdminReportRequest request = buildAdminReportRequest(ReportConstants.ReportGroup.PUBLIC);
 
     Report result =
-        ReportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
+        reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
 
     assertThat(result.getShared()).isEqualTo('S');
   }
@@ -143,7 +160,7 @@ class ReportMapperTest {
     AdminReportRequest request = buildAdminReportRequest(ReportConstants.ReportGroup.TEMPLATE);
 
     Report result =
-        ReportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
+        reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
 
     assertThat(result.getShared()).isEqualTo('T');
   }
