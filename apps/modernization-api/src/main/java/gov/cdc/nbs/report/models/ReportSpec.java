@@ -10,4 +10,6 @@ public record ReportSpec(
     @JsonProperty(value = "library_name", required = true) String libraryName,
     @JsonProperty(value = "data_source_name", required = true) String dataSourceName,
     @JsonProperty(value = "subset_query", required = true) String subsetQuery,
-    @JsonProperty(value = "column_map", required = false) List<List<String>> columnMap) {}
+    @JsonProperty(value = "column_map", required = false) List<List<String>> columnMap,
+    @JsonProperty(value = "days_value") Integer daysValue) {
+}
