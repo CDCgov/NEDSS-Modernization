@@ -60,7 +60,7 @@ class ReportControllerTest {
       Report expectedReport = mock(Report.class);
       NbsUserDetails user = mock(NbsUserDetails.class);
 
-      when(service.upsertReport(request, user, null)).thenReturn(expectedReport);
+      when(service.createReport(request, user)).thenReturn(expectedReport);
 
       ResponseEntity<ReportId> response = controller.createReport(user, request);
 
@@ -84,8 +84,7 @@ class ReportControllerTest {
 
       String errorMsg = "No data source found for ID " + request.dataSourceId();
 
-      when(service.upsertReport(request, user, null))
-          .thenThrow(new IllegalArgumentException(errorMsg));
+      when(service.createReport(request, user)).thenThrow(new IllegalArgumentException(errorMsg));
 
       assertThatThrownBy(() -> controller.createReport(user, request))
           .isInstanceOf(IllegalArgumentException.class)
@@ -108,8 +107,7 @@ class ReportControllerTest {
 
       String errorMsg = "No report library found for ID " + request.libraryId();
 
-      when(service.upsertReport(request, user, null))
-          .thenThrow(new IllegalArgumentException(errorMsg));
+      when(service.createReport(request, user)).thenThrow(new IllegalArgumentException(errorMsg));
 
       assertThatThrownBy(() -> controller.createReport(user, request))
           .isInstanceOf(IllegalArgumentException.class)
@@ -137,7 +135,7 @@ class ReportControllerTest {
       NbsUserDetails user = mock(NbsUserDetails.class);
       ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
-      when(service.upsertReport(request, user, reportId)).thenReturn(expectedReport);
+      when(service.editReport(request, user, reportId)).thenReturn(expectedReport);
 
       ResponseEntity<ReportId> response =
           controller.editReport(user, reportUid, dataSourceUid, request);
@@ -165,7 +163,7 @@ class ReportControllerTest {
 
       String errorMsg = "No data source found for ID " + request.dataSourceId();
 
-      when(service.upsertReport(request, user, reportId))
+      when(service.editReport(request, user, reportId))
           .thenThrow(new IllegalArgumentException(errorMsg));
 
       assertThatThrownBy(() -> controller.editReport(user, reportUid, dataSourceUid, request))
@@ -192,7 +190,7 @@ class ReportControllerTest {
 
       String errorMsg = "No report library found for ID " + request.libraryId();
 
-      when(service.upsertReport(request, user, reportId))
+      when(service.editReport(request, user, reportId))
           .thenThrow(new IllegalArgumentException(errorMsg));
 
       assertThatThrownBy(() -> controller.editReport(user, reportUid, dataSourceUid, request))
