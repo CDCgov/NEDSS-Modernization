@@ -58,20 +58,9 @@ public class ReportService {
     this.reportFilterBuilder = reportFilterBuilder;
   }
 
-  /**
-   * Either create a new report or update an existing report, depending on whether an existing
-   * ReportId is supplied.
-   */
   @Transactional
-  public Report upsertReport(
-      AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
-    if (existingReportId != null && !reportRepository.existsById(existingReportId)) {
-      throw new NotFoundException(
-          String.format(
-              "Report not found for Report UID: %d and Data Source UID: %d",
-              existingReportId.getReportUid(), existingReportId.getDataSourceUid()));
-    }
-
+  public Report createReport(
+      AdminReportRequest request, NbsUserDetails user) {
     DataSource dataSource =
         dataSourceRepository
             .findById(request.dataSourceId())
@@ -91,7 +80,7 @@ public class ReportService {
     Report savedReport =
         reportRepository.save(
             ReportMapper.fromAdminReportRequest(
-                request, user, reportLibrary, dataSource, existingReportId));
+                request, user, reportLibrary, dataSource, null));
 
     if (!request.filterRequests().isEmpty()) {
       List<ReportFilter> reportFilters =
@@ -101,6 +90,53 @@ public class ReportService {
 
       reportFilterRepository.saveAll(reportFilters);
     }
+
+    return savedReport;
+  }
+
+  @Transactional
+  public Report editReport(
+          AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
+    if (existingReportId != null && !reportRepository.existsById(existingReportId)) {
+      throw new NotFoundException(
+              String.format(
+                      "Report not found for Report UID: %d and Data Source UID: %d",
+                      existingReportId.getReportUid(), existingReportId.getDataSourceUid()));
+    }
+
+    DataSource dataSource =
+            dataSourceRepository
+                    .findById(request.dataSourceId())
+                    .orElseThrow(
+                            () ->
+                                    new IllegalArgumentException(
+                                            "No data source found for ID " + request.dataSourceId()));
+
+    ReportLibrary reportLibrary =
+            reportLibraryRepository
+                    .findById(request.libraryId())
+                    .orElseThrow(
+                            () ->
+                                    new IllegalArgumentException(
+                                            "No report library found for ID " + request.libraryId()));
+
+    Report savedReport =
+            reportRepository.save(
+                    ReportMapper.fromAdminReportRequest(
+                            request, user, reportLibrary, dataSource, existingReportId));
+
+    List<ReportFilter> existingFilters = savedReport.getReportFilters();
+
+    List<ReportFilter> filtersToDelete = existingFilters.stream()
+            .filter(f -> request.filterRequests().stream().noneMatch(fr -> fr.id() != null && fr.id().equals(f.getId())))
+            .toList();
+
+    List<ReportFilter> filtersToUpsert = request.filterRequests().stream()
+            .map(f -> reportFilterBuilder.build(f, savedReport))
+            .toList();
+
+    reportFilterRepository.deleteAll(filtersToDelete);
+    reportFilterRepository.saveAll(filtersToUpsert);
 
     return savedReport;
   }

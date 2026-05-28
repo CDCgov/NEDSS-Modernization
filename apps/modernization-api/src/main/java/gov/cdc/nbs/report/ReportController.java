@@ -31,7 +31,7 @@ public class ReportController {
   public ResponseEntity<ReportId> createReport(
       @AuthenticationPrincipal NbsUserDetails user,
       @Valid @RequestBody AdminReportRequest request) {
-    Report report = reportService.upsertReport(request, user, null);
+    Report report = reportService.createReport(request, user);
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 
@@ -43,7 +43,7 @@ public class ReportController {
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody AdminReportRequest request) {
     Report report =
-        reportService.upsertReport(request, user, new ReportId(reportUid, dataSourceUid));
+        reportService.editReport(request, user, new ReportId(reportUid, dataSourceUid));
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 

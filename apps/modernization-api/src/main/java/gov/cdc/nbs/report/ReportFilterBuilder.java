@@ -1,7 +1,7 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.*;
-import gov.cdc.nbs.report.models.CreateFilterRequest;
+import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.repository.FilterCodeRepository;
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ public class ReportFilterBuilder {
     this.filterCodeRepository = filterCodeRepository;
   }
 
-  public ReportFilter build(CreateFilterRequest filter, Report report) {
+  public ReportFilter build(UpsertFilterRequest filter, Report report) {
     Character statusCd = 'A';
     LocalDateTime now = LocalDateTime.now();
 
@@ -113,6 +113,10 @@ public class ReportFilterBuilder {
               .statusTime(now)
               .build());
     }
+
+      if (filter.id() != null) {
+          filterBuilder.id(filter.id());
+      }
 
     return filterBuilder.build();
   }

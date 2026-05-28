@@ -10,7 +10,7 @@ import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportFilterValidation;
-import gov.cdc.nbs.report.models.CreateFilterRequest;
+import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.repository.FilterCodeRepository;
 import java.util.Optional;
@@ -37,8 +37,8 @@ class ReportFilterBuilderTest {
   @Test
   void build_should_throw_when_column_id_provided_but_data_source_column_not_found() {
     Long columnUid = 999L;
-    CreateFilterRequest filter =
-        new CreateFilterRequest(5L, columnUid, ReportConstants.SelectType.SINGLE, false);
+    UpsertFilterRequest filter =
+        new UpsertFilterRequest(5L, columnUid, ReportConstants.SelectType.SINGLE, false);
     Report report = mock(Report.class);
 
     when(dataSourceColumnRepository.findById(columnUid)).thenReturn(Optional.empty());
@@ -51,8 +51,8 @@ class ReportFilterBuilderTest {
   @Test
   void build_should_throw_when_filter_code_not_found() {
     Long filterCodeId = 42L;
-    CreateFilterRequest filter =
-        new CreateFilterRequest(filterCodeId, null, ReportConstants.SelectType.SINGLE, false);
+    UpsertFilterRequest filter =
+        new UpsertFilterRequest(filterCodeId, null, ReportConstants.SelectType.SINGLE, false);
     Report report = mock(Report.class);
 
     when(filterCodeRepository.findById(filterCodeId)).thenReturn(Optional.empty());
@@ -64,8 +64,8 @@ class ReportFilterBuilderTest {
 
   @Test
   void build_should_set_filter_validation_when_required() {
-    CreateFilterRequest filter =
-        new CreateFilterRequest(5L, null, ReportConstants.SelectType.SINGLE, true);
+    UpsertFilterRequest filter =
+        new UpsertFilterRequest(5L, null, ReportConstants.SelectType.SINGLE, true);
     Report report = mock(Report.class);
 
     FilterCode mockFilterCode = mock(FilterCode.class);
@@ -82,8 +82,8 @@ class ReportFilterBuilderTest {
 
   @Test
   void build_should_not_set_filter_validation_when_not_required() {
-    CreateFilterRequest filter =
-        new CreateFilterRequest(5L, null, ReportConstants.SelectType.SINGLE, false);
+    UpsertFilterRequest filter =
+        new UpsertFilterRequest(5L, null, ReportConstants.SelectType.SINGLE, false);
     Report report = mock(Report.class);
 
     FilterCode mockFilterCode = mock(FilterCode.class);
@@ -97,8 +97,8 @@ class ReportFilterBuilderTest {
 
   @Test
   void build_should_set_min_max_for_where_clause_builder_case_7() {
-    CreateFilterRequest filter =
-        new CreateFilterRequest(7L, null, ReportConstants.SelectType.SINGLE, false);
+    UpsertFilterRequest filter =
+        new UpsertFilterRequest(7L, null, ReportConstants.SelectType.SINGLE, false);
     Report report = mock(Report.class);
 
     when(filterCodeRepository.findById(7L)).thenReturn(Optional.of(mock(FilterCode.class)));
@@ -112,8 +112,8 @@ class ReportFilterBuilderTest {
   @ParameterizedTest
   @MethodSource("fetchMinMaxTimeRangeTestParams")
   void build_should_set_min_max_for_time_range_cases(Long filterCodeId) {
-    CreateFilterRequest filter =
-        new CreateFilterRequest(filterCodeId, null, ReportConstants.SelectType.SINGLE, false);
+    UpsertFilterRequest filter =
+        new UpsertFilterRequest(filterCodeId, null, ReportConstants.SelectType.SINGLE, false);
     Report report = mock(Report.class);
 
     when(filterCodeRepository.findById(filterCodeId))
@@ -128,8 +128,8 @@ class ReportFilterBuilderTest {
   @ParameterizedTest
   @MethodSource("fetchMinMaxSelectGroupTestParams")
   void build_should_set_min_max_for_multi_select_group(Long filterCodeId) {
-    CreateFilterRequest filter =
-        new CreateFilterRequest(filterCodeId, null, ReportConstants.SelectType.MULTI, false);
+    UpsertFilterRequest filter =
+        new UpsertFilterRequest(filterCodeId, null, ReportConstants.SelectType.MULTI, false);
     Report report = mock(Report.class);
 
     when(filterCodeRepository.findById(filterCodeId))
@@ -144,8 +144,8 @@ class ReportFilterBuilderTest {
   @ParameterizedTest
   @MethodSource("fetchMinMaxSelectGroupTestParams")
   void build_should_set_min_max_for_single_select_group(Long filterCodeId) {
-    CreateFilterRequest filter =
-        new CreateFilterRequest(filterCodeId, null, ReportConstants.SelectType.SINGLE, false);
+    UpsertFilterRequest filter =
+        new UpsertFilterRequest(filterCodeId, null, ReportConstants.SelectType.SINGLE, false);
     Report report = mock(Report.class);
 
     when(filterCodeRepository.findById(filterCodeId))
@@ -160,8 +160,8 @@ class ReportFilterBuilderTest {
   @Test
   void build_should_attach_data_source_column_when_present() {
     long columnUid = 77L;
-    CreateFilterRequest filter =
-        new CreateFilterRequest(5L, columnUid, ReportConstants.SelectType.SINGLE, false);
+    UpsertFilterRequest filter =
+        new UpsertFilterRequest(5L, columnUid, ReportConstants.SelectType.SINGLE, false);
     Report report = mock(Report.class);
 
     DataSourceColumn column = mock(DataSourceColumn.class);
@@ -175,8 +175,8 @@ class ReportFilterBuilderTest {
 
   @Test
   void build_should_set_default_values_on_success() {
-    CreateFilterRequest filter =
-        new CreateFilterRequest(5L, null, ReportConstants.SelectType.SINGLE, false);
+    UpsertFilterRequest filter =
+        new UpsertFilterRequest(5L, null, ReportConstants.SelectType.SINGLE, false);
     Report report = mock(Report.class);
     FilterCode filterCode = mock(FilterCode.class);
 

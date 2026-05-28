@@ -15,7 +15,7 @@ public record AdminReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String sectionCode,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Long ownerId,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String group,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<CreateFilterRequest> filterRequests,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<UpsertFilterRequest> filterRequests,
     String description) {
   public AdminReportRequest {
     //  Jakarta does not offer an Enum validation annotation, so here we are

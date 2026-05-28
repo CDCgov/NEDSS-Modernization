@@ -114,10 +114,10 @@ class ReportServiceTest {
     }
 
     private AdminReportRequest buildAdminReportRequest(Boolean includeFilters) {
-      List<CreateFilterRequest> filterRequests =
+      List<UpsertFilterRequest> filterRequests =
           includeFilters
               ? List.of(
-                  new CreateFilterRequest(7L, columnUid, ReportConstants.SelectType.MULTI, false))
+                  new UpsertFilterRequest(7L, columnUid, ReportConstants.SelectType.MULTI, false))
               : Collections.emptyList();
       return new AdminReportRequest(
           dataSourceUid,
