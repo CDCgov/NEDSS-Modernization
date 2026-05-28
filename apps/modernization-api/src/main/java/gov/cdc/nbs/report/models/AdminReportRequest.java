@@ -18,6 +18,7 @@ public record AdminReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<CreateFilterRequest> filterRequests,
     String description) {
   public AdminReportRequest {
+    //  Jakarta does not offer an Enum validation annotation, so here we are
     if (Arrays.stream(ReportConstants.ReportGroup.values())
         .noneMatch(g -> g.toString().equals(group))) {
       throw new IllegalArgumentException("Invalid report group: " + group);

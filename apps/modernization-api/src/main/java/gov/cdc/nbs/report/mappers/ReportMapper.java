@@ -35,7 +35,7 @@ public class ReportMapper {
         .isModifiableIndicator('N') // consistently "N" in DB, so just continuing that pattern
         .ownerUid(request.ownerId())
         .reportTitle(request.reportTitle())
-        .shared(reportGroupToDbChar(request.group()))
+        .shared(reportGroupToDbChar(ReportConstants.ReportGroup.valueOf(request.group())))
         .status(new Status(Status.ACTIVE_CODE, now))
         .sectionCd(request.sectionCode())
         .reportLibrary(reportLibrary)
