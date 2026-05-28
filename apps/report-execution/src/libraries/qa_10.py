@@ -1,3 +1,5 @@
+import time
+
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -8,100 +10,66 @@ def execute(
     data_source_name: str,
     **kwargs,
 ):
-    """QA Report 05: Number of Records Entered by User ID.
+    """QA10 STD Program Report: Interviews - Pregnant/Recent Birth Report.
 
     Conversion notes:
-    * Matched "export format"
+    * Did not include logging of run time
+    * Hardcode i to "14" instead of the count of the columns
     """
-    content = trx.query(
-        f"""
-        WITH v_event_metric as ({subset_query}),
-        
-        PROG_AREA as (
-            SELECT DISTINCT PROG_AREA_CD
-            FROM nbs_srte.dbo.condition_code
-            WHERE 
-                condition_cd in ('10560', '900')
-                OR nnd_entity_identifier = 'STD_Case_Map_v1.0'
-        ),
 
-        INV as (
-            SELECT DISTINCT 
-                count(*) as OOJ_REFF,
-                em.ADD_USER_ID
-            FROM v_event_metric em
-            INNER JOIN rdb.dbo.STD_HIV_DATAMART hiv on em.LOCAL_ID = hiv.INV_LOCAL_ID
-            INNER JOIN rdb.dbo.F_STD_PAGE_CASE std 
-                on hiv.INVESTIGATION_KEY = std.INVESTIGATION_KEY
-            INNER JOIN rdb.dbo.D_INV_ADMINISTRATIVE adm 
-                on std.D_INV_ADMINISTRATIVE_KEY = adm.D_INV_ADMINISTRATIVE_KEY
-            WHERE 
-                em.EVENT_TYPE in ('PHCInvForm')
-                AND adm.ADM_REFERRAL_BASIS_OOJ IS NOT NULL
-            GROUP BY em.ADD_USER_ID
-        ),
-
-        LAB_MORB as (
-            SELECT DISTINCT
-                COUNT (*) as REACTOR,
-                em.ADD_USER_ID
-            FROM v_event_metric em
-            INNER JOIN PROG_AREA pa on pa.PROG_AREA_CD = em.prog_area_cd
-            WHERE
-                em.EVENT_TYPE in ('LabReport', 'MorbReport')
-                AND em.ELECTRONIC_IND = 'N'
-            GROUP BY em.ADD_USER_ID
-        ),
-
-        CONTACT as (
-            SELECT COUNT (*) as PART_CLUS,
-                em.ADD_USER_ID
-        FROM v_event_metric em
-        INNER JOIN PROG_AREA pa on pa.PROG_AREA_CD = em.prog_area_cd
-        WHERE
-            em.EVENT_TYPE in ('CONTACT')
-        GROUP BY em.ADD_USER_ID
-        ),
-
-        RESULT as (
-            SELECT
-                COALESCE(
-                    INV.ADD_USER_ID,
-                    LAB_MORB.ADD_USER_ID,
-                    CONTACT.ADD_USER_ID
-                ) as ADD_USER_ID,
-                COALESCE(INV.OOJ_REFF, 0) as OOJ_REFF,
-                COALESCE(LAB_MORB.REACTOR, 0) as REACTOR,
-                COALESCE(CONTACT.PART_CLUS, 0) as PART_CLUS
-            FROM INV
-            FULL JOIN LAB_MORB on INV.ADD_USER_ID = LAB_MORB.ADD_USER_ID
-            FULL JOIN CONTACT on INV.ADD_USER_ID = CONTACT.ADD_USER_ID 
-                    or LAB_MORB.ADD_USER_ID = CONTACT.ADD_USER_ID
+    sql_query = f"""
+    WITH shd AS (
+    SELECT *
+    FROM ({subset_query}) AS base
+    )
+    SELECT
+        a.investigation_key as [INVESTIGATION_KEY],
+        NULLIF(a.patient_name, 'NULL') AS [PATIENT_NAME],
+        a.patient_local_id as [PATIENT_LOCAL_ID],
+        NULLIF(a.patient_age_reported, 'NULL') AS [PATIENT_AGE_REPORTED],
+        SUBSTRING(patient_sex, 1, 1) AS [PATIENT_SEX],
+        a.DIAGNOSIS_CD,
+        a.JURISDICTION_NM,
+        NULLIF(INVESTIGATOR_INTERVIEW_QC, 'NULL') AS [INVESTIGATOR_INTERVIEW_QC],
+        FORMAT(CAST(a.cc_closed_dt AS DATE), 'MM/dd/yyyy') as CLOSED_DT,
+        CASE WHEN a.CC_CLOSED_DT IS NULL THEN 'Y' ELSE 'N' END as Open_Status, 
+        SUBSTRING(NULLIF(a.PATIENT_PREGNANT_IND, 'NULL'), 1, 1) AS [PATIENT_PREGNANT_IND],
+        NULLIF(PBI_PREG_IN_LAST_12MO_IND, 'NULL') AS [PBI_PREG_IN_LAST_12MO_IND],
+        NULLIF(a.PBI_PREG_AT_EXAM_IND, 'NULL') AS [PBI_PREG_AT_EXAM_IND],
+        NULLIF(PBI_PREG_AT_IX_IND, 'NULL') AS [PBI_PREG_AT_IX_IND],
+        NULLIF(PBI_PREG_IN_LAST_12MO_IND, 'NULL') AS [PBI_PREG_IN_LAST_12MO_IND],
+        FORMAT(CAST(CA_INTERVIEWER_ASSIGN_DT AS DATE), 'MM/dd/yyyy') AS [ASSIGNED_DT],
+        '14' AS [i], -- the sas library included a column with the count of the columns
+        LOWER(NULLIF(PATIENT_NAME, 'NULL')) AS [name_l],
+        SUBSTRING(a.PATIENT_LOCAL_ID, 4, 8) - 10000000 AS [patient_id],
+        CASE
+            WHEN PATIENT_AGE_REPORTED IS NULL THEN NULL
+            WHEN LTRIM(RTRIM(PATIENT_AGE_REPORTED)) IN ('', '.') THEN NULL
+            ELSE TRY_CAST(
+                    LEFT(
+                            LTRIM(RTRIM(PATIENT_AGE_REPORTED)),
+                            CHARINDEX(' ', LTRIM(RTRIM(PATIENT_AGE_REPORTED)) + ' ') - 1
+                    ) AS INT
+                 )
+            END AS [age]
+    FROM
+        shd a
+            INNER JOIN RDB.DBO.INVESTIGATION e
+                       ON a.INVESTIGATION_KEY = e.INVESTIGATION_KEY
+    where a.DIAGNOSIS_CD IS NOT NULL
+      and a.INVESTIGATOR_INTERVIEW_KEY IS NOT NULL
+      and a.inv_local_id is not null
+      and e.inv_case_status in ('Probable', 'Confirmed')
+      and a.patient_sex = 'Female'
+      and (
+        a.patient_pregnant_ind = 'Yes'
+            or a.pbi_preg_at_exam_ind = 'Yes'
+            or a.pbi_preg_at_ix_ind = 'Yes'
+            or a.pbi_preg_in_last_12mo_ind = 'Yes'
         )
+    order by name_l, DIAGNOSIS_CD;
+    """
 
-        SELECT 
-            -- SAS trim leaves a ' ' behind if otherwise empty
-            TRIM(CONCAT(
-                COALESCE(TRIM(usr.PROVIDER_QUICK_CODE), ' '),
-                ' - ',
-                COALESCE(TRIM(usr.FIRST_NM), ' '),
-                ' ',
-                COALESCE(TRIM(usr.LAST_NM), ' ')
-            )) as user_qc,
-            RESULT.OOJ_REFF,
-            usr.FIRST_NM,
-            usr.LAST_NM,
-            usr.PROVIDER_QUICK_CODE,
-            RESULT.ADD_USER_ID,
-            RESULT.REACTOR,
-            RESULT.PART_CLUS
-        FROM RESULT
-        LEFT JOIN rdb.dbo.USER_PROFILE usr on usr.NEDSS_ENTRY_ID = RESULT.ADD_USER_ID
-        ORDER BY user_qc
-        """
-    )
+    content = trx.query(sql_query)
 
-    return ReportResult(
-        content_type='table',
-        content=content,
-    )
+    return ReportResult(content_type='table', content=content)

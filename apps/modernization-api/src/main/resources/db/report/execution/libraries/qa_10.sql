@@ -6,6 +6,7 @@ DECLARE @pyLib VARCHAR(50) = 'qa_10'
 DECLARE @sasLib VARCHAR(50) = 'QA10.SAS'
 DECLARE @desc VARCHAR(300) = 'QA10: Interviews - Pregnant/Recent Birth. This report generates a list, by name, of females interviewed that have a current or past year pregnancy status of Yes during the specified time period.'
 
+
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN
     UPDATE [dbo].[Report_Library]
@@ -25,6 +26,7 @@ BEGIN
         library_name,
         desc_txt,
         runner,
+        column_select_ind,
         is_builtin_ind,
         add_time,
         add_user_id,
@@ -34,6 +36,7 @@ BEGIN
         @pyLib,
         @desc,
         'python',
+        'N',
         'Y',
         CURRENT_TIMESTAMP,
         99999999,
