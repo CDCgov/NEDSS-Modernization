@@ -2065,6 +2065,286 @@ describe('report run page', () => {
                 });
             });
         });
+
+        describe('BAS_STD_HIV_WRKR', () => {
+            const mockOptionApiImpl = (url: string) => {
+                if (url.includes('person/std-hiv-worker/names')) {
+                    return Promise.resolve([
+                        { value: 'erso', name: 'Jyn Erso' },
+                        { value: 'andor', name: 'Cassian Andor' },
+                    ]);
+                } else {
+                    return Promise.resolve([]);
+                }
+            };
+
+            describe('single select', () => {
+                const MOCK_FILTER: BasicFilterConfiguration = {
+                    reportFilterUid: 1001,
+                    filterType: {
+                        id: 5,
+                        codeTable: 'nbs_odse..person_name',
+                        descTxt: 'Basic STD HIV Worker Filter',
+                        code: 'STD_HIV_WRKR',
+                        codeSetName: 'STD_HIV_WRKR',
+                        type: 'BAS_STD_HIV_WRKR',
+                        name: 'STD HIV Workers',
+                    },
+                    isRequired: true,
+                    minValueCount: 1,
+                    maxValueCount: 1,
+                    defaultValues: [],
+                    defaultIncludeNulls: false,
+                    reportColumnUid: 2001,
+                };
+
+                it('goes through happy path', async () => {
+                    const user = userEvent.setup();
+
+                    const mockConfigApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
+
+                    const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findByRole('option', { name: 'Jyn Erso' })).toBeVisible();
+
+                    // component refreshes when options populates, so can't do this earlier
+                    let dropDown = await findByLabelText('Full Name');
+                    expect(dropDown).toBeVisible();
+                    await userEvent.selectOptions(dropDown, 'Jyn Erso');
+
+                    expect(dropDown).toHaveValue('erso');
+
+                    expect(await axe(container)).toHaveNoViolations();
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['erso'] }],
+                        }),
+                    });
+                });
+
+                it('does not submit on required', async () => {
+                    const user = userEvent.setup();
+
+                    const mockConfigApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
+
+                    const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findByRole('option', { name: 'Jyn Erso' })).toBeVisible();
+
+                    // component refreshes when options populates, so can't do this earlier
+                    const dropDown = await findByLabelText('Full Name');
+                    expect(dropDown).toBeVisible();
+                    expect(dropDown).toHaveValue('');
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+
+                    expect(dropDown).toBeInvalid();
+                    expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                    expect(mockResultApi).not.toHaveBeenCalled();
+                });
+
+                it('renders default value', async () => {
+                    const user = userEvent.setup();
+
+                    const mockConfigApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['erso'] }],
+                        });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
+
+                    const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findByRole('option', { name: 'Jyn Erso' })).toBeVisible();
+
+                    // component refreshes when options populates, so can't do this earlier
+                    const dropDown = await findByLabelText('Full Name');
+                    expect(dropDown).toBeVisible();
+                    expect(dropDown).toHaveValue('erso');
+
+                    await userEvent.selectOptions(dropDown, 'andor');
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['andor'] }],
+                        }),
+                    });
+                });
+            });
+            describe('multi select', () => {
+                const MOCK_FILTER: BasicFilterConfiguration = {
+                    reportFilterUid: 1001,
+                    filterType: {
+                        id: 5,
+                        codeTable: 'nbs_odse..person_name',
+                        descTxt: 'Basic STD HIV Worker Filter',
+                        code: 'STD_HIV_WRKR',
+                        codeSetName: 'STD_HIV_WRKR',
+                        type: 'BAS_STD_HIV_WRKR',
+                        name: 'STD HIV Workers',
+                    },
+                    isRequired: true,
+                    minValueCount: 1,
+                    maxValueCount: -1,
+                    defaultValues: [],
+                    defaultIncludeNulls: false,
+                    reportColumnUid: 2001,
+                };
+
+                it('goes through happy path', async () => {
+                    const user = userEvent.setup();
+
+                    const mockConfigApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
+
+                    const { getByRole, getByText, findByRole, findByLabelText, container } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockConfigApi).toHaveBeenCalled();
+
+                    await user.click(await findByLabelText('Full Name'));
+                    expect(await findByRole('option', { name: 'Jyn Erso' })).toBeVisible();
+
+                    // component refreshes when options populates, so can't do this earlier
+                    let dropDown = await findByLabelText('Full Name');
+                    expect(dropDown).toBeVisible();
+                    await userEvent.click(dropDown);
+                    await userEvent.click(getByText('Jyn Erso'));
+                    await userEvent.click(dropDown);
+                    await userEvent.click(getByText('Cassian Andor'));
+
+                    expect(await findByRole('button', { name: 'Remove Jyn Erso' })).toBeVisible();
+                    expect(await findByRole('button', { name: 'Remove Cassian Andor' })).toBeVisible();
+
+                    expect(await axe(container)).toHaveNoViolations();
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['erso', 'andor'] }],
+                        }),
+                    });
+                });
+
+                it('does not submit on required', async () => {
+                    const user = userEvent.setup();
+
+                    const mockConfigApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
+
+                    const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockConfigApi).toHaveBeenCalled();
+
+                    await user.click(await findByLabelText('Full Name'));
+                    expect(await findByRole('option', { name: 'Jyn Erso' })).toBeVisible();
+
+                    // component refreshes when options populates, so can't do this earlier
+                    const dropDown = await findByLabelText('Full Name');
+                    expect(dropDown).toBeVisible();
+                    expect(dropDown).toHaveValue('');
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+
+                    expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                    expect(mockResultApi).not.toHaveBeenCalled();
+                });
+
+                it('renders default value', async () => {
+                    const user = userEvent.setup();
+
+                    const mockConfigApi = vi
+                        .mocked(generated.ReportControllerService.getReportConfiguration)
+                        .mockResolvedValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['andor'] }],
+                        });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
+
+                    const { getByRole, getByText, findByRole, findByLabelText } = renderWithRouter();
+
+                    expect(getByRole('status')).toHaveTextContent('Loading');
+
+                    expect(mockConfigApi).toHaveBeenCalled();
+
+                    await user.click(await findByLabelText('Full Name'));
+                    expect(await findByRole('option', { name: 'Cassian Andor' })).toBeVisible();
+
+                    // component refreshes when options populates, so can't do this earlier
+                    const dropDown = await findByLabelText('Full Name');
+                    expect(dropDown).toBeVisible();
+                    expect(await findByRole('button', { name: 'Remove Cassian Andor' })).toBeVisible();
+
+                    await userEvent.click(dropDown);
+                    await userEvent.click(getByText('Jyn Erso'));
+
+                    const exportButton = await findByRole('button', { name: 'Export' });
+                    await user.click(exportButton);
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['andor', 'erso'] }],
+                        }),
+                    });
+                });
+            });
+        });
     });
 
     describe('advanced filter', () => {
