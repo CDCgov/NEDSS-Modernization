@@ -23,7 +23,7 @@ def execute(
     FROM ({subset_query}) AS base
     )
     SELECT
-        a.investigation_key as [INVESTIGATION_KEY],
+        a.INVESTIGATION_KEY as [INVESTIGATION_KEY],
         NULLIF(a.patient_name, 'NULL') AS [PATIENT_NAME],
         a.patient_local_id as [PATIENT_LOCAL_ID],
         NULLIF(a.patient_age_reported, 'NULL') AS [PATIENT_AGE_REPORTED],
