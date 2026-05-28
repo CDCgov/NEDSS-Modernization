@@ -31,7 +31,14 @@ class ReportMapperTest {
 
   private AdminReportRequest buildAdminReportRequest(ReportConstants.ReportGroup group) {
     return new AdminReportRequest(
-        2L, 1L, reportTitle, sectionCd, ownerId, group, Collections.emptyList(), description);
+        2L,
+        1L,
+        reportTitle,
+        sectionCd,
+        ownerId,
+        group.toString(),
+        Collections.emptyList(),
+        description);
   }
 
   @BeforeEach
