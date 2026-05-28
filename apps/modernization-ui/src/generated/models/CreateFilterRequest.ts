@@ -2,10 +2,16 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateFilterValueRequest } from './CreateFilterValueRequest';
 export type CreateFilterRequest = {
     filterCodeUid: number;
     columnUid?: number;
-    filterValues?: Array<CreateFilterValueRequest>;
+    selectType?: CreateFilterRequest.selectType;
+    isRequired: boolean;
 };
+export namespace CreateFilterRequest {
+    export enum selectType {
+        SINGLE = 'SINGLE',
+        MULTI = 'MULTI',
+    }
+}
 
