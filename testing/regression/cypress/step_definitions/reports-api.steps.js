@@ -252,6 +252,13 @@ Then("the response should contain a report result", () => {
   });
 });
 
+Then("the response should contain a ReportId", () => {
+  cy.get("@apiResponse").then((response) => {
+    expect(response.body).to.have.property("reportUid");
+    expect(response.body).to.have.property("dataSourceUid");
+  });
+});
+
 Then("the response should contain validation error for {string}", (fieldName) => {
   cy.get("@apiResponse").then((response) => {
     expect(response.status).to.eq(422);
