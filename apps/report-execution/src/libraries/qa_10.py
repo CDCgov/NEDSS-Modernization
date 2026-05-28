@@ -56,18 +56,18 @@ def execute(
         shd a
             INNER JOIN RDB.DBO.INVESTIGATION e
                        ON a.INVESTIGATION_KEY = e.INVESTIGATION_KEY
-    where a.DIAGNOSIS_CD IS NOT NULL
-      and a.INVESTIGATOR_INTERVIEW_KEY IS NOT NULL
-      and a.inv_local_id is not null
-      and e.inv_case_status in ('Probable', 'Confirmed')
-      and a.patient_sex = 'Female'
-      and (
+    WHERE a.DIAGNOSIS_CD IS NOT NULL
+      AND a.INVESTIGATOR_INTERVIEW_KEY IS NOT NULL
+      AND a.inv_local_id IS NOT NULL
+      AND e.inv_case_status in ('Probable', 'Confirmed')
+      AND a.patient_sex = 'Female'
+      AND (
         a.patient_pregnant_ind = 'Yes'
-            or a.pbi_preg_at_exam_ind = 'Yes'
-            or a.pbi_preg_at_ix_ind = 'Yes'
-            or a.pbi_preg_in_last_12mo_ind = 'Yes'
+            OR a.pbi_preg_at_exam_ind = 'Yes'
+            OR a.pbi_preg_at_ix_ind = 'Yes'
+            OR a.pbi_preg_in_last_12mo_ind = 'Yes'
         )
-    order by name_l, DIAGNOSIS_CD;
+    ORDER BY name_l, DIAGNOSIS_CD;
     """
 
     content = trx.query(sql_query)
