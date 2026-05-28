@@ -41,7 +41,7 @@ class TestIntegrationNbsSrDupInvLibrary:
             'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
             'subset_query': '',
             'days_value': None,
-            'column_map': self.default_column_map.copy(),
+            'column_map': self.default_column_map,
         }
         base.update(overrides)
         if base['subset_query'] == '':
@@ -65,7 +65,6 @@ class TestIntegrationNbsSrDupInvLibrary:
 
         data = result.content
         assert len(data.data) >= 0
-
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
 
     def test_execute_report_with_days_value(self):

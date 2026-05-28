@@ -94,7 +94,9 @@ def execute(
         OR (d.days_until_next IS NOT NULL AND d.days_until_next <= {days_value})
     )
     ORDER BY
-        d.row_num
+        d.[{col_dict['PATIENT_LOCAL_ID']}],
+        d.[{col_dict['DISEASE_CD']}],
+        d.[{col_dict['EVENT_DATE']}]
     """
 
     content = trx.query(full_query)
