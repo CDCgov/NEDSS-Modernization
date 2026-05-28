@@ -8,13 +8,19 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdminReportRequest;
+import gov.cdc.nbs.repository.FilterCodeRepository;
+import gov.cdc.nbs.repository.ReportRepository;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class ReportMapper {
-  private ReportMapper() {}
+  private final ReportRepository reportRepository;
+  private ReportMapper(ReportRepository reportRepository) {
+    this.reportRepository = reportRepository;
+  }
 
-  public static Report fromAdminReportRequest(
+  public Report fromAdminReportRequest(
       AdminReportRequest request,
       NbsUserDetails user,
       ReportLibrary reportLibrary,
@@ -25,9 +31,10 @@ public class ReportMapper {
     Report.ReportBuilder builder = Report.builder();
 
     if (existingReportId != null) {
-      builder = builder.id(existingReportId);
+      builder.id(existingReportId);
     } else {
-      builder = builder.addTime(now).addUserUid(user.getId());
+      builder.id(new ReportId(reportRepository.getNextReportId(), dataSource.getId()));
+      builder.addTime(now).addUserUid(user.getId());
     }
 
     ReportConstants.ReportGroup group =

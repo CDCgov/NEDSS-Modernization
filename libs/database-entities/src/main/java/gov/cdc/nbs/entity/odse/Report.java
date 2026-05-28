@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.repository.Query;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "Report", catalog = "NBS_ODSE")
 public class Report {
-  @EmbeddedId private ReportId id;
+  @EmbeddedId @NonNull ReportId id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(

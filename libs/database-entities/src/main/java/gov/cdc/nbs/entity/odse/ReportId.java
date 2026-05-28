@@ -20,7 +20,6 @@ import lombok.Setter;
 public class ReportId implements Serializable {
 
   @Column(name = "report_uid", nullable = false)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long reportUid;
 
   @Column(name = "data_source_uid", nullable = false)
