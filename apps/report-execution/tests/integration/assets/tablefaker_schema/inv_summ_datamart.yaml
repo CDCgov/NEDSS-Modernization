@@ -7,8 +7,8 @@ tables:
     columns:
       - column_name: INVESTIGATION_KEY
         type: int
-        data: fake.unique.random_int(1, 1000000)
-        null_percentage: 0
+        data: row_id
+        is_primary_key: true
       
       - column_name: PATIENT_KEY
         type: int
