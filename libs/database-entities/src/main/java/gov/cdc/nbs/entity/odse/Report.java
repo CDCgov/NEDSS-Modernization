@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.jpa.repository.Query;
 
 @AllArgsConstructor
 @RequiredArgsConstructor

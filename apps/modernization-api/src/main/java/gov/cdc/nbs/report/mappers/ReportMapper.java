@@ -8,14 +8,13 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdminReportRequest;
-import gov.cdc.nbs.repository.FilterCodeRepository;
 import gov.cdc.nbs.repository.ReportRepository;
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class ReportMapper {
   private final ReportRepository reportRepository;
+
   private ReportMapper(ReportRepository reportRepository) {
     this.reportRepository = reportRepository;
   }
