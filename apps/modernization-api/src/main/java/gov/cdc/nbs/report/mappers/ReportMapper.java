@@ -25,12 +25,12 @@ public class ReportMapper {
 
     if (existingReportId != null) {
       builder = builder.id(existingReportId);
+    } else {
+      builder = builder.addTime(now).addUserUid(user.getId());
     }
 
     return builder
         .dataSource(dataSource)
-        .addTime(now)
-        .addUserUid(user.getId())
         .descTxt(request.description())
         .isModifiableIndicator('N') // consistently "N" in DB, so just continuing that pattern
         .ownerUid(request.ownerId())
