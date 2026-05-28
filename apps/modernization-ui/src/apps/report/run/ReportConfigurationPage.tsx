@@ -8,6 +8,10 @@ import { Card } from 'design-system/card';
 import { STATE_FILTER_CODE } from './filters/basic/OptionSelectFilter';
 import { CurrentStateProvider } from './filters/basic/useCurrentState';
 import { AdvancedFilter } from './filters/advanced/AdvancedFilter';
+import { ColumnSelector } from './columns/ColumnSelector';
+
+import layoutStyles from './layout/layout.module.scss';
+import { Required } from 'design-system/entry';
 
 const ReportConfigurationPage = ({
     config,
@@ -34,7 +38,7 @@ const ReportConfigurationPage = ({
                 </>
             }
         >
-            <form>
+            <form className={layoutStyles.columnContent}>
                 {basicFilters.length > 0 && (
                     <CurrentStateProvider stateFilter={stateFilter}>
                         <Card id="basic-filters" title="Basic Filters" collapsible={true}>
@@ -47,6 +51,18 @@ const ReportConfigurationPage = ({
                 {config.advancedFilter && (
                     <Card id="advanced-filter" title="Advanced Filter" collapsible={true}>
                         <AdvancedFilter filter={config.advancedFilter} columns={config.columns} />
+                    </Card>
+                )}
+                {config.library.allowColumnSelection && (
+                    <Card
+                        id="column-selection"
+                        title="Column selection"
+                        required={true}
+                        subtext="Select the column variables you would like to include in this report."
+                        actions={<Required />}
+                        collapsible={true}
+                    >
+                        <ColumnSelector columns={config.columns} defaultColumns={config.defaultColumnUids} />
                     </Card>
                 )}
                 <details>
