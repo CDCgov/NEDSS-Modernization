@@ -8,4 +8,5 @@ public record ReportSpec(
     @JsonProperty(value = "report_title", required = true) String reportTitle,
     @JsonProperty(value = "library_name", required = true) String libraryName,
     @JsonProperty(value = "data_source_name", required = true) String dataSourceName,
-    @JsonProperty(value = "subset_query", required = true) String subsetQuery) {}
+    @JsonProperty(value = "subset_query", required = true) String subsetQuery,
+    @JsonProperty(value = "days_value") Integer daysValue) {}
