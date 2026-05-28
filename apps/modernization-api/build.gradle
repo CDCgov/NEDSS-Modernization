@@ -73,6 +73,12 @@ dependencies {
     
     // liquibase
     implementation 'org.liquibase:liquibase-core:5.0.1'
+    
+    constraints {
+        implementation('org.apache.tomcat.embed:tomcat-embed-core:10.1.55') {
+            because('CVE-2026-43515')
+        }
+    }
 
 }
 
