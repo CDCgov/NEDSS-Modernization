@@ -45,7 +45,11 @@ public class ReportFilterBuilder {
     Integer minValueCount = null;
     Integer maxValueCount = null;
 
-    switch (filter.filterCodeUid().intValue()) {
+
+       // Note that this logic mapping filterCodeUids to corresponding min value counts and
+       // max value counts was pulled **verbatim** from NBS 6, to maintain parity with 6 as
+       // closely as possible.
+     switch (filter.filterCodeUid().intValue()) {
       case 7 // Where Clause Builder
           -> {
         minValueCount = 0;
