@@ -1,21 +1,35 @@
 package gov.cdc.nbs.report.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
+/**
+ * Configuration for a report, including data source, filters, columns,
+ * and an extensible options container.
+ */
 public record ReportConfiguration(
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportDataSource dataSource,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Library library,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String title,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        List<BasicFilterConfiguration> basicFilters,
+    ReportDataSource dataSource,
+    Library library,
+    String title,
+    List<BasicFilterConfiguration> basicFilters,
     AdvancedFilterConfiguration advancedFilter,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<ReportColumn> columns,
-    List<Long> defaultColumnUids) {
+    List<ReportColumn> columns,
+    ReportConfigurationOptions options 
+) {
+    /**
+     * @return the list of default column UIDs, or {@code null} if options is null.
+     */
+    @JsonIgnore
+    public List<Long> getDefaultColumnUids() {
+        return options != null ? options.getDefaultColumnUids() : null;
+    }
 
-  @JsonIgnore
-  public boolean isPython() {
-    return library().runner().equalsIgnoreCase("python");
-  }
+    /**
+     * @return the report days value (30, 60, 90) or {@code null} if not set.
+     */
+    @JsonIgnore
+    public Integer getReportDays() {
+        return options != null ? options.getReportDays() : null;
+    }
 }
