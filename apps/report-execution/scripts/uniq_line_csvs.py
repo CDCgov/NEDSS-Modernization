@@ -41,7 +41,7 @@ if __name__ == '__main__':
     logging.info(32 * '*')
 
     logging.info(f'* stats for [{fp1}]')
-    logging.info(f'* line count: {len(first_set)}')
+    logging.info(f'* unique line count: {len(first_set)}')
 
     diff = first_set.difference(second_set)
 
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     logging.info(32 * '*')
 
     logging.info(f'* stats for [{fp2}]')
-    logging.info(f'* line count: {len(second_set)}')
+    logging.info(f'* unique line count: {len(second_set)}')
 
     diff = second_set.difference(first_set)
 
