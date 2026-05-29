@@ -1,9 +1,8 @@
 import React from 'react';
-import { ReportControllerService } from 'generated';
+import { AdvancedFilterRequest, BasicFilterRequest, ReportControllerService } from 'generated';
 import { useCallback, useState } from 'react';
 import { useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
-import { AdvancedFilterRequest, BasicFilterRequest } from 'generated';
 import { useNewTab } from './useNewTab';
 import { ResultDataPage } from './ResultDataPage';
 import fileDownload from 'js-file-download';
@@ -19,6 +18,16 @@ export type ReportExecuteForm = {
     basicFilter?: Record<string, { value: string[] | string | null; includeNulls: boolean }>;
     advancedFilter?: QbRuleGroup;
     columns?: string[];
+};
+
+const normalizeFormValueToStringArray = (value: unknown): string[] => {
+    if (value === undefined || value === null) {
+        return [];
+    }
+    if (Array.isArray(value)) {
+        return value;
+    }
+    return [value.toString()];
 };
 
 const ReportRunPage = () => {
@@ -40,10 +49,10 @@ const ReportRunPage = () => {
             (data) => {
                 const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
                     .map(([id, { value, includeNulls }]) => {
-                        const values = typeof value === 'string' ? [value] : (value ?? []);
+                        const values = normalizeFormValueToStringArray(value);
                         return {
                             // remove `id_` prefix
-                            reportFilterUid: parseInt(id.slice(3)),
+                            reportFilterUid: Number.parseInt(id.slice(3)),
                             values,
                             includeNulls,
                         };

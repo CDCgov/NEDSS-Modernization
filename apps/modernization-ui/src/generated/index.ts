@@ -114,5 +114,6 @@ export { ReportSectionsService } from './services/ReportSectionsService';
 export { ResultedTestOptionsService } from './services/ResultedTestOptionsService';
 export { StateOptionsService } from './services/StateOptionsService';
 export { StatesOptionsService } from './services/StatesOptionsService';
+export { StdWorkerNameOptionsService } from './services/StdWorkerNameOptionsService';
 export { UserService } from './services/UserService';
 export { UserOptionsService } from './services/UserOptionsService';
