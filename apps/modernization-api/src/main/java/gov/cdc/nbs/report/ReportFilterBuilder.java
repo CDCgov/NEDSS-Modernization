@@ -22,7 +22,8 @@ public class ReportFilterBuilder {
   //  Suppressing java:S131 ("switch" statements should have "default" clauses) because
   // there isn't anything to actually do in the default case when switching against
   // the filter request's filterCodeUid.
-  @SuppressWarnings("java:S131")
+  //  Suppressing java:S5411 ("Use a primitive boolean expression here.") because `isRequired`
+  // is a Boolean for API flexibility.
   public ReportFilter build(UpsertFilterRequest filter, Report report) {
     Character statusCd = 'A';
     LocalDateTime now = LocalDateTime.now();
@@ -109,7 +110,6 @@ public class ReportFilterBuilder {
       filterBuilder.dataSourceColumn(dataSourceColumn);
     }
 
-    //  NOSONAR
     if (filter.isRequired()) {
       filterBuilder.filterValidation(
           ReportFilterValidation.builder()
