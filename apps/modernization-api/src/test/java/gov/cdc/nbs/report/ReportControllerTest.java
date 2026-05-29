@@ -54,7 +54,7 @@ class ReportControllerTest {
               "Test Report",
               "SEC",
               0L,
-              ReportConstants.ReportGroup.REPORTING_FACILITY.toString(),
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
               Collections.emptyList(),
               "Description");
       Report expectedReport = mock(Report.class);
@@ -77,7 +77,7 @@ class ReportControllerTest {
               "Test Report",
               "SEC",
               0L,
-              ReportConstants.ReportGroup.REPORTING_FACILITY.toString(),
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
               Collections.emptyList(),
               "Description");
       NbsUserDetails user = mock(NbsUserDetails.class);
@@ -100,7 +100,7 @@ class ReportControllerTest {
               "Test Report",
               "SEC",
               0L,
-              ReportConstants.ReportGroup.REPORTING_FACILITY.toString(),
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
               Collections.emptyList(),
               "Description");
       NbsUserDetails user = mock(NbsUserDetails.class);
@@ -128,7 +128,7 @@ class ReportControllerTest {
               "Updated Report",
               "SEC",
               0L,
-              ReportConstants.ReportGroup.REPORTING_FACILITY.toString(),
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
               Collections.emptyList(),
               "Updated Description");
       Report expectedReport = mock(Report.class);
@@ -155,7 +155,7 @@ class ReportControllerTest {
               "Updated Report",
               "SEC",
               0L,
-              ReportConstants.ReportGroup.REPORTING_FACILITY.toString(),
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
               Collections.emptyList(),
               "Updated Description");
       NbsUserDetails user = mock(NbsUserDetails.class);
@@ -182,7 +182,7 @@ class ReportControllerTest {
               "Updated Report",
               "SEC",
               0L,
-              ReportConstants.ReportGroup.REPORTING_FACILITY.toString(),
+              ReportConstants.ReportGroup.REPORTING_FACILITY,
               Collections.emptyList(),
               "Updated Description");
       NbsUserDetails user = mock(NbsUserDetails.class);

@@ -127,7 +127,7 @@ class ReportServiceTest {
           "Test Report Title",
           "123",
           0L,
-          ReportConstants.ReportGroup.REPORTING_FACILITY.toString(),
+          ReportConstants.ReportGroup.REPORTING_FACILITY,
           filterRequests,
           "Test Report Description");
     }
@@ -250,7 +250,7 @@ class ReportServiceTest {
           "Test Report Title",
           "123",
           0L,
-          ReportConstants.ReportGroup.REPORTING_FACILITY.toString(),
+          ReportConstants.ReportGroup.REPORTING_FACILITY,
           filterRequests,
           "Test Report Description");
     }

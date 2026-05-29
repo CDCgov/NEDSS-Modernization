@@ -45,7 +45,7 @@ class ReportMapperTest {
         reportTitle,
         sectionCd,
         ownerId,
-        group.toString(),
+        group,
         Collections.emptyList(),
         description);
   }
