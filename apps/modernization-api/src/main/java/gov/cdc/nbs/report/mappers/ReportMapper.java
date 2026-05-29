@@ -6,17 +6,19 @@ import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdminReportRequest;
-import gov.cdc.nbs.repository.ReportRepository;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ReportMapper {
-  private final ReportRepository reportRepository;
+  private final IdGeneratorService idGenerator;
 
-  public ReportMapper(ReportRepository reportRepository) {
-    this.reportRepository = reportRepository;
+  public ReportMapper(IdGeneratorService idGenerator) {
+    this.idGenerator = idGenerator;
   }
 
   public Report fromAdminReportRequest(
@@ -32,7 +34,7 @@ public class ReportMapper {
     if (existingReportId != null) {
       builder.id(existingReportId);
     } else {
-      builder.id(new ReportId(reportRepository.getNextReportId(), dataSource.getId()));
+      builder.id(new ReportId(generateReportId(), dataSource.getId()));
       builder.addTime(now).addUserUid(user.getId());
     }
 
@@ -54,6 +56,11 @@ public class ReportMapper {
         .sectionCd(request.sectionCode())
         .reportLibrary(reportLibrary)
         .build();
+  }
+
+  private Long generateReportId() {
+    var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT);
+    return generatedId.getId();
   }
 
   private static Character reportGroupToDbChar(ReportConstants.ReportGroup group) {

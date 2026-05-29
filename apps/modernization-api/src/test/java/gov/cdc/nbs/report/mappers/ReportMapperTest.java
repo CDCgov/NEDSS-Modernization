@@ -8,14 +8,15 @@ import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdminReportRequest;
-import gov.cdc.nbs.repository.ReportRepository;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -26,7 +27,7 @@ class ReportMapperTest {
   @Mock private NbsUserDetails user;
   @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;
-  private final ReportRepository reportRepository = Mockito.mock(ReportRepository.class);
+  @Mock private IdGeneratorService idGenerator;
 
   private final Long userId = 123L;
   private final Long ownerId = 456L;
@@ -35,7 +36,7 @@ class ReportMapperTest {
   private final String sectionCd = "SEC";
   private final String description = "Test Description";
 
-  private final ReportMapper reportMapper = new ReportMapper(reportRepository);
+  @InjectMocks private ReportMapper reportMapper;
 
   private AdminReportRequest buildAdminReportRequest(ReportConstants.ReportGroup group) {
     return new AdminReportRequest(
@@ -55,6 +56,10 @@ class ReportMapperTest {
     Mockito.lenient().when(user.getId()).thenReturn(userId);
 
     Mockito.lenient().when(dataSource.getId()).thenReturn(dataSourceId);
+
+    Mockito.lenient()
+        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT))
+        .thenReturn(new IdGeneratorService.GeneratedId(47L));
   }
 
   @Test
@@ -65,7 +70,9 @@ class ReportMapperTest {
     LocalDateTime beforeCreation = LocalDateTime.now();
 
     Long nextReportId = 100L;
-    Mockito.lenient().when(reportRepository.getNextReportId()).thenReturn(nextReportId);
+    Mockito.lenient()
+        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT))
+        .thenReturn(new IdGeneratorService.GeneratedId(nextReportId));
 
     Report result =
         reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
@@ -73,7 +80,7 @@ class ReportMapperTest {
 
     assertThat(result.getId()).isNotNull();
     assertThat(result.getId().getDataSourceUid()).isEqualTo(request.dataSourceId());
-    Mockito.verify(reportRepository).getNextReportId();
+    Mockito.verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.REPORT);
     assertThat(result.getId().getReportUid()).isEqualTo(nextReportId);
 
     // Should always be set to 'N'

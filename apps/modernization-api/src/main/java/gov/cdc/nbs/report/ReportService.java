@@ -47,12 +47,13 @@ public class ReportService {
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig,
       WhereClauseService whereClauseService,
-      ReportFilterBuilder reportFilterBuilder) {
+      ReportFilterBuilder reportFilterBuilder,
+      ReportMapper reportMapper) {
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
     this.reportFilterRepository = reportFilterRepository;
-    this.reportMapper = new ReportMapper(reportRepository);
+    this.reportMapper = reportMapper;
 
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
