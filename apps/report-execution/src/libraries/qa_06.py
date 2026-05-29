@@ -14,6 +14,9 @@ def execute(
 
     Conversion notes:
     * FL_FUP_EXAM_DT logic in final SELECT is the equivalent of SAS in original script
+    * All Datetime columns have been cast to Date in order to standardize our date
+      formatting in CSV outputs.  This will look slightly different than the SAS output
+      but the dates are functionally the same.
     * Sorting differs slightly from QA06.sas.  In original SAS file, there is only one
       ORDER BY statement (using PATIENT_NAME).  SQL uses this same ORDER BY but the
       actual sorting beyond that will differ between SAS and SQL Server.
@@ -108,5 +111,13 @@ def execute(
         """
 
     content = trx.query(query)
+    header = 'QA06: Patients with Multiple Cases'
+    subheader = 'This report generates a list, by name, of individuals who have '
+    subheader += 'multiple occasions of cases within a time period.'
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(
+        content_type='table',
+        content=content,
+        header=header,
+        subheader=subheader
+    )
