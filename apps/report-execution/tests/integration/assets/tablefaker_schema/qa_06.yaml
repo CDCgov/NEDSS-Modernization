@@ -5,8 +5,7 @@ config:
 
 tables:
   - table_name: "[RDB].[dbo].[USER_PROFILE]"
-    export_file_name: '1_user_profile'
-    row_count: 25
+    row_count: 50
     columns:
       # required columns
       - column_name: nedss_entry_id
@@ -20,8 +19,7 @@ tables:
         data: random.choice(["dekalb", "fulton", "JLJ", "local", "pks", "state"])
         null_percentage: 0.25
   - table_name: "[RDB].[dbo].[EVENT_METRIC]"
-    export_file_name: '2_event_metric'
-    row_count: 25
+    row_count: 1000
     columns:
       # required columns
       - column_name: event_type
@@ -35,8 +33,7 @@ tables:
       - column_name: add_user_id
         data: foreign_key("[RDB].[dbo].[USER_PROFILE]", "nedss_entry_id")
   - table_name: "[RDB].[dbo].[INVESTIGATION]"
-    export_file_name: "3_investigation"
-    row_count: 25
+    row_count: 1000
     columns:
       # required columns
       - column_name: investigation_key
@@ -53,8 +50,7 @@ tables:
       - column_name: referral_basis
         data: random.choice(["T1 - Positive Test", "T2 - Morbidity Report", "C1- Cohort", "A1 - Associate 1", "A2 - Associate 2", "A3 - Associate 3", "P1 - Partner, Sex", "P2 - Partner, Needle-Sharing", "M1 - Congenital Infant Followup"])
   - table_name: "[RDB].[dbo].[LAB_TEST]"
-    export_file_name: "4_lab_test"
-    row_count: 25
+    row_count: 1000
     columns:
       # required columns
       - column_name: lab_test_key
@@ -67,8 +63,7 @@ tables:
       - column_name: specimen_collection_dt
         data: fake.date_between(start_date='-19w')
   - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
-    export_file_name: "5_lab_test_result"
-    row_count: 25
+    row_count: 1000
     columns:
       # required columns
       - column_name: lab_test_key
@@ -106,8 +101,7 @@ tables:
       - column_name: test_result_grp_key
         data: random.randint(1000, 10000)
   - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
-    export_file_name: "6_std_hiv_datamart"
-    row_count: 25
+    row_count: 500
     columns:
       # required columns
       - column_name: investigation_key
@@ -119,7 +113,7 @@ tables:
       - column_name: diagnosis
         data: random.choice(["710 - Syphilis, primary", "200 - Chlamydia", "300 - Gonorrhea", "790 - Syphilis, Congenital", "730 - Syphilis, Early Non-Primary, Non-Secondary"])
       - column_name: patient_local_id
-        data: random.choice(["PSN10067002GA01", "PSN10076044GA01", "PSN10082059GA01", "PSN10087055GA01", "PSN10087069GA01", "PSN10087071GA01", "PSN10088042GA01", "PSN10089067GA01", "PSN10089161GA01", "PSN10094077GA01", "PSN10094080GA01"])
+        data: random.choice(["PSN20067002GA01", "PSN30076044GA01", "PSN10082059GA01", "PSN10087055GA01", "PSN10087069GA01", "PSN10087071GA01", "PSN10088042GA01", "PSN10089067GA01", "PSN10089161GA01", "PSN10094077GA01", "PSN10094080GA01"])
       - column_name: cmp_pid_ind
         data: r"No"
         null_percentage: 0.75
@@ -130,12 +124,11 @@ tables:
         data: fake.date_between(start_date='-19w')
         null_percentage: 0.75
       - column_name: patient_name
-        data: random.choice(["Walowitz, Howard", "Van Dam, Jean Claude", "Freeman, Gordon", "Stantz, Raymond", "Solo, Han", "Torrance, Jack", "Bowman, Dave"]) if random.random() < .95 else None
+        data: random.choice(["Walowitz, Howard", "Van Dam, Jean Claude", "Freeman, Gordon", "Stantz, Raymond", "Solo, Han", "Torrance, Jack", "Bowman, Dave", "Poole, Frank", "Deschain, Roland", "Truant, Johnny", "Navidson, Will", "Hanna, Vincent", "McCauley, Neil", "Cooper, Dale", "Vance, Eli", "Lumbergh, Bill"] ) if random.random() < .95 else None
       - column_name: program_jurisdiction_oid
         data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
   - table_name: "[RDB].[dbo].[MORBIDITY_REPORT_EVENT]"
-    export_file_name: "7_morbidity_report_event"
-    row_count: 25
+    row_count: 100
     columns:
       # required columns
       - column_name: morb_rpt_key
@@ -172,8 +165,7 @@ tables:
       - column_name: reporter_key
         data: random.randint(1000, 10000)
   - table_name: "[RDB].[dbo].[MORBIDITY_REPORT]"
-    export_file_name: "8_morbidity_report"
-    row_count: 25
+    row_count: 100
     columns:
       # required columns
       - column_name: morb_rpt_key
