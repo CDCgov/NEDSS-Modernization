@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
@@ -25,7 +26,6 @@ public class ReportFilterBuilder {
   //  Suppressing java:S5411 ("Use a primitive boolean expression here.") because `isRequired`
   // is a Boolean for API flexibility.
   public ReportFilter build(UpsertFilterRequest filter, Report report) {
-    Character statusCd = 'A';
     LocalDateTime now = LocalDateTime.now();
 
     DataSourceColumn dataSourceColumn = null;
@@ -96,7 +96,7 @@ public class ReportFilterBuilder {
     }
 
     ReportFilter.ReportFilterBuilder filterBuilder =
-        ReportFilter.builder().report(report).filterCode(filterCode).statusCd(statusCd);
+        ReportFilter.builder().report(report).filterCode(filterCode).statusCd(Status.ACTIVE_CODE);
 
     if (minValueCount != null) {
       filterBuilder.minValueCnt(minValueCount);
@@ -114,7 +114,7 @@ public class ReportFilterBuilder {
       filterBuilder.filterValidation(
           ReportFilterValidation.builder()
               .reportFilterInd('Y')
-              .statusCd(statusCd)
+              .statusCd(Status.ACTIVE_CODE)
               .statusTime(now)
               .build());
     } else {
