@@ -15,56 +15,50 @@ def execute(
     * Hardcode i to "14" instead of the count of the columns
     """
     sql_query = f"""
-    WITH shd AS (
-    SELECT *
-    FROM ({subset_query}) AS base
-    )
+    WITH shd AS ({subset_query})
     SELECT
-        a.INVESTIGATION_KEY as [INVESTIGATION_KEY],
-        NULLIF(a.patient_name, 'NULL') AS [PATIENT_NAME],
-        a.patient_local_id as [PATIENT_LOCAL_ID],
-        NULLIF(a.patient_age_reported, 'NULL') AS [PATIENT_AGE_REPORTED],
-        SUBSTRING(patient_sex, 1, 1) AS [PATIENT_SEX],
-        a.DIAGNOSIS_CD,
-        a.JURISDICTION_NM,
-        NULLIF(INVESTIGATOR_INTERVIEW_QC, 'NULL') AS [INVESTIGATOR_INTERVIEW_QC],
-        FORMAT(CAST(a.cc_closed_dt AS DATE), 'MM/dd/yyyy') as CLOSED_DT,
-        CASE WHEN a.CC_CLOSED_DT IS NULL THEN 'Y' ELSE 'N' END as Open_Status, 
-        SUBSTRING(
-            NULLIF(a.PATIENT_PREGNANT_IND, 'NULL'), 1, 1
-        ) AS [PATIENT_PREGNANT_IND],
-        NULLIF(PBI_PREG_IN_LAST_12MO_IND, 'NULL') AS [PBI_PREG_IN_LAST_12MO_IND],
-        NULLIF(a.PBI_PREG_AT_EXAM_IND, 'NULL') AS [PBI_PREG_AT_EXAM_IND],
-        NULLIF(PBI_PREG_AT_IX_IND, 'NULL') AS [PBI_PREG_AT_IX_IND],
-        NULLIF(PBI_PREG_IN_LAST_12MO_IND, 'NULL') AS [PBI_PREG_IN_LAST_12MO_IND],
-        FORMAT(CAST(CA_INTERVIEWER_ASSIGN_DT AS DATE), 'MM/dd/yyyy') AS [ASSIGNED_DT],
+        shd.INVESTIGATION_KEY,
+        shd.PATIENT_NAME,
+        shd.PATIENT_LOCAL_ID,
+        shd.PATIENT_AGE_REPORTED,
+        SUBSTRING(PATIENT_SEX, 1, 1) AS [PATIENT_SEX],
+        shd.DIAGNOSIS_CD,
+        shd.JURISDICTION_NM,
+        INVESTIGATOR_INTERVIEW_QC,
+        CAST(shd.cc_closed_dt AS DATE) as CLOSED_DT,
+        CASE WHEN shd.CC_CLOSED_DT IS NULL THEN 'Y' ELSE 'N' END as Open_Status,
+        SUBSTRING(shd.PATIENT_PREGNANT_IND, 1, 1) AS [PATIENT_PREGNANT_IND],
+        PBI_PREG_IN_LAST_12MO_IND AS [PBI_PREG_IN_LAST_12MO_IND],
+        shd.PBI_PREG_AT_EXAM_IND AS [PBI_PREG_AT_EXAM_IND],
+        PBI_PREG_AT_IX_IND AS [PBI_PREG_AT_IX_IND],
+        PBI_PREG_IN_LAST_12MO_IND AS [PBI_PREG_IN_LAST_12MO_IND],
+        CAST(CA_INTERVIEWER_ASSIGN_DT AS DATE) AS [ASSIGNED_DT],
         '14' AS [i], -- the sas library included a column with the count of the columns
-        LOWER(NULLIF(PATIENT_NAME, 'NULL')) AS [name_l],
-        SUBSTRING(a.PATIENT_LOCAL_ID, 4, 8) - 10000000 AS [patient_id],
-        CASE
-            WHEN PATIENT_AGE_REPORTED IS NULL THEN NULL
-            WHEN LTRIM(RTRIM(PATIENT_AGE_REPORTED)) IN ('', '.') THEN NULL
-            ELSE TRY_CAST(
-                    LEFT(
-                            LTRIM(RTRIM(PATIENT_AGE_REPORTED)),
-                            CHARINDEX(' ', LTRIM(RTRIM(PATIENT_AGE_REPORTED)) + ' ') - 1
-                    ) AS INT
-                 )
-            END AS [age]
+        LOWER(PATIENT_NAME) AS [name_l],
+        SUBSTRING(shd.PATIENT_LOCAL_ID, 4, 8) - 10000000 AS [patient_id],
+        TRY_CAST(
+            NULLIF(
+                LEFT(
+                    TRIM(PATIENT_AGE_REPORTED),
+                    CHARINDEX(' ', TRIM(PATIENT_AGE_REPORTED) + ' ') - 1
+                ),
+                '.'
+            ) AS INT
+        ) AS [age]
     FROM
-        shd a
-            INNER JOIN RDB.DBO.INVESTIGATION e
-                       ON a.INVESTIGATION_KEY = e.INVESTIGATION_KEY
-    WHERE a.DIAGNOSIS_CD IS NOT NULL
-      AND a.INVESTIGATOR_INTERVIEW_KEY IS NOT NULL
-      AND a.inv_local_id IS NOT NULL
-      AND e.inv_case_status in ('Probable', 'Confirmed')
-      AND a.patient_sex = 'Female'
+        shd 
+            INNER JOIN RDB.DBO.INVESTIGATION inv
+                       ON shd.INVESTIGATION_KEY = inv.INVESTIGATION_KEY
+    WHERE shd.DIAGNOSIS_CD IS NOT NULL
+      AND shd.INVESTIGATOR_INTERVIEW_KEY IS NOT NULL
+      AND shd.INV_LOCAL_ID IS NOT NULL
+      AND inv.INV_CASE_STATUS in ('Probable', 'Confirmed')
+      AND shd.PATIENT_SEX = 'Female'
       AND (
-        a.patient_pregnant_ind = 'Yes'
-            OR a.pbi_preg_at_exam_ind = 'Yes'
-            OR a.pbi_preg_at_ix_ind = 'Yes'
-            OR a.pbi_preg_in_last_12mo_ind = 'Yes'
+        shd.PATIENT_PREGNANT_IND = 'Yes'
+            OR shd.PBI_PREG_AT_EXAM_IND = 'Yes'
+            OR shd.PBI_PREG_AT_IX_IND = 'Yes'
+            OR shd.PBI_PREG_IN_LAST_12MO_IND = 'Yes'
         )
     ORDER BY name_l, DIAGNOSIS_CD;
     """
