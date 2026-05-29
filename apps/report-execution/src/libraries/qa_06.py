@@ -13,7 +13,6 @@ def execute(
     period.
 
     Conversion notes:
-    * MSSQL Datetime conversions use constants, "101" is for mm/dd/yyyy
     * FL_FUP_EXAM_DT logic in final SELECT is the equivalent of SAS in original script
     * Sorting differs slightly from QA06.sas.  In original SAS file, there is only one
       ORDER BY statement (using PATIENT_NAME).  SQL uses this same ORDER BY but the
@@ -99,10 +98,7 @@ def execute(
           PC.SPECIMEN_COLLECTION_DT,
           PC.DIAGNOSIS_DT,
           CC.CASE_COUNT AS COUNT,
-          CAST(
-            TRY_CONVERT(int, SUBSTRING(PC.PATIENT_LOCAL_ID, 4, 8)) - 10000000
-                AS varchar(10)
-          ) AS PATIENTID
+          TRY_CONVERT(int, SUBSTRING(PC.PATIENT_LOCAL_ID, 4, 8)) - 10000000 AS PATIENTID
         FROM PATIENT_CASES PC
         INNER JOIN CASE_COUNTS CC
           ON ((PC.PATIENT_NAME = CC.PATIENT_NAME) OR
