@@ -292,9 +292,9 @@ class ReportServiceTest {
       when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.empty());
 
       AdminReportRequest request = buildAdminReportRequest(true);
+      ReportId id = new ReportId(reportUid, dataSourceUid);
 
-      assertThatThrownBy(
-              () -> service.editReport(request, user, new ReportId(reportUid, dataSourceUid)))
+      assertThatThrownBy(() -> service.editReport(request, user, id))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No data source found for ID " + dataSourceUid);
 
@@ -310,9 +310,9 @@ class ReportServiceTest {
       when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.empty());
 
       AdminReportRequest request = buildAdminReportRequest(true);
+      ReportId id = new ReportId(reportUid, dataSourceUid);
 
-      assertThatThrownBy(
-              () -> service.editReport(request, user, new ReportId(reportUid, dataSourceUid)))
+      assertThatThrownBy(() -> service.editReport(request, user, id))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No report library found for ID " + libraryId);
 

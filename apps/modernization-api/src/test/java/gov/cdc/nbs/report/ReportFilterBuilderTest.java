@@ -105,7 +105,7 @@ class ReportFilterBuilderTest {
 
     ReportFilter result = builder.build(filter, report);
 
-    assertThat(result.getMinValueCnt()).isEqualTo(0);
+    assertThat(result.getMinValueCnt()).isZero();
     assertThat(result.getMaxValueCnt()).isEqualTo(-1);
   }
 

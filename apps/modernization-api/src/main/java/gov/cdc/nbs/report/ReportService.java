@@ -85,10 +85,7 @@ public class ReportService {
   public Report editReport(
       AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
     if (existingReportId != null && !reportRepository.existsById(existingReportId)) {
-      throw new NotFoundException(
-          String.format(
-              "Report not found for Report UID: %d and Data Source UID: %d",
-              existingReportId.getReportUid(), existingReportId.getDataSourceUid()));
+      throw new NotFoundException(getReportNotFoundText(existingReportId));
     }
 
     ReportMetadata metadata = fetchReportMetadata(request);
@@ -171,12 +168,7 @@ public class ReportService {
                   reportColumns,
                   defaultColumnUids);
             })
-        .orElseThrow(
-            () ->
-                new NotFoundException(
-                    String.format(
-                        "Report not found for Report UID: %d and Data Source UID: %d",
-                        reportUid, dataSourceUid)));
+        .orElseThrow(() -> new NotFoundException(getReportNotFoundText(id)));
   }
 
   @Transactional(readOnly = true)
@@ -186,12 +178,7 @@ public class ReportService {
     Report report =
         reportRepository
             .findById(reportId)
-            .orElseThrow(
-                () ->
-                    new NotFoundException(
-                        String.format(
-                            "Report not found for Report UID: %d and Data Source UID: %d",
-                            reportUid, dataSourceUid)));
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     ReportLibrary reportLibrary = report.getReportLibrary();
     if (reportLibrary == null) {
@@ -230,6 +217,12 @@ public class ReportService {
         .body(reportSpec)
         .retrieve()
         .toEntity(ReportResult.class);
+  }
+
+  private String getReportNotFoundText(ReportId reportId) {
+    return String.format(
+        "Report not found for Report UID: %d and Data Source UID: %d",
+        reportId.getReportUid(), reportId.getDataSourceUid());
   }
 
   private record ReportMetadata(DataSource dataSource, ReportLibrary reportLibrary) {}
