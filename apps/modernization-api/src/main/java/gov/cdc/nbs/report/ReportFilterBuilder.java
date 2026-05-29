@@ -98,13 +98,8 @@ public class ReportFilterBuilder {
     ReportFilter.ReportFilterBuilder filterBuilder =
         ReportFilter.builder().report(report).filterCode(filterCode).statusCd(Status.ACTIVE_CODE);
 
-    if (minValueCount != null) {
-      filterBuilder.minValueCnt(minValueCount);
-    }
-
-    if (maxValueCount != null) {
-      filterBuilder.maxValueCnt(maxValueCount);
-    }
+    filterBuilder.minValueCnt(minValueCount);
+    filterBuilder.maxValueCnt(maxValueCount);
 
     if (dataSourceColumn != null) {
       filterBuilder.dataSourceColumn(dataSourceColumn);
