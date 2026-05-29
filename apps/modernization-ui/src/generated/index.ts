@@ -109,6 +109,8 @@ export { ProgramAreaOptionsService } from './services/ProgramAreaOptionsService'
 export { ProviderOptionsService } from './services/ProviderOptionsService';
 export { RaceOptionsService } from './services/RaceOptionsService';
 export { ReportControllerService } from './services/ReportControllerService';
+export { ReportLibrariesService } from './services/ReportLibrariesService';
+export { ReportSectionsService } from './services/ReportSectionsService';
 export { ResultedTestOptionsService } from './services/ResultedTestOptionsService';
 export { StateOptionsService } from './services/StateOptionsService';
 export { StatesOptionsService } from './services/StatesOptionsService';

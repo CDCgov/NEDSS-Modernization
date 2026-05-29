@@ -8,6 +8,18 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class UserOptionsService {
     /**
+     * NBS User List
+     * Provides all users in NBS.
+     * @returns Option OK
+     * @throws ApiError
+     */
+    public static userList(): CancelablePromise<Array<Option>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/options/users',
+        });
+    }
+    /**
      * NBS User Option Autocomplete
      * Provides options from Users that have a name matching a criteria.
      * @returns Option OK

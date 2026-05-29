@@ -8,6 +8,10 @@ public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportDataSource dataSource,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Library library,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String title,
+    String description,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long ownerUid,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String group,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String sectionCd,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<BasicFilterConfiguration> basicFilters,
     AdvancedFilterConfiguration advancedFilter,

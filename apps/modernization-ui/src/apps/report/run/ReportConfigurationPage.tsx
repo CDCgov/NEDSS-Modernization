@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'design-system/button';
 import { permissions, Permitted } from 'libs/permission';
-import { ReportRunLayout } from './layout/ReportRunLayout';
+import { ReportLayout } from '../layout/ReportLayout';
 import { ReportConfiguration } from 'generated';
 import { BasicFilter } from './filters/basic/BasicFilter';
 import { Card } from 'design-system/card';
@@ -10,7 +10,7 @@ import { CurrentStateProvider } from './filters/basic/useCurrentState';
 import { AdvancedFilter } from './filters/advanced/AdvancedFilter';
 import { ColumnSelector } from './columns/ColumnSelector';
 
-import layoutStyles from './layout/layout.module.scss';
+import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
 
 const ReportConfigurationPage = ({
@@ -25,8 +25,8 @@ const ReportConfigurationPage = ({
     const stateFilter = config.basicFilters.find((f) => f.filterType.code?.startsWith(STATE_FILTER_CODE));
 
     return (
-        <ReportRunLayout
-            config={config}
+        <ReportLayout
+            title={config.title}
             actions={
                 <>
                     <Permitted permission={permissions.reports.run}>
@@ -72,7 +72,7 @@ const ReportConfigurationPage = ({
                     <pre>{config ? JSON.stringify(config, null, 2) : 'loading'}</pre>
                 </details>
             </form>
-        </ReportRunLayout>
+        </ReportLayout>
     );
 };
 

@@ -1,19 +1,18 @@
 import { ReactNode } from 'react';
 
-import { ReportConfiguration } from 'generated';
 import { Heading } from 'components/heading';
 
 import styles from './layout.module.scss';
 
-type ReportRunHeaderProps = {
-    config: ReportConfiguration;
+type ReportHeaderProps = {
+    title: string;
     actions: ReactNode;
 };
 
-export const ReportRunHeader = ({ config, actions }: ReportRunHeaderProps) => {
+export const ReportHeader = ({ title, actions }: ReportHeaderProps) => {
     return (
         <div className={styles.header}>
-            <Heading level={1}>Run Report: {config.title}</Heading>
+            <Heading level={1}>{title}</Heading>
             <div>{actions}</div>
         </div>
     );

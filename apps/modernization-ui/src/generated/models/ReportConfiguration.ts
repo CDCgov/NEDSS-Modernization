@@ -11,6 +11,10 @@ export type ReportConfiguration = {
     dataSource: ReportDataSource;
     library: Library;
     title: string;
+    description?: string;
+    ownerUid: number;
+    group: string;
+    sectionCd: string;
     basicFilters: Array<BasicFilterConfiguration>;
     advancedFilter?: AdvancedFilterConfiguration;
     columns: Array<ReportColumn>;

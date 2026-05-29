@@ -38,6 +38,7 @@ class WhereClauseServiceTest {
         Mockito.mock(ReportDataSource.class),
         Mockito.mock(Library.class),
         "Test Report",
+        null,
         basicFilterConfigurations,
         null,
         columns,
