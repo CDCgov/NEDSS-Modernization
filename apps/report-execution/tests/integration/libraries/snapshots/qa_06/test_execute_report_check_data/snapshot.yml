@@ -1,476 +1,3906 @@
 - !!python/tuple
   - null
-  - PSN10087069GA01
+  - PSN10082059GA01
   - CAS10021036GA01
-  - P2 - Partner, Needle-Sharing
+  - C1- Cohort
   - null
-  - 710 - Syphilis, primary
+  - 200 - Chlamydia
   - null
   - null
-  - 2026-01-22
-  - 2026-03-29
-  - 2026-02-07
-  - 5
-  - '87069'
+  - 2021-02-09
+  - 2023-02-17
+  - 2020-07-10
+  - 13
+  - 82059
 - !!python/tuple
   - null
-  - PSN10087069GA01
-  - CAS10021036GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 710 - Syphilis, primary
-  - null
-  - null
-  - 2026-01-22
-  - 2026-03-29
-  - 2026-03-19
-  - 5
-  - '87069'
-- !!python/tuple
-  - null
-  - PSN10087069GA01
-  - CAS10021036GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 710 - Syphilis, primary
-  - null
-  - null
-  - 2026-01-22
-  - 2026-03-29
-  - 2026-04-04
-  - 5
-  - '87069'
-- !!python/tuple
-  - null
-  - PSN10087069GA01
-  - CAS10021036GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 710 - Syphilis, primary
-  - null
-  - null
-  - 2026-01-22
-  - 2026-03-29
-  - 2026-05-23
-  - 5
-  - '87069'
-- !!python/tuple
-  - null
-  - PSN10094080GA01
-  - CAS10010008GA01
+  - PSN10087055GA01
+  - CAS10005241GA01
   - P2 - Partner, Needle-Sharing
   - local
-  - 790 - Syphilis, Congenital
+  - 200 - Chlamydia
   - null
+  - 2024-01-19
   - null
-  - 2026-04-13
-  - 2026-02-20
-  - 2026-02-21
-  - 5
-  - '94080'
+  - 2022-04-13
+  - 2023-01-28
+  - 13
+  - 87055
 - !!python/tuple
-  - Bowman, Dave
+  - null
   - PSN10087055GA01
-  - CAS10005241GA01
-  - P2 - Partner, Needle-Sharing
-  - fulton
-  - 710 - Syphilis, primary
-  - 'No'
-  - 2026-01-24
+  - CAS10010008GA01
+  - M1 - Congenital Infant Followup
   - null
-  - 2026-04-23
-  - 2026-01-24
-  - 3
-  - '87055'
-- !!python/tuple
-  - Bowman, Dave
-  - PSN10094077GA01
-  - CAS10021036GA01
-  - T1 - Positive Test
-  - dekalb
   - 790 - Syphilis, Congenital
   - null
   - null
-  - 2026-02-19
-  - 2026-02-19
-  - 2026-01-25
-  - 3
-  - '94077'
+  - null
+  - 2023-08-10
+  - null
+  - 13
+  - 87055
 - !!python/tuple
-  - Bowman, Dave
-  - PSN10094077GA01
-  - CAS10021036GA01
-  - T1 - Positive Test
-  - dekalb
-  - 790 - Syphilis, Congenital
   - null
-  - null
-  - 2026-02-19
-  - 2026-02-19
-  - 2026-05-22
-  - 3
-  - '94077'
-- !!python/tuple
-  - Solo, Han
-  - PSN10094080GA01
-  - CAS10022028GA01
-  - T1 - Positive Test
-  - dekalb
-  - 300 - Gonorrhea
-  - null
-  - null
-  - 2026-02-19
-  - 2026-02-19
-  - 2026-01-25
-  - 2
-  - '94080'
-- !!python/tuple
-  - Solo, Han
-  - PSN10094080GA01
-  - CAS10022028GA01
-  - T1 - Positive Test
-  - dekalb
-  - 300 - Gonorrhea
-  - null
-  - null
-  - 2026-02-19
-  - 2026-02-19
-  - 2026-05-22
-  - 2
-  - '94080'
-- !!python/tuple
-  - Stantz, Raymond
-  - PSN10076044GA01
+  - PSN10087055GA01
   - CAS10021036GA01
   - A1 - Associate 1
-  - null
-  - 790 - Syphilis, Congenital
-  - 'No'
-  - null
-  - null
-  - 2026-03-25
-  - 2026-05-12
-  - 7
-  - '76044'
-- !!python/tuple
-  - Stantz, Raymond
-  - PSN10087071GA01
-  - CAS10005241GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 'No'
-  - null
-  - null
-  - 2026-03-29
-  - 2026-02-07
-  - 7
-  - '87071'
-- !!python/tuple
-  - Stantz, Raymond
-  - PSN10087071GA01
-  - CAS10005241GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 'No'
-  - null
-  - null
-  - 2026-03-29
-  - 2026-03-19
-  - 7
-  - '87071'
-- !!python/tuple
-  - Stantz, Raymond
-  - PSN10087071GA01
-  - CAS10005241GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 'No'
-  - null
-  - null
-  - 2026-03-29
-  - 2026-04-04
-  - 7
-  - '87071'
-- !!python/tuple
-  - Stantz, Raymond
-  - PSN10087071GA01
-  - CAS10005241GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 'No'
-  - null
-  - null
-  - 2026-03-29
-  - 2026-05-23
-  - 7
-  - '87071'
-- !!python/tuple
-  - Stantz, Raymond
-  - PSN10087071GA01
-  - CAS10021036GA01
-  - A3 - Associate 3
-  - dekalb
-  - 300 - Gonorrhea
-  - null
-  - 2026-01-16
-  - null
-  - 2026-03-08
-  - 2026-03-24
-  - 7
-  - '87071'
-- !!python/tuple
-  - Stantz, Raymond
-  - PSN10087071GA01
-  - CAS10021036GA01
-  - A3 - Associate 3
-  - dekalb
-  - 300 - Gonorrhea
-  - null
-  - 2026-01-16
-  - null
-  - 2026-03-08
-  - 2026-04-16
-  - 7
-  - '87071'
-- !!python/tuple
-  - Torrance, Jack
-  - PSN10076044GA01
-  - CAS10005241GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 710 - Syphilis, primary
-  - null
-  - null
-  - null
-  - 2026-03-29
-  - 2026-02-07
-  - 4
-  - '76044'
-- !!python/tuple
-  - Torrance, Jack
-  - PSN10076044GA01
-  - CAS10005241GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 710 - Syphilis, primary
-  - null
-  - null
-  - null
-  - 2026-03-29
-  - 2026-03-19
-  - 4
-  - '76044'
-- !!python/tuple
-  - Torrance, Jack
-  - PSN10076044GA01
-  - CAS10005241GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 710 - Syphilis, primary
-  - null
-  - null
-  - null
-  - 2026-03-29
-  - 2026-04-04
-  - 4
-  - '76044'
-- !!python/tuple
-  - Torrance, Jack
-  - PSN10076044GA01
-  - CAS10005241GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 710 - Syphilis, primary
-  - null
-  - null
-  - null
-  - 2026-03-29
-  - 2026-05-23
-  - 4
-  - '76044'
-- !!python/tuple
-  - Van Dam, Jean Claude
-  - PSN10076044GA01
-  - CAS10021036GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 300 - Gonorrhea
-  - null
-  - null
-  - 2026-03-23
-  - 2026-02-20
-  - 2026-04-12
-  - 5
-  - '76044'
-- !!python/tuple
-  - Van Dam, Jean Claude
-  - PSN10076044GA01
-  - CAS10021036GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 300 - Gonorrhea
-  - null
-  - null
-  - 2026-03-23
-  - 2026-02-20
-  - 2026-04-29
-  - 5
-  - '76044'
-- !!python/tuple
-  - Van Dam, Jean Claude
-  - PSN10076044GA01
-  - CAS10021036GA01
-  - P2 - Partner, Needle-Sharing
-  - pks
+  - local
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - null
   - null
   - null
-  - 2026-03-29
-  - 2026-01-17
-  - 5
-  - '76044'
+  - 2022-10-15
+  - null
+  - 13
+  - 87055
 - !!python/tuple
-  - Van Dam, Jean Claude
-  - PSN10087055GA01
-  - CAS10005241GA01
+  - null
+  - PSN10087069GA01
+  - CAS10022028GA01
   - A1 - Associate 1
-  - pks
+  - state
   - 300 - Gonorrhea
   - null
-  - 2026-04-22
   - null
-  - 2026-04-30
-  - 2026-03-15
-  - 5
-  - '87055'
+  - 2022-02-15
+  - 2021-10-22
+  - 2022-11-12
+  - 13
+  - 87069
 - !!python/tuple
-  - Van Dam, Jean Claude
+  - null
   - PSN10088042GA01
   - CAS10010008GA01
+  - A1 - Associate 1
+  - dekalb
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2024-11-10
+  - null
+  - 13
+  - 88042
+- !!python/tuple
+  - null
+  - PSN10088042GA01
+  - CAS10010008GA01
+  - T2 - Morbidity Report
+  - pks
+  - 300 - Gonorrhea
+  - null
+  - 2019-05-23
+  - null
+  - 2019-09-04
+  - null
+  - 13
+  - 88042
+- !!python/tuple
+  - null
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - A3 - Associate 3
+  - dekalb
+  - 300 - Gonorrhea
+  - 'No'
+  - null
+  - null
+  - 2024-02-20
+  - 2021-08-10
+  - 13
+  - 88042
+- !!python/tuple
+  - null
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - P2 - Partner, Needle-Sharing
+  - local
+  - 710 - Syphilis, primary
+  - null
+  - 2023-08-20
+  - null
+  - 2024-12-22
+  - 2023-07-23
+  - 13
+  - 88042
+- !!python/tuple
+  - null
+  - PSN10089067GA01
+  - CAS10021036GA01
+  - C1- Cohort
+  - JLJ
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2023-11-03
+  - null
+  - 13
+  - 89067
+- !!python/tuple
+  - null
+  - PSN10089161GA01
+  - CAS10010008GA01
+  - A2 - Associate 2
+  - local
+  - 710 - Syphilis, primary
+  - 'No'
+  - 2019-09-30
+  - null
+  - 2024-04-30
+  - null
+  - 13
+  - 89161
+- !!python/tuple
+  - null
+  - PSN10094080GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'No'
+  - 2019-12-24
+  - null
+  - 2020-09-13
+  - null
+  - 13
+  - 94080
+- !!python/tuple
+  - null
+  - PSN10094080GA01
+  - CAS10022028GA01
+  - T1 - Positive Test
+  - pks
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2024-08-20
+  - 2024-08-20
+  - null
+  - 13
+  - 94080
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10082059GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'Yes'
+  - null
+  - null
+  - 2020-03-23
+  - null
+  - 16
+  - 82059
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10087055GA01
+  - CAS10005241GA01
+  - P1 - Partner, Sex
+  - fulton
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2023-07-31
+  - 2018-07-29
+  - 16
+  - 87055
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10087055GA01
+  - CAS10010008GA01
+  - P1 - Partner, Sex
+  - JLJ
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2024-09-22
+  - 2020-05-05
+  - null
+  - 16
+  - 87055
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10087055GA01
+  - CAS10010008GA01
+  - P2 - Partner, Needle-Sharing
+  - null
+  - 200 - Chlamydia
+  - null
+  - 2019-05-01
+  - null
+  - 2023-01-11
+  - null
+  - 16
+  - 87055
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10087055GA01
+  - CAS10021036GA01
+  - A1 - Associate 1
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2021-12-12
+  - 2023-06-25
+  - 16
+  - 87055
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10087055GA01
+  - CAS10021036GA01
+  - M1 - Congenital Infant Followup
+  - fulton
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2022-09-11
+  - 2018-10-08
+  - 16
+  - 87055
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10087055GA01
+  - CAS10021036GA01
+  - M1 - Congenital Infant Followup
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - 2023-03-06
+  - 2019-12-20
+  - 2022-03-26
+  - null
+  - 16
+  - 87055
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10087055GA01
+  - CAS10022028GA01
+  - M1 - Congenital Infant Followup
+  - state
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2023-08-10
+  - 2024-01-04
+  - 16
+  - 87055
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10087069GA01
+  - CAS10022028GA01
+  - P1 - Partner, Sex
+  - JLJ
+  - 200 - Chlamydia
+  - 'Yes'
+  - null
+  - null
+  - 2024-10-26
+  - null
+  - 16
+  - 87069
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - P1 - Partner, Sex
+  - null
+  - 200 - Chlamydia
+  - 'No'
+  - null
+  - null
+  - 2024-07-08
+  - 2023-03-18
+  - 16
+  - 87071
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - A2 - Associate 2
+  - fulton
+  - 710 - Syphilis, primary
+  - 'Yes'
+  - null
+  - null
+  - 2023-06-07
+  - 2023-07-24
+  - 16
+  - 88042
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10089067GA01
+  - CAS10021036GA01
+  - A3 - Associate 3
+  - local
+  - 710 - Syphilis, primary
+  - 'No'
+  - null
+  - null
+  - 2020-09-02
+  - 2023-11-24
+  - 16
+  - 89067
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10089161GA01
+  - CAS10010008GA01
+  - M1 - Congenital Infant Followup
+  - fulton
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - 2023-01-04
+  - null
+  - 2023-01-26
+  - null
+  - 16
+  - 89161
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10094077GA01
+  - CAS10005241GA01
+  - A3 - Associate 3
+  - state
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2024-02-19
+  - null
+  - 16
+  - 94077
+- !!python/tuple
+  - Bowman, Dave
+  - PSN10094077GA01
+  - CAS10021036GA01
+  - T2 - Morbidity Report
+  - pks
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2024-03-03
+  - null
+  - 16
+  - 94077
+- !!python/tuple
+  - Bowman, Dave
+  - PSN20067002GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - dekalb
+  - 200 - Chlamydia
+  - 'Yes'
+  - null
+  - null
+  - 2020-01-31
+  - null
+  - 16
+  - 10067002
+- !!python/tuple
+  - Cooper, Dale
+  - PSN10082059GA01
+  - CAS10005241GA01
+  - A1 - Associate 1
+  - state
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2019-04-30
+  - null
+  - 12
+  - 82059
+- !!python/tuple
+  - Cooper, Dale
+  - PSN10087055GA01
+  - CAS10022028GA01
+  - A2 - Associate 2
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - 2023-10-10
+  - 2024-12-27
+  - 2024-04-23
+  - null
+  - 12
+  - 87055
+- !!python/tuple
+  - Cooper, Dale
+  - PSN10087069GA01
+  - CAS10021036GA01
+  - T2 - Morbidity Report
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - 2022-01-09
+  - 2022-03-18
+  - null
+  - 12
+  - 87069
+- !!python/tuple
+  - Cooper, Dale
+  - PSN10087071GA01
+  - CAS10022028GA01
   - C1- Cohort
   - null
   - 790 - Syphilis, Congenital
   - null
   - null
   - null
-  - 2026-04-30
-  - 2026-04-12
-  - 5
-  - '88042'
+  - 2019-10-27
+  - null
+  - 12
+  - 87071
 - !!python/tuple
-  - Walowitz, Howard
-  - PSN10067002GA01
-  - CAS10010008GA01
-  - P2 - Partner, Needle-Sharing
+  - Cooper, Dale
+  - PSN10087071GA01
+  - CAS10022028GA01
+  - T2 - Morbidity Report
   - null
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 'No'
-  - 2026-05-06
   - null
-  - 2026-03-29
-  - 2026-02-07
-  - 8
-  - '67002'
+  - 2021-07-02
+  - 2023-01-13
+  - 2018-09-29
+  - null
+  - 12
+  - 87071
 - !!python/tuple
-  - Walowitz, Howard
-  - PSN10067002GA01
-  - CAS10010008GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 'No'
-  - 2026-05-06
-  - null
-  - 2026-03-29
-  - 2026-03-19
-  - 8
-  - '67002'
-- !!python/tuple
-  - Walowitz, Howard
-  - PSN10067002GA01
-  - CAS10010008GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 'No'
-  - 2026-05-06
-  - null
-  - 2026-03-29
-  - 2026-04-04
-  - 8
-  - '67002'
-- !!python/tuple
-  - Walowitz, Howard
-  - PSN10067002GA01
-  - CAS10010008GA01
-  - P2 - Partner, Needle-Sharing
-  - null
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 'No'
-  - 2026-05-06
-  - null
-  - 2026-03-29
-  - 2026-05-23
-  - 8
-  - '67002'
-- !!python/tuple
-  - Walowitz, Howard
-  - PSN10089067GA01
+  - Cooper, Dale
+  - PSN10088042GA01
   - CAS10005241GA01
-  - P2 - Partner, Needle-Sharing
+  - P1 - Partner, Sex
+  - null
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2024-05-24
+  - null
+  - 12
+  - 88042
+- !!python/tuple
+  - Cooper, Dale
+  - PSN10094080GA01
+  - CAS10022028GA01
+  - A2 - Associate 2
+  - dekalb
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2018-10-17
+  - null
+  - 12
+  - 94080
+- !!python/tuple
+  - Cooper, Dale
+  - PSN20067002GA01
+  - CAS10010008GA01
+  - A1 - Associate 1
+  - JLJ
+  - 200 - Chlamydia
+  - 'Yes'
+  - null
+  - null
+  - 2022-03-25
+  - null
+  - 12
+  - 10067002
+- !!python/tuple
+  - Cooper, Dale
+  - PSN30076044GA01
+  - CAS10005241GA01
+  - T2 - Morbidity Report
+  - dekalb
+  - 790 - Syphilis, Congenital
+  - null
+  - 2021-10-05
+  - null
+  - 2024-07-27
+  - null
+  - 12
+  - 20076044
+- !!python/tuple
+  - Cooper, Dale
+  - PSN30076044GA01
+  - CAS10021036GA01
+  - A3 - Associate 3
+  - null
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2024-12-29
+  - null
+  - 12
+  - 20076044
+- !!python/tuple
+  - Cooper, Dale
+  - PSN30076044GA01
+  - CAS10022028GA01
+  - P1 - Partner, Sex
+  - null
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2020-07-26
+  - null
+  - 12
+  - 20076044
+- !!python/tuple
+  - Cooper, Dale
+  - PSN30076044GA01
+  - CAS10022028GA01
+  - P1 - Partner, Sex
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - 2024-07-15
+  - null
+  - 2019-07-08
+  - null
+  - 12
+  - 20076044
+- !!python/tuple
+  - Deschain, Roland
+  - PSN10082059GA01
+  - CAS10022028GA01
+  - P1 - Partner, Sex
+  - null
+  - 710 - Syphilis, primary
+  - 'No'
+  - 2023-01-02
+  - 2023-01-24
+  - 2023-01-28
+  - null
+  - 12
+  - 82059
+- !!python/tuple
+  - Deschain, Roland
+  - PSN10087069GA01
+  - CAS10005241GA01
+  - C1- Cohort
+  - null
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2023-02-17
+  - 2020-07-10
+  - 12
+  - 87069
+- !!python/tuple
+  - Deschain, Roland
+  - PSN10087069GA01
+  - CAS10010008GA01
+  - C1- Cohort
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2020-03-04
+  - null
+  - 12
+  - 87069
+- !!python/tuple
+  - Deschain, Roland
+  - PSN10088042GA01
+  - CAS10021036GA01
+  - A3 - Associate 3
   - null
   - 790 - Syphilis, Congenital
   - null
   - null
-  - 2026-01-18
-  - 2026-02-20
-  - 2026-04-12
-  - 8
-  - '89067'
+  - null
+  - 2024-07-03
+  - null
+  - 12
+  - 88042
 - !!python/tuple
-  - Walowitz, Howard
-  - PSN10089067GA01
-  - CAS10005241GA01
+  - Deschain, Roland
+  - PSN10089161GA01
+  - CAS10021036GA01
   - P2 - Partner, Needle-Sharing
+  - local
+  - 200 - Chlamydia
   - null
-  - 790 - Syphilis, Congenital
   - null
   - null
-  - 2026-01-18
-  - 2026-02-20
-  - 2026-04-29
-  - 8
-  - '89067'
+  - 2024-12-22
+  - 2023-07-23
+  - 12
+  - 89161
 - !!python/tuple
-  - Walowitz, Howard
-  - PSN10089067GA01
+  - Deschain, Roland
+  - PSN10089161GA01
   - CAS10022028GA01
   - A3 - Associate 3
   - dekalb
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - null
-  - 2026-04-26
   - null
-  - 2026-03-08
-  - 2026-03-24
-  - 8
-  - '89067'
+  - null
+  - 2024-02-20
+  - 2021-08-10
+  - 12
+  - 89161
+- !!python/tuple
+  - Deschain, Roland
+  - PSN10094077GA01
+  - CAS10010008GA01
+  - T2 - Morbidity Report
+  - pks
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2022-12-15
+  - 2024-10-05
+  - 2022-12-15
+  - 12
+  - 94077
+- !!python/tuple
+  - Deschain, Roland
+  - PSN10094077GA01
+  - CAS10022028GA01
+  - T1 - Positive Test
+  - null
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2024-10-05
+  - 2024-10-05
+  - 2021-05-11
+  - 12
+  - 94077
+- !!python/tuple
+  - Deschain, Roland
+  - PSN10094080GA01
+  - CAS10005241GA01
+  - M1 - Congenital Infant Followup
+  - state
+  - 300 - Gonorrhea
+  - 'No'
+  - null
+  - null
+  - 2023-08-10
+  - 2024-01-04
+  - 12
+  - 94080
+- !!python/tuple
+  - Deschain, Roland
+  - PSN10094080GA01
+  - CAS10010008GA01
+  - T1 - Positive Test
+  - null
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2018-11-30
+  - 2018-11-30
+  - null
+  - 12
+  - 94080
+- !!python/tuple
+  - Deschain, Roland
+  - PSN10094080GA01
+  - CAS10022028GA01
+  - M1 - Congenital Infant Followup
+  - null
+  - 200 - Chlamydia
+  - null
+  - 2019-08-15
+  - 2023-10-30
+  - 2024-03-09
+  - null
+  - 12
+  - 94080
+- !!python/tuple
+  - Deschain, Roland
+  - PSN20067002GA01
+  - CAS10005241GA01
+  - M1 - Congenital Infant Followup
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2021-12-23
+  - null
+  - 12
+  - 10067002
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10087055GA01
+  - CAS10010008GA01
+  - T1 - Positive Test
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2018-06-14
+  - 2020-08-02
+  - null
+  - 15
+  - 87055
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10087069GA01
+  - CAS10021036GA01
+  - A1 - Associate 1
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2021-01-09
+  - 2022-03-25
+  - null
+  - 15
+  - 87069
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10087071GA01
+  - CAS10010008GA01
+  - P1 - Partner, Sex
+  - null
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - null
+  - 2018-06-02
+  - 2023-07-15
+  - null
+  - 15
+  - 87071
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - M1 - Congenital Infant Followup
+  - local
+  - 710 - Syphilis, primary
+  - null
+  - 2020-08-23
+  - null
+  - 2024-02-22
+  - 2022-07-14
+  - 15
+  - 87071
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - M1 - Congenital Infant Followup
+  - local
+  - 710 - Syphilis, primary
+  - null
+  - 2020-08-23
+  - null
+  - 2024-02-22
+  - 2024-12-28
+  - 15
+  - 87071
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10087071GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - JLJ
+  - 710 - Syphilis, primary
+  - null
+  - 2021-09-03
+  - null
+  - 2021-08-27
+  - null
+  - 15
+  - 87071
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10089067GA01
+  - CAS10022028GA01
+  - T2 - Morbidity Report
+  - pks
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2023-01-09
+  - null
+  - 15
+  - 89067
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10089161GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - local
+  - 200 - Chlamydia
+  - null
+  - 2024-11-24
+  - null
+  - 2024-04-27
+  - null
+  - 15
+  - 89161
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10089161GA01
+  - CAS10005241GA01
+  - A3 - Associate 3
+  - null
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2022-08-18
+  - null
+  - 15
+  - 89161
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10089161GA01
+  - CAS10005241GA01
+  - A3 - Associate 3
+  - fulton
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2021-12-07
+  - 2024-12-05
+  - null
+  - 15
+  - 89161
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10094077GA01
+  - CAS10022028GA01
+  - P1 - Partner, Sex
+  - local
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2019-04-27
+  - 2022-05-13
+  - null
+  - 15
+  - 94077
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN10094080GA01
+  - CAS10022028GA01
+  - P1 - Partner, Sex
+  - JLJ
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - null
+  - 2023-06-08
+  - 2018-10-04
+  - 2020-09-02
+  - 15
+  - 94080
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN20067002GA01
+  - CAS10021036GA01
+  - A1 - Associate 1
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'Yes'
+  - 2023-07-01
+  - null
+  - 2021-12-12
+  - 2023-06-25
+  - 15
+  - 10067002
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN20067002GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - null
+  - 710 - Syphilis, primary
+  - 'Yes'
+  - null
+  - null
+  - 2021-08-11
+  - null
+  - 15
+  - 10067002
+- !!python/tuple
+  - Freeman, Gordon
+  - PSN30076044GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - pks
+  - 300 - Gonorrhea
+  - 'Yes'
+  - null
+  - 2021-09-30
+  - 2019-10-21
+  - null
+  - 15
+  - 20076044
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10082059GA01
+  - CAS10005241GA01
+  - T2 - Morbidity Report
+  - fulton
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'No'
+  - null
+  - null
+  - 2024-09-18
+  - null
+  - 22
+  - 82059
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10082059GA01
+  - CAS10010008GA01
+  - P2 - Partner, Needle-Sharing
+  - dekalb
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2019-08-16
+  - null
+  - 22
+  - 82059
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10082059GA01
+  - CAS10021036GA01
+  - A1 - Associate 1
+  - JLJ
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2020-05-04
+  - 2021-12-12
+  - 2023-06-25
+  - 22
+  - 82059
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10087055GA01
+  - CAS10005241GA01
+  - T1 - Positive Test
+  - pks
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2021-02-14
+  - 2021-02-14
+  - null
+  - 22
+  - 87055
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10087055GA01
+  - CAS10010008GA01
+  - C1- Cohort
+  - local
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2022-06-18
+  - null
+  - 22
+  - 87055
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10087055GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - local
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2022-10-15
+  - null
+  - 22
+  - 87055
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10087069GA01
+  - CAS10010008GA01
+  - T2 - Morbidity Report
+  - local
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - 2019-02-15
+  - null
+  - 2022-10-15
+  - null
+  - 22
+  - 87069
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10087069GA01
+  - CAS10022028GA01
+  - M1 - Congenital Infant Followup
+  - local
+  - 790 - Syphilis, Congenital
+  - 'Yes'
+  - 2024-07-17
+  - null
+  - 2024-03-03
+  - null
+  - 22
+  - 87069
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - C1- Cohort
+  - null
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2023-02-17
+  - 2020-07-10
+  - 22
+  - 87071
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - T2 - Morbidity Report
+  - state
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - null
+  - 2020-07-18
+  - 2023-03-22
+  - 2020-07-18
+  - 22
+  - 87071
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10087071GA01
+  - CAS10022028GA01
+  - T2 - Morbidity Report
+  - local
+  - 200 - Chlamydia
+  - 'No'
+  - null
+  - null
+  - 2021-11-13
+  - null
+  - 22
+  - 87071
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10088042GA01
+  - CAS10005241GA01
+  - T2 - Morbidity Report
+  - state
+  - 790 - Syphilis, Congenital
+  - null
+  - 2020-07-05
+  - null
+  - 2023-09-13
+  - null
+  - 22
+  - 88042
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10088042GA01
+  - CAS10021036GA01
+  - T2 - Morbidity Report
+  - pks
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2022-12-15
+  - 2024-10-05
+  - 2022-12-15
+  - 22
+  - 88042
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - P1 - Partner, Sex
+  - fulton
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - 2021-04-04
+  - 2023-07-26
+  - null
+  - 22
+  - 88042
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10089067GA01
+  - CAS10022028GA01
+  - T2 - Morbidity Report
+  - local
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - 2018-11-16
+  - null
+  - 2024-05-19
+  - null
+  - 22
+  - 89067
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10094077GA01
+  - CAS10010008GA01
+  - A1 - Associate 1
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2019-02-18
+  - null
+  - 22
+  - 94077
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10094077GA01
+  - CAS10022028GA01
+  - M1 - Congenital Infant Followup
+  - state
+  - 710 - Syphilis, primary
+  - 'Yes'
+  - null
+  - null
+  - 2024-06-12
+  - 2022-10-07
+  - 22
+  - 94077
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10094080GA01
+  - CAS10021036GA01
+  - P2 - Partner, Needle-Sharing
+  - pks
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'No'
+  - 2023-05-14
+  - null
+  - 2018-12-20
+  - null
+  - 22
+  - 94080
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN10094080GA01
+  - CAS10021036GA01
+  - T2 - Morbidity Report
+  - fulton
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2020-03-17
+  - null
+  - 22
+  - 94080
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN20067002GA01
+  - CAS10021036GA01
+  - A2 - Associate 2
+  - local
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2022-03-18
+  - null
+  - 22
+  - 10067002
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN20067002GA01
+  - CAS10022028GA01
+  - A2 - Associate 2
+  - state
+  - 300 - Gonorrhea
+  - null
+  - 2019-09-09
+  - null
+  - 2023-07-22
+  - 2021-03-26
+  - 22
+  - 10067002
+- !!python/tuple
+  - Hanna, Vincent
+  - PSN30076044GA01
+  - CAS10022028GA01
+  - M1 - Congenital Infant Followup
+  - fulton
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2024-10-02
+  - 2022-09-11
+  - 2018-10-08
+  - 22
+  - 20076044
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10082059GA01
+  - CAS10005241GA01
+  - M1 - Congenital Infant Followup
+  - state
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2020-11-21
+  - 2019-05-18
+  - 15
+  - 82059
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10082059GA01
+  - CAS10021036GA01
+  - T2 - Morbidity Report
+  - dekalb
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2024-06-26
+  - null
+  - 15
+  - 82059
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10087055GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2020-01-07
+  - null
+  - 15
+  - 87055
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10087055GA01
+  - CAS10022028GA01
+  - T2 - Morbidity Report
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - 2018-09-20
+  - null
+  - 2021-05-15
+  - null
+  - 15
+  - 87055
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10087071GA01
+  - CAS10010008GA01
+  - A3 - Associate 3
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2018-12-02
+  - 2024-01-18
+  - 15
+  - 87071
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10087071GA01
+  - CAS10022028GA01
+  - P2 - Partner, Needle-Sharing
+  - local
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2019-08-01
+  - 2023-05-11
+  - null
+  - 15
+  - 87071
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10087071GA01
+  - CAS10022028GA01
+  - T2 - Morbidity Report
+  - local
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'Yes'
+  - null
+  - null
+  - 2024-05-19
+  - null
+  - 15
+  - 87071
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10088042GA01
+  - CAS10010008GA01
+  - P2 - Partner, Needle-Sharing
+  - JLJ
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2020-11-27
+  - 2020-12-04
+  - 15
+  - 88042
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - A3 - Associate 3
+  - fulton
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2019-09-18
+  - 2021-10-02
+  - null
+  - 15
+  - 88042
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10089067GA01
+  - CAS10021036GA01
+  - T2 - Morbidity Report
+  - null
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2024-11-02
+  - null
+  - 15
+  - 89067
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10089067GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - 2023-05-25
+  - null
+  - 2022-04-19
+  - null
+  - 15
+  - 89067
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10089161GA01
+  - CAS10021036GA01
+  - P1 - Partner, Sex
+  - null
+  - 710 - Syphilis, primary
+  - 'Yes'
+  - 2019-04-02
+  - null
+  - 2023-07-15
+  - null
+  - 15
+  - 89161
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10094077GA01
+  - CAS10005241GA01
+  - P2 - Partner, Needle-Sharing
+  - local
+  - 200 - Chlamydia
+  - null
+  - 2019-07-04
+  - null
+  - 2021-11-15
+  - null
+  - 15
+  - 94077
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN10094077GA01
+  - CAS10010008GA01
+  - A2 - Associate 2
+  - null
+  - 790 - Syphilis, Congenital
+  - null
+  - 2018-07-20
+  - 2024-09-07
+  - 2022-04-14
+  - null
+  - 15
+  - 94077
+- !!python/tuple
+  - Lumbergh, Bill
+  - PSN30076044GA01
+  - CAS10021036GA01
+  - T1 - Positive Test
+  - fulton
+  - 200 - Chlamydia
+  - 'No'
+  - 2022-03-12
+  - 2021-07-24
+  - 2021-07-24
+  - null
+  - 15
+  - 20076044
+- !!python/tuple
+  - McCauley, Neil
+  - PSN10082059GA01
+  - CAS10005241GA01
+  - C1- Cohort
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2018-12-08
+  - 2023-11-03
+  - null
+  - 10
+  - 82059
+- !!python/tuple
+  - McCauley, Neil
+  - PSN10087069GA01
+  - CAS10021036GA01
+  - A2 - Associate 2
+  - null
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2021-11-15
+  - 2024-04-26
+  - 10
+  - 87069
+- !!python/tuple
+  - McCauley, Neil
+  - PSN10087071GA01
+  - CAS10005241GA01
+  - T2 - Morbidity Report
+  - fulton
+  - 200 - Chlamydia
+  - 'Yes'
+  - null
+  - null
+  - 2024-09-18
+  - null
+  - 10
+  - 87071
+- !!python/tuple
+  - McCauley, Neil
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - T1 - Positive Test
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'No'
+  - null
+  - 2020-05-16
+  - 2020-05-16
+  - null
+  - 10
+  - 87071
+- !!python/tuple
+  - McCauley, Neil
+  - PSN10087071GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - fulton
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2019-10-04
+  - 2023-05-03
+  - null
+  - 10
+  - 87071
+- !!python/tuple
+  - McCauley, Neil
+  - PSN10088042GA01
+  - CAS10010008GA01
+  - M1 - Congenital Infant Followup
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2018-06-09
+  - null
+  - 10
+  - 88042
+- !!python/tuple
+  - McCauley, Neil
+  - PSN10089067GA01
+  - CAS10005241GA01
+  - T2 - Morbidity Report
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'Yes'
+  - 2023-12-08
+  - null
+  - 2024-09-16
+  - null
+  - 10
+  - 89067
+- !!python/tuple
+  - McCauley, Neil
+  - PSN10094077GA01
+  - CAS10010008GA01
+  - A2 - Associate 2
+  - state
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2018-09-13
+  - 2024-08-20
+  - null
+  - 10
+  - 94077
+- !!python/tuple
+  - McCauley, Neil
+  - PSN10094077GA01
+  - CAS10022028GA01
+  - T2 - Morbidity Report
+  - null
+  - 790 - Syphilis, Congenital
+  - 'Yes'
+  - null
+  - null
+  - 2022-11-26
+  - null
+  - 10
+  - 94077
+- !!python/tuple
+  - McCauley, Neil
+  - PSN20067002GA01
+  - CAS10021036GA01
+  - M1 - Congenital Infant Followup
+  - fulton
+  - 710 - Syphilis, primary
+  - 'Yes'
+  - null
+  - null
+  - 2021-12-03
+  - null
+  - 10
+  - 10067002
+- !!python/tuple
+  - Navidson, Will
+  - PSN10082059GA01
+  - CAS10021036GA01
+  - P1 - Partner, Sex
+  - fulton
+  - 710 - Syphilis, primary
+  - null
+  - 2024-01-10
+  - null
+  - 2021-05-04
+  - null
+  - 12
+  - 82059
+- !!python/tuple
+  - Navidson, Will
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - A2 - Associate 2
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'Yes'
+  - null
+  - null
+  - 2023-03-27
+  - null
+  - 12
+  - 87071
+- !!python/tuple
+  - Navidson, Will
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - P1 - Partner, Sex
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'No'
+  - 2022-04-08
+  - null
+  - 2024-10-28
+  - null
+  - 12
+  - 87071
+- !!python/tuple
+  - Navidson, Will
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - T2 - Morbidity Report
+  - fulton
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - null
+  - null
+  - 2024-09-18
+  - null
+  - 12
+  - 87071
+- !!python/tuple
+  - Navidson, Will
+  - PSN10089161GA01
+  - CAS10005241GA01
+  - T1 - Positive Test
+  - fulton
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2019-05-16
+  - 2022-11-26
+  - null
+  - 12
+  - 89161
+- !!python/tuple
+  - Navidson, Will
+  - PSN10094077GA01
+  - CAS10021036GA01
+  - A2 - Associate 2
+  - null
+  - 200 - Chlamydia
+  - null
+  - 2020-10-02
+  - null
+  - 2021-09-05
+  - null
+  - 12
+  - 94077
+- !!python/tuple
+  - Navidson, Will
+  - PSN10094077GA01
+  - CAS10021036GA01
+  - P2 - Partner, Needle-Sharing
+  - local
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2022-04-13
+  - 2023-01-28
+  - 12
+  - 94077
+- !!python/tuple
+  - Navidson, Will
+  - PSN10094080GA01
+  - CAS10010008GA01
+  - T1 - Positive Test
+  - dekalb
+  - 300 - Gonorrhea
+  - 'Yes'
+  - null
+  - 2021-10-26
+  - 2021-10-26
+  - null
+  - 12
+  - 94080
+- !!python/tuple
+  - Navidson, Will
+  - PSN20067002GA01
+  - CAS10005241GA01
+  - A1 - Associate 1
+  - pks
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2019-01-20
+  - null
+  - 12
+  - 10067002
+- !!python/tuple
+  - Navidson, Will
+  - PSN30076044GA01
+  - CAS10005241GA01
+  - P1 - Partner, Sex
+  - dekalb
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2019-05-27
+  - 2022-03-25
+  - 12
+  - 20076044
+- !!python/tuple
+  - Navidson, Will
+  - PSN30076044GA01
+  - CAS10005241GA01
+  - T1 - Positive Test
+  - fulton
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2021-04-26
+  - 2021-04-26
+  - 2018-07-08
+  - 12
+  - 20076044
+- !!python/tuple
+  - Navidson, Will
+  - PSN30076044GA01
+  - CAS10005241GA01
+  - T2 - Morbidity Report
+  - dekalb
+  - 790 - Syphilis, Congenital
+  - null
+  - 2020-12-23
+  - 2019-07-09
+  - 2024-06-26
+  - null
+  - 12
+  - 20076044
+- !!python/tuple
+  - Poole, Frank
+  - PSN10082059GA01
+  - CAS10010008GA01
+  - A3 - Associate 3
+  - fulton
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2021-08-08
+  - null
+  - 15
+  - 82059
+- !!python/tuple
+  - Poole, Frank
+  - PSN10082059GA01
+  - CAS10021036GA01
+  - P2 - Partner, Needle-Sharing
+  - local
+  - 200 - Chlamydia
+  - null
+  - 2022-04-03
+  - null
+  - 2021-02-15
+  - 2022-03-31
+  - 15
+  - 82059
+- !!python/tuple
+  - Poole, Frank
+  - PSN10087055GA01
+  - CAS10010008GA01
+  - T1 - Positive Test
+  - fulton
+  - 710 - Syphilis, primary
+  - 'Yes'
+  - null
+  - 2021-08-19
+  - 2024-04-01
+  - 2020-04-03
+  - 15
+  - 87055
+- !!python/tuple
+  - Poole, Frank
+  - PSN10087055GA01
+  - CAS10021036GA01
+  - P2 - Partner, Needle-Sharing
+  - state
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - null
+  - null
+  - 2021-09-24
+  - null
+  - 15
+  - 87055
+- !!python/tuple
+  - Poole, Frank
+  - PSN10087069GA01
+  - CAS10021036GA01
+  - T1 - Positive Test
+  - fulton
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'Yes'
+  - null
+  - 2020-08-03
+  - 2020-08-03
+  - null
+  - 15
+  - 87069
+- !!python/tuple
+  - Poole, Frank
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - T1 - Positive Test
+  - dekalb
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - 2022-11-22
+  - 2022-11-22
+  - null
+  - 15
+  - 87071
+- !!python/tuple
+  - Poole, Frank
+  - PSN10088042GA01
+  - CAS10021036GA01
+  - M1 - Congenital Infant Followup
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2022-05-25
+  - null
+  - 15
+  - 88042
+- !!python/tuple
+  - Poole, Frank
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - dekalb
+  - 300 - Gonorrhea
+  - 'No'
+  - null
+  - null
+  - 2023-12-15
+  - 2020-07-24
+  - 15
+  - 88042
+- !!python/tuple
+  - Poole, Frank
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - dekalb
+  - 300 - Gonorrhea
+  - 'No'
+  - null
+  - null
+  - 2023-12-15
+  - 2023-11-17
+  - 15
+  - 88042
+- !!python/tuple
+  - Poole, Frank
+  - PSN10089067GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - local
+  - 710 - Syphilis, primary
+  - 'No'
+  - 2019-06-26
+  - null
+  - 2024-06-11
+  - null
+  - 15
+  - 89067
+- !!python/tuple
+  - Poole, Frank
+  - PSN10089067GA01
+  - CAS10021036GA01
+  - A2 - Associate 2
+  - fulton
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'Yes'
+  - null
+  - 2022-03-10
+  - 2021-12-16
+  - null
+  - 15
+  - 89067
+- !!python/tuple
+  - Poole, Frank
+  - PSN10089161GA01
+  - CAS10010008GA01
+  - A2 - Associate 2
+  - state
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2022-05-07
+  - 2023-07-22
+  - 2021-03-26
+  - 15
+  - 89161
+- !!python/tuple
+  - Poole, Frank
+  - PSN20067002GA01
+  - CAS10021036GA01
+  - P2 - Partner, Needle-Sharing
+  - null
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - null
+  - null
+  - 2023-11-19
+  - null
+  - 15
+  - 10067002
+- !!python/tuple
+  - Poole, Frank
+  - PSN20067002GA01
+  - CAS10022028GA01
+  - T2 - Morbidity Report
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - 2020-04-01
+  - 2023-02-10
+  - 2019-06-14
+  - 2023-02-10
+  - 15
+  - 10067002
+- !!python/tuple
+  - Poole, Frank
+  - PSN30076044GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - null
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2023-05-31
+  - null
+  - 15
+  - 20076044
+- !!python/tuple
+  - Solo, Han
+  - PSN10082059GA01
+  - CAS10022028GA01
+  - A3 - Associate 3
+  - local
+  - 710 - Syphilis, primary
+  - null
+  - 2019-04-08
+  - 2023-04-01
+  - 2020-11-07
+  - null
+  - 16
+  - 82059
+- !!python/tuple
+  - Solo, Han
+  - PSN10087055GA01
+  - CAS10021036GA01
+  - C1- Cohort
+  - dekalb
+  - 300 - Gonorrhea
+  - 'Yes'
+  - 2023-09-22
+  - null
+  - 2024-09-16
+  - null
+  - 16
+  - 87055
+- !!python/tuple
+  - Solo, Han
+  - PSN10087055GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - dekalb
+  - 710 - Syphilis, primary
+  - 'Yes'
+  - null
+  - null
+  - 2021-11-12
+  - null
+  - 16
+  - 87055
+- !!python/tuple
+  - Solo, Han
+  - PSN10087069GA01
+  - CAS10010008GA01
+  - A2 - Associate 2
+  - state
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'Yes'
+  - null
+  - 2018-08-30
+  - 2023-12-11
+  - 2020-09-14
+  - 16
+  - 87069
+- !!python/tuple
+  - Solo, Han
+  - PSN10087069GA01
+  - CAS10010008GA01
+  - C1- Cohort
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - 2024-04-26
+  - 2023-09-01
+  - 2023-06-07
+  - null
+  - 16
+  - 87069
+- !!python/tuple
+  - Solo, Han
+  - PSN10087071GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - local
+  - 710 - Syphilis, primary
+  - 'Yes'
+  - null
+  - null
+  - 2024-06-11
+  - null
+  - 16
+  - 87071
+- !!python/tuple
+  - Solo, Han
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - T1 - Positive Test
+  - dekalb
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2021-06-06
+  - 2022-11-22
+  - null
+  - 16
+  - 87071
+- !!python/tuple
+  - Solo, Han
+  - PSN10087071GA01
+  - CAS10022028GA01
+  - T2 - Morbidity Report
+  - state
+  - 300 - Gonorrhea
+  - 'Yes'
+  - null
+  - 2024-03-11
+  - 2023-09-13
+  - null
+  - 16
+  - 87071
+- !!python/tuple
+  - Solo, Han
+  - PSN10088042GA01
+  - CAS10005241GA01
+  - P1 - Partner, Sex
+  - local
+  - 710 - Syphilis, primary
+  - 'Yes'
+  - null
+  - null
+  - 2020-07-16
+  - 2018-08-20
+  - 16
+  - 88042
+- !!python/tuple
+  - Solo, Han
+  - PSN10089067GA01
+  - CAS10021036GA01
+  - C1- Cohort
+  - local
+  - 790 - Syphilis, Congenital
+  - 'Yes'
+  - null
+  - null
+  - 2018-10-17
+  - 2018-08-04
+  - 16
+  - 89067
+- !!python/tuple
+  - Solo, Han
+  - PSN10089161GA01
+  - CAS10005241GA01
+  - M1 - Congenital Infant Followup
+  - null
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2021-09-23
+  - 2019-03-13
+  - null
+  - 16
+  - 89161
+- !!python/tuple
+  - Solo, Han
+  - PSN10089161GA01
+  - CAS10010008GA01
+  - A1 - Associate 1
+  - null
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2020-09-13
+  - null
+  - 16
+  - 89161
+- !!python/tuple
+  - Solo, Han
+  - PSN10089161GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - state
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - null
+  - null
+  - 2020-11-27
+  - null
+  - 16
+  - 89161
+- !!python/tuple
+  - Solo, Han
+  - PSN10094077GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2022-04-14
+  - null
+  - 16
+  - 94077
+- !!python/tuple
+  - Solo, Han
+  - PSN10094077GA01
+  - CAS10021036GA01
+  - P1 - Partner, Sex
+  - local
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2024-10-28
+  - null
+  - 16
+  - 94077
+- !!python/tuple
+  - Solo, Han
+  - PSN20067002GA01
+  - CAS10021036GA01
+  - M1 - Congenital Infant Followup
+  - state
+  - 790 - Syphilis, Congenital
+  - null
+  - 2022-03-19
+  - null
+  - 2024-06-12
+  - 2022-10-07
+  - 16
+  - 10067002
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN10087055GA01
+  - CAS10022028GA01
+  - M1 - Congenital Infant Followup
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2019-03-13
+  - null
+  - 15
+  - 87055
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN10087071GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - null
+  - 200 - Chlamydia
+  - null
+  - 2024-03-07
+  - null
+  - 2022-04-14
+  - null
+  - 15
+  - 87071
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN10087071GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - null
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2023-03-27
+  - null
+  - 15
+  - 87071
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN10088042GA01
+  - CAS10005241GA01
+  - P2 - Partner, Needle-Sharing
+  - dekalb
+  - 200 - Chlamydia
+  - 'Yes'
+  - 2018-06-11
+  - null
+  - 2019-08-16
+  - null
+  - 15
+  - 88042
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN10089161GA01
+  - CAS10010008GA01
+  - A3 - Associate 3
+  - local
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2023-12-26
+  - null
+  - 15
+  - 89161
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN10089161GA01
+  - CAS10022028GA01
+  - M1 - Congenital Infant Followup
+  - dekalb
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'No'
+  - null
+  - null
+  - 2024-12-03
+  - null
+  - 15
+  - 89161
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN10094077GA01
+  - CAS10010008GA01
+  - P1 - Partner, Sex
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2024-07-08
+  - 2023-03-18
+  - 15
+  - 94077
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN10094080GA01
+  - CAS10005241GA01
+  - A3 - Associate 3
+  - null
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2020-03-03
+  - null
+  - 15
+  - 94080
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN10094080GA01
+  - CAS10005241GA01
+  - T2 - Morbidity Report
+  - null
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2024-07-21
+  - 2022-11-26
+  - null
+  - 15
+  - 94080
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN20067002GA01
+  - CAS10010008GA01
+  - A3 - Associate 3
+  - state
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - 2024-09-05
+  - 2022-06-13
+  - null
+  - 15
+  - 10067002
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN20067002GA01
+  - CAS10022028GA01
+  - M1 - Congenital Infant Followup
+  - state
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2024-07-08
+  - null
+  - 15
+  - 10067002
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN30076044GA01
+  - CAS10010008GA01
+  - A3 - Associate 3
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - 2022-01-17
+  - null
+  - 2023-05-02
+  - 2021-09-27
+  - 15
+  - 20076044
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN30076044GA01
+  - CAS10010008GA01
+  - P1 - Partner, Sex
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2021-09-22
+  - 2024-10-26
+  - null
+  - 15
+  - 20076044
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN30076044GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - pks
+  - 200 - Chlamydia
+  - null
+  - 2020-06-30
+  - null
+  - 2021-05-02
+  - 2019-06-15
+  - 15
+  - 20076044
+- !!python/tuple
+  - Stantz, Raymond
+  - PSN30076044GA01
+  - CAS10022028GA01
+  - P2 - Partner, Needle-Sharing
+  - dekalb
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2023-12-16
+  - null
+  - 15
+  - 20076044
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10082059GA01
+  - CAS10021036GA01
+  - A3 - Associate 3
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - 2020-04-22
+  - null
+  - 2024-06-23
+  - null
+  - 30
+  - 82059
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087055GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - null
+  - 300 - Gonorrhea
+  - 'No'
+  - null
+  - null
+  - 2021-11-14
+  - null
+  - 30
+  - 87055
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087055GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - dekalb
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2020-09-24
+  - 2022-12-30
+  - 30
+  - 87055
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087055GA01
+  - CAS10010008GA01
+  - P2 - Partner, Needle-Sharing
+  - state
+  - 710 - Syphilis, primary
+  - 'Yes'
+  - 2021-05-05
+  - null
+  - 2023-07-27
+  - null
+  - 30
+  - 87055
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087055GA01
+  - CAS10021036GA01
+  - A2 - Associate 2
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2021-09-01
+  - null
+  - 30
+  - 87055
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087055GA01
+  - CAS10021036GA01
+  - A2 - Associate 2
+  - local
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'Yes'
+  - 2024-01-04
+  - null
+  - 2024-02-22
+  - 2023-08-10
+  - 30
+  - 87055
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087055GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - local
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2018-10-01
+  - 2024-10-04
+  - 30
+  - 87055
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087069GA01
+  - CAS10021036GA01
+  - A1 - Associate 1
+  - JLJ
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2021-08-27
+  - null
+  - 30
+  - 87069
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087071GA01
+  - CAS10005241GA01
+  - C1- Cohort
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2022-04-19
+  - null
+  - 30
+  - 87071
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087071GA01
+  - CAS10005241GA01
+  - C1- Cohort
+  - local
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2024-10-26
+  - 2024-01-31
+  - 2018-11-13
+  - 30
+  - 87071
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087071GA01
+  - CAS10005241GA01
+  - C1- Cohort
+  - local
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2024-10-26
+  - 2024-01-31
+  - 2023-10-16
+  - 30
+  - 87071
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10087071GA01
+  - CAS10022028GA01
+  - P2 - Partner, Needle-Sharing
+  - dekalb
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2022-05-13
+  - null
+  - 30
+  - 87071
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - 2021-12-13
+  - null
+  - 2022-03-18
+  - 2024-07-30
+  - 30
+  - 88042
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - M1 - Congenital Infant Followup
+  - local
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2024-02-22
+  - 2022-07-14
+  - 30
+  - 88042
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - M1 - Congenital Infant Followup
+  - local
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2024-02-22
+  - 2024-12-28
+  - 30
+  - 88042
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10089161GA01
+  - CAS10022028GA01
+  - A2 - Associate 2
+  - fulton
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2021-12-16
+  - null
+  - 30
+  - 89161
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10089161GA01
+  - CAS10022028GA01
+  - A2 - Associate 2
+  - state
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2024-09-26
+  - 2021-11-03
+  - 30
+  - 89161
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10094077GA01
+  - CAS10010008GA01
+  - C1- Cohort
+  - local
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - 2022-03-08
+  - 2024-01-31
+  - 2018-11-13
+  - 30
+  - 94077
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10094077GA01
+  - CAS10010008GA01
+  - C1- Cohort
+  - local
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - 2022-03-08
+  - 2024-01-31
+  - 2023-10-16
+  - 30
+  - 94077
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10094077GA01
+  - CAS10021036GA01
+  - T2 - Morbidity Report
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - 2021-10-09
+  - null
+  - 2021-05-15
+  - null
+  - 30
+  - 94077
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10094077GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2019-04-22
+  - null
+  - 30
+  - 94077
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10094080GA01
+  - CAS10005241GA01
+  - P1 - Partner, Sex
+  - pks
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2020-08-01
+  - null
+  - 30
+  - 94080
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10094080GA01
+  - CAS10010008GA01
+  - T1 - Positive Test
+  - JLJ
+  - 200 - Chlamydia
+  - 'Yes'
+  - null
+  - 2021-09-28
+  - 2021-09-28
+  - null
+  - 30
+  - 94080
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10094080GA01
+  - CAS10021036GA01
+  - A1 - Associate 1
+  - null
+  - 200 - Chlamydia
+  - null
+  - 2019-05-06
+  - null
+  - 2023-08-07
+  - null
+  - 30
+  - 94080
+- !!python/tuple
+  - Torrance, Jack
+  - PSN10094080GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - dekalb
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2024-08-28
+  - 2024-09-16
+  - null
+  - 30
+  - 94080
+- !!python/tuple
+  - Torrance, Jack
+  - PSN20067002GA01
+  - CAS10005241GA01
+  - A3 - Associate 3
+  - null
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - null
+  - 2022-01-13
+  - 2021-10-27
+  - null
+  - 30
+  - 10067002
+- !!python/tuple
+  - Torrance, Jack
+  - PSN20067002GA01
+  - CAS10021036GA01
+  - M1 - Congenital Infant Followup
+  - local
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'No'
+  - null
+  - null
+  - 2024-02-22
+  - 2022-07-14
+  - 30
+  - 10067002
+- !!python/tuple
+  - Torrance, Jack
+  - PSN20067002GA01
+  - CAS10021036GA01
+  - M1 - Congenital Infant Followup
+  - local
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'No'
+  - null
+  - null
+  - 2024-02-22
+  - 2024-12-28
+  - 30
+  - 10067002
+- !!python/tuple
+  - Torrance, Jack
+  - PSN30076044GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - local
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2021-11-19
+  - null
+  - 30
+  - 20076044
+- !!python/tuple
+  - Torrance, Jack
+  - PSN30076044GA01
+  - CAS10005241GA01
+  - M1 - Congenital Infant Followup
+  - fulton
+  - 200 - Chlamydia
+  - 'No'
+  - 2023-07-10
+  - null
+  - 2022-06-07
+  - 2021-08-07
+  - 30
+  - 20076044
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10082059GA01
+  - CAS10022028GA01
+  - P1 - Partner, Sex
+  - fulton
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2021-06-21
+  - 2024-09-06
+  - null
+  - 18
+  - 82059
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10087055GA01
+  - CAS10010008GA01
+  - A3 - Associate 3
+  - JLJ
+  - 200 - Chlamydia
+  - null
+  - 2019-06-26
+  - 2023-01-20
+  - 2024-06-23
+  - null
+  - 18
+  - 87055
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10087069GA01
+  - CAS10005241GA01
+  - M1 - Congenital Infant Followup
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2023-05-22
+  - null
+  - 18
+  - 87069
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10087069GA01
+  - CAS10005241GA01
+  - T2 - Morbidity Report
+  - pks
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2022-12-15
+  - 2024-10-05
+  - 2022-12-15
+  - 18
+  - 87069
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10087069GA01
+  - CAS10010008GA01
+  - A1 - Associate 1
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2023-12-01
+  - null
+  - 18
+  - 87069
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10087069GA01
+  - CAS10022028GA01
+  - A2 - Associate 2
+  - local
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2021-12-10
+  - null
+  - 18
+  - 87069
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10087071GA01
+  - CAS10005241GA01
+  - A3 - Associate 3
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - 2024-06-12
+  - 2023-01-03
+  - 2024-12-29
+  - null
+  - 18
+  - 87071
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10088042GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - fulton
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2021-09-15
+  - null
+  - 18
+  - 88042
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - null
+  - 2019-10-27
+  - null
+  - 18
+  - 88042
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10094077GA01
+  - CAS10010008GA01
+  - M1 - Congenital Infant Followup
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 'Yes'
+  - null
+  - null
+  - 2022-03-26
+  - null
+  - 18
+  - 94077
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10094077GA01
+  - CAS10010008GA01
+  - P2 - Partner, Needle-Sharing
+  - state
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2023-07-27
+  - null
+  - 18
+  - 94077
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10094077GA01
+  - CAS10021036GA01
+  - T1 - Positive Test
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2021-02-04
+  - 2021-02-04
+  - null
+  - 18
+  - 94077
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10094080GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - local
+  - 300 - Gonorrhea
+  - null
+  - 2020-06-08
+  - null
+  - 2024-04-30
+  - null
+  - 18
+  - 94080
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10094080GA01
+  - CAS10021036GA01
+  - P2 - Partner, Needle-Sharing
+  - null
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - null
+  - null
+  - 2021-11-13
+  - null
+  - 18
+  - 94080
+- !!python/tuple
+  - Truant, Johnny
+  - PSN10094080GA01
+  - CAS10021036GA01
+  - T1 - Positive Test
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2020-07-06
+  - 2020-07-06
+  - null
+  - 18
+  - 94080
+- !!python/tuple
+  - Truant, Johnny
+  - PSN20067002GA01
+  - CAS10021036GA01
+  - P1 - Partner, Sex
+  - local
+  - 710 - Syphilis, primary
+  - null
+  - 2023-07-24
+  - 2022-04-19
+  - 2019-07-27
+  - null
+  - 18
+  - 10067002
+- !!python/tuple
+  - Truant, Johnny
+  - PSN20067002GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - local
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2021-09-04
+  - null
+  - 18
+  - 10067002
+- !!python/tuple
+  - Truant, Johnny
+  - PSN30076044GA01
+  - CAS10010008GA01
+  - T1 - Positive Test
+  - fulton
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2021-01-12
+  - 2021-07-24
+  - null
+  - 18
+  - 20076044
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10087055GA01
+  - CAS10010008GA01
+  - A3 - Associate 3
+  - null
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2022-08-18
+  - null
+  - 13
+  - 87055
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10087069GA01
+  - CAS10010008GA01
+  - M1 - Congenital Infant Followup
+  - null
+  - 790 - Syphilis, Congenital
+  - 'Yes'
+  - 2024-06-01
+  - 2020-01-18
+  - 2019-10-28
+  - null
+  - 13
+  - 87069
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10087069GA01
+  - CAS10010008GA01
+  - M1 - Congenital Infant Followup
+  - fulton
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2022-09-11
+  - 2018-10-08
+  - 13
+  - 87069
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10087069GA01
+  - CAS10022028GA01
+  - A2 - Associate 2
+  - fulton
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2023-06-07
+  - 2023-07-24
+  - 13
+  - 87069
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10087071GA01
+  - CAS10022028GA01
+  - A3 - Associate 3
+  - local
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2019-01-15
+  - null
+  - 13
+  - 87071
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10088042GA01
+  - CAS10005241GA01
+  - P1 - Partner, Sex
+  - null
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2023-01-28
+  - null
+  - 13
+  - 88042
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10088042GA01
+  - CAS10021036GA01
+  - A1 - Associate 1
+  - null
+  - 200 - Chlamydia
+  - null
+  - 2019-10-06
+  - 2019-03-15
+  - 2023-08-07
+  - null
+  - 13
+  - 88042
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - JLJ
+  - 790 - Syphilis, Congenital
+  - null
+  - 2022-12-29
+  - null
+  - 2023-05-11
+  - null
+  - 13
+  - 88042
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10089067GA01
+  - CAS10022028GA01
+  - T1 - Positive Test
+  - pks
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2023-09-27
+  - 2023-09-27
+  - null
+  - 13
+  - 89067
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10089161GA01
+  - CAS10010008GA01
+  - A1 - Associate 1
+  - null
+  - 200 - Chlamydia
+  - null
+  - 2021-02-28
+  - null
+  - 2018-05-05
+  - 2021-07-12
+  - 13
+  - 89161
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10094077GA01
+  - CAS10005241GA01
+  - A1 - Associate 1
+  - null
+  - 300 - Gonorrhea
+  - 'No'
+  - null
+  - 2023-08-08
+  - 2021-06-06
+  - null
+  - 13
+  - 94077
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10094077GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - null
+  - 710 - Syphilis, primary
+  - null
+  - 2019-02-09
+  - null
+  - 2022-10-08
+  - null
+  - 13
+  - 94077
+- !!python/tuple
+  - Van Dam, Jean Claude
+  - PSN10094080GA01
+  - CAS10010008GA01
+  - A1 - Associate 1
+  - pks
+  - 790 - Syphilis, Congenital
+  - 'No'
+  - 2022-05-20
+  - null
+  - 2024-04-23
+  - null
+  - 13
+  - 94080
+- !!python/tuple
+  - Vance, Eli
+  - PSN10087055GA01
+  - CAS10005241GA01
+  - T2 - Morbidity Report
+  - pks
+  - 200 - Chlamydia
+  - null
+  - 2019-12-30
+  - null
+  - 2024-03-03
+  - null
+  - 22
+  - 87055
+- !!python/tuple
+  - Vance, Eli
+  - PSN10087069GA01
+  - CAS10005241GA01
+  - A1 - Associate 1
+  - JLJ
+  - 200 - Chlamydia
+  - 'Yes'
+  - 2021-06-08
+  - null
+  - 2022-07-27
+  - 2019-02-22
+  - 22
+  - 87069
+- !!python/tuple
+  - Vance, Eli
+  - PSN10087069GA01
+  - CAS10005241GA01
+  - P1 - Partner, Sex
+  - local
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2019-05-25
+  - 2022-01-03
+  - null
+  - 22
+  - 87069
+- !!python/tuple
+  - Vance, Eli
+  - PSN10087069GA01
+  - CAS10010008GA01
+  - P2 - Partner, Needle-Sharing
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2024-04-28
+  - 2021-03-26
+  - null
+  - 22
+  - 87069
+- !!python/tuple
+  - Vance, Eli
+  - PSN10087071GA01
+  - CAS10010008GA01
+  - A2 - Associate 2
+  - state
+  - 300 - Gonorrhea
+  - null
+  - 2022-11-03
+  - null
+  - 2023-07-22
+  - 2021-03-26
+  - 22
+  - 87071
+- !!python/tuple
+  - Vance, Eli
+  - PSN10087071GA01
+  - CAS10021036GA01
+  - P1 - Partner, Sex
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2019-11-08
+  - 2024-10-28
+  - null
+  - 22
+  - 87071
+- !!python/tuple
+  - Vance, Eli
+  - PSN10087071GA01
+  - CAS10022028GA01
+  - P2 - Partner, Needle-Sharing
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2019-01-28
+  - 2019-01-06
+  - null
+  - 22
+  - 87071
+- !!python/tuple
+  - Vance, Eli
+  - PSN10088042GA01
+  - CAS10005241GA01
+  - A1 - Associate 1
+  - local
+  - 710 - Syphilis, primary
+  - 'No'
+  - null
+  - null
+  - 2021-03-07
+  - 2018-11-24
+  - 22
+  - 88042
+- !!python/tuple
+  - Vance, Eli
+  - PSN10088042GA01
+  - CAS10005241GA01
+  - M1 - Congenital Infant Followup
+  - state
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2024-12-26
+  - 2021-08-29
+  - null
+  - 22
+  - 88042
+- !!python/tuple
+  - Vance, Eli
+  - PSN10089067GA01
+  - CAS10010008GA01
+  - A2 - Associate 2
+  - pks
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2023-12-29
+  - null
+  - 22
+  - 89067
+- !!python/tuple
+  - Vance, Eli
+  - PSN10089067GA01
+  - CAS10021036GA01
+  - A1 - Associate 1
+  - pks
+  - 200 - Chlamydia
+  - null
+  - 2023-08-27
+  - null
+  - 2024-06-12
+  - null
+  - 22
+  - 89067
+- !!python/tuple
+  - Vance, Eli
+  - PSN10089067GA01
+  - CAS10021036GA01
+  - T1 - Positive Test
+  - fulton
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2024-04-01
+  - 2024-04-01
+  - 2020-04-03
+  - 22
+  - 89067
+- !!python/tuple
+  - Vance, Eli
+  - PSN10089161GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - JLJ
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2021-04-26
+  - null
+  - 22
+  - 89161
+- !!python/tuple
+  - Vance, Eli
+  - PSN10089161GA01
+  - CAS10005241GA01
+  - T2 - Morbidity Report
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2022-03-26
+  - 2018-06-09
+  - 2018-08-08
+  - 22
+  - 89161
+- !!python/tuple
+  - Vance, Eli
+  - PSN10089161GA01
+  - CAS10010008GA01
+  - T1 - Positive Test
+  - pks
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - 2023-08-17
+  - 2023-08-17
+  - null
+  - 22
+  - 89161
+- !!python/tuple
+  - Vance, Eli
+  - PSN10089161GA01
+  - CAS10021036GA01
+  - T2 - Morbidity Report
+  - pks
+  - 200 - Chlamydia
+  - 'No'
+  - null
+  - null
+  - 2022-05-13
+  - null
+  - 22
+  - 89161
+- !!python/tuple
+  - Vance, Eli
+  - PSN10094077GA01
+  - CAS10005241GA01
+  - C1- Cohort
+  - JLJ
+  - 300 - Gonorrhea
+  - null
+  - 2018-08-03
+  - null
+  - 2021-11-19
+  - null
+  - 22
+  - 94077
+- !!python/tuple
+  - Vance, Eli
+  - PSN10094077GA01
+  - CAS10010008GA01
+  - A2 - Associate 2
+  - state
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2023-07-22
+  - 2021-03-26
+  - 22
+  - 94077
+- !!python/tuple
+  - Vance, Eli
+  - PSN10094080GA01
+  - CAS10005241GA01
+  - A2 - Associate 2
+  - local
+  - 790 - Syphilis, Congenital
+  - null
+  - 2024-09-06
+  - null
+  - 2019-09-20
+  - null
+  - 22
+  - 94080
+- !!python/tuple
+  - Vance, Eli
+  - PSN20067002GA01
+  - CAS10010008GA01
+  - P2 - Partner, Needle-Sharing
+  - state
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2023-07-27
+  - null
+  - 22
+  - 10067002
+- !!python/tuple
+  - Vance, Eli
+  - PSN30076044GA01
+  - CAS10005241GA01
+  - T1 - Positive Test
+  - pks
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2024-08-06
+  - 2024-08-06
+  - 2019-02-12
+  - 22
+  - 20076044
+- !!python/tuple
+  - Vance, Eli
+  - PSN30076044GA01
+  - CAS10010008GA01
+  - M1 - Congenital Infant Followup
+  - pks
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2022-07-05
+  - null
+  - 22
+  - 20076044
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10082059GA01
+  - CAS10005241GA01
+  - A1 - Associate 1
+  - JLJ
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - null
+  - 2022-02-20
+  - null
+  - 23
+  - 82059
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10082059GA01
+  - CAS10021036GA01
+  - A1 - Associate 1
+  - JLJ
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2022-03-18
+  - 2024-07-30
+  - 23
+  - 82059
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10082059GA01
+  - CAS10022028GA01
+  - A1 - Associate 1
+  - local
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2021-05-27
+  - 2021-11-03
+  - null
+  - 23
+  - 82059
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10087055GA01
+  - CAS10021036GA01
+  - A1 - Associate 1
+  - state
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2020-11-27
+  - null
+  - 23
+  - 87055
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10087055GA01
+  - CAS10021036GA01
+  - C1- Cohort
+  - dekalb
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2024-09-23
+  - 2023-12-15
+  - 2020-07-24
+  - 23
+  - 87055
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10087055GA01
+  - CAS10021036GA01
+  - C1- Cohort
+  - dekalb
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2024-09-23
+  - 2023-12-15
+  - 2023-11-17
+  - 23
+  - 87055
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10087069GA01
+  - CAS10021036GA01
+  - A2 - Associate 2
+  - local
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2022-07-16
+  - 2021-05-24
+  - null
+  - 23
+  - 87069
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10087069GA01
+  - CAS10022028GA01
+  - T1 - Positive Test
+  - null
+  - 790 - Syphilis, Congenital
+  - null
+  - 2024-07-08
+  - 2023-10-12
+  - 2023-11-04
+  - 2021-03-16
+  - 23
+  - 87069
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10087071GA01
+  - CAS10005241GA01
+  - C1- Cohort
+  - local
+  - 710 - Syphilis, primary
+  - null
+  - null
+  - 2021-03-01
+  - 2018-05-30
+  - null
+  - 23
+  - 87071
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10088042GA01
+  - CAS10005241GA01
+  - P1 - Partner, Sex
+  - fulton
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2024-09-06
+  - null
+  - 23
+  - 88042
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10088042GA01
+  - CAS10022028GA01
+  - T2 - Morbidity Report
+  - state
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2020-07-18
+  - 2023-03-22
+  - 2020-07-18
+  - 23
+  - 88042
 - !!python/tuple
   - Walowitz, Howard
   - PSN10089067GA01
   - CAS10022028GA01
-  - A3 - Associate 3
+  - A1 - Associate 1
+  - JLJ
+  - 710 - Syphilis, primary
+  - null
+  - 2022-09-28
+  - null
+  - 2024-11-02
+  - null
+  - 23
+  - 89067
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10089161GA01
+  - CAS10005241GA01
+  - C1- Cohort
+  - null
+  - 300 - Gonorrhea
+  - null
+  - null
+  - null
+  - 2023-10-01
+  - null
+  - 23
+  - 89161
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10089161GA01
+  - CAS10021036GA01
+  - C1- Cohort
   - dekalb
+  - 300 - Gonorrhea
+  - 'No'
+  - null
+  - null
+  - 2024-04-27
+  - 2021-04-06
+  - 23
+  - 89161
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10089161GA01
+  - CAS10022028GA01
+  - C1- Cohort
+  - JLJ
+  - 200 - Chlamydia
+  - 'Yes'
+  - null
+  - 2019-04-09
+  - 2021-11-19
+  - null
+  - 23
+  - 89161
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10094077GA01
+  - CAS10021036GA01
+  - A3 - Associate 3
+  - state
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - null
-  - 2026-04-26
   - null
-  - 2026-03-08
-  - 2026-04-16
-  - 8
-  - '89067'
+  - null
+  - 2024-02-19
+  - null
+  - 23
+  - 94077
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10094080GA01
+  - CAS10005241GA01
+  - T1 - Positive Test
+  - pks
+  - 300 - Gonorrhea
+  - null
+  - null
+  - 2022-07-30
+  - 2022-07-30
+  - null
+  - 23
+  - 94080
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN10094080GA01
+  - CAS10010008GA01
+  - T1 - Positive Test
+  - pks
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - 2019-08-09
+  - 2021-11-12
+  - 2021-11-12
+  - null
+  - 23
+  - 94080
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN20067002GA01
+  - CAS10005241GA01
+  - C1- Cohort
+  - dekalb
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2023-12-15
+  - 2020-07-24
+  - 23
+  - 10067002
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN20067002GA01
+  - CAS10005241GA01
+  - C1- Cohort
+  - dekalb
+  - 200 - Chlamydia
+  - null
+  - null
+  - null
+  - 2023-12-15
+  - 2023-11-17
+  - 23
+  - 10067002
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN20067002GA01
+  - CAS10010008GA01
+  - A1 - Associate 1
+  - fulton
+  - 200 - Chlamydia
+  - null
+  - null
+  - 2018-11-29
+  - 2021-11-01
+  - null
+  - 23
+  - 10067002
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN20067002GA01
+  - CAS10010008GA01
+  - T1 - Positive Test
+  - null
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - null
+  - null
+  - 2023-11-03
+  - 2023-11-03
+  - null
+  - 23
+  - 10067002
+- !!python/tuple
+  - Walowitz, Howard
+  - PSN30076044GA01
+  - CAS10021036GA01
+  - M1 - Congenital Infant Followup
+  - fulton
+  - 790 - Syphilis, Congenital
+  - null
+  - null
+  - null
+  - 2018-11-19
+  - null
+  - 23
+  - 20076044

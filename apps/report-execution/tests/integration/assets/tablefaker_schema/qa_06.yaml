@@ -115,7 +115,7 @@ tables:
       - column_name: patient_local_id
         data: random.choice(["PSN20067002GA01", "PSN30076044GA01", "PSN10082059GA01", "PSN10087055GA01", "PSN10087069GA01", "PSN10087071GA01", "PSN10088042GA01", "PSN10089067GA01", "PSN10089161GA01", "PSN10094077GA01", "PSN10094080GA01"])
       - column_name: cmp_pid_ind
-        data: r"No"
+        data: random.choice(["Yes", "No"])
         null_percentage: 0.75
       - column_name: confirmation_dt
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
