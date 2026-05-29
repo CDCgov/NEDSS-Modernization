@@ -20,11 +20,10 @@ public class ReportFilterBuilder {
     this.filterCodeRepository = filterCodeRepository;
   }
 
-  //  Suppressing java:S131 ("switch" statements should have "default" clauses) because
+  //  Suppressing java:S131 ("switch" statements should have "def`ault" clauses) because
   // there isn't anything to actually do in the default case when switching against
   // the filter request's filterCodeUid.
-  //  Suppressing java:S5411 ("Use a primitive boolean expression here.") because `isRequired`
-  // is a Boolean for API flexibility.
+  @SuppressWarnings("java:S131")
   public ReportFilter build(UpsertFilterRequest filter, Report report) {
     LocalDateTime now = LocalDateTime.now();
 
@@ -113,7 +112,7 @@ public class ReportFilterBuilder {
               .statusTime(now)
               .build());
     } else {
-        //  Delete corresponding filter validation record if it exists
+      //  Delete corresponding filter validation record if it exists
       filterBuilder.filterValidation(null);
     }
 

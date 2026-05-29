@@ -10,7 +10,6 @@ import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdminReportRequest;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,7 +41,7 @@ public class ReportMapper {
         .dataSource(dataSource)
         .descTxt(request.description())
         .isModifiableIndicator('N') // consistently "N" in DB, so just continuing that pattern
-            .filterMode('B')  // consistently "B" in DB, so just continuing that pattern"
+        .filterMode('B') // consistently "B" in DB, so just continuing that pattern"
         .ownerUid(request.ownerId())
         .reportTitle(request.reportTitle())
         .shared(reportGroupToDbChar(request.group()))

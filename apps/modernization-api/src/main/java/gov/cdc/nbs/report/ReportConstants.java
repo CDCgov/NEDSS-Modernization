@@ -21,21 +21,10 @@ public final class ReportConstants {
   }
 
   public enum ReportGroup {
-    PRIVATE("Private"),
-    REPORTING_FACILITY("Reporting Facility"),
-    PUBLIC("Public"),
-    TEMPLATE("Template");
-
-    private final String text;
-
-    ReportGroup(final String text) {
-      this.text = text;
-    }
-
-    @Override
-    public String toString() {
-      return text;
-    }
+    PRIVATE,
+    REPORTING_FACILITY,
+    PUBLIC,
+    TEMPLATE;
   }
 
   private ReportConstants() {}

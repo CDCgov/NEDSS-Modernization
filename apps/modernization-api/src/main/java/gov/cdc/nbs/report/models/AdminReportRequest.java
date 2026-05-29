@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import java.util.Arrays;
 import java.util.List;
 
 public record AdminReportRequest(
@@ -16,5 +15,4 @@ public record AdminReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Long ownerId,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank ReportConstants.ReportGroup group,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<UpsertFilterRequest> filterRequests,
-    String description) {
-}
+    String description) {}
