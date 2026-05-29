@@ -45,7 +45,7 @@ public class ReportFilter {
   private List<FilterValue> filterValues;
 
   // Setting orphanRemoval to true so we can delete a ReportFilterValidation record when
-  // it's detached from the ReportFilter (i.e. `filterValidation` is set to null).
+  // it's detached from its parent ReportFilter (i.e. `filterValidation` is set to null).
   @OneToOne(mappedBy = "reportFilter", fetch = FetchType.LAZY, orphanRemoval = true)
   private ReportFilterValidation filterValidation;
 
