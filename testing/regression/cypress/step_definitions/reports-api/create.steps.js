@@ -2,6 +2,7 @@ import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 const VALID_DATA_SOURCE_UID = 1;
 const VALID_REPORT_LIBRARY_ID = 10000001;
+const VALID_SECTION_CODE = "1000";
 
 function makeCreateRequest(body) {
   return cy.request({
@@ -20,7 +21,7 @@ When(/^I send a POST request to the create endpoint with a valid report$/, () =>
     dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Test Report Title",
-    sectionCode: "Test Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
     group: "Private",
     filterRequests: [],
@@ -35,7 +36,7 @@ When(/^I send a POST request to the create endpoint with missing dataSourceId$/,
     dataSourceId: null,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Test Report Title",
-    sectionCode: "Test Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
     group: "Private",
     filterRequests: [],
@@ -50,7 +51,7 @@ When(/^I send a POST request to the create endpoint with missing libraryId$/, ()
     dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: null,
     reportTitle: "Test Report Title",
-    sectionCode: "Test Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
     group: "Private",
     filterRequests: [],
@@ -65,7 +66,7 @@ When(/^I send a POST request to the create endpoint with missing reportTitle$/, 
     dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: null,
-    sectionCode: "Test Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
     group: "Private",
     filterRequests: [],
@@ -95,7 +96,7 @@ When(/^I send a POST request to the create endpoint with missing ownerId$/, () =
     dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Test Report Title",
-    sectionCode: "Test Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: null,
     group: "Private",
     filterRequests: [],
@@ -110,7 +111,7 @@ When(/^I send a POST request to the create endpoint with missing group$/, () => 
     dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Test Report Title",
-    sectionCode: "Test Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
     group: null,
     filterRequests: [],

@@ -3,6 +3,7 @@ import { When } from "@badeball/cypress-cucumber-preprocessor";
 const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
 const VALID_REPORT_LIBRARY_ID = 10000001;
+const VALID_SECTION_CODE = "1001";
 
 function makeEditRequest(body) {
   return cy.request({
@@ -21,7 +22,7 @@ When(/^I send a PUT request to the edit endpoint with a valid report$/, () => {
     dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Edited Report Title",
-    sectionCode: "Edited Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
     group: "Private",
     filterRequests: [],
@@ -36,7 +37,7 @@ When(/^I send a PUT request to the edit endpoint with missing dataSourceId$/, ()
     dataSourceId: null,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Edited Report Title",
-    sectionCode: "Edited Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
     group: "Private",
     filterRequests: [],
@@ -51,7 +52,7 @@ When(/^I send a PUT request to the edit endpoint with missing libraryId$/, () =>
     dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: null,
     reportTitle: "Edited Report Title",
-    sectionCode: "Edited Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
     group: "Private",
     filterRequests: [],
@@ -66,7 +67,7 @@ When(/^I send a PUT request to the edit endpoint with missing reportTitle$/, () 
     dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: null,
-    sectionCode: "Edited Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
     group: "Private",
     filterRequests: [],
@@ -96,7 +97,7 @@ When(/^I send a PUT request to the edit endpoint with missing ownerId$/, () => {
     dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Edited Report Title",
-    sectionCode: "Edited Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: null,
     group: "Private",
     filterRequests: [],
@@ -111,7 +112,7 @@ When(/^I send a PUT request to the edit endpoint with missing group$/, () => {
     dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Edited Report Title",
-    sectionCode: "Edited Section Code",
+    sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
     group: null,
     filterRequests: [],
