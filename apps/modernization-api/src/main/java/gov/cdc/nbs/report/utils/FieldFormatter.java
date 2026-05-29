@@ -12,11 +12,23 @@ import org.springframework.stereotype.Component;
 public class FieldFormatter {
   public String formatField(String type, String value) {
     return switch (type.toUpperCase()) {
-      case "STRING" -> "'" + value.replace("'", "''") + "'";
+      case "STRING", "DATETIME" -> "'" + value.replace("'", "''") + "'";
       case "DATE" -> convertToSQLDate(value);
       case "INTEGER", "NUMBER" -> validateNumeric(value);
       default -> throw new IllegalArgumentException("Unexpected Column Type: " + type);
     };
+  }
+
+  /**
+   * Generates a string that contains the colName in brackets which protects against SQL reserved
+   * words
+   */
+  public String convertToSQLColName(String colName, String colType) {
+    String sqlColName = "[" + colName + "]";
+    if (colType.equals("DATETIME")) {
+      return "CAST(" + sqlColName + " AS DATE)";
+    }
+    return sqlColName;
   }
 
   private static String convertToSQLDate(String date) {

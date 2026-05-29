@@ -2,9 +2,26 @@ package gov.cdc.nbs.report;
 
 import static gov.cdc.nbs.report.ReportConstants.BAS_TIME_RANGE_TYPES;
 import static gov.cdc.nbs.report.ReportConstants.BAS_TYPES;
+import static gov.cdc.nbs.report.ReportConstants.BW;
+import static gov.cdc.nbs.report.ReportConstants.CO;
+import static gov.cdc.nbs.report.ReportConstants.COMPARISON_OPERATORS;
+import static gov.cdc.nbs.report.ReportConstants.EQ;
+import static gov.cdc.nbs.report.ReportConstants.GE;
+import static gov.cdc.nbs.report.ReportConstants.GT;
+import static gov.cdc.nbs.report.ReportConstants.IN;
+import static gov.cdc.nbs.report.ReportConstants.LE;
+import static gov.cdc.nbs.report.ReportConstants.LT;
+import static gov.cdc.nbs.report.ReportConstants.NE;
+import static gov.cdc.nbs.report.ReportConstants.NN;
+import static gov.cdc.nbs.report.ReportConstants.RDB_LAB_RESULT_VAL_COLS;
 import static gov.cdc.nbs.report.ReportConstants.SQL_AND;
 import static gov.cdc.nbs.report.ReportConstants.SQL_WHERE;
+import static gov.cdc.nbs.report.ReportConstants.SW;
 
+import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.report.models.AdvancedFilterRequest;
+import gov.cdc.nbs.report.models.AdvancedQuery;
+import gov.cdc.nbs.report.models.AdvancedQueryResult;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.FilterType;
@@ -12,10 +29,13 @@ import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.utils.FieldFormatter;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
+import java.util.function.BiFunction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,24 +46,69 @@ public class WhereClauseService {
 
   private final FieldFormatter fieldFormatter;
 
+  private static final String LAB_RESULT_QUERY_VAL =
+      "root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM %s";
+
+  Map<String, BiFunction<AdvancedQuery.Rule, ReportColumn, String>> advQueryOperations =
+      Map.ofEntries(
+          Map.entry(
+              EQ,
+              (rule, column) ->
+                  isCodedType(column)
+                      ? buildAdvFilterCriteria(rule, column)
+                      : buildAdvComparisonCriteria(rule, column)),
+          Map.entry(
+              NE,
+              (rule, column) ->
+                  isCodedType(column)
+                      ? buildAdvFilterCriteria(rule, column)
+                      : buildAdvComparisonCriteria(rule, column)),
+          Map.entry(IN, this::buildAdvNullCriteria),
+          Map.entry(NN, this::buildAdvNullCriteria),
+          Map.entry(SW, this::buildAdvLikeCriteria),
+          Map.entry(CO, this::buildAdvLikeCriteria),
+          Map.entry(BW, this::buildAdvBetweenCriteria),
+          Map.entry(LT, this::buildAdvComparisonCriteria),
+          Map.entry(GT, this::buildAdvComparisonCriteria),
+          Map.entry(LE, this::buildAdvComparisonCriteria),
+          Map.entry(GE, this::buildAdvComparisonCriteria));
+
   /**
-   * Generates a complete SQL WHERE clause for a report execution.
+   * Generates a complete SQL WHERE clause for a report execution. Process both the basic and
+   * advanced where clauses
    *
    * @param reportConfig The metadata configuration for the report being executed.
    * @param executionRequest The specific filter values and columns requested by the user.
+   * @param dataSourceNameUtils
    * @return A string starting with "WHERE " followed by the filter criteria, or an empty string if
    *     no filters are applied.
    */
   public String buildWhereClause(
-      ReportConfiguration reportConfig, ReportExecutionRequest executionRequest) {
-
-    // StringJoiner provides the "WHERE " prefix and " AND " delimiters between filter statements
-    StringJoiner finalWhere = new StringJoiner(SQL_AND, SQL_WHERE, "");
+      ReportConfiguration reportConfig,
+      ReportExecutionRequest executionRequest,
+      DataSourceNameUtils dataSourceNameUtils) {
+    String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
+    String labResultQuery = String.format(LAB_RESULT_QUERY_VAL, rdbDataSource);
 
     String basicWhereFragment =
         buildBasicWhereFragment(reportConfig, executionRequest.basicFilters());
 
+    AdvancedQueryResult advancedQueryResult =
+        buildAdvancedQueryResult(reportConfig, executionRequest.advancedFilter());
+    String advWhereFragment = advancedQueryResult.query();
+    boolean hasLabResultVal = advancedQueryResult.hasLabResultVal();
+
+    // StringJoiner provides the "WHERE " prefix and " AND " delimiters between filter statements
+    StringJoiner finalWhere = new StringJoiner(SQL_AND, SQL_WHERE, "");
+
+    if (hasLabResultVal) {
+      basicWhereFragment = String.format("%s WHERE %s", labResultQuery, basicWhereFragment);
+    }
     finalWhere.add(basicWhereFragment);
+    if (!advWhereFragment.isEmpty()) {
+      finalWhere.add(
+          String.format("%s%s", advancedQueryResult.query(), hasLabResultVal ? ")" : ""));
+    }
 
     // Only return the WHERE clause if it contains anything beyond the initial "WHERE " prefix
     return finalWhere.length() > SQL_WHERE.length() ? finalWhere.toString() : "";
@@ -95,7 +160,7 @@ public class WhereClauseService {
       if (BAS_TYPES.contains(type)) {
         basicCriteria.add(buildBasicFilterCriteria(filterRequest, column));
       } else if (BAS_TIME_RANGE_TYPES.contains(type)) {
-        basicCriteria.add(buildBasicTimeRangeCriteria(filterRequest, column));
+        basicCriteria.add(buildBasicBetweenCriteria(filterRequest, column));
       }
     }
 
@@ -103,19 +168,101 @@ public class WhereClauseService {
   }
 
   /**
-   * Builds a standard multi-value SQL criteria using an IN clause. Result format: ([COLUMN_NAME] IN
-   * ('Val1', 'Val2') OR [COLUMN_NAME] IS NULL)
+   * Processes an advanced filter request into a joined SQL fragment.
    *
-   * @param basicFilterRequest The user-provided values.
+   * @param config used to map columnIds to database columns.
+   * @param advancedFilterRequest The advanced filter request provided in the execution request.
+   * @return AdvancedQueryResult that contains
+   *     <ul>
+   *       <li>query - a joined SQL string without the "WHERE" prefix
+   *       <li>hasLabResultVal - a boolean to determine whether a special clause needs to be added
+   *           to handle special columns from the RDB.LAB_RESULT_VAL table
+   *     </ul>
+   */
+  public AdvancedQueryResult buildAdvancedQueryResult(
+      ReportConfiguration config, AdvancedFilterRequest advancedFilterRequest) {
+    if (advancedFilterRequest == null) return new AdvancedQueryResult("", false);
+    return buildAdvancedQuery(config, advancedFilterRequest.value());
+  }
+
+  /**
+   * Performs a preorder traversal of the advanced filter request's Rule values to build a joined
+   * SQL fragment.
+   *
+   * @return AdvancedQueryResult that contains
+   *     <ul>
+   *       <li>query - a joined SQL string without the "WHERE" prefix
+   *       <li>hasLabResultVal - a boolean to determine whether a special clause needs to be added
+   *           to handle special columns from the RDB.LAB_RESULT_VAL table
+   *     </ul>
+   */
+  private AdvancedQueryResult buildAdvancedQuery(ReportConfiguration config, AdvancedQuery query) {
+    boolean containsLabResultValCol = false;
+    if (query.getClass().equals(AdvancedQuery.Rule.class)) {
+      AdvancedQuery.Rule rule = (AdvancedQuery.Rule) query;
+      AdvancedQueryResult advQueryRes = buildFormattedAdvancedCriteria(config, rule);
+      if (advQueryRes.hasLabResultVal()) {
+        containsLabResultValCol = true;
+      }
+      return new AdvancedQueryResult(advQueryRes.query(), containsLabResultValCol);
+    }
+
+    if (query.getClass().equals(AdvancedQuery.RuleGroup.class)) {
+      AdvancedQuery.RuleGroup ruleGroup = (AdvancedQuery.RuleGroup) query;
+      if (ruleGroup.rules().isEmpty()) return new AdvancedQueryResult("", false);
+
+      String combinator = String.format(" %s ", ruleGroup.combinator().toUpperCase());
+      StringJoiner joiner = new StringJoiner(combinator, "(", ")");
+
+      for (AdvancedQuery rule : ruleGroup.rules()) {
+        AdvancedQueryResult innerAdvQueryRes = buildAdvancedQuery(config, rule);
+        String innerRuleSql = innerAdvQueryRes.query();
+        if (!innerRuleSql.isEmpty()) {
+          joiner.add(innerRuleSql);
+        }
+        if (innerAdvQueryRes.hasLabResultVal()) {
+          containsLabResultValCol = true;
+        }
+      }
+
+      return new AdvancedQueryResult(joiner.toString(), containsLabResultValCol);
+    }
+
+    return new AdvancedQueryResult("", containsLabResultValCol);
+  }
+
+  private AdvancedQueryResult buildFormattedAdvancedCriteria(
+      ReportConfiguration config, AdvancedQuery.Rule rule) {
+    boolean hasLabResultValCol;
+
+    String operator = rule.operator().toUpperCase();
+    ReportColumn column =
+        findColumn(config, rule.columnId()).orElseThrow(IllegalArgumentException::new);
+    hasLabResultValCol = RDB_LAB_RESULT_VAL_COLS.contains(column.name());
+    String query =
+        Optional.ofNullable(advQueryOperations.get(operator))
+            .map(fn -> fn.apply(rule, column))
+            .orElseThrow(() -> new IllegalArgumentException("Unsupported operator: " + operator));
+    return new AdvancedQueryResult(query, hasLabResultValCol);
+  }
+
+  /**
+   * Builds a standard multi-value SQL criteria using the IN operator. Possible result formats:
+   *
+   * <ul>
+   *   <li>([COLUMN_NAME] IN ('Val1', 'Val2'))
+   *   <li>([COLUMN_NAME] NOT IN ('Val1', 'Val2') OR [COLUMN_NAME] IS NULL)
+   *   <li>([COLUMN_NAME] IN ('Val1', 'Val2') OR [COLUMN_NAME] IS NULL)
+   * </ul>
+   *
+   * @param values The user-provided values.
    * @param column The metadata for the column being filtered.
+   * @param includeNulls adds " OR [COLUMN_NAME] IS NULL"
+   * @param negateCriteria adds "NOT" operator
    * @return A parenthesized SQL fragment.
    */
-  private String buildBasicFilterCriteria(
-      BasicFilterRequest basicFilterRequest, ReportColumn column) {
-
-    boolean includeNulls = basicFilterRequest.includeNulls();
-
-    List<String> values = basicFilterRequest.values();
+  private String buildFilterCriteria(
+      List<String> values, ReportColumn column, boolean includeNulls, boolean negateCriteria) {
     if (values.isEmpty() && !includeNulls) return "";
 
     // Delegate type-specific escaping and quoting to the FieldFormatter
@@ -147,7 +294,7 @@ public class WhereClauseService {
     if (hasValues) {
       criteria
           .append(colName)
-          .append(" IN (")
+          .append(String.format(" %sIN (", negateCriteria ? "NOT " : ""))
           .append(String.join(", ", formattedValues))
           .append(")");
     }
@@ -157,33 +304,58 @@ public class WhereClauseService {
       if (hasValues) {
         criteria.append(" OR ");
       }
-      criteria.append(colName).append(" IS NULL");
+      criteria.append(buildNullCriteria(column, false));
     }
 
     return criteria.append(")").toString();
   }
 
+  private String buildBasicFilterCriteria(
+      BasicFilterRequest basicFilterRequest, ReportColumn column) {
+    return buildFilterCriteria(
+        basicFilterRequest.values(), column, basicFilterRequest.includeNulls(), false);
+  }
+
+  private String buildAdvFilterCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
+    List<String> values = Arrays.asList(rule.value().split("\\|"));
+    boolean isNNOperator = rule.operator().equals(NE);
+    return buildFilterCriteria(values, column, isNNOperator, isNNOperator);
+  }
+
   /**
-   * Builds an SQL date/time range criteria using a BETWEEN clause. Result format: (([COLUMN_NAME]
-   * BETWEEN 'Start' AND 'End') OR ([COLUMN_NAME] IS NULL))
+   * Builds a SQL criteria using the BETWEEN operator. Possible result formats:
    *
-   * @param basicFilterRequest The user-provided date range values.
+   * <ul>
+   *   <li>(([COLUMN_NAME] BETWEEN 'Start' * AND 'End') OR ([COLUMN_NAME] IS NULL))
+   *   <li>([COLUMN_NAME] NOT IN ('Val1', 'Val2') OR [COLUMN_NAME] IS NULL)
+   *   <li>([COLUMN_NAME] IN ('Val1', 'Val2') OR [COLUMN_NAME] IS NULL)
+   * </ul>
+   *
+   * @param values The user-provided values.
    * @param column The metadata for the column being filtered.
+   * @param includeNulls adds " OR ([COLUMN_NAME] IS NULL)"
    * @return A parenthesized SQL fragment.
    */
-  private String buildBasicTimeRangeCriteria(
-      BasicFilterRequest basicFilterRequest, ReportColumn column) {
-    List<String> values = basicFilterRequest.values();
-    boolean includeNulls = basicFilterRequest.includeNulls();
-
+  private String buildBetweenCriteria(
+      List<String> values, ReportColumn column, boolean includeNulls) {
     if (values.size() != 2 && !includeNulls) return "";
 
-    // Transform raw client values into type-formatted strings
-    List<String> formattedValues = fieldFormatter.convertToSQLFromDateRange(values);
+    String colType = column.sourceTypeCode();
+    List<String> formattedValues;
+
+    if (colType.equals("DATE")) {
+      formattedValues = fieldFormatter.convertToSQLFromDateRange(values);
+    } else {
+      formattedValues =
+          values.stream()
+              .filter(Objects::nonNull)
+              .map(v -> fieldFormatter.formatField(column.sourceTypeCode(), v))
+              .toList();
+    }
 
     StringBuilder criteria = new StringBuilder("(");
 
-    String colName = "[" + column.name() + "]";
+    String colName = fieldFormatter.convertToSQLColName(column.name(), colType);
 
     criteria
         .append(colName)
@@ -193,10 +365,103 @@ public class WhereClauseService {
         .append(formattedValues.get(1));
 
     if (includeNulls) {
-      criteria.insert(0, "(").append(") OR (").append(colName).append(" IS NULL").append(")");
+      criteria.insert(0, "(").append(") OR (").append(buildNullCriteria(column, false)).append(")");
     }
 
     return criteria.append(")").toString();
+  }
+
+  private String buildBasicBetweenCriteria(
+      BasicFilterRequest basicFilterRequest, ReportColumn column) {
+    List<String> values = basicFilterRequest.values();
+    boolean includeNulls = basicFilterRequest.includeNulls();
+
+    return buildBetweenCriteria(values, column, includeNulls);
+  }
+
+  private String buildAdvBetweenCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
+    List<String> values = Arrays.asList(rule.value().split(","));
+    return buildBetweenCriteria(values, column, false);
+  }
+
+  /**
+   * Builds a SQL criteria using the NULL operator. Possible result formats:
+   *
+   * <ul>
+   *   <li>[COLUMN_NAME] IS NULL
+   *   <li>[COLUMN_NAME] IS NOT NULL
+   * </ul>
+   *
+   * @param column The metadata for the column being filtered.
+   * @param negateCriteria adds "NOT" operator
+   * @return a SQL fragment.
+   */
+  private String buildNullCriteria(ReportColumn column, boolean negateCriteria) {
+    return String.format(
+        "%s IS %sNULL",
+        fieldFormatter.convertToSQLColName(column.name(), column.sourceTypeCode()),
+        negateCriteria ? "NOT " : "");
+  }
+
+  private String buildAdvNullCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
+    boolean negateCriteria = rule.operator().equals(NN);
+    return "(" + buildNullCriteria(column, negateCriteria) + ")";
+  }
+
+  /**
+   * Builds a SQL criteria using the LIKE operator. Possible result formats:
+   *
+   * <ul>
+   *   <li>[COLUMN_NAME] IS LIKE 'val%'
+   *   <li>[COLUMN_NAME] IS LIKE '%val%'
+   * </ul>
+   *
+   * @param rule the advanced query rule
+   * @param column The metadata for the column being filtered.
+   * @return a SQL fragment.
+   */
+  private String buildAdvLikeCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
+    StringBuilder criteria = new StringBuilder("(");
+    boolean isContains = rule.operator().contains(CO);
+
+    return criteria
+        .append(fieldFormatter.convertToSQLColName(column.name(), column.sourceTypeCode()))
+        .append(" LIKE ")
+        .append(String.format("'%s", isContains ? "%" : ""))
+        .append(rule.value())
+        .append("%'")
+        .append(")")
+        .toString();
+  }
+
+  /**
+   * Builds a SQL criteria using comparison operators. Possible result formats:
+   *
+   * <ul>
+   *   <li>[COLUMN_NAME] <> 'val' OR [COLUMN_NAME] IS NULL
+   *   <li>[COLUMN_NAME] != 'val'
+   *   <li>[COLUMN_NAME] > val
+   *   <li>[COLUMN_NAME] <= val
+   * </ul>
+   *
+   * @param rule the advanced query rule
+   * @param column The metadata for the column being filtered.
+   * @return a SQL fragment.
+   */
+  private String buildAdvComparisonCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
+    String operator = rule.operator();
+    String sqlOperator =
+        Optional.ofNullable(COMPARISON_OPERATORS.get(operator))
+            .orElseThrow(
+                () -> new IllegalArgumentException("Unsupported comparison operator: " + operator));
+    String colName = fieldFormatter.convertToSQLColName(column.name(), column.sourceTypeCode());
+    String value = fieldFormatter.formatField(column.sourceTypeCode(), rule.value());
+
+    String nullCriteria = "";
+    if (operator.equals(NE)) {
+      nullCriteria = String.format(" OR %s", buildAdvNullCriteria(rule, column));
+    }
+    return String.format("(%s %s %s%s)", colName, sqlOperator, value, nullCriteria);
   }
 
   /** Retrieves the column metadata associated with a specific column UID. */
@@ -213,5 +478,9 @@ public class WhereClauseService {
     return reportConfig.basicFilters().stream()
         .filter(bf -> Objects.equals(bf.reportFilterUid(), reportFilterUid))
         .findFirst();
+  }
+
+  private boolean isCodedType(ReportColumn column) {
+    return column.codesetNm() != null && !column.codesetNm().isEmpty();
   }
 }
