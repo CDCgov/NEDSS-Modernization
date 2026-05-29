@@ -61,7 +61,7 @@ tables:
 
       # used by library
       - column_name: specimen_collection_dt
-        data: fake.date_between(start_date='-19w')
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
   - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
     row_count: 1000
     columns:
@@ -118,10 +118,10 @@ tables:
         data: r"No"
         null_percentage: 0.75
       - column_name: confirmation_dt
-        data: fake.date_between(start_date='-19w')
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         null_percentage: 0.75
       - column_name: fl_fup_exam_dt 
-        data: fake.date_between(start_date='-19w')
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         null_percentage: 0.75
       - column_name: patient_name
         data: random.choice(["Walowitz, Howard", "Van Dam, Jean Claude", "Freeman, Gordon", "Stantz, Raymond", "Solo, Han", "Torrance, Jack", "Bowman, Dave", "Poole, Frank", "Deschain, Roland", "Truant, Johnny", "Navidson, Will", "Hanna, Vincent", "McCauley, Neil", "Cooper, Dale", "Vance, Eli", "Lumbergh, Bill"] ) if random.random() < .95 else None
@@ -176,4 +176,4 @@ tables:
 
       # used by library
       - column_name: diagnosis_dt
-        data: fake.date_between(start_date='-19w')
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
