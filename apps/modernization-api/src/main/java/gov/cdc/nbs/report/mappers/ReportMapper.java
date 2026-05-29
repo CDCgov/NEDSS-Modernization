@@ -49,7 +49,7 @@ public class ReportMapper {
         .dataSource(dataSource)
         .descTxt(request.description())
         .isModifiableIndicator('N') // consistently "N" in DB, so just continuing that pattern
-            .filterMode('B')
+            .filterMode('B')  // consistently "B" in DB, so just continuing that pattern"
         .ownerUid(request.ownerId())
         .reportTitle(request.reportTitle())
         .shared(reportGroupToDbChar(group))
