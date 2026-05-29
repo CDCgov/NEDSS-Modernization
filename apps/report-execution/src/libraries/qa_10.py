@@ -39,7 +39,7 @@ def execute(
         TRY_CAST(
             LEFT(
                 TRIM(PATIENT_AGE_REPORTED), 
-                CHARINDEX(' ', TRIM(PATIENT_AGE_REPORTED) + ' ') - 1) AS INT
+                CHARINDEX(' ', TRIM(PATIENT_AGE_REPORTED) + ' ')) AS INT
         ) AS [age]
     FROM
         shd 
