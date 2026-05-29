@@ -28,7 +28,7 @@ class TestIntegrationQa10Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 80
+        assert len(data) == 81
         assert len(data[0]) == 20
         assert len(data[0]) == len(result.content.columns)
 

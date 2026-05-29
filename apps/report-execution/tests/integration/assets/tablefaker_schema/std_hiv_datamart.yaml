@@ -60,7 +60,10 @@ tables:
           return f"{fake.last_name()}, {fake.first_name()}"
         null_percentage: 0.05
       - column_name: patient_age_reported
-        data: fake.random_int(1, 99)
+        data: |
+          age_num = fake.random_int(1, 99)
+          suffix = random.choice([" years", " Years"]) if random.random() < 0.2 else ""
+          return f"{age_num}{suffix}"
         null_percentage: 0.05
       - column_name: patient_sex
         data: random.choice(["Female", "Male", ""]) if random.random() < .95 else None
