@@ -21,10 +21,6 @@ public class ReportFilterBuilder {
     this.filterCodeRepository = filterCodeRepository;
   }
 
-  //  Suppressing java:S131 ("switch" statements should have "def`ault" clauses) because
-  // there isn't anything to actually do in the default case when switching against
-  // the filter request's filterCodeUid.
-  @SuppressWarnings("java:S131")
   public ReportFilter build(UpsertFilterRequest filter, Report report) {
     LocalDateTime now = LocalDateTime.now();
 
@@ -50,8 +46,8 @@ public class ReportFilterBuilder {
     ReportFilter.ReportFilterBuilder filterBuilder =
         ReportFilter.builder().report(report).filterCode(filterCode).statusCd(Status.ACTIVE_CODE);
 
-      ValueCountCalculator.ReportValueCounts valueCounts =
-          ValueCountCalculator.fromFilterRequest(filter);
+    ValueCountCalculator.ReportValueCounts valueCounts =
+        ValueCountCalculator.fromFilterRequest(filter);
     filterBuilder.minValueCnt(valueCounts.minValueCount());
     filterBuilder.maxValueCnt(valueCounts.maxValueCount());
 
