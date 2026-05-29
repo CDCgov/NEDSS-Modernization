@@ -37,13 +37,9 @@ def execute(
         LOWER(PATIENT_NAME) AS [name_l],
         SUBSTRING(shd.PATIENT_LOCAL_ID, 4, 8) - 10000000 AS [patient_id],
         TRY_CAST(
-            NULLIF(
-                LEFT(
-                    TRIM(PATIENT_AGE_REPORTED),
-                    CHARINDEX(' ', TRIM(PATIENT_AGE_REPORTED) + ' ') - 1
-                ),
-                '.'
-            ) AS INT
+            LEFT(
+                TRIM(PATIENT_AGE_REPORTED), 
+                CHARINDEX(' ', TRIM(PATIENT_AGE_REPORTED) + ' ') - 1) AS INT
         ) AS [age]
     FROM
         shd 
