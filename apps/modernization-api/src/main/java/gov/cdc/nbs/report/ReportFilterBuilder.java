@@ -113,6 +113,7 @@ public class ReportFilterBuilder {
               .statusTime(now)
               .build());
     } else {
+        //  Delete corresponding filter validation record if it exists
       filterBuilder.filterValidation(null);
     }
 
