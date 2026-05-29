@@ -48,12 +48,15 @@ def execute(
             b.LAB_TEST_KEY IS NULL
             OR c.TREATMENT_KEY IS NULL
         )
-    ORDER BY a.PATIENT_NAME
+    ORDER BY
+        a.PATIENT_LOCAL_ID,
+        a.PATIENT_NAME,
+        a.DIAGNOSIS_CD,
+        a.INV_LOCAL_ID,
+        ERROR_TXT,
+        CONFIRMATION_DT;
     """
 
     content = trx.query(full_query)
 
-    return ReportResult(
-        content_type='table',
-        content=content
-    )
+    return ReportResult(content_type='table', content=content)
