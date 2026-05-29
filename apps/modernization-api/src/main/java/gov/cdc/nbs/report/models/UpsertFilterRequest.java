@@ -9,4 +9,4 @@ public record UpsertFilterRequest(
         Long filterCodeUid, //  Pertains to FilterCode.ID
     Long columnUid,
     ReportConstants.SelectType selectType,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isRequired) {}
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean isRequired) {}
