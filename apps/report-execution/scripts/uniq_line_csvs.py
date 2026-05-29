@@ -48,9 +48,9 @@ if __name__ == '__main__':
     if not diff:
         logging.info(f'* all lines in [{fp1}] are found in [{fp2}]')
     else:
-        logging.info(f'* lines found in [{fp1}] that are NOT in [{fp2}]:')
+        logging.info(f'* unique lines found in [{fp1}] that are NOT in [{fp2}]:')
         for line in diff:
-            logging.info(f'{line}')
+            logging.info(f'* {line}')
 
     logging.info(32 * '*')
 
@@ -62,8 +62,8 @@ if __name__ == '__main__':
     if not diff:
         logging.info(f'* all lines in [{fp2}] are found in [{fp1}]')
     else:
-        logging.info(f'* lines found in [{fp2}] that are NOT in [{fp1}]:')
+        logging.info(f'* unique lines found in [{fp2}] that are NOT in [{fp1}]:')
         for line in diff:
-            logging.info(f'{line}')
+            logging.info(f'* {line}')
 
     logging.info(32 * '*')
