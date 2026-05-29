@@ -1,3 +1,6 @@
+import re
+from datetime import date
+
 import pytest
 import yaml
 
@@ -32,6 +35,27 @@ class TestIntegrationQa06Library:
         assert len(data[0]) == len(result.content.columns)
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+
+        # Sanity check for data shape
+        patient_local_id_re = re.compile(r'PSN\d{8}GA01')
+        inv_local_id_re = re.compile(r'CAS\d{8}GA01')
+        referral_basis_re = re.compile(r'[A-Z]{1}\d\s?-\s[A-Za-z ,0-9]+')
+        diagnosis_re = re.compile(r'\d+\s-\s[A-Za-z ,]')
+
+        for row in data:
+            assert row[0] is None or type(row[0]) is str
+            assert patient_local_id_re.match(row[1]) is not None
+            assert inv_local_id_re.match(row[2]) is not None
+            assert referral_basis_re.match(row[3]) is not None
+            assert row[4] is None or type(row[4]) is str
+            assert diagnosis_re.match(row[5]) is not None
+            assert row[6] is None or row[6] in ['Yes', 'No']
+            assert row[7] is None or type(row[7]) is date
+            assert row[8] is None or type(row[8]) is date
+            assert row[9] is None or type(row[9]) is date
+            assert row[10] is None or type(row[10]) is date
+            assert row[11] > 1
+            assert type(row[12]) is int
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
