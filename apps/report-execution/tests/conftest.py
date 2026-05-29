@@ -176,6 +176,7 @@ def get_tables_from_faker(schema_name: str) -> tuple[list[str], list[str]]:
     db_tables = [t['table_name'] for t in schema['tables']]
     fk_tables = schema['config'].get('nbs', {}).get('fk_tables', [])
 
+
     return (db_tables, fk_tables)
 
 
