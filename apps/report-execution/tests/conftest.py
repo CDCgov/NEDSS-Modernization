@@ -103,7 +103,7 @@ def mock_db_connection(mocker):
 @pytest.fixture(scope='session')
 def setup_containers(request):
     """Set up DB and report execution containers."""
-    logging.info('Setting up test containers...')
+    logging.info('Setting up containers tests...')
     compose_path = os.path.join(os.path.dirname(__file__), '../../../cdc-sandbox')
     services = ['report-execution', 'nbs-mssql']
     compose_file_names = [
@@ -241,10 +241,8 @@ def insert_fake_data(
     with db_transaction(conn_string) as trx:
         # Tables with foreign keys pointing to the table we want to replace need to
         # be backed up and cleared out to avoid FK constraint violations
-
         for fk_table in fk_tables:
             temp_fk_table = temp_name(fk_table)
-
             trx.execute(
                 f"IF OBJECT_ID('{temp_fk_table}') IS NOT NULL "
                 f'DROP TABLE {temp_fk_table}'
