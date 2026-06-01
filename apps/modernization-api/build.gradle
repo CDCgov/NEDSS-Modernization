@@ -27,6 +27,7 @@ dependencies {
     implementation(project(':accumulation'))
     implementation(project(':change'))
     implementation(project(':database-entities'))
+    implementation(project(':datasource-utils'))
     implementation(project(':event-schema'))
     implementation(project(':authentication'))
     implementation(project(':authorization'))
@@ -72,6 +73,12 @@ dependencies {
     
     // liquibase
     implementation 'org.liquibase:liquibase-core:5.0.1'
+    
+    constraints {
+        implementation('org.apache.tomcat.embed:tomcat-embed-core:10.1.55') {
+            because('CVE-2026-43515')
+        }
+    }
 
 }
 
@@ -104,7 +111,7 @@ testing {
                 implementation libs.spring.test
                 implementation libs.spring.security.test
                 implementation.bundle(libs.bundles.testcontainers.elasticsearch)
-                implementation 'net.datafaker:datafaker:2.5.4' 
+                implementation 'net.datafaker:datafaker:2.5.4'
 
                 implementation libs.awaitility
 

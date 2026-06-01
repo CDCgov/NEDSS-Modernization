@@ -15,7 +15,7 @@ class OccupationOptionFinder extends SQLBasedOptionFinder {
           row_number() over (order by [code]) as [order]
       from NBS_SRTE..NAICS_Industry_code
       where status_cd = 'A'
-        and parent_is_cd = 'root'
+        and indent_level_nbr = 1
       order by
         code_short_desc_txt
       """;

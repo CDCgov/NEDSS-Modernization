@@ -1,9 +1,8 @@
 import React from 'react';
-import { ReportConfiguration, ReportControllerService } from 'generated';
+import { AdvancedFilterRequest, BasicFilterRequest, ReportConfiguration, ReportControllerService } from 'generated';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
-import { AdvancedFilterRequest, BasicFilterRequest } from 'generated';
 import { useNewTab } from './useNewTab';
 import { ResultDataPage } from './ResultDataPage';
 import fileDownload from 'js-file-download';
@@ -11,13 +10,23 @@ import { ReportResultPage } from './ReportResultPage';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
-import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/AdvancedFilter';
+import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
 
 export type ReportExecuteForm = {
     // key is the report's ID
-    basicFilter?: Record<string, string[] | string>;
+    basicFilter?: Record<string, { value: string[] | string | null; includeNulls: boolean }>;
     advancedFilter?: QbRuleGroup;
     columns?: string[];
+};
+
+const normalizeFormValueToStringArray = (value: unknown): string[] => {
+    if (value === undefined || value === null) {
+        return [];
+    }
+    if (Array.isArray(value)) {
+        return value;
+    }
+    return [value.toString()];
 };
 
 const ReportRunPage = () => {
@@ -45,40 +54,52 @@ const ReportRunPage = () => {
         form.handleSubmit(
             (data) => {
                 const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
-                    .map(([id, value]) => {
-                        const values = typeof value === 'string' ? [value] : value;
+                    .map(([id, { value, includeNulls }]) => {
+                        const values = normalizeFormValueToStringArray(value);
                         return {
                             // remove `id_` prefix
-                            reportFilterUid: parseInt(id.slice(3)),
+                            reportFilterUid: Number.parseInt(id.slice(3)),
                             values,
+                            includeNulls,
                         };
                     })
                     .filter((f) => !!f.values);
 
                 const advancedFilterQuery =
                     data.advancedFilter && config
-                        ? queryToAdvancedFilterRequest(data.advancedFilter, config.reportColumns)
+                        ? queryToAdvancedFilterRequest(data.advancedFilter, config.columns)
                         : undefined;
                 const advancedFilter =
                     advancedFilterQuery && config?.advancedFilter?.reportFilterUid
                         ? { reportFilterUid: config.advancedFilter?.reportFilterUid, value: advancedFilterQuery }
                         : undefined;
 
-                handleSubmit(isExport, basicFilters, advancedFilter);
+                const columnUids = config?.library.allowColumnSelection
+                    ? data.columns!.map((v) => parseInt(v))
+                    : undefined;
+
+                handleSubmit(isExport, basicFilters, advancedFilter, columnUids);
             },
             (errors) => {
                 // TODO make this gather all errors and nicely format
-                setError(Object.values(errors.basicFilter ?? {}).reduce((acc, cur) => `${acc}\n${cur?.message}`, ''));
+                setError(
+                    Object.values(errors.basicFilter ?? {}).reduce((acc, cur) => `${acc}\n${cur?.value?.message}`, '')
+                );
             }
         )(event);
     };
 
     const handleSubmit = useCallback(
-        (isExport: boolean, basicFilters: BasicFilterRequest[], advancedFilter?: AdvancedFilterRequest) => {
+        (
+            isExport: boolean,
+            basicFilters: BasicFilterRequest[],
+            advancedFilter?: AdvancedFilterRequest,
+            columnUids?: number[]
+        ) => {
             setSubmitting(true);
             setError('');
             const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
-            runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter } })
+            runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids } })
                 .then((res) => {
                     setHasResult(true);
                     if (!res.content) {

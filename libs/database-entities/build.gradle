@@ -32,4 +32,3 @@ dependencies {
     annotationProcessor libs.lombok
 
 }
-

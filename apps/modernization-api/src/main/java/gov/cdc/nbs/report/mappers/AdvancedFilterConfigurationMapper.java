@@ -34,7 +34,7 @@ public class AdvancedFilterConfigurationMapper {
   public static AdvancedFilterConfiguration fromReportFilter(ReportFilter filter) {
     FilterType filterType = FilterTypeMapper.fromFilterCode(filter.getFilterCode());
 
-    if (!filterType.filterType().equals(ReportConstants.ADV_FILTER_TYPE)) {
+    if (!filterType.type().equals(ReportConstants.ADV_FILTER_TYPE)) {
       throw new IllegalArgumentException(
               "Cannot create advanced filter from non where clause builder filter");
     }

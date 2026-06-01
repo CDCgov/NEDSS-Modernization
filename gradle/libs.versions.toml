@@ -4,7 +4,7 @@ spring-security = '6.5.9'
 jackson = '2.21.1'
 queryDSL = '5.1.0'
 
-junit-jupiter = '6.0.3'
+junit-jupiter = '6.1.0' 
 cucumber = '7.34.3'
 assertj = '3.27.4'
 testcontainers = '1.21.0'
@@ -48,7 +48,7 @@ cucumber-spring = { module = 'io.cucumber:cucumber-spring', version.ref = 'cucum
 cucumber-junit = { module = 'io.cucumber:cucumber-junit', version.ref = 'cucumber' }
 cucumber-junit-platform-engine = { module = 'io.cucumber:cucumber-junit-platform-engine', version.ref = 'cucumber' }
 junit = { module = 'org.junit.jupiter:junit-jupiter', version.ref = 'junit-jupiter' }
-junit-platform = { module = 'org.junit.platform:junit-platform-suite', version = '1.13.4' }
+junit-platform = { module = 'org.junit.platform:junit-platform-suite', version = '6.1.0' }
 awaitility = { module = 'org.awaitility:awaitility', version = '4.3.0' }
 
 [bundles]

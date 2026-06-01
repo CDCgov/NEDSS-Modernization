@@ -1,6 +1,9 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
+import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
+import gov.cdc.nbs.entity.odse.DisplayColumn;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
@@ -18,8 +21,8 @@ import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
-import gov.cdc.nbs.report.utils.DataSourceNameUtils;
 import gov.cdc.nbs.repository.ReportRepository;
+import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
@@ -35,14 +38,17 @@ public class ReportService {
   private final ReportRepository reportRepository;
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils;
+  private final WhereClauseService whereClauseService;
 
   public ReportService(
       final ReportRepository reportRepository,
       RestClient reportExecutionClient,
-      final DataSourceNameConfiguration dataSourceNameConfig) {
+      final DataSourceNameConfiguration dataSourceNameConfig,
+      WhereClauseService whereClauseService) {
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
+    this.whereClauseService = whereClauseService;
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
@@ -77,13 +83,20 @@ public class ReportService {
               List<ReportColumn> reportColumns =
                   dataSourceColumns.stream().map(ReportColumnMapper::fromDataSourceColumn).toList();
 
+              List<Long> defaultColumnUids =
+                  report.getDisplayColumns().stream()
+                      .sorted(Comparator.comparing(DisplayColumn::getSequenceNumber))
+                      .map(DisplayColumn::getDataSourceColumnId)
+                      .toList();
+
               return new ReportConfiguration(
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
                   report.getReportTitle(),
                   basicFilters,
                   advancedFilter,
-                  reportColumns);
+                  reportColumns,
+                  defaultColumnUids);
             })
         .orElseThrow(
             () ->
@@ -123,8 +136,7 @@ public class ReportService {
 
     if (!reportConfigResponse.isPython()) {
       throw new NotImplementedException(
-          String.format(
-              "Report not implemented for %s", reportConfigResponse.reportLibrary().runner()),
+          String.format("Report not implemented for %s", reportConfigResponse.library().runner()),
           String.valueOf(HttpStatus.NOT_IMPLEMENTED));
     }
 
@@ -134,7 +146,8 @@ public class ReportService {
     }
 
     ReportSpecBuilder specBuilder =
-        new ReportSpecBuilder(request, reportConfigResponse, dataSourceNameUtils);
+        new ReportSpecBuilder(
+            request, reportConfigResponse, dataSourceNameUtils, whereClauseService);
     ReportSpec reportSpec = specBuilder.build();
 
     return reportExecutionClient

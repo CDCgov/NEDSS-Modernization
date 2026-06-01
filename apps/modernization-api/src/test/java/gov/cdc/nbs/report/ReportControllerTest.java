@@ -58,7 +58,8 @@ class ReportControllerTest {
             "Report Title",
             List.of(basicFilterConfig),
             advancedFilterConfig,
-            columns);
+            columns,
+            null);
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ResponseEntity<ReportConfiguration> response =
@@ -137,7 +138,7 @@ class ReportControllerTest {
         new AdvancedQuery.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
     AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
-    BasicFilterRequest basicFilter = new BasicFilterRequest(4L, Arrays.asList("test"));
+    BasicFilterRequest basicFilter = new BasicFilterRequest(4L, Arrays.asList("test"), true);
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
@@ -169,7 +170,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
     SimpleErrors errors = new SimpleErrors(controller);
@@ -193,7 +194,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
     when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
@@ -216,7 +217,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
     when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
@@ -238,7 +239,7 @@ class ReportControllerTest {
             dataSourceUid,
             false,
             Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
     SimpleErrors errors = new SimpleErrors(controller);
@@ -259,7 +260,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
     when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
@@ -306,7 +307,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
     SimpleErrors errors = new SimpleErrors(controller);
@@ -329,7 +330,7 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            List.of(new BasicFilterRequest(10066724L, List.of("35001"))),
+            List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
     SimpleErrors errors = new SimpleErrors(controller);
