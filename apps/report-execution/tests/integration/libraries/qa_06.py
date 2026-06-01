@@ -91,7 +91,7 @@ class TestIntegrationQa06Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'QA06: Patients with Multiple Cases'
+        assert result.header == 'QA06'
         assert result.subheader is None
         assert (
             result.description
