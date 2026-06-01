@@ -1,9 +1,12 @@
 from datetime import date, datetime
-from re import sub
 from typing import Annotated, Any, Literal
 
-from pandas import DataFrame, to_datetime
+import pandas as pd
 from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
+
+from src.utils import get_str_env_or_default
+
+# res = utils.get_str_env_or_default('CSV_DATE_STRFTIME', 'foobar')
 
 
 class ReportSpec(BaseModel):
@@ -56,11 +59,20 @@ def serialize_table(table: Table) -> str:
      - date: mm/dd/yyyy
     """
 
-    def convert_dates(val: Any) -> Any:
-        if type(val) not in [date, datetime]:
-            return val
+    # strftime constants for Python date and datetime when outputting to CSV
+    csv_date_strftime = get_str_env_or_default('CSV_DATE_STRFTIME', '%m/%d/%Y')
+    csv_datetime_strftime = get_str_env_or_default(
+        'CSV_DATETIME_STRFTIME', '%m/%d/%Y %H:%M:%S'
+    )
 
-        return to_datetime(val)
+    # properly format dates and datetimes
+    def convert_dates(val: Any) -> Any:
+        if type(val) is date:
+            return pd.to_datetime(val).strftime(csv_date_strftime)
+        elif type(val) is datetime:
+            return pd.to_datetime(val).strftime(csv_datetime_strftime)
+
+        return val
 
     updated_data = []
     for tpl in table.data:
@@ -70,18 +82,13 @@ def serialize_table(table: Table) -> str:
 
     # Short cut to valid CSV - can swap out later if performance dictates
     # or serialize to CSV at a different location
-    df = DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
+    df = pd.DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
 
     csv_str = df.to_csv(
         index=False,
-        date_format='%m/%d/%Y %H:%M:%S',
         float_format='{:.20g}',
         lineterminator='\r\n',
     )
-
-    # Remove the %H:%M:%S where no time is given (dates) while leaving datetimes intact
-    date_re = r'(?P<date>\d{2}/\d{2}/\d{4}) 00:00:00'
-    csv_str = sub(date_re, r'\g<date>', csv_str)
 
     # Remove trailing new line
     return csv_str[:-2]

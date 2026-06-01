@@ -35,6 +35,15 @@ def get_int_env_or_default(env_var: str, default: int):
         return default
 
 
+def get_str_env_or_default(env_var: str, default: int):
+    """Gets an environment variable, if it isn't present or not an int uses the default."""
+    res = os.getenv(env_var)
+    if res is None:
+        return default
+
+    return res
+
+
 def parse_date(date_str: str, date_format: str) -> datetime | None:
     """Parse a date string, trying ISO format first, then US format."""
     try:
