@@ -11,7 +11,7 @@ public class ReportSectionFinder extends SQLBasedOptionFinder {
       """
       select
         section_cd          as [value],
-        section_desc_txt    as [name],
+        section_desc_txt    as [name]
       from NBS_ODSE..Report_Section
       order by
           [name]
