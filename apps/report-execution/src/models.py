@@ -6,8 +6,6 @@ from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
 
 from src.utils import get_str_env_or_default
 
-# res = utils.get_str_env_or_default('CSV_DATE_STRFTIME', 'foobar')
-
 
 class ReportSpec(BaseModel):
     """Report request specification."""
@@ -58,7 +56,6 @@ def serialize_table(table: Table) -> str:
      - datetime: mm/dd/yyyy hh:mm:ss
      - date: mm/dd/yyyy
     """
-
     # strftime constants for Python date and datetime when outputting to CSV
     csv_date_strftime = get_str_env_or_default('CSV_DATE_STRFTIME', '%m/%d/%Y')
     csv_datetime_strftime = get_str_env_or_default(

@@ -36,7 +36,7 @@ def get_int_env_or_default(env_var: str, default: int):
 
 
 def get_str_env_or_default(env_var: str, default: int):
-    """Gets an environment variable, if it isn't present or not an int uses the default."""
+    """Gets an environment variable, if it isn't present uses the default."""
     res = os.getenv(env_var)
     if res is None:
         return default

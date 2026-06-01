@@ -1,8 +1,9 @@
 import datetime
 import re
-from src import models
 
 from faker import Faker
+
+from src import models
 
 
 class TestModels:
