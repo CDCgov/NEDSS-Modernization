@@ -1,4 +1,5 @@
 import datetime
+
 import pytest
 import yaml
 
@@ -51,7 +52,7 @@ class TestIntegrationNbsSr08Library:
 
         assert record is not None
         assert record[0] == '13'  # State Code
-        assert record[4] == datetime.datetime(2018, 5, 20, 0, 0) # Event Date
+        assert record[4] == datetime.datetime(2018, 5, 20, 0, 0)  # Event Date
         assert record[5] == '13002'  # County Code
         assert record[6] >= 1  # Case Count
 
