@@ -24,7 +24,7 @@ def execute(
         a.PATIENT_NAME,
         a.PATIENT_LOCAL_ID,
         a.DIAGNOSIS_CD,
-        CONVERT(varchar(10), a.CONFIRMATION_DT, 101) AS CONFIRMATION_DT,
+        CAST(a.CONFIRMATION_DT AS DATE) AS CONFIRMATION_DT,
         CASE
             WHEN b.LAB_TEST_KEY IS NULL AND c.TREATMENT_KEY IS NULL
                 THEN 'No Treatment or Lab'
