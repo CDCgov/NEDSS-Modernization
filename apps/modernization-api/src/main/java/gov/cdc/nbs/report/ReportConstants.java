@@ -15,8 +15,6 @@ public final class ReportConstants {
   public static final String SQL_AND = " AND ";
   public static final String SQL_WHERE = "WHERE ";
 
-  public static final Set<String> SECTION_CODES = Set.of("1000", "1001", "1002");
-
   public enum SelectType {
     SINGLE,
     MULTI

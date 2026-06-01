@@ -15,6 +15,7 @@ import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
+import gov.cdc.nbs.repository.ReportSectionRepository;
 import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
@@ -32,6 +33,7 @@ public class ReportService {
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
   private final ReportFilterRepository reportFilterRepository;
+  private final ReportSectionRepository reportSectionRepository;
   private final ReportMapper reportMapper;
 
   private final RestClient reportExecutionClient;
@@ -44,6 +46,7 @@ public class ReportService {
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
       final ReportFilterRepository reportFilterRepository,
+      final ReportSectionRepository reportSectionRepository,
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig,
       WhereClauseService whereClauseService,
@@ -53,6 +56,7 @@ public class ReportService {
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
     this.reportFilterRepository = reportFilterRepository;
+    this.reportSectionRepository = reportSectionRepository;
     this.reportMapper = reportMapper;
 
     this.reportExecutionClient = reportExecutionClient;
@@ -244,6 +248,11 @@ public class ReportService {
                 () ->
                     new IllegalArgumentException(
                         "No report library found for ID " + request.libraryId()));
+
+    if (!reportSectionRepository.existsBySectionCd(request.sectionCode())) {
+      throw new IllegalArgumentException(
+          "No report section found for code " + request.sectionCode());
+    }
 
     return new ReportMetadata(dataSource, reportLibrary);
   }

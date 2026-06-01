@@ -42,6 +42,7 @@ class ReportServiceTest {
   @Mock private ReportFilterRepository reportFilterRepository;
   @Mock private FilterCodeRepository filterCodeRepository;
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
+  @Mock private ReportSectionRepository reportSectionRepository;
   @Mock private ReportMapper reportMapper;
 
   @Mock private RestClient reportExecutionClient;
@@ -87,6 +88,7 @@ class ReportServiceTest {
   class CreateReport {
     private final Long filterCodeUid = 7L;
     private final Long columnUid = 8L;
+    private final String sectionCd = "1000";
 
     private NbsUserDetails mockUser;
     private DataSource mockDataSource;
@@ -116,6 +118,7 @@ class ReportServiceTest {
       Mockito.lenient()
           .when(dataSourceColumnRepository.findById(any()))
           .thenReturn(Optional.of(mockColumn));
+      Mockito.lenient().when(reportSectionRepository.existsBySectionCd(sectionCd)).thenReturn(true);
     }
 
     private AdminReportRequest buildAdminReportRequest(Boolean includeFilters) {
@@ -129,7 +132,7 @@ class ReportServiceTest {
           dataSourceUid,
           libraryId,
           "Test Report Title",
-          "123",
+          sectionCd,
           0L,
           ReportConstants.ReportGroup.REPORTING_FACILITY,
           filterRequests,
@@ -211,6 +214,20 @@ class ReportServiceTest {
       verify(reportRepository, never()).save(any());
       verify(reportFilterRepository, never()).saveAll(any());
     }
+
+    @Test
+    void createReport_should_throw_when_report_section_not_found() {
+      when(reportSectionRepository.existsBySectionCd(sectionCd)).thenReturn(false);
+
+      AdminReportRequest request = buildAdminReportRequest(true);
+
+      assertThatThrownBy(() -> service.createReport(request, mockUser))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("No report section found for code " + sectionCd);
+
+      verify(reportRepository, never()).save(any());
+      verify(reportFilterRepository, never()).saveAll(any());
+    }
   }
 
   @Nested
@@ -220,6 +237,7 @@ class ReportServiceTest {
     private final Long libraryId = 20L;
     private final Long filterCodeUid = 7L;
     private final Long columnUid = 8L;
+    private final String sectionCd = "1000";
 
     private NbsUserDetails mockUser;
     private DataSource mockDataSource;
@@ -254,6 +272,7 @@ class ReportServiceTest {
       Mockito.lenient()
           .when(dataSourceColumnRepository.findById(any()))
           .thenReturn(Optional.of(mockColumn));
+      Mockito.lenient().when(reportSectionRepository.existsBySectionCd(sectionCd)).thenReturn(true);
     }
 
     private AdminReportRequest buildAdminReportRequest(Boolean includeFilters) {
@@ -267,7 +286,7 @@ class ReportServiceTest {
           dataSourceUid,
           libraryId,
           "Test Report Title",
-          "123",
+          sectionCd,
           0L,
           ReportConstants.ReportGroup.REPORTING_FACILITY,
           filterRequests,
@@ -339,6 +358,20 @@ class ReportServiceTest {
 
       verify(dataSourceRepository).findById(dataSourceUid);
       verify(reportLibraryRepository).findById(libraryId);
+
+      verify(reportRepository, never()).save(any());
+      verify(reportFilterRepository, never()).saveAll(any());
+    }
+
+    @Test
+    void editReport_should_throw_when_report_section_not_found() {
+      when(reportSectionRepository.existsBySectionCd(sectionCd)).thenReturn(false);
+
+      AdminReportRequest request = buildAdminReportRequest(true);
+
+      assertThatThrownBy(() -> service.editReport(request, mockUser, reportId))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("No report section found for code " + sectionCd);
 
       verify(reportRepository, never()).save(any());
       verify(reportFilterRepository, never()).saveAll(any());

@@ -15,10 +15,4 @@ public record AdminReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Long ownerId,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull ReportConstants.ReportGroup group,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<UpsertFilterRequest> filterRequests,
-    String description) {
-  public AdminReportRequest {
-    if (!ReportConstants.SECTION_CODES.contains(sectionCode)) {
-      throw new IllegalArgumentException("Invalid section code: " + sectionCode);
-    }
-  }
-}
+    String description) {}
