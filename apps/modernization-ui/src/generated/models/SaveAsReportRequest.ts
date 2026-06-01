@@ -12,10 +12,10 @@ export type SaveAsReportRequest = {
 };
 export namespace SaveAsReportRequest {
     export enum group {
-        PRIVATE = 'Private',
-        REPORTING_FACILITY = 'Reporting Facility',
-        PUBLIC = 'Public',
-        TEMPLATE = 'Template',
+        PRIVATE = 'PRIVATE',
+        REPORTING_FACILITY = 'REPORTING_FACILITY',
+        PUBLIC = 'PUBLIC',
+        TEMPLATE = 'TEMPLATE',
     }
 }
 

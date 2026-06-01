@@ -9,8 +9,16 @@ export type AdminReportRequest = {
     reportTitle: string;
     sectionCode: string;
     ownerId: number;
-    group: string;
+    group: AdminReportRequest.group;
     filterRequests: Array<UpsertFilterRequest>;
     description?: string;
 };
+export namespace AdminReportRequest {
+    export enum group {
+        PRIVATE = 'PRIVATE',
+        REPORTING_FACILITY = 'REPORTING_FACILITY',
+        PUBLIC = 'PUBLIC',
+        TEMPLATE = 'TEMPLATE',
+    }
+}
 

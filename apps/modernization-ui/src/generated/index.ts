@@ -10,7 +10,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 export type { Address } from './models/Address';
 export type { AddressDemographic } from './models/AddressDemographic';
 export type { Administrative } from './models/Administrative';
-export type { AdminReportRequest } from './models/AdminReportRequest';
+export { AdminReportRequest } from './models/AdminReportRequest';
 export type { AdvancedFilterConfiguration } from './models/AdvancedFilterConfiguration';
 export type { AdvancedFilterRequest } from './models/AdvancedFilterRequest';
 export type { AdvancedQuery } from './models/AdvancedQuery';
