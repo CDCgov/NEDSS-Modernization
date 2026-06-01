@@ -25,6 +25,7 @@ BEGIN
         library_name,
         desc_txt,
         runner,
+        column_select_ind,
         is_builtin_ind,
         add_time,
         add_user_id,
