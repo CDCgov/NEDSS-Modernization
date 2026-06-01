@@ -112,8 +112,6 @@ def execute(
 
     content = trx.query(query)
     header = 'QA06: Patients with Multiple Cases'
-    description = 'This report generates a list, by name, of individuals who have '
-    description += 'multiple occasions of cases within a time period.'
 
     return ReportResult(
         content_type='table', content=content, header=header, description=description
