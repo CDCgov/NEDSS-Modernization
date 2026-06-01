@@ -1,1881 +1,1748 @@
 - !!python/tuple
-  - 449
-  - null
-  - null
-  - null
-  - '37'
-  - M
-  - A
-  - '200'
-  - '22442937'
-  - '64252157'
-  - N
-  - 08/16/2020
-  - 09/20/2019
-  - null
-  - XXX
-  - ''
-  - '13'
-  - '37'
-- !!python/tuple
-  - 690
-  - null
-  - null
-  - null
-  - '43'
-  - F
-  - A
-  - '350'
-  - '92109766'
-  - '17614009'
-  - N
-  - 04/12/2024
-  - 04/27/2019
-  - null
-  - XXX
-  - ''
-  - '13'
-  - '43'
-- !!python/tuple
-  - 887
-  - null
-  - null
-  - null
-  - '61'
-  - null
-  - B
-  - '420'
-  - '19099778'
-  - '11987567'
-  - N
-  - 11/24/2020
-  - 05/09/2021
-  - null
-  - XXX
-  - ''
-  - '13'
-  - '61'
-- !!python/tuple
-  - 464
-  - null
-  - null
-  - null
-  - '57'
-  - F
-  - B
-  - '480'
-  - '89732426'
-  - '81504048'
-  - N
-  - 04/30/2019
-  - 03/11/2022
-  - null
-  - XXX
-  - ''
-  - '13'
-  - '57'
-- !!python/tuple
   - 569
   - null
   - null
   - null
-  - '42'
-  - F
-  - B
-  - '600'
-  - '60124208'
-  - '98638121'
+  - '21'
+  - Female
+  - ''
+  - '480'
+  - '59647717'
+  - '71946169'
   - N
-  - 02/19/2019
-  - 12/14/2018
+  - 12/21/2023
+  - 07/07/2020
   - null
-  - XXX
+  - ''
   - ''
   - '13'
-  - '42'
+  - '21'
 - !!python/tuple
-  - 514
+  - 619
   - null
   - null
   - null
-  - '33'
+  - null
   - ''
   - W
-  - '800'
-  - '48054375'
-  - '68020077'
+  - '850'
+  - '59746482'
+  - '46630231'
   - N
-  - 02/23/2021
-  - 11/21/2023
+  - 01/13/2022
+  - 07/23/2022
   - null
   - XXX
   - ''
   - '13'
-  - '33'
+  - null
 - !!python/tuple
-  - 439
+  - 773
   - null
   - null
+  - Allen, Michelle
+  - '3'
   - null
-  - '57'
-  - M
-  - AI
-  - '900'
-  - '27425929'
-  - '98667041'
+  - ''
+  - '850'
+  - '83027981'
+  - '46042470'
   - N
-  - 04/07/2020
-  - 01/27/2024
-  - null
-  - XXX
+  - 07/26/2023
+  - 02/16/2022
+  - allen, michelle
+  - ''
   - ''
   - '13'
-  - '57'
+  - '3'
 - !!python/tuple
-  - 760
+  - 598
   - null
   - null
-  - Adams, Joseph
-  - '92'
-  - M
+  - Anderson, Monica
+  - '26'
+  - Male
   - W
+  - '730'
+  - '56766480'
+  - '82427062'
+  - N
+  - null
+  - 07/27/2024
+  - anderson, monica
+  - XXX
+  - ''
+  - '13'
+  - '26'
+- !!python/tuple
+  - 264
+  - null
+  - null
+  - Andrews, Isaac
+  - '61'
+  - Male
+  - W
+  - '100'
+  - '27838256'
+  - '31386349'
+  - N
+  - 05/25/2018
+  - 10/10/2020
+  - andrews, isaac
+  - XXX
+  - ''
+  - '13'
+  - '61'
+- !!python/tuple
+  - 656
+  - null
+  - null
+  - Baker, Alexander
+  - '18'
+  - Male
+  - ''
   - '350'
-  - '75290051'
-  - '24960078'
+  - null
+  - '81443808'
   - N
-  - 07/03/2019
-  - 02/13/2022
-  - adams, joseph
-  - XXX
+  - 03/22/2022
+  - 10/01/2019
+  - baker, alexander
+  - ''
   - ''
   - '13'
-  - '92'
+  - '18'
 - !!python/tuple
-  - 650
+  - 153
   - null
   - null
-  - Anderson, Richard
-  - '67'
-  - F
+  - Beasley, Sarah
+  - '29'
+  - Female
   - B
-  - '460'
-  - '65754363'
-  - '10081312'
-  - N
-  - 12/26/2024
-  - 07/24/2024
-  - anderson, richard
-  - XXX
-  - ''
-  - '13'
-  - '67'
-- !!python/tuple
-  - 742
-  - null
-  - null
-  - Barry, Joshua
-  - '65'
-  - F
-  - A
   - '410'
-  - '75298455'
-  - '80060366'
+  - '92461629'
+  - '42697430'
   - N
-  - 04/23/2023
-  - 12/16/2018
-  - barry, joshua
+  - 11/24/2024
+  - 08/03/2022
+  - beasley, sarah
   - XXX
   - ''
   - '13'
-  - '65'
+  - '29'
 - !!python/tuple
-  - 416
+  - 142
   - null
   - null
-  - Bartlett, Tracy
-  - '4'
+  - Bell, Brittany
+  - '96'
+  - Female
+  - AI
+  - '600'
+  - '35250201'
+  - '64284184'
+  - N
+  - 03/16/2019
+  - 11/19/2021
+  - bell, brittany
+  - XXX
   - ''
+  - '13'
+  - '96'
+- !!python/tuple
+  - 643
+  - null
+  - null
+  - Berry, Carrie
+  - '81'
+  - Male
+  - null
+  - '420'
+  - '34136124'
+  - '54693037'
+  - N
+  - 01/03/2022
+  - 05/20/2024
+  - berry, carrie
+  - ''
+  - ''
+  - '13'
+  - '81'
+- !!python/tuple
+  - 602
+  - null
+  - null
+  - Buchanan, James
+  - '37'
+  - Female
+  - B
+  - '410'
+  - '66491158'
+  - '39681774'
+  - N
+  - 11/21/2023
+  - 07/08/2021
+  - buchanan, james
+  - XXX
+  - ''
+  - '13'
+  - '37'
+- !!python/tuple
+  - 610
+  - null
+  - null
+  - Campbell, Jordan
+  - '29'
+  - Male
+  - A
+  - '745'
+  - '66684863'
+  - '12326949'
+  - N
+  - 01/16/2023
+  - 10/24/2020
+  - campbell, jordan
+  - XXX
+  - ''
+  - '13'
+  - '29'
+- !!python/tuple
+  - 734
+  - null
+  - null
+  - Campbell, Scott
+  - '28'
+  - ''
+  - B
+  - '790'
+  - '31864240'
+  - '14147879'
+  - N
+  - 12/02/2020
+  - 09/19/2018
+  - campbell, scott
+  - XXX
+  - ''
+  - '13'
+  - '28'
+- !!python/tuple
+  - 385
+  - null
+  - null
+  - Carter, Felicia
+  - '15'
+  - ''
+  - B
+  - '300'
+  - '31228325'
+  - '75891034'
+  - N
+  - 04/07/2022
+  - 02/22/2023
+  - carter, felicia
+  - XXX
+  - ''
+  - '13'
+  - '15'
+- !!python/tuple
+  - 813
+  - null
+  - null
+  - Clark, Ethan
+  - '74'
+  - null
+  - W
+  - '720'
+  - '57378597'
+  - '64586842'
+  - N
+  - 06/20/2022
+  - 05/08/2024
+  - clark, ethan
+  - XXX
+  - ''
+  - '13'
+  - '74'
+- !!python/tuple
+  - 804
+  - null
+  - null
+  - Coleman, Jason
+  - 33 years
+  - Male
+  - B
+  - '470'
+  - '51302088'
+  - '23484312'
+  - N
+  - 12/04/2018
+  - 07/16/2018
+  - coleman, jason
+  - XXX
+  - ''
+  - '13'
+  - 33 years
+- !!python/tuple
+  - 348
+  - null
+  - null
+  - Conner, Stephen
+  - '62'
+  - Male
+  - B
+  - '470'
+  - '44523697'
+  - '99894490'
+  - N
+  - 10/07/2022
+  - 08/08/2019
+  - conner, stephen
+  - XXX
+  - ''
+  - '13'
+  - '62'
+- !!python/tuple
+  - 1000
+  - null
+  - null
+  - Cook, Crystal
+  - '65'
+  - Male
   - ''
   - '750'
-  - '33461565'
-  - '25789245'
+  - '28452849'
+  - '72341130'
   - N
-  - 04/30/2019
-  - 05/27/2024
-  - bartlett, tracy
+  - 03/11/2019
+  - 12/18/2018
+  - cook, crystal
   - ''
   - ''
   - '13'
-  - '4'
+  - '65'
 - !!python/tuple
-  - 547
+  - 539
   - null
   - null
-  - Black, Matthew
-  - '14'
-  - F
+  - Cooper, Steven
+  - null
+  - null
+  - AI
+  - '740'
+  - '92260359'
+  - '43214708'
+  - N
+  - null
+  - 12/22/2024
+  - cooper, steven
+  - XXX
+  - ''
+  - '13'
+  - null
+- !!python/tuple
+  - 733
+  - null
+  - null
+  - Davis, Alyssa
+  - '8'
+  - Female
+  - W
+  - '490'
+  - '24079207'
+  - '46968362'
+  - N
+  - 04/10/2022
+  - 09/17/2019
+  - davis, alyssa
+  - XXX
+  - ''
+  - '13'
+  - '8'
+- !!python/tuple
+  - 989
+  - null
+  - null
+  - Davis, Derrick
+  - 11 years
+  - Male
+  - ''
+  - '480'
+  - '16954785'
+  - '20275627'
+  - N
+  - 12/11/2020
+  - 12/09/2021
+  - davis, derrick
+  - ''
+  - ''
+  - '13'
+  - 11 years
+- !!python/tuple
+  - 83
+  - null
+  - null
+  - Day, Brent
+  - '20'
+  - ''
+  - AI
+  - '470'
+  - '79192807'
+  - '12069465'
+  - N
+  - 05/13/2024
+  - 06/06/2020
+  - day, brent
+  - XXX
+  - ''
+  - '13'
+  - '20'
+- !!python/tuple
+  - 575
+  - null
+  - null
+  - Edwards, Ryan
+  - '24'
+  - ''
+  - null
+  - '100'
+  - '49014836'
+  - '53785272'
+  - N
+  - null
+  - 09/29/2021
+  - edwards, ryan
+  - ''
+  - ''
+  - '13'
+  - '24'
+- !!python/tuple
+  - 536
+  - null
+  - null
+  - Fitzgerald, Patricia
+  - 27 years
+  - Male
+  - A
+  - '470'
+  - '43767579'
+  - '87729941'
+  - N
+  - 07/29/2018
+  - 12/26/2018
+  - fitzgerald, patricia
+  - XXX
+  - ''
+  - '13'
+  - 27 years
+- !!python/tuple
+  - 62
+  - null
+  - null
+  - Freeman, Shannon
+  - '1'
+  - ''
+  - ''
+  - '745'
+  - '72095144'
+  - '47237267'
+  - N
+  - 07/30/2022
+  - 03/23/2019
+  - freeman, shannon
+  - ''
+  - ''
+  - '13'
+  - '1'
+- !!python/tuple
+  - 858
+  - null
+  - null
+  - Garcia, Wanda
+  - '40'
+  - Female
+  - W
+  - '450'
+  - '27516164'
+  - '49453223'
+  - N
+  - 03/14/2019
+  - 07/17/2023
+  - garcia, wanda
+  - XXX
+  - ''
+  - '13'
+  - '40'
+- !!python/tuple
+  - 264
+  - null
+  - null
+  - George, Jeffrey
+  - '8'
+  - Female
+  - W
+  - '450'
+  - '13811604'
+  - '46711684'
+  - N
+  - 03/07/2023
+  - 01/23/2024
+  - george, jeffrey
+  - XXX
+  - ''
+  - '13'
+  - '8'
+- !!python/tuple
+  - 156
+  - null
+  - null
+  - Harris, Darren
+  - '90'
+  - Female
+  - ''
+  - '900'
+  - '90784291'
+  - '67794228'
+  - N
+  - 12/13/2021
+  - 04/10/2024
+  - harris, darren
+  - ''
+  - ''
+  - '13'
+  - '90'
+- !!python/tuple
+  - 403
+  - null
+  - null
+  - Harris, Vanessa
+  - '11'
+  - Male
+  - null
+  - '720'
+  - '88828806'
+  - '14682633'
+  - N
+  - 06/09/2020
+  - 09/29/2021
+  - harris, vanessa
+  - ''
+  - ''
+  - '13'
+  - '11'
+- !!python/tuple
+  - 992
+  - null
+  - null
+  - Hayes, Lindsay
+  - null
+  - Female
+  - B
+  - '790'
+  - '71280007'
+  - '57565394'
+  - N
+  - 06/14/2024
+  - 11/10/2018
+  - hayes, lindsay
+  - XXX
+  - ''
+  - '13'
+  - null
+- !!python/tuple
+  - 582
+  - null
+  - null
+  - Hebert, Patrick
+  - '33'
+  - null
+  - A
+  - '410'
+  - '43872468'
+  - '49556987'
+  - N
+  - 09/27/2018
+  - 11/13/2023
+  - hebert, patrick
+  - XXX
+  - ''
+  - '13'
+  - '33'
+- !!python/tuple
+  - 922
+  - null
+  - null
+  - Hernandez, Gabriella
+  - null
+  - Male
+  - W
+  - '900'
+  - '31799630'
+  - '84065610'
+  - N
+  - 08/27/2021
+  - 05/20/2020
+  - hernandez, gabriella
+  - XXX
+  - ''
+  - '13'
+  - null
+- !!python/tuple
+  - 347
+  - null
+  - null
+  - Hines, Brandon
+  - '18'
+  - null
+  - null
+  - '420'
+  - '69602751'
+  - '30452416'
+  - N
+  - 04/18/2021
+  - 11/11/2021
+  - hines, brandon
+  - ''
+  - ''
+  - '13'
+  - '18'
+- !!python/tuple
+  - 777
+  - null
+  - null
+  - Houston, Caroline
+  - 82 years
+  - Male
+  - A
+  - '100'
+  - '46272366'
+  - '25896271'
+  - N
+  - 12/17/2019
+  - 07/03/2018
+  - houston, caroline
+  - XXX
+  - ''
+  - '13'
+  - 82 years
+- !!python/tuple
+  - 216
+  - null
+  - null
+  - Hudson, Logan
+  - '9'
+  - ''
+  - null
+  - '600'
+  - '22700071'
+  - '11809054'
+  - N
+  - null
+  - 07/10/2021
+  - hudson, logan
+  - ''
+  - ''
+  - '13'
+  - '9'
+- !!python/tuple
+  - 971
+  - null
+  - null
+  - Hutchinson, Maria
+  - null
+  - Male
   - AI
   - '790'
-  - '46380156'
-  - '21376105'
+  - '91373874'
+  - '88745323'
   - N
+  - 03/26/2021
+  - 04/11/2020
+  - hutchinson, maria
+  - XXX
+  - ''
+  - '13'
+  - null
+- !!python/tuple
+  - 126
+  - null
+  - null
+  - Jackson, Christine
+  - null
+  - Male
+  - B
+  - '800'
+  - '50995222'
+  - '27353582'
+  - N
+  - 04/20/2024
+  - 12/27/2022
+  - jackson, christine
+  - XXX
+  - ''
+  - '13'
+  - null
+- !!python/tuple
+  - 730
+  - null
+  - null
+  - James, Amber
+  - '47'
+  - ''
+  - W
+  - '950'
+  - '63345719'
+  - '53887117'
+  - N
+  - 12/31/2023
+  - 11/05/2021
+  - james, amber
+  - XXX
+  - ''
+  - '13'
+  - '47'
+- !!python/tuple
+  - 323
+  - null
+  - null
+  - Jimenez, Lucas
+  - '59'
+  - Male
+  - W
+  - '745'
+  - '24187028'
+  - '45246926'
+  - N
+  - 11/26/2024
+  - 07/18/2019
+  - jimenez, lucas
+  - XXX
+  - ''
+  - '13'
+  - '59'
+- !!python/tuple
+  - 398
+  - null
+  - null
+  - Kim, Daniel
+  - '5'
+  - Female
+  - B
+  - '100'
+  - '49924722'
+  - '23939769'
+  - N
+  - 06/26/2021
+  - 05/06/2019
+  - kim, daniel
+  - XXX
+  - ''
+  - '13'
+  - '5'
+- !!python/tuple
+  - 712
+  - null
+  - null
+  - Landry, Laura
+  - '94'
+  - Female
+  - AI
+  - '450'
+  - '59982133'
+  - '26289084'
+  - N
+  - 11/19/2018
+  - 08/04/2020
+  - landry, laura
+  - XXX
+  - ''
+  - '13'
+  - '94'
+- !!python/tuple
+  - 88
+  - null
+  - null
+  - Larson, Jeff
+  - '56'
+  - Male
+  - B
+  - '350'
+  - '61048843'
+  - '85120216'
+  - N
+  - 08/18/2024
+  - 04/15/2022
+  - larson, jeff
+  - XXX
+  - ''
+  - '13'
+  - '56'
+- !!python/tuple
+  - 626
+  - null
+  - null
+  - Lee, Edward
+  - '39'
+  - ''
+  - AI
+  - '790'
+  - '57008616'
+  - '65815408'
+  - N
+  - 04/09/2024
+  - 08/28/2019
+  - lee, edward
+  - XXX
+  - ''
+  - '13'
+  - '39'
+- !!python/tuple
+  - 104
+  - null
+  - null
+  - Lewis, Gregory
+  - null
+  - Female
+  - ''
+  - '350'
+  - '32207084'
+  - '59821086'
+  - N
+  - 08/06/2023
+  - 03/08/2021
+  - lewis, gregory
+  - ''
+  - ''
+  - '13'
+  - null
+- !!python/tuple
+  - 145
+  - null
+  - null
+  - Mendez, Matthew
+  - '19'
+  - Male
+  - B
+  - '480'
+  - '67689611'
+  - '97811326'
+  - N
+  - 05/07/2021
+  - 07/14/2023
+  - mendez, matthew
+  - XXX
+  - ''
+  - '13'
+  - '19'
+- !!python/tuple
+  - 93
+  - null
+  - null
+  - Meyer, Veronica
+  - 1 Years
+  - ''
+  - A
+  - '100'
+  - null
+  - '82469789'
+  - N
+  - 06/18/2020
+  - 03/03/2022
+  - meyer, veronica
+  - XXX
+  - ''
+  - '13'
+  - 1 Years
+- !!python/tuple
+  - 421
+  - null
+  - null
+  - Mitchell, Jonathan
+  - '69'
+  - Male
+  - A
+  - '350'
+  - '22334520'
+  - '79562021'
+  - N
+  - 11/02/2024
+  - 05/12/2018
+  - mitchell, jonathan
+  - XXX
+  - ''
+  - '13'
+  - '69'
+- !!python/tuple
+  - 175
+  - null
+  - null
+  - Moore, Kelly
+  - 12 Years
+  - ''
+  - W
+  - '950'
+  - '86951775'
+  - '72570098'
+  - N
+  - 05/22/2020
+  - 07/05/2024
+  - moore, kelly
+  - XXX
+  - ''
+  - '13'
+  - 12 Years
+- !!python/tuple
+  - 965
+  - null
+  - null
+  - Moore, Trevor
+  - '11'
+  - ''
+  - ''
+  - '300'
+  - '69905603'
+  - '54674064'
+  - N
+  - 11/10/2024
+  - 09/06/2022
+  - moore, trevor
+  - ''
+  - ''
+  - '13'
+  - '11'
+- !!python/tuple
+  - 926
+  - null
+  - null
+  - Morales, Christopher
+  - '96'
+  - Male
+  - AI
+  - '750'
+  - '30355643'
+  - '69419561'
+  - N
+  - null
+  - 07/08/2021
+  - morales, christopher
+  - XXX
+  - ''
+  - '13'
+  - '96'
+- !!python/tuple
+  - 448
+  - null
+  - null
+  - Morales, Robert
+  - '74'
+  - Female
+  - W
+  - '750'
+  - null
+  - '82076426'
+  - N
+  - 10/08/2023
+  - 09/22/2021
+  - morales, robert
+  - XXX
+  - ''
+  - '13'
+  - '74'
+- !!python/tuple
+  - 337
+  - null
+  - null
+  - Munoz, Adrian
+  - 6 years
+  - Male
+  - W
+  - '750'
+  - '22238121'
+  - '75897023'
+  - N
+  - 05/01/2023
+  - 08/20/2022
+  - munoz, adrian
+  - XXX
+  - ''
+  - '13'
+  - 6 years
+- !!python/tuple
+  - 264
+  - null
+  - null
+  - Nelson, Janet
+  - 28 Years
+  - Male
+  - W
+  - '740'
+  - '38997088'
+  - '29166111'
+  - N
+  - 02/06/2022
+  - 06/26/2021
+  - nelson, janet
+  - XXX
+  - ''
+  - '13'
+  - 28 Years
+- !!python/tuple
+  - 531
+  - null
+  - null
+  - Nelson, Michelle
+  - '47'
+  - Female
+  - AI
+  - '490'
+  - '97849883'
+  - '74371395'
+  - N
+  - 07/03/2021
+  - 11/08/2021
+  - nelson, michelle
+  - XXX
+  - ''
+  - '13'
+  - '47'
+- !!python/tuple
+  - 610
+  - null
+  - null
+  - Odonnell, Ronald
+  - '56'
+  - Female
+  - B
+  - '950'
+  - '55350536'
+  - '59798787'
+  - N
+  - 12/11/2021
+  - 12/19/2021
+  - odonnell, ronald
+  - XXX
+  - ''
+  - '13'
+  - '56'
+- !!python/tuple
+  - 275
+  - null
+  - null
+  - Oneal, Tiffany
+  - '60'
+  - null
+  - B
+  - '600'
+  - '92972414'
+  - '19487140'
+  - N
+  - 07/18/2024
+  - 01/14/2024
+  - oneal, tiffany
+  - XXX
+  - ''
+  - '13'
+  - '60'
+- !!python/tuple
+  - 90
+  - null
+  - null
+  - Orr, Chelsea
+  - '9'
+  - Male
+  - ''
+  - '745'
+  - '21722065'
+  - '55378246'
+  - Y
+  - 12/14/2023
+  - null
+  - orr, chelsea
+  - ''
+  - ''
+  - '13'
+  - '9'
+- !!python/tuple
+  - 191
+  - null
+  - null
+  - Ortiz, Mark
+  - '95'
+  - ''
+  - null
+  - '350'
+  - '74151726'
+  - '75747139'
+  - N
+  - 07/25/2023
+  - 06/04/2018
+  - ortiz, mark
+  - ''
+  - ''
+  - '13'
+  - '95'
+- !!python/tuple
+  - 265
+  - null
+  - null
+  - Page, Kevin
+  - '23'
+  - ''
+  - null
+  - '750'
+  - '18386548'
+  - null
+  - N
+  - 10/06/2022
+  - 07/04/2022
+  - page, kevin
+  - ''
+  - ''
+  - '13'
+  - '23'
+- !!python/tuple
+  - 843
+  - null
+  - null
+  - Parker, Erin
+  - '67'
+  - Male
+  - W
+  - '460'
+  - '37125250'
+  - '71992382'
+  - N
+  - null
+  - 06/30/2024
+  - parker, erin
+  - XXX
+  - ''
+  - '13'
+  - '67'
+- !!python/tuple
+  - 662
+  - null
+  - null
+  - Payne, Darryl
+  - '95'
+  - ''
+  - AI
+  - '300'
+  - '27031867'
+  - '98797884'
+  - N
+  - 07/08/2021
+  - 08/30/2019
+  - payne, darryl
+  - XXX
+  - ''
+  - '13'
+  - '95'
+- !!python/tuple
+  - 217
+  - null
+  - null
+  - Perez, Marcus
+  - '10'
+  - Female
+  - W
+  - '740'
+  - '45844540'
+  - '71742544'
+  - N
+  - 06/12/2021
   - 11/04/2023
-  - 01/09/2021
-  - black, matthew
+  - perez, marcus
+  - XXX
+  - ''
+  - '13'
+  - '10'
+- !!python/tuple
+  - 272
+  - null
+  - null
+  - Pittman, Marco
+  - '68'
+  - ''
+  - null
+  - '410'
+  - '42366325'
+  - '46802096'
+  - N
+  - 03/04/2019
+  - 08/14/2023
+  - pittman, marco
+  - ''
+  - ''
+  - '13'
+  - '68'
+- !!python/tuple
+  - 722
+  - null
+  - null
+  - Powell, Ronald
+  - '96'
+  - Male
+  - W
+  - '490'
+  - '53169502'
+  - '19709410'
+  - Y
+  - 11/01/2022
+  - null
+  - powell, ronald
+  - XXX
+  - ''
+  - '13'
+  - '96'
+- !!python/tuple
+  - 432
+  - null
+  - null
+  - Powers, Christopher
+  - null
+  - ''
+  - B
+  - '450'
+  - '87851733'
+  - '36779995'
+  - N
+  - 12/05/2020
+  - 03/22/2019
+  - powers, christopher
+  - XXX
+  - ''
+  - '13'
+  - null
+- !!python/tuple
+  - 206
+  - null
+  - null
+  - Ray, David
+  - '25'
+  - Female
+  - W
+  - '490'
+  - '93929876'
+  - '45110267'
+  - N
+  - null
+  - 02/15/2021
+  - ray, david
+  - XXX
+  - ''
+  - '13'
+  - '25'
+- !!python/tuple
+  - 144
+  - null
+  - null
+  - Robinson, Ruben
+  - '29'
+  - ''
+  - ''
+  - '800'
+  - '14409683'
+  - '99589109'
+  - Y
+  - 07/14/2022
+  - null
+  - robinson, ruben
+  - ''
+  - ''
+  - '13'
+  - '29'
+- !!python/tuple
+  - 390
+  - null
+  - null
+  - Rodriguez, Russell
+  - '85'
+  - Male
+  - A
+  - '200'
+  - '12227734'
+  - '51941890'
+  - N
+  - 06/17/2022
+  - 10/08/2023
+  - rodriguez, russell
+  - XXX
+  - ''
+  - '13'
+  - '85'
+- !!python/tuple
+  - 184
+  - null
+  - null
+  - Rogers, Erin
+  - '14'
+  - Male
+  - A
+  - '730'
+  - '73333750'
+  - '36706868'
+  - N
+  - 06/09/2018
+  - 12/23/2022
+  - rogers, erin
   - XXX
   - ''
   - '13'
   - '14'
 - !!python/tuple
-  - 361
+  - 473
   - null
   - null
-  - Bolton, Carrie
-  - '23'
-  - F
-  - AI
-  - '900'
-  - '44500407'
-  - '88847523'
+  - Savage, Patricia
+  - 71 Years
+  - ''
+  - B
+  - '100'
+  - '10261828'
+  - '38567539'
   - N
-  - 12/14/2019
-  - 12/29/2018
-  - bolton, carrie
+  - 11/10/2020
+  - 02/19/2022
+  - savage, patricia
   - XXX
   - ''
   - '13'
-  - '23'
+  - 71 Years
 - !!python/tuple
-  - 307
+  - 142
   - null
   - null
-  - Bonilla, Charles
-  - '93'
-  - F
+  - Schaefer, Timothy
+  - 66 Years
+  - Female
+  - ''
+  - '720'
+  - '19321622'
+  - '86962138'
+  - N
+  - 08/22/2022
+  - 01/03/2020
+  - schaefer, timothy
+  - ''
+  - ''
+  - '13'
+  - 66 Years
+- !!python/tuple
+  - 651
+  - null
+  - null
+  - Scott, Tanya
+  - '90'
+  - ''
   - W
-  - '500'
-  - '41191250'
-  - '99806467'
+  - '600'
+  - '72420715'
+  - null
   - N
-  - 11/28/2022
-  - 09/16/2019
-  - bonilla, charles
+  - 06/29/2024
+  - 07/16/2023
+  - scott, tanya
   - XXX
   - ''
   - '13'
-  - '93'
+  - '90'
 - !!python/tuple
-  - 793
+  - 912
   - null
   - null
-  - Boyd, Amanda
-  - '58'
-  - M
-  - ''
-  - '500'
-  - '84223235'
-  - '47786620'
+  - Shepherd, Joanna
+  - '27'
+  - Male
+  - A
+  - '420'
+  - '18135117'
+  - '10206687'
   - N
-  - 05/11/2022
-  - 01/14/2023
-  - boyd, amanda
-  - ''
+  - 10/13/2020
+  - 07/24/2020
+  - shepherd, joanna
+  - XXX
   - ''
   - '13'
-  - '58'
+  - '27'
 - !!python/tuple
-  - 666
+  - 989
   - null
   - null
-  - Brown, Scott
+  - Simon, Shannon
   - '58'
-  - F
-  - null
-  - '200'
+  - Female
+  - ''
+  - '745'
   - '58672819'
   - '92919890'
   - N
   - 09/30/2024
   - 04/09/2021
-  - brown, scott
+  - simon, shannon
   - ''
   - ''
   - '13'
   - '58'
 - !!python/tuple
-  - 207
+  - 266
   - null
   - null
-  - Bryant, Ryan
-  - '56'
-  - F
-  - W
-  - '745'
-  - '17335422'
-  - '83658491'
+  - Simpson, Shelly
+  - '67'
+  - Female
+  - B
+  - '400'
+  - '76082329'
+  - '67223322'
   - N
-  - 08/03/2021
-  - 07/07/2018
-  - bryant, ryan
+  - 11/24/2021
+  - 03/23/2023
+  - simpson, shelly
   - XXX
   - ''
   - '13'
-  - '56'
+  - '67'
 - !!python/tuple
-  - 904
+  - 805
   - null
   - null
-  - Butler, Cindy
-  - '54'
-  - M
-  - ''
-  - '460'
-  - '90290071'
-  - '36000655'
+  - Singleton, Karen
+  - '37'
+  - Male
+  - B
+  - '750'
+  - null
+  - '26408087'
   - N
-  - 04/24/2022
-  - 06/19/2023
-  - butler, cindy
+  - 06/19/2018
+  - 03/21/2021
+  - singleton, karen
+  - XXX
   - ''
+  - '13'
+  - '37'
+- !!python/tuple
+  - 654
+  - null
+  - null
+  - Smith, Christian
+  - '60'
+  - Female
+  - A
+  - '500'
+  - '70766929'
+  - '66114255'
+  - N
+  - 04/25/2022
+  - 09/16/2024
+  - smith, christian
+  - XXX
+  - ''
+  - '13'
+  - '60'
+- !!python/tuple
+  - 581
+  - null
+  - null
+  - Smith, Christine
+  - '54'
+  - ''
+  - W
+  - '470'
+  - '86273876'
+  - '90580388'
+  - N
+  - 07/22/2022
+  - 01/31/2024
+  - smith, christine
+  - XXX
   - ''
   - '13'
   - '54'
+- !!python/tuple
+  - 153
+  - null
+  - null
+  - Smith, Christopher
+  - null
+  - Male
+  - A
+  - '400'
+  - '93042224'
+  - '86438070'
+  - N
+  - 04/22/2020
+  - 05/05/2023
+  - smith, christopher
+  - XXX
+  - ''
+  - '13'
+  - null
+- !!python/tuple
+  - 542
+  - null
+  - null
+  - Smith, Erin
+  - '30'
+  - ''
+  - B
+  - '710'
+  - '14326047'
+  - '65428204'
+  - N
+  - 01/10/2020
+  - 11/02/2023
+  - smith, erin
+  - XXX
+  - ''
+  - '13'
+  - '30'
+- !!python/tuple
+  - 795
+  - null
+  - null
+  - Smith, Stacy
+  - '90'
+  - Male
+  - ''
+  - '900'
+  - '37151914'
+  - '92206428'
+  - N
+  - 02/11/2024
+  - 04/22/2021
+  - smith, stacy
+  - ''
+  - ''
+  - '13'
+  - '90'
 - !!python/tuple
   - 529
   - null
   - null
-  - Butler, Deborah
-  - '35'
-  - F
-  - ''
-  - '450'
-  - '82134702'
-  - '26679733'
-  - N
-  - 09/12/2019
-  - 06/14/2020
-  - butler, deborah
-  - ''
-  - ''
-  - '13'
-  - '35'
-- !!python/tuple
-  - 352
-  - null
-  - null
-  - Chang, Mike
-  - '37'
-  - F
-  - A
-  - '720'
-  - '90260372'
-  - '81070044'
-  - N
-  - 05/05/2018
-  - 08/10/2024
-  - chang, mike
-  - XXX
-  - ''
-  - '13'
-  - '37'
-- !!python/tuple
-  - 962
-  - null
-  - null
-  - Chavez, Virginia
-  - '73'
-  - M
-  - null
-  - '745'
-  - '22604985'
-  - '28358369'
-  - N
-  - 01/11/2021
-  - 11/04/2018
-  - chavez, virginia
-  - ''
-  - ''
-  - '13'
-  - '73'
-- !!python/tuple
-  - 220
-  - null
-  - null
-  - Cole, Nicholas
-  - '36'
-  - ''
-  - A
-  - '600'
-  - '49960657'
-  - '32234688'
-  - N
-  - 01/08/2022
-  - 07/01/2024
-  - cole, nicholas
-  - XXX
-  - ''
-  - '13'
-  - '36'
-- !!python/tuple
-  - 202
-  - null
-  - null
-  - Coleman, William
-  - '42'
-  - F
-  - ''
-  - '730'
-  - '18358373'
-  - '50466068'
-  - Y
-  - 10/28/2021
-  - null
-  - coleman, william
-  - ''
-  - ''
-  - '13'
-  - '42'
-- !!python/tuple
-  - 28
-  - null
-  - null
-  - Combs, Phyllis
-  - '42'
-  - F
-  - AI
-  - '480'
-  - '44519207'
-  - '22024736'
-  - N
-  - 09/30/2019
-  - 02/09/2020
-  - combs, phyllis
-  - XXX
-  - ''
-  - '13'
-  - '42'
-- !!python/tuple
-  - 159
-  - null
-  - null
-  - Cook, Joshua
-  - '8'
-  - M
-  - W
-  - '750'
-  - '86838035'
-  - '90325366'
-  - N
-  - 08/14/2024
-  - 05/05/2022
-  - cook, joshua
-  - XXX
-  - ''
-  - '13'
-  - '8'
-- !!python/tuple
-  - 836
-  - null
-  - null
-  - Cook, Tina
-  - '18'
-  - F
-  - ''
-  - '480'
-  - '65040051'
-  - '68203216'
-  - N
-  - 12/14/2019
-  - 09/07/2024
-  - cook, tina
-  - ''
-  - ''
-  - '13'
-  - '18'
-- !!python/tuple
-  - 176
-  - null
-  - null
-  - Cooley, Michael
-  - '9'
-  - M
-  - W
-  - '200'
-  - null
-  - '88952353'
-  - N
-  - 01/23/2021
-  - 07/19/2024
-  - cooley, michael
-  - XXX
-  - ''
-  - '13'
-  - '9'
-- !!python/tuple
-  - 660
-  - null
-  - null
-  - Cortez, Valerie
-  - '67'
-  - F
-  - ''
-  - '100'
-  - '54140014'
-  - '29440757'
-  - N
-  - 07/06/2020
-  - 04/15/2020
-  - cortez, valerie
-  - ''
-  - ''
-  - '13'
-  - '67'
-- !!python/tuple
-  - 906
-  - null
-  - null
-  - Cruz, Brandi
-  - '27'
-  - M
-  - B
-  - '745'
-  - '94089654'
-  - '56004825'
-  - N
-  - 11/21/2019
-  - 11/27/2019
-  - cruz, brandi
-  - XXX
-  - ''
-  - '13'
-  - '27'
-- !!python/tuple
-  - 300
-  - null
-  - null
-  - David, Brandon
-  - '2'
-  - null
-  - AI
-  - '500'
-  - '12113937'
-  - '99139576'
-  - N
-  - 07/14/2018
-  - 10/13/2021
-  - david, brandon
-  - XXX
-  - ''
-  - '13'
-  - '2'
-- !!python/tuple
-  - 206
-  - null
-  - null
-  - Davis, Cynthia
-  - '91'
-  - F
-  - B
-  - '900'
-  - '51775688'
-  - '50575918'
-  - N
-  - null
-  - 02/12/2021
-  - davis, cynthia
-  - XXX
-  - ''
-  - '13'
-  - '91'
-- !!python/tuple
-  - 715
-  - null
-  - null
-  - Davis, Robert
-  - '40'
-  - M
-  - ''
-  - '740'
-  - '50018502'
-  - '38648485'
-  - N
-  - 07/02/2022
-  - 05/19/2024
-  - davis, robert
-  - ''
-  - ''
-  - '13'
-  - '40'
-- !!python/tuple
-  - 277
-  - null
-  - null
-  - Dawson, Jennifer
-  - '24'
-  - M
-  - ''
-  - '900'
-  - '65451456'
-  - null
-  - N
-  - 09/04/2022
-  - 04/15/2024
-  - dawson, jennifer
-  - ''
-  - ''
-  - '13'
-  - '24'
-- !!python/tuple
-  - 920
-  - null
-  - null
-  - Dickerson, Amanda
-  - '93'
-  - ''
-  - B
-  - '850'
-  - '65607479'
-  - '67594165'
-  - N
-  - 11/21/2021
-  - 09/11/2022
-  - dickerson, amanda
-  - XXX
-  - ''
-  - '13'
-  - '93'
-- !!python/tuple
-  - 152
-  - null
-  - null
-  - Downs, Samantha
-  - '64'
-  - F
-  - null
-  - '950'
-  - '58791399'
-  - '21404608'
-  - Y
-  - 03/07/2024
-  - null
-  - downs, samantha
-  - ''
-  - ''
-  - '13'
-  - '64'
-- !!python/tuple
-  - 35
-  - null
-  - null
-  - Edwards, Jason
-  - '59'
-  - F
-  - AI
-  - '900'
-  - '56889354'
-  - null
-  - N
-  - 10/02/2019
-  - 03/09/2022
-  - edwards, jason
-  - XXX
-  - ''
-  - '13'
-  - '59'
-- !!python/tuple
-  - 693
-  - null
-  - null
-  - Fleming, Bobby
-  - '50'
-  - ''
-  - A
-  - '720'
-  - '90060542'
-  - '25279276'
-  - N
-  - 06/02/2019
-  - 07/01/2023
-  - fleming, bobby
-  - XXX
-  - ''
-  - '13'
-  - '50'
-- !!python/tuple
-  - 390
-  - null
-  - null
-  - Gilmore, Lydia
-  - '60'
-  - F
-  - A
-  - '490'
-  - '49802155'
-  - '16006358'
-  - N
-  - 07/25/2023
-  - 10/11/2023
-  - gilmore, lydia
-  - XXX
-  - ''
-  - '13'
-  - '60'
-- !!python/tuple
-  - 91
-  - null
-  - null
-  - Graves, Rebecca
-  - '75'
-  - F
-  - W
-  - '750'
-  - '95217513'
-  - '21448472'
-  - N
-  - 01/03/2022
-  - 05/29/2021
-  - graves, rebecca
-  - XXX
-  - ''
-  - '13'
-  - '75'
-- !!python/tuple
-  - 738
-  - null
-  - null
-  - Gutierrez, Justin
-  - '86'
-  - F
-  - A
-  - '460'
-  - '56602613'
-  - '22210762'
-  - N
-  - 09/04/2018
-  - 11/01/2018
-  - gutierrez, justin
-  - XXX
-  - ''
-  - '13'
-  - '86'
-- !!python/tuple
-  - 156
-  - null
-  - null
-  - Hall, Judy
-  - '96'
-  - ''
-  - ''
-  - '410'
-  - '47923663'
-  - '78395395'
-  - N
-  - 10/03/2019
-  - 12/31/2018
-  - hall, judy
-  - ''
-  - ''
-  - '13'
-  - '96'
-- !!python/tuple
-  - 886
-  - null
-  - null
-  - Hall, Mark
-  - '45'
-  - null
-  - B
-  - '790'
-  - '55342300'
-  - '55986452'
-  - N
-  - 06/04/2021
-  - 12/11/2022
-  - hall, mark
-  - XXX
-  - ''
-  - '13'
-  - '45'
-- !!python/tuple
-  - 923
-  - null
-  - null
-  - Hart, Heather
-  - '18'
-  - M
-  - B
-  - '800'
-  - null
-  - '50460560'
-  - N
-  - 02/06/2022
-  - 06/19/2023
-  - hart, heather
-  - XXX
-  - ''
-  - '13'
-  - '18'
-- !!python/tuple
-  - 103
-  - null
-  - null
-  - Haynes, Neil
-  - '98'
-  - M
-  - B
-  - '480'
-  - '46151050'
-  - '56482236'
-  - N
-  - 09/13/2021
-  - 11/10/2019
-  - haynes, neil
-  - XXX
-  - ''
-  - '13'
-  - '98'
-- !!python/tuple
-  - 617
-  - null
-  - null
-  - Henderson, Amy
-  - '36'
-  - F
-  - AI
-  - '850'
-  - '57516215'
-  - '19502591'
-  - N
-  - null
-  - 06/27/2024
-  - henderson, amy
-  - XXX
-  - ''
-  - '13'
-  - '36'
-- !!python/tuple
-  - 140
-  - null
-  - null
-  - Hernandez, Katie
-  - '17'
-  - M
-  - null
-  - '790'
-  - '62948348'
-  - '60864531'
-  - N
-  - 03/08/2023
-  - 12/13/2022
-  - hernandez, katie
-  - ''
-  - ''
-  - '13'
-  - '17'
-- !!python/tuple
-  - 924
-  - null
-  - null
-  - Hernandez, Nathaniel
-  - '39'
-  - M
-  - B
-  - '350'
-  - '16332929'
-  - '13623657'
-  - N
-  - 11/22/2018
-  - 12/16/2023
-  - hernandez, nathaniel
-  - XXX
-  - ''
-  - '13'
-  - '39'
-- !!python/tuple
-  - 935
-  - null
-  - null
-  - Hill, Curtis
-  - '15'
-  - M
-  - A
-  - '100'
-  - '54455181'
-  - '57637690'
-  - N
-  - 11/30/2020
-  - 01/19/2022
-  - hill, curtis
-  - XXX
-  - ''
-  - '13'
-  - '15'
-- !!python/tuple
-  - 60
-  - null
-  - null
-  - Hobbs, Riley
-  - '26'
-  - M
-  - W
-  - '420'
-  - '67374181'
-  - '77250560'
-  - N
-  - 03/15/2024
-  - 06/24/2019
-  - hobbs, riley
-  - XXX
-  - ''
-  - '13'
-  - '26'
-- !!python/tuple
-  - 662
-  - null
-  - null
-  - Huber, Ashley
-  - '77'
-  - ''
-  - A
-  - '720'
-  - '94921808'
-  - '40766081'
-  - N
-  - 12/29/2023
-  - 07/08/2019
-  - huber, ashley
-  - XXX
-  - ''
-  - '13'
-  - '77'
-- !!python/tuple
-  - 823
-  - null
-  - null
-  - Hunt, Stephanie
-  - '69'
-  - ''
-  - B
-  - '350'
-  - null
-  - '58004929'
-  - N
-  - 09/15/2019
-  - 06/21/2022
-  - hunt, stephanie
-  - XXX
-  - ''
-  - '13'
-  - '69'
-- !!python/tuple
-  - 226
-  - null
-  - null
-  - Jackson, Logan
-  - null
-  - ''
+  - Spencer, Diana
+  - '19'
+  - Male
   - A
   - '400'
-  - '69361488'
-  - '98484061'
+  - '68850145'
+  - '75655069'
   - N
-  - 05/16/2020
-  - 08/01/2019
-  - jackson, logan
-  - XXX
-  - ''
-  - '13'
-  - null
-- !!python/tuple
-  - 375
-  - null
-  - null
-  - Jimenez, Madison
-  - '34'
-  - M
-  - B
-  - '745'
-  - '78802780'
-  - '10548654'
-  - N
-  - 05/08/2019
-  - 05/27/2022
-  - jimenez, madison
-  - XXX
-  - ''
-  - '13'
-  - '34'
-- !!python/tuple
-  - 447
-  - null
-  - null
-  - Kennedy, Kaitlyn
-  - '96'
-  - F
-  - W
-  - '800'
-  - '36163933'
-  - null
-  - N
-  - 04/11/2023
-  - 06/17/2024
-  - kennedy, kaitlyn
-  - XXX
-  - ''
-  - '13'
-  - '96'
-- !!python/tuple
-  - 337
-  - null
-  - null
-  - Klein, Steven
-  - '42'
-  - ''
-  - null
-  - '480'
-  - '93375347'
-  - '51385321'
-  - N
-  - 03/15/2024
-  - 07/19/2018
-  - klein, steven
-  - ''
-  - ''
-  - '13'
-  - '42'
-- !!python/tuple
-  - 564
-  - null
-  - null
-  - Lee, Brandon
-  - '97'
-  - ''
-  - AI
-  - '850'
-  - '21455704'
-  - '68010230'
-  - N
-  - 01/08/2019
-  - 11/14/2021
-  - lee, brandon
-  - XXX
-  - ''
-  - '13'
-  - '97'
-- !!python/tuple
-  - 565
-  - null
-  - null
-  - Leonard, Tiffany
-  - '84'
-  - F
-  - AI
-  - '800'
-  - '43637190'
-  - '41799960'
-  - N
-  - 03/28/2024
-  - 02/01/2022
-  - leonard, tiffany
-  - XXX
-  - ''
-  - '13'
-  - '84'
-- !!python/tuple
-  - 929
-  - null
-  - null
-  - Lester, Diane
-  - '75'
-  - ''
-  - AI
-  - '720'
-  - '45250946'
-  - '93790372'
-  - N
-  - 06/20/2020
-  - 11/14/2020
-  - lester, diane
-  - XXX
-  - ''
-  - '13'
-  - '75'
-- !!python/tuple
-  - 276
-  - null
-  - null
-  - Long, Corey
-  - '40'
-  - M
-  - A
-  - '470'
-  - '46161720'
-  - '23654256'
-  - N
-  - 06/23/2022
-  - 11/16/2021
-  - long, corey
-  - XXX
-  - ''
-  - '13'
-  - '40'
-- !!python/tuple
-  - 864
-  - null
-  - null
-  - Martin, Aimee
-  - '3'
-  - F
-  - W
-  - '300'
-  - '32187231'
-  - '39843737'
-  - N
-  - 09/29/2020
-  - 11/22/2021
-  - martin, aimee
-  - XXX
-  - ''
-  - '13'
-  - '3'
-- !!python/tuple
-  - 782
-  - null
-  - null
-  - Martin, Gerald
-  - '24'
-  - ''
-  - W
-  - '470'
-  - '82217803'
-  - '43888172'
-  - N
-  - 12/28/2019
-  - 09/14/2018
-  - martin, gerald
-  - XXX
-  - ''
-  - '13'
-  - '24'
-- !!python/tuple
-  - 801
-  - null
-  - null
-  - Maxwell, Cynthia
-  - '17'
-  - M
-  - ''
-  - '745'
-  - '90866830'
-  - '31148631'
-  - N
-  - 06/29/2019
-  - 08/25/2022
-  - maxwell, cynthia
-  - ''
-  - ''
-  - '13'
-  - '17'
-- !!python/tuple
-  - 498
-  - null
-  - null
-  - Mclaughlin, John
-  - '83'
-  - ''
-  - W
-  - '470'
-  - '32966631'
-  - '18099179'
-  - N
-  - 12/23/2022
-  - 05/06/2021
-  - mclaughlin, john
-  - XXX
-  - ''
-  - '13'
-  - '83'
-- !!python/tuple
-  - 247
-  - null
-  - null
-  - Melton, Tina
-  - '90'
-  - ''
-  - W
-  - '900'
-  - '87730204'
-  - '35129765'
-  - Y
-  - 09/25/2024
-  - null
-  - melton, tina
-  - XXX
-  - ''
-  - '13'
-  - '90'
-- !!python/tuple
-  - 291
-  - null
-  - null
-  - Miller, Melissa
-  - '99'
-  - M
-  - ''
-  - '740'
-  - '90277183'
-  - '81205247'
-  - N
-  - 04/17/2019
-  - 07/24/2024
-  - miller, melissa
-  - ''
-  - ''
-  - '13'
-  - '99'
-- !!python/tuple
-  - 359
-  - null
-  - null
-  - Murray, Thomas
-  - '29'
-  - null
-  - B
-  - '750'
-  - '67252464'
-  - '27760595'
-  - N
-  - 04/11/2020
-  - 10/21/2023
-  - murray, thomas
-  - XXX
-  - ''
-  - '13'
-  - '29'
-- !!python/tuple
-  - 753
-  - null
-  - null
-  - Navarro, Colton
-  - '14'
-  - ''
-  - B
-  - '200'
-  - '65533854'
-  - '33324463'
-  - N
-  - 10/24/2023
-  - 09/13/2024
-  - navarro, colton
-  - XXX
-  - ''
-  - '13'
-  - '14'
-- !!python/tuple
-  - 653
-  - null
-  - null
-  - Nelson, Adrian
-  - '55'
-  - F
-  - A
-  - '950'
-  - '94195822'
-  - '11975001'
-  - N
-  - 08/06/2022
-  - 05/02/2022
-  - nelson, adrian
-  - XXX
-  - ''
-  - '13'
-  - '55'
-- !!python/tuple
-  - 348
-  - null
-  - null
-  - Obrien, Suzanne
-  - '44'
-  - F
-  - ''
-  - '750'
-  - '69841994'
-  - '19372420'
-  - N
+  - 12/01/2022
   - 07/01/2021
-  - 08/16/2019
-  - obrien, suzanne
-  - ''
-  - ''
-  - '13'
-  - '44'
-- !!python/tuple
-  - 269
-  - null
-  - null
-  - Ortega, Michelle
-  - '78'
-  - F
-  - AI
-  - '730'
-  - '17937498'
-  - '64177556'
-  - N
-  - 06/14/2023
-  - 05/08/2018
-  - ortega, michelle
+  - spencer, diana
   - XXX
   - ''
   - '13'
-  - '78'
-- !!python/tuple
-  - 114
-  - null
-  - null
-  - Ortiz, Nichole
-  - '70'
-  - ''
-  - ''
-  - '850'
-  - '64464231'
-  - '24309631'
-  - N
-  - 11/13/2020
-  - 05/27/2023
-  - ortiz, nichole
-  - ''
-  - ''
-  - '13'
-  - '70'
-- !!python/tuple
-  - 864
-  - null
-  - null
-  - Parks, David
-  - '36'
-  - F
-  - ''
-  - '800'
-  - '54415768'
-  - '45320676'
-  - N
-  - 02/23/2019
-  - 08/26/2022
-  - parks, david
-  - ''
-  - ''
-  - '13'
-  - '36'
-- !!python/tuple
-  - 495
-  - null
-  - null
-  - Patterson, Daniel
-  - '56'
-  - F
-  - B
-  - '470'
-  - '66752083'
-  - '14554314'
-  - N
-  - 12/01/2018
-  - 05/04/2022
-  - patterson, daniel
-  - XXX
-  - ''
-  - '13'
-  - '56'
-- !!python/tuple
-  - 697
-  - null
-  - null
-  - Perez, Jennifer
-  - '23'
-  - ''
-  - null
-  - '100'
-  - '98821382'
-  - '59507537'
-  - Y
-  - 01/16/2023
-  - null
-  - perez, jennifer
-  - ''
-  - ''
-  - '13'
-  - '23'
-- !!python/tuple
-  - 710
-  - null
-  - null
-  - Powell, Deborah
-  - '1'
-  - F
-  - ''
-  - '410'
-  - '88783957'
-  - '13665975'
-  - N
-  - 11/09/2023
-  - 05/29/2019
-  - powell, deborah
-  - ''
-  - ''
-  - '13'
-  - '1'
-- !!python/tuple
-  - 338
-  - null
-  - null
-  - Pugh, Tammy
-  - '47'
-  - M
-  - ''
-  - '350'
-  - '63117465'
-  - '36461692'
-  - N
-  - 09/11/2024
-  - 07/31/2019
-  - pugh, tammy
-  - ''
-  - ''
-  - '13'
-  - '47'
-- !!python/tuple
-  - 583
-  - null
-  - null
-  - Raymond, Jose
-  - '6'
-  - ''
-  - ''
-  - '790'
-  - '47418040'
-  - '99923062'
-  - N
-  - 01/24/2024
-  - 04/23/2022
-  - raymond, jose
-  - ''
-  - ''
-  - '13'
-  - '6'
-- !!python/tuple
-  - 409
-  - null
-  - null
-  - Reid, Danielle
-  - '87'
-  - M
-  - W
-  - '500'
-  - '60184511'
-  - '56463260'
-  - N
-  - 10/10/2023
-  - 09/06/2023
-  - reid, danielle
-  - XXX
-  - ''
-  - '13'
-  - '87'
-- !!python/tuple
-  - 560
-  - null
-  - null
-  - Rivera, Sarah
-  - '66'
-  - F
-  - W
-  - '420'
-  - '25405740'
-  - '38965121'
-  - N
-  - 05/15/2024
-  - 10/30/2024
-  - rivera, sarah
-  - XXX
-  - ''
-  - '13'
-  - '66'
-- !!python/tuple
-  - 971
-  - null
-  - null
-  - Rojas, Devon
-  - null
-  - M
-  - W
-  - '460'
-  - '49774942'
-  - '26743268'
-  - N
-  - 03/27/2022
-  - 06/16/2020
-  - rojas, devon
-  - XXX
-  - ''
-  - '13'
-  - null
-- !!python/tuple
-  - 871
-  - null
-  - null
-  - Russo, Gary
-  - '76'
-  - M
-  - ''
-  - '350'
-  - '96571917'
-  - '39905888'
-  - N
-  - 03/29/2021
-  - 06/10/2019
-  - russo, gary
-  - ''
-  - ''
-  - '13'
-  - '76'
-- !!python/tuple
-  - 184
-  - null
-  - null
-  - Sanchez, Andrea
-  - '68'
-  - F
-  - W
-  - '720'
-  - '88051266'
-  - '28221531'
-  - N
-  - 03/01/2022
-  - 08/16/2020
-  - sanchez, andrea
-  - XXX
-  - ''
-  - '13'
-  - '68'
-- !!python/tuple
-  - 374
-  - null
-  - null
-  - Silva, James
-  - '45'
-  - ''
-  - B
-  - '500'
-  - '45155251'
-  - '23644913'
-  - Y
-  - 10/17/2023
-  - null
-  - silva, james
-  - XXX
-  - ''
-  - '13'
-  - '45'
-- !!python/tuple
-  - 377
-  - null
-  - null
-  - Smith, Alexis
-  - '4'
-  - M
-  - ''
-  - '750'
-  - '62358008'
-  - '58912347'
-  - N
-  - 09/22/2021
-  - 03/15/2019
-  - smith, alexis
-  - ''
-  - ''
-  - '13'
-  - '4'
-- !!python/tuple
-  - 264
-  - null
-  - null
-  - Sparks, Scott
-  - '10'
-  - F
-  - AI
-  - '490'
-  - '78174838'
-  - '42917514'
-  - N
-  - 10/05/2018
-  - 08/21/2019
-  - sparks, scott
-  - XXX
-  - ''
-  - '13'
-  - '10'
-- !!python/tuple
-  - 63
-  - null
-  - null
-  - Stanton, Brian
-  - '37'
-  - ''
-  - null
-  - '790'
-  - '74255462'
-  - '94775083'
-  - Y
-  - 12/27/2021
-  - null
-  - stanton, brian
-  - ''
-  - ''
-  - '13'
-  - '37'
+  - '19'
 - !!python/tuple
   - 702
   - null
   - null
-  - Stanton, Madison
-  - '14'
-  - F
-  - A
-  - '600'
-  - '64415168'
-  - '93097638'
-  - N
-  - 12/22/2021
-  - 12/19/2019
-  - stanton, madison
-  - XXX
-  - ''
-  - '13'
-  - '14'
-- !!python/tuple
-  - 942
-  - null
-  - null
-  - Summers, Cassie
-  - '66'
-  - F
-  - W
-  - '400'
-  - '80505119'
-  - '94923617'
-  - N
-  - 08/14/2022
-  - 12/30/2024
-  - summers, cassie
-  - XXX
-  - ''
-  - '13'
-  - '66'
-- !!python/tuple
-  - 56
-  - null
-  - null
-  - Sweeney, Patrick
-  - '45'
-  - F
-  - ''
-  - '400'
-  - '95262197'
-  - '40482189'
-  - N
-  - 08/14/2018
-  - 02/10/2022
-  - sweeney, patrick
-  - ''
-  - ''
-  - '13'
-  - '45'
-- !!python/tuple
-  - 142
-  - null
-  - null
-  - Tran, Danielle
-  - '40'
-  - F
-  - A
-  - '200'
-  - '84233370'
-  - '30980488'
-  - N
-  - 12/27/2021
-  - 04/25/2024
-  - tran, danielle
-  - XXX
-  - ''
-  - '13'
-  - '40'
-- !!python/tuple
-  - 242
-  - null
-  - null
-  - Valdez, Donald
-  - '41'
-  - M
-  - A
-  - '950'
-  - null
-  - '53572683'
-  - N
-  - 06/06/2022
-  - 07/12/2022
-  - valdez, donald
-  - XXX
-  - ''
-  - '13'
-  - '41'
-- !!python/tuple
-  - 858
-  - null
-  - null
-  - Valencia, Daniel
-  - '76'
-  - M
-  - ''
-  - '790'
-  - '37589387'
-  - '42885850'
-  - N
-  - 01/28/2019
-  - 08/14/2024
-  - valencia, daniel
-  - ''
-  - ''
-  - '13'
-  - '76'
-- !!python/tuple
-  - 496
-  - null
-  - null
-  - Warren, Amanda
-  - '15'
-  - ''
-  - W
-  - '790'
-  - '62393315'
-  - '36514728'
-  - N
-  - 12/13/2023
-  - 04/28/2019
-  - warren, amanda
-  - XXX
-  - ''
-  - '13'
-  - '15'
-- !!python/tuple
-  - 335
-  - null
-  - null
-  - Whitney, Nicholas
-  - '4'
-  - ''
-  - ''
-  - '500'
-  - '37790203'
-  - '85089674'
-  - N
-  - 06/19/2021
-  - 04/24/2023
-  - whitney, nicholas
-  - ''
-  - ''
-  - '13'
-  - '4'
-- !!python/tuple
-  - 351
-  - null
-  - null
-  - Wilkinson, Troy
-  - '53'
-  - F
+  - Stone, Kelly
+  - '90'
+  - Male
   - B
-  - '410'
-  - '35707501'
-  - '17902831'
+  - '745'
+  - '49801748'
+  - '16552910'
   - N
-  - 11/02/2023
-  - 07/29/2019
-  - wilkinson, troy
+  - 10/23/2022
+  - 07/24/2018
+  - stone, kelly
   - XXX
   - ''
   - '13'
-  - '53'
+  - '90'
 - !!python/tuple
-  - 448
+  - 670
   - null
   - null
-  - Williams, Christine
-  - '73'
+  - Sweeney, Sean
+  - '18'
   - ''
-  - ''
-  - '730'
-  - '26989664'
-  - '30797973'
+  - A
+  - '400'
+  - '45543983'
+  - '55967232'
   - N
-  - 07/11/2020
-  - 08/17/2024
-  - williams, christine
-  - ''
-  - ''
-  - '13'
-  - '73'
-- !!python/tuple
-  - 320
-  - null
-  - null
-  - Wise, Paige
-  - '62'
-  - M
-  - B
-  - '730'
-  - '56765740'
-  - '98013256'
-  - N
-  - 08/29/2020
-  - 05/28/2022
-  - wise, paige
+  - 01/25/2021
+  - 07/27/2020
+  - sweeney, sean
   - XXX
   - ''
   - '13'
-  - '62'
+  - '18'
 - !!python/tuple
-  - 610
+  - 421
   - null
   - null
-  - Woods, Dillon
-  - '70'
-  - F
-  - ''
-  - '950'
-  - null
-  - '47087018'
-  - N
-  - 05/02/2021
-  - 09/06/2018
-  - woods, dillon
-  - ''
-  - ''
-  - '13'
-  - '70'
-- !!python/tuple
-  - 652
-  - null
-  - null
-  - Wright, Amy
-  - '86'
-  - ''
+  - Todd, Kayla
+  - '5'
+  - Female
   - AI
-  - '750'
-  - '80471930'
-  - '97981568'
+  - '790'
+  - '81836335'
+  - '56715536'
   - N
-  - 11/25/2022
-  - 02/22/2022
-  - wright, amy
+  - 05/08/2018
+  - 05/06/2023
+  - todd, kayla
   - XXX
   - ''
   - '13'
-  - '86'
+  - '5'
+- !!python/tuple
+  - 968
+  - null
+  - null
+  - Torres, Monique
+  - '82'
+  - ''
+  - ''
+  - '100'
+  - '98395313'
+  - '96877471'
+  - N
+  - 09/25/2019
+  - 06/30/2021
+  - torres, monique
+  - ''
+  - ''
+  - '13'
+  - '82'
+- !!python/tuple
+  - 326
+  - null
+  - null
+  - Walters, Courtney
+  - 7 years
+  - null
+  - AI
+  - '300'
+  - '30232895'
+  - '92070913'
+  - N
+  - 06/01/2022
+  - 01/05/2022
+  - walters, courtney
+  - XXX
+  - ''
+  - '13'
+  - 7 years
+- !!python/tuple
+  - 461
+  - null
+  - null
+  - Ward, Grace
+  - 56 Years
+  - Male
+  - B
+  - '790'
+  - '63255784'
+  - '32854431'
+  - N
+  - 04/16/2019
+  - 12/09/2018
+  - ward, grace
+  - XXX
+  - ''
+  - '13'
+  - 56 Years
+- !!python/tuple
+  - 411
+  - null
+  - null
+  - Washington, Stacey
+  - '32'
+  - Female
+  - B
+  - '710'
+  - '95580820'
+  - '11769948'
+  - N
+  - 05/10/2020
+  - 01/30/2019
+  - washington, stacey
+  - XXX
+  - ''
+  - '13'
+  - '32'
+- !!python/tuple
+  - 648
+  - null
+  - null
+  - Watkins, Charles
+  - '84'
+  - Female
+  - AI
+  - '470'
+  - '86515612'
+  - '40239885'
+  - N
+  - 07/29/2022
+  - 08/22/2018
+  - watkins, charles
+  - XXX
+  - ''
+  - '13'
+  - '84'
+- !!python/tuple
+  - 871
+  - null
+  - null
+  - Wiggins, Brian
+  - '9'
+  - ''
+  - B
+  - '900'
+  - '95116591'
+  - '10833988'
+  - N
+  - 01/14/2020
+  - 05/01/2022
+  - wiggins, brian
+  - XXX
+  - ''
+  - '13'
+  - '9'
+- !!python/tuple
+  - 648
+  - null
+  - null
+  - Williams, Brendan
+  - '29'
+  - Female
+  - W
+  - '420'
+  - '13976347'
+  - '67292855'
+  - N
+  - 12/14/2021
+  - 01/28/2023
+  - williams, brendan
+  - XXX
+  - ''
+  - '13'
+  - '29'
+- !!python/tuple
+  - 1000
+  - null
+  - null
+  - Williams, Timothy
+  - '88'
+  - Female
+  - AI
+  - '480'
+  - '72534182'
+  - '88681845'
+  - N
+  - 11/30/2023
+  - 12/07/2019
+  - williams, timothy
+  - XXX
+  - ''
+  - '13'
+  - '88'
