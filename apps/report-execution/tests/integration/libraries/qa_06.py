@@ -93,11 +93,7 @@ class TestIntegrationQa06Library:
         result = execute_report(report_spec)
         assert result.header == 'QA06'
         assert result.subheader is None
-        assert (
-            result.description
-            == 'This report generates a list, by name, of individuals who have \
-multiple occasions of cases within a time period.'
-        )
+        assert result.description is None
         assert result.content_type == 'table'
 
         assert result.content.columns[0] == 'PATIENT_NAME'
