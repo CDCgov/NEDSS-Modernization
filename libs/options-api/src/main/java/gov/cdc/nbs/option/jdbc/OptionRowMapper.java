@@ -9,8 +9,6 @@ import org.springframework.lang.NonNull;
 
 public class OptionRowMapper implements RowMapper<Option> {
 
-  public OptionRowMapper() {}
-
   @Override
   @NonNull public Option mapRow(final ResultSet rs, final int rowNum) throws SQLException {
     // "value" and "name" must be specified as columns in the return
