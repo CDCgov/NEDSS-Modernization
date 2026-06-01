@@ -1,5 +1,5 @@
 import { When } from "@badeball/cypress-cucumber-preprocessor";
-import { NEW_REPORT_UID, NEW_DATA_SOURCE_UID } from "./create.steps";
+import { NEW_REPORT_UID, VALID_DATA_SOURCE_UID } from "./create.steps";
 
 const VALID_REPORT_LIBRARY_ID = 10000001;
 const VALID_SECTION_CODE = "1001";
@@ -7,7 +7,7 @@ const VALID_SECTION_CODE = "1001";
 function makeEditRequest(body) {
   return cy.request({
     method: "PUT",
-    url: `${Cypress.config().baseUrl}nbs/api/report/configuration/${NEW_REPORT_UID}/${NEW_DATA_SOURCE_UID}`,
+    url: `${Cypress.config().baseUrl}nbs/api/report/configuration/${NEW_REPORT_UID}/${VALID_DATA_SOURCE_UID}`,
     body,
     failOnStatusCode: false,
     headers: {
@@ -18,7 +18,7 @@ function makeEditRequest(body) {
 
 When(/^I send a PUT request to the edit endpoint with a valid report$/, () => {
   const validReport = {
-    dataSourceId: NEW_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Edited Report Title",
     sectionCode: VALID_SECTION_CODE,
@@ -48,7 +48,7 @@ When(/^I send a PUT request to the edit endpoint with missing dataSourceId$/, ()
 
 When(/^I send a PUT request to the edit endpoint with missing libraryId$/, () => {
   const validReport = {
-    dataSourceId: NEW_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: null,
     reportTitle: "Edited Report Title",
     sectionCode: VALID_SECTION_CODE,
@@ -63,7 +63,7 @@ When(/^I send a PUT request to the edit endpoint with missing libraryId$/, () =>
 
 When(/^I send a PUT request to the edit endpoint with missing reportTitle$/, () => {
   const validReport = {
-    dataSourceId: NEW_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: null,
     sectionCode: VALID_SECTION_CODE,
@@ -78,7 +78,7 @@ When(/^I send a PUT request to the edit endpoint with missing reportTitle$/, () 
 
 When(/^I send a PUT request to the edit endpoint with missing sectionCode$/, () => {
   const validReport = {
-    dataSourceId: NEW_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Edited Report Title",
     sectionCode: null,
@@ -93,7 +93,7 @@ When(/^I send a PUT request to the edit endpoint with missing sectionCode$/, () 
 
 When(/^I send a PUT request to the edit endpoint with missing ownerId$/, () => {
   const validReport = {
-    dataSourceId: NEW_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Edited Report Title",
     sectionCode: VALID_SECTION_CODE,
@@ -108,7 +108,7 @@ When(/^I send a PUT request to the edit endpoint with missing ownerId$/, () => {
 
 When(/^I send a PUT request to the edit endpoint with missing group$/, () => {
   const validReport = {
-    dataSourceId: NEW_DATA_SOURCE_UID,
+    dataSourceId: VALID_DATA_SOURCE_UID,
     libraryId: VALID_REPORT_LIBRARY_ID,
     reportTitle: "Edited Report Title",
     sectionCode: VALID_SECTION_CODE,

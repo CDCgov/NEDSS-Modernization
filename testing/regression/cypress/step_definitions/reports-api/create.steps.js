@@ -1,11 +1,10 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
-const VALID_DATA_SOURCE_UID = 1;
 const VALID_REPORT_LIBRARY_ID = 10000001;
 const VALID_SECTION_CODE = "1000";
 
 export let NEW_REPORT_UID;
-export let NEW_DATA_SOURCE_UID;
+export const VALID_DATA_SOURCE_UID = 1;
 
 function makeCreateRequest(body) {
   return cy.request({
@@ -130,6 +129,5 @@ Then("the response should contain a ReportId", () => {
     expect(response.body).to.have.property("dataSourceUid");
 
     NEW_REPORT_UID = response.body.reportUid;
-    NEW_DATA_SOURCE_UID = response.body.dataSourceUid;
   });
 });
