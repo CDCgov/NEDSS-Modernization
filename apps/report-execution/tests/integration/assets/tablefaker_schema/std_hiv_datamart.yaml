@@ -2,7 +2,7 @@ config:
   seed: 4
   nbs:
     fk_tables:
-        - '[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]'
+      - '[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]'
 
 tables:
   - table_name: "[RDB].[dbo].[INVESTIGATION]"
