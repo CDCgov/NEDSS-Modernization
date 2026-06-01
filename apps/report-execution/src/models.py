@@ -52,7 +52,8 @@ class Table(BaseModel):
 def serialize_table(table: Table) -> str:
     """Turn a Table into a CSV for returning to the user.
 
-    Standardizes Python date and datetime instances to the following format:
+    Standardizes Python date and datetime instances to the provided strftime constants,
+    defaulting to:
      - datetime: mm/dd/yyyy hh:mm:ss
      - date: mm/dd/yyyy
     """
@@ -62,7 +63,7 @@ def serialize_table(table: Table) -> str:
         'CSV_DATETIME_STRFTIME', '%m/%d/%Y %H:%M:%S'
     )
 
-    # properly format dates and datetimes
+    # properly format a given value if it's a date or datetime
     def convert_dates(val: Any) -> Any:
         if type(val) is date:
             return pd.to_datetime(val).strftime(csv_date_strftime)
@@ -71,6 +72,7 @@ def serialize_table(table: Table) -> str:
 
         return val
 
+    # update table data to have properly formatted dates and datetimes
     updated_data = []
     for tpl in table.data:
         updated_data.append([v for v in map(convert_dates, tpl)])
