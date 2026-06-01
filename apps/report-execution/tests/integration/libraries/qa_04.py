@@ -109,6 +109,7 @@ class TestIntegrationQa04Library:
                 'No Treatment or Lab',
                 'No Lab',
                 'No Treatment',
+                'N/A'
             )
 
     def test_execute_report_confirmed_probable_only(self):
