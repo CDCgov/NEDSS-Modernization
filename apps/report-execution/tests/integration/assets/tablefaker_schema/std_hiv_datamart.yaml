@@ -19,7 +19,7 @@ tables:
       - column_name: inv_local_id
         data: |
           id_num = fake.unique.random_int(10000, 99999)
-          return f"CAS100{id_num}GA01"  
+          return f"CAS100{id_num}GA01"
 
   - table_name: "[RDB].[dbo].[D_PROVIDER]"
     row_count: 250
@@ -111,7 +111,13 @@ tables:
       - column_name: ordering_facility_key
         data: foreign_key("[RDB].[dbo].[D_ORGANIZATION]", "organization_key")
       - column_name: patient_pregnant_ind
-        data: random.choice(["Yes", "No"])
+        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+      - column_name: pbi_preg_in_last_12mo_ind
+        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+      - column_name: pbi_preg_at_ix_ind
+        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+      - column_name: pbi_preg_at_exam_ind
+        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
       - column_name: investigator_interview_key
         data: fake.random_int(10000000, 99999999)
 
