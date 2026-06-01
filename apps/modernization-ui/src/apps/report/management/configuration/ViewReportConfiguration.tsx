@@ -26,12 +26,15 @@ const ViewReportConfiguration = () => {
             title="View Report"
             actions={
                 <>
-                    <Button secondary={true} onClick={() => window.alert("to do")}>Delete</Button>
+                    <Button secondary={true} onClick={() => window.alert('to do')}>
+                        Delete
+                    </Button>
                     <LinkButton href={`/report/management/configuration/${reportUid}/${dataSourceUid}/edit`}>
                         Edit
                     </LinkButton>
                 </>
-            }>
+            }
+        >
             <div className={styles.columnContent}>
                 <ReportConfigurationContent isEditable={false} config={config} />
             </div>
