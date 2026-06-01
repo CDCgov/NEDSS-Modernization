@@ -111,8 +111,5 @@ def execute(
         """
 
     content = trx.query(query)
-    header = 'QA06: Patients with Multiple Cases'
 
-    return ReportResult(
-        content_type='table', content=content, header=header, description=description
-    )
+    return ReportResult(content_type='table', content=content)
