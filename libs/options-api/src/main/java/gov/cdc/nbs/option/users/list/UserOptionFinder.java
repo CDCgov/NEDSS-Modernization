@@ -15,8 +15,7 @@ public class UserOptionFinder extends SQLBasedOptionFinder {
             +   case
                     when user_last_nm is null then ''
                         else ' ' + user_last_nm
-                    end as [name],
-        0 as [order]
+                    end as [name]
         from Auth_user
       order by
           [name]

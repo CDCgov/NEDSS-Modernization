@@ -13,8 +13,11 @@ public class OptionRowMapper implements RowMapper<Option> {
 
   @Override
   @NonNull public Option mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+    // "value" and "name" must be specified as columns in the return
     String value = rs.getString("value");
     String name = rs.getString("name");
+
+    // "order" and "label" are optional - populate if available or use a reasonable default
     ResultSetMetaData meta = rs.getMetaData();
     int cnt = meta.getColumnCount();
     int order = 1;
