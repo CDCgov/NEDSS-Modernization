@@ -162,7 +162,7 @@ tables:
         data: row_id + 20000
         is_primary_key: true
       - column_name: INVESTIGATION_KEY
-        data: row_id
+        data: row_id if row_id <= 100 else row_id + 100
         foreign_key:
           table: "[RDB].[dbo].[investigation]"
           column: INVESTIGATION_KEY

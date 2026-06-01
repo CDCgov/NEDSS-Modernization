@@ -33,7 +33,6 @@ class TestIntegrationQa04Library:
         data = result.content
         assert len(data.data) > 0
         assert len(data.data[0]) == len(data.columns) if data.data else True
-
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
 
         assert data.columns == [
@@ -65,7 +64,6 @@ class TestIntegrationQa04Library:
         result = execute_report(report_spec)
         assert result.content_type == 'table'
         assert result.header == 'QA04 Cases Missing Lab and/or Treatment'
-
         data = result.content
         assert data.data == []
 

@@ -56,7 +56,5 @@ def execute(
         ERROR_TXT,
         CONFIRMATION_DT;
     """
-
     content = trx.query(full_query)
-
     return ReportResult(content_type='table', content=content)
