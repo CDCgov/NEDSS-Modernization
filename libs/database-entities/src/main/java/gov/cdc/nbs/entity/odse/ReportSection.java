@@ -24,7 +24,7 @@ public class ReportSection {
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
   private Long id;
 
-  @NonNull @Column(name = "section_cd", length = 50, nullable = false)
+  @NonNull @Column(name = "section_cd", length = 50, unique = true, nullable = false)
   private String sectionCd;
 
   @NonNull @Column(name = "section_desc_txt", length = 100, nullable = false)
