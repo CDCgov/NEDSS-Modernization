@@ -10,6 +10,7 @@ import { Validator } from 'validation';
 import { getValueList, OptionSelectFilter, optionSelectValidator } from './OptionSelectFilter';
 import { getYearRange, YearRangeFilter } from './YearRangeFilter';
 import { getMonthYearRange, MonthYearRangeFilter, monthYearRangeValidator } from './MonthYearRangeFilter';
+import { getNumericValue, NumericFilter, numericValidator } from './NumericFilter.tsx';
 import { Checkbox } from 'design-system/checkbox';
 
 export type BasicFilterProps = {
@@ -64,6 +65,16 @@ const FILTER_TYPE_MAP: Record<
         validationRule: optionSelectValidator,
     },
     BAS_CVG_LIST: {
+        FilterComponent: OptionSelectFilter,
+        getDefaultValue: getValueList,
+        validationRule: optionSelectValidator,
+    },
+    BAS_DAYS: {
+        FilterComponent: NumericFilter,
+        getDefaultValue: getNumericValue,
+        validationRule: numericValidator,
+    },
+    BAS_STD_HIV_WRKR: {
         FilterComponent: OptionSelectFilter,
         getDefaultValue: getValueList,
         validationRule: optionSelectValidator,
