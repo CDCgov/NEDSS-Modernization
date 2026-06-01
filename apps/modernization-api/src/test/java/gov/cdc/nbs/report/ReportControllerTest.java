@@ -44,6 +44,9 @@ class ReportControllerTest {
   void getReport_should_return_report_configuration_response() {
     Long reportUid = 1L;
     Long dataSourceUid = 2L;
+    Long ownerUid = 0L;
+    String group = "S";
+    String sectionCd = "1002";
 
     DataSource dataSourceEntity = mock(DataSource.class);
     ReportLibrary reportLibraryEntity = mock(ReportLibrary.class);
@@ -57,6 +60,9 @@ class ReportControllerTest {
             new Library(reportLibraryEntity),
             "Report Title",
             "Report description prose",
+            ownerUid,
+            group,
+            sectionCd,
             List.of(basicFilterConfig),
             advancedFilterConfig,
             columns,
