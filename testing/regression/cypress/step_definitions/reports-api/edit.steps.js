@@ -23,7 +23,7 @@ When(/^I send a PUT request to the edit endpoint with a valid report$/, () => {
     reportTitle: "Edited Report Title",
     sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
-    group: "Private",
+    group: "PRIVATE",
     filterRequests: [],
     description: "Edited Description",
   };
@@ -38,7 +38,7 @@ When(/^I send a PUT request to the edit endpoint with missing dataSourceId$/, ()
     reportTitle: "Edited Report Title",
     sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
-    group: "Private",
+    group: "PRIVATE",
     filterRequests: [],
     description: "Edited Description",
   };
@@ -53,7 +53,7 @@ When(/^I send a PUT request to the edit endpoint with missing libraryId$/, () =>
     reportTitle: "Edited Report Title",
     sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
-    group: "Private",
+    group: "PRIVATE",
     filterRequests: [],
     description: "Edited Description",
   };
@@ -68,7 +68,7 @@ When(/^I send a PUT request to the edit endpoint with missing reportTitle$/, () 
     reportTitle: null,
     sectionCode: VALID_SECTION_CODE,
     ownerId: 0,
-    group: "Private",
+    group: "PRIVATE",
     filterRequests: [],
     description: "Edited Description",
   };
@@ -83,7 +83,7 @@ When(/^I send a PUT request to the edit endpoint with missing sectionCode$/, () 
     reportTitle: "Edited Report Title",
     sectionCode: null,
     ownerId: 0,
-    group: "Private",
+    group: "PRIVATE",
     filterRequests: [],
     description: "Edited Description",
   };
@@ -98,7 +98,7 @@ When(/^I send a PUT request to the edit endpoint with missing ownerId$/, () => {
     reportTitle: "Edited Report Title",
     sectionCode: VALID_SECTION_CODE,
     ownerId: null,
-    group: "Private",
+    group: "PRIVATE",
     filterRequests: [],
     description: "Edited Description",
   };

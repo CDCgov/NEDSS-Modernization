@@ -13,6 +13,6 @@ public record AdminReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String reportTitle,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String sectionCode,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Long ownerId,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank ReportConstants.ReportGroup group,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull ReportConstants.ReportGroup group,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<UpsertFilterRequest> filterRequests,
     String description) {}
