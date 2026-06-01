@@ -1,3 +1,4 @@
+import datetime
 import pytest
 import yaml
 
@@ -47,7 +48,7 @@ class TestIntegrationNbsQa03Library:
         assert record[0].startswith('CAS')
         assert record[2].startswith('PSN')
         assert int(record[3]) >= 100
-        assert len(record[5]) == 10
+        assert record[5] == datetime.datetime(2022, 1, 24, 0, 0)
         assert len(record[7]) > 0
         assert len(record[8]) > 0
         assert record[9] >= 10000
