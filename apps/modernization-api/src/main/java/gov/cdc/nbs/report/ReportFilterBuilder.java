@@ -1,7 +1,11 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.audit.Status;
-import gov.cdc.nbs.entity.odse.*;
+import gov.cdc.nbs.entity.odse.DataSourceColumn;
+import gov.cdc.nbs.entity.odse.FilterCode;
+import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportFilter;
+import gov.cdc.nbs.entity.odse.ReportFilterValidation;
 import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.report.utils.ValueCountCalculator;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
