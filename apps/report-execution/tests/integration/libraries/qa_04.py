@@ -108,7 +108,7 @@ class TestIntegrationQa04Library:
             assert row[error_col_idx] in (
                 'No Treatment or Lab',
                 'No Lab',
-                'No Treatment'
+                'No Treatment',
             )
 
     def test_execute_report_confirmed_probable_only(self):
