@@ -44,6 +44,10 @@ def execute(
         ON a.INVESTIGATION_KEY = c.INVESTIGATION_KEY
     WHERE a.INV_LOCAL_ID IS NOT NULL
         AND e.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+        AND (
+            b.LAB_TEST_KEY IS NULL
+            OR c.TREATMENT_KEY IS NULL
+        )
     ORDER BY
         a.PATIENT_LOCAL_ID,
         a.PATIENT_NAME,
