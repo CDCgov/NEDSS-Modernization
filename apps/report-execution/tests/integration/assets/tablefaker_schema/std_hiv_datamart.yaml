@@ -60,10 +60,13 @@ tables:
           return f"{fake.last_name()}, {fake.first_name()}"
         null_percentage: 0.05
       - column_name: patient_age_reported
-        data: fake.random_int(1, 99)
+        data: |
+          age_num = fake.random_int(1, 99)
+          suffix = random.choice([" years", " Years"]) if random.random() < 0.2 else ""
+          return f"{age_num}{suffix}"
         null_percentage: 0.05
       - column_name: patient_sex
-        data: random.choice(["F", "M", ""]) if random.random() < .95 else None
+        data: random.choice(["Female", "Male", ""]) if random.random() < .95 else None
       - column_name: patient_race
         data: random.choice(["B", "A", "AI", "W", ""]) if random.random() < .95 else None
       - column_name: patient_local_id
@@ -107,6 +110,16 @@ tables:
           return f"CAS100{id_num}GA01"
       - column_name: ordering_facility_key
         data: foreign_key("[RDB].[dbo].[D_ORGANIZATION]", "organization_key")
+      - column_name: patient_pregnant_ind
+        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+      - column_name: pbi_preg_in_last_12mo_ind
+        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+      - column_name: pbi_preg_at_ix_ind
+        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+      - column_name: pbi_preg_at_exam_ind
+        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+      - column_name: investigator_interview_key
+        data: fake.random_int(10000000, 99999999)
 
 
 # === Columns not needed for reports yet ===
