@@ -5,6 +5,7 @@ import { Layout } from 'layout';
 import { ReactNode } from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { ViewReportConfiguration } from './ViewReportConfiguration';
+import userEvent from '@testing-library/user-event';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
@@ -61,7 +62,15 @@ const MOCK_CONFIG: generated.ReportConfiguration = {
         },
     ],
     basicFilters: [
-        { reportFilterUid: 4, isRequired: true, defaultIncludeNulls: false, filterType: { id: 1, name: 'My filter' } },
+        {
+            reportFilterUid: 4,
+            isRequired: true,
+            defaultIncludeNulls: false,
+            filterType: { id: 1, name: 'My filter' },
+            minValueCount: 1,
+            maxValueCount: 1,
+            reportColumnUid: 2001,
+        },
     ],
     advancedFilter: {
         reportFilterUid: 123,
@@ -113,7 +122,7 @@ describe('view report configuration page', () => {
             .mocked(generated.ReportControllerService.getReportConfiguration)
             .mockResolvedValue(MOCK_CONFIG);
         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
-        const { getByRole, findByText } = renderWithRouter();
+        const { getByRole, findByText, findAllByText, findAllByLabelText } = renderWithRouter();
 
         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -129,5 +138,30 @@ describe('view report configuration page', () => {
         expect(await findByText('Test Report')).toBeVisible();
         expect(await findByText('System')).toBeVisible();
         expect(await findByText('My filter')).toBeVisible();
+        expect(await findByText('Where Clause Builder')).toBeVisible();
+
+        const user = userEvent.setup();
+
+        await user.click((await findAllByLabelText('View'))[0]);
+
+        expect(await findAllByText('My filter')).toHaveLength(2);
+        expect(await findAllByText('Yes')).toHaveLength(2);
+        expect(await findAllByText('Full Name'));
+        expect(await findAllByText('Single'));
+    });
+
+    it('renders no filters', async () => {
+        const mockApi = vi
+            .mocked(generated.ReportControllerService.getReportConfiguration)
+            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [], advancedFilter: undefined });
+        vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
+        const { getByRole, findByText } = renderWithRouter();
+
+        expect(getByRole('status')).toHaveTextContent('Loading');
+
+        expect(mockApi).toHaveBeenCalled();
+
+        expect(await findByText('3. Available filters')).toBeVisible();
+        expect(await findByText('No data has been added.'));
     });
 });

@@ -38,6 +38,7 @@ type FilterColumn = NamedColumn<FilterConfig, string> & HasValueFunction<FilterC
 
 const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportConfiguration; isEditable: boolean }) => {
     const filterColumns: FilterColumn[] = [
+        // TODO: This should be derived from the filter ID once we make thing editable
         { id: 'filter', name: 'Filter', value: (v) => v.name },
         { id: 'type', name: 'Type', value: (v) => v.type },
         {
@@ -51,6 +52,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
     const filterData: FilterConfig[] =
         config?.basicFilters.map((f) => ({
             id: f.reportFilterUid,
+            // TODO: This should be derived from the filter ID once we make thing editable
             name: f.filterType.name ?? '',
             type: formatType(f),
             columnId: f.reportColumnUid,
