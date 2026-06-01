@@ -73,11 +73,7 @@ def serialize_table(table: Table) -> str:
         return val
 
     # update table data to have properly formatted dates and datetimes
-    updated_data = []
-    for tpl in table.data:
-        updated_data.append([v for v in map(convert_dates, tpl)])
-
-    table.data = updated_data
+    table.data = [map(convert_dates, tpl) for tpl in table.data]
 
     # Short cut to valid CSV - can swap out later if performance dictates
     # or serialize to CSV at a different location
