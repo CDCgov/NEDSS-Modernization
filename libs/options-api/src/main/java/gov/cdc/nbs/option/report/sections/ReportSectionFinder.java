@@ -10,9 +10,8 @@ public class ReportSectionFinder extends SQLBasedOptionFinder {
   private static final String QUERY =
       """
       select
-        section_code        as [value],
-        desc_txt            as [name],
-        0                   as [order]
+        section_cd          as [value],
+        section_desc_txt    as [name],
       from NBS_ODSE..Report_Section
       order by
           [name]

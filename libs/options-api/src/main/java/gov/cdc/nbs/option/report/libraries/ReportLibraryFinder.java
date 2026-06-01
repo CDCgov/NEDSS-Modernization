@@ -10,9 +10,9 @@ public class ReportLibraryFinder extends SQLBasedOptionFinder {
   private static final String QUERY =
       """
       select
-        library_uid                               as [value],
-        CONCAT(library_name, ' - ', desc_txt)     as [name],
-        0                                         as [order]
+        library_uid    as [value],
+        library_name   as [name],
+        desc_txt       as [label]
       from NBS_ODSE..Report_Library
       order by
           [name]

@@ -13,7 +13,7 @@ export const ReportHeader = ({ title, actions }: ReportHeaderProps) => {
     return (
         <div className={styles.header}>
             <Heading level={1}>{title}</Heading>
-            <div>{actions}</div>
+            <div className={styles.actions}>{actions}</div>
         </div>
     );
 };

@@ -1,16 +1,20 @@
 import { Card } from 'design-system/card';
+import { NoData } from 'design-system/data';
 import { ValueView } from 'design-system/data-display/ValueView';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { ValueField } from 'design-system/field';
 import { HasValueFunction, NamedColumn } from 'design-system/table/header/column';
 import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
+import { Selectable } from 'options';
+import { useReportDataSources, useReportLibraries, useReportSections } from 'options/report';
+import { useUserOptions } from 'options/users';
 
 interface FilterConfig {
     id?: number;
     name: string;
     type?: string;
     columnId?: number;
-    isRequired: string;
+    requiredInd: string;
 }
 
 const sizing = 'medium';
@@ -23,7 +27,14 @@ const formatType = ({ minValueCount, maxValueCount }: BasicFilterConfiguration) 
     }
 };
 
-type FilterColumn = NamedColumn<FilterConfig> & HasValueFunction<FilterConfig, string>;
+const GROUP_OPTIONS = [
+    { value: 'S', name: 'Public' },
+    { value: 'P', name: 'Private' },
+    { value: 'T', name: 'Template' },
+    { value: 'R', name: 'Reporting Facility' },
+];
+
+type FilterColumn = NamedColumn<FilterConfig, string> & HasValueFunction<FilterConfig, string>;
 
 const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportConfiguration; isEditable: boolean }) => {
     const filterColumns: FilterColumn[] = [
@@ -34,7 +45,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
             name: 'Associated column',
             value: (v) => config?.columns.find(({ id }) => id === v.columnId)?.title,
         },
-        { id: 'filter-required', name: 'Required as basic filter?', value: (v) => v.isRequired },
+        { id: 'filter-required', name: 'Required as basic filter?', value: (v) => v.requiredInd },
     ];
 
     const filterData: FilterConfig[] =
@@ -43,17 +54,22 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
             name: f.filterType.name ?? '',
             type: formatType(f),
             columnId: f.reportColumnUid,
-            isRequired: f.isRequired ? 'Yes' : 'No',
+            requiredInd: f.isRequired ? 'Yes' : 'No',
         })) ?? [];
 
     if (config?.advancedFilter) {
-        filterData.push({ id: config.advancedFilter.reportFilterUid, name: 'Where Clause Builder', isRequired: 'No' });
+        filterData.push({ id: config.advancedFilter.reportFilterUid, name: 'Where Clause Builder', requiredInd: 'No' });
     }
 
     return (
         <>
             <Card id="report-source" title="1. Report source" collapsible={false}>
-                <Row isEditable={isEditable} label="Data source" defaultValue={config?.dataSource.name} />
+                <Row
+                    isEditable={isEditable}
+                    label="Data source"
+                    defaultValue={config?.dataSource.id.toString()}
+                    getOptions={useReportDataSources}
+                />
             </Card>
             <Card id="metadata" title="2. Report configuration" collapsible={false}>
                 <Row isEditable={isEditable} label="Name" defaultValue={config?.title} />
@@ -62,24 +78,28 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     isEditable={isEditable}
                     label="Owner"
                     defaultValue={config?.ownerUid.toString()}
+                    getOptions={() => [{ value: '0', name: 'System' }, ...useUserOptions()]}
                     helperText="The user who can edit and delete this report."
                 />
                 <Row
                     isEditable={isEditable}
                     label="Group"
                     defaultValue={config?.group}
+                    getOptions={() => GROUP_OPTIONS}
                     helperText="The level of visibility for the report. Templates are public."
                 />
                 <Row
                     isEditable={isEditable}
                     label="Section name"
                     defaultValue={config?.sectionCd}
+                    getOptions={useReportSections}
                     helperText="The heading under which this report appears."
                 />
                 <Row
                     isEditable={isEditable}
                     label="Report execution library"
-                    defaultValue={config?.library.name}
+                    defaultValue={config?.library.id.toString()}
+                    getOptions={useReportLibraries}
                     helperText="The query logic for the report"
                 />
             </Card>
@@ -92,7 +112,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                 data={filterData}
                 viewRenderer={(entry: FilterConfig) =>
                     filterColumns.map((fc) => (
-                        <ValueView title={fc.name} value={fc.value(entry)} sizing={sizing} required />
+                        <ValueView key={fc.id} title={fc.name} value={fc.value(entry)} sizing={sizing} required />
                     ))
                 }
             />
@@ -105,20 +125,37 @@ const Row = ({
     defaultValue,
     label,
     helperText,
+    getOptions,
     required = true,
 }: {
     isEditable: boolean;
     defaultValue?: string;
     label: string;
+    getOptions?: () => Selectable[];
     helperText?: string;
     required?: boolean;
 }) => {
+    const options = getOptions?.();
+
+    const option = options ? options.find(({ value }) => value === defaultValue) : defaultValue;
+
     return isEditable ? (
         <div>TO DO - {required}</div>
     ) : (
         <ValueField label={label} helperText={helperText}>
-            {defaultValue}
+            <Option option={option} />
         </ValueField>
+    );
+};
+
+const Option = ({ option }: { option?: Selectable | string }) => {
+    if (!option) return <NoData />;
+    if (typeof option === 'string') return option;
+    if (option.name === option.label || !option.label) return option.name;
+    return (
+        <span>
+            {option.name} <em className="text-base">({option.label})</em>
+        </span>
     );
 };
 
