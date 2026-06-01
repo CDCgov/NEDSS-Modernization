@@ -1,6 +1,8 @@
+from datetime import date, datetime
+from re import sub
 from typing import Annotated, Any, Literal
 
-from pandas import DataFrame
+from pandas import DataFrame, to_datetime
 from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
 
 
@@ -47,12 +49,36 @@ class Table(BaseModel):
 
 
 def serialize_table(table: Table) -> str:
-    """Turn a Table into a CSV for returning to the user."""
+    """Turn a Table into a CSV for returning to the user.
+
+    Standardizes Python date and datetime instances to the following format:
+     - datetime: mm/dd/yyyy hh:mm:ss
+     - date: mm/dd/yyyy
+    """
+    def convert_dates(val: Any) -> Any:
+        if type(val) not in [date, datetime]:
+            return val
+
+        return to_datetime(val)
+
+    updated_data = []
+    for tpl in table.data:
+        updated_data.append([v for v in map(convert_dates, tpl)])
+
+    table.data = updated_data
+
     # Short cut to valid CSV - can swap out later if performance dictates
     # or serialize to CSV at a different location
     df = DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
-    # remove trailing new line
-    return df.to_csv(index=False, float_format='{:.20g}', lineterminator='\r\n')[:-2]
+
+    csv_str = df.to_csv(index=False, date_format="%m/%d/%Y %H:%M:%S", float_format='{:.20g}', lineterminator='\r\n')
+
+    # Remove the %H:%M:%S where no time is given (dates) while leaving datetimes intact
+    date_re = r"(?P<date>\d{2}/\d{2}/\d{4}) 00:00:00"
+    csv_str = sub(date_re, r"\g<date>", csv_str)
+
+    # Remove trailing new line
+    return csv_str[:-2]
 
 
 # TODO: add other return types  # noqa: FIX002
