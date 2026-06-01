@@ -9,6 +9,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
 import java.util.Collections;
@@ -41,6 +42,7 @@ class ReportServiceTest {
   @Mock private ReportFilterRepository reportFilterRepository;
   @Mock private FilterCodeRepository filterCodeRepository;
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
+  @Mock private ReportMapper reportMapper;
 
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportLibrary reportLibrary;
@@ -86,13 +88,15 @@ class ReportServiceTest {
     private final Long filterCodeUid = 7L;
     private final Long columnUid = 8L;
 
-    private NbsUserDetails user;
+    private NbsUserDetails mockUser;
+    private DataSource mockDataSource;
+    private ReportLibrary mockReportLibrary;
 
     @BeforeEach
     void setup() {
-      DataSource mockDataSource = mock(DataSource.class);
-      ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
-      user = mock(NbsUserDetails.class);
+      mockDataSource = mock(DataSource.class);
+      mockReportLibrary = mock(ReportLibrary.class);
+      mockUser = mock(NbsUserDetails.class);
 
       FilterCode mockFilterCode = mock(FilterCode.class);
       Mockito.lenient().when(mockFilterCode.getId()).thenReturn(filterCodeUid);
@@ -135,11 +139,15 @@ class ReportServiceTest {
     @Test
     void createReport_should_create_and_return_report_when_all_inputs_are_valid() {
       Report savedReport = mock(Report.class);
-      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
       AdminReportRequest request = buildAdminReportRequest(true);
 
-      Report result = service.createReport(request, user);
+      when(reportMapper.fromAdminReportRequest(
+              request, mockUser, mockReportLibrary, mockDataSource, null))
+          .thenReturn(savedReport);
+      when(reportRepository.save(savedReport)).thenReturn(savedReport);
+
+      Report result = service.createReport(request, mockUser);
 
       assertThat(result).isEqualTo(savedReport);
       verify(dataSourceRepository).findById(dataSourceUid);
@@ -150,16 +158,22 @@ class ReportServiceTest {
     @Test
     void createReport_should_create_report_when_filters_are_empty() {
       Report savedReport = mock(Report.class);
-      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
 
       AdminReportRequest request = buildAdminReportRequest(false);
 
-      Report result = service.createReport(request, user);
+      when(reportMapper.fromAdminReportRequest(
+              request, mockUser, mockReportLibrary, mockDataSource, null))
+          .thenReturn(savedReport);
+      when(reportRepository.save(savedReport)).thenReturn(savedReport);
+
+      Report result = service.createReport(request, mockUser);
 
       assertThat(result).isEqualTo(savedReport);
       verify(dataSourceRepository).findById(dataSourceUid);
       verify(reportLibraryRepository).findById(libraryId);
 
+      verify(reportMapper)
+          .fromAdminReportRequest(request, mockUser, mockReportLibrary, mockDataSource, null);
       verify(reportRepository).save(any(Report.class));
       verify(reportFilterRepository, never()).saveAll(any());
     }
@@ -170,7 +184,7 @@ class ReportServiceTest {
 
       AdminReportRequest request = buildAdminReportRequest(true);
 
-      assertThatThrownBy(() -> service.createReport(request, user))
+      assertThatThrownBy(() -> service.createReport(request, mockUser))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No data source found for ID " + dataSourceUid);
 
@@ -187,7 +201,7 @@ class ReportServiceTest {
 
       AdminReportRequest request = buildAdminReportRequest(true);
 
-      assertThatThrownBy(() -> service.createReport(request, user))
+      assertThatThrownBy(() -> service.createReport(request, mockUser))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No report library found for ID " + libraryId);
 
@@ -207,13 +221,18 @@ class ReportServiceTest {
     private final Long filterCodeUid = 7L;
     private final Long columnUid = 8L;
 
-    private NbsUserDetails user;
+    private NbsUserDetails mockUser;
+    private DataSource mockDataSource;
+    private ReportLibrary mockReportLibrary;
+    private Report savedReport;
+    private ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
     @BeforeEach
     void setup() {
-      DataSource mockDataSource = mock(DataSource.class);
-      ReportLibrary mockReportLibrary = mock(ReportLibrary.class);
-      user = mock(NbsUserDetails.class);
+      mockDataSource = mock(DataSource.class);
+      mockReportLibrary = mock(ReportLibrary.class);
+      mockUser = mock(NbsUserDetails.class);
+      savedReport = mock(Report.class);
 
       FilterCode mockFilterCode = mock(FilterCode.class);
       Mockito.lenient().when(mockFilterCode.getId()).thenReturn(filterCodeUid);
@@ -256,13 +275,15 @@ class ReportServiceTest {
     }
 
     @Test
-    void editReport_should_create_and_return_report_when_all_inputs_are_valid() {
-      Report savedReport = mock(Report.class);
-      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-
+    void editReport_should_edit_and_return_report_when_all_inputs_are_valid() {
       AdminReportRequest request = buildAdminReportRequest(true);
 
-      Report result = service.editReport(request, user, new ReportId(reportUid, dataSourceUid));
+      when(reportMapper.fromAdminReportRequest(
+              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+          .thenReturn(savedReport);
+      when(reportRepository.save(savedReport)).thenReturn(savedReport);
+
+      Report result = service.editReport(request, mockUser, reportId);
 
       assertThat(result).isEqualTo(savedReport);
       verify(dataSourceRepository).findById(dataSourceUid);
@@ -272,12 +293,14 @@ class ReportServiceTest {
 
     @Test
     void editReport_should_create_report_when_filters_are_empty() {
-      Report savedReport = mock(Report.class);
-      when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-
       AdminReportRequest request = buildAdminReportRequest(false);
 
-      Report result = service.editReport(request, user, new ReportId(reportUid, dataSourceUid));
+      when(reportMapper.fromAdminReportRequest(
+              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+          .thenReturn(savedReport);
+      when(reportRepository.save(savedReport)).thenReturn(savedReport);
+
+      Report result = service.editReport(request, mockUser, reportId);
 
       assertThat(result).isEqualTo(savedReport);
       verify(dataSourceRepository).findById(dataSourceUid);
@@ -292,9 +315,8 @@ class ReportServiceTest {
       when(dataSourceRepository.findById(dataSourceUid)).thenReturn(Optional.empty());
 
       AdminReportRequest request = buildAdminReportRequest(true);
-      ReportId id = new ReportId(reportUid, dataSourceUid);
 
-      assertThatThrownBy(() -> service.editReport(request, user, id))
+      assertThatThrownBy(() -> service.editReport(request, mockUser, reportId))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No data source found for ID " + dataSourceUid);
 
@@ -310,9 +332,8 @@ class ReportServiceTest {
       when(reportLibraryRepository.findById(libraryId)).thenReturn(Optional.empty());
 
       AdminReportRequest request = buildAdminReportRequest(true);
-      ReportId id = new ReportId(reportUid, dataSourceUid);
 
-      assertThatThrownBy(() -> service.editReport(request, user, id))
+      assertThatThrownBy(() -> service.editReport(request, mockUser, reportId))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("No report library found for ID " + libraryId);
 
@@ -325,8 +346,6 @@ class ReportServiceTest {
 
     @Test
     void editReport_should_delete_filters_not_included_in_request() {
-      Report savedReport = mock(Report.class);
-
       ReportFilter existingReportFilter1 = mock(ReportFilter.class);
       ReportFilter existingReportFilter2 = mock(ReportFilter.class);
       Mockito.lenient().when(existingReportFilter1.getId()).thenReturn(100L);
@@ -339,7 +358,12 @@ class ReportServiceTest {
 
       AdminReportRequest request = buildAdminReportRequest(true);
 
-      Report result = service.editReport(request, user, new ReportId(reportUid, dataSourceUid));
+      when(reportMapper.fromAdminReportRequest(
+              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+          .thenReturn(savedReport);
+      when(reportRepository.save(savedReport)).thenReturn(savedReport);
+
+      Report result = service.editReport(request, mockUser, reportId);
 
       assertThat(result).isEqualTo(savedReport);
       verify(reportFilterRepository)
@@ -348,8 +372,6 @@ class ReportServiceTest {
 
     @Test
     void editReport_should_upsert_filters_included_in_request() {
-      Report savedReport = mock(Report.class);
-
       ReportFilter existingReportFilter1 = mock(ReportFilter.class);
       ReportFilter existingReportFilter2 = mock(ReportFilter.class);
       Mockito.lenient().when(existingReportFilter1.getId()).thenReturn(100L);
@@ -367,7 +389,12 @@ class ReportServiceTest {
 
       AdminReportRequest request = buildAdminReportRequest(true);
 
-      Report result = service.editReport(request, user, new ReportId(reportUid, dataSourceUid));
+      when(reportMapper.fromAdminReportRequest(
+              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+          .thenReturn(savedReport);
+      when(reportRepository.save(savedReport)).thenReturn(savedReport);
+
+      Report result = service.editReport(request, mockUser, reportId);
 
       assertThat(result).isEqualTo(savedReport);
       verify(reportFilterBuilder).build(request.filterRequests().getFirst(), savedReport);
