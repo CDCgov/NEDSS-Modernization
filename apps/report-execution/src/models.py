@@ -55,6 +55,7 @@ def serialize_table(table: Table) -> str:
      - datetime: mm/dd/yyyy hh:mm:ss
      - date: mm/dd/yyyy
     """
+
     def convert_dates(val: Any) -> Any:
         if type(val) not in [date, datetime]:
             return val
@@ -71,11 +72,16 @@ def serialize_table(table: Table) -> str:
     # or serialize to CSV at a different location
     df = DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
 
-    csv_str = df.to_csv(index=False, date_format="%m/%d/%Y %H:%M:%S", float_format='{:.20g}', lineterminator='\r\n')
+    csv_str = df.to_csv(
+        index=False,
+        date_format='%m/%d/%Y %H:%M:%S',
+        float_format='{:.20g}',
+        lineterminator='\r\n',
+    )
 
     # Remove the %H:%M:%S where no time is given (dates) while leaving datetimes intact
-    date_re = r"(?P<date>\d{2}/\d{2}/\d{4}) 00:00:00"
-    csv_str = sub(date_re, r"\g<date>", csv_str)
+    date_re = r'(?P<date>\d{2}/\d{2}/\d{4}) 00:00:00'
+    csv_str = sub(date_re, r'\g<date>', csv_str)
 
     # Remove trailing new line
     return csv_str[:-2]

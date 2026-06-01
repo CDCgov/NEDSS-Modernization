@@ -6,12 +6,12 @@ from faker import Faker
 
 
 class TestModels:
-    """Tests for the Models module.""" 
+    """Tests for the Models module."""
 
     def test_serialize_table_formats_dates_correctly(self):
         f = Faker()
 
-        columns = ["example_date", "example_datetime"]
+        columns = ['example_date', 'example_datetime']
         data = []
         for _ in range(20):
             data.append(
