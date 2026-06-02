@@ -22,6 +22,10 @@ import org.springframework.context.annotation.Configuration;
  *   <li>Query param for data_source_uid
  *   <li>Query param for report_uid
  * </ul>
+ * <ul>
+ *   <li>Request is a GET
+ *   <li>Path equal to {@code /nbs/NewReport.do
+ * </ul>
  */
 @Configuration
 @ConditionalOnProperty(
@@ -29,9 +33,6 @@ import org.springframework.context.annotation.Configuration;
     name = "enabled",
     havingValue = "true")
 class ReportAdminRouteLocatorConfiguration {
-
-  private static final String DATA_SOURCE_UID = "data_source_uid";
-  private static final String REPORT_UID = "report_uid";
 
   @Bean
   RouteLocator reportAdminRouteLocator(
@@ -41,13 +42,13 @@ class ReportAdminRouteLocatorConfiguration {
     return builder
         .routes()
         .route(
-            "report-run",
+            "report-config-view",
             route ->
                 route
                     .order(RouteOrdering.MODERNIZED_SERVICE.order())
-                    .query(DATA_SOURCE_UID)
+                    .query("data_source_uid")
                     .and()
-                    .query(REPORT_UID)
+                    .query("report_uid")
                     .and()
                     .path("/nbs/ViewReport.do")
                     .filters(
@@ -55,6 +56,18 @@ class ReportAdminRouteLocatorConfiguration {
                             filter
                                 .setPath(
                                     "/report/management/configuration/{:report_uid}/{:data_source_uid}")
+                                .filters(defaults))
+                    .uri(service.uri()))
+        .route(
+            "report-config-add",
+            route ->
+                route
+                    .order(RouteOrdering.MODERNIZED_SERVICE.order())
+                    .path("/nbs/AddReport.do")
+                    .filters(
+                        filter ->
+                            filter
+                                .setPath("/report/management/configuration/add")
                                 .filters(defaults))
                     .uri(service.uri()))
         .build();
