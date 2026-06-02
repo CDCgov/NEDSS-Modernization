@@ -24,6 +24,7 @@ class ReportTest {
     Long reportId = 1L;
     Long dataSource = 2L;
     ReportId id = new ReportId(reportId, dataSource);
+
     String sectionCd = "1000";
 
     Report actual = new Report(id, sectionCd);
