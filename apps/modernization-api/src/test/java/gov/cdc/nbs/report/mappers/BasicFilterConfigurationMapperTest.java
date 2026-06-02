@@ -3,7 +3,14 @@ package gov.cdc.nbs.report.mappers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import gov.cdc.nbs.entity.odse.*;
+import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.DataSourceColumn;
+import gov.cdc.nbs.entity.odse.FilterCode;
+import gov.cdc.nbs.entity.odse.FilterValue;
+import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportFilter;
+import gov.cdc.nbs.entity.odse.ReportFilterValidation;
+import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import java.time.LocalDateTime;
 import java.util.List;
