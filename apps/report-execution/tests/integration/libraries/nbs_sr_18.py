@@ -71,3 +71,33 @@ class TestIntegrationNbsSr13Library:
         assert data[4][0] == '3 - Clinical Case Definition'
         assert data[5][0] == '4 - Provider Diagnosis'
         assert data[6][0] == '5 - Suspect Case'
+
+
+    def test_execute_report_no_data(self, snapshot):
+        report_spec = ReportSpec.model_validate(
+            {
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'SR 18',
+                'library_name': 'nbs_sr_18',
+                'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART] WHERE 1 = 2',
+            }
+        )
+
+        result = execute_report(report_spec)
+
+        assert len(result.content.data) == 0
+        assert result.content.columns == [
+            'Case Verification',
+            'Pulmonary Count',
+            'Pulmonary %',
+            'Extrapulmonary Count',
+            'Extrapulmonary %',
+            'Both Count',
+            'Both %',
+            'Unknown Count',
+            'Unknown %',
+            'All Cases Count',
+            'All Cases %',
+        ]

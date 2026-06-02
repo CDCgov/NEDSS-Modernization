@@ -44,20 +44,28 @@ def execute(
     """
 
     content = trx.query(query)
+    table = _perform_calculations(content)
 
-    df = pd.DataFrame.from_records(content.data, columns=content.columns)
+    return ReportResult(content_type='table', content=table)
 
-    # calculate percentage of total for each value in each "Count" column
-    cols = ['Pulmonary', 'Extrapulmonary', 'Both', 'Unknown', 'All Cases']
-    for col in cols:
-        df[f'{col} %'] = (df[f'{col} Count'] / df[f'{col} Count'].sum() * 100).round(1)
+def _perform_calculations(table: Table) -> Table:
+    """Take the raw query result data and calculate the data needed
+    to recreate the SAS report."""
+    df = pd.DataFrame.from_records(table.data, columns=table.columns)
 
     # order the columns to match the SAS report
+    cols = ['Pulmonary', 'Extrapulmonary', 'Both', 'Unknown', 'All Cases']
     ordered_cols = ['Case Verification']
     for col in cols:
         ordered_cols.extend([f'{col} Count', f'{col} %'])
 
-    df = df[ordered_cols]
+    # short-circuit for no data
+    if not table.data:
+        return Table(columns=ordered_cols, data=table.data)
+
+    # calculate percentage of total for each value in each "Count" column
+    for col in cols:
+        df[f'{col} %'] = (df[f'{col} Count'] / df[f'{col} Count'].sum() * 100).round(1)
 
     # re-write the case verification strings to match SAS report
     df['Case Verification'] = [
@@ -70,9 +78,7 @@ def execute(
         '5 - Suspect Case',
     ]
 
-    # put it into a Table for the report result
-    data = df.values.tolist()
-    columns = df.columns.to_list()
-    final_table = Table(data=data, columns=columns)
+    # ensure column ordering matches the SAS report
+    df = df[ordered_cols]
 
-    return ReportResult(content_type='table', content=final_table)
+    return Table(data=df.values.tolist(), columns=df.columns.to_list())
