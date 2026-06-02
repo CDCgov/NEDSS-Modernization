@@ -40,6 +40,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
 
 @Service
 public class ReportService {
@@ -236,6 +237,17 @@ public class ReportService {
         .contentType(MediaType.APPLICATION_JSON)
         .body(reportSpec)
         .retrieve()
+        .onStatus(
+            (status) -> status.value() >= 400,
+            (_request, response) -> {
+              throw new RestClientResponseException(
+                  "Error response from the report-execution service",
+                  response.getStatusCode(),
+                  response.getStatusText(),
+                  response.getHeaders(),
+                  response.getBody().readAllBytes(),
+                  null);
+            })
         .toEntity(ReportResult.class);
   }
 
