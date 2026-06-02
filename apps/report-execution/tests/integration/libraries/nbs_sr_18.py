@@ -72,7 +72,6 @@ class TestIntegrationNbsSr13Library:
         assert data[5][0] == '4 - Provider Diagnosis'
         assert data[6][0] == '5 - Suspect Case'
 
-
     def test_execute_report_no_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {

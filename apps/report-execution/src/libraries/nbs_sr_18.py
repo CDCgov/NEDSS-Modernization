@@ -48,6 +48,7 @@ def execute(
 
     return ReportResult(content_type='table', content=table)
 
+
 def _perform_calculations(table: Table) -> Table:
     """Take the raw query result data and calculate the data needed
     to recreate the SAS report."""
