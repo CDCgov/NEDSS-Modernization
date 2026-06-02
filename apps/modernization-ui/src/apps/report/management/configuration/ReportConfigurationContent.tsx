@@ -1,6 +1,5 @@
 import { Card } from 'design-system/card';
 import { NoData } from 'design-system/data';
-import { ValueView } from 'design-system/data-display/ValueView';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { ValueField } from 'design-system/field';
 import { HasValueFunction, NamedColumn } from 'design-system/table/header/column';
