@@ -1,7 +1,9 @@
 package gov.cdc.nbs.gateway.report;
 
 import gov.cdc.nbs.gateway.RouteOrdering;
-import gov.cdc.nbs.gateway.modernization.ModernizationService;
+import gov.cdc.nbs.gateway.filter.QueryParamToPathGatewayFilterFactory;
+import gov.cdc.nbs.gateway.filter.QueryParamToPathGatewayFilterFactory.Config;
+import gov.cdc.nbs.gateway.ui.UIService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -38,7 +40,7 @@ class ReportAdminRouteLocatorConfiguration {
   RouteLocator reportAdminRouteLocator(
       final RouteLocatorBuilder builder,
       @Qualifier("defaults") final List<GatewayFilter> defaults,
-      final ModernizationService service) {
+      final UIService service) {
     return builder
         .routes()
         .route(
@@ -54,8 +56,12 @@ class ReportAdminRouteLocatorConfiguration {
                     .filters(
                         filter ->
                             filter
-                                .setPath(
-                                    "/report/management/configuration/{:report_uid}/{:data_source_uid}")
+                                .filter(
+                                    new QueryParamToPathGatewayFilterFactory()
+                                        .apply(
+                                            new Config(
+                                                List.of("report_uid", "data_source_uid"),
+                                                "/nbs/redirect/report/management/configuration/{report_uid}/{data_source_uid}")))
                                 .filters(defaults))
                     .uri(service.uri()))
         .route(
@@ -63,11 +69,11 @@ class ReportAdminRouteLocatorConfiguration {
             route ->
                 route
                     .order(RouteOrdering.MODERNIZED_SERVICE.order())
-                    .path("/nbs/AddReport.do")
+                    .path("/nbs/NewReport.do")
                     .filters(
                         filter ->
                             filter
-                                .setPath("/report/management/configuration/add")
+                                .setPath("/nbs/redirect/report/management/configuration/add")
                                 .filters(defaults))
                     .uri(service.uri()))
         .build();
