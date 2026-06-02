@@ -82,7 +82,7 @@ public class ReportService {
 
   @Transactional
   public Report createReport(AdminReportRequest request, NbsUserDetails user) {
-    ReportMetadata metadata = fetchReportMetadata(request);
+    ReportMetadata metadata = verifyReportMetadata(request);
 
     Report savedReport =
         reportRepository.save(
@@ -108,7 +108,7 @@ public class ReportService {
       throw new NotFoundException(getReportNotFoundText(existingReportId));
     }
 
-    ReportMetadata metadata = fetchReportMetadata(request);
+    ReportMetadata metadata = verifyReportMetadata(request);
 
     Report savedReport =
         reportRepository.save(
@@ -247,7 +247,7 @@ public class ReportService {
 
   private record ReportMetadata(DataSource dataSource, ReportLibrary reportLibrary) {}
 
-  private ReportMetadata fetchReportMetadata(AdminReportRequest request) {
+  private ReportMetadata verifyReportMetadata(AdminReportRequest request) {
     DataSource dataSource =
         dataSourceRepository
             .findById(request.dataSourceId())
