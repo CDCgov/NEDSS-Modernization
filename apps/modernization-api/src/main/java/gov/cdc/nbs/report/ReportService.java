@@ -92,7 +92,7 @@ public class ReportService {
                       .toList();
 
               ReportSortColumn reportSortColumn =
-                  report.getReportSortColumns().stream().findFirst().get();
+                  report.getReportSortColumns().stream().findFirst().orElse(null);
               Long defaultSortColumnUid = null;
               SortDirection defaultSortDirection = null;
               if (reportSortColumn != null) {
