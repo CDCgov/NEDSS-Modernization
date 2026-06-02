@@ -8,6 +8,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.RestClientResponseException;
 
 @ControllerAdvice(assignableTypes = {ReportController.class})
 public class ReportExceptionHandler {
@@ -39,6 +40,13 @@ public class ReportExceptionHandler {
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<String> handleFailedSerialization(HttpMessageNotReadableException ex) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
+  @ExceptionHandler(RestClientResponseException.class)
+  public ResponseEntity<String> handleRestClientFailure(RestClientResponseException ex) {
+    String err = ex.getResponseBodyAsString();
+    LOGGER.log(System.Logger.Level.ERROR, "Error received from rest client: %s".formatted(err), ex);
+    return new ResponseEntity<>(err, ex.getStatusCode());
   }
 
   @ExceptionHandler(Exception.class)
