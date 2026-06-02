@@ -15,7 +15,7 @@ def execute(
     (for this reported case) or to a treatment record.
 
     Conversion notes:
-
+    * Matches original report format
     """
     full_query = f"""
     WITH subset AS ({subset_query})
