@@ -10,6 +10,7 @@ def execute(
     data_source_name: str,
     **kwargs,
 ):
+    """SR18: TB Case Verification Report. Computes statistics about TB cases."""
     query = f"""
         WITH subset AS (
             {subset_query}
@@ -51,7 +52,8 @@ def execute(
 
 def _perform_calculations(table: Table) -> Table:
     """Take the raw query result data and calculate the data needed
-    to recreate the SAS report."""
+    to recreate the SAS report.
+    """
     df = pd.DataFrame.from_records(table.data, columns=table.columns)
 
     # order the columns to match the SAS report

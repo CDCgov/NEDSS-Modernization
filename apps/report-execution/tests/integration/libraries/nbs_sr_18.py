@@ -1,8 +1,8 @@
 import pytest
 import yaml
 
-from src.models import ReportSpec
 from src.execute_report import execute_report
+from src.models import ReportSpec
 
 faker_schema = 'tb_datamart.yaml'
 
@@ -50,17 +50,17 @@ class TestIntegrationNbsSr13Library:
 
         # ensure proper data types for each column
         for d in data:
-            assert type(d[0]) == str
-            assert type(d[1]) == int
-            assert type(d[2]) == float
-            assert type(d[3]) == int
-            assert type(d[4]) == float
-            assert type(d[5]) == int
-            assert type(d[6]) == float
-            assert type(d[7]) == int
-            assert type(d[8]) == float
-            assert type(d[9]) == int
-            assert type(d[10]) == float
+            assert isinstance(d[0], str)
+            assert isinstance(d[1], int)
+            assert isinstance(d[2], float)
+            assert isinstance(d[3], int)
+            assert isinstance(d[4], float)
+            assert isinstance(d[5], int)
+            assert isinstance(d[6], float)
+            assert isinstance(d[7], int)
+            assert isinstance(d[8], float)
+            assert isinstance(d[9], int)
+            assert isinstance(d[10], float)
 
         # ensure the Case Verification strings match the SAS report
         assert data[0][0] == '0 - Not a Verified Case'
