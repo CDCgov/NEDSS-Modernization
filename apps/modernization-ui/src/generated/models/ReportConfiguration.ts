@@ -15,5 +15,13 @@ export type ReportConfiguration = {
     advancedFilter?: AdvancedFilterConfiguration;
     columns: Array<ReportColumn>;
     defaultColumnUids?: Array<number>;
+    defaultSortColumnUid?: number;
+    defaultSortDirection?: ReportConfiguration.defaultSortDirection;
 };
+export namespace ReportConfiguration {
+    export enum defaultSortDirection {
+        ASC = 'ASC',
+        DESC = 'DESC',
+    }
+}
 

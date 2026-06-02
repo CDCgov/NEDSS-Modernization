@@ -9,7 +9,15 @@ export type ReportExecutionRequest = {
     dataSourceUid: number;
     isExport: boolean;
     columnUids?: Array<number>;
+    sortColumnUid?: number;
+    sortDirection?: ReportExecutionRequest.sortDirection;
     basicFilters?: Array<BasicFilterRequest>;
     advancedFilter?: AdvancedFilterRequest;
 };
+export namespace ReportExecutionRequest {
+    export enum sortDirection {
+        ASC = 'ASC',
+        DESC = 'DESC',
+    }
+}
 
