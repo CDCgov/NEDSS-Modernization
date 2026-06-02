@@ -58,9 +58,9 @@ def serialize_table(table: Table) -> str:
      - date: mm/dd/yyyy
     """
     # strftime constants for Python date and datetime when outputting to CSV
-    csv_date_strftime = get_str_env_or_default('CSV_DATE_STRFTIME', '%m/%d/%Y')
+    csv_date_strftime = get_str_env_or_default('REPORT_EXPORT_DATE_FORMAT', '%m/%d/%Y')
     csv_datetime_strftime = get_str_env_or_default(
-        'CSV_DATETIME_STRFTIME', '%m/%d/%Y %H:%M:%S'
+        'REPORT_EXPORT_DATETIME_FORMAT', '%m/%d/%Y %H:%M:%S'
     )
 
     # properly format a given value if it's a date or datetime
