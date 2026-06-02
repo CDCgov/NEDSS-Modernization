@@ -32,7 +32,6 @@ class TestIntegrationNbsSr13Library:
         snapshot.assert_match(yaml.dump(data), 'snapshot.yaml')
 
         assert len(data) == 7
-        assert len(data) == 7
 
         # ensure the columns are correct
         assert result.content.columns == [
