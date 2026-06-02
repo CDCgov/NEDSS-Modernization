@@ -73,11 +73,11 @@ def serialize_table(table: Table) -> str:
         return val
 
     # update table data to have properly formatted dates and datetimes
-    table.data = [map(convert_dates, tpl) for tpl in table.data]
+    data = [list(map(convert_dates, tpl)) for tpl in table.data]
 
     # Short cut to valid CSV - can swap out later if performance dictates
     # or serialize to CSV at a different location
-    df = pd.DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
+    df = pd.DataFrame.from_records(data, columns=table.columns, coerce_float=True)
 
     csv_str = df.to_csv(
         index=False,
