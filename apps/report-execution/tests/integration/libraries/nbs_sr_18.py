@@ -31,37 +31,43 @@ class TestIntegrationNbsSr13Library:
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yaml')
 
-    # def test_execute_report_check_data(self, snapshot):
-    #     report_spec = ReportSpec.model_validate(
-    #         {
-    #             'is_export': True,
-    #             'is_builtin': True,
-    #             'report_title': 'SR 13',
-    #             'library_name': 'nbs_sr_13',
-    #             'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
-    #             'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
-    #         }
-    #     )
+        assert len(data) == 7
+        assert len(data) == 7
 
-    #     result = execute_report(report_spec)
-    #     assert result.content_type == 'table'
+        # ensure the columns are correct
+        assert result.content.columns == [
+            'Case Verification',
+            'Pulmonary Count',
+            'Pulmonary %',
+            'Extrapulmonary Count',
+            'Extrapulmonary %',
+            'Both Count',
+            'Both %',
+            'Unknown Count',
+            'Unknown %',
+            'All Cases Count',
+            'All Cases %',
+        ]
 
-    #     data = result.content.data
-    #     assert len(data) == 6  # two combinations with no data, zeros not filled
-    #     assert len(data[0]) == 3
-    #     assert len(data[0]) == len(result.content.columns)
+        # ensure proper data types for each column
+        for d in data:
+            assert type(d[0]) == str
+            assert type(d[1]) == int
+            assert type(d[2]) == float
+            assert type(d[3]) == int
+            assert type(d[4]) == float
+            assert type(d[5]) == int
+            assert type(d[6]) == float
+            assert type(d[7]) == int
+            assert type(d[8]) == float
+            assert type(d[9]) == int
+            assert type(d[10]) == float
 
-    #     snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
-
-    #     # Sanity check the result's shape beyond the snapshot
-    #     record = None
-    #     for row in result.content.data:
-    #         if (
-    #             row[0] == Decimal('4877.00000')
-    #             and row[1] == 'Measles'
-    #             and row[2] == 'Confirmed'
-    #         ):
-    #             record = row
-    #             break
-
-    #     assert record is not None
+        # ensure the Case Verification strings match the SAS report
+        assert data[0][0] == '0 - Not a Verified Case'
+        assert data[1][0] == '1 - Positive Culture'
+        assert data[2][0] == '1A - Positive NAA'
+        assert data[3][0] == '2 - Positive Smear'
+        assert data[4][0] == '3 - Clinical Case Definition'
+        assert data[5][0] == '4 - Provider Diagnosis'
+        assert data[6][0] == '5 - Suspect Case'
