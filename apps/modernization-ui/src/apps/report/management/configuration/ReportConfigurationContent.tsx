@@ -114,7 +114,9 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                 data={filterData}
                 viewRenderer={(entry: FilterConfig) =>
                     filterColumns.map((fc) => (
-                        <ValueView key={fc.id} title={fc.name} value={fc.value(entry)} sizing={sizing} required />
+                        <ValueField key={fc.id} label={fc.name} sizing={sizing}>
+                            {fc.value(entry)}
+                        </ValueField>
                     ))
                 }
             />
