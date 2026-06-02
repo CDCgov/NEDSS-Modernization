@@ -17,12 +17,11 @@ def execute(
     with the same disease, within a user-specified number of days.
 
     Conversion notes:
-    * The way SAS sorts data depends on the session's encoding. This library 
-    will always sort alphabetically by Patient Local ID, Disease Code, and 
+    * The way SAS sorts data depends on the session's encoding. This library
+    will always sort alphabetically by Patient Local ID, Disease Code, and
     Event Date to ensure consistent results regardless of encoding.
     * Dates are formatted MM/DD/YYY in this library
     """
-
     # for easier lookups when order doesn't matter
     col_dict = {m[0]: m[1] for m in column_map}
 
