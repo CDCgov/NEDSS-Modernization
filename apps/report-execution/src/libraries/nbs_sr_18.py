@@ -1,0 +1,78 @@
+import pandas as pd
+
+from src.db_transaction import Transaction
+from src.models import ReportResult, Table
+
+
+def execute(
+    trx: Transaction,
+    subset_query: str,
+    data_source_name: str,
+    **kwargs,
+):
+    query = f"""
+        WITH subset AS (
+            {subset_query}
+        )
+        SELECT CASE_VERIFICATION AS [Case Verification],
+            SUM(CASE 
+                    WHEN CALC_DISEASE_SITE = 'Pulmonary'
+                        THEN 1
+                    ELSE 0
+                    END) AS [Pulmonary Count],
+            SUM(CASE 
+                    WHEN CALC_DISEASE_SITE = 'Extra Pulmonary'
+                        THEN 1
+                    ELSE 0
+                    END) AS [Extrapulmonary Count],
+            SUM(CASE 
+                    WHEN CALC_DISEASE_SITE = 'Both'
+                        THEN 1
+                    ELSE 0
+                    END) AS [Both Count],
+            SUM(CASE 
+                    WHEN CALC_DISEASE_SITE = 'Unknown'
+                        THEN 1
+                    ELSE 0
+                    END) AS [Unknown Count],
+            COUNT(*) AS [All Cases Count]
+        FROM subset
+        WHERE CASE_VERIFICATION IS NOT NULL
+            AND CALC_DISEASE_SITE IS NOT NULL
+        GROUP BY CASE_VERIFICATION
+        ORDER BY CASE_VERIFICATION;
+    """
+
+    content = trx.query(query)
+
+    df = pd.DataFrame.from_records(content.data, columns=content.columns)
+
+    # calculate percentage of total for each value in each "Count" column
+    cols = ['Pulmonary', 'Extrapulmonary', 'Both', 'Unknown', 'All Cases']
+    for col in cols:
+        df[f'{col} %'] = (df[f'{col} Count'] / df[f'{col} Count'].sum() * 100).round(1)
+
+    # order the columns to match the SAS report
+    ordered_cols = ['Case Verification']
+    for col in cols:
+        ordered_cols.extend([f'{col} Count', f'{col} %'])
+
+    df = df[ordered_cols]
+
+    # re-write the case verification strings to match SAS report
+    df['Case Verification'] = [
+        '0 - Not a Verified Case',
+        '1 - Positive Culture',
+        '1A - Positive NAA',
+        '2 - Positive Smear',
+        '3 - Clinical Case Definition',
+        '4 - Provider Diagnosis',
+        '5 - Suspect Case',
+    ]
+
+    # put it into a Table for the report result
+    data = df.values.tolist()
+    columns = df.columns.to_list()
+    final_table = Table(data=data, columns=columns)
+
+    return ReportResult(content_type='table', content=final_table)

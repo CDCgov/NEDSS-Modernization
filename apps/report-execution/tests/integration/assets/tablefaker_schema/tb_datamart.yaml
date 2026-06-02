@@ -1,0 +1,20 @@
+config:
+  seed: 19
+  nbs:
+    fk_tables: []
+
+tables:
+  - table_name: "[RDB].[dbo].[TB_DATAMART]"
+    row_count: 1000
+    columns:
+      # required columns
+      - column_name: investigation_key
+        data: row_id
+
+      # used by library
+      - column_name: case_verification
+        data: random.choice(["0 - Not a Verified Case", "1 - Positive Culture", "1A - Positive NAA", "2 - Positive Smear/Tissue", "3 - Clinical Case Definition", "4 - Verified by Provider Diagnosis", "5 - Suspect"])
+        null_percentage: 0.05
+      - column_name: calc_disease_site
+        data: random.choice(["Pulmonary", "Extra Pulmonary", "Both", "Unknown"])
+        null_percentage: 0.05
