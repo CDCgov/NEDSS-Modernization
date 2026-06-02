@@ -5,6 +5,12 @@ import static gov.cdc.nbs.report.ReportConstants.BAS_TYPES;
 import static gov.cdc.nbs.report.ReportConstants.SQL_AND;
 import static gov.cdc.nbs.report.ReportConstants.SQL_WHERE;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authorization.permission.Permission;
+import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
+import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
+import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.FilterType;
@@ -16,6 +22,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
+
+import gov.cdc.nbs.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +34,8 @@ import org.springframework.stereotype.Service;
 public class WhereClauseService {
 
   private final FieldFormatter fieldFormatter;
+  private final PermissionScopeResolver scopeResolver;
+  private final ReportRepository reportRepository;
 
   /**
    * Generates a complete SQL WHERE clause for a report execution.
@@ -44,9 +55,74 @@ public class WhereClauseService {
         buildBasicWhereFragment(reportConfig, executionRequest.basicFilters());
 
     finalWhere.add(basicWhereFragment);
+    finalWhere.add(buildPermissionFragment(reportConfig, executionRequest));
 
     // Only return the WHERE clause if it contains anything beyond the initial "WHERE " prefix
     return finalWhere.length() > SQL_WHERE.length() ? finalWhere.toString() : "";
+  }
+
+  public String buildPermissionFragment(ReportConfiguration reportConfig, ReportExecutionRequest executionRequest) {
+    return getJurisProgramCriteria(reportConfig.dataSource().jurisdictionSecurity(), executionRequest);
+  }
+
+  private String getJurisProgramCriteria(Character jurisdictionSecurity, ReportExecutionRequest executionRequest) {
+
+    // Safe null-check and comparison for jurisdictionSecurity
+    boolean hasJurisdictionSecurity = jurisdictionSecurity != null
+            && jurisdictionSecurity == 'Y';
+
+    // Early return if jurisdiction security is not active
+    if (!hasJurisdictionSecurity) {
+      return "";
+    }
+
+    ReportId reportId = new ReportId(executionRequest.reportUid(), executionRequest.dataSourceUid());
+    Character shared = reportRepository.getReferenceById(reportId).getShared();
+
+    // Map the shared flag to a Permission, or return null if unmatched
+    Permission permission = switch (shared != null ? shared : ' ') {
+      case 'T' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTTEMPLATE");
+      case 'P' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTPRIVATE");
+      case 'S' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTPUBLIC");
+      case 'R' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTREPORTINGFACILITY");
+      default  -> null;
+    };
+
+    // Early return if the shared character didn't map to a valid permission
+    if (permission == null) {
+      return "";
+    }
+
+    // 3. Resolve the scope using the valid permission
+    PermissionScope scope = this.scopeResolver.resolve(permission);
+
+    // Early return or safe SQL fallback if the user has no allowed jurisdiction IDs
+    if (scope.any().isEmpty()) {
+      return "";
+    }
+
+    // 4. Stream the longs, map them to Strings, and join them with commas
+    String ids = scope.any().stream()
+            .map(String::valueOf)
+            .collect(Collectors.joining(", "));
+
+    // Wrap the result in your SQL "IN (...)" syntax
+    return "program_jurisdiction_oid IN (" + ids + ")";
+  }
+
+  private String getReportingFacilityPermission(Character reportingFacilitySecurity) {
+    // Safe null-check and comparison for jurisdictionSecurity
+    boolean hasReportingFacilitySecurity = reportingFacilitySecurity != null
+            && reportingFacilitySecurity == 'Y';
+
+    // Early return if jurisdiction security is not active
+    if (!hasReportingFacilitySecurity) {
+      return "";
+    }
+
+    NbsUserDetails user = SecurityUtil.getUserDetails().;
+
+
   }
 
   /**

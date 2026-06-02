@@ -15,5 +15,7 @@ public final class ReportConstants {
   public static final String SQL_AND = " AND ";
   public static final String SQL_WHERE = "WHERE ";
 
+  public static final String REPORTINGOPERATION = "REPORTING";
+
   private ReportConstants() {}
 }
