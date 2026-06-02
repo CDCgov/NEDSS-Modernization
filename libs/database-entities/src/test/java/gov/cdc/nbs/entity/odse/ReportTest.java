@@ -49,6 +49,8 @@ class ReportTest {
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()));
   }
 
+  // Suppressing too many assertions code smell as there are just a lot of fields in report
+  @SuppressWarnings("java:S5961")
   @Test
   void should_create_complete_report() {
     Long reportId = 1L;

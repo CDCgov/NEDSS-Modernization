@@ -66,6 +66,15 @@ class ReportServiceTest {
 
   private Report mockReport(
       ReportId id, String runner, String dataSourceName, List<ReportFilter> reportFilters) {
+    return mockReport(id, runner, dataSourceName, reportFilters, "DESC");
+  }
+
+  private Report mockReport(
+      ReportId id,
+      String runner,
+      String dataSourceName,
+      List<ReportFilter> reportFilters,
+      String sortDir) {
     Report report = mock(Report.class);
 
     Mockito.lenient().when(report.getReportLibrary()).thenReturn(reportLibrary);
@@ -78,7 +87,7 @@ class ReportServiceTest {
     Mockito.lenient().when(columnA.getSequenceNumber()).thenReturn(2);
     Mockito.lenient().when(columnB.getSequenceNumber()).thenReturn(1);
     Mockito.lenient().when(report.getReportSortColumns()).thenReturn(List.of(reportSortColumn));
-    Mockito.lenient().when(reportSortColumn.getReportSortOrderCode()).thenReturn("DESC");
+    Mockito.lenient().when(reportSortColumn.getReportSortOrderCode()).thenReturn(sortDir);
     Mockito.lenient().when(reportSortColumn.getDataSourceColumnUid()).thenReturn(columnAId);
     Mockito.lenient().when(reportLibrary.getRunner()).thenReturn(runner);
     Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
@@ -158,6 +167,16 @@ class ReportServiceTest {
     String runner = service.getReportRunner(reportUid, dataSourceUid);
 
     assertThat(runner).isEqualTo("python");
+  }
+
+  @Test
+  void getReportRunner_should_return_asc_when_sort_direction_asc() {
+    ReportId id = new ReportId(reportUid, dataSourceUid);
+    mockReport(id, "python", "nbs_ods.PHCDemographic", List.of(), "asc");
+
+    ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
+
+    assertThat(config.defaultSortDirection()).isEqualTo(SortDirection.ASC);
   }
 
   @Test
