@@ -51,4 +51,3 @@ class TestModels:
 
             assert d == '13-04-1985'
             assert dt == '13-04-1985 04:15'
-
