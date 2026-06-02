@@ -19,11 +19,11 @@ public class BasicFilterConfigurationMapper {
 
     FilterType filterType = FilterTypeMapper.fromFilterCode(filter.getFilterCode());
 
-    if (!filterType.type().startsWith("BAS_")) {
+    if (!filterType.type().startsWith(ReportConstants.BASIC_FILTER_PREFIX)) {
       throw new IllegalArgumentException("Cannot create basic filter from advanced filter");
     }
 
-    Boolean isRequired = false;
+    boolean isRequired = false;
     if (filter.getFilterValidation() != null
         && filter.getFilterValidation().getReportFilterInd() != null) {
       isRequired = "Y".equals(filter.getFilterValidation().getReportFilterInd().toString());
@@ -32,7 +32,7 @@ public class BasicFilterConfigurationMapper {
     // For the future: A list of strings may end up being too simple for all use cases,
     // may need to evolve to be a small object with a key and value
     List<String> defaultValues = null;
-    Boolean defaultIncludeNulls = false;
+    boolean defaultIncludeNulls = false;
     if (filter.getFilterValues() != null) {
       defaultValues =
           filter.getFilterValues().stream()

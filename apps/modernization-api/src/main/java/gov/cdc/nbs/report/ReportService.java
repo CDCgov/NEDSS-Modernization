@@ -60,7 +60,11 @@ public class ReportService {
             report -> {
               List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
-                      .filter(f -> f.getFilterCode().getFilterType().startsWith(ReportConstants.BASIC_FILTER_PREFIX))
+                      .filter(
+                          f ->
+                              f.getFilterCode()
+                                  .getFilterType()
+                                  .startsWith(ReportConstants.BASIC_FILTER_PREFIX))
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
