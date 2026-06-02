@@ -15,8 +15,10 @@ import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.ReportConstants.SortDirection;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportResult;
@@ -47,6 +49,7 @@ class ReportServiceTest {
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;
+  @Mock private ReportSortColumn reportSortColumn;
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RequestBodySpec requestBodySpec;
@@ -74,6 +77,9 @@ class ReportServiceTest {
     Mockito.lenient().when(columnB.getDataSourceColumnId()).thenReturn(columnBId);
     Mockito.lenient().when(columnA.getSequenceNumber()).thenReturn(2);
     Mockito.lenient().when(columnB.getSequenceNumber()).thenReturn(1);
+    Mockito.lenient().when(report.getReportSortColumns()).thenReturn(List.of(reportSortColumn));
+    Mockito.lenient().when(reportSortColumn.getReportSortOrderCode()).thenReturn("DESC");
+    Mockito.lenient().when(reportSortColumn.getDataSourceColumnUid()).thenReturn(columnAId);
     Mockito.lenient().when(reportLibrary.getRunner()).thenReturn(runner);
     Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
     Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
@@ -130,6 +136,8 @@ class ReportServiceTest {
             });
     assertThat(config.advancedFilter().reportFilterUid()).isEqualTo(6L);
     assertThat(config.defaultColumnUids()).isEqualTo(List.of(columnBId, columnAId));
+    assertThat(config.defaultSortColumnUid()).isEqualTo(columnAId);
+    assertThat(config.defaultSortDirection()).isEqualTo(SortDirection.DESC);
   }
 
   @Test
