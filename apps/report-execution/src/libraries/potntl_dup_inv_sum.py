@@ -29,7 +29,7 @@ def execute(
     for col in ['PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE']:
         if col not in col_dict:
             missing_columns.append(col)
-    if missing_columns:
+    if len(missing_columns) > 0:
         raise MissingColumnError(missing_columns)
 
     # Only use default if days_value is None (not provided)
