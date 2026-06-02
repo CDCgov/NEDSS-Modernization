@@ -40,6 +40,9 @@ public class Report {
   @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
   private List<DisplayColumn> displayColumns;
 
+  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
+  private List<ReportSortColumn> reportSortColumns;
+
   @Column(name = "desc_txt", length = 300)
   private String descTxt;
 

@@ -7,8 +7,10 @@ import gov.cdc.nbs.entity.odse.DisplayColumn;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.ReportConstants.SortDirection;
 import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
@@ -89,6 +91,18 @@ public class ReportService {
                       .map(DisplayColumn::getDataSourceColumnId)
                       .toList();
 
+              ReportSortColumn reportSortColumn =
+                  report.getReportSortColumns().stream().findFirst().get();
+              Long defaultSortColumnUid = null;
+              SortDirection defaultSortDirection = null;
+              if (reportSortColumn != null) {
+                defaultSortColumnUid = reportSortColumn.getDataSourceColumnUid();
+                defaultSortDirection =
+                    "ASC".equalsIgnoreCase(reportSortColumn.getReportSortOrderCode())
+                        ? SortDirection.ASC
+                        : SortDirection.DESC;
+              }
+
               return new ReportConfiguration(
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
@@ -96,7 +110,9 @@ public class ReportService {
                   basicFilters,
                   advancedFilter,
                   reportColumns,
-                  defaultColumnUids);
+                  defaultColumnUids,
+                  defaultSortColumnUid,
+                  defaultSortDirection);
             })
         .orElseThrow(
             () ->
