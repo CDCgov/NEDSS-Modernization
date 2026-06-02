@@ -9,7 +9,7 @@ faker_schema = 'tb_datamart.yaml'
 
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
-class TestIntegrationNbsSr13Library:
+class TestIntegrationNbsSr18Library:
     """Integration tests for the SR18 TB Case Verification library."""
 
     def test_execute_report_check_data(self, snapshot):
