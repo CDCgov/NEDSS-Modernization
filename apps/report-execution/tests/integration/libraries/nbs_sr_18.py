@@ -1,4 +1,5 @@
 import pytest
+import yaml
 
 from src.models import ReportSpec
 from src.execute_report import execute_report
@@ -24,6 +25,11 @@ class TestIntegrationNbsSr13Library:
         )
 
         result = execute_report(report_spec)
+        assert result.content_type == 'table'
+
+        data = result.content.data
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yaml')
 
     # def test_execute_report_check_data(self, snapshot):
     #     report_spec = ReportSpec.model_validate(
