@@ -10,8 +10,10 @@ import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.ReportConstants.SortDirection;
 import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
@@ -26,6 +28,7 @@ import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
@@ -180,6 +183,18 @@ public class ReportService {
                       .map(DisplayColumn::getDataSourceColumnId)
                       .toList();
 
+              ReportSortColumn reportSortColumn =
+                  report.getReportSortColumns().stream().findFirst().orElse(null);
+              SortSpec defaultSort = null;
+              if (reportSortColumn != null) {
+                defaultSort =
+                    new SortSpec(
+                        reportSortColumn.getDataSourceColumnUid(),
+                        "ASC".equalsIgnoreCase(reportSortColumn.getReportSortOrderCode())
+                            ? SortDirection.ASC
+                            : SortDirection.DESC);
+              }
+
               return new ReportConfiguration(
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
@@ -187,7 +202,8 @@ public class ReportService {
                   basicFilters,
                   advancedFilter,
                   reportColumns,
-                  defaultColumnUids);
+                  defaultColumnUids,
+                  defaultSort);
             })
         .orElseThrow(() -> new NotFoundException(getReportNotFoundText(id)));
   }
@@ -238,14 +254,14 @@ public class ReportService {
         .body(reportSpec)
         .retrieve()
         .onStatus(
-            (status) -> status.value() >= 400,
-            (_request, response) -> {
+            status -> status.value() >= 400,
+            (req, resp) -> {
               throw new RestClientResponseException(
                   "Error response from the report-execution service",
-                  response.getStatusCode(),
-                  response.getStatusText(),
-                  response.getHeaders(),
-                  response.getBody().readAllBytes(),
+                  resp.getStatusCode(),
+                  resp.getStatusText(),
+                  resp.getHeaders(),
+                  resp.getBody().readAllBytes(),
                   null);
             })
         .toEntity(ReportResult.class);
