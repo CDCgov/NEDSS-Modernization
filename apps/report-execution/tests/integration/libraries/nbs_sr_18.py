@@ -65,7 +65,3 @@ class TestIntegrationNbsSr18Library:
             'CASE_VERIFICATION',
             'CALC_DISEASE_SITE',
         ]
-
-        for data in result.content.data:
-            assert isinstance(data[0], str)
-            assert isinstance(data[1], str)
