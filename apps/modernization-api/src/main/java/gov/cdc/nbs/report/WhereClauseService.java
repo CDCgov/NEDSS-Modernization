@@ -11,7 +11,6 @@ import static gov.cdc.nbs.report.ReportConstants.SQL_WHERE;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
-import gov.cdc.nbs.report.models.AdvancedQueryResult;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.FilterType;
@@ -19,6 +18,7 @@ import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.utils.FieldFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class WhereClauseService {
   private final FieldFormatter fieldFormatter;
 
   private static final String LAB_RESULT_QUERY_VAL =
-      "root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM %s";
+      SQL_WHERE + "root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM %s %s)";
 
   Map<Operator, BiFunction<AdvancedQuery.Rule, ReportColumn, String>> advQueryOperations =
       Map.ofEntries(
@@ -65,7 +65,7 @@ public class WhereClauseService {
 
   /**
    * Generates a complete SQL WHERE clause for a report execution. Process both the basic and
-   * advanced where clauses
+   * advanced where clauses as well as if filtering by certain RDB.LAB_TEST_REPORT table columns
    *
    * @param reportConfig The metadata configuration for the report being executed.
    * @param executionRequest The specific filter values and columns requested by the user.
@@ -77,27 +77,21 @@ public class WhereClauseService {
       ReportConfiguration reportConfig,
       ReportExecutionRequest executionRequest,
       DataSourceNameUtils dataSourceNameUtils) {
-    String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
-    String labResultQuery = String.format(LAB_RESULT_QUERY_VAL, rdbDataSource);
 
     String basicWhereFragment =
         buildBasicWhereFragment(reportConfig, executionRequest.basicFilters());
 
-    AdvancedQueryResult advancedQueryResult =
+    String advWhereFragment =
         buildAdvancedQueryResult(reportConfig, executionRequest.advancedFilter());
-    String advWhereFragment = advancedQueryResult.query();
-    boolean hasLabResultVal = advancedQueryResult.hasLabResultVal();
+    boolean hasLabResultVal = hasLabResultVal(reportConfig, executionRequest.advancedFilter());
 
-    // StringJoiner provides the "WHERE " prefix and " AND " delimiters between filter statements
     StringJoiner finalWhere = new StringJoiner(SQL_AND, SQL_WHERE, "");
 
-    if (hasLabResultVal) {
-      basicWhereFragment = String.format("%s WHERE %s", labResultQuery, basicWhereFragment);
-    }
     finalWhere.add(basicWhereFragment);
-    if (!advWhereFragment.isEmpty()) {
-      finalWhere.add(
-          String.format("%s%s", advancedQueryResult.query(), hasLabResultVal ? ")" : ""));
+    finalWhere.add(advWhereFragment);
+    if (hasLabResultVal) {
+      String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
+      return LAB_RESULT_QUERY_VAL.formatted(rdbDataSource, finalWhere.toString());
     }
 
     // Only return the WHERE clause if it contains anything beyond the initial "WHERE " prefix
@@ -162,16 +156,11 @@ public class WhereClauseService {
    *
    * @param config used to map columnIds to database columns.
    * @param advancedFilterRequest The advanced filter request provided in the execution request.
-   * @return AdvancedQueryResult that contains
-   *     <ul>
-   *       <li>query - a joined SQL string without the "WHERE" prefix
-   *       <li>hasLabResultVal - a boolean to determine whether a special clause needs to be added
-   *           to handle special columns from the RDB.LAB_RESULT_VAL table
-   *     </ul>
+   * @return A joined SQL string without the "WHERE" prefix
    */
-  public AdvancedQueryResult buildAdvancedQueryResult(
+  public String buildAdvancedQueryResult(
       ReportConfiguration config, AdvancedFilterRequest advancedFilterRequest) {
-    if (advancedFilterRequest == null) return new AdvancedQueryResult("", false);
+    if (advancedFilterRequest == null) return "";
     return buildAdvancedQuery(config, advancedFilterRequest.value());
   }
 
@@ -179,61 +168,42 @@ public class WhereClauseService {
    * Performs a preorder traversal of the advanced filter request's Rule values to build a joined
    * SQL fragment.
    *
-   * @return AdvancedQueryResult that contains
-   *     <ul>
-   *       <li>query - a joined SQL string without the "WHERE" prefix
-   *       <li>hasLabResultVal - a boolean to determine whether a special clause needs to be added
-   *           to handle special columns from the RDB.LAB_RESULT_VAL table
-   *     </ul>
+   * @return A joined SQL string without the "WHERE" prefix
    */
-  private AdvancedQueryResult buildAdvancedQuery(ReportConfiguration config, AdvancedQuery query) {
-    boolean containsLabResultValCol = false;
+  private String buildAdvancedQuery(ReportConfiguration config, AdvancedQuery query) {
     if (query.getClass().equals(AdvancedQuery.Rule.class)) {
       AdvancedQuery.Rule rule = (AdvancedQuery.Rule) query;
-      AdvancedQueryResult advQueryRes = buildFormattedAdvancedCriteria(config, rule);
-      if (advQueryRes.hasLabResultVal()) {
-        containsLabResultValCol = true;
-      }
-      return new AdvancedQueryResult(advQueryRes.query(), containsLabResultValCol);
+      return buildFormattedAdvancedCriteria(config, rule);
     }
 
     if (query.getClass().equals(AdvancedQuery.RuleGroup.class)) {
       AdvancedQuery.RuleGroup ruleGroup = (AdvancedQuery.RuleGroup) query;
-      if (ruleGroup.rules().isEmpty()) return new AdvancedQueryResult("", false);
+      if (ruleGroup.rules().isEmpty()) return "";
 
       String combinator = String.format(" %s ", ruleGroup.combinator().toUpperCase());
       StringJoiner joiner = new StringJoiner(combinator, "(", ")");
 
       for (AdvancedQuery rule : ruleGroup.rules()) {
-        AdvancedQueryResult innerAdvQueryRes = buildAdvancedQuery(config, rule);
-        String innerRuleSql = innerAdvQueryRes.query();
+        String innerRuleSql = buildAdvancedQuery(config, rule);
         if (!innerRuleSql.isEmpty()) {
           joiner.add(innerRuleSql);
         }
-        if (innerAdvQueryRes.hasLabResultVal()) {
-          containsLabResultValCol = true;
-        }
       }
 
-      return new AdvancedQueryResult(joiner.toString(), containsLabResultValCol);
+      return joiner.toString();
     }
 
     throw new IllegalArgumentException("Invalid advanced filter");
   }
 
-  private AdvancedQueryResult buildFormattedAdvancedCriteria(
+  private String buildFormattedAdvancedCriteria(
       ReportConfiguration config, AdvancedQuery.Rule rule) {
-    boolean hasLabResultValCol;
-
-    Operator operator = Operator.valueOf(rule.operator().toUpperCase());
+    Operator operator = getOperator(rule);
     ReportColumn column =
         findColumn(config, rule.columnId()).orElseThrow(IllegalArgumentException::new);
-    hasLabResultValCol = RDB_LAB_RESULT_VAL_COLS.contains(column.name().toUpperCase());
-    String query =
-        Optional.ofNullable(advQueryOperations.get(operator))
-            .map(fn -> fn.apply(rule, column))
-            .orElseThrow(() -> new IllegalArgumentException("Unsupported operator: " + operator));
-    return new AdvancedQueryResult(query, hasLabResultValCol);
+    return Optional.ofNullable(advQueryOperations.get(operator))
+        .map(fn -> fn.apply(rule, column))
+        .orElseThrow(() -> new IllegalArgumentException("Unsupported operator: " + operator));
   }
 
   /**
@@ -308,7 +278,7 @@ public class WhereClauseService {
 
   private String buildAdvFilterCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
     List<String> values = Arrays.asList(rule.value().split("\\|"));
-    boolean isNEOperator = Operator.valueOf(rule.operator()).equals(Operator.NE);
+    boolean isNEOperator = getOperator(rule).equals(Operator.NE);
     return buildFilterCriteria(values, column, isNEOperator, isNEOperator);
   }
 
@@ -394,7 +364,7 @@ public class WhereClauseService {
   }
 
   private String buildAdvNullCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
-    boolean negateCriteria = Operator.valueOf(rule.operator()).equals(Operator.NN);
+    boolean negateCriteria = getOperator(rule).equals(Operator.NN);
     return "(" + buildNullCriteria(column, negateCriteria) + ")";
   }
 
@@ -412,7 +382,7 @@ public class WhereClauseService {
    */
   private String buildAdvLikeCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
     StringBuilder criteria = new StringBuilder("(");
-    boolean isContains = Operator.valueOf(rule.operator()).equals(Operator.CO);
+    boolean isContains = getOperator(rule).equals(Operator.CO);
 
     return criteria
         .append(fieldFormatter.convertToSQLColName(column.name(), column.sourceTypeCode()))
@@ -439,7 +409,7 @@ public class WhereClauseService {
    * @return a SQL fragment.
    */
   private String buildAdvComparisonCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
-    Operator operator = Operator.valueOf(rule.operator().toUpperCase());
+    Operator operator = getOperator(rule);
     String sqlOperator =
         Optional.ofNullable(COMPARISON_OPERATORS.get(operator))
             .orElseThrow(
@@ -448,7 +418,7 @@ public class WhereClauseService {
     String value = fieldFormatter.formatField(column.sourceTypeCode(), rule.value());
 
     String nullCriteria = "";
-    if (Operator.valueOf(rule.operator()).equals(Operator.NE)) {
+    if (getOperator(rule).equals(Operator.NE)) {
       nullCriteria = String.format(" OR %s", buildAdvNullCriteria(rule, column));
     }
     return String.format("(%s %s %s%s)", colName, sqlOperator, value, nullCriteria);
@@ -472,5 +442,36 @@ public class WhereClauseService {
 
   private boolean isCodedType(ReportColumn column) {
     return column.codesetNm() != null && !column.codesetNm().isEmpty();
+  }
+
+  /** Checks if the AdvancedFilterRequest contains a column in RDB_LAB_RESULT_VAL_COLS */
+  private boolean hasLabResultVal(ReportConfiguration config, AdvancedFilterRequest filterRequest) {
+    if (filterRequest == null || filterRequest.value() == null) return false;
+
+    List<Long> columnIds = extractColumnIds(filterRequest.value());
+    return columnIds.stream()
+        .distinct()
+        .map(id -> findColumn(config, id))
+        .flatMap(Optional::stream)
+        .map(ReportColumn::name)
+        .anyMatch(RDB_LAB_RESULT_VAL_COLS::contains);
+  }
+
+  private List<Long> extractColumnIds(AdvancedQuery query) {
+    List<Long> columnIds = new ArrayList<>();
+    if (query.getClass().equals(AdvancedQuery.Rule.class)) {
+      AdvancedQuery.Rule rule = (AdvancedQuery.Rule) query;
+      columnIds.add(rule.columnId());
+    } else if (query.getClass().equals(AdvancedQuery.RuleGroup.class)) {
+      AdvancedQuery.RuleGroup ruleGroup = (AdvancedQuery.RuleGroup) query;
+      for (AdvancedQuery subRule : ruleGroup.rules()) {
+        columnIds.addAll(extractColumnIds(subRule));
+      }
+    }
+    return columnIds;
+  }
+
+  private Operator getOperator(AdvancedQuery.Rule rule) {
+    return Operator.valueOf(rule.operator().toUpperCase());
   }
 }

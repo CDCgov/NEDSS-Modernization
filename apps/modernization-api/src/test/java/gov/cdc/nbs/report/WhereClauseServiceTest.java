@@ -3,14 +3,12 @@ package gov.cdc.nbs.report;
 import static gov.cdc.nbs.report.ReportConstants.Operator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
-import gov.cdc.nbs.report.models.AdvancedQueryResult;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.FilterType;
@@ -565,11 +563,9 @@ class WhereClauseServiceTest {
         createAdvancedFilterConfiguration(1L, ruleGroup);
     ReportConfiguration reportConfig = createReportConfig(filterConfiguration, reportCols);
 
-    AdvancedQueryResult result =
+    String advFilterResult =
         mockWhereClauseService.buildAdvancedQueryResult(reportConfig, advancedFilterRequest);
-
-    assertThat(result.query()).isEqualTo(expectedSQL);
-    assertFalse(result.hasLabResultVal());
+    assertThat(advFilterResult).isEqualTo(expectedSQL);
   }
 
   private static Stream<Arguments> fetchAdvancedQueryRuleParams() {
