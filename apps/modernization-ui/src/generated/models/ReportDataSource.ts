@@ -4,5 +4,7 @@
 /* eslint-disable */
 export type ReportDataSource = {
     name: string;
+    jurisdictionSecurity: string;
+    facilitySecurity: string;
 };
 
