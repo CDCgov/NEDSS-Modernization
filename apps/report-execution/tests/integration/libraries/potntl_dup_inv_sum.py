@@ -163,19 +163,21 @@ class TestIntegrationNbsSrDupInvLibrary:
         # Verify the error contains the missing column
         assert 'DISEASE_CD' in str(exc_info.value)
 
-    def test_execute_report_columns(self):
-        """Verify that the expected columns are present."""
+    def test_execute_report_column_ordering(self):
+        """Verify that the expected columns are present and ordered as expected."""
         report_spec = self.create_spec()
 
         result = execute_report(report_spec)
 
-        expected_columns = {
+        expected_columns = [
+            'Event Date',
             'Patient Local Id',
             'Disease Code',
-            'Event Date',
-            'Investigation Local Id',
-        }
-        result_columns = set(result.content.columns)
-
-        missing_columns = expected_columns - result_columns
+            'Investigation Local Id'
+        ]
+        missing_columns = set(expected_columns) - set(result.content.columns)
         assert not missing_columns, f'Missing expected columns: {missing_columns}'
+        assert result.content.columns == expected_columns, \
+            "Column order does not match expected"
+
+        
