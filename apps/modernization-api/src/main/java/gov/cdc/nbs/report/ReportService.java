@@ -1,17 +1,24 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.DisplayColumn;
 import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.ReportConstants.SortDirection;
 import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
+import gov.cdc.nbs.report.mappers.ReportMapper;
+import gov.cdc.nbs.report.models.AdminReportRequest;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.Library;
@@ -21,7 +28,12 @@ import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.SortSpec;
+import gov.cdc.nbs.repository.DataSourceRepository;
+import gov.cdc.nbs.repository.ReportFilterRepository;
+import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
+import gov.cdc.nbs.repository.ReportSectionRepository;
 import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
@@ -31,24 +43,106 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
 
 @Service
 public class ReportService {
 
   private final ReportRepository reportRepository;
+  private final DataSourceRepository dataSourceRepository;
+  private final ReportLibraryRepository reportLibraryRepository;
+  private final ReportFilterRepository reportFilterRepository;
+  private final ReportSectionRepository reportSectionRepository;
+  private final ReportMapper reportMapper;
+
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils;
   private final WhereClauseService whereClauseService;
+  private final ReportFilterBuilder reportFilterBuilder;
 
   public ReportService(
       final ReportRepository reportRepository,
+      final DataSourceRepository dataSourceRepository,
+      final ReportLibraryRepository reportLibraryRepository,
+      final ReportFilterRepository reportFilterRepository,
+      final ReportSectionRepository reportSectionRepository,
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig,
-      WhereClauseService whereClauseService) {
+      WhereClauseService whereClauseService,
+      ReportFilterBuilder reportFilterBuilder,
+      ReportMapper reportMapper) {
     this.reportRepository = reportRepository;
+    this.dataSourceRepository = dataSourceRepository;
+    this.reportLibraryRepository = reportLibraryRepository;
+    this.reportFilterRepository = reportFilterRepository;
+    this.reportSectionRepository = reportSectionRepository;
+    this.reportMapper = reportMapper;
+
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
     this.whereClauseService = whereClauseService;
+    this.reportFilterBuilder = reportFilterBuilder;
+  }
+
+  @Transactional
+  public Report createReport(AdminReportRequest request, NbsUserDetails user) {
+    ReportMetadata metadata = verifyReportMetadata(request);
+
+    Report savedReport =
+        reportRepository.save(
+            reportMapper.fromAdminReportRequest(
+                request, user, metadata.reportLibrary, metadata.dataSource, null));
+
+    if (!request.filterRequests().isEmpty()) {
+      List<ReportFilter> reportFilters =
+          request.filterRequests().stream()
+              .map(f -> reportFilterBuilder.build(f, savedReport))
+              .toList();
+
+      reportFilterRepository.saveAll(reportFilters);
+    }
+
+    return savedReport;
+  }
+
+  @Transactional
+  public Report editReport(
+      AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
+    if (existingReportId != null && !reportRepository.existsById(existingReportId)) {
+      throw new NotFoundException(getReportNotFoundText(existingReportId));
+    }
+
+    ReportMetadata metadata = verifyReportMetadata(request);
+
+    Report savedReport =
+        reportRepository.save(
+            reportMapper.fromAdminReportRequest(
+                request, user, metadata.reportLibrary, metadata.dataSource, existingReportId));
+
+    List<ReportFilter> existingFilters = savedReport.getReportFilters();
+
+    List<ReportFilter> filtersToDelete =
+        existingFilters.stream()
+            .filter(
+                f ->
+                    request.filterRequests().stream()
+                        .noneMatch(fr -> fr.id() != null && fr.id().equals(f.getId())))
+            .toList();
+
+    List<ReportFilter> filtersToUpsert =
+        request.filterRequests().stream()
+            .map(f -> reportFilterBuilder.build(f, savedReport))
+            .toList();
+
+    if (!filtersToDelete.isEmpty()) {
+      reportFilterRepository.deleteAll(filtersToDelete);
+    }
+
+    if (!filtersToUpsert.isEmpty()) {
+      reportFilterRepository.saveAll(filtersToUpsert);
+    }
+
+    return savedReport;
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
@@ -89,6 +183,18 @@ public class ReportService {
                       .map(DisplayColumn::getDataSourceColumnId)
                       .toList();
 
+              ReportSortColumn reportSortColumn =
+                  report.getReportSortColumns().stream().findFirst().orElse(null);
+              SortSpec defaultSort = null;
+              if (reportSortColumn != null) {
+                defaultSort =
+                    new SortSpec(
+                        reportSortColumn.getDataSourceColumnUid(),
+                        "ASC".equalsIgnoreCase(reportSortColumn.getReportSortOrderCode())
+                            ? SortDirection.ASC
+                            : SortDirection.DESC);
+              }
+
               return new ReportConfiguration(
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
@@ -97,14 +203,10 @@ public class ReportService {
                   basicFilters,
                   advancedFilter,
                   reportColumns,
-                  defaultColumnUids);
+                  defaultColumnUids,
+                  defaultSort);
             })
-        .orElseThrow(
-            () ->
-                new NotFoundException(
-                    String.format(
-                        "Report not found for Report UID: %d and Data Source UID: %d",
-                        reportUid, dataSourceUid)));
+        .orElseThrow(() -> new NotFoundException(getReportNotFoundText(id)));
   }
 
   @Transactional(readOnly = true)
@@ -114,12 +216,7 @@ public class ReportService {
     Report report =
         reportRepository
             .findById(reportId)
-            .orElseThrow(
-                () ->
-                    new NotFoundException(
-                        String.format(
-                            "Report not found for Report UID: %d and Data Source UID: %d",
-                            reportUid, dataSourceUid)));
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     ReportLibrary reportLibrary = report.getReportLibrary();
     if (reportLibrary == null) {
@@ -157,6 +254,50 @@ public class ReportService {
         .contentType(MediaType.APPLICATION_JSON)
         .body(reportSpec)
         .retrieve()
+        .onStatus(
+            status -> status.value() >= 400,
+            (req, resp) -> {
+              throw new RestClientResponseException(
+                  "Error response from the report-execution service",
+                  resp.getStatusCode(),
+                  resp.getStatusText(),
+                  resp.getHeaders(),
+                  resp.getBody().readAllBytes(),
+                  null);
+            })
         .toEntity(ReportResult.class);
+  }
+
+  private String getReportNotFoundText(ReportId reportId) {
+    return String.format(
+        "Report not found for Report UID: %d and Data Source UID: %d",
+        reportId.getReportUid(), reportId.getDataSourceUid());
+  }
+
+  private record ReportMetadata(DataSource dataSource, ReportLibrary reportLibrary) {}
+
+  private ReportMetadata verifyReportMetadata(AdminReportRequest request) {
+    DataSource dataSource =
+        dataSourceRepository
+            .findById(request.dataSourceId())
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "No data source found for ID " + request.dataSourceId()));
+
+    ReportLibrary reportLibrary =
+        reportLibraryRepository
+            .findById(request.libraryId())
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "No report library found for ID " + request.libraryId()));
+
+    if (!reportSectionRepository.existsBySectionCd(request.sectionCode())) {
+      throw new IllegalArgumentException(
+          "No report section found for code " + request.sectionCode());
+    }
+
+    return new ReportMetadata(dataSource, reportLibrary);
   }
 }

@@ -57,3 +57,9 @@ databaseChangeLog:
         - sqlFile:
             path: db/report/execution/libraries/qa_03.sql
             splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/qa_10.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/qa_06.sql
+            splitStatements: false

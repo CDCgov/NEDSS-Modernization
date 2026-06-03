@@ -17,5 +17,22 @@ public final class ReportConstants {
 
   public static final String REPORTINGOPERATION = "REPORTING";
 
+  public enum SortDirection {
+    ASC,
+    DESC;
+  }
+
+  public enum SelectType {
+    SINGLE,
+    MULTI
+  }
+
+  public enum ReportGroup {
+    PRIVATE,
+    REPORTING_FACILITY,
+    PUBLIC,
+    TEMPLATE;
+  }
+
   private ReportConstants() {}
 }

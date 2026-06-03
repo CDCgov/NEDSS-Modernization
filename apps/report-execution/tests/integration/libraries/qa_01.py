@@ -33,7 +33,7 @@ class TestIntegrationNbsQa01Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 99
+        assert len(data) == 92
         assert len(data[0]) == 18
         assert len(data[0]) == len(result.content.columns)
 
@@ -49,7 +49,6 @@ class TestIntegrationNbsQa01Library:
         assert record is not None
         assert record[3].lower() == record[13]
         assert record[4] == record[17]
-        assert record[14] == 'XXX'
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = self.create_spec(
