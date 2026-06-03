@@ -1,0 +1,18 @@
+package gov.cdc.nbs.report.models;
+
+import gov.cdc.nbs.report.ReportConstants;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import java.util.List;
+
+public record AdminReportRequest(
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Positive Long dataSourceId,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Positive Long libraryId,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String reportTitle,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String sectionCode,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull Long ownerId,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull ReportConstants.ReportGroup group,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<UpsertFilterRequest> filterRequests,
+    String description) {}

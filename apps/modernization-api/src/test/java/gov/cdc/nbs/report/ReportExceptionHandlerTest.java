@@ -7,6 +7,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientResponseException;
 
 class ReportExceptionHandlerTest {
 
@@ -40,5 +41,17 @@ class ReportExceptionHandlerTest {
 
     assertEquals("Illegal Argument", responseEntity.getBody());
     assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+  }
+
+  @Test
+  void should_return_error_msg_and_status_code_for_rest_client_exceptiont() {
+    RestClientResponseException exception =
+        new RestClientResponseException(
+            "I failed", 503, "uh oh", null, "it went poorly".getBytes(), null);
+
+    ResponseEntity<String> responseEntity = handler.handleRestClientFailure(exception);
+
+    assertEquals("it went poorly", responseEntity.getBody());
+    assertEquals(HttpStatus.SERVICE_UNAVAILABLE, responseEntity.getStatusCode());
   }
 }

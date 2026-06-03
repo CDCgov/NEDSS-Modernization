@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -37,8 +38,14 @@ public class DisplayColumn {
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
   // Report has a composite primary key
-  @JoinColumn(name = "report_uid", nullable = false)
-  @JoinColumn(name = "data_source_uid", nullable = false)
+  @SuppressWarnings("java:S1710")
+  @JoinColumns({
+    @JoinColumn(name = "report_uid", referencedColumnName = "report_uid", nullable = false),
+    @JoinColumn(
+        name = "data_source_uid",
+        referencedColumnName = "data_source_uid",
+        nullable = false)
+  })
   private Report report;
 
   @NonNull @Column(name = "sequence_nbr")
