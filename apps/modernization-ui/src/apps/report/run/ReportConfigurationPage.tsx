@@ -20,7 +20,8 @@ const SECTIONS = [
         hasData: (config: ReportConfiguration) => config.basicFilters.length > 0,
         Component: ({ config, id, title }: { config: ReportConfiguration; id: string; title: string }) => (
             <CurrentStateProvider
-                stateFilter={config.basicFilters.find((f) => f.filterType.code?.startsWith(STATE_FILTER_CODE))}>
+                stateFilter={config.basicFilters.find((f) => f.filterType.code?.startsWith(STATE_FILTER_CODE))}
+            >
                 <Card id={id} title={title} collapsible={true}>
                     {config.basicFilters.map((filter, i) => (
                         <BasicFilter key={`basic_filter_${i}`} filter={filter} columns={config.columns} />
@@ -50,7 +51,8 @@ const SECTIONS = [
                 required={true}
                 subtext="Select the column variables you would like to include in this report."
                 actions={<Required />}
-                collapsible={true}>
+                collapsible={true}
+            >
                 <ColumnSelector columns={config.columns} defaultColumns={config.defaultColumnUids} />
             </Card>
         ),
@@ -78,7 +80,8 @@ const ReportConfigurationPage = ({
                         <Button onClick={(e) => handleSubmit(e, true)}>Export</Button>
                     </Permitted>
                 </>
-            }>
+            }
+        >
             <form className={layoutStyles.columnContent}>
                 {sectionData.map(({ id, title, Component }) => (
                     <Component key={id} config={config} id={id} title={title} />
