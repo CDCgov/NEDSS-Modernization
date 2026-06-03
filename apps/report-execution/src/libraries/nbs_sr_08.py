@@ -26,7 +26,7 @@ def execute(
             state AS [State],
             county AS [County],
             phc_code_short_desc AS [Condition],
-            UPPER(FORMAT(event_date, 'ddMMMyyyy:HH:mm:ss.fff')) AS [Event Date],
+            event_date AS [Event Date],
             cnty_cd AS [County Code],
             sum(group_case_cnt) AS [Cases]
         FROM subset

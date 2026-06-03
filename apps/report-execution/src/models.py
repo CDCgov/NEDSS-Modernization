@@ -1,7 +1,10 @@
+from datetime import date, datetime
 from typing import Annotated, Any, Literal
 
-from pandas import DataFrame
+import pandas as pd
 from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
+
+from src.utils import get_str_env_or_default
 
 
 class ReportSpec(BaseModel):
@@ -47,12 +50,43 @@ class Table(BaseModel):
 
 
 def serialize_table(table: Table) -> str:
-    """Turn a Table into a CSV for returning to the user."""
+    """Turn a Table into a CSV for returning to the user.
+
+    Standardizes Python date and datetime instances to the provided strftime constants,
+    defaulting to:
+     - datetime: mm/dd/yyyy hh:mm:ss
+     - date: mm/dd/yyyy
+    """
+    # strftime constants for Python date and datetime when outputting to CSV
+    csv_date_strftime = get_str_env_or_default('REPORT_EXPORT_DATE_FORMAT', '%m/%d/%Y')
+    csv_datetime_strftime = get_str_env_or_default(
+        'REPORT_EXPORT_DATETIME_FORMAT', '%m/%d/%Y %H:%M:%S'
+    )
+
+    # properly format a given value if it's a date or datetime
+    def convert_dates(val: Any) -> Any:
+        if type(val) is date:
+            return pd.to_datetime(val).strftime(csv_date_strftime)
+        elif type(val) is datetime:
+            return pd.to_datetime(val).strftime(csv_datetime_strftime)
+
+        return val
+
+    # update table data to have properly formatted dates and datetimes
+    data = [list(map(convert_dates, tpl)) for tpl in table.data]
+
     # Short cut to valid CSV - can swap out later if performance dictates
     # or serialize to CSV at a different location
-    df = DataFrame.from_records(table.data, columns=table.columns, coerce_float=True)
-    # remove trailing new line
-    return df.to_csv(index=False, float_format='{:.20g}', lineterminator='\r\n')[:-2]
+    df = pd.DataFrame.from_records(data, columns=table.columns, coerce_float=True)
+
+    csv_str = df.to_csv(
+        index=False,
+        float_format='{:.20g}',
+        lineterminator='\r\n',
+    )
+
+    # Remove trailing new line
+    return csv_str[:-2]
 
 
 # TODO: add other return types  # noqa: FIX002
