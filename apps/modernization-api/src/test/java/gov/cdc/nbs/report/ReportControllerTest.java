@@ -209,21 +209,21 @@ class ReportControllerTest {
       DataSource dataSourceEntity = mock(DataSource.class);
       ReportLibrary reportLibraryEntity = mock(ReportLibrary.class);
 
-    BasicFilterConfiguration basicFilterConfig = mock(BasicFilterConfiguration.class);
-    AdvancedFilterConfiguration advancedFilterConfig = mock(AdvancedFilterConfiguration.class);
-    List<ReportColumn> columns = List.of(mock(ReportColumn.class));
-    ReportConfiguration reportConfig =
-        new ReportConfiguration(
-            new ReportDataSource(dataSourceEntity),
-            new Library(reportLibraryEntity),
-            "Report Title",
-            'N',
-            List.of(basicFilterConfig),
-            advancedFilterConfig,
-            columns,
-            null,
-            null);
-    when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
+      BasicFilterConfiguration basicFilterConfig = mock(BasicFilterConfiguration.class);
+      AdvancedFilterConfiguration advancedFilterConfig = mock(AdvancedFilterConfiguration.class);
+      List<ReportColumn> columns = List.of(mock(ReportColumn.class));
+      ReportConfiguration reportConfig =
+          new ReportConfiguration(
+              new ReportDataSource(dataSourceEntity),
+              new Library(reportLibraryEntity),
+              "Report Title",
+              'N',
+              List.of(basicFilterConfig),
+              advancedFilterConfig,
+              columns,
+              null,
+              null);
+      when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
       ResponseEntity<ReportConfiguration> response =
           controller.getReportConfiguration(reportUid, dataSourceUid);
