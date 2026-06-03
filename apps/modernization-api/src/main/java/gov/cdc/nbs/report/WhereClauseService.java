@@ -83,12 +83,16 @@ public class WhereClauseService {
 
     String advWhereFragment =
         buildAdvancedQueryResult(reportConfig, executionRequest.advancedFilter());
-    boolean hasLabResultVal = hasLabResultVal(reportConfig, executionRequest.advancedFilter());
 
     StringJoiner finalWhere = new StringJoiner(SQL_AND, SQL_WHERE, "");
 
     finalWhere.add(basicWhereFragment);
-    finalWhere.add(advWhereFragment);
+
+    if (advWhereFragment != null && !advWhereFragment.isEmpty()) {
+      finalWhere.add(advWhereFragment);
+    }
+
+    boolean hasLabResultVal = hasLabResultVal(reportConfig, executionRequest.advancedFilter());
     if (hasLabResultVal) {
       String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
       return LAB_RESULT_QUERY_VAL.formatted(rdbDataSource, finalWhere.toString());
@@ -254,7 +258,8 @@ public class WhereClauseService {
     if (hasValues) {
       criteria
           .append(colName)
-          .append(String.format(" %sIN (", negateCriteria ? "NOT " : ""))
+          .append(negateCriteria ? " NOT" : "")
+          .append(" IN (")
           .append(String.join(", ", formattedValues))
           .append(")");
     }
@@ -309,7 +314,7 @@ public class WhereClauseService {
       formattedValues =
           values.stream()
               .filter(Objects::nonNull)
-              .map(v -> fieldFormatter.formatField(column.sourceTypeCode(), v))
+              .map(v -> fieldFormatter.formatField(colType, v))
               .toList();
     }
 
@@ -387,7 +392,7 @@ public class WhereClauseService {
     return criteria
         .append(fieldFormatter.convertToSQLColName(column.name(), column.sourceTypeCode()))
         .append(" LIKE CONCAT(")
-        .append(String.format("'%s', ", isContains ? "%" : ""))
+        .append(isContains ? "'%', " : "")
         .append(fieldFormatter.formatField(column.sourceTypeCode(), rule.value()))
         .append(", '%')")
         .append(")")
