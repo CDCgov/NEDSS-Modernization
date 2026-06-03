@@ -23,8 +23,10 @@ public class AdvancedQueryBuilderTest {
           .filterName("Where Clause Builder")
           .build();
 
-  private FilterValue buildOperatorValue(
-      ReportFilter filter, Integer sequenceNumber, String operator) {
+  private final ReportFilter filter =
+      ReportFilter.builder().report(report).filterCode(filterCode).build();
+
+  private FilterValue buildOperatorValue(Integer sequenceNumber, String operator) {
     return FilterValue.builder()
         .id(faker.number().randomNumber())
         .reportFilter(filter)
@@ -34,8 +36,7 @@ public class AdvancedQueryBuilderTest {
         .build();
   }
 
-  private FilterValue buildClauseValue(
-      ReportFilter filter, Integer sequenceNumber, String operator, String valueTxt) {
+  private FilterValue buildClauseValue(Integer sequenceNumber, String operator, String valueTxt) {
     return FilterValue.builder()
         .id(faker.number().randomNumber())
         .reportFilter(filter)
@@ -49,13 +50,6 @@ public class AdvancedQueryBuilderTest {
 
   ////////////////////////////////////////////////////////////////////////
 
-  private void assertRuleGroupMatchesOperatorValue(
-      AdvancedQuery.RuleGroup ruleGroup, FilterValue operatorValue, Integer expectedRuleCount) {
-    assertThat(ruleGroup.id()).isEqualTo(operatorValue.getId().toString());
-    assertThat(ruleGroup.combinator()).isEqualTo(operatorValue.getOperator());
-    assertThat(ruleGroup.rules()).hasSize(expectedRuleCount);
-  }
-
   private void assertRuleMatchesClauseValue(AdvancedQuery.Rule rule, FilterValue clauseValue) {
     assertThat(rule.id()).isEqualTo(clauseValue.getId().toString());
     assertThat(rule.columnId()).isEqualTo(clauseValue.getColumnUid());
@@ -67,88 +61,199 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_create_rule_group_with_single_rule() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    FilterValue equalsClause = buildClauseValue(1, "equals", "test value");
+    filter.setFilterValues(List.of(equalsClause));
 
-    FilterValue groupValue = buildOperatorValue(filter, 1, "and");
-    FilterValue clauseValue = buildClauseValue(filter, 2, "equals", "test value");
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
 
-    filter.setFilterValues(List.of(groupValue, clauseValue));
-
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter);
-
-    // Act
     AdvancedQuery.RuleGroup result = builder.build();
 
-    // Assert
-    assertRuleGroupMatchesOperatorValue(result, groupValue, 1);
+    // Root 'AND' RuleGroup should be created
+    assertThat(result.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(result.rules()).hasSize(1);
 
+    // Single Rule on said RuleGroup should match equals clause
     assertThat(result.rules().getFirst()).isInstanceOf(AdvancedQuery.Rule.class);
     AdvancedQuery.Rule rule = (AdvancedQuery.Rule) result.rules().getFirst();
 
-    assertRuleMatchesClauseValue(rule, clauseValue);
+    assertRuleMatchesClauseValue(rule, equalsClause);
   }
 
   @Test
-  void build_should_create_rule_group_with_multiple_rules() {
-    // Arrange: Create a ReportFilter with a group FilterValue and two clause FilterValues
+  void build_should_create_rule_group_with_multiple_rules_in_single_or_group() {
     ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    FilterValue rootOrClause = buildOperatorValue(filter, 1, "or");
+    FilterValue containsClause = buildClauseValue(1, "contains", "value1");
+    FilterValue orOperator = buildOperatorValue(2, "or");
+    FilterValue startsWithClause = buildClauseValue(3, "startsWith", "value2");
 
-    FilterValue clauseValue1 = buildClauseValue(filter, 2, "contains", "value1");
-    FilterValue clauseValue2 = buildClauseValue(filter, 3, "startsWith", "value2");
+    filter.setFilterValues(List.of(containsClause, orOperator, startsWithClause));
 
-    filter.setFilterValues(List.of(rootOrClause, clauseValue1, clauseValue2));
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter);
-
-    // Act
     AdvancedQuery.RuleGroup result = builder.build();
 
-    // Assert
-    assertRuleGroupMatchesOperatorValue(result, rootOrClause, 2);
+    // Root 'OR' RuleGroup should be created, with 2 rules
+    assertThat(result.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(result.rules()).hasSize(2);
 
+    // The first rule in the 'OR' group should match the 'contains' clause
     assertThat(result.rules().getFirst()).isInstanceOf(AdvancedQuery.Rule.class);
     AdvancedQuery.Rule rule1 = (AdvancedQuery.Rule) result.rules().getFirst();
-    assertRuleMatchesClauseValue(rule1, clauseValue1);
+    assertRuleMatchesClauseValue(rule1, containsClause);
 
+    // The second rule in the 'OR' group should match the 'startsWith' clause
     assertThat(result.rules().get(1)).isInstanceOf(AdvancedQuery.Rule.class);
     AdvancedQuery.Rule rule2 = (AdvancedQuery.Rule) result.rules().get(1);
-    assertRuleMatchesClauseValue(rule2, clauseValue2);
+    assertRuleMatchesClauseValue(rule2, startsWithClause);
   }
 
   @Test
-  void build_should_create_rule_group_with_nested_rule_group() {
-    // Arrange: Create a ReportFilter with a group FilterValue, a clause, an operator, and another
-    // clause
+  void build_should_create_rule_group_with_both_OR_AND_operators() {
     ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    FilterValue andValue = buildOperatorValue(filter, 1, "and");
-    FilterValue clauseValue1 = buildClauseValue(filter, 2, "equals", "value1");
-    FilterValue orValue = buildOperatorValue(filter, 3, "or");
-    FilterValue clauseValue2 = buildClauseValue(filter, 4, "notEquals", "value2");
+    FilterValue containsClause = buildClauseValue(1, "contains", "value3");
+    FilterValue andValue = buildOperatorValue(2, "and");
+    FilterValue equalsClause = buildClauseValue(3, "equals", "value1");
+    FilterValue orValue = buildOperatorValue(4, "or");
+    FilterValue notEqualsClause = buildClauseValue(5, "notEquals", "value2");
 
-    filter.setFilterValues(List.of(andValue, clauseValue1, orValue, clauseValue2));
+    filter.setFilterValues(
+        List.of(containsClause, andValue, equalsClause, orValue, notEqualsClause));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
 
-    // Act
     AdvancedQuery.RuleGroup rootRuleGroup = builder.build();
 
-    // Assert
-    assertRuleGroupMatchesOperatorValue(rootRuleGroup, andValue, 2);
+    // Root 'OR' RuleGroup should be created, with 2 rules
+    assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(rootRuleGroup.rules()).hasSize(2);
 
-    // First rule
+    // The first rule in the root 'OR' RuleGroup is the 'AND' RuleGroup
+    assertThat(rootRuleGroup.rules().getFirst()).isInstanceOf(AdvancedQuery.RuleGroup.class);
+    AdvancedQuery.RuleGroup andGroup = (AdvancedQuery.RuleGroup) rootRuleGroup.rules().getFirst();
+
+    assertThat(andGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(andGroup.rules()).hasSize(2);
+
+    // The first Rule in the 'AND' group should match the 'contains' clause
+    assertThat(andGroup.rules().getFirst()).isInstanceOf(AdvancedQuery.Rule.class);
+    AdvancedQuery.Rule rule1 = (AdvancedQuery.Rule) andGroup.rules().getFirst();
+    assertRuleMatchesClauseValue(rule1, containsClause);
+
+    // The second Rule in the 'AND' group should match the 'equals' clause
+    assertThat(andGroup.rules().get(1)).isInstanceOf(AdvancedQuery.Rule.class);
+    AdvancedQuery.Rule rule2 = (AdvancedQuery.Rule) andGroup.rules().get(1);
+    assertRuleMatchesClauseValue(rule2, equalsClause);
+
+    // The second rule in the root 'OR' RuleGroup is the 'notEquals' clause
+    assertThat(rootRuleGroup.rules().get(1)).isInstanceOf(AdvancedQuery.Rule.class);
+    AdvancedQuery.Rule notEqualsRule = (AdvancedQuery.Rule) rootRuleGroup.rules().get(1);
+    assertRuleMatchesClauseValue(notEqualsRule, notEqualsClause);
+  }
+
+  @Test
+  void build_should_handle_outermost_parentheses_correctly() {
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+
+    FilterValue openParenValue = buildOperatorValue(1, "(");
+    FilterValue containsClause = buildClauseValue(2, "contains", "value3");
+    FilterValue andValue = buildOperatorValue(3, "and");
+    FilterValue equalsClause = buildClauseValue(4, "equals", "value1");
+    FilterValue orValue = buildOperatorValue(5, "or");
+    FilterValue notEqualsClause = buildClauseValue(6, "notEquals", "value2");
+    FilterValue closeParenValue = buildOperatorValue(7, ")");
+
+    filter.setFilterValues(
+        List.of(
+            openParenValue,
+            containsClause,
+            andValue,
+            equalsClause,
+            orValue,
+            notEqualsClause,
+            closeParenValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+
+    AdvancedQuery.RuleGroup rootRuleGroup = builder.build();
+
+    // Root 'OR' RuleGroup should be created, with 2 rules
+    assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(rootRuleGroup.rules()).hasSize(2);
+
+    // The first rule in the root 'OR' RuleGroup is the 'AND' RuleGroup
+    assertThat(rootRuleGroup.rules().getFirst()).isInstanceOf(AdvancedQuery.RuleGroup.class);
+    AdvancedQuery.RuleGroup andGroup = (AdvancedQuery.RuleGroup) rootRuleGroup.rules().getFirst();
+
+    assertThat(andGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(andGroup.rules()).hasSize(2);
+
+    // The first Rule in the 'AND' group should match the 'contains' clause
+    assertThat(andGroup.rules().getFirst()).isInstanceOf(AdvancedQuery.Rule.class);
+    AdvancedQuery.Rule rule1 = (AdvancedQuery.Rule) andGroup.rules().getFirst();
+    assertRuleMatchesClauseValue(rule1, containsClause);
+
+    // The second Rule in the 'AND' group should match the 'equals' clause
+    assertThat(andGroup.rules().get(1)).isInstanceOf(AdvancedQuery.Rule.class);
+    AdvancedQuery.Rule rule2 = (AdvancedQuery.Rule) andGroup.rules().get(1);
+    assertRuleMatchesClauseValue(rule2, equalsClause);
+
+    // The second rule in the root 'OR' RuleGroup is the 'notEquals' clause
+    assertThat(rootRuleGroup.rules().get(1)).isInstanceOf(AdvancedQuery.Rule.class);
+    AdvancedQuery.Rule notEqualsRule = (AdvancedQuery.Rule) rootRuleGroup.rules().get(1);
+    assertRuleMatchesClauseValue(notEqualsRule, notEqualsClause);
+  }
+
+  @Test
+  void build_should_handle_OR_nested_within_AND_correctly() {
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+
+    FilterValue containsClause = buildClauseValue(1, "contains", "value3");
+    FilterValue andValue = buildOperatorValue(2, "and");
+    FilterValue openParenValue = buildOperatorValue(3, "(");
+    FilterValue equalsClause = buildClauseValue(4, "equals", "value1");
+    FilterValue orValue = buildOperatorValue(5, "or");
+    FilterValue notEqualsClause = buildClauseValue(6, "notEquals", "value2");
+    FilterValue closeParenValue = buildOperatorValue(7, ")");
+
+    filter.setFilterValues(
+        List.of(
+            containsClause,
+            andValue,
+            openParenValue,
+            equalsClause,
+            orValue,
+            notEqualsClause,
+            closeParenValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+
+    AdvancedQuery.RuleGroup rootRuleGroup = builder.build();
+
+    // Root 'AND' RuleGroup should be created, with 2 rules
+    assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(rootRuleGroup.rules()).hasSize(2);
+
+    // The first Rule in the root 'AND' group should match the 'contains' clause
     assertThat(rootRuleGroup.rules().getFirst()).isInstanceOf(AdvancedQuery.Rule.class);
     AdvancedQuery.Rule rule1 = (AdvancedQuery.Rule) rootRuleGroup.rules().getFirst();
-    assertRuleMatchesClauseValue(rule1, clauseValue1);
+    assertRuleMatchesClauseValue(rule1, containsClause);
 
-    // Second is a nested RuleGroup
+    // The second rule in the root 'AND' RuleGroup is the 'OR' RuleGroup, with 2 rules
     assertThat(rootRuleGroup.rules().get(1)).isInstanceOf(AdvancedQuery.RuleGroup.class);
-    AdvancedQuery.RuleGroup nestedGroup = (AdvancedQuery.RuleGroup) rootRuleGroup.rules().get(1);
-    assertRuleGroupMatchesOperatorValue(nestedGroup, orValue, 1);
+    AdvancedQuery.RuleGroup andGroup = (AdvancedQuery.RuleGroup) rootRuleGroup.rules().get(1);
 
-    assertThat(nestedGroup.rules().getFirst()).isInstanceOf(AdvancedQuery.Rule.class);
-    AdvancedQuery.Rule rule2 = (AdvancedQuery.Rule) nestedGroup.rules().getFirst();
-    assertRuleMatchesClauseValue(rule2, clauseValue2);
+    assertThat(andGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(andGroup.rules()).hasSize(2);
+
+    // The first Rule in the 'AND' group should match the 'equals' clause
+    assertThat(andGroup.rules().getFirst()).isInstanceOf(AdvancedQuery.Rule.class);
+    AdvancedQuery.Rule equalsRule = (AdvancedQuery.Rule) andGroup.rules().getFirst();
+    assertRuleMatchesClauseValue(equalsRule, equalsClause);
+
+    // The second Rule in the 'AND' group should match the 'notEquals' clause
+    assertThat(andGroup.rules().get(1)).isInstanceOf(AdvancedQuery.Rule.class);
+    AdvancedQuery.Rule notEqualsRule = (AdvancedQuery.Rule) andGroup.rules().get(1);
+    assertRuleMatchesClauseValue(notEqualsRule, notEqualsClause);
   }
 }

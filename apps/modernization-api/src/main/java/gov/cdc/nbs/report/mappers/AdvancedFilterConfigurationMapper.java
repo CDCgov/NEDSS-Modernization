@@ -23,6 +23,6 @@ public class AdvancedFilterConfigurationMapper {
     }
 
     return new AdvancedFilterConfiguration(
-        filter.getId(), new AdvancedQueryBuilder(filter).build());
+        filter.getId(), new AdvancedQueryBuilder(filter.getFilterValues()).build());
   }
 }

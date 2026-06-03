@@ -15,7 +15,7 @@ public class AdvancedQueryBuilder {
 
   /** Specifies if there is another {@code FilterValue} to be processed */
   private boolean hasNext() {
-    return current < filterValues.size() - 1;
+    return current < filterValues.size();
   }
 
   /** Returns the current {@code FilterValue} */
@@ -39,7 +39,33 @@ public class AdvancedQueryBuilder {
   }
 
   public AdvancedQuery.RuleGroup build() {
-    return buildRuleGroup(ReportConstants.QueryCombinators.and, null);
+    AdvancedQuery.Rule firstRule = null;
+    ReportConstants.QueryCombinators firstCombinator = null;
+
+    // Iterate through FilterValues until we find the first OPERATOR
+    while (hasNext()) {
+      FilterValue filterValue = peek();
+      if (filterValue.getValueType().equals("CLAUSE")) {
+        firstRule = buildClause(filterValue);
+      } else if (filterValue.getValueType().equals("OPERATOR")) {
+        if (filterValue.getOperator().equals("and") || filterValue.getOperator().equals("or")) {
+          firstCombinator = ReportConstants.QueryCombinators.valueOf(filterValue.getOperator());
+          break;
+        }
+      }
+      advance();
+    }
+
+    // If we didn't find an OPERATOR, default to 'AND' combinator for a single rule
+    if (firstCombinator == null) {
+      firstCombinator = ReportConstants.QueryCombinators.and;
+    }
+
+    // Then build the root RuleGroup from said OPERATOR and corresponding rule
+    AdvancedQuery.RuleGroup ruleGroup = buildRuleGroup(firstCombinator, firstRule);
+
+    System.out.println(ruleGroup);
+    return ruleGroup;
   }
 
   private AdvancedQuery.RuleGroup buildRuleGroup(
@@ -58,14 +84,7 @@ public class AdvancedQueryBuilder {
 
       switch (filterValue.getValueType()) {
         case "CLAUSE":
-          validateClause(filterValue);
-
-          rules.add(
-              new AdvancedQuery.Rule(
-                  filterValue.getId().toString(),
-                  filterValue.getColumnUid(),
-                  filterValue.getOperator(),
-                  filterValue.getValueTxt()));
+          rules.add(buildClause(filterValue));
           break;
         case "OPERATOR":
           validateOperator(filterValue);
@@ -73,20 +92,20 @@ public class AdvancedQueryBuilder {
           switch (filterValue.getOperator()) {
             case "or":
               if (combinator.equals(ReportConstants.QueryCombinators.and)) {
-                //  If going directly from an 'AND' group to an 'OR' group, WITHOUT parens
+                //  If going directly from an 'AND' group to an 'OR' group, without parens
                 if (nestDepth == 0) {
                   //  We terminate the current 'AND' group
+                  terminated = true;
                   AdvancedQuery.RuleGroup andGroup =
                       new AdvancedQuery.RuleGroup(
                           UUID.randomUUID().toString(),
                           ReportConstants.QueryCombinators.and,
                           rules);
-                  terminated = true;
 
                   // And add it as a rule to the new 'OR' group, which we then build
                   ruleGroup = buildRuleGroup(ReportConstants.QueryCombinators.or, andGroup);
 
-                  //  If going from an 'AND' group to an 'OR' group WITHIN parens
+                  //  If going from an 'AND' group to an 'OR' group WITHIN inner parens
                 } else {
                   //  We just build the 'OR' group, starting from the previous FilterValue
                   AdvancedQuery firstOrRule = rules.removeLast();
@@ -168,6 +187,16 @@ public class AdvancedQueryBuilder {
     }
 
     return ruleGroup;
+  }
+
+  private AdvancedQuery.Rule buildClause(FilterValue filterValue) {
+    validateClause(filterValue);
+
+    return new AdvancedQuery.Rule(
+        filterValue.getId().toString(),
+        filterValue.getColumnUid(),
+        filterValue.getOperator(),
+        filterValue.getValueTxt());
   }
 
   private void validateClause(FilterValue filterValue) {
