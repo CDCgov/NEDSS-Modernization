@@ -238,14 +238,14 @@ public class ReportService {
         .body(reportSpec)
         .retrieve()
         .onStatus(
-            (status) -> status.value() >= 400,
-            (_request, response) -> {
+            status -> status.value() >= 400,
+            (req, resp) -> {
               throw new RestClientResponseException(
                   "Error response from the report-execution service",
-                  response.getStatusCode(),
-                  response.getStatusText(),
-                  response.getHeaders(),
-                  response.getBody().readAllBytes(),
+                  resp.getStatusCode(),
+                  resp.getStatusText(),
+                  resp.getHeaders(),
+                  resp.getBody().readAllBytes(),
                   null);
             })
         .toEntity(ReportResult.class);
