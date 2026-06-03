@@ -44,10 +44,7 @@ def execute(
     WITH subset AS ({subset_query})
     -- Capture SQL Server's physical row order
     , source_order AS (
-        SELECT 
-            *,
-            ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS row_num
-        FROM subset
+        SELECT * FROM subset
     )
     , clean_data AS (
         SELECT *
@@ -65,7 +62,7 @@ def execute(
                     PARTITION BY
                     [{col_dict['PATIENT_LOCAL_ID']}],
                     [{col_dict['DISEASE_CD']}] 
-                    ORDER BY [{col_dict['EVENT_DATE']}], row_num
+                    ORDER BY [{col_dict['EVENT_DATE']}]
                 ),
                 [{col_dict['EVENT_DATE']}]
             ) AS days_since_prev,
@@ -74,7 +71,7 @@ def execute(
                 LEAD([{col_dict['EVENT_DATE']}]) OVER (
                     PARTITION BY [{col_dict['PATIENT_LOCAL_ID']}],
                     [{col_dict['DISEASE_CD']}]
-                    ORDER BY [{col_dict['EVENT_DATE']}], row_num
+                    ORDER BY [{col_dict['EVENT_DATE']}]
                 )
             ) AS days_until_next
         FROM clean_data
