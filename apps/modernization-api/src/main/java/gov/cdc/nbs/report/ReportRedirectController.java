@@ -18,7 +18,7 @@ class ReportRedirectController {
   @Hidden
   @GetMapping("/nbs/redirect/report/**")
   RedirectView reportRedirect(HttpServletRequest request) {
-    var parts = request.getRequestURL().toString().split("/nbs/redirect");
+    String[] parts = request.getRequestURL().toString().split("/nbs/redirect");
     return new RedirectView(parts[1]);
   }
 }
