@@ -572,6 +572,7 @@ class ReportServiceTest {
         when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
         when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
         when(requestBodySpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
 
         ResponseEntity<ReportResult> expectedResponse =
             new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK);
