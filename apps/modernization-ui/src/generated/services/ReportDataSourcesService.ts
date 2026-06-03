@@ -6,7 +6,7 @@ import type { Option } from '../models/Option';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class ReportDataSuorcesService {
+export class ReportDataSourcesService {
     /**
      * Report data sources
      * Provides all report data sources in NBS.

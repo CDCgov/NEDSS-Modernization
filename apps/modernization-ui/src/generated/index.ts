@@ -114,7 +114,7 @@ export { ProgramAreaOptionsService } from './services/ProgramAreaOptionsService'
 export { ProviderOptionsService } from './services/ProviderOptionsService';
 export { RaceOptionsService } from './services/RaceOptionsService';
 export { ReportControllerService } from './services/ReportControllerService';
-export { ReportDataSuorcesService } from './services/ReportDataSuorcesService';
+export { ReportDataSourcesService } from './services/ReportDataSourcesService';
 export { ReportLibrariesService } from './services/ReportLibrariesService';
 export { ReportSectionsService } from './services/ReportSectionsService';
 export { ResultedTestOptionsService } from './services/ResultedTestOptionsService';
