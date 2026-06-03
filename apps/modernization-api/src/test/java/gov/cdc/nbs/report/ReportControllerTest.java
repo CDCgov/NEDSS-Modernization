@@ -6,10 +6,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.AdminReportRequest;
@@ -204,7 +202,7 @@ class ReportControllerTest {
     @Test
     void getReport_should_return_report_configuration_response() {
       Long reportUid = 1L;
-      Long dataSourceUid = 2L;   
+      Long dataSourceUid = 2L;
       Long ownerUid = 0L;
       String group = "S";
       String sectionCd = "1002";
