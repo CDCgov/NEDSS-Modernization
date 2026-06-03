@@ -218,7 +218,7 @@ public class WhereClauseService {
       return new AdvancedQueryResult(joiner.toString(), containsLabResultValCol);
     }
 
-    return new AdvancedQueryResult("", containsLabResultValCol);
+    throw new IllegalArgumentException("Invalid advanced filter");
   }
 
   private AdvancedQueryResult buildFormattedAdvancedCriteria(
@@ -228,7 +228,7 @@ public class WhereClauseService {
     Operator operator = Operator.valueOf(rule.operator().toUpperCase());
     ReportColumn column =
         findColumn(config, rule.columnId()).orElseThrow(IllegalArgumentException::new);
-    hasLabResultValCol = RDB_LAB_RESULT_VAL_COLS.contains(column.name());
+    hasLabResultValCol = RDB_LAB_RESULT_VAL_COLS.contains(column.name().toUpperCase());
     String query =
         Optional.ofNullable(advQueryOperations.get(operator))
             .map(fn -> fn.apply(rule, column))

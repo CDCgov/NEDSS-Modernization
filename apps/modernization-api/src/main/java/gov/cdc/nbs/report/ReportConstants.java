@@ -42,12 +42,12 @@ public final class ReportConstants {
 
   public static final Set<String> RDB_LAB_RESULT_VAL_COLS =
       Set.of(
-          "numeric_result_val",
-          "ref_range_frm",
-          "ref_range_to",
-          "coded_result_val",
-          "coded_result_val_desc",
-          "text_result_val",
+          "NUMERIC_RESULT_VAL",
+          "REF_RANGE_FRM",
+          "REF_RANGE_TO",
+          "CODED_RESULT_VAL",
+          "CODED_RESULT_VAL_DESC",
+          "TEXT_RESULT_VAL",
           "RESULT_UNITS");
 
   private ReportConstants() {}
