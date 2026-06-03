@@ -22,8 +22,8 @@ public class ReportColumnMapper {
     return new ReportColumn(
         dataSourceColumn.getId(),
         dataSourceColumn.getColumnMaxLength(),
-        dataSourceColumn.getColumnName(),
-        dataSourceColumn.getColumnTitle(),
+        dataSourceColumn.getColumnName().trim(),
+        dataSourceColumn.getColumnTitle().trim(),
         dataSourceColumn.getColumnSourceTypeCode(),
         dataSourceColumn.getDescTxt(),
         isDisplayable,
