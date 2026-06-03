@@ -5,12 +5,9 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @Getter
 @Setter
@@ -21,8 +18,8 @@ public class ReportFilterValidation {
   @Column(name = "report_filter_validation_uid", nullable = false)
   private Long id;
 
-  @NonNull @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "report_filter_uid")
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "report_filter_uid", nullable = false)
   private ReportFilter reportFilter;
 
   @Column(name = "report_filter_ind")

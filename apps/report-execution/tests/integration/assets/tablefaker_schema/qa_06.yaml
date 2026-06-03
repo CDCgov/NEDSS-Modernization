@@ -1,0 +1,179 @@
+config:
+  seed: 19
+  nbs:
+    fk_tables: [ "[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]" ]
+
+tables:
+  - table_name: "[RDB].[dbo].[USER_PROFILE]"
+    row_count: 50
+    columns:
+      # required columns
+      - column_name: nedss_entry_id
+        data: row_id
+        is_primary_key: true
+      - column_name: provider_key
+        data: random.randrange(1000001, 1000099)
+
+      # used in library
+      - column_name: provider_quick_code
+        data: random.choice(["dekalb", "fulton", "JLJ", "local", "pks", "state"])
+        null_percentage: 0.25
+  - table_name: "[RDB].[dbo].[EVENT_METRIC]"
+    row_count: 1000
+    columns:
+      # required columns
+      - column_name: event_type
+        data: random.choice(["PHCInvForm", "LabReport", "MorbReport", "CONTACT", "Vaccination"])
+        is_primary_key: true
+      - column_name: event_uid
+        data: row_id
+        is_primary_key: true
+
+      # used in library
+      - column_name: add_user_id
+        data: foreign_key("[RDB].[dbo].[USER_PROFILE]", "nedss_entry_id")
+  - table_name: "[RDB].[dbo].[INVESTIGATION]"
+    row_count: 1000
+    columns:
+      # required columns
+      - column_name: investigation_key
+        data: row_id
+        is_primary_key: true
+      - column_name: record_status_cd
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+
+      # used by library
+      - column_name: case_uid
+        data: foreign_key("[RDB].[dbo].[EVENT_METRIC]", "event_uid")
+      - column_name: inv_case_status
+        data: random.choice(['Probable', 'Confirmed', 'Not a Case', 'Suspect'])
+      - column_name: referral_basis
+        data: random.choice(["T1 - Positive Test", "T2 - Morbidity Report", "C1- Cohort", "A1 - Associate 1", "A2 - Associate 2", "A3 - Associate 3", "P1 - Partner, Sex", "P2 - Partner, Needle-Sharing", "M1 - Congenital Infant Followup"])
+  - table_name: "[RDB].[dbo].[LAB_TEST]"
+    row_count: 1000
+    columns:
+      # required columns
+      - column_name: lab_test_key
+        data: row_id
+        is_primary_key: true
+      - column_name: record_status_cd
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+
+      # used by library
+      - column_name: specimen_collection_dt
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+  - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
+    row_count: 1000
+    columns:
+      # required columns
+      - column_name: lab_test_key
+        data: foreign_key("[RDB].[dbo].[LAB_TEST]", "lab_test_key")
+      - column_name: investigation_key
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+      - column_name: record_status_cd
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+      - column_name: condition_key
+        data: random.randint(1000, 10000)
+      - column_name: copy_to_provider_key
+        data: random.randint(1000, 10000)
+      - column_name: lab_rpt_dt_key
+        data: random.randint(1000, 10000)
+      - column_name: lab_test_technician_key
+        data: random.randint(1000, 10000)
+      - column_name: ldf_group_key
+        data: random.randint(1000, 10000)
+      - column_name: morb_rpt_key
+        data: random.randint(1000, 10000)
+      - column_name: ordering_org_key
+        data: random.randint(1000, 10000)
+      - column_name: ordering_provider_key
+        data: random.randint(1000, 10000)
+      - column_name: patient_key
+        data: random.randint(1000, 10000)
+      - column_name: performing_lab_key
+        data: random.randint(1000, 10000)
+      - column_name: reporting_lab_key
+        data: random.randint(1000, 10000)
+      - column_name: result_comment_grp_key
+        data: random.randint(1000, 10000)
+      - column_name: specimen_collector_key
+        data: random.randint(1000, 10000)
+      - column_name: test_result_grp_key
+        data: random.randint(1000, 10000)
+  - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
+    row_count: 500
+    columns:
+      # required columns
+      - column_name: investigation_key
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+
+      # used by library
+      - column_name: inv_local_id
+        data: random.choice(["CAS10022028GA01", "CAS10021036GA01", "CAS10005241GA01", "CAS10010008GA01"])
+      - column_name: diagnosis
+        data: random.choice(["710 - Syphilis, primary", "200 - Chlamydia", "300 - Gonorrhea", "790 - Syphilis, Congenital", "730 - Syphilis, Early Non-Primary, Non-Secondary"])
+      - column_name: patient_local_id
+        data: random.choice(["PSN20067002GA01", "PSN30076044GA01", "PSN10082059GA01", "PSN10087055GA01", "PSN10087069GA01", "PSN10087071GA01", "PSN10088042GA01", "PSN10089067GA01", "PSN10089161GA01", "PSN10094077GA01", "PSN10094080GA01"])
+      - column_name: cmp_pid_ind
+        data: random.choice(["Yes", "No"])
+        null_percentage: 0.75
+      - column_name: confirmation_dt
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.75
+      - column_name: fl_fup_exam_dt 
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.75
+      - column_name: patient_name
+        data: random.choice(["Walowitz, Howard", "Van Dam, Jean Claude", "Freeman, Gordon", "Stantz, Raymond", "Solo, Han", "Torrance, Jack", "Bowman, Dave", "Poole, Frank", "Deschain, Roland", "Truant, Johnny", "Navidson, Will", "Hanna, Vincent", "McCauley, Neil", "Cooper, Dale", "Vance, Eli", "Lumbergh, Bill"] ) if random.random() < .95 else None
+      - column_name: program_jurisdiction_oid
+        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
+  - table_name: "[RDB].[dbo].[MORBIDITY_REPORT_EVENT]"
+    row_count: 100
+    columns:
+      # required columns
+      - column_name: morb_rpt_key
+        data: row_id
+        is_primary_key: true
+      - column_name: record_status_cd
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+      - column_name: investigation_key
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+      - column_name: condition_key
+        data: random.randint(1000, 10000)
+      - column_name: health_care_key
+        data: random.randint(1000, 10000)
+      - column_name: hsptl_discharge_dt_key
+        data: random.randint(1000, 10000)
+      - column_name: hsptl_key
+        data: random.randint(1000, 10000)
+      - column_name: illness_onset_dt_key
+        data: random.randint(1000, 10000)
+      - column_name: ldf_group_key
+        data: random.randint(1000, 10000)
+      - column_name: morb_rpt_create_dt_key
+        data: random.randint(1000, 10000)
+      - column_name: morb_rpt_dt_key
+        data: random.randint(1000, 10000)
+      - column_name: morb_rpt_src_org_key
+        data: random.randint(1000, 10000)
+      - column_name: nursing_home_key
+        data: random.randint(1000, 10000)
+      - column_name: patient_key
+        data: random.randint(1000, 10000)
+      - column_name: physician_key
+        data: random.randint(1000, 10000)
+      - column_name: reporter_key
+        data: random.randint(1000, 10000)
+  - table_name: "[RDB].[dbo].[MORBIDITY_REPORT]"
+    row_count: 100
+    columns:
+      # required columns
+      - column_name: morb_rpt_key
+        data: foreign_key("[RDB].[dbo].[MORBIDITY_REPORT_EVENT]", "morb_rpt_key")
+        data: row_id
+      - column_name: record_status_cd
+        data: random.choice(['ACTIVE', 'INACTIVE'])
+
+      # used by library
+      - column_name: diagnosis_dt
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))

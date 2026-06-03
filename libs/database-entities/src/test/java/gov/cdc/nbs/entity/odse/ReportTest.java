@@ -24,6 +24,7 @@ class ReportTest {
     Long reportId = 1L;
     Long dataSource = 2L;
     ReportId id = new ReportId(reportId, dataSource);
+
     String sectionCd = "1000";
 
     Report actual = new Report(id, sectionCd);
@@ -49,6 +50,8 @@ class ReportTest {
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()));
   }
 
+  // Suppressing too many assertions code smell as there are just a lot of fields in report
+  @SuppressWarnings("java:S5961")
   @Test
   void should_create_complete_report() {
     Long reportId = 1L;
@@ -58,6 +61,7 @@ class ReportTest {
     ReportLibrary reportLibrary = new ReportLibrary();
     List<ReportFilter> reportFilters = List.of(new ReportFilter(), new ReportFilter());
     List<DisplayColumn> displayColumns = List.of(new DisplayColumn(), new DisplayColumn());
+    List<ReportSortColumn> reportSortColumns = List.of(new ReportSortColumn());
     String descTxt = "Counts of Reportable Diseases by County for Selected Time Frame";
     LocalDateTime effectiveFromTime = LocalDateTime.parse("2020-03-03T10:15:30");
     LocalDateTime effectiveToTime = LocalDateTime.parse("2020-03-04T10:15:30");
@@ -85,6 +89,7 @@ class ReportTest {
             reportLibrary,
             reportFilters,
             displayColumns,
+            reportSortColumns,
             descTxt,
             effectiveTime,
             filterMode,
@@ -126,6 +131,7 @@ class ReportTest {
         .satisfies(report -> assertEquals(reportLibrary, report.getReportLibrary()))
         .satisfies(report -> assertEquals(reportFilters, report.getReportFilters()))
         .satisfies(report -> assertEquals(displayColumns, report.getDisplayColumns()))
+        .satisfies(report -> assertEquals(reportSortColumns, report.getReportSortColumns()))
         .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()))
         .satisfies(report -> assertEquals(addReasonCd, report.getAddReasonCd()))
         .satisfies(report -> assertEquals(addTime, report.getAddTime()))

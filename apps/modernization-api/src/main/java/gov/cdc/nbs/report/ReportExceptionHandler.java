@@ -5,15 +5,22 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.client.RestClientResponseException;
 
 @ControllerAdvice(assignableTypes = {ReportController.class})
 public class ReportExceptionHandler {
 
   private static final System.Logger LOGGER =
       System.getLogger(ReportExceptionHandler.class.getName());
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    return new ResponseEntity<>(
+        ex.getBindingResult().getAllErrors().toString(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<String> handleNotFound(NotFoundException ex) {
@@ -35,13 +42,11 @@ public class ReportExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
-  /**
-   * Ensure the status code set on ResponseStatusExceptions is maintained through to the response,
-   * and is not overridden with 500 through our ExceptionHandler for the base Exception class.
-   */
-  @ExceptionHandler(ResponseStatusException.class)
-  public ResponseEntity<Object> handleResponseStatusException(ResponseStatusException ex) {
-    return new ResponseEntity<>(ex.getMessage(), ex.getStatusCode());
+  @ExceptionHandler(RestClientResponseException.class)
+  public ResponseEntity<String> handleRestClientFailure(RestClientResponseException ex) {
+    String err = ex.getResponseBodyAsString();
+    LOGGER.log(System.Logger.Level.ERROR, "Error received from rest client: %s".formatted(err), ex);
+    return new ResponseEntity<>(err, ex.getStatusCode());
   }
 
   @ExceptionHandler(Exception.class)

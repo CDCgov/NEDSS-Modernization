@@ -18,8 +18,8 @@ class ReportColumnMapperTest {
         DataSourceColumn.builder()
             .id(1L)
             .columnMaxLength(255)
-            .columnName("column_name")
-            .columnTitle("Column Title")
+            .columnName(" column_name")
+            .columnTitle(" Column Title ")
             .columnSourceTypeCode("VARCHAR")
             .dataSource(dataSource)
             .descTxt("Some description")
@@ -35,8 +35,8 @@ class ReportColumnMapperTest {
 
     assertThat(mapped.id()).isEqualTo(dbColumn.getId());
     assertThat(mapped.maxLength()).isEqualTo(dbColumn.getColumnMaxLength());
-    assertThat(mapped.name()).isEqualTo(dbColumn.getColumnName());
-    assertThat(mapped.title()).isEqualTo(dbColumn.getColumnTitle());
+    assertThat(mapped.name()).isEqualTo(dbColumn.getColumnName().trim());
+    assertThat(mapped.title()).isEqualTo(dbColumn.getColumnTitle().trim());
     assertThat(mapped.sourceTypeCode()).isEqualTo(dbColumn.getColumnSourceTypeCode());
     assertThat(mapped.descTxt()).isEqualTo(dbColumn.getDescTxt());
     assertThat(mapped.isDisplayable()).isTrue();

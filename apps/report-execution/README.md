@@ -93,6 +93,20 @@ uv run ./scripts/load_fake_data.py phc_demographic.yaml
 uv run ./scripts/restore_original_data.py phc_demographic.yaml
 ```
 
+### Comparing CSV contents
+
+As part of the testing we need to be comparing the output of the SAS version of the script and the Python library version.  While using the standard `diff` is perfectly reasonable in most cases there is also a script which will compare the _unique_ lines in each CSV against one another, confirming that all of the contents found in one are found in the other.
+
+This is especially useful when the explicit ordering from the SAS output can't be guaranteed in the Python library.  In cases like this it's crucial that we ensure that the data in each file are identical regardless of ordering.
+
+Example:
+```bash
+# qa06_sas.csv is the SAS output, qa06_py.csv is the Python library output
+uv run ./scripts/uniq_line_csvs.py qa06_sas.csv qa06_py.csv
+```
+
+This script will list each unique line in each file that differs from the other and no lines at all when the contents are identical in both.
+
 ## Code Linting and Formatting
 
 Additionally, this project uses [Ruff](https://docs.astral.sh/ruff/) (also created by Astral, the makers of uv) for linting and formatting and [Pyrefly](https://pyrefly.org/) for type checking.

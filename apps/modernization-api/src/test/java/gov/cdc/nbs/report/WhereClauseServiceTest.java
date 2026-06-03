@@ -55,6 +55,7 @@ class WhereClauseServiceTest {
         basicFilterConfigurations,
         advFilterConfiguration,
         columns,
+        null,
         null);
   }
 
