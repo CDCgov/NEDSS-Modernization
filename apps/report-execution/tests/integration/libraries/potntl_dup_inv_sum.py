@@ -173,11 +173,10 @@ class TestIntegrationNbsSrDupInvLibrary:
             'Event Date',
             'Patient Local Id',
             'Disease Code',
-            'Investigation Local Id'
+            'Investigation Local Id',
         ]
         missing_columns = set(expected_columns) - set(result.content.columns)
         assert not missing_columns, f'Missing expected columns: {missing_columns}'
-        assert result.content.columns == expected_columns, \
-            "Column order does not match expected"
-
-        
+        assert result.content.columns == expected_columns, (
+            'Column order does not match expected'
+        )

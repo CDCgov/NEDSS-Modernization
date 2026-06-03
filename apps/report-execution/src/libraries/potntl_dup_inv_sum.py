@@ -23,9 +23,7 @@ def execute(
     * Dates defer to default formatting
     """
     if not column_map:
-        raise MissingColumnError(
-            ['PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE']
-        )
+        raise MissingColumnError(['PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE'])
     # for easier lookups when order doesn't matter
     col_dict = {m[0]: m[1] for m in column_map}
 
