@@ -28,7 +28,7 @@ public class QueryParamToPathGatewayFilterFactory
 
         if (paramValue != null) {
           // Replace placeholder (e.g., {id}) with the query param value
-          path = path.toString().replace("{" + param + "}", paramValue);
+          path = path.replace("{" + param + "}", paramValue);
         }
       }
 
