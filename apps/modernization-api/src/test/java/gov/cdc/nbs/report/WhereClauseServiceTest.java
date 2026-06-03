@@ -42,7 +42,6 @@ class WhereClauseServiceTest {
         null,
         columns,
         null,
-        null,
         null);
   }
 

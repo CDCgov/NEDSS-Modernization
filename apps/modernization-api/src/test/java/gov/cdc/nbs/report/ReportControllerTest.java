@@ -60,7 +60,6 @@ class ReportControllerTest {
             advancedFilterConfig,
             columns,
             null,
-            null,
             null);
     when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
@@ -149,7 +148,6 @@ class ReportControllerTest {
             true,
             Arrays.asList(27L, 31L),
             null,
-            null,
             List.of(basicFilter),
             advancedFilter);
 
@@ -174,7 +172,6 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            null,
             null,
             List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
@@ -201,7 +198,6 @@ class ReportControllerTest {
             true,
             Arrays.asList(27L, 31L),
             null,
-            null,
             List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
@@ -226,7 +222,6 @@ class ReportControllerTest {
             true,
             Arrays.asList(27L, 31L),
             null,
-            null,
             List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
@@ -250,7 +245,6 @@ class ReportControllerTest {
             false,
             Arrays.asList(27L, 31L),
             null,
-            null,
             List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
@@ -272,7 +266,6 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            null,
             null,
             List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
@@ -303,7 +296,6 @@ class ReportControllerTest {
             false,
             Arrays.asList(27L, 31L),
             null,
-            null,
             List.of(),
             advancedFilter);
 
@@ -329,7 +321,6 @@ class ReportControllerTest {
             true,
             Arrays.asList(27L, 31L),
             null,
-            null,
             List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);
 
@@ -353,7 +344,6 @@ class ReportControllerTest {
             dataSourceUid,
             true,
             Arrays.asList(27L, 31L),
-            null,
             null,
             List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
             null);

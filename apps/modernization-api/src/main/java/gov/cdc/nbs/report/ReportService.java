@@ -23,6 +23,7 @@ import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.Comparator;
 import java.util.List;
@@ -93,14 +94,14 @@ public class ReportService {
 
               ReportSortColumn reportSortColumn =
                   report.getReportSortColumns().stream().findFirst().orElse(null);
-              Long defaultSortColumnUid = null;
-              SortDirection defaultSortDirection = null;
+              SortSpec defaultSort = null;
               if (reportSortColumn != null) {
-                defaultSortColumnUid = reportSortColumn.getDataSourceColumnUid();
-                defaultSortDirection =
-                    "ASC".equalsIgnoreCase(reportSortColumn.getReportSortOrderCode())
-                        ? SortDirection.ASC
-                        : SortDirection.DESC;
+                defaultSort =
+                    new SortSpec(
+                        reportSortColumn.getDataSourceColumnUid(),
+                        "ASC".equalsIgnoreCase(reportSortColumn.getReportSortOrderCode())
+                            ? SortDirection.ASC
+                            : SortDirection.DESC);
               }
 
               return new ReportConfiguration(
@@ -111,8 +112,7 @@ public class ReportService {
                   advancedFilter,
                   reportColumns,
                   defaultColumnUids,
-                  defaultSortColumnUid,
-                  defaultSortDirection);
+                  defaultSort);
             })
         .orElseThrow(
             () ->

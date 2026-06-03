@@ -23,6 +23,7 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.List;
 import java.util.Optional;
@@ -145,8 +146,7 @@ class ReportServiceTest {
             });
     assertThat(config.advancedFilter().reportFilterUid()).isEqualTo(6L);
     assertThat(config.defaultColumnUids()).isEqualTo(List.of(columnBId, columnAId));
-    assertThat(config.defaultSortColumnUid()).isEqualTo(columnAId);
-    assertThat(config.defaultSortDirection()).isEqualTo(SortDirection.DESC);
+    assertThat(config.defaultSort()).isEqualTo(new SortSpec(columnAId, SortDirection.DESC));
   }
 
   @Test
@@ -176,7 +176,7 @@ class ReportServiceTest {
 
     ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
 
-    assertThat(config.defaultSortDirection()).isEqualTo(SortDirection.ASC);
+    assertThat(config.defaultSort().direction()).isEqualTo(SortDirection.ASC);
   }
 
   @Test
@@ -230,8 +230,7 @@ class ReportServiceTest {
       when(responseSpec.toEntity(ReportResult.class)).thenReturn(expectedResponse);
 
       ReportExecutionRequest request =
-          new ReportExecutionRequest(
-              reportUid, dataSourceUid, true, null, null, null, List.of(), null);
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
       ResponseEntity<ReportResult> response = service.executeReport(request);
 
@@ -248,7 +247,7 @@ class ReportServiceTest {
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
-            reportUid, dataSourceUid, true, List.of(17L), null, null, List.of(), null);
+            reportUid, dataSourceUid, true, List.of(17L), null, List.of(), null);
 
     assertThatThrownBy(() -> service.executeReport(request))
         .isInstanceOf(NotImplementedException.class)
@@ -263,7 +262,7 @@ class ReportServiceTest {
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
-            reportUid, dataSourceUid, true, List.of(18L), null, null, List.of(), null);
+            reportUid, dataSourceUid, true, List.of(18L), null, List.of(), null);
 
     assertThatThrownBy(() -> service.executeReport(request))
         .isInstanceOf(NotFoundException.class)
