@@ -7,6 +7,7 @@ import type { BasicFilterConfiguration } from './BasicFilterConfiguration';
 import type { Library } from './Library';
 import type { ReportColumn } from './ReportColumn';
 import type { ReportDataSource } from './ReportDataSource';
+import type { SortSpec } from './SortSpec';
 export type ReportConfiguration = {
     dataSource: ReportDataSource;
     library: Library;
@@ -19,5 +20,6 @@ export type ReportConfiguration = {
     advancedFilter?: AdvancedFilterConfiguration;
     columns: Array<ReportColumn>;
     defaultColumnUids?: Array<number>;
+    defaultSort?: SortSpec;
 };
 

@@ -88,6 +88,7 @@ export { RuleGroup } from './models/RuleGroup';
 export { SaveAsReportRequest } from './models/SaveAsReportRequest';
 export type { Selectable } from './models/Selectable';
 export type { SensitiveValue } from './models/SensitiveValue';
+export { SortSpec } from './models/SortSpec';
 export type { Specimen } from './models/Specimen';
 export type { Success } from './models/Success';
 export { UpsertFilterRequest } from './models/UpsertFilterRequest';
