@@ -6,4 +6,4 @@ record UserInformation(
     String last,
     String username,
     boolean enabled,
-    long externalOrgUid) {}
+    Long externalOrgUid) {}
