@@ -20,7 +20,7 @@ def execute(
     * The way SAS sorts data depends on the session's encoding. This library
     will always sort alphabetically by Patient Local ID, Disease Code, and
     Event Date to ensure consistent results regardless of encoding.
-    * Dates are formatted MM/DD/YYY in this library
+    * Dates defer to default formatting
     """
     # for easier lookups when order doesn't matter
     col_dict = {m[0]: m[1] for m in column_map}
