@@ -14,7 +14,7 @@ class UserInformationFinder {
           [user].[user_first_nm] as first,
           [user].[user_last_nm] as last,
           [user].user_id as username,
-          case record_status_cd,
+          case record_status_cd
               when 'ACTIVE' then 1
               else 0
           end as enabled,
