@@ -85,7 +85,8 @@ class TestIntegrationNbsSr18Library:
 
         result = execute_report(report_spec)
 
-        assert len(result.content.data) == 0
+        # should still have 7 rows of data and all columns
+        assert len(result.content.data) == 7
         assert result.content.columns == [
             'Case Verification',
             'Pulmonary Count',
@@ -99,3 +100,73 @@ class TestIntegrationNbsSr18Library:
             'All Cases Count',
             'All Cases %',
         ]
+
+        for data in result.content.data:
+            assert isinstance(data[0], str)
+            assert isinstance(data[1], int)
+            assert isinstance(data[2], float)
+            assert isinstance(data[3], int)
+            assert isinstance(data[4], float)
+            assert isinstance(data[5], int)
+            assert isinstance(data[6], float)
+            assert isinstance(data[7], int)
+            assert isinstance(data[8], float)
+            assert isinstance(data[9], int)
+            assert isinstance(data[10], float)
+
+    def test_execute_report_spotty_data(self, snapshot):
+        case_verifications = [
+            '0 - Not a Verified Case',
+            '1 - Positive Culture',
+            '1A - Positive NAA',
+            '2 - Positive Smear/Tissue',
+            '3 - Clinical Case Definition',
+            '4 - Verified by Provider Diagnosis',
+            '5 - Suspect',
+        ]
+
+        for cv in case_verifications:
+            subset_query = 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]'
+            subset_query += f"WHERE CASE_VERIFICATION = '{cv}'"
+
+            report_spec = ReportSpec.model_validate(
+                {
+                    'is_export': True,
+                    'is_builtin': True,
+                    'report_title': 'SR 18',
+                    'library_name': 'nbs_sr_18',
+                    'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
+                    'subset_query': subset_query,
+                }
+            )
+
+            result = execute_report(report_spec)
+
+            # should still have 7 rows of data and all columns
+            assert len(result.content.data) == 7
+            assert result.content.columns == [
+                'Case Verification',
+                'Pulmonary Count',
+                'Pulmonary %',
+                'Extrapulmonary Count',
+                'Extrapulmonary %',
+                'Both Count',
+                'Both %',
+                'Unknown Count',
+                'Unknown %',
+                'All Cases Count',
+                'All Cases %',
+            ]
+
+            for data in result.content.data:
+                assert isinstance(data[0], str)
+                assert isinstance(data[1], int)
+                assert isinstance(data[2], float)
+                assert isinstance(data[3], int)
+                assert isinstance(data[4], float)
+                assert isinstance(data[5], int)
+                assert isinstance(data[6], float)
+                assert isinstance(data[7], int)
+                assert isinstance(data[8], float)
+                assert isinstance(data[9], int)
+                assert isinstance(data[10], float)
