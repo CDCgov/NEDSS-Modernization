@@ -122,10 +122,15 @@ public class WhereClauseService {
   /** Pure mapper utility isolating the business rules matching flags to permissions. */
   private Permission mapSharedToPermission(Character shared) {
     return switch (shared != null ? shared : ' ') {
-      case 'T' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTTEMPLATE");
-      case 'P' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTPRIVATE");
-      case 'S' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTPUBLIC");
-      case 'R' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTREPORTINGFACILITY");
+      case ReportConstants.TEMPLATE_REPORT_GROUP_CHAR ->
+          new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTTEMPLATE);
+      case ReportConstants.PRIVATE_REPORT_GROUP_CHAR ->
+          new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTPRIVATE);
+      case ReportConstants.PUBLIC_REPORT_GROUP_CHAR ->
+          new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTPUBLIC);
+      case ReportConstants.REPORTING_FACILITY_REPORT_GROUP_CHAR ->
+          new Permission(
+              ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTREPORTINGFACILITY);
       default -> null;
     };
   }

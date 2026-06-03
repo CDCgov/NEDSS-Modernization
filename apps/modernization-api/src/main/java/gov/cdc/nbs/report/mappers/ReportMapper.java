@@ -58,10 +58,10 @@ public class ReportMapper {
 
   private static Character reportGroupToDbChar(ReportConstants.ReportGroup group) {
     return switch (group) {
-      case PRIVATE -> 'P';
-      case REPORTING_FACILITY -> 'R';
-      case PUBLIC -> 'S';
-      case TEMPLATE -> 'T';
+      case PRIVATE -> ReportConstants.PRIVATE_REPORT_GROUP_CHAR;
+      case REPORTING_FACILITY -> ReportConstants.REPORTING_FACILITY_REPORT_GROUP_CHAR;
+      case PUBLIC -> ReportConstants.PUBLIC_REPORT_GROUP_CHAR;
+      case TEMPLATE -> ReportConstants.TEMPLATE_REPORT_GROUP_CHAR;
     };
   }
 }
