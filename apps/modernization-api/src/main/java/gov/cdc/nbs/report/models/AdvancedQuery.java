@@ -17,9 +17,7 @@ public sealed interface AdvancedQuery {
 
   record RuleGroup(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String id, // uuid
-      @Schema(
-              requiredMode = Schema.RequiredMode.REQUIRED)
-          @NotNull ReportConstants.QueryCombinators combinator,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull ReportConstants.QueryCombinators combinator,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<AdvancedQuery> rules)
       implements AdvancedQuery {}
 
