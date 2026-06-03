@@ -4,20 +4,14 @@
 /* eslint-disable */
 import type { AdvancedFilterRequest } from './AdvancedFilterRequest';
 import type { BasicFilterRequest } from './BasicFilterRequest';
+import type { SortSpec } from './SortSpec';
 export type ReportExecutionRequest = {
     reportUid: number;
     dataSourceUid: number;
     isExport: boolean;
     columnUids?: Array<number>;
-    sortColumnUid?: number;
-    sortDirection?: ReportExecutionRequest.sortDirection;
+    sort?: SortSpec;
     basicFilters?: Array<BasicFilterRequest>;
     advancedFilter?: AdvancedFilterRequest;
 };
-export namespace ReportExecutionRequest {
-    export enum sortDirection {
-        ASC = 'ASC',
-        DESC = 'DESC',
-    }
-}
 
