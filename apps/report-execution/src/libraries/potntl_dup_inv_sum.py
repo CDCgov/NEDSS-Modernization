@@ -102,7 +102,7 @@ def execute(
     ORDER BY
         d.[{col_dict['PATIENT_LOCAL_ID']}],
         d.[{col_dict['DISEASE_CD']}],
-        d.[{col_dict['EVENT_DATE']}]
+        d.[{col_dict['EVENT_DATE']}] desc
     """
 
     content = trx.query(full_query)
