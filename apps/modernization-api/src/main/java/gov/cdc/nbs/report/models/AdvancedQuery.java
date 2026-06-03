@@ -2,6 +2,7 @@ package gov.cdc.nbs.report.models;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import gov.cdc.nbs.report.ReportConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -17,9 +18,8 @@ public sealed interface AdvancedQuery {
   record RuleGroup(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String id, // uuid
       @Schema(
-              requiredMode = Schema.RequiredMode.REQUIRED,
-              allowableValues = {"or", "and"})
-          @NotNull String combinator,
+              requiredMode = Schema.RequiredMode.REQUIRED)
+          @NotNull ReportConstants.QueryCombinators combinator,
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull List<AdvancedQuery> rules)
       implements AdvancedQuery {}
 
