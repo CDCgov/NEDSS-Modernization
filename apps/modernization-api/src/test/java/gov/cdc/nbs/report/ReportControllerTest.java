@@ -6,8 +6,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
+import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.AdminReportRequest;
@@ -206,6 +208,9 @@ class ReportControllerTest {
       Long ownerUid = 0L;
       String group = "S";
       String sectionCd = "1002";
+
+      DataSource dataSourceEntity = mock(DataSource.class);
+      ReportLibrary reportLibraryEntity = mock(ReportLibrary.class);
 
       BasicFilterConfiguration basicFilterConfig = mock(BasicFilterConfiguration.class);
       AdvancedFilterConfiguration advancedFilterConfig = mock(AdvancedFilterConfiguration.class);
