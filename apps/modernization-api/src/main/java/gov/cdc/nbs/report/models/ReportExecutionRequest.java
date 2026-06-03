@@ -11,5 +11,6 @@ public record ReportExecutionRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Positive long dataSourceUid,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull boolean isExport,
     List<Long> columnUids,
+    SortSpec sort,
     @Valid List<BasicFilterRequest> basicFilters,
     @Valid AdvancedFilterRequest advancedFilter) {}

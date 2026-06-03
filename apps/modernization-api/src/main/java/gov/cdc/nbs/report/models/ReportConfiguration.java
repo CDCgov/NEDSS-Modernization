@@ -14,16 +14,9 @@ public record ReportConfiguration(
     String title,
     List<BasicFilterConfiguration> basicFilters,
     AdvancedFilterConfiguration advancedFilter,
-    List<ReportColumn> columns,
-    ReportConfigurationOptions options 
-) {
-    /**
-     * @return the list of default column UIDs, or {@code null} if options is null.
-     */
-    @JsonIgnore
-    public List<Long> getDefaultColumnUids() {
-        return options != null ? options.getDefaultColumnUids() : null;
-    }
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<ReportColumn> columns,
+    List<Long> defaultColumnUids,
+    SortSpec defaultSort) {
 
     /**
      * @return the report days value (30, 60, 90) or {@code null} if not set.
