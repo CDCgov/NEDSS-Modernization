@@ -1,10 +1,12 @@
 package gov.cdc.nbs.entity.odse;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Map;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -37,6 +39,10 @@ public class ReportLibrary {
 
   @NonNull @Column(name = "is_builtin_ind", length = 1, nullable = false)
   private Character isBuiltinInd;
+
+  @Column(name = "report_params", columnDefinition = "NVARCHAR(MAX)", nullable = true)
+  @Convert(converter = JsonToMapConverter.class)
+      private Map<String, Object> reportParams;
 
   @NonNull @Column(name = "add_time", nullable = false)
   private LocalDateTime addTime;
