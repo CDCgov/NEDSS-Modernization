@@ -12,6 +12,7 @@ import { ColumnSelector } from './columns/ColumnSelector';
 
 import layoutStyles from './layout/layout.module.scss';
 import { Required } from 'design-system/entry';
+import { InPageNavigation } from 'design-system/inPageNavigation';
 
 const SECTIONS = [
     {
@@ -31,8 +32,8 @@ const SECTIONS = [
         ),
     },
     {
-        title: 'Advanced filters',
-        id: 'advanced-filters',
+        title: 'Advanced filter',
+        id: 'advanced-filter',
         hasData: (config: ReportConfiguration) => !!config.advancedFilter,
         Component: ({ config, id, title }: { config: ReportConfiguration; id: string; title: string }) => (
             <Card id={id} title={title} collapsible={true}>
@@ -82,6 +83,9 @@ const ReportConfigurationPage = ({
                 </>
             }
         >
+            <aside>
+                <InPageNavigation sections={sectionData.map(({ id, title }) => ({ id, label: title }))} />
+            </aside>
             <form className={layoutStyles.columnContent}>
                 {sectionData.map(({ id, title, Component }) => (
                     <Component key={id} config={config} id={id} title={title} />
