@@ -55,6 +55,17 @@ class TestUtils:
             assert res == 100
             assert len(caplog.records) == 0
 
+    def test_get_str_env_or_default_valid(self, monkeypatch):
+        with monkeypatch.context() as m:
+            m.setenv('CSV_DATE_STRFTIME', '%m/%d/%Y')
+
+            res = utils.get_str_env_or_default('CSV_DATE_STRFTIME', 'foobar')
+            assert res == '%m/%d/%Y'
+
+    def test_get_str_env_or_default_invalid(self):
+        res = utils.get_str_env_or_default('CSV_DATE_STRFTIME', 'foobar')
+        assert res == 'foobar'
+
     def test_gen_subheader_with_us(self):
         result = utils.gen_subheader(states=['Georgia', 'Tennessee'])
         assert result == 'Georgia, Tennessee'

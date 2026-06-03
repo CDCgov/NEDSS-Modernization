@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @Embeddable
 public class Status {
 
-  private static final char ACTIVE_CODE = 'A';
-  private static final char INACTIVE_CODE = 'I';
+  public static final char ACTIVE_CODE = 'A';
+  public static final char INACTIVE_CODE = 'I';
 
   @Column(name = "status_cd", nullable = false)
   private Character statusCd;
