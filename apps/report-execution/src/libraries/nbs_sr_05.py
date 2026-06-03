@@ -58,7 +58,7 @@ def execute(
         SELECT phc_code_short_desc, '{filler_state}' as state,
         {month} as month, year, 0 as cases
         FROM diseases,
-        (VALUES {", ".join([f"({y})" for y in years])}) as year_values(year)
+        (VALUES {', '.join([f'({y})' for y in years])}) as year_values(year)
     ),
 
     -- base_data CTE
@@ -129,9 +129,8 @@ def execute(
 
     -- Result select
     SELECT FORMAT(
-             IIF(
-               median_ytd = 0,0,(curr_ytd - median_ytd) / median_ytd
-             ), 'P0', 'en-us') AS [Percent Change {year} vs 5 Year Median],
+           IIF( median_ytd = 0,0,(curr_ytd - median_ytd) / median_ytd), 'P0', 'en-us')
+             AS [Percent Change {year} vs 5 Year Median],
            last_ytd AS [Cumulative for {last_year} to Date],
            curr_ytd AS [Cumulative for {year} to Date],
            ty.phc_code_short_desc AS [Disease],
