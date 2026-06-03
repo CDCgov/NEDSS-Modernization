@@ -1,7 +1,5 @@
-import pandas as pd
-
 from src.db_transaction import Transaction
-from src.models import ReportResult, Table
+from src.models import ReportResult
 
 
 def execute(
