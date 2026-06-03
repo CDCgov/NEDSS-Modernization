@@ -48,6 +48,7 @@ class ReportServiceTest {
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;
+  @Mock private ReportSortColumn reportSortColumn;
   @Mock private ReportFilterBuilder reportFilterBuilder;
 
   @Mock private RequestBodyUriSpec requestBodyUriSpec;
@@ -66,6 +67,15 @@ class ReportServiceTest {
 
   private Report mockReport(
       ReportId id, String runner, String dataSourceName, List<ReportFilter> reportFilters) {
+    return mockReport(id, runner, dataSourceName, reportFilters, "DESC");
+  }
+
+  private Report mockReport(
+      ReportId id,
+      String runner,
+      String dataSourceName,
+      List<ReportFilter> reportFilters,
+      String sortDir) {
     Report report = mock(Report.class);
 
     Mockito.lenient().when(report.getReportLibrary()).thenReturn(reportLibrary);
@@ -77,6 +87,9 @@ class ReportServiceTest {
     Mockito.lenient().when(columnB.getDataSourceColumnId()).thenReturn(columnBId);
     Mockito.lenient().when(columnA.getSequenceNumber()).thenReturn(2);
     Mockito.lenient().when(columnB.getSequenceNumber()).thenReturn(1);
+    Mockito.lenient().when(report.getReportSortColumns()).thenReturn(List.of(reportSortColumn));
+    Mockito.lenient().when(reportSortColumn.getReportSortOrderCode()).thenReturn(sortDir);
+    Mockito.lenient().when(reportSortColumn.getDataSourceColumnUid()).thenReturn(columnAId);
     Mockito.lenient().when(reportLibrary.getRunner()).thenReturn(runner);
     Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
     Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
@@ -565,7 +578,7 @@ class ReportServiceTest {
         when(responseSpec.toEntity(ReportResult.class)).thenReturn(expectedResponse);
 
         ReportExecutionRequest request =
-            new ReportExecutionRequest(reportUid, dataSourceUid, true, null, List.of(), null);
+            new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
         ResponseEntity<ReportResult> response = service.executeReport(request);
 
@@ -581,7 +594,8 @@ class ReportServiceTest {
       mockReport(id, "java", "nbs_rdb.V_CHALK_TALK", List.of());
 
       ReportExecutionRequest request =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(17L), List.of(), null);
+          new ReportExecutionRequest(
+              reportUid, dataSourceUid, true, List.of(17L), null, List.of(), null);
 
       assertThatThrownBy(() -> service.executeReport(request))
           .isInstanceOf(NotImplementedException.class)
@@ -595,7 +609,8 @@ class ReportServiceTest {
       when(reportRepository.findById(id)).thenReturn(Optional.empty());
 
       ReportExecutionRequest request =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(18L), List.of(), null);
+          new ReportExecutionRequest(
+              reportUid, dataSourceUid, true, List.of(18L), null, List.of(), null);
 
       assertThatThrownBy(() -> service.executeReport(request))
           .isInstanceOf(NotFoundException.class)
