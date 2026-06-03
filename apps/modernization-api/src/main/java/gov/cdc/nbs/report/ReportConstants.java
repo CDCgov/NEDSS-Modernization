@@ -20,5 +20,17 @@ public final class ReportConstants {
     DESC;
   }
 
+  public enum SelectType {
+    SINGLE,
+    MULTI
+  }
+
+  public enum ReportGroup {
+    PRIVATE,
+    REPORTING_FACILITY,
+    PUBLIC,
+    TEMPLATE;
+  }
+
   private ReportConstants() {}
 }

@@ -1,21 +1,16 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportResult;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportId;
+import gov.cdc.nbs.report.models.*;
 import jakarta.validation.Valid;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/nbs/api/report")
@@ -29,6 +24,48 @@ public class ReportController {
 
   public ReportController(ReportService reportService) {
     this.reportService = reportService;
+  }
+
+  @PostMapping("/configuration")
+  @PreAuthorize("hasAuthority('REPORTADMIN-SYSTEM')")
+  public ResponseEntity<ReportId> createReport(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @Valid @RequestBody AdminReportRequest request) {
+    Report report = reportService.createReport(request, user);
+    return new ResponseEntity<>(report.getId(), HttpStatus.OK);
+  }
+
+  @PutMapping("/configuration/{reportUid}/{dataSourceUid}")
+  @PreAuthorize("hasAuthority('REPORTADMIN-SYSTEM')")
+  public ResponseEntity<ReportId> editReport(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long reportUid,
+      @PathVariable Long dataSourceUid,
+      @Valid @RequestBody AdminReportRequest request) {
+    Report report = reportService.editReport(request, user, new ReportId(reportUid, dataSourceUid));
+    return new ResponseEntity<>(report.getId(), HttpStatus.OK);
+  }
+
+  @PutMapping("/configuration/{reportUid}/{dataSourceUid}/save")
+  //  TODO: Figure out how to handle permissions more granularly NOSONAR
+  public ResponseEntity<ReportId> saveReport(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long reportUid,
+      @PathVariable Long dataSourceUid,
+      @Valid @RequestBody ReportExecutionRequest request) {
+    //  @TODO: Finish implementation NOSONAR
+    return null;
+  }
+
+  @PostMapping("/configuration/{reportUid}/{dataSourceUid}/save-as")
+  //  TODO: Figure out how to handle permissions more granularly NOSONAR
+  public ResponseEntity<ReportId> saveAsReport(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long reportUid,
+      @PathVariable Long dataSourceUid,
+      @Valid @RequestBody SaveAsReportRequest request) {
+    //  @TODO: Finish implementation NOSONAR
+    return null;
   }
 
   @GetMapping("/configuration/{reportUid}/{dataSourceUid}")
@@ -50,12 +87,7 @@ public class ReportController {
   @PostMapping("/run")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
   public ResponseEntity<ReportResult> runReport(
-      @Valid @RequestBody ReportExecutionRequest request, Errors validationErrors) {
-    if (validationErrors.hasErrors()) {
-      throw new ResponseStatusException(
-          HttpStatus.UNPROCESSABLE_ENTITY, validationErrors.getAllErrors().toString());
-    }
-
+      @Valid @RequestBody ReportExecutionRequest request) {
     if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
 
@@ -65,11 +97,7 @@ public class ReportController {
   @PostMapping("/export")
   @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
   public ResponseEntity<ReportResult> exportReport(
-      @Valid @RequestBody ReportExecutionRequest request, Errors validationErrors) {
-    if (validationErrors.hasErrors()) {
-      throw new ResponseStatusException(
-          HttpStatus.UNPROCESSABLE_ENTITY, validationErrors.getAllErrors().toString());
-    }
+      @Valid @RequestBody ReportExecutionRequest request) {
     if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");
     return reportService.executeReport(request);
