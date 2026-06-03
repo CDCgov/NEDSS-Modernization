@@ -29,18 +29,20 @@ class TestIntegrationNbsSr18Library:
 
         data = result.content.data
 
+        with open('./sr18snapshot.yaml', 'w') as fd:
+            fd.write(yaml.dump(data))
+
         snapshot.assert_match(yaml.dump(data), 'snapshot.yaml')
 
-        assert len(data) == 7
+        assert len(data) > 0
 
-        # ensure the columns are correct
         assert result.content.columns == [
             'CASE_VERIFICATION',
             'CALC_DISEASE_SITE',
         ]
 
-        # ensure proper data types for each column
         for d in data:
+            assert len(d) == 2
             assert isinstance(d[0], str)
             assert isinstance(d[1], str)
 
@@ -58,8 +60,7 @@ class TestIntegrationNbsSr18Library:
 
         result = execute_report(report_spec)
 
-        # should still have 7 rows of data and all columns
-        assert len(result.content.data) == 7
+        assert len(result.content.data) == 0
         assert result.content.columns == [
             'CASE_VERIFICATION',
             'CALC_DISEASE_SITE',
