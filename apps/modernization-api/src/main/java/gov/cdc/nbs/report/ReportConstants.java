@@ -17,26 +17,28 @@ public final class ReportConstants {
   public static final String SQL_WHERE = "WHERE ";
 
   // operator options for the advanced filter
-  public static final String EQ = "EQ"; // equals
-  public static final String NE = "NE"; // not equals
-  public static final String IN = "IN"; // is null
-  public static final String NN = "NN"; // not null
-  public static final String SW = "SW"; // starts with
-  public static final String CO = "CO"; // contains
-  public static final String BW = "BW"; // between
-  public static final String LT = "LT"; // less than
-  public static final String GT = "GT"; // greater than
-  public static final String LE = "LE"; // less than or equal to
-  public static final String GE = "GE"; // greater than or equal to
+  public enum Operator {
+    EQ, // equals
+    NE, // not equals
+    IN, // is null
+    NN, // not null
+    SW, // starts with
+    CO, // contains
+    BW, // between
+    LT, // less than
+    GT, // greater than
+    LE, // less than or equal to
+    GE // greater than or equal to
+  }
 
-  public static final Map<String, String> COMPARISON_OPERATORS =
+  public static final Map<Operator, String> COMPARISON_OPERATORS =
       Map.ofEntries(
-          Map.entry(LT, "<"),
-          Map.entry(GT, ">"),
-          Map.entry(LE, "<="),
-          Map.entry(GE, ">="),
-          Map.entry(NE, "<>"),
-          Map.entry(EQ, "="));
+          Map.entry(Operator.LT, "<"),
+          Map.entry(Operator.GT, ">"),
+          Map.entry(Operator.LE, "<="),
+          Map.entry(Operator.GE, ">="),
+          Map.entry(Operator.NE, "<>"),
+          Map.entry(Operator.EQ, "="));
 
   public static final Set<String> RDB_LAB_RESULT_VAL_COLS =
       Set.of(

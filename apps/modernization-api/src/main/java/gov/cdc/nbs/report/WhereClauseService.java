@@ -2,21 +2,11 @@ package gov.cdc.nbs.report;
 
 import static gov.cdc.nbs.report.ReportConstants.BAS_TIME_RANGE_TYPES;
 import static gov.cdc.nbs.report.ReportConstants.BAS_TYPES;
-import static gov.cdc.nbs.report.ReportConstants.BW;
-import static gov.cdc.nbs.report.ReportConstants.CO;
 import static gov.cdc.nbs.report.ReportConstants.COMPARISON_OPERATORS;
-import static gov.cdc.nbs.report.ReportConstants.EQ;
-import static gov.cdc.nbs.report.ReportConstants.GE;
-import static gov.cdc.nbs.report.ReportConstants.GT;
-import static gov.cdc.nbs.report.ReportConstants.IN;
-import static gov.cdc.nbs.report.ReportConstants.LE;
-import static gov.cdc.nbs.report.ReportConstants.LT;
-import static gov.cdc.nbs.report.ReportConstants.NE;
-import static gov.cdc.nbs.report.ReportConstants.NN;
+import static gov.cdc.nbs.report.ReportConstants.Operator;
 import static gov.cdc.nbs.report.ReportConstants.RDB_LAB_RESULT_VAL_COLS;
 import static gov.cdc.nbs.report.ReportConstants.SQL_AND;
 import static gov.cdc.nbs.report.ReportConstants.SQL_WHERE;
-import static gov.cdc.nbs.report.ReportConstants.SW;
 
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
@@ -49,29 +39,29 @@ public class WhereClauseService {
   private static final String LAB_RESULT_QUERY_VAL =
       "root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM %s";
 
-  Map<String, BiFunction<AdvancedQuery.Rule, ReportColumn, String>> advQueryOperations =
+  Map<Operator, BiFunction<AdvancedQuery.Rule, ReportColumn, String>> advQueryOperations =
       Map.ofEntries(
           Map.entry(
-              EQ,
+              Operator.EQ,
               (rule, column) ->
                   isCodedType(column)
                       ? buildAdvFilterCriteria(rule, column)
                       : buildAdvComparisonCriteria(rule, column)),
           Map.entry(
-              NE,
+              Operator.NE,
               (rule, column) ->
                   isCodedType(column)
                       ? buildAdvFilterCriteria(rule, column)
                       : buildAdvComparisonCriteria(rule, column)),
-          Map.entry(IN, this::buildAdvNullCriteria),
-          Map.entry(NN, this::buildAdvNullCriteria),
-          Map.entry(SW, this::buildAdvLikeCriteria),
-          Map.entry(CO, this::buildAdvLikeCriteria),
-          Map.entry(BW, this::buildAdvBetweenCriteria),
-          Map.entry(LT, this::buildAdvComparisonCriteria),
-          Map.entry(GT, this::buildAdvComparisonCriteria),
-          Map.entry(LE, this::buildAdvComparisonCriteria),
-          Map.entry(GE, this::buildAdvComparisonCriteria));
+          Map.entry(Operator.IN, this::buildAdvNullCriteria),
+          Map.entry(Operator.NN, this::buildAdvNullCriteria),
+          Map.entry(Operator.SW, this::buildAdvLikeCriteria),
+          Map.entry(Operator.CO, this::buildAdvLikeCriteria),
+          Map.entry(Operator.BW, this::buildAdvBetweenCriteria),
+          Map.entry(Operator.LT, this::buildAdvComparisonCriteria),
+          Map.entry(Operator.GT, this::buildAdvComparisonCriteria),
+          Map.entry(Operator.LE, this::buildAdvComparisonCriteria),
+          Map.entry(Operator.GE, this::buildAdvComparisonCriteria));
 
   /**
    * Generates a complete SQL WHERE clause for a report execution. Process both the basic and
@@ -235,7 +225,7 @@ public class WhereClauseService {
       ReportConfiguration config, AdvancedQuery.Rule rule) {
     boolean hasLabResultValCol;
 
-    String operator = rule.operator().toUpperCase();
+    Operator operator = Operator.valueOf(rule.operator().toUpperCase());
     ReportColumn column =
         findColumn(config, rule.columnId()).orElseThrow(IllegalArgumentException::new);
     hasLabResultValCol = RDB_LAB_RESULT_VAL_COLS.contains(column.name());
@@ -318,8 +308,8 @@ public class WhereClauseService {
 
   private String buildAdvFilterCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
     List<String> values = Arrays.asList(rule.value().split("\\|"));
-    boolean isNNOperator = rule.operator().equals(NE);
-    return buildFilterCriteria(values, column, isNNOperator, isNNOperator);
+    boolean isNEOperator = Operator.valueOf(rule.operator()).equals(Operator.NE);
+    return buildFilterCriteria(values, column, isNEOperator, isNEOperator);
   }
 
   /**
@@ -404,7 +394,7 @@ public class WhereClauseService {
   }
 
   private String buildAdvNullCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
-    boolean negateCriteria = rule.operator().equals(NN);
+    boolean negateCriteria = Operator.valueOf(rule.operator()).equals(Operator.NN);
     return "(" + buildNullCriteria(column, negateCriteria) + ")";
   }
 
@@ -422,7 +412,7 @@ public class WhereClauseService {
    */
   private String buildAdvLikeCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
     StringBuilder criteria = new StringBuilder("(");
-    boolean isContains = rule.operator().contains(CO);
+    boolean isContains = Operator.valueOf(rule.operator()).equals(Operator.CO);
 
     return criteria
         .append(fieldFormatter.convertToSQLColName(column.name(), column.sourceTypeCode()))
@@ -449,7 +439,7 @@ public class WhereClauseService {
    * @return a SQL fragment.
    */
   private String buildAdvComparisonCriteria(AdvancedQuery.Rule rule, ReportColumn column) {
-    String operator = rule.operator();
+    Operator operator = Operator.valueOf(rule.operator().toUpperCase());
     String sqlOperator =
         Optional.ofNullable(COMPARISON_OPERATORS.get(operator))
             .orElseThrow(
@@ -458,7 +448,7 @@ public class WhereClauseService {
     String value = fieldFormatter.formatField(column.sourceTypeCode(), rule.value());
 
     String nullCriteria = "";
-    if (operator.equals(NE)) {
+    if (Operator.valueOf(rule.operator()).equals(Operator.NE)) {
       nullCriteria = String.format(" OR %s", buildAdvNullCriteria(rule, column));
     }
     return String.format("(%s %s %s%s)", colName, sqlOperator, value, nullCriteria);

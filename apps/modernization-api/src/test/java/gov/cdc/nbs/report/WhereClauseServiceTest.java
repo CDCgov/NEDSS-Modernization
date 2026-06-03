@@ -1,16 +1,6 @@
 package gov.cdc.nbs.report;
 
-import static gov.cdc.nbs.report.ReportConstants.BW;
-import static gov.cdc.nbs.report.ReportConstants.CO;
-import static gov.cdc.nbs.report.ReportConstants.EQ;
-import static gov.cdc.nbs.report.ReportConstants.GE;
-import static gov.cdc.nbs.report.ReportConstants.GT;
-import static gov.cdc.nbs.report.ReportConstants.IN;
-import static gov.cdc.nbs.report.ReportConstants.LE;
-import static gov.cdc.nbs.report.ReportConstants.LT;
-import static gov.cdc.nbs.report.ReportConstants.NE;
-import static gov.cdc.nbs.report.ReportConstants.NN;
-import static gov.cdc.nbs.report.ReportConstants.SW;
+import static gov.cdc.nbs.report.ReportConstants.Operator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertFalse;
@@ -117,8 +107,8 @@ class WhereClauseServiceTest {
     return new AdvancedQuery.RuleGroup(id, combinator, rules);
   }
 
-  private AdvancedQuery.Rule createRule(String id, Long columnId, String operator, String value) {
-    return new AdvancedQuery.Rule(id, columnId, operator, value);
+  private AdvancedQuery.Rule createRule(String id, Long columnId, Operator operator, String value) {
+    return new AdvancedQuery.Rule(id, columnId, operator.name(), value);
   }
 
   private ReportColumn mockReportColumn(Long id, String columnSourceTypeCode, String columnName) {
@@ -491,8 +481,10 @@ class WhereClauseServiceTest {
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
     ReportColumn reportColumn2 = mockReportColumn(columnUid2, "DATE", "TimeRangeColumn");
 
-    AdvancedQuery.Rule labResultRule = createRule(UUID.randomUUID().toString(), 15L, EQ, "1");
-    AdvancedQuery.Rule labResultRule2 = createRule(UUID.randomUUID().toString(), 16L, NE, "1");
+    AdvancedQuery.Rule labResultRule =
+        createRule(UUID.randomUUID().toString(), 15L, Operator.EQ, "1");
+    AdvancedQuery.Rule labResultRule2 =
+        createRule(UUID.randomUUID().toString(), 16L, Operator.NE, "1");
 
     ReportColumn labResultReportColumn = mockReportColumn(15L, "INTEGER", "numeric_result_val");
     ReportColumn labResultReportColumn2 = mockReportColumn(16L, "STRING", "RESULT_UNITS", "");
@@ -600,40 +592,40 @@ class WhereClauseServiceTest {
     String dateVal = "2026-05-28";
     List<Map<String, Object>> rules =
         Arrays.asList(
-            Map.of("columnId", 2L, "operator", EQ, "value", intNumVal),
-            Map.of("columnId", 2L, "operator", NE, "value", intNumVal),
-            Map.of("columnId", 2L, "operator", GT, "value", intNumVal),
-            Map.of("columnId", 2L, "operator", LT, "value", intNumVal),
-            Map.of("columnId", 2L, "operator", GE, "value", intNumVal),
-            Map.of("columnId", 2L, "operator", LE, "value", intNumVal),
-            Map.of("columnId", 2L, "operator", NN, "value", ""),
-            Map.of("columnId", 2L, "operator", IN, "value", ""),
-            Map.of("columnId", 2L, "operator", BW, "value", "1,2"),
-            Map.of("columnId", 4L, "operator", EQ, "value", dateVal),
-            Map.of("columnId", 4L, "operator", NE, "value", dateVal),
-            Map.of("columnId", 4L, "operator", NN, "value", ""),
-            Map.of("columnId", 4L, "operator", IN, "value", ""),
-            Map.of("columnId", 4L, "operator", BW, "value", "2026-05-25,2026-05-28"),
-            Map.of("columnId", 4L, "operator", LT, "value", dateVal),
-            Map.of("columnId", 4L, "operator", GT, "value", dateVal),
-            Map.of("columnId", 4L, "operator", LE, "value", dateVal),
-            Map.of("columnId", 4L, "operator", GE, "value", dateVal),
-            Map.of("columnId", 5L, "operator", SW, "value", "foo"),
-            Map.of("columnId", 5L, "operator", CO, "value", "foo"),
-            Map.of("columnId", 5L, "operator", EQ, "value", "foo"),
-            Map.of("columnId", 5L, "operator", NE, "value", "foo"),
+            Map.of("columnId", 2L, "operator", Operator.EQ, "value", intNumVal),
+            Map.of("columnId", 2L, "operator", Operator.NE, "value", intNumVal),
+            Map.of("columnId", 2L, "operator", Operator.GT, "value", intNumVal),
+            Map.of("columnId", 2L, "operator", Operator.LT, "value", intNumVal),
+            Map.of("columnId", 2L, "operator", Operator.GE, "value", intNumVal),
+            Map.of("columnId", 2L, "operator", Operator.LE, "value", intNumVal),
+            Map.of("columnId", 2L, "operator", Operator.NN, "value", ""),
+            Map.of("columnId", 2L, "operator", Operator.IN, "value", ""),
+            Map.of("columnId", 2L, "operator", Operator.BW, "value", "1,2"),
+            Map.of("columnId", 4L, "operator", Operator.EQ, "value", dateVal),
+            Map.of("columnId", 4L, "operator", Operator.NE, "value", dateVal),
+            Map.of("columnId", 4L, "operator", Operator.NN, "value", ""),
+            Map.of("columnId", 4L, "operator", Operator.IN, "value", ""),
+            Map.of("columnId", 4L, "operator", Operator.BW, "value", "2026-05-25,2026-05-28"),
+            Map.of("columnId", 4L, "operator", Operator.LT, "value", dateVal),
+            Map.of("columnId", 4L, "operator", Operator.GT, "value", dateVal),
+            Map.of("columnId", 4L, "operator", Operator.LE, "value", dateVal),
+            Map.of("columnId", 4L, "operator", Operator.GE, "value", dateVal),
+            Map.of("columnId", 5L, "operator", Operator.SW, "value", "foo"),
+            Map.of("columnId", 5L, "operator", Operator.CO, "value", "foo"),
+            Map.of("columnId", 5L, "operator", Operator.EQ, "value", "foo"),
+            Map.of("columnId", 5L, "operator", Operator.NE, "value", "foo"),
             Map.of(
                 "columnId",
                 6L,
                 "operator",
-                EQ,
+                Operator.EQ,
                 "value",
                 "2019 Novel Coronavirus|AIDS|Acanthamoeba Disease (Excluding Keratitis)"),
             Map.of(
                 "columnId",
                 6L,
                 "operator",
-                NE,
+                Operator.NE,
                 "value",
                 "2019 Novel Coronavirus|AIDS|Acanthamoeba Disease (Excluding Keratitis)"));
 
@@ -644,7 +636,7 @@ class WhereClauseServiceTest {
               return createRule(
                   UUID.randomUUID().toString(),
                   columnUid,
-                  (String) rule.get("operator"),
+                  (Operator) rule.get("operator"),
                   (String) rule.get("value"));
             })
         .toList();
