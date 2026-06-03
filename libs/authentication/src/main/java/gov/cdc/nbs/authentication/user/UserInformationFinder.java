@@ -14,10 +14,11 @@ class UserInformationFinder {
           [user].[user_first_nm] as first,
           [user].[user_last_nm] as last,
           [user].user_id as username,
-          case record_status_cd
+          case record_status_cd,
               when 'ACTIVE' then 1
               else 0
-          end as enabled
+          end as enabled,
+          [user].[external_org_uid] as externalOrgUid
       from Auth_user [user]
       where [user].[user_id] = :username
         """;

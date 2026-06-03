@@ -56,6 +56,7 @@ class ReportControllerTest {
             new ReportDataSource(dataSourceEntity),
             new Library(reportLibraryEntity),
             "Report Title",
+            'N',
             List.of(basicFilterConfig),
             advancedFilterConfig,
             columns,

@@ -8,6 +8,7 @@ public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportDataSource dataSource,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Library library,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String title,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Character shared,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<BasicFilterConfiguration> basicFilters,
     AdvancedFilterConfiguration advancedFilter,

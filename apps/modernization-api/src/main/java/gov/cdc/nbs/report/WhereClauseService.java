@@ -5,12 +5,10 @@ import static gov.cdc.nbs.report.ReportConstants.BAS_TYPES;
 import static gov.cdc.nbs.report.ReportConstants.SQL_AND;
 import static gov.cdc.nbs.report.ReportConstants.SQL_WHERE;
 
-import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.config.security.SecurityUtil;
-import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.FilterType;
@@ -18,13 +16,12 @@ import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.utils.FieldFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
-
-import gov.cdc.nbs.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +32,6 @@ public class WhereClauseService {
 
   private final FieldFormatter fieldFormatter;
   private final PermissionScopeResolver scopeResolver;
-  private final ReportRepository reportRepository;
 
   /**
    * Generates a complete SQL WHERE clause for a report execution.
@@ -55,74 +51,76 @@ public class WhereClauseService {
         buildBasicWhereFragment(reportConfig, executionRequest.basicFilters());
 
     finalWhere.add(basicWhereFragment);
-    finalWhere.add(buildPermissionFragment(reportConfig, executionRequest));
+    finalWhere.add(buildPermissionFragment(reportConfig, reportConfig.shared()));
 
     // Only return the WHERE clause if it contains anything beyond the initial "WHERE " prefix
     return finalWhere.length() > SQL_WHERE.length() ? finalWhere.toString() : "";
   }
 
-  public String buildPermissionFragment(ReportConfiguration reportConfig, ReportExecutionRequest executionRequest) {
-    return getJurisProgramCriteria(reportConfig.dataSource().jurisdictionSecurity(), executionRequest);
-  }
+  public String buildPermissionFragment(ReportConfiguration reportConfig, Character sharedStatus) {
+    List<String> permissionClauses = new ArrayList<>();
 
-  private String getJurisProgramCriteria(Character jurisdictionSecurity, ReportExecutionRequest executionRequest) {
+    String jpCriteria =
+        getJurisProgramCriteria(reportConfig.dataSource().jurisdictionSecurity(), sharedStatus);
+    if (!jpCriteria.isBlank()) {
+      permissionClauses.add(jpCriteria);
+    }
 
-    // Safe null-check and comparison for jurisdictionSecurity
-    boolean hasJurisdictionSecurity = jurisdictionSecurity != null
-            && jurisdictionSecurity == 'Y';
+    String reportingFacilityCriteria =
+        getReportingFacilityCriteria(reportConfig.dataSource().facilitySecurity());
+    if (!reportingFacilityCriteria.isBlank()) {
+      permissionClauses.add(reportingFacilityCriteria);
+    }
 
-    // Early return if jurisdiction security is not active
-    if (!hasJurisdictionSecurity) {
+    if (permissionClauses.isEmpty()) {
       return "";
     }
 
-    ReportId reportId = new ReportId(executionRequest.reportUid(), executionRequest.dataSourceUid());
-    Character shared = reportRepository.getReferenceById(reportId).getShared();
+    return "(" + String.join(SQL_AND, permissionClauses) + ")";
+  }
 
-    // Map the shared flag to a Permission, or return null if unmatched
-    Permission permission = switch (shared != null ? shared : ' ') {
-      case 'T' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTTEMPLATE");
-      case 'P' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTPRIVATE");
-      case 'S' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTPUBLIC");
-      case 'R' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTREPORTINGFACILITY");
-      default  -> null;
-    };
+  private String getJurisProgramCriteria(Character jurisdictionSecurity, Character sharedStatus) {
+    if (jurisdictionSecurity == null || jurisdictionSecurity != 'Y') {
+      return "";
+    }
 
-    // Early return if the shared character didn't map to a valid permission
+    Permission permission = mapSharedToPermission(sharedStatus);
     if (permission == null) {
       return "";
     }
 
-    // 3. Resolve the scope using the valid permission
     PermissionScope scope = this.scopeResolver.resolve(permission);
-
-    // Early return or safe SQL fallback if the user has no allowed jurisdiction IDs
     if (scope.any().isEmpty()) {
       return "";
     }
 
-    // 4. Stream the longs, map them to Strings, and join them with commas
-    String ids = scope.any().stream()
-            .map(String::valueOf)
-            .collect(Collectors.joining(", "));
+    String ids = scope.any().stream().map(String::valueOf).collect(Collectors.joining(", "));
 
-    // Wrap the result in your SQL "IN (...)" syntax
     return "program_jurisdiction_oid IN (" + ids + ")";
   }
 
-  private String getReportingFacilityPermission(Character reportingFacilitySecurity) {
-    // Safe null-check and comparison for jurisdictionSecurity
-    boolean hasReportingFacilitySecurity = reportingFacilitySecurity != null
-            && reportingFacilitySecurity == 'Y';
-
-    // Early return if jurisdiction security is not active
-    if (!hasReportingFacilitySecurity) {
+  private String getReportingFacilityCriteria(Character reportingFacilitySecurity) {
+    if (reportingFacilitySecurity == null || reportingFacilitySecurity != 'Y') {
       return "";
     }
 
-    NbsUserDetails user = SecurityUtil.getUserDetails().;
+    Long externalOrgId = SecurityUtil.getUserDetails().getExternalOrgUid();
+    if (externalOrgId == null) {
+      return "";
+    }
 
+    return "REPORTING_FACILITY_UID = " + externalOrgId;
+  }
 
+  /** Pure mapper utility isolating the business rules matching flags to permissions. */
+  private Permission mapSharedToPermission(Character shared) {
+    return switch (shared != null ? shared : ' ') {
+      case 'T' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTTEMPLATE");
+      case 'P' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTPRIVATE");
+      case 'S' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTPUBLIC");
+      case 'R' -> new Permission(ReportConstants.REPORTINGOPERATION, "VIEWREPORTREPORTINGFACILITY");
+      default -> null;
+    };
   }
 
   /**

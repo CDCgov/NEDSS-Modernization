@@ -93,6 +93,7 @@ public class ReportService {
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
                   report.getReportTitle(),
+                  report.getShared(),
                   basicFilters,
                   advancedFilter,
                   reportColumns,

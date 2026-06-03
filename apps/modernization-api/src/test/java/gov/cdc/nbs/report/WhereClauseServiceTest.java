@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.FilterType;
@@ -17,6 +18,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -25,11 +27,13 @@ class WhereClauseServiceTest {
 
   private WhereClauseService mockWhereClauseService;
 
+  @Mock private PermissionScopeResolver scopeResolver;
+
+  private final FieldFormatter fieldFormatter = new FieldFormatter();
+
   @BeforeEach
   void setUp() {
-    // Instantiate the REAL formatter
-    FieldFormatter fieldFormatter = new FieldFormatter();
-    mockWhereClauseService = new WhereClauseService(fieldFormatter);
+    mockWhereClauseService = new WhereClauseService(fieldFormatter, scopeResolver);
   }
 
   private ReportConfiguration createReportConfig(
@@ -38,6 +42,7 @@ class WhereClauseServiceTest {
         Mockito.mock(ReportDataSource.class),
         Mockito.mock(Library.class),
         "Test Report",
+        'N',
         basicFilterConfigurations,
         null,
         columns,
@@ -407,5 +412,18 @@ class WhereClauseServiceTest {
     assertThatThrownBy(() -> mockWhereClauseService.buildBasicWhereFragment(reportConfig, request))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("No valid formatted values produced for column: ColumnName");
+  }
+
+  @Test
+  void should_return_empty_fragments_when_security_indicators_are_not_active() {
+    ReportConfiguration reportConfig = createReportConfig(List.of(), List.of());
+    // Set security parameters to 'N' or null
+    when(reportConfig.dataSource().jurisdictionSecurity()).thenReturn('N');
+    when(reportConfig.dataSource().facilitySecurity()).thenReturn(null);
+
+    String result = mockWhereClauseService.buildPermissionFragment(reportConfig, 'N');
+
+    // The output wrapper is structural: "()" inside a Joiner, meaning empty elements yield "()"
+    assertThat(result).isEmpty();
   }
 }
