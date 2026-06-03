@@ -416,10 +416,10 @@ public class WhereClauseService {
 
     return criteria
         .append(fieldFormatter.convertToSQLColName(column.name(), column.sourceTypeCode()))
-        .append(" LIKE ")
-        .append(String.format("'%s", isContains ? "%" : ""))
-        .append(rule.value())
-        .append("%'")
+        .append(" LIKE CONCAT(")
+        .append(String.format("'%s', ", isContains ? "%" : ""))
+        .append(fieldFormatter.formatField(column.sourceTypeCode(), rule.value()))
+        .append(", '%')")
         .append(")")
         .toString();
   }

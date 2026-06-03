@@ -542,7 +542,7 @@ class WhereClauseServiceTest {
             mockWhereClauseService.buildWhereClause(
                 reportConfig, executionRequest, mockDataSourceNameUtils))
         .isEqualTo(
-            "WHERE root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM [RDB].[dbo].[lab_test_report] WHERE ([COLUMN_INTEGER] IN (1)) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL)) AND (([COLUMN_DATETIME] IN ('2026-05-28')) OR (([COLUMN_STRING] LIKE '%foo%') AND (([COLUMN_INTEGER] NOT IN (1) OR [COLUMN_INTEGER] IS NULL) OR (([COLUMN_STRING] LIKE 'foo%') AND ([COLUMN_STRING] IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)')) AND ([COLUMN_INTEGER] IN (1)) AND ([COLUMN_INTEGER] >= 1)) OR (CAST([COLUMN_DATETIME] AS DATE) > '2026-05-28') OR ([numeric_result_val] = 1)) AND ([COLUMN_STRING] NOT IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)') OR [COLUMN_STRING] IS NULL) AND ([RESULT_UNITS] <> '1' OR ([RESULT_UNITS] IS NULL))) OR (CAST([COLUMN_DATETIME] AS DATE) BETWEEN '2026-05-25' AND '2026-05-28') OR (CAST([COLUMN_DATETIME] AS DATE) IS NOT NULL) OR ([COLUMN_INTEGER] > 1) OR ([COLUMN_INTEGER] BETWEEN 1 AND 2)))");
+            "WHERE root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM [RDB].[dbo].[lab_test_report] WHERE ([COLUMN_INTEGER] IN (1)) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL)) AND (([COLUMN_DATETIME] IN ('2026-05-28')) OR (([COLUMN_STRING] LIKE CONCAT('%', 'foo', '%')) AND (([COLUMN_INTEGER] NOT IN (1) OR [COLUMN_INTEGER] IS NULL) OR (([COLUMN_STRING] LIKE CONCAT('', 'foo', '%')) AND ([COLUMN_STRING] IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)')) AND ([COLUMN_INTEGER] IN (1)) AND ([COLUMN_INTEGER] >= 1)) OR (CAST([COLUMN_DATETIME] AS DATE) > '2026-05-28') OR ([numeric_result_val] = 1)) AND ([COLUMN_STRING] NOT IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)') OR [COLUMN_STRING] IS NULL) AND ([RESULT_UNITS] <> '1' OR ([RESULT_UNITS] IS NULL))) OR (CAST([COLUMN_DATETIME] AS DATE) BETWEEN '2026-05-25' AND '2026-05-28') OR (CAST([COLUMN_DATETIME] AS DATE) IS NOT NULL) OR ([COLUMN_INTEGER] > 1) OR ([COLUMN_INTEGER] BETWEEN 1 AND 2)))");
   }
 
   @ParameterizedTest
@@ -582,7 +582,7 @@ class WhereClauseServiceTest {
             "(([COLUMN_DATETIME] IN ('2026-05-28')) AND ([COLUMN_DATETIME] NOT IN ('2026-05-28') OR CAST([COLUMN_DATETIME] AS DATE) IS NULL) AND (CAST([COLUMN_DATETIME] AS DATE) IS NOT NULL) AND (CAST([COLUMN_DATETIME] AS DATE) IS NULL) AND (CAST([COLUMN_DATETIME] AS DATE) BETWEEN '2026-05-25' AND '2026-05-28') AND (CAST([COLUMN_DATETIME] AS DATE) < '2026-05-28') AND (CAST([COLUMN_DATETIME] AS DATE) > '2026-05-28') AND (CAST([COLUMN_DATETIME] AS DATE) <= '2026-05-28') AND (CAST([COLUMN_DATETIME] AS DATE) >= '2026-05-28'))"),
         Arguments.of(
             List.of(18, 19, 20, 21),
-            "(([COLUMN_STRING] LIKE 'foo%') AND ([COLUMN_STRING] LIKE '%foo%') AND ([COLUMN_STRING] IN ('foo')) AND ([COLUMN_STRING] NOT IN ('foo') OR [COLUMN_STRING] IS NULL))"),
+            "(([COLUMN_STRING] LIKE CONCAT('', 'foo', '%')) AND ([COLUMN_STRING] LIKE CONCAT('%', 'foo', '%')) AND ([COLUMN_STRING] IN ('foo')) AND ([COLUMN_STRING] NOT IN ('foo') OR [COLUMN_STRING] IS NULL))"),
         Arguments.of(List.of(), ""),
         Arguments.of(null, ""));
   }
