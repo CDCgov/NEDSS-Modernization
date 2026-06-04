@@ -45,8 +45,6 @@ def execute(
 
     full_query = f"""
     WITH subset AS ({subset_query})
-    -- Capture SQL Server's physical row order
-    , source_order AS (
         SELECT * FROM subset
     )
     , clean_data AS (
