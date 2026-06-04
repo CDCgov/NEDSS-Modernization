@@ -25,12 +25,6 @@ public class AdvancedQueryBuilder {
     return filterValues.get(current);
   }
 
-  /** Returns the last processed {@code FilterValue} */
-  private FilterValue previous() {
-    if (current == 0) return null;
-    return filterValues.get(current - 1);
-  }
-
   /** Advances the current index to the next {@code FilterValue} in the list */
   private void advance() {
     if (hasNext()) current++;
@@ -46,6 +40,11 @@ public class AdvancedQueryBuilder {
     this.filterValues.add(CLOSE_PAREN);
 
     AdvancedQuery.RuleGroup res = startRuleGroup();
+
+    if (current != filterValues.size()) {
+      throw new Error("Extra query left over :(");
+    }
+
     return simplify(res);
   }
 
@@ -72,6 +71,7 @@ public class AdvancedQueryBuilder {
     FilterValue combinator = peek();
     // "(" CLAUSE ")"
     if (isCloseParen(combinator)) {
+      advance();
       return new AdvancedQuery.RuleGroup(
           combinator.getId().toString(), ReportConstants.QueryCombinators.and, List.of(firstRule));
     } else if (!isCombinator(combinator))
