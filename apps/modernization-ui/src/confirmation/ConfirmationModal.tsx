@@ -36,13 +36,14 @@ export const ConfirmationModal = ({
             ref={modal}
             id={id}
             aria-labelledby="confirmation-heading"
-            className="modal"
-            aria-describedby={ariaDescribedBy}
-        >
-            <ModalHeading id="confirmation-heading">{title}</ModalHeading>
-            <div className={classNames(style.content, 'modal-content')}>
+            className={classNames(style.content, 'modal')}
+            aria-describedby={ariaDescribedBy}>
+            <ModalHeading id="confirmation-heading" className={style.heading}>
+                {title}
+            </ModalHeading>
+            <div className="modal-content">
                 <div className={classNames('warning')}>
-                    <Icon.Warning className={classNames(style.warningIcon)} />
+                    <Icon.Warning className={classNames(style.warningIcon)} aria-label="Warning" />
                 </div>
                 <div className={classNames(style.message, 'modal-message')}>
                     <p id={ariaDescribedBy}>{message}</p>
@@ -58,8 +59,7 @@ export const ConfirmationModal = ({
                         type="button"
                         onClick={onConfirm}
                         data-testid="confirmation-btn"
-                        className={`${classNames(style.actionButton)} ${confirmBtnClassName ? confirmBtnClassName : ''}`}
-                    >
+                        className={`${classNames(style.actionButton)} ${confirmBtnClassName ? confirmBtnClassName : ''}`}>
                         {confirmText}
                     </Button>
                 </ButtonGroup>

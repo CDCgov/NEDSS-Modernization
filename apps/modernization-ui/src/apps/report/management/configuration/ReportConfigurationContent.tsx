@@ -1,3 +1,7 @@
+import { ModalRef } from '@trussworks/react-uswds';
+import { Shown } from 'conditional-render';
+import { ConfirmationModal } from 'confirmation';
+import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
 import { NoData } from 'design-system/data';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
@@ -8,22 +12,22 @@ import { SingleSelect } from 'design-system/select';
 import { HasValueFunction, NamedColumn } from 'design-system/table/header/column';
 import { AdminReportRequest, BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
-import { useReportDataSources, useReportLibraries, useReportSections } from 'options/report';
+import { useReportDataSources, useReportFilters, useReportLibraries, useReportSections } from 'options/report';
 import { useUserOptions } from 'options/users';
 import { ReactComponentLike } from 'prop-types';
-import { useId } from 'react';
-import { Controller } from 'react-hook-form';
+import { useId, useRef, useState } from 'react';
+import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 
 interface FilterConfig {
     id?: number;
-    name: string;
-    type?: string;
+    filter: Selectable;
+    selectType?: string;
     columnId?: number;
-    requiredInd: string;
+    isRequired: boolean;
 }
 
-const sizing = 'medium';
+const SIZING = 'medium';
 
 // TODO: Move this to the API once #3238 is merged
 const formatType = ({ minValueCount, maxValueCount }: BasicFilterConfiguration) => {
@@ -71,38 +75,36 @@ const formToRequest = (data: ConfigForm): AdminReportRequest => {
 type FilterColumn = NamedColumn<FilterConfig, string> & HasValueFunction<FilterConfig, string>;
 
 const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportConfiguration; isEditable: boolean }) => {
-    const filterColumns: FilterColumn[] = [
-        // TODO: This should be derived from the filter ID once we make thing editable
-        { id: 'filter', name: 'Filter', value: (v) => v.name },
-        { id: 'type', name: 'Type', value: (v) => v.type },
-        {
-            id: 'column',
-            name: 'Associated column',
-            value: (v) => config?.columns.find(({ id }) => id === v.columnId)?.title,
-        },
-        { id: 'filter-required', name: 'Required as basic filter?', value: (v) => v.requiredInd },
-    ];
+    const [dataSourceSelected, setDataSourceSelected] = useState(!!config?.dataSource);
+    const confirmDataSourceRef = useRef<ModalRef>(null);
 
-    const filterData: FilterConfig[] =
-        config?.basicFilters.map((f) => ({
-            id: f.reportFilterUid,
-            // TODO: This should be derived from the filter ID once we make thing editable
-            name: f.filterType.name ?? '',
-            type: formatType(f),
-            columnId: f.reportColumnUid,
-            requiredInd: f.isRequired ? 'Yes' : 'No',
-        })) ?? [];
-
-    if (config?.advancedFilter) {
-        filterData.push({ id: config.advancedFilter.reportFilterUid, name: 'Where Clause Builder', requiredInd: 'No' });
-    }
+    const dataSource = useWatch<ConfigForm, 'dataSourceId'>({
+        name: 'dataSourceId',
+    });
 
     return (
         <>
-            <Card id="report-source" title="1. Report source" collapsible={false}>
+            <Card
+                id="report-source"
+                title="1. Report source"
+                collapsible={false}
+                footer={
+                    <Shown when={isEditable && !dataSourceSelected}>
+                        {/* didn't seem worth adding a styles module for this one thing */}
+                        <div style={{ paddingLeft: '16rem' }}>
+                            <Button
+                                secondary={true}
+                                disabled={!dataSource}
+                                onClick={confirmDataSourceRef.current?.toggleModal}>
+                                Confirm data source
+                            </Button>
+                        </div>
+                    </Shown>
+                }>
                 <Row
                     // only editable on create
-                    isEditable={isEditable && !config?.dataSource}
+                    isEditable={isEditable}
+                    disabled={dataSourceSelected}
                     fieldName="dataSourceId"
                     EditComponent={SingleSelect}
                     label="Data source"
@@ -115,10 +117,31 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                         }))
                     }
                 />
+
+                <ConfirmationModal
+                    modal={confirmDataSourceRef}
+                    title={`Confirm data source: ${dataSource?.name}`}
+                    message={
+                        <>
+                            After you confirm, you cannot edit the data source again. If you want to use a different
+                            data source for this report later, create a new report.
+                        </>
+                    }
+                    confirmText="Confirm"
+                    cancelText="Cancel"
+                    onConfirm={() => {
+                        setDataSourceSelected(true);
+                        confirmDataSourceRef.current?.toggleModal();
+                    }}
+                    onCancel={() => {
+                        confirmDataSourceRef.current?.toggleModal();
+                    }}
+                />
             </Card>
-            <Card id="metadata" title="2. Report configuration" collapsible={false}>
+            <Card id="metadata" title="2. Report configuration" collapsible={false} disabled={!dataSourceSelected}>
                 <Row
                     isEditable={isEditable}
+                    disabled={!dataSourceSelected}
                     fieldName="reportTitle"
                     EditComponent={TextInputField}
                     label="Name"
@@ -127,6 +150,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                 />
                 <Row
                     isEditable={isEditable}
+                    disabled={!dataSourceSelected}
                     fieldName="description"
                     EditComponent={TextAreaField}
                     label="Description"
@@ -136,6 +160,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                 />
                 <Row
                     isEditable={isEditable}
+                    disabled={!dataSourceSelected}
                     fieldName="ownerId"
                     EditComponent={SingleSelect}
                     label="Owner"
@@ -145,6 +170,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                 />
                 <Row
                     isEditable={isEditable}
+                    disabled={!dataSourceSelected}
                     fieldName="group"
                     EditComponent={SingleSelect}
                     label="Group"
@@ -154,6 +180,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                 />
                 <Row
                     isEditable={isEditable}
+                    disabled={!dataSourceSelected}
                     fieldName="sectionCode"
                     EditComponent={SingleSelect}
                     label="Section name"
@@ -163,6 +190,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                 />
                 <Row
                     isEditable={isEditable}
+                    disabled={!dataSourceSelected}
                     fieldName="libraryId"
                     EditComponent={SingleSelect}
                     label="Report execution library"
@@ -180,28 +208,14 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     helperText="The query logic for the report"
                 />
             </Card>
-            <RepeatingBlock<FilterConfig>
-                id="filter-config"
-                title="3. Available filters"
-                itemName="filter"
-                columns={filterColumns}
-                sizing={sizing}
-                editable={isEditable}
-                data={filterData}
-                viewRenderer={(entry: FilterConfig) =>
-                    filterColumns.map((fc) => (
-                        <ValueField key={fc.id} label={fc.name} sizing={sizing}>
-                            {fc.value(entry)}
-                        </ValueField>
-                    ))
-                }
-            />
+            <FilterRepeatingBlock config={config} isEditable={isEditable} dataSourceSelected={dataSourceSelected} />
         </>
     );
 };
 
 const Row = ({
     isEditable,
+    disabled,
     defaultValue,
     fieldName,
     label,
@@ -212,6 +226,7 @@ const Row = ({
     EditComponent,
 }: {
     isEditable: boolean;
+    disabled: boolean;
     defaultValue?: string;
     fieldName: string;
     label: string;
@@ -231,13 +246,14 @@ const Row = ({
             name={fieldName}
             rules={required ? validateRequiredRule(label) : undefined}
             defaultValue={defaultValue}
+            disabled={disabled}
             // ignoring the ref as it does not pass down well and isn't critical
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             render={({ field: { ref, ...fieldValues }, fieldState: { error } }) => (
                 <EditComponent
                     id={id}
                     orientation="horizontal"
-                    sizing="medium"
+                    SIZING="medium"
                     required={required}
                     label={label}
                     helperText={helperText}
@@ -263,6 +279,118 @@ const Option = ({ option }: { option?: Selectable | string }) => {
         <span>
             {option.name} <em className="text-base">({option.label})</em>
         </span>
+    );
+};
+
+const FilterRepeatingBlock = ({
+    config,
+    isEditable,
+    dataSourceSelected,
+}: {
+    config?: ReportConfiguration;
+    isEditable: boolean;
+    dataSourceSelected: boolean;
+}) => {
+    const filterOptions = useReportFilters();
+
+    const filterColumns: FilterColumn[] = [
+        { id: 'filter', name: 'Filter', value: (v) => v.filter.name },
+        { id: 'type', name: 'Type', value: (v) => v.selectType },
+        {
+            id: 'column',
+            name: 'Associated column',
+            value: (v) => config?.columns.find(({ id }) => id === v.columnId)?.title,
+        },
+        { id: 'filter-required', name: 'Required as basic filter?', value: (v) => (v.isRequired ? 'Yes' : 'No') },
+    ];
+
+    const filterData: FilterConfig[] =
+        config?.basicFilters.map((f) => ({
+            id: f.reportFilterUid,
+            filter: filterOptions.find(({ value }) => parseInt(value) === f.filterType.id)!,
+            selectType: formatType(f),
+            columnId: f.reportColumnUid,
+            isRequired: f.isRequired,
+        })) ?? [];
+
+    if (config?.advancedFilter) {
+        filterData.push({
+            id: config.advancedFilter.reportFilterUid,
+            filter: filterOptions.find(({ value }) => value === '7')!,
+            isRequired: false,
+        });
+    }
+
+    return (
+        <RepeatingBlock<FilterConfig>
+            id="filter-config"
+            title="3. Available filters"
+            itemName="filter"
+            columns={filterColumns}
+            sizing={SIZING}
+            editable={isEditable && dataSourceSelected}
+            data={filterData}
+            disabled={!dataSourceSelected}
+            viewRenderer={(entry: FilterConfig) =>
+                filterColumns.map((fc) => (
+                    <ValueField key={fc.id} label={fc.name} sizing={SIZING}>
+                        {fc.value(entry)}
+                    </ValueField>
+                ))
+            }
+            formRenderer={() => <FilterConfigForm filterOptions={filterOptions} />}
+        />
+    );
+};
+
+const SELECTABLE_FILTER_IDS = ['1', '2', '3', '8', '9', '10', '16', '19', '20', '21'];
+const COLUMN_REQUIRED_FILTER_IDS = [
+    '1',
+    '2',
+    '3',
+    '5',
+    '6',
+    '8',
+    '9',
+    '10',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
+    '21',
+];
+
+const FilterConfigForm = ({ filterOptions }: { filterOptions: Selectable[] }) => {
+    // Note the repeating block starts a new form, so this is a different form context than the
+    // parent report config form
+
+    return (
+        <section>
+            <Controller
+                name="filter"
+                rules={validateRequiredRule('Filter')}
+                // ignoring the ref as it does not pass down well and isn't critical
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
+                    <SingleSelect
+                        id={`filter-${name}`}
+                        label={'Filter'}
+                        name={name}
+                        options={filterOptions}
+                        orientation="horizontal"
+                        error={error?.message}
+                        required
+                        sizing={SIZING}
+                        {...remaining}
+                    />
+                )}
+            />
+        </section>
     );
 };
 

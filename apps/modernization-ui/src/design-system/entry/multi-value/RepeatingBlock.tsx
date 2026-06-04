@@ -39,7 +39,7 @@ type RepeatingBlockProps<V extends FieldValues> = {
     isValid?: (isValid: boolean) => void;
     formRenderer?: (entry?: V, sizing?: Sizing) => ReactNode;
     itemName?: string;
-} & Pick<CardProps, 'id' | 'title' | 'collapsible'>;
+} & Pick<CardProps, 'id' | 'title' | 'collapsible' | 'disabled'>;
 
 const RepeatingBlock = <V extends FieldValues>({
     id,
@@ -54,6 +54,7 @@ const RepeatingBlock = <V extends FieldValues>({
     sizing,
     viewable = true,
     editable = true,
+    disabled = false,
     onChange,
     isDirty,
     isValid,
@@ -142,6 +143,7 @@ const RepeatingBlock = <V extends FieldValues>({
             title={title}
             collapsible={collapsible}
             sizing={sizing}
+            disabled={disabled}
             flair={<Tag size={sizing}>{interaction.entries.length}</Tag>}
             className={classNames(styles.card)}
             info={editable && <Required />}

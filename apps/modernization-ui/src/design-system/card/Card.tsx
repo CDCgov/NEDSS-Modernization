@@ -15,6 +15,7 @@ type CardProps = {
     open?: boolean;
     footer?: ReactNode;
     required?: boolean;
+    disabled?: boolean;
 } & Omit<CardHeaderProps, 'control'> &
     JSX.IntrinsicElements['section'];
 
@@ -31,6 +32,7 @@ const Card = ({
     open = true,
     footer,
     required = false,
+    disabled = false,
     children,
     ...remaining
 }: CardProps) => {
@@ -44,7 +46,7 @@ const Card = ({
             id={cardId}
             role="group"
             aria-labelledby={id}
-            className={classNames(styles.card, className)}
+            className={classNames(styles.card, className, {[styles.disabled]: disabled})}
             {...remaining}
         >
             <CardHeader
