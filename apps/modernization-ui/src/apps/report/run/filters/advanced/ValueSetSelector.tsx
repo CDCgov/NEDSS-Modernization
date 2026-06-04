@@ -32,12 +32,15 @@ const CODE_DESC_CD = {
     DESCRIPTION: 'd',
 };
 
-const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>) => {
+type Required = {
+    required?: boolean;
+};
+
+const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField> & Required) => {
     const id = useId();
     const [options, setOptions] = useState<Selectable[] | null>(null);
     const { ready, properties } = useConfiguration();
     const { codeDescCd, codesetNm, columnUid } = props.schema.fieldMap[props.field] ?? {};
-
     useEffect(() => {
         const getValues = async (): Promise<Selectable[]> => {
             const valueSetMap = getValueSetMap(properties.entries.NBS_STATE_CODE);
@@ -109,6 +112,7 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
             sizing="medium"
             options={options ?? []}
             value={value}
+            required={props.required}
             onChange={handleOnChange}
         />
     );

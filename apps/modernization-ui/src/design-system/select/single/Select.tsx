@@ -11,9 +11,10 @@ type SelectProps = {
     onChange?: (value: Selectable | null) => void;
     placeholder?: string;
     sizing?: Sizing;
+    useLabel?: boolean | undefined;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'value'>;
 
-const renderOptions = (options: Selectable[], placeholder?: string) => (
+const renderOptions = (options: Selectable[], placeholder?: string, useLabel?: boolean) => (
     <>
         {placeholder && (
             <option key={-1} value="" aria-label="no value selected">
@@ -22,7 +23,7 @@ const renderOptions = (options: Selectable[], placeholder?: string) => (
         )}
         {options?.map((item, index) => (
             <option key={index} value={item.value} aria-label={item.label}>
-                {item.name}
+                {useLabel ? item.label : item.name}
             </option>
         ))}
     </>
@@ -35,6 +36,7 @@ const Select = ({
     value,
     onChange,
     placeholder = '- Select -',
+    useLabel = false,
     ...inputProps
 }: SelectProps) => {
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -51,7 +53,7 @@ const Select = ({
             onChange={handleChange}
             {...inputProps}
         >
-            {renderOptions(options, placeholder)}
+            {renderOptions(options, placeholder, useLabel)}
         </select>
     );
 };

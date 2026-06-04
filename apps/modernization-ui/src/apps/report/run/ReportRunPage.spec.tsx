@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor, within } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -2587,7 +2587,8 @@ describe('report run page', () => {
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
                 .mockResolvedValue(MOCK_RESULT);
-            const { getByRole, findAllByText, queryByText, findByRole } = renderWithRouter();
+            const { getByRole, findAllByText, queryByText, findByRole, findByLabelText, getByLabelText, container } =
+                renderWithRouter();
 
             expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -2596,19 +2597,18 @@ describe('report run page', () => {
             expect(await findAllByText('Advanced filter')).toHaveLength(2);
             expect(queryByText('Basic filters')).toBeNull();
 
-            const fieldSelect = await findByRole('combobox', { name: 'Field' });
-            expect(fieldSelect).toHaveValue('~');
+            const fieldSelect = getByLabelText('Field');
+            expect(fieldSelect).toHaveValue('');
             const user = userEvent.setup();
             await user.selectOptions(fieldSelect, 'Full Name');
-            const opSelect = await findByRole('combobox', { name: 'Operator' });
-            expect(opSelect).toHaveValue('~');
+            const opSelect = await findByLabelText('Logic');
+            expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, 'contains');
-            const valueBox = await findByRole('textbox', { name: 'Value' });
+            const valueBox = await findByLabelText('Value');
             expect(valueBox).toHaveValue('');
             await user.type(valueBox, 'hi');
 
-            // currently not working, but should once we put in our own components
-            // expect(await axe(container)).toHaveNoViolations();
+            expect(await axe(container)).toHaveNoViolations();
 
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
@@ -2681,7 +2681,10 @@ describe('report run page', () => {
                 getByText,
                 findByText,
                 findAllByText,
+                getByLabelText,
+                getByTestId,
                 findByLabelText,
+                findAllByLabelText,
                 findByRole,
                 findAllByRole,
                 findByTestId,
@@ -2693,8 +2696,8 @@ describe('report run page', () => {
 
             expect(await findAllByText('Advanced filter')).toHaveLength(2);
 
-            const fieldSelect = await findByRole('combobox', { name: 'Field' });
-            expect(fieldSelect).toHaveValue('~');
+            const fieldSelect = getByLabelText('Field');
+            expect(fieldSelect).toHaveValue('');
             const user = userEvent.setup();
             await user.selectOptions(fieldSelect, 'Full Name');
 
@@ -2702,40 +2705,40 @@ describe('report run page', () => {
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
 
-            expect(await findByText('Must select an operator and value')).toBeVisible();
+            expect(await findByText('Must select an operator and value.')).toBeVisible();
 
             // generally filled in text value
-            const opSelect = await findByRole('combobox', { name: 'Operator' });
-            expect(opSelect).toHaveValue('~');
+            const opSelect = getByLabelText('Logic');
+            expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, 'contains');
 
-            expect(await findByText('Value cannot be empty')).toBeVisible();
+            expect(await findByText('Value cannot be empty.')).toBeVisible();
 
-            const valueBox = await findByRole('textbox', { name: 'Value' });
+            const valueBox = getByLabelText('Value');
             expect(valueBox).toHaveValue('');
             await user.type(valueBox, 'hi');
 
-            expect(queryByText('Value cannot be empty')).toBeNull();
+            expect(queryByText('Value cannot be empty.')).toBeNull();
 
             // generally filled in number value
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
-            expect(opSelect).toHaveValue('~');
+            expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, '=');
 
-            expect(await findByText('Value cannot be empty')).toBeVisible();
+            expect(await findByText('Value cannot be empty.')).toBeVisible();
 
-            const numberBox = await findByRole('spinbutton', { name: 'Value' });
+            const numberBox = await findByLabelText('Value');
             expect(numberBox).toHaveValue(null);
-            await user.type(numberBox, '0');
+            await user.type(numberBox, '0{tab}');
 
-            expect(queryByText('Value cannot be empty')).toBeNull();
+            expect(queryByText('Value cannot be empty.')).toBeNull();
 
             // generally filled in coded list
             await user.selectOptions(fieldSelect, 'Condition Code');
-            expect(opSelect).toHaveValue('~');
+            expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, 'in');
 
-            expect(await findByText('Value cannot be empty')).toBeVisible();
+            expect(await findByText('Value cannot be empty.')).toBeVisible();
 
             await waitFor(() => expect(codedValueGetter).toHaveBeenCalledWith(`/nbs/api/options/races`));
 
@@ -2744,46 +2747,51 @@ describe('report run page', () => {
             await userEvent.click(dropDown);
             await userEvent.click(getByText('Terrible disease'));
 
-            expect(queryByText('Value cannot be empty')).toBeNull();
+            expect(queryByText('Value cannot be empty.')).toBeNull();
 
             // dates between
             await user.selectOptions(fieldSelect, 'DATE_OF_BIRTH');
-            expect(opSelect).toHaveValue('~');
+            expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, 'between');
 
-            expect(await findByText('Both low and high values required')).toBeVisible();
+            expect(await findByText('Both low and high values required.')).toBeVisible();
 
             // The date entry will likely need to change once we switch to NBS components
-            const dtInputs = (await findByTestId('value-editor')).children;
-            await user.type(dtInputs[0], '2022-10-18');
+            const dtContainer = getByTestId('date-range-editor');
+            const dtInputFrom = await within(dtContainer).findByLabelText('From');
+            const dtInputTo = await within(dtContainer).findByLabelText('To');
+            await user.type(dtInputFrom, '10/18/2022{tab}');
 
-            expect(await findByText('Both low and high values required')).toBeVisible();
+            expect(await findByText('Both low and high values required.')).toBeVisible();
 
-            await user.type(dtInputs[1], '2022-10-17');
+            await user.type(dtInputTo, '10/17/2022{tab}');
 
-            expect(await findByText('High value must be greater than or equal to low value')).toBeVisible();
+            expect(await findByText('High value must be greater than or equal to low value.')).toBeVisible();
+            await user.clear(dtInputTo);
+            await user.type(dtInputTo, '10/20/2022{tab}');
 
-            await user.type(dtInputs[1], '{backspace}9');
-
-            expect(queryByText('High value must be greater than or equal to low value')).toBeNull();
+            expect(queryByText('High value must be greater than or equal to low value.')).toBeNull();
 
             // numbers between
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
-            expect(opSelect).toHaveValue('~');
+            expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, 'between');
 
-            expect(await findByText('Both low and high values required')).toBeVisible();
+            expect(await findByText('Both low and high values required.')).toBeVisible();
 
-            const numInputs = await findAllByRole('spinbutton');
-            await user.type(numInputs[0], '10');
+            const numContainer = getByTestId('number-range-editor');
+            const numInputFrom = await within(numContainer).findByLabelText('From');
+            const numInputTo = await within(numContainer).findByLabelText('To');
+            await user.type(numInputFrom, '10');
 
-            expect(await findByText('Both low and high values required')).toBeVisible();
+            expect(await findByText('Both low and high values required.')).toBeVisible();
 
-            await user.type(numInputs[1], '0');
+            await user.type(numInputTo, '0');
 
-            expect(await findByText('High value must be greater than or equal to low value')).toBeVisible();
+            expect(await findByText('High value must be greater than or equal to low value.')).toBeVisible();
 
-            await user.type(numInputs[1], '{backspace}20');
+            await user.clear(numInputTo);
+            await user.type(numInputTo, '20');
 
             await user.click(exportButton);
 
@@ -2860,7 +2868,8 @@ describe('report run page', () => {
                 { value: '123', name: 'Disease, terrible' },
                 { value: '456', name: 'Disease, not so bad' },
             ]);
-            const { getByRole, findAllByText, findByRole, findAllByRole, findAllByTitle } = renderWithRouter();
+            const { getByRole, getByTestId, findAllByText, findByRole, findAllByRole, findAllByLabelText } =
+                renderWithRouter();
 
             expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -2880,26 +2889,28 @@ describe('report run page', () => {
             expect(fields[2]).toHaveValue('DAYS_OLD');
             expect(fields[3]).toHaveValue('CONDITION');
 
-            const operators = await findAllByRole('combobox', { name: 'Operator' });
+            const operators = await findAllByRole('combobox', { name: 'Logic' });
             expect(operators).toHaveLength(4);
             expect(operators[0]).toHaveValue('beginswith');
             expect(operators[1]).toHaveValue('>');
             expect(operators[2]).toHaveValue('between');
             expect(operators[3]).toHaveValue('notIn');
 
-            const values = await findAllByTitle('Value');
+            const values = await findAllByLabelText('Value');
             expect(values).toHaveLength(3);
             expect(values[0]).toHaveValue('prefix');
             expect(values[1]).toHaveValue('2020-01-01');
-            const [low, high] = values[2].children;
-            expect(low).toHaveValue(10);
-            expect(high).toHaveValue(20);
+            const numContainer = getByTestId('number-range-editor');
+            const numLow = await within(numContainer).findByLabelText('From');
+            const numHigh = await within(numContainer).findByLabelText('To');
+            expect(numLow).toHaveValue(10);
+            expect(numHigh).toHaveValue(20);
             expect(await findByRole('button', { name: 'Remove Disease, terrible' })).toBeVisible();
             expect(await findByRole('button', { name: 'Remove Disease, not so bad' })).toBeVisible();
 
             const user = userEvent.setup();
-            await user.type(high, '1');
-            expect(high).toHaveValue(201);
+            await user.type(numHigh, '1');
+            expect(numHigh).toHaveValue(201);
 
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
@@ -3215,7 +3226,7 @@ describe('report run page', () => {
                     expect(announcementEl).toHaveTextContent('You have moved the group up to path 2-2')
                 );
 
-                const addRuleBtn = (await findAllByRole('button', { name: '+ Rule' }))[0];
+                const addRuleBtn = (await findAllByRole('button', { name: 'Add rule' }))[0];
                 await user.click(addRuleBtn);
                 await waitFor(() =>
                     expect(announcementEl).toHaveTextContent('The group has returned to its starting position')

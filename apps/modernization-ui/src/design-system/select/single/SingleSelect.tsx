@@ -15,6 +15,7 @@ type Props = {
     error?: string;
     required?: boolean;
     warning?: string;
+    useLabel?: boolean;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'value'>;
 
 const SingleSelect = ({
@@ -31,6 +32,7 @@ const SingleSelect = ({
     required,
     warning,
     placeholder = '- Select -',
+    useLabel = false,
     ...inputProps
 }: Props) => {
     return (
@@ -53,6 +55,7 @@ const SingleSelect = ({
                 placeholder={placeholder}
                 required={required}
                 aria-required={required}
+                useLabel={useLabel}
                 {...inputProps}
             />
         </EntryWrapper>

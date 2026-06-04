@@ -1,0 +1,126 @@
+@use 'styles/borders';
+@use 'styles/buttons';
+@use 'styles/colors';
+
+.layout {
+    :global {
+        .queryBuilder {
+            padding: 1rem;
+            max-width: 90rem;
+        }
+
+        .ruleGroup-header,
+        .rule {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(1.5rem, 1fr));
+            align-items: end;
+            gap: 10px;
+        }
+
+        .trash-icon {
+            @include borders.bordered();
+
+            svg {
+                fill: colors.$error;
+            }
+
+            &:hover {
+                svg {
+                    fill: colors.$error-dark;
+                }
+            }
+        }
+
+        .ruleGroup-header {
+            padding-right: 0.5rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+
+            &:not(:first-of-type) {
+                margin-top: 0.5rem;
+            }
+
+            .queryBuilder-dragHandle {
+                grid-column: span 1;
+                grid-column-start: 1;
+            }
+
+            span {
+                padding-left: 0;
+                grid-column: span 3;
+            }
+
+            button {
+                grid-column: span 4;
+
+                &:nth-of-type(2) {
+                    grid-column: span 5;
+                }
+            }
+
+            .trash-icon {
+                grid-column: span 1;
+                margin-bottom: 0.25rem;
+            }
+        }
+
+        .ruleGroup {
+            padding: 1rem 0;
+            border: 1px dashed colors.$base-light;
+            margin-top: 0.75rem;
+
+            &:first-of-type {
+                border: none;
+                padding: 0;
+            }
+
+            &:not(:first-of-type) {
+                margin-left: 0;
+                margin-right: 1rem;
+                padding-left: 1rem;
+            }
+        }
+
+        .rule {
+            padding: 0.75rem 0 0.75rem 0;
+
+            .queryBuilder-dragHandle {
+                grid-column-start: 1;
+            }
+
+            span {
+                padding-left: 0;
+                grid-column: span 11;
+
+                &:nth-of-type(3) {
+                    grid-column: span 5;
+                }
+            }
+
+            button {
+                grid-column: span 5;
+            }
+
+            .trash-icon {
+                grid-column: span 1 / -2;
+            }
+        }
+
+        .queryBuilder-value {
+            grid-column: span 15;
+        }
+
+        // Preview Where Clause styling
+        details {
+            div {
+                max-width: 90rem;
+            }
+        }
+
+        summary {
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}

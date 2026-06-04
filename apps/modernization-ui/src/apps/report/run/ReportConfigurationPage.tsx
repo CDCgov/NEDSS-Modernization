@@ -14,6 +14,8 @@ import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 
+import styles from './report-configuration-page.module.scss';
+
 const BASIC_SECTIONS = [
     {
         title: 'Time',
@@ -58,7 +60,16 @@ const SECTIONS = [
         id: 'advanced-filter',
         hasData: (config: ReportConfiguration) => !!config.advancedFilter,
         Component: ({ config, id, title }: { config: ReportConfiguration; id: string; title: string }) => (
-            <Card id={id} title={title} collapsible={true}>
+            <Card
+                id={id}
+                title={title}
+                collapsible={true}
+                className={styles.card}
+                subtext="Add rules and rule groups to narrow or broaden your results.
+                Use AND to require all connected rules or groups to match, or OR to require
+                only one to match. Your advanced filter combines with your basic filters
+                using AND logic. The WHERE clause preview shows your advanced filter as you build it."
+            >
                 <AdvancedFilter filter={config.advancedFilter!} columns={config.columns} />
             </Card>
         ),

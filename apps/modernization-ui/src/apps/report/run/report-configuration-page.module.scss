@@ -1,0 +1,15 @@
+@use 'styles/borders';
+@use 'styles/buttons';
+@use 'styles/colors';
+
+.card {
+    header {
+        div {
+            max-width: 90rem;
+
+            span:first-of-type {
+                padding-bottom: 1rem;
+            }
+        }
+    }
+}

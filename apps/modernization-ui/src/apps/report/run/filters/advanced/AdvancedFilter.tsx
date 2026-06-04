@@ -14,7 +14,7 @@ import QueryBuilder, {
     splitBy,
     ValidationResult,
 } from 'react-querybuilder';
-import 'react-querybuilder/dist/query-builder.css';
+
 import { ReportExecuteForm } from '../../ReportRunPage';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
@@ -28,6 +28,10 @@ import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { KeyboardDnDProvider } from './useKeyboardDnd';
 import { ShiftableDragHandle } from './ShiftableDragHandle';
 import { ValueEditor } from './ValueEditor';
+import { ValueSingleSelector } from './ValueSingleSelector.tsx';
+import { AdvancedFilterButton } from './AdvancedFilterButton.tsx';
+
+import styles from './advanced-filter.module.scss';
 
 // ============= Constants ============= /
 
@@ -284,7 +288,8 @@ const validator: QueryValidator = (q) => {
     return result;
 };
 
-const isDate = (val: string) => !!val.match(/\d{4}-\d{2}-\d{2}/);
+// matches date format (e.g. 11/01/2020 1/1/2020)
+const isDate = (val: string) => !!val.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
 
 const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: ValidationResultMap) => {
     const setInvalid = (id: string, reason: string) => {
@@ -302,27 +307,32 @@ const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: Valida
         if (!rule.field || rule.field === '~') return;
 
         // check for exceptions
-        if (!rule.operator || rule.operator === '~') {
-            setInvalid(id, 'Must select an operator and value');
+        if (rule.operator === '~') {
+            setInvalid(id, 'Must select an operator and value.');
         } else if (rule.operator === 'between') {
-            if (!rule.value || rule.value.includes('~')) {
-                setInvalid(id, 'Both low and high values required');
-            } else {
-                const parts: string[] = rule.value.split(',');
-                if (isDate(parts[0])) {
-                    const [startDt, endDt] = parts.map((v) => new Date(v));
-                    if (startDt > endDt) {
-                        setInvalid(id, 'High value must be greater than or equal to low value');
-                    }
-                } else {
-                    const [startInt, endInt] = parts.map((v) => parseInt(v));
-                    if (startInt > endInt) setInvalid(id, 'High value must be greater than or equal to low value');
+            if (rule.value.trim() === '') {
+                setInvalid(id, 'Both low and high values required.');
+            }
+
+            const parts: string[] = rule.value.split(',');
+
+            if (parts[0] === '' || parts[1] === '') {
+                setInvalid(id, 'Both low and high values required.');
+            }
+
+            if (isDate(parts[0]) && isDate(parts[1])) {
+                const [startDt, endDt] = parts.map((v) => new Date(v));
+
+                if (startDt > endDt) {
+                    setInvalid(id, 'High value must be greater than or equal to low value.');
                 }
+            } else {
+                const [startInt, endInt] = parts.map((v) => parseInt(v));
+                if (startInt > endInt) setInvalid(id, 'High value must be greater than or equal to low value.');
             }
         } else if (BINARY_OPERATORS.find((name) => name === rule.operator)) {
-            // 0 is fine, but falsey
-            if ((!rule.value && rule.value !== 0) || !rule.value.length) {
-                setInvalid(id, 'Value cannot be empty');
+            if (rule.value === '') {
+                setInvalid(id, 'Value cannot be empty.');
             }
         }
     } else if (isRuleGroupType(rule)) {
@@ -354,7 +364,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
 
     return (
-        <div>
+        <div className={styles.layout}>
             {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
             <KeyboardDnDProvider>
                 <QueryBuilderDnD dnd={pragmaticDndAdapter} updateWhileDragging={false}>
@@ -367,7 +377,14 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                         autoSelectField={false}
                         autoSelectOperator={false}
                         autoSelectValue={false}
-                        controlElements={{ dragHandle: ShiftableDragHandle, valueEditor: ValueEditor }}
+                        controlElements={{
+                            dragHandle: ShiftableDragHandle,
+                            valueEditor: ValueEditor,
+                            fieldSelector: ValueSingleSelector,
+                            operatorSelector: ValueSingleSelector,
+                            combinatorSelector: ValueSingleSelector,
+                            actionElement: AdvancedFilterButton,
+                        }}
                     />
                 </QueryBuilderDnD>
             </KeyboardDnDProvider>
@@ -380,17 +397,19 @@ const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
     const fallbackExpression = 'No advanced filter selections made';
 
     return (
-        <details>
-            <summary>Preview Where Statement</summary>
-            <p className="font-mono-md">
-                {query
-                    ? formatQuery(query, {
-                          format: 'sql',
-                          preset: 'mssql',
-                          fallbackExpression,
-                      })
-                    : fallbackExpression}
-            </p>
+        <details className="padding-205 border-top border-base-lighter">
+            <summary className="text-bold margin-bottom-2">Preview of WHERE Clause</summary>
+            <div className="bg-base-lightest padding-105">
+                <p className="font-mono-md">
+                    {query
+                        ? formatQuery(query, {
+                              format: 'sql',
+                              preset: 'mssql',
+                              fallbackExpression,
+                          })
+                        : fallbackExpression}
+                </p>
+            </div>
         </details>
     );
 };
