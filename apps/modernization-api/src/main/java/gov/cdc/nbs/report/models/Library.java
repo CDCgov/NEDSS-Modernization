@@ -21,6 +21,7 @@ public record Library(
         dbLibrary.getDescTxt(),
         dbLibrary.isBuiltin(),
         dbLibrary.allowColumnSelection(),
-        JsonUtils.parseJsonMap(dbLibrary.getReportParams())   // String -> Map
+        dbLibrary.getLibraryParams()
+    );
   }
 }
