@@ -63,3 +63,6 @@ databaseChangeLog:
         - sqlFile:
             path: db/report/execution/libraries/qa_06.sql
             splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/nbs_sr_18.sql
+            splitStatements: false
