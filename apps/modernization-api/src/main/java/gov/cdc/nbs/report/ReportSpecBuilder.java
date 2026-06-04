@@ -93,7 +93,14 @@ public class ReportSpecBuilder {
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery, columnMap, daysValue);
+        isExport,
+        isBuiltin,
+        reportTitle,
+        libraryName,
+        dataSourceName,
+        subsetQuery,
+        columnMap,
+        daysValue);
   }
 
   private Integer extractDaysValue() {
