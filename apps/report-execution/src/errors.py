@@ -23,7 +23,7 @@ class MissingColumnError(BaseReportExecutionError):
 
     def __init__(self, missing_columns: list[str]):
         message = f"""
-        Required columns {', '.join(missing_columns)} are missing from column_map
+        Required columns {', '.join(missing_columns)} are missing from column selection
         """
         super().__init__(message, 422)
 
