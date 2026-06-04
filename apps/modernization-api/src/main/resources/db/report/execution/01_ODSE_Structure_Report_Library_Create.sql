@@ -18,7 +18,7 @@ BEGIN
         runner                  varchar(10)     NOT NULL,
         column_select_ind       char(1)         NOT NULL,
         is_builtin_ind          char(1)         NOT NULL,
-        report_params           NVARCHAR(MAX)   NULL,              
+        report_params           varchar(300)   NULL,              
         add_time                datetime        NOT NULL,
         add_user_id             bigint          NOT NULL,
         last_chg_time           datetime        NOT NULL,

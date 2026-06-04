@@ -74,7 +74,7 @@ public class ReportSpecBuilder {
     boolean isExport = reportExecRequest.isExport();
     boolean isBuiltin = reportLibrary.isBuiltin();
     String reportTitle = reportConfig.title();
-    String libraryName = reportConfig.library().libraryName();
+    String libraryName = reportConfig.library().name();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     List<ReportColumn> columns = fetchColumns();
@@ -85,8 +85,6 @@ public class ReportSpecBuilder {
     String orderByClause = "";
 
     Integer daysValue = extractDaysValue();
-
-    Map<String, Object> reportParams = reportConfig.getReportParams();
 
     String subsetQuery =
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();

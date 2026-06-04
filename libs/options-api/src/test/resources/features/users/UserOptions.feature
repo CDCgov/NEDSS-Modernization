@@ -25,3 +25,9 @@ Feature: User Options REST API
   Scenario: I cannot find specific users that do not exist
     When I am trying to find users that start with "zzzzzzzzz"
     Then there aren't any options available
+    
+  Scenario: I can find all users
+    When I am retrieving all the users
+    Then there are 44 options included
+    And the option named "Tommy Oliver" is included
+    And the option named "Nope Nope" is not included

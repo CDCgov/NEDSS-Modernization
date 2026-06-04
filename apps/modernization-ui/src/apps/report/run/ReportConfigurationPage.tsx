@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'design-system/button';
 import { permissions, Permitted } from 'libs/permission';
-import { ReportRunLayout } from './layout/ReportRunLayout';
+import { ReportLayout } from '../layout/ReportLayout';
 import { ReportConfiguration } from 'generated';
 import { BasicFilter } from './filters/basic/BasicFilter';
 import { Card } from 'design-system/card';
@@ -10,8 +10,55 @@ import { CurrentStateProvider } from './filters/basic/useCurrentState';
 import { AdvancedFilter } from './filters/advanced/AdvancedFilter';
 import { ColumnSelector } from './columns/ColumnSelector';
 
-import layoutStyles from './layout/layout.module.scss';
+import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
+import { InPageNavigation } from 'design-system/inPageNavigation';
+
+const SECTIONS = [
+    {
+        title: 'Basic filters',
+        id: 'basic-filters',
+        hasData: (config: ReportConfiguration) => config.basicFilters.length > 0,
+        Component: ({ config, id, title }: { config: ReportConfiguration; id: string; title: string }) => (
+            <CurrentStateProvider
+                stateFilter={config.basicFilters.find((f) => f.filterType.code?.startsWith(STATE_FILTER_CODE))}
+            >
+                <Card id={id} title={title} collapsible={true}>
+                    {config.basicFilters.map((filter, i) => (
+                        <BasicFilter key={`basic_filter_${i}`} filter={filter} columns={config.columns} />
+                    ))}
+                </Card>
+            </CurrentStateProvider>
+        ),
+    },
+    {
+        title: 'Advanced filter',
+        id: 'advanced-filter',
+        hasData: (config: ReportConfiguration) => !!config.advancedFilter,
+        Component: ({ config, id, title }: { config: ReportConfiguration; id: string; title: string }) => (
+            <Card id={id} title={title} collapsible={true}>
+                <AdvancedFilter filter={config.advancedFilter!} columns={config.columns} />
+            </Card>
+        ),
+    },
+    {
+        title: 'Column selection',
+        id: 'column-selection',
+        hasData: (config: ReportConfiguration) => config.library.allowColumnSelection,
+        Component: ({ config, id, title }: { config: ReportConfiguration; id: string; title: string }) => (
+            <Card
+                id={id}
+                title={title}
+                required={true}
+                subtext="Select the column variables you would like to include in this report."
+                actions={<Required />}
+                collapsible={true}
+            >
+                <ColumnSelector columns={config.columns} defaultColumns={config.defaultColumnUids} />
+            </Card>
+        ),
+    },
+];
 
 const ReportConfigurationPage = ({
     config,
@@ -20,13 +67,11 @@ const ReportConfigurationPage = ({
     config: ReportConfiguration;
     handleSubmit: (e: React.BaseSyntheticEvent, isExport: boolean) => void;
 }) => {
-    const basicFilters = config.basicFilters;
-    // the state drives other filter options, so need to pull it out
-    const stateFilter = config.basicFilters.find((f) => f.filterType.code?.startsWith(STATE_FILTER_CODE));
+    const sectionData = SECTIONS.filter(({ hasData }) => hasData(config));
 
     return (
-        <ReportRunLayout
-            config={config}
+        <ReportLayout
+            title={config.title}
             actions={
                 <>
                     <Permitted permission={permissions.reports.run}>
@@ -38,41 +83,15 @@ const ReportConfigurationPage = ({
                 </>
             }
         >
+            <aside>
+                <InPageNavigation sections={sectionData.map(({ id, title }) => ({ id, label: title }))} />
+            </aside>
             <form className={layoutStyles.columnContent}>
-                {basicFilters.length > 0 && (
-                    <CurrentStateProvider stateFilter={stateFilter}>
-                        <Card id="basic-filters" title="Basic Filters" collapsible={true}>
-                            {basicFilters.map((filter, i) => (
-                                <BasicFilter key={`basic_filter_${i}`} filter={filter} columns={config.columns} />
-                            ))}
-                        </Card>
-                    </CurrentStateProvider>
-                )}
-                {config.advancedFilter && (
-                    <Card id="advanced-filter" title="Advanced Filter" collapsible={true}>
-                        <AdvancedFilter filter={config.advancedFilter} columns={config.columns} />
-                    </Card>
-                )}
-                {config.library.allowColumnSelection && (
-                    <Card
-                        id="column-selection"
-                        title="Column selection"
-                        required={true}
-                        subtext="Select the column variables you would like to include in this report."
-                        actions={<Required />}
-                        collapsible={true}
-                    >
-                        <ColumnSelector columns={config.columns} defaultColumns={config.defaultColumnUids} />
-                    </Card>
-                )}
-                <details>
-                    <summary>
-                        <p>Config:</p>
-                    </summary>
-                    <pre>{config ? JSON.stringify(config, null, 2) : 'loading'}</pre>
-                </details>
+                {sectionData.map(({ id, title, Component }) => (
+                    <Component key={id} config={config} id={id} title={title} />
+                ))}
             </form>
-        </ReportRunLayout>
+        </ReportLayout>
     );
 };
 

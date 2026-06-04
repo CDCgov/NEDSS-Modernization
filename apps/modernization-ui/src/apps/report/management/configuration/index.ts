@@ -1,0 +1,1 @@
+export { ViewReportConfiguration } from './ViewReportConfiguration';
