@@ -286,5 +286,6 @@ public class AdvancedQueryBuilderTest {
 
 // valid
 // ((((a or b))))
+// ((a and b or c and (d or e)))
 // (((b)) or a)
 // a and b or c and d and e or f
