@@ -22,20 +22,12 @@ import { validateRequiredRule } from 'validation/entry';
 interface FilterConfig {
     id?: number;
     filter: Selectable;
-    selectType?: string;
+    selectType?: BasicFilterConfiguration.selectType;
     columnId?: number;
     isRequired: boolean;
 }
 
 const SIZING = 'medium';
-
-// TODO: Move this to the API once #3238 is merged
-const formatType = ({ minValueCount, maxValueCount }: BasicFilterConfiguration) => {
-    if (minValueCount === 1) {
-        if (maxValueCount === -1) return 'Multi';
-        if (maxValueCount === 1) return 'Single';
-    }
-};
 
 interface GroupSelectable {
     value: ReportConfiguration.group;
@@ -308,7 +300,7 @@ const FilterRepeatingBlock = ({
         config?.basicFilters.map((f) => ({
             id: f.reportFilterUid,
             filter: filterOptions.find(({ value }) => parseInt(value) === f.filterType.id)!,
-            selectType: formatType(f),
+            selectType: f.selectType,
             columnId: f.reportColumnUid,
             isRequired: f.isRequired,
         })) ?? [];
