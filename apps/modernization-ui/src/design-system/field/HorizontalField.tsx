@@ -37,7 +37,7 @@ const HorizontalField = ({
         })}
     >
         <div className={styles.left}>
-            <label className={classNames({ [styles.required]: required })} htmlFor={htmlFor}>
+            <label className={classNames(styles.label, { [styles.required]: required })} htmlFor={htmlFor}>
                 {label}
             </label>
             {helperText && <HelperText id={`${htmlFor}-hint`}>{helperText}</HelperText>}

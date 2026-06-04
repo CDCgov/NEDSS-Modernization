@@ -1,6 +1,6 @@
 import React from 'react';
-import { AdvancedFilterRequest, BasicFilterRequest, ReportConfiguration, ReportControllerService } from 'generated';
-import { useCallback, useEffect, useState } from 'react';
+import { AdvancedFilterRequest, BasicFilterRequest, ReportControllerService } from 'generated';
+import { useCallback, useState } from 'react';
 import { useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
 import { useNewTab } from './useNewTab';
@@ -11,6 +11,7 @@ import { LoadingIndicator } from 'libs/loading/indicator';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
+import { useReportConfiguration } from 'apps/report/hooks/useReportConfiguration';
 
 export type ReportExecuteForm = {
     // key is the report's ID
@@ -33,18 +34,11 @@ const ReportRunPage = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
-    const [config, setConfig] = useState<ReportConfiguration | null>(null);
     const [hasResult, setHasResult] = useState<boolean>(false);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const { openNewTab } = useNewTab();
-
-    // Load the report configuration
-    useEffect(() => {
-        ReportControllerService.getReportConfiguration({ reportUid, dataSourceUid })
-            .then((value) => setConfig(value))
-            .catch((err) => setError(JSON.stringify(err)));
-    }, []);
+    const config = useReportConfiguration({ reportUid, dataSourceUid, handleError: setError });
 
     const form = useForm<ReportExecuteForm>({
         mode: 'onSubmit',
