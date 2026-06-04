@@ -25,7 +25,5 @@ BEGIN
         last_chg_user_id        bigint          NOT NULL,
 
         CONSTRAINT PK_Report_Library PRIMARY KEY (library_uid)
-        CONSTRAINT CK_Report_Library_ReportParams_IsJSON
-            CHECK (ISJSON(report_params) = 1 OR report_params IS NULL)
     );
 END
