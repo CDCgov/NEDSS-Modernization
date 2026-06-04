@@ -17,6 +17,6 @@ public record Library(
         dbLibrary.getLibraryName(),
         dbLibrary.isBuiltin(),
         dbLibrary.allowColumnSelection(),
-        dbLibrary.getReportParams());
+        JsonUtils.parseJsonMap(dbLibrary.getReportParams())   // String -> Map
   }
 }

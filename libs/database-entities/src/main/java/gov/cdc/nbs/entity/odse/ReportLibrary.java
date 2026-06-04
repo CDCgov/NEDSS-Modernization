@@ -40,9 +40,8 @@ public class ReportLibrary {
   @NonNull @Column(name = "is_builtin_ind", length = 1, nullable = false)
   private Character isBuiltinInd;
 
-  @Column(name = "report_params", columnDefinition = "NVARCHAR(MAX)", nullable = true)
-  @Convert(converter = JsonToMapConverter.class)
-      private Map<String, Object> reportParams;
+@Column(name = "report_params", columnDefinition = "NVARCHAR(MAX)", nullable = true)
+private String reportParams;   // stored as raw JSON string
 
   @NonNull @Column(name = "add_time", nullable = false)
   private LocalDateTime addTime;
