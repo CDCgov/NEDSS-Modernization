@@ -145,14 +145,10 @@ public class AdvancedQueryBuilder {
           }
         }
 
-      } else if (isOperator(filterValue)) {
-        if (filterValue.getOperator() != "(")
-          throw new AdvancedQueryException("non-open paren after operator", filterValue);
-
+      } else if (isOpenParen(filterValue)) {
         rules.add(startRuleGroup());
       } else {
-        throw new AdvancedQueryException(
-            "Unknown valueType encountered: " + filterValue.getValueType(), filterValue);
+        throw new AdvancedQueryException("') invalid after operator", filterValue);
       }
 
       if (isCloseParen(peek())) {
