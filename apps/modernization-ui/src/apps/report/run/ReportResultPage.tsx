@@ -1,6 +1,6 @@
 import { Button } from 'design-system/button';
 import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
-import { ReportRunLayout } from './layout/ReportRunLayout';
+import { ReportLayout } from '../layout/ReportLayout';
 import { ReportConfiguration } from 'generated';
 
 const ReportResultPage = ({
@@ -15,8 +15,8 @@ const ReportResultPage = ({
     handleRefineReport: () => void;
 }) => {
     return (
-        <ReportRunLayout
-            config={config}
+        <ReportLayout
+            title={config.title}
             actions={
                 <>
                     <Button onClick={handleRefineReport}>Refine Report</Button>
@@ -26,7 +26,7 @@ const ReportResultPage = ({
         >
             {error && <InlineErrorMessage id="report-result-error">{error}</InlineErrorMessage>}
             {resultLoading ? 'Your report is running, this can take some time' : 'Your report has run'}
-        </ReportRunLayout>
+        </ReportLayout>
     );
 };
 

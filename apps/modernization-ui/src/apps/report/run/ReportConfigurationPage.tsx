@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'design-system/button';
 import { permissions, Permitted } from 'libs/permission';
-import { ReportRunLayout } from './layout/ReportRunLayout';
+import { ReportLayout } from '../layout/ReportLayout';
 import { ReportConfiguration } from 'generated';
 import { BasicFilter } from './filters/basic/BasicFilter';
 import { Card } from 'design-system/card';
@@ -10,7 +10,7 @@ import { CurrentStateProvider } from './filters/basic/useCurrentState';
 import { AdvancedFilter } from './filters/advanced/AdvancedFilter';
 import { ColumnSelector } from './columns/ColumnSelector';
 
-import layoutStyles from './layout/layout.module.scss';
+import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 
@@ -70,8 +70,8 @@ const ReportConfigurationPage = ({
     const sectionData = SECTIONS.filter(({ hasData }) => hasData(config));
 
     return (
-        <ReportRunLayout
-            config={config}
+        <ReportLayout
+            title={config.title}
             actions={
                 <>
                     <Permitted permission={permissions.reports.run}>
@@ -91,7 +91,7 @@ const ReportConfigurationPage = ({
                     <Component key={id} config={config} id={id} title={title} />
                 ))}
             </form>
-        </ReportRunLayout>
+        </ReportLayout>
     );
 };
 

@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
@@ -52,6 +53,10 @@ class WhereClauseServiceTest {
         Mockito.mock(ReportDataSource.class),
         Mockito.mock(Library.class),
         "Test Report",
+        null,
+        0L,
+        ReportGroup.PUBLIC,
+        "1002",
         basicFilterConfigurations,
         advFilterConfiguration,
         columns,
