@@ -39,32 +39,41 @@ public class AdvancedQueryBuilder {
   }
 
   public AdvancedQuery.RuleGroup build() {
-    AdvancedQuery.Rule firstRule = null;
-    ReportConstants.QueryCombinators firstCombinator = null;
+    AdvancedQuery.RuleGroup ruleGroup = buildRuleGroup(ReportConstants.QueryCombinators.and, null);
 
-    // Iterate through FilterValues until we find the first OPERATOR
-    while (hasNext()) {
-      FilterValue filterValue = peek();
-      if (filterValue.getValueType().equals("CLAUSE")) {
-        firstRule = buildClause(filterValue);
-      } else if (filterValue.getValueType().equals("OPERATOR")) {
-        if (filterValue.getOperator().equals("and") || filterValue.getOperator().equals("or")) {
-          firstCombinator = ReportConstants.QueryCombinators.valueOf(filterValue.getOperator());
-          break;
-        }
-      }
-      advance();
+    return unwrapRuleGroup(ruleGroup);
+  }
+
+  private AdvancedQuery.RuleGroup unwrapRuleGroup(AdvancedQuery.RuleGroup ruleGroup) {
+    //  If a RuleGroup has only one Rule, and it's also a RuleGroup
+    if (ruleGroup.rules().size() == 1
+        && ruleGroup.rules().getFirst() instanceof AdvancedQuery.RuleGroup) {
+
+      //  We can do away with the outer RuleGroup
+      return unwrapRuleGroup((AdvancedQuery.RuleGroup) ruleGroup.rules().getFirst());
+    } else if (ruleGroup.rules().size() > 1) {
+      return new AdvancedQuery.RuleGroup(
+          ruleGroup.id(),
+          ruleGroup.combinator(),
+          ruleGroup.rules().stream()
+              .map(
+                  rule -> {
+                    //  If a RuleGroup's rule is a RuleGroup, and it has only one Rule
+                    if (rule instanceof AdvancedQuery.RuleGroup nestedRuleGroup) {
+                      if ((nestedRuleGroup.rules().size() == 1
+                          && nestedRuleGroup.rules().getFirst() instanceof AdvancedQuery.Rule)) {
+                        //  Bypass the nested RuleGroup and attach the inner Rule to the outer
+                        // RuleGroup
+                        return nestedRuleGroup.rules().getFirst();
+                      } else {
+                        return unwrapRuleGroup(nestedRuleGroup);
+                      }
+                    } else {
+                      return rule;
+                    }
+                  })
+              .toList());
     }
-
-    // If we didn't find an OPERATOR, default to 'AND' combinator for a single rule
-    if (firstCombinator == null) {
-      firstCombinator = ReportConstants.QueryCombinators.and;
-    }
-
-    // Then build the root RuleGroup from said OPERATOR and corresponding rule
-    AdvancedQuery.RuleGroup ruleGroup = buildRuleGroup(firstCombinator, firstRule);
-
-    System.out.println(ruleGroup);
     return ruleGroup;
   }
 
@@ -76,7 +85,6 @@ public class AdvancedQueryBuilder {
     }
 
     AdvancedQuery.RuleGroup ruleGroup = null;
-    int nestDepth = 0;
     boolean terminated = false;
 
     while (hasNext()) {
@@ -92,29 +100,15 @@ public class AdvancedQueryBuilder {
           switch (filterValue.getOperator()) {
             case "or":
               if (combinator.equals(ReportConstants.QueryCombinators.and)) {
-                //  If going directly from an 'AND' group to an 'OR' group, without parens
-                if (nestDepth == 0) {
-                  //  We terminate the current 'AND' group
-                  terminated = true;
-                  AdvancedQuery.RuleGroup andGroup =
-                      new AdvancedQuery.RuleGroup(
-                          UUID.randomUUID().toString(),
-                          ReportConstants.QueryCombinators.and,
-                          rules);
+                //  If going directly from an 'AND' group to an 'OR' group, terminate the current
+                // 'AND' group
+                terminated = true;
+                AdvancedQuery.RuleGroup andGroup =
+                    new AdvancedQuery.RuleGroup(
+                        UUID.randomUUID().toString(), ReportConstants.QueryCombinators.and, rules);
 
-                  // And add it as a rule to the new 'OR' group, which we then build
-                  ruleGroup = buildRuleGroup(ReportConstants.QueryCombinators.or, andGroup);
-
-                  //  If going from an 'AND' group to an 'OR' group WITHIN inner parens
-                } else {
-                  //  We just build the 'OR' group, starting from the previous FilterValue
-                  AdvancedQuery firstOrRule = rules.removeLast();
-                  AdvancedQuery.RuleGroup orGroup =
-                      buildRuleGroup(ReportConstants.QueryCombinators.or, firstOrRule);
-
-                  // And add it to the existing list of 'AND' group rules
-                  rules.add(orGroup);
-                }
+                // And add it as a rule to the new 'OR' group, which we then build
+                ruleGroup = buildRuleGroup(ReportConstants.QueryCombinators.or, andGroup);
               }
               break;
             case "and":
@@ -137,20 +131,12 @@ public class AdvancedQueryBuilder {
                         "Cannot follow a closing parenthesis with an open parenthesis without an OPERATOR in between",
                         filterValue));
               }
-              nestDepth++;
+              advance();
+              rules.add(buildRuleGroup(ReportConstants.QueryCombinators.and, null));
               break;
             case ")":
               // If we encounter a closed parenthesis without any nesting, terminate the rule group
-              if (nestDepth == 0) {
-                terminated = true;
-              } else {
-                nestDepth--;
-              }
-
-              if (nestDepth < 0) {
-                queryErrors.add(
-                    new AdvancedQueryException("Too many closing parentheses", filterValue));
-              }
+              terminated = true;
               break;
             default:
               queryErrors.add(
@@ -168,10 +154,6 @@ public class AdvancedQueryBuilder {
       if (terminated) {
         break;
       }
-    }
-
-    if (nestDepth != 0) {
-      queryErrors.add(new AdvancedQueryException("Mismatched parentheses"));
     }
 
     if (!queryErrors.isEmpty()) {
