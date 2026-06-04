@@ -35,7 +35,6 @@ def execute(
     curr_month = today.strftime('%b%Y').upper()
     year = today.year
     month = today.month
-    day_of_year = int(today.strftime('%j'))
     last_year = year - 1
     years = range(year, year - 6, -1)
 
