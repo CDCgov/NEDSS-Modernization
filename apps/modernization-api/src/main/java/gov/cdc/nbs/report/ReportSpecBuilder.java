@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -85,11 +86,13 @@ public class ReportSpecBuilder {
 
     Integer daysValue = extractDaysValue();
 
+    Map<String, Object> reportParams = reportConfig.getReportParams();
+
     String subsetQuery =
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery, daysValue);
+        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery, daysValue, null);
   }
 
   private Integer extractDaysValue() {
