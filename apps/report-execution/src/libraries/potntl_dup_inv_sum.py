@@ -45,11 +45,9 @@ def execute(
 
     full_query = f"""
     WITH subset AS ({subset_query})
-        SELECT * FROM subset
-    )
     , clean_data AS (
         SELECT *
-        FROM source_order 
+        FROM subset
         WHERE [{col_dict['EVENT_DATE']}] IS NOT NULL
             AND [{col_dict['PATIENT_LOCAL_ID']}] IS NOT NULL
             AND [{col_dict['DISEASE_CD']}] IS NOT NULL
