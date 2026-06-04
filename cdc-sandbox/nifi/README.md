@@ -9,3 +9,4 @@
 5. Copy the `flow.xml.gz` in the `/opt/nifi/nifi-current/conf` folder of the docker container into `cdc-sanbox/nifi/nifi_conf/conf/`
 6. Commit changes
 7. Create PR
+

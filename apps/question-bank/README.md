@@ -78,3 +78,4 @@ the NBS `Auth_User` table.
 | nbs.security.oidc.host     |                                                                                      | The hostname of the OIDC compatible Identity Provider                       |
 | nbs.security.oidc.base     | `/realms/nbs-users`                                                                  | The path to the OIDC endpoints                                              |
 | nbs.security.oidc.uri      | `${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}` | The URI for the OIDC issuer                                                 |
+

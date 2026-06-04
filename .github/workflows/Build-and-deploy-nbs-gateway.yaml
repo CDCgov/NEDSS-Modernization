@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - alpha-trigger/**
     paths:
       - "apps/nbs-gateway/**"
       - "gradle/libs.versions.toml"
@@ -13,11 +14,12 @@ jobs:
       id-token: write
       contents: read
       security-events: write
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@cm/fix
     with:
       microservice_name: nbs7-nbs-gateway
       dockerfile_relative_path: -f ./apps/nbs-gateway/Dockerfile .
       environment_classifier: SNAPSHOT
       java_version: "17"
+      create_octopus_release: true
     secrets:
       NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}

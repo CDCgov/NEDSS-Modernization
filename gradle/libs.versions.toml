@@ -83,3 +83,4 @@ cucumber = [
 
 [plugins]
 springBoot = { id = 'org.springframework.boot', version.ref = 'springBoot' }
+

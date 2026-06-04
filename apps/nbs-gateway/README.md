@@ -145,3 +145,4 @@ enabling the `oidc` profile. The profile requires a specific set of configuratio
 | nbs.security.oidc.uri           | `${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}` | The URI for the OIDC issuer                                                          |
 | nbs.security.oidc.client.id     |                                                                                      | The client id used to initiate Authentication                                        |
 | nbs.security.oidc.client.secret |                                                                                      | The client secret used to initiate Authentication                                    |
+

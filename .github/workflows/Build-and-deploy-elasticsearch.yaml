@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - alpha-trigger/**
     paths:
       - "cdc-sandbox/elasticsearch/**"
 
@@ -12,10 +13,11 @@ jobs:
       id-token: write
       contents: read
       security-events: write
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-other-microservice-container.yaml@main
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-other-microservice-container.yaml@cm/fix
     with:
       microservice_name: nbs7-elasticsearch
       dockerfile_relative_path: ./cdc-sandbox/elasticsearch
       environment_classifier: SNAPSHOT
+      create_octopus_release: true
     secrets:
       NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}
