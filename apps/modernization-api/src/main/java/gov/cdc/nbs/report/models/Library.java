@@ -11,7 +11,7 @@ public record Library(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String description,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean isBuiltin,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Boolean allowColumnSelection,
-    @Schema(description = "Optional JSON parameters for the report") Map<String, Object> reportParams) {
+    @Schema(description = "Optional JSON parameters for the report") String libraryParams) {
 
   public Library(ReportLibrary dbLibrary) {
     this(
