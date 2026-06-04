@@ -67,8 +67,8 @@ def execute(
         YEAR(event_date) as year, sum(group_case_cnt) as cases
         FROM subset
         WHERE event_date is not NULL
-        AND DATEPART(dayofyear, event_date) <= {day_of_year}
-        AND YEAR(event_date) > ({year} - 5)
+        AND MONTH(event_date) <= {month}
+        AND YEAR(event_date) >= ({year} - 5)
         GROUP BY phc_code_short_desc, state, MONTH(event_date), YEAR(event_date)
     )
 
