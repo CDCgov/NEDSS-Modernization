@@ -12,6 +12,7 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.models.AdminReportRequest;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
@@ -206,7 +207,7 @@ class ReportControllerTest {
       Long reportUid = 1L;
       Long dataSourceUid = 2L;
       Long ownerUid = 0L;
-      String group = "S";
+      ReportGroup group = ReportGroup.PUBLIC;
       String sectionCd = "1002";
 
       DataSource dataSourceEntity = mock(DataSource.class);
@@ -227,6 +228,7 @@ class ReportControllerTest {
               List.of(basicFilterConfig),
               advancedFilterConfig,
               columns,
+              null,
               null);
       when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
@@ -320,6 +322,7 @@ class ReportControllerTest {
               dataSourceUid,
               true,
               Arrays.asList(27L, 31L),
+              null,
               List.of(basicFilter),
               advancedFilter);
 
@@ -343,6 +346,7 @@ class ReportControllerTest {
               dataSourceUid,
               true,
               Arrays.asList(27L, 31L),
+              null,
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
@@ -365,6 +369,7 @@ class ReportControllerTest {
               dataSourceUid,
               true,
               Arrays.asList(27L, 31L),
+              null,
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
@@ -387,6 +392,7 @@ class ReportControllerTest {
               dataSourceUid,
               true,
               Arrays.asList(27L, 31L),
+              null,
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
@@ -408,6 +414,7 @@ class ReportControllerTest {
               dataSourceUid,
               false,
               Arrays.asList(27L, 31L),
+              null,
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
@@ -432,7 +439,13 @@ class ReportControllerTest {
 
       ReportExecutionRequest request =
           new ReportExecutionRequest(
-              reportUid, dataSourceUid, false, Arrays.asList(27L, 31L), List.of(), advancedFilter);
+              reportUid,
+              dataSourceUid,
+              false,
+              Arrays.asList(27L, 31L),
+              null,
+              List.of(),
+              advancedFilter);
 
       when(service.executeReport(request))
           .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
@@ -453,6 +466,7 @@ class ReportControllerTest {
               dataSourceUid,
               true,
               Arrays.asList(27L, 31L),
+              null,
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 

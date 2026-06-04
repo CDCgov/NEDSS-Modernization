@@ -18,7 +18,7 @@ class ReportDataSourceController {
       operationId = "reportDataSources",
       summary = "Report data sources",
       description = "Provides all report data sources in NBS.",
-      tags = "ReportDataSuorces")
+      tags = "ReportDataSources")
   @GetMapping("/nbs/api/options/report/datasources")
   Collection<Option> dataSources() {
     return finder.find();

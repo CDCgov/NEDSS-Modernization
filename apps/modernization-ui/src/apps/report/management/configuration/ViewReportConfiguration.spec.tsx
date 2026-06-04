@@ -29,7 +29,7 @@ vi.mock('libs/permission', async () => {
 const MOCK_CONFIG: generated.ReportConfiguration = {
     title: 'Test Report',
     ownerUid: 0,
-    group: 'S',
+    group: generated.ReportConfiguration.group.PUBLIC,
     sectionCd: '1000',
     dataSource: {
         id: 1,
