@@ -25,7 +25,7 @@
         "react-dom": "^18",
         "react-hook-form": "7.54.2",
         "react-querybuilder": "^8.15.0",
-        "react-router": "7.14.1",
+        "react-router": "7.15.0",
         "react-select": "^5.10.2",
         "vite": "^8.0.5",
         "web-vitals": "^5.2.0"
