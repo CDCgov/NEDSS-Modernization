@@ -86,7 +86,9 @@ public class WhereClauseService {
 
     StringJoiner finalWhere = new StringJoiner(SQL_AND, SQL_WHERE, "");
 
-    finalWhere.add(basicWhereFragment);
+    if (basicWhereFragment != null && !basicWhereFragment.isEmpty()) {
+      finalWhere.add(basicWhereFragment);
+    }
 
     if (advWhereFragment != null && !advWhereFragment.isEmpty()) {
       finalWhere.add(advWhereFragment);
@@ -451,7 +453,7 @@ public class WhereClauseService {
 
   /** Checks if the AdvancedFilterRequest contains a column in RDB_LAB_RESULT_VAL_COLS */
   private boolean hasLabResultVal(ReportConfiguration config, AdvancedFilterRequest filterRequest) {
-    if (filterRequest == null || filterRequest.value() == null) return false;
+    if (filterRequest == null) return false;
 
     List<Long> columnIds = extractColumnIds(filterRequest.value());
     return columnIds.stream()
