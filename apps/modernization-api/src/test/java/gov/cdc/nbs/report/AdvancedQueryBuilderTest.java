@@ -268,3 +268,23 @@ public class AdvancedQueryBuilderTest {
     assertRuleMatchesClauseValue(notEqualsRule, notEqualsClause);
   }
 }
+
+// invalid
+// ())
+// (a b c)
+// or and
+// a or and
+// a or a a
+// or b
+// () or a
+// ()
+// )
+// or
+// and
+// (
+// (()
+
+// valid
+// ((((a or b))))
+// (((b)) or a)
+// a and b or c and d and e or f

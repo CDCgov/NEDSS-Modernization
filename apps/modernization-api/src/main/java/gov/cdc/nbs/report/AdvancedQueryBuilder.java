@@ -62,8 +62,7 @@ public class AdvancedQueryBuilder {
       firstRule = buildClause(next);
       advance();
     } else if (isCloseParen(next)) { // "(" ")"
-      return new AdvancedQuery.RuleGroup(
-          next.getId().toString(), ReportConstants.QueryCombinators.and, List.of());
+      throw new AdvancedQueryException("Invalid empty clause `()`", next);
     } else {
       throw new AdvancedQueryException("Expected new rule or rule group", next);
     }
@@ -82,6 +81,8 @@ public class AdvancedQueryBuilder {
 
     // Then build the root RuleGroup from said OPERATOR and corresponding rule
     AdvancedQuery.RuleGroup ruleGroup = buildRuleGroup(firstCombinator, firstRule);
+
+    if (!hasNext()) throw new AdvancedQueryException("Expected closing paren");
 
     FilterValue closingParen = peek();
     if (!isCloseParen(closingParen))
@@ -109,7 +110,7 @@ public class AdvancedQueryBuilder {
         advance();
         FilterValue next = peek();
 
-        if (next.getValueType() != "OPERATOR")
+        if (!isOperator(next))
           throw new AdvancedQueryException("operator must follow clause", next);
 
         if (isCombinator(next)) {
@@ -172,9 +173,6 @@ public class AdvancedQueryBuilder {
   }
 
   private AdvancedQuery.Rule buildClause(FilterValue filterValue) {
-    // shouldn't be needed anymore maybe?
-    // validateClause(filterValue);
-
     return new AdvancedQuery.Rule(
         filterValue.getId().toString(),
         filterValue.getColumnUid(),
@@ -194,10 +192,6 @@ public class AdvancedQueryBuilder {
           ruleGroup.id(),
           ruleGroup.combinator(),
           ruleGroup.rules().stream()
-              .filter(
-                  (AdvancedQuery rule) ->
-                      (rule instanceof AdvancedQuery.Rule)
-                          || ((AdvancedQuery.RuleGroup) rule).rules().size() > 0)
               .map(
                   (AdvancedQuery rule) ->
                       (rule instanceof AdvancedQuery.RuleGroup)
@@ -208,19 +202,19 @@ public class AdvancedQueryBuilder {
   }
 
   private boolean isOpenParen(FilterValue fv) {
-    return fv.getValueType().equals("OPERATOR") && fv.getOperator().equals("(");
+    return isOperator(fv) && fv.getOperator().equals("(");
   }
 
   private boolean isCloseParen(FilterValue fv) {
-    return fv.getValueType().equals("OPERATOR") && fv.getOperator().equals(")");
+    return isOperator(fv) && fv.getOperator().equals(")");
   }
 
   private boolean isOr(FilterValue fv) {
-    return fv.getValueType().equals("OPERATOR") && fv.getOperator().equals("or");
+    return isOperator(fv) && fv.getOperator().equals("or");
   }
 
   private boolean isAnd(FilterValue fv) {
-    return fv.getValueType().equals("OPERATOR") && fv.getOperator().equals("and");
+    return isOperator(fv) && fv.getOperator().equals("and");
   }
 
   private boolean isClause(FilterValue fv) {
@@ -232,41 +226,6 @@ public class AdvancedQueryBuilder {
   }
 
   private boolean isCombinator(FilterValue fv) {
-    return fv.getValueType().equals("OPERATOR")
-        && (fv.getOperator().equals("or") || fv.getOperator().equals("and"));
+    return isAnd(fv) || isOr(fv);
   }
-
-  // DEAD I THINK?
-  //   private void validateClause(FilterValue filterValue) {
-  //     if (previous() != null && previous().getValueType().equals("CLAUSE")) {
-  //       queryErrors.add(
-  //           new AdvancedQueryException(
-  //               "CLAUSE cannot follow another CLAUSE without an OPERATOR in between",
-  // filterValue));
-  //     }
-  //   }
-
-  //   private void validateOperator(FilterValue filterValue) {
-  //     if (previous() == null) {
-  //       queryErrors.add(
-  //           new AdvancedQueryException(
-  //               "First filter value must be a CLAUSE, not an OPERATOR", peek()));
-  //     }
-  //     if (current == filterValues.size() - 1 && !filterValue.getOperator().equals(")")) {
-  //       queryErrors.add(
-  //           new AdvancedQueryException(
-  //               "Cannot end list of FilterValues with an OPERATOR unless it's a closing
-  // parenthesis",
-  //               filterValue));
-  //     }
-  //     if (previous() != null
-  //         && previous().getValueType().equals("OPERATOR")
-  //         && !filterValue.getOperator().equals(")")
-  //         && !previous().getOperator().equals("(")) {
-  //       queryErrors.add(
-  //           new AdvancedQueryException(
-  //               "Cannot follow OPERATOR with another OPERATOR, unless it's a parenthesis",
-  //               filterValue));
-  //     }
-  //   }
 }
