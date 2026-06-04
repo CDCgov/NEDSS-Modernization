@@ -31,17 +31,20 @@ type RepeatingBlockProps<V extends FieldValues> = {
     viewRenderer: (entry: V, sizing?: Sizing) => ReactNode;
     // edit properties
     editable?: boolean;
-    defaultValues?: DefaultValuesResolver<DefaultValues<V>>; // Provide all default values to allow `isDirty` to function
+    // Provide all default values to allow `isDirty` to function
+    defaultValues?: DefaultValuesResolver<DefaultValues<V>>;
     errors?: ReactNode[];
     onChange?: (data: V[]) => void;
     isDirty?: (isDirty: boolean) => void;
     isValid?: (isValid: boolean) => void;
     formRenderer?: (entry?: V, sizing?: Sizing) => ReactNode;
+    itemName?: string;
 } & Pick<CardProps, 'id' | 'title' | 'collapsible'>;
 
 const RepeatingBlock = <V extends FieldValues>({
     id,
     title,
+    itemName = title,
     collapsible,
     features,
     columns,
@@ -146,7 +149,7 @@ const RepeatingBlock = <V extends FieldValues>({
             footer={
                 <Shown when={editable && interaction.status !== 'viewing'}>
                     <EditFooter
-                        title={title}
+                        itemName={itemName}
                         sizing={sizing}
                         form={form}
                         interaction={interaction}
@@ -316,7 +319,7 @@ const ActionColumn = ({
 type EditFooterProps<T extends FieldValues> = {
     form: UseFormReturn<T>;
     interaction: MultiValueEntryInteraction<T>;
-    title: string;
+    itemName: string;
     clearable: boolean;
     defaultValues?: DefaultValuesResolver<DefaultValues<T>>;
     sizing?: Sizing;
@@ -325,7 +328,7 @@ type EditFooterProps<T extends FieldValues> = {
 const EditFooter = <E extends FieldValues>({
     form,
     interaction,
-    title,
+    itemName,
     clearable,
     defaultValues,
     sizing,
@@ -357,13 +360,13 @@ const EditFooter = <E extends FieldValues>({
         >
             <Shown when={interaction.status === 'adding'}>
                 <Button secondary icon="add" sizing={sizing} onClick={form.handleSubmit(handleAdd)}>
-                    {`Add ${title.toLowerCase()}`}
+                    {`Add ${itemName.toLowerCase()}`}
                 </Button>
                 <Shown when={clearable}>
                     <Button
                         secondary
                         sizing={sizing}
-                        aria-description={`clear the pending values for ${title}`}
+                        aria-description={`clear the pending values for ${itemName}`}
                         onClick={handleClear}
                         onMouseDown={(e) => e.preventDefault()}
                     >
@@ -373,12 +376,12 @@ const EditFooter = <E extends FieldValues>({
             </Shown>
             <Shown when={interaction.status === 'editing'}>
                 <Button secondary sizing={sizing} onClick={form.handleSubmit(handleUpdate)}>
-                    {`Update ${title.toLowerCase()}`}
+                    {`Update ${itemName.toLowerCase()}`}
                 </Button>
                 <Button
                     secondary
                     sizing={sizing}
-                    aria-description={`cancel editing current ${title}`}
+                    aria-description={`cancel editing current ${itemName}`}
                     onClick={interaction.reset}
                 >
                     Cancel
