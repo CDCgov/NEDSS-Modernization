@@ -2,7 +2,7 @@ from datetime import date, datetime
 from typing import Annotated, Any, Literal
 
 import pandas as pd
-from pydantic import BaseModel, ConfigDict, Field, PlainSerializer
+from pydantic import BaseModel, ConfigDict, Field, PlainSerializer, Json
 
 from src.utils import get_str_env_or_default
 
@@ -17,7 +17,7 @@ class ReportSpec(BaseModel):
     data_source_name: str = Field(min_length=1)
     subset_query: str = Field(min_length=1)
     days_value: int | None = None  # Specific to potntl_dup_inv_sum
-    library_params: Json[Any] | None = pydantic.Field(default_factory=dict)
+    library_params: Json[Any] | None = Field(default_factory=dict)
 
 
 # column names and values
