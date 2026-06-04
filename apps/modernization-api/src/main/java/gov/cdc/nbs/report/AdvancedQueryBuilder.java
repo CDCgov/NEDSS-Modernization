@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public class AdvancedQueryBuilder {
   private final ArrayList<FilterValue> filterValues;
-  private final List<AdvancedQueryException> queryErrors = new ArrayList<>();
 
   private final FilterValue OPEN_PAREN = new FilterValue(1L, null, 1, "OPERATOR", null, "(", null);
   private final FilterValue CLOSE_PAREN = new FilterValue(2L, null, 1, "OPERATOR", null, ")", null);
@@ -224,7 +223,7 @@ public class AdvancedQueryBuilder {
                           || ((AdvancedQuery.RuleGroup) rule).rules().size() > 0)
               .map(
                   (AdvancedQuery rule) ->
-                      (rule instanceof AdvancedQuery.RuleGroup nestedRuleGroup)
+                      (rule instanceof AdvancedQuery.RuleGroup)
                           ? simplify((AdvancedQuery.RuleGroup) rule)
                           : rule)
               .toList());
@@ -232,11 +231,11 @@ public class AdvancedQueryBuilder {
   }
 
   private boolean isOpenParen(FilterValue fv) {
-    return fv.getValueType() != "OPERATOR" && fv.getOperator().equals("(");
+    return fv.getValueType().equals("OPERATOR") && fv.getOperator().equals("(");
   }
 
   private boolean isCloseParen(FilterValue fv) {
-    return fv.getValueType() != "OPERATOR" && fv.getOperator().equals(")");
+    return fv.getValueType().equals("OPERATOR") && fv.getOperator().equals(")");
   }
 
   private boolean isClause(FilterValue fv) {
