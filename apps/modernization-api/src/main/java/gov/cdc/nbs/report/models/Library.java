@@ -2,7 +2,6 @@ package gov.cdc.nbs.report.models;
 
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Map;
 
 public record Library(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long id,
@@ -21,7 +20,6 @@ public record Library(
         dbLibrary.getDescTxt(),
         dbLibrary.isBuiltin(),
         dbLibrary.allowColumnSelection(),
-        dbLibrary.getLibraryParams()
-    );
+        dbLibrary.getLibraryParams());
   }
 }
