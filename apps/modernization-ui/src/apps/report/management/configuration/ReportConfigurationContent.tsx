@@ -1,6 +1,5 @@
 import { Card } from 'design-system/card';
 import { NoData } from 'design-system/data';
-import { ValueView } from 'design-system/data-display/ValueView';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { ValueField } from 'design-system/field';
 import { HasValueFunction, NamedColumn } from 'design-system/table/header/column';
@@ -114,7 +113,9 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                 data={filterData}
                 viewRenderer={(entry: FilterConfig) =>
                     filterColumns.map((fc) => (
-                        <ValueView key={fc.id} title={fc.name} value={fc.value(entry)} sizing={sizing} required />
+                        <ValueField key={fc.id} label={fc.name} sizing={sizing}>
+                            {fc.value(entry)}
+                        </ValueField>
                     ))
                 }
             />
