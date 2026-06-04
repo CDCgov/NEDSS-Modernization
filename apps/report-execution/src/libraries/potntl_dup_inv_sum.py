@@ -29,7 +29,7 @@ def execute(
     col_dict = {m[0]: m[1] for m in column_map}
 
     missing_columns = []
-    for col in ['PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE']:
+    for col in required_cols:
         if col not in col_dict:
             missing_columns.append(col)
     if len(missing_columns) > 0:
