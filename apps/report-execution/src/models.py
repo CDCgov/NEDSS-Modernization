@@ -17,7 +17,7 @@ class ReportSpec(BaseModel):
     data_source_name: str = Field(min_length=1)
     subset_query: str = Field(min_length=1)
     days_value: int | None = None  # Specific to potntl_dup_inv_sum
-    report_params: dict[str, Any] | None = None
+    library_params: Json[Any] | None = pydantic.Field(default_factory=dict)
 
 
 # column names and values
