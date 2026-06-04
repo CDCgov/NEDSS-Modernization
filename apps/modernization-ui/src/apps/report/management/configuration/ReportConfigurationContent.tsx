@@ -28,10 +28,10 @@ const formatType = ({ minValueCount, maxValueCount }: BasicFilterConfiguration) 
 };
 
 const GROUP_OPTIONS = [
-    { value: 'S', name: 'Public' },
-    { value: 'P', name: 'Private' },
-    { value: 'T', name: 'Template' },
-    { value: 'R', name: 'Reporting Facility' },
+    { value: ReportConfiguration.group.PUBLIC, name: 'Public' },
+    { value: ReportConfiguration.group.PRIVATE, name: 'Private' },
+    { value: ReportConfiguration.group.TEMPLATE, name: 'Template' },
+    { value: ReportConfiguration.group.REPORTING_FACILITY, name: 'Reporting Facility' },
 ];
 
 type FilterColumn = NamedColumn<FilterConfig, string> & HasValueFunction<FilterConfig, string>;

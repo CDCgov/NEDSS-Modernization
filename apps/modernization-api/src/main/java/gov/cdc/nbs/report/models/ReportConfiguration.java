@@ -1,6 +1,7 @@
 package gov.cdc.nbs.report.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import gov.cdc.nbs.report.ReportConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String title,
     String description,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long ownerUid,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String group,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportConstants.ReportGroup group,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String sectionCd,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<BasicFilterConfiguration> basicFilters,

@@ -14,7 +14,7 @@ export type ReportConfiguration = {
     title: string;
     description?: string;
     ownerUid: number;
-    group: string;
+    group: ReportConfiguration.group;
     sectionCd: string;
     basicFilters: Array<BasicFilterConfiguration>;
     advancedFilter?: AdvancedFilterConfiguration;
@@ -22,4 +22,12 @@ export type ReportConfiguration = {
     defaultColumnUids?: Array<number>;
     defaultSort?: SortSpec;
 };
+export namespace ReportConfiguration {
+    export enum group {
+        PRIVATE = 'PRIVATE',
+        REPORTING_FACILITY = 'REPORTING_FACILITY',
+        PUBLIC = 'PUBLIC',
+        TEMPLATE = 'TEMPLATE',
+    }
+}
 

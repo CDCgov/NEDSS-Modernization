@@ -201,7 +201,7 @@ public class ReportService {
                   report.getReportTitle(),
                   report.getDescTxt(),
                   report.getOwnerUid(),
-                  report.getShared().toString(),
+                  ReportConstants.dbCharToReportGroup(report.getShared()),
                   report.getSectionCd(),
                   basicFilters,
                   advancedFilter,

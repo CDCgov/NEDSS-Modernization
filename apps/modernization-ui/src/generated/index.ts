@@ -76,7 +76,7 @@ export type { PatientVaccination } from './models/PatientVaccination';
 export type { PhoneDemographic } from './models/PhoneDemographic';
 export type { RaceDemographic } from './models/RaceDemographic';
 export type { ReportColumn } from './models/ReportColumn';
-export type { ReportConfiguration } from './models/ReportConfiguration';
+export { ReportConfiguration } from './models/ReportConfiguration';
 export type { ReportDataSource } from './models/ReportDataSource';
 export type { ReportExecutionRequest } from './models/ReportExecutionRequest';
 export type { ReportId } from './models/ReportId';

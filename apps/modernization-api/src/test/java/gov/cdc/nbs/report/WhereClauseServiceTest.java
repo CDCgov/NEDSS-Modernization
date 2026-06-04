@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.FilterType;
@@ -40,7 +41,7 @@ class WhereClauseServiceTest {
         "Test Report",
         null,
         0L,
-        "S",
+        ReportGroup.PUBLIC,
         "1002",
         basicFilterConfigurations,
         null,
