@@ -8,6 +8,8 @@
     padding: 1rem;
 }
 
+$header-height: 6rem;
+
 .page {
     display: flex;
     flex-direction: column;
@@ -18,6 +20,24 @@
         z-index: 1000;
 
         background-color: colors.$base-white;
+    }
+
+    & > main {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas: 'main aside';
+
+        h2 {
+            scroll-margin-top: $header-height;
+        }
+
+        & > aside {
+            margin: 1rem;
+            grid-area: aside;
+            position: sticky;
+            align-self: start;
+            top: $header-height;
+        }
     }
 }
 
