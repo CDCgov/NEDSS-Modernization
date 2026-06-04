@@ -103,7 +103,7 @@ def mock_db_connection(mocker):
 @pytest.fixture(scope='session')
 def setup_containers(request):
     """Set up DB and report execution containers."""
-    logging.info('Setting up test containers...')
+    logging.info('Setting up containers tests...')
     compose_path = os.path.join(os.path.dirname(__file__), '../../../cdc-sandbox')
     services = ['report-execution', 'nbs-mssql']
     compose_file_names = [
