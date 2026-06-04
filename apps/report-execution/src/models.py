@@ -2,7 +2,7 @@ from datetime import date, datetime
 from typing import Annotated, Any, Literal
 
 import pandas as pd
-from pydantic import BaseModel, ConfigDict, Field, PlainSerializer, Json
+from pydantic import BaseModel, ConfigDict, Field, Json, PlainSerializer
 
 from src.utils import get_str_env_or_default
 
