@@ -72,12 +72,18 @@ afterEach(() => {
 
 const MOCK_CONFIG: ReportConfiguration = {
     title: 'Test Report',
+    ownerUid: 0,
+    group: 'S',
+    sectionCd: '1000',
     dataSource: {
+        id: 1,
         name: 'nbs_ods.data_source',
     },
     library: {
+        id: 2,
         runner: 'python',
-        libraryName: 'nbs_sr_99',
+        name: 'nbs_sr_99',
+        description: 'a library',
         isBuiltin: true,
         allowColumnSelection: false,
     },

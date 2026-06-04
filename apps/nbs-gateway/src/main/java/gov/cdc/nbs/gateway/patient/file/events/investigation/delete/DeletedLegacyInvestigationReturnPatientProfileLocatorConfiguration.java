@@ -53,7 +53,7 @@ class DeletedLegacyInvestigationReturnPatientProfileLocatorConfiguration {
             "deleted-legacy-investigation-patient-file-return",
             route ->
                 route
-                    .order(RouteOrdering.PATIENT_FILE.before())
+                    .order(RouteOrdering.MODERNIZED_SERVICE.before())
                     .path(
                         "/nbs/ViewInvestigation1.do",
                         "/nbs/ViewInvestigation2.do",
