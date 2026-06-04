@@ -15,7 +15,6 @@ tables:
         data: fake.random_element(["Confirmed", "Probable", "Suspect", "Unknown"])
       - column_name: record_status_cd
         data: fake.random_element(["ACTIVE", "INACTIVE"])
-        null_percentage: 0
       - column_name: inv_local_id
         data: |
           id_num = fake.unique.random_int(10000, 99999)
