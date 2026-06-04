@@ -1,6 +1,7 @@
 package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 
 import gov.cdc.nbs.entity.odse.FilterCode;
@@ -57,6 +58,16 @@ public class AdvancedQueryBuilderTest {
     assertThat(rule.value()).isEqualTo(clauseValue.getValueTxt());
   }
 
+  private AdvancedQuery.RuleGroup tryBuild(AdvancedQueryBuilder builder) {
+    try {
+      return builder.build();
+    } catch (AdvancedQueryException e) {
+      System.out.println(e);
+      assertFalse(true);
+      return null;
+    }
+  }
+
   ////////////////////////////////////////////////////////////////////////
 
   @Test
@@ -66,7 +77,7 @@ public class AdvancedQueryBuilderTest {
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
 
-    AdvancedQuery.RuleGroup result = builder.build();
+    AdvancedQuery.RuleGroup result = tryBuild(builder);
 
     // Root 'AND' RuleGroup should be created
     assertThat(result.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
@@ -90,7 +101,7 @@ public class AdvancedQueryBuilderTest {
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
 
-    AdvancedQuery.RuleGroup result = builder.build();
+    AdvancedQuery.RuleGroup result = tryBuild(builder);
 
     // Root 'OR' RuleGroup should be created, with 2 rules
     assertThat(result.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
@@ -122,7 +133,7 @@ public class AdvancedQueryBuilderTest {
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
 
-    AdvancedQuery.RuleGroup rootRuleGroup = builder.build();
+    AdvancedQuery.RuleGroup rootRuleGroup = tryBuild(builder);
 
     // Root 'OR' RuleGroup should be created, with 2 rules
     assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
@@ -175,7 +186,7 @@ public class AdvancedQueryBuilderTest {
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
 
-    AdvancedQuery.RuleGroup rootRuleGroup = builder.build();
+    AdvancedQuery.RuleGroup rootRuleGroup = tryBuild(builder);
 
     // Root 'OR' RuleGroup should be created, with 2 rules
     assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
@@ -228,7 +239,7 @@ public class AdvancedQueryBuilderTest {
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
 
-    AdvancedQuery.RuleGroup rootRuleGroup = builder.build();
+    AdvancedQuery.RuleGroup rootRuleGroup = tryBuild(builder);
 
     // Root 'AND' RuleGroup should be created, with 2 rules
     assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);

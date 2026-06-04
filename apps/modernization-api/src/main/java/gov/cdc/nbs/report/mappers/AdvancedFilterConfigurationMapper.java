@@ -2,8 +2,10 @@ package gov.cdc.nbs.report.mappers;
 
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.report.AdvancedQueryBuilder;
+import gov.cdc.nbs.report.AdvancedQueryException;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
+import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.FilterType;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +24,14 @@ public class AdvancedFilterConfigurationMapper {
           "Cannot create advanced filter from non where clause builder filter");
     }
 
-    return new AdvancedFilterConfiguration(
-        filter.getId(), new AdvancedQueryBuilder(filter.getFilterValues()).build());
+    AdvancedQuery.RuleGroup value = null;
+    try {
+      value = new AdvancedQueryBuilder(filter.getFilterValues()).build();
+    } catch (AdvancedQueryException e) {
+      // TODO add the message to the result
+      System.out.println(e);
+    }
+
+    return new AdvancedFilterConfiguration(filter.getId(), value);
   }
 }
