@@ -40,6 +40,11 @@ public class Report {
   @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
   private List<DisplayColumn> displayColumns;
 
+  // should be 1:1 in practice, but the DB implies there could be
+  // more and NBS 6 fetches all then takes the first
+  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
+  private List<ReportSortColumn> reportSortColumns;
+
   @Column(name = "desc_txt", length = 300)
   private String descTxt;
 

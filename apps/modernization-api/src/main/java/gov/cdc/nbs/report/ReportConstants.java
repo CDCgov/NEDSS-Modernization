@@ -15,6 +15,11 @@ public final class ReportConstants {
   public static final String SQL_AND = " AND ";
   public static final String SQL_WHERE = "WHERE ";
 
+  public enum SortDirection {
+    ASC,
+    DESC;
+  }
+
   public enum SelectType {
     SINGLE,
     MULTI
