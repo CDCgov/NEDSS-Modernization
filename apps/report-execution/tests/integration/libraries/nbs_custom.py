@@ -1,3 +1,5 @@
+import datetime
+import decimal
 import pytest
 import yaml
 
@@ -45,6 +47,11 @@ class TestIntegrationNbsCustomLibrary:
         ]
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+
+        for data in result.content.data:
+            assert isinstance(data[0], decimal.Decimal)
+            assert isinstance(data[1], str)
+            assert isinstance(data[2], datetime.datetime)
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
