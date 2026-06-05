@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 public class FieldFormatter {
   public String formatField(String type, String value) {
     return switch (type.toUpperCase()) {
-      case "STRING", "DATETIME" -> "'" + value.replace("'", "''") + "'";
-      case "DATE" -> convertToSQLDate(value);
+      case "STRING" -> "'" + value.replace("'", "''") + "'";
+      case "DATE", "DATETIME" -> convertToSQLDate(value);
       case "INTEGER", "NUMBER" -> validateNumeric(value);
       default -> throw new IllegalArgumentException("Unexpected Column Type: " + type);
     };
@@ -25,6 +25,9 @@ public class FieldFormatter {
    */
   public String convertToSQLColName(String colName, String colType) {
     String sqlColName = "[" + colName + "]";
+
+    // Ensures comparison operators (e.g. <>, =, >, IN, etc...) work for DATETIME columns
+    // when compared against a date value (e.g. '2026-05-28')
     if (colType.equals("DATETIME")) {
       return "CAST(" + sqlColName + " AS DATE)";
     }

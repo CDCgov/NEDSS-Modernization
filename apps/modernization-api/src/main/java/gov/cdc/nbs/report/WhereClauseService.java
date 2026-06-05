@@ -253,7 +253,7 @@ public class WhereClauseService {
     }
 
     StringBuilder criteria = new StringBuilder("(");
-    String colName = "[" + column.name() + "]"; // Brackets protect against SQL reserved words
+    String colName = fieldFormatter.convertToSQLColName(column.name(), column.sourceTypeCode());
     boolean hasValues = !formattedValues.isEmpty();
 
     // Append the IN clause if actual data values were provided
@@ -310,7 +310,7 @@ public class WhereClauseService {
     String colType = column.sourceTypeCode();
     List<String> formattedValues;
 
-    if (colType.equals("DATE")) {
+    if (colType.equals("DATE") || colType.equals("DATETIME")) {
       formattedValues = fieldFormatter.convertToSQLFromDateRange(values);
     } else {
       formattedValues =
