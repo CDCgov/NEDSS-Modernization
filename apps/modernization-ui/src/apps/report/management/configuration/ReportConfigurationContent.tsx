@@ -138,12 +138,10 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     getOptions={() => {
                         const libs = useReportLibraries();
                         const nbsCustom = libs.find(({ name }) => name === 'nbs_custom');
-                        const options = libs
-                            .filter(({ name }) => name !== 'nbs_custom')
-                            .map(({ value, name, label }) => ({ value, name: `${name} (${label})`, label }));
+                        const options = libs.filter(({ name }) => name !== 'nbs_custom');
                         if (!nbsCustom) return options;
-                        const nbsCustomName = `${nbsCustom.name} (recommended default) (${nbsCustom.label})`;
-                        return [{ value: nbsCustom.value, name: nbsCustomName, label: nbsCustom.value }, ...options];
+                        const nbsCustomName = `${nbsCustom.name} (recommended default)`;
+                        return [{ value: nbsCustom.value, name: nbsCustomName, label: nbsCustom.label }, ...options];
                     }}
                     helperText="The query logic for the report"
                 />
@@ -192,13 +190,7 @@ const DataSourceEditCard = ({
                 EditComponent={SingleSelect}
                 label="Data source"
                 defaultValue={config?.dataSource.id.toString()}
-                getOptions={() =>
-                    useReportDataSources().map(({ value, name, label }) => ({
-                        value,
-                        name: `${name} (${label})`,
-                        label,
-                    }))
-                }
+                getOptions={useReportDataSources}
             />
 
             <ConfirmationModal
@@ -236,13 +228,7 @@ const DataSourceCard = ({ dataSource }: { dataSource: string }) => {
                 EditComponent={SingleSelect}
                 label="Data source"
                 defaultValue={dataSource}
-                getOptions={() =>
-                    useReportDataSources().map(({ value, name, label }) => ({
-                        value,
-                        name: `${name} (${label})`,
-                        label,
-                    }))
-                }
+                getOptions={useReportDataSources}
             />
         </Card>
     );
@@ -292,7 +278,7 @@ const Row = ({
                     label={label}
                     helperText={helperText}
                     error={error?.message}
-                    options={options}
+                    options={addLabelToName(options ?? [])}
                     maxLength={maxLength}
                     disabled={disabled}
                     {...fieldValues}
@@ -305,6 +291,13 @@ const Row = ({
         </ValueField>
     );
 };
+
+const addLabelToName = (options: Selectable[]) =>
+    options.map(({ value, name, label }) => ({
+        value,
+        label,
+        name: !label || label === name ? name : `${name} (${label})`,
+    }));
 
 const Option = ({ option }: { option?: Selectable | string }) => {
     if (!option) return <NoData />;
@@ -399,7 +392,7 @@ const useColumnOptions = (dataSource?: Selectable | string) => {
         load(typeof dataSource === 'string' ? dataSource : dataSource?.value);
     }, [dataSource]);
 
-    return options.map(({ value, name, label }) => ({ value, name: `${name} (${label})` }));
+    return options;
 };
 
 const FilterRepeatingBlockImpl = ({
