@@ -270,41 +270,263 @@ public class AdvancedQueryBuilderTest {
   }
 
   @Test
-  void build_should_throw_on_invalid_filter_expressions() {
-    // Define the invalid expressions as token arrays
-    String[][] invalidExpressions = new String[][] {
-      {"(", ")", ")"}, // ())
-      {"(", "a", "b", "c", ")"}, // (a b c)
-      {"or", "and"}, // or and
-      {"a", "or", "and"}, // a or and
-      {"a", "or", "a", "a"}, // a or a a
-      {"or", "b"}, // or b
-      {"(", ")", "or", "a"}, // () or a
-      {"(", ")"}, // ()
-      {")"}, // )
-      {"or"}, // or
-      {"and"}, // and
-      {"("}, // (
-      {"(", "(", ")"} // (()
-    };
+  void build_should_throw_on_invalid_expression_double_close_paren() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"(", ")", ")"}; // ())
 
-    for (String[] tokens : invalidExpressions) {
-      ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-      int seq = 1;
-      List<FilterValue> values = new java.util.ArrayList<>();
-      for (String t : tokens) {
-        if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-          values.add(buildOperatorValue(seq++, t));
-        } else {
-          values.add(buildClauseValue(seq++, "equals", t));
-        }
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
       }
-
-      localFilter.setFilterValues(values);
-      AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-
-      assertThrows(AdvancedQueryException.class, () -> builder.build());
     }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_paren_with_three_clauses() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"(", "a", "b", "c", ")"}; // (a b c)
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_or_and() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"or", "and"};
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_a_or_and() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"a", "or", "and"};
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_a_or_a_a() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"a", "or", "a", "a"};
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_or_b() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"or", "b"};
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_empty_paren_or_a() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"(", ")", "or", "a"};
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_empty_paren() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"(", ")"};
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_single_close() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {")"};
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_single_or() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"or"};
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_single_and() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"and"};
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_single_open() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"("};
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
+  }
+
+  @Test
+  void build_should_throw_on_invalid_expression_open_open_close() {
+    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    String[] tokens = new String[] {"(", "(", ")"}; // (()
+
+    int seq = 1;
+    List<FilterValue> values = new java.util.ArrayList<>();
+    for (String t : tokens) {
+      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+        values.add(buildOperatorValue(seq++, t));
+      } else {
+        values.add(buildClauseValue(seq++, "equals", t));
+      }
+    }
+
+    localFilter.setFilterValues(values);
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> builder.build());
   }
 }
 
