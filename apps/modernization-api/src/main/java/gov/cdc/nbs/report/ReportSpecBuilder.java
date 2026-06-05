@@ -77,6 +77,10 @@ public class ReportSpecBuilder {
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     List<ReportColumn> columns = fetchColumns();
+    List<List<String>> columnMap = null;
+    if (columns != null) {
+      columnMap = columns.stream().map(c -> List.of(c.name(), c.title())).toList();
+    }
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
@@ -97,6 +101,7 @@ public class ReportSpecBuilder {
         libraryName,
         dataSourceName,
         subsetQuery,
+        columnMap,
         daysValue,
         libraryParams);
   }
