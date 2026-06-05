@@ -77,6 +77,10 @@ public class ReportSpecBuilder {
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
     List<ReportColumn> columns = fetchColumns();
+    List<List<String>> columnMap = null;
+    if (columns != null) {
+      columnMap = columns.stream().map(c -> List.of(c.name(), c.title())).toList();
+    }
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
@@ -90,7 +94,14 @@ public class ReportSpecBuilder {
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
     return new ReportSpec(
-        isExport, isBuiltin, reportTitle, libraryName, dataSourceName, subsetQuery, daysValue);
+        isExport,
+        isBuiltin,
+        reportTitle,
+        libraryName,
+        dataSourceName,
+        subsetQuery,
+        columnMap,
+        daysValue);
   }
 
   private Integer extractDaysValue() {
