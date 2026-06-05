@@ -3,7 +3,7 @@ import { Shown } from 'conditional-render';
 import { usePermissions } from './usePermissions';
 import { Predicate } from 'utils';
 
-type PermittedProps = {
+export type PermittedProps = {
     /** The name of the permission required or a predicate that resolves the permission */
     permission: string | Predicate<string[]>;
     /** The children to render if permissions are satisfied */

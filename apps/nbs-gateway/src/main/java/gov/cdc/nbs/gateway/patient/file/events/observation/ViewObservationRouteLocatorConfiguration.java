@@ -46,7 +46,7 @@ class ViewObservationRouteLocatorConfiguration {
             "view-observation-apply-patient-action-cookie",
             route ->
                 route
-                    .order(RouteOrdering.PATIENT_FILE.before())
+                    .order(RouteOrdering.MODERNIZED_SERVICE.before())
                     .path("/nbs/NewLabReview1.do", "/nbs/PatientSearchResults1.do")
                     .and()
                     .not(query -> query.query("ContextAction", "ViewFile"))

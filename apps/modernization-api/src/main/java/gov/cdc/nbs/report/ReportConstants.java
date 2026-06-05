@@ -32,5 +32,26 @@ public final class ReportConstants {
     TEMPLATE;
   }
 
+  public static Character reportGroupToDbChar(ReportConstants.ReportGroup group) {
+    return switch (group) {
+      case PRIVATE -> 'P';
+      case REPORTING_FACILITY -> 'R';
+      case PUBLIC -> 'S';
+      case TEMPLATE -> 'T';
+    };
+  }
+
+  public static ReportConstants.ReportGroup dbCharToReportGroup(Character shared) {
+    return switch (shared) {
+      case 'P' -> ReportGroup.PRIVATE;
+      case 'R' -> ReportGroup.REPORTING_FACILITY;
+      case 'S' -> ReportGroup.PUBLIC;
+      case 'T' -> ReportGroup.TEMPLATE;
+      default ->
+          throw new IllegalArgumentException(
+              "Invalid `Report.shared` group value: %s".formatted(shared));
+    };
+  }
+
   private ReportConstants() {}
 }

@@ -8,13 +8,18 @@ import org.springframework.stereotype.Component;
 public class StdHivWorkerOptionFinder extends SQLBasedOptionFinder {
 
   private static final String QUERY =
+      // The program area lists can be comma delimited
       """
+      WITH std_hiv_prog as (
+        SELECT CONCAT(',', hiv.config_value, ',', std.config_value, ',') as list
+        FROM (SELECT config_value FROM dbo.NBS_Configuration WHERE config_key = 'HIV_PROGRAM_AREAS') hiv,
+          (SELECT config_value FROM dbo.NBS_Configuration WHERE config_key = 'STD_PROGRAM_AREAS') std
+      )
       SELECT DISTINCT
-          root_extension_txt AS [key],
-          CONCAT(first_nm, ' ', last_nm) AS [value],
-          0 AS [order]
+          root_extension_txt AS [value],
+          CONCAT(first_nm, ' ', last_nm) AS [name]
         FROM
-          dbo.person_name pn, dbo.entity_id ei, dbo.auth_user au, dbo.auth_user_role aur
+          dbo.person_name pn, dbo.entity_id ei, dbo.auth_user au, dbo.auth_user_role aur, std_hiv_prog
         WHERE
           pn.person_uid = ei.entity_uid
           AND ei.type_cd = 'QEC'
@@ -22,11 +27,7 @@ public class StdHivWorkerOptionFinder extends SQLBasedOptionFinder {
           AND au.auth_user_uid = aur.auth_user_uid
           AND root_extension_txt IS NOT NULL
           AND root_extension_txt !=''
-          AND aur.prog_area_cd IN (
-            SELECT config_value
-            FROM dbo.NBS_Configuration
-            WHERE config_key IN ('HIV_PROGRAM_AREAS', 'STD_PROGRAM_AREAS')
-          )
+          AND CHARINDEX(CONCAT(',', aur.prog_area_cd, ','), std_hiv_prog.list) > 0
         ORDER BY [value];
       """;
 
