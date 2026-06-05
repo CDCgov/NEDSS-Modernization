@@ -271,279 +271,181 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_double_close_paren() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"(", ")", ")"}; // ())
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue openParenValue1 = buildOperatorValue(1, "(");
+    FilterValue openParenValue2 = buildOperatorValue(2, "(");
+    FilterValue closeParenValue = buildOperatorValue(3, ")");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(openParenValue1, openParenValue2, closeParenValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_paren_with_three_clauses() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"(", "a", "b", "c", ")"}; // (a b c)
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue containsClause = buildOperatorValue(1, "(");
+    FilterValue equalsClause = buildClauseValue(2, "equals", "value1");
+    FilterValue notEqualsClause = buildClauseValue(3, "notEquals", "value2");
+    FilterValue notNullClause = buildClauseValue(4, "notNull", "value3");
+    FilterValue closeParenValue = buildOperatorValue(5, ")");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(
+        List.of(containsClause, equalsClause, notEqualsClause, notNullClause, closeParenValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_or_and() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"or", "and"};
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue orOperatorValue = buildOperatorValue(1, "or");
+    FilterValue andOperatorValue = buildOperatorValue(2, "and");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(orOperatorValue, andOperatorValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_a_or_and() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"a", "or", "and"};
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue equalsClause = buildClauseValue(1, "equals", "value1");
+    FilterValue orOperatorValue = buildOperatorValue(2, "or");
+    FilterValue andOperatorValue = buildOperatorValue(3, "and");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(equalsClause, orOperatorValue, andOperatorValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_a_or_a_a() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"a", "or", "a", "a"};
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue equalsClause = buildClauseValue(1, "equals", "value1");
+    FilterValue orOperatorValue = buildOperatorValue(2, "or");
+    FilterValue notEqualsClause = buildClauseValue(3, "notEquals", "value2");
+    FilterValue notNullClause = buildClauseValue(4, "notNull", "value3");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(equalsClause, orOperatorValue, notEqualsClause, notNullClause));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_or_b() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"or", "b"};
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue orOperatorValue = buildOperatorValue(1, "or");
+    FilterValue notEqualsClause = buildClauseValue(2, "notEquals", "value2");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(orOperatorValue, notEqualsClause));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_empty_paren_or_a() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"(", ")", "or", "a"};
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue openParenValue = buildOperatorValue(1, "(");
+    FilterValue closeParenValue = buildOperatorValue(2, ")");
+    FilterValue orOperatorValue = buildOperatorValue(3, "or");
+    FilterValue notEqualsClause = buildClauseValue(4, "notEquals", "value2");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(
+        List.of(openParenValue, closeParenValue, orOperatorValue, notEqualsClause));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_empty_paren() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"(", ")"};
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue openParenValue = buildOperatorValue(1, "(");
+    FilterValue closeParenValue = buildOperatorValue(2, ")");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(openParenValue, closeParenValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_single_close() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {")"};
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue closeParenValue = buildOperatorValue(1, ")");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(closeParenValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_single_or() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"or"};
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue orOperatorValue = buildOperatorValue(1, "or");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(orOperatorValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_single_and() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"and"};
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue andOperatorValue = buildOperatorValue(1, "and");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(andOperatorValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_single_open() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"("};
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue openParenValue = buildOperatorValue(1, "(");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(openParenValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 
   @Test
   void build_should_throw_on_invalid_expression_open_open_close() {
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    String[] tokens = new String[] {"(", "(", ")"}; // (()
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    int seq = 1;
-    List<FilterValue> values = new java.util.ArrayList<>();
-    for (String t : tokens) {
-      if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
-        values.add(buildOperatorValue(seq++, t));
-      } else {
-        values.add(buildClauseValue(seq++, "equals", t));
-      }
-    }
+    FilterValue openParenValue1 = buildOperatorValue(1, "(");
+    FilterValue openParenValue2 = buildOperatorValue(1, "(");
+    FilterValue closeParenValue = buildOperatorValue(1, "(");
 
-    localFilter.setFilterValues(values);
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> builder.build());
+    filter.setFilterValues(List.of(openParenValue1, openParenValue2, closeParenValue));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
   }
 }
-
-// invalid
-// ())
-// (a b c)
-// or and
-// a or and
-// a or a a
-// or b
-// () or a
-// ()
-// )
-// or
-// and
-// (
-// (()
 
 // valid
 // ((((a or b))))
