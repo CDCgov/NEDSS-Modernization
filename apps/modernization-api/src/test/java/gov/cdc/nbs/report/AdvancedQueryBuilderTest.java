@@ -2,6 +2,7 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
 import gov.cdc.nbs.entity.odse.FilterCode;
@@ -59,7 +60,12 @@ public class AdvancedQueryBuilderTest {
   }
 
   private AdvancedQuery.RuleGroup tryBuild(AdvancedQueryBuilder builder) {
-    return builder.build();
+    try {
+      return builder.build();
+    } catch (AdvancedQueryException e) {
+      fail("Building AdvancedQuery.RuleGroup threw an exception: " + e.getMessage());
+      return null;
+    }
   }
 
   /// /////////////////////////////////////////////////////////////////////

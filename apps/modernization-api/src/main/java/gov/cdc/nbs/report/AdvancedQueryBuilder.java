@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public class AdvancedQueryBuilder {
   private final List<FilterValue> filterValues;
-  private final List<AdvancedQueryException> queryErrors = new ArrayList<>();
 
   /** 0-based index of the current {@code FilterValue} being processed */
   private int current = 0;
@@ -38,7 +37,7 @@ public class AdvancedQueryBuilder {
     this.filterValues = filterValues;
   }
 
-  public AdvancedQuery.RuleGroup build() {
+  public AdvancedQuery.RuleGroup build() throws AdvancedQueryException {
     AdvancedQuery.RuleGroup ruleGroup = buildRuleGroup(ReportConstants.QueryCombinators.and, null);
 
     return unwrapRuleGroup(ruleGroup);
@@ -78,7 +77,8 @@ public class AdvancedQueryBuilder {
   }
 
   private AdvancedQuery.RuleGroup buildRuleGroup(
-      ReportConstants.QueryCombinators combinator, AdvancedQuery previousRule) {
+      ReportConstants.QueryCombinators combinator, AdvancedQuery previousRule)
+      throws AdvancedQueryException {
     List<AdvancedQuery> rules = new ArrayList<>();
     if (previousRule != null) {
       rules.add(previousRule);
@@ -126,10 +126,9 @@ public class AdvancedQueryBuilder {
               break;
             case "(":
               if (previous() != null && previous().getOperator().equals(")")) {
-                queryErrors.add(
-                    new AdvancedQueryException(
-                        "Cannot follow a closing parenthesis with an open parenthesis without an OPERATOR in between",
-                        filterValue));
+                throw new AdvancedQueryException(
+                    "Cannot follow a closing parenthesis with an open parenthesis without an OPERATOR in between",
+                    filterValue);
               }
               advance();
               rules.add(buildRuleGroup(ReportConstants.QueryCombinators.and, null));
@@ -139,29 +138,19 @@ public class AdvancedQueryBuilder {
               terminated = true;
               break;
             default:
-              queryErrors.add(
-                  new AdvancedQueryException(
-                      "Unknown operator: " + filterValue.getOperator(), filterValue));
+              throw new AdvancedQueryException(
+                  "Unknown operator: " + filterValue.getOperator(), filterValue);
           }
           break;
         default:
-          queryErrors.add(
-              new AdvancedQueryException(
-                  "Unknown valueType encountered: " + filterValue.getValueType(), filterValue));
+          throw new AdvancedQueryException(
+              "Unknown valueType encountered: " + filterValue.getValueType(), filterValue);
       }
       advance();
 
       if (terminated) {
         break;
       }
-    }
-
-    if (!queryErrors.isEmpty()) {
-      //  TODO: What exactly do we wanna do here?  Should we still return the partially built
-      // ruleGroup
-      //  alongside the list of errors?  Given we presumably want to surface these errors to the
-      // user in
-      //  a non-blocking way, should this still be considered a 2XX response?
     }
 
     if (ruleGroup == null) {
@@ -171,7 +160,7 @@ public class AdvancedQueryBuilder {
     return ruleGroup;
   }
 
-  private AdvancedQuery.Rule buildClause(FilterValue filterValue) {
+  private AdvancedQuery.Rule buildClause(FilterValue filterValue) throws AdvancedQueryException {
     validateClause(filterValue);
 
     return new AdvancedQuery.Rule(
@@ -181,34 +170,18 @@ public class AdvancedQueryBuilder {
         filterValue.getValueTxt());
   }
 
-  private void validateClause(FilterValue filterValue) {
+  private void validateClause(FilterValue filterValue) throws AdvancedQueryException {
     if (previous() != null && previous().getValueType().equals("CLAUSE")) {
-      queryErrors.add(
-          new AdvancedQueryException(
-              "CLAUSE cannot follow another CLAUSE without an OPERATOR in between", filterValue));
+      throw new AdvancedQueryException(
+          "CLAUSE cannot follow another CLAUSE without an OPERATOR in between", filterValue);
     }
   }
 
-  private void validateOperator(FilterValue filterValue) {
-    if (previous() == null) {
-      queryErrors.add(
-          new AdvancedQueryException(
-              "First filter value must be a CLAUSE, not an OPERATOR", peek()));
-    }
+  private void validateOperator(FilterValue filterValue) throws AdvancedQueryException {
     if (current == filterValues.size() - 1 && !filterValue.getOperator().equals(")")) {
-      queryErrors.add(
-          new AdvancedQueryException(
-              "Cannot end list of FilterValues with an OPERATOR unless it's a closing parenthesis",
-              filterValue));
-    }
-    if (previous() != null
-        && previous().getValueType().equals("OPERATOR")
-        && !filterValue.getOperator().equals(")")
-        && !previous().getOperator().equals("(")) {
-      queryErrors.add(
-          new AdvancedQueryException(
-              "Cannot follow OPERATOR with another OPERATOR, unless it's a parenthesis",
-              filterValue));
+      throw new AdvancedQueryException(
+          "Cannot end list of FilterValues with an OPERATOR unless it's a closing parenthesis",
+          filterValue);
     }
   }
 }
