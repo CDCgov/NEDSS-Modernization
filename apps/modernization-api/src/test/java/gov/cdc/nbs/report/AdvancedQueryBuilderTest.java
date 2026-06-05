@@ -2,6 +2,7 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 import gov.cdc.nbs.entity.odse.FilterCode;
@@ -266,6 +267,44 @@ public class AdvancedQueryBuilderTest {
     assertThat(andGroup.rules().get(1)).isInstanceOf(AdvancedQuery.Rule.class);
     AdvancedQuery.Rule notEqualsRule = (AdvancedQuery.Rule) andGroup.rules().get(1);
     assertRuleMatchesClauseValue(notEqualsRule, notEqualsClause);
+  }
+
+  @Test
+  void build_should_throw_on_invalid_filter_expressions() {
+    // Define the invalid expressions as token arrays
+    String[][] invalidExpressions = new String[][] {
+      {"(", ")", ")"}, // ())
+      {"(", "a", "b", "c", ")"}, // (a b c)
+      {"or", "and"}, // or and
+      {"a", "or", "and"}, // a or and
+      {"a", "or", "a", "a"}, // a or a a
+      {"or", "b"}, // or b
+      {"(", ")", "or", "a"}, // () or a
+      {"(", ")"}, // ()
+      {")"}, // )
+      {"or"}, // or
+      {"and"}, // and
+      {"("}, // (
+      {"(", "(", ")"} // (()
+    };
+
+    for (String[] tokens : invalidExpressions) {
+      ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+      int seq = 1;
+      List<FilterValue> values = new java.util.ArrayList<>();
+      for (String t : tokens) {
+        if ("(".equals(t) || ")".equals(t) || "or".equals(t) || "and".equals(t)) {
+          values.add(buildOperatorValue(seq++, t));
+        } else {
+          values.add(buildClauseValue(seq++, "equals", t));
+        }
+      }
+
+      localFilter.setFilterValues(values);
+      AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+
+      assertThrows(AdvancedQueryException.class, () -> builder.build());
+    }
   }
 }
 
