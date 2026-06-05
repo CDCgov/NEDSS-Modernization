@@ -12,10 +12,22 @@ export type ReportConfiguration = {
     dataSource: ReportDataSource;
     library: Library;
     title: string;
+    description?: string;
+    ownerUid: number;
+    group: ReportConfiguration.group;
+    sectionCd: string;
     basicFilters: Array<BasicFilterConfiguration>;
     advancedFilter?: AdvancedFilterConfiguration;
     columns: Array<ReportColumn>;
     defaultColumnUids?: Array<number>;
     defaultSort?: SortSpec;
 };
+export namespace ReportConfiguration {
+    export enum group {
+        PRIVATE = 'PRIVATE',
+        REPORTING_FACILITY = 'REPORTING_FACILITY',
+        PUBLIC = 'PUBLIC',
+        TEMPLATE = 'TEMPLATE',
+    }
+}
 

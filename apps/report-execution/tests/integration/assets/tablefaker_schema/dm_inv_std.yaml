@@ -1,0 +1,15 @@
+config:
+  seed: 19
+  nbs:
+    fk_tables: []
+
+tables:
+  - table_name: "[RDB].[dbo].[DM_INV_STD]"
+    row_count: 500
+    columns:
+      - column_name: program_jurisdiction_oid
+        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
+      - column_name: PATIENT_LOCAL_ID
+        data: random.choice(["PSN20067002GA01", "PSN30076044GA01", "PSN10082059GA01", "PSN10087055GA01", "PSN10087069GA01", "PSN10087071GA01", "PSN10088042GA01", "PSN10089067GA01", "PSN10089161GA01", "PSN10094077GA01", "PSN10094080GA01"])
+      - column_name: EVENT_DATE
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))

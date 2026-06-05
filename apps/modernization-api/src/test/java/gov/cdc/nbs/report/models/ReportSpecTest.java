@@ -16,6 +16,7 @@ class ReportSpecTest {
             "nbs_custom",
             "nbs_rdb.investigation",
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
+            null,
             11);
 
     assertThat(reportSpec.isBuiltin()).isTrue();

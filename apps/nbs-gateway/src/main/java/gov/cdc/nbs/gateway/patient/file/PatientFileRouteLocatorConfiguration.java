@@ -44,7 +44,7 @@ class PatientFileRouteLocatorConfiguration {
             "patient-file-direct-uid",
             route ->
                 route
-                    .order(RouteOrdering.PATIENT_FILE.order())
+                    .order(RouteOrdering.MODERNIZED_SERVICE.order())
                     .query(CONTEXT_ACTION_PARAMETER, VALID_ACTIONS)
                     .and()
                     .query("uid")
@@ -54,7 +54,7 @@ class PatientFileRouteLocatorConfiguration {
             "patient-file-direct-uid",
             route ->
                 route
-                    .order(RouteOrdering.PATIENT_FILE.order())
+                    .order(RouteOrdering.MODERNIZED_SERVICE.order())
                     .query(CONTEXT_ACTION_PARAMETER, VALID_ACTIONS)
                     .and()
                     .query("MPRUid")
@@ -64,7 +64,7 @@ class PatientFileRouteLocatorConfiguration {
             "patient-file-resolving",
             route ->
                 route
-                    .order(RouteOrdering.PATIENT_FILE.order())
+                    .order(RouteOrdering.MODERNIZED_SERVICE.order())
                     .query(CONTEXT_ACTION_PARAMETER, VALID_ACTIONS)
                     .filters(filter -> filter.setPath(service.summary()).filters(defaults))
                     .uri(service.uri()))
