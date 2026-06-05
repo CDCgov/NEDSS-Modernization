@@ -50,7 +50,7 @@ public class AdvancedQueryBuilderTest {
         .build();
   }
 
-  ////////////////////////////////////////////////////////////////////////
+  /// /////////////////////////////////////////////////////////////////////
 
   private void assertRuleMatchesClauseValue(AdvancedQuery.Rule rule, FilterValue clauseValue) {
     assertThat(rule.id()).isEqualTo(clauseValue.getId().toString());
@@ -64,12 +64,12 @@ public class AdvancedQueryBuilderTest {
       return builder.build();
     } catch (AdvancedQueryException e) {
       System.out.println(e);
-      assertFalse(true);
+      assertFalse(true, "AdvancedQueryBuilder should not throw an exception");
       return null;
     }
   }
 
-  ////////////////////////////////////////////////////////////////////////
+  /// /////////////////////////////////////////////////////////////////////
 
   @Test
   void build_should_create_rule_group_with_single_rule() {
@@ -280,7 +280,7 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(openParenValue1, openParenValue2, closeParenValue));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -297,7 +297,7 @@ public class AdvancedQueryBuilderTest {
         List.of(containsClause, equalsClause, notEqualsClause, notNullClause, closeParenValue));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -310,7 +310,7 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(orOperatorValue, andOperatorValue));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -324,7 +324,7 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(equalsClause, orOperatorValue, andOperatorValue));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -339,7 +339,7 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(equalsClause, orOperatorValue, notEqualsClause, notNullClause));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -352,7 +352,7 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(orOperatorValue, notEqualsClause));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -368,7 +368,7 @@ public class AdvancedQueryBuilderTest {
         List.of(openParenValue, closeParenValue, orOperatorValue, notEqualsClause));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -381,7 +381,7 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(openParenValue, closeParenValue));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -393,7 +393,7 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(closeParenValue));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -405,7 +405,7 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(orOperatorValue));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -417,7 +417,7 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(andOperatorValue));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -429,7 +429,7 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(openParenValue));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
 
   @Test
@@ -443,67 +443,93 @@ public class AdvancedQueryBuilderTest {
     filter.setFilterValues(List.of(openParenValue1, openParenValue2, closeParenValue));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
-    assertThrows(AdvancedQueryException.class, () -> tryBuild(builder));
+    assertThrows(AdvancedQueryException.class, builder::build);
   }
-}
+
   @Test
   void build_should_handle_deeply_nested_or_expression() {
     // ((((a or b))))
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-    FilterValue open1 = buildOperatorValue(1, "(");
-    FilterValue open2 = buildOperatorValue(2, "(");
-    FilterValue open3 = buildOperatorValue(3, "(");
-    FilterValue open4 = buildOperatorValue(4, "(");
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    FilterValue openParen1 = buildOperatorValue(1, "(");
+    FilterValue openParen2 = buildOperatorValue(2, "(");
+    FilterValue openParen3 = buildOperatorValue(3, "(");
+    FilterValue openParen4 = buildOperatorValue(4, "(");
 
-    FilterValue aClause = buildClauseValue(5, "equals", "a");
-    FilterValue orOp = buildOperatorValue(6, "or");
-    FilterValue bClause = buildClauseValue(7, "equals", "b");
+    FilterValue equalsClause = buildClauseValue(5, "equals", "value1");
+    FilterValue orOperator = buildOperatorValue(6, "or");
+    FilterValue notEqualsClause = buildClauseValue(7, "notEquals", "value2");
 
-    FilterValue close4 = buildOperatorValue(8, ")");
-    FilterValue close3 = buildOperatorValue(9, ")");
-    FilterValue close2 = buildOperatorValue(10, ")");
-    FilterValue close1 = buildOperatorValue(11, ")");
+    FilterValue closeParen1 = buildOperatorValue(8, ")");
+    FilterValue closeParen2 = buildOperatorValue(9, ")");
+    FilterValue closeParen3 = buildOperatorValue(10, ")");
+    FilterValue closeParen4 = buildOperatorValue(11, ")");
 
-    localFilter.setFilterValues(
-        List.of(open1, open2, open3, open4, aClause, orOp, bClause, close4, close3, close2, close1));
+    filter.setFilterValues(
+        List.of(
+            openParen1,
+            openParen2,
+            openParen3,
+            openParen4,
+            equalsClause,
+            orOperator,
+            notEqualsClause,
+            closeParen1,
+            closeParen2,
+            closeParen3,
+            closeParen4));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     // should simplify to an OR group with two rules (a, b)
     assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
     assertThat(root.rules()).hasSize(2);
     assertThat(root.rules().getFirst()).isInstanceOf(AdvancedQuery.Rule.class);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().getFirst(), aClause);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().get(1), bClause);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().getFirst(), equalsClause);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().get(1), notEqualsClause);
   }
 
   @Test
   void build_should_handle_complex_mixed_and_or_with_inner_parens() {
     // ((a and b or c and (d or e)))
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    FilterValue o1 = buildOperatorValue(1, "(");
-    FilterValue o2 = buildOperatorValue(2, "(");
+    FilterValue openParen1 = buildOperatorValue(1, "(");
+    FilterValue openParen2 = buildOperatorValue(2, "(");
 
-    FilterValue a = buildClauseValue(3, "equals", "a");
-    FilterValue and1 = buildOperatorValue(4, "and");
-    FilterValue b = buildClauseValue(5, "equals", "b");
-    FilterValue or1 = buildOperatorValue(6, "or");
-    FilterValue c = buildClauseValue(7, "equals", "c");
-    FilterValue and2 = buildOperatorValue(8, "and");
-    FilterValue ip = buildOperatorValue(9, "(");
-    FilterValue d = buildClauseValue(10, "equals", "d");
-    FilterValue or2 = buildOperatorValue(11, "or");
-    FilterValue e = buildClauseValue(12, "equals", "e");
-    FilterValue cp = buildOperatorValue(13, ")");
-    FilterValue cclose = buildOperatorValue(14, ")");
-    FilterValue cclose2 = buildOperatorValue(15, ")");
+    FilterValue equalsClause1 = buildClauseValue(3, "equals", "value1");
+    FilterValue andOperator1 = buildOperatorValue(4, "and");
+    FilterValue equalsClause2 = buildClauseValue(5, "equals", "value2");
+    FilterValue orOperator1 = buildOperatorValue(6, "or");
+    FilterValue equalsClause3 = buildClauseValue(7, "equals", "value3");
+    FilterValue andOperator2 = buildOperatorValue(8, "and");
+    FilterValue innerOpenParen = buildOperatorValue(9, "(");
+    FilterValue equalsClause4 = buildClauseValue(10, "equals", "value4");
+    FilterValue orOperator2 = buildOperatorValue(11, "or");
+    FilterValue equalsClause5 = buildClauseValue(12, "equals", "value5");
+    FilterValue innerCloseParen = buildOperatorValue(13, ")");
+    FilterValue closeParen1 = buildOperatorValue(14, ")");
+    FilterValue closeParen2 = buildOperatorValue(15, ")");
 
-    localFilter.setFilterValues(
-        List.of(o1, o2, a, and1, b, or1, c, and2, ip, d, or2, e, cp, cclose, cclose2));
+    filter.setFilterValues(
+        List.of(
+            openParen1,
+            openParen2,
+            equalsClause1,
+            andOperator1,
+            equalsClause2,
+            orOperator1,
+            equalsClause3,
+            andOperator2,
+            innerOpenParen,
+            equalsClause4,
+            orOperator2,
+            equalsClause5,
+            innerCloseParen,
+            closeParen1,
+            closeParen2));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     // Root should be OR combining two AND groups
@@ -515,8 +541,8 @@ public class AdvancedQueryBuilderTest {
     AdvancedQuery.RuleGroup firstAnd = (AdvancedQuery.RuleGroup) root.rules().getFirst();
     assertThat(firstAnd.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
     assertThat(firstAnd.rules()).hasSize(2);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) firstAnd.rules().getFirst(), a);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) firstAnd.rules().get(1), b);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) firstAnd.rules().getFirst(), equalsClause1);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) firstAnd.rules().get(1), equalsClause2);
 
     // Second rule is AND group (c, (d or e))
     assertThat(root.rules().get(1)).isInstanceOf(AdvancedQuery.RuleGroup.class);
@@ -525,35 +551,45 @@ public class AdvancedQueryBuilderTest {
     assertThat(secondAnd.rules()).hasSize(2);
 
     // First of secondAnd should be clause c
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) secondAnd.rules().getFirst(), c);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) secondAnd.rules().getFirst(), equalsClause3);
 
     // Second of secondAnd should be an OR group (d, e)
     assertThat(secondAnd.rules().get(1)).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup innerOr = (AdvancedQuery.RuleGroup) secondAnd.rules().get(1);
     assertThat(innerOr.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
     assertThat(innerOr.rules()).hasSize(2);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) innerOr.rules().getFirst(), d);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) innerOr.rules().get(1), e);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) innerOr.rules().getFirst(), equalsClause4);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) innerOr.rules().get(1), equalsClause5);
   }
 
   @Test
   void build_should_handle_nested_group_or_with_clause() {
     // (((b)) or a)
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
+    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    FilterValue o1 = buildOperatorValue(1, "(");
-    FilterValue o2 = buildOperatorValue(2, "(");
-    FilterValue o3 = buildOperatorValue(3, "(");
-    FilterValue b = buildClauseValue(4, "equals", "b");
-    FilterValue c1 = buildOperatorValue(5, ")");
-    FilterValue c2 = buildOperatorValue(6, ")");
-    FilterValue orv = buildOperatorValue(7, "or");
-    FilterValue a = buildClauseValue(8, "equals", "a");
-    FilterValue c3 = buildOperatorValue(9, ")");
+    FilterValue openParen1 = buildOperatorValue(1, "(");
+    FilterValue openParen2 = buildOperatorValue(2, "(");
+    FilterValue openParen3 = buildOperatorValue(3, "(");
+    FilterValue equalsClause = buildClauseValue(4, "equals", "value1");
+    FilterValue closeParen1 = buildOperatorValue(5, ")");
+    FilterValue closeParen2 = buildOperatorValue(6, ")");
+    FilterValue orOperator = buildOperatorValue(7, "or");
+    FilterValue notEquals = buildClauseValue(8, "notEquals", "value2");
+    FilterValue closeParen3 = buildOperatorValue(9, ")");
 
-    localFilter.setFilterValues(List.of(o1, o2, o3, b, c1, c2, orv, a, c3));
+    filter.setFilterValues(
+        List.of(
+            openParen1,
+            openParen2,
+            openParen3,
+            equalsClause,
+            closeParen1,
+            closeParen2,
+            orOperator,
+            notEquals,
+            closeParen3));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
@@ -561,8 +597,8 @@ public class AdvancedQueryBuilderTest {
 
     // first is b, second is a
     assertThat(root.rules().getFirst()).isInstanceOf(AdvancedQuery.Rule.class);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().getFirst(), b);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().get(1), a);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().getFirst(), equalsClause);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().get(1), notEquals);
   }
 
   @Test
@@ -570,19 +606,31 @@ public class AdvancedQueryBuilderTest {
     // a and b or c and d and e or f
     ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
 
-    FilterValue a = buildClauseValue(1, "equals", "a");
-    FilterValue and1 = buildOperatorValue(2, "and");
-    FilterValue b = buildClauseValue(3, "equals", "b");
-    FilterValue or1 = buildOperatorValue(4, "or");
-    FilterValue c = buildClauseValue(5, "equals", "c");
-    FilterValue and2 = buildOperatorValue(6, "and");
-    FilterValue d = buildClauseValue(7, "equals", "d");
-    FilterValue and3 = buildOperatorValue(8, "and");
-    FilterValue e = buildClauseValue(9, "equals", "e");
-    FilterValue or2 = buildOperatorValue(10, "or");
-    FilterValue f = buildClauseValue(11, "equals", "f");
+    FilterValue equalsClause1 = buildClauseValue(1, "equals", "a");
+    FilterValue andOperator1 = buildOperatorValue(2, "and");
+    FilterValue equalsClause2 = buildClauseValue(3, "equals", "b");
+    FilterValue orOperator1 = buildOperatorValue(4, "or");
+    FilterValue equalsClause3 = buildClauseValue(5, "equals", "c");
+    FilterValue andOperator2 = buildOperatorValue(6, "and");
+    FilterValue equalsClause4 = buildClauseValue(7, "equals", "d");
+    FilterValue andOperator3 = buildOperatorValue(8, "and");
+    FilterValue equalsClause5 = buildClauseValue(9, "equals", "e");
+    FilterValue orOperator2 = buildOperatorValue(10, "or");
+    FilterValue equalsClause6 = buildClauseValue(11, "equals", "f");
 
-    localFilter.setFilterValues(List.of(a, and1, b, or1, c, and2, d, and3, e, or2, f));
+    localFilter.setFilterValues(
+        List.of(
+            equalsClause1,
+            andOperator1,
+            equalsClause2,
+            orOperator1,
+            equalsClause3,
+            andOperator2,
+            equalsClause4,
+            andOperator3,
+            equalsClause5,
+            orOperator2,
+            equalsClause6));
 
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
     AdvancedQuery.RuleGroup root = tryBuild(builder);
@@ -596,25 +644,20 @@ public class AdvancedQueryBuilderTest {
     AdvancedQuery.RuleGroup first = (AdvancedQuery.RuleGroup) root.rules().getFirst();
     assertThat(first.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
     assertThat(first.rules()).hasSize(2);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) first.rules().getFirst(), a);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) first.rules().get(1), b);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) first.rules().getFirst(), equalsClause1);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) first.rules().get(1), equalsClause2);
 
     // second is AND group (c,d,e)
     assertThat(root.rules().get(1)).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup second = (AdvancedQuery.RuleGroup) root.rules().get(1);
     assertThat(second.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
     assertThat(second.rules()).hasSize(3);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) second.rules().getFirst(), c);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) second.rules().get(1), d);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) second.rules().get(2), e);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) second.rules().getFirst(), equalsClause3);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) second.rules().get(1), equalsClause4);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) second.rules().get(2), equalsClause5);
 
     // third is clause f
     assertThat(root.rules().get(2)).isInstanceOf(AdvancedQuery.Rule.class);
-    assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().get(2), f);
+    assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().get(2), equalsClause6);
   }
-
-// valid
-// ((((a or b))))
-// ((a and b or c and (d or e)))
-// (((b)) or a)
-// a and b or c and d and e or f
+}
