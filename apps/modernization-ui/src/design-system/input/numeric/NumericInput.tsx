@@ -8,6 +8,7 @@ type NumericInputProps = {
     sizing?: Sizing;
     error?: string;
     required?: boolean;
+    helperText?: string;
 } & NumericProps;
 
 const NumericInput = ({
@@ -18,6 +19,7 @@ const NumericInput = ({
     error,
     required,
     placeholder,
+    helperText,
     ...remaining
 }: NumericInputProps) => {
     return (
@@ -28,6 +30,7 @@ const NumericInput = ({
             htmlFor={id}
             required={required}
             error={error}
+            helperText={helperText}
         >
             <Numeric id={id} placeholder={placeholder} {...remaining} />
         </EntryWrapper>
