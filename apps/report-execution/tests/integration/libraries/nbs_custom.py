@@ -4,7 +4,7 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-faker_schema = 'phc_demographic.yaml'
+faker_schema = 'dm_inv_std.yaml'
 
 
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
@@ -19,13 +19,15 @@ class TestIntegrationNbsCustomLibrary:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_custom',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
+                'data_source_name': '[NBS_RDB].[dbo].[DM_INV_STD]',
                 'subset_query': """
-                        SELECT PHC_code_short_desc,
-                               state,
-                               county
-                        FROM NBS_ODSE.dbo.PHCDemographic
-                        ORDER BY PHC_code_short_desc, state, county
+                        SELECT PROGRAM_JURISDICTION_OID,
+                               PATIENT_LOCAL_ID,
+                               EVENT_DATE
+                        FROM rdb.dbo.DM_INV_STD
+                        ORDER BY PROGRAM_JURISDICTION_OID,
+                                 PATIENT_LOCAL_ID,
+                                 EVENT_DATE
                 """,
             }
         )
@@ -34,12 +36,12 @@ class TestIntegrationNbsCustomLibrary:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 1000
+        assert len(data) == 500
         assert len(data[0]) == len(result.content.columns)
         assert result.content.columns == [
-            'PHC_code_short_desc',
-            'state',
-            'county'
+            'PROGRAM_JURISDICTION_OID',
+            'PATIENT_LOCAL_ID',
+            'EVENT_DATE'
         ]
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
@@ -51,12 +53,12 @@ class TestIntegrationNbsCustomLibrary:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_custom',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
+                'data_source_name': '[NBS_RDB].[dbo].[DM_INV_STD]',
                 'subset_query': """
-                        SELECT PHC_code_short_desc,
-                               state,
-                               county
-                        FROM NBS_ODSE.dbo.PHCDemographic
+                        SELECT PROGRAM_JURISDICTION_OID,
+                               PATIENT_LOCAL_ID,
+                               EVENT_DATE
+                        FROM rdb.dbo.DM_INV_STD
                         WHERE 1 = 2
                 """,
             }
@@ -67,7 +69,7 @@ class TestIntegrationNbsCustomLibrary:
 
         assert len(result.content.data) == 0
         assert result.content.columns == [
-            'PHC_code_short_desc',
-            'state',
-            'county'
+            'PROGRAM_JURISDICTION_OID',
+            'PATIENT_LOCAL_ID',
+            'EVENT_DATE'
         ]
