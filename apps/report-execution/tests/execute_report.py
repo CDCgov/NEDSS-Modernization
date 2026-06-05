@@ -47,3 +47,22 @@ class TestExecuteReport:
             exc_info.value.message
             == 'Library `missing_library` (is_builtin: True) not found'
         )
+
+    def test_execute_report_with_library_params(self, mock_db_transaction):
+        """Test that library_params can be passed to the execute function."""
+        report_spec = ReportSpec.model_validate(
+            {
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'Test Report with Params',
+                'library_name': 'nbs_custom',
+                'data_source_name': 'random_db_table_0',
+                'subset_query': 'SELECT * FROM test',
+                'library_params': '{"report_days": 30}',
+            }
+        )
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+        assert result.header == 'Custom Report For Table: random_db_table_0'
+        assert result.content.columns == ['id', 'name']
+        assert len(result.content.data) == 4
