@@ -68,7 +68,6 @@ class WhereClauseServiceTest {
         defaultIncludeNulls,
         null,
         null,
-        null,
         mockType);
   }
 
@@ -328,8 +327,7 @@ class WhereClauseServiceTest {
 
     // Create a config where filterType is null
     BasicFilterConfiguration config =
-        new BasicFilterConfiguration(
-            filterUid, columnUid, List.of(), false, null, null, null, null);
+        new BasicFilterConfiguration(filterUid, columnUid, List.of(), false, null, null, null);
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));

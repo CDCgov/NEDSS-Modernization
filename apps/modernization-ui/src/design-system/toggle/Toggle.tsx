@@ -1,16 +1,17 @@
 import classNames from 'classnames';
 import styles from './toggle.module.scss';
 import { Sizing } from 'design-system/field';
+import { isLabelVisible, Labeled } from 'design-system/label-utils';
 
-type Props = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'value'> & {
-    value?: boolean;
-    name: string;
-    label: string;
-    sizing?: Sizing;
-    onChange?: (checked: boolean) => void;
-};
+type Props = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'value'> &
+    Labeled & {
+        value?: boolean;
+        name: string;
+        sizing?: Sizing;
+        onChange?: (checked: boolean) => void;
+    };
 
-export const Toggle = ({ value = false, name, label, sizing, onChange }: Props) => {
+export const Toggle = ({ value = false, name, sizing, onChange, ...remaining }: Props) => {
     const handleChange = (checked: boolean) => {
         onChange?.(checked);
     };
@@ -24,10 +25,11 @@ export const Toggle = ({ value = false, name, label, sizing, onChange }: Props) 
                     checked={value}
                     name={name}
                     onChange={(e) => handleChange(e.target.checked)}
+                    {...remaining}
                 />
                 <span className={styles.slider}></span>
             </label>
-            <label htmlFor={name}>{label}</label>
+            {isLabelVisible(remaining) && <label htmlFor={name}>{remaining.label}</label>}
         </div>
     );
 };
