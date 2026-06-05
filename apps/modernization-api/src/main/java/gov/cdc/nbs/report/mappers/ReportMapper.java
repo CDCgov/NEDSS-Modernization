@@ -44,7 +44,7 @@ public class ReportMapper {
         .filterMode('B') // consistently "B" in DB, so just continuing that pattern"
         .ownerUid(request.ownerId())
         .reportTitle(request.reportTitle())
-        .shared(reportGroupToDbChar(request.group()))
+        .shared(ReportConstants.reportGroupToDbChar(request.group()))
         .status(new Status(Status.ACTIVE_CODE, now))
         .sectionCd(request.sectionCode())
         .reportLibrary(reportLibrary)
@@ -54,14 +54,5 @@ public class ReportMapper {
   private Long generateReportId() {
     var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT);
     return generatedId.getId();
-  }
-
-  private static Character reportGroupToDbChar(ReportConstants.ReportGroup group) {
-    return switch (group) {
-      case PRIVATE -> 'P';
-      case REPORTING_FACILITY -> 'R';
-      case PUBLIC -> 'S';
-      case TEMPLATE -> 'T';
-    };
   }
 }

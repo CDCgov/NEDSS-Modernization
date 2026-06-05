@@ -53,7 +53,7 @@ class DeletedInvestigationReturnPatientFileLocatorConfiguration {
             "deleted-investigation-patient-file-return",
             route ->
                 route
-                    .order(RouteOrdering.PATIENT_FILE.before())
+                    .order(RouteOrdering.MODERNIZED_SERVICE.before())
                     .path("/nbs/PageAction.do")
                     .and()
                     .query("method", "deleteSubmit")

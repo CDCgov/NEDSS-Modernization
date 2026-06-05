@@ -9,6 +9,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
@@ -83,6 +84,7 @@ class ReportServiceTest {
     Mockito.lenient().when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
     Mockito.lenient().when(report.getReportFilters()).thenReturn(reportFilters);
     Mockito.lenient().when(report.getDisplayColumns()).thenReturn(List.of(columnA, columnB));
+    Mockito.lenient().when(report.getShared()).thenReturn('P');
     Mockito.lenient().when(columnA.getDataSourceColumnId()).thenReturn(columnAId);
     Mockito.lenient().when(columnB.getDataSourceColumnId()).thenReturn(columnBId);
     Mockito.lenient().when(columnA.getSequenceNumber()).thenReturn(2);
@@ -499,6 +501,7 @@ class ReportServiceTest {
               });
       assertThat(config.advancedFilter().reportFilterUid()).isEqualTo(6L);
       assertThat(config.defaultColumnUids()).isEqualTo(List.of(columnBId, columnAId));
+      assertThat(config.group()).isEqualTo(ReportGroup.PRIVATE);
     }
 
     @Test
@@ -562,6 +565,7 @@ class ReportServiceTest {
               "nbs_custom",
               "[NBS_ODSE].[dbo].[PHCDemographic]",
               "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
+              null,
               null);
       try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
           mockConstruction(

@@ -41,6 +41,11 @@ vi.mock('configuration', () => {
     };
 });
 
+vi.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
+    __esModule: true,
+    default: vi.fn(),
+}));
+
 // don't actually let the cache cache
 const localStorageMock: Storage = {
     getItem: (): string | null => null,
@@ -67,12 +72,18 @@ afterEach(() => {
 
 const MOCK_CONFIG: ReportConfiguration = {
     title: 'Test Report',
+    ownerUid: 0,
+    group: 'S',
+    sectionCd: '1000',
     dataSource: {
+        id: 1,
         name: 'nbs_ods.data_source',
     },
     library: {
+        id: 2,
         runner: 'python',
-        libraryName: 'nbs_sr_99',
+        name: 'nbs_sr_99',
+        description: 'a library',
         isBuiltin: true,
         allowColumnSelection: false,
     },
@@ -154,7 +165,7 @@ describe('report run page', () => {
 
             expect(mockApi).toHaveBeenCalled();
 
-            expect(await findByText(/Config/)).toBeVisible();
+            expect(await findByText('On this page')).toBeVisible();
         });
 
         it('run button submits config and opens in new tab', async () => {
@@ -221,7 +232,7 @@ describe('report run page', () => {
 
                 expect(await findByLabelText('Full Name')).toBeVisible();
                 expect(await findByText('Basic Text Filter')).toBeVisible();
-                expect(queryByText('Advanced Filter')).toBeNull();
+                expect(queryByText('Advanced filter')).toBeNull();
             });
 
             it('renders the filter name when column unavailable', async () => {
@@ -368,11 +379,13 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+                const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                 expect(getByRole('status')).toHaveTextContent('Loading');
 
                 expect(mockConfigApi).toHaveBeenCalled();
+
+                expect(await findAllByText('Other filters')).toHaveLength(2);
 
                 const input = await findByLabelText('Full Name');
                 await userEvent.type(input, 'test');
@@ -483,11 +496,13 @@ describe('report run page', () => {
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
 
-                    const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+                    const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                     expect(getByRole('status')).toHaveTextContent('Loading');
 
                     expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findAllByText('Time')).toHaveLength(2);
 
                     expect(await findByLabelText('Full Name')).toBeVisible();
                     const fromInput = await findByLabelText('From');
@@ -610,11 +625,13 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+                const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                 expect(getByRole('status')).toHaveTextContent('Loading');
 
                 expect(mockConfigApi).toHaveBeenCalled();
+
+                expect(await findAllByText('Time')).toHaveLength(2);
 
                 expect(await findByLabelText('Full Name')).toBeVisible();
                 const fromInput = await findByLabelText('From');
@@ -745,11 +762,13 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+                const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                 expect(getByRole('status')).toHaveTextContent('Loading');
 
                 expect(mockConfigApi).toHaveBeenCalled();
+
+                expect(await findAllByText('Time')).toHaveLength(2);
 
                 expect(await findByLabelText('Full Name')).toBeVisible();
                 const fromMonthInput = await findByLabelText('From Month');
@@ -894,11 +913,13 @@ describe('report run page', () => {
                             { value: '04', name: 'Arizona' },
                         ]);
 
-                        const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+                        const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                         expect(getByRole('status')).toHaveTextContent('Loading');
 
                         expect(mockConfigApi).toHaveBeenCalled();
+
+                        expect(await findAllByText('Geographic area')).toHaveLength(2);
 
                         expect(await findByRole('option', { name: 'Georgia' })).toBeVisible();
 
@@ -1209,11 +1230,13 @@ describe('report run page', () => {
                             .mockResolvedValue(MOCK_RESULT);
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                        const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+                        const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                         expect(getByRole('status')).toHaveTextContent('Loading');
 
                         expect(mockConfigApi).toHaveBeenCalled();
+
+                        expect(await findAllByText('Geographic area')).toHaveLength(2);
 
                         expect(await findByRole('option', { name: 'Dekalb County' })).toBeVisible();
 
@@ -1541,11 +1564,13 @@ describe('report run page', () => {
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+                    const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                     expect(getByRole('status')).toHaveTextContent('Loading');
 
                     expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findAllByText('Condition')).toHaveLength(2);
 
                     expect(await findByRole('option', { name: '2019 Novel Coronavirus' })).toBeVisible();
 
@@ -1818,11 +1843,13 @@ describe('report run page', () => {
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+                    const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                     expect(getByRole('status')).toHaveTextContent('Loading');
 
                     expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findAllByText('Condition')).toHaveLength(2);
 
                     expect(await findByRole('option', { name: '100 - Chancroid' })).toBeVisible();
 
@@ -2092,11 +2119,13 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+                const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                 expect(getByRole('status')).toHaveTextContent('Loading');
 
                 expect(mockConfigApi).toHaveBeenCalled();
+
+                expect(await findAllByText('Time')).toHaveLength(2);
 
                 const input = await findByLabelText('Duplicate Investigations Time Frame');
                 await user.type(input, '5');
@@ -2311,11 +2340,13 @@ describe('report run page', () => {
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
+                    const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                     expect(getByRole('status')).toHaveTextContent('Loading');
 
                     expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findAllByText('Other filters')).toHaveLength(2);
 
                     expect(await findByRole('option', { name: 'Jyn Erso' })).toBeVisible();
 
@@ -2562,14 +2593,14 @@ describe('report run page', () => {
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
                 .mockResolvedValue(MOCK_RESULT);
-            const { getByRole, findByText, queryByText, findByRole } = renderWithRouter();
+            const { getByRole, findAllByText, queryByText, findByRole } = renderWithRouter();
 
             expect(getByRole('status')).toHaveTextContent('Loading');
 
             expect(mockApi).toHaveBeenCalled();
 
-            expect(await findByText('Advanced Filter')).toBeVisible();
-            expect(queryByText('Basic Filters')).toBeNull();
+            expect(await findAllByText('Advanced filter')).toHaveLength(2);
+            expect(queryByText('Basic filters')).toBeNull();
 
             const fieldSelect = await findByRole('combobox', { name: 'Field' });
             expect(fieldSelect).toHaveValue('~');
@@ -2618,13 +2649,13 @@ describe('report run page', () => {
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
                 .mockResolvedValue(MOCK_RESULT);
-            const { getByRole, findByText, findByRole } = renderWithRouter();
+            const { getByRole, findAllByText, findByRole } = renderWithRouter();
 
             expect(getByRole('status')).toHaveTextContent('Loading');
 
             expect(mockApi).toHaveBeenCalled();
 
-            expect(await findByText('Advanced Filter')).toBeVisible();
+            expect(await findAllByText('Advanced filter')).toHaveLength(2);
 
             const exportButton = await findByRole('button', { name: 'Export' });
             const user = userEvent.setup();
@@ -2655,6 +2686,7 @@ describe('report run page', () => {
                 queryByText,
                 getByText,
                 findByText,
+                findAllByText,
                 findByLabelText,
                 findByRole,
                 findAllByRole,
@@ -2665,7 +2697,7 @@ describe('report run page', () => {
 
             expect(mockApi).toHaveBeenCalled();
 
-            expect(await findByText('Advanced Filter')).toBeVisible();
+            expect(await findAllByText('Advanced filter')).toHaveLength(2);
 
             const fieldSelect = await findByRole('combobox', { name: 'Field' });
             expect(fieldSelect).toHaveValue('~');
@@ -2834,13 +2866,13 @@ describe('report run page', () => {
                 { value: '123', name: 'Disease, terrible' },
                 { value: '456', name: 'Disease, not so bad' },
             ]);
-            const { getByRole, findByText, findByRole, findAllByRole, findAllByTitle } = renderWithRouter();
+            const { getByRole, findAllByText, findByRole, findAllByRole, findAllByTitle } = renderWithRouter();
 
             expect(getByRole('status')).toHaveTextContent('Loading');
 
             expect(mockApi).toHaveBeenCalled();
 
-            expect(await findByText('Advanced Filter')).toBeVisible();
+            expect(await findAllByText('Advanced filter')).toHaveLength(2);
 
             const combinators = await findAllByRole('combobox', { name: 'Combinator' });
             expect(combinators).toHaveLength(2);
@@ -2980,13 +3012,13 @@ describe('report run page', () => {
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
-                const { getByRole, findByText, findByRole, findByTestId, findAllByTestId } = renderWithRouter();
+                const { getByRole, findAllByText, findByRole, findByTestId, findAllByTestId } = renderWithRouter();
 
                 expect(getByRole('status')).toHaveTextContent('Loading');
 
                 expect(mockApi).toHaveBeenCalled();
 
-                expect(await findByText('Advanced Filter')).toBeVisible();
+                expect(await findAllByText('Advanced filter')).toHaveLength(2);
 
                 const user = userEvent.setup();
                 const ruleGroupHandle = async () => await findByTestId('drag-handle-128-128-128');
@@ -3163,13 +3195,13 @@ describe('report run page', () => {
                         },
                     },
                 });
-                const { getByRole, findByText, findAllByRole, findByTestId, findAllByTestId } = renderWithRouter();
+                const { getByRole, findAllByText, findAllByRole, findByTestId, findAllByTestId } = renderWithRouter();
 
                 expect(getByRole('status')).toHaveTextContent('Loading');
 
                 expect(mockApi).toHaveBeenCalled();
 
-                expect(await findByText('Advanced Filter')).toBeVisible();
+                expect(await findAllByText('Advanced filter')).toHaveLength(2);
 
                 const user = userEvent.setup();
                 const ruleGroupHandle = async () => await findByTestId('drag-handle-128-128-128');
@@ -3212,16 +3244,24 @@ describe('report run page', () => {
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
                 .mockResolvedValue(MOCK_RESULT);
-            const { container, getByRole, findByText, queryByText, findByRole, findAllByRole, findByLabelText } =
-                renderWithRouter();
+            const {
+                container,
+                getByRole,
+                findByText,
+                findAllByText,
+                queryByText,
+                findByRole,
+                findAllByRole,
+                findByLabelText,
+            } = renderWithRouter();
 
             expect(getByRole('status')).toHaveTextContent('Loading');
 
             expect(mockApi).toHaveBeenCalled();
 
-            expect(await findByText('Column selection')).toBeVisible();
-            expect(queryByText('Basic Filters')).toBeNull();
-            expect(queryByText('Advanced Filters')).toBeNull();
+            expect(await findAllByText('Column selection')).toHaveLength(2);
+            expect(queryByText('Basic filters')).toBeNull();
+            expect(queryByText('Advanced filter')).toBeNull();
 
             // starts unselected
             expect(await findByText('Select a column from "Available columns"')).toBeVisible();
