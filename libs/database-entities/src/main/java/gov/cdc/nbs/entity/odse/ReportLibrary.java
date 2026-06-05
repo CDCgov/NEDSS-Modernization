@@ -38,7 +38,7 @@ public class ReportLibrary {
   @NonNull @Column(name = "is_builtin_ind", length = 1, nullable = false)
   private Character isBuiltinInd;
 
-  @Column(name = "library_params", length = 300, nullable = true)
+  @Column(name = "library_params", length = 300)
   private String libraryParams;
 
   @NonNull @Column(name = "add_time", nullable = false)
