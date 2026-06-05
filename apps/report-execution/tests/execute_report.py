@@ -66,3 +66,19 @@ class TestExecuteReport:
         assert result.header == 'Custom Report For Table: random_db_table_0'
         assert result.content.columns == ['id', 'name']
         assert len(result.content.data) == 4
+
+    def test_execute_report_invalid_library_params_type(self):
+        """Test that a non-JSON value for library_params raises validation error."""
+        with pytest.raises(ValueError) as exc_info:
+            ReportSpec.model_validate(
+                {
+                    'is_export': True,
+                    'is_builtin': True,
+                    'report_title': 'Invalid Params',
+                    'library_name': 'nbs_custom',
+                    'data_source_name': 'random_db_table_0',
+                    'subset_query': 'SELECT * FROM test',
+                    'library_params': 'not a json object',
+                }
+            )
+        assert 'Invalid JSON' in str(exc_info.value)
