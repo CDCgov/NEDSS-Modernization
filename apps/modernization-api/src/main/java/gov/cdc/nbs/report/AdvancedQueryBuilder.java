@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class AdvancedQueryBuilder {
-  private final List<FilterValue> filterValues;
-  private final List<AdvancedQueryException> queryErrors = new ArrayList<>();
+  private final ArrayList<FilterValue> filterValues;
+
+  private final FilterValue OPEN_PAREN = new FilterValue(1L, null, 1, "OPERATOR", null, "(", null);
+  private final FilterValue CLOSE_PAREN = new FilterValue(2L, null, 1, "OPERATOR", null, ")", null);
 
   /** 0-based index of the current {@code FilterValue} being processed */
   private int current = 0;
@@ -23,163 +25,140 @@ public class AdvancedQueryBuilder {
     return filterValues.get(current);
   }
 
-  /** Returns the last processed {@code FilterValue} */
-  private FilterValue previous() {
-    if (current == 0) return null;
-    return filterValues.get(current - 1);
-  }
-
   /** Advances the current index to the next {@code FilterValue} in the list */
   private void advance() {
     if (hasNext()) current++;
   }
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues) {
-    this.filterValues = filterValues;
+    this.filterValues = new ArrayList<>(filterValues);
   }
 
-  public AdvancedQuery.RuleGroup build() {
-    AdvancedQuery.Rule firstRule = null;
-    ReportConstants.QueryCombinators firstCombinator = null;
+  public AdvancedQuery.RuleGroup build() throws AdvancedQueryException {
+    // wrap whole thing in () to make sure it's a valid rule group
+    this.filterValues.add(0, OPEN_PAREN);
+    this.filterValues.add(CLOSE_PAREN);
 
-    // Iterate through FilterValues until we find the first OPERATOR
-    while (hasNext()) {
-      FilterValue filterValue = peek();
-      if (filterValue.getValueType().equals("CLAUSE")) {
-        firstRule = buildClause(filterValue);
-      } else if (filterValue.getValueType().equals("OPERATOR")) {
-        if (filterValue.getOperator().equals("and") || filterValue.getOperator().equals("or")) {
-          firstCombinator = ReportConstants.QueryCombinators.valueOf(filterValue.getOperator());
-          break;
-        }
-      }
+    AdvancedQuery.RuleGroup res = startRuleGroup();
+
+    if (current != filterValues.size()) {
+      throw new Error("Extra query left over :(");
+    }
+
+    return simplify(res);
+  }
+
+  private AdvancedQuery.RuleGroup startRuleGroup() throws AdvancedQueryException {
+    FilterValue openParen = peek();
+    if (!isOpenParen(openParen))
+      throw new AdvancedQueryException("Expected paren to open rule group", openParen);
+    advance();
+
+    AdvancedQuery firstRule = null;
+    FilterValue next = peek();
+    if (isOpenParen(next)) {
+      firstRule = startRuleGroup();
+    } else if (isClause(next)) {
+      firstRule = buildClause(next);
       advance();
+    } else if (isCloseParen(next)) { // "(" ")"
+      throw new AdvancedQueryException("Invalid empty clause `()`", next);
+    } else {
+      throw new AdvancedQueryException("Expected new rule or rule group", next);
     }
 
-    // If we didn't find an OPERATOR, default to 'AND' combinator for a single rule
-    if (firstCombinator == null) {
-      firstCombinator = ReportConstants.QueryCombinators.and;
-    }
+    FilterValue combinator = peek();
+    // "(" CLAUSE ")"
+    if (isCloseParen(combinator)) {
+      advance();
+      return new AdvancedQuery.RuleGroup(
+          combinator.getId().toString(), ReportConstants.QueryCombinators.and, List.of(firstRule));
+    } else if (!isCombinator(combinator))
+      throw new AdvancedQueryException("Expected 'and' or 'or'", combinator);
+    ReportConstants.QueryCombinators firstCombinator =
+        ReportConstants.QueryCombinators.valueOf(combinator.getOperator());
+    advance();
 
     // Then build the root RuleGroup from said OPERATOR and corresponding rule
     AdvancedQuery.RuleGroup ruleGroup = buildRuleGroup(firstCombinator, firstRule);
+
+    if (!hasNext()) throw new AdvancedQueryException("Expected closing paren");
+
+    FilterValue closingParen = peek();
+    if (!isCloseParen(closingParen))
+      throw new AdvancedQueryException("Expected closing paren", closingParen);
+    advance();
 
     System.out.println(ruleGroup);
     return ruleGroup;
   }
 
+  /// ( col = 1 AND -> next token should be "(" OR CLAUSE
   private AdvancedQuery.RuleGroup buildRuleGroup(
-      ReportConstants.QueryCombinators combinator, AdvancedQuery previousRule) {
+      ReportConstants.QueryCombinators combinator, AdvancedQuery previousRule)
+      throws AdvancedQueryException {
     List<AdvancedQuery> rules = new ArrayList<>();
-    if (previousRule != null) {
-      rules.add(previousRule);
-    }
+    rules.add(previousRule);
 
     AdvancedQuery.RuleGroup ruleGroup = null;
-    int nestDepth = 0;
-    boolean terminated = false;
 
     while (hasNext()) {
       FilterValue filterValue = peek();
 
-      switch (filterValue.getValueType()) {
-        case "CLAUSE":
-          rules.add(buildClause(filterValue));
-          break;
-        case "OPERATOR":
-          validateOperator(filterValue);
+      if (isClause(filterValue)) {
+        rules.add(buildClause(filterValue));
+        advance();
+        FilterValue next = peek();
 
-          switch (filterValue.getOperator()) {
-            case "or":
-              if (combinator.equals(ReportConstants.QueryCombinators.and)) {
-                //  If going directly from an 'AND' group to an 'OR' group, without parens
-                if (nestDepth == 0) {
-                  //  We terminate the current 'AND' group
-                  terminated = true;
-                  AdvancedQuery.RuleGroup andGroup =
-                      new AdvancedQuery.RuleGroup(
-                          UUID.randomUUID().toString(),
-                          ReportConstants.QueryCombinators.and,
-                          rules);
+        if (!isOperator(next))
+          throw new AdvancedQueryException("operator must follow clause", next);
 
-                  // And add it as a rule to the new 'OR' group, which we then build
-                  ruleGroup = buildRuleGroup(ReportConstants.QueryCombinators.or, andGroup);
+        if (isCombinator(next)) {
 
-                  //  If going from an 'AND' group to an 'OR' group WITHIN inner parens
-                } else {
-                  //  We just build the 'OR' group, starting from the previous FilterValue
-                  AdvancedQuery firstOrRule = rules.removeLast();
-                  AdvancedQuery.RuleGroup orGroup =
-                      buildRuleGroup(ReportConstants.QueryCombinators.or, firstOrRule);
-
-                  // And add it to the existing list of 'AND' group rules
-                  rules.add(orGroup);
-                }
-              }
-              break;
-            case "and":
-              //  If going directly from an 'OR' group to an 'AND' group, WITH OR WITHOUT parens
-              if (combinator.equals(ReportConstants.QueryCombinators.or)) {
-                //  We build out the 'AND' group to completion, starting from the previous
-                // FilterValue
-                AdvancedQuery firstAndRule = rules.removeLast();
-                AdvancedQuery.RuleGroup andGroup =
-                    buildRuleGroup(ReportConstants.QueryCombinators.and, firstAndRule);
-
-                // And attach it to the existing list of 'OR' group rules
-                rules.add(andGroup);
-              }
-              break;
-            case "(":
-              if (previous() != null && previous().getOperator().equals(")")) {
-                queryErrors.add(
-                    new AdvancedQueryException(
-                        "Cannot follow a closing parenthesis with an open parenthesis without an OPERATOR in between",
-                        filterValue));
-              }
-              nestDepth++;
-              break;
-            case ")":
-              // If we encounter a closed parenthesis without any nesting, terminate the rule group
-              if (nestDepth == 0) {
-                terminated = true;
-              } else {
-                nestDepth--;
-              }
-
-              if (nestDepth < 0) {
-                queryErrors.add(
-                    new AdvancedQueryException("Too many closing parentheses", filterValue));
-              }
-              break;
-            default:
-              queryErrors.add(
-                  new AdvancedQueryException(
-                      "Unknown operator: " + filterValue.getOperator(), filterValue));
+          if (combinator.equals(ReportConstants.QueryCombinators.valueOf(next.getOperator()))) {
+            advance(); // keep on keeping on
+            continue;
           }
-          break;
-        default:
-          queryErrors.add(
-              new AdvancedQueryException(
-                  "Unknown valueType encountered: " + filterValue.getValueType(), filterValue));
+
+          // and => or
+          if (isOr(next) && combinator.equals(ReportConstants.QueryCombinators.and)) {
+            //  We terminate the current 'AND' group
+            AdvancedQuery.RuleGroup andGroup =
+                new AdvancedQuery.RuleGroup(
+                    UUID.randomUUID().toString(), ReportConstants.QueryCombinators.and, rules);
+            advance();
+
+            // And add it as a rule to the new 'OR' group, which we then build
+            ruleGroup = buildRuleGroup(ReportConstants.QueryCombinators.or, andGroup);
+
+            // or => and
+          } else if (isAnd(next) && combinator.equals(ReportConstants.QueryCombinators.or)) {
+            //  We build out the 'AND' group to completion, starting from the previous
+            // FilterValue
+            AdvancedQuery rule = rules.removeLast();
+            advance();
+            AdvancedQuery.RuleGroup andGroup =
+                buildRuleGroup(ReportConstants.QueryCombinators.and, rule);
+
+            // And attach it to the existing list of 'OR' group rules
+            rules.add(andGroup);
+          }
+        }
+
+      } else if (isOpenParen(filterValue)) {
+        rules.add(startRuleGroup());
+      } else {
+        throw new AdvancedQueryException("') invalid after operator", filterValue);
       }
+
+      if (isCloseParen(peek())) {
+        if (ruleGroup == null) {
+          ruleGroup = new AdvancedQuery.RuleGroup(UUID.randomUUID().toString(), combinator, rules);
+        }
+        return ruleGroup;
+      }
+
       advance();
-
-      if (terminated) {
-        break;
-      }
-    }
-
-    if (nestDepth != 0) {
-      queryErrors.add(new AdvancedQueryException("Mismatched parentheses"));
-    }
-
-    if (!queryErrors.isEmpty()) {
-      //  TODO: What exactly do we wanna do here?  Should we still return the partially built
-      // ruleGroup
-      //  alongside the list of errors?  Given we presumably want to surface these errors to the
-      // user in
-      //  a non-blocking way, should this still be considered a 2XX response?
     }
 
     if (ruleGroup == null) {
@@ -190,8 +169,6 @@ public class AdvancedQueryBuilder {
   }
 
   private AdvancedQuery.Rule buildClause(FilterValue filterValue) {
-    validateClause(filterValue);
-
     return new AdvancedQuery.Rule(
         filterValue.getId().toString(),
         filterValue.getColumnUid(),
@@ -199,34 +176,52 @@ public class AdvancedQueryBuilder {
         filterValue.getValueTxt());
   }
 
-  private void validateClause(FilterValue filterValue) {
-    if (previous() != null && previous().getValueType().equals("CLAUSE")) {
-      queryErrors.add(
-          new AdvancedQueryException(
-              "CLAUSE cannot follow another CLAUSE without an OPERATOR in between", filterValue));
+  private AdvancedQuery.RuleGroup simplify(AdvancedQuery.RuleGroup ruleGroup) {
+    //  If a RuleGroup has only one Rule, and it's also a RuleGroup
+    if (ruleGroup.rules().size() == 1
+        && ruleGroup.rules().getFirst() instanceof AdvancedQuery.RuleGroup) {
+
+      //  We can do away with the outer RuleGroup
+      return simplify((AdvancedQuery.RuleGroup) ruleGroup.rules().getFirst());
+    } else {
+      return new AdvancedQuery.RuleGroup(
+          ruleGroup.id(),
+          ruleGroup.combinator(),
+          ruleGroup.rules().stream()
+              .map(
+                  (AdvancedQuery rule) ->
+                      (rule instanceof AdvancedQuery.RuleGroup)
+                          ? simplify((AdvancedQuery.RuleGroup) rule)
+                          : rule)
+              .toList());
     }
   }
 
-  private void validateOperator(FilterValue filterValue) {
-    if (previous() == null) {
-      queryErrors.add(
-          new AdvancedQueryException(
-              "First filter value must be a CLAUSE, not an OPERATOR", peek()));
-    }
-    if (current == filterValues.size() - 1 && !filterValue.getOperator().equals(")")) {
-      queryErrors.add(
-          new AdvancedQueryException(
-              "Cannot end list of FilterValues with an OPERATOR unless it's a closing parenthesis",
-              filterValue));
-    }
-    if (previous() != null
-        && previous().getValueType().equals("OPERATOR")
-        && !filterValue.getOperator().equals(")")
-        && !previous().getOperator().equals("(")) {
-      queryErrors.add(
-          new AdvancedQueryException(
-              "Cannot follow OPERATOR with another OPERATOR, unless it's a parenthesis",
-              filterValue));
-    }
+  private boolean isOpenParen(FilterValue fv) {
+    return isOperator(fv) && fv.getOperator().equals("(");
+  }
+
+  private boolean isCloseParen(FilterValue fv) {
+    return isOperator(fv) && fv.getOperator().equals(")");
+  }
+
+  private boolean isOr(FilterValue fv) {
+    return isOperator(fv) && fv.getOperator().equals("or");
+  }
+
+  private boolean isAnd(FilterValue fv) {
+    return isOperator(fv) && fv.getOperator().equals("and");
+  }
+
+  private boolean isClause(FilterValue fv) {
+    return fv.getValueType().equals("CLAUSE");
+  }
+
+  private boolean isOperator(FilterValue fv) {
+    return fv.getValueType().equals("OPERATOR");
+  }
+
+  private boolean isCombinator(FilterValue fv) {
+    return isAnd(fv) || isOr(fv);
   }
 }
