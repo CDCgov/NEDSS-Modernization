@@ -1,5 +1,6 @@
 import datetime
 import decimal
+
 import pytest
 import yaml
 
@@ -43,7 +44,7 @@ class TestIntegrationNbsCustomLibrary:
         assert result.content.columns == [
             'PROGRAM_JURISDICTION_OID',
             'PATIENT_LOCAL_ID',
-            'EVENT_DATE'
+            'EVENT_DATE',
         ]
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
@@ -78,5 +79,5 @@ class TestIntegrationNbsCustomLibrary:
         assert result.content.columns == [
             'PROGRAM_JURISDICTION_OID',
             'PATIENT_LOCAL_ID',
-            'EVENT_DATE'
+            'EVENT_DATE',
         ]
