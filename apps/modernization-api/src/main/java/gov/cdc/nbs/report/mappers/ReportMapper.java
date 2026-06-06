@@ -52,7 +52,7 @@ public class ReportMapper {
   }
 
   private Long generateReportId() {
-    var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT);
+    var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
   }
 }

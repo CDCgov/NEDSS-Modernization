@@ -12,6 +12,7 @@ import { SingleSelect } from 'design-system/select';
 import { HasValueFunction, NamedColumn } from 'design-system/table/header/column';
 import { Toggle } from 'design-system/toggle/Toggle';
 import { AdminReportRequest, BasicFilterConfiguration, ReportConfiguration } from 'generated';
+import { LoadingIndicator } from 'libs/loading/indicator';
 import { Selectable } from 'options';
 import { useReportDataSources, useReportFilters, useReportLibraries, useReportSections } from 'options/report';
 import { useReportDataSourceFilterableColumnOptions } from 'options/report/useReportDataSourceColumnOptions';
@@ -361,7 +362,11 @@ const FilterRepeatingBlock = ({
         });
     }
 
-    return isEditable ? (
+    console.log({ config, filterOptions, defaultFilterData });
+
+    return filterOptions.length === 0 ? (
+        <LoadingIndicator />
+    ) : isEditable ? (
         <Controller
             name="filterRequests"
             defaultValue={defaultFilterData}
