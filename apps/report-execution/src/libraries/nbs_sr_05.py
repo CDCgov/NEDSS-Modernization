@@ -35,110 +35,116 @@ def execute(
     curr_month = today.strftime('%b%Y').upper()
     year = today.year
     month = today.month
-    day_of_year = int(today.strftime('%j'))
     last_year = year - 1
     years = range(year, year - 6, -1)
 
     # Place holder value used when ensuring all disease+year have data
     filler_state = '<FILLER>'
 
-    trx.execute(
-        # State filtering is assumed to happen in the filters/subset
-        f'WITH subset as ({subset_query})\n'
-        # diseases CTE done without any filtering
-        ', diseases as (\n'
-        'SELECT DISTINCT phc_code_short_desc\n'
-        'FROM subset\n'
-        ')\n'
-        # all diseases and all years with zero's pre-filtering CTE
-        # ensures that row exists for all diseases and median is correct
-        ', disease_year as (\n'
-        f"SELECT phc_code_short_desc, '{filler_state}' as state, "
-        f'{month} as month, year, 0 as cases\n'
-        'FROM diseases, \n'
-        f'(VALUES {", ".join([f"({y})" for y in years])}) as year_values(year)\n'
-        ')\n'
-        # base_data CTE
-        ', base_data as (\n'
-        'SELECT phc_code_short_desc, state, MONTH(event_date) as month, '
-        'YEAR(event_date) as year, sum(group_case_cnt) as cases\n'
-        'FROM subset\n'
-        'WHERE event_date is not NULL\n'
-        f'AND DATEPART(dayofyear, event_date) <= {day_of_year}\n'
-        f'AND YEAR(event_date) > ({year} - 5)\n'
-        'GROUP BY phc_code_short_desc, state, MONTH(event_date), YEAR(event_date)\n'
-        ')\n'
-        # base_data temp table
-        'SELECT *\n'
-        'INTO #base_data\n'
-        'FROM base_data\n'
-        'UNION ALL\n'
-        'SELECT * FROM disease_year\n'
+    temp_table_query = f"""
+    -- State filtering is assumed to happen in the filters/subset
+    WITH subset as ({subset_query}),
+
+    -- diseases CTE done without any filtering
+    diseases as (
+        SELECT DISTINCT phc_code_short_desc
+        FROM subset
+    ),
+
+    -- all diseases and all years with zero's pre-filtering CTE ensures that row
+    -- exists for all diseases and median is correct
+    disease_year as (
+        SELECT phc_code_short_desc, '{filler_state}' as state,
+        {month} as month, year, 0 as cases
+        FROM diseases,
+        (VALUES {', '.join([f'({y})' for y in years])}) as year_values(year)
+    ),
+
+    -- base_data CTE
+    base_data as (
+        SELECT phc_code_short_desc, state, MONTH(event_date) as month,
+        YEAR(event_date) as year, sum(group_case_cnt) as cases
+        FROM subset
+        WHERE event_date is not NULL
+        AND MONTH(event_date) <= {month}
+        AND YEAR(event_date) >= ({year} - 5)
+        GROUP BY phc_code_short_desc, state, MONTH(event_date), YEAR(event_date)
     )
+
+    -- base_data temp table
+    SELECT * 
+    INTO #base_data
+    FROM base_data
+    UNION ALL
+    SELECT *
+    FROM disease_year
+    """
+
+    trx.execute(temp_table_query)
 
     # Because the base data is guaranteed to have a "0" entry for every year and disease
     # in the current month, we know that all diseases for all years will be present
     # and don't need to worry about null coalescing
-    content = trx.query(
-        # year_data CTE
-        'WITH year_data as (\n'
-        'SELECT phc_code_short_desc, year, SUM(cases) as cases\n'
-        'FROM #base_data\n'
-        'GROUP BY phc_code_short_desc, year'
-        ')\n'
-        # this_month CTE
-        ', this_month as (\n'
-        'SELECT phc_code_short_desc, SUM(cases) as curr_month\n'
-        'FROM #base_data\n'
-        f'WHERE month = {month}\n'
-        f'AND year = {year}\n'
-        'GROUP BY phc_code_short_desc'
-        ')\n'
-        # this_year CTE
-        ', this_year as (\n'
-        'SELECT phc_code_short_desc, SUM(cases) as curr_ytd\n'
-        'FROM year_data\n'
-        f'WHERE year = {year}\n'
-        'GROUP BY phc_code_short_desc'
-        ')\n'
-        # last_year CTE
-        ', last_year as (\n'
-        'SELECT phc_code_short_desc, SUM(cases) as last_ytd\n'
-        'FROM year_data\n'
-        f'WHERE year = ({year} - 1)\n'
-        'GROUP BY phc_code_short_desc'
-        ')\n'
-        # median_year CTE
-        ', median_year as (\n'
-        'SELECT DISTINCT phc_code_short_desc, PERCENTILE_CONT(0.5) WITHIN GROUP '
-        '(ORDER BY cases) OVER (PARTITION BY phc_code_short_desc) as median_ytd\n'
-        'FROM year_data\n'
-        f'WHERE year != {year}\n'
-        ')\n'
-        # Result select
-        'SELECT \n'
-        'FORMAT('
-        '  IIF('
-        '    median_ytd = 0, '
-        '    0, '
-        '    (curr_ytd - median_ytd) / median_ytd'
-        '  ), '
-        "  'P0', 'en-us'"
-        ')'
-        f'       as [Percent Change {year} vs 5 Year Median], \n'
-        f'last_ytd as [Cumulative for {last_year} to Date], \n'
-        f'curr_ytd as [Cumulative for {year} to Date], \n'
-        'ty.phc_code_short_desc as [Disease], \n'
-        f'{year} as [Year], \n'
-        'curr_ytd as [Cases], \n'
-        'median_ytd as [5 Year Median Year to Date], \n'
-        f'curr_month as [{curr_month}] \n'
-        'FROM this_year ty\n'
-        'LEFT JOIN this_month tm on tm.phc_code_short_desc = ty.phc_code_short_desc\n'
-        'LEFT JOIN last_year ly on ly.phc_code_short_desc = ty.phc_code_short_desc\n'
-        'LEFT JOIN median_year my on my.phc_code_short_desc = ty.phc_code_short_desc\n'
-        'ORDER BY ty.phc_code_short_desc asc'
+    main_query = f"""
+    -- year_data CTE
+    WITH year_data as (
+        SELECT phc_code_short_desc, year, SUM(cases) as cases
+        FROM #base_data
+        GROUP BY phc_code_short_desc, year
+    ),
+
+    -- this_month CTE
+    this_month as (
+        SELECT phc_code_short_desc, SUM(cases) as curr_month
+        FROM #base_data
+        WHERE month = {month}
+        AND year = {year}
+        GROUP BY phc_code_short_desc
+    ),
+
+    -- this_year CTE
+    this_year as (
+        SELECT phc_code_short_desc, SUM(cases) as curr_ytd
+        FROM year_data
+        WHERE year = {year}
+        GROUP BY phc_code_short_desc
+    ),
+
+    -- last_year CTE
+    last_year as (
+        SELECT phc_code_short_desc, SUM(cases) as last_ytd
+        FROM year_data
+        WHERE year = ({year} - 1)
+        GROUP BY phc_code_short_desc
+    ),
+
+    -- median_year CTE
+    median_year as (
+        SELECT DISTINCT phc_code_short_desc, PERCENTILE_CONT(0.5) WITHIN GROUP
+        (ORDER BY cases) OVER (PARTITION BY phc_code_short_desc) as median_ytd
+        FROM year_data
+        WHERE year != {year}
     )
+
+    -- Result select
+    SELECT FORMAT(
+           IIF( median_ytd = 0,0,(curr_ytd - median_ytd) / median_ytd), 'P0', 'en-us')
+             AS [Percent Change {year} vs 5 Year Median],
+           last_ytd AS [Cumulative for {last_year} to Date],
+           curr_ytd AS [Cumulative for {year} to Date],
+           ty.phc_code_short_desc AS [Disease],
+           {year} AS [Year],
+           curr_ytd AS [Cases],
+           median_ytd AS [5 Year Median Year to Date],
+           curr_month AS [{curr_month}]
+    FROM this_year ty
+      LEFT JOIN this_month tm ON tm.phc_code_short_desc = ty.phc_code_short_desc
+      LEFT JOIN last_year ly ON ly.phc_code_short_desc = ty.phc_code_short_desc
+      LEFT JOIN median_year my ON my.phc_code_short_desc = ty.phc_code_short_desc
+    ORDER BY ty.phc_code_short_desc ASC
+    """
+
+    content = trx.query(main_query)
 
     # Get the state(s) in the data set for subheader display
     states = trx.query('SELECT DISTINCT state FROM #base_data ORDER BY state')
