@@ -1,0 +1,2 @@
+
+export const SIZING = 'medium';

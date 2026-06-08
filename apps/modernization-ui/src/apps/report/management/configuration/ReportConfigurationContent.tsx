@@ -4,41 +4,29 @@ import { ConfirmationModal } from 'confirmation';
 import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
 import { NoData } from 'design-system/data';
-import { RepeatingBlock } from 'design-system/entry/multi-value';
-import { Field, ValueField } from 'design-system/field';
+import { ValueField } from 'design-system/field';
 import { TextInputField } from 'design-system/input';
 import { TextAreaField } from 'design-system/input/text';
 import { SingleSelect } from 'design-system/select';
-import { HasValueFunction, NamedColumn } from 'design-system/table/header/column';
-import { Toggle } from 'design-system/toggle/Toggle';
-import { AdminReportRequest, BasicFilterConfiguration, ReportConfiguration } from 'generated';
-import { LoadingIndicator } from 'libs/loading/indicator';
+import { AdminReportRequest, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
-import { useReportDataSources, useReportFilters, useReportLibraries, useReportSections } from 'options/report';
-import { useReportDataSourceFilterableColumnOptions } from 'options/report/useReportDataSourceColumnOptions';
+import { useReportDataSources, useReportLibraries, useReportSections } from 'options/report';
 import { useUserOptions } from 'options/users';
 import { ReactComponentLike } from 'prop-types';
-import { useEffect, useId, useRef, useState } from 'react';
+import { ReactNode, useId, useRef, useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
+import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
+import { addLabelToName, EnumSelectable } from './utils';
+import { SIZING } from './constants';
 
-interface EnumSelectable<T> {
-    value: T;
-    name: string;
-}
+
 const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [
     { value: ReportConfiguration.group.PUBLIC, name: 'Public' },
     { value: ReportConfiguration.group.PRIVATE, name: 'Private' },
     { value: ReportConfiguration.group.TEMPLATE, name: 'Template' },
     { value: ReportConfiguration.group.REPORTING_FACILITY, name: 'Reporting Facility' },
 ];
-
-const SELECT_OPTIONS: EnumSelectable<BasicFilterConfiguration.selectType>[] = [
-    { value: BasicFilterConfiguration.selectType.SINGLE, name: 'Single' },
-    { value: BasicFilterConfiguration.selectType.MULTI, name: 'Multi' },
-];
-
-const SIZING = 'medium';
 
 export type ConfigForm = {
     dataSourceId: Selectable;
@@ -75,9 +63,9 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
     return (
         <>
             {isEditable ? (
-                <DataSourceEditCard isEditable={isEditable} config={config} setDataSource={setDataSource} />
+                <DataSourceEditCard config={config} setDataSource={setDataSource} />
             ) : (
-                <DataSourceCard dataSource={config!.dataSource.id.toString()} />
+                <DataSourceCard isEditable={false} defaultValue={config!.dataSource.id.toString()} disabled={false} />
             )}
             <Card id="metadata" title="2. Report configuration" collapsible={false} disabled={!dataSourceSelected}>
                 <Row
@@ -156,7 +144,6 @@ const DataSourceEditCard = ({
     config,
     setDataSource,
 }: {
-    isEditable: boolean;
     config?: ReportConfiguration;
     setDataSource: (ds: Selectable) => void;
 }) => {
@@ -166,10 +153,10 @@ const DataSourceEditCard = ({
     const dataSource = useWatch<ConfigForm, 'dataSourceId'>({ disabled: dataSourceSelected, name: 'dataSourceId' });
 
     return (
-        <Card
-            id="report-source"
-            title="1. Report source"
-            collapsible={false}
+        <DataSourceCard
+            isEditable={true}
+            defaultValue={config?.dataSource.id.toString()}
+            disabled={dataSourceSelected}
             footer={
                 <Shown when={!dataSourceSelected}>
                     {/* didn't seem worth adding a styles module for this one thing */}
@@ -177,25 +164,12 @@ const DataSourceEditCard = ({
                         <Button
                             secondary={true}
                             disabled={!dataSource}
-                            onClick={confirmDataSourceRef.current?.toggleModal}
-                        >
+                            onClick={confirmDataSourceRef.current?.toggleModal}>
                             Confirm data source
                         </Button>
                     </div>
                 </Shown>
-            }
-        >
-            <Row
-                // only editable on create
-                isEditable={true}
-                disabled={dataSourceSelected}
-                fieldName="dataSourceId"
-                EditComponent={SingleSelect}
-                label="Data source"
-                defaultValue={config?.dataSource.id.toString()}
-                getOptions={useReportDataSources}
-            />
-
+            }>
             <ConfirmationModal
                 modal={confirmDataSourceRef}
                 title={`Confirm data source: ${dataSource?.name}`}
@@ -216,23 +190,36 @@ const DataSourceEditCard = ({
                     confirmDataSourceRef.current?.toggleModal();
                 }}
             />
-        </Card>
+        </DataSourceCard>
     );
 };
 
-const DataSourceCard = ({ dataSource }: { dataSource: string }) => {
+const DataSourceCard = ({
+    defaultValue,
+    disabled,
+    footer,
+    children,
+    isEditable,
+}: {
+    defaultValue?: string;
+    disabled: boolean;
+    isEditable: boolean;
+    footer?: ReactNode;
+    children?: ReactNode;
+}) => {
     return (
-        <Card id="report-source" title="1. Report source" collapsible={false}>
+        <Card id="report-source" title="1. Report source" collapsible={false} footer={footer}>
             <Row
-                // only editable on create
-                isEditable={false}
-                disabled={false}
+                isEditable={isEditable}
+                disabled={disabled}
                 fieldName="dataSourceId"
                 EditComponent={SingleSelect}
                 label="Data source"
-                defaultValue={dataSource}
+                defaultValue={defaultValue}
                 getOptions={useReportDataSources}
             />
+
+            {children}
         </Card>
     );
 };
@@ -295,12 +282,6 @@ const Row = ({
     );
 };
 
-const addLabelToName = ({ value, name, label }: Selectable) => ({
-    value,
-    label,
-    name: !label || label === name ? name : `${name} (${label})`,
-});
-
 const Option = ({ option }: { option?: Selectable | string }) => {
     if (!option) return <NoData />;
     if (typeof option === 'string') return option;
@@ -312,273 +293,5 @@ const Option = ({ option }: { option?: Selectable | string }) => {
     );
 };
 
-interface FilterConfig {
-    id?: number;
-    filter: Selectable;
-    selectType?: EnumSelectable<BasicFilterConfiguration.selectType>;
-    associatedColumn?: Selectable;
-    isRequired: boolean;
-}
-
-const EMPTY_FILTER_CONFIG: Partial<FilterConfig> = {
-    id: undefined,
-    filter: undefined,
-    selectType: undefined,
-    associatedColumn: undefined,
-    isRequired: false,
-};
-
-type FilterColumn = NamedColumn<FilterConfig, string> & HasValueFunction<FilterConfig, string>;
-
-const filterColumns: FilterColumn[] = [
-    { id: 'filter', name: 'Filter', value: (v) => v.filter.name },
-    { id: 'type', name: 'Type', value: (v) => v.selectType?.name },
-    {
-        id: 'column',
-        name: 'Associated column',
-        value: (v) => v.associatedColumn?.name,
-    },
-    { id: 'filter-required', name: 'Required as basic filter?', value: (v) => (v.isRequired ? 'Yes' : 'No') },
-];
-
-const FilterRepeatingBlock = ({
-    config,
-    isEditable,
-    dataSource,
-}: {
-    config?: ReportConfiguration;
-    isEditable: boolean;
-    dataSource?: Selectable | string;
-}) => {
-    const dataSourceSelected = !!dataSource;
-    const filterOptions = useReportFilters();
-    const rawColumnOptions = useColumnOptions(dataSource);
-    const columnOptions = (rawColumnOptions ?? []).map(addLabelToName);
-
-    const defaultFilterData: FilterConfig[] =
-        config?.basicFilters.map((f) => ({
-            id: f.reportFilterUid,
-            filter: filterOptions.find(({ value }) => parseInt(value) === f.filterType.id)!,
-            selectType: SELECT_OPTIONS.find(({ value }) => value == f.selectType),
-            associatedColumn: columnOptions.find(({ value }) => value === f.reportColumnUid?.toString()),
-            isRequired: f.isRequired,
-        })) ?? [];
-
-    if (config?.advancedFilter) {
-        defaultFilterData.push({
-            id: config.advancedFilter.reportFilterUid,
-            filter: filterOptions.find(({ value }) => value === '7')!,
-            isRequired: false,
-        });
-    }
-
-    return filterOptions.length === 0 ? (
-        <LoadingIndicator />
-    ) : isEditable ? (
-        <Controller
-            name="filterRequests"
-            defaultValue={defaultFilterData}
-            render={({ field: { onChange, value } }) => (
-                <FilterRepeatingBlockImpl
-                    onChange={onChange}
-                    isEditable={isEditable}
-                    dataSourceSelected={dataSourceSelected}
-                    filterOptions={filterOptions}
-                    columnOptions={columnOptions}
-                    value={value}
-                />
-            )}
-        />
-    ) : (
-        <FilterRepeatingBlockImpl
-            isEditable={isEditable}
-            dataSourceSelected={dataSourceSelected}
-            value={defaultFilterData}
-        />
-    );
-};
-
-const useColumnOptions = (dataSource?: Selectable | string) => {
-    const { load, options } = useReportDataSourceFilterableColumnOptions();
-
-    useEffect(() => {
-        load(typeof dataSource === 'string' ? dataSource : dataSource?.value);
-    }, [dataSource]);
-
-    return options;
-};
-
-const FilterRepeatingBlockImpl = ({
-    isEditable,
-    dataSourceSelected,
-    value,
-    filterOptions,
-    columnOptions,
-    onChange,
-}: {
-    isEditable: boolean;
-    dataSourceSelected: boolean;
-    value: FilterConfig[];
-    filterOptions?: Selectable[];
-    columnOptions?: Selectable[];
-    onChange?: (v: FilterConfig[]) => void;
-}) => {
-    return (
-        <RepeatingBlock<FilterConfig>
-            id="filter-config"
-            title="3. Available filters"
-            itemName="filter"
-            columns={filterColumns}
-            sizing={SIZING}
-            defaultValues={EMPTY_FILTER_CONFIG}
-            editable={isEditable && dataSourceSelected}
-            data={value}
-            disabled={!dataSourceSelected}
-            onChange={onChange}
-            viewRenderer={(entry: FilterConfig) =>
-                filterColumns.map((fc) => (
-                    <ValueField key={fc.id} label={fc.name} sizing={SIZING}>
-                        {fc.value(entry)}
-                    </ValueField>
-                ))
-            }
-            formRenderer={() => (
-                <FilterConfigForm filterOptions={filterOptions ?? []} columnOptions={columnOptions ?? []} />
-            )}
-        />
-    );
-};
-
-// Matches NBS 6 logic
-const SELECTABLE_FILTER_IDS = new Set(['1', '2', '3', '8', '9', '10', '16', '19', '20', '21']);
-const COLUMN_REQUIRED_FILTER_IDS = new Set([
-    '1',
-    '2',
-    '3',
-    '5',
-    '6',
-    '8',
-    '9',
-    '10',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-    '20',
-    '21',
-]);
-
-const FilterConfigForm = ({
-    filterOptions,
-    columnOptions,
-}: {
-    filterOptions: Selectable[];
-    columnOptions: Selectable[];
-}) => {
-    // Note the repeating block starts a new form, so this is a different form context than the
-    // parent report config form
-
-    const filterVal = useWatch<FilterConfig, 'filter'>({ name: 'filter' });
-
-    return (
-        <section>
-            <Controller
-                name="filter"
-                rules={validateRequiredRule('Filter')}
-                // ignoring the ref as it does not pass down well and isn't critical
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                    <SingleSelect
-                        id={`filter-${name}`}
-                        label={'Filter'}
-                        name={name}
-                        options={filterOptions}
-                        orientation="horizontal"
-                        error={error?.message}
-                        required
-                        sizing={SIZING}
-                        {...remaining}
-                    />
-                )}
-            />
-            {SELECTABLE_FILTER_IDS.has(filterVal?.value) && (
-                <Controller
-                    name="selectType"
-                    rules={validateRequiredRule('Type')}
-                    shouldUnregister={true}
-                    // ignoring the ref as it does not pass down well and isn't critical
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                        <SingleSelect
-                            id={`filter-${name}`}
-                            label={'Type'}
-                            name={name}
-                            options={SELECT_OPTIONS}
-                            orientation="horizontal"
-                            error={error?.message}
-                            required
-                            sizing={SIZING}
-                            {...remaining}
-                        />
-                    )}
-                />
-            )}
-            {COLUMN_REQUIRED_FILTER_IDS.has(filterVal?.value) && (
-                <>
-                    <Controller
-                        name="associatedColumn"
-                        rules={validateRequiredRule('Associated column')}
-                        shouldUnregister={true}
-                        // ignoring the ref as it does not pass down well and isn't critical
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                            <SingleSelect
-                                id={`filter-${name}`}
-                                label="Associated column"
-                                name={name}
-                                options={columnOptions}
-                                orientation="horizontal"
-                                error={error?.message}
-                                required
-                                sizing={SIZING}
-                                {...remaining}
-                            />
-                        )}
-                    />
-                    <Controller
-                        name="isRequired"
-                        defaultValue={false}
-                        shouldUnregister={true}
-                        // ignoring the ref as it does not pass down well and isn't critical
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                            <Field
-                                htmlFor={`filter-${name}`}
-                                orientation="horizontal"
-                                sizing={SIZING}
-                                label="Required as basic filter?"
-                                className="height-full"
-                                error={error?.message}
-                                required
-                            >
-                                <Toggle
-                                    id={`filter-${name}`}
-                                    aria-label="Required as basic filter"
-                                    name={name}
-                                    required
-                                    {...remaining}
-                                />
-                            </Field>
-                        )}
-                    />
-                </>
-            )}
-        </section>
-    );
-};
 
 export { ReportConfigurationContent, formToRequest };

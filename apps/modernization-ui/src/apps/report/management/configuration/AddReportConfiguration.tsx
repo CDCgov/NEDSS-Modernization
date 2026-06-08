@@ -46,7 +46,7 @@ const AddReportConfiguration = () => {
             title="Add Report"
             actions={
                 <>
-                    <Button secondary={true} onClick={() => window.alert('to do')} disabled={submitting}>
+                    <Button secondary={true} onClick={() =>navigate('/nbs/ListReport.do')} disabled={submitting}>
                         Cancel
                     </Button>
                     <Button onClick={handleSubmit} disabled={submitting}>
