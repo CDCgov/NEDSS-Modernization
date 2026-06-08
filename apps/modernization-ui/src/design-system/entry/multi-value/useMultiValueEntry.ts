@@ -47,23 +47,19 @@ const waiting = <V>(next: Lookup<Entry<V>>): Waiting<V> => {
 
 const initialize =
     <V>(identifierGenerator: () => string) =>
-    (values: V[]): State<V> =>
-        values.reduce(
-            (existing, value) => {
-                const id = identifierGenerator();
-                const entry = { id, value };
-                return {
-                    status: existing.status,
-                    values,
-                    entries: [...existing.entries, entry],
-                    lookup: { ...existing.lookup, [id]: entry },
-                };
-            },
-            { status: 'adding', values: [...values], entries: [], lookup: {} } as Waiting<V>
-        );
+    (values: V[]): State<V> => {
+        const entries = values.map((value) => ({ id: identifierGenerator(), value }));
+        const lookup = Object.fromEntries(entries.map((entry) => [entry.id, entry]));
+        return {
+            status: 'adding',
+            values: [...values],
+            entries,
+            lookup,
+        };
+    };
 
 const reducer =
-    <V>(identifierGenerator: () => string, onChange?: (changed: V[]) => void) =>
+    <V>(identifierGenerator: () => string) =>
     (current: State<V>, action: Action<V>): State<V> => {
         switch (action.type) {
             case 'initialize': {
@@ -95,53 +91,64 @@ const reducer =
                 break;
             }
             case 'add': {
-                const id = identifierGenerator();
-                const entry = { id, value: action.item };
-                const lookup = { ...current.lookup, [id]: entry };
-
-                const next = waiting(lookup);
-                //
-                onChange?.(next.values);
-                return next;
+                return handleAdd(identifierGenerator, current, action.item);
             }
             case 'update': {
-                if (current.status === 'editing') {
-                    // must be editing something to update it.
-                    const lookup = { ...current.lookup };
-
-                    lookup[current.selected.id] = { id: current.selected.id, value: action.item };
-
-                    const next = waiting(lookup);
-                    onChange?.(next.values);
+                const next = handleUpdate(current, action.item);
+                if (next) {
                     return next;
+                } else {
+                    break;
                 }
-                break;
             }
             case 'delete': {
-                const identifier = action.identifier;
-                const lookup = { ...current.lookup };
-
-                delete lookup[identifier];
-
-                if (current.status !== 'adding' && current.selected.id === identifier) {
-                    // deleted the selected entry, revert to default state
-                    const next = waiting(lookup);
-                    onChange?.(next.values);
-                    return next;
-                }
-
-                const { entries, values } = asData(lookup);
-                onChange?.(values);
-                return { ...current, lookup, entries, values };
+                return handleDelete(current, action.identifier);
             }
         }
         return current;
     };
 
+const handleAdd = <V>(identifierGenerator: () => string, current: State<V>, item: V) => {
+    const id = identifierGenerator();
+    const entry = { id, value: item };
+    const lookup = { ...current.lookup, [id]: entry };
+
+    const next = waiting(lookup);
+    return next;
+};
+
+const handleUpdate = <V>(current: State<V>, item: V) => {
+    // must be editing something to update it.
+    if (current.status === 'editing') {
+        const lookup = { ...current.lookup };
+
+        lookup[current.selected.id] = { id: current.selected.id, value: item };
+
+        const next = waiting(lookup);
+        return next;
+    }
+};
+
+const handleDelete = <V>(current: State<V>, identifier: string) => {
+    const lookup = { ...current.lookup };
+
+    delete lookup[identifier];
+
+    if (current.status !== 'adding' && current.selected.id === identifier) {
+        // deleted the selected entry, revert to default state
+        const next = waiting(lookup);
+        return next;
+    }
+
+    const { entries, values } = asData(lookup);
+    return { ...current, lookup, entries, values };
+};
+
 type MultiValueEntryInteraction<V> = {
     /** The values under entry */
     values: V[];
-    /** Clears any existing entries, creating new entries using the given values.  Any current selection will be reset. */
+    /** Clears any existing entries, creating new entries using the given values.  
+    Any current selection will be reset. */
     using: (values: V[]) => void;
     /** The entries for the current values */
     entries: Entry<V>[];
@@ -175,11 +182,7 @@ const useMultiValueEntry = <E>({
     identifierGenerator,
     onChange,
 }: MultiValueEntrySettings<E>): MultiValueEntryInteraction<E> => {
-    const [state, dispatch] = useReducer(
-        reducer<E>(identifierGenerator, onChange),
-        values,
-        initialize(identifierGenerator)
-    );
+    const [state, dispatch] = useReducer(reducer<E>(identifierGenerator), values, initialize(identifierGenerator));
 
     const selected = state.status === 'editing' || state.status === 'viewing' ? state.selected : undefined;
 
@@ -190,10 +193,31 @@ const useMultiValueEntry = <E>({
     const edit = useCallback((identifier: string) => dispatch({ type: 'edit', identifier }), [dispatch]);
     const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
 
-    // mutation actions
-    const add = useCallback((item: E) => dispatch({ type: 'add', item }), [dispatch]);
-    const update = useCallback((item: E) => dispatch({ type: 'update', item }), [dispatch]);
-    const remove = useCallback((identifier: string) => dispatch({ type: 'delete', identifier }), [dispatch]);
+    // mutation actions - defer to onChange to update the data, which will then reset the state here
+    const add = (item: E) => {
+        if (onChange) {
+            const { values } = handleAdd(identifierGenerator, state, item);
+            onChange(values);
+        } else {
+            dispatch({ type: 'add', item });
+        }
+    };
+    const update = (item: E) => {
+        if (onChange) {
+            const next = handleUpdate(state, item);
+            if (next) onChange(next.values);
+        } else {
+            dispatch({ type: 'update', item });
+        }
+    };
+    const remove = (identifier: string) => {
+        if (onChange) {
+            const { values } = handleDelete(state, identifier);
+            onChange(values);
+        } else {
+            dispatch({ type: 'delete', identifier });
+        }
+    };
 
     return {
         status: state.status,
