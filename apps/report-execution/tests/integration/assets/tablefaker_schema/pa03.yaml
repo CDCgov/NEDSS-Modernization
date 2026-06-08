@@ -26,6 +26,10 @@ tables:
       - column_name: provider_key
         data: row_id
         is_primary_key: true
+      - column_name: provider_quick_code
+        data: |
+          return "fulton" if row_id == 1 else random.choice(["dekalb", "JLJ", "local", "pks", "state"])
+        null_percentage: 0
       - column_name: provider_first_name
         data: fake.first_name()
         null_percentage: 0.05
@@ -48,21 +52,36 @@ tables:
           return f"{fake.last_name()} Medical Center"
 
   - table_name: "[RDB].[dbo].[D_INTERVIEW]"
-    row_count: 20
+    row_count: 60
     columns:
       - column_name: D_INTERVIEW_KEY
         data: row_id
         is_primary_key: true
       - column_name: record_status_cd
-        data: fake.random_element(["ACTIVE", "INACTIVE"])
+        data: random.choice(["ACTIVE", "ACTIVE", "ACTIVE", "LOG_DEL"])
+      - column_name: LOCAL_ID
+        data: |
+          return f"IX{100000 + row_id}"
+      - column_name: IX_TYPE
+        data: |
+          return random.choices(
+            ["Initial/Original", "Re-Interview", "Cluster", "Field Follow-up"],
+            weights=[70, 20, 5, 5]
+          )[0]
+      - column_name: ix_location
+        data: random.choices(["Clinic", "Field", "Telephone"], weights=[55, 35, 10])[0]
+      - column_name: IX_DATE
+        data: fake.date_between(start_date=date(2024, 1, 1), end_date=date(2024, 3, 31))
 
   - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
-    row_count: 20
+    row_count: 60
     columns:
       - column_name: INVESTIGATION_KEY
         data: row_id
       - column_name: D_INTERVIEW_KEY
         data: row_id
+      - column_name: IX_INTERVIEWER_KEY
+        data: 1
 
   - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
     row_count: 60
@@ -93,13 +112,17 @@ tables:
           id_num = fake.unique.random_int(10000, 99999)
           return f"CAS100{id_num}GA01"
       - column_name: CA_PATIENT_INTV_STATUS
-        data: random.choice(["I - Interviewed"]) if random.random() < .9 else None
+        data: |
+          return random.choices(
+            ["I - Interviewed", "A - Awaiting", "R - Refused Interview", "U - Unable to Locate", "O - Other", None],
+            weights=[65, 10, 7, 7, 6, 5]
+          )[0]
       - column_name: INIT_FUP_INTERNET_FOLL_UP_CD
         data: random.choice(["Y", "N"])
       - column_name: FL_FUP_INTERNET_OUTCOME_CD
         data: random.choice(["I1", "I2", "I3", "I4", "I5", "I6", "I7"]) if random.random() < .95 else None
       - column_name: investigator_interview_key
-        data: fake.random_int(10000000, 99999999)
+        data: 1
       - column_name: investigator_interview_qc
         data: fake.random_int(10000000, 99999999)
         null_percentage: 0.05
@@ -112,6 +135,9 @@ tables:
       - column_name: CC_CLOSED_DT
         data: |
           return date(2024, 2, min(row_id, 28))
+      - column_name: FL_FUP_INIT_ASSGN_DT
+        data: fake.date_between(start_date=date(2024, 1, 1), end_date=date(2024, 3, 31))
+        null_percentage: 0.15
       - column_name: ix_date_oi
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         null_percentage: 0.05
@@ -121,6 +147,12 @@ tables:
         data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) if random.random() < .95 else None
       - column_name: condition_cd
         data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) if random.random() < .95 else None
+      - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
+        data: str(random.randint(0, 4))
+      - column_name: SOC_PRTNRS_PRD_FML_TTL
+        data: str(random.randint(0, 4))
+      - column_name: SOC_PRTNRS_PRD_MALE_TTL
+        data: str(random.randint(0, 4))
       - column_name: confirmation_dt
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
       - column_name: jurisdiction_nm
@@ -184,10 +216,10 @@ tables:
       - column_name: THIRD_PARTY_INVESTIGATION_KEY
         data: 1
       - column_name: CONTACT_INTERVIEW_KEY
-        data: 1
+        data: foreign_key("[RDB].[dbo].[D_INTERVIEW]", "D_INTERVIEW_KEY")
       - column_name: DISPOSITIONED_BY_KEY
         data: 1
       - column_name: CONTACT_EXPOSURE_SITE_KEY
         data: 1
       - column_name: CONTACT_INVESTIGATOR_KEY
-        data: random.choice([1, 2])
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
