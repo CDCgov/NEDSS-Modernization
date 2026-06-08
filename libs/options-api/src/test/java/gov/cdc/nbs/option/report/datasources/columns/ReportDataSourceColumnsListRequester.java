@@ -17,6 +17,7 @@ class ReportDataSourceListColumnsRequester {
   }
 
   ResultActions complete(final String dataSource) throws Exception {
-    return mvc.perform(get("/nbs/api/options/report/datasources/columns/{dataSource}", dataSource)).andDo(print());
+    return mvc.perform(get("/nbs/api/options/report/datasources/columns/{dataSource}", dataSource))
+        .andDo(print());
   }
 }
