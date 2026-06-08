@@ -177,12 +177,14 @@ const DataSourceEditCard = ({
                         <Button
                             secondary={true}
                             disabled={!dataSource}
-                            onClick={confirmDataSourceRef.current?.toggleModal}>
+                            onClick={confirmDataSourceRef.current?.toggleModal}
+                        >
                             Confirm data source
                         </Button>
                     </div>
                 </Shown>
-            }>
+            }
+        >
             <Row
                 // only editable on create
                 isEditable={true}
@@ -554,7 +556,8 @@ const FilterConfigForm = ({
                                 label="Required as basic filter?"
                                 className="height-full"
                                 error={error?.message}
-                                required>
+                                required
+                            >
                                 <Toggle
                                     id={`filter-${name}`}
                                     aria-label={'Required as basic filter'}

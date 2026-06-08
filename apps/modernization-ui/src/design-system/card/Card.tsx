@@ -46,7 +46,7 @@ const Card = ({
             id={cardId}
             role="group"
             aria-labelledby={id}
-            className={classNames(styles.card, className, {[styles.disabled]: disabled})}
+            className={classNames(styles.card, className, { [styles.disabled]: disabled })}
             {...remaining}
         >
             <CardHeader

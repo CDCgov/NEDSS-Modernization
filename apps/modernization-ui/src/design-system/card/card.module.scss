@@ -3,7 +3,6 @@
 @use 'styles/components';
 
 section.card {
-    
     &.disabled {
         background-color: colors.$base-lightest;
     }
