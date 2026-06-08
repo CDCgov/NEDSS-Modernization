@@ -92,6 +92,8 @@ public class ReportSpecBuilder {
     String subsetQuery =
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
+    String libraryParams = reportConfig.library().libraryParams();
+
     return new ReportSpec(
         isExport,
         isBuiltin,
@@ -100,7 +102,8 @@ public class ReportSpecBuilder {
         dataSourceName,
         subsetQuery,
         columnMap,
-        daysValue);
+        daysValue,
+        libraryParams);
   }
 
   private Integer extractDaysValue() {
