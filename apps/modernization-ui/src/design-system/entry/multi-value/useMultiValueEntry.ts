@@ -47,20 +47,16 @@ const waiting = <V>(next: Lookup<Entry<V>>): Waiting<V> => {
 
 const initialize =
     <V>(identifierGenerator: () => string) =>
-    (values: V[]): State<V> =>
-        values.reduce(
-            (existing, value) => {
-                const id = identifierGenerator();
-                const entry = { id, value };
-                return {
-                    status: existing.status,
-                    values,
-                    entries: [...existing.entries, entry],
-                    lookup: { ...existing.lookup, [id]: entry },
-                };
-            },
-            { status: 'adding', values: [...values], entries: [], lookup: {} } as Waiting<V>
-        );
+    (values: V[]): State<V> => {
+        const entries = values.map((value) => ({ id: identifierGenerator(), value }));
+        const lookup = Object.fromEntries(entries.map((entry) => [entry.id, entry]));
+        return {
+            status: 'adding',
+            values: [...values],
+            entries,
+            lookup,
+        };
+    };
 
 const reducer =
     <V>(identifierGenerator: () => string) =>
@@ -151,7 +147,8 @@ const handleDelete = <V>(current: State<V>, identifier: string) => {
 type MultiValueEntryInteraction<V> = {
     /** The values under entry */
     values: V[];
-    /** Clears any existing entries, creating new entries using the given values.  Any current selection will be reset. */
+    /** Clears any existing entries, creating new entries using the given values.  
+    Any current selection will be reset. */
     using: (values: V[]) => void;
     /** The entries for the current values */
     entries: Entry<V>[];
@@ -197,39 +194,30 @@ const useMultiValueEntry = <E>({
     const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
 
     // mutation actions - defer to onChange to update the data, which will then reset the state here
-    const add = useCallback(
-        (item: E) => {
-            if (onChange) {
-                const { values } = handleAdd(identifierGenerator, state, item);
-                onChange(values);
-            } else {
-                dispatch({ type: 'add', item });
-            }
-        },
-        [dispatch, onChange]
-    );
-    const update = useCallback(
-        (item: E) => {
-            if (onChange) {
-                const next = handleUpdate(state, item);
-                if (next) onChange(next.values);
-            } else {
-                dispatch({ type: 'update', item });
-            }
-        },
-        [dispatch, onChange]
-    );
-    const remove = useCallback(
-        (identifier: string) => {
-            if (onChange) {
-                const { values } = handleDelete(state, identifier);
-                onChange(values);
-            } else {
-                dispatch({ type: 'delete', identifier });
-            }
-        },
-        [dispatch]
-    );
+    const add = (item: E) => {
+        if (onChange) {
+            const { values } = handleAdd(identifierGenerator, state, item);
+            onChange(values);
+        } else {
+            dispatch({ type: 'add', item });
+        }
+    };
+    const update = (item: E) => {
+        if (onChange) {
+            const next = handleUpdate(state, item);
+            if (next) onChange(next.values);
+        } else {
+            dispatch({ type: 'update', item });
+        }
+    };
+    const remove = (identifier: string) => {
+        if (onChange) {
+            const { values } = handleDelete(state, identifier);
+            onChange(values);
+        } else {
+            dispatch({ type: 'delete', identifier });
+        }
+    };
 
     return {
         status: state.status,

@@ -1,9 +1,7 @@
-import { ChangeEvent, useCallback } from 'react';
+import { ChangeEvent } from 'react';
 import classNames from 'classnames';
 import { findByValue, Selectable } from 'options';
 import { Sizing } from 'design-system/field';
-
-const hashed = (options: Selectable[]) => options.reduce((previous, next) => previous + next.value, '');
 
 type SelectProps = {
     id: string;
@@ -39,13 +37,10 @@ const Select = ({
     placeholder = '- Select -',
     ...inputProps
 }: SelectProps) => {
-    const handleChange = useCallback(
-        (event: ChangeEvent<HTMLSelectElement>) => {
-            const selected = findByValue(options)(event.target.value) ?? null;
-            onChange?.(selected);
-        },
-        [hashed(options), onChange]
-    );
+    const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        const selected = findByValue(options)(event.target.value) ?? null;
+        onChange?.(selected);
+    };
 
     return (
         <select

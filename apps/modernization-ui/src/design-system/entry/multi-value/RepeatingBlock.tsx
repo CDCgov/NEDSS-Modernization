@@ -34,6 +34,8 @@ type RepeatingBlockProps<V extends FieldValues> = {
     // Provide all default values to allow `isDirty` to function
     defaultValues?: DefaultValuesResolver<DefaultValues<V>>;
     errors?: ReactNode[];
+    // If onChange is used, it is assumed to update the data and control
+    // the mutating updates from the parent component
     onChange?: (data: V[]) => void;
     isDirty?: (isDirty: boolean) => void;
     isValid?: (isValid: boolean) => void;

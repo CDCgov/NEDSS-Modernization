@@ -67,8 +67,7 @@ const MOCK_CONFIG: generated.ReportConfiguration = {
             isRequired: true,
             defaultIncludeNulls: false,
             filterType: { id: 1, name: 'My filter' },
-            minValueCount: 1,
-            maxValueCount: 1,
+            selectType: generated.BasicFilterConfiguration.selectType.SINGLE,
             reportColumnUid: 2001,
         },
     ],
@@ -112,6 +111,16 @@ describe('view report configuration page', () => {
                 { value: '1000', name: 'Default' },
                 { value: '1002', name: 'My reports' },
             ]);
+        } else if (url.includes('filters')) {
+            return Promise.resolve([
+                { value: '7', name: 'Where Clause Builder' },
+                { value: '1', name: 'My filter' },
+            ]);
+        } else if (url.includes('columns')) {
+            return Promise.resolve([
+                { value: '2001', name: 'FULL_NAME', label: 'Full Name' },
+                { value: '2002', name: 'DATE_OF_BIRTH', label: 'Date of Birth' },
+            ]);
         } else {
             return Promise.resolve([]);
         }
@@ -146,7 +155,7 @@ describe('view report configuration page', () => {
 
         expect(await findAllByText('My filter')).toHaveLength(2);
         expect(await findAllByText('Yes')).toHaveLength(2);
-        expect(await findAllByText('Full Name'));
+        expect(await findAllByText(/FULL_NAME \(Full Name\)/));
         expect(await findAllByText('Single'));
     });
 

@@ -281,7 +281,7 @@ const Row = ({
                     label={label}
                     helperText={helperText}
                     error={error?.message}
-                    options={addLabelToName(options ?? [])}
+                    options={(options ?? []).map(addLabelToName)}
                     maxLength={maxLength}
                     disabled={disabled}
                     {...fieldValues}
@@ -295,12 +295,11 @@ const Row = ({
     );
 };
 
-const addLabelToName = (options: Selectable[]) =>
-    options.map(({ value, name, label }) => ({
-        value,
-        label,
-        name: !label || label === name ? name : `${name} (${label})`,
-    }));
+const addLabelToName = ({ value, name, label }: Selectable) => ({
+    value,
+    label,
+    name: !label || label === name ? name : `${name} (${label})`,
+});
 
 const Option = ({ option }: { option?: Selectable | string }) => {
     if (!option) return <NoData />;
@@ -320,6 +319,14 @@ interface FilterConfig {
     associatedColumn?: Selectable;
     isRequired: boolean;
 }
+
+const EMPTY_FILTER_CONFIG: Partial<FilterConfig> = {
+    id: undefined,
+    filter: undefined,
+    selectType: undefined,
+    associatedColumn: undefined,
+    isRequired: false,
+};
 
 type FilterColumn = NamedColumn<FilterConfig, string> & HasValueFunction<FilterConfig, string>;
 
@@ -345,7 +352,8 @@ const FilterRepeatingBlock = ({
 }) => {
     const dataSourceSelected = !!dataSource;
     const filterOptions = useReportFilters();
-    const columnOptions = useColumnOptions(dataSource);
+    const rawColumnOptions = useColumnOptions(dataSource);
+    const columnOptions = (rawColumnOptions ?? []).map(addLabelToName);
 
     const defaultFilterData: FilterConfig[] =
         config?.basicFilters.map((f) => ({
@@ -363,8 +371,6 @@ const FilterRepeatingBlock = ({
             isRequired: false,
         });
     }
-
-    console.log({ config, filterOptions, defaultFilterData });
 
     return filterOptions.length === 0 ? (
         <LoadingIndicator />
@@ -424,6 +430,7 @@ const FilterRepeatingBlockImpl = ({
             itemName="filter"
             columns={filterColumns}
             sizing={SIZING}
+            defaultValues={EMPTY_FILTER_CONFIG}
             editable={isEditable && dataSourceSelected}
             data={value}
             disabled={!dataSourceSelected}
@@ -443,8 +450,8 @@ const FilterRepeatingBlockImpl = ({
 };
 
 // Matches NBS 6 logic
-const SELECTABLE_FILTER_IDS = ['1', '2', '3', '8', '9', '10', '16', '19', '20', '21'];
-const COLUMN_REQUIRED_FILTER_IDS = [
+const SELECTABLE_FILTER_IDS = new Set(['1', '2', '3', '8', '9', '10', '16', '19', '20', '21']);
+const COLUMN_REQUIRED_FILTER_IDS = new Set([
     '1',
     '2',
     '3',
@@ -463,7 +470,7 @@ const COLUMN_REQUIRED_FILTER_IDS = [
     '19',
     '20',
     '21',
-];
+]);
 
 const FilterConfigForm = ({
     filterOptions,
@@ -498,7 +505,7 @@ const FilterConfigForm = ({
                     />
                 )}
             />
-            {SELECTABLE_FILTER_IDS.includes(filterVal?.value) && (
+            {SELECTABLE_FILTER_IDS.has(filterVal?.value) && (
                 <Controller
                     name="selectType"
                     rules={validateRequiredRule('Type')}
@@ -520,7 +527,7 @@ const FilterConfigForm = ({
                     )}
                 />
             )}
-            {COLUMN_REQUIRED_FILTER_IDS.includes(filterVal?.value) && (
+            {COLUMN_REQUIRED_FILTER_IDS.has(filterVal?.value) && (
                 <>
                     <Controller
                         name="associatedColumn"
@@ -531,7 +538,7 @@ const FilterConfigForm = ({
                         render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
                             <SingleSelect
                                 id={`filter-${name}`}
-                                label={'Associated column'}
+                                label="Associated column"
                                 name={name}
                                 options={columnOptions}
                                 orientation="horizontal"
@@ -560,7 +567,7 @@ const FilterConfigForm = ({
                             >
                                 <Toggle
                                     id={`filter-${name}`}
-                                    aria-label={'Required as basic filter'}
+                                    aria-label="Required as basic filter"
                                     name={name}
                                     required
                                     {...remaining}
