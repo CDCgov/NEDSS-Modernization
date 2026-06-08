@@ -8,6 +8,7 @@ class ReportSpecTest {
 
   @Test
   void should_create_report_spec() {
+    String libraryParams = "{\"reportDays\": \"30\"}";
     ReportSpec reportSpec =
         new ReportSpec(
             true,
@@ -17,7 +18,8 @@ class ReportSpecTest {
             "nbs_rdb.investigation",
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
             null,
-            11);
+            11,
+            libraryParams);
 
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
@@ -27,5 +29,6 @@ class ReportSpecTest {
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
     assertThat(reportSpec.daysValue()).isEqualTo(11);
+    assertThat(reportSpec.libraryParams()).isEqualTo(libraryParams);
   }
 }
