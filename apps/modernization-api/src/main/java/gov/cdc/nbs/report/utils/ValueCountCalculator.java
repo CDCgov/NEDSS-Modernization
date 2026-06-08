@@ -65,9 +65,9 @@ public class ValueCountCalculator {
   }
 
   public static ReportConstants.SelectType toSelectType(ReportValueCounts counts) {
-    if (counts.minValueCount == 1) {
-      if (counts.maxValueCount == -1) return ReportConstants.SelectType.MULTI;
-      if (counts.maxValueCount == 1) return ReportConstants.SelectType.SINGLE;
+    if ((Integer.valueOf(1)).equals(counts.minValueCount)) {
+      if (Integer.valueOf(-1).equals(counts.maxValueCount)) return ReportConstants.SelectType.MULTI;
+      if (Integer.valueOf(1).equals(counts.maxValueCount)) return ReportConstants.SelectType.SINGLE;
     }
 
     return null;

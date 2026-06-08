@@ -41,7 +41,7 @@ public class ReportMapper {
     if (reportLibrary.getLibraryName().toUpperCase().endsWith(".SAS")) {
       builder.location(reportLibrary.getLibraryName());
       builder.reportTypeCode(
-          reportLibrary.getColumnSelectInd().toString().equals('Y')
+          reportLibrary.getColumnSelectInd().toString().equals("Y")
               ? "SAS_CUSTOM"
               : "SAS_ODS_HTML");
     }

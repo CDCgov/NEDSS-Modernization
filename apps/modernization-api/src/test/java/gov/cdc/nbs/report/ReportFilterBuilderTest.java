@@ -10,6 +10,7 @@ import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportFilterValidation;
+import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.repository.FilterCodeRepository;
@@ -17,21 +18,29 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ReportFilterBuilderTest {
 
-  private DataSourceColumnRepository dataSourceColumnRepository;
-  private FilterCodeRepository filterCodeRepository;
-  private ReportFilterBuilder builder;
+  @Mock private DataSourceColumnRepository dataSourceColumnRepository;
+  @Mock private FilterCodeRepository filterCodeRepository;
+  @Mock private IdGeneratorService idGenerator;
+
+  @InjectMocks private ReportFilterBuilder builder;
 
   @BeforeEach
   void setUp() {
-    dataSourceColumnRepository = mock(DataSourceColumnRepository.class);
-    filterCodeRepository = mock(FilterCodeRepository.class);
-    builder = new ReportFilterBuilder(dataSourceColumnRepository, filterCodeRepository);
+    Mockito.lenient()
+        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(47L));
   }
 
   @Test
@@ -72,6 +81,7 @@ class ReportFilterBuilderTest {
     when(filterCodeRepository.findById(5L)).thenReturn(Optional.of(mockFilterCode));
 
     ReportFilter result = builder.build(filter, report);
+    Mockito.verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.NBS);
 
     ReportFilterValidation validation = result.getFilterValidation();
     assertThat(validation).isNotNull();
