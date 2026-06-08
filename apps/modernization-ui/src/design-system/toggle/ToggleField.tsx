@@ -23,7 +23,8 @@ const ToggleField = ({
             helperText={helperText}
             required={required}
             error={error}
-            warning={warning}>
+            warning={warning}
+        >
             <Toggle
                 name={id}
                 required={required}
