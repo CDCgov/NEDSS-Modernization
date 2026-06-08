@@ -27,7 +27,7 @@ public class FieldFormatter {
     String sqlColName = "[" + colName + "]";
 
     // Ensures comparison operators (e.g. <>, =, >, IN, etc...) work for DATETIME columns
-    // when compared against a date value (e.g. '2026-05-28')
+    // when compared against a date value (e.g. '2026-05-28') since frontend passes date values
     if (colType.equals("DATETIME")) {
       return "CAST(" + sqlColName + " AS DATE)";
     }
