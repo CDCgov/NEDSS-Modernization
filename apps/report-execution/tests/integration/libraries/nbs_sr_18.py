@@ -29,9 +29,6 @@ class TestIntegrationNbsSr18Library:
 
         data = result.content.data
 
-        with open('./sr18snapshot.yaml', 'w') as fd:
-            fd.write(yaml.dump(data))
-
         snapshot.assert_match(yaml.dump(data), 'snapshot.yaml')
 
         assert len(data) > 0
