@@ -77,7 +77,7 @@ const Fixture = ({
     errors,
     defaultValues,
     sizing,
-    onChange = vi.fn(),
+    onChange,
     isDirty = vi.fn(),
     isValid,
 }: Partial<RepeatingBlockProps<TestType>>) => (
@@ -221,10 +221,10 @@ describe('RepeatingBlock', () => {
         expect(input1).toHaveValue('first value');
     });
 
-    it('should display submitted data in table', async () => {
+    it('should display submitted data in table - controlled', async () => {
         const onChange = vi.fn();
 
-        const { getByRole, getAllByRole, getByLabelText } = render(<Fixture onChange={onChange} />);
+        const { getByRole, getByLabelText } = render(<Fixture onChange={onChange} />);
 
         const add = getByRole('button', { name: 'Add test title' });
 
@@ -235,7 +235,20 @@ describe('RepeatingBlock', () => {
             .then(() => user.type(getByLabelText('Second Input'), 'second value'))
             .then(() => user.click(add));
 
-        expect(onChange).toBeCalledWith([{ firstInput: 'first value', secondInput: 'second value' }]);
+        expect(onChange).toHaveBeenCalledWith([{ firstInput: 'first value', secondInput: 'second value' }]);
+    });
+
+    it('should display submitted data in table - uncontrolled', async () => {
+        const { getByRole, getAllByRole, getByLabelText } = render(<Fixture />);
+
+        const add = getByRole('button', { name: 'Add test title' });
+
+        const user = userEvent.setup();
+
+        await user
+            .type(getByLabelText('First Input'), 'first value')
+            .then(() => user.type(getByLabelText('Second Input'), 'second value'))
+            .then(() => user.click(add));
 
         const columns = getAllByRole('cell');
         expect(columns).toHaveLength(3);
@@ -264,7 +277,7 @@ describe('RepeatingBlock', () => {
 
         // expect value to be added
         await waitFor(() => {
-            expect(onChange).toBeCalledWith([{ firstInput: 'typed value', secondInput: undefined }]);
+            expect(onChange).toHaveBeenCalledWith([{ firstInput: 'typed value', secondInput: undefined }]);
         });
 
         // verify validation message is no longer visible
@@ -350,7 +363,7 @@ describe('RepeatingBlock', () => {
         expect(cancel).toBeInTheDocument();
     });
 
-    it('should delete row when delete icon clicked', async () => {
+    it('should delete row when delete icon clicked - controlled', async () => {
         const onChange = vi.fn();
         render(
             <Fixture
@@ -373,10 +386,31 @@ describe('RepeatingBlock', () => {
         expect(onChange).toHaveBeenCalledWith([]);
     });
 
-    it('should allow edit of row', async () => {
+    it('should delete row when delete icon clicked - uncontrolled', async () => {
+        const { queryByText } = render(
+            <Fixture
+                data={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: [],
+                    },
+                ]}
+            />
+        );
+
+        const remove = screen.getByRole('button', { name: 'Delete' });
+        const user = userEvent.setup();
+
+        await user.click(remove);
+
+        expect(queryByText('first-value')).toBeNull();
+    });
+
+    it('should allow edit of row - controlled', async () => {
         const onChange = vi.fn();
 
-        const { getByRole, getAllByRole, getByLabelText } = render(
+        const { getByRole, getByLabelText } = render(
             <Fixture
                 onChange={onChange}
                 data={[
@@ -406,6 +440,31 @@ describe('RepeatingBlock', () => {
                 expect.objectContaining({ firstInput: 'first-value-changed', secondInput: 'second-value' }),
             ])
         );
+    });
+
+    it('should allow edit of row - uncontrolled', async () => {
+        const { getByRole, getAllByRole, getByLabelText } = render(
+            <Fixture
+                data={[
+                    {
+                        firstInput: 'first-value',
+                        secondInput: 'second-value',
+                        others: [],
+                    },
+                ]}
+            />
+        );
+
+        const edit = getByRole('button', { name: 'Edit' });
+
+        const user = userEvent.setup();
+
+        await user.click(edit);
+
+        const update = getByRole('button', { name: 'Update test title' });
+        const input1 = getByLabelText('First Input');
+
+        await user.type(input1, '-changed{tab}').then(() => user.click(update));
 
         // table display updated
         const columns = getAllByRole('cell');
