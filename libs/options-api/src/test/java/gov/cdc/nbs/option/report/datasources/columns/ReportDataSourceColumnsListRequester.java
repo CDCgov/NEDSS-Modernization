@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @Component
-class ReportDataSourceListColumnsRequester {
+class ReportDataSourceColumnsListRequester {
 
   private final MockMvc mvc;
 
@@ -17,7 +17,8 @@ class ReportDataSourceListColumnsRequester {
   }
 
   ResultActions complete(final String dataSource) throws Exception {
-    return mvc.perform(get("/nbs/api/options/report/datasources/columns/{dataSource}", dataSource))
+    return mvc.perform(
+            get("/nbs/api/options/report/datasource/columns/filterable/{dataSource}", dataSource))
         .andDo(print());
   }
 }

@@ -6,7 +6,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 public class ReportDataSourceColumnsListSteps {
 
-  private final ReportDataSourceListRequester request;
+  private final ReportDataSourceColumnsListRequester request;
   private final Active<ResultActions> response;
 
   ReportDataSourceColumnsListSteps(
