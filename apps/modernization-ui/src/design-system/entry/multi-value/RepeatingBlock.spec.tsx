@@ -235,7 +235,7 @@ describe('RepeatingBlock', () => {
             .then(() => user.type(getByLabelText('Second Input'), 'second value'))
             .then(() => user.click(add));
 
-        expect(onChange).toBeCalledWith([{ firstInput: 'first value', secondInput: 'second value' }]);
+        expect(onChange).toHaveBeenCalledWith([{ firstInput: 'first value', secondInput: 'second value' }]);
     });
 
     it('should display submitted data in table - uncontrolled', async () => {
@@ -277,7 +277,7 @@ describe('RepeatingBlock', () => {
 
         // expect value to be added
         await waitFor(() => {
-            expect(onChange).toBeCalledWith([{ firstInput: 'typed value', secondInput: undefined }]);
+            expect(onChange).toHaveBeenCalledWith([{ firstInput: 'typed value', secondInput: undefined }]);
         });
 
         // verify validation message is no longer visible

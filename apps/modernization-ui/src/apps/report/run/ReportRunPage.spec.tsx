@@ -73,7 +73,7 @@ afterEach(() => {
 const MOCK_CONFIG: ReportConfiguration = {
     title: 'Test Report',
     ownerUid: 0,
-    group: 'S',
+    group: ReportConfiguration.group.PUBLIC,
     sectionCd: '1000',
     dataSource: {
         id: 1,
