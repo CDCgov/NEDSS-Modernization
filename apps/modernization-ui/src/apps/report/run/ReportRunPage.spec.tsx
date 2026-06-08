@@ -887,7 +887,7 @@ describe('report run page', () => {
                             name: 'State',
                         },
                         isRequired: true,
-                        maxValueCount: 1,
+                        selectType: BasicFilterConfiguration.selectType.SINGLE,
                         reportColumnUid: 2001,
                         defaultIncludeNulls: false,
                     };
@@ -1026,7 +1026,7 @@ describe('report run page', () => {
                             name: 'County',
                         },
                         isRequired: true,
-                        maxValueCount: -1,
+                        selectType: BasicFilterConfiguration.selectType.MULTI,
                         reportColumnUid: 2001,
                         defaultIncludeNulls: false,
                     };
@@ -1166,7 +1166,7 @@ describe('report run page', () => {
                         name: 'State',
                     },
                     isRequired: true,
-                    maxValueCount: 1,
+                    selectType: BasicFilterConfiguration.selectType.SINGLE,
                     defaultValues: ['13'],
                     defaultIncludeNulls: false,
                     reportColumnUid: 2002,
@@ -1205,7 +1205,7 @@ describe('report run page', () => {
                             name: 'County',
                         },
                         isRequired: true,
-                        maxValueCount: 1,
+                        selectType: BasicFilterConfiguration.selectType.SINGLE,
                         reportColumnUid: 2001,
                         defaultIncludeNulls: false,
                     };
@@ -1358,7 +1358,7 @@ describe('report run page', () => {
                             name: 'County',
                         },
                         isRequired: true,
-                        maxValueCount: -1,
+                        selectType: BasicFilterConfiguration.selectType.MULTI,
                         reportColumnUid: 2001,
                         defaultIncludeNulls: false,
                     };
