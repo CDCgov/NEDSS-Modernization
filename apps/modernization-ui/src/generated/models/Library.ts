@@ -9,5 +9,9 @@ export type Library = {
     description: string;
     isBuiltin: boolean;
     allowColumnSelection: boolean;
-    libraryParams?: string | null;
+    /**
+     * Optional JSON parameters for the report
+     */
+    libraryParams?: string;
 };
+
