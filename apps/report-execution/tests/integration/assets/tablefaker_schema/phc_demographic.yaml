@@ -31,13 +31,11 @@ tables:
             return "GCD"
           elif PHC_code == "502651":
             return "FOOD"
-      - column_name: program_jurisdiction_oid
-        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
 
       # Case basics
       - column_name: PHC_code_short_desc
         type: string
-        data: random.choice(['2019 Novel Coronavirus', 'Botulism, foodborne', 'Chancroid', 'Chlamydia trachomatis infection', 'Gonorrhea', 'HIV', 'Hepatitis B, acute', 'Monkeypox', 'Pertussis', 'Syphilis, primary'])
+        data: PHC_code_desc
       - column_name: event_date 
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         null_percentage: 0.05
