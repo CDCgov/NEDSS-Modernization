@@ -9,5 +9,5 @@ export type Library = {
     description: string;
     isBuiltin: boolean;
     allowColumnSelection: boolean;
+    libraryParams?: string | null;
 };
-
