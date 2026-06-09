@@ -135,5 +135,5 @@ it a parameter that can be passed in from the API.
         AND f.DIAGNOSIS = g.DIAGNOSIS
     ORDER BY f.PATIENT_NAME, f.DIAGNOSIS, f.FL_FUP_EXAM_DT
     """
-    df = trx.query(sql)
-    return ReportResult(content_type="table", content=df)
+    content = trx.query(sql)
+    return ReportResult(content_type="table", content=content)

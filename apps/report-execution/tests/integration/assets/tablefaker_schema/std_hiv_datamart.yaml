@@ -13,6 +13,7 @@ tables:
         is_primary_key: true
       - column_name: inv_case_status
         data: fake.random_element(["Confirmed", "Probable", "Suspect", "Unknown"])
+        null_percentage: 0
       - column_name: record_status_cd
         data: fake.random_element(["ACTIVE", "INACTIVE"])
         null_percentage: 0
@@ -140,6 +141,7 @@ tables:
         foreign_key:
           table: "[RDB].[dbo].[INVESTIGATION]"
           column: INVESTIGATION_KEY
+        null_percentage: 0
 
       # patient demographics
       - column_name: patient_name
@@ -167,6 +169,7 @@ tables:
           id_num = fake.unique.random_int(10000, 99999)
           pre_id_num = random.choice([100, 200, 300])
           return f"PSN{pre_id_num}{id_num}GA01"
+        null_percentage: 0
 
       # case information
       - column_name: diagnosis
@@ -174,7 +177,7 @@ tables:
           # Create a limited set of diagnoses to enable duplicates
           diagnoses = ["100","200","300","350","400"]
           return random.choice(diagnoses)
-        null_percentage: 0.02
+        null_percentage: 0
 
       - column_name: field_record_number
         data: fake.random_int(10000000, 99999999)
@@ -216,6 +219,7 @@ tables:
         data: |
           id_num = fake.unique.random_int(10000, 99999)
           return f"CAS100{id_num}GA01"
+        null_percentage: 0
 
       - column_name: ordering_facility_key
         data: foreign_key("[RDB].[dbo].[D_ORGANIZATION]", "organization_key")
@@ -248,6 +252,10 @@ tables:
           offset = (row_id % 5) * 15  # 0,15,30,45,60 days
           return base_date + timedelta(days=offset)
         null_percentage: 0.1
+
+      - column_name: inv_case_status
+        data: fake.random_element(["Confirmed", "Probable", "Suspect", "Unknown"])
+        null_percentage: 0
 
   - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
     row_count: 200
