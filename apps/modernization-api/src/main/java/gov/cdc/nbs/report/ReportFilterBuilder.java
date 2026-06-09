@@ -64,7 +64,9 @@ public class ReportFilterBuilder {
     }
 
     if (filter.isRequired()) {
-      // TODO: org.springframework.orm.jpa.JpaSystemException: Identifier of entity 'gov.cdc.nbs.entity.odse.ReportFilterValidation' must be manually assigned before calling 'persist()'
+      // TODO: org.springframework.orm.jpa.JpaSystemException: Identifier of entity
+      // 'gov.cdc.nbs.entity.odse.ReportFilterValidation' must be manually assigned before calling
+      // 'persist()'
       filterBuilder.filterValidation(
           ReportFilterValidation.builder()
               .reportFilterInd('Y')
