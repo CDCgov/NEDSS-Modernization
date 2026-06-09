@@ -58,8 +58,11 @@ class ReportMapperTest {
     Mockito.lenient().when(dataSource.getId()).thenReturn(dataSourceId);
 
     Mockito.lenient()
-        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT))
+        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
         .thenReturn(new IdGeneratorService.GeneratedId(47L));
+
+    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("hello.sas");
+    Mockito.lenient().when(reportLibrary.getColumnSelectInd()).thenReturn('Y');
   }
 
   @Test
@@ -71,7 +74,7 @@ class ReportMapperTest {
 
     Long nextReportId = 100L;
     Mockito.lenient()
-        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT))
+        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
         .thenReturn(new IdGeneratorService.GeneratedId(nextReportId));
 
     Report result =
@@ -80,7 +83,7 @@ class ReportMapperTest {
 
     assertThat(result.getId()).isNotNull();
     assertThat(result.getId().getDataSourceUid()).isEqualTo(request.dataSourceId());
-    Mockito.verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.REPORT);
+    Mockito.verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.NBS);
     assertThat(result.getId().getReportUid()).isEqualTo(nextReportId);
 
     // Should always be set to 'N'
@@ -99,6 +102,8 @@ class ReportMapperTest {
     assertThat(result.getShared()).isEqualTo('R');
     assertThat(result.getSectionCd()).isEqualTo(sectionCd);
     assertThat(result.getReportLibrary()).isEqualTo(reportLibrary);
+    assertThat(result.getLocation()).isEqualTo("hello.sas");
+    assertThat(result.getReportTypeCode()).isEqualTo("SAS_CUSTOM");
   }
 
   @Test

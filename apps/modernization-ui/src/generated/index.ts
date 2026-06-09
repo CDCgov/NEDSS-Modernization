@@ -16,7 +16,7 @@ export type { AdvancedFilterRequest } from './models/AdvancedFilterRequest';
 export type { AdvancedQuery } from './models/AdvancedQuery';
 export type { Allowed } from './models/Allowed';
 export type { AssociatedInvestigation } from './models/AssociatedInvestigation';
-export type { BasicFilterConfiguration } from './models/BasicFilterConfiguration';
+export { BasicFilterConfiguration } from './models/BasicFilterConfiguration';
 export type { BasicFilterRequest } from './models/BasicFilterRequest';
 export type { BirthDemographic } from './models/BirthDemographic';
 export type { ConceptOption } from './models/ConceptOption';
