@@ -35,20 +35,17 @@ class TestIntegrationQa07Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        # assert len(data) == 500
-        # assert len(data[0]) == len(result.content.columns)
-        # assert result.content.columns == [
-        #     'PROGRAM_JURISDICTION_OID',
-        #     'PATIENT_LOCAL_ID',
-        #     'EVENT_DATE',
-        # ]
+
+        assert len(data) == 423
+        assert result.content.columns == [
+            'PATIENT_NAME',
+            'PATIENT_ID',
+            'DIAGNOSIS',
+            'CONFIRMATION_DT',
+            'FL_FUP_EXAM_DT'
+        ]
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
-
-        # for data in result.content.data:
-        #     assert isinstance(data[0], decimal.Decimal)
-        #     assert isinstance(data[1], str)
-        #     assert isinstance(data[2], datetime.datetime)
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = self.create_spec()
@@ -58,3 +55,36 @@ class TestIntegrationQa07Library:
         assert result.content_type == 'table'
 
         assert len(result.content.data) == 0
+
+    def test_execute_report_different_days(self):
+        """Test that the number of duplicate cases changes with the days parameter."""
+        # 30 days
+        spec_30 = self.create_spec(library_params='{"report_days": 30}')
+        result_30 = execute_report(spec_30)
+        rows_30 = len(result_30.content.data)
+
+        # 60 days
+        spec_60 = self.create_spec(library_params='{"report_days": 60}')
+        result_60 = execute_report(spec_60)
+        rows_60 = len(result_60.content.data)
+
+        # 90 days
+        spec_90 = self.create_spec(library_params='{"report_days": 90}')
+        result_90 = execute_report(spec_90)
+        rows_90 = len(result_90.content.data)
+
+        # With more days, more rows should be considered duplicates
+        assert rows_30 <= rows_60 <= rows_90
+        
+    def test_execute_report_missing_days_parameter(self):
+        """Test that missing 'report_days' in library_params raises an error."""
+        spec = self.create_spec(library_params='{}')
+        with pytest.raises(ValueError, match="must contain 'days'"):
+            execute_report(spec)
+
+    def test_execute_report_invalid_days_format(self):
+        """Test that non‑integer days value raises an error."""
+        spec = self.create_spec(library_params='{"report_days": "thirty"}')
+        # The actual parsing error may come from JSON or the SQL query.
+        with pytest.raises((ValueError, TypeError)):
+            execute_report(spec)
