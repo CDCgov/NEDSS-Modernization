@@ -61,7 +61,6 @@ const FilterRepeatingBlock = ({
     const filterOptions = useReportFilters();
     const rawColumnOptions = useColumnOptions(dataSource);
     const columnOptions = (rawColumnOptions ?? []).map(addLabelToName);
-    console.log({filterOptions, columnOptions})
 
     const defaultFilterData: FilterConfig[] =
         config?.basicFilters.map((f) => ({
