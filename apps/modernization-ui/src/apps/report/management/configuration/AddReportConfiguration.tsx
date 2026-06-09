@@ -54,7 +54,8 @@ const AddReportConfiguration = () => {
                         Submit
                     </Button>
                 </>
-            }>
+            }
+        >
             <div className={styles.columnContent}>
                 {error && <AlertBanner type="error">{error}</AlertBanner>}
                 <FormProvider {...form}>

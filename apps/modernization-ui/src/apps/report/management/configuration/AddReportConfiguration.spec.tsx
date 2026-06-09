@@ -152,23 +152,22 @@ describe('add report configuration page', () => {
         await user.selectOptions(await findByLabelText('Owner'), '0'); // System
         await user.selectOptions(await findByLabelText('Group'), 'PRIVATE');
         await user.selectOptions(await findByLabelText('Section name'), 'My reports');
-        const libDropDown = await findByRole('combobox', {name: "Report execution library"})
-        const libOptions = await within(libDropDown).findAllByRole('option')
+        const libDropDown = await findByRole('combobox', { name: 'Report execution library' });
+        const libOptions = await within(libDropDown).findAllByRole('option');
         await user.selectOptions(libDropDown, libOptions[1]); // nbs custom at top (after `- Select -` placeholder)
-        
+
         // add filter
         await user.selectOptions(await findByLabelText('Filter'), '1');
         await user.selectOptions(await findByLabelText('Type'), 'Single');
         await user.selectOptions(await findByLabelText('Associated column'), 'DATE_OF_BIRTH (Date of Birth)');
         await user.click(await findByLabelText('Required as basic filter'));
-        await user.click(await findByRole('button', {name: 'Add filter'}));
+        await user.click(await findByRole('button', { name: 'Add filter' }));
         // should add to table and form reset
-        expect(await findByRole('cell', {name: 'My filter'})).toBeVisible();
+        expect(await findByRole('cell', { name: 'My filter' })).toBeVisible();
         expect(await findByLabelText('Filter')).toHaveValue('');
-        
-        await user.click(await findByRole('button', {name: 'Submit'}))
 
-        expect(navigate).toHaveBeenCalledWith('/report/management/configuration/1/2')
-        
+        await user.click(await findByRole('button', { name: 'Submit' }));
+
+        expect(navigate).toHaveBeenCalledWith('/report/management/configuration/1/2');
     });
 });

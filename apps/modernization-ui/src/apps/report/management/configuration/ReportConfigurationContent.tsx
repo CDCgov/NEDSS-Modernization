@@ -20,7 +20,6 @@ import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
 import { addLabelToName, EnumSelectable } from './utils';
 import { SIZING } from './constants';
 
-
 const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [
     { value: ReportConfiguration.group.PUBLIC, name: 'Public' },
     { value: ReportConfiguration.group.PRIVATE, name: 'Private' },
@@ -165,12 +164,14 @@ const DataSourceEditCard = ({
                         <Button
                             secondary={true}
                             disabled={!dataSource}
-                            onClick={confirmDataSourceRef.current?.toggleModal}>
+                            onClick={confirmDataSourceRef.current?.toggleModal}
+                        >
                             Confirm data source
                         </Button>
                     </div>
                 </Shown>
-            }>
+            }
+        >
             <ConfirmationModal
                 modal={confirmDataSourceRef}
                 title={`Confirm data source: ${dataSource?.name}`}
@@ -293,6 +294,5 @@ const Option = ({ option }: { option?: Selectable | string }) => {
         </span>
     );
 };
-
 
 export { ReportConfigurationContent, formToRequest };
