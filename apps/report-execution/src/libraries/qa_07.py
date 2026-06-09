@@ -54,12 +54,12 @@ it a parameter that can be passed in from the API.
             SELECT 
                 b.INVESTIGATION_KEY,
                 MAX(d.SPECIMEN_COLLECTION_DT) AS SPECIMEN_COLLECTION_DT
-            FROM nbs_rdb.LAB_TEST_RESULT b
-            INNER JOIN nbs_rdb.LAB_TEST d ON b.LAB_TEST_KEY = d.LAB_TEST_KEY
+            FROM rdb.dbo.LAB_TEST_RESULT b
+            INNER JOIN rdb.dbo.LAB_TEST d ON b.LAB_TEST_KEY = d.LAB_TEST_KEY
             GROUP BY b.INVESTIGATION_KEY
         ) lab ON s.INVESTIGATION_KEY = lab.INVESTIGATION_KEY
-        LEFT JOIN nbs_rdb.MORBIDITY_REPORT_EVENT mre ON s.INVESTIGATION_KEY = mre.INVESTIGATION_KEY
-        LEFT JOIN nbs_rdb.MORBIDITY_REPORT mr ON mre.MORB_RPT_KEY = mr.MORB_RPT_KEY
+        LEFT JOIN rdb.dbo.MORBIDITY_REPORT_EVENT mre ON s.INVESTIGATION_KEY = mre.INVESTIGATION_KEY
+        LEFT JOIN rdb.dbo.MORBIDITY_REPORT mr ON mre.MORB_RPT_KEY = mr.MORB_RPT_KEY
         WHERE s.INV_LOCAL_ID IS NOT NULL
           AND s.DIAGNOSIS IS NOT NULL
           AND s.INV_CASE_STATUS IN ('Probable', 'Confirmed')
@@ -71,7 +71,7 @@ it a parameter that can be passed in from the API.
             INV_LOCAL_ID,
             DIAGNOSIS,
             CONFIRMATION_DT,
-            -- Derive FL_FUP_EXAM_DT as per SAS logic (using specimen or diagnosis date if missing)
+            -- Derive FL_FUP_EXAM_DT
             COALESCE(
                 FL_FUP_EXAM_DT,
                 CASE
@@ -136,4 +136,4 @@ it a parameter that can be passed in from the API.
     ORDER BY f.PATIENT_NAME, f.DIAGNOSIS, f.FL_FUP_EXAM_DT
     """
     df = trx.query(sql)
-    return ReportResult(content_type="table", content=df, header=header)
+    return ReportResult(content_type="table", content=df)
