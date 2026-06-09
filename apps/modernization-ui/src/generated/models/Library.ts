@@ -3,9 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 export type Library = {
+    id: number;
     runner: string;
-    libraryName: string;
+    name: string;
+    description: string;
     isBuiltin: boolean;
     allowColumnSelection: boolean;
+    /**
+     * Optional JSON parameters for the report
+     */
+    libraryParams?: string;
 };
 

@@ -37,6 +37,15 @@ public class ReportMapper {
       builder.addTime(now).addUserUid(user.getId());
     }
 
+    // adding a SAS library - need to make sure the location and type are set for NBS 6 to use
+    if (reportLibrary.getLibraryName().toUpperCase().endsWith(".SAS")) {
+      builder.location(reportLibrary.getLibraryName());
+      builder.reportTypeCode(
+          reportLibrary.getColumnSelectInd().toString().equals("Y")
+              ? "SAS_CUSTOM"
+              : "SAS_ODS_HTML");
+    }
+
     return builder
         .dataSource(dataSource)
         .descTxt(request.description())
@@ -44,7 +53,7 @@ public class ReportMapper {
         .filterMode('B') // consistently "B" in DB, so just continuing that pattern"
         .ownerUid(request.ownerId())
         .reportTitle(request.reportTitle())
-        .shared(reportGroupToDbChar(request.group()))
+        .shared(ReportConstants.reportGroupToDbChar(request.group()))
         .status(new Status(Status.ACTIVE_CODE, now))
         .sectionCd(request.sectionCode())
         .reportLibrary(reportLibrary)
@@ -52,16 +61,7 @@ public class ReportMapper {
   }
 
   private Long generateReportId() {
-    var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT);
+    var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
-  }
-
-  private static Character reportGroupToDbChar(ReportConstants.ReportGroup group) {
-    return switch (group) {
-      case PRIVATE -> 'P';
-      case REPORTING_FACILITY -> 'R';
-      case PUBLIC -> 'S';
-      case TEMPLATE -> 'T';
-    };
   }
 }

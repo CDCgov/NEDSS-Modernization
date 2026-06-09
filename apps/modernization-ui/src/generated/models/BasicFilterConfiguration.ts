@@ -8,9 +8,14 @@ export type BasicFilterConfiguration = {
     reportColumnUid?: number;
     defaultValues?: Array<string>;
     defaultIncludeNulls: boolean;
-    minValueCount?: number;
-    maxValueCount?: number;
+    selectType?: BasicFilterConfiguration.selectType;
     isRequired: boolean;
     filterType: FilterType;
 };
+export namespace BasicFilterConfiguration {
+    export enum selectType {
+        SINGLE = 'SINGLE',
+        MULTI = 'MULTI',
+    }
+}
 
