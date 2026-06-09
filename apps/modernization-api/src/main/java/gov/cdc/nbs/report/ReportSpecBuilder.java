@@ -84,7 +84,8 @@ public class ReportSpecBuilder {
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
-    String whereClause = whereClauseService.buildWhereClause(reportConfig, reportExecRequest);
+    String whereClause =
+        whereClauseService.buildWhereClause(reportConfig, reportExecRequest, dataSourceNameUtils);
     String orderByClause = "";
 
     Integer daysValue = extractDaysValue();

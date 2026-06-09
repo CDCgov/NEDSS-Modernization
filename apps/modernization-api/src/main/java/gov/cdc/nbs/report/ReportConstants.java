@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import java.util.Map;
 import java.util.Set;
 
 public final class ReportConstants {
@@ -52,6 +53,40 @@ public final class ReportConstants {
               "Invalid `Report.shared` group value: %s".formatted(shared));
     };
   }
+
+  // operator options for the advanced filter
+  public enum Operator {
+    EQ, // equals
+    NE, // not equals
+    IN, // is null
+    NN, // not null
+    SW, // starts with
+    CO, // contains
+    BW, // between
+    LT, // less than
+    GT, // greater than
+    LE, // less than or equal to
+    GE // greater than or equal to
+  }
+
+  public static final Map<Operator, String> COMPARISON_OPERATORS =
+      Map.ofEntries(
+          Map.entry(Operator.LT, "<"),
+          Map.entry(Operator.GT, ">"),
+          Map.entry(Operator.LE, "<="),
+          Map.entry(Operator.GE, ">="),
+          Map.entry(Operator.NE, "<>"),
+          Map.entry(Operator.EQ, "="));
+
+  public static final Set<String> RDB_LAB_RESULT_VAL_COLS =
+      Set.of(
+          "NUMERIC_RESULT_VAL",
+          "REF_RANGE_FRM",
+          "REF_RANGE_TO",
+          "CODED_RESULT_VAL",
+          "CODED_RESULT_VAL_DESC",
+          "TEXT_RESULT_VAL",
+          "RESULT_UNITS");
 
   private ReportConstants() {}
 }
