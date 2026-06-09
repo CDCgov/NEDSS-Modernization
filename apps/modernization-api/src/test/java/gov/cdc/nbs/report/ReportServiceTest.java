@@ -565,6 +565,8 @@ class ReportServiceTest {
               "nbs_custom",
               "[NBS_ODSE].[dbo].[PHCDemographic]",
               "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
+              null,
+              null,
               null);
       try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
           mockConstruction(
