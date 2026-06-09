@@ -128,8 +128,12 @@ def execute(
 
     -- Result select
     SELECT FORMAT(
-           IIF( median_ytd = 0,0,(curr_ytd - median_ytd) / median_ytd), 'P0', 'en-us')
-             AS [Percent Change {year} vs 5 Year Median],
+             CASE
+               WHEN median_ytd = 0 THEN 0
+               ELSE (curr_ytd - median_ytd) / median_ytd
+             END,
+             '0%;(0%);0%'
+           ) AS [Percent Change {year} vs 5 Year Median],
            last_ytd AS [Cumulative for {last_year} to Date],
            curr_ytd AS [Cumulative for {year} to Date],
            ty.phc_code_short_desc AS [Disease],
