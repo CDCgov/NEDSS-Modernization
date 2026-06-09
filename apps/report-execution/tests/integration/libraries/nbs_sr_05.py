@@ -228,10 +228,10 @@ class TestIntegrationNbsSr05Library:
 
     def _verify_percentage(self, percentage_str, should_eq=None):
         """Negatives wrapped in parens, percentage value should be [0, 100]."""
-        pattern = r"\(?(\d+)%\)?"
+        pattern = r'\(?(\d+)%\)?'
         match = re.match(pattern, percentage_str)
 
-        assert match is not None, f"regex failed to match for: {percentage_str}"
+        assert match is not None, f'regex failed to match for: {percentage_str}'
 
         percentage = int(match.group(1))
         assert percentage <= 100
