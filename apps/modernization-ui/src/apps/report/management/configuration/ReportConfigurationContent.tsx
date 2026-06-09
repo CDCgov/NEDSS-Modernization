@@ -19,11 +19,9 @@ interface FilterConfig {
 const sizing = 'medium';
 
 // TODO: Move this to the API once #3238 is merged
-const formatType = ({ minValueCount, maxValueCount }: BasicFilterConfiguration) => {
-    if (minValueCount === 1) {
-        if (maxValueCount === -1) return 'Multi';
-        if (maxValueCount === 1) return 'Single';
-    }
+const formatType = ({ selectType }: BasicFilterConfiguration) => {
+    if (selectType === BasicFilterConfiguration.selectType.MULTI) return 'Multi';
+    if (selectType === BasicFilterConfiguration.selectType.SINGLE) return 'Single';
 };
 
 const GROUP_OPTIONS = [

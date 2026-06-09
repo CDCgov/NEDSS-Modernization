@@ -11,6 +11,7 @@ import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportFilterValidation;
 import gov.cdc.nbs.entity.odse.ReportId;
+import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -88,8 +89,7 @@ class BasicFilterConfigurationMapperTest {
     assertThat(mapped.reportColumnUid()).isEqualTo(column.getId());
     assertThat(mapped.defaultValues()).isEqualTo(List.of("value"));
     assertThat(mapped.defaultIncludeNulls()).isFalse();
-    assertThat(mapped.minValueCount()).isEqualTo(1);
-    assertThat(mapped.maxValueCount()).isEqualTo(-1);
+    assertThat(mapped.selectType()).isEqualTo(ReportConstants.SelectType.MULTI);
     assertThat(mapped.isRequired()).isTrue();
     assertThat(mapped.filterType()).isEqualTo(FilterTypeMapper.fromFilterCode(filterCode));
   }
@@ -104,7 +104,7 @@ class BasicFilterConfigurationMapperTest {
             .filterCode(filterCode)
             .filterValues(List.of(filterValueAllowNulls))
             .minValueCnt(1)
-            .maxValueCnt(-1)
+            .maxValueCnt(1)
             .report(emptyReport)
             .build();
 
@@ -114,8 +114,7 @@ class BasicFilterConfigurationMapperTest {
     assertThat(mapped.reportColumnUid()).isEqualTo(column.getId());
     assertThat(mapped.defaultValues()).isEqualTo(List.of());
     assertThat(mapped.defaultIncludeNulls()).isTrue();
-    assertThat(mapped.minValueCount()).isEqualTo(1);
-    assertThat(mapped.maxValueCount()).isEqualTo(-1);
+    assertThat(mapped.selectType()).isEqualTo(ReportConstants.SelectType.SINGLE);
     assertThat(mapped.isRequired()).isTrue();
     assertThat(mapped.filterType()).isEqualTo(FilterTypeMapper.fromFilterCode(filterCode));
   }
