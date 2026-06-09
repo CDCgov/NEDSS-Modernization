@@ -269,7 +269,8 @@ const FilterConfigForm = ({
                                 sizing={SIZING}
                                 label="Required as basic filter?"
                                 className="height-full"
-                                error={error?.message}>
+                                error={error?.message}
+                            >
                                 <Toggle
                                     id={`filter-${name}`}
                                     aria-label="Required as basic filter"
