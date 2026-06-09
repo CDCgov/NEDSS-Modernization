@@ -105,7 +105,7 @@ public class AdvancedQueryBuilder {
             rules.add(andGroup);
           }
         } else if (isOpenParen(filterValue)) {
-          if (previous() != null && previous().getOperator().equals(")")) {
+          if (previous() != null && isCloseParen(previous())) {
             throw new AdvancedQueryException(
                 "Cannot follow a closing parenthesis with an open parenthesis without an OPERATOR in between",
                 filterValue);
@@ -164,6 +164,10 @@ public class AdvancedQueryBuilder {
     return isOperator(filterValue) && filterValue.getOperator().equals("and");
   }
 
+  private boolean isParen(FilterValue filterValue) {
+    return isOpenParen(filterValue) || isCloseParen(filterValue);
+  }
+
   private boolean isOpenParen(FilterValue filterValue) {
     return isOperator(filterValue) && filterValue.getOperator().equals("(");
   }
@@ -190,7 +194,7 @@ public class AdvancedQueryBuilder {
   }
 
   private void validateOperator(FilterValue filterValue) throws AdvancedQueryException {
-    if (previous() == null) {
+    if (previous() == null && !filterValue.getOperator().equals("(")) {
       throw new AdvancedQueryException(
           "First filter value must be a CLAUSE, not an OPERATOR", peek());
     }
@@ -199,12 +203,15 @@ public class AdvancedQueryBuilder {
           "Cannot end list of FilterValues with an OPERATOR unless it's a closing parenthesis",
           filterValue);
     }
-    if (previous() != null
-        && previous().getValueType().equals("OPERATOR")
-        && !filterValue.getOperator().equals(")")
-        && !previous().getOperator().equals("(")) {
-      throw new AdvancedQueryException(
-          "Cannot follow OPERATOR with another OPERATOR, unless it's a parenthesis", filterValue);
+    if (previous() != null && isOperator(previous())) {
+      if (!isParen(filterValue)) {
+        throw new AdvancedQueryException(
+            "'and/or' OPERATOR cannot follow another OPERATOR", filterValue);
+      }
+      if (isCloseParen(previous()) && isOpenParen(filterValue)) {
+        throw new AdvancedQueryException(
+            "Cannot follow a closing parenthesis with an open parenthesis", filterValue);
+      }
     }
   }
 
@@ -213,6 +220,7 @@ public class AdvancedQueryBuilder {
   private RuleGroupParams fetchRootRuleGroupParams() throws AdvancedQueryException {
     AdvancedQuery.Rule firstRule = null;
     ReportConstants.QueryCombinators firstCombinator = null;
+    int nestDepth = 0;
 
     // Iterate through FilterValues until we find the first OPERATOR
     while (hasNext()) {
@@ -222,12 +230,22 @@ public class AdvancedQueryBuilder {
       } else if (isAnd(filterValue) || isOr(filterValue)) {
         firstCombinator = ReportConstants.QueryCombinators.valueOf(filterValue.getOperator());
         break;
+      } else if (isOpenParen(filterValue)) {
+        nestDepth++;
+      } else if (isCloseParen(filterValue)) {
+        nestDepth--;
+      } else {
+        throw new AdvancedQueryException(
+            "Unknown valueType encountered: " + filterValue.getValueType(), filterValue);
       }
       advance();
     }
 
     // If we didn't find an OPERATOR, default to 'AND' combinator for a single rule
     if (firstCombinator == null) {
+      if (nestDepth != 0) {
+        throw new AdvancedQueryException("Mismatched parentheses");
+      }
       firstCombinator = ReportConstants.QueryCombinators.and;
     }
 
