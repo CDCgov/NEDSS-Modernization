@@ -147,7 +147,7 @@ tables:
       - column_name: patient_name
         data: |
           # Create a fixed set of names so duplicates appear
-          names = ["Smith, John", "Doe, Jane", "Brown, Robert", "Jones, Mary", "Wilson, James"]
+          names = ["Scott, Jill", "Badu, Erykah", "Carey, Mariah", "Keys, Alicia", "Glasper, Robert"]
           return random.choice(names)
         null_percentage: 0.02
 
