@@ -26,6 +26,13 @@ def execute(
     * Run has columns in different order
     * Use pipe separator instead of new line for subheader
     * Remove "by county" from the description since this isn't by county
+    * Negative precentages are displayed with parentheses to match SAS
+      output (e.g. -0.12 gets displayed as (12%)).  The SAS script uses
+      the `percent9.0` format, meaning the result is always 9 characters
+      wide and there are no decimal places.  The additional character padding
+      is NOT replicated in the SQL below for simplicity's sake (SQL Server
+      does not have an equivalent padded format and the padding would have
+      to be done by hand).
     """
     today = datetime.date.today()
 
@@ -72,7 +79,7 @@ def execute(
     )
 
     -- base_data temp table
-    SELECT * 
+    SELECT *
     INTO #base_data
     FROM base_data
     UNION ALL
