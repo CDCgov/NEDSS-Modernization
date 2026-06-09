@@ -34,7 +34,7 @@ class PatientFileSummaryReturnRouteLocatorConfiguration {
             "patient-file-summary-return",
             route ->
                 route
-                    .order(RouteOrdering.PATIENT_FILE.order())
+                    .order(RouteOrdering.MODERNIZED_SERVICE.order())
                     .query("ContextAction", "ReturnToFileSummary")
                     .filters(filter -> filter.setPath(parameters.summary()).filters(defaults))
                     .uri(parameters.uri()))
