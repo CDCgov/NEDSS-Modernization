@@ -176,4 +176,27 @@ class ReportMapperTest {
 
     assertThat(result.getShared()).isEqualTo('T');
   }
+
+  @Test
+  void fromAdminReportRequest_should_set_report_type_code_to_html_when_no_column_select() {
+    Mockito.lenient().when(reportLibrary.getColumnSelectInd()).thenReturn('N');
+    AdminReportRequest request = buildAdminReportRequest(ReportConstants.ReportGroup.TEMPLATE);
+
+    Report result =
+        reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
+
+    assertThat(result.getReportTypeCode()).isEqualTo("SAS_ODS_HTML");
+  }
+
+  @Test
+  void fromAdminReportRequest_should_not_set_report_type_code_or_location_if_not_sas() {
+    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("py_lib");
+    AdminReportRequest request = buildAdminReportRequest(ReportConstants.ReportGroup.TEMPLATE);
+
+    Report result =
+        reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
+
+    assertThat(result.getReportTypeCode()).isNull();
+    assertThat(result.getLocation()).isNull();
+  }
 }
