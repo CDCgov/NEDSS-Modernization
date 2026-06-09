@@ -20,6 +20,7 @@ public class DistinctValuesFinder {
       """
       select distinct [%s] as [value]
       from %s
+      where [%s] is not NULL
       order by
           value
       """;
@@ -31,8 +32,10 @@ public class DistinctValuesFinder {
             c.column_name
         from NBS_ODSE..Data_Source ds
         inner join NBS_ODSE..Data_source_column c on c.data_source_uid = ds.data_source_uid
+        inner join NBS_ODSE..Data_Source_Codeset cd on cd.column_uid = c.column_uid
         where
             c.column_uid = ?
+            AND cd.code_desc_cd = 'H'
     """;
 
   private final JdbcClient client;
@@ -53,7 +56,7 @@ public class DistinctValuesFinder {
           dataSourceNameUtils.buildDataSourceName(column.get("data_source_name").toString());
 
       return this.client
-          .sql(DATA_QUERY.formatted(columnName, dataSourceName))
+          .sql(DATA_QUERY.formatted(columnName, dataSourceName, columnName))
           .query()
           .singleColumn()
           .stream()
@@ -62,7 +65,9 @@ public class DistinctValuesFinder {
 
     } catch (NumberFormatException | EmptyResultDataAccessException e) {
       // report column uid not a number or  column not found
-      LOGGER.log(System.Logger.Level.INFO, "Report column UID %s not found".formatted(columnUid));
+      LOGGER.log(
+          System.Logger.Level.INFO,
+          "Report column UID %s not found or not configured".formatted(columnUid));
       return List.of();
     }
   }
