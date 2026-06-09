@@ -79,7 +79,7 @@ const FilterRepeatingBlock = ({
         });
     }
 
-    return (filterOptions.length === 0 || columnOptions.length === 0) ? (
+    return filterOptions.length === 0 || (!!dataSource && columnOptions.length === 0) ? (
         <LoadingIndicator />
     ) : isEditable ? (
         <Controller
@@ -269,8 +269,7 @@ const FilterConfigForm = ({
                                 sizing={SIZING}
                                 label="Required as basic filter?"
                                 className="height-full"
-                                error={error?.message}
-                            >
+                                error={error?.message}>
                                 <Toggle
                                     id={`filter-${name}`}
                                     aria-label="Required as basic filter"
