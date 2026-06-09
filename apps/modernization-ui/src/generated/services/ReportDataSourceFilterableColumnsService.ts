@@ -20,7 +20,7 @@ export class ReportDataSourceFilterableColumnsService {
     }): CancelablePromise<Array<Option>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/api/options/report/datasource/columns/filterable/{dataSourceUid}',
+            url: '/nbs/api/options/report/datasource/{dataSourceUid}/columns/filterable',
             path: {
                 'dataSourceUid': dataSourceUid,
             },
