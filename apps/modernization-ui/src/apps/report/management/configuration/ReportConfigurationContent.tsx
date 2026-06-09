@@ -94,7 +94,12 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     EditComponent={SingleSelect}
                     label="Owner"
                     defaultValue={config?.ownerUid.toString()}
-                    getOptions={() => [{ value: '0', name: 'System' }, ...useUserOptions()]}
+                    getOptions={() => {
+                        const options = useUserOptions();
+                        if (options.length === 0) return options;
+                        // add system option once loaded (to avoid options appearing loaded when not)
+                        return [{ value: '0', name: 'System' }, ...options];
+                    }}
                     helperText="The user who can edit and delete this report."
                 />
                 <Row
@@ -164,14 +169,12 @@ const DataSourceEditCard = ({
                         <Button
                             secondary={true}
                             disabled={!dataSource}
-                            onClick={confirmDataSourceRef.current?.toggleModal}
-                        >
+                            onClick={confirmDataSourceRef.current?.toggleModal}>
                             Confirm data source
                         </Button>
                     </div>
                 </Shown>
-            }
-        >
+            }>
             <ConfirmationModal
                 modal={confirmDataSourceRef}
                 title={`Confirm data source: ${dataSource?.name}`}
@@ -254,11 +257,14 @@ const Row = ({
 
     const option = options ? options.find(({ value }) => value === defaultValue) : defaultValue;
 
-    return isEditable ? (
+    const optionsReady = defaultValue && !!getOptions ? options!.length > 0 : true;
+
+    // if there is a default value and a get options, wait for options to load before registering the field
+    return isEditable && optionsReady ? (
         <Controller
             name={fieldName}
             rules={required ? validateRequiredRule(label) : undefined}
-            defaultValue={defaultValue}
+            defaultValue={option}
             // ignoring the ref as it does not pass down well and isn't critical
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             render={({ field: { ref, ...fieldValues }, fieldState: { error } }) => (
