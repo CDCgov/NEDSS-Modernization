@@ -61,6 +61,7 @@ const FilterRepeatingBlock = ({
     const filterOptions = useReportFilters();
     const rawColumnOptions = useColumnOptions(dataSource);
     const columnOptions = (rawColumnOptions ?? []).map(addLabelToName);
+    console.log({filterOptions, columnOptions})
 
     const defaultFilterData: FilterConfig[] =
         config?.basicFilters.map((f) => ({
@@ -79,7 +80,7 @@ const FilterRepeatingBlock = ({
         });
     }
 
-    return filterOptions.length === 0 ? (
+    return (filterOptions.length === 0 || columnOptions.length === 0) ? (
         <LoadingIndicator />
     ) : isEditable ? (
         <Controller

@@ -11,6 +11,7 @@
     width: 3.125rem;
     animation: spin 1.5s linear infinite;
     z-index: 10000;
+    margin: 1rem auto;
 
     .screen-reader {
         clip: rect(0, 0, 0, 0);
