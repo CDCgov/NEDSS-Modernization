@@ -48,7 +48,7 @@ When('I select "Probable" from the sort options', () => {
   openInvestigationPage.selectProbable();
 });
 
-When('I click the "Ok" button', () => {
+When('I click the Ok button', () => {
   openInvestigationPage.clickOk();
 });
 
@@ -56,7 +56,7 @@ Then('I should see the results sorted by "Confirmed" status', () => {
   openInvestigationPage.verifyNoSortingChanges();
 });
 
-When('I click the "Cancel" button', () => {
+When('I click the Cancel button', () => {
   openInvestigationPage.clickCancel();
 });
 

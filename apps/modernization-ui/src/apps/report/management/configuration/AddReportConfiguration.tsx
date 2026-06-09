@@ -1,13 +1,14 @@
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { ReportLayout } from 'apps/report/layout/ReportLayout';
-import { Button } from 'design-system/button';
+import { Button, LinkButton } from 'design-system/button';
 import { useState } from 'react';
 import { ConfigForm, formToRequest, ReportConfigurationContent } from './ReportConfigurationContent';
-
-import styles from 'apps/report/layout/layout.module.scss';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ReportControllerService } from 'generated';
+import { NBS_LIST_REPORT_CONFIG_PAGE } from './constants';
 import { useNavigate } from 'react-router';
+
+import styles from 'apps/report/layout/layout.module.scss';
 
 const AddReportConfiguration = () => {
     const [error, setError] = useState<string | null>(null);
@@ -46,15 +47,14 @@ const AddReportConfiguration = () => {
             title="Add Report"
             actions={
                 <>
-                    <Button secondary={true} onClick={() =>navigate('/nbs/ListReport.do')} disabled={submitting}>
+                    <LinkButton secondary={true} href={NBS_LIST_REPORT_CONFIG_PAGE} disabled={submitting}>
                         Cancel
-                    </Button>
+                    </LinkButton>
                     <Button onClick={handleSubmit} disabled={submitting}>
                         Submit
                     </Button>
                 </>
-            }
-        >
+            }>
             <div className={styles.columnContent}>
                 {error && <AlertBanner type="error">{error}</AlertBanner>}
                 <FormProvider {...form}>

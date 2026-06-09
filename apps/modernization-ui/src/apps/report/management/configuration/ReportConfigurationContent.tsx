@@ -50,6 +50,7 @@ const formToRequest = (data: ConfigForm): AdminReportRequest => {
         filterRequests: data.filterRequests.map((fc) => ({
             id: fc.id,
             filterCodeUid: parseInt(fc.filter.value),
+            selectType: fc.selectType?.value,
             columnUid: fc.associatedColumn?.value ? parseInt(fc.associatedColumn.value) : undefined,
             isRequired: fc.isRequired,
         })),
@@ -125,12 +126,12 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     label="Report execution library"
                     defaultValue={config?.library.id.toString()}
                     getOptions={() => {
+                        // move nbs custom to the top of the list
                         const libs = useReportLibraries();
                         const nbsCustom = libs.find(({ name }) => name === 'nbs_custom');
                         const options = libs.filter(({ name }) => name !== 'nbs_custom');
                         if (!nbsCustom) return options;
-                        const nbsCustomName = `${nbsCustom.name} (recommended default)`;
-                        return [{ value: nbsCustom.value, name: nbsCustomName, label: nbsCustom.label }, ...options];
+                        return [nbsCustom, ...options];
                     }}
                     helperText="The query logic for the report"
                 />

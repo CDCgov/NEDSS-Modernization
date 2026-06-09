@@ -21,11 +21,11 @@ Feature: Verify Open Investigation Queue functionality
     When I open the sort menu
     And I click on "Select All"
     And I select "Confirmed" from the sort options
-    And I click the "Ok" button
+    And I click the Ok button
     Then I should see the results sorted by "Confirmed" status
     When I open the sort menu
     And I deselect "Confirmed"
-    And I click the "Cancel" button
+    And I click the Cancel button
     Then I should see no change in sorting
 
   Scenario: Removing filters and sorts
