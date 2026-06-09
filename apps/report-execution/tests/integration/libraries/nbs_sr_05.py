@@ -1,4 +1,5 @@
 import datetime
+import re
 
 import pytest
 import yaml
@@ -52,9 +53,8 @@ class TestIntegrationNbsSr05Library:
                     break
 
             assert record is not None
-            # -100% to 100%
-            assert int(record[0][:-1]) <= 100
-            assert int(record[0][:-1]) >= -100
+
+            self._verify_percentage(record[0])
             assert record[1] >= 100
             assert record[2] >= 100
             assert record[4] == 2024
@@ -93,7 +93,7 @@ class TestIntegrationNbsSr05Library:
 
             assert record is not None
             # No data returned should default to zero
-            assert record[0] == '0%'
+            self._verify_percentage(record[0], 0)
             assert record[1] == 0
             assert record[2] == 0
             assert record[4] == 2024
@@ -131,7 +131,7 @@ class TestIntegrationNbsSr05Library:
 
             assert record is not None
             # current year data should be zero, older not
-            assert int(record[0][:-1]) < 0
+            self._verify_percentage(record[0])
             assert record[1] >= 100
             assert record[2] == 0
             assert record[4] == 2024
@@ -225,3 +225,17 @@ class TestIntegrationNbsSr05Library:
         assert result.content.columns[5] == 'Cases'
         assert result.content.columns[6] == '5 Year Median Year to Date'
         assert result.content.columns[7] == 'JUN2024'
+
+    def _verify_percentage(self, percentage_str, should_eq=None):
+        """Negatives wrapped in parens, percentage value should be [0, 100]."""
+        pattern = r"\(?(\d+)%\)?"
+        match = re.match(pattern, percentage_str)
+
+        assert match is not None, f"regex failed to match for: {percentage_str}"
+
+        percentage = int(match.group(1))
+        assert percentage <= 100
+        assert percentage >= 0
+
+        if should_eq:
+            assert percentage == should_eq
