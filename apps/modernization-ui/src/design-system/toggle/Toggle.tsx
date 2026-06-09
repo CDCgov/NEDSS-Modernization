@@ -3,7 +3,7 @@ import styles from './toggle.module.scss';
 import { Sizing } from 'design-system/field';
 import { isLabelVisible, Labeled } from 'design-system/label-utils';
 
-type Props = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'value'> &
+export type ToggleProps = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'value'> &
     Labeled & {
         value?: boolean;
         name: string;
@@ -11,7 +11,7 @@ type Props = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'valu
         onChange?: (checked: boolean) => void;
     };
 
-export const Toggle = ({ value = false, name, sizing, onChange, ...remaining }: Props) => {
+export const Toggle = ({ value = false, name, sizing, onChange, ...remaining }: ToggleProps) => {
     const handleChange = (checked: boolean) => {
         onChange?.(checked);
     };

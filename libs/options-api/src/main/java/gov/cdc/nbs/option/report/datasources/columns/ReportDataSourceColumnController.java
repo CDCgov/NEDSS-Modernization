@@ -20,7 +20,7 @@ class ReportDataSourceColumnController {
       summary = "Filterable report columns for a data source",
       description = "Provides all filterable report columns in a data source in NBS.",
       tags = "ReportDataSourceFilterableColumns")
-  @GetMapping("/nbs/api/options/report/datasource/columns/filterable/{dataSourceUid}")
+  @GetMapping("/nbs/api/options/report/datasource/{dataSourceUid}/columns/filterable")
   Collection<Option> dataSourceColumns(@PathVariable final String dataSourceUid) {
     return finder.find(dataSourceUid);
   }
