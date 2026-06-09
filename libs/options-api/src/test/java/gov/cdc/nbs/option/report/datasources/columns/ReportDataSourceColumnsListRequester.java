@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.report.datasources;
+package gov.cdc.nbs.option.report.datasources.columns;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

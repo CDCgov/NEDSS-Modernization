@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.report.datasources;
+package gov.cdc.nbs.option.report.datasources.columns;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.When;
