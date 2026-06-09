@@ -37,6 +37,15 @@ public class ReportMapper {
       builder.addTime(now).addUserUid(user.getId());
     }
 
+    // adding a SAS library - need to make sure the location and type are set for NBS 6 to use
+    if (reportLibrary.getLibraryName().toUpperCase().endsWith(".SAS")) {
+      builder.location(reportLibrary.getLibraryName());
+      builder.reportTypeCode(
+          reportLibrary.getColumnSelectInd().toString().equals("Y")
+              ? "SAS_CUSTOM"
+              : "SAS_ODS_HTML");
+    }
+
     return builder
         .dataSource(dataSource)
         .descTxt(request.description())
@@ -52,7 +61,7 @@ public class ReportMapper {
   }
 
   private Long generateReportId() {
-    var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT);
+    var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
   }
 }
