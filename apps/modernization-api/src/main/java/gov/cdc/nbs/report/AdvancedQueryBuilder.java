@@ -12,6 +12,8 @@ public class AdvancedQueryBuilder {
   /** 0-based index of the current {@code FilterValue} being processed */
   private int current = 0;
 
+  private int parenDepth = 0;
+
   /** Specifies if there is another {@code FilterValue} to be processed */
   private boolean hasNext() {
     return current < filterValues.size();
@@ -43,6 +45,14 @@ public class AdvancedQueryBuilder {
     // Build the root RuleGroup from the first OPERATOR and corresponding rule
     AdvancedQuery.RuleGroup ruleGroup =
         buildRuleGroup(firstRuleGroupParams.combinator, firstRuleGroupParams.rule);
+
+    if (hasNext()) {
+      throw new AdvancedQueryException("Unexpected trailing FilterValues", peek());
+    }
+
+    if (parenDepth != 0) {
+      throw new AdvancedQueryException("Unbalanced parentheses: " + parenDepth, null);
+    }
 
     System.out.println(ruleGroup);
     return ruleGroup;
@@ -105,12 +115,8 @@ public class AdvancedQueryBuilder {
             rules.add(andGroup);
           }
         } else if (isOpenParen(filterValue)) {
-          if (previous() != null && isCloseParen(previous())) {
-            throw new AdvancedQueryException(
-                "Cannot follow a closing parenthesis with an open parenthesis without an OPERATOR in between",
-                filterValue);
-          }
           nestDepth++;
+          parenDepth++;
         } else if (isCloseParen(filterValue)) {
           // If we encounter a closed parenthesis without any nesting, terminate the rule group
           if (nestDepth == 0) {
@@ -119,9 +125,7 @@ public class AdvancedQueryBuilder {
             nestDepth--;
           }
 
-          if (nestDepth < 0) {
-            throw new AdvancedQueryException("Too many closing parentheses", filterValue);
-          }
+          parenDepth--;
         } else {
           throw new AdvancedQueryException(
               "Unknown operator: " + filterValue.getOperator(), filterValue);
@@ -135,10 +139,6 @@ public class AdvancedQueryBuilder {
       if (terminated) {
         break;
       }
-    }
-
-    if (nestDepth != 0) {
-      throw new AdvancedQueryException("Mismatched parentheses");
     }
 
     if (ruleGroup == null) {
@@ -194,19 +194,22 @@ public class AdvancedQueryBuilder {
   }
 
   private void validateOperator(FilterValue filterValue) throws AdvancedQueryException {
-    if (previous() == null && !filterValue.getOperator().equals("(")) {
+    if (previous() == null && !isOpenParen(filterValue)) {
       throw new AdvancedQueryException(
           "First filter value must be a CLAUSE, not an OPERATOR", peek());
     }
-    if (current == filterValues.size() - 1 && !filterValue.getOperator().equals(")")) {
+    if (current == filterValues.size() - 1 && !isCloseParen(filterValue)) {
       throw new AdvancedQueryException(
           "Cannot end list of FilterValues with an OPERATOR unless it's a closing parenthesis",
           filterValue);
     }
     if (previous() != null && isOperator(previous())) {
-      if (!isParen(filterValue)) {
+      if (isCloseParen(filterValue) && isOpenParen(previous())) {
+        throw new AdvancedQueryException("Empty parentheses are not allowed", filterValue);
+      }
+      if (!isParen(filterValue) && !isParen(previous())) {
         throw new AdvancedQueryException(
-            "'and/or' OPERATOR cannot follow another OPERATOR", filterValue);
+            "'and/or' OPERATOR cannot follow another 'and/or' OPERATOR", filterValue);
       }
       if (isCloseParen(previous()) && isOpenParen(filterValue)) {
         throw new AdvancedQueryException(
@@ -220,20 +223,26 @@ public class AdvancedQueryBuilder {
   private RuleGroupParams fetchRootRuleGroupParams() throws AdvancedQueryException {
     AdvancedQuery.Rule firstRule = null;
     ReportConstants.QueryCombinators firstCombinator = null;
-    int nestDepth = 0;
 
     // Iterate through FilterValues until we find the first OPERATOR
     while (hasNext()) {
       FilterValue filterValue = peek();
       if (isClause(filterValue)) {
         firstRule = buildClause(filterValue);
-      } else if (isAnd(filterValue) || isOr(filterValue)) {
-        firstCombinator = ReportConstants.QueryCombinators.valueOf(filterValue.getOperator());
-        break;
-      } else if (isOpenParen(filterValue)) {
-        nestDepth++;
-      } else if (isCloseParen(filterValue)) {
-        nestDepth--;
+      } else if (isOperator(filterValue)) {
+        validateOperator(filterValue);
+
+        if (isAnd(filterValue) || isOr(filterValue)) {
+          firstCombinator = ReportConstants.QueryCombinators.valueOf(filterValue.getOperator());
+          break;
+        } else if (isOpenParen(filterValue)) {
+          parenDepth++;
+        } else if (isCloseParen(filterValue)) {
+          parenDepth--;
+        } else {
+          throw new AdvancedQueryException(
+              "Unknown operator: " + filterValue.getOperator(), filterValue);
+        }
       } else {
         throw new AdvancedQueryException(
             "Unknown valueType encountered: " + filterValue.getValueType(), filterValue);
@@ -243,9 +252,6 @@ public class AdvancedQueryBuilder {
 
     // If we didn't find an OPERATOR, default to 'AND' combinator for a single rule
     if (firstCombinator == null) {
-      if (nestDepth != 0) {
-        throw new AdvancedQueryException("Mismatched parentheses");
-      }
       firstCombinator = ReportConstants.QueryCombinators.and;
     }
 
