@@ -756,15 +756,15 @@
   - 2023-01-31 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 20019569
-  - 710 - Syphilis, primary
-  - 2025-12-01 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Carey, Mariah
   - 44353
   - 710 - Syphilis, primary
   - 2023-07-13 00:00:00
+  - 2023-01-31 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 20019569
+  - 710 - Syphilis, primary
+  - 2025-12-01 00:00:00
   - 2023-01-31 00:00:00
 - !!python/tuple
   - Carey, Mariah
@@ -798,27 +798,27 @@
   - 2023-03-02 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 20048160
-  - 710 - Syphilis, primary
-  - 2023-05-15 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Carey, Mariah
   - 10098180
   - 710 - Syphilis, primary
   - 2021-06-04 00:00:00
   - 2023-03-02 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10023891
-  - 720 - Syphilis, secondary
-  - 2021-10-15 00:00:00
-  - 2023-01-16 00:00:00
+  - 20048160
+  - 710 - Syphilis, primary
+  - 2023-05-15 00:00:00
+  - 2023-03-02 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 10060081
   - 720 - Syphilis, secondary
   - 2025-03-27 00:00:00
+  - 2023-01-16 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10023891
+  - 720 - Syphilis, secondary
+  - 2021-10-15 00:00:00
   - 2023-01-16 00:00:00
 - !!python/tuple
   - Carey, Mariah
@@ -990,12 +990,6 @@
   - 2023-02-15 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10080876
-  - 790 - Syphilis, Congenital
-  - 2021-08-26 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Carey, Mariah
   - 10074452
   - 790 - Syphilis, Congenital
   - 2024-03-02 00:00:00
@@ -1008,16 +1002,16 @@
   - 2023-02-15 00:00:00
 - !!python/tuple
   - Carey, Mariah
+  - 10080876
+  - 790 - Syphilis, Congenital
+  - 2021-08-26 00:00:00
+  - 2023-02-15 00:00:00
+- !!python/tuple
+  - Carey, Mariah
   - 10072121
   - 790 - Syphilis, Congenital
   - 2020-11-03 00:00:00
   - 2023-02-15 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 91165
-  - 790 - Syphilis, Congenital
-  - 2024-01-06 00:00:00
-  - 2023-03-02 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 38290
@@ -1035,6 +1029,12 @@
   - 10092247
   - 790 - Syphilis, Congenital
   - 2023-07-25 00:00:00
+  - 2023-03-02 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 91165
+  - 790 - Syphilis, Congenital
+  - 2024-01-06 00:00:00
   - 2023-03-02 00:00:00
 - !!python/tuple
   - Carey, Mariah
@@ -1140,27 +1140,27 @@
   - 2023-01-01 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20097787
-  - 300 - Gonorrhea
-  - 2020-04-25 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Glasper, Robert
   - 20044564
   - 300 - Gonorrhea
   - 2021-05-22 00:00:00
   - 2023-01-01 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 17238
+  - 20097787
   - 300 - Gonorrhea
-  - 2021-03-22 00:00:00
-  - 2023-01-16 00:00:00
+  - 2020-04-25 00:00:00
+  - 2023-01-01 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 10037812
   - 300 - Gonorrhea
   - 2022-08-30 00:00:00
+  - 2023-01-16 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 17238
+  - 300 - Gonorrhea
+  - 2021-03-22 00:00:00
   - 2023-01-16 00:00:00
 - !!python/tuple
   - Glasper, Robert
@@ -1380,15 +1380,15 @@
   - 2023-01-31 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 10068354
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-05-27 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Glasper, Robert
   - 26119
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2020-11-28 00:00:00
+  - 2023-02-15 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10068354
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-05-27 00:00:00
   - 2023-02-15 00:00:00
 - !!python/tuple
   - Glasper, Robert
@@ -2022,6 +2022,12 @@
   - 2023-01-31 00:00:00
 - !!python/tuple
   - Keys, Alicia
+  - 10083856
+  - 900 - HIV Infection
+  - 2023-02-04 00:00:00
+  - 2023-02-15 00:00:00
+- !!python/tuple
+  - Keys, Alicia
   - 20030414
   - 900 - HIV Infection
   - 2025-02-27 00:00:00
@@ -2031,12 +2037,6 @@
   - 20015747
   - 900 - HIV Infection
   - 2025-05-29 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 10083856
-  - 900 - HIV Infection
-  - 2023-02-04 00:00:00
   - 2023-02-15 00:00:00
 - !!python/tuple
   - Keys, Alicia
