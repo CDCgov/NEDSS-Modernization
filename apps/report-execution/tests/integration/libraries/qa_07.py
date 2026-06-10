@@ -1,8 +1,6 @@
-import datetime
-import decimal
-from mssql_python.exceptions import ProgrammingError
 import pytest
 import yaml
+from mssql_python.exceptions import ProgrammingError
 
 from src.execute_report import execute_report
 from src.models import ReportSpec
@@ -14,6 +12,7 @@ faker_schema = 'std_hiv_datamart.yaml'
 @pytest.mark.integration
 class TestIntegrationQa07Library:
     """Integration tests for the QA07 library."""
+
     def create_spec(self, **overrides):
         """Create a report specification with defaults from the class properties."""
         base = {
@@ -24,11 +23,11 @@ class TestIntegrationQa07Library:
             'library_name': 'qa_07',
             'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
-            'library_params': '{"report_days": 30}'
+            'library_params': '{"report_days": 30}',
         }
         base.update(overrides)
         return ReportSpec.model_validate(base)
-    
+
     def test_execute_report_check_data(self, snapshot):
         report_spec = self.create_spec()
         result = execute_report(report_spec)
@@ -42,14 +41,16 @@ class TestIntegrationQa07Library:
             'PATIENT_ID',
             'DIAGNOSIS',
             'CONFIRMATION_DT',
-            'FL_FUP_EXAM_DT'
+            'FL_FUP_EXAM_DT',
         ]
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = self.create_spec()
-        report_spec.subset_query = 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1=0'
+        report_spec.subset_query = """
+        SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1=0
+        """
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
