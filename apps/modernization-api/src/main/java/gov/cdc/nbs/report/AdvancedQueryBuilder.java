@@ -51,7 +51,7 @@ public class AdvancedQueryBuilder {
   private AdvancedQuery.RuleGroup startRuleGroup() throws AdvancedQueryException {
     FilterValue openParen = peek();
     if (!isOpenParen(openParen))
-      throw new AdvancedQueryException("Expected paren to open rule group", openParen);
+      throw new AdvancedQueryException("Expected paren to open rule group", filterValues);
     advance();
 
     AdvancedQuery firstRule = null;
@@ -62,9 +62,9 @@ public class AdvancedQueryBuilder {
       firstRule = buildClause(next);
       advance();
     } else if (isCloseParen(next)) { // "(" ")"
-      throw new AdvancedQueryException("Invalid empty clause `()`", next);
+      throw new AdvancedQueryException("Invalid empty clause `()`", filterValues);
     } else {
-      throw new AdvancedQueryException("Expected new rule or rule group", next);
+      throw new AdvancedQueryException("Expected new rule or rule group", filterValues);
     }
 
     FilterValue combinator = peek();
@@ -74,7 +74,7 @@ public class AdvancedQueryBuilder {
       return new AdvancedQuery.RuleGroup(
           combinator.getId().toString(), ReportConstants.QueryCombinators.and, List.of(firstRule));
     } else if (!isCombinator(combinator))
-      throw new AdvancedQueryException("Expected 'and' or 'or'", combinator);
+      throw new AdvancedQueryException("Expected 'and' or 'or'", filterValues);
     ReportConstants.QueryCombinators firstCombinator =
         ReportConstants.QueryCombinators.valueOf(combinator.getOperator());
     advance();
@@ -86,7 +86,7 @@ public class AdvancedQueryBuilder {
 
     FilterValue closingParen = peek();
     if (!isCloseParen(closingParen))
-      throw new AdvancedQueryException("Expected closing paren", closingParen);
+      throw new AdvancedQueryException("Expected closing paren", filterValues);
     advance();
 
     System.out.println(ruleGroup);
@@ -111,7 +111,7 @@ public class AdvancedQueryBuilder {
         FilterValue next = peek();
 
         if (!isOperator(next))
-          throw new AdvancedQueryException("operator must follow clause", next);
+          throw new AdvancedQueryException("operator must follow clause", filterValues);
 
         if (isCombinator(next)) {
 
@@ -148,7 +148,7 @@ public class AdvancedQueryBuilder {
       } else if (isOpenParen(filterValue)) {
         rules.add(startRuleGroup());
       } else {
-        throw new AdvancedQueryException("') invalid after operator", filterValue);
+        throw new AdvancedQueryException("') invalid after operator", filterValues);
       }
 
       if (isCloseParen(peek())) {
