@@ -1,4 +1,6 @@
 import datetime
+import decimal
+import re
 
 import pytest
 import yaml
@@ -52,9 +54,8 @@ class TestIntegrationNbsSr05Library:
                     break
 
             assert record is not None
-            # -100% to 100%
-            assert int(record[0][:-1]) <= 100
-            assert int(record[0][:-1]) >= -100
+
+            self._verify_percentage(record)
             assert record[1] >= 100
             assert record[2] >= 100
             assert record[4] == 2024
@@ -93,7 +94,7 @@ class TestIntegrationNbsSr05Library:
 
             assert record is not None
             # No data returned should default to zero
-            assert record[0] == '0%'
+            self._verify_percentage(record)
             assert record[1] == 0
             assert record[2] == 0
             assert record[4] == 2024
@@ -131,7 +132,7 @@ class TestIntegrationNbsSr05Library:
 
             assert record is not None
             # current year data should be zero, older not
-            assert int(record[0][:-1]) < 0
+            self._verify_percentage(record)
             assert record[1] >= 100
             assert record[2] == 0
             assert record[4] == 2024
@@ -225,3 +226,45 @@ class TestIntegrationNbsSr05Library:
         assert result.content.columns[5] == 'Cases'
         assert result.content.columns[6] == '5 Year Median Year to Date'
         assert result.content.columns[7] == 'JUN2024'
+
+    def _verify_percentage(self, record):
+        """The query results from SR05 have percentages represented as strings
+        with '%' appended, rounded to zero decimal places, and wrapped in
+        parentheses when negative (e.g. -15% would be (15%)).  This is because
+        the query is mimicking the SAS `percent9.0` format which has all the
+        aforementioned features.
+
+        Verify the found percentage by unpacking the percentage value from the
+        result string and ensuring it is correct by re-calculating the percentage
+        from the other provided numbers.
+        """
+        # ensure it's in the proper format (e.g. "15%" or "(15%)")
+        pattern = r'\(?(\d+)%\)?'
+        match = re.match(pattern, record[0])
+
+        assert match is not None, f'regex failed to match for: {record[0]}'
+
+        percentage_from_query = decimal.Decimal(match.group(1))
+
+        # query result percentage is negative if wrapped in parens
+        if record[0].find('(') != -1:
+            percentage_from_query = percentage_from_query * -1
+
+        cases_from_query = record[5]
+        five_year_median_to_date_from_query = decimal.Decimal(record[6])
+
+        # should be 0%
+        if (
+            five_year_median_to_date_from_query == 0
+            or cases_from_query - five_year_median_to_date_from_query == 0
+        ):
+            assert percentage_from_query == 0
+            return
+
+        # re-calculate the percentage to compare against the query's results
+        calc_percentage = (
+            cases_from_query - five_year_median_to_date_from_query
+        ) / five_year_median_to_date_from_query
+        calc_percentage = round(calc_percentage * 100, 0)
+
+        assert percentage_from_query == calc_percentage
