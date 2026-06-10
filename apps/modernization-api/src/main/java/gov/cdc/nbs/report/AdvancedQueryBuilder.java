@@ -47,7 +47,7 @@ public class AdvancedQueryBuilder {
         buildRuleGroup(firstRuleGroupParams.combinator, firstRuleGroupParams.rule);
 
     if (hasNext()) {
-      throw new AdvancedQueryException("Unexpected trailing FilterValues", peek());
+      throw new AdvancedQueryException("Unexpected trailing FilterValues", filterValues);
     }
 
     if (parenDepth != 0) {
@@ -128,11 +128,11 @@ public class AdvancedQueryBuilder {
           parenDepth--;
         } else {
           throw new AdvancedQueryException(
-              "Unknown operator: " + filterValue.getOperator(), filterValue);
+              "Unknown operator: " + filterValue.getOperator(), filterValues);
         }
       } else {
         throw new AdvancedQueryException(
-            "Unknown valueType encountered: " + filterValue.getValueType(), filterValue);
+            "Unknown valueType encountered: " + filterValue.getValueType(), filterValues);
       }
       advance();
 
@@ -189,31 +189,31 @@ public class AdvancedQueryBuilder {
   private void validateClause(FilterValue filterValue) throws AdvancedQueryException {
     if (previous() != null && previous().getValueType().equals("CLAUSE")) {
       throw new AdvancedQueryException(
-          "CLAUSE cannot follow another CLAUSE without an OPERATOR in between", filterValue);
+          "CLAUSE cannot follow another CLAUSE without an OPERATOR in between", filterValues);
     }
   }
 
   private void validateOperator(FilterValue filterValue) throws AdvancedQueryException {
     if (previous() == null && !isOpenParen(filterValue)) {
       throw new AdvancedQueryException(
-          "First filter value must be a CLAUSE, not an OPERATOR", peek());
+          "First filter value must be a CLAUSE, not an OPERATOR", filterValues);
     }
     if (current == filterValues.size() - 1 && !isCloseParen(filterValue)) {
       throw new AdvancedQueryException(
           "Cannot end list of FilterValues with an OPERATOR unless it's a closing parenthesis",
-          filterValue);
+          filterValues);
     }
     if (previous() != null && isOperator(previous())) {
       if (isCloseParen(filterValue) && isOpenParen(previous())) {
-        throw new AdvancedQueryException("Empty parentheses are not allowed", filterValue);
+        throw new AdvancedQueryException("Empty parentheses are not allowed", filterValues);
       }
       if (!isParen(filterValue) && !isParen(previous())) {
         throw new AdvancedQueryException(
-            "'and/or' OPERATOR cannot follow another 'and/or' OPERATOR", filterValue);
+            "'and/or' OPERATOR cannot follow another 'and/or' OPERATOR", filterValues);
       }
       if (isCloseParen(previous()) && isOpenParen(filterValue)) {
         throw new AdvancedQueryException(
-            "Cannot follow a closing parenthesis with an open parenthesis", filterValue);
+            "Cannot follow a closing parenthesis with an open parenthesis", filterValues);
       }
     }
   }
@@ -241,11 +241,11 @@ public class AdvancedQueryBuilder {
           parenDepth--;
         } else {
           throw new AdvancedQueryException(
-              "Unknown operator: " + filterValue.getOperator(), filterValue);
+              "Unknown operator: " + filterValue.getOperator(), filterValues);
         }
       } else {
         throw new AdvancedQueryException(
-            "Unknown valueType encountered: " + filterValue.getValueType(), filterValue);
+            "Unknown valueType encountered: " + filterValue.getValueType(), filterValues);
       }
       advance();
     }
