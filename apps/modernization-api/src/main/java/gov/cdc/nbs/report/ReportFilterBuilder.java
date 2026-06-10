@@ -5,7 +5,6 @@ import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
-import gov.cdc.nbs.entity.odse.ReportFilterValidation;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.report.utils.ValueCountCalculator;
