@@ -199,7 +199,6 @@ public class ReportService {
                   new ReportDataSource(report.getDataSource()),
                   new Library(report.getReportLibrary()),
                   report.getReportTitle(),
-                  report.getShared(),
                   report.getDescTxt(),
                   report.getOwnerUid(),
                   ReportConstants.dbCharToReportGroup(report.getShared()),

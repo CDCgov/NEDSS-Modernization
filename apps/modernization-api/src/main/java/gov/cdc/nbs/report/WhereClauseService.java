@@ -8,13 +8,13 @@ import static gov.cdc.nbs.report.ReportConstants.RDB_LAB_RESULT_VAL_COLS;
 import static gov.cdc.nbs.report.ReportConstants.SQL_AND;
 import static gov.cdc.nbs.report.ReportConstants.SQL_WHERE;
 
-import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
-import gov.cdc.nbs.report.models.AdvancedFilterRequest;
-import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.report.models.AdvancedFilterRequest;
+import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.FilterType;
@@ -24,7 +24,6 @@ import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.utils.FieldFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -84,7 +83,6 @@ public class WhereClauseService {
       ReportConfiguration reportConfig,
       ReportExecutionRequest executionRequest,
       DataSourceNameUtils dataSourceNameUtils) {
-      ReportConfiguration reportConfig, ReportExecutionRequest executionRequest) {
 
     List<String> activeClauses = new ArrayList<>();
 
@@ -94,9 +92,22 @@ public class WhereClauseService {
       activeClauses.add(basicWhereFragment);
     }
 
-    String permissionFragment = buildPermissionFragment(reportConfig, reportConfig.shared());
+    String advWhereFragment =
+        buildAdvancedQueryResult(reportConfig, executionRequest.advancedFilter());
+    if (advWhereFragment != null && !advWhereFragment.isEmpty()) {
+      activeClauses.add(advWhereFragment);
+    }
+
+    String permissionFragment = buildPermissionFragment(reportConfig);
     if (!permissionFragment.isBlank()) {
       activeClauses.add(permissionFragment);
+    }
+
+    boolean hasLabResultVal = hasLabResultVal(reportConfig, executionRequest.advancedFilter());
+    if (hasLabResultVal) {
+      String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
+      return LAB_RESULT_QUERY_VAL.formatted(
+          rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
     }
 
     if (activeClauses.isEmpty()) {
@@ -106,17 +117,18 @@ public class WhereClauseService {
     return SQL_WHERE + String.join(SQL_AND, activeClauses);
   }
 
-  public String buildPermissionFragment(ReportConfiguration reportConfig, Character sharedStatus) {
+  public String buildPermissionFragment(ReportConfiguration reportConfig) {
     List<String> permissionClauses = new ArrayList<>();
 
     String jpCriteria =
-        getJurisProgramCriteria(reportConfig.dataSource().jurisdictionSecurity(), sharedStatus);
+        getJurisProgramCriteria(
+            reportConfig.dataSource().hasJurisdictionSecurity(), reportConfig.group());
     if (!jpCriteria.isBlank()) {
       permissionClauses.add(jpCriteria);
     }
 
     String reportingFacilityCriteria =
-        getReportingFacilityCriteria(reportConfig.dataSource().facilitySecurity());
+        getReportingFacilityCriteria(reportConfig.dataSource().hasFacilitySecurity());
     if (!reportingFacilityCriteria.isBlank()) {
       permissionClauses.add(reportingFacilityCriteria);
     }
@@ -125,78 +137,58 @@ public class WhereClauseService {
       return "";
     }
 
-    String advWhereFragment =
-        buildAdvancedQueryResult(reportConfig, executionRequest.advancedFilter());
+    return "(" + String.join(SQL_AND, permissionClauses) + ")";
+  }
 
-    StringJoiner finalWhere = new StringJoiner(SQL_AND, SQL_WHERE, "");
-
-    if (basicWhereFragment != null && !basicWhereFragment.isEmpty()) {
-      finalWhere.add(basicWhereFragment);
+  private String getJurisProgramCriteria(
+      boolean hasJurisdictionSecurity, ReportConstants.ReportGroup group) {
+    if (!hasJurisdictionSecurity) {
+      return "";
     }
 
-    if (advWhereFragment != null && !advWhereFragment.isEmpty()) {
-      finalWhere.add(advWhereFragment);
+    Permission permission = mapSharedToPermission(group);
+    if (permission == null) {
+      return "";
     }
 
-    boolean hasLabResultVal = hasLabResultVal(reportConfig, executionRequest.advancedFilter());
-    if (hasLabResultVal) {
-      String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
-      return LAB_RESULT_QUERY_VAL.formatted(rdbDataSource, finalWhere.toString());
+    PermissionScope scope = this.scopeResolver.resolve(permission);
+    if (scope.any().isEmpty()) {
+      return "";
     }
 
-    // Only return the WHERE clause if it contains anything beyond the initial "WHERE " prefix
-    return finalWhere.length() > SQL_WHERE.length() ? finalWhere.toString() : "";
-          return "(" + String.join(SQL_AND, permissionClauses) + ")";
-}
+    String ids = scope.any().stream().map(String::valueOf).collect(Collectors.joining(", "));
 
-      private String getJurisProgramCriteria(Character jurisdictionSecurity, Character sharedStatus) {
-          if (jurisdictionSecurity == null || jurisdictionSecurity != 'Y') {
-              return "";
-          }
+    return "(program_jurisdiction_oid IN (" + ids + "))";
+  }
 
-          Permission permission = mapSharedToPermission(sharedStatus);
-          if (permission == null) {
-              return "";
-          }
+  private String getReportingFacilityCriteria(boolean hasReportingFacilitySecurity) {
+    if (!hasReportingFacilitySecurity) {
+      return "";
+    }
 
-          PermissionScope scope = this.scopeResolver.resolve(permission);
-          if (scope.any().isEmpty()) {
-              return "";
-          }
+    Long externalOrgId = SecurityUtil.getUserDetails().getExternalOrgUid();
+    if (externalOrgId == null) {
+      return "";
+    }
 
-          String ids = scope.any().stream().map(String::valueOf).collect(Collectors.joining(", "));
+    return "(REPORTING_FACILITY_UID = " + externalOrgId + ")";
+  }
 
-          return "(program_jurisdiction_oid IN (" + ids + "))";
-      }
-
-      private String getReportingFacilityCriteria(Character reportingFacilitySecurity) {
-          if (reportingFacilitySecurity == null || reportingFacilitySecurity != 'Y') {
-              return "";
-          }
-
-          Long externalOrgId = SecurityUtil.getUserDetails().getExternalOrgUid();
-          if (externalOrgId == null) {
-              return "";
-          }
-
-          return "(REPORTING_FACILITY_UID = " + externalOrgId + ")";
-      }
-
-      /** Pure mapper utility isolating the business rules matching flags to permissions. */
-      private Permission mapSharedToPermission(Character shared) {
-          return switch (shared != null ? shared : ' ') {
-              case ReportConstants.TEMPLATE_REPORT_GROUP_CHAR ->
-                      new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTTEMPLATE);
-              case ReportConstants.PRIVATE_REPORT_GROUP_CHAR ->
-                      new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTPRIVATE);
-              case ReportConstants.PUBLIC_REPORT_GROUP_CHAR ->
-                      new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTPUBLIC);
-              case ReportConstants.REPORTING_FACILITY_REPORT_GROUP_CHAR ->
-                      new Permission(
-                              ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTREPORTINGFACILITY);
-              default -> null;
-          };
-      }
+  /** Pure mapper utility isolating the business rules matching flags to permissions. */
+  private Permission mapSharedToPermission(ReportConstants.ReportGroup group) {
+    return switch (group) {
+      case ReportConstants.ReportGroup.TEMPLATE ->
+          new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTTEMPLATE);
+      case ReportConstants.ReportGroup.PRIVATE ->
+          new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTPRIVATE);
+      case ReportConstants.ReportGroup.PUBLIC ->
+          new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTPUBLIC);
+      case ReportConstants.ReportGroup.REPORTING_FACILITY ->
+          new Permission(
+              ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTREPORTINGFACILITY);
+      default -> null;
+    };
+  }
 
   /**
    * Processes a list of basic filter requests into a joined SQL fragment.

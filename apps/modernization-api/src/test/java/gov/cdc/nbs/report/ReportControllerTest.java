@@ -225,7 +225,6 @@ class ReportControllerTest {
               ownerUid,
               group,
               sectionCd,
-              'N',
               List.of(basicFilterConfig),
               advancedFilterConfig,
               columns,

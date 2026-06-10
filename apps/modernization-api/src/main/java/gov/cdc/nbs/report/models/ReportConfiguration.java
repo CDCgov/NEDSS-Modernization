@@ -13,7 +13,6 @@ public record ReportConfiguration(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long ownerUid,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ReportConstants.ReportGroup group,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String sectionCd,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Character shared,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<BasicFilterConfiguration> basicFilters,
     AdvancedFilterConfiguration advancedFilter,

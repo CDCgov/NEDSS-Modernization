@@ -5,17 +5,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ReportDataSource(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long id,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name) {
-public record ReportDataSource(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Character jurisdictionSecurity,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Character facilitySecurity) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean hasJurisdictionSecurity,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean hasFacilitySecurity) {
 
   public ReportDataSource(DataSource entity) {
-    this(entity.getId(), entity.getDataSourceName());
     this(
+        entity.getId(),
         entity.getDataSourceName(),
-        entity.getJurisdictionSecurity(),
-        entity.getReportingFacilitySecurity());
+        "Y".equals(entity.getJurisdictionSecurity().toString()),
+        "Y".equals(entity.getReportingFacilitySecurity().toString()));
   }
 }
