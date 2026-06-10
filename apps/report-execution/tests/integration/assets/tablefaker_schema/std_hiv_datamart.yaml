@@ -172,12 +172,12 @@ tables:
         null_percentage: 0
 
       # case information
+      - column_name: diagnosis_cd
+        data: random.choice(['200', '300', '710', '720', '730', '790', '900']) if random.random() < .95 else None
+
       - column_name: diagnosis
         data: |
-          # Create a limited set of diagnoses to enable duplicates
-          diagnoses = ["100","200","300","350","400"]
-          return random.choice(diagnoses)
-        null_percentage: 0
+          '200 - Chlamydia' if diagnosis_cd == '200' else '300 - Gonorrhea' if diagnosis_cd == '300' else '710 - Syphilis, primary' if diagnosis_cd == '710' else '720 - Syphilis, secondary' if diagnosis_cd == '720' else '730 - Syphilis, Early Non-Primary, Non-Secondary' if diagnosis_cd == '730' else '790 - Syphilis, Congenital' if diagnosis_cd == '790' else '900 - HIV Infection' if diagnosis_cd == '900' else None
 
       - column_name: field_record_number
         data: fake.random_int(10000000, 99999999)
