@@ -59,7 +59,7 @@ tables:
         data: fake.date_between(start_date=datetime(2020, 1, 1), end_date=datetime(2025, 12, 31))
         null_percentage: 0.1
       - column_name: RECORD_STATUS_CD
-        data: random.choice(["ACTIVE", "INACTIVE"])
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
 
   - table_name: "[RDB].[dbo].[MORBIDITY_REPORT_EVENT]"
     row_count: 500
@@ -131,7 +131,7 @@ tables:
         data: fake.date_between(start_date=datetime(2020, 1, 1), end_date=datetime(2025, 12, 31))
         null_percentage: 0.1
       - column_name: RECORD_STATUS_CD
-        data: random.choice(["ACTIVE", "INACTIVE"])
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
 
   - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
     row_count: 1000
@@ -148,15 +148,18 @@ tables:
         data: |
           # Create a fixed set of names so duplicates appear
           names = ["Scott, Jill", "Badu, Erykah", "Carey, Mariah", "Keys, Alicia", "Glasper, Robert"]
-          return random.choice(names)
+          return fake.random_element(names)
         null_percentage: 0.02
 
       - column_name: patient_age_reported
         data: |
           age_num = fake.random_int(1, 99)
-          suffix = random.choice([" years", " Years"]) if random.random() < 0.2 else ""
-          return f"{age_num}{suffix}"
-        null_percentage: 0.05
+          # 95% chance of a suffix, 5% chance of a dot
+          if fake.random_int(1, 100) <= 95:
+              suffix = fake.random_element([" Years", " Months", " Days"])
+              return f"{age_num}{suffix}"
+          else:
+              return "."
 
       - column_name: patient_sex
         data: fake.random_element(["Female", "Male", ""])
@@ -169,13 +172,13 @@ tables:
       - column_name: patient_local_id
         data: |
           id_num = fake.unique.random_int(10000, 99999)
-          pre_id_num = random.choice([100, 200, 300])
+          pre_id_num = fake.random_element([100, 200, 300])
           return f"PSN{pre_id_num}{id_num}GA01"
         null_percentage: 0
 
       # case information
       - column_name: diagnosis_cd
-        data: fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if random.random() < 0.9 else None
+        data: fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if fake.random.random() < 0.9 else None
       
       - column_name: diagnosis
         data: |
@@ -202,7 +205,7 @@ tables:
         null_percentage: 0.05
 
       - column_name: ca_patient_intv_status
-        data: random.choice(["I - Interviewed"]) if random.random() < .1 else None
+        data: fake.random_element(["I - Interviewed"]) if fake.random.random() < 0.1 else None
 
       - column_name: program_jurisdiction_oid
         data: fake.random_element(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
@@ -212,7 +215,7 @@ tables:
 
       - column_name: jurisdiction_nm
         type: string
-        data: fake.random_element(["Washington County", "Middlesex County"]) if random.random() < 0.95 else None
+        data: fake.random_element(["Washington County", "Middlesex County"]) if fake.random.random() < 0.95 else None
 
       - column_name: physician_key
         data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
@@ -289,7 +292,7 @@ tables:
           table: "[RDB].[dbo].[INVESTIGATION]"
           column: INVESTIGATION_KEY
       - column_name: RECORD_STATUS_CD
-        data: random.choice(["ACTIVE", "INACTIVE"])
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
       - column_name: RESULT_COMMENT_GRP_KEY
         data: row_id + 40000
       - column_name: TEST_RESULT_GRP_KEY
@@ -331,7 +334,7 @@ tables:
           table: "[RDB].[dbo].[INVESTIGATION]"
           column: INVESTIGATION_KEY
       - column_name: RECORD_STATUS_CD
-        data: random.choice(["ACTIVE", "INACTIVE"])
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
       - column_name: TREATMENT_DT_KEY
         data: row_id + 180000
       - column_name: TREATMENT_PROVIDING_ORG_KEY

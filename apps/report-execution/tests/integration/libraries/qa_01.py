@@ -33,7 +33,7 @@ class TestIntegrationNbsQa01Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 97
+        assert len(data) == 86
         assert len(data[0]) == 18
         assert len(data[0]) == len(result.content.columns)
 
