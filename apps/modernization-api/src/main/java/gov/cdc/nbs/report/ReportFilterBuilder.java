@@ -66,32 +66,8 @@ public class ReportFilterBuilder {
     Long filterUid = filter.id() == null ? generateReportFilterId() : filter.id();
     filterBuilder.id(filterUid);
 
-    if (filter.isRequired()) {
-      ReportFilterValidation.ReportFilterValidationBuilder validationBuilder =
-          ReportFilterValidation.builder()
-              .reportFilterInd('Y')
-              .statusCd(Status.ACTIVE_CODE)
-              .statusTime(now);
-      Long validationUid = null;
-      if (filter.id() != null) {
-        ReportFilter origFilter =
-            report.getReportFilters().stream()
-                .filter(f -> f.getId() == filterUid)
-                .findFirst()
-                .orElse(null);
-        if (origFilter != null) {
-          validationBuilder.reportFilter(origFilter);
-          if (origFilter.getFilterValidation() != null) {
-            validationUid = origFilter.getFilterValidation().getId();
-          }
-        }
-      }
-      if (validationUid == null) {
-        validationUid = generateReportFilterId();
-      }
-      filterBuilder.filterValidation(validationBuilder.id(validationUid).build());
-
-    } else {
+    // If the filter is required, this will get handled in a later step of upsert
+    if (!filter.isRequired()) {
       //  Delete corresponding filter validation record if it exists
       filterBuilder.filterValidation(null);
     }
