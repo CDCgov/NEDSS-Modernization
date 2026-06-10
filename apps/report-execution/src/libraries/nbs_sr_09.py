@@ -21,33 +21,43 @@ def execute(
     """
     content = trx.query(
         f"""
-        WITH subset AS ({subset_query})
+        WITH subset AS
+        (
+          {subset_query}
+        ),
         -- Monthly aggregation with exact column names matching the export
-        SELECT 
-            COALESCE(state_cd, 'N/A') AS [State Code],
-            COALESCE(state, 'N/A') AS [State],
-            COALESCE(county, 'N/A') AS [County],
-            phc_code_short_desc AS [Condition],
-            FORMAT(event_date, 'MMM') AS monyr,
-            FORMAT(event_date, 'yyyyMM') AS ord,
-            SUM(group_case_cnt) AS Cases
-        FROM subset
-        WHERE event_date IS NOT NULL
-        GROUP BY 
-            state_cd,
-            state,
-            county,
-            phc_code_short_desc,
-            FORMAT(event_date, 'MMM'),
-            FORMAT(event_date, 'yyyyMM')
-        HAVING SUM(group_case_cnt) > 0
-        ORDER BY 
-            state_cd,
-            state,
-            county,
-            phc_code_short_desc,
-            ord,
-            monyr;
+        monthly_agg AS
+        (
+          SELECT COALESCE(state_cd,'N/A') AS "State Code",
+                 COALESCE(state,'N/A') AS State,
+                 COALESCE(county,'N/A') AS County,
+                 phc_code_short_desc AS Condition,
+                 FORMAT(event_date,'MMM') AS monyr,
+                 FORMAT(event_date,'yyyyMM') AS ord,
+                 SUM(group_case_cnt) AS Cases
+          FROM subset
+          GROUP BY state_cd,
+                   state,
+                   county,
+                   phc_code_short_desc,
+                   FORMAT(event_date,'MMM'),
+                   FORMAT(event_date,'yyyyMM')
+        )
+        -- final output, sub '.' for NULL values in mony and ord to match SAS script
+        SELECT "State Code",
+               State,
+               County,
+               Condition,
+               COALESCE(monyr,'.') AS monyr,
+               COALESCE(ord,'.') AS ord,
+               Cases
+        FROM monthly_agg
+        ORDER BY "State Code",
+                 State,
+                 County,
+                 Condition,
+                 ord,
+                 monyr;
         """
     )
 

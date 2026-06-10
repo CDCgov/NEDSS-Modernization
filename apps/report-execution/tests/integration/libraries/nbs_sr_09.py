@@ -67,13 +67,15 @@ class TestIntegrationNbsSr09Library:
             assert isinstance(row[col_index['State']], str)
             assert isinstance(row[col_index['County']], str)
             assert isinstance(row[col_index['Condition']], str)
-            assert isinstance(row[col_index['Cases']], Decimal)
-            assert row[col_index['Cases']] >= 0
 
-            # Month code should be 6-digit YYYYMM format
+            cases = row[col_index['Cases']]
+            assert cases is None or isinstance(cases, Decimal)
+            assert cases is None or cases >= 0
+
+            # Month code should be 6-digit YYYYMM format, '.' substituted for NULLs
             month_code = row[col_index['ord']]
-            assert len(month_code) == 6
-            assert month_code.isdigit()
+            assert month_code == '.' or len(month_code) == 6
+            assert month_code == '.' or month_code.isdigit()
 
     def test_execute_report_with_filters(self):
         """Verify report works with filtered subset_query."""
