@@ -8,7 +8,7 @@ care about ordering, file lines are put in a set and compared to one another.
 import logging
 from sys import argv
 
-logging.basicConfig(level='INFO')
+logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 
 def csv_to_line_set(fp):
@@ -38,32 +38,32 @@ if __name__ == '__main__':
 
     first_set, second_set = get_csv_line_sets(fp1, fp2)
 
-    logging.info(32 * '*')
-
-    logging.info(f'* stats for [{fp1}]')
-    logging.info(f'* unique line count: {len(first_set)}')
+    logging.info(f'stats for [{fp1}]')
+    logging.info(f'unique line count: {len(first_set)}')
 
     diff = first_set.difference(second_set)
 
     if not diff:
-        logging.info(f'* all lines in [{fp1}] are found in [{fp2}]')
+        logging.info(f'all lines in [{fp1}] are found in [{fp2}]')
     else:
-        logging.info(f'* unique lines found in [{fp1}] that are NOT in [{fp2}]:')
+        logging.info(
+            f'{len(diff)} unique lines found in [{fp1}] that are NOT in [{fp2}]:'
+        )
         for line in diff:
-            logging.info(f'* {line}')
+            logging.info(f'{line}')
 
     logging.info(32 * '*')
 
-    logging.info(f'* stats for [{fp2}]')
-    logging.info(f'* unique line count: {len(second_set)}')
+    logging.info(f'stats for [{fp2}]')
+    logging.info(f'unique line count: {len(second_set)}')
 
     diff = second_set.difference(first_set)
 
     if not diff:
-        logging.info(f'* all lines in [{fp2}] are found in [{fp1}]')
+        logging.info(f'all lines in [{fp2}] are found in [{fp1}]')
     else:
-        logging.info(f'* unique lines found in [{fp2}] that are NOT in [{fp1}]:')
+        logging.info(
+            f'{len(diff)} unique lines found in [{fp2}] that are NOT in [{fp1}]:'
+        )
         for line in diff:
-            logging.info(f'* {line}')
-
-    logging.info(32 * '*')
+            logging.info(f'{line}')

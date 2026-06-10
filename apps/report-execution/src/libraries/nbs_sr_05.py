@@ -26,6 +26,13 @@ def execute(
     * Run has columns in different order
     * Use pipe separator instead of new line for subheader
     * Remove "by county" from the description since this isn't by county
+    * Negative precentages are displayed with parentheses to match SAS
+      output (e.g. -0.12 gets displayed as (12%)).  The SAS script uses
+      the `percent9.0` format, meaning the result is always 9 characters
+      wide and there are no decimal places.  The additional character padding
+      is NOT replicated in the SQL below for simplicity's sake (SQL Server
+      does not have an equivalent padded format and the padding would have
+      to be done by hand).
     """
     today = datetime.date.today()
 
@@ -72,7 +79,7 @@ def execute(
     )
 
     -- base_data temp table
-    SELECT * 
+    SELECT *
     INTO #base_data
     FROM base_data
     UNION ALL
@@ -128,8 +135,12 @@ def execute(
 
     -- Result select
     SELECT FORMAT(
-           IIF( median_ytd = 0,0,(curr_ytd - median_ytd) / median_ytd), 'P0', 'en-us')
-             AS [Percent Change {year} vs 5 Year Median],
+             CASE
+               WHEN median_ytd = 0 THEN 0
+               ELSE (curr_ytd - median_ytd) / median_ytd
+             END,
+             '0%;(0%);0%'
+           ) AS [Percent Change {year} vs 5 Year Median],
            last_ytd AS [Cumulative for {last_year} to Date],
            curr_ytd AS [Cumulative for {year} to Date],
            ty.phc_code_short_desc AS [Disease],
