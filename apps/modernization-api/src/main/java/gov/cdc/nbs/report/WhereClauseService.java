@@ -75,7 +75,7 @@ public class WhereClauseService {
    *
    * @param reportConfig The metadata configuration for the report being executed.
    * @param executionRequest The specific filter values and columns requested by the user.
-   * @param dataSourceNameUtils
+   * @param dataSourceNameUtils Utility to standardize datasource naming
    * @return A string starting with "WHERE " followed by the filter criteria, or an empty string if
    *     no filters are applied.
    */
@@ -146,14 +146,11 @@ public class WhereClauseService {
       return "";
     }
 
-    Permission permission = mapSharedToPermission(group);
-    if (permission == null) {
-      return "";
-    }
-
-    PermissionScope scope = this.scopeResolver.resolve(permission);
+    PermissionScope scope = this.scopeResolver.resolve(mapSharedToPermission(group));
     if (scope.any().isEmpty()) {
-      return "";
+      throw new IllegalArgumentException(
+          "No Jurisdiction or Program Area permissions found for user: "
+              + SecurityUtil.getUserDetails().getUsername());
     }
 
     String ids = scope.any().stream().map(String::valueOf).collect(Collectors.joining(", "));
@@ -177,16 +174,15 @@ public class WhereClauseService {
   /** Pure mapper utility isolating the business rules matching flags to permissions. */
   private Permission mapSharedToPermission(ReportConstants.ReportGroup group) {
     return switch (group) {
-      case ReportConstants.ReportGroup.TEMPLATE ->
+      case TEMPLATE ->
           new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTTEMPLATE);
-      case ReportConstants.ReportGroup.PRIVATE ->
+      case PRIVATE ->
           new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTPRIVATE);
-      case ReportConstants.ReportGroup.PUBLIC ->
+      case PUBLIC ->
           new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTPUBLIC);
-      case ReportConstants.ReportGroup.REPORTING_FACILITY ->
+      case REPORTING_FACILITY ->
           new Permission(
               ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTREPORTINGFACILITY);
-      default -> null;
     };
   }
 

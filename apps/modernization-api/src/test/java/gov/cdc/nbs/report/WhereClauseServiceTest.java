@@ -794,20 +794,21 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_return_empty_jurisdiction_criteria_when_user_has_no_assigned_ids() {
+  void should_throw_illegal_arg_exception_when_user_has_no_assigned_ids() {
     ReportConfiguration reportConfig = createReportConfig(List.of(), List.of(), ReportGroup.PUBLIC);
 
     when(reportConfig.dataSource().hasJurisdictionSecurity()).thenReturn(Boolean.TRUE);
-    when(reportConfig.dataSource().hasFacilitySecurity()).thenReturn(Boolean.FALSE);
 
     PermissionScope emptyScope = Mockito.mock(PermissionScope.class);
     when(emptyScope.any()).thenReturn(List.of()); // Empty list
     when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTPUBLIC")))
         .thenReturn(emptyScope);
 
-    String result = whereClauseService.buildPermissionFragment(reportConfig);
+    mockAuthenticatedUser(null);
 
-    assertThat(result).isEmpty();
+    assertThatThrownBy(() -> whereClauseService.buildPermissionFragment(reportConfig))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("No Jurisdiction or Program Area permissions found for user: null");
   }
 
   @Test
