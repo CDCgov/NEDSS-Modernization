@@ -5,6 +5,7 @@ import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
+import gov.cdc.nbs.entity.odse.ReportFilterValidation;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.report.utils.ValueCountCalculator;
@@ -16,14 +17,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReportFilterBuilder {
   private final DataSourceColumnRepository dataSourceColumnRepository;
+  private final ReportFilterValidationBuilder reportFilterValidationBuilder;
   private final FilterCodeRepository filterCodeRepository;
   private final IdGeneratorService idGenerator;
 
   public ReportFilterBuilder(
       DataSourceColumnRepository dataSourceColumnRepository,
+      ReportFilterValidationBuilder reportFilterValidationBuilder,
       FilterCodeRepository filterCodeRepository,
       IdGeneratorService idGenerator) {
     this.dataSourceColumnRepository = dataSourceColumnRepository;
+    this.reportFilterValidationBuilder = reportFilterValidationBuilder;
     this.filterCodeRepository = filterCodeRepository;
     this.idGenerator = idGenerator;
   }
@@ -71,7 +75,15 @@ public class ReportFilterBuilder {
       filterBuilder.filterValidation(null);
     }
 
-    return filterBuilder.build();
+    ReportFilter builtFilter = filterBuilder.build();
+
+    if (filter.isRequired()) {
+      ReportFilterValidation filterValidation =
+          reportFilterValidationBuilder.build(report, builtFilter);
+      builtFilter.setFilterValidation(filterValidation);
+    }
+
+    return builtFilter;
   }
 
   private Long generateReportFilterId() {

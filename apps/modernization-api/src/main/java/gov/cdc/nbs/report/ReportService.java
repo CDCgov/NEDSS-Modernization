@@ -8,7 +8,6 @@ import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.DisplayColumn;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
-import gov.cdc.nbs.entity.odse.ReportFilterValidation;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
@@ -32,13 +31,11 @@ import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportFilterRepository;
-import gov.cdc.nbs.repository.ReportFilterValidationRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.IntStream;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -55,7 +52,6 @@ public class ReportService {
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
   private final ReportFilterRepository reportFilterRepository;
-  private final ReportFilterValidationRepository reportFilterValidationRepository;
   private final ReportSectionRepository reportSectionRepository;
   private final ReportMapper reportMapper;
 
@@ -63,14 +59,12 @@ public class ReportService {
   private final DataSourceNameUtils dataSourceNameUtils;
   private final WhereClauseService whereClauseService;
   private final ReportFilterBuilder reportFilterBuilder;
-  private final ReportFilterValidationBuilder reportFilterValidationBuilder;
 
   public ReportService(
       final ReportRepository reportRepository,
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
       final ReportFilterRepository reportFilterRepository,
-      final ReportFilterValidationRepository reportFilterValidationRepository,
       final ReportSectionRepository reportSectionRepository,
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig,
@@ -82,7 +76,6 @@ public class ReportService {
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
     this.reportFilterRepository = reportFilterRepository;
-    this.reportFilterValidationRepository = reportFilterValidationRepository;
     this.reportSectionRepository = reportSectionRepository;
     this.reportMapper = reportMapper;
 
@@ -90,7 +83,6 @@ public class ReportService {
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
     this.whereClauseService = whereClauseService;
     this.reportFilterBuilder = reportFilterBuilder;
-    this.reportFilterValidationBuilder = reportFilterValidationBuilder;
   }
 
   @Transactional
@@ -139,15 +131,7 @@ public class ReportService {
               .map(f -> reportFilterBuilder.build(f, savedReport))
               .toList();
 
-      List<ReportFilter> savedFilters = reportFilterRepository.saveAll(reportFilters);
-
-      List<ReportFilterValidation> filterValidations =
-          IntStream.range(0, savedFilters.size())
-              .filter(i -> request.filterRequests().get(i).isRequired())
-              .mapToObj(i -> reportFilterValidationBuilder.build(savedReport, savedFilters.get(i)))
-              .toList();
-
-      reportFilterValidationRepository.saveAll(filterValidations);
+      reportFilterRepository.saveAll(reportFilters);
     }
 
     return savedReport;
