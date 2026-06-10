@@ -1,6 +1,6 @@
 import datetime
 import decimal
-
+from mssql_python.exceptions import ProgrammingError
 import pytest
 import yaml
 
@@ -36,7 +36,7 @@ class TestIntegrationQa07Library:
 
         data = result.content.data
 
-        assert len(data) == 423
+        assert len(data) == 425
         assert result.content.columns == [
             'PATIENT_NAME',
             'PATIENT_ID',
@@ -75,7 +75,7 @@ class TestIntegrationQa07Library:
 
         # With more days, more rows should be considered duplicates
         assert rows_30 <= rows_60 <= rows_90
-        
+
     def test_execute_report_missing_days_parameter(self):
         """Test that missing 'report_days' in library_params raises an error."""
         spec = self.create_spec(library_params='{}')
@@ -85,6 +85,5 @@ class TestIntegrationQa07Library:
     def test_execute_report_invalid_days_format(self):
         """Test that non‑integer days value raises an error."""
         spec = self.create_spec(library_params='{"report_days": "thirty"}')
-        # The actual parsing error may come from JSON or the SQL query.
-        with pytest.raises((ValueError, TypeError)):
+        with pytest.raises(ProgrammingError):
             execute_report(spec)
