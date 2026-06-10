@@ -35,7 +35,7 @@ class TestIntegrationQa07Library:
 
         data = result.content.data
 
-        assert len(data) == 380
+        assert len(data) == 383
         assert result.content.columns == [
             'PATIENT_NAME',
             'PATIENT_ID',

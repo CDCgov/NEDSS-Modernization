@@ -178,7 +178,7 @@ tables:
 
       # case information
       - column_name: diagnosis_cd
-        data: fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if fake.random.random() < 0.9 else None
+        data: fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if fake.random_int(1,100) <= 90 else None
       
       - column_name: diagnosis
         data: |
@@ -205,7 +205,7 @@ tables:
         null_percentage: 0.05
 
       - column_name: ca_patient_intv_status
-        data: fake.random_element(["I - Interviewed"]) if fake.random.random() < 0.1 else None
+        data: fake.random_element(["I - Interviewed"]) if fake.random_int(1,100) <= 10 else None
 
       - column_name: program_jurisdiction_oid
         data: fake.random_element(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
@@ -215,7 +215,7 @@ tables:
 
       - column_name: jurisdiction_nm
         type: string
-        data: fake.random_element(["Washington County", "Middlesex County"]) if fake.random.random() < 0.95 else None
+        data: fake.random_element(["Washington County", "Middlesex County"]) if fake.random_int(1,100) <= 95 else None
 
       - column_name: physician_key
         data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
