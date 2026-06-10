@@ -1,5 +1,5 @@
 - !!python/tuple
-  - -16%
+  - (16%)
   - !!python/object/apply:decimal.Decimal
     - '743.00000'
   - !!python/object/apply:decimal.Decimal
