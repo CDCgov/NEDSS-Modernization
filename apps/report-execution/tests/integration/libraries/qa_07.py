@@ -43,7 +43,6 @@ class TestIntegrationQa07Library:
             'CONFIRMATION_DT',
             'FL_FUP_EXAM_DT',
         ]
-
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
     def test_execute_report_no_data(self, snapshot):
