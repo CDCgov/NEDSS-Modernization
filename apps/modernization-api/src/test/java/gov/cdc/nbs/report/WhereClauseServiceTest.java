@@ -314,6 +314,53 @@ class WhereClauseServiceTest {
   }
 
   @Test
+  void should_return_empty_string_when_filter_type_is_BAS_DAYS() {
+    Long filterUid = 100L;
+    Long columnUid = 2L;
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "BAS_DAYS");
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    List<BasicFilterRequest> request =
+        List.of(new BasicFilterRequest(filterUid, List.of("val"), false));
+
+    String whereFragment = mockWhereClauseService.buildBasicWhereFragment(reportConfig, request);
+
+    assertThat(whereFragment).isEmpty();
+  }
+
+  @Test
+  void should_eliminate_BAS_DAYS_filter_but_leave_other_filters() {
+    Long filterUid = 100L;
+    Long columnUid = 1L;
+    Long filterUid2 = 101L;
+    Long columnUid2 = 2L;
+
+    ReportConfiguration reportConfig =
+        createReportConfig(
+            List.of(
+                createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, "BAS_TXT"),
+                createBasicFilterConfiguration(
+                    List.of(), filterUid2, columnUid2, false, "BAS_DAYS")),
+            List.of(
+                mockReportColumn(columnUid, "STRING", "ColumnName"),
+                mockReportColumn(columnUid2, "STRING", "ColumnName2")));
+
+    List<BasicFilterRequest> basicFilterRequest =
+        List.of(
+            new BasicFilterRequest(filterUid, List.of("condition1"), false),
+            new BasicFilterRequest(filterUid2, List.of("condition2"), false));
+
+    String whereFragment =
+        mockWhereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequest);
+
+    assertThat(whereFragment).isEqualTo("([ColumnName] IN ('condition1'))");
+  }
+
+  @Test
   void should_escape_malicious_strings_to_prevent_in_clause_breakout() {
     Long filterUid = 100L;
     Long columnUid = 2L;

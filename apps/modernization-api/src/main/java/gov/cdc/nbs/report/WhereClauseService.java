@@ -128,6 +128,12 @@ public class WhereClauseService {
                       new IllegalArgumentException(
                           "No basic filter configuration found for UID: "
                               + filterRequest.reportFilterUid()));
+      // BAS_DAYS is a non-column filter which is intercepted and processed
+      // independently during execution spec builds.
+      if (config.filterType() != null
+          && ReportConstants.BAS_DAYS.equals(config.filterType().type())) {
+        continue;
+      }
 
       // Find the associated Column
       ReportColumn column =
