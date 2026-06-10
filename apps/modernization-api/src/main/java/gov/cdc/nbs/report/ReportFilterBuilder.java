@@ -63,25 +63,37 @@ public class ReportFilterBuilder {
       filterBuilder.dataSourceColumn(dataSourceColumn);
     }
 
+    Long filterUid = filter.id() == null ? generateReportFilterId() : filter.id();
+    filterBuilder.id(filterUid);
+
     if (filter.isRequired()) {
-      // TODO: org.springframework.orm.jpa.JpaSystemException: Identifier of entity
-      // 'gov.cdc.nbs.entity.odse.ReportFilterValidation' must be manually assigned before calling
-      // 'persist()'
-      filterBuilder.filterValidation(
+      ReportFilterValidation.ReportFilterValidationBuilder validationBuilder =
           ReportFilterValidation.builder()
               .reportFilterInd('Y')
               .statusCd(Status.ACTIVE_CODE)
-              .statusTime(now)
-              .build());
+              .statusTime(now);
+      Long validationUid = null;
+      if (filter.id() != null) {
+        ReportFilter origFilter =
+            report.getReportFilters().stream()
+                .filter(f -> f.getId() == filterUid)
+                .findFirst()
+                .orElse(null);
+        if (origFilter != null) {
+          validationBuilder.reportFilter(origFilter);
+          if (origFilter.getFilterValidation() != null) {
+            validationUid = origFilter.getFilterValidation().getId();
+          }
+        }
+      }
+      if (validationUid == null) {
+        validationUid = generateReportFilterId();
+      }
+      filterBuilder.filterValidation(validationBuilder.id(validationUid).build());
+
     } else {
       //  Delete corresponding filter validation record if it exists
       filterBuilder.filterValidation(null);
-    }
-
-    if (filter.id() == null) {
-      filterBuilder.id(generateReportFilterId());
-    } else {
-      filterBuilder.id(filter.id());
     }
 
     return filterBuilder.build();
