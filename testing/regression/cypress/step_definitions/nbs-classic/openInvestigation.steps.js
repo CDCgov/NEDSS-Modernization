@@ -11,7 +11,7 @@ Then('I should land on the "Open Investigation Queue" page', () => {
 });
 
 // Navigating through pages
-When('I click on the "Next" link', () => {
+When('I click on the Next link', () => {
   openInvestigationPage.clickNext();
 });
 
@@ -19,7 +19,7 @@ Then('I should see the next page of results', () => {
   openInvestigationPage.clickPrevious();
 });
 
-When('I click on the "Previous" link', () => {
+When('I click on the Previous link', () => {
   openInvestigationPage.clickPrevious();
 });
 
@@ -64,7 +64,7 @@ Then('I should see no change in sorting', () => {
   openInvestigationPage.verifyNoSortingChanges();
 });
 
-When('I click on the "Remove All Filters Sorts" link', () => {
+When('I click on the Remove All Filters Sorts link', () => {
   openInvestigationPage.clickRemoveFilters();
 });
 

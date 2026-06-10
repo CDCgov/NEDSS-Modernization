@@ -10,9 +10,9 @@ Feature: Verify Open Investigation Queue functionality
   @skip-broken
   Scenario: Navigating through pages
     When I click on "Open Investigation" in the menu bar
-    When I click on the "Next" link
+    When I click on the Next link
     Then I should see the next page of results
-    When I click on the "Previous" link
+    When I click on the Previous link
     Then I should see the previous page of results
 
   @skip-broken
@@ -30,7 +30,7 @@ Feature: Verify Open Investigation Queue functionality
 
   Scenario: Removing filters and sorts
     When I click on "Open Investigation" in the menu bar
-    When I click on the "Remove All Filters Sorts" link
+    When I click on the Remove All Filters Sorts link
     Then all filters and sorts should be cleared
 
   @skip-broken
