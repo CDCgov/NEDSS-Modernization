@@ -16,7 +16,7 @@ export type { AdvancedFilterRequest } from './models/AdvancedFilterRequest';
 export type { AdvancedQuery } from './models/AdvancedQuery';
 export type { Allowed } from './models/Allowed';
 export type { AssociatedInvestigation } from './models/AssociatedInvestigation';
-export type { BasicFilterConfiguration } from './models/BasicFilterConfiguration';
+export { BasicFilterConfiguration } from './models/BasicFilterConfiguration';
 export type { BasicFilterRequest } from './models/BasicFilterRequest';
 export type { BirthDemographic } from './models/BirthDemographic';
 export type { ConceptOption } from './models/ConceptOption';
@@ -114,7 +114,9 @@ export { ProgramAreaOptionsService } from './services/ProgramAreaOptionsService'
 export { ProviderOptionsService } from './services/ProviderOptionsService';
 export { RaceOptionsService } from './services/RaceOptionsService';
 export { ReportControllerService } from './services/ReportControllerService';
+export { ReportDataSourceFilterableColumnsService } from './services/ReportDataSourceFilterableColumnsService';
 export { ReportDataSourcesService } from './services/ReportDataSourcesService';
+export { ReportFiltersService } from './services/ReportFiltersService';
 export { ReportLibrariesService } from './services/ReportLibrariesService';
 export { ReportSectionsService } from './services/ReportSectionsService';
 export { ResultedTestOptionsService } from './services/ResultedTestOptionsService';

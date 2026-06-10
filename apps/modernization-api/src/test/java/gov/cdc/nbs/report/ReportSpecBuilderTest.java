@@ -66,7 +66,7 @@ class ReportSpecBuilderTest {
     Mockito.lenient().when(filterType.type()).thenReturn(filterTypeCode);
 
     return new BasicFilterConfiguration(
-        reportFilterUid, reportColumnUid, filterDefaultValues, null, null, null, null, filterType);
+        reportFilterUid, reportColumnUid, filterDefaultValues, null, null, null, filterType);
   }
 
   private ReportColumn mockReportColumn(Long columnId, String columnName, String columnTitle) {
