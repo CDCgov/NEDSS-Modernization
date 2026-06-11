@@ -66,15 +66,14 @@ public class ReportFilterBuilder {
 
     ReportFilter builtFilter = filterBuilder.build();
 
-    ReportFilterValidation filterValidation =
-        buildReportFilterValidation(report, builtFilter, filter);
+    ReportFilterValidation filterValidation = buildReportFilterValidation(builtFilter, filter);
     builtFilter.setFilterValidation(filterValidation);
 
     return builtFilter;
   }
 
   private ReportFilterValidation buildReportFilterValidation(
-      Report report, ReportFilter filter, UpsertFilterRequest request) {
+      ReportFilter filter, UpsertFilterRequest request) {
     // Delete corresponding filter validation record if it exists
     if (!request.isRequired()) return null;
 
