@@ -84,6 +84,31 @@ class TestIntegrationPa03Library:
             assert isinstance(value, int)
             assert value >= 0
 
+        row_map = {label: value for label, value in data}
+        assert row_map['Total No. IPS Partners:'] <= row_map['Total No. Partners:']
+        assert (
+            row_map['Total No. IPS Social Contacts:']
+            <= row_map['Total No. Social Contacts:']
+        )
+        assert (
+            row_map['Total No. IPS Associates:']
+            <= row_map['Total No. Associates:']
+        )
+
+        sexual_outcome_total = sum(
+            value for label, value in data if label.startswith('Sexual Contact:')
+        )
+        social_outcome_total = sum(
+            value for label, value in data if label.startswith('Social Contact:')
+        )
+        associate_outcome_total = sum(
+            value for label, value in data if label.startswith('Associate:')
+        )
+
+        assert sexual_outcome_total <= row_map['Total No. IPS Partners:']
+        assert social_outcome_total <= row_map['Total No. IPS Social Contacts:']
+        assert associate_outcome_total <= row_map['Total No. IPS Associates:']
+
     def test_execute_report_no_data(self):
         report_spec = ReportSpec.model_validate(
             {
