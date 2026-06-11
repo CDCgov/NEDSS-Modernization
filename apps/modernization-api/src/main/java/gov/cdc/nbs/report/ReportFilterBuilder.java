@@ -82,17 +82,15 @@ public class ReportFilterBuilder {
 
     ReportFilterValidation.ReportFilterValidationBuilder validationBuilder =
         ReportFilterValidation.builder()
+            .reportFilter(filter)
             .reportFilterInd('Y')
             .statusCd(Status.ACTIVE_CODE)
             .statusTime(now);
 
-    Long validationUid = null;
-    validationBuilder.reportFilter(filter);
-    if (filter.getFilterValidation() != null) {
-      validationUid = filter.getFilterValidation().getId();
-    } else {
-      validationUid = generateReportFilterId();
-    }
+    Long validationUid =
+        filter.getFilterValidation() == null
+            ? generateReportFilterId()
+            : filter.getFilterValidation().getId();
     validationBuilder.id(validationUid);
 
     return validationBuilder.build();
