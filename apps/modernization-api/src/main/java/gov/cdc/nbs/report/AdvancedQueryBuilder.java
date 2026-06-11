@@ -45,7 +45,15 @@ public class AdvancedQueryBuilder {
       throw new Error("Extra query left over :(");
     }
 
-    return simplify(res);
+    AdvancedQuery finalGroup = simplify(res);
+    System.out.println("Final RuleGroup: " + finalGroup);
+
+    if (finalGroup instanceof AdvancedQuery.Rule) {
+      return new AdvancedQuery.RuleGroup(
+          UUID.randomUUID().toString(), ReportConstants.QueryCombinators.and, List.of(finalGroup));
+    } else {
+      return (AdvancedQuery.RuleGroup) finalGroup;
+    }
   }
 
   private AdvancedQuery.RuleGroup startRuleGroup() throws AdvancedQueryException {
@@ -89,7 +97,6 @@ public class AdvancedQueryBuilder {
       throw new AdvancedQueryException("Expected closing paren", filterValues);
     advance();
 
-    System.out.println(ruleGroup);
     return ruleGroup;
   }
 
@@ -176,23 +183,29 @@ public class AdvancedQueryBuilder {
         filterValue.getValueTxt());
   }
 
-  private AdvancedQuery.RuleGroup simplify(AdvancedQuery.RuleGroup ruleGroup) {
+  private AdvancedQuery simplify(AdvancedQuery.RuleGroup ruleGroup) {
     //  If a RuleGroup has only one Rule, and it's also a RuleGroup
     if (ruleGroup.rules().size() == 1
         && ruleGroup.rules().getFirst() instanceof AdvancedQuery.RuleGroup) {
 
       //  We can do away with the outer RuleGroup
       return simplify((AdvancedQuery.RuleGroup) ruleGroup.rules().getFirst());
+    } else if (ruleGroup.rules().size() == 1
+        && ruleGroup.rules().getFirst() instanceof AdvancedQuery.Rule) {
+      return ruleGroup.rules().getFirst();
     } else {
       return new AdvancedQuery.RuleGroup(
           ruleGroup.id(),
           ruleGroup.combinator(),
           ruleGroup.rules().stream()
               .map(
-                  (AdvancedQuery rule) ->
-                      (rule instanceof AdvancedQuery.RuleGroup)
-                          ? simplify((AdvancedQuery.RuleGroup) rule)
-                          : rule)
+                  (AdvancedQuery rule) -> {
+                    if (rule instanceof AdvancedQuery.Rule) {
+                      return rule;
+                    } else {
+                      return simplify((AdvancedQuery.RuleGroup) rule);
+                    }
+                  })
               .toList());
     }
   }
