@@ -45,3 +45,29 @@ globalThis.ResizeObserver = class {
     unobserve() {}
     disconnect() {}
 };
+
+// From focus-trap/focus-trap-react#1002 (comment)
+async function mock(mockedUri: string, stub: unknown) {
+    const { Module } = (await import('module')) as unknown as {
+        Module: Record<string, (uri: string, parent: unknown) => void>;
+    };
+    Module._load_original = Module._load;
+    Module._load = (uri, parent) => {
+        if (uri === mockedUri) return stub;
+        return Module._load_original(uri, parent);
+    };
+}
+
+vi.hoisted(async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const tabbable: { tabbable: any; focusable: any; isTabbable: any; isFocusable: any } =
+        await vi.importActual('tabbable');
+    return mock('tabbable', {
+        ...tabbable,
+        tabbable: (node: Element, options: object) => tabbable.tabbable(node, { ...options, displayCheck: 'none' }),
+        focusable: (node: Element, options: object) => tabbable.focusable(node, { ...options, displayCheck: 'none' }),
+        isTabbable: (node: Element, options: object) => tabbable.isTabbable(node, { ...options, displayCheck: 'none' }),
+        isFocusable: (node: Element, options: object) =>
+            tabbable.isFocusable(node, { ...options, displayCheck: 'none' }),
+    });
+});
