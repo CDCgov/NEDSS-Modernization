@@ -19,8 +19,7 @@ public class AdvancedQueryException extends Exception {
 
   @Override
   public String getMessage() {
-    // Appends custom record information to the standard message
-    return super.getMessage() + " (Query String: '" + generateQueryString() + "')";
+    return super.getMessage() + " [Query String: '" + generateQueryString() + "']";
   }
 
   public String generateQueryString() {
@@ -30,13 +29,21 @@ public class AdvancedQueryException extends Exception {
             filterValues.stream()
                 .sorted(Comparator.comparing(FilterValue::getSequenceNumber))
                 .map(
-                    f ->
-                        ((List.of("(", ")", "and", "or").contains(f.getOperator())
-                                    ? f.getOperator()
-                                    : "COL " + f.getOperator())
-                                + " "
-                                + (f.getValueTxt() != null ? f.getValueTxt() : ""))
-                            .strip())
+                    f -> {
+                      String part;
+
+                      if (List.of("(", ")", "and", "or").contains(f.getOperator())) {
+                        part = f.getOperator();
+                      } else {
+                        part = "COL " + f.getOperator();
+                      }
+
+                      if (f.getValueTxt() != null) {
+                        part += " " + f.getValueTxt();
+                      }
+
+                      return part;
+                    })
                 .toList());
   }
 }
