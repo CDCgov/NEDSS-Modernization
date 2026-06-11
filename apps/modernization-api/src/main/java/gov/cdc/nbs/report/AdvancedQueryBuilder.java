@@ -9,8 +9,12 @@ import java.util.UUID;
 public class AdvancedQueryBuilder {
   private final ArrayList<FilterValue> filterValues;
 
-  private final FilterValue OPEN_PAREN = new FilterValue(1L, null, 1, "OPERATOR", null, "(", null);
-  private final FilterValue CLOSE_PAREN = new FilterValue(2L, null, 1, "OPERATOR", null, ")", null);
+  private final FilterValue FIRST_OPEN_PAREN = new FilterValue(1L, null, 0, "OPERATOR", null, "(", null);
+  private final FilterValue LAST_CLOSE_PAREN = new FilterValue(2L, null, 1000, "OPERATOR", null, ")", null);
+
+  public AdvancedQueryBuilder(List<FilterValue> filterValues) {
+    this.filterValues = new ArrayList<>(filterValues);
+  }
 
   /** 0-based index of the current {@code FilterValue} being processed */
   private int current = 0;
@@ -30,39 +34,41 @@ public class AdvancedQueryBuilder {
     if (hasNext()) current++;
   }
 
-  public AdvancedQueryBuilder(List<FilterValue> filterValues) {
-    this.filterValues = new ArrayList<>(filterValues);
-  }
-
+  /**
+   * Recursively construct a singular nested {@code RuleGroup} from the list of {@code FilterValue}s
+   * provided.
+   *
+   * @throws AdvancedQueryException if any of the FilterValue set is invalid
+   */
   public AdvancedQuery.RuleGroup build() throws AdvancedQueryException {
-    // wrap whole thing in () to make sure it's a valid rule group
-    this.filterValues.add(0, OPEN_PAREN);
-    this.filterValues.add(CLOSE_PAREN);
+    // wrap the whole thing in () to make sure it's a valid rule group
+    this.filterValues.addFirst(FIRST_OPEN_PAREN);
+    this.filterValues.add(LAST_CLOSE_PAREN);
 
-    AdvancedQuery.RuleGroup res = startRuleGroup();
+    AdvancedQuery.RuleGroup rootRuleGroup = startRuleGroup();
 
-    if (current != filterValues.size()) {
-      throw new Error("Extra query left over :(");
+    if (hasNext()) {
+      throw new AdvancedQueryException("Extra FilterValue left over after parsing: " + peek(), filterValues);
     }
 
-    AdvancedQuery finalGroup = simplify(res);
-    System.out.println("Final RuleGroup: " + finalGroup);
+    AdvancedQuery query = simplify(rootRuleGroup);
 
-    if (finalGroup instanceof AdvancedQuery.Rule) {
+    if (query instanceof AdvancedQuery.Rule) {
       return new AdvancedQuery.RuleGroup(
-          UUID.randomUUID().toString(), ReportConstants.QueryCombinators.and, List.of(finalGroup));
+          UUID.randomUUID().toString(), ReportConstants.QueryCombinators.and, List.of(query));
     } else {
-      return (AdvancedQuery.RuleGroup) finalGroup;
+      return (AdvancedQuery.RuleGroup) query;
     }
   }
 
   private AdvancedQuery.RuleGroup startRuleGroup() throws AdvancedQueryException {
     FilterValue openParen = peek();
-    if (!isOpenParen(openParen))
+    if (!isOpenParen(openParen)) {
       throw new AdvancedQueryException("Expected paren to open rule group", filterValues);
+    }
     advance();
 
-    AdvancedQuery firstRule = null;
+    AdvancedQuery firstRule;
     FilterValue next = peek();
     if (isOpenParen(next)) {
       firstRule = startRuleGroup();
@@ -118,7 +124,7 @@ public class AdvancedQueryBuilder {
         FilterValue next = peek();
 
         if (!isOperator(next))
-          throw new AdvancedQueryException("operator must follow clause", filterValues);
+          throw new AdvancedQueryException("OPERATOR must follow CLAUSE", filterValues);
 
         if (isCombinator(next)) {
           if (combinator.equals(ReportConstants.QueryCombinators.valueOf(next.getOperator()))) {
@@ -154,7 +160,7 @@ public class AdvancedQueryBuilder {
       } else if (isOpenParen(filterValue)) {
         rules.add(startRuleGroup());
       } else {
-        throw new AdvancedQueryException("') invalid after operator", filterValues);
+        throw new AdvancedQueryException("') invalid after OPERATOR", filterValues);
       }
 
       if (isCloseParen(peek())) {
@@ -192,7 +198,7 @@ public class AdvancedQueryBuilder {
         //  We can do away with the outer RuleGroup
         return simplify((AdvancedQuery.RuleGroup) firstRule);
       } else {
-        //  We can return the Rule directly and remove the redundant RuleGroup
+        //  Similarly if it's a Rule, except terminate the sequence
         return firstRule;
       }
     } else {
