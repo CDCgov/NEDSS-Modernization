@@ -20,7 +20,7 @@ class NbsUserDetailsTest {
             "last",
             Set.of(new SimpleGrantedAuthority("TestOperation-TestObject")),
             true,
-            null);
+            1L);
 
     assertThat(userDetails.hasPermission(new Permission("TestOperation", "TestObject"))).isTrue();
   }
@@ -35,7 +35,7 @@ class NbsUserDetailsTest {
             "last",
             Set.of(new SimpleGrantedAuthority("TestOperation-WrongObject")),
             true,
-            null);
+            1L);
 
     assertThat(userDetails.hasPermission(new Permission("TestOperation", "TestObject"))).isFalse();
   }
@@ -50,7 +50,7 @@ class NbsUserDetailsTest {
             "last",
             Set.of(new SimpleGrantedAuthority("WrongOperation-TestObject")),
             true,
-            null);
+            1L);
 
     assertThat(userDetails.hasPermission(new Permission("TestOperation", "TestObject"))).isFalse();
   }
@@ -58,7 +58,7 @@ class NbsUserDetailsTest {
   @Test
   void does_not_have_permission_null() {
     NbsUserDetails userDetails =
-        new NbsUserDetails(103L, "username", "first", "last", Set.of(), true, null);
+        new NbsUserDetails(103L, "username", "first", "last", Set.of(), true, 1L);
 
     assertThat(userDetails.hasPermission(new Permission("TestOperation", "TestObject"))).isFalse();
   }
