@@ -59,6 +59,20 @@ def _ips_contact_local_ids(rows: list[tuple], referral_bases: set[str]) -> set[s
     }
 
 
+def _ips_both_contact_local_ids(rows: list[tuple], referral_bases: set[str]) -> set[str]:
+    # The SAS IPS totals section uses Val_M/Val_N/Val_O, which only count rows where
+    # both the case and the contact are marked for internet follow-up.
+    return {
+        row[0]
+        for row in rows
+        if row[0] is not None
+        and row[1] == 'Y'
+        and row[2] == 'Y'
+        and row[3] in referral_bases
+        and row[4] in VALID_PROCESSING_DECISIONS
+    }
+
+
 def _ips_outcome_counter(rows: list[tuple], referral_bases: set[str]) -> dict[str, int]:
     # SAS counts distinct concatenated contact ids within each outcome bucket, not
     # raw qualifying rows. Deduping here keeps the Python result aligned.
@@ -163,6 +177,10 @@ def execute(
     ips_social_contacts = _ips_contact_local_ids(contact_rows, SOCIAL_BASES)  # SAS Val_I: distinct pp03 ids where case INIT_FUP_INTERNET_FOLL_UP_CD='Y' for social-contact referral bases.
     ips_associate_contacts = _ips_contact_local_ids(contact_rows, ASSOCIATE_BASES)  # SAS Val_J: distinct pp03 ids where case INIT_FUP_INTERNET_FOLL_UP_CD='Y' for associate referral bases.
 
+    ips_partner_both = _ips_both_contact_local_ids(contact_rows, PARTNER_BASES)  # SAS Val_M: distinct pp03 ids where both case and contact have internet follow-up for partner referral bases.
+    ips_social_both = _ips_both_contact_local_ids(contact_rows, SOCIAL_BASES)  # SAS Val_N: distinct pp03 ids where both case and contact have internet follow-up for social-contact referral bases.
+    ips_associate_both = _ips_both_contact_local_ids(contact_rows, ASSOCIATE_BASES)  # SAS Val_O: distinct pp03 ids where both case and contact have internet follow-up for associate referral bases.
+
     outcome_counts = {  # SAS Val_Q1-Val_Q7, Val_R1-Val_R7, and Val_S1-Val_S7 outcome buckets from pp03.
         'Sexual Contact:': _ips_outcome_counter(contact_rows, PARTNER_BASES),  # SAS Val_Q1-Val_Q7: partner rows with case/contact internet follow-up and outcome I1-I7.
         'Social Contact:': _ips_outcome_counter(contact_rows, SOCIAL_BASES),  # SAS Val_R1-Val_R7: social-contact rows with case/contact internet follow-up and outcome I1-I7.
@@ -190,9 +208,9 @@ def execute(
             'IPS Cluster Index:',
             _ratio(len(ips_social_contacts) + len(ips_associate_contacts), len(ips_cases)),
         ),
-        ('Total No. IPS Partners:', len(ips_partner_contacts)),
-        ('Total No. IPS Social Contacts:', len(ips_social_contacts)),
-        ('Total No. IPS Associates:', len(ips_associate_contacts)),
+        ('Total No. IPS Partners:', len(ips_partner_both)),
+        ('Total No. IPS Social Contacts:', len(ips_social_both)),
+        ('Total No. IPS Associates:', len(ips_associate_both)),
     ]
 
     for label in ('Sexual Contact:', 'Social Contact:', 'Associate:'):

@@ -27,9 +27,8 @@ tables:
         data: row_id
         is_primary_key: true
       - column_name: provider_quick_code
-        data: |
-          return "fulton" if row_id == 1 else random.choice(["dekalb", "JLJ", "local", "pks", "state"])
-        null_percentage: 0
+        data: random.choice(["dekalb", "fulton", "JLJ", "local", "pks", "state"])
+        null_percentage: 0.25
       - column_name: provider_first_name
         data: fake.first_name()
         null_percentage: 0.05
@@ -54,15 +53,15 @@ tables:
   - table_name: "[RDB].[dbo].[D_INTERVIEW]"
     row_count: 60
     columns:
-      - column_name: D_INTERVIEW_KEY
+      - column_name: d_interview_key
         data: row_id
         is_primary_key: true
       - column_name: record_status_cd
         data: random.choice(["ACTIVE", "ACTIVE", "ACTIVE", "LOG_DEL"])
-      - column_name: LOCAL_ID
+      - column_name: local_id
         data: |
           return f"IX{100000 + row_id}"
-      - column_name: IX_TYPE
+      - column_name: ix_type
         data: |
           return random.choices(
             ["Initial/Original", "Re-Interview", "Cluster", "Field Follow-up"],
@@ -70,23 +69,23 @@ tables:
           )[0]
       - column_name: ix_location
         data: random.choices(["Clinic", "Field", "Telephone"], weights=[55, 35, 10])[0]
-      - column_name: IX_DATE
+      - column_name: ix_date
         data: fake.date_between(start_date=date(2024, 1, 1), end_date=date(2024, 3, 31))
 
   - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
     row_count: 60
     columns:
-      - column_name: INVESTIGATION_KEY
+      - column_name: investigation_key
         data: row_id
-      - column_name: D_INTERVIEW_KEY
+      - column_name: d_interview_key
         data: row_id
-      - column_name: IX_INTERVIEWER_KEY
+      - column_name: ix_interviewer_key
         data: 1
 
   - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
     row_count: 60
     columns:
-      - column_name: INVESTIGATION_KEY
+      - column_name: investigation_key
         data: row_id
       - column_name: patient_name
         data: |
@@ -111,31 +110,31 @@ tables:
         data: |
           id_num = fake.unique.random_int(10000, 99999)
           return f"CAS100{id_num}GA01"
-      - column_name: CA_PATIENT_INTV_STATUS
+      - column_name: ca_patient_intv_status
         data: |
           return random.choices(
             ["I - Interviewed", "A - Awaiting", "R - Refused Interview", "U - Unable to Locate", "O - Other", None],
             weights=[65, 10, 7, 7, 6, 5]
           )[0]
-      - column_name: INIT_FUP_INTERNET_FOLL_UP_CD
+      - column_name: init_fup_internet_foll_up_cd
         data: random.choice(["Y", "N"])
-      - column_name: FL_FUP_INTERNET_OUTCOME_CD
+      - column_name: fl_fup_internet_outcome_cd
         data: random.choice(["I1", "I2", "I3", "I4", "I5", "I6", "I7"]) if random.random() < .95 else None
       - column_name: investigator_interview_key
         data: 1
       - column_name: investigator_interview_qc
         data: fake.random_int(10000000, 99999999)
         null_percentage: 0.05
-      - column_name: FIELD_RECORD_NUMBER
+      - column_name: field_record_number
         data: |
           return 90000000 + row_id
-      - column_name: CA_INTERVIEWER_ASSIGN_DT
+      - column_name: ca_interviewer_assign_dt
         data: |
           return date(2024, 1, min(row_id, 28))
-      - column_name: CC_CLOSED_DT
+      - column_name: cc_closed_dt
         data: |
           return date(2024, 2, min(row_id, 28))
-      - column_name: FL_FUP_INIT_ASSGN_DT
+      - column_name: fl_fup_init_assgn_dt
         data: fake.date_between(start_date=date(2024, 1, 1), end_date=date(2024, 3, 31))
         null_percentage: 0.15
       - column_name: ix_date_oi
@@ -147,11 +146,11 @@ tables:
         data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) if random.random() < .95 else None
       - column_name: condition_cd
         data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) if random.random() < .95 else None
-      - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
+      - column_name: std_prtnrs_prd_trnsgndr_ttl
         data: str(random.randint(0, 4))
-      - column_name: SOC_PRTNRS_PRD_FML_TTL
+      - column_name: soc_prtnrs_prd_fml_ttl
         data: str(random.randint(0, 4))
-      - column_name: SOC_PRTNRS_PRD_MALE_TTL
+      - column_name: soc_prtnrs_prd_male_ttl
         data: str(random.randint(0, 4))
       - column_name: confirmation_dt
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
@@ -174,52 +173,52 @@ tables:
   - table_name: "[RDB].[dbo].[D_CONTACT_RECORD]"
     row_count: 40
     columns:
-      - column_name: D_CONTACT_RECORD_KEY
+      - column_name: d_contact_record_key
         data: row_id
         is_primary_key: true
-      - column_name: LOCAL_ID
+      - column_name: local_id
         data: |
           return f"CTRPA03{row_id:03d}"
       - column_name: record_status_cd
-        data: fake.random_element(["ACTIVE", "INACTIVE"])
-      - column_name: RECORD_STATUS_TIME
+        data: random.choice(["ACTIVE", "INACTIVE"])
+      - column_name: record_status_time
         data: |
           return datetime(2024, 3, min(row_id, 28), 8, 0, 0)
-      - column_name: CTT_REFERRAL_BASIS
+      - column_name: ctt_referral_basis
         data: random.choice(["P1 - Partner, Sex", "S1 - Social Contact 1", "A1 - Associate 1", "P2 - Partner, Needle-Sharing"])
-      - column_name: CTT_PROCESSING_DECISION
+      - column_name: ctt_processing_decision
         data: random.choice(["Field Follow-up", "Secondary Referral", "Record Search Closure"])
-      - column_name: ADD_TIME
+      - column_name: add_time
         data: |
           return datetime(2024, 1, min(row_id, 28), 9, 0, 0)
-      - column_name: LAST_CHG_TIME
+      - column_name: last_chg_time
         data: |
           return datetime(2024, 2, min(row_id, 28), 9, 0, 0)
 
   - table_name: "[RDB].[dbo].[F_CONTACT_RECORD_CASE]"
     row_count: 40
     columns:
-      - column_name: D_CONTACT_RECORD_KEY
+      - column_name: d_contact_record_key
         data: row_id
-      - column_name: SUBJECT_INVESTIGATION_KEY
+      - column_name: subject_investigation_key
         data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
-      - column_name: CONTACT_INVESTIGATION_KEY
+      - column_name: contact_investigation_key
         data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
-      - column_name: THIRD_PARTY_ENTITY_KEY
+      - column_name: third_party_entity_key
         data: 1
-      - column_name: CONTACT_KEY
+      - column_name: contact_key
         data: |
           return 1000 + row_id
-      - column_name: SUBJECT_KEY
+      - column_name: subject_key
         data: |
           return 2000 + (1 if row_id in (1, 2, 3) else 2)
-      - column_name: THIRD_PARTY_INVESTIGATION_KEY
+      - column_name: third_party_investigation_key
         data: 1
-      - column_name: CONTACT_INTERVIEW_KEY
-        data: foreign_key("[RDB].[dbo].[D_INTERVIEW]", "D_INTERVIEW_KEY")
-      - column_name: DISPOSITIONED_BY_KEY
+      - column_name: contact_interview_key
+        data: foreign_key("[RDB].[dbo].[D_INTERVIEW]", "d_interview_key")
+      - column_name: dispositioned_by_key
         data: 1
-      - column_name: CONTACT_EXPOSURE_SITE_KEY
+      - column_name: contact_exposure_site_key
         data: 1
-      - column_name: CONTACT_INVESTIGATOR_KEY
+      - column_name: contact_investigator_key
         data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
