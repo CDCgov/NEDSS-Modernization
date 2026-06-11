@@ -6,7 +6,7 @@ const resolver = (dataSource?: string | null) => {
     return dataSource
         ? cachedSelectableResolver(
               `report.datasource.columns.filterable.options.${dataSource}`,
-              `/nbs/api/options/report/datasource/${dataSource}/columns?filterable=true`
+              `/nbs/api/options/report/datasource/${dataSource}/columns/filterable`
           )()
         : Promise.resolve<Selectable[]>([]);
 };

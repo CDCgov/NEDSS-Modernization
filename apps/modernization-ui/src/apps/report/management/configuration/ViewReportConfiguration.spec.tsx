@@ -155,7 +155,7 @@ describe('view report configuration page', () => {
 
         expect(await findAllByText('My filter')).toHaveLength(2);
         expect(await findAllByText('Yes')).toHaveLength(2);
-        expect(await findAllByText('Full Name'));
+        expect(await findAllByText(/FULL_NAME \(Full Name\)/));
         expect(await findAllByText('Single'));
     });
 

@@ -77,6 +77,23 @@ class TestIntegrationNbsSr07Library:
         assert len(result.description) > 100
         assert result.content_type == 'table'
 
-        assert result.content.columns[0] == 'Disease'
-        assert result.content.columns[1] == 'type'
-        assert result.content.columns[2] == 'Number of Cases'
+        assert result.content.columns == ['Disease', 'type', 'Number of Cases']
+
+    def test_execute_report_no_data(self, snapshot):
+        report_spec = ReportSpec.model_validate(
+            {
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'SR7',
+                'library_name': 'nbs_sr_07',
+                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
+                'subset_query': (
+                    'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 2'
+                ),
+            }
+        )
+
+        result = execute_report(report_spec)
+
+        assert len(result.content.data) == 0
+        assert result.content.columns == ['Disease', 'type', 'Number of Cases']
