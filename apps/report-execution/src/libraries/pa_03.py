@@ -59,7 +59,9 @@ def _ips_contact_local_ids(rows: list[tuple], referral_bases: set[str]) -> set[s
     }
 
 
-def _ips_both_contact_local_ids(rows: list[tuple], referral_bases: set[str]) -> set[str]:
+def _ips_both_contact_local_ids(
+    rows: list[tuple], referral_bases: set[str]
+) -> set[str]:
     # SAS Val_M / Val_N / Val_O require both the case and the contact to be flagged
     # for internet follow-up.
     return {
@@ -162,29 +164,58 @@ def execute(
     );
     """
 
-    case_rows = trx.query(cases_query).data  # Equivalent input to SAS pa3_new for Val_A and Val_G.
-    contact_rows = trx.query(contacts_query).data  # Equivalent input to SAS pp03 for Val_B-Val_O and Val_Q1-Val_S7.
-
+    case_rows = trx.query(
+        cases_query
+    ).data  # Equivalent input to SAS pa3_new for Val_A and Val_G.
+    contact_rows = trx.query(
+        contacts_query
+    ).data  # Equivalent input to SAS pp03 for Val_B-Val_O and Val_Q1-Val_S7.
 
     all_cases = _case_local_ids(case_rows)  # See PA03.sas line 85 (val_a)
-    ips_cases = {row[0] for row in case_rows if row[0] is not None and row[1] == 'Y'}  # See PA03.sas line 106 (val_G)
+    ips_cases = {
+        row[0] for row in case_rows if row[0] is not None and row[1] == 'Y'
+    }  # See PA03.sas line 106 (val_G)
 
-    partner_contacts = _contact_local_ids(contact_rows, PARTNER_BASES)  # see PA03.sas line 88 (val_b)
-    social_contacts = _contact_local_ids(contact_rows, SOCIAL_BASES)  # see PA03.sas line 94 (val_c)
-    associate_contacts = _contact_local_ids(contact_rows, ASSOCIATE_BASES)  # see PA03.sas line 100 (val_d)
+    partner_contacts = _contact_local_ids(
+        contact_rows, PARTNER_BASES
+    )  # see PA03.sas line 88 (val_b)
+    social_contacts = _contact_local_ids(
+        contact_rows, SOCIAL_BASES
+    )  # see PA03.sas line 94 (val_c)
+    associate_contacts = _contact_local_ids(
+        contact_rows, ASSOCIATE_BASES
+    )  # see PA03.sas line 100 (val_d)
 
-    ips_partner_contacts = _ips_contact_local_ids(contact_rows, PARTNER_BASES)  # see PA03.sas line 112 (val_H)
-    ips_social_contacts = _ips_contact_local_ids(contact_rows, SOCIAL_BASES)  # # see PA03.sas line 120 (val_I)
-    ips_associate_contacts = _ips_contact_local_ids(contact_rows, ASSOCIATE_BASES)  # see PA03.sas line 128 (val_J)
-    
-    ips_partner_both = _ips_both_contact_local_ids(contact_rows, PARTNER_BASES)  # see PA03.sas line 136 (val_M)
-    ips_social_both = _ips_both_contact_local_ids(contact_rows, SOCIAL_BASES)  # see PA03.sas line 143 (val_N)
-    ips_associate_both = _ips_both_contact_local_ids(contact_rows, ASSOCIATE_BASES)  # see PA03.sas line 151 (val_O)
+    ips_partner_contacts = _ips_contact_local_ids(
+        contact_rows, PARTNER_BASES
+    )  # see PA03.sas line 112 (val_H)
+    ips_social_contacts = _ips_contact_local_ids(
+        contact_rows, SOCIAL_BASES
+    )  # # see PA03.sas line 120 (val_I)
+    ips_associate_contacts = _ips_contact_local_ids(
+        contact_rows, ASSOCIATE_BASES
+    )  # see PA03.sas line 128 (val_J)
 
-    outcome_counts = { 
-        'Sexual Contact:': _ips_outcome_counter(contact_rows, PARTNER_BASES),  # see PA03.sas lines 158-212 (val_q*)
-        'Social Contact:': _ips_outcome_counter(contact_rows, SOCIAL_BASES),  # see PA03.sas lines 215-269 (val_r*)
-        'Associate:': _ips_outcome_counter(contact_rows, ASSOCIATE_BASES),  # see PA03.sas lines 271-325 (val_s*)
+    ips_partner_both = _ips_both_contact_local_ids(
+        contact_rows, PARTNER_BASES
+    )  # see PA03.sas line 136 (val_M)
+    ips_social_both = _ips_both_contact_local_ids(
+        contact_rows, SOCIAL_BASES
+    )  # see PA03.sas line 143 (val_N)
+    ips_associate_both = _ips_both_contact_local_ids(
+        contact_rows, ASSOCIATE_BASES
+    )  # see PA03.sas line 151 (val_O)
+
+    outcome_counts = {
+        'Sexual Contact:': _ips_outcome_counter(
+            contact_rows, PARTNER_BASES
+        ),  # see PA03.sas lines 158-212 (val_q*)
+        'Social Contact:': _ips_outcome_counter(
+            contact_rows, SOCIAL_BASES
+        ),  # see PA03.sas lines 215-269 (val_r*)
+        'Associate:': _ips_outcome_counter(
+            contact_rows, ASSOCIATE_BASES
+        ),  # see PA03.sas lines 271-325 (val_s*)
     }
 
     rows = [
@@ -204,7 +235,9 @@ def execute(
         ),
         (
             'IPS Cluster Index:',
-            _ratio(len(ips_social_contacts) + len(ips_associate_contacts), len(ips_cases)),
+            _ratio(
+                len(ips_social_contacts) + len(ips_associate_contacts), len(ips_cases)
+            ),
         ),
         ('Total No. IPS Partners:', len(ips_partner_both)),
         ('Total No. IPS Social Contacts:', len(ips_social_both)),

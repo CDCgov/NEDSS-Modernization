@@ -90,10 +90,7 @@ class TestIntegrationPa03Library:
             row_map['Total No. IPS Social Contacts:']
             <= row_map['Total No. Social Contacts:']
         )
-        assert (
-            row_map['Total No. IPS Associates:']
-            <= row_map['Total No. Associates:']
-        )
+        assert row_map['Total No. IPS Associates:'] <= row_map['Total No. Associates:']
 
         sexual_outcome_total = sum(
             value for label, value in data if label.startswith('Sexual Contact:')
