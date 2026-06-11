@@ -1,8 +1,15 @@
+import logging
+
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from . import errors, models
 from .execute_report import execute_report
+from .utils import get_str_env_or_default
+
+# default the logging to INFO
+level = get_str_env_or_default('LOG_LEVEL', 'INFO')
+logging.basicConfig(level=level)
 
 app = FastAPI()
 
