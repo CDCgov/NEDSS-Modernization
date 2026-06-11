@@ -1,6 +1,5 @@
 name: Build and Push report execution image to ECR
 on:
-  pull_request: # temp for PR
   push:
     branches:
       - main
