@@ -27,9 +27,11 @@ def execute(
     INVESTIGATION_KEY (the last is used only as a tie‑breaker and does not appear
     in the final output). SAS does not have a tiebreaker value.
     """
-    days = library_params.get('report_days')
+    if not isinstance(library_params, dict):
+        raise ValueError(f"library_params must be a dictionary containing 'days_value' (e.g., 30, 60, 90), got {library_params}")
+    days = library_params.get('days_value')
     if days is None:
-        raise ValueError("library_params must contain 'days' (e.g., 30, 60, 90)")
+        raise ValueError(f"library_params must contain 'days_value' (e.g., 30, 60, 90), got {library_params}")
 
     # Build a SQL query that performs the entire duplicate detection
     sql = f"""
