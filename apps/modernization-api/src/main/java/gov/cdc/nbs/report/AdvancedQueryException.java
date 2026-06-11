@@ -25,18 +25,18 @@ public class AdvancedQueryException extends Exception {
 
   public String generateQueryString() {
     return "WHERE "
-            + String.join(
+        + String.join(
             " ",
             filterValues.stream()
-                    .sorted(Comparator.comparing(FilterValue::getSequenceNumber))
-                    .map(
-                            f ->
-                                    ((List.of("(", ")", "and", "or").contains(f.getOperator())
-                                            ? f.getOperator()
-                                            : "COL " + f.getOperator())
-                                            + " "
-                                            + (f.getValueTxt() != null ? f.getValueTxt() : ""))
-                                            .strip())
-                    .toList());
+                .sorted(Comparator.comparing(FilterValue::getSequenceNumber))
+                .map(
+                    f ->
+                        ((List.of("(", ")", "and", "or").contains(f.getOperator())
+                                    ? f.getOperator()
+                                    : "COL " + f.getOperator())
+                                + " "
+                                + (f.getValueTxt() != null ? f.getValueTxt() : ""))
+                            .strip())
+                .toList());
   }
 }
