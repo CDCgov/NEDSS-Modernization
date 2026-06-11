@@ -58,8 +58,11 @@ class ReportMapperTest {
     Mockito.lenient().when(dataSource.getId()).thenReturn(dataSourceId);
 
     Mockito.lenient()
-        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT))
+        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
         .thenReturn(new IdGeneratorService.GeneratedId(47L));
+
+    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("hello.sas");
+    Mockito.lenient().when(reportLibrary.getColumnSelectInd()).thenReturn('Y');
   }
 
   @Test
@@ -71,7 +74,7 @@ class ReportMapperTest {
 
     Long nextReportId = 100L;
     Mockito.lenient()
-        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.REPORT))
+        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
         .thenReturn(new IdGeneratorService.GeneratedId(nextReportId));
 
     Report result =
@@ -80,7 +83,7 @@ class ReportMapperTest {
 
     assertThat(result.getId()).isNotNull();
     assertThat(result.getId().getDataSourceUid()).isEqualTo(request.dataSourceId());
-    Mockito.verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.REPORT);
+    Mockito.verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.NBS);
     assertThat(result.getId().getReportUid()).isEqualTo(nextReportId);
 
     // Should always be set to 'N'
@@ -99,6 +102,8 @@ class ReportMapperTest {
     assertThat(result.getShared()).isEqualTo('R');
     assertThat(result.getSectionCd()).isEqualTo(sectionCd);
     assertThat(result.getReportLibrary()).isEqualTo(reportLibrary);
+    assertThat(result.getLocation()).isEqualTo("hello.sas");
+    assertThat(result.getReportTypeCode()).isEqualTo("SAS_CUSTOM");
   }
 
   @Test
@@ -170,5 +175,28 @@ class ReportMapperTest {
         reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
 
     assertThat(result.getShared()).isEqualTo('T');
+  }
+
+  @Test
+  void fromAdminReportRequest_should_set_report_type_code_to_html_when_no_column_select() {
+    Mockito.lenient().when(reportLibrary.getColumnSelectInd()).thenReturn('N');
+    AdminReportRequest request = buildAdminReportRequest(ReportConstants.ReportGroup.TEMPLATE);
+
+    Report result =
+        reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
+
+    assertThat(result.getReportTypeCode()).isEqualTo("SAS_ODS_HTML");
+  }
+
+  @Test
+  void fromAdminReportRequest_should_not_set_report_type_code_or_location_if_not_sas() {
+    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("py_lib");
+    AdminReportRequest request = buildAdminReportRequest(ReportConstants.ReportGroup.TEMPLATE);
+
+    Report result =
+        reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
+
+    assertThat(result.getReportTypeCode()).isNull();
+    assertThat(result.getLocation()).isNull();
   }
 }

@@ -12,6 +12,7 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.models.AdminReportRequest;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
@@ -205,6 +206,9 @@ class ReportControllerTest {
     void getReport_should_return_report_configuration_response() {
       Long reportUid = 1L;
       Long dataSourceUid = 2L;
+      Long ownerUid = 0L;
+      ReportGroup group = ReportGroup.PUBLIC;
+      String sectionCd = "1002";
 
       DataSource dataSourceEntity = mock(DataSource.class);
       ReportLibrary reportLibraryEntity = mock(ReportLibrary.class);
@@ -217,6 +221,10 @@ class ReportControllerTest {
               new ReportDataSource(dataSourceEntity),
               new Library(reportLibraryEntity),
               "Report Title",
+              "Report description prose",
+              ownerUid,
+              group,
+              sectionCd,
               List.of(basicFilterConfig),
               advancedFilterConfig,
               columns,

@@ -9,7 +9,9 @@
     padding: 0.5rem 1.75rem;
     gap: 2rem;
     align-items: center;
-    @extend %thin-bottom;
+    &:not(:last-child) {
+        @extend %thin-bottom;
+    }
     font-size: 0.875rem;
 
     .title {

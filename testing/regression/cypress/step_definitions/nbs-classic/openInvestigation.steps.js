@@ -11,7 +11,7 @@ Then('I should land on the "Open Investigation Queue" page', () => {
 });
 
 // Navigating through pages
-When('I click on the "Next" link', () => {
+When('I click on the Next link', () => {
   openInvestigationPage.clickNext();
 });
 
@@ -19,7 +19,7 @@ Then('I should see the next page of results', () => {
   openInvestigationPage.clickPrevious();
 });
 
-When('I click on the "Previous" link', () => {
+When('I click on the Previous link', () => {
   openInvestigationPage.clickPrevious();
 });
 
@@ -48,7 +48,7 @@ When('I select "Probable" from the sort options', () => {
   openInvestigationPage.selectProbable();
 });
 
-When('I click the "Ok" button', () => {
+When('I click the Ok button', () => {
   openInvestigationPage.clickOk();
 });
 
@@ -56,7 +56,7 @@ Then('I should see the results sorted by "Confirmed" status', () => {
   openInvestigationPage.verifyNoSortingChanges();
 });
 
-When('I click the "Cancel" button', () => {
+When('I click the Cancel button', () => {
   openInvestigationPage.clickCancel();
 });
 
@@ -64,7 +64,7 @@ Then('I should see no change in sorting', () => {
   openInvestigationPage.verifyNoSortingChanges();
 });
 
-When('I click on the "Remove All Filters Sorts" link', () => {
+When('I click on the Remove All Filters Sorts link', () => {
   openInvestigationPage.clickRemoveFilters();
 });
 

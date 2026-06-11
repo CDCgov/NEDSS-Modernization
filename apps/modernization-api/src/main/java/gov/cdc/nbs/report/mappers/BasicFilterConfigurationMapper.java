@@ -5,6 +5,8 @@ import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.FilterType;
+import gov.cdc.nbs.report.utils.ValueCountCalculator;
+import gov.cdc.nbs.report.utils.ValueCountCalculator.ReportValueCounts;
 import java.util.List;
 
 public class BasicFilterConfigurationMapper {
@@ -47,8 +49,8 @@ public class BasicFilterConfigurationMapper {
         columnUid,
         defaultValues,
         defaultIncludeNulls,
-        filter.getMinValueCnt(),
-        filter.getMaxValueCnt(),
+        ValueCountCalculator.toSelectType(
+            new ReportValueCounts(filter.getMinValueCnt(), filter.getMaxValueCnt())),
         isRequired,
         filterType);
   }

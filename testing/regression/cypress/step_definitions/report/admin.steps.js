@@ -1,0 +1,25 @@
+import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
+
+When('I navigate to manage reports', () => {
+    cy.visit('/nbs/ListReport.do');
+    cy.contains('Report Name').should('be.visible');
+});
+
+Then('I should see the report list', () => {
+    cy.contains('Report Name').should('be.visible');
+});
+
+Then('I should see the {string} configuration page', (type) => {
+    cy.contains(`${type} Report`).should('be.visible');
+});
+
+Then('I should see {int} available filters', (filterCount) => {
+    // account for header
+    cy.findByRole('group', { name: '3. Available filters' })
+        .findAllByRole('row')
+        .should('have.length', filterCount + 1);
+});
+
+When('I click the filter {int} {string} button', (filterInd, name) => {
+    cy.findAllByRole('button', { name }).eq(filterInd).click();
+});

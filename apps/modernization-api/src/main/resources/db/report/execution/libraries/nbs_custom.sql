@@ -4,7 +4,7 @@ USE [NBS_ODSE]
 
 DECLARE @pyLib VARCHAR(50) = 'nbs_custom'
 DECLARE @sasLib VARCHAR(50) = 'NBSCUSTOM.SAS'
-DECLARE @desc VARCHAR(300) = 'Basic tabular report. Executes the query described by the data source and filters and returns the table'
+DECLARE @desc VARCHAR(300) = 'Recommended default. Basic tabular report. Executes the query described by the data source and filters and returns the table'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN

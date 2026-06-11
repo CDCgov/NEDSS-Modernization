@@ -53,7 +53,7 @@ class DeletedPAMInvestigationReturnPatientFileLocatorConfiguration {
             "deleted-PAM-investigation-patient-file-return",
             route ->
                 route
-                    .order(RouteOrdering.PATIENT_FILE.before())
+                    .order(RouteOrdering.MODERNIZED_SERVICE.before())
                     .path("/nbs/PamAction.do")
                     .and()
                     .query("method", "deleteSubmit")
