@@ -43,7 +43,7 @@ public class AdvancedQueryBuilder {
     AdvancedQuery.RuleGroup ruleGroup = buildRuleGroup(ReportConstants.QueryCombinators.and, null);
 
     if (parenDepth != 0) {
-      throw new AdvancedQueryException("Mismatched parentheses");
+      throw new AdvancedQueryException("Mismatched parentheses", filterValues);
     }
 
     return unwrapRuleGroup(ruleGroup);
