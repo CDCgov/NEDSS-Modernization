@@ -1,7 +1,6 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.entity.odse.FilterValue;
-import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +8,14 @@ import java.util.UUID;
 
 public class AdvancedQueryBuilder {
   private static final System.Logger LOGGER =
-          System.getLogger(AdvancedQueryBuilder.class.getName());
+      System.getLogger(AdvancedQueryBuilder.class.getName());
 
   private final ArrayList<FilterValue> filterValues;
 
-  private final FilterValue FIRST_OPEN_PAREN = new FilterValue(1L, null, 0, "OPERATOR", null, "(", null);
-  private final FilterValue LAST_CLOSE_PAREN = new FilterValue(2L, null, 1000, "OPERATOR", null, ")", null);
+  private final FilterValue FIRST_OPEN_PAREN =
+      new FilterValue(1L, null, 0, "OPERATOR", null, "(", null);
+  private final FilterValue LAST_CLOSE_PAREN =
+      new FilterValue(2L, null, 1000, "OPERATOR", null, ")", null);
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues) {
     this.filterValues = new ArrayList<>(filterValues);
@@ -36,7 +37,9 @@ public class AdvancedQueryBuilder {
   /** Advances the current index to the next {@code FilterValue} in the list */
   private void advance() {
     if (hasNext()) {
-      LOGGER.log(System.Logger.Level.TRACE, "Advancing from FilterValue " + current + " to " + current + 1);
+      LOGGER.log(
+          System.Logger.Level.TRACE,
+          "Advancing from FilterValue " + current + " to " + current + 1);
       current++;
     }
   }
@@ -57,7 +60,8 @@ public class AdvancedQueryBuilder {
     AdvancedQuery.RuleGroup rootRuleGroup = startRuleGroup();
 
     if (hasNext()) {
-      throw new AdvancedQueryException("Extra FilterValue left over after parsing: " + peek(), filterValues);
+      throw new AdvancedQueryException(
+          "Extra FilterValue left over after parsing: " + peek(), filterValues);
     }
 
     AdvancedQuery query = simplify(rootRuleGroup);
@@ -122,7 +126,9 @@ public class AdvancedQueryBuilder {
   private AdvancedQuery.RuleGroup buildRuleGroup(
       ReportConstants.QueryCombinators combinator, AdvancedQuery previousRule)
       throws AdvancedQueryException {
-    LOGGER.log(System.Logger.Level.DEBUG, "Building '" + combinator + "' rule group from previousRule " + previousRule);
+    LOGGER.log(
+        System.Logger.Level.DEBUG,
+        "Building '" + combinator + "' rule group from previousRule " + previousRule);
 
     List<AdvancedQuery> rules = new ArrayList<>();
     rules.add(previousRule);

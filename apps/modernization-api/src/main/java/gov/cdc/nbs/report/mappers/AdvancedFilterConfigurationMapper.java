@@ -4,7 +4,6 @@ import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.report.AdvancedQueryBuilder;
 import gov.cdc.nbs.report.AdvancedQueryException;
 import gov.cdc.nbs.report.ReportConstants;
-import gov.cdc.nbs.report.ReportExceptionHandler;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.FilterType;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public class AdvancedFilterConfigurationMapper {
   private static final System.Logger LOGGER =
-          System.getLogger(AdvancedFilterConfiguration.class.getName());
+      System.getLogger(AdvancedFilterConfiguration.class.getName());
 
   private static final List<String> KNOWN_OPERATORS =
       Arrays.asList("GE", "LE", "GT", "LT", "BW", "CO", "SW", "EQ", "NE", "IN", "NN");

@@ -7,11 +7,10 @@ public record AdvancedFilterConfiguration(
     AdvancedQuery.RuleGroup defaultValue,
     //  The resulting SQL query portion extracted during construction of the RuleGroup.
     //  Included for debugging purposes if the RuleGroup cannot be constructed.
-    String query
-    ) {
-    public AdvancedFilterConfiguration {
-        if (defaultValue == null && (query == null || query.isBlank())) {
-            throw new IllegalArgumentException("Either 'defaultValue' or 'query' must be provided");
-        }
+    String query) {
+  public AdvancedFilterConfiguration {
+    if (defaultValue == null && (query == null || query.isBlank())) {
+      throw new IllegalArgumentException("Either 'defaultValue' or 'query' must be provided");
     }
+  }
 }
