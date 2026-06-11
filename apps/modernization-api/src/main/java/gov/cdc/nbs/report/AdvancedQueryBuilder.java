@@ -14,6 +14,8 @@ public class AdvancedQueryBuilder {
 
   private int parenDepth = 0;
 
+  private int rootParenDepth = 0;
+
   /** Specifies if there is another {@code FilterValue} to be processed */
   private boolean hasNext() {
     return current < filterValues.size();
@@ -46,12 +48,32 @@ public class AdvancedQueryBuilder {
     AdvancedQuery.RuleGroup ruleGroup =
         buildRuleGroup(firstRuleGroupParams.combinator, firstRuleGroupParams.rule);
 
-    if (hasNext()) {
+    if (rootParenDepth > 0 && current < filterValues.size()) {
+      System.out.println("Root paren depth: " + rootParenDepth);
+      while (true) {
+        System.out.println("Processing root paren: " + peek());
+        if (isCloseParen(peek())) {
+          System.out.println("Root ) encountered");
+          rootParenDepth--;
+          parenDepth--;
+        }
+
+        if (current < filterValues.size() - 1) {
+          advance();
+        } else {
+          break;
+        }
+      }
+    }
+
+    if (current < filterValues.size() - 1) {
+      System.out.println("Unexpected trailing FilterValue: " + peek().getOperator());
+      System.out.println("CUrrent index: " + current);
       throw new AdvancedQueryException("Unexpected trailing FilterValues", filterValues);
     }
 
     if (parenDepth != 0) {
-      throw new AdvancedQueryException("Unbalanced parentheses: " + parenDepth, null);
+      throw new AdvancedQueryException("Unbalanced parentheses: " + parenDepth, filterValues);
     }
 
     System.out.println(ruleGroup);
@@ -120,8 +142,12 @@ public class AdvancedQueryBuilder {
         } else if (isCloseParen(filterValue)) {
           // If we encounter a closed parenthesis without any nesting, terminate the rule group
           if (nestDepth == 0) {
+            System.out.println("Terminating rule group: " + filterValue.getOperator());
+            //            rootParenDepth--;
             terminated = true;
           } else {
+            System.out.println(
+                "Closing paren encountered, nesting depth: " + nestDepth + " rules: " + rules);
             nestDepth--;
           }
 
@@ -236,8 +262,12 @@ public class AdvancedQueryBuilder {
           firstCombinator = ReportConstants.QueryCombinators.valueOf(filterValue.getOperator());
           break;
         } else if (isOpenParen(filterValue)) {
+          System.out.println("Root ( encountered, seq" + filterValue.getSequenceNumber());
+          rootParenDepth++;
           parenDepth++;
         } else if (isCloseParen(filterValue)) {
+          System.out.println("Root ) encountered");
+          rootParenDepth--;
           parenDepth--;
         } else {
           throw new AdvancedQueryException(
