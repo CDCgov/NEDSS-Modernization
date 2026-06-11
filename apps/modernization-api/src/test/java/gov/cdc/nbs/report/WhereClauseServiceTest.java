@@ -313,15 +313,26 @@ class WhereClauseServiceTest {
     assertThat(whereFragment).isEmpty();
   }
 
-  @Test
-  void should_return_empty_string_when_filter_type_is_BAS_DAYS() {
+  private static Stream<String> noColumnFilterTypes() {
+    return ReportConstants.BAS_TYPES_NO_COLUMN.stream();
+  }
+
+  // Test will loop through all values in BAS_TYPES_NO_COLUMN and run the test for each
+  @ParameterizedTest(
+      name =
+          "Should skip processing and return empty string when filter type is in BAS_TYPES_NO_COLUMN ")
+  @MethodSource("noColumnFilterTypes")
+  void should_return_empty_string_when_filter_type_has_no_associated_column(
+      String filterTypeNoColumn) {
     Long filterUid = 100L;
     Long columnUid = 2L;
 
+    // Create configuration using the parameterized filter type string
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "BAS_DAYS");
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterTypeNoColumn);
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
+
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
 
     List<BasicFilterRequest> request =
@@ -332,8 +343,12 @@ class WhereClauseServiceTest {
     assertThat(whereFragment).isEmpty();
   }
 
-  @Test
-  void should_eliminate_BAS_DAYS_filter_but_leave_other_filters() {
+  // Test will loop through all values in BAS_TYPES_NO_COLUMN and run the test for each
+  @ParameterizedTest(
+      name =
+          "Should skip processing and return empty string when filter type is in BAS_TYPES_NO_COLUMN ")
+  @MethodSource("noColumnFilterTypes")
+  void should_eliminate_BAS_DAYS_filter_but_leave_other_filters(String filterTypeNoColumn) {
     Long filterUid = 100L;
     Long columnUid = 1L;
     Long filterUid2 = 101L;
@@ -344,7 +359,7 @@ class WhereClauseServiceTest {
             List.of(
                 createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, "BAS_TXT"),
                 createBasicFilterConfiguration(
-                    List.of(), filterUid2, columnUid2, false, "BAS_DAYS")),
+                    List.of(), filterUid2, columnUid2, false, filterTypeNoColumn)),
             List.of(
                 mockReportColumn(columnUid, "STRING", "ColumnName"),
                 mockReportColumn(columnUid2, "STRING", "ColumnName2")));
