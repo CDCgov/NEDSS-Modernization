@@ -45,3 +45,7 @@ Then('I should see value {string} in the {string} field', (value, label) => {
 Then('I should see value {string} in the {string} {string} input field', (value, label, role) => {
     cy.findByRole(role, { name: label }).should('have.value', value);
 });
+
+Then('I should see option {string} in the {string} combobox input field', (value, label) => {
+    cy.findByRole('combobox', { name: label }).find('option:selected').should('have.text', value);
+});

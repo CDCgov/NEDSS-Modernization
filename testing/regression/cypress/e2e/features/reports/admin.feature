@@ -104,23 +104,18 @@ Feature: View report configuration
         Then I should see value "No" in the "Required as basic filter?" field
         When I click the filter 2 "View" button
         Then I should see value "Yes" in the "Required as basic filter?" field
-        When I click on the "Back to Manage Reports" link
-        Then I should see the report list
-        Then I should see the "My test report" link
         
         # == Edit the Report ==
-        When I click on the "My test report" link
-        Then I should see the "View" configuration page
         When I click the "Edit" button
         # Check state
         Then The "Data source" "combobox" should be disabled
-        Then I should see value "nbs_ods.PHCDemographic (Line List of Diseases with NBS Security)" in the "Data source" "combobox" input field
+        Then I should see option "nbs_ods.PHCDemographic (Line List of Diseases with NBS Security)" in the "Data source" combobox input field
         Then I should see value "My test report" in the "Name" "textbox" input field
         Then I should see value "My test report is the best report" in the "Description" "textbox" input field
-        Then I should see value "System" in the "Owner" "combobox" input field
-        Then I should see value "Reporting Facility" in the "Group" "combobox" input field
-        Then I should see value "STD Report Section" in the "Section name" "combobox" input field
-        Then I should see value "nbs_custom (Recommended default. Basic tabular report. Executes the query described by the data source and filters and returns the table)" in the "Report execution library" "combobox" input field
+        Then I should see option "System" in the "Owner" combobox input field
+        Then I should see option "Reporting Facility" in the "Group" combobox input field
+        Then I should see option "STD Report Section" in the "Section name" combobox input field
+        Then I should see option "nbs_custom (Recommended default. Basic tabular report. Executes the query described by the data source and filters and returns the table)" in the "Report execution library" combobox input field
         Then I should see 4 available filters
         # Change things
         When I select value "Default Report Section" in the "Section name" field
@@ -146,7 +141,7 @@ Feature: View report configuration
         Then I should see value "My test report is the best report" in the "Description" field
         Then I should see value "System" in the "Owner" field
         Then I should see value "Reporting Facility" in the "Group" field
-        Then I should see value "STD Report Section" in the "Section name" field
+        Then I should see value "Default Report Section" in the "Section name" field
         Then I should see value "nbs_custom (Recommended default. Basic tabular report. Executes the query described by the data source and filters and returns the table)" in the "Report execution library" field
         Then I should see 4 available filters
         
@@ -173,6 +168,10 @@ Feature: View report configuration
         Then I should see value "---" in the "Type" field
         Then I should see value "---" in the "Associated column" field
         Then I should see value "No" in the "Required as basic filter?" field
+
+        When I click on the "Back to Manage Reports" link
+        Then I should see the report list
+        Then I should see the "My test report" link
 
         # TODO - delete
         
