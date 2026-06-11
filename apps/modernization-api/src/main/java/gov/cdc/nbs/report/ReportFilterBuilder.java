@@ -17,24 +17,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReportFilterBuilder {
   private final DataSourceColumnRepository dataSourceColumnRepository;
-  private final ReportFilterValidationBuilder reportFilterValidationBuilder;
   private final FilterCodeRepository filterCodeRepository;
   private final IdGeneratorService idGenerator;
 
   public ReportFilterBuilder(
       DataSourceColumnRepository dataSourceColumnRepository,
-      ReportFilterValidationBuilder reportFilterValidationBuilder,
       FilterCodeRepository filterCodeRepository,
       IdGeneratorService idGenerator) {
     this.dataSourceColumnRepository = dataSourceColumnRepository;
-    this.reportFilterValidationBuilder = reportFilterValidationBuilder;
     this.filterCodeRepository = filterCodeRepository;
     this.idGenerator = idGenerator;
   }
 
   public ReportFilter build(UpsertFilterRequest filter, Report report) {
-    LocalDateTime now = LocalDateTime.now();
-
     DataSourceColumn dataSourceColumn = null;
     if (filter.columnUid() != null) {
       dataSourceColumn =
@@ -69,21 +64,38 @@ public class ReportFilterBuilder {
     Long filterUid = filter.id() == null ? generateReportFilterId() : filter.id();
     filterBuilder.id(filterUid);
 
-    // If the filter is required, this will get handled in a later step of upsert
-    if (!filter.isRequired()) {
-      //  Delete corresponding filter validation record if it exists
-      filterBuilder.filterValidation(null);
-    }
-
     ReportFilter builtFilter = filterBuilder.build();
 
-    if (filter.isRequired()) {
-      ReportFilterValidation filterValidation =
-          reportFilterValidationBuilder.build(report, builtFilter);
-      builtFilter.setFilterValidation(filterValidation);
-    }
+    ReportFilterValidation filterValidation =
+        buildReportFilterValidation(report, builtFilter, filter);
+    builtFilter.setFilterValidation(filterValidation);
 
     return builtFilter;
+  }
+
+  private ReportFilterValidation buildReportFilterValidation(
+      Report report, ReportFilter filter, UpsertFilterRequest request) {
+    // Delete corresponding filter validation record if it exists
+    if (!request.isRequired()) return null;
+
+    LocalDateTime now = LocalDateTime.now();
+
+    ReportFilterValidation.ReportFilterValidationBuilder validationBuilder =
+        ReportFilterValidation.builder()
+            .reportFilterInd('Y')
+            .statusCd(Status.ACTIVE_CODE)
+            .statusTime(now);
+
+    Long validationUid = null;
+    validationBuilder.reportFilter(filter);
+    if (filter.getFilterValidation() != null) {
+      validationUid = filter.getFilterValidation().getId();
+    } else {
+      validationUid = generateReportFilterId();
+    }
+    validationBuilder.id(validationUid);
+
+    return validationBuilder.build();
   }
 
   private Long generateReportFilterId() {

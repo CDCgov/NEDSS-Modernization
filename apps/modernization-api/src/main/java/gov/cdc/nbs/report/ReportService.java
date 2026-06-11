@@ -70,7 +70,6 @@ public class ReportService {
       final DataSourceNameConfiguration dataSourceNameConfig,
       WhereClauseService whereClauseService,
       ReportFilterBuilder reportFilterBuilder,
-      ReportFilterValidationBuilder reportFilterValidationBuilder,
       ReportMapper reportMapper) {
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
