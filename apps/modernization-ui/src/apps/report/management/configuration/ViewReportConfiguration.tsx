@@ -8,6 +8,7 @@ import { useParams } from 'react-router';
 import { ReportConfigurationContent } from './ReportConfigurationContent';
 
 import styles from 'apps/report/layout/layout.module.scss';
+import { NBS_LIST_REPORT_CONFIG_PAGE } from './constants';
 
 const ViewReportConfiguration = () => {
     const params = useParams();
@@ -24,6 +25,8 @@ const ViewReportConfiguration = () => {
     ) : (
         <ReportLayout
             title="View Report"
+            startHref={NBS_LIST_REPORT_CONFIG_PAGE}
+            startPage="Manage Reports"
             actions={
                 <>
                     <Button secondary={true} onClick={() => window.alert('to do')}>
