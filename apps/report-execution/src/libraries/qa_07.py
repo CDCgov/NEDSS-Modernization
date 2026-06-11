@@ -23,9 +23,9 @@ def execute(
     Conversion notes:
     * The original SAS code had the days value hard coded in the library, but we made
     it a parameter that can be passed in from the API.
-    * The output is sorted by PATIENT_NAME, DIAGNOSIS, FL_FUP_EXAM_DT, and INVESTIGATION_KEY
-    (the last is used only as a tie‑breaker and does not appear in the final output). SAS does
-    not have a tiebreaker value.
+    * The output is sorted by PATIENT_NAME, DIAGNOSIS, FL_FUP_EXAM_DT, and
+    INVESTIGATION_KEY (the last is used only as a tie‑breaker and does not appear
+    in the final output). SAS does not have a tiebreaker value.
     """
     days = library_params.get('report_days')
     if days is None:
