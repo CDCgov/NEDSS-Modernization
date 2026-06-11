@@ -79,11 +79,7 @@ class WhereClauseServiceTest {
       Long reportFilterUid,
       Long reportColumnUid,
       Boolean defaultIncludeNulls,
-      String typeString) {
-
-    FilterType mockType = Mockito.mock(FilterType.class);
-    // Ensure the mock returns the string we need for the IF/ELSE logic
-    Mockito.lenient().when(mockType.type()).thenReturn(typeString);
+      FilterType fitlerType) {
 
     return new BasicFilterConfiguration(
         reportFilterUid,
@@ -92,7 +88,11 @@ class WhereClauseServiceTest {
         defaultIncludeNulls,
         null,
         null,
-        mockType);
+        fitlerType);
+  }
+
+  private FilterType createFilterType(String type, String code) {
+    return new FilterType(1L, "", "", code, "", type, "");
   }
 
   private AdvancedFilterConfiguration createAdvancedFilterConfiguration(
@@ -137,10 +137,12 @@ class WhereClauseServiceTest {
     Long columnUid = 2L;
     List<String> filterDefaultValue = List.of("condition1", "condition2");
 
+    FilterType filterType = createFilterType("BAS_TXT", "");
+
     List<BasicFilterConfiguration> basicFilterConfigs =
         List.of(
             createBasicFilterConfiguration(
-                filterDefaultValue, filterUid, columnUid, null, "BAS_TXT"));
+                filterDefaultValue, filterUid, columnUid, null, filterType));
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
 
@@ -162,12 +164,13 @@ class WhereClauseServiceTest {
     Long col1 = 1L;
     Long filter2 = 102L;
     Long col2 = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     ReportConfiguration reportConfig =
         createReportConfig(
             List.of(
-                createBasicFilterConfiguration(List.of(), filter1, col1, false, "BAS_TXT"),
-                createBasicFilterConfiguration(List.of(), filter2, col2, false, "BAS_TXT")),
+                createBasicFilterConfiguration(List.of(), filter1, col1, false, filterType),
+                createBasicFilterConfiguration(List.of(), filter2, col2, false, filterType)),
             List.of(
                 mockReportColumn(col1, "STRING", "ColumnName1"),
                 mockReportColumn(col2, "STRING", "ColumnName2")));
@@ -186,11 +189,12 @@ class WhereClauseServiceTest {
   void should_handle_allow_nulls_operator() {
     Long filterUid = 100L;
     Long columnUid = 1L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     ReportConfiguration reportConfig =
         createReportConfig(
             List.of(
-                createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, "BAS_TXT")),
+                createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType)),
             List.of(mockReportColumn(columnUid, "STRING", "ColumnName")));
 
     List<BasicFilterRequest> basicFilterRequest =
@@ -208,13 +212,14 @@ class WhereClauseServiceTest {
     Long columnUid = 1L;
     Long filterUid2 = 101L;
     Long columnUid2 = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     ReportConfiguration reportConfig =
         createReportConfig(
             List.of(
-                createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, "BAS_TXT"),
+                createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType),
                 createBasicFilterConfiguration(
-                    List.of(), filterUid2, columnUid2, false, "BAS_TXT")),
+                    List.of(), filterUid2, columnUid2, false, filterType)),
             List.of(
                 mockReportColumn(columnUid, "STRING", "ColumnName"),
                 mockReportColumn(columnUid2, "STRING", "ColumnName2")));
@@ -236,9 +241,10 @@ class WhereClauseServiceTest {
   void should_handle_only_nulls_requested() {
     Long filterUid = 100L;
     Long columnUid = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     List<BasicFilterConfiguration> basicFilterConfigs =
-        List.of(createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, "BAS_TXT"));
+        List.of(createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType));
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
     ReportConfiguration reportConfig =
         createReportConfig(basicFilterConfigs, List.of(reportColumn));
@@ -257,9 +263,10 @@ class WhereClauseServiceTest {
   void should_handle_time_range_logic() {
     Long filterUid = 200L;
     Long columnUid = 5L;
+    FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
 
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "BAS_TIM_RANGE");
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "DATE", "date_column");
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
@@ -276,9 +283,10 @@ class WhereClauseServiceTest {
   void should_handle_time_range_with_nulls() {
     Long filterUid = 200L;
     Long columnUid = 5L;
+    FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
 
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, "BAS_TIM_RANGE");
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType);
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "DATE", "date_column");
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
@@ -297,10 +305,11 @@ class WhereClauseServiceTest {
   void should_return_empty_string_when_no_filters_match_type() {
     Long filterUid = 100L;
     Long columnUid = 2L;
+    FilterType filterType = createFilterType("UNKNOWN_TYPE", "");
 
     // Type is "UNKNOWN_TYPE", which is not in BAS_TYPES or TIME_RANGE_TYPES
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "UNKNOWN_TYPE");
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
@@ -314,22 +323,23 @@ class WhereClauseServiceTest {
   }
 
   private static Stream<String> noColumnFilterTypes() {
-    return ReportConstants.BAS_TYPES_NO_COLUMN.stream();
+    return ReportConstants.BAS_CODES_NO_COLUMN.stream();
   }
 
-  // Test will loop through all values in BAS_TYPES_NO_COLUMN and run the test for each
+  // Test will loop through all values in BAS_CODES_NO_COLUMN and run the test for each
   @ParameterizedTest(
       name =
-          "Should skip processing and return empty string when filter type is in BAS_TYPES_NO_COLUMN ")
+          "Should skip processing and return empty string when filter type is in BAS_CODES_NO_COLUMN ")
   @MethodSource("noColumnFilterTypes")
   void should_return_empty_string_when_filter_type_has_no_associated_column(
-      String filterTypeNoColumn) {
+      String filterCodeNoColumn) {
     Long filterUid = 100L;
     Long columnUid = 2L;
+    FilterType filterType = createFilterType("", filterCodeNoColumn);
 
     // Create configuration using the parameterized filter type string
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterTypeNoColumn);
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
 
@@ -343,23 +353,26 @@ class WhereClauseServiceTest {
     assertThat(whereFragment).isEmpty();
   }
 
-  // Test will loop through all values in BAS_TYPES_NO_COLUMN and run the test for each
+  // Test will loop through all values in BAS_CODES_NO_COLUMN and run the test for each
   @ParameterizedTest(
       name =
-          "Should skip processing and return empty string when filter type is in BAS_TYPES_NO_COLUMN ")
+          "Should skip processing and return empty string when filter type is in BAS_CODES_NO_COLUMN ")
   @MethodSource("noColumnFilterTypes")
-  void should_eliminate_BAS_DAYS_filter_but_leave_other_filters(String filterTypeNoColumn) {
+  void should_eliminate_BAS_CODES_NO_COLUMN_filters_but_leave_other_filters(
+      String filterCodeNoColumn) {
     Long filterUid = 100L;
     Long columnUid = 1L;
     Long filterUid2 = 101L;
     Long columnUid2 = 2L;
+    FilterType filterType1 = createFilterType("BAS_TXT", "");
+    FilterType filterType2 = createFilterType("", filterCodeNoColumn);
 
     ReportConfiguration reportConfig =
         createReportConfig(
             List.of(
-                createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, "BAS_TXT"),
+                createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType1),
                 createBasicFilterConfiguration(
-                    List.of(), filterUid2, columnUid2, false, filterTypeNoColumn)),
+                    List.of(), filterUid2, columnUid2, false, filterType2)),
             List.of(
                 mockReportColumn(columnUid, "STRING", "ColumnName"),
                 mockReportColumn(columnUid2, "STRING", "ColumnName2")));
@@ -379,10 +392,11 @@ class WhereClauseServiceTest {
   void should_escape_malicious_strings_to_prevent_in_clause_breakout() {
     Long filterUid = 100L;
     Long columnUid = 2L;
+    FilterType filterType = createFilterType("BAS_CON_LIST", "");
 
     // Setup Config
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "BAS_CON_LIST");
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
@@ -406,9 +420,10 @@ class WhereClauseServiceTest {
 
     Long filterUid = 100L;
     Long columnUid = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     List<BasicFilterConfiguration> basicFilterConfigs =
-        List.of(createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, "BAS_TXT"));
+        List.of(createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType));
     // Column list is empty or doesn't contain 2L
     ReportConfiguration reportConfig = createReportConfig(basicFilterConfigs, List.of());
 
@@ -455,15 +470,17 @@ class WhereClauseServiceTest {
   void should_return_full_where_clause_with_prefix() {
     Long filterUid = 100L;
     Long columnUid = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     Long filterUid2 = 10L;
     Long columnUid2 = 3L;
+    FilterType filterType2 = createFilterType("BAS_TIM_RANGE", "");
 
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "BAS_TXT");
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
 
     BasicFilterConfiguration config2 =
-        createBasicFilterConfiguration(List.of(), filterUid2, columnUid2, true, "BAS_TIM_RANGE");
+        createBasicFilterConfiguration(List.of(), filterUid2, columnUid2, true, filterType2);
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
     ReportColumn reportColumn2 = mockReportColumn(columnUid2, "DATE", "TimeRangeColumn");
@@ -493,8 +510,10 @@ class WhereClauseServiceTest {
   @Test
   void should_throw_exception_when_values_mismatch_due_to_nulls() {
     Long filterUid = 100L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
+
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, 2L, false, "BAS_TXT");
+        createBasicFilterConfiguration(List.of(), filterUid, 2L, false, filterType);
     ReportColumn reportColumn = mockReportColumn(2L, "STRING", "ColumnName");
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
 
@@ -511,10 +530,11 @@ class WhereClauseServiceTest {
   void should_throw_exception_when_input_values_result_in_zero_formatted_values() {
     Long filterUid = 100L;
     Long columnUid = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     // Setup config and column
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "BAS_TXT");
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
 
@@ -532,15 +552,17 @@ class WhereClauseServiceTest {
   void should_create_where_clause_with_all_filters_and_nested_rules() {
     Long filterUid = 100L;
     Long columnUid = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     Long filterUid2 = 10L;
     Long columnUid2 = 3L;
+    FilterType filterType2 = createFilterType("BAS_TIM_RANGE", "");
 
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "BAS_TXT");
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
 
     BasicFilterConfiguration config2 =
-        createBasicFilterConfiguration(List.of(), filterUid2, columnUid2, true, "BAS_TIM_RANGE");
+        createBasicFilterConfiguration(List.of(), filterUid2, columnUid2, true, filterType2);
 
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
     ReportColumn reportColumn2 = mockReportColumn(columnUid2, "DATE", "TimeRangeColumn");

@@ -1,8 +1,8 @@
 package gov.cdc.nbs.report;
 
+import static gov.cdc.nbs.report.ReportConstants.BAS_CODES_NO_COLUMN;
 import static gov.cdc.nbs.report.ReportConstants.BAS_TIME_RANGE_TYPES;
 import static gov.cdc.nbs.report.ReportConstants.BAS_TYPES;
-import static gov.cdc.nbs.report.ReportConstants.BAS_TYPES_NO_COLUMN;
 import static gov.cdc.nbs.report.ReportConstants.COMPARISON_OPERATORS;
 import static gov.cdc.nbs.report.ReportConstants.Operator;
 import static gov.cdc.nbs.report.ReportConstants.RDB_LAB_RESULT_VAL_COLS;
@@ -129,9 +129,9 @@ public class WhereClauseService {
                       new IllegalArgumentException(
                           "No basic filter configuration found for UID: "
                               + filterRequest.reportFilterUid()));
-      // BAS_TYPES_NO_COLUMN are non-column filters which are intercepted and processed
+      // BAS_CODES_NO_COLUMN are non-column filters which are intercepted and processed
       // independently during execution spec builds.
-      if (config.filterType() != null && BAS_TYPES_NO_COLUMN.contains(config.filterType().type())) {
+      if (config.filterType() != null && BAS_CODES_NO_COLUMN.contains(config.filterType().code())) {
         continue;
       }
 
