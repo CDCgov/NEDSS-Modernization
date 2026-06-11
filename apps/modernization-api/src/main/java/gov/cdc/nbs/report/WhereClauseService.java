@@ -94,7 +94,7 @@ public class WhereClauseService {
 
     String advWhereFragment =
         buildAdvancedQueryResult(reportConfig, executionRequest.advancedFilter());
-    if (advWhereFragment != null && !advWhereFragment.isEmpty()) {
+    if (advWhereFragment != null && !advWhereFragment.isBlank()) {
       activeClauses.add(advWhereFragment);
     }
 
@@ -121,14 +121,14 @@ public class WhereClauseService {
     List<String> permissionClauses = new ArrayList<>();
 
     String jpCriteria =
-        getJurisProgramCriteria(
+        getJurisProgramRestrictionCriteria(
             reportConfig.dataSource().hasJurisdictionSecurity(), reportConfig.group());
     if (!jpCriteria.isBlank()) {
       permissionClauses.add(jpCriteria);
     }
 
     String reportingFacilityCriteria =
-        getReportingFacilityCriteria(reportConfig.dataSource().hasFacilitySecurity());
+        getReportingFacilityRestrictionCriteria(reportConfig.dataSource().hasFacilitySecurity());
     if (!reportingFacilityCriteria.isBlank()) {
       permissionClauses.add(reportingFacilityCriteria);
     }
@@ -140,10 +140,26 @@ public class WhereClauseService {
     return "(" + String.join(SQL_AND, permissionClauses) + ")";
   }
 
-  private String getJurisProgramCriteria(
+  /**
+   * Constructs the SQL criteria block to restrict data visibility by program area and jurisdiction.
+   * <p>
+   * If jurisdiction security is not set for the data source, this method returns an
+   * empty string indicating no juris or prog area restrictions. If security is set but the user possesses
+   * no valid scopes, an exception is thrown to prevent silent data exposure.
+   * </p>
+   *
+   * @param hasJurisdictionSecurity Indicates if jurisdiction and program area isolation is set.
+   * @param group                     The report group used to derive the specific visibility permission.
+   * @return A parenthesized SQL predicate clause (e.g., {@code "(program_jurisdiction_oid IN (1, 2))"}).
+   * Returns an empty string {@code ""} if jurisdiction/program area security is not set.
+   * @throws IllegalArgumentException If jurisdiction/progam area security is set but the user's resolved
+   * {@link PermissionScope} contains no assigned identifiers.
+   */
+  private String getJurisProgramRestrictionCriteria(
       boolean hasJurisdictionSecurity, ReportConstants.ReportGroup group) {
+    final String NO_JURIS_RESTRICTION = "";
     if (!hasJurisdictionSecurity) {
-      return "";
+      return NO_JURIS_RESTRICTION;
     }
 
     PermissionScope scope = this.scopeResolver.resolve(mapSharedToPermission(group));
@@ -158,14 +174,24 @@ public class WhereClauseService {
     return "(program_jurisdiction_oid IN (" + ids + "))";
   }
 
-  private String getReportingFacilityCriteria(boolean hasReportingFacilitySecurity) {
+  /**
+   * Constructs the SQL criteria block to restrict data visibility by reporting facility.
+   *
+   * @param hasReportingFacilitySecurity Indicates if facility-level isolation has been set.
+   * @return A parenthesized SQL predicate clause (e.g., {@code "(REPORTING_FACILITY_UID = 123)"}).
+   * Returns an empty string {@code ""} when no facility restrictions apply, indicating
+   * the query should run for all facilities.
+   */
+  private String getReportingFacilityRestrictionCriteria(boolean hasReportingFacilitySecurity) {
+    final String NO_FACILITY_RESTRICTION = "";
+
     if (!hasReportingFacilitySecurity) {
-      return "";
+      return NO_FACILITY_RESTRICTION;
     }
 
     Long externalOrgId = SecurityUtil.getUserDetails().getExternalOrgUid();
     if (externalOrgId == null) {
-      return "";
+      return NO_FACILITY_RESTRICTION;
     }
 
     return "(REPORTING_FACILITY_UID = " + externalOrgId + ")";
