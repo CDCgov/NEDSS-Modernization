@@ -270,11 +270,18 @@ tables:
 
       - column_name: fl_fup_exam_dt
         data: |
-          # For each patient/diagnosis group, we need multiple dates within 30-90 days.
-          # This is a simplified approach: create a base date and add offsets that repeat.
-          # Use a deterministic pattern based on row_id modulo something.
+          # Create a deterministic pattern that yields gaps of different sizes
+          # Use row_id to decide a "band": 0-30, 31-60, 61-90, etc.
           base_date = date(2023, 1, 1)
-          offset = (row_id % 5) * 15  # 0,15,30,45,60 days
+          r = (row_id * 17) % 100   # deterministic "random" number 0..99
+          if r < 40:
+              offset = 0   # very close
+          elif r < 70:
+              offset = 45  # medium gap (45 days, >30 but <=60)
+          else:
+              offset = 90  # large gap (90 days, >60 but <=90)
+          # Add a small jitter to avoid exact equality
+          offset += (row_id // 5) % 10
           return base_date + timedelta(days=offset)
         null_percentage: 0.1
 

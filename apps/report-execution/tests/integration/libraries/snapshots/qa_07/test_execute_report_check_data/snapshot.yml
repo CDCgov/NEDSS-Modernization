@@ -1,63 +1,63 @@
 - !!python/tuple
   - Badu, Erykah
-  - 10028563
-  - 200 - Chlamydia
-  - 2020-01-31 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 10077894
-  - 200 - Chlamydia
-  - 2020-10-06 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Badu, Erykah
   - 98411
   - 200 - Chlamydia
   - 2021-08-19 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 20048550
-  - 200 - Chlamydia
-  - 2020-03-09 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 10051607
-  - 200 - Chlamydia
-  - 2024-04-05 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-01-09 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 20076243
   - 200 - Chlamydia
   - 2025-04-06 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-02-17 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 99617
   - 200 - Chlamydia
   - 2025-06-28 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-02-18 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 10028563
+  - 200 - Chlamydia
+  - 2020-01-31 00:00:00
+  - 2023-02-19 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 20012688
   - 200 - Chlamydia
   - 2023-07-06 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-02-19 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 10089405
+  - 10077894
   - 200 - Chlamydia
-  - 2021-06-09 00:00:00
-  - 2023-02-15 00:00:00
+  - 2020-10-06 00:00:00
+  - 2023-02-21 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 10096051
   - 200 - Chlamydia
   - 2022-10-11 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-04-05 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 10089405
+  - 200 - Chlamydia
+  - 2021-06-09 00:00:00
+  - 2023-04-08 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 20048550
+  - 200 - Chlamydia
+  - 2020-03-09 00:00:00
+  - 2023-04-09 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 10051607
+  - 200 - Chlamydia
+  - 2024-04-05 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 20019675
@@ -72,400 +72,400 @@
   - 2023-01-01 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 20078827
+  - 20058360
   - 300 - Gonorrhea
-  - 2022-08-03 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 20054559
-  - 300 - Gonorrhea
-  - 2020-03-04 00:00:00
-  - 2023-01-16 00:00:00
+  - 2022-05-06 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 20071172
   - 300 - Gonorrhea
   - 2025-04-24 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 20058360
-  - 300 - Gonorrhea
-  - 2022-05-06 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 20065936
-  - 300 - Gonorrhea
-  - 2023-08-16 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-05 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 34407
   - 300 - Gonorrhea
   - 2023-11-12 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 41968
+  - 20078827
   - 300 - Gonorrhea
-  - 2024-05-19 00:00:00
-  - 2023-03-02 00:00:00
+  - 2022-08-03 00:00:00
+  - 2023-01-07 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 20054559
+  - 300 - Gonorrhea
+  - 2020-03-04 00:00:00
+  - 2023-01-08 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 20065936
+  - 300 - Gonorrhea
+  - 2023-08-16 00:00:00
+  - 2023-02-18 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 42042
   - 300 - Gonorrhea
   - 2024-09-11 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 32387
-  - 710 - Syphilis, primary
-  - 2021-07-19 00:00:00
-  - 2023-01-01 00:00:00
+  - 41968
+  - 300 - Gonorrhea
+  - 2024-05-19 00:00:00
+  - 2023-04-04 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 10022598
   - 710 - Syphilis, primary
   - 2020-05-07 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 20079380
-  - 710 - Syphilis, primary
-  - 2021-02-06 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 20018625
-  - 710 - Syphilis, primary
-  - 2022-04-25 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 30919
-  - 710 - Syphilis, primary
-  - 2021-08-04 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 10050299
   - 710 - Syphilis, primary
   - 2023-06-04 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 10037805
-  - 720 - Syphilis, secondary
-  - 2023-07-14 00:00:00
-  - 2023-01-16 00:00:00
+  - 30919
+  - 710 - Syphilis, primary
+  - 2021-08-04 00:00:00
+  - 2023-02-22 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 20051402
-  - 720 - Syphilis, secondary
-  - 2022-06-26 00:00:00
-  - 2023-01-31 00:00:00
+  - 32387
+  - 710 - Syphilis, primary
+  - 2021-07-19 00:00:00
+  - 2023-04-02 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 20049
-  - 720 - Syphilis, secondary
-  - 2021-11-11 00:00:00
-  - 2023-01-31 00:00:00
+  - 20079380
+  - 710 - Syphilis, primary
+  - 2021-02-06 00:00:00
+  - 2023-04-04 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 10015993
-  - 720 - Syphilis, secondary
-  - 2024-06-30 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 46112
-  - 720 - Syphilis, secondary
-  - 2024-01-15 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 69660
-  - 720 - Syphilis, secondary
-  - 2025-05-18 00:00:00
-  - 2023-02-15 00:00:00
+  - 20018625
+  - 710 - Syphilis, primary
+  - 2022-04-25 00:00:00
+  - 2023-04-08 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 49744
   - 720 - Syphilis, secondary
   - 2023-07-25 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 10060012
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-05-08 00:00:00
   - 2023-01-01 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 10049194
+  - 20049
+  - 720 - Syphilis, secondary
+  - 2021-11-11 00:00:00
+  - 2023-01-05 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 10015993
+  - 720 - Syphilis, secondary
+  - 2024-06-30 00:00:00
+  - 2023-01-07 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 69660
+  - 720 - Syphilis, secondary
+  - 2025-05-18 00:00:00
+  - 2023-01-07 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 20051402
+  - 720 - Syphilis, secondary
+  - 2022-06-26 00:00:00
+  - 2023-02-16 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 46112
+  - 720 - Syphilis, secondary
+  - 2024-01-15 00:00:00
+  - 2023-02-18 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 10037805
+  - 720 - Syphilis, secondary
+  - 2023-07-14 00:00:00
+  - 2023-02-23 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 10053995
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-08-31 00:00:00
+  - 2020-08-31 00:00:00
+  - 2023-01-01 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 20029558
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-02-02 00:00:00
   - 2023-01-01 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 20065190
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2023-06-08 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 19178
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-04-18 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 10053995
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-08-31 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 66752
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-02-09 00:00:00
-  - 2023-01-16 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 32322
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2023-08-09 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 20081644
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-08-02 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 60500
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-05-27 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 15006
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-06-02 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 20029597
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-07-08 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 80941
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-02-13 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 10034085
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-05-08 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 20029558
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-02-02 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 62081
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-11-25 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Badu, Erykah
-  - 91596
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-08-03 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 20084314
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2022-01-07 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 96605
-  - 790 - Syphilis, Congenital
-  - 2025-06-29 00:00:00
-  - 2023-01-01 00:00:00
+  - 15006
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2021-06-02 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 89176
-  - 790 - Syphilis, Congenital
-  - 2021-01-31 00:00:00
-  - 2023-01-01 00:00:00
+  - 10060012
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2022-05-08 00:00:00
+  - 2023-01-06 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 93254
-  - 790 - Syphilis, Congenital
-  - 2025-07-12 00:00:00
-  - 2023-01-01 00:00:00
+  - 80941
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2024-02-13 00:00:00
+  - 2023-01-09 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 76247
-  - 790 - Syphilis, Congenital
-  - 2022-08-26 00:00:00
-  - 2023-01-01 00:00:00
+  - 10034085
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-05-08 00:00:00
+  - 2023-01-10 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 61464
-  - 790 - Syphilis, Congenital
-  - 2022-02-19 00:00:00
-  - 2023-01-16 00:00:00
+  - 62081
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2022-11-25 00:00:00
+  - 2023-02-15 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 10040469
-  - 790 - Syphilis, Congenital
-  - 2021-02-05 00:00:00
-  - 2023-01-16 00:00:00
+  - 10049194
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-08-31 00:00:00
+  - 2023-02-19 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 10074543
-  - 790 - Syphilis, Congenital
-  - 2023-06-29 00:00:00
-  - 2023-01-31 00:00:00
+  - 20029597
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-07-08 00:00:00
+  - 2023-02-20 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 66752
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-02-09 00:00:00
+  - 2023-02-22 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 60500
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-05-27 00:00:00
+  - 2023-02-23 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 91596
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2025-08-03 00:00:00
+  - 2023-04-06 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 19178
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2021-04-18 00:00:00
+  - 2023-04-10 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 20081644
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-08-02 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 10089130
   - 790 - Syphilis, Congenital
   - 2022-12-16 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-01-01 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 71666
+  - 96605
   - 790 - Syphilis, Congenital
-  - 2020-01-27 00:00:00
-  - 2023-01-31 00:00:00
+  - 2025-06-29 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 20071955
+  - 76247
   - 790 - Syphilis, Congenital
-  - 2023-01-22 00:00:00
-  - 2023-02-15 00:00:00
+  - 2022-08-26 00:00:00
+  - 2023-01-09 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 10019844
+  - 10040469
   - 790 - Syphilis, Congenital
-  - 2022-02-25 00:00:00
-  - 2023-02-15 00:00:00
+  - 2021-02-05 00:00:00
+  - 2023-01-10 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 20052987
   - 790 - Syphilis, Congenital
   - 2025-08-02 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-16 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 10071933
-  - 900 - HIV Infection
-  - 2021-06-19 00:00:00
-  - 2023-01-01 00:00:00
+  - 20071955
+  - 790 - Syphilis, Congenital
+  - 2023-01-22 00:00:00
+  - 2023-02-19 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 20079182
-  - 900 - HIV Infection
-  - 2020-07-08 00:00:00
-  - 2023-01-16 00:00:00
+  - 10074543
+  - 790 - Syphilis, Congenital
+  - 2023-06-29 00:00:00
+  - 2023-02-21 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 20084959
-  - 900 - HIV Infection
-  - 2020-08-04 00:00:00
-  - 2023-01-31 00:00:00
+  - 71666
+  - 790 - Syphilis, Congenital
+  - 2020-01-27 00:00:00
+  - 2023-02-21 00:00:00
 - !!python/tuple
   - Badu, Erykah
-  - 10029824
-  - 900 - HIV Infection
-  - 2023-10-04 00:00:00
-  - 2023-02-15 00:00:00
+  - 89176
+  - 790 - Syphilis, Congenital
+  - 2021-01-31 00:00:00
+  - 2023-02-22 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 61464
+  - 790 - Syphilis, Congenital
+  - 2022-02-19 00:00:00
+  - 2023-04-04 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 93254
+  - 790 - Syphilis, Congenital
+  - 2025-07-12 00:00:00
+  - 2023-04-08 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 10019844
+  - 790 - Syphilis, Congenital
+  - 2022-02-25 00:00:00
+  - 2023-04-09 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 32250
   - 900 - HIV Infection
   - 2021-05-23 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 47814
   - 900 - HIV Infection
   - 2020-05-16 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-06 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 10029824
+  - 900 - HIV Infection
+  - 2023-10-04 00:00:00
+  - 2023-01-09 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 20057666
   - 900 - HIV Infection
   - 2021-03-01 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-09 00:00:00
 - !!python/tuple
   - Badu, Erykah
   - 21181
   - 900 - HIV Infection
   - 2024-03-31 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 65304
-  - 200 - Chlamydia
-  - 2024-02-12 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 66422
-  - 200 - Chlamydia
-  - 2025-10-21 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 50519
-  - 200 - Chlamydia
-  - 2023-06-13 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 63236
-  - 200 - Chlamydia
-  - 2024-09-04 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 10017707
-  - 200 - Chlamydia
-  - 2020-08-15 00:00:00
   - 2023-02-15 00:00:00
 - !!python/tuple
-  - Carey, Mariah
-  - 20037752
-  - 200 - Chlamydia
-  - 2023-01-06 00:00:00
-  - 2023-02-15 00:00:00
+  - Badu, Erykah
+  - 10071933
+  - 900 - HIV Infection
+  - 2021-06-19 00:00:00
+  - 2023-04-02 00:00:00
 - !!python/tuple
-  - Carey, Mariah
-  - 99992
-  - 200 - Chlamydia
-  - 2025-07-17 00:00:00
-  - 2023-02-15 00:00:00
+  - Badu, Erykah
+  - 20084959
+  - 900 - HIV Infection
+  - 2020-08-04 00:00:00
+  - 2023-04-05 00:00:00
+- !!python/tuple
+  - Badu, Erykah
+  - 20079182
+  - 900 - HIV Infection
+  - 2020-07-08 00:00:00
+  - 2023-04-07 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 20050441
   - 200 - Chlamydia
   - 2025-08-12 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-04 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 99992
+  - 200 - Chlamydia
+  - 2025-07-17 00:00:00
+  - 2023-01-06 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 65304
+  - 200 - Chlamydia
+  - 2024-02-12 00:00:00
+  - 2023-02-18 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 66422
+  - 200 - Chlamydia
+  - 2025-10-21 00:00:00
+  - 2023-02-19 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10017707
+  - 200 - Chlamydia
+  - 2020-08-15 00:00:00
+  - 2023-02-22 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 20037752
+  - 200 - Chlamydia
+  - 2023-01-06 00:00:00
+  - 2023-04-03 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 50519
+  - 200 - Chlamydia
+  - 2023-06-13 00:00:00
+  - 2023-04-06 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 63236
+  - 200 - Chlamydia
+  - 2024-09-04 00:00:00
+  - 2023-04-09 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 10090304
@@ -474,592 +474,598 @@
   - 2022-05-08 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 20054713
+  - 10072130
   - 300 - Gonorrhea
-  - 2020-05-21 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 10072106
-  - 300 - Gonorrhea
-  - 2022-04-26 00:00:00
-  - 2023-01-16 00:00:00
+  - 2020-03-18 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 71065
   - 300 - Gonorrhea
   - 2020-03-23 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 10063823
-  - 300 - Gonorrhea
-  - 2022-10-22 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 10051155
-  - 300 - Gonorrhea
-  - 2022-10-19 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 20038299
-  - 300 - Gonorrhea
-  - 2025-06-18 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 55148
-  - 300 - Gonorrhea
-  - 2022-12-10 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 82533
-  - 300 - Gonorrhea
-  - 2023-01-25 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 10064705
   - 300 - Gonorrhea
   - 2022-04-20 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-04 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 55148
+  - 300 - Gonorrhea
+  - 2022-12-10 00:00:00
+  - 2023-01-07 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10051155
+  - 300 - Gonorrhea
+  - 2022-10-19 00:00:00
+  - 2023-02-16 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 45435
   - 300 - Gonorrhea
   - 2023-01-22 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10072130
+  - 82533
   - 300 - Gonorrhea
-  - 2020-03-18 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-25 00:00:00
+  - 2023-02-24 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 20099688
-  - 710 - Syphilis, primary
-  - 2021-08-20 00:00:00
-  - 2023-01-16 00:00:00
+  - 20038299
+  - 300 - Gonorrhea
+  - 2025-06-18 00:00:00
+  - 2023-04-04 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10059106
-  - 710 - Syphilis, primary
-  - 2020-06-24 00:00:00
-  - 2023-01-31 00:00:00
+  - 10063823
+  - 300 - Gonorrhea
+  - 2022-10-22 00:00:00
+  - 2023-04-06 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10059582
-  - 710 - Syphilis, primary
-  - 2024-10-23 00:00:00
-  - 2023-01-31 00:00:00
+  - 20054713
+  - 300 - Gonorrhea
+  - 2020-05-21 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10085577
-  - 710 - Syphilis, primary
-  - 2022-03-10 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 10078419
-  - 710 - Syphilis, primary
-  - 2021-08-20 00:00:00
-  - 2023-02-15 00:00:00
+  - 10072106
+  - 300 - Gonorrhea
+  - 2022-04-26 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 20045036
   - 710 - Syphilis, primary
   - 2021-01-27 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-03 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10078419
+  - 710 - Syphilis, primary
+  - 2021-08-20 00:00:00
+  - 2023-01-10 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10059106
+  - 710 - Syphilis, primary
+  - 2020-06-24 00:00:00
+  - 2023-02-17 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10059582
+  - 710 - Syphilis, primary
+  - 2024-10-23 00:00:00
+  - 2023-02-20 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10085577
+  - 710 - Syphilis, primary
+  - 2022-03-10 00:00:00
+  - 2023-02-21 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 20099688
+  - 710 - Syphilis, primary
+  - 2021-08-20 00:00:00
+  - 2023-02-23 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 78740
   - 710 - Syphilis, primary
   - 2021-12-16 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-04-04 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 69955
   - 710 - Syphilis, primary
   - 2023-06-05 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 20086042
-  - 720 - Syphilis, secondary
-  - 2023-09-27 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 20015834
-  - 720 - Syphilis, secondary
-  - 2020-01-19 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 98205
-  - 720 - Syphilis, secondary
-  - 2022-12-13 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 10076716
-  - 720 - Syphilis, secondary
-  - 2024-04-04 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 20013362
-  - 720 - Syphilis, secondary
-  - 2021-11-30 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 45539
-  - 720 - Syphilis, secondary
-  - 2024-12-23 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 76296
-  - 720 - Syphilis, secondary
-  - 2024-06-20 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-04-09 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 87707
   - 720 - Syphilis, secondary
   - 2020-04-03 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-05 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 20042361
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-01-11 00:00:00
-  - 2023-01-01 00:00:00
+  - 20013362
+  - 720 - Syphilis, secondary
+  - 2021-11-30 00:00:00
+  - 2023-01-08 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 19181
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-09-20 00:00:00
-  - 2023-01-01 00:00:00
+  - 45539
+  - 720 - Syphilis, secondary
+  - 2024-12-23 00:00:00
+  - 2023-02-24 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10093824
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-02-06 00:00:00
-  - 2023-01-16 00:00:00
+  - 98205
+  - 720 - Syphilis, secondary
+  - 2022-12-13 00:00:00
+  - 2023-04-01 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 76296
+  - 720 - Syphilis, secondary
+  - 2024-06-20 00:00:00
+  - 2023-04-03 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 20015834
+  - 720 - Syphilis, secondary
+  - 2020-01-19 00:00:00
+  - 2023-04-06 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10076716
+  - 720 - Syphilis, secondary
+  - 2024-04-04 00:00:00
+  - 2023-04-08 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 20086042
+  - 720 - Syphilis, secondary
+  - 2023-09-27 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 20037500
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2021-07-28 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 10090640
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-08-20 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 20042568
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-01-30 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 29274
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-03-14 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 87238
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-07-11 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 23619
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2023-09-13 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 20076844
-  - 790 - Syphilis, Congenital
-  - 2024-06-13 00:00:00
-  - 2023-01-01 00:00:00
+  - 87238
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2025-07-11 00:00:00
+  - 2023-02-16 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 21647
-  - 790 - Syphilis, Congenital
-  - 2022-12-29 00:00:00
-  - 2023-01-01 00:00:00
+  - 10093824
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2024-02-06 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 90707
-  - 790 - Syphilis, Congenital
-  - 2022-08-23 00:00:00
-  - 2023-01-01 00:00:00
+  - 10090640
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-08-20 00:00:00
+  - 2023-02-21 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 20081688
-  - 790 - Syphilis, Congenital
-  - 2020-01-21 00:00:00
-  - 2023-01-01 00:00:00
+  - 19181
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-09-20 00:00:00
+  - 2023-02-24 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 20044287
-  - 790 - Syphilis, Congenital
-  - 2024-04-14 00:00:00
-  - 2023-01-16 00:00:00
+  - 20042568
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-01-30 00:00:00
+  - 2023-02-24 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10026986
-  - 790 - Syphilis, Congenital
-  - 2021-02-05 00:00:00
-  - 2023-01-16 00:00:00
+  - 29274
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-03-14 00:00:00
+  - 2023-04-04 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10099775
-  - 790 - Syphilis, Congenital
-  - 2020-02-10 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 10022546
-  - 790 - Syphilis, Congenital
-  - 2020-09-08 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 20042808
-  - 790 - Syphilis, Congenital
-  - 2020-03-15 00:00:00
-  - 2023-01-31 00:00:00
+  - 20042361
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-01-11 00:00:00
+  - 2023-04-08 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 20014587
   - 790 - Syphilis, Congenital
   - 2021-02-25 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 82915
-  - 790 - Syphilis, Congenital
-  - 2021-08-16 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 10088727
-  - 790 - Syphilis, Congenital
-  - 2020-02-22 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 10045873
-  - 790 - Syphilis, Congenital
-  - 2022-03-28 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 95220
-  - 790 - Syphilis, Congenital
-  - 2025-04-02 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Carey, Mariah
-  - 20086983
-  - 790 - Syphilis, Congenital
-  - 2021-08-19 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 10090648
   - 790 - Syphilis, Congenital
   - 2021-08-23 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10091064
-  - 900 - HIV Infection
-  - 2025-01-06 00:00:00
-  - 2023-01-01 00:00:00
+  - 20086983
+  - 790 - Syphilis, Congenital
+  - 2021-08-19 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 10028295
-  - 900 - HIV Infection
-  - 2023-06-04 00:00:00
-  - 2023-01-01 00:00:00
+  - 20044287
+  - 790 - Syphilis, Congenital
+  - 2024-04-14 00:00:00
+  - 2023-01-05 00:00:00
 - !!python/tuple
   - Carey, Mariah
-  - 18987
-  - 900 - HIV Infection
-  - 2025-07-05 00:00:00
-  - 2023-01-01 00:00:00
+  - 10026986
+  - 790 - Syphilis, Congenital
+  - 2021-02-05 00:00:00
+  - 2023-02-15 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10099775
+  - 790 - Syphilis, Congenital
+  - 2020-02-10 00:00:00
+  - 2023-02-16 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 20081688
+  - 790 - Syphilis, Congenital
+  - 2020-01-21 00:00:00
+  - 2023-02-18 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 21647
+  - 790 - Syphilis, Congenital
+  - 2022-12-29 00:00:00
+  - 2023-02-19 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 20042808
+  - 790 - Syphilis, Congenital
+  - 2020-03-15 00:00:00
+  - 2023-02-24 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10045873
+  - 790 - Syphilis, Congenital
+  - 2022-03-28 00:00:00
+  - 2023-02-24 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 20076844
+  - 790 - Syphilis, Congenital
+  - 2024-06-13 00:00:00
+  - 2023-04-02 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10088727
+  - 790 - Syphilis, Congenital
+  - 2020-02-22 00:00:00
+  - 2023-04-03 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 82915
+  - 790 - Syphilis, Congenital
+  - 2021-08-16 00:00:00
+  - 2023-04-04 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10022546
+  - 790 - Syphilis, Congenital
+  - 2020-09-08 00:00:00
+  - 2023-04-04 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 90707
+  - 790 - Syphilis, Congenital
+  - 2022-08-23 00:00:00
+  - 2023-04-05 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 95220
+  - 790 - Syphilis, Congenital
+  - 2025-04-02 00:00:00
+  - 2023-04-09 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 10099668
   - 900 - HIV Infection
   - 2020-02-07 00:00:00
-  - 2023-01-01 00:00:00
+  - 2023-01-02 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10091064
+  - 900 - HIV Infection
+  - 2025-01-06 00:00:00
+  - 2023-02-24 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 10028295
+  - 900 - HIV Infection
+  - 2023-06-04 00:00:00
+  - 2023-04-03 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 20066897
   - 900 - HIV Infection
   - 2021-01-02 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-04-04 00:00:00
+- !!python/tuple
+  - Carey, Mariah
+  - 18987
+  - 900 - HIV Infection
+  - 2025-07-05 00:00:00
+  - 2023-04-09 00:00:00
 - !!python/tuple
   - Carey, Mariah
   - 20084685
   - 900 - HIV Infection
   - 2020-04-10 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10019206
-  - 200 - Chlamydia
-  - 2024-09-17 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10024622
-  - 200 - Chlamydia
-  - 2025-02-27 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 44367
-  - 200 - Chlamydia
-  - 2022-12-14 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 59725
-  - 200 - Chlamydia
-  - 2020-07-14 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10018347
-  - 200 - Chlamydia
-  - 2021-03-08 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 20046424
-  - 200 - Chlamydia
-  - 2023-02-21 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 13283
-  - 200 - Chlamydia
-  - 2024-07-10 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 60201
-  - 200 - Chlamydia
-  - 2021-07-17 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10023528
-  - 200 - Chlamydia
-  - 2025-02-24 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 93628
-  - 200 - Chlamydia
-  - 2023-08-02 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10014775
-  - 200 - Chlamydia
-  - 2022-07-25 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10095642
-  - 200 - Chlamydia
-  - 2020-01-10 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-04-09 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 10098885
   - 200 - Chlamydia
   - 2022-09-27 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20060749
-  - 300 - Gonorrhea
-  - 2023-07-16 00:00:00
-  - 2023-01-01 00:00:00
+  - 10014775
+  - 200 - Chlamydia
+  - 2022-07-25 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 10091117
-  - 300 - Gonorrhea
-  - 2025-10-25 00:00:00
-  - 2023-01-01 00:00:00
+  - 20046424
+  - 200 - Chlamydia
+  - 2023-02-21 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 41111
-  - 300 - Gonorrhea
-  - 2024-03-18 00:00:00
-  - 2023-01-01 00:00:00
+  - 59725
+  - 200 - Chlamydia
+  - 2020-07-14 00:00:00
+  - 2023-01-06 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 10037798
-  - 300 - Gonorrhea
-  - 2021-01-13 00:00:00
-  - 2023-01-01 00:00:00
+  - 13283
+  - 200 - Chlamydia
+  - 2024-07-10 00:00:00
+  - 2023-01-08 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20030746
-  - 300 - Gonorrhea
-  - 2021-10-01 00:00:00
-  - 2023-01-01 00:00:00
+  - 93628
+  - 200 - Chlamydia
+  - 2023-08-02 00:00:00
+  - 2023-01-10 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 10011379
-  - 300 - Gonorrhea
+  - 44367
+  - 200 - Chlamydia
+  - 2022-12-14 00:00:00
+  - 2023-02-21 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10024622
+  - 200 - Chlamydia
   - 2025-02-27 00:00:00
-  - 2023-01-16 00:00:00
+  - 2023-02-22 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20089621
-  - 300 - Gonorrhea
-  - 2025-03-30 00:00:00
-  - 2023-01-16 00:00:00
+  - 10095642
+  - 200 - Chlamydia
+  - 2020-01-10 00:00:00
+  - 2023-04-04 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 10012143
-  - 300 - Gonorrhea
-  - 2021-03-25 00:00:00
-  - 2023-01-16 00:00:00
+  - 10019206
+  - 200 - Chlamydia
+  - 2024-09-17 00:00:00
+  - 2023-04-06 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 50781
-  - 300 - Gonorrhea
-  - 2021-11-20 00:00:00
-  - 2023-01-16 00:00:00
+  - 10018347
+  - 200 - Chlamydia
+  - 2021-03-08 00:00:00
+  - 2023-04-06 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 31790
-  - 300 - Gonorrhea
-  - 2024-06-24 00:00:00
-  - 2023-01-16 00:00:00
+  - 60201
+  - 200 - Chlamydia
+  - 2021-07-17 00:00:00
+  - 2023-04-07 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20065716
-  - 300 - Gonorrhea
-  - 2021-12-01 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 67446
-  - 300 - Gonorrhea
-  - 2022-10-17 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 61988
-  - 300 - Gonorrhea
-  - 2021-01-24 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 20086975
-  - 300 - Gonorrhea
-  - 2020-06-02 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10077911
-  - 300 - Gonorrhea
-  - 2023-02-08 00:00:00
-  - 2023-02-15 00:00:00
+  - 10023528
+  - 200 - Chlamydia
+  - 2025-02-24 00:00:00
+  - 2023-04-09 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 10028964
   - 300 - Gonorrhea
   - 2021-10-06 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 20026019
-  - 300 - Gonorrhea
-  - 2024-10-31 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-01 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 74216
   - 300 - Gonorrhea
   - 2022-05-07 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10037206
-  - 710 - Syphilis, primary
-  - 2025-05-01 00:00:00
   - 2023-01-01 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 95576
-  - 710 - Syphilis, primary
-  - 2024-12-22 00:00:00
-  - 2023-01-01 00:00:00
+  - 20086975
+  - 300 - Gonorrhea
+  - 2020-06-02 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 77756
-  - 710 - Syphilis, primary
-  - 2021-10-02 00:00:00
-  - 2023-01-01 00:00:00
+  - 50781
+  - 300 - Gonorrhea
+  - 2021-11-20 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 92971
-  - 710 - Syphilis, primary
-  - 2020-02-11 00:00:00
-  - 2023-01-01 00:00:00
+  - 10012143
+  - 300 - Gonorrhea
+  - 2021-03-25 00:00:00
+  - 2023-01-08 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 10069716
-  - 710 - Syphilis, primary
-  - 2023-10-25 00:00:00
-  - 2023-01-16 00:00:00
+  - 31790
+  - 300 - Gonorrhea
+  - 2024-06-24 00:00:00
+  - 2023-01-08 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 10037653
-  - 710 - Syphilis, primary
-  - 2021-01-30 00:00:00
-  - 2023-01-31 00:00:00
+  - 20089621
+  - 300 - Gonorrhea
+  - 2025-03-30 00:00:00
+  - 2023-02-15 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20078896
-  - 710 - Syphilis, primary
-  - 2020-04-03 00:00:00
-  - 2023-03-02 00:00:00
+  - 10037798
+  - 300 - Gonorrhea
+  - 2021-01-13 00:00:00
+  - 2023-02-15 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 20065716
+  - 300 - Gonorrhea
+  - 2021-12-01 00:00:00
+  - 2023-02-17 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10091117
+  - 300 - Gonorrhea
+  - 2025-10-25 00:00:00
+  - 2023-02-19 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 20026019
+  - 300 - Gonorrhea
+  - 2024-10-31 00:00:00
+  - 2023-02-19 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 41111
+  - 300 - Gonorrhea
+  - 2024-03-18 00:00:00
+  - 2023-02-21 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10011379
+  - 300 - Gonorrhea
+  - 2025-02-27 00:00:00
+  - 2023-02-23 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 20030746
+  - 300 - Gonorrhea
+  - 2021-10-01 00:00:00
+  - 2023-02-24 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 20060749
+  - 300 - Gonorrhea
+  - 2023-07-16 00:00:00
+  - 2023-04-03 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 67446
+  - 300 - Gonorrhea
+  - 2022-10-17 00:00:00
+  - 2023-04-04 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 61988
+  - 300 - Gonorrhea
+  - 2021-01-24 00:00:00
+  - 2023-04-05 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10077911
+  - 300 - Gonorrhea
+  - 2023-02-08 00:00:00
+  - 2023-04-08 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 10083886
   - 710 - Syphilis, primary
   - 2025-02-20 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 10012851
+  - 92971
+  - 710 - Syphilis, primary
+  - 2020-02-11 00:00:00
+  - 2023-01-03 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10069716
+  - 710 - Syphilis, primary
+  - 2023-10-25 00:00:00
+  - 2023-01-03 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 77756
+  - 710 - Syphilis, primary
+  - 2021-10-02 00:00:00
+  - 2023-01-06 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 95576
+  - 710 - Syphilis, primary
+  - 2024-12-22 00:00:00
+  - 2023-01-10 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10037653
+  - 710 - Syphilis, primary
+  - 2021-01-30 00:00:00
+  - 2023-02-21 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 20078896
+  - 710 - Syphilis, primary
+  - 2020-04-03 00:00:00
+  - 2023-02-22 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10037206
+  - 710 - Syphilis, primary
+  - 2025-05-01 00:00:00
+  - 2023-04-02 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10030213
   - 720 - Syphilis, secondary
-  - 2023-01-13 00:00:00
-  - 2023-01-01 00:00:00
+  - 2021-04-20 00:00:00
+  - 2023-01-02 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 21222
+  - 720 - Syphilis, secondary
+  - 2023-05-26 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 87293
@@ -1068,244 +1074,226 @@
   - 2023-02-15 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 10032859
+  - 20036747
   - 720 - Syphilis, secondary
-  - 2025-05-27 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 20017859
-  - 720 - Syphilis, secondary
-  - 2023-01-24 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10030213
-  - 720 - Syphilis, secondary
-  - 2021-04-20 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 21222
-  - 720 - Syphilis, secondary
-  - 2023-05-26 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 20054862
-  - 720 - Syphilis, secondary
-  - 2024-08-10 00:00:00
-  - 2023-03-02 00:00:00
+  - 2021-06-10 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 20041831
   - 720 - Syphilis, secondary
   - 2022-12-17 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-23 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10012851
+  - 720 - Syphilis, secondary
+  - 2023-01-13 00:00:00
+  - 2023-04-02 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 20017859
+  - 720 - Syphilis, secondary
+  - 2023-01-24 00:00:00
+  - 2023-04-06 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 20031074
   - 720 - Syphilis, secondary
   - 2021-08-16 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-04-06 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20036747
+  - 10032859
   - 720 - Syphilis, secondary
-  - 2021-06-10 00:00:00
-  - 2023-03-02 00:00:00
+  - 2025-05-27 00:00:00
+  - 2023-04-09 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 81318
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-05-29 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10060048
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-03-04 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10096933
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-05-26 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10052564
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-07-28 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 79066
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-01-11 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 20014085
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-08-30 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 20060920
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-01-28 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10061156
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-11-22 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 65113
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-09-22 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 20046575
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-04-05 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10042328
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-09-09 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 20045431
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-10-13 00:00:00
-  - 2023-02-15 00:00:00
+  - 20054862
+  - 720 - Syphilis, secondary
+  - 2024-08-10 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 20058058
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2024-04-28 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20092100
+  - 20060920
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-12-15 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-28 00:00:00
+  - 2023-01-03 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10061156
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2025-11-22 00:00:00
+  - 2023-01-05 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10096933
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2025-05-26 00:00:00
+  - 2023-01-05 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 20046575
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-04-05 00:00:00
+  - 2023-01-06 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10042328
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2025-09-09 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 10060111
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2022-04-29 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20020516
-  - 790 - Syphilis, Congenital
-  - 2024-12-31 00:00:00
-  - 2023-01-01 00:00:00
+  - 20014085
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2022-08-30 00:00:00
+  - 2023-01-08 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20035358
-  - 790 - Syphilis, Congenital
-  - 2020-06-29 00:00:00
-  - 2023-01-01 00:00:00
+  - 20045431
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-10-13 00:00:00
+  - 2023-01-09 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 79066
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-01-11 00:00:00
+  - 2023-02-21 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 81318
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2024-05-29 00:00:00
+  - 2023-02-22 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 65113
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-09-22 00:00:00
+  - 2023-02-23 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10060048
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-03-04 00:00:00
+  - 2023-04-03 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 20092100
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2022-12-15 00:00:00
+  - 2023-04-08 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10052564
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-07-28 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 20055890
   - 790 - Syphilis, Congenital
   - 2025-03-09 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 10022865
-  - 790 - Syphilis, Congenital
-  - 2023-01-07 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 70673
-  - 790 - Syphilis, Congenital
-  - 2023-05-01 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 54184
-  - 790 - Syphilis, Congenital
-  - 2021-01-17 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 10094697
   - 790 - Syphilis, Congenital
   - 2025-04-25 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 22698
+  - 54184
   - 790 - Syphilis, Congenital
-  - 2025-03-13 00:00:00
-  - 2023-02-15 00:00:00
+  - 2021-01-17 00:00:00
+  - 2023-01-05 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 20020516
+  - 790 - Syphilis, Congenital
+  - 2024-12-31 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 10030140
   - 790 - Syphilis, Congenital
   - 2020-05-21 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-08 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 10022865
+  - 790 - Syphilis, Congenital
+  - 2023-01-07 00:00:00
+  - 2023-02-16 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 22698
+  - 790 - Syphilis, Congenital
+  - 2025-03-13 00:00:00
+  - 2023-02-18 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 20035358
+  - 790 - Syphilis, Congenital
+  - 2020-06-29 00:00:00
+  - 2023-04-05 00:00:00
+- !!python/tuple
+  - Glasper, Robert
+  - 70673
+  - 790 - Syphilis, Congenital
+  - 2023-05-01 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 36511
   - 790 - Syphilis, Congenital
   - 2021-10-28 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 20031147
-  - 900 - HIV Infection
-  - 2024-07-24 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 73718
-  - 900 - HIV Infection
-  - 2022-09-09 00:00:00
-  - 2023-01-01 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 31752
   - 900 - HIV Infection
   - 2020-07-16 00:00:00
-  - 2023-01-16 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 41456
+  - 73718
   - 900 - HIV Infection
-  - 2021-11-14 00:00:00
-  - 2023-01-16 00:00:00
+  - 2022-09-09 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 10044173
+  - 20031147
   - 900 - HIV Infection
-  - 2021-08-06 00:00:00
-  - 2023-01-31 00:00:00
+  - 2024-07-24 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Glasper, Robert
-  - 20025228
+  - 93518
   - 900 - HIV Infection
-  - 2022-12-01 00:00:00
-  - 2023-01-31 00:00:00
+  - 2024-08-02 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 20082726
   - 900 - HIV Infection
   - 2024-09-28 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-09 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 10051543
@@ -1317,187 +1305,205 @@
   - 20053868
   - 900 - HIV Infection
   - 2025-07-21 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 30461
-  - 900 - HIV Infection
-  - 2020-03-23 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Glasper, Robert
-  - 93518
-  - 900 - HIV Infection
-  - 2024-08-02 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-18 00:00:00
 - !!python/tuple
   - Glasper, Robert
   - 85146
   - 900 - HIV Infection
   - 2021-12-28 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-23 00:00:00
 - !!python/tuple
-  - Keys, Alicia
-  - 57066
-  - 200 - Chlamydia
-  - 2021-11-17 00:00:00
-  - 2023-01-01 00:00:00
+  - Glasper, Robert
+  - 30461
+  - 900 - HIV Infection
+  - 2020-03-23 00:00:00
+  - 2023-02-24 00:00:00
 - !!python/tuple
-  - Keys, Alicia
-  - 20084444
-  - 200 - Chlamydia
-  - 2025-05-19 00:00:00
-  - 2023-01-01 00:00:00
+  - Glasper, Robert
+  - 20025228
+  - 900 - HIV Infection
+  - 2022-12-01 00:00:00
+  - 2023-04-01 00:00:00
 - !!python/tuple
-  - Keys, Alicia
-  - 10041379
-  - 200 - Chlamydia
-  - 2025-06-05 00:00:00
-  - 2023-01-01 00:00:00
+  - Glasper, Robert
+  - 41456
+  - 900 - HIV Infection
+  - 2021-11-14 00:00:00
+  - 2023-04-06 00:00:00
 - !!python/tuple
-  - Keys, Alicia
-  - 86467
-  - 200 - Chlamydia
-  - 2022-07-07 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20075105
-  - 200 - Chlamydia
-  - 2021-07-04 00:00:00
-  - 2023-01-16 00:00:00
+  - Glasper, Robert
+  - 10044173
+  - 900 - HIV Infection
+  - 2021-08-06 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 57545
   - 200 - Chlamydia
   - 2025-11-01 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20044635
-  - 200 - Chlamydia
-  - 2022-12-23 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 31197
-  - 200 - Chlamydia
-  - 2024-08-05 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 10085294
-  - 200 - Chlamydia
-  - 2020-01-22 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20043371
-  - 200 - Chlamydia
-  - 2024-11-29 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 52157
-  - 200 - Chlamydia
-  - 2025-01-11 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 10023874
   - 200 - Chlamydia
   - 2024-02-07 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-01-06 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 69230
+  - 10085294
   - 200 - Chlamydia
-  - 2021-04-02 00:00:00
+  - 2020-01-22 00:00:00
+  - 2023-01-07 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 52157
+  - 200 - Chlamydia
+  - 2025-01-11 00:00:00
+  - 2023-01-09 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20084444
+  - 200 - Chlamydia
+  - 2025-05-19 00:00:00
+  - 2023-01-09 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20043371
+  - 200 - Chlamydia
+  - 2024-11-29 00:00:00
   - 2023-02-15 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20044635
+  - 200 - Chlamydia
+  - 2022-12-23 00:00:00
+  - 2023-02-19 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20075105
+  - 200 - Chlamydia
+  - 2021-07-04 00:00:00
+  - 2023-02-20 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 31197
+  - 200 - Chlamydia
+  - 2024-08-05 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 84784
   - 200 - Chlamydia
   - 2022-06-30 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 20091815
-  - 300 - Gonorrhea
-  - 2023-05-18 00:00:00
-  - 2023-01-01 00:00:00
+  - 69230
+  - 200 - Chlamydia
+  - 2021-04-02 00:00:00
+  - 2023-02-22 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 26649
-  - 300 - Gonorrhea
-  - 2025-05-06 00:00:00
-  - 2023-01-01 00:00:00
+  - 57066
+  - 200 - Chlamydia
+  - 2021-11-17 00:00:00
+  - 2023-02-24 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 10091551
-  - 300 - Gonorrhea
-  - 2021-04-26 00:00:00
-  - 2023-01-01 00:00:00
+  - 86467
+  - 200 - Chlamydia
+  - 2022-07-07 00:00:00
+  - 2023-04-08 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 10041379
+  - 200 - Chlamydia
+  - 2025-06-05 00:00:00
+  - 2023-04-09 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 20078092
   - 300 - Gonorrhea
   - 2020-05-06 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 10082607
-  - 300 - Gonorrhea
-  - 2024-12-18 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20080585
-  - 300 - Gonorrhea
-  - 2024-04-19 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 10094354
-  - 300 - Gonorrhea
-  - 2022-09-10 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 56828
-  - 300 - Gonorrhea
-  - 2021-11-16 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 10074276
-  - 300 - Gonorrhea
-  - 2025-08-25 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 10089368
-  - 300 - Gonorrhea
-  - 2025-01-30 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20025976
-  - 300 - Gonorrhea
-  - 2020-10-21 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 53420
-  - 300 - Gonorrhea
-  - 2020-02-06 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-01 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 10044827
   - 300 - Gonorrhea
   - 2022-09-18 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-02 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20091815
+  - 300 - Gonorrhea
+  - 2023-05-18 00:00:00
+  - 2023-01-03 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 10089368
+  - 300 - Gonorrhea
+  - 2025-01-30 00:00:00
+  - 2023-01-03 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 56828
+  - 300 - Gonorrhea
+  - 2021-11-16 00:00:00
+  - 2023-01-05 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 10094354
+  - 300 - Gonorrhea
+  - 2022-09-10 00:00:00
+  - 2023-01-10 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 10074276
+  - 300 - Gonorrhea
+  - 2025-08-25 00:00:00
+  - 2023-02-20 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 26649
+  - 300 - Gonorrhea
+  - 2025-05-06 00:00:00
+  - 2023-02-21 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20025976
+  - 300 - Gonorrhea
+  - 2020-10-21 00:00:00
+  - 2023-02-21 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20080585
+  - 300 - Gonorrhea
+  - 2024-04-19 00:00:00
+  - 2023-02-23 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 10091551
+  - 300 - Gonorrhea
+  - 2021-04-26 00:00:00
+  - 2023-04-03 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 53420
+  - 300 - Gonorrhea
+  - 2020-02-06 00:00:00
+  - 2023-04-05 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 10082607
+  - 300 - Gonorrhea
+  - 2024-12-18 00:00:00
+  - 2023-04-06 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 69516
+  - 710 - Syphilis, primary
+  - 2020-08-01 00:00:00
+  - 2023-01-01 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 20061790
@@ -1506,76 +1512,46 @@
   - 2023-01-01 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 87702
-  - 710 - Syphilis, primary
-  - 2025-01-09 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 69516
-  - 710 - Syphilis, primary
-  - 2020-08-01 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Keys, Alicia
   - 82185
   - 710 - Syphilis, primary
   - 2023-07-11 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 10078629
-  - 720 - Syphilis, secondary
-  - 2020-12-10 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20046632
-  - 720 - Syphilis, secondary
-  - 2023-04-04 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 30880
-  - 720 - Syphilis, secondary
-  - 2022-10-15 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20064704
-  - 720 - Syphilis, secondary
-  - 2021-08-18 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20011158
-  - 720 - Syphilis, secondary
-  - 2022-07-29 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 96256
-  - 720 - Syphilis, secondary
-  - 2022-06-17 00:00:00
-  - 2023-02-15 00:00:00
+  - 87702
+  - 710 - Syphilis, primary
+  - 2025-01-09 00:00:00
+  - 2023-04-01 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 10094866
   - 720 - Syphilis, secondary
   - 2022-02-07 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 10079114
+  - 53007
   - 720 - Syphilis, secondary
-  - 2022-03-14 00:00:00
-  - 2023-02-15 00:00:00
+  - 2024-08-11 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 18191
   - 720 - Syphilis, secondary
   - 2020-04-28 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-06 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20073518
+  - 720 - Syphilis, secondary
+  - 2020-04-13 00:00:00
+  - 2023-01-08 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 85093
+  - 720 - Syphilis, secondary
+  - 2025-12-24 00:00:00
+  - 2023-01-10 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 10057063
@@ -1584,214 +1560,238 @@
   - 2023-02-15 00:00:00
 - !!python/tuple
   - Keys, Alicia
+  - 10078629
+  - 720 - Syphilis, secondary
+  - 2020-12-10 00:00:00
+  - 2023-02-18 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 30880
+  - 720 - Syphilis, secondary
+  - 2022-10-15 00:00:00
+  - 2023-02-22 00:00:00
+- !!python/tuple
+  - Keys, Alicia
   - 20094496
   - 720 - Syphilis, secondary
   - 2024-02-14 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-23 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 20073518
+  - 20011158
   - 720 - Syphilis, secondary
-  - 2020-04-13 00:00:00
-  - 2023-03-02 00:00:00
+  - 2022-07-29 00:00:00
+  - 2023-04-02 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 53007
+  - 10079114
   - 720 - Syphilis, secondary
-  - 2024-08-11 00:00:00
-  - 2023-03-02 00:00:00
+  - 2022-03-14 00:00:00
+  - 2023-04-05 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 85093
+  - 20046632
   - 720 - Syphilis, secondary
-  - 2025-12-24 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-04-04 00:00:00
+  - 2023-04-07 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 31260
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-04-20 00:00:00
-  - 2023-01-16 00:00:00
+  - 96256
+  - 720 - Syphilis, secondary
+  - 2022-06-17 00:00:00
+  - 2023-04-08 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 10080406
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-05-14 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 10079263
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-06-28 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 27986
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-07-31 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 16244
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-07-11 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 97306
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-08-26 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20024705
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-11-14 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 40080
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-09-19 00:00:00
-  - 2023-03-02 00:00:00
+  - 20064704
+  - 720 - Syphilis, secondary
+  - 2021-08-18 00:00:00
+  - 2023-04-08 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 10062713
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2023-05-20 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-01 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 20011294
+  - 97306
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-11-17 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-08-26 00:00:00
+  - 2023-01-01 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 49754
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2022-05-16 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 59305
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2025-10-11 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 10063126
-  - 790 - Syphilis, Congenital
-  - 2025-12-12 00:00:00
-  - 2023-01-01 00:00:00
+  - 20011294
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2022-11-17 00:00:00
+  - 2023-01-08 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 95867
-  - 790 - Syphilis, Congenital
-  - 2024-06-04 00:00:00
-  - 2023-01-01 00:00:00
+  - 16244
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2021-07-11 00:00:00
+  - 2023-01-09 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 20027476
-  - 790 - Syphilis, Congenital
-  - 2022-01-29 00:00:00
-  - 2023-01-16 00:00:00
+  - 10079263
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2022-06-28 00:00:00
+  - 2023-01-10 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 40080
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2025-09-19 00:00:00
+  - 2023-02-16 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 31260
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-04-20 00:00:00
+  - 2023-02-19 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 27986
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2024-07-31 00:00:00
+  - 2023-02-20 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 10080406
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2024-05-14 00:00:00
+  - 2023-02-22 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20024705
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2023-11-14 00:00:00
+  - 2023-04-05 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 20616
   - 790 - Syphilis, Congenital
   - 2022-01-14 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20045006
-  - 790 - Syphilis, Congenital
-  - 2024-07-25 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-01-01 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 10069829
   - 790 - Syphilis, Congenital
   - 2021-01-04 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 20038322
+  - 20027476
   - 790 - Syphilis, Congenital
-  - 2024-03-03 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 86050
-  - 790 - Syphilis, Congenital
-  - 2021-07-03 00:00:00
-  - 2023-03-02 00:00:00
+  - 2022-01-29 00:00:00
+  - 2023-02-16 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 62151
   - 790 - Syphilis, Congenital
   - 2024-09-27 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-16 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 10059959
-  - 900 - HIV Infection
-  - 2025-02-21 00:00:00
-  - 2023-01-01 00:00:00
+  - 20038322
+  - 790 - Syphilis, Congenital
+  - 2024-03-03 00:00:00
+  - 2023-02-19 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 10010225
-  - 900 - HIV Infection
-  - 2025-05-18 00:00:00
-  - 2023-01-01 00:00:00
+  - 20045006
+  - 790 - Syphilis, Congenital
+  - 2024-07-25 00:00:00
+  - 2023-02-23 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 20043575
-  - 900 - HIV Infection
-  - 2020-09-07 00:00:00
-  - 2023-01-01 00:00:00
+  - 10063126
+  - 790 - Syphilis, Congenital
+  - 2025-12-12 00:00:00
+  - 2023-04-02 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 17404
-  - 900 - HIV Infection
-  - 2020-03-30 00:00:00
-  - 2023-01-16 00:00:00
+  - 86050
+  - 790 - Syphilis, Congenital
+  - 2021-07-03 00:00:00
+  - 2023-04-04 00:00:00
 - !!python/tuple
   - Keys, Alicia
-  - 20048676
-  - 900 - HIV Infection
-  - 2024-10-07 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 20014838
-  - 900 - HIV Infection
-  - 2025-07-25 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Keys, Alicia
-  - 10061970
-  - 900 - HIV Infection
-  - 2020-06-07 00:00:00
-  - 2023-02-15 00:00:00
+  - 95867
+  - 790 - Syphilis, Congenital
+  - 2024-06-04 00:00:00
+  - 2023-04-06 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 20090624
   - 900 - HIV Infection
   - 2025-03-16 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-04 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 10059959
+  - 900 - HIV Infection
+  - 2025-02-21 00:00:00
+  - 2023-01-07 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20048676
+  - 900 - HIV Infection
+  - 2024-10-07 00:00:00
+  - 2023-01-10 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 10010225
+  - 900 - HIV Infection
+  - 2025-05-18 00:00:00
+  - 2023-02-15 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 17404
+  - 900 - HIV Infection
+  - 2020-03-30 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 10096386
   - 900 - HIV Infection
   - 2020-05-27 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-04-03 00:00:00
 - !!python/tuple
   - Keys, Alicia
   - 77394
   - 900 - HIV Infection
   - 2022-10-05 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-04-04 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 10061970
+  - 900 - HIV Infection
+  - 2020-06-07 00:00:00
+  - 2023-04-06 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20014838
+  - 900 - HIV Infection
+  - 2025-07-25 00:00:00
+  - 2023-04-07 00:00:00
+- !!python/tuple
+  - Keys, Alicia
+  - 20043575
+  - 900 - HIV Infection
+  - 2020-09-07 00:00:00
+  - 2023-04-09 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 10672
@@ -1800,99 +1800,87 @@
   - 2022-10-26 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10022306
+  - 84271
   - 200 - Chlamydia
-  - 2024-03-30 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 10060574
-  - 200 - Chlamydia
-  - 2023-08-25 00:00:00
-  - 2023-01-01 00:00:00
+  - 2023-01-27 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 74224
   - 200 - Chlamydia
   - 2022-03-23 00:00:00
-  - 2023-01-01 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 20082900
   - 200 - Chlamydia
   - 2022-04-28 00:00:00
-  - 2023-01-16 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 56210
+  - 10060574
   - 200 - Chlamydia
-  - 2024-12-28 00:00:00
-  - 2023-01-16 00:00:00
+  - 2023-08-25 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 96978
   - 200 - Chlamydia
   - 2023-02-07 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 20096901
-  - 200 - Chlamydia
-  - 2023-04-25 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 10025016
-  - 200 - Chlamydia
-  - 2025-12-18 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 69444
-  - 200 - Chlamydia
-  - 2023-11-20 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 10015839
-  - 200 - Chlamydia
-  - 2020-07-06 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 84271
-  - 200 - Chlamydia
-  - 2023-01-27 00:00:00
-  - 2023-02-15 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 10038434
-  - 200 - Chlamydia
-  - 2025-05-30 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 20070218
   - 200 - Chlamydia
   - 2025-03-17 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-09 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10038372
-  - 300 - Gonorrhea
-  - 2023-05-04 00:00:00
-  - 2023-01-01 00:00:00
+  - 10015839
+  - 200 - Chlamydia
+  - 2020-07-06 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 20073459
-  - 300 - Gonorrhea
-  - 2020-08-31 00:00:00
-  - 2023-01-01 00:00:00
+  - 10038434
+  - 200 - Chlamydia
+  - 2025-05-30 00:00:00
+  - 2023-02-21 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 20051257
+  - 10025016
+  - 200 - Chlamydia
+  - 2025-12-18 00:00:00
+  - 2023-02-22 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 56210
+  - 200 - Chlamydia
+  - 2024-12-28 00:00:00
+  - 2023-04-03 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 69444
+  - 200 - Chlamydia
+  - 2023-11-20 00:00:00
+  - 2023-04-04 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 20096901
+  - 200 - Chlamydia
+  - 2023-04-25 00:00:00
+  - 2023-04-06 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 10022306
+  - 200 - Chlamydia
+  - 2024-03-30 00:00:00
+  - 2023-04-09 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 81295
   - 300 - Gonorrhea
-  - 2020-06-10 00:00:00
+  - 2024-09-10 00:00:00
   - 2023-01-01 00:00:00
 - !!python/tuple
   - Scott, Jill
@@ -1902,124 +1890,118 @@
   - 2023-01-01 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 20048324
+  - 20073459
   - 300 - Gonorrhea
-  - 2025-07-05 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 81295
-  - 300 - Gonorrhea
-  - 2024-09-10 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 58452
-  - 300 - Gonorrhea
-  - 2022-01-28 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 21794
-  - 300 - Gonorrhea
-  - 2021-06-26 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 20065778
-  - 300 - Gonorrhea
-  - 2024-11-14 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 27934
-  - 300 - Gonorrhea
-  - 2022-06-14 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 10071149
-  - 300 - Gonorrhea
-  - 2025-09-26 00:00:00
-  - 2023-01-31 00:00:00
+  - 2020-08-31 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 10049772
   - 300 - Gonorrhea
   - 2024-11-10 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 20095086
-  - 300 - Gonorrhea
-  - 2022-10-17 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 20045427
-  - 300 - Gonorrhea
-  - 2024-08-31 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 20062782
   - 300 - Gonorrhea
   - 2025-01-28 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-05 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 67036
   - 300 - Gonorrhea
   - 2022-02-28 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10075880
-  - 710 - Syphilis, primary
-  - 2023-03-12 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 20015287
-  - 710 - Syphilis, primary
-  - 2021-11-28 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 10059054
-  - 710 - Syphilis, primary
+  - 20065778
+  - 300 - Gonorrhea
   - 2024-11-14 00:00:00
-  - 2023-01-01 00:00:00
+  - 2023-01-08 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10042031
-  - 710 - Syphilis, primary
-  - 2024-12-23 00:00:00
-  - 2023-01-16 00:00:00
+  - 20048324
+  - 300 - Gonorrhea
+  - 2025-07-05 00:00:00
+  - 2023-01-10 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10036723
-  - 710 - Syphilis, primary
-  - 2022-08-27 00:00:00
-  - 2023-01-16 00:00:00
+  - 10071149
+  - 300 - Gonorrhea
+  - 2025-09-26 00:00:00
+  - 2023-02-17 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 20061780
-  - 710 - Syphilis, primary
-  - 2020-02-27 00:00:00
-  - 2023-01-16 00:00:00
+  - 20051257
+  - 300 - Gonorrhea
+  - 2020-06-10 00:00:00
+  - 2023-02-18 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 20045427
+  - 300 - Gonorrhea
+  - 2024-08-31 00:00:00
+  - 2023-02-22 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 20095086
+  - 300 - Gonorrhea
+  - 2022-10-17 00:00:00
+  - 2023-02-23 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 27934
+  - 300 - Gonorrhea
+  - 2022-06-14 00:00:00
+  - 2023-04-01 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 58452
+  - 300 - Gonorrhea
+  - 2022-01-28 00:00:00
+  - 2023-04-03 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 10038372
+  - 300 - Gonorrhea
+  - 2023-05-04 00:00:00
+  - 2023-04-06 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 21794
+  - 300 - Gonorrhea
+  - 2021-06-26 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 10065559
   - 710 - Syphilis, primary
   - 2021-02-17 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 19833
+  - 20015287
   - 710 - Syphilis, primary
-  - 2022-10-30 00:00:00
-  - 2023-01-31 00:00:00
+  - 2021-11-28 00:00:00
+  - 2023-01-03 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 29448
+  - 710 - Syphilis, primary
+  - 2025-02-12 00:00:00
+  - 2023-01-03 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 10075880
+  - 710 - Syphilis, primary
+  - 2023-03-12 00:00:00
+  - 2023-01-04 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 83340
+  - 710 - Syphilis, primary
+  - 2020-09-02 00:00:00
+  - 2023-01-10 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 20096232
@@ -2028,262 +2010,274 @@
   - 2023-02-15 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 29448
+  - 10059054
   - 710 - Syphilis, primary
-  - 2025-02-12 00:00:00
-  - 2023-02-15 00:00:00
+  - 2024-11-14 00:00:00
+  - 2023-02-19 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 83340
+  - 20061780
   - 710 - Syphilis, primary
-  - 2020-09-02 00:00:00
-  - 2023-03-02 00:00:00
+  - 2020-02-27 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 36880
-  - 720 - Syphilis, secondary
-  - 2024-10-02 00:00:00
-  - 2023-01-01 00:00:00
+  - 10036723
+  - 710 - Syphilis, primary
+  - 2022-08-27 00:00:00
+  - 2023-04-04 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 91165
-  - 720 - Syphilis, secondary
-  - 2021-06-05 00:00:00
-  - 2023-01-01 00:00:00
+  - 10042031
+  - 710 - Syphilis, primary
+  - 2024-12-23 00:00:00
+  - 2023-04-06 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10088184
-  - 720 - Syphilis, secondary
-  - 2021-11-12 00:00:00
-  - 2023-01-01 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 20028268
-  - 720 - Syphilis, secondary
-  - 2023-09-05 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 20015105
-  - 720 - Syphilis, secondary
-  - 2022-10-15 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 20041879
-  - 720 - Syphilis, secondary
-  - 2022-03-28 00:00:00
-  - 2023-01-16 00:00:00
+  - 19833
+  - 710 - Syphilis, primary
+  - 2022-10-30 00:00:00
+  - 2023-04-10 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 20081530
   - 720 - Syphilis, secondary
   - 2022-05-16 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-01-01 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10049342
+  - 20041879
   - 720 - Syphilis, secondary
-  - 2025-09-17 00:00:00
-  - 2023-01-31 00:00:00
+  - 2022-03-28 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10078614
+  - 20015105
   - 720 - Syphilis, secondary
-  - 2020-02-24 00:00:00
-  - 2023-01-31 00:00:00
+  - 2022-10-15 00:00:00
+  - 2023-01-05 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 35938
   - 720 - Syphilis, secondary
   - 2022-08-03 00:00:00
-  - 2023-02-15 00:00:00
+  - 2023-01-10 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 20092552
+  - 20028268
   - 720 - Syphilis, secondary
-  - 2024-11-27 00:00:00
+  - 2023-09-05 00:00:00
+  - 2023-01-10 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 36880
+  - 720 - Syphilis, secondary
+  - 2024-10-02 00:00:00
   - 2023-02-15 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 10086958
   - 720 - Syphilis, secondary
   - 2024-05-26 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 10015204
-  - 720 - Syphilis, secondary
-  - 2022-07-05 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 10043228
-  - 720 - Syphilis, secondary
-  - 2021-08-15 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-20 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 78547
   - 720 - Syphilis, secondary
   - 2025-03-07 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-23 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 21675
   - 720 - Syphilis, secondary
   - 2021-10-25 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-23 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 40224
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-01-31 00:00:00
-  - 2023-01-16 00:00:00
+  - 10088184
+  - 720 - Syphilis, secondary
+  - 2021-11-12 00:00:00
+  - 2023-04-03 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10045758
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-01-13 00:00:00
-  - 2023-01-31 00:00:00
+  - 10043228
+  - 720 - Syphilis, secondary
+  - 2021-08-15 00:00:00
+  - 2023-04-06 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 53310
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-01-24 00:00:00
-  - 2023-02-15 00:00:00
+  - 10015204
+  - 720 - Syphilis, secondary
+  - 2022-07-05 00:00:00
+  - 2023-04-07 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10079736
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-03-28 00:00:00
-  - 2023-02-15 00:00:00
+  - 10049342
+  - 720 - Syphilis, secondary
+  - 2025-09-17 00:00:00
+  - 2023-04-07 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 20092552
+  - 720 - Syphilis, secondary
+  - 2024-11-27 00:00:00
+  - 2023-04-08 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 91165
+  - 720 - Syphilis, secondary
+  - 2021-06-05 00:00:00
+  - 2023-04-08 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 10078614
+  - 720 - Syphilis, secondary
+  - 2020-02-24 00:00:00
+  - 2023-04-08 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 20064995
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2020-05-24 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 20038855
+  - 40224
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-06-27 00:00:00
-  - 2023-03-02 00:00:00
+  - 2024-01-31 00:00:00
+  - 2023-02-16 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 10027846
   - 730 - Syphilis, Early Non-Primary, Non-Secondary
   - 2020-06-14 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-16 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 31002
+  - 20038855
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2022-06-27 00:00:00
+  - 2023-02-22 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 53310
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-01-24 00:00:00
+  - 2023-04-06 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 10079736
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2020-03-28 00:00:00
+  - 2023-04-06 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 10045758
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 2021-01-13 00:00:00
+  - 2023-04-08 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 10016364
   - 790 - Syphilis, Congenital
-  - 2020-03-15 00:00:00
+  - 2025-12-02 00:00:00
   - 2023-01-01 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 20071975
   - 790 - Syphilis, Congenital
   - 2020-04-30 00:00:00
-  - 2023-01-16 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10041785
+  - 10085400
   - 790 - Syphilis, Congenital
-  - 2021-08-19 00:00:00
-  - 2023-01-16 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 10048385
-  - 790 - Syphilis, Congenital
-  - 2021-08-06 00:00:00
-  - 2023-01-16 00:00:00
+  - 2023-09-12 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 34107
   - 790 - Syphilis, Congenital
   - 2025-11-30 00:00:00
-  - 2023-01-16 00:00:00
+  - 2023-01-04 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 10069526
   - 790 - Syphilis, Congenital
   - 2025-04-04 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-01-09 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10016364
+  - 31002
   - 790 - Syphilis, Congenital
-  - 2025-12-02 00:00:00
-  - 2023-02-15 00:00:00
+  - 2020-03-15 00:00:00
+  - 2023-01-10 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 20018903
+  - 10041785
   - 790 - Syphilis, Congenital
-  - 2025-02-24 00:00:00
+  - 2021-08-19 00:00:00
   - 2023-02-15 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 66948
   - 790 - Syphilis, Congenital
   - 2023-12-19 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-02-19 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10080802
+  - 10048385
   - 790 - Syphilis, Congenital
-  - 2022-03-17 00:00:00
-  - 2023-03-02 00:00:00
+  - 2021-08-06 00:00:00
+  - 2023-02-23 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 10085400
+  - 20018903
   - 790 - Syphilis, Congenital
-  - 2023-09-12 00:00:00
-  - 2023-03-02 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 19432
-  - 790 - Syphilis, Congenital
-  - 2023-07-27 00:00:00
-  - 2023-03-02 00:00:00
+  - 2025-02-24 00:00:00
+  - 2023-02-24 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 10063661
   - 790 - Syphilis, Congenital
   - 2021-05-24 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-04-03 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 10056780
   - 790 - Syphilis, Congenital
   - 2023-06-16 00:00:00
-  - 2023-03-02 00:00:00
+  - 2023-04-03 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 10080802
+  - 790 - Syphilis, Congenital
+  - 2022-03-17 00:00:00
+  - 2023-04-07 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 19432
+  - 790 - Syphilis, Congenital
+  - 2023-07-27 00:00:00
+  - 2023-04-07 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 46931
   - 900 - HIV Infection
   - 2022-01-30 00:00:00
-  - 2023-01-16 00:00:00
+  - 2023-01-02 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 20046176
   - 900 - HIV Infection
   - 2024-12-01 00:00:00
-  - 2023-01-31 00:00:00
+  - 2023-01-03 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 20011688
+  - 20080123
   - 900 - HIV Infection
-  - 2020-01-11 00:00:00
-  - 2023-01-31 00:00:00
-- !!python/tuple
-  - Scott, Jill
-  - 93167
-  - 900 - HIV Infection
-  - 2020-10-24 00:00:00
-  - 2023-01-31 00:00:00
+  - 2022-02-04 00:00:00
+  - 2023-01-07 00:00:00
 - !!python/tuple
   - Scott, Jill
   - 20080104
@@ -2292,7 +2286,13 @@
   - 2023-02-15 00:00:00
 - !!python/tuple
   - Scott, Jill
-  - 20080123
+  - 93167
   - 900 - HIV Infection
-  - 2022-02-04 00:00:00
-  - 2023-03-02 00:00:00
+  - 2020-10-24 00:00:00
+  - 2023-02-20 00:00:00
+- !!python/tuple
+  - Scott, Jill
+  - 20011688
+  - 900 - HIV Infection
+  - 2020-01-11 00:00:00
+  - 2023-02-24 00:00:00
