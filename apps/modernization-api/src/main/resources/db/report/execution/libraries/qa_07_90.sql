@@ -11,6 +11,7 @@ IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sas
 BEGIN
     UPDATE [dbo].[Report_Library]
     SET
+        library_params = @libraryParams,
         library_name = @pyLib,
         runner = 'python',
         desc_txt = @desc,
