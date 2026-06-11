@@ -107,7 +107,7 @@ def execute(
 ):
     """PA03 STD Program Report: Internet Partner Services Report.
 
-    Conversion notes:   
+    Conversion notes:
     * Keeps the SQL intentionally narrow and performs the SAS metric math in Python.
     * Returns a long-form table instead of reproducing the SAS PDF layout.
     """
