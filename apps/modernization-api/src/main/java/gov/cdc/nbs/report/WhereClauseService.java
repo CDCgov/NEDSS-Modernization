@@ -142,18 +142,18 @@ public class WhereClauseService {
 
   /**
    * Constructs the SQL criteria block to restrict data visibility by program area and jurisdiction.
-   * <p>
-   * If jurisdiction security is not set for the data source, this method returns an
-   * empty string indicating no juris or prog area restrictions. If security is set but the user possesses
-   * no valid scopes, an exception is thrown to prevent silent data exposure.
-   * </p>
+   *
+   * <p>If jurisdiction security is not set for the data source, this method returns an empty string
+   * indicating no juris or prog area restrictions. If security is set but the user possesses no
+   * valid scopes, an exception is thrown to prevent silent data exposure.
    *
    * @param hasJurisdictionSecurity Indicates if jurisdiction and program area isolation is set.
-   * @param group                     The report group used to derive the specific visibility permission.
-   * @return A parenthesized SQL predicate clause (e.g., {@code "(program_jurisdiction_oid IN (1, 2))"}).
-   * Returns an empty string {@code ""} if jurisdiction/program area security is not set.
-   * @throws IllegalArgumentException If jurisdiction/progam area security is set but the user's resolved
-   * {@link PermissionScope} contains no assigned identifiers.
+   * @param group The report group used to derive the specific visibility permission.
+   * @return A parenthesized SQL predicate clause (e.g., {@code "(program_jurisdiction_oid IN (1,
+   *     2))"}). Returns an empty string {@code ""} if jurisdiction/program area security is not
+   *     set.
+   * @throws IllegalArgumentException If jurisdiction/progam area security is set but the user's
+   *     resolved {@link PermissionScope} contains no assigned identifiers.
    */
   private String getJurisProgramRestrictionCriteria(
       boolean hasJurisdictionSecurity, ReportConstants.ReportGroup group) {
@@ -179,8 +179,8 @@ public class WhereClauseService {
    *
    * @param hasReportingFacilitySecurity Indicates if facility-level isolation has been set.
    * @return A parenthesized SQL predicate clause (e.g., {@code "(REPORTING_FACILITY_UID = 123)"}).
-   * Returns an empty string {@code ""} when no facility restrictions apply, indicating
-   * the query should run for all facilities.
+   *     Returns an empty string {@code ""} when no facility restrictions apply, indicating the
+   *     query should run for all facilities.
    */
   private String getReportingFacilityRestrictionCriteria(boolean hasReportingFacilitySecurity) {
     final String NO_FACILITY_RESTRICTION = "";
