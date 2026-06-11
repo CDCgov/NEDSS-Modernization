@@ -28,10 +28,16 @@ def execute(
     in the final output). SAS does not have a tiebreaker value.
     """
     if not isinstance(library_params, dict):
-        raise ValueError(f"library_params must be a dictionary containing 'days_value' (e.g., 30, 60, 90), got {library_params}")
+        raise ValueError(f"""
+            library_params must be a dictionary containing 'days_value' \
+                         (e.g., 30, 60, 90), got {library_params}
+            """)
     days = library_params.get('days_value')
     if days is None:
-        raise ValueError(f"library_params must contain 'days_value' (e.g., 30, 60, 90), got {library_params}")
+        raise ValueError(f"""
+            library_params must contain 'days_value' \
+                         (e.g., 30, 60, 90), got {library_params}
+            """)
 
     # Build a SQL query that performs the entire duplicate detection
     sql = f"""
@@ -51,7 +57,8 @@ def execute(
                 s.INV_CASE_STATUS,
                 lab.SPECIMEN_COLLECTION_DT,
                 mr.DIAGNOSIS_DT,
-                CAST(SUBSTRING(s.PATIENT_LOCAL_ID, 4, 8) AS BIGINT) - 10000000 AS PATIENT_ID
+                CAST(SUBSTRING(s.PATIENT_LOCAL_ID, 4, 8) AS BIGINT) - 10000000
+                AS PATIENT_ID
             FROM subset s
             LEFT JOIN (
                 SELECT
@@ -80,8 +87,10 @@ def execute(
                 COALESCE(
                     FL_FUP_EXAM_DT,
                     CASE
-                        WHEN REFERRAL_BASIS = 'T1 - Positive Test' THEN SPECIMEN_COLLECTION_DT
-                        WHEN REFERRAL_BASIS = 'T2 - Morbidity Report' THEN DIAGNOSIS_DT
+                        WHEN REFERRAL_BASIS = 'T1 - Positive Test'
+                        THEN SPECIMEN_COLLECTION_DT
+                        WHEN REFERRAL_BASIS = 'T2 - Morbidity Report'
+                        THEN DIAGNOSIS_DT
                     END
                 ) AS FL_FUP_EXAM_DT
             FROM derived
@@ -145,8 +154,10 @@ def execute(
                 a.CONFIRMATION_DT,
                 a.FL_FUP_EXAM_DT,
                 -- Use ascending diff to next, and descending diff to previous
-                a.diff_next_asc AS days1,   -- positive difference to next row in chronological order
-                d.diff_prev_desc AS days    -- negative difference to previous row in reverse chronological order
+                a.diff_next_asc AS days1,
+                -- positive difference to next row in chronological order
+                d.diff_prev_desc AS days
+                -- negative difference to previous row in reverse chronological order
             FROM asc_diffs a
             INNER JOIN desc_diffs d
                 ON a.INVESTIGATION_KEY = d.INVESTIGATION_KEY
