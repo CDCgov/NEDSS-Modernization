@@ -23,7 +23,7 @@ BEGIN
         ('CA04.SAS', 'CA04: Disease by Hangout Report: Detailed. Gives a listing of social venues where infected patients claimed to meet sex partners or engage in sexual activities.'),
         ('CA05.SAS', 'CA05: Disease by Hangout Report: Summary. Gives a listing of social venues where infected patients claimed to meet sex partners or engage in sexual activities.  The listing also displays the number of cases by diagnosis'  ),
         ('Case_Verification_Report.SAS', 'TB Case Verification Report - 2020 RVCT'),
-        ('NBSCUSTOM.SAS', 'Basic tabular report. Executes the query described by the data source and filters and returns the table'),
+        ('NBSCUSTOM.SAS', 'Recommended default. Basic tabular report. Executes the query described by the data source and filters and returns the table'),
         ('NBSSR00001.SAS', '2 Year Disease Count(year to date) with Percentage Change, by Geographic Area'),
         ('NBSSR00002.SAS', 'SR2: Counts of Reportable Diseases by County for Selected Time Frame. Report demonstrates, in table form, the total number of Investigation(s) [both Individual and Summary] by County irrespective of Case Status.'),
         ('NBSSR00003.SAS', 'Counts of Cases of Selected Diseases by Region and State by Month and Quarter'),
