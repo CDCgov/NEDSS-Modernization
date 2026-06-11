@@ -107,8 +107,7 @@ def execute(
 ):
     """PA03 STD Program Report: Internet Partner Services Report.
 
-    Conversion notes:
-    * Uses the subset_query built by modernization-api as the report's case population.
+    Conversion notes:   
     * Keeps the SQL intentionally narrow and performs the SAS metric math in Python.
     * Returns a long-form table instead of reproducing the SAS PDF layout.
     """
@@ -118,8 +117,6 @@ def execute(
     WITH shd AS (
         {subset_query}
     )
-    -- This matches the STD_HIV_DATAMART1 -> pa3_new case population used by SAS
-    -- for Val_A and Val_G.
     SELECT DISTINCT
         shd.INV_LOCAL_ID,
         shd.INIT_FUP_INTERNET_FOLL_UP_CD
@@ -134,16 +131,12 @@ def execute(
         {subset_query}
     ),
     cases AS (
-        -- Keep the case-side subset small, then join outward to contacts exactly
-        -- once when building the pp03-equivalent rows.
         SELECT shd.INVESTIGATION_KEY, shd.INV_LOCAL_ID, shd.INIT_FUP_INTERNET_FOLL_UP_CD
         FROM shd
         INNER JOIN RDB.DBO.INVESTIGATION i
             ON i.INVESTIGATION_KEY = shd.INVESTIGATION_KEY
         WHERE i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
     )
-    -- The concatenated local id mirrors SAS cat(f.inv_local_id, a.inv_local_id),
-    -- which is the distinct key used for contact counts.
     SELECT DISTINCT
         CONCAT(
             COALESCE(contacts.INV_LOCAL_ID, ''), COALESCE(cases.INV_LOCAL_ID, '')
