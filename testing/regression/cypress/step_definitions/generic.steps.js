@@ -1,7 +1,7 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 
 When('I click on the {string} link', (name) => {
-    cy.contains('a', name).last().click();
+    cy.contains('a', name).click();
 });
 
 Then('I should see the {string} link', (name) => {
