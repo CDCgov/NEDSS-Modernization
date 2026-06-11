@@ -47,7 +47,7 @@
         "@graphql-codegen/typescript": "^5.0.9",
         "@graphql-codegen/typescript-operations": "^5.0.9",
         "@graphql-codegen/typescript-react-apollo": "^4.4.1",
-        "@storybook/addon-docs": "^10.3.4",
+        "@storybook/addon-docs": "^10.4.2",
         "@storybook/addon-onboarding": "^10.3.4",
         "@storybook/react-vite": "^10.3.4",
         "@testing-library/jest-dom": "^6.6.3",

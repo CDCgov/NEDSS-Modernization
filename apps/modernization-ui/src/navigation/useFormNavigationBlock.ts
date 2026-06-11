@@ -22,12 +22,18 @@ const useFormNavigationBlock = <V extends FieldValues, C, D extends FieldValues 
     const blocker = useNavigationBlock(remaining);
 
     useEffect(() => {
-        if (!form.formState.isSubmitting && exists(form.formState.dirtyFields)) {
+        if (!form.formState.isSubmitSuccessful && !form.formState.isSubmitting && exists(form.formState.dirtyFields)) {
             blocker.block();
         } else {
             blocker.allow();
         }
-    }, [form.formState.isSubmitting, exists(form.formState.dirtyFields), blocker.allow, blocker.block]);
+    }, [
+        form.formState.isSubmitSuccessful,
+        form.formState.isSubmitting,
+        exists(form.formState.dirtyFields),
+        blocker.allow,
+        blocker.block,
+    ]);
 
     return blocker;
 };

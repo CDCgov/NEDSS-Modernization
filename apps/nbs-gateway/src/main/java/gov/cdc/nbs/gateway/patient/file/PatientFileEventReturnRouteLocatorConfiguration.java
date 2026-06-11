@@ -34,7 +34,7 @@ class PatientFileEventReturnRouteLocatorConfiguration {
             "patient-file-event-return",
             route ->
                 route
-                    .order(RouteOrdering.PATIENT_FILE.order())
+                    .order(RouteOrdering.MODERNIZED_SERVICE.order())
                     .query("ContextAction", "ReturnToFileEvents")
                     .filters(filter -> filter.setPath(parameters.events()).filters(defaults))
                     .uri(parameters.uri()))

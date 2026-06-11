@@ -4,9 +4,6 @@ import { BlockingAttribute, MatchingAttribute, MatchMethod } from 'apps/deduplic
 import { ImportConfigurationModal } from './ImportConfigurationModal';
 import { AlgorithmExport } from 'apps/deduplication/api/model/AlgorithmExport';
 
-const onImport = vi.fn();
-const onCancel = vi.fn();
-
 // mock file.text()
 File.prototype.text = function () {
     return new Promise((resolve, reject) => {
@@ -17,15 +14,10 @@ File.prototype.text = function () {
     });
 };
 
-const Fixture = ({ visible = true }) => {
+const Fixture = ({ visible = true, onImport = vi.fn(), onCancel = vi.fn() }) => {
     return <ImportConfigurationModal visible={visible} onCancel={onCancel} onImport={onImport} />;
 };
 describe('ImportConfigurationModal', () => {
-    beforeEach(() => {
-        onImport.mockClear();
-        onCancel.mockClear();
-    });
-
     it('should show proper heading', () => {
         const { getByText } = render(<Fixture />);
 
@@ -52,8 +44,9 @@ describe('ImportConfigurationModal', () => {
     });
 
     it('should trigger on cancel when close button clicked', async () => {
+        const onCancel = vi.fn();
         const user = userEvent.setup();
-        const { getAllByRole } = render(<Fixture />);
+        const { getAllByRole } = render(<Fixture onCancel={onCancel} />);
 
         const close = getAllByRole('button')[0]; // close 'X'
         await user.click(close);
@@ -61,8 +54,9 @@ describe('ImportConfigurationModal', () => {
     });
 
     it('should trigger on cancel when cancel button clicked', async () => {
+        const onCancel = vi.fn();
         const user = userEvent.setup();
-        const { getAllByRole } = render(<Fixture />);
+        const { getAllByRole } = render(<Fixture onCancel={onCancel} />);
 
         const cancel = getAllByRole('button')[1];
         expect(cancel).toHaveTextContent('Cancel');
@@ -71,9 +65,10 @@ describe('ImportConfigurationModal', () => {
     });
 
     it('should trigger import when valid configuration file uploaded', async () => {
+        const onImport = vi.fn();
         const user = userEvent.setup();
 
-        const { getAllByRole, getByLabelText } = render(<Fixture />);
+        const { getAllByRole, getByLabelText } = render(<Fixture onImport={onImport} />);
 
         const fileInput = getByLabelText('Drag configuration file here or choose from folder');
         const algorithmExport: AlgorithmExport = {
@@ -112,9 +107,10 @@ describe('ImportConfigurationModal', () => {
     });
 
     it('should show warning when invalid configuration uploaded', async () => {
+        const onImport = vi.fn();
         const user = userEvent.setup();
 
-        const { getAllByRole, getByLabelText, queryByText } = render(<Fixture />);
+        const { getAllByRole, getByLabelText, queryByText } = render(<Fixture onImport={onImport} />);
 
         const fileInput = getByLabelText('Drag configuration file here or choose from folder');
 
@@ -139,9 +135,10 @@ describe('ImportConfigurationModal', () => {
     });
 
     it('should show warning when non configuration file is uploaded', async () => {
+        const onImport = vi.fn();
         const user = userEvent.setup();
 
-        const { getAllByRole, getByLabelText, queryByText } = render(<Fixture />);
+        const { getAllByRole, getByLabelText, queryByText } = render(<Fixture onImport={onImport} />);
 
         const fileInput = getByLabelText('Drag configuration file here or choose from folder');
 

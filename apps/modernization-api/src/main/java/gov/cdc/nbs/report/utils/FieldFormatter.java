@@ -13,10 +13,25 @@ public class FieldFormatter {
   public String formatField(String type, String value) {
     return switch (type.toUpperCase()) {
       case "STRING" -> "'" + value.replace("'", "''") + "'";
-      case "DATE" -> convertToSQLDate(value);
+      case "DATE", "DATETIME" -> convertToSQLDate(value);
       case "INTEGER", "NUMBER" -> validateNumeric(value);
       default -> throw new IllegalArgumentException("Unexpected Column Type: " + type);
     };
+  }
+
+  /**
+   * Generates a string that contains the colName in brackets which protects against SQL reserved
+   * words
+   */
+  public String convertToSQLColName(String colName, String colType) {
+    String sqlColName = "[" + colName + "]";
+
+    // Ensures comparison operators (e.g. <>, =, >, IN, etc...) work for DATETIME columns
+    // when compared against a date value (e.g. '2026-05-28') since frontend passes date values
+    if (colType.equals("DATETIME")) {
+      return "CAST(" + sqlColName + " AS DATE)";
+    }
+    return sqlColName;
   }
 
   private static String convertToSQLDate(String date) {

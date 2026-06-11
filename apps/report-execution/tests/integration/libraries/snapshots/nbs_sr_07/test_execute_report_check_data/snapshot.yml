@@ -1,7 +1,7 @@
 - !!python/tuple
   - Measles
   - Five Year Median YTD
-  - 1016.0
+  - 1111.0
 - !!python/tuple
   - Measles
   - Current YTD
@@ -10,7 +10,7 @@
 - !!python/tuple
   - Pertussis
   - Five Year Median YTD
-  - 834.0
+  - 929.0
 - !!python/tuple
   - Pertussis
   - Current YTD
@@ -19,9 +19,9 @@
 - !!python/tuple
   - Salmonellosis
   - Five Year Median YTD
-  - 785.0
+  - 890.0
 - !!python/tuple
   - Salmonellosis
   - Current YTD
   - !!python/object/apply:decimal.Decimal
-    - '1424.00000'
+    - '1490.00000'

@@ -1,5 +1,5 @@
 - !!python/tuple
-  - -9%
+  - (16%)
   - !!python/object/apply:decimal.Decimal
     - '743.00000'
   - !!python/object/apply:decimal.Decimal
@@ -8,32 +8,32 @@
   - 2024
   - !!python/object/apply:decimal.Decimal
     - '928.00000'
-  - 1016.0
+  - 1111.0
   - !!python/object/apply:decimal.Decimal
     - '135.00000'
 - !!python/tuple
-  - 76%
+  - 58%
   - !!python/object/apply:decimal.Decimal
-    - '894.00000'
+    - '948.00000'
   - !!python/object/apply:decimal.Decimal
     - '1464.00000'
   - Pertussis
   - 2024
   - !!python/object/apply:decimal.Decimal
     - '1464.00000'
-  - 834.0
+  - 929.0
   - !!python/object/apply:decimal.Decimal
     - '248.00000'
 - !!python/tuple
-  - 81%
+  - 67%
   - !!python/object/apply:decimal.Decimal
     - '994.00000'
   - !!python/object/apply:decimal.Decimal
-    - '1424.00000'
+    - '1490.00000'
   - Salmonellosis
   - 2024
   - !!python/object/apply:decimal.Decimal
-    - '1424.00000'
-  - 785.0
+    - '1490.00000'
+  - 890.0
   - !!python/object/apply:decimal.Decimal
-    - '172.00000'
+    - '238.00000'

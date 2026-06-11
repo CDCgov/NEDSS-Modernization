@@ -66,7 +66,7 @@ class ReportSpecBuilderTest {
     Mockito.lenient().when(filterType.type()).thenReturn(filterTypeCode);
 
     return new BasicFilterConfiguration(
-        reportFilterUid, reportColumnUid, filterDefaultValues, null, null, null, null, filterType);
+        reportFilterUid, reportColumnUid, filterDefaultValues, null, null, null, filterType);
   }
 
   private ReportColumn mockReportColumn(Long columnId, String columnName, String columnTitle) {
@@ -90,7 +90,7 @@ class ReportSpecBuilderTest {
 
     Library library = Mockito.mock(Library.class);
     Mockito.lenient().when(reportConfiguration.library()).thenReturn(library);
-    Mockito.lenient().when(library.libraryName()).thenReturn("nbs_custom");
+    Mockito.lenient().when(library.name()).thenReturn("nbs_custom");
 
     ReportDataSource dataSource = Mockito.mock(ReportDataSource.class);
     Mockito.lenient().when(reportConfiguration.dataSource()).thenReturn(dataSource);
@@ -145,7 +145,7 @@ class ReportSpecBuilderTest {
     assertThat(reportSpec.isBuiltin()).isEqualTo(reportConfig.library().isBuiltin());
     assertThat(reportSpec.isExport()).isEqualTo(request.isExport());
     assertThat(reportSpec.reportTitle()).isEqualTo(reportConfig.title());
-    assertThat(reportSpec.libraryName()).isEqualTo(reportConfig.library().libraryName());
+    assertThat(reportSpec.libraryName()).isEqualTo(reportConfig.library().name());
     assertThat(reportSpec.dataSourceName()).isEqualTo("[NBS_ODSE].[dbo].[NBS_configuration]");
 
     assertThat(reportSpec.subsetQuery())

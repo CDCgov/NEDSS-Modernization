@@ -1,5 +1,6 @@
 @use 'styles/borders';
 @use 'styles/components';
+@use 'styles/colors';
 
 .horizontal {
     --label-area-width: 13rem;
@@ -11,7 +12,12 @@
     display: grid;
     grid-template-columns: var(--label-area-width) 1fr;
 
-    @extend %thin-bottom;
+    color: colors.$base-darkest;
+    line-height: normal;
+
+    &:not(:last-child) {
+        @extend %thin-bottom;
+    }
 
     .left {
         display: flex;
@@ -19,8 +25,11 @@
         gap: 0.5rem;
         padding-top: 0.5rem;
 
-        label {
+        .label {
+            display: flex;
+            align-items: center;
             font-weight: 700;
+            min-height: var(--component-height);
 
             &.required {
                 @include components.required();
@@ -32,12 +41,22 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        align-items: flex-start;
         gap: 0.5rem;
+        min-height: 100%;
+        align-items: center;
 
         .children {
             min-width: fit-content;
             width: 20rem;
+        }
+
+        .value {
+            display: flex;
+            align-items: center;
+            padding-top: 0.5rem;
+            min-height: var(--component-height);
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
         }
 
         .message {
@@ -51,6 +70,8 @@
     &.small {
         --label-area-width: 12rem;
 
+        @extend %small;
+
         .left {
             padding-top: 0.25rem;
         }
@@ -62,5 +83,9 @@
         }
 
         padding-left: 1rem;
+    }
+
+    &.large {
+        @extend %large;
     }
 }

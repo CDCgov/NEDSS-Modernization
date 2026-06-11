@@ -36,13 +36,15 @@ export const ConfirmationModal = ({
             ref={modal}
             id={id}
             aria-labelledby="confirmation-heading"
-            className="modal"
+            className={classNames(style.content, 'modal')}
             aria-describedby={ariaDescribedBy}
         >
-            <ModalHeading id="confirmation-heading">{title}</ModalHeading>
-            <div className={classNames(style.content, 'modal-content')}>
+            <ModalHeading id="confirmation-heading" className={style.heading}>
+                {title}
+            </ModalHeading>
+            <div className="modal-content">
                 <div className={classNames('warning')}>
-                    <Icon.Warning className={classNames(style.warningIcon)} />
+                    <Icon.Warning className={classNames(style.warningIcon)} aria-label="Warning" />
                 </div>
                 <div className={classNames(style.message, 'modal-message')}>
                     <p id={ariaDescribedBy}>{message}</p>

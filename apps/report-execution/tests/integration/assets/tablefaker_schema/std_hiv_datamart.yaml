@@ -52,7 +52,11 @@ tables:
     columns:
       # required columns:
       - column_name: investigation_key
-        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+        data: row_id
+        foreign_key:
+          table: "[RDB].[dbo].[investigation]"
+          column: INVESTIGATION_KEY
+
       # patient demographics
       - column_name: patient_name
         data: |
@@ -96,8 +100,7 @@ tables:
       - column_name: program_jurisdiction_oid
         data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
       - column_name: confirmation_dt
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
-        null_percentage: 0.05
+        data: fake.date_between(start_date=date(2020, 1, 1), end_date=date(2025, 12, 31))
       - column_name: jurisdiction_nm
         type: string
         data: random.choice(["Washington County", "Middlesex County"]) if random.random() < .95 else None
@@ -119,6 +122,78 @@ tables:
         data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
       - column_name: investigator_interview_key
         data: fake.random_int(10000000, 99999999)
+
+  # Join tables needed for qa04
+
+  - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
+    row_count: 200
+    columns:
+      - column_name: LAB_TEST_KEY
+        data: row_id + 10000
+        is_primary_key: true
+      - column_name: INVESTIGATION_KEY
+        data: row_id
+        foreign_key:
+          table: "[RDB].[dbo].[investigation]"
+          column: INVESTIGATION_KEY
+      - column_name: RECORD_STATUS_CD
+        data: random.choice(["ACTIVE", "INACTIVE"])
+      - column_name: RESULT_COMMENT_GRP_KEY
+        data: row_id + 40000
+      - column_name: TEST_RESULT_GRP_KEY
+        data: row_id + 50000
+      - column_name: PERFORMING_LAB_KEY
+        data: row_id + 60000
+      - column_name: PATIENT_KEY
+        data: row_id + 70000
+      - column_name: COPY_TO_PROVIDER_KEY
+        data: row_id + 80000
+      - column_name: LAB_TEST_TECHNICIAN_KEY
+        data: row_id + 90000
+      - column_name: SPECIMEN_COLLECTOR_KEY
+        data: row_id + 100000
+      - column_name: ORDERING_ORG_KEY
+        data: row_id + 110000
+      - column_name: REPORTING_LAB_KEY
+        data: row_id + 120000
+      - column_name: CONDITION_KEY
+        data: row_id + 130000
+      - column_name: LAB_RPT_DT_KEY
+        data: row_id + 140000
+      - column_name: MORB_RPT_KEY
+        data: row_id + 150000
+      - column_name: LDF_GROUP_KEY
+        data: row_id + 160000
+      - column_name: ORDERING_PROVIDER_KEY
+        data: row_id + 170000
+
+  - table_name: "[RDB].[dbo].[TREATMENT_EVENT]"
+    row_count: 160
+    columns:
+      - column_name: TREATMENT_KEY
+        data: row_id + 20000
+        is_primary_key: true
+      - column_name: INVESTIGATION_KEY
+        data: row_id if row_id <= 100 else row_id + 100
+        foreign_key:
+          table: "[RDB].[dbo].[investigation]"
+          column: INVESTIGATION_KEY
+      - column_name: RECORD_STATUS_CD
+        data: random.choice(["ACTIVE", "INACTIVE"])
+      - column_name: TREATMENT_DT_KEY
+        data: row_id + 180000
+      - column_name: TREATMENT_PROVIDING_ORG_KEY
+        data: row_id + 190000
+      - column_name: PATIENT_KEY
+        data: row_id + 70000
+      - column_name: MORB_RPT_KEY
+        data: row_id + 150000
+      - column_name: TREATMENT_PHYSICIAN_KEY
+        data: row_id + 200000
+      - column_name: CONDITION_KEY
+        data: row_id + 130000
+      - column_name: LDF_GROUP_KEY
+        data: row_id + 160000
 
 
 # === Columns not needed for reports yet ===
@@ -143,7 +218,6 @@ tables:
 #COINFECTION_ID varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #CONDITION_CD varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #CONDITION_KEY bigint NULL,
-#CONFIRMATION_DT datetime NULL,
 #CURR_PROCESS_STATE varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #DETECTION_METHOD_DESC_TXT varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 #DIAGNOSIS varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
