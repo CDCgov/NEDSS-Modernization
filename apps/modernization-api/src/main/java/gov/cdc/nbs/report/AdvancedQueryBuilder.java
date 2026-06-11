@@ -184,15 +184,18 @@ public class AdvancedQueryBuilder {
   }
 
   private AdvancedQuery simplify(AdvancedQuery.RuleGroup ruleGroup) {
-    //  If a RuleGroup has only one Rule, and it's also a RuleGroup
-    if (ruleGroup.rules().size() == 1
-        && ruleGroup.rules().getFirst() instanceof AdvancedQuery.RuleGroup) {
+    //  If a RuleGroup has only one Rule
+    if (ruleGroup.rules().size() == 1) {
+      AdvancedQuery firstRule = ruleGroup.rules().getFirst();
 
-      //  We can do away with the outer RuleGroup
-      return simplify((AdvancedQuery.RuleGroup) ruleGroup.rules().getFirst());
-    } else if (ruleGroup.rules().size() == 1
-        && ruleGroup.rules().getFirst() instanceof AdvancedQuery.Rule) {
-      return ruleGroup.rules().getFirst();
+      // if it's a RuleGroup
+      if (firstRule instanceof AdvancedQuery.RuleGroup) {
+        //  We can do away with the outer RuleGroup
+        return simplify((AdvancedQuery.RuleGroup) firstRule);
+      } else {
+        //  We can return the Rule directly and remove the redundant RuleGroup
+        return firstRule;
+      }
     } else {
       return new AdvancedQuery.RuleGroup(
           ruleGroup.id(),
