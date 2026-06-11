@@ -23,7 +23,7 @@ public class AdvancedQueryException extends Exception {
     return super.getMessage() + " (Query String: '" + generateQueryString() + "')";
   }
 
-  private String generateQueryString() {
+  public String generateQueryString() {
     return "WHERE "
         + String.join(
             " ",

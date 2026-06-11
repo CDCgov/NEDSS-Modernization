@@ -121,7 +121,6 @@ public class AdvancedQueryBuilder {
           throw new AdvancedQueryException("operator must follow clause", filterValues);
 
         if (isCombinator(next)) {
-
           if (combinator.equals(ReportConstants.QueryCombinators.valueOf(next.getOperator()))) {
             advance(); // keep on keeping on
             continue;
