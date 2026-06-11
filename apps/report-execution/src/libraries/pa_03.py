@@ -145,7 +145,9 @@ def execute(
     -- The concatenated local id mirrors SAS cat(f.inv_local_id, a.inv_local_id),
     -- which is the distinct key used for contact counts.
     SELECT DISTINCT
-        CONCAT(COALESCE(contacts.INV_LOCAL_ID, ''), COALESCE(cases.INV_LOCAL_ID, '')) AS INV_LOCAL_ID,
+        CONCAT(
+            COALESCE(contacts.INV_LOCAL_ID, ''), COALESCE(cases.INV_LOCAL_ID, '')
+        ) AS INV_LOCAL_ID,
         cases.INIT_FUP_INTERNET_FOLL_UP_CD,
         contacts.INIT_FUP_INTERNET_FOLL_UP_CD AS CON_INIT_FUP_INTERNET_FOLL_UP_CD,
         dcr.CTT_REFERRAL_BASIS,
