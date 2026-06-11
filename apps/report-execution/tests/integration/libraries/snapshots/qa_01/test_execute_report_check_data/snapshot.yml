@@ -1,1430 +1,1449 @@
 - !!python/tuple
-  - 265
-  - null
-  - null
-  - null
-  - 54 Years
-  - Female
-  - AI
-  - '730'
-  - '54632777'
-  - '75181852'
-  - N
-  - 2019-02-27
-  - 2018-11-27
-  - null
-  - XXX
-  - ''
-  - '13'
-  - 54 Years
-- !!python/tuple
   - 249
   - null
   - null
   - null
-  - 28 Days
+  - 48 Months
   - Female
-  - ''
-  - '900'
-  - '90431555'
-  - '26191373'
-  - N
-  - 2024-12-25
-  - 2020-12-10
-  - null
-  - ''
-  - ''
-  - '13'
-  - 28 Days
-- !!python/tuple
-  - 106
-  - null
-  - null
-  - Badu, Erykah
-  - 76 Months
-  - ''
-  - B
-  - '200'
-  - '52311457'
-  - '12935659'
-  - N
-  - 2018-07-17
-  - 2019-06-10
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 76 Months
-- !!python/tuple
-  - 811
-  - null
-  - null
-  - Badu, Erykah
-  - 42 Days
-  - null
-  - ''
-  - '200'
-  - '75757895'
-  - '14915026'
-  - N
-  - 2020-05-16
-  - 2019-01-08
-  - badu, erykah
-  - ''
-  - ''
-  - '13'
-  - 42 Days
-- !!python/tuple
-  - 972
-  - null
-  - null
-  - Badu, Erykah
-  - 5 Years
-  - Female
-  - B
-  - '200'
-  - '14779905'
-  - '76360995'
-  - N
-  - 2024-10-18
-  - 2020-01-16
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 5 Years
-- !!python/tuple
-  - 504
-  - null
-  - null
-  - Badu, Erykah
-  - 91 Days
-  - Male
-  - AI
+  - A
   - '300'
-  - '93065464'
-  - '15410653'
+  - '91011709'
+  - '12402714'
   - N
-  - 2024-02-17
-  - 2024-02-04
-  - badu, erykah
+  - 2020-01-29
+  - 2023-10-16
+  - null
   - XXX
   - ''
   - '13'
-  - 91 Days
+  - 48 Months
 - !!python/tuple
-  - 755
+  - 579
   - null
   - null
-  - Badu, Erykah
-  - 66 Days
+  - null
+  - 98 Days
   - Male
-  - AI
-  - '300'
-  - '62007224'
-  - '77974495'
-  - N
-  - 2023-10-17
-  - 2022-02-15
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 66 Days
-- !!python/tuple
-  - 768
-  - null
-  - null
-  - Badu, Erykah
-  - 11 Days
-  - Male
-  - B
-  - '300'
-  - '38091995'
-  - '37555592'
-  - N
-  - 2021-05-14
-  - 2024-02-27
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 11 Days
-- !!python/tuple
-  - 428
-  - null
-  - null
-  - Badu, Erykah
-  - .
-  - ''
   - A
-  - '710'
-  - '92161007'
-  - '48358757'
-  - N
-  - 2023-11-14
-  - 2021-05-03
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - .
-- !!python/tuple
-  - 623
-  - null
-  - null
-  - Badu, Erykah
-  - 1 Days
-  - Female
-  - W
-  - '710'
-  - '37066139'
-  - '63660888'
-  - N
-  - 2021-09-04
-  - 2024-08-24
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 1 Days
-- !!python/tuple
-  - 275
-  - null
-  - null
-  - Badu, Erykah
-  - 58 Days
-  - Male
-  - W
   - '720'
-  - '13818549'
-  - '36791762'
+  - '24167681'
+  - '13407696'
   - N
-  - 2019-08-31
-  - 2021-11-22
-  - badu, erykah
+  - 2021-07-21
+  - 2020-12-19
+  - null
   - XXX
   - ''
   - '13'
-  - 58 Days
+  - 98 Days
 - !!python/tuple
-  - 839
-  - null
-  - null
-  - Badu, Erykah
-  - 17 Months
-  - Male
-  - AI
-  - '720'
-  - '98496502'
-  - '69928196'
-  - N
-  - 2022-06-17
-  - 2018-07-05
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 17 Months
-- !!python/tuple
-  - 913
-  - null
-  - null
-  - Badu, Erykah
-  - 63 Months
-  - ''
-  - ''
-  - '720'
-  - '92012813'
-  - '86796523'
-  - N
-  - null
-  - 2021-01-23
-  - badu, erykah
-  - ''
-  - ''
-  - '13'
-  - 63 Months
-- !!python/tuple
-  - 785
-  - null
-  - null
-  - Badu, Erykah
-  - 67 Days
-  - Female
-  - A
-  - '730'
-  - '54239763'
-  - '89644763'
-  - N
-  - 2024-07-27
-  - 2019-02-12
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 67 Days
-- !!python/tuple
-  - 910
-  - null
-  - null
-  - Badu, Erykah
-  - 27 Days
-  - Male
-  - A
-  - '730'
-  - '72019457'
-  - null
-  - N
-  - 2019-06-28
-  - 2018-07-29
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 27 Days
-- !!python/tuple
-  - 194
-  - null
-  - null
-  - Badu, Erykah
-  - 59 Days
-  - Female
-  - A
-  - '790'
-  - '43586452'
-  - '65342330'
-  - N
-  - 2021-02-24
-  - 2024-12-29
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 59 Days
-- !!python/tuple
-  - 400
-  - null
-  - null
-  - Badu, Erykah
-  - 15 Years
-  - Female
-  - W
-  - '790'
-  - '96717964'
-  - '36695598'
-  - N
-  - 2022-03-25
-  - 2019-01-25
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 15 Years
-- !!python/tuple
-  - 20
-  - null
-  - null
-  - Badu, Erykah
-  - 43 Months
-  - Male
-  - A
-  - '900'
-  - '83855195'
-  - null
-  - N
-  - 2024-11-29
-  - 2023-04-23
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 43 Months
-- !!python/tuple
-  - 24
-  - null
-  - null
-  - Badu, Erykah
-  - 50 Days
-  - Female
-  - A
-  - '900'
-  - '92094355'
-  - '57425481'
-  - N
-  - 2019-05-28
-  - 2022-03-13
-  - badu, erykah
-  - XXX
-  - ''
-  - '13'
-  - 50 Days
-- !!python/tuple
-  - 510
+  - 536
   - null
   - null
   - Badu, Erykah
   - 87 Years
   - ''
-  - A
-  - '900'
+  - null
+  - '200'
   - '60839502'
-  - null
-  - N
+  - '20578954'
+  - Y
   - 2020-07-05
-  - 2022-09-10
+  - null
   - badu, erykah
-  - XXX
+  - ''
   - ''
   - '13'
   - 87 Years
 - !!python/tuple
-  - 615
+  - 700
   - null
   - null
   - Badu, Erykah
-  - 68 Months
-  - null
-  - B
-  - '900'
-  - '99063128'
-  - '12306796'
+  - 49 Months
+  - ''
+  - A
+  - '300'
+  - '80146370'
+  - '43354084'
   - N
-  - 2024-12-19
-  - 2021-08-11
+  - 2019-05-12
+  - 2020-02-10
   - badu, erykah
   - XXX
   - ''
   - '13'
-  - 68 Months
+  - 49 Months
 - !!python/tuple
-  - 739
+  - 18
   - null
   - null
   - Badu, Erykah
-  - 93 Years
-  - Female
-  - B
-  - '900'
-  - '44738363'
-  - '42491528'
+  - 19 Years
+  - null
+  - ''
+  - '710'
+  - '48640266'
+  - '97276340'
   - N
-  - 2019-12-03
   - 2023-08-03
+  - 2018-09-19
+  - badu, erykah
+  - ''
+  - ''
+  - '13'
+  - 19 Years
+- !!python/tuple
+  - 460
+  - null
+  - null
+  - Badu, Erykah
+  - 28 Months
+  - ''
+  - A
+  - '710'
+  - '33593236'
+  - '59619717'
+  - N
+  - 2022-09-23
+  - 2022-12-23
   - badu, erykah
   - XXX
   - ''
   - '13'
-  - 93 Years
+  - 28 Months
 - !!python/tuple
-  - 230
+  - 773
   - null
   - null
-  - Carey, Mariah
-  - 82 Days
-  - Female
-  - B
-  - '200'
-  - '65727551'
-  - '13936118'
+  - Badu, Erykah
+  - 69 Years
+  - ''
+  - A
+  - '710'
+  - '99336873'
+  - '86551898'
   - N
-  - null
-  - 2024-12-18
-  - carey, mariah
+  - 2021-09-05
+  - 2018-07-15
+  - badu, erykah
   - XXX
   - ''
   - '13'
-  - 82 Days
+  - 69 Years
 - !!python/tuple
-  - 473
+  - 812
   - null
   - null
-  - Carey, Mariah
-  - 57 Months
-  - Male
+  - Badu, Erykah
+  - 36 Months
+  - ''
+  - null
+  - '710'
+  - '71559285'
+  - '69205096'
+  - N
+  - 2024-11-23
+  - 2018-06-04
+  - badu, erykah
+  - ''
+  - ''
+  - '13'
+  - 36 Months
+- !!python/tuple
+  - 934
+  - null
+  - null
+  - Badu, Erykah
+  - 60 Days
+  - Female
+  - AI
+  - '710'
+  - '83680042'
+  - '51164902'
+  - N
+  - 2020-09-25
+  - 2020-11-12
+  - badu, erykah
+  - XXX
+  - ''
+  - '13'
+  - 60 Days
+- !!python/tuple
+  - 772
+  - null
+  - null
+  - Badu, Erykah
+  - 16 Days
+  - Female
   - W
-  - '200'
-  - '44754415'
-  - '27241559'
+  - '720'
+  - '94895365'
+  - '47791950'
+  - N
+  - 2022-02-20
+  - 2019-10-24
+  - badu, erykah
+  - XXX
+  - ''
+  - '13'
+  - 16 Days
+- !!python/tuple
+  - 448
+  - null
+  - null
+  - Badu, Erykah
+  - 91 Years
+  - Female
+  - AI
+  - '730'
+  - '58321053'
+  - '91962965'
+  - N
+  - 2020-12-16
+  - 2024-03-12
+  - badu, erykah
+  - XXX
+  - ''
+  - '13'
+  - 91 Years
+- !!python/tuple
+  - 70
+  - null
+  - null
+  - Badu, Erykah
+  - 15 Months
+  - ''
+  - ''
+  - '790'
+  - '22725223'
+  - '42841886'
   - N
   - 2020-09-18
-  - 2020-12-14
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 57 Months
-- !!python/tuple
-  - 523
-  - null
-  - null
-  - Carey, Mariah
-  - 93 Years
-  - Female
-  - AI
-  - '200'
-  - '88854110'
-  - '14652417'
-  - Y
-  - 2024-04-15
-  - null
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 93 Years
-- !!python/tuple
-  - 432
-  - null
-  - null
-  - Carey, Mariah
-  - 16 Days
-  - Female
-  - W
-  - '300'
-  - '37143592'
-  - '76017062'
-  - N
-  - 2023-09-28
-  - 2019-12-10
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 16 Days
-- !!python/tuple
-  - 97
-  - null
-  - null
-  - Carey, Mariah
-  - 94 Days
-  - ''
-  - ''
-  - '710'
-  - '93088386'
-  - '73638602'
-  - N
-  - 2019-08-02
-  - 2023-09-28
-  - carey, mariah
+  - 2020-08-26
+  - badu, erykah
   - ''
   - ''
   - '13'
-  - 94 Days
-- !!python/tuple
-  - 856
-  - null
-  - null
-  - Carey, Mariah
-  - 3 Months
-  - Female
-  - AI
-  - '710'
-  - '34974207'
-  - '46077778'
-  - N
-  - 2024-01-14
-  - 2023-12-18
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 3 Months
-- !!python/tuple
-  - 777
-  - null
-  - null
-  - Carey, Mariah
-  - 36 Years
-  - Female
-  - B
-  - '720'
-  - '58999911'
-  - '59068836'
-  - N
-  - 2024-02-19
-  - 2022-05-28
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 36 Years
-- !!python/tuple
-  - 274
-  - null
-  - null
-  - Carey, Mariah
-  - 15 Days
-  - ''
-  - A
-  - '730'
-  - '11873220'
-  - '22304630'
-  - N
-  - 2024-10-02
-  - 2020-12-24
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 15 Days
-- !!python/tuple
-  - 358
-  - null
-  - null
-  - Carey, Mariah
-  - 32 Days
-  - Female
-  - W
-  - '730'
-  - '66926427'
-  - '94079704'
-  - N
-  - null
-  - 2022-03-10
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 32 Days
-- !!python/tuple
-  - 376
-  - null
-  - null
-  - Carey, Mariah
-  - 46 Months
-  - Female
-  - ''
-  - '730'
-  - '34325652'
-  - '45748675'
-  - N
-  - 2021-06-20
-  - 2019-10-27
-  - carey, mariah
-  - ''
-  - ''
-  - '13'
-  - 46 Months
-- !!python/tuple
-  - 137
-  - null
-  - null
-  - Carey, Mariah
-  - 98 Days
-  - Female
-  - null
-  - '790'
-  - '24625112'
-  - '10304224'
-  - N
-  - 2023-05-18
-  - 2024-07-01
-  - carey, mariah
-  - ''
-  - ''
-  - '13'
-  - 98 Days
-- !!python/tuple
-  - 423
-  - null
-  - null
-  - Carey, Mariah
-  - 38 Months
-  - ''
-  - ''
-  - '790'
-  - '71205660'
-  - null
-  - N
-  - 2020-04-25
-  - 2020-09-12
-  - carey, mariah
-  - ''
-  - ''
-  - '13'
-  - 38 Months
-- !!python/tuple
-  - 151
-  - null
-  - null
-  - Carey, Mariah
-  - 44 Years
-  - ''
-  - A
-  - '900'
-  - '74441229'
-  - '51036403'
-  - N
-  - 2021-05-11
-  - 2022-06-19
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 44 Years
-- !!python/tuple
-  - 317
-  - null
-  - null
-  - Carey, Mariah
-  - 95 Days
-  - null
-  - B
-  - '900'
-  - '77874450'
-  - '46570277'
-  - N
-  - 2019-07-29
-  - 2022-09-01
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 95 Days
-- !!python/tuple
-  - 723
-  - null
-  - null
-  - Carey, Mariah
-  - 48 Months
-  - Male
-  - B
-  - '900'
-  - '30128050'
-  - '79008671'
-  - N
-  - 2024-05-08
-  - 2021-04-09
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 48 Months
-- !!python/tuple
-  - 770
-  - null
-  - null
-  - Carey, Mariah
-  - 9 Days
-  - Female
-  - AI
-  - '900'
-  - '76855258'
-  - '92853035'
-  - N
-  - 2024-07-14
-  - 2019-01-22
-  - carey, mariah
-  - XXX
-  - ''
-  - '13'
-  - 9 Days
+  - 15 Months
 - !!python/tuple
   - 602
   - null
   - null
-  - Glasper, Robert
-  - .
-  - Male
-  - W
-  - '200'
-  - '35961304'
-  - '85110282'
+  - Badu, Erykah
+  - 69 Days
+  - ''
+  - AI
+  - '790'
+  - '48826684'
+  - '44835170'
   - N
-  - 2024-11-30
-  - 2018-09-20
-  - glasper, robert
+  - 2023-08-20
+  - 2024-11-03
+  - badu, erykah
   - XXX
+  - ''
+  - '13'
+  - 69 Days
+- !!python/tuple
+  - 989
+  - null
+  - null
+  - Badu, Erykah
+  - 49 Years
+  - Male
+  - A
+  - '790'
+  - '74256167'
+  - '30150197'
+  - N
+  - 2019-10-26
+  - 2018-12-19
+  - badu, erykah
+  - XXX
+  - ''
+  - '13'
+  - 49 Years
+- !!python/tuple
+  - 208
+  - null
+  - null
+  - Badu, Erykah
+  - 89 Years
+  - Male
+  - A
+  - '900'
+  - '45391862'
+  - '74962234'
+  - N
+  - 2023-08-27
+  - 2024-09-29
+  - badu, erykah
+  - XXX
+  - ''
+  - '13'
+  - 89 Years
+- !!python/tuple
+  - 28
+  - null
+  - null
+  - Carey, Mariah
+  - 18 Years
+  - ''
+  - AI
+  - '200'
+  - '20408041'
+  - '32726787'
+  - N
+  - 2020-05-25
+  - 2019-04-13
+  - carey, mariah
+  - XXX
+  - ''
+  - '13'
+  - 18 Years
+- !!python/tuple
+  - 99
+  - null
+  - null
+  - Carey, Mariah
+  - 35 Days
+  - Male
+  - ''
+  - '200'
+  - '61933277'
+  - '71452015'
+  - N
+  - 2018-09-19
+  - 2020-07-24
+  - carey, mariah
+  - ''
+  - ''
+  - '13'
+  - 35 Days
+- !!python/tuple
+  - 167
+  - null
+  - null
+  - Carey, Mariah
+  - 40 Years
+  - Male
+  - B
+  - '200'
+  - '87572416'
+  - '27355261'
+  - N
+  - 2022-01-18
+  - 2018-06-03
+  - carey, mariah
+  - XXX
+  - ''
+  - '13'
+  - 40 Years
+- !!python/tuple
+  - 263
+  - null
+  - null
+  - Carey, Mariah
+  - 68 Days
+  - Female
+  - null
+  - '200'
+  - '62362649'
+  - '69571447'
+  - N
+  - 2023-06-02
+  - 2019-11-01
+  - carey, mariah
+  - ''
+  - ''
+  - '13'
+  - 68 Days
+- !!python/tuple
+  - 539
+  - null
+  - null
+  - Carey, Mariah
+  - 66 Months
+  - Female
+  - B
+  - '200'
+  - '76077344'
+  - '62389600'
+  - N
+  - 2023-08-26
+  - 2018-06-23
+  - carey, mariah
+  - XXX
+  - ''
+  - '13'
+  - 66 Months
+- !!python/tuple
+  - 875
+  - null
+  - null
+  - Carey, Mariah
+  - 7 Days
+  - Male
+  - A
+  - '200'
+  - '42874644'
+  - '52363759'
+  - N
+  - 2021-11-09
+  - 2019-07-09
+  - carey, mariah
+  - XXX
+  - ''
+  - '13'
+  - 7 Days
+- !!python/tuple
+  - 79
+  - null
+  - null
+  - Carey, Mariah
+  - 40 Years
+  - Female
+  - null
+  - '300'
+  - '45536981'
+  - '37449188'
+  - N
+  - 2024-07-30
+  - 2020-02-02
+  - carey, mariah
+  - ''
+  - ''
+  - '13'
+  - 40 Years
+- !!python/tuple
+  - 324
+  - null
+  - null
+  - Carey, Mariah
+  - 48 Days
+  - ''
+  - ''
+  - '300'
+  - '91557826'
+  - '42213048'
+  - N
+  - 2018-08-09
+  - 2023-02-25
+  - carey, mariah
+  - ''
+  - ''
+  - '13'
+  - 48 Days
+- !!python/tuple
+  - 583
+  - null
+  - null
+  - Carey, Mariah
+  - 90 Months
+  - Male
+  - null
+  - '300'
+  - '78447241'
+  - '95875482'
+  - N
+  - 2023-10-02
+  - 2023-02-14
+  - carey, mariah
+  - ''
+  - ''
+  - '13'
+  - 90 Months
+- !!python/tuple
+  - 592
+  - null
+  - null
+  - Carey, Mariah
+  - 9 Months
+  - Female
+  - A
+  - '300'
+  - '79538115'
+  - '85111718'
+  - N
+  - 2018-09-02
+  - 2022-02-27
+  - carey, mariah
+  - XXX
+  - ''
+  - '13'
+  - 9 Months
+- !!python/tuple
+  - 753
+  - null
+  - null
+  - Carey, Mariah
+  - .
+  - ''
+  - null
+  - '300'
+  - '84743630'
+  - '13906228'
+  - N
+  - 2019-12-06
+  - 2023-12-18
+  - carey, mariah
+  - ''
   - ''
   - '13'
   - .
 - !!python/tuple
-  - 947
+  - 25
   - null
   - null
-  - Glasper, Robert
-  - 30 Days
-  - Female
+  - Carey, Mariah
+  - 34 Years
+  - Male
   - W
-  - '200'
-  - '42408584'
-  - '25756781'
+  - '710'
+  - '13223603'
+  - '36443403'
   - N
-  - 2019-02-01
-  - 2018-07-01
-  - glasper, robert
+  - 2024-05-01
+  - 2023-09-25
+  - carey, mariah
   - XXX
   - ''
   - '13'
-  - 30 Days
+  - 34 Years
+- !!python/tuple
+  - 528
+  - null
+  - null
+  - Carey, Mariah
+  - 67 Days
+  - Female
+  - ''
+  - '710'
+  - '42291829'
+  - '49158269'
+  - N
+  - 2021-05-25
+  - 2020-06-02
+  - carey, mariah
+  - ''
+  - ''
+  - '13'
+  - 67 Days
 - !!python/tuple
   - 394
   - null
   - null
-  - Glasper, Robert
-  - .
-  - ''
-  - AI
-  - '300'
-  - '45893855'
-  - '80276706'
+  - Carey, Mariah
+  - 3 Years
+  - Female
+  - B
+  - '720'
+  - '45225106'
+  - '82120878'
   - N
   - null
-  - 2024-04-30
+  - 2023-04-02
+  - carey, mariah
+  - XXX
+  - ''
+  - '13'
+  - 3 Years
+- !!python/tuple
+  - 69
+  - null
+  - null
+  - Carey, Mariah
+  - 80 Days
+  - null
+  - B
+  - '730'
+  - '18182425'
+  - '52111646'
+  - N
+  - 2019-07-19
+  - 2020-09-28
+  - carey, mariah
+  - XXX
+  - ''
+  - '13'
+  - 80 Days
+- !!python/tuple
+  - 133
+  - null
+  - null
+  - Carey, Mariah
+  - 39 Months
+  - ''
+  - ''
+  - '730'
+  - '78692626'
+  - '60386620'
+  - N
+  - 2019-01-06
+  - 2020-12-15
+  - carey, mariah
+  - ''
+  - ''
+  - '13'
+  - 39 Months
+- !!python/tuple
+  - 240
+  - null
+  - null
+  - Carey, Mariah
+  - 29 Months
+  - ''
+  - A
+  - '730'
+  - '66277718'
+  - '29734325'
+  - N
+  - 2019-01-03
+  - 2018-12-01
+  - carey, mariah
+  - XXX
+  - ''
+  - '13'
+  - 29 Months
+- !!python/tuple
+  - 212
+  - null
+  - null
+  - Carey, Mariah
+  - 51 Months
+  - Female
+  - A
+  - '790'
+  - '64515759'
+  - null
+  - N
+  - 2023-09-07
+  - 2018-11-19
+  - carey, mariah
+  - XXX
+  - ''
+  - '13'
+  - 51 Months
+- !!python/tuple
+  - 206
+  - null
+  - null
+  - Carey, Mariah
+  - 89 Days
+  - Male
+  - ''
+  - '900'
+  - '51791938'
+  - '32529113'
+  - N
+  - 2018-09-11
+  - 2018-07-17
+  - carey, mariah
+  - ''
+  - ''
+  - '13'
+  - 89 Days
+- !!python/tuple
+  - 618
+  - null
+  - null
+  - Carey, Mariah
+  - 30 Years
+  - Male
+  - B
+  - '900'
+  - '13600424'
+  - '60930283'
+  - N
+  - 2019-02-28
+  - 2019-04-11
+  - carey, mariah
+  - XXX
+  - ''
+  - '13'
+  - 30 Years
+- !!python/tuple
+  - 10
+  - null
+  - null
+  - Glasper, Robert
+  - 49 Days
+  - Female
+  - ''
+  - '200'
+  - '58635404'
+  - '20550698'
+  - N
+  - 2021-03-21
+  - 2019-09-28
+  - glasper, robert
+  - ''
+  - ''
+  - '13'
+  - 49 Days
+- !!python/tuple
+  - 248
+  - null
+  - null
+  - Glasper, Robert
+  - 6 Days
+  - ''
+  - W
+  - '200'
+  - '10098105'
+  - '48704784'
+  - N
+  - 2020-09-25
+  - 2019-07-31
   - glasper, robert
   - XXX
   - ''
   - '13'
-  - .
+  - 6 Days
 - !!python/tuple
-  - 649
+  - 685
   - null
   - null
   - Glasper, Robert
-  - 11 Months
+  - 95 Days
+  - Female
   - ''
-  - AI
-  - '300'
-  - '71009269'
-  - '43717999'
+  - '200'
+  - '15182459'
+  - '92180031'
   - N
-  - 2020-01-01
-  - 2022-09-08
+  - 2018-09-16
+  - 2024-06-03
   - glasper, robert
-  - XXX
+  - ''
   - ''
   - '13'
-  - 11 Months
+  - 95 Days
 - !!python/tuple
-  - 678
+  - 713
   - null
   - null
   - Glasper, Robert
   - 20 Days
   - Male
   - AI
-  - '300'
+  - '200'
+  - '29607686'
   - '64255137'
-  - '30295454'
   - N
-  - 2020-11-24
-  - 2019-10-21
+  - 2024-01-04
+  - 2019-05-08
   - glasper, robert
   - XXX
   - ''
   - '13'
   - 20 Days
 - !!python/tuple
-  - 572
+  - 865
   - null
   - null
   - Glasper, Robert
-  - 36 Months
-  - Female
-  - A
-  - '710'
-  - '83909809'
-  - '18626813'
+  - .
+  - null
+  - ''
+  - '200'
+  - '91026435'
+  - '46670544'
   - N
-  - 2019-09-25
-  - 2019-09-04
+  - 2020-02-09
+  - 2019-12-02
+  - glasper, robert
+  - ''
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 953
+  - null
+  - null
+  - Glasper, Robert
+  - 98 Years
+  - Female
+  - AI
+  - '200'
+  - '85174998'
+  - '54688789'
+  - N
+  - 2022-06-12
+  - 2023-04-10
   - glasper, robert
   - XXX
   - ''
   - '13'
-  - 36 Months
+  - 98 Years
 - !!python/tuple
-  - 789
+  - 354
   - null
   - null
   - Glasper, Robert
-  - 81 Months
-  - ''
-  - ''
-  - '710'
-  - '66700947'
-  - '70969897'
+  - .
+  - null
+  - null
+  - '300'
+  - '67210032'
+  - '85566805'
   - N
-  - 2021-04-23
-  - 2023-04-10
+  - 2020-06-27
+  - 2020-09-14
   - glasper, robert
   - ''
   - ''
   - '13'
-  - 81 Months
+  - .
 - !!python/tuple
-  - 825
+  - 675
   - null
   - null
   - Glasper, Robert
-  - 47 Months
+  - 19 Years
+  - Male
+  - W
+  - '300'
+  - '91587357'
+  - '99156937'
+  - N
+  - 2023-08-11
+  - 2020-02-11
+  - glasper, robert
+  - XXX
+  - ''
+  - '13'
+  - 19 Years
+- !!python/tuple
+  - 303
+  - null
+  - null
+  - Glasper, Robert
+  - 20 Months
   - Male
   - B
   - '710'
-  - '50272247'
-  - '92184686'
+  - '67883691'
+  - '31574941'
   - N
-  - 2020-03-01
-  - 2021-03-20
+  - 2024-02-16
+  - 2018-10-07
   - glasper, robert
   - XXX
   - ''
   - '13'
-  - 47 Months
+  - 20 Months
 - !!python/tuple
-  - 110
+  - 519
   - null
   - null
   - Glasper, Robert
-  - 30 Months
-  - Female
-  - AI
+  - 36 Months
+  - Male
+  - null
   - '720'
-  - '94014017'
-  - '52868124'
+  - '10814263'
+  - '60114753'
   - N
-  - 2024-04-02
-  - 2023-10-14
+  - 2022-05-06
+  - 2018-07-01
+  - glasper, robert
+  - ''
+  - ''
+  - '13'
+  - 36 Months
+- !!python/tuple
+  - 979
+  - null
+  - null
+  - Glasper, Robert
+  - 54 Months
+  - null
+  - W
+  - '720'
+  - '15681299'
+  - '83598991'
+  - N
+  - 2021-05-08
+  - 2020-01-27
   - glasper, robert
   - XXX
   - ''
   - '13'
-  - 30 Months
+  - 54 Months
 - !!python/tuple
   - 147
   - null
   - null
   - Glasper, Robert
-  - .
-  - Female
+  - 26 Years
+  - ''
   - W
-  - '720'
-  - '37617950'
-  - '43095764'
-  - N
-  - 2020-02-08
-  - 2021-09-24
-  - glasper, robert
-  - XXX
-  - ''
-  - '13'
-  - .
-- !!python/tuple
-  - 3
-  - null
-  - null
-  - Glasper, Robert
-  - 38 Years
-  - Female
-  - null
   - '730'
-  - '38957109'
-  - '38584648'
-  - Y
-  - 2022-02-16
-  - null
-  - glasper, robert
-  - ''
-  - ''
-  - '13'
-  - 38 Years
-- !!python/tuple
-  - 999
-  - null
-  - null
-  - Glasper, Robert
-  - 21 Years
-  - Female
-  - ''
-  - '730'
-  - '88600755'
-  - '96833895'
+  - '49164031'
+  - '16373158'
   - N
-  - 2020-08-24
-  - 2024-11-24
-  - glasper, robert
-  - ''
-  - ''
-  - '13'
-  - 21 Years
-- !!python/tuple
-  - 101
-  - null
-  - null
-  - Glasper, Robert
-  - .
-  - ''
-  - B
-  - '790'
-  - null
-  - '17387289'
-  - N
-  - 2022-04-30
-  - 2021-09-07
+  - 2023-07-24
+  - 2019-06-04
   - glasper, robert
   - XXX
   - ''
   - '13'
-  - .
+  - 26 Years
 - !!python/tuple
-  - 609
+  - 183
   - null
   - null
   - Glasper, Robert
-  - 22 Months
-  - Female
-  - B
-  - '790'
-  - '18638926'
-  - '35280086'
-  - N
-  - 2022-05-16
-  - 2019-02-05
-  - glasper, robert
-  - XXX
+  - 70 Years
   - ''
-  - '13'
-  - 22 Months
-- !!python/tuple
-  - 848
-  - null
-  - null
-  - Glasper, Robert
-  - 97 Days
-  - Male
-  - W
-  - '790'
-  - '43749289'
-  - '26678511'
-  - N
-  - 2020-02-15
-  - 2021-02-12
-  - glasper, robert
-  - XXX
-  - ''
-  - '13'
-  - 97 Days
-- !!python/tuple
-  - 897
-  - null
-  - null
-  - Glasper, Robert
-  - 15 Years
-  - Male
   - A
-  - '790'
-  - '15004672'
-  - '87093209'
+  - '730'
+  - '55231011'
+  - '17194351'
   - N
-  - 2024-03-15
-  - 2018-10-28
+  - 2022-01-04
+  - 2023-08-11
   - glasper, robert
   - XXX
   - ''
   - '13'
-  - 15 Years
+  - 70 Years
 - !!python/tuple
-  - 29
+  - 512
   - null
   - null
   - Glasper, Robert
-  - 23 Months
-  - Male
+  - 18 Years
+  - null
+  - B
+  - '730'
+  - '68920679'
+  - '80394304'
+  - N
+  - 2023-08-17
+  - 2022-07-27
+  - glasper, robert
+  - XXX
+  - ''
+  - '13'
+  - 18 Years
+- !!python/tuple
+  - 544
+  - null
+  - null
+  - Glasper, Robert
+  - 96 Months
+  - Female
+  - null
+  - '730'
+  - '55338593'
+  - '68153545'
+  - N
+  - 2021-01-11
+  - 2022-11-03
+  - glasper, robert
+  - ''
+  - ''
+  - '13'
+  - 96 Months
+- !!python/tuple
+  - 694
+  - null
+  - null
+  - Glasper, Robert
+  - 39 Months
+  - ''
+  - A
+  - '730'
+  - '60151383'
+  - '90362880'
+  - N
+  - 2023-01-13
+  - 2020-08-26
+  - glasper, robert
+  - XXX
+  - ''
+  - '13'
+  - 39 Months
+- !!python/tuple
+  - 888
+  - null
+  - null
+  - Glasper, Robert
+  - 34 Years
+  - ''
   - AI
-  - '900'
-  - '49395776'
-  - '54100639'
+  - '730'
+  - '43960876'
+  - '42147395'
   - N
-  - 2022-08-24
-  - 2022-11-23
+  - 2020-12-26
+  - 2024-11-29
   - glasper, robert
   - XXX
   - ''
   - '13'
-  - 23 Months
+  - 34 Years
 - !!python/tuple
-  - 321
+  - 971
   - null
   - null
   - Glasper, Robert
-  - 48 Months
+  - 24 Days
   - ''
-  - ''
-  - '900'
-  - null
-  - '93700827'
-  - Y
-  - 2019-05-27
-  - null
+  - AI
+  - '730'
+  - '14103910'
+  - '31299510'
+  - N
+  - 2022-08-01
+  - 2023-04-11
   - glasper, robert
-  - ''
+  - XXX
   - ''
   - '13'
-  - 48 Months
+  - 24 Days
 - !!python/tuple
-  - 273
+  - 27
+  - null
+  - null
+  - Glasper, Robert
+  - 78 Years
+  - Male
+  - W
+  - '790'
+  - '96963399'
+  - '68261517'
+  - N
+  - 2021-06-15
+  - 2019-12-13
+  - glasper, robert
+  - XXX
+  - ''
+  - '13'
+  - 78 Years
+- !!python/tuple
+  - 361
+  - null
+  - null
+  - Glasper, Robert
+  - 44 Months
+  - ''
+  - B
+  - '900'
+  - null
+  - null
+  - N
+  - 2020-08-17
+  - 2022-07-21
+  - glasper, robert
+  - XXX
+  - ''
+  - '13'
+  - 44 Months
+- !!python/tuple
+  - 154
   - null
   - null
   - Keys, Alicia
-  - 84 Months
+  - 34 Months
   - Female
   - B
   - '200'
-  - '53350620'
-  - '67719653'
+  - '19069782'
+  - '23626289'
   - N
-  - 2021-08-16
-  - 2023-08-23
+  - 2023-06-02
+  - 2024-05-23
   - keys, alicia
   - XXX
   - ''
   - '13'
-  - 84 Months
+  - 34 Months
 - !!python/tuple
-  - 692
+  - 279
   - null
   - null
   - Keys, Alicia
-  - 62 Years
-  - ''
-  - null
-  - '300'
-  - '24277531'
-  - '28153145'
-  - N
-  - 2023-11-24
-  - 2024-03-06
-  - keys, alicia
-  - ''
-  - ''
-  - '13'
-  - 62 Years
-- !!python/tuple
-  - 378
-  - null
-  - null
-  - Keys, Alicia
-  - 45 Years
-  - Male
-  - ''
-  - '710'
-  - '13861714'
-  - '44732393'
-  - N
-  - 2024-08-07
-  - 2018-08-09
-  - keys, alicia
-  - ''
-  - ''
-  - '13'
-  - 45 Years
-- !!python/tuple
-  - 960
-  - null
-  - null
-  - Keys, Alicia
-  - 30 Months
-  - Male
-  - AI
-  - '710'
-  - '35815432'
-  - '49424737'
-  - N
-  - 2022-01-16
-  - 2021-02-03
-  - keys, alicia
-  - XXX
-  - ''
-  - '13'
-  - 30 Months
-- !!python/tuple
-  - 976
-  - null
-  - null
-  - Keys, Alicia
-  - 19 Years
-  - Female
-  - AI
-  - '710'
-  - '36874726'
-  - '62880817'
-  - N
-  - 2024-09-01
-  - 2019-02-27
-  - keys, alicia
-  - XXX
-  - ''
-  - '13'
-  - 19 Years
-- !!python/tuple
-  - 13
-  - null
-  - null
-  - Keys, Alicia
-  - 90 Days
+  - 16 Months
   - ''
   - W
-  - '730'
-  - '51508964'
-  - '99021689'
+  - '200'
+  - '31560695'
+  - '47456840'
   - N
-  - 2019-09-11
-  - 2018-12-03
+  - 2022-02-15
+  - 2020-10-21
   - keys, alicia
   - XXX
   - ''
   - '13'
-  - 90 Days
+  - 16 Months
 - !!python/tuple
-  - 48
+  - 640
   - null
   - null
   - Keys, Alicia
-  - 3 Months
-  - Female
+  - .
+  - null
   - ''
-  - '730'
-  - '96770772'
-  - '42764151'
+  - '200'
+  - '98765777'
+  - '20624401'
   - N
-  - 2019-02-07
-  - 2020-03-11
+  - 2021-03-25
+  - 2022-02-20
   - keys, alicia
   - ''
   - ''
   - '13'
-  - 3 Months
+  - .
 - !!python/tuple
-  - 388
+  - 641
   - null
   - null
   - Keys, Alicia
-  - 48 Days
+  - 26 Years
   - ''
-  - AI
-  - '730'
-  - '87721901'
-  - '75028461'
+  - ''
+  - '200'
+  - '46362356'
+  - '39025191'
   - N
-  - null
-  - 2023-07-03
+  - 2021-02-02
+  - 2024-04-12
   - keys, alicia
-  - XXX
+  - ''
   - ''
   - '13'
-  - 48 Days
+  - 26 Years
 - !!python/tuple
-  - 805
+  - 223
   - null
   - null
   - Keys, Alicia
-  - 4 Days
+  - 40 Months
   - ''
   - B
-  - '730'
-  - '42078335'
-  - '91408416'
+  - '300'
+  - '65266557'
+  - '81965626'
   - N
-  - 2019-06-18
-  - 2021-01-09
+  - 2019-10-03
+  - 2019-10-28
   - keys, alicia
   - XXX
   - ''
   - '13'
-  - 4 Days
+  - 40 Months
 - !!python/tuple
-  - 934
+  - 313
   - null
   - null
   - Keys, Alicia
-  - 52 Months
+  - 27 Years
+  - Female
+  - B
+  - '300'
+  - '94069100'
+  - '55558295'
+  - N
+  - 2019-12-23
+  - 2024-10-27
+  - keys, alicia
+  - XXX
+  - ''
+  - '13'
+  - 27 Years
+- !!python/tuple
+  - 470
+  - null
+  - null
+  - Keys, Alicia
+  - 71 Years
+  - Male
+  - null
+  - '300'
+  - '31025497'
+  - '11563824'
+  - N
+  - 2019-12-07
+  - 2023-01-25
+  - keys, alicia
+  - ''
+  - ''
+  - '13'
+  - 71 Years
+- !!python/tuple
+  - 737
+  - null
+  - null
+  - Keys, Alicia
+  - 51 Days
+  - Female
+  - ''
+  - '300'
+  - '87787148'
+  - '71657253'
+  - N
+  - 2023-09-26
+  - 2023-08-10
+  - keys, alicia
+  - ''
+  - ''
+  - '13'
+  - 51 Days
+- !!python/tuple
+  - 823
+  - null
+  - null
+  - Keys, Alicia
+  - 52 Years
+  - Male
+  - W
+  - '300'
+  - '15033753'
+  - '92827159'
+  - N
+  - 2018-07-25
+  - 2023-03-01
+  - keys, alicia
+  - XXX
+  - ''
+  - '13'
+  - 52 Years
+- !!python/tuple
+  - 195
+  - null
+  - null
+  - Keys, Alicia
+  - 91 Months
+  - Male
+  - B
+  - '710'
+  - '71280007'
+  - '57565394'
+  - N
+  - 2024-06-14
+  - 2018-11-10
+  - keys, alicia
+  - XXX
+  - ''
+  - '13'
+  - 91 Months
+- !!python/tuple
+  - 442
+  - null
+  - null
+  - Keys, Alicia
+  - 29 Days
+  - null
+  - null
+  - '710'
+  - '13081827'
+  - '41452940'
+  - N
+  - 2022-02-23
+  - 2024-01-01
+  - keys, alicia
+  - ''
+  - ''
+  - '13'
+  - 29 Days
+- !!python/tuple
+  - 800
+  - null
+  - null
+  - Keys, Alicia
+  - 25 Years
+  - ''
+  - ''
+  - '710'
+  - '40854066'
+  - '77454556'
+  - N
+  - 2020-07-11
+  - 2021-01-13
+  - keys, alicia
+  - ''
+  - ''
+  - '13'
+  - 25 Years
+- !!python/tuple
+  - 89
+  - null
+  - null
+  - Keys, Alicia
+  - 96 Months
+  - ''
+  - W
+  - '720'
+  - '31104416'
+  - '74135483'
+  - N
+  - 2024-12-05
+  - 2018-06-07
+  - keys, alicia
+  - XXX
+  - ''
+  - '13'
+  - 96 Months
+- !!python/tuple
+  - 721
+  - null
+  - null
+  - Keys, Alicia
+  - 17 Years
+  - null
+  - AI
+  - '720'
+  - '62372830'
+  - '28251417'
+  - N
+  - 2018-12-06
+  - 2023-01-18
+  - keys, alicia
+  - XXX
+  - ''
+  - '13'
+  - 17 Years
+- !!python/tuple
+  - 446
+  - null
+  - null
+  - Keys, Alicia
+  - 44 Years
+  - Male
+  - ''
+  - '730'
+  - '71205660'
+  - '88675652'
+  - N
+  - 2020-04-25
+  - 2020-09-12
+  - keys, alicia
+  - ''
+  - ''
+  - '13'
+  - 44 Years
+- !!python/tuple
+  - 926
+  - null
+  - null
+  - Keys, Alicia
+  - 72 Years
+  - Male
+  - AI
+  - '730'
+  - '83219663'
+  - '72583347'
+  - N
+  - 2019-02-28
+  - 2019-06-28
+  - keys, alicia
+  - XXX
+  - ''
+  - '13'
+  - 72 Years
+- !!python/tuple
+  - 996
+  - null
+  - null
+  - Keys, Alicia
+  - 17 Years
+  - null
+  - ''
+  - '730'
+  - '26832822'
+  - '55613456'
+  - N
+  - 2019-02-08
+  - 2023-06-27
+  - keys, alicia
+  - ''
+  - ''
+  - '13'
+  - 17 Years
+- !!python/tuple
+  - 769
+  - null
+  - null
+  - Keys, Alicia
+  - 32 Months
+  - Male
+  - W
+  - '790'
+  - '94183015'
+  - '33327439'
+  - N
+  - 2021-03-20
+  - 2024-08-29
+  - keys, alicia
+  - XXX
+  - ''
+  - '13'
+  - 32 Months
+- !!python/tuple
+  - 540
+  - null
+  - null
+  - Keys, Alicia
+  - 1 Days
+  - Female
+  - B
+  - '900'
+  - '50608315'
+  - '37830135'
+  - N
+  - 2024-05-25
+  - 2019-11-15
+  - keys, alicia
+  - XXX
+  - ''
+  - '13'
+  - 1 Days
+- !!python/tuple
+  - 593
+  - null
+  - null
+  - Keys, Alicia
+  - 15 Days
   - Female
   - A
-  - '730'
-  - '12637529'
-  - '51015255'
-  - N
-  - 2019-06-28
-  - 2021-02-12
-  - keys, alicia
-  - XXX
-  - ''
-  - '13'
-  - 52 Months
-- !!python/tuple
-  - 257
-  - null
-  - null
-  - Keys, Alicia
-  - 3 Days
-  - Female
-  - AI
-  - '790'
-  - '96918194'
-  - '62949386'
-  - N
-  - 2024-12-08
-  - 2019-10-25
-  - keys, alicia
-  - XXX
-  - ''
-  - '13'
-  - 3 Days
-- !!python/tuple
-  - 364
-  - null
-  - null
-  - Keys, Alicia
-  - 69 Days
-  - ''
-  - ''
-  - '790'
-  - '69547306'
-  - '21892430'
-  - N
-  - 2021-04-14
-  - 2024-01-14
-  - keys, alicia
-  - ''
-  - ''
-  - '13'
-  - 69 Days
-- !!python/tuple
-  - 664
-  - null
-  - null
-  - Keys, Alicia
-  - 67 Years
-  - Female
-  - ''
-  - '790'
-  - '98093290'
-  - '16147226'
-  - N
-  - 2022-10-08
-  - 2019-04-05
-  - keys, alicia
-  - ''
-  - ''
-  - '13'
-  - 67 Years
-- !!python/tuple
-  - 928
-  - null
-  - null
-  - Keys, Alicia
-  - 98 Years
-  - Male
-  - AI
-  - '790'
-  - '53627759'
-  - '50326766'
-  - N
-  - 2020-11-10
-  - 2021-07-15
-  - keys, alicia
-  - XXX
-  - ''
-  - '13'
-  - 98 Years
-- !!python/tuple
-  - 186
-  - null
-  - null
-  - Keys, Alicia
-  - 41 Months
-  - ''
-  - null
   - '900'
-  - '99453160'
-  - '30618120'
+  - '69406757'
+  - '55824137'
   - N
-  - 2024-11-11
-  - 2024-11-06
-  - keys, alicia
-  - ''
-  - ''
-  - '13'
-  - 41 Months
-- !!python/tuple
-  - 576
-  - null
-  - null
-  - Keys, Alicia
-  - 41 Years
-  - Male
-  - B
-  - '900'
-  - '29463873'
-  - '56326471'
-  - N
-  - 2022-10-15
-  - 2019-08-01
+  - 2020-02-19
+  - 2022-02-03
   - keys, alicia
   - XXX
   - ''
   - '13'
-  - 41 Years
+  - 15 Days
 - !!python/tuple
-  - 904
-  - null
-  - null
-  - Keys, Alicia
-  - 16 Days
-  - Female
-  - ''
-  - '900'
-  - '17244249'
-  - '86688681'
-  - N
-  - 2023-10-20
-  - 2018-08-31
-  - keys, alicia
-  - ''
-  - ''
-  - '13'
-  - 16 Days
-- !!python/tuple
-  - 940
-  - null
-  - null
-  - Keys, Alicia
-  - 36 Days
-  - Female
-  - B
-  - '900'
-  - '44476574'
-  - '43422069'
-  - N
-  - 2024-03-11
-  - 2023-08-06
-  - keys, alicia
-  - XXX
-  - ''
-  - '13'
-  - 36 Days
-- !!python/tuple
-  - 145
+  - 137
   - null
   - null
   - Scott, Jill
-  - 83 Months
-  - ''
-  - W
+  - 5 Days
+  - Female
+  - null
   - '200'
-  - '64330116'
-  - '35433746'
+  - '61492582'
+  - '76461370'
   - N
-  - 2023-11-14
-  - 2019-11-08
+  - 2023-03-09
+  - 2022-03-27
   - scott, jill
-  - XXX
+  - ''
   - ''
   - '13'
-  - 83 Months
+  - 5 Days
 - !!python/tuple
-  - 334
+  - 352
   - null
   - null
   - Scott, Jill
@@ -1433,7 +1452,7 @@
   - W
   - '200'
   - '66585032'
-  - '10786511'
+  - null
   - N
   - 2021-06-27
   - 2019-09-16
@@ -1443,192 +1462,249 @@
   - '13'
   - 32 Years
 - !!python/tuple
-  - 386
+  - 549
   - null
   - null
   - Scott, Jill
-  - 34 Months
-  - Male
-  - AI
-  - '200'
-  - '36768560'
-  - '78711145'
-  - N
-  - 2022-02-13
-  - 2020-01-04
-  - scott, jill
-  - XXX
+  - 59 Years
   - ''
-  - '13'
-  - 34 Months
-- !!python/tuple
-  - 447
-  - null
-  - null
-  - Scott, Jill
-  - 4 Days
-  - Male
-  - AI
-  - '200'
-  - '75350091'
-  - '90935500'
-  - N
-  - 2019-06-14
-  - 2019-12-01
-  - scott, jill
-  - XXX
-  - ''
-  - '13'
-  - 4 Days
-- !!python/tuple
-  - 857
-  - null
-  - null
-  - Scott, Jill
-  - 91 Days
-  - Male
   - A
-  - '200'
-  - '22156840'
-  - '93805061'
-  - N
-  - 2019-10-16
-  - 2019-07-25
-  - scott, jill
-  - XXX
-  - ''
-  - '13'
-  - 91 Days
-- !!python/tuple
-  - 399
-  - null
-  - null
-  - Scott, Jill
-  - 20 Days
-  - Male
-  - AI
   - '300'
-  - '81942696'
-  - '87331435'
+  - '72832044'
+  - '20655856'
   - N
-  - 2022-05-05
-  - 2023-05-27
+  - 2019-05-01
+  - 2023-12-27
   - scott, jill
   - XXX
   - ''
   - '13'
-  - 20 Days
+  - 59 Years
 - !!python/tuple
-  - 237
+  - 328
   - null
   - null
   - Scott, Jill
-  - 4 Days
+  - 65 Days
   - ''
-  - AI
+  - null
+  - '710'
+  - '67552042'
+  - '13553859'
+  - N
+  - 2021-06-25
+  - 2023-09-24
+  - scott, jill
+  - ''
+  - ''
+  - '13'
+  - 65 Days
+- !!python/tuple
+  - 740
+  - null
+  - null
+  - Scott, Jill
+  - 93 Months
+  - null
+  - ''
+  - '710'
+  - '77465847'
+  - '55747049'
+  - N
+  - 2024-04-12
+  - 2020-10-27
+  - scott, jill
+  - ''
+  - ''
+  - '13'
+  - 93 Months
+- !!python/tuple
+  - 759
+  - null
+  - null
+  - Scott, Jill
+  - 3 Days
+  - Male
+  - B
+  - '710'
+  - '91911978'
+  - '31309529'
+  - N
+  - null
+  - 2022-04-01
+  - scott, jill
+  - XXX
+  - ''
+  - '13'
+  - 3 Days
+- !!python/tuple
+  - 777
+  - null
+  - null
+  - Scott, Jill
+  - 79 Months
+  - ''
+  - W
+  - '710'
+  - '51958017'
+  - '36388822'
+  - N
+  - 2024-12-12
+  - 2022-04-05
+  - scott, jill
+  - XXX
+  - ''
+  - '13'
+  - 79 Months
+- !!python/tuple
+  - 48
+  - null
+  - null
+  - Scott, Jill
+  - 28 Days
+  - ''
+  - B
   - '720'
-  - '54672901'
-  - '26746989'
+  - '21093016'
+  - '75341574'
   - N
-  - 2022-07-18
-  - 2018-12-09
+  - 2022-05-30
+  - 2023-01-22
   - scott, jill
   - XXX
   - ''
   - '13'
-  - 4 Days
+  - 28 Days
 - !!python/tuple
-  - 342
+  - 203
   - null
   - null
   - Scott, Jill
-  - 68 Days
+  - 2 Months
+  - null
+  - W
+  - '720'
+  - '39433335'
+  - '14491652'
+  - N
+  - 2024-11-11
+  - 2021-11-29
+  - scott, jill
+  - XXX
+  - ''
+  - '13'
+  - 2 Months
+- !!python/tuple
+  - 571
+  - null
+  - null
+  - Scott, Jill
+  - 6 Months
+  - Female
+  - A
+  - '720'
+  - '49517390'
+  - '63007365'
+  - N
+  - 2023-03-16
+  - 2018-12-30
+  - scott, jill
+  - XXX
+  - ''
+  - '13'
+  - 6 Months
+- !!python/tuple
+  - 790
+  - null
+  - null
+  - Scott, Jill
+  - 18 Days
+  - Female
+  - null
+  - '730'
+  - '67542091'
+  - '23348703'
+  - N
+  - 2021-01-25
+  - 2022-10-21
+  - scott, jill
+  - ''
+  - ''
+  - '13'
+  - 18 Days
+- !!python/tuple
+  - 880
+  - null
+  - null
+  - Scott, Jill
+  - 38 Months
+  - Male
+  - B
+  - '730'
+  - '68875545'
+  - null
+  - N
+  - 2020-11-26
+  - 2020-05-15
+  - scott, jill
+  - XXX
+  - ''
+  - '13'
+  - 38 Months
+- !!python/tuple
+  - 657
+  - null
+  - null
+  - Scott, Jill
+  - 94 Days
   - Male
   - AI
-  - '720'
-  - '16577265'
-  - '52829259'
-  - N
-  - 2024-08-11
-  - 2021-03-02
-  - scott, jill
-  - XXX
-  - ''
-  - '13'
-  - 68 Days
-- !!python/tuple
-  - 161
-  - null
-  - null
-  - Scott, Jill
-  - 96 Months
-  - ''
-  - A
-  - '730'
-  - '45732607'
-  - '26409708'
-  - N
-  - 2020-03-28
-  - 2022-06-01
-  - scott, jill
-  - XXX
-  - ''
-  - '13'
-  - 96 Months
-- !!python/tuple
-  - 130
-  - null
-  - null
-  - Scott, Jill
-  - 20 Years
-  - Female
-  - AI
   - '790'
-  - '88334636'
-  - null
+  - '35304247'
+  - '80659947'
   - N
-  - 2023-11-26
-  - 2018-11-03
+  - 2022-02-23
+  - 2020-10-08
   - scott, jill
   - XXX
   - ''
   - '13'
-  - 20 Years
+  - 94 Days
 - !!python/tuple
-  - 949
+  - 930
   - null
   - null
   - Scott, Jill
-  - 22 Years
+  - 74 Months
   - ''
-  - AI
+  - ''
   - '790'
-  - '98712982'
-  - null
+  - '12548958'
+  - '76016321'
   - N
-  - 2021-07-24
-  - 2021-10-24
+  - 2022-09-25
+  - 2022-03-31
   - scott, jill
-  - XXX
+  - ''
   - ''
   - '13'
-  - 22 Years
+  - 74 Months
 - !!python/tuple
-  - 799
+  - 533
   - null
   - null
   - Scott, Jill
-  - 6 Years
-  - Female
-  - B
+  - 91 Months
+  - Male
+  - W
   - '900'
-  - '74114581'
-  - '54262183'
+  - '27094636'
+  - '14177651'
   - N
-  - 2023-03-06
-  - 2022-01-25
+  - 2019-01-26
+  - 2024-03-16
   - scott, jill
   - XXX
   - ''
   - '13'
-  - 6 Years
+  - 91 Months

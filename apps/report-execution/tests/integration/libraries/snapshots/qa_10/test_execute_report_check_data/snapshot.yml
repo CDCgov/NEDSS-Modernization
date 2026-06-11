@@ -1,262 +1,220 @@
 - !!python/tuple
-  - 6
-  - Badu, Erykah
-  - PSN20051447GA01
-  - 24 Days
-  - F
-  - '200'
-  - null
-  - '33090012'
-  - 2018-08-25
-  - N
-  - N
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2021-04-09
-  - '14'
-  - badu, erykah
-  - 10051447
-  - 24
-- !!python/tuple
-  - 217
-  - Badu, Erykah
-  - PSN20087953GA01
-  - 40 Days
-  - F
-  - '300'
-  - null
-  - '81194456'
-  - 2022-06-12
-  - N
-  - N
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 2021-11-22
-  - '14'
-  - badu, erykah
-  - 10087953
-  - 40
-- !!python/tuple
-  - 365
-  - Badu, Erykah
-  - PSN30096116GA01
-  - 75 Years
-  - F
-  - '300'
-  - Middlesex County
-  - '21053113'
-  - 2018-11-24
-  - N
-  - N
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2020-01-05
-  - '14'
-  - badu, erykah
-  - 20096116
-  - 75
-- !!python/tuple
-  - 424
+  - 447
   - Badu, Erykah
   - PSN30080736GA01
   - 91 Days
   - F
-  - '710'
+  - '200'
   - Washington County
-  - '70695492'
-  - 2019-08-07
+  - '36322943'
+  - 2022-09-29
   - N
-  - Y
+  - N
+  - 'Yes'
   - 'No'
   - 'No'
   - 'Yes'
-  - 'No'
-  - 2022-09-29
+  - 2024-08-04
   - '14'
   - badu, erykah
   - 20080736
   - 91
 - !!python/tuple
-  - 776
+  - 468
   - Badu, Erykah
-  - PSN20055110GA01
-  - 53 Days
+  - PSN10099617GA01
+  - 70 Years
   - F
-  - '710'
-  - Middlesex County
-  - '59395117'
-  - 2023-01-27
+  - '200'
+  - Washington County
+  - '73567693'
+  - 2019-11-06
   - N
-  - Y
+  - N
+  - 'Yes'
   - 'No'
   - 'No'
-  - 'No'
-  - 'No'
-  - 2023-02-13
+  - 'Yes'
+  - 2020-09-11
   - '14'
   - badu, erykah
-  - 10055110
-  - 53
+  - 99617
+  - 70
 - !!python/tuple
-  - 242
+  - 783
   - Badu, Erykah
-  - PSN30072946GA01
-  - 20 Months
+  - PSN10034407GA01
+  - 64 Days
   - F
-  - '720'
+  - '300'
   - Washington County
-  - '21379833'
-  - 2023-02-19
+  - '34725791'
+  - 2019-02-06
   - N
   - N
   - 'No'
   - 'Yes'
-  - 'No'
-  - 'No'
-  - 2019-02-17
-  - '14'
-  - badu, erykah
-  - 20072946
-  - 20
-- !!python/tuple
-  - 726
-  - Badu, Erykah
-  - PSN10066641GA01
-  - 69 Days
-  - F
-  - '730'
-  - Washington County
-  - '60813257'
-  - 2021-04-08
-  - N
   - null
   - 'No'
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 2020-12-24
+  - 2018-10-09
   - '14'
   - badu, erykah
-  - 66641
-  - 69
+  - 34407
+  - 64
 - !!python/tuple
-  - 875
+  - 846
   - Badu, Erykah
-  - PSN20016979GA01
-  - 95 Days
+  - PSN30081644GA01
+  - 88 Months
   - F
   - '730'
   - Middlesex County
-  - '71715168'
-  - 2023-02-22
+  - '96704520'
+  - 2023-06-19
   - N
   - N
+  - 'No'
   - 'No'
   - 'Yes'
   - 'No'
-  - 'No'
-  - 2022-04-19
+  - 2019-11-28
   - '14'
   - badu, erykah
-  - 10016979
-  - 95
+  - 20081644
+  - 88
 - !!python/tuple
-  - 75
+  - 178
   - Badu, Erykah
-  - PSN10030202GA01
-  - 17 Months
+  - PSN10024148GA01
+  - 42 Months
   - F
   - '790'
   - Middlesex County
-  - '45536981'
-  - 2024-12-05
+  - '74481746'
+  - 2020-10-01
   - N
-  - N
-  - 'No'
-  - 'Yes'
+  - Y
   - 'No'
   - 'No'
-  - 2019-09-15
+  - 'No'
+  - 'No'
+  - 2022-05-27
   - '14'
   - badu, erykah
-  - 30202
-  - 17
+  - 24148
+  - 42
 - !!python/tuple
-  - 739
-  - Badu, Erykah
-  - PSN10055104GA01
-  - 93 Years
-  - F
-  - '900'
-  - Washington County
-  - '42491528'
-  - 2023-08-03
-  - N
-  - N
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 2019-12-03
-  - '14'
-  - badu, erykah
-  - 55104
-  - 93
-- !!python/tuple
-  - 888
-  - Badu, Erykah
-  - PSN10032677GA01
-  - 53 Years
-  - F
-  - '900'
-  - Washington County
-  - '57914962'
-  - 2018-05-09
-  - N
-  - N
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2023-07-18
-  - '14'
-  - badu, erykah
-  - 32677
-  - 53
-- !!python/tuple
-  - 523
+  - 263
   - Carey, Mariah
-  - PSN20065871GA01
-  - 93 Years
+  - PSN30037752GA01
+  - 68 Days
   - F
   - '200'
-  - Middlesex County
-  - '14652417'
-  - null
-  - Y
+  - Washington County
+  - '69571447'
+  - 2019-11-01
   - N
-  - 'Yes'
+  - N
   - 'No'
   - 'No'
   - 'Yes'
-  - 2024-04-15
+  - 'No'
+  - 2023-06-02
   - '14'
   - carey, mariah
-  - 10065871
-  - 93
+  - 20037752
+  - 68
 - !!python/tuple
-  - 590
+  - 79
+  - Carey, Mariah
+  - PSN10045435GA01
+  - 40 Years
+  - F
+  - '300'
+  - Middlesex County
+  - '37449188'
+  - 2020-02-02
+  - N
+  - N
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 2024-07-30
+  - '14'
+  - carey, mariah
+  - 45435
+  - 40
+- !!python/tuple
+  - 617
+  - Carey, Mariah
+  - PSN30038299GA01
+  - 1 Years
+  - F
+  - '300'
+  - null
+  - '43275233'
+  - 2024-06-12
+  - N
+  - N
+  - null
+  - 'Yes'
+  - 'No'
+  - null
+  - 2018-06-16
+  - '14'
+  - carey, mariah
+  - 20038299
+  - 1
+- !!python/tuple
+  - 148
+  - Carey, Mariah
+  - PSN20078419GA01
+  - 90 Months
+  - F
+  - '710'
+  - Middlesex County
+  - '57668817'
+  - 2024-09-25
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2022-03-16
+  - '14'
+  - carey, mariah
+  - 10078419
+  - 90
+- !!python/tuple
+  - 632
+  - Carey, Mariah
+  - PSN20085577GA01
+  - .
+  - F
+  - '710'
+  - null
+  - '74537117'
+  - 2019-10-29
+  - N
+  - Y
+  - 'No'
+  - null
+  - null
+  - 'No'
+  - 2019-07-10
+  - '14'
+  - carey, mariah
+  - 10085577
+  - null
+- !!python/tuple
+  - 620
   - Carey, Mariah
   - PSN20075002GA01
   - 97 Months
   - F
-  - '790'
+  - '720'
   - Washington County
   - '75307611'
   - 2022-05-30
@@ -272,317 +230,380 @@
   - 10075002
   - 97
 - !!python/tuple
-  - 137
+  - 271
   - Carey, Mariah
-  - PSN20066459GA01
-  - 98 Days
+  - PSN30044287GA01
+  - 21 Years
   - F
   - '790'
-  - Middlesex County
-  - '10304224'
-  - 2024-07-01
+  - null
+  - '96918194'
+  - 2022-06-06
   - N
   - N
   - 'Yes'
   - 'No'
   - 'No'
   - 'Yes'
-  - 2023-05-18
+  - 2020-12-21
   - '14'
   - carey, mariah
-  - 10066459
-  - 98
+  - 20044287
+  - 21
 - !!python/tuple
-  - 43
+  - 372
   - Carey, Mariah
-  - PSN30039091GA01
-  - 46 Years
-  - F
-  - '790'
-  - Middlesex County
-  - '39279715'
-  - 2024-12-27
-  - N
-  - Y
-  - 'No'
-  - 'No'
-  - 'No'
-  - 'No'
-  - 2020-06-06
-  - '14'
-  - carey, mariah
-  - 20039091
-  - 46
-- !!python/tuple
-  - 964
-  - Carey, Mariah
-  - PSN30040371GA01
-  - 60 Months
+  - PSN10064278GA01
+  - 45 Days
   - F
   - '790'
   - Washington County
-  - '31290391'
-  - 2018-11-28
+  - '59578846'
+  - 2021-11-29
   - N
   - N
   - 'No'
-  - 'No'
+  - null
   - 'Yes'
   - 'No'
-  - 2022-11-17
+  - 2022-01-09
   - '14'
   - carey, mariah
-  - 20040371
-  - 60
+  - 64278
+  - 45
 - !!python/tuple
-  - 975
+  - 666
   - Glasper, Robert
-  - PSN30090094GA01
-  - 65 Days
-  - F
-  - '720'
-  - Middlesex County
-  - '23751222'
-  - 2021-04-02
-  - N
-  - N
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 2021-12-26
-  - '14'
-  - glasper, robert
-  - 20090094
-  - 65
-- !!python/tuple
-  - 751
-  - Glasper, Robert
-  - PSN30088490GA01
-  - 86 Years
-  - F
-  - '720'
-  - Middlesex County
-  - '68917999'
-  - 2024-11-26
-  - N
-  - N
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 2022-07-31
-  - '14'
-  - glasper, robert
-  - 20088490
-  - 86
-- !!python/tuple
-  - 216
-  - Glasper, Robert
-  - PSN10067612GA01
-  - 56 Years
-  - F
-  - '790'
-  - Middlesex County
-  - '66775953'
-  - 2024-07-14
-  - N
-  - Y
-  - 'No'
-  - 'No'
-  - 'No'
-  - 'No'
-  - 2024-03-23
-  - '14'
-  - glasper, robert
-  - 67612
-  - 56
-- !!python/tuple
-  - 736
-  - Glasper, Robert
-  - PSN20028225GA01
-  - 30 Days
-  - F
-  - '900'
-  - Washington County
-  - '71056298'
-  - 2024-01-07
-  - N
-  - Y
-  - 'No'
-  - 'No'
-  - 'No'
-  - 'No'
-  - 2020-12-03
-  - '14'
-  - glasper, robert
-  - 10028225
-  - 30
-- !!python/tuple
-  - 898
-  - Keys, Alicia
-  - PSN10032306GA01
-  - 6 Days
+  - PSN30046424GA01
+  - 35 Days
   - F
   - '200'
   - Middlesex County
-  - '21811145'
-  - 2024-11-17
+  - '27198873'
+  - 2021-10-30
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - null
+  - '14'
+  - glasper, robert
+  - 20046424
+  - 35
+- !!python/tuple
+  - 736
+  - Glasper, Robert
+  - PSN10031790GA01
+  - 50 Months
+  - F
+  - '300'
+  - Washington County
+  - '59599181'
+  - 2021-10-01
   - N
   - Y
   - 'No'
   - 'No'
   - 'No'
   - 'No'
-  - 2022-07-17
+  - 2019-09-24
+  - '14'
+  - glasper, robert
+  - 31790
+  - 50
+- !!python/tuple
+  - 817
+  - Glasper, Robert
+  - PSN10067446GA01
+  - 64 Days
+  - F
+  - '300'
+  - Washington County
+  - '65165319'
+  - 2021-09-04
+  - N
+  - N
+  - 'Yes'
+  - 'Yes'
+  - 'No'
+  - 'Yes'
+  - 2024-04-14
+  - '14'
+  - glasper, robert
+  - 67446
+  - 64
+- !!python/tuple
+  - 54
+  - Glasper, Robert
+  - PSN20028964GA01
+  - 30 Months
+  - F
+  - '300'
+  - Middlesex County
+  - '51825970'
+  - 2019-01-20
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2023-03-02
+  - '14'
+  - glasper, robert
+  - 10028964
+  - 30
+- !!python/tuple
+  - 139
+  - Glasper, Robert
+  - PSN30078896GA01
+  - 41 Years
+  - F
+  - '710'
+  - Middlesex County
+  - '58142614'
+  - 2023-06-16
+  - N
+  - Y
+  - 'No'
+  - 'No'
+  - 'No'
+  - 'No'
+  - 2022-05-31
+  - '14'
+  - glasper, robert
+  - 20078896
+  - 41
+- !!python/tuple
+  - 505
+  - Glasper, Robert
+  - PSN20012851GA01
+  - 36 Years
+  - F
+  - '720'
+  - Middlesex County
+  - null
+  - 2020-03-29
+  - N
+  - N
+  - 'Yes'
+  - null
+  - 'No'
+  - 'Yes'
+  - 2023-07-11
+  - '14'
+  - glasper, robert
+  - 10012851
+  - 36
+- !!python/tuple
+  - 518
+  - Glasper, Robert
+  - PSN20094697GA01
+  - 50 Days
+  - F
+  - '790'
+  - Middlesex County
+  - null
+  - 2024-09-03
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2021-04-24
+  - '14'
+  - glasper, robert
+  - 10094697
+  - 50
+- !!python/tuple
+  - 444
+  - Glasper, Robert
+  - PSN10085146GA01
+  - 93 Months
+  - F
+  - '900'
+  - Washington County
+  - '51476546'
+  - 2019-10-21
+  - N
+  - N
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 2020-08-06
+  - '14'
+  - glasper, robert
+  - 85146
+  - 93
+- !!python/tuple
+  - 343
+  - Glasper, Robert
+  - PSN30082726GA01
+  - .
+  - F
+  - '900'
+  - Middlesex County
+  - '80018003'
+  - 2020-03-07
+  - N
+  - N
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - null
+  - '14'
+  - glasper, robert
+  - 20082726
+  - null
+- !!python/tuple
+  - 365
+  - Glasper, Robert
+  - PSN30031147GA01
+  - 1 Months
+  - F
+  - '900'
+  - Washington County
+  - '97971239'
+  - 2021-03-09
+  - N
+  - Y
+  - 'No'
+  - 'No'
+  - 'No'
+  - 'No'
+  - 2021-08-19
+  - '14'
+  - glasper, robert
+  - 20031147
+  - 1
+- !!python/tuple
+  - 703
+  - Keys, Alicia
+  - PSN20057063GA01
+  - 19 Years
+  - F
+  - '720'
+  - Middlesex County
+  - '25861235'
+  - 2024-09-14
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2023-10-19
   - '14'
   - keys, alicia
-  - 32306
-  - 6
+  - 10057063
+  - 19
 - !!python/tuple
-  - 679
+  - 714
   - Keys, Alicia
   - PSN10053007GA01
   - 20 Years
   - F
   - '720'
-  - Middlesex County
+  - Washington County
   - '40662366'
   - 2024-12-01
   - N
   - N
+  - 'No'
   - 'Yes'
   - 'No'
   - 'No'
-  - 'Yes'
   - 2022-06-03
   - '14'
   - keys, alicia
   - 53007
   - 20
 - !!python/tuple
-  - 474
+  - 330
   - Keys, Alicia
-  - PSN10047606GA01
-  - 91 Years
-  - F
-  - '790'
-  - Middlesex County
-  - '50174242'
-  - 2024-10-01
-  - N
-  - N
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 2024-08-23
-  - '14'
-  - keys, alicia
-  - 47606
-  - 91
-- !!python/tuple
-  - 744
-  - Keys, Alicia
-  - PSN10089713GA01
-  - 92 Months
-  - F
-  - '900'
-  - Washington County
-  - '18663991'
-  - 2021-03-28
-  - N
-  - N
-  - 'No'
-  - 'Yes'
-  - null
-  - 'No'
-  - 2019-12-07
-  - '14'
-  - keys, alicia
-  - 89713
-  - 92
-- !!python/tuple
-  - 183
-  - Scott, Jill
-  - PSN10062315GA01
-  - 5 Days
-  - F
-  - '720'
-  - Middlesex County
-  - '37567331'
-  - 2024-07-25
-  - N
-  - Y
-  - 'No'
-  - 'No'
-  - null
-  - 'No'
-  - 2023-06-28
-  - '14'
-  - scott, jill
-  - 62315
-  - 5
-- !!python/tuple
-  - 178
-  - Scott, Jill
-  - PSN20010085GA01
-  - 92 Years
-  - F
-  - '730'
-  - Middlesex County
-  - '15170705'
-  - 2024-08-30
-  - N
-  - Y
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 2024-06-17
-  - '14'
-  - scott, jill
-  - 10010085
-  - 92
-- !!python/tuple
-  - 335
-  - Scott, Jill
-  - PSN20042989GA01
-  - 26 Months
-  - F
-  - '730'
-  - Washington County
-  - '11048296'
-  - 2022-09-06
-  - N
-  - N
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 2022-07-25
-  - '14'
-  - scott, jill
-  - 10042989
-  - 26
-- !!python/tuple
-  - 319
-  - Scott, Jill
-  - PSN30060497GA01
-  - 89 Years
+  - PSN10086712GA01
+  - .
   - F
   - '790'
   - Washington County
-  - '16006334'
-  - 2021-12-20
+  - '60856375'
+  - 2024-02-14
   - N
-  - Y
+  - N
+  - 'Yes'
   - 'No'
   - 'No'
+  - 'Yes'
+  - 2019-09-07
+  - '14'
+  - keys, alicia
+  - 86712
+  - null
+- !!python/tuple
+  - 486
+  - Scott, Jill
+  - PSN20025016GA01
+  - 38 Days
+  - F
+  - '200'
+  - Washington County
+  - '98829235'
+  - 2020-04-02
+  - N
+  - N
   - 'No'
   - 'No'
-  - 2021-02-28
+  - 'Yes'
+  - 'No'
+  - 2024-05-31
   - '14'
   - scott, jill
-  - 20060497
-  - 89
+  - 10025016
+  - 38
+- !!python/tuple
+  - 603
+  - Scott, Jill
+  - PSN30096232GA01
+  - 81 Months
+  - F
+  - '710'
+  - Washington County
+  - '73106587'
+  - 2024-05-20
+  - N
+  - N
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 2020-06-07
+  - '14'
+  - scott, jill
+  - 20096232
+  - 81
+- !!python/tuple
+  - 114
+  - Scott, Jill
+  - PSN30064995GA01
+  - 75 Days
+  - F
+  - '730'
+  - Middlesex County
+  - '83750794'
+  - 2020-05-27
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2023-12-02
+  - '14'
+  - scott, jill
+  - 20064995
+  - 75
