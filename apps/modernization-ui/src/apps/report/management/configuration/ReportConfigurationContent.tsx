@@ -169,12 +169,14 @@ const DataSourceEditCard = ({
                         <Button
                             secondary={true}
                             disabled={!dataSource}
-                            onClick={confirmDataSourceRef.current?.toggleModal}>
+                            onClick={confirmDataSourceRef.current?.toggleModal}
+                        >
                             Confirm data source
                         </Button>
                     </div>
                 </Shown>
-            }>
+            }
+        >
             <ConfirmationModal
                 modal={confirmDataSourceRef}
                 title={`Confirm data source: ${dataSource?.name}`}

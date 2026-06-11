@@ -15,7 +15,7 @@ const EditReportConfiguration = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
-    const viewUrl = `/report/management/configuration/${reportUid}/${dataSourceUid}`
+    const viewUrl = `/report/management/configuration/${reportUid}/${dataSourceUid}`;
     const [error, setError] = useState<string | null>(null);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const config = useReportConfiguration({ reportUid, dataSourceUid, handleError: setError });
@@ -67,7 +67,8 @@ const EditReportConfiguration = () => {
                         Submit
                     </Button>
                 </>
-            }>
+            }
+        >
             <div className={styles.columnContent}>
                 {error && <AlertBanner type="error">{error}</AlertBanner>}
                 <FormProvider {...form}>
