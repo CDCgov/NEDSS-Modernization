@@ -1,4 +1,46 @@
 - !!python/tuple
+  - 137
+  - null
+  - PSN10095953GA01
+  - '68'
+  - F
+  - '350'
+  - Washington County
+  - '68334965'
+  - 2020-05-28
+  - N
+  - N
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 2022-04-25
+  - '14'
+  - null
+  - 95953
+  - 68
+- !!python/tuple
+  - 59
+  - null
+  - PSN10049526GA01
+  - '13'
+  - F
+  - '710'
+  - Middlesex County
+  - '28276662'
+  - 2020-09-13
+  - N
+  - Y
+  - 'No'
+  - 'No'
+  - 'No'
+  - 'No'
+  - 2021-09-15
+  - '14'
+  - null
+  - 49526
+  - 13
+- !!python/tuple
   - 75
   - Beasley, Sarah
   - PSN30083699GA01
@@ -65,7 +107,7 @@
   - 278
   - Diaz, Victoria
   - PSN20022195GA01
-  - null
+  - '16'
   - F
   - '410'
   - Washington County
@@ -81,7 +123,7 @@
   - '14'
   - diaz, victoria
   - 10022195
-  - null
+  - 16
 - !!python/tuple
   - 296
   - Garcia, Wanda
@@ -91,8 +133,8 @@
   - '450'
   - Middlesex County
   - '49453223'
-  - 2023-07-17
-  - N
+  - null
+  - Y
   - N
   - 'No'
   - 'No'
@@ -314,27 +356,6 @@
   - 88219
   - 73
 - !!python/tuple
-  - 59
-  - Rocha, Brittany
-  - PSN10049526GA01
-  - '13'
-  - F
-  - '710'
-  - Middlesex County
-  - '28276662'
-  - 2020-09-13
-  - N
-  - Y
-  - 'No'
-  - 'No'
-  - 'No'
-  - 'No'
-  - 2021-09-15
-  - '14'
-  - rocha, brittany
-  - 49526
-  - 13
-- !!python/tuple
   - 263
   - Smith, Brittany
   - PSN20083542GA01
@@ -376,27 +397,6 @@
   - stanley, janet
   - 10038005
   - 33
-- !!python/tuple
-  - 137
-  - Stein, Nicholas
-  - PSN10095953GA01
-  - null
-  - F
-  - '350'
-  - Washington County
-  - '68334965'
-  - 2020-05-28
-  - N
-  - N
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2022-04-25
-  - '14'
-  - stein, nicholas
-  - 95953
-  - null
 - !!python/tuple
   - 512
   - Todd, Matthew
@@ -448,8 +448,8 @@
   - '900'
   - Middlesex County
   - '37024562'
-  - null
-  - Y
+  - 2020-12-01
+  - N
   - N
   - 'Yes'
   - 'No'
