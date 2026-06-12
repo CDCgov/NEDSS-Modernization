@@ -9,7 +9,25 @@ def execute(
     library_params: dict,
     **kwargs,
 ):
-    """QA07: Duplicate Cases (30/60/90 days). Matches SAS output exactly."""
+    """
+    QA07: Duplicate Cases. The Report will consist of 3 reports, identical
+    except for the number of days used, and will display in the NBS Report Module as:
+    •	QA07 - Duplicate Cases (30 Days)
+    •	QA07 - Duplicate Cases (60 Days)
+    •	QA07 - Duplicate Cases (90 Days)
+    This report generates a list, by name, of individuals that have possible duplicate
+    case incidents.
+    User filtering includes a time period (based on case confirmation date), diagnoses
+    and range between occurrences. “Cases” only include investigations with Case Status
+    of Probable or Confirmed.
+
+    Conversion notes:
+    * The original SAS code had the days value hard coded in the library, but we made
+    it a parameter that can be passed in from the API.
+    * The output is sorted by PATIENT_NAME, DIAGNOSIS, FL_FUP_EXAM_DT, and
+    INVESTIGATION_KEY (the last is used only as a tie‑breaker and does not appear
+    in the final output). SAS does not have a tiebreaker value.
+    """
     if not isinstance(library_params, dict):
         raise ValueError(f"""
             library_params must be a dictionary containing 'days_value' \
