@@ -50,11 +50,10 @@ public class AdvancedQueryBuilder {
    * Recursively construct a singular nested {@code RuleGroup} from the list of {@code FilterValue}s
    * provided.
    *
-   *
    * @throws AdvancedQueryException if any of the FilterValue set is invalid
-   *
    */
-  @SuppressWarnings("java:S3776") // Suppress "cognitive complexity" warning since this is inherently complex
+  @SuppressWarnings(
+      "java:S3776") // Suppress "cognitive complexity" warning since this is inherently complex
   public AdvancedQuery.RuleGroup build() throws AdvancedQueryException {
     LOGGER.log(System.Logger.Level.DEBUG, "Building query from: " + filterValues);
 
