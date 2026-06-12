@@ -23,6 +23,11 @@ VALID_PROCESSING_DECISIONS = {
 }
 OUTCOME_CODES = ('I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7')
 VALID_REFERRAL_BASES = tuple(sorted(PARTNER_BASES | SOCIAL_BASES | ASSOCIATE_BASES))
+OUTCOME_CATEGORIES = (
+    ('Sexual Contact', PARTNER_BASES),
+    ('Social Contact', SOCIAL_BASES),
+    ('Associate', ASSOCIATE_BASES),
+)
 
 
 def _sql_string_list(values: tuple[str, ...]) -> str:
@@ -201,56 +206,55 @@ def execute(
         contact_rows, ASSOCIATE_BASES
     )  # see PA03.sas line 151 (val_O)
 
-    outcome_counts = {
-        'Sexual Contact:': _ips_outcome_counter(
-            contact_rows, PARTNER_BASES
-        ),  # see PA03.sas lines 158-212 (val_q*)
-        'Social Contact:': _ips_outcome_counter(
-            contact_rows, SOCIAL_BASES
-        ),  # see PA03.sas lines 215-269 (val_r*)
-        'Associate:': _ips_outcome_counter(
-            contact_rows, ASSOCIATE_BASES
-        ),  # see PA03.sas lines 271-325 (val_s*)
-    }
-
     rows = [
-        ('Total Number of Cases:', len(all_cases)),
-        ('No. Cases w/Internet Follow-up:', len(ips_cases)),
-        ("Total No. Partners Init'd:", len(partner_contacts)),
-        ('Total No. Partners:', len(ips_partner_contacts)),
-        ("Total No. Social Contacts Init'd:", len(social_contacts)),
-        ('Total No. Social Contacts:', len(ips_social_contacts)),
-        ("Total No. Associates Init'd:", len(associate_contacts)),
-        ('Total No. Associates:', len(ips_associate_contacts)),
-        ('Contact Index:', _ratio(len(partner_contacts), len(all_cases))),
-        ('IPS Contact Index:', _ratio(len(ips_partner_contacts), len(ips_cases))),
+        ('Total Number of Cases', None, None, len(all_cases), None),
+        ('Total Number of Cases', "Total No. Partners Init'd", None, len(partner_contacts), None),
+        ('Total Number of Cases', "Total No. Social Contacts Init'd", None, len(social_contacts), None),
+        ('Total Number of Cases', "Total No. Associates Init'd", None, len(associate_contacts), None),
+        ('Total Number of Cases', 'Contact Index', None, None, _ratio(len(partner_contacts), len(all_cases))),
         (
-            'Cluster Index:',
+            'Total Number of Cases',
+            'Cluster Index',
+            None,
+            None,
             _ratio(len(social_contacts) + len(associate_contacts), len(all_cases)),
         ),
+        ('No. Cases w/Internet Follow-up', None, None, len(ips_cases), None),
+        ('No. Cases w/Internet Follow-up', 'Total No. Partners', None, len(ips_partner_contacts), None),
+        ('No. Cases w/Internet Follow-up', 'Total No. Social Contacts', None, len(ips_social_contacts), None),
+        ('No. Cases w/Internet Follow-up', 'Total No. Associates', None, len(ips_associate_contacts), None),
+        ('No. Cases w/Internet Follow-up', 'IPS Contact Index', None, None, _ratio(len(ips_partner_contacts), len(ips_cases))),
         (
-            'IPS Cluster Index:',
+            'No. Cases w/Internet Follow-up',
+            'IPS Cluster Index',
+            None,
+            None,
             _ratio(
                 len(ips_social_contacts) + len(ips_associate_contacts), len(ips_cases)
             ),
         ),
-        ('Total No. IPS Partners:', len(ips_partner_both)),
-        ('Total No. IPS Social Contacts:', len(ips_social_both)),
-        ('Total No. IPS Associates:', len(ips_associate_both)),
+        ('Total No. IPS Partners', None, None, len(ips_partner_both), None),
+        ('Total No. IPS Social', None, None, len(ips_social_both), None),
+        ('Total No. IPS Associates', None, None, len(ips_associate_both), None),
     ]
 
-    for label in ('Sexual Contact:', 'Social Contact:', 'Associate:'):
-        counts = outcome_counts[label]
+    for category_2, referral_bases in OUTCOME_CATEGORIES:
+        counts = _ips_outcome_counter(
+            contact_rows, referral_bases
+        )  # see PA03.sas lines 158-325 (val_q*, val_r*, val_s*)
         for outcome_code in OUTCOME_CODES:
             rows.append(
                 (
-                    f'{label} {outcome_code}',
+                    'Outcomes',
+                    category_2,
+                    outcome_code,
                     counts.get(outcome_code, 0),
+                    None,
                 )
             )
 
     content = Table(
-        columns=['LABEL', 'VALUE'],
+        columns=['Category 1', 'Category 2', 'Category 3', 'Count', 'Index'],
         data=rows,
     )
 

@@ -28,83 +28,100 @@ class TestIntegrationPa03Library:
 
         data = result.content.data
         assert len(data) == 36
-        assert len(data[0]) == 2
+        assert len(data[0]) == 5
         assert len(data[0]) == len(result.content.columns)
 
-        labels = [row[0] for row in data]
-        values = [row[1] for row in data]
-
-        assert labels == [
-            'Total Number of Cases:',
-            'No. Cases w/Internet Follow-up:',
-            "Total No. Partners Init'd:",
-            'Total No. Partners:',
-            "Total No. Social Contacts Init'd:",
-            'Total No. Social Contacts:',
-            "Total No. Associates Init'd:",
-            'Total No. Associates:',
-            'Contact Index:',
-            'IPS Contact Index:',
-            'Cluster Index:',
-            'IPS Cluster Index:',
-            'Total No. IPS Partners:',
-            'Total No. IPS Social Contacts:',
-            'Total No. IPS Associates:',
-            'Sexual Contact: I1',
-            'Sexual Contact: I2',
-            'Sexual Contact: I3',
-            'Sexual Contact: I4',
-            'Sexual Contact: I5',
-            'Sexual Contact: I6',
-            'Sexual Contact: I7',
-            'Social Contact: I1',
-            'Social Contact: I2',
-            'Social Contact: I3',
-            'Social Contact: I4',
-            'Social Contact: I5',
-            'Social Contact: I6',
-            'Social Contact: I7',
-            'Associate: I1',
-            'Associate: I2',
-            'Associate: I3',
-            'Associate: I4',
-            'Associate: I5',
-            'Associate: I6',
-            'Associate: I7',
+        assert data[:15] == [
+            ('Total Number of Cases', None, None, data[0][3], None),
+            ('Total Number of Cases', "Total No. Partners Init'd", None, data[1][3], None),
+            ('Total Number of Cases', "Total No. Social Contacts Init'd", None, data[2][3], None),
+            ('Total Number of Cases', "Total No. Associates Init'd", None, data[3][3], None),
+            ('Total Number of Cases', 'Contact Index', None, None, data[4][4]),
+            ('Total Number of Cases', 'Cluster Index', None, None, data[5][4]),
+            ('No. Cases w/Internet Follow-up', None, None, data[6][3], None),
+            ('No. Cases w/Internet Follow-up', 'Total No. Partners', None, data[7][3], None),
+            ('No. Cases w/Internet Follow-up', 'Total No. Social Contacts', None, data[8][3], None),
+            ('No. Cases w/Internet Follow-up', 'Total No. Associates', None, data[9][3], None),
+            ('No. Cases w/Internet Follow-up', 'IPS Contact Index', None, None, data[10][4]),
+            ('No. Cases w/Internet Follow-up', 'IPS Cluster Index', None, None, data[11][4]),
+            ('Total No. IPS Partners', None, None, data[12][3], None),
+            ('Total No. IPS Social', None, None, data[13][3], None),
+            ('Total No. IPS Associates', None, None, data[14][3], None),
         ]
 
-        for value in values[:8]:
-            assert isinstance(value, int)
-            assert value >= 0
+        assert data[15:] == [
+            ('Outcomes', 'Sexual Contact', 'I1', data[15][3], None),
+            ('Outcomes', 'Sexual Contact', 'I2', data[16][3], None),
+            ('Outcomes', 'Sexual Contact', 'I3', data[17][3], None),
+            ('Outcomes', 'Sexual Contact', 'I4', data[18][3], None),
+            ('Outcomes', 'Sexual Contact', 'I5', data[19][3], None),
+            ('Outcomes', 'Sexual Contact', 'I6', data[20][3], None),
+            ('Outcomes', 'Sexual Contact', 'I7', data[21][3], None),
+            ('Outcomes', 'Social Contact', 'I1', data[22][3], None),
+            ('Outcomes', 'Social Contact', 'I2', data[23][3], None),
+            ('Outcomes', 'Social Contact', 'I3', data[24][3], None),
+            ('Outcomes', 'Social Contact', 'I4', data[25][3], None),
+            ('Outcomes', 'Social Contact', 'I5', data[26][3], None),
+            ('Outcomes', 'Social Contact', 'I6', data[27][3], None),
+            ('Outcomes', 'Social Contact', 'I7', data[28][3], None),
+            ('Outcomes', 'Associate', 'I1', data[29][3], None),
+            ('Outcomes', 'Associate', 'I2', data[30][3], None),
+            ('Outcomes', 'Associate', 'I3', data[31][3], None),
+            ('Outcomes', 'Associate', 'I4', data[32][3], None),
+            ('Outcomes', 'Associate', 'I5', data[33][3], None),
+            ('Outcomes', 'Associate', 'I6', data[34][3], None),
+            ('Outcomes', 'Associate', 'I7', data[35][3], None),
+        ]
 
-        for value in values[8:12]:
-            assert value is None or isinstance(value, float)
+        for row in data[:4]:
+            assert isinstance(row[3], int)
+            assert row[3] >= 0
+            assert row[4] is None
 
-        for value in values[12:]:
-            assert isinstance(value, int)
-            assert value >= 0
+        for row in data[4:6]:
+            assert row[3] is None
+            assert row[4] is None or isinstance(row[4], float)
 
-        row_map = {label: value for label, value in data}
-        assert row_map['Total No. IPS Partners:'] <= row_map['Total No. Partners:']
-        assert (
-            row_map['Total No. IPS Social Contacts:']
-            <= row_map['Total No. Social Contacts:']
-        )
-        assert row_map['Total No. IPS Associates:'] <= row_map['Total No. Associates:']
+        for row in data[6:10]:
+            assert isinstance(row[3], int)
+            assert row[3] >= 0
+            assert row[4] is None
+
+        for row in data[10:12]:
+            assert row[3] is None
+            assert row[4] is None or isinstance(row[4], float)
+
+        for row in data[12:]:
+            assert isinstance(row[3], int)
+            assert row[3] >= 0
+            assert row[4] is None
+
+        row_map = {(row[0], row[1], row[2]): row for row in data}
+
+        total_partners = row_map[('No. Cases w/Internet Follow-up', 'Total No. Partners', None)][3]
+        total_social = row_map[('No. Cases w/Internet Follow-up', 'Total No. Social Contacts', None)][3]
+        total_associates = row_map[('No. Cases w/Internet Follow-up', 'Total No. Associates', None)][3]
+        total_ips_partners = row_map[('Total No. IPS Partners', None, None)][3]
+        total_ips_social = row_map[('Total No. IPS Social', None, None)][3]
+        total_ips_associates = row_map[('Total No. IPS Associates', None, None)][3]
+
+        assert total_ips_partners <= total_partners
+        assert total_ips_social <= total_social
+        assert total_ips_associates <= total_associates
 
         sexual_outcome_total = sum(
-            value for label, value in data if label.startswith('Sexual Contact:')
+            row[3] for row in data if row[0] == 'Outcomes' and row[1] == 'Sexual Contact'
         )
         social_outcome_total = sum(
-            value for label, value in data if label.startswith('Social Contact:')
+            row[3] for row in data if row[0] == 'Outcomes' and row[1] == 'Social Contact'
         )
         associate_outcome_total = sum(
-            value for label, value in data if label.startswith('Associate:')
+            row[3] for row in data if row[0] == 'Outcomes' and row[1] == 'Associate'
         )
 
-        assert sexual_outcome_total <= row_map['Total No. IPS Partners:']
-        assert social_outcome_total <= row_map['Total No. IPS Social Contacts:']
-        assert associate_outcome_total <= row_map['Total No. IPS Associates:']
+        assert sexual_outcome_total <= total_ips_partners
+        assert social_outcome_total <= total_ips_social
+        assert associate_outcome_total <= total_ips_associates
 
     def test_execute_report_no_data(self):
         report_spec = ReportSpec.model_validate(
@@ -125,30 +142,18 @@ class TestIntegrationPa03Library:
 
         data = result.content.data
         assert len(data) == 36
-        assert len(result.content.columns) == 2
+        assert len(result.content.columns) == 5
 
-        row_map = {label: value for label, value in data}
-        assert row_map['Total Number of Cases:'] == 0
-        assert row_map['No. Cases w/Internet Follow-up:'] == 0
-        assert row_map["Total No. Partners Init'd:"] == 0
-        assert row_map['Total No. Partners:'] == 0
-        assert row_map["Total No. Social Contacts Init'd:"] == 0
-        assert row_map['Total No. Social Contacts:'] == 0
-        assert row_map["Total No. Associates Init'd:"] == 0
-        assert row_map['Total No. Associates:'] == 0
-        assert row_map['Contact Index:'] is None
-        assert row_map['IPS Contact Index:'] is None
-        assert row_map['Cluster Index:'] is None
-        assert row_map['IPS Cluster Index:'] is None
-        assert row_map['Total No. IPS Partners:'] == 0
-        assert row_map['Total No. IPS Social Contacts:'] == 0
-        assert row_map['Total No. IPS Associates:'] == 0
+        assert data[0] == ('Total Number of Cases', None, None, 0, None)
+        assert data[6] == ('No. Cases w/Internet Follow-up', None, None, 0, None)
+        assert data[12] == ('Total No. IPS Partners', None, None, 0, None)
+        assert data[13] == ('Total No. IPS Social', None, None, 0, None)
+        assert data[14] == ('Total No. IPS Associates', None, None, 0, None)
 
-        for label, value in data[15:]:
-            assert label.startswith(
-                ('Sexual Contact:', 'Social Contact:', 'Associate:')
-            )
-            assert value == 0
+        for row in data[15:]:
+            assert row[0] == 'Outcomes'
+            assert row[3] == 0
+            assert row[4] is None
 
     def test_execute_report_check_metadata(self):
         report_spec = ReportSpec.model_validate(
@@ -168,5 +173,8 @@ class TestIntegrationPa03Library:
         assert result.description is None
         assert result.content_type == 'table'
 
-        assert result.content.columns[0] == 'LABEL'
-        assert result.content.columns[1] == 'VALUE'
+        assert result.content.columns[0] == 'Category 1'
+        assert result.content.columns[1] == 'Category 2'
+        assert result.content.columns[2] == 'Category 3'
+        assert result.content.columns[3] == 'Count'
+        assert result.content.columns[4] == 'Index'
