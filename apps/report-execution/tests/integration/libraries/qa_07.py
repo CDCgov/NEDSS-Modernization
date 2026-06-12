@@ -38,10 +38,15 @@ class TestIntegrationQa07Library:
         assert len(data) == 364
         assert result.content.columns == [
             'PATIENT_NAME',
-            'PATIENT_ID',
+            'PATIENT_LOCAL_ID',
+            'INV_LOCAL_ID',
             'DIAGNOSIS',
             'CONFIRMATION_DT',
             'FL_FUP_EXAM_DT',
+            'PATIENTID',
+            'DAYS',
+            'DAYS1',
+            'COUNT'
         ]
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 

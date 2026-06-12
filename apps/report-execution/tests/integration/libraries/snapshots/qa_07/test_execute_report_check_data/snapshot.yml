@@ -1,2154 +1,4004 @@
 - !!python/tuple
+  - null
+  - PSN30062782GA01
+  - CAS10023065GA01
+  - 300 - Gonorrhea
+  - 01/28/2025
+  - 01/05/2023
+  - 20062782
+  - 0
+  - 0
+  - 2
+- !!python/tuple
+  - null
+  - PSN20037798GA01
+  - CAS10052765GA01
+  - 300 - Gonorrhea
+  - 01/13/2021
+  - 02/15/2023
+  - 10037798
+  - 0
+  - 0
+  - 2
+- !!python/tuple
   - Badu, Erykah
+  - PSN10098411GA01
+  - CAS10079230GA01
+  - 200 - Chlamydia
+  - 08/19/2021
+  - 01/09/2023
   - 98411
-  - 200 - Chlamydia
-  - 2021-08-19 00:00:00
-  - 2023-01-09 00:00:00
+  - 0
+  - 0
+  - 10
 - !!python/tuple
   - Badu, Erykah
+  - PSN30076243GA01
+  - CAS10062721GA01
+  - 200 - Chlamydia
+  - 04/06/2025
+  - 02/17/2023
   - 20076243
-  - 200 - Chlamydia
-  - 2025-04-06 00:00:00
-  - 2023-02-17 00:00:00
+  - -1
+  - 1
+  - 10
 - !!python/tuple
   - Badu, Erykah
+  - PSN10099617GA01
+  - CAS10099783GA01
+  - 200 - Chlamydia
+  - 06/28/2025
+  - 02/18/2023
   - 99617
-  - 200 - Chlamydia
-  - 2025-06-28 00:00:00
-  - 2023-02-18 00:00:00
+  - -1
+  - 1
+  - 10
 - !!python/tuple
   - Badu, Erykah
+  - PSN20028563GA01
+  - CAS10068870GA01
+  - 200 - Chlamydia
+  - 01/31/2020
+  - 02/19/2023
   - 10028563
-  - 200 - Chlamydia
-  - 2020-01-31 00:00:00
-  - 2023-02-19 00:00:00
+  - -2
+  - 0
+  - 10
 - !!python/tuple
   - Badu, Erykah
+  - PSN30012688GA01
+  - CAS10016214GA01
+  - 200 - Chlamydia
+  - 07/06/2023
+  - 02/19/2023
   - 20012688
-  - 200 - Chlamydia
-  - 2023-07-06 00:00:00
-  - 2023-02-19 00:00:00
+  - 0
+  - 2
+  - 10
 - !!python/tuple
   - Badu, Erykah
+  - PSN20077894GA01
+  - CAS10036687GA01
+  - 200 - Chlamydia
+  - 10/06/2020
+  - 02/21/2023
   - 10077894
-  - 200 - Chlamydia
-  - 2020-10-06 00:00:00
-  - 2023-02-21 00:00:00
+  - 0
+  - 0
+  - 10
 - !!python/tuple
   - Badu, Erykah
+  - PSN20096051GA01
+  - CAS10076711GA01
+  - 200 - Chlamydia
+  - 10/11/2022
+  - 04/05/2023
   - 10096051
-  - 200 - Chlamydia
-  - 2022-10-11 00:00:00
-  - 2023-04-05 00:00:00
+  - -4
+  - 4
+  - 10
 - !!python/tuple
   - Badu, Erykah
+  - PSN30048550GA01
+  - CAS10030236GA01
+  - 200 - Chlamydia
+  - 03/09/2020
+  - 04/09/2023
   - 20048550
-  - 200 - Chlamydia
-  - 2020-03-09 00:00:00
-  - 2023-04-09 00:00:00
+  - -1
+  - 1
+  - 10
 - !!python/tuple
   - Badu, Erykah
+  - PSN20051607GA01
+  - CAS10061063GA01
+  - 200 - Chlamydia
+  - 04/05/2024
+  - 04/10/2023
   - 10051607
-  - 200 - Chlamydia
-  - 2024-04-05 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 10
 - !!python/tuple
   - Badu, Erykah
+  - PSN30080736GA01
+  - CAS10064115GA01
+  - 200 - Chlamydia
+  - 05/12/2025
+  - 04/10/2023
   - 20080736
-  - 200 - Chlamydia
-  - 2025-05-12 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 10
 - !!python/tuple
   - Badu, Erykah
+  - PSN30019675GA01
+  - CAS10059538GA01
+  - 300 - Gonorrhea
+  - 07/24/2024
+  - 01/01/2023
   - 20019675
-  - 300 - Gonorrhea
-  - 2024-07-24 00:00:00
-  - 2023-01-01 00:00:00
+  - -4
+  - 4
+  - 6
 - !!python/tuple
   - Badu, Erykah
+  - PSN30071172GA01
+  - CAS10097086GA01
+  - 300 - Gonorrhea
+  - 04/24/2025
+  - 01/05/2023
   - 20071172
-  - 300 - Gonorrhea
-  - 2025-04-24 00:00:00
-  - 2023-01-05 00:00:00
+  - -2
+  - 2
+  - 6
 - !!python/tuple
   - Badu, Erykah
+  - PSN10034407GA01
+  - CAS10056061GA01
+  - 300 - Gonorrhea
+  - 11/12/2023
+  - 01/07/2023
   - 34407
-  - 300 - Gonorrhea
-  - 2023-11-12 00:00:00
-  - 2023-01-07 00:00:00
+  - -1
+  - 1
+  - 6
 - !!python/tuple
   - Badu, Erykah
+  - PSN30054559GA01
+  - CAS10080656GA01
+  - 300 - Gonorrhea
+  - 03/04/2020
+  - 01/08/2023
   - 20054559
-  - 300 - Gonorrhea
-  - 2020-03-04 00:00:00
-  - 2023-01-08 00:00:00
+  - 0
+  - 0
+  - 6
 - !!python/tuple
   - Badu, Erykah
+  - PSN20075268GA01
+  - CAS10019319GA01
+  - 300 - Gonorrhea
+  - 06/03/2020
+  - 02/17/2023
   - 10075268
-  - 300 - Gonorrhea
-  - 2020-06-03 00:00:00
-  - 2023-02-17 00:00:00
+  - 0
+  - 0
+  - 6
 - !!python/tuple
   - Badu, Erykah
+  - PSN10041968GA01
+  - CAS10096426GA01
+  - 300 - Gonorrhea
+  - 05/19/2024
+  - 04/04/2023
   - 41968
-  - 300 - Gonorrhea
-  - 2024-05-19 00:00:00
-  - 2023-04-04 00:00:00
+  - 0
+  - 0
+  - 6
 - !!python/tuple
   - Badu, Erykah
+  - PSN20022598GA01
+  - CAS10063133GA01
+  - 710 - Syphilis, primary
+  - 05/07/2020
+  - 01/03/2023
   - 10022598
-  - 710 - Syphilis, primary
-  - 2020-05-07 00:00:00
-  - 2023-01-03 00:00:00
+  - -4
+  - 4
+  - 5
 - !!python/tuple
   - Badu, Erykah
+  - PSN20050299GA01
+  - CAS10049873GA01
+  - 710 - Syphilis, primary
+  - 06/04/2023
+  - 01/07/2023
   - 10050299
-  - 710 - Syphilis, primary
-  - 2023-06-04 00:00:00
-  - 2023-01-07 00:00:00
+  - 0
+  - 0
+  - 5
 - !!python/tuple
   - Badu, Erykah
+  - PSN10030919GA01
+  - CAS10076966GA01
+  - 710 - Syphilis, primary
+  - 08/04/2021
+  - 02/22/2023
   - 30919
-  - 710 - Syphilis, primary
-  - 2021-08-04 00:00:00
-  - 2023-02-22 00:00:00
+  - 0
+  - 0
+  - 5
 - !!python/tuple
   - Badu, Erykah
+  - PSN10032387GA01
+  - CAS10016435GA01
+  - 710 - Syphilis, primary
+  - 07/19/2021
+  - 04/02/2023
   - 32387
-  - 710 - Syphilis, primary
-  - 2021-07-19 00:00:00
-  - 2023-04-02 00:00:00
+  - -6
+  - 6
+  - 5
 - !!python/tuple
   - Badu, Erykah
+  - PSN30018625GA01
+  - CAS10040091GA01
+  - 710 - Syphilis, primary
+  - 04/25/2022
+  - 04/08/2023
   - 20018625
-  - 710 - Syphilis, primary
-  - 2022-04-25 00:00:00
-  - 2023-04-08 00:00:00
+  - 0
+  - 0
+  - 5
 - !!python/tuple
   - Badu, Erykah
+  - PSN10047169GA01
+  - CAS10037005GA01
+  - 720 - Syphilis, secondary
+  - 10/13/2022
+  - 01/04/2023
   - 47169
-  - 720 - Syphilis, secondary
-  - 2022-10-13 00:00:00
-  - 2023-01-04 00:00:00
+  - -3
+  - 3
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN20015993GA01
+  - CAS10076646GA01
+  - 720 - Syphilis, secondary
+  - 06/30/2024
+  - 01/07/2023
   - 10015993
-  - 720 - Syphilis, secondary
-  - 2024-06-30 00:00:00
-  - 2023-01-07 00:00:00
+  - -2
+  - 0
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN10069660GA01
+  - CAS10039957GA01
+  - 720 - Syphilis, secondary
+  - 05/18/2025
+  - 01/07/2023
   - 69660
-  - 720 - Syphilis, secondary
-  - 2025-05-18 00:00:00
-  - 2023-01-07 00:00:00
+  - 0
+  - 2
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN30062061GA01
+  - CAS10072170GA01
+  - 720 - Syphilis, secondary
+  - 09/19/2022
+  - 01/09/2023
   - 20062061
-  - 720 - Syphilis, secondary
-  - 2022-09-19 00:00:00
-  - 2023-01-09 00:00:00
+  - -1
+  - 1
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN10040488GA01
+  - CAS10081886GA01
+  - 720 - Syphilis, secondary
+  - 01/30/2020
+  - 01/10/2023
   - 40488
-  - 720 - Syphilis, secondary
-  - 2020-01-30 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN30051402GA01
+  - CAS10055128GA01
+  - 720 - Syphilis, secondary
+  - 06/26/2022
+  - 02/16/2023
   - 20051402
-  - 720 - Syphilis, secondary
-  - 2022-06-26 00:00:00
-  - 2023-02-16 00:00:00
+  - -2
+  - 2
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN10046112GA01
+  - CAS10031665GA01
+  - 720 - Syphilis, secondary
+  - 01/15/2024
+  - 02/18/2023
   - 46112
-  - 720 - Syphilis, secondary
-  - 2024-01-15 00:00:00
-  - 2023-02-18 00:00:00
+  - -5
+  - 5
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN20037805GA01
+  - CAS10049249GA01
+  - 720 - Syphilis, secondary
+  - 07/14/2023
+  - 02/23/2023
   - 10037805
-  - 720 - Syphilis, secondary
-  - 2023-07-14 00:00:00
-  - 2023-02-23 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN10069658GA01
+  - CAS10093505GA01
+  - 720 - Syphilis, secondary
+  - 05/11/2024
+  - 04/04/2023
   - 69658
-  - 720 - Syphilis, secondary
-  - 2024-05-11 00:00:00
-  - 2023-04-04 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN30029558GA01
+  - CAS10033244GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 02/02/2023
+  - 01/01/2023
   - 20029558
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-02-02 00:00:00
-  - 2023-01-01 00:00:00
+  - -1
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN20010719GA01
+  - CAS10034388GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 07/11/2021
+  - 01/01/2023
   - 10010719
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-07-11 00:00:00
-  - 2023-01-01 00:00:00
+  - 0
+  - 1
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN30065190GA01
+  - CAS10043771GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 06/08/2023
+  - 01/02/2023
   - 20065190
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-06-08 00:00:00
-  - 2023-01-02 00:00:00
+  - -2
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10032322GA01
+  - CAS10049379GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 08/09/2023
+  - 01/02/2023
   - 32322
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-08-09 00:00:00
-  - 2023-01-02 00:00:00
+  - 0
+  - 2
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10015006GA01
+  - CAS10093078GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 06/02/2021
+  - 01/04/2023
   - 15006
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-06-02 00:00:00
-  - 2023-01-04 00:00:00
+  - -2
+  - 2
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN20060012GA01
+  - CAS10030405GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/08/2022
+  - 01/06/2023
   - 10060012
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-05-08 00:00:00
-  - 2023-01-06 00:00:00
+  - -3
+  - 3
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10080941GA01
+  - CAS10064341GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 02/13/2024
+  - 01/09/2023
   - 80941
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-02-13 00:00:00
-  - 2023-01-09 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN20034085GA01
+  - CAS10071501GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/08/2023
+  - 01/10/2023
   - 10034085
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-05-08 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN20049194GA01
+  - CAS10076252GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 08/31/2023
+  - 02/19/2023
   - 10049194
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-08-31 00:00:00
-  - 2023-02-19 00:00:00
+  - -1
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10031194GA01
+  - CAS10084679GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 04/15/2023
+  - 02/19/2023
   - 31194
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-04-15 00:00:00
-  - 2023-02-19 00:00:00
+  - 0
+  - 1
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN30029597GA01
+  - CAS10096814GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 07/08/2023
+  - 02/20/2023
   - 20029597
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-07-08 00:00:00
-  - 2023-02-20 00:00:00
+  - -2
+  - 2
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10066752GA01
+  - CAS10072117GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 02/09/2020
+  - 02/22/2023
   - 66752
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-02-09 00:00:00
-  - 2023-02-22 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10060500GA01
+  - CAS10076765GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/27/2023
+  - 02/23/2023
   - 60500
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-05-27 00:00:00
-  - 2023-02-23 00:00:00
+  - 0
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10091596GA01
+  - CAS10011003GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 08/03/2025
+  - 04/06/2023
   - 91596
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-08-03 00:00:00
-  - 2023-04-06 00:00:00
+  - -4
+  - 4
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10019178GA01
+  - CAS10087325GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 04/18/2021
+  - 04/10/2023
   - 19178
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-04-18 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN30081644GA01
+  - CAS10049747GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 08/02/2023
+  - 04/10/2023
   - 20081644
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-08-02 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN20089130GA01
+  - CAS10053933GA01
+  - 790 - Syphilis, Congenital
+  - 12/16/2022
+  - 01/01/2023
   - 10089130
-  - 790 - Syphilis, Congenital
-  - 2022-12-16 00:00:00
-  - 2023-01-01 00:00:00
+  - -3
+  - 3
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN30061186GA01
+  - CAS10011366GA01
+  - 790 - Syphilis, Congenital
+  - 12/21/2021
+  - 01/04/2023
   - 20061186
-  - 790 - Syphilis, Congenital
-  - 2021-12-21 00:00:00
-  - 2023-01-04 00:00:00
+  - -2
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10096605GA01
+  - CAS10054495GA01
+  - 790 - Syphilis, Congenital
+  - 06/29/2025
+  - 01/04/2023
   - 96605
-  - 790 - Syphilis, Congenital
-  - 2025-06-29 00:00:00
-  - 2023-01-04 00:00:00
+  - 0
+  - 2
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10024148GA01
+  - CAS10052134GA01
+  - 790 - Syphilis, Congenital
+  - 06/07/2022
+  - 01/06/2023
   - 24148
-  - 790 - Syphilis, Congenital
-  - 2022-06-07 00:00:00
-  - 2023-01-06 00:00:00
+  - -2
+  - 2
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10017042GA01
+  - CAS10075720GA01
+  - 790 - Syphilis, Congenital
+  - 12/17/2020
+  - 01/08/2023
   - 17042
-  - 790 - Syphilis, Congenital
-  - 2020-12-17 00:00:00
-  - 2023-01-08 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10076247GA01
+  - CAS10063655GA01
+  - 790 - Syphilis, Congenital
+  - 08/26/2022
+  - 01/09/2023
   - 76247
-  - 790 - Syphilis, Congenital
-  - 2022-08-26 00:00:00
-  - 2023-01-09 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN20040469GA01
+  - CAS10068684GA01
+  - 790 - Syphilis, Congenital
+  - 02/05/2021
+  - 01/10/2023
   - 10040469
-  - 790 - Syphilis, Congenital
-  - 2021-02-05 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN30052987GA01
+  - CAS10047883GA01
+  - 790 - Syphilis, Congenital
+  - 08/02/2025
+  - 02/16/2023
   - 20052987
-  - 790 - Syphilis, Congenital
-  - 2025-08-02 00:00:00
-  - 2023-02-16 00:00:00
+  - -3
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10063701GA01
+  - CAS10062883GA01
+  - 790 - Syphilis, Congenital
+  - 12/03/2021
+  - 02/16/2023
   - 63701
-  - 790 - Syphilis, Congenital
-  - 2021-12-03 00:00:00
-  - 2023-02-16 00:00:00
+  - 0
+  - 3
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN30071955GA01
+  - CAS10097236GA01
+  - 790 - Syphilis, Congenital
+  - 01/22/2023
+  - 02/19/2023
   - 20071955
-  - 790 - Syphilis, Congenital
-  - 2023-01-22 00:00:00
-  - 2023-02-19 00:00:00
+  - -2
+  - 2
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10071666GA01
+  - CAS10018388GA01
+  - 790 - Syphilis, Congenital
+  - 01/27/2020
+  - 02/21/2023
   - 71666
-  - 790 - Syphilis, Congenital
-  - 2020-01-27 00:00:00
-  - 2023-02-21 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10089176GA01
+  - CAS10072331GA01
+  - 790 - Syphilis, Congenital
+  - 01/31/2021
+  - 02/22/2023
   - 89176
-  - 790 - Syphilis, Congenital
-  - 2021-01-31 00:00:00
-  - 2023-02-22 00:00:00
+  - 0
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10061464GA01
+  - CAS10084261GA01
+  - 790 - Syphilis, Congenital
+  - 02/19/2022
+  - 04/04/2023
   - 61464
-  - 790 - Syphilis, Congenital
-  - 2022-02-19 00:00:00
-  - 2023-04-04 00:00:00
+  - -3
+  - 3
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10091042GA01
+  - CAS10053167GA01
+  - 790 - Syphilis, Congenital
+  - 03/30/2022
+  - 04/07/2023
   - 91042
-  - 790 - Syphilis, Congenital
-  - 2022-03-30 00:00:00
-  - 2023-04-07 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10093254GA01
+  - CAS10058230GA01
+  - 790 - Syphilis, Congenital
+  - 07/12/2025
+  - 04/08/2023
   - 93254
-  - 790 - Syphilis, Congenital
-  - 2025-07-12 00:00:00
-  - 2023-04-08 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN20019844GA01
+  - CAS10088734GA01
+  - 790 - Syphilis, Congenital
+  - 02/25/2022
+  - 04/09/2023
   - 10019844
-  - 790 - Syphilis, Congenital
-  - 2022-02-25 00:00:00
-  - 2023-04-09 00:00:00
+  - 0
+  - 0
+  - 16
 - !!python/tuple
   - Badu, Erykah
+  - PSN10032250GA01
+  - CAS10045888GA01
+  - 900 - HIV Infection
+  - 05/23/2021
+  - 01/02/2023
   - 32250
-  - 900 - HIV Infection
-  - 2021-05-23 00:00:00
-  - 2023-01-02 00:00:00
+  - -4
+  - 4
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN10047814GA01
+  - CAS10095215GA01
+  - 900 - HIV Infection
+  - 05/16/2020
+  - 01/06/2023
   - 47814
-  - 900 - HIV Infection
-  - 2020-05-16 00:00:00
-  - 2023-01-06 00:00:00
+  - -3
+  - 3
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN20029824GA01
+  - CAS10040715GA01
+  - 900 - HIV Infection
+  - 10/04/2023
+  - 01/09/2023
   - 10029824
-  - 900 - HIV Infection
-  - 2023-10-04 00:00:00
-  - 2023-01-09 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN30057666GA01
+  - CAS10082945GA01
+  - 900 - HIV Infection
+  - 03/01/2021
+  - 01/09/2023
   - 20057666
-  - 900 - HIV Infection
-  - 2021-03-01 00:00:00
-  - 2023-01-09 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN10021181GA01
+  - CAS10064045GA01
+  - 900 - HIV Infection
+  - 03/31/2024
+  - 02/15/2023
   - 21181
-  - 900 - HIV Infection
-  - 2024-03-31 00:00:00
-  - 2023-02-15 00:00:00
+  - -2
+  - 2
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN10091070GA01
+  - CAS10021385GA01
+  - 900 - HIV Infection
+  - 05/12/2023
+  - 02/17/2023
   - 91070
-  - 900 - HIV Infection
-  - 2023-05-12 00:00:00
-  - 2023-02-17 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN20071933GA01
+  - CAS10090878GA01
+  - 900 - HIV Infection
+  - 06/19/2021
+  - 04/02/2023
   - 10071933
-  - 900 - HIV Infection
-  - 2021-06-19 00:00:00
-  - 2023-04-02 00:00:00
+  - -3
+  - 3
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN30084959GA01
+  - CAS10075989GA01
+  - 900 - HIV Infection
+  - 08/04/2020
+  - 04/05/2023
   - 20084959
-  - 900 - HIV Infection
-  - 2020-08-04 00:00:00
-  - 2023-04-05 00:00:00
+  - -2
+  - 2
+  - 9
 - !!python/tuple
   - Badu, Erykah
+  - PSN30079182GA01
+  - CAS10032845GA01
+  - 900 - HIV Infection
+  - 07/08/2020
+  - 04/07/2023
   - 20079182
-  - 900 - HIV Infection
-  - 2020-07-08 00:00:00
-  - 2023-04-07 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Carey, Mariah
+  - PSN30050441GA01
+  - CAS10091296GA01
+  - 200 - Chlamydia
+  - 08/12/2025
+  - 01/04/2023
   - 20050441
-  - 200 - Chlamydia
-  - 2025-08-12 00:00:00
-  - 2023-01-04 00:00:00
+  - -1
+  - 1
+  - 6
 - !!python/tuple
   - Carey, Mariah
+  - PSN10038995GA01
+  - CAS10051689GA01
+  - 200 - Chlamydia
+  - 09/14/2024
+  - 01/05/2023
   - 38995
-  - 200 - Chlamydia
-  - 2024-09-14 00:00:00
-  - 2023-01-05 00:00:00
+  - -1
+  - 1
+  - 6
 - !!python/tuple
   - Carey, Mariah
+  - PSN10099992GA01
+  - CAS10077105GA01
+  - 200 - Chlamydia
+  - 07/17/2025
+  - 01/06/2023
   - 99992
-  - 200 - Chlamydia
-  - 2025-07-17 00:00:00
-  - 2023-01-06 00:00:00
+  - 0
+  - 0
+  - 6
 - !!python/tuple
   - Carey, Mariah
+  - PSN10066422GA01
+  - CAS10011345GA01
+  - 200 - Chlamydia
+  - 10/21/2025
+  - 02/19/2023
   - 66422
-  - 200 - Chlamydia
-  - 2025-10-21 00:00:00
-  - 2023-02-19 00:00:00
+  - 0
+  - 0
+  - 6
 - !!python/tuple
   - Carey, Mariah
+  - PSN10050519GA01
+  - CAS10080763GA01
+  - 200 - Chlamydia
+  - 06/13/2023
+  - 04/06/2023
   - 50519
-  - 200 - Chlamydia
-  - 2023-06-13 00:00:00
-  - 2023-04-06 00:00:00
+  - -3
+  - 3
+  - 6
 - !!python/tuple
   - Carey, Mariah
+  - PSN10063236GA01
+  - CAS10099647GA01
+  - 200 - Chlamydia
+  - 09/04/2024
+  - 04/09/2023
   - 63236
-  - 200 - Chlamydia
-  - 2024-09-04 00:00:00
-  - 2023-04-09 00:00:00
+  - 0
+  - 0
+  - 6
 - !!python/tuple
   - Carey, Mariah
+  - PSN10071065GA01
+  - CAS10059614GA01
+  - 300 - Gonorrhea
+  - 03/23/2020
+  - 01/02/2023
   - 71065
-  - 300 - Gonorrhea
-  - 2020-03-23 00:00:00
-  - 2023-01-02 00:00:00
+  - -2
+  - 2
+  - 9
 - !!python/tuple
   - Carey, Mariah
+  - PSN20064705GA01
+  - CAS10036149GA01
+  - 300 - Gonorrhea
+  - 04/20/2022
+  - 01/04/2023
   - 10064705
-  - 300 - Gonorrhea
-  - 2022-04-20 00:00:00
-  - 2023-01-04 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Carey, Mariah
+  - PSN20051155GA01
+  - CAS10031063GA01
+  - 300 - Gonorrhea
+  - 10/19/2022
+  - 02/16/2023
   - 10051155
-  - 300 - Gonorrhea
-  - 2022-10-19 00:00:00
-  - 2023-02-16 00:00:00
+  - -4
+  - 4
+  - 9
 - !!python/tuple
   - Carey, Mariah
+  - PSN20090304GA01
+  - CAS10041170GA01
+  - 300 - Gonorrhea
+  - 07/05/2021
+  - 02/20/2023
   - 10090304
-  - 300 - Gonorrhea
-  - 2021-07-05 00:00:00
-  - 2023-02-20 00:00:00
+  - -4
+  - 4
+  - 9
 - !!python/tuple
   - Carey, Mariah
+  - PSN10082533GA01
+  - CAS10099304GA01
+  - 300 - Gonorrhea
+  - 01/25/2023
+  - 02/24/2023
   - 82533
-  - 300 - Gonorrhea
-  - 2023-01-25 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Carey, Mariah
+  - PSN30038299GA01
+  - CAS10034320GA01
+  - 300 - Gonorrhea
+  - 06/18/2025
+  - 04/04/2023
   - 20038299
-  - 300 - Gonorrhea
-  - 2025-06-18 00:00:00
-  - 2023-04-04 00:00:00
+  - -2
+  - 2
+  - 9
 - !!python/tuple
   - Carey, Mariah
+  - PSN20063823GA01
+  - CAS10063802GA01
+  - 300 - Gonorrhea
+  - 10/22/2022
+  - 04/06/2023
   - 10063823
-  - 300 - Gonorrhea
-  - 2022-10-22 00:00:00
-  - 2023-04-06 00:00:00
+  - -4
+  - 4
+  - 9
 - !!python/tuple
   - Carey, Mariah
+  - PSN30054713GA01
+  - CAS10067375GA01
+  - 300 - Gonorrhea
+  - 05/21/2020
+  - 04/10/2023
   - 20054713
-  - 300 - Gonorrhea
-  - 2020-05-21 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Carey, Mariah
+  - PSN20072106GA01
+  - CAS10041677GA01
+  - 300 - Gonorrhea
+  - 04/26/2022
+  - 04/10/2023
   - 10072106
-  - 300 - Gonorrhea
-  - 2022-04-26 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Carey, Mariah
+  - PSN30045036GA01
+  - CAS10049677GA01
+  - 710 - Syphilis, primary
+  - 01/27/2021
+  - 01/03/2023
   - 20045036
-  - 710 - Syphilis, primary
-  - 2021-01-27 00:00:00
-  - 2023-01-03 00:00:00
+  - -7
+  - 7
+  - 7
 - !!python/tuple
   - Carey, Mariah
+  - PSN20078419GA01
+  - CAS10014424GA01
+  - 710 - Syphilis, primary
+  - 08/20/2021
+  - 01/10/2023
   - 10078419
-  - 710 - Syphilis, primary
-  - 2021-08-20 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 7
 - !!python/tuple
   - Carey, Mariah
+  - PSN20059582GA01
+  - CAS10094292GA01
+  - 710 - Syphilis, primary
+  - 10/23/2024
+  - 02/20/2023
   - 10059582
-  - 710 - Syphilis, primary
-  - 2024-10-23 00:00:00
-  - 2023-02-20 00:00:00
+  - -1
+  - 1
+  - 7
 - !!python/tuple
   - Carey, Mariah
+  - PSN20085577GA01
+  - CAS10072015GA01
+  - 710 - Syphilis, primary
+  - 03/10/2022
+  - 02/21/2023
   - 10085577
-  - 710 - Syphilis, primary
-  - 2022-03-10 00:00:00
-  - 2023-02-21 00:00:00
+  - -2
+  - 2
+  - 7
 - !!python/tuple
   - Carey, Mariah
+  - PSN30099688GA01
+  - CAS10071087GA01
+  - 710 - Syphilis, primary
+  - 08/20/2021
+  - 02/23/2023
   - 20099688
-  - 710 - Syphilis, primary
-  - 2021-08-20 00:00:00
-  - 2023-02-23 00:00:00
+  - 0
+  - 0
+  - 7
 - !!python/tuple
   - Carey, Mariah
+  - PSN10078740GA01
+  - CAS10089415GA01
+  - 710 - Syphilis, primary
+  - 12/16/2021
+  - 04/04/2023
   - 78740
-  - 710 - Syphilis, primary
-  - 2021-12-16 00:00:00
-  - 2023-04-04 00:00:00
+  - -5
+  - 5
+  - 7
 - !!python/tuple
   - Carey, Mariah
+  - PSN30058047GA01
+  - CAS10044005GA01
+  - 710 - Syphilis, primary
+  - 10/02/2020
+  - 04/09/2023
   - 20058047
-  - 710 - Syphilis, primary
-  - 2020-10-02 00:00:00
-  - 2023-04-09 00:00:00
+  - 0
+  - 0
+  - 7
 - !!python/tuple
   - Carey, Mariah
+  - PSN20070928GA01
+  - CAS10016360GA01
+  - 720 - Syphilis, secondary
+  - 07/18/2025
+  - 01/01/2023
   - 10070928
-  - 720 - Syphilis, secondary
-  - 2025-07-18 00:00:00
-  - 2023-01-01 00:00:00
+  - -1
+  - 1
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN30094896GA01
+  - CAS10016333GA01
+  - 720 - Syphilis, secondary
+  - 05/01/2025
+  - 01/02/2023
   - 20094896
-  - 720 - Syphilis, secondary
-  - 2025-05-01 00:00:00
-  - 2023-01-02 00:00:00
+  - -3
+  - 3
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN10087707GA01
+  - CAS10044036GA01
+  - 720 - Syphilis, secondary
+  - 04/03/2020
+  - 01/05/2023
   - 87707
-  - 720 - Syphilis, secondary
-  - 2020-04-03 00:00:00
-  - 2023-01-05 00:00:00
+  - -3
+  - 3
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN30013362GA01
+  - CAS10048079GA01
+  - 720 - Syphilis, secondary
+  - 11/30/2021
+  - 01/08/2023
   - 20013362
-  - 720 - Syphilis, secondary
-  - 2021-11-30 00:00:00
-  - 2023-01-08 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN20075002GA01
+  - CAS10025758GA01
+  - 720 - Syphilis, secondary
+  - 02/03/2021
+  - 02/19/2023
   - 10075002
-  - 720 - Syphilis, secondary
-  - 2021-02-03 00:00:00
-  - 2023-02-19 00:00:00
+  - -5
+  - 5
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN10045539GA01
+  - CAS10053722GA01
+  - 720 - Syphilis, secondary
+  - 12/23/2024
+  - 02/24/2023
   - 45539
-  - 720 - Syphilis, secondary
-  - 2024-12-23 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN10098205GA01
+  - CAS10039820GA01
+  - 720 - Syphilis, secondary
+  - 12/13/2022
+  - 04/01/2023
   - 98205
-  - 720 - Syphilis, secondary
-  - 2022-12-13 00:00:00
-  - 2023-04-01 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN10076296GA01
+  - CAS10080532GA01
+  - 720 - Syphilis, secondary
+  - 06/20/2024
+  - 04/03/2023
   - 76296
-  - 720 - Syphilis, secondary
-  - 2024-06-20 00:00:00
-  - 2023-04-03 00:00:00
+  - -3
+  - 3
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN30015834GA01
+  - CAS10031534GA01
+  - 720 - Syphilis, secondary
+  - 01/19/2020
+  - 04/06/2023
   - 20015834
-  - 720 - Syphilis, secondary
-  - 2020-01-19 00:00:00
-  - 2023-04-06 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN20076716GA01
+  - CAS10053611GA01
+  - 720 - Syphilis, secondary
+  - 04/04/2024
+  - 04/08/2023
   - 10076716
-  - 720 - Syphilis, secondary
-  - 2024-04-04 00:00:00
-  - 2023-04-08 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN30086042GA01
+  - CAS10076498GA01
+  - 720 - Syphilis, secondary
+  - 09/27/2023
+  - 04/10/2023
   - 20086042
-  - 720 - Syphilis, secondary
-  - 2023-09-27 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Carey, Mariah
+  - PSN10023619GA01
+  - CAS10067489GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 09/13/2023
+  - 01/03/2023
   - 23619
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-09-13 00:00:00
-  - 2023-01-03 00:00:00
+  - -1
+  - 1
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN10042920GA01
+  - CAS10014269GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 04/26/2021
+  - 01/04/2023
   - 42920
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-04-26 00:00:00
-  - 2023-01-04 00:00:00
+  - -1
+  - 1
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN10087657GA01
+  - CAS10092461GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 09/14/2025
+  - 01/05/2023
   - 87657
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-09-14 00:00:00
-  - 2023-01-05 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN20042690GA01
+  - CAS10075411GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 06/16/2021
+  - 02/16/2023
   - 10042690
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-06-16 00:00:00
-  - 2023-02-16 00:00:00
+  - -5
+  - 0
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN10040632GA01
+  - CAS10029703GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 03/22/2024
+  - 02/16/2023
   - 40632
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-03-22 00:00:00
-  - 2023-02-16 00:00:00
+  - 0
+  - 5
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN20090640GA01
+  - CAS10072402GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 08/20/2023
+  - 02/21/2023
   - 10090640
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-08-20 00:00:00
-  - 2023-02-21 00:00:00
+  - -1
+  - 1
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN30043990GA01
+  - CAS10094069GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 12/08/2021
+  - 02/22/2023
   - 20043990
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-12-08 00:00:00
-  - 2023-02-22 00:00:00
+  - -2
+  - 2
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN10019181GA01
+  - CAS10010405GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 09/20/2020
+  - 02/24/2023
   - 19181
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-09-20 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN30042568GA01
+  - CAS10018178GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 01/30/2020
+  - 02/24/2023
   - 20042568
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-01-30 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN30013917GA01
+  - CAS10080354GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 06/11/2023
+  - 04/02/2023
   - 20013917
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-06-11 00:00:00
-  - 2023-04-02 00:00:00
+  - -2
+  - 2
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN10029274GA01
+  - CAS10021617GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 03/14/2023
+  - 04/04/2023
   - 29274
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-03-14 00:00:00
-  - 2023-04-04 00:00:00
+  - -4
+  - 4
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN20028988GA01
+  - CAS10067712GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/03/2020
+  - 04/08/2023
   - 10028988
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-05-03 00:00:00
-  - 2023-04-08 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Carey, Mariah
+  - PSN30014587GA01
+  - CAS10087292GA01
+  - 790 - Syphilis, Congenital
+  - 02/25/2021
+  - 01/03/2023
   - 20014587
-  - 790 - Syphilis, Congenital
-  - 2021-02-25 00:00:00
-  - 2023-01-03 00:00:00
+  - -2
+  - 0
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN20090648GA01
+  - CAS10080924GA01
+  - 790 - Syphilis, Congenital
+  - 08/23/2021
+  - 01/03/2023
   - 10090648
-  - 790 - Syphilis, Congenital
-  - 2021-08-23 00:00:00
-  - 2023-01-03 00:00:00
+  - 0
+  - 2
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN10064278GA01
+  - CAS10062239GA01
+  - 790 - Syphilis, Congenital
+  - 02/21/2025
+  - 01/05/2023
   - 64278
-  - 790 - Syphilis, Congenital
-  - 2025-02-21 00:00:00
-  - 2023-01-05 00:00:00
+  - -3
+  - 3
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN30028701GA01
+  - CAS10020724GA01
+  - 790 - Syphilis, Congenital
+  - 08/04/2025
+  - 01/08/2023
   - 20028701
-  - 790 - Syphilis, Congenital
-  - 2025-08-04 00:00:00
-  - 2023-01-08 00:00:00
+  - 0
+  - 0
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN20026986GA01
+  - CAS10099256GA01
+  - 790 - Syphilis, Congenital
+  - 02/05/2021
+  - 02/15/2023
   - 10026986
-  - 790 - Syphilis, Congenital
-  - 2021-02-05 00:00:00
-  - 2023-02-15 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN20099775GA01
+  - CAS10023030GA01
+  - 790 - Syphilis, Congenital
+  - 02/10/2020
+  - 02/16/2023
   - 10099775
-  - 790 - Syphilis, Congenital
-  - 2020-02-10 00:00:00
-  - 2023-02-16 00:00:00
+  - -2
+  - 2
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN30081688GA01
+  - CAS10068222GA01
+  - 790 - Syphilis, Congenital
+  - 01/21/2020
+  - 02/18/2023
   - 20081688
-  - 790 - Syphilis, Congenital
-  - 2020-01-21 00:00:00
-  - 2023-02-18 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN10021647GA01
+  - CAS10084038GA01
+  - 790 - Syphilis, Congenital
+  - 12/29/2022
+  - 02/19/2023
   - 21647
-  - 790 - Syphilis, Congenital
-  - 2022-12-29 00:00:00
-  - 2023-02-19 00:00:00
+  - -3
+  - 3
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN10037034GA01
+  - CAS10023932GA01
+  - 790 - Syphilis, Congenital
+  - 08/06/2023
+  - 02/22/2023
   - 37034
-  - 790 - Syphilis, Congenital
-  - 2023-08-06 00:00:00
-  - 2023-02-22 00:00:00
+  - -2
+  - 2
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN30042808GA01
+  - CAS10078417GA01
+  - 790 - Syphilis, Congenital
+  - 03/15/2020
+  - 02/24/2023
   - 20042808
-  - 790 - Syphilis, Congenital
-  - 2020-03-15 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN30076844GA01
+  - CAS10095178GA01
+  - 790 - Syphilis, Congenital
+  - 06/13/2024
+  - 04/02/2023
   - 20076844
-  - 790 - Syphilis, Congenital
-  - 2024-06-13 00:00:00
-  - 2023-04-02 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN20088727GA01
+  - CAS10037315GA01
+  - 790 - Syphilis, Congenital
+  - 02/22/2020
+  - 04/03/2023
   - 10088727
-  - 790 - Syphilis, Congenital
-  - 2020-02-22 00:00:00
-  - 2023-04-03 00:00:00
+  - -1
+  - 1
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN10082915GA01
+  - CAS10097503GA01
+  - 790 - Syphilis, Congenital
+  - 08/16/2021
+  - 04/04/2023
   - 82915
-  - 790 - Syphilis, Congenital
-  - 2021-08-16 00:00:00
-  - 2023-04-04 00:00:00
+  - -1
+  - 0
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN20022546GA01
+  - CAS10075263GA01
+  - 790 - Syphilis, Congenital
+  - 09/08/2020
+  - 04/04/2023
   - 10022546
-  - 790 - Syphilis, Congenital
-  - 2020-09-08 00:00:00
-  - 2023-04-04 00:00:00
+  - 0
+  - 1
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN10090707GA01
+  - CAS10086875GA01
+  - 790 - Syphilis, Congenital
+  - 08/23/2022
+  - 04/05/2023
   - 90707
-  - 790 - Syphilis, Congenital
-  - 2022-08-23 00:00:00
-  - 2023-04-05 00:00:00
+  - -4
+  - 4
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN10095220GA01
+  - CAS10032982GA01
+  - 790 - Syphilis, Congenital
+  - 04/02/2025
+  - 04/09/2023
   - 95220
-  - 790 - Syphilis, Congenital
-  - 2025-04-02 00:00:00
-  - 2023-04-09 00:00:00
+  - 0
+  - 0
+  - 16
 - !!python/tuple
   - Carey, Mariah
+  - PSN20099668GA01
+  - CAS10055198GA01
+  - 900 - HIV Infection
+  - 02/07/2020
+  - 01/02/2023
   - 10099668
-  - 900 - HIV Infection
-  - 2020-02-07 00:00:00
-  - 2023-01-02 00:00:00
+  - -2
+  - 2
+  - 8
 - !!python/tuple
   - Carey, Mariah
+  - PSN10067213GA01
+  - CAS10076314GA01
+  - 900 - HIV Infection
+  - 10/20/2020
+  - 01/04/2023
   - 67213
-  - 900 - HIV Infection
-  - 2020-10-20 00:00:00
-  - 2023-01-04 00:00:00
+  - -5
+  - 5
+  - 8
 - !!python/tuple
   - Carey, Mariah
+  - PSN10046287GA01
+  - CAS10068533GA01
+  - 900 - HIV Infection
+  - 01/17/2021
+  - 01/09/2023
   - 46287
-  - 900 - HIV Infection
-  - 2021-01-17 00:00:00
-  - 2023-01-09 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Carey, Mariah
+  - PSN20091064GA01
+  - CAS10078426GA01
+  - 900 - HIV Infection
+  - 01/06/2025
+  - 02/24/2023
   - 10091064
-  - 900 - HIV Infection
-  - 2025-01-06 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Carey, Mariah
+  - PSN20028295GA01
+  - CAS10044028GA01
+  - 900 - HIV Infection
+  - 06/04/2023
+  - 04/03/2023
   - 10028295
-  - 900 - HIV Infection
-  - 2023-06-04 00:00:00
-  - 2023-04-03 00:00:00
+  - -1
+  - 1
+  - 8
 - !!python/tuple
   - Carey, Mariah
+  - PSN30066897GA01
+  - CAS10020342GA01
+  - 900 - HIV Infection
+  - 01/02/2021
+  - 04/04/2023
   - 20066897
-  - 900 - HIV Infection
-  - 2021-01-02 00:00:00
-  - 2023-04-04 00:00:00
+  - -5
+  - 5
+  - 8
 - !!python/tuple
   - Carey, Mariah
+  - PSN10018987GA01
+  - CAS10084395GA01
+  - 900 - HIV Infection
+  - 07/05/2025
+  - 04/09/2023
   - 18987
-  - 900 - HIV Infection
-  - 2025-07-05 00:00:00
-  - 2023-04-09 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Carey, Mariah
+  - PSN30084685GA01
+  - CAS10087730GA01
+  - 900 - HIV Infection
+  - 04/10/2020
+  - 04/09/2023
   - 20084685
-  - 900 - HIV Infection
-  - 2020-04-10 00:00:00
-  - 2023-04-09 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Glasper, Robert
+  - PSN10044536GA01
+  - CAS10076726GA01
+  - 200 - Chlamydia
+  - 03/01/2022
+  - 01/01/2023
   - 44536
-  - 200 - Chlamydia
-  - 2022-03-01 00:00:00
-  - 2023-01-01 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20098885GA01
+  - CAS10070861GA01
+  - 200 - Chlamydia
+  - 09/27/2022
+  - 01/03/2023
   - 10098885
-  - 200 - Chlamydia
-  - 2022-09-27 00:00:00
-  - 2023-01-03 00:00:00
+  - -1
+  - 1
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN30046424GA01
+  - CAS10014086GA01
+  - 200 - Chlamydia
+  - 02/21/2023
+  - 01/04/2023
   - 20046424
-  - 200 - Chlamydia
-  - 2023-02-21 00:00:00
-  - 2023-01-04 00:00:00
+  - -4
+  - 4
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10013283GA01
+  - CAS10049716GA01
+  - 200 - Chlamydia
+  - 07/10/2024
+  - 01/08/2023
   - 13283
-  - 200 - Chlamydia
-  - 2024-07-10 00:00:00
-  - 2023-01-08 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10093628GA01
+  - CAS10060892GA01
+  - 200 - Chlamydia
+  - 08/02/2023
+  - 01/10/2023
   - 93628
-  - 200 - Chlamydia
-  - 2023-08-02 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10044367GA01
+  - CAS10066584GA01
+  - 200 - Chlamydia
+  - 12/14/2022
+  - 02/21/2023
   - 44367
-  - 200 - Chlamydia
-  - 2022-12-14 00:00:00
-  - 2023-02-21 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20095642GA01
+  - CAS10056305GA01
+  - 200 - Chlamydia
+  - 01/10/2020
+  - 04/04/2023
   - 10095642
-  - 200 - Chlamydia
-  - 2020-01-10 00:00:00
-  - 2023-04-04 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20019206GA01
+  - CAS10078836GA01
+  - 200 - Chlamydia
+  - 09/17/2024
+  - 04/06/2023
   - 10019206
-  - 200 - Chlamydia
-  - 2024-09-17 00:00:00
-  - 2023-04-06 00:00:00
+  - -1
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20018347GA01
+  - CAS10071554GA01
+  - 200 - Chlamydia
+  - 03/08/2021
+  - 04/06/2023
   - 10018347
-  - 200 - Chlamydia
-  - 2021-03-08 00:00:00
-  - 2023-04-06 00:00:00
+  - 0
+  - 1
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10060201GA01
+  - CAS10056624GA01
+  - 200 - Chlamydia
+  - 07/17/2021
+  - 04/07/2023
   - 60201
-  - 200 - Chlamydia
-  - 2021-07-17 00:00:00
-  - 2023-04-07 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20023528GA01
+  - CAS10080372GA01
+  - 200 - Chlamydia
+  - 02/24/2025
+  - 04/09/2023
   - 10023528
-  - 200 - Chlamydia
-  - 2025-02-24 00:00:00
-  - 2023-04-09 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20028964GA01
+  - CAS10021447GA01
+  - 300 - Gonorrhea
+  - 10/06/2021
+  - 01/01/2023
   - 10028964
-  - 300 - Gonorrhea
-  - 2021-10-06 00:00:00
-  - 2023-01-01 00:00:00
+  - -6
+  - 6
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN10050781GA01
+  - CAS10071151GA01
+  - 300 - Gonorrhea
+  - 11/20/2021
+  - 01/07/2023
   - 50781
-  - 300 - Gonorrhea
-  - 2021-11-20 00:00:00
-  - 2023-01-07 00:00:00
+  - -1
+  - 1
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN20012143GA01
+  - CAS10073327GA01
+  - 300 - Gonorrhea
+  - 03/25/2021
+  - 01/08/2023
   - 10012143
-  - 300 - Gonorrhea
-  - 2021-03-25 00:00:00
-  - 2023-01-08 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN10031790GA01
+  - CAS10033801GA01
+  - 300 - Gonorrhea
+  - 06/24/2024
+  - 01/08/2023
   - 31790
-  - 300 - Gonorrhea
-  - 2024-06-24 00:00:00
-  - 2023-01-08 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN30089621GA01
+  - CAS10014794GA01
+  - 300 - Gonorrhea
+  - 03/30/2025
+  - 02/15/2023
   - 20089621
-  - 300 - Gonorrhea
-  - 2025-03-30 00:00:00
-  - 2023-02-15 00:00:00
+  - -2
+  - 2
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN30065716GA01
+  - CAS10059375GA01
+  - 300 - Gonorrhea
+  - 12/01/2021
+  - 02/17/2023
   - 20065716
-  - 300 - Gonorrhea
-  - 2021-12-01 00:00:00
-  - 2023-02-17 00:00:00
+  - -2
+  - 2
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN20091117GA01
+  - CAS10032550GA01
+  - 300 - Gonorrhea
+  - 10/25/2025
+  - 02/19/2023
   - 10091117
-  - 300 - Gonorrhea
-  - 2025-10-25 00:00:00
-  - 2023-02-19 00:00:00
+  - -2
+  - 2
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN10041111GA01
+  - CAS10028110GA01
+  - 300 - Gonorrhea
+  - 03/18/2024
+  - 02/21/2023
   - 41111
-  - 300 - Gonorrhea
-  - 2024-03-18 00:00:00
-  - 2023-02-21 00:00:00
+  - -2
+  - 2
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN20011379GA01
+  - CAS10025724GA01
+  - 300 - Gonorrhea
+  - 02/27/2025
+  - 02/23/2023
   - 10011379
-  - 300 - Gonorrhea
-  - 2025-02-27 00:00:00
-  - 2023-02-23 00:00:00
+  - -1
+  - 1
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN30030746GA01
+  - CAS10094610GA01
+  - 300 - Gonorrhea
+  - 10/01/2021
+  - 02/24/2023
   - 20030746
-  - 300 - Gonorrhea
-  - 2021-10-01 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN10067446GA01
+  - CAS10099049GA01
+  - 300 - Gonorrhea
+  - 10/17/2022
+  - 04/04/2023
   - 67446
-  - 300 - Gonorrhea
-  - 2022-10-17 00:00:00
-  - 2023-04-04 00:00:00
+  - -4
+  - 4
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN20077911GA01
+  - CAS10024689GA01
+  - 300 - Gonorrhea
+  - 02/08/2023
+  - 04/08/2023
   - 10077911
-  - 300 - Gonorrhea
-  - 2023-02-08 00:00:00
-  - 2023-04-08 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN20083886GA01
+  - CAS10093861GA01
+  - 710 - Syphilis, primary
+  - 02/20/2025
+  - 01/03/2023
   - 10083886
-  - 710 - Syphilis, primary
-  - 2025-02-20 00:00:00
-  - 2023-01-03 00:00:00
+  - -3
+  - 0
+  - 9
 - !!python/tuple
   - Glasper, Robert
+  - PSN10092971GA01
+  - CAS10032472GA01
+  - 710 - Syphilis, primary
+  - 02/11/2020
+  - 01/03/2023
   - 92971
-  - 710 - Syphilis, primary
-  - 2020-02-11 00:00:00
-  - 2023-01-03 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Glasper, Robert
+  - PSN20069716GA01
+  - CAS10029625GA01
+  - 710 - Syphilis, primary
+  - 10/25/2023
+  - 01/03/2023
   - 10069716
-  - 710 - Syphilis, primary
-  - 2023-10-25 00:00:00
-  - 2023-01-03 00:00:00
+  - 0
+  - 3
+  - 9
 - !!python/tuple
   - Glasper, Robert
+  - PSN10077756GA01
+  - CAS10024370GA01
+  - 710 - Syphilis, primary
+  - 10/02/2021
+  - 01/06/2023
   - 77756
-  - 710 - Syphilis, primary
-  - 2021-10-02 00:00:00
-  - 2023-01-06 00:00:00
+  - -4
+  - 4
+  - 9
 - !!python/tuple
   - Glasper, Robert
+  - PSN10095576GA01
+  - CAS10023033GA01
+  - 710 - Syphilis, primary
+  - 12/22/2024
+  - 01/10/2023
   - 95576
-  - 710 - Syphilis, primary
-  - 2024-12-22 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Glasper, Robert
+  - PSN20031157GA01
+  - CAS10096374GA01
+  - 710 - Syphilis, primary
+  - 10/15/2021
+  - 02/15/2023
   - 10031157
-  - 710 - Syphilis, primary
-  - 2021-10-15 00:00:00
-  - 2023-02-15 00:00:00
+  - -7
+  - 7
+  - 9
 - !!python/tuple
   - Glasper, Robert
+  - PSN30078896GA01
+  - CAS10089382GA01
+  - 710 - Syphilis, primary
+  - 04/03/2020
+  - 02/22/2023
   - 20078896
-  - 710 - Syphilis, primary
-  - 2020-04-03 00:00:00
-  - 2023-02-22 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Glasper, Robert
+  - PSN20037206GA01
+  - CAS10083644GA01
+  - 710 - Syphilis, primary
+  - 05/01/2025
+  - 04/02/2023
   - 10037206
-  - 710 - Syphilis, primary
-  - 2025-05-01 00:00:00
-  - 2023-04-02 00:00:00
+  - -7
+  - 7
+  - 9
 - !!python/tuple
   - Glasper, Robert
+  - PSN20016498GA01
+  - CAS10039363GA01
+  - 710 - Syphilis, primary
+  - 06/16/2023
+  - 04/09/2023
   - 10016498
-  - 710 - Syphilis, primary
-  - 2023-06-16 00:00:00
-  - 2023-04-09 00:00:00
+  - 0
+  - 0
+  - 9
 - !!python/tuple
   - Glasper, Robert
+  - PSN20012863GA01
+  - CAS10047627GA01
+  - 720 - Syphilis, secondary
+  - 05/26/2023
+  - 01/01/2023
   - 10012863
-  - 720 - Syphilis, secondary
-  - 2023-05-26 00:00:00
-  - 2023-01-01 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN20030213GA01
+  - CAS10094509GA01
+  - 720 - Syphilis, secondary
+  - 04/20/2021
+  - 01/02/2023
   - 10030213
-  - 720 - Syphilis, secondary
-  - 2021-04-20 00:00:00
-  - 2023-01-02 00:00:00
+  - -2
+  - 2
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN10021222GA01
+  - CAS10086180GA01
+  - 720 - Syphilis, secondary
+  - 05/26/2023
+  - 01/04/2023
   - 21222
-  - 720 - Syphilis, secondary
-  - 2023-05-26 00:00:00
-  - 2023-01-04 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN10028546GA01
+  - CAS10048636GA01
+  - 720 - Syphilis, secondary
+  - 12/08/2021
+  - 01/04/2023
   - 28546
-  - 720 - Syphilis, secondary
-  - 2021-12-08 00:00:00
-  - 2023-01-04 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN10087293GA01
+  - CAS10043097GA01
+  - 720 - Syphilis, secondary
+  - 12/16/2020
+  - 02/15/2023
   - 87293
-  - 720 - Syphilis, secondary
-  - 2020-12-16 00:00:00
-  - 2023-02-15 00:00:00
+  - -5
+  - 5
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN20040377GA01
+  - CAS10047030GA01
+  - 720 - Syphilis, secondary
+  - 12/12/2021
+  - 02/20/2023
   - 10040377
-  - 720 - Syphilis, secondary
-  - 2021-12-12 00:00:00
-  - 2023-02-20 00:00:00
+  - -3
+  - 0
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN30036747GA01
+  - CAS10091666GA01
+  - 720 - Syphilis, secondary
+  - 06/10/2021
+  - 02/20/2023
   - 20036747
-  - 720 - Syphilis, secondary
-  - 2021-06-10 00:00:00
-  - 2023-02-20 00:00:00
+  - 0
+  - 3
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN30041831GA01
+  - CAS10031671GA01
+  - 720 - Syphilis, secondary
+  - 12/17/2022
+  - 02/23/2023
   - 20041831
-  - 720 - Syphilis, secondary
-  - 2022-12-17 00:00:00
-  - 2023-02-23 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN20012851GA01
+  - CAS10033283GA01
+  - 720 - Syphilis, secondary
+  - 01/13/2023
+  - 04/02/2023
   - 10012851
-  - 720 - Syphilis, secondary
-  - 2023-01-13 00:00:00
-  - 2023-04-02 00:00:00
+  - -4
+  - 4
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN30017859GA01
+  - CAS10098849GA01
+  - 720 - Syphilis, secondary
+  - 01/24/2023
+  - 04/06/2023
   - 20017859
-  - 720 - Syphilis, secondary
-  - 2023-01-24 00:00:00
-  - 2023-04-06 00:00:00
+  - -3
+  - 0
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN30031074GA01
+  - CAS10016789GA01
+  - 720 - Syphilis, secondary
+  - 08/16/2021
+  - 04/06/2023
   - 20031074
-  - 720 - Syphilis, secondary
-  - 2021-08-16 00:00:00
-  - 2023-04-06 00:00:00
+  - 0
+  - 3
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN20032859GA01
+  - CAS10013999GA01
+  - 720 - Syphilis, secondary
+  - 05/27/2025
+  - 04/09/2023
   - 10032859
-  - 720 - Syphilis, secondary
-  - 2025-05-27 00:00:00
-  - 2023-04-09 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN30054862GA01
+  - CAS10099403GA01
+  - 720 - Syphilis, secondary
+  - 08/10/2024
+  - 04/10/2023
   - 20054862
-  - 720 - Syphilis, secondary
-  - 2024-08-10 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Glasper, Robert
+  - PSN20061156GA01
+  - CAS10071013GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 11/22/2025
+  - 01/05/2023
   - 10061156
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-11-22 00:00:00
-  - 2023-01-05 00:00:00
+  - -1
+  - 0
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN20096933GA01
+  - CAS10023042GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/26/2025
+  - 01/05/2023
   - 10096933
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-05-26 00:00:00
-  - 2023-01-05 00:00:00
+  - 0
+  - 1
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN30046575GA01
+  - CAS10075953GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 04/05/2020
+  - 01/06/2023
   - 20046575
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-04-05 00:00:00
-  - 2023-01-06 00:00:00
+  - -1
+  - 1
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN20042328GA01
+  - CAS10047848GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 09/09/2025
+  - 01/07/2023
   - 10042328
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-09-09 00:00:00
-  - 2023-01-07 00:00:00
+  - -1
+  - 0
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN20060111GA01
+  - CAS10052104GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 04/29/2022
+  - 01/07/2023
   - 10060111
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-04-29 00:00:00
-  - 2023-01-07 00:00:00
+  - 0
+  - 1
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN30014085GA01
+  - CAS10073083GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 08/30/2022
+  - 01/08/2023
   - 20014085
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-08-30 00:00:00
-  - 2023-01-08 00:00:00
+  - -1
+  - 1
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN30045431GA01
+  - CAS10076499GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 10/13/2020
+  - 01/09/2023
   - 20045431
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-10-13 00:00:00
-  - 2023-01-09 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN10079066GA01
+  - CAS10032737GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 01/11/2023
+  - 02/21/2023
   - 79066
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-01-11 00:00:00
-  - 2023-02-21 00:00:00
+  - -1
+  - 1
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN10081318GA01
+  - CAS10054434GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/29/2024
+  - 02/22/2023
   - 81318
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-05-29 00:00:00
-  - 2023-02-22 00:00:00
+  - -1
+  - 1
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN10065113GA01
+  - CAS10051931GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 09/22/2020
+  - 02/23/2023
   - 65113
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-09-22 00:00:00
-  - 2023-02-23 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN30092100GA01
+  - CAS10082443GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 12/15/2022
+  - 04/08/2023
   - 20092100
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-12-15 00:00:00
-  - 2023-04-08 00:00:00
+  - -2
+  - 2
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN20052564GA01
+  - CAS10091743GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 07/28/2020
+  - 04/10/2023
   - 10052564
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-07-28 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Glasper, Robert
+  - PSN30055890GA01
+  - CAS10072916GA01
+  - 790 - Syphilis, Congenital
+  - 03/09/2025
+  - 01/02/2023
   - 20055890
-  - 790 - Syphilis, Congenital
-  - 2025-03-09 00:00:00
-  - 2023-01-02 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20094697GA01
+  - CAS10060189GA01
+  - 790 - Syphilis, Congenital
+  - 04/25/2025
+  - 01/04/2023
   - 10094697
-  - 790 - Syphilis, Congenital
-  - 2025-04-25 00:00:00
-  - 2023-01-04 00:00:00
+  - -1
+  - 1
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10054184GA01
+  - CAS10092242GA01
+  - 790 - Syphilis, Congenital
+  - 01/17/2021
+  - 01/05/2023
   - 54184
-  - 790 - Syphilis, Congenital
-  - 2021-01-17 00:00:00
-  - 2023-01-05 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN30020516GA01
+  - CAS10095381GA01
+  - 790 - Syphilis, Congenital
+  - 12/31/2024
+  - 01/07/2023
   - 20020516
-  - 790 - Syphilis, Congenital
-  - 2024-12-31 00:00:00
-  - 2023-01-07 00:00:00
+  - -1
+  - 1
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20030140GA01
+  - CAS10051985GA01
+  - 790 - Syphilis, Congenital
+  - 05/21/2020
+  - 01/08/2023
   - 10030140
-  - 790 - Syphilis, Congenital
-  - 2020-05-21 00:00:00
-  - 2023-01-08 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20022865GA01
+  - CAS10066487GA01
+  - 790 - Syphilis, Congenital
+  - 01/07/2023
+  - 02/16/2023
   - 10022865
-  - 790 - Syphilis, Congenital
-  - 2023-01-07 00:00:00
-  - 2023-02-16 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10022698GA01
+  - CAS10050865GA01
+  - 790 - Syphilis, Congenital
+  - 03/13/2025
+  - 02/18/2023
   - 22698
-  - 790 - Syphilis, Congenital
-  - 2025-03-13 00:00:00
-  - 2023-02-18 00:00:00
+  - -1
+  - 1
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20030855GA01
+  - CAS10076344GA01
+  - 790 - Syphilis, Congenital
+  - 06/23/2021
+  - 02/19/2023
   - 10030855
-  - 790 - Syphilis, Congenital
-  - 2021-06-23 00:00:00
-  - 2023-02-19 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN30035358GA01
+  - CAS10023439GA01
+  - 790 - Syphilis, Congenital
+  - 06/29/2020
+  - 04/05/2023
   - 20035358
-  - 790 - Syphilis, Congenital
-  - 2020-06-29 00:00:00
-  - 2023-04-05 00:00:00
+  - -5
+  - 5
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10070673GA01
+  - CAS10055224GA01
+  - 790 - Syphilis, Congenital
+  - 05/01/2023
+  - 04/10/2023
   - 70673
-  - 790 - Syphilis, Congenital
-  - 2023-05-01 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10036511GA01
+  - CAS10096633GA01
+  - 790 - Syphilis, Congenital
+  - 10/28/2021
+  - 04/10/2023
   - 36511
-  - 790 - Syphilis, Congenital
-  - 2021-10-28 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10031752GA01
+  - CAS10052642GA01
+  - 900 - HIV Infection
+  - 07/16/2020
+  - 01/03/2023
   - 31752
-  - 900 - HIV Infection
-  - 2020-07-16 00:00:00
-  - 2023-01-03 00:00:00
+  - -1
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10073718GA01
+  - CAS10068935GA01
+  - 900 - HIV Infection
+  - 09/09/2022
+  - 01/03/2023
   - 73718
-  - 900 - HIV Infection
-  - 2022-09-09 00:00:00
-  - 2023-01-03 00:00:00
+  - 0
+  - 1
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN30031147GA01
+  - CAS10031439GA01
+  - 900 - HIV Infection
+  - 07/24/2024
+  - 01/04/2023
   - 20031147
-  - 900 - HIV Infection
-  - 2024-07-24 00:00:00
-  - 2023-01-04 00:00:00
+  - -5
+  - 5
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN30082726GA01
+  - CAS10034866GA01
+  - 900 - HIV Infection
+  - 09/28/2024
+  - 01/09/2023
   - 20082726
-  - 900 - HIV Infection
-  - 2024-09-28 00:00:00
-  - 2023-01-09 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN20051543GA01
+  - CAS10042715GA01
+  - 900 - HIV Infection
+  - 05/31/2022
+  - 02/15/2023
   - 10051543
-  - 900 - HIV Infection
-  - 2022-05-31 00:00:00
-  - 2023-02-15 00:00:00
+  - -3
+  - 3
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN30053868GA01
+  - CAS10095263GA01
+  - 900 - HIV Infection
+  - 07/21/2025
+  - 02/18/2023
   - 20053868
-  - 900 - HIV Infection
-  - 2025-07-21 00:00:00
-  - 2023-02-18 00:00:00
+  - -5
+  - 5
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10085146GA01
+  - CAS10062652GA01
+  - 900 - HIV Infection
+  - 12/28/2021
+  - 02/23/2023
   - 85146
-  - 900 - HIV Infection
-  - 2021-12-28 00:00:00
-  - 2023-02-23 00:00:00
+  - -1
+  - 1
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10030461GA01
+  - CAS10088087GA01
+  - 900 - HIV Infection
+  - 03/23/2020
+  - 02/24/2023
   - 30461
-  - 900 - HIV Infection
-  - 2020-03-23 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN30025228GA01
+  - CAS10065197GA01
+  - 900 - HIV Infection
+  - 12/01/2022
+  - 04/01/2023
   - 20025228
-  - 900 - HIV Infection
-  - 2022-12-01 00:00:00
-  - 2023-04-01 00:00:00
+  - -3
+  - 3
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10058718GA01
+  - CAS10065955GA01
+  - 900 - HIV Infection
+  - 12/10/2020
+  - 04/04/2023
   - 58718
-  - 900 - HIV Infection
-  - 2020-12-10 00:00:00
-  - 2023-04-04 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Glasper, Robert
+  - PSN10041456GA01
+  - CAS10080312GA01
+  - 900 - HIV Infection
+  - 11/14/2021
+  - 04/06/2023
   - 41456
-  - 900 - HIV Infection
-  - 2021-11-14 00:00:00
-  - 2023-04-06 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN10057545GA01
+  - CAS10051168GA01
+  - 200 - Chlamydia
+  - 11/01/2025
+  - 01/04/2023
   - 57545
-  - 200 - Chlamydia
-  - 2025-11-01 00:00:00
-  - 2023-01-04 00:00:00
+  - -2
+  - 2
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN20023874GA01
+  - CAS10090038GA01
+  - 200 - Chlamydia
+  - 02/07/2024
+  - 01/06/2023
   - 10023874
-  - 200 - Chlamydia
-  - 2024-02-07 00:00:00
-  - 2023-01-06 00:00:00
+  - -3
+  - 3
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN10052157GA01
+  - CAS10038539GA01
+  - 200 - Chlamydia
+  - 01/11/2025
+  - 01/09/2023
   - 52157
-  - 200 - Chlamydia
-  - 2025-01-11 00:00:00
-  - 2023-01-09 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN30084444GA01
+  - CAS10089829GA01
+  - 200 - Chlamydia
+  - 05/19/2025
+  - 01/09/2023
   - 20084444
-  - 200 - Chlamydia
-  - 2025-05-19 00:00:00
-  - 2023-01-09 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN30043371GA01
+  - CAS10098005GA01
+  - 200 - Chlamydia
+  - 11/29/2024
+  - 02/15/2023
   - 20043371
-  - 200 - Chlamydia
-  - 2024-11-29 00:00:00
-  - 2023-02-15 00:00:00
+  - -4
+  - 4
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN30044635GA01
+  - CAS10045345GA01
+  - 200 - Chlamydia
+  - 12/23/2022
+  - 02/19/2023
   - 20044635
-  - 200 - Chlamydia
-  - 2022-12-23 00:00:00
-  - 2023-02-19 00:00:00
+  - -1
+  - 1
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN30075105GA01
+  - CAS10087585GA01
+  - 200 - Chlamydia
+  - 07/04/2021
+  - 02/20/2023
   - 20075105
-  - 200 - Chlamydia
-  - 2021-07-04 00:00:00
-  - 2023-02-20 00:00:00
+  - -2
+  - 0
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN10031197GA01
+  - CAS10048906GA01
+  - 200 - Chlamydia
+  - 08/05/2024
+  - 02/20/2023
   - 31197
-  - 200 - Chlamydia
-  - 2024-08-05 00:00:00
-  - 2023-02-20 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN10084784GA01
+  - CAS10042230GA01
+  - 200 - Chlamydia
+  - 06/30/2022
+  - 02/20/2023
   - 84784
-  - 200 - Chlamydia
-  - 2022-06-30 00:00:00
-  - 2023-02-20 00:00:00
+  - 0
+  - 2
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN10069230GA01
+  - CAS10039764GA01
+  - 200 - Chlamydia
+  - 04/02/2021
+  - 02/22/2023
   - 69230
-  - 200 - Chlamydia
-  - 2021-04-02 00:00:00
-  - 2023-02-22 00:00:00
+  - -2
+  - 2
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN10057066GA01
+  - CAS10040773GA01
+  - 200 - Chlamydia
+  - 11/17/2021
+  - 02/24/2023
   - 57066
-  - 200 - Chlamydia
-  - 2021-11-17 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN20041379GA01
+  - CAS10061403GA01
+  - 200 - Chlamydia
+  - 06/05/2025
+  - 04/09/2023
   - 10041379
-  - 200 - Chlamydia
-  - 2025-06-05 00:00:00
-  - 2023-04-09 00:00:00
+  - 0
+  - 0
+  - 12
 - !!python/tuple
   - Keys, Alicia
+  - PSN30078092GA01
+  - CAS10040758GA01
+  - 300 - Gonorrhea
+  - 05/06/2020
+  - 01/01/2023
   - 20078092
-  - 300 - Gonorrhea
-  - 2020-05-06 00:00:00
-  - 2023-01-01 00:00:00
+  - -1
+  - 1
+  - 8
 - !!python/tuple
   - Keys, Alicia
+  - PSN20044827GA01
+  - CAS10012324GA01
+  - 300 - Gonorrhea
+  - 09/18/2022
+  - 01/02/2023
   - 10044827
-  - 300 - Gonorrhea
-  - 2022-09-18 00:00:00
-  - 2023-01-02 00:00:00
+  - -1
+  - 1
+  - 8
 - !!python/tuple
   - Keys, Alicia
+  - PSN30091815GA01
+  - CAS10064411GA01
+  - 300 - Gonorrhea
+  - 05/18/2023
+  - 01/03/2023
   - 20091815
-  - 300 - Gonorrhea
-  - 2023-05-18 00:00:00
-  - 2023-01-03 00:00:00
+  - -2
+  - 2
+  - 8
 - !!python/tuple
   - Keys, Alicia
+  - PSN10056828GA01
+  - CAS10038521GA01
+  - 300 - Gonorrhea
+  - 11/16/2021
+  - 01/05/2023
   - 56828
-  - 300 - Gonorrhea
-  - 2021-11-16 00:00:00
-  - 2023-01-05 00:00:00
+  - -5
+  - 5
+  - 8
 - !!python/tuple
   - Keys, Alicia
+  - PSN20094354GA01
+  - CAS10049020GA01
+  - 300 - Gonorrhea
+  - 09/10/2022
+  - 01/10/2023
   - 10094354
-  - 300 - Gonorrhea
-  - 2022-09-10 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Keys, Alicia
+  - PSN30025976GA01
+  - CAS10052243GA01
+  - 300 - Gonorrhea
+  - 10/21/2020
+  - 02/21/2023
   - 20025976
-  - 300 - Gonorrhea
-  - 2020-10-21 00:00:00
-  - 2023-02-21 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Keys, Alicia
+  - PSN30042613GA01
+  - CAS10058780GA01
+  - 300 - Gonorrhea
+  - 11/06/2024
+  - 02/21/2023
   - 20042613
-  - 300 - Gonorrhea
-  - 2024-11-06 00:00:00
-  - 2023-02-21 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Keys, Alicia
+  - PSN20091551GA01
+  - CAS10019004GA01
+  - 300 - Gonorrhea
+  - 04/26/2021
+  - 04/03/2023
   - 10091551
-  - 300 - Gonorrhea
-  - 2021-04-26 00:00:00
-  - 2023-04-03 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Keys, Alicia
+  - PSN30061790GA01
+  - CAS10099746GA01
+  - 710 - Syphilis, primary
+  - 11/30/2023
+  - 01/01/2023
+  - 20061790
+  - 0
+  - 0
+  - 3
+- !!python/tuple
+  - Keys, Alicia
+  - PSN10082185GA01
+  - CAS10074094GA01
+  - 710 - Syphilis, primary
+  - 07/11/2023
+  - 02/20/2023
+  - 82185
+  - 0
+  - 0
+  - 3
+- !!python/tuple
+  - Keys, Alicia
+  - PSN10087702GA01
+  - CAS10073371GA01
+  - 710 - Syphilis, primary
+  - 01/09/2025
+  - 04/01/2023
+  - 87702
+  - 0
+  - 0
+  - 3
+- !!python/tuple
+  - Keys, Alicia
+  - PSN20094866GA01
+  - CAS10011940GA01
+  - 720 - Syphilis, secondary
+  - 02/07/2022
+  - 01/03/2023
   - 10094866
-  - 720 - Syphilis, secondary
-  - 2022-02-07 00:00:00
-  - 2023-01-03 00:00:00
+  - -2
+  - 2
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN30014687GA01
+  - CAS10087676GA01
+  - 720 - Syphilis, secondary
+  - 08/09/2022
+  - 01/05/2023
   - 20014687
-  - 720 - Syphilis, secondary
-  - 2022-08-09 00:00:00
-  - 2023-01-05 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN10018191GA01
+  - CAS10014190GA01
+  - 720 - Syphilis, secondary
+  - 04/28/2020
+  - 01/06/2023
   - 18191
-  - 720 - Syphilis, secondary
-  - 2020-04-28 00:00:00
-  - 2023-01-06 00:00:00
+  - -4
+  - 4
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN10085093GA01
+  - CAS10095239GA01
+  - 720 - Syphilis, secondary
+  - 12/24/2025
+  - 01/10/2023
   - 85093
-  - 720 - Syphilis, secondary
-  - 2025-12-24 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN20057063GA01
+  - CAS10045791GA01
+  - 720 - Syphilis, secondary
+  - 08/07/2024
+  - 02/15/2023
   - 10057063
-  - 720 - Syphilis, secondary
-  - 2024-08-07 00:00:00
-  - 2023-02-15 00:00:00
+  - -3
+  - 3
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN20078629GA01
+  - CAS10036317GA01
+  - 720 - Syphilis, secondary
+  - 12/10/2020
+  - 02/18/2023
   - 10078629
-  - 720 - Syphilis, secondary
-  - 2020-12-10 00:00:00
-  - 2023-02-18 00:00:00
+  - -4
+  - 4
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN10030880GA01
+  - CAS10049552GA01
+  - 720 - Syphilis, secondary
+  - 10/15/2022
+  - 02/22/2023
   - 30880
-  - 720 - Syphilis, secondary
-  - 2022-10-15 00:00:00
-  - 2023-02-22 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN30094496GA01
+  - CAS10089830GA01
+  - 720 - Syphilis, secondary
+  - 02/14/2024
+  - 02/23/2023
   - 20094496
-  - 720 - Syphilis, secondary
-  - 2024-02-14 00:00:00
-  - 2023-02-23 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN30011158GA01
+  - CAS10089180GA01
+  - 720 - Syphilis, secondary
+  - 07/29/2022
+  - 04/02/2023
   - 20011158
-  - 720 - Syphilis, secondary
-  - 2022-07-29 00:00:00
-  - 2023-04-02 00:00:00
+  - -3
+  - 3
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN20079114GA01
+  - CAS10051047GA01
+  - 720 - Syphilis, secondary
+  - 03/14/2022
+  - 04/05/2023
   - 10079114
-  - 720 - Syphilis, secondary
-  - 2022-03-14 00:00:00
-  - 2023-04-05 00:00:00
+  - -2
+  - 2
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN30046632GA01
+  - CAS10083038GA01
+  - 720 - Syphilis, secondary
+  - 04/04/2023
+  - 04/07/2023
   - 20046632
-  - 720 - Syphilis, secondary
-  - 2023-04-04 00:00:00
-  - 2023-04-07 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN10096256GA01
+  - CAS10070591GA01
+  - 720 - Syphilis, secondary
+  - 06/17/2022
+  - 04/08/2023
   - 96256
-  - 720 - Syphilis, secondary
-  - 2022-06-17 00:00:00
-  - 2023-04-08 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN30064704GA01
+  - CAS10057937GA01
+  - 720 - Syphilis, secondary
+  - 08/18/2021
+  - 04/08/2023
   - 20064704
-  - 720 - Syphilis, secondary
-  - 2021-08-18 00:00:00
-  - 2023-04-08 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Keys, Alicia
+  - PSN20062713GA01
+  - CAS10081937GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/20/2023
+  - 01/01/2023
   - 10062713
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-05-20 00:00:00
-  - 2023-01-01 00:00:00
+  - -3
+  - 0
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN10097306GA01
+  - CAS10052163GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 08/26/2023
+  - 01/01/2023
   - 97306
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-08-26 00:00:00
-  - 2023-01-01 00:00:00
+  - 0
+  - 3
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN30094636GA01
+  - CAS10094625GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 03/01/2020
+  - 01/04/2023
   - 20094636
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-03-01 00:00:00
-  - 2023-01-04 00:00:00
+  - -4
+  - 0
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN10049754GA01
+  - CAS10063929GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/16/2022
+  - 01/04/2023
   - 49754
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-05-16 00:00:00
-  - 2023-01-04 00:00:00
+  - 0
+  - 0
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN10059305GA01
+  - CAS10065046GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 10/11/2025
+  - 01/04/2023
   - 59305
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-10-11 00:00:00
-  - 2023-01-04 00:00:00
+  - 0
+  - 4
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN30011294GA01
+  - CAS10078139GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 11/17/2022
+  - 01/08/2023
   - 20011294
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-11-17 00:00:00
-  - 2023-01-08 00:00:00
+  - -1
+  - 1
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN10016244GA01
+  - CAS10087153GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 07/11/2021
+  - 01/09/2023
   - 16244
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-07-11 00:00:00
-  - 2023-01-09 00:00:00
+  - -1
+  - 1
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN20079263GA01
+  - CAS10035727GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 06/28/2022
+  - 01/10/2023
   - 10079263
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-06-28 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN10040080GA01
+  - CAS10038044GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 09/19/2025
+  - 02/16/2023
   - 40080
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-09-19 00:00:00
-  - 2023-02-16 00:00:00
+  - -3
+  - 0
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN30096291GA01
+  - CAS10014588GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 10/01/2023
+  - 02/16/2023
   - 20096291
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-10-01 00:00:00
-  - 2023-02-16 00:00:00
+  - 0
+  - 3
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN10031260GA01
+  - CAS10048620GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 04/20/2023
+  - 02/19/2023
   - 31260
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-04-20 00:00:00
-  - 2023-02-19 00:00:00
+  - -1
+  - 1
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN10027986GA01
+  - CAS10012172GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 07/31/2024
+  - 02/20/2023
   - 27986
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-07-31 00:00:00
-  - 2023-02-20 00:00:00
+  - -2
+  - 2
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN20080406GA01
+  - CAS10042592GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/14/2024
+  - 02/22/2023
   - 10080406
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-05-14 00:00:00
-  - 2023-02-22 00:00:00
+  - 0
+  - 0
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN20020692GA01
+  - CAS10042056GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 09/09/2023
+  - 04/07/2023
   - 10020692
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2023-09-09 00:00:00
-  - 2023-04-07 00:00:00
+  - 0
+  - 0
+  - 14
 - !!python/tuple
   - Keys, Alicia
+  - PSN20069829GA01
+  - CAS10051513GA01
+  - 790 - Syphilis, Congenital
+  - 01/04/2021
+  - 01/07/2023
   - 10069829
-  - 790 - Syphilis, Congenital
-  - 2021-01-04 00:00:00
-  - 2023-01-07 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN10086712GA01
+  - CAS10095457GA01
+  - 790 - Syphilis, Congenital
+  - 11/11/2024
+  - 01/07/2023
   - 86712
-  - 790 - Syphilis, Congenital
-  - 2024-11-11 00:00:00
-  - 2023-01-07 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN30027476GA01
+  - CAS10010198GA01
+  - 790 - Syphilis, Congenital
+  - 01/29/2022
+  - 02/16/2023
   - 20027476
-  - 790 - Syphilis, Congenital
-  - 2022-01-29 00:00:00
-  - 2023-02-16 00:00:00
+  - -3
+  - 0
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN10062151GA01
+  - CAS10048692GA01
+  - 790 - Syphilis, Congenital
+  - 09/27/2024
+  - 02/16/2023
   - 62151
-  - 790 - Syphilis, Congenital
-  - 2024-09-27 00:00:00
-  - 2023-02-16 00:00:00
+  - 0
+  - 3
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN30038322GA01
+  - CAS10095675GA01
+  - 790 - Syphilis, Congenital
+  - 03/03/2024
+  - 02/19/2023
   - 20038322
-  - 790 - Syphilis, Congenital
-  - 2024-03-03 00:00:00
-  - 2023-02-19 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN20063126GA01
+  - CAS10070319GA01
+  - 790 - Syphilis, Congenital
+  - 12/12/2025
+  - 04/02/2023
   - 10063126
-  - 790 - Syphilis, Congenital
-  - 2025-12-12 00:00:00
-  - 2023-04-02 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN30022007GA01
+  - CAS10086119GA01
+  - 790 - Syphilis, Congenital
+  - 04/20/2022
+  - 04/04/2023
   - 20022007
-  - 790 - Syphilis, Congenital
-  - 2022-04-20 00:00:00
-  - 2023-04-04 00:00:00
+  - -2
+  - 0
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN10086050GA01
+  - CAS10025271GA01
+  - 790 - Syphilis, Congenital
+  - 07/03/2021
+  - 04/04/2023
   - 86050
-  - 790 - Syphilis, Congenital
-  - 2021-07-03 00:00:00
-  - 2023-04-04 00:00:00
+  - 0
+  - 2
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN10095867GA01
+  - CAS10030735GA01
+  - 790 - Syphilis, Congenital
+  - 06/04/2024
+  - 04/06/2023
   - 95867
-  - 790 - Syphilis, Congenital
-  - 2024-06-04 00:00:00
-  - 2023-04-06 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN20067405GA01
+  - CAS10022980GA01
+  - 790 - Syphilis, Congenital
+  - 09/21/2025
+  - 04/08/2023
   - 10067405
-  - 790 - Syphilis, Congenital
-  - 2025-09-21 00:00:00
-  - 2023-04-08 00:00:00
+  - -2
+  - 2
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN10063435GA01
+  - CAS10097051GA01
+  - 790 - Syphilis, Congenital
+  - 12/22/2024
+  - 04/10/2023
   - 63435
-  - 790 - Syphilis, Congenital
-  - 2024-12-22 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 11
 - !!python/tuple
   - Keys, Alicia
+  - PSN30090624GA01
+  - CAS10091096GA01
+  - 900 - HIV Infection
+  - 03/16/2025
+  - 01/04/2023
   - 20090624
-  - 900 - HIV Infection
-  - 2025-03-16 00:00:00
-  - 2023-01-04 00:00:00
+  - -3
+  - 3
+  - 10
 - !!python/tuple
   - Keys, Alicia
+  - PSN20059959GA01
+  - CAS10085497GA01
+  - 900 - HIV Infection
+  - 02/21/2025
+  - 01/07/2023
   - 10059959
-  - 900 - HIV Infection
-  - 2025-02-21 00:00:00
-  - 2023-01-07 00:00:00
+  - -3
+  - 3
+  - 10
 - !!python/tuple
   - Keys, Alicia
+  - PSN30048676GA01
+  - CAS10015429GA01
+  - 900 - HIV Infection
+  - 10/07/2024
+  - 01/10/2023
   - 20048676
-  - 900 - HIV Infection
-  - 2024-10-07 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 10
 - !!python/tuple
   - Keys, Alicia
+  - PSN20010225GA01
+  - CAS10070707GA01
+  - 900 - HIV Infection
+  - 05/18/2025
+  - 02/15/2023
   - 10010225
-  - 900 - HIV Infection
-  - 2025-05-18 00:00:00
-  - 2023-02-15 00:00:00
+  - -5
+  - 5
+  - 10
 - !!python/tuple
   - Keys, Alicia
+  - PSN10017404GA01
+  - CAS10073557GA01
+  - 900 - HIV Infection
+  - 03/30/2020
+  - 02/20/2023
   - 17404
-  - 900 - HIV Infection
-  - 2020-03-30 00:00:00
-  - 2023-02-20 00:00:00
+  - 0
+  - 0
+  - 10
 - !!python/tuple
   - Keys, Alicia
+  - PSN20096386GA01
+  - CAS10080020GA01
+  - 900 - HIV Infection
+  - 05/27/2020
+  - 04/03/2023
   - 10096386
-  - 900 - HIV Infection
-  - 2020-05-27 00:00:00
-  - 2023-04-03 00:00:00
+  - -1
+  - 0
+  - 10
 - !!python/tuple
   - Keys, Alicia
+  - PSN30077551GA01
+  - CAS10084289GA01
+  - 900 - HIV Infection
+  - 03/04/2020
+  - 04/03/2023
   - 20077551
-  - 900 - HIV Infection
-  - 2020-03-04 00:00:00
-  - 2023-04-03 00:00:00
+  - 0
+  - 1
+  - 10
 - !!python/tuple
   - Keys, Alicia
+  - PSN10077394GA01
+  - CAS10026778GA01
+  - 900 - HIV Infection
+  - 10/05/2022
+  - 04/04/2023
   - 77394
-  - 900 - HIV Infection
-  - 2022-10-05 00:00:00
-  - 2023-04-04 00:00:00
+  - -2
+  - 2
+  - 10
 - !!python/tuple
   - Keys, Alicia
+  - PSN20061970GA01
+  - CAS10082746GA01
+  - 900 - HIV Infection
+  - 06/07/2020
+  - 04/06/2023
   - 10061970
-  - 900 - HIV Infection
-  - 2020-06-07 00:00:00
-  - 2023-04-06 00:00:00
+  - -3
+  - 3
+  - 10
 - !!python/tuple
   - Keys, Alicia
+  - PSN30043575GA01
+  - CAS10038777GA01
+  - 900 - HIV Infection
+  - 09/07/2020
+  - 04/09/2023
   - 20043575
-  - 900 - HIV Infection
-  - 2020-09-07 00:00:00
-  - 2023-04-09 00:00:00
+  - 0
+  - 0
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN10084271GA01
+  - CAS10078112GA01
+  - 200 - Chlamydia
+  - 01/27/2023
+  - 01/02/2023
   - 84271
-  - 200 - Chlamydia
-  - 2023-01-27 00:00:00
-  - 2023-01-02 00:00:00
+  - -1
+  - 1
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN10074224GA01
+  - CAS10023689GA01
+  - 200 - Chlamydia
+  - 03/23/2022
+  - 01/03/2023
   - 74224
-  - 200 - Chlamydia
-  - 2022-03-23 00:00:00
-  - 2023-01-03 00:00:00
+  - -1
+  - 1
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN20060574GA01
+  - CAS10016860GA01
+  - 200 - Chlamydia
+  - 08/25/2023
+  - 01/04/2023
   - 10060574
-  - 200 - Chlamydia
-  - 2023-08-25 00:00:00
-  - 2023-01-04 00:00:00
+  - -3
+  - 3
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN10096978GA01
+  - CAS10028771GA01
+  - 200 - Chlamydia
+  - 02/07/2023
+  - 01/07/2023
   - 96978
-  - 200 - Chlamydia
-  - 2023-02-07 00:00:00
-  - 2023-01-07 00:00:00
+  - -1
+  - 1
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN10010672GA01
+  - CAS10047492GA01
+  - 200 - Chlamydia
+  - 07/04/2020
+  - 01/08/2023
   - 10672
-  - 200 - Chlamydia
-  - 2020-07-04 00:00:00
-  - 2023-01-08 00:00:00
+  - -1
+  - 1
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN30070218GA01
+  - CAS10092853GA01
+  - 200 - Chlamydia
+  - 03/17/2025
+  - 01/09/2023
   - 20070218
-  - 200 - Chlamydia
-  - 2025-03-17 00:00:00
-  - 2023-01-09 00:00:00
+  - 0
+  - 0
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN20015839GA01
+  - CAS10068818GA01
+  - 200 - Chlamydia
+  - 07/06/2020
+  - 02/20/2023
   - 10015839
-  - 200 - Chlamydia
-  - 2020-07-06 00:00:00
-  - 2023-02-20 00:00:00
+  - -2
+  - 2
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN20025016GA01
+  - CAS10064654GA01
+  - 200 - Chlamydia
+  - 12/18/2025
+  - 02/22/2023
   - 10025016
-  - 200 - Chlamydia
-  - 2025-12-18 00:00:00
-  - 2023-02-22 00:00:00
+  - 0
+  - 0
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN20027208GA01
+  - CAS10055964GA01
+  - 200 - Chlamydia
+  - 04/26/2025
+  - 04/02/2023
   - 10027208
-  - 200 - Chlamydia
-  - 2025-04-26 00:00:00
-  - 2023-04-02 00:00:00
+  - -4
+  - 4
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN30096901GA01
+  - CAS10063587GA01
+  - 200 - Chlamydia
+  - 04/25/2023
+  - 04/06/2023
   - 20096901
-  - 200 - Chlamydia
-  - 2023-04-25 00:00:00
-  - 2023-04-06 00:00:00
+  - 0
+  - 0
+  - 10
 - !!python/tuple
   - Scott, Jill
+  - PSN10081295GA01
+  - CAS10041784GA01
+  - 300 - Gonorrhea
+  - 09/10/2024
+  - 01/01/2023
   - 81295
-  - 300 - Gonorrhea
-  - 2024-09-10 00:00:00
-  - 2023-01-01 00:00:00
+  - -2
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20054106GA01
+  - CAS10031041GA01
+  - 300 - Gonorrhea
+  - 11/06/2020
+  - 01/01/2023
   - 10054106
-  - 300 - Gonorrhea
-  - 2020-11-06 00:00:00
-  - 2023-01-01 00:00:00
+  - 0
+  - 2
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30073459GA01
+  - CAS10035554GA01
+  - 300 - Gonorrhea
+  - 08/31/2020
+  - 01/03/2023
   - 20073459
-  - 300 - Gonorrhea
-  - 2020-08-31 00:00:00
-  - 2023-01-03 00:00:00
+  - -5
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20049772GA01
+  - CAS10014596GA01
+  - 300 - Gonorrhea
+  - 11/10/2024
+  - 01/03/2023
   - 10049772
-  - 300 - Gonorrhea
-  - 2024-11-10 00:00:00
-  - 2023-01-03 00:00:00
+  - 0
+  - 5
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30065778GA01
+  - CAS10043889GA01
+  - 300 - Gonorrhea
+  - 11/14/2024
+  - 01/08/2023
   - 20065778
-  - 300 - Gonorrhea
-  - 2024-11-14 00:00:00
-  - 2023-01-08 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20035191GA01
+  - CAS10040505GA01
+  - 300 - Gonorrhea
+  - 12/11/2023
+  - 01/09/2023
   - 10035191
-  - 300 - Gonorrhea
-  - 2023-12-11 00:00:00
-  - 2023-01-09 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20071149GA01
+  - CAS10072522GA01
+  - 300 - Gonorrhea
+  - 09/26/2025
+  - 02/17/2023
   - 10071149
-  - 300 - Gonorrhea
-  - 2025-09-26 00:00:00
-  - 2023-02-17 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30051257GA01
+  - CAS10049732GA01
+  - 300 - Gonorrhea
+  - 06/10/2020
+  - 02/18/2023
   - 20051257
-  - 300 - Gonorrhea
-  - 2020-06-10 00:00:00
-  - 2023-02-18 00:00:00
+  - -2
+  - 2
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30049027GA01
+  - CAS10047070GA01
+  - 300 - Gonorrhea
+  - 10/23/2024
+  - 02/20/2023
   - 20049027
-  - 300 - Gonorrhea
-  - 2024-10-23 00:00:00
-  - 2023-02-20 00:00:00
+  - -2
+  - 2
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30045427GA01
+  - CAS10071830GA01
+  - 300 - Gonorrhea
+  - 08/31/2024
+  - 02/22/2023
   - 20045427
-  - 300 - Gonorrhea
-  - 2024-08-31 00:00:00
-  - 2023-02-22 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10058452GA01
+  - CAS10030417GA01
+  - 300 - Gonorrhea
+  - 01/28/2022
+  - 04/03/2023
   - 58452
-  - 300 - Gonorrhea
-  - 2022-01-28 00:00:00
-  - 2023-04-03 00:00:00
+  - -3
+  - 3
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20038372GA01
+  - CAS10030067GA01
+  - 300 - Gonorrhea
+  - 05/04/2023
+  - 04/06/2023
   - 10038372
-  - 300 - Gonorrhea
-  - 2023-05-04 00:00:00
-  - 2023-04-06 00:00:00
+  - -4
+  - 4
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10021794GA01
+  - CAS10045627GA01
+  - 300 - Gonorrhea
+  - 06/26/2021
+  - 04/10/2023
   - 21794
-  - 300 - Gonorrhea
-  - 2021-06-26 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30015287GA01
+  - CAS10051825GA01
+  - 710 - Syphilis, primary
+  - 11/28/2021
+  - 01/03/2023
   - 20015287
-  - 710 - Syphilis, primary
-  - 2021-11-28 00:00:00
-  - 2023-01-03 00:00:00
+  - -1
+  - 1
+  - 7
 - !!python/tuple
   - Scott, Jill
+  - PSN20075880GA01
+  - CAS10028020GA01
+  - 710 - Syphilis, primary
+  - 03/12/2023
+  - 01/04/2023
   - 10075880
-  - 710 - Syphilis, primary
-  - 2023-03-12 00:00:00
-  - 2023-01-04 00:00:00
+  - 0
+  - 0
+  - 7
 - !!python/tuple
   - Scott, Jill
+  - PSN30096232GA01
+  - CAS10059096GA01
+  - 710 - Syphilis, primary
+  - 09/06/2021
+  - 02/15/2023
   - 20096232
-  - 710 - Syphilis, primary
-  - 2021-09-06 00:00:00
-  - 2023-02-15 00:00:00
+  - -4
+  - 4
+  - 7
 - !!python/tuple
   - Scott, Jill
+  - PSN20059054GA01
+  - CAS10075155GA01
+  - 710 - Syphilis, primary
+  - 11/14/2024
+  - 02/19/2023
   - 10059054
-  - 710 - Syphilis, primary
-  - 2024-11-14 00:00:00
-  - 2023-02-19 00:00:00
+  - -1
+  - 1
+  - 7
 - !!python/tuple
   - Scott, Jill
+  - PSN30061780GA01
+  - CAS10065209GA01
+  - 710 - Syphilis, primary
+  - 02/27/2020
+  - 02/20/2023
   - 20061780
-  - 710 - Syphilis, primary
-  - 2020-02-27 00:00:00
-  - 2023-02-20 00:00:00
+  - 0
+  - 0
+  - 7
 - !!python/tuple
   - Scott, Jill
+  - PSN20042031GA01
+  - CAS10095980GA01
+  - 710 - Syphilis, primary
+  - 12/23/2024
+  - 04/06/2023
   - 10042031
-  - 710 - Syphilis, primary
-  - 2024-12-23 00:00:00
-  - 2023-04-06 00:00:00
+  - -4
+  - 4
+  - 7
 - !!python/tuple
   - Scott, Jill
+  - PSN10019833GA01
+  - CAS10041998GA01
+  - 710 - Syphilis, primary
+  - 10/30/2022
+  - 04/10/2023
   - 19833
-  - 710 - Syphilis, primary
-  - 2022-10-30 00:00:00
-  - 2023-04-10 00:00:00
+  - 0
+  - 0
+  - 7
 - !!python/tuple
   - Scott, Jill
+  - PSN30081530GA01
+  - CAS10027138GA01
+  - 720 - Syphilis, secondary
+  - 05/16/2022
+  - 01/01/2023
   - 20081530
-  - 720 - Syphilis, secondary
-  - 2022-05-16 00:00:00
-  - 2023-01-01 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30041879GA01
+  - CAS10041853GA01
+  - 720 - Syphilis, secondary
+  - 03/28/2022
+  - 01/02/2023
   - 20041879
-  - 720 - Syphilis, secondary
-  - 2022-03-28 00:00:00
-  - 2023-01-02 00:00:00
+  - -8
+  - 8
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10035938GA01
+  - CAS10042212GA01
+  - 720 - Syphilis, secondary
+  - 08/03/2022
+  - 01/10/2023
   - 35938
-  - 720 - Syphilis, secondary
-  - 2022-08-03 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10078547GA01
+  - CAS10030916GA01
+  - 720 - Syphilis, secondary
+  - 03/07/2025
+  - 02/23/2023
   - 78547
-  - 720 - Syphilis, secondary
-  - 2025-03-07 00:00:00
-  - 2023-02-23 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10021675GA01
+  - CAS10061990GA01
+  - 720 - Syphilis, secondary
+  - 10/25/2021
+  - 02/23/2023
   - 21675
-  - 720 - Syphilis, secondary
-  - 2021-10-25 00:00:00
-  - 2023-02-23 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20088184GA01
+  - CAS10077051GA01
+  - 720 - Syphilis, secondary
+  - 11/12/2021
+  - 04/03/2023
   - 10088184
-  - 720 - Syphilis, secondary
-  - 2021-11-12 00:00:00
-  - 2023-04-03 00:00:00
+  - -3
+  - 3
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20043228GA01
+  - CAS10068390GA01
+  - 720 - Syphilis, secondary
+  - 08/15/2021
+  - 04/06/2023
   - 10043228
-  - 720 - Syphilis, secondary
-  - 2021-08-15 00:00:00
-  - 2023-04-06 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10029192GA01
+  - CAS10065878GA01
+  - 720 - Syphilis, secondary
+  - 01/02/2023
+  - 04/07/2023
   - 29192
-  - 720 - Syphilis, secondary
-  - 2023-01-02 00:00:00
-  - 2023-04-07 00:00:00
+  - -1
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20015204GA01
+  - CAS10098984GA01
+  - 720 - Syphilis, secondary
+  - 07/05/2022
+  - 04/07/2023
   - 10015204
-  - 720 - Syphilis, secondary
-  - 2022-07-05 00:00:00
-  - 2023-04-07 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20049342GA01
+  - CAS10036095GA01
+  - 720 - Syphilis, secondary
+  - 09/17/2025
+  - 04/07/2023
   - 10049342
-  - 720 - Syphilis, secondary
-  - 2025-09-17 00:00:00
-  - 2023-04-07 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30081289GA01
+  - CAS10095388GA01
+  - 720 - Syphilis, secondary
+  - 10/10/2024
+  - 04/07/2023
   - 20081289
-  - 720 - Syphilis, secondary
-  - 2024-10-10 00:00:00
-  - 2023-04-07 00:00:00
+  - 0
+  - 1
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30092552GA01
+  - CAS10051426GA01
+  - 720 - Syphilis, secondary
+  - 11/27/2024
+  - 04/08/2023
   - 20092552
-  - 720 - Syphilis, secondary
-  - 2024-11-27 00:00:00
-  - 2023-04-08 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20078614GA01
+  - CAS10043950GA01
+  - 720 - Syphilis, secondary
+  - 02/24/2020
+  - 04/08/2023
   - 10078614
-  - 720 - Syphilis, secondary
-  - 2020-02-24 00:00:00
-  - 2023-04-08 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30064995GA01
+  - CAS10065930GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/24/2020
+  - 01/03/2023
   - 20064995
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-05-24 00:00:00
-  - 2023-01-03 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN10040224GA01
+  - CAS10063486GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 01/31/2024
+  - 02/16/2023
   - 40224
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2024-01-31 00:00:00
-  - 2023-02-16 00:00:00
+  - -1
+  - 0
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN20027846GA01
+  - CAS10039921GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 06/14/2020
+  - 02/16/2023
   - 10027846
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-06-14 00:00:00
-  - 2023-02-16 00:00:00
+  - 0
+  - 1
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN20024320GA01
+  - CAS10077234GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 07/27/2025
+  - 02/17/2023
   - 10024320
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2025-07-27 00:00:00
-  - 2023-02-17 00:00:00
+  - -5
+  - 5
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN30038855GA01
+  - CAS10098522GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 06/27/2022
+  - 02/22/2023
   - 20038855
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2022-06-27 00:00:00
-  - 2023-02-22 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN10053310GA01
+  - CAS10094845GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 01/24/2020
+  - 04/06/2023
   - 53310
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-01-24 00:00:00
-  - 2023-04-06 00:00:00
+  - -2
+  - 0
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN20079736GA01
+  - CAS10050868GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 03/28/2020
+  - 04/06/2023
   - 10079736
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2020-03-28 00:00:00
-  - 2023-04-06 00:00:00
+  - 0
+  - 2
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN20045758GA01
+  - CAS10099504GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 01/13/2021
+  - 04/08/2023
   - 10045758
-  - 730 - Syphilis, Early Non-Primary, Non-Secondary
-  - 2021-01-13 00:00:00
-  - 2023-04-08 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN20016364GA01
+  - CAS10084125GA01
+  - 790 - Syphilis, Congenital
+  - 12/02/2025
+  - 01/01/2023
   - 10016364
-  - 790 - Syphilis, Congenital
-  - 2025-12-02 00:00:00
-  - 2023-01-01 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30071975GA01
+  - CAS10046531GA01
+  - 790 - Syphilis, Congenital
+  - 04/30/2020
+  - 01/02/2023
   - 20071975
-  - 790 - Syphilis, Congenital
-  - 2020-04-30 00:00:00
-  - 2023-01-02 00:00:00
+  - -2
+  - 2
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20085400GA01
+  - CAS10084674GA01
+  - 790 - Syphilis, Congenital
+  - 09/12/2023
+  - 01/04/2023
   - 10085400
-  - 790 - Syphilis, Congenital
-  - 2023-09-12 00:00:00
-  - 2023-01-04 00:00:00
+  - -5
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10034107GA01
+  - CAS10036755GA01
+  - 790 - Syphilis, Congenital
+  - 11/30/2025
+  - 01/04/2023
   - 34107
-  - 790 - Syphilis, Congenital
-  - 2025-11-30 00:00:00
-  - 2023-01-04 00:00:00
+  - 0
+  - 5
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20069526GA01
+  - CAS10093790GA01
+  - 790 - Syphilis, Congenital
+  - 04/04/2025
+  - 01/09/2023
   - 10069526
-  - 790 - Syphilis, Congenital
-  - 2025-04-04 00:00:00
-  - 2023-01-09 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10031002GA01
+  - CAS10033654GA01
+  - 790 - Syphilis, Congenital
+  - 03/15/2020
+  - 01/10/2023
   - 31002
-  - 790 - Syphilis, Congenital
-  - 2020-03-15 00:00:00
-  - 2023-01-10 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20041785GA01
+  - CAS10086037GA01
+  - 790 - Syphilis, Congenital
+  - 08/19/2021
+  - 02/15/2023
   - 10041785
-  - 790 - Syphilis, Congenital
-  - 2021-08-19 00:00:00
-  - 2023-02-15 00:00:00
+  - -4
+  - 4
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10066948GA01
+  - CAS10028653GA01
+  - 790 - Syphilis, Congenital
+  - 12/19/2023
+  - 02/19/2023
   - 66948
-  - 790 - Syphilis, Congenital
-  - 2023-12-19 00:00:00
-  - 2023-02-19 00:00:00
+  - -4
+  - 4
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20048385GA01
+  - CAS10031201GA01
+  - 790 - Syphilis, Congenital
+  - 08/06/2021
+  - 02/23/2023
   - 10048385
-  - 790 - Syphilis, Congenital
-  - 2021-08-06 00:00:00
-  - 2023-02-23 00:00:00
+  - -1
+  - 1
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN30018903GA01
+  - CAS10063011GA01
+  - 790 - Syphilis, Congenital
+  - 02/24/2025
+  - 02/24/2023
   - 20018903
-  - 790 - Syphilis, Congenital
-  - 2025-02-24 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20063661GA01
+  - CAS10092956GA01
+  - 790 - Syphilis, Congenital
+  - 05/24/2021
+  - 04/03/2023
   - 10063661
-  - 790 - Syphilis, Congenital
-  - 2021-05-24 00:00:00
-  - 2023-04-03 00:00:00
+  - -4
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN20056780GA01
+  - CAS10056462GA01
+  - 790 - Syphilis, Congenital
+  - 06/16/2023
+  - 04/03/2023
   - 10056780
-  - 790 - Syphilis, Congenital
-  - 2023-06-16 00:00:00
-  - 2023-04-03 00:00:00
+  - 0
+  - 4
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10019432GA01
+  - CAS10098586GA01
+  - 790 - Syphilis, Congenital
+  - 07/27/2023
+  - 04/07/2023
   - 19432
-  - 790 - Syphilis, Congenital
-  - 2023-07-27 00:00:00
-  - 2023-04-07 00:00:00
+  - 0
+  - 0
+  - 13
 - !!python/tuple
   - Scott, Jill
+  - PSN10046931GA01
+  - CAS10042850GA01
+  - 900 - HIV Infection
+  - 01/30/2022
+  - 01/02/2023
   - 46931
-  - 900 - HIV Infection
-  - 2022-01-30 00:00:00
-  - 2023-01-02 00:00:00
+  - -1
+  - 1
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN30046176GA01
+  - CAS10091033GA01
+  - 900 - HIV Infection
+  - 12/01/2024
+  - 01/03/2023
   - 20046176
-  - 900 - HIV Infection
-  - 2024-12-01 00:00:00
-  - 2023-01-03 00:00:00
+  - -4
+  - 0
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN10070048GA01
+  - CAS10042598GA01
+  - 900 - HIV Infection
+  - 12/20/2021
+  - 01/03/2023
   - 70048
-  - 900 - HIV Infection
-  - 2021-12-20 00:00:00
-  - 2023-01-03 00:00:00
+  - 0
+  - 4
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN30080123GA01
+  - CAS10082450GA01
+  - 900 - HIV Infection
+  - 02/04/2022
+  - 01/07/2023
   - 20080123
-  - 900 - HIV Infection
-  - 2022-02-04 00:00:00
-  - 2023-01-07 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN30080104GA01
+  - CAS10058929GA01
+  - 900 - HIV Infection
+  - 07/08/2025
+  - 02/15/2023
   - 20080104
-  - 900 - HIV Infection
-  - 2025-07-08 00:00:00
-  - 2023-02-15 00:00:00
+  - -5
+  - 5
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN10093167GA01
+  - CAS10016311GA01
+  - 900 - HIV Infection
+  - 10/24/2020
+  - 02/20/2023
   - 93167
-  - 900 - HIV Infection
-  - 2020-10-24 00:00:00
-  - 2023-02-20 00:00:00
+  - -4
+  - 4
+  - 8
 - !!python/tuple
   - Scott, Jill
+  - PSN30011688GA01
+  - CAS10077406GA01
+  - 900 - HIV Infection
+  - 01/11/2020
+  - 02/24/2023
   - 20011688
-  - 900 - HIV Infection
-  - 2020-01-11 00:00:00
-  - 2023-02-24 00:00:00
+  - 0
+  - 0
+  - 8
 - !!python/tuple
   - Scott, Jill
-  - 10069324
+  - PSN20069324GA01
+  - CAS10082667GA01
   - 900 - HIV Infection
-  - 2025-10-03 00:00:00
-  - 2023-04-04 00:00:00
+  - 10/03/2025
+  - 04/04/2023
+  - 10069324
+  - 0
+  - 0
+  - 8
