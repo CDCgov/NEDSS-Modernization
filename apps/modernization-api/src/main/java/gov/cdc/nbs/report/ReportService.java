@@ -92,11 +92,15 @@ public class ReportService {
   @Transactional
   public Report editReport(
       AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
+    Report existingReport = null;
     if (existingReportId != null && !reportRepository.existsById(existingReportId)) {
-      throw new NotFoundException(getReportNotFoundText(existingReportId));
+      existingReport =
+          reportRepository
+              .findById(existingReportId)
+              .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
     }
 
-    Report savedReport = upsertReport(request, user, existingReportId);
+    Report savedReport = upsertReport(request, user, existingReport);
 
     List<ReportFilter> existingFilters = savedReport.getReportFilters();
 
@@ -116,13 +120,13 @@ public class ReportService {
   }
 
   private Report upsertReport(
-      AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
+      AdminReportRequest request, NbsUserDetails user, Report existingReport) {
     ReportMetadata metadata = verifyReportMetadata(request);
 
     Report savedReport =
         reportRepository.save(
             reportMapper.fromAdminReportRequest(
-                request, user, metadata.reportLibrary, metadata.dataSource, existingReportId));
+                request, user, metadata.reportLibrary, metadata.dataSource, existingReport));
 
     if (!request.filterRequests().isEmpty()) {
       List<ReportFilter> reportFilters =

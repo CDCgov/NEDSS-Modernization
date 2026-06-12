@@ -149,8 +149,8 @@ const FilterRepeatingBlockImpl = ({
                     </ValueField>
                 ))
             }
-            formRenderer={() => (
-                <FilterConfigForm filterOptions={filterOptions ?? []} columnOptions={columnOptions ?? []} />
+            formRenderer={(entry) => (
+                <FilterConfigForm entry={entry} filterOptions={filterOptions ?? []} columnOptions={columnOptions ?? []} />
             )}
         />
     );
@@ -180,9 +180,11 @@ const COLUMN_REQUIRED_FILTER_IDS = new Set([
 ]);
 
 const FilterConfigForm = ({
+    entry,
     filterOptions,
     columnOptions,
 }: {
+    entry?: FilterConfig;
     filterOptions: Selectable[];
     columnOptions: Selectable[];
 }) => {
@@ -202,6 +204,7 @@ const FilterConfigForm = ({
                     <SingleSelect
                         id={`filter-${name}`}
                         label={'Filter'}
+                        disabled={!!entry?.id} // can't change filter type on edit
                         name={name}
                         options={filterOptions}
                         orientation="horizontal"

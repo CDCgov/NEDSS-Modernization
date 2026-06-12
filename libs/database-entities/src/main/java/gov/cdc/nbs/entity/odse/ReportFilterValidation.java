@@ -18,7 +18,7 @@ public class ReportFilterValidation {
   @Column(name = "report_filter_validation_uid", nullable = false)
   private Long id;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "report_filter_uid", nullable = false)
   private ReportFilter reportFilter;
 

@@ -121,10 +121,12 @@ Feature: View report configuration
         When I select value "Default Report Section" in the "Section name" field
         # required => non
         When I click the filter 2 "Edit" button
+        Then The "Filter" "combobox" should be disabled
         When I toggle the "Required as basic filter" field
         When I click the "Update filter" button
         # non => required
         When I click the filter 0 "Edit" button
+        Then The "Filter" "combobox" should be disabled
         When I toggle the "Required as basic filter" field
         When I click the "Update filter" button
         # delete
