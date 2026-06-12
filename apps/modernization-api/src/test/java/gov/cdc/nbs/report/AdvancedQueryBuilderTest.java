@@ -14,7 +14,7 @@ import java.util.List;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
-public class AdvancedQueryBuilderTest {
+class AdvancedQueryBuilderTest {
   private final Faker faker = new Faker();
 
   private final Report report = mock(Report.class);
@@ -50,7 +50,7 @@ public class AdvancedQueryBuilderTest {
         .build();
   }
 
-  /// /////////////////////////////////////////////////////////////////////
+  // /////////////////////////////////////////////////////////////////////
 
   private void assertRuleMatchesClauseValue(AdvancedQuery.Rule rule, FilterValue clauseValue) {
     assertThat(rule.id()).isEqualTo(clauseValue.getId().toString());
@@ -69,7 +69,7 @@ public class AdvancedQueryBuilderTest {
     }
   }
 
-  /// /////////////////////////////////////////////////////////////////////
+  // /////////////////////////////////////////////////////////////////////
 
   @Test
   void build_should_create_rule_group_with_single_rule() {
