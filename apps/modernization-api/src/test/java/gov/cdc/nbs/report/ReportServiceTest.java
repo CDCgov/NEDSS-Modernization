@@ -481,7 +481,15 @@ class ReportServiceTest {
                       null,
                       null),
                   null,
-                  null,
+                  List.of(
+                      FilterValue.builder()
+                          .id(47L)
+                          .sequenceNumber(1)
+                          .valueType("CLAUSE")
+                          .columnUid(9L)
+                          .operator("EQUALS")
+                          .valueTxt("value1")
+                          .build()),
                   null,
                   null,
                   null,
