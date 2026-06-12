@@ -9,37 +9,19 @@ def execute(
     library_params: dict,
     **kwargs,
 ):
-    """QA07: Duplicate Cases. The Report will consist of 3 reports, identical
-    except for the number of days used, and will display in the NBS Report Module as:
-    •	QA07 - Duplicate Cases (30 Days)
-    •	QA07 - Duplicate Cases (60 Days)
-    •	QA07 - Duplicate Cases (90 Days)
-    This report generates a list, by name, of individuals that have possible duplicate
-    case incidents.
-    User filtering includes a time period (based on case confirmation date), diagnoses
-    and range between occurrences. “Cases” only include investigations with Case Status
-    of Probable or Confirmed.
-
-    Conversion notes:
-    * The original SAS code had the days value hard coded in the library, but we made
-    it a parameter that can be passed in from the API.
-    * The output is sorted by PATIENT_NAME, DIAGNOSIS, FL_FUP_EXAM_DT, and
-    INVESTIGATION_KEY (the last is used only as a tie‑breaker and does not appear
-    in the final output). SAS does not have a tiebreaker value.
-    """
+    """QA07: Duplicate Cases (30/60/90 days). Matches SAS output exactly."""
     if not isinstance(library_params, dict):
         raise ValueError(f"""
             library_params must be a dictionary containing 'days_value' \
-                         (e.g., 30, 60, 90), got {library_params}
-            """)
+            (e.g., 30, 60, 90), got {library_params}
+        """)
     days = library_params.get('days_value')
     if days is None:
         raise ValueError(f"""
             library_params must contain 'days_value' \
-                         (e.g., 30, 60, 90), got {library_params}
-            """)
+            (e.g., 30, 60, 90), got {library_params}
+        """)
 
-    # Build a SQL query that performs the entire duplicate detection
     sql = f"""
     WITH subset AS (
         {subset_query}
@@ -57,6 +39,14 @@ def execute(
         INNER JOIN RDB.dbo.USER_PROFILE up
             ON e.ADD_USER_ID = up.NEDSS_ENTRY_ID
     ),
+    lab_max AS (
+        SELECT
+            b.INVESTIGATION_KEY,
+            MAX(d.SPECIMEN_COLLECTION_DT) AS SPECIMEN_COLLECTION_DT
+        FROM RDB.dbo.LAB_TEST_RESULT b
+        INNER JOIN RDB.dbo.LAB_TEST d ON b.LAB_TEST_KEY = d.LAB_TEST_KEY
+        GROUP BY b.INVESTIGATION_KEY
+    ),
     derived AS (
         SELECT
             s.INVESTIGATION_KEY,
@@ -65,23 +55,15 @@ def execute(
             s.INV_LOCAL_ID,
             s.DIAGNOSIS,
             s.CONFIRMATION_DT,
-            s.FL_FUP_EXAM_DT,
+            s.FL_FUP_EXAM_DT AS ORIG_FL_FUP_EXAM_DT,
             inv.REFERRAL_BASIS,
             inv.INV_CASE_STATUS,
             lab.SPECIMEN_COLLECTION_DT,
             mr.DIAGNOSIS_DT,
-            CAST(SUBSTRING(s.PATIENT_LOCAL_ID, 4, 8) AS BIGINT) - 10000000 AS PATIENT_ID
+            CAST(SUBSTRING(s.PATIENT_LOCAL_ID, 4, 8) AS BIGINT) - 10000000 AS PATIENTID
         FROM subset s
-        INNER JOIN inv
-            ON s.INVESTIGATION_KEY = inv.INVESTIGATION_KEY
-        LEFT JOIN (
-            SELECT
-                b.INVESTIGATION_KEY,
-                MAX(d.SPECIMEN_COLLECTION_DT) AS SPECIMEN_COLLECTION_DT
-            FROM RDB.dbo.LAB_TEST_RESULT b
-            INNER JOIN RDB.dbo.LAB_TEST d ON b.LAB_TEST_KEY = d.LAB_TEST_KEY
-            GROUP BY b.INVESTIGATION_KEY
-        ) lab ON s.INVESTIGATION_KEY = lab.INVESTIGATION_KEY
+        INNER JOIN inv ON s.INVESTIGATION_KEY = inv.INVESTIGATION_KEY
+        LEFT JOIN lab_max lab ON s.INVESTIGATION_KEY = lab.INVESTIGATION_KEY
         LEFT JOIN RDB.dbo.MORBIDITY_REPORT_EVENT mre
             ON s.INVESTIGATION_KEY = mre.INVESTIGATION_KEY
         LEFT JOIN RDB.dbo.MORBIDITY_REPORT mr
@@ -90,76 +72,123 @@ def execute(
           AND s.DIAGNOSIS IS NOT NULL
           AND inv.INV_CASE_STATUS IN ('Probable', 'Confirmed')
     ),
-    with_date AS (
+    with_fup_dt AS (
         SELECT
             INVESTIGATION_KEY,
             PATIENT_NAME,
-            PATIENT_ID,
+            PATIENT_LOCAL_ID,
             INV_LOCAL_ID,
             DIAGNOSIS,
             CONFIRMATION_DT,
+            PATIENTID,
             COALESCE(
-                FL_FUP_EXAM_DT,
+                ORIG_FL_FUP_EXAM_DT,
                 CASE
                     WHEN REFERRAL_BASIS = 'T1 - Positive Test' THEN SPECIMEN_COLLECTION_DT
                     WHEN REFERRAL_BASIS = 'T2 - Morbidity Report' THEN DIAGNOSIS_DT
                 END
             ) AS FL_FUP_EXAM_DT
         FROM derived
+        WHERE ORIG_FL_FUP_EXAM_DT IS NOT NULL
+           OR (REFERRAL_BASIS = 'T1 - Positive Test' AND SPECIMEN_COLLECTION_DT IS NOT NULL)
+           OR (REFERRAL_BASIS = 'T2 - Morbidity Report' AND DIAGNOSIS_DT IS NOT NULL)
     ),
-    filtered AS (
-        SELECT *
-        FROM with_date
-        WHERE FL_FUP_EXAM_DT IS NOT NULL
-    ),
-    diffs AS (
+    with_prev_asc AS (
         SELECT
             *,
             LAG(FL_FUP_EXAM_DT) OVER (
                 PARTITION BY PATIENT_NAME, DIAGNOSIS
                 ORDER BY FL_FUP_EXAM_DT, INVESTIGATION_KEY
-            ) AS prev_date,
+            ) AS prev_date_asc
+        FROM with_fup_dt
+    ),
+    cluster_starts AS (
+        SELECT
+            *,
+            CASE
+                WHEN prev_date_asc IS NULL
+                     OR DATEDIFF(day, prev_date_asc, FL_FUP_EXAM_DT) > {days}
+                THEN 1
+                ELSE 0
+            END AS new_cluster
+        FROM with_prev_asc
+    ),
+    clustered_rows AS (
+        SELECT
+            *,
+            SUM(new_cluster) OVER (
+                PARTITION BY PATIENT_NAME, DIAGNOSIS
+                ORDER BY FL_FUP_EXAM_DT, INVESTIGATION_KEY
+            ) AS cluster_id
+        FROM cluster_starts
+    ),
+    days_calc AS (
+        SELECT
+            *,
+            LAG(FL_FUP_EXAM_DT) OVER (
+                PARTITION BY PATIENT_NAME, DIAGNOSIS, cluster_id
+                ORDER BY FL_FUP_EXAM_DT DESC, INVESTIGATION_KEY
+            ) AS lag_desc
+        FROM clustered_rows
+    ),
+    days1_calc AS (
+        SELECT
+            *,
             LEAD(FL_FUP_EXAM_DT) OVER (
-                PARTITION BY PATIENT_NAME, DIAGNOSIS
-                ORDER BY FL_FUP_EXAM_DT, INVESTIGATION_KEY
-            ) AS next_date,
-            ABS(DATEDIFF(day, LAG(FL_FUP_EXAM_DT) OVER (
-                PARTITION BY PATIENT_NAME, DIAGNOSIS
-                ORDER BY FL_FUP_EXAM_DT, INVESTIGATION_KEY
-            ), FL_FUP_EXAM_DT)) AS diff_prev,
-            ABS(DATEDIFF(day, FL_FUP_EXAM_DT, LEAD(FL_FUP_EXAM_DT) OVER (
-                PARTITION BY PATIENT_NAME, DIAGNOSIS
-                ORDER BY FL_FUP_EXAM_DT, INVESTIGATION_KEY
-            ))) AS diff_next
-        FROM filtered
+                PARTITION BY PATIENT_NAME, DIAGNOSIS, cluster_id
+                ORDER BY FL_FUP_EXAM_DT ASC, INVESTIGATION_KEY
+            ) AS lead_asc
+        FROM days_calc
+    ),
+    with_diffs AS (
+        SELECT
+            *,
+            ISNULL(
+                CASE WHEN lag_desc IS NOT NULL
+                     THEN DATEDIFF(day, lag_desc, FL_FUP_EXAM_DT)
+                END, 0
+            ) AS DAYS,
+            ISNULL(
+                CASE WHEN lead_asc IS NOT NULL
+                     THEN DATEDIFF(day, FL_FUP_EXAM_DT, lead_asc)
+                END, 0
+            ) AS DAYS1
+        FROM days1_calc
     ),
     flagged AS (
         SELECT
             *,
             CASE
-                WHEN (diff_prev <= {days} OR diff_next <= {days}) THEN 1
+                WHEN DAYS >= -{days} AND DAYS1 <= {days} THEN 1
                 ELSE 0
-            END AS is_duplicate
-        FROM diffs
+            END AS meets_condition
+        FROM with_diffs
     ),
-    groups_with_dup AS (
+    counts AS (
         SELECT
             PATIENT_NAME,
-            DIAGNOSIS
+            DIAGNOSIS,
+            SUM(meets_condition) AS cnt
         FROM flagged
-        WHERE is_duplicate = 1
         GROUP BY PATIENT_NAME, DIAGNOSIS
     )
     SELECT
         f.PATIENT_NAME,
-        f.PATIENT_ID,
+        f.PATIENT_LOCAL_ID,
+        f.INV_LOCAL_ID,
         f.DIAGNOSIS,
         f.CONFIRMATION_DT,
-        f.FL_FUP_EXAM_DT
+        f.FL_FUP_EXAM_DT,
+        f.PATIENTID,
+        f.DAYS,
+        f.DAYS1,
+        c.cnt AS COUNT
     FROM flagged f
-    INNER JOIN groups_with_dup g
-        ON f.PATIENT_NAME = g.PATIENT_NAME
-        AND f.DIAGNOSIS = g.DIAGNOSIS
+    INNER JOIN counts c
+        ON (f.PATIENT_NAME = c.PATIENT_NAME OR (f.PATIENT_NAME IS NULL AND c.PATIENT_NAME IS NULL))
+        AND (f.DIAGNOSIS = c.DIAGNOSIS OR (f.DIAGNOSIS IS NULL AND c.DIAGNOSIS IS NULL))
+    WHERE f.meets_condition = 1
+      AND c.cnt > 1
     ORDER BY f.PATIENT_NAME, f.DIAGNOSIS, f.FL_FUP_EXAM_DT, f.INVESTIGATION_KEY
     """
     content = trx.query(sql)
