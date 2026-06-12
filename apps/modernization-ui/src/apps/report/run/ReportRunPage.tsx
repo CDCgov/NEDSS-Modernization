@@ -34,9 +34,9 @@ const ReportRunPage = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
-    const [hasResult, setHasResult] = useState<boolean>(false);
-    const [submitting, setSubmitting] = useState<boolean>(false);
+    const [status, setStatus] = useState<'configuring' | 'submitting' | 'complete'>('configuring');
     const [error, setError] = useState<string | null>(null);
+    const [wasExported, setWasExported] = useState<boolean>(true);
     const { openNewTab } = useNewTab();
     const config = useReportConfiguration({ reportUid, dataSourceUid, handleError: setError });
 
@@ -90,12 +90,13 @@ const ReportRunPage = () => {
             advancedFilter?: AdvancedFilterRequest,
             columnUids?: number[]
         ) => {
-            setSubmitting(true);
+            setWasExported(isExport)
+            setStatus('submitting');
             setError('');
             const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
             runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids } })
                 .then((res) => {
-                    setHasResult(true);
+                    setStatus('complete');
                     if (!res.content) {
                         setError('No content!');
                         return;
@@ -107,8 +108,7 @@ const ReportRunPage = () => {
                         openNewTab(<ResultDataPage result={res} />);
                     }
                 })
-                .catch((err) => setError(JSON.stringify(err)))
-                .finally(() => setSubmitting(false));
+                .catch((err) => setError(JSON.stringify(err)));
         },
         []
     );
@@ -118,7 +118,7 @@ const ReportRunPage = () => {
             {error && <AlertBanner type="error">{error}</AlertBanner>}
             <LoadingIndicator />
         </>
-    ) : !hasResult && !submitting ? (
+    ) : status === 'configuring' ? (
         <>
             {error && <AlertBanner type="error">{error}</AlertBanner>}
             <FormProvider {...form}>
@@ -128,9 +128,10 @@ const ReportRunPage = () => {
     ) : (
         <ReportResultPage
             config={config}
-            resultLoading={!hasResult}
+            resultLoading={status === 'submitting'}
+            wasExported={wasExported}
             error={error}
-            handleRefineReport={() => setHasResult(false)}
+            handleRefineReport={() => setStatus('configuring')}
         />
     );
 };
