@@ -1,6 +1,8 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult, Table
 
+Pa03Row = tuple[str, str | None, str | None, int | None, float | None]
+
 PARTNER_BASES = {
     'P1 - Partner, Sex',
     'P2 - Partner, Needle-Sharing',
@@ -206,7 +208,7 @@ def execute(
         contact_rows, ASSOCIATE_BASES
     )  # see PA03.sas line 151 (val_O)
 
-    rows = [
+    rows: list[Pa03Row] = [
         ('Total Number of Cases', None, None, len(all_cases), None),
         (
             'Total Number of Cases',
