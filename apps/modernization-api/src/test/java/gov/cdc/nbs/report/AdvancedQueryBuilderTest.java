@@ -93,7 +93,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_create_rule_group_with_multiple_rules_in_single_or_group() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
     FilterValue containsClause = buildClauseValue(1, "contains", "value1");
     FilterValue orOperator = buildOperatorValue(2, "or");
     FilterValue startsWithClause = buildClauseValue(3, "startsWith", "value2");
@@ -121,8 +120,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_create_rule_group_with_both_OR_AND_operators() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue containsClause = buildClauseValue(1, "contains", "value3");
     FilterValue andValue = buildOperatorValue(2, "and");
     FilterValue equalsClause = buildClauseValue(3, "equals", "value1");
@@ -165,8 +162,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_handle_outermost_parentheses_correctly() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue openParenValue = buildOperatorValue(1, "(");
     FilterValue containsClause = buildClauseValue(2, "contains", "value3");
     FilterValue andValue = buildOperatorValue(3, "and");
@@ -218,8 +213,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_handle_OR_nested_within_AND_correctly() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue containsClause = buildClauseValue(1, "contains", "value3");
     FilterValue andValue = buildOperatorValue(2, "and");
     FilterValue openParenValue = buildOperatorValue(3, "(");
@@ -271,8 +264,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_double_close_paren() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue openParenValue1 = buildOperatorValue(1, "(");
     FilterValue openParenValue2 = buildOperatorValue(2, "(");
     FilterValue closeParenValue = buildOperatorValue(3, ")");
@@ -285,8 +276,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_paren_with_three_clauses() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue containsClause = buildOperatorValue(1, "(");
     FilterValue equalsClause = buildClauseValue(2, "equals", "value1");
     FilterValue notEqualsClause = buildClauseValue(3, "notEquals", "value2");
@@ -302,8 +291,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_or_and() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue orOperatorValue = buildOperatorValue(1, "or");
     FilterValue andOperatorValue = buildOperatorValue(2, "and");
 
@@ -315,8 +302,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_a_or_and() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue equalsClause = buildClauseValue(1, "equals", "value1");
     FilterValue orOperatorValue = buildOperatorValue(2, "or");
     FilterValue andOperatorValue = buildOperatorValue(3, "and");
@@ -329,8 +314,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_a_or_a_a() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue equalsClause = buildClauseValue(1, "equals", "value1");
     FilterValue orOperatorValue = buildOperatorValue(2, "or");
     FilterValue notEqualsClause = buildClauseValue(3, "notEquals", "value2");
@@ -344,8 +327,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_or_b() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue orOperatorValue = buildOperatorValue(1, "or");
     FilterValue notEqualsClause = buildClauseValue(2, "notEquals", "value2");
 
@@ -357,8 +338,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_empty_paren_or_a() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue openParenValue = buildOperatorValue(1, "(");
     FilterValue closeParenValue = buildOperatorValue(2, ")");
     FilterValue orOperatorValue = buildOperatorValue(3, "or");
@@ -373,8 +352,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_empty_paren() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue openParenValue = buildOperatorValue(1, "(");
     FilterValue closeParenValue = buildOperatorValue(2, ")");
 
@@ -386,8 +363,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_single_close() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue closeParenValue = buildOperatorValue(1, ")");
 
     filter.setFilterValues(List.of(closeParenValue));
@@ -398,8 +373,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_single_or() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue orOperatorValue = buildOperatorValue(1, "or");
 
     filter.setFilterValues(List.of(orOperatorValue));
@@ -410,8 +383,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_single_and() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue andOperatorValue = buildOperatorValue(1, "and");
 
     filter.setFilterValues(List.of(andOperatorValue));
@@ -422,8 +393,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_single_open() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue openParenValue = buildOperatorValue(1, "(");
 
     filter.setFilterValues(List.of(openParenValue));
@@ -434,8 +403,6 @@ public class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_open_open_close() {
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue openParenValue1 = buildOperatorValue(1, "(");
     FilterValue openParenValue2 = buildOperatorValue(1, "(");
     FilterValue closeParenValue = buildOperatorValue(1, "(");
@@ -449,7 +416,6 @@ public class AdvancedQueryBuilderTest {
   @Test
   void build_should_handle_deeply_nested_or_expression() {
     // ((((a or b))))
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
     FilterValue openParen1 = buildOperatorValue(1, "(");
     FilterValue openParen2 = buildOperatorValue(2, "(");
     FilterValue openParen3 = buildOperatorValue(3, "(");
@@ -492,8 +458,6 @@ public class AdvancedQueryBuilderTest {
   @Test
   void build_should_handle_complex_mixed_and_or_with_inner_parens() {
     // ((a and b or c and (d or e)))
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue openParen1 = buildOperatorValue(1, "(");
     FilterValue openParen2 = buildOperatorValue(2, "(");
 
@@ -565,8 +529,6 @@ public class AdvancedQueryBuilderTest {
   @Test
   void build_should_handle_nested_group_or_with_clause() {
     // (((b)) or a)
-    ReportFilter filter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue openParen1 = buildOperatorValue(1, "(");
     FilterValue openParen2 = buildOperatorValue(2, "(");
     FilterValue openParen3 = buildOperatorValue(3, "(");
@@ -604,8 +566,6 @@ public class AdvancedQueryBuilderTest {
   @Test
   void build_should_handle_long_chain_of_and_or_combination() {
     // a and b or c and d and e or f
-    ReportFilter localFilter = ReportFilter.builder().report(report).filterCode(filterCode).build();
-
     FilterValue equalsClause1 = buildClauseValue(1, "equals", "a");
     FilterValue andOperator1 = buildOperatorValue(2, "and");
     FilterValue equalsClause2 = buildClauseValue(3, "equals", "b");
@@ -618,7 +578,7 @@ public class AdvancedQueryBuilderTest {
     FilterValue orOperator2 = buildOperatorValue(10, "or");
     FilterValue equalsClause6 = buildClauseValue(11, "equals", "f");
 
-    localFilter.setFilterValues(
+    filter.setFilterValues(
         List.of(
             equalsClause1,
             andOperator1,
@@ -632,7 +592,7 @@ public class AdvancedQueryBuilderTest {
             orOperator2,
             equalsClause6));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(localFilter.getFilterValues());
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     // root should be OR with two rules: AND(a,b), OR(AND(c,d,e), f)
