@@ -92,29 +92,26 @@ public class ReportService {
   @Transactional
   public Report editReport(
       AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
-    Report existingReport = null;
-    if (existingReportId != null && !reportRepository.existsById(existingReportId)) {
-      existingReport =
-          reportRepository
-              .findById(existingReportId)
-              .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
-    }
+    Report existingReport =
+        reportRepository
+            .findById(existingReportId)
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
 
     Report savedReport = upsertReport(request, user, existingReport);
 
-    List<ReportFilter> existingFilters = savedReport.getReportFilters();
+    // List<ReportFilter> existingFilters = savedReport.getReportFilters();
 
-    List<ReportFilter> filtersToDelete =
-        existingFilters.stream()
-            .filter(
-                f ->
-                    request.filterRequests().stream()
-                        .noneMatch(fr -> fr.id() != null && fr.id().equals(f.getId())))
-            .toList();
+    // List<ReportFilter> filtersToDelete =
+    //     existingFilters.stream()
+    //         .filter(
+    //             f ->
+    //                 request.filterRequests().stream()
+    //                     .noneMatch(fr -> fr.id() != null && fr.id().equals(f.getId())))
+    //         .toList();
 
-    if (!filtersToDelete.isEmpty()) {
-      reportFilterRepository.deleteAll(filtersToDelete);
-    }
+    // if (!filtersToDelete.isEmpty()) {
+    //   reportFilterRepository.deleteAll(filtersToDelete);
+    // }
 
     return savedReport;
   }
@@ -123,21 +120,15 @@ public class ReportService {
       AdminReportRequest request, NbsUserDetails user, Report existingReport) {
     ReportMetadata metadata = verifyReportMetadata(request);
 
-    Report savedReport =
-        reportRepository.save(
-            reportMapper.fromAdminReportRequest(
-                request, user, metadata.reportLibrary, metadata.dataSource, existingReport));
+    Report report =
+        reportMapper.fromAdminReportRequest(
+            request, user, metadata.reportLibrary, metadata.dataSource, existingReport);
 
-    if (!request.filterRequests().isEmpty()) {
-      List<ReportFilter> reportFilters =
-          request.filterRequests().stream()
-              .map(f -> reportFilterBuilder.build(f, savedReport))
-              .toList();
+    List<ReportFilter> reportFilters =
+        request.filterRequests().stream().map(f -> reportFilterBuilder.build(f, report)).toList();
+    report.setReportFilters(reportFilters);
 
-      reportFilterRepository.saveAll(reportFilters);
-    }
-
-    return savedReport;
+    return reportRepository.save(report);
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {

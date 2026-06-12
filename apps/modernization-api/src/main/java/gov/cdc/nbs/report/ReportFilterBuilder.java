@@ -49,9 +49,9 @@ public class ReportFilterBuilder {
                     new IllegalArgumentException(
                         "Filter code not found for UID: " + filterRequest.filterCodeUid()));
 
-    ReportFilter builtFilter = null;
+    ReportFilter filter = null;
     if (filterRequest.id() == null) {
-      builtFilter =
+      filter =
           ReportFilter.builder()
               .report(report)
               .filterCode(filterCode)
@@ -59,7 +59,8 @@ public class ReportFilterBuilder {
               .id(generateReportFilterId())
               .build();
     } else {
-      builtFilter =
+      filter =
+          // TODO - why aren't we finding the filter?
           report.getReportFilters().stream()
               .filter(f -> f.getId() == filterRequest.id())
               .findFirst()
@@ -68,7 +69,7 @@ public class ReportFilterBuilder {
                       new IllegalArgumentException(
                           "Unknown report filter cannot be updated: %s"
                               .formatted(filterRequest.id())));
-      if (builtFilter.getFilterCode() != filterCode) {
+      if (filter.getFilterCode().getId() != filterCode.getId()) {
         throw new IllegalArgumentException(
             "Cannot update filter type on an existing filter. Delete the filter and create a new one to change the type");
       }
@@ -76,16 +77,16 @@ public class ReportFilterBuilder {
 
     ValueCountCalculator.ReportValueCounts valueCounts =
         ValueCountCalculator.fromFilterRequest(filterRequest);
-    builtFilter.setMinValueCnt(valueCounts.minValueCount());
-    builtFilter.setMaxValueCnt(valueCounts.maxValueCount());
+    filter.setMinValueCnt(valueCounts.minValueCount());
+    filter.setMaxValueCnt(valueCounts.maxValueCount());
 
     if (dataSourceColumn != null) {
-      builtFilter.setDataSourceColumn(dataSourceColumn);
+      filter.setDataSourceColumn(dataSourceColumn);
     }
 
-    handleReportFilterValidation(builtFilter, filterRequest);
+    handleReportFilterValidation(filter, filterRequest);
 
-    return builtFilter;
+    return filter;
   }
 
   private void handleReportFilterValidation(ReportFilter filter, UpsertFilterRequest request) {

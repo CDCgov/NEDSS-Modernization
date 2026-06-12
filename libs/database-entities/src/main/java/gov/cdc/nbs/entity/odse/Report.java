@@ -34,7 +34,11 @@ public class Report {
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibrary;
 
-  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
+  @OneToMany(
+      mappedBy = "report",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<ReportFilter> reportFilters;
 
   @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
