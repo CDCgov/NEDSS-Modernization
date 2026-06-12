@@ -1,267 +1,289 @@
 - !!python/tuple
-  - CAS10010520GA01
+  - CAS10010946GA01
   - null
-  - PSN30081301GA01
-  - '710'
-  - '95'
-  - 2022-11-23 00:00:00
+  - PSN30081806GA01
+  - '410'
+  - '23'
+  - 2024-04-02 00:00:00
   - Washington County
-  - Ponce Medical Center
-  - Arthur Day
-  - 20081301
+  - Moon Medical Center
+  - Richard Martin
+  - 20081806
 - !!python/tuple
-  - CAS10014637GA01
+  - CAS10013282GA01
   - null
-  - PSN30020413GA01
-  - '480'
-  - 63 Years
-  - 2021-10-05 00:00:00
-  - Middlesex County
-  - Mclaughlin Medical Center
-  - Arthur Day
-  - 20020413
-- !!python/tuple
-  - CAS10015009GA01
-  - null
-  - PSN10069820GA01
-  - null
-  - '36'
-  - 2021-03-03 00:00:00
-  - Middlesex County
-  - Mills Medical Center
-  - Jon Warner
-  - 69820
-- !!python/tuple
-  - CAS10019477GA01
-  - null
-  - PSN10093904GA01
-  - '710'
-  - 51 years
-  - 2024-10-16 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Jessica Bruce
-  - 93904
-- !!python/tuple
-  - CAS10021510GA01
-  - null
-  - PSN20045046GA01
-  - '300'
-  - '15'
-  - 2020-05-08 00:00:00
-  - Middlesex County
-  - Liu Medical Center
-  - Joseph Torres
-  - 10045046
-- !!python/tuple
-  - CAS10024439GA01
-  - null
-  - PSN20065980GA01
-  - '350'
-  - 34 Years
-  - 2020-11-26 00:00:00
-  - Middlesex County
-  - Soto Medical Center
-  - Thomas Grant
-  - 10065980
-- !!python/tuple
-  - CAS10027555GA01
-  - null
-  - PSN30046568GA01
-  - '480'
-  - '21'
-  - 2023-04-21 00:00:00
-  - Washington County
-  - Keith Medical Center
-  - Mary Gilbert
-  - 20046568
-- !!python/tuple
-  - CAS10033025GA01
-  - null
-  - PSN30099524GA01
-  - '750'
-  - '54'
-  - 2025-10-09 00:00:00
-  - Middlesex County
-  - Mills Medical Center
-  - Jeffrey Nguyen
-  - 20099524
-- !!python/tuple
-  - CAS10033182GA01
-  - null
-  - PSN20047732GA01
-  - '490'
-  - '95'
-  - 2022-03-09 00:00:00
-  - Middlesex County
-  - Morris Medical Center
-  - Singh
-  - 10047732
-- !!python/tuple
-  - CAS10037191GA01
-  - null
-  - PSN20067783GA01
-  - '850'
-  - null
-  - 2021-02-27 00:00:00
-  - Middlesex County
-  - Merritt Medical Center
-  - Greg Montoya
-  - 10067783
-- !!python/tuple
-  - CAS10038541GA01
-  - null
-  - PSN30085339GA01
-  - '450'
-  - '53'
-  - 2024-01-04 00:00:00
-  - Middlesex County
-  - Miller Medical Center
-  - Gregory Byrd
-  - 20085339
-- !!python/tuple
-  - CAS10039861GA01
-  - null
-  - PSN20049514GA01
-  - '350'
-  - 84 years
-  - 2022-06-10 00:00:00
-  - Middlesex County
-  - Torres Medical Center
-  - Austin Harris
-  - 10049514
-- !!python/tuple
-  - CAS10045038GA01
-  - null
-  - PSN10038207GA01
-  - '500'
-  - null
-  - 2022-05-15 00:00:00
+  - PSN30042348GA01
+  - '400'
+  - '14'
+  - 2020-11-28 00:00:00
   - Middlesex County
   - Mcgee Medical Center
-  - Jeffrey Butler
-  - 38207
+  - Elizabeth Dean
+  - 20042348
 - !!python/tuple
-  - CAS10048474GA01
+  - CAS10017021GA01
   - null
-  - PSN20095950GA01
-  - '350'
-  - '45'
-  - 2024-10-02 00:00:00
-  - Washington County
-  - Wolf Medical Center
-  - Cynthia Ruiz
-  - 10095950
-- !!python/tuple
-  - CAS10053069GA01
-  - null
-  - PSN20015523GA01
-  - '720'
-  - '16'
-  - 2024-09-13 00:00:00
-  - Washington County
-  - Keith Medical Center
-  - Samantha Charles
-  - 10015523
-- !!python/tuple
-  - CAS10061362GA01
-  - null
-  - PSN20033244GA01
-  - null
-  - '14'
-  - 2024-10-31 00:00:00
-  - null
-  - Soto Medical Center
-  - David Walker
-  - 10033244
-- !!python/tuple
-  - CAS10062068GA01
-  - null
-  - PSN10023085GA01
-  - null
-  - '72'
-  - 2023-08-09 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Shannon Winters
-  - 23085
-- !!python/tuple
-  - CAS10071396GA01
-  - null
-  - PSN20023178GA01
+  - PSN20073931GA01
   - '850'
-  - '49'
-  - 2023-01-17 00:00:00
+  - 11 years
+  - 2022-10-23 00:00:00
   - Middlesex County
-  - White Medical Center
-  - Donna Hopkins
-  - 10023178
-- !!python/tuple
-  - CAS10073458GA01
-  - null
-  - PSN30014454GA01
-  - '410'
-  - '68'
-  - 2022-12-28 00:00:00
-  - Washington County
-  - Ponce Medical Center
-  - Terri Walters
-  - 20014454
-- !!python/tuple
-  - CAS10077486GA01
-  - null
-  - PSN30073276GA01
-  - '900'
-  - '42'
-  - 2023-12-26 00:00:00
-  - Middlesex County
-  - Ponce Medical Center
-  - Douglas Jackson
-  - 20073276
-- !!python/tuple
-  - CAS10094259GA01
-  - null
-  - PSN30082391GA01
-  - '790'
-  - '36'
-  - 2024-04-19 00:00:00
-  - null
   - Goodman Medical Center
-  - Cindy Jackson
-  - 20082391
+  - Jennifer Gonzalez
+  - 10073931
 - !!python/tuple
-  - CAS10094496GA01
+  - CAS10018835GA01
   - null
-  - PSN10053657GA01
-  - null
-  - '85'
-  - 2023-10-22 00:00:00
-  - Washington County
-  - Carter Medical Center
-  - Lauren Miller
-  - 53657
-- !!python/tuple
-  - CAS10096871GA01
-  - null
-  - PSN20085463GA01
-  - '400'
-  - '79'
-  - 2021-09-25 00:00:00
-  - null
-  - Kelley Medical Center
-  - Christina Flores
-  - 10085463
-- !!python/tuple
-  - CAS10097096GA01
-  - null
-  - PSN30094726GA01
-  - '490'
-  - '14'
-  - 2023-11-16 00:00:00
+  - PSN10049526GA01
+  - '710'
+  - '13'
+  - 2023-12-05 00:00:00
   - Middlesex County
+  - Stewart Medical Center
+  - Summer Murphy
+  - 49526
+- !!python/tuple
+  - CAS10025042GA01
+  - null
+  - PSN10080691GA01
+  - '480'
+  - '89'
+  - 2021-07-07 00:00:00
+  - Washington County
+  - Buchanan Medical Center
+  - Kayla Short
+  - 80691
+- !!python/tuple
+  - CAS10027844GA01
+  - null
+  - PSN20090057GA01
+  - '950'
+  - '33'
+  - 2025-08-16 00:00:00
+  - Middlesex County
+  - Snow Medical Center
+  - Jason Ryan
+  - 10090057
+- !!python/tuple
+  - CAS10028567GA01
+  - null
+  - PSN10072130GA01
+  - '950'
+  - '82'
+  - 2020-04-28 00:00:00
+  - Washington County
+  - Stewart Medical Center
+  - Mary Sullivan
+  - 72130
+- !!python/tuple
+  - CAS10034801GA01
+  - null
+  - PSN10086502GA01
+  - '200'
+  - null
+  - 2021-05-27 00:00:00
+  - Middlesex County
+  - Padilla Medical Center
+  - Allison Ramirez
+  - 86502
+- !!python/tuple
+  - CAS10044408GA01
+  - null
+  - PSN30054592GA01
+  - '710'
+  - '36'
+  - 2023-01-22 00:00:00
+  - Middlesex County
+  - Garcia Medical Center
+  - James Harrison
+  - 20054592
+- !!python/tuple
+  - CAS10047178GA01
+  - null
+  - PSN30018305GA01
+  - '100'
+  - 73 Years
+  - 2020-09-28 00:00:00
+  - Washington County
   - Ponce Medical Center
-  - Andrew Bryant
-  - 20094726
+  - Leah Torres
+  - 20018305
+- !!python/tuple
+  - CAS10049345GA01
+  - null
+  - PSN20016536GA01
+  - '450'
+  - '32'
+  - 2020-05-11 00:00:00
+  - Middlesex County
+  - Mitchell Medical Center
+  - Mallory Vincent
+  - 10016536
+- !!python/tuple
+  - CAS10057647GA01
+  - null
+  - PSN10032569GA01
+  - '750'
+  - '78'
+  - 2020-03-06 00:00:00
+  - Middlesex County
+  - Morris Medical Center
+  - Robert Caldwell
+  - 32569
+- !!python/tuple
+  - CAS10058023GA01
+  - null
+  - PSN30062626GA01
+  - '470'
+  - 33 years
+  - 2022-12-27 00:00:00
+  - Washington County
+  - Cox Medical Center
+  - Natalie
+  - 20062626
+- !!python/tuple
+  - CAS10058674GA01
+  - null
+  - PSN30035764GA01
+  - '490'
+  - '41'
+  - 2023-01-24 00:00:00
+  - Washington County
+  - Carrillo Medical Center
+  - Jacob Coffey
+  - 20035764
+- !!python/tuple
+  - CAS10062792GA01
+  - null
+  - PSN30085158GA01
+  - '450'
+  - 71 years
+  - 2020-11-18 00:00:00
+  - Middlesex County
+  - Snow Medical Center
+  - Dustin Harris
+  - 20085158
+- !!python/tuple
+  - CAS10064995GA01
+  - null
+  - PSN30019341GA01
+  - '480'
+  - '39'
+  - 2020-12-25 00:00:00
+  - Middlesex County
+  - Goodman Medical Center
+  - Tracy Owens
+  - 20019341
+- !!python/tuple
+  - CAS10068274GA01
+  - null
+  - PSN10063981GA01
+  - '600'
+  - '49'
+  - 2020-08-04 00:00:00
+  - Middlesex County
+  - Moon Medical Center
+  - Carla Wood
+  - 63981
+- !!python/tuple
+  - CAS10068441GA01
+  - null
+  - PSN10095953GA01
+  - '350'
+  - '68'
+  - 2022-03-10 00:00:00
+  - Washington County
+  - Stewart Medical Center
+  - Scott Rogers
+  - 95953
+- !!python/tuple
+  - CAS10070898GA01
+  - null
+  - PSN20013251GA01
+  - '470'
+  - '46'
+  - 2022-01-27 00:00:00
+  - Middlesex County
+  - Carter Medical Center
+  - Christopher Hamilton
+  - 10013251
+- !!python/tuple
+  - CAS10072749GA01
+  - null
+  - PSN10059768GA01
+  - '400'
+  - '52'
+  - 2021-09-24 00:00:00
+  - Middlesex County
+  - Carter Medical Center
+  - Brad Singh
+  - 59768
+- !!python/tuple
+  - CAS10072761GA01
+  - null
+  - PSN10055892GA01
+  - '400'
+  - 16 years
+  - 2021-11-16 00:00:00
+  - Middlesex County
+  - Austin Medical Center
+  - Victoria Silva
+  - 55892
+- !!python/tuple
+  - CAS10073051GA01
+  - null
+  - PSN10027240GA01
+  - '420'
+  - '36'
+  - 2022-05-10 00:00:00
+  - Middlesex County
+  - Soto Medical Center
+  - Joseph Murphy
+  - 27240
+- !!python/tuple
+  - CAS10081765GA01
+  - null
+  - PSN20013250GA01
+  - '200'
+  - '7'
+  - 2020-08-06 00:00:00
+  - Washington County
+  - Hill Medical Center
+  - James Lopez
+  - 10013250
+- !!python/tuple
+  - CAS10084004GA01
+  - null
+  - PSN10067314GA01
+  - '470'
+  - '54'
+  - 2020-11-28 00:00:00
+  - null
+  - Mclaughlin Medical Center
+  - Sarah Mcdowell
+  - 67314
+- !!python/tuple
+  - CAS10085053GA01
+  - null
+  - PSN10025497GA01
+  - '490'
+  - '40'
+  - 2022-04-01 00:00:00
+  - Middlesex County
+  - Buchanan Medical Center
+  - Nicole Nguyen
+  - 25497
+- !!python/tuple
+  - CAS10087616GA01
+  - null
+  - PSN20099213GA01
+  - '410'
+  - '93'
+  - 2025-04-09 00:00:00
+  - Washington County
+  - Moon Medical Center
+  - Thomas Grant
+  - 10099213
 - !!python/tuple
   - CAS10029720GA01
   - Adams, Peter
@@ -296,6 +318,17 @@
   - Colleen Wilson
   - 75223
 - !!python/tuple
+  - CAS10015009GA01
+  - Alexander, Hannah
+  - PSN10069820GA01
+  - null
+  - null
+  - 2021-03-03 00:00:00
+  - Middlesex County
+  - Mills Medical Center
+  - Jon Warner
+  - 69820
+- !!python/tuple
   - CAS10081387GA01
   - Allen, Michelle
   - PSN30072134GA01
@@ -304,7 +337,7 @@
   - 2023-05-07 00:00:00
   - Washington County
   - Horton Medical Center
-  - Lauren Miller
+  - ''
   - 20072134
 - !!python/tuple
   - CAS10032561GA01
@@ -326,7 +359,7 @@
   - 2024-02-14 00:00:00
   - Middlesex County
   - Merritt Medical Center
-  - Jacob
+  - Hubbard
   - 10091284
 - !!python/tuple
   - CAS10038531GA01
@@ -359,7 +392,7 @@
   - 2023-01-16 00:00:00
   - Washington County
   - Garcia Medical Center
-  - Lori Flores, MD
+  - Lori Flores
   - 86347
 - !!python/tuple
   - CAS10017118GA01
@@ -491,7 +524,7 @@
   - 2021-10-24 00:00:00
   - Middlesex County
   - Garcia Medical Center
-  - Mary Jackson
+  - Jackson
   - 60038
 - !!python/tuple
   - CAS10090228GA01
@@ -546,7 +579,7 @@
   - 2021-11-27 00:00:00
   - Middlesex County
   - Mason Medical Center
-  - Daniel Brown
+  - Brown
   - 10093189
 - !!python/tuple
   - CAS10019359GA01
@@ -568,7 +601,7 @@
   - 2020-10-18 00:00:00
   - Washington County
   - Harris Medical Center
-  - Daniel Brown
+  - Brown
   - 20054233
 - !!python/tuple
   - CAS10041435GA01
@@ -608,7 +641,7 @@
   - Brady, Thomas
   - PSN30092284GA01
   - '950'
-  - '74'
+  - null
   - 2024-11-02 00:00:00
   - Washington County
   - Hill Medical Center
@@ -656,14 +689,25 @@
   - 2023-04-21 00:00:00
   - Washington County
   - Garcia Medical Center
-  - Peter
+  - Peter Pena
   - 10067943
+- !!python/tuple
+  - CAS10097096GA01
+  - Brown, Martha
+  - PSN30094726GA01
+  - '490'
+  - '14'
+  - 2023-11-16 00:00:00
+  - Middlesex County
+  - Ponce Medical Center
+  - Andrew Bryant
+  - 20094726
 - !!python/tuple
   - CAS10025117GA01
   - Brown, Rachael
   - PSN20023306GA01
   - '850'
-  - 9 years
+  - null
   - 2025-11-19 00:00:00
   - Washington County
   - Austin Medical Center
@@ -681,17 +725,6 @@
   - Rachel Walton
   - 66660
 - !!python/tuple
-  - CAS10057647GA01
-  - Buchanan, Michael
-  - PSN10032569GA01
-  - '750'
-  - null
-  - 2020-03-06 00:00:00
-  - Middlesex County
-  - Morris Medical Center
-  - Robert Caldwell
-  - 32569
-- !!python/tuple
   - CAS10028547GA01
   - Burch, Alexandria
   - PSN20010749GA01
@@ -702,6 +735,17 @@
   - Miller Medical Center
   - Troy Davis
   - 10010749
+- !!python/tuple
+  - CAS10061362GA01
+  - Burnett, James
+  - PSN20033244GA01
+  - null
+  - '14'
+  - 2024-10-31 00:00:00
+  - null
+  - Soto Medical Center
+  - David Walker
+  - 10033244
 - !!python/tuple
   - CAS10072124GA01
   - Burns, Oscar
@@ -733,14 +777,25 @@
   - 2020-06-28 00:00:00
   - Middlesex County
   - Buchanan Medical Center
-  - Jose Mckee
+  - Mckee
   - 10034701
+- !!python/tuple
+  - CAS10077486GA01
+  - Byrd, Philip
+  - PSN30073276GA01
+  - '900'
+  - '42'
+  - 2023-12-26 00:00:00
+  - Middlesex County
+  - Ponce Medical Center
+  - Douglas
+  - 20073276
 - !!python/tuple
   - CAS10070760GA01
   - Callahan, Sharon
   - PSN20073435GA01
   - '410'
-  - null
+  - '76'
   - 2025-05-19 00:00:00
   - Middlesex County
   - Cox Medical Center
@@ -801,17 +856,6 @@
   - Bruce Medical Center
   - Matthew Martinez
   - 20048319
-- !!python/tuple
-  - CAS10087616GA01
-  - Carlson, David
-  - PSN20099213GA01
-  - '410'
-  - '93'
-  - 2025-04-09 00:00:00
-  - Washington County
-  - Moon Medical Center
-  - Thomas Grant
-  - 10099213
 - !!python/tuple
   - CAS10097156GA01
   - Carpenter, Daniel
@@ -920,7 +964,7 @@
   - 2021-09-21 00:00:00
   - Middlesex County
   - Hill Medical Center
-  - Krystal Stevenson
+  - Krystal , II
   - 10035024
 - !!python/tuple
   - CAS10034757GA01
@@ -949,23 +993,12 @@
   - Cochran, Charles
   - PSN20061555GA01
   - '950'
-  - null
+  - '51'
   - 2020-03-17 00:00:00
   - Middlesex County
   - Merritt Medical Center
   - Wesley Collins
   - 10061555
-- !!python/tuple
-  - CAS10058023GA01
-  - Coleman, Jason
-  - PSN30062626GA01
-  - '470'
-  - 33 years
-  - 2022-12-27 00:00:00
-  - Washington County
-  - Cox Medical Center
-  - Natalie Kelly
-  - 20062626
 - !!python/tuple
   - CAS10054438GA01
   - Collins, Craig
@@ -997,7 +1030,7 @@
   - 2021-06-16 00:00:00
   - Washington County
   - Stewart Medical Center
-  - Daniel Brown
+  - Brown
   - 10043503
 - !!python/tuple
   - CAS10045790GA01
@@ -1022,6 +1055,17 @@
   - Kayla Short
   - 20016738
 - !!python/tuple
+  - CAS10038541GA01
+  - Cook, Marissa
+  - PSN30085339GA01
+  - '450'
+  - '53'
+  - 2024-01-04 00:00:00
+  - Middlesex County
+  - Miller Medical Center
+  - Gregory Byrd
+  - 20085339
+- !!python/tuple
   - CAS10022143GA01
   - Cross, Ashley
   - PSN20086394GA01
@@ -1041,7 +1085,7 @@
   - 2021-07-19 00:00:00
   - Washington County
   - Wilson Medical Center
-  - Michelle
+  - Michelle Gonzalez
   - 10031366
 - !!python/tuple
   - CAS10084218GA01
@@ -1052,7 +1096,7 @@
   - 2021-01-21 00:00:00
   - Washington County
   - Smith Medical Center
-  - Summer Grant
+  - Summer
   - 10027537
 - !!python/tuple
   - CAS10032681GA01
@@ -1085,7 +1129,7 @@
   - 2024-01-21 00:00:00
   - Middlesex County
   - Hernandez Medical Center
-  - Michelle
+  - Michelle Gonzalez
   - 20056146
 - !!python/tuple
   - CAS10020322GA01
@@ -1109,17 +1153,6 @@
   - Wilson Medical Center
   - Tracy Lopez
   - 56297
-- !!python/tuple
-  - CAS10049345GA01
-  - Davis, Linda
-  - PSN20016536GA01
-  - '450'
-  - '32'
-  - 2020-05-11 00:00:00
-  - Middlesex County
-  - Mitchell Medical Center
-  - Mallory Vincent
-  - 10016536
 - !!python/tuple
   - CAS10031262GA01
   - Davis, Lisa
@@ -1158,7 +1191,7 @@
   - Diaz, Victoria
   - PSN20022195GA01
   - '410'
-  - null
+  - '16'
   - 2023-11-16 00:00:00
   - Washington County
   - White Medical Center
@@ -1169,11 +1202,11 @@
   - Dixon, John
   - PSN20078911GA01
   - '950'
-  - '33'
+  - null
   - 2021-02-19 00:00:00
   - Washington County
   - Mills Medical Center
-  - Jamie Edwards
+  - Edwards
   - 10078911
 - !!python/tuple
   - CAS10033447GA01
@@ -1275,28 +1308,6 @@
   - Conrad
   - 10072929
 - !!python/tuple
-  - CAS10072761GA01
-  - Fletcher, Diane
-  - PSN10055892GA01
-  - '400'
-  - 16 years
-  - 2021-11-16 00:00:00
-  - Middlesex County
-  - Austin Medical Center
-  - Victoria Silva
-  - 55892
-- !!python/tuple
-  - CAS10017021GA01
-  - Ford, Nicholas
-  - PSN20073931GA01
-  - '850'
-  - null
-  - 2022-10-23 00:00:00
-  - Middlesex County
-  - Goodman Medical Center
-  - Jennifer Gonzalez
-  - 10073931
-- !!python/tuple
   - CAS10043600GA01
   - Foster, Anthony
   - PSN20039287GA01
@@ -1323,11 +1334,11 @@
   - Fox, Brian
   - PSN30032020GA01
   - '745'
-  - null
+  - '83'
   - 2020-05-05 00:00:00
   - Washington County
   - Carrillo Medical Center
-  - Jacob
+  - Hubbard
   - 20032020
 - !!python/tuple
   - CAS10086470GA01
@@ -1362,6 +1373,17 @@
   - Liu Medical Center
   - Zachary Barnes
   - 20018376
+- !!python/tuple
+  - CAS10073458GA01
+  - French, Laurie
+  - PSN30014454GA01
+  - '410'
+  - '68'
+  - 2022-12-28 00:00:00
+  - Washington County
+  - Ponce Medical Center
+  - Terri Walters
+  - 20014454
 - !!python/tuple
   - CAS10054630GA01
   - French, Leah
@@ -1415,7 +1437,7 @@
   - 2023-09-28 00:00:00
   - Middlesex County
   - Mcgee Medical Center
-  - Jessica Newman, III
+  - Jessica Newman
   - 97584
 - !!python/tuple
   - CAS10035853GA01
@@ -1426,14 +1448,14 @@
   - 2022-04-25 00:00:00
   - Middlesex County
   - Mccormick Medical Center
-  - Jennifer Macias
+  - Macias
   - 73386
 - !!python/tuple
   - CAS10031909GA01
   - Gentry, Allison
   - PSN10022843GA01
   - '720'
-  - '96'
+  - null
   - 2024-04-28 00:00:00
   - Middlesex County
   - Smith Medical Center
@@ -1506,6 +1528,17 @@
   - Johnny Smith
   - 82412
 - !!python/tuple
+  - CAS10045038GA01
+  - Gonzalez, Deanna
+  - PSN10038207GA01
+  - '500'
+  - '65'
+  - 2022-05-15 00:00:00
+  - Middlesex County
+  - Mcgee Medical Center
+  - Jeffrey Butler
+  - 38207
+- !!python/tuple
   - CAS10046069GA01
   - Gordon, Richard
   - PSN20067551GA01
@@ -1576,7 +1609,7 @@
   - Hall, Anna
   - PSN10050825GA01
   - '710'
-  - '48'
+  - null
   - 2025-12-14 00:00:00
   - Middlesex County
   - Jones Medical Center
@@ -1627,6 +1660,17 @@
   - Emily Nielsen
   - 10095047
 - !!python/tuple
+  - CAS10096871GA01
+  - Hall, Maria
+  - PSN20085463GA01
+  - '400'
+  - '79'
+  - 2021-09-25 00:00:00
+  - null
+  - Kelley Medical Center
+  - Christina Flores, Sr.
+  - 10085463
+- !!python/tuple
   - CAS10077270GA01
   - Hamilton, Danny
   - PSN20093404GA01
@@ -1671,6 +1715,17 @@
   - Matthew Sanders
   - 59679
 - !!python/tuple
+  - CAS10027555GA01
+  - Harris, Justin
+  - PSN30046568GA01
+  - '480'
+  - '21'
+  - 2023-04-21 00:00:00
+  - Washington County
+  - Keith Medical Center
+  - Mary Gilbert
+  - 20046568
+- !!python/tuple
   - CAS10061826GA01
   - Harris, Vanessa
   - PSN30073207GA01
@@ -1701,14 +1756,14 @@
   - 2025-01-30 00:00:00
   - Washington County
   - Moon Medical Center
-  - Kaufman
+  - Vanessa Kaufman
   - 20078585
 - !!python/tuple
   - CAS10057827GA01
   - Hayes, Lindsay
   - PSN30055641GA01
   - '790'
-  - null
+  - '5'
   - 2020-02-16 00:00:00
   - Washington County
   - Morris Medical Center
@@ -1811,7 +1866,7 @@
   - 2022-09-22 00:00:00
   - Middlesex County
   - Williams Medical Center
-  - Monica
+  - Monica Walters
   - 20019869
 - !!python/tuple
   - CAS10012286GA01
@@ -1822,7 +1877,7 @@
   - 2024-12-05 00:00:00
   - Middlesex County
   - Miller Medical Center
-  - Hooper
+  - Barry Hooper
   - 99695
 - !!python/tuple
   - CAS10053393GA01
@@ -1833,7 +1888,7 @@
   - 2024-03-18 00:00:00
   - Washington County
   - Hernandez Medical Center
-  - Brian Todd
+  - Brian
   - 10074528
 - !!python/tuple
   - CAS10026105GA01
@@ -1912,6 +1967,17 @@
   - Arnold Medical Center
   - Ryan Elliott
   - 10016897
+- !!python/tuple
+  - CAS10094496GA01
+  - Horne, Linda
+  - PSN10053657GA01
+  - null
+  - '85'
+  - 2023-10-22 00:00:00
+  - Washington County
+  - Carter Medical Center
+  - ''
+  - 53657
 - !!python/tuple
   - CAS10055450GA01
   - Houston, Caroline
@@ -1998,18 +2064,18 @@
   - 2024-12-05 00:00:00
   - Middlesex County
   - Cox Medical Center
-  - Charles
+  - Charles Sanchez
   - 20046227
 - !!python/tuple
   - CAS10025671GA01
   - Hutchinson, Maria
   - PSN20018848GA01
   - '790'
-  - null
+  - '67'
   - 2020-06-10 00:00:00
   - Middlesex County
   - Carter Medical Center
-  - Michael Harris
+  - Michael
   - 10018848
 - !!python/tuple
   - CAS10050987GA01
@@ -2027,11 +2093,11 @@
   - Jackson, Christine
   - PSN10033028GA01
   - '800'
-  - null
+  - 30 years
   - 2022-10-27 00:00:00
   - Middlesex County
   - Mitchell Medical Center
-  - Phillip Ford
+  - Ford
   - 33028
 - !!python/tuple
   - CAS10088766GA01
@@ -2053,7 +2119,7 @@
   - 2022-08-18 00:00:00
   - Washington County
   - Kelley Medical Center
-  - Michelle
+  - Michelle Gonzalez
   - 66209
 - !!python/tuple
   - CAS10022878GA01
@@ -2108,7 +2174,7 @@
   - 2023-02-05 00:00:00
   - Washington County
   - Hill Medical Center
-  - Singh
+  - Amanda Singh
   - 21847
 - !!python/tuple
   - CAS10044401GA01
@@ -2144,17 +2210,6 @@
   - Peter Crosby
   - 20057158
 - !!python/tuple
-  - CAS10025042GA01
-  - Jenkins, Jesus
-  - PSN10080691GA01
-  - '480'
-  - '89'
-  - 2021-07-07 00:00:00
-  - Washington County
-  - Buchanan Medical Center
-  - Kayla Short
-  - 80691
-- !!python/tuple
   - CAS10087205GA01
   - Jenkins, Joseph
   - PSN30050807GA01
@@ -2174,7 +2229,7 @@
   - 2022-07-25 00:00:00
   - Middlesex County
   - Mcintosh Medical Center
-  - Natalie Kelly
+  - Natalie
   - 39036
 - !!python/tuple
   - CAS10027111GA01
@@ -2185,14 +2240,14 @@
   - 2021-01-08 00:00:00
   - Middlesex County
   - Warren Medical Center
-  - Daniel Brown
+  - Brown
   - 10070035
 - !!python/tuple
   - CAS10060357GA01
   - Johnson, Dominique
   - PSN20095805GA01
   - '400'
-  - '80'
+  - null
   - 2020-03-27 00:00:00
   - Middlesex County
   - Gutierrez Medical Center
@@ -2295,7 +2350,7 @@
   - 2020-07-14 00:00:00
   - Washington County
   - Carter Medical Center
-  - Horn
+  - Erin Horn
   - 58477
 - !!python/tuple
   - CAS10027112GA01
@@ -2309,16 +2364,16 @@
   - Tina Burns
   - 10050716
 - !!python/tuple
-  - CAS10028567GA01
+  - CAS10033182GA01
   - Jones, Luis
-  - PSN10072130GA01
-  - '950'
-  - '82'
-  - 2020-04-28 00:00:00
-  - Washington County
-  - Stewart Medical Center
-  - Mary Sullivan
-  - 72130
+  - PSN20047732GA01
+  - '490'
+  - null
+  - 2022-03-09 00:00:00
+  - Middlesex County
+  - Morris Medical Center
+  - Amanda Singh
+  - 10047732
 - !!python/tuple
   - CAS10060728GA01
   - Joseph, Robert
@@ -2350,7 +2405,7 @@
   - 2023-03-25 00:00:00
   - Washington County
   - Mclaughlin Medical Center
-  - Lauren Miller
+  - ''
   - 46990
 - !!python/tuple
   - CAS10016822GA01
@@ -2372,7 +2427,7 @@
   - 2025-01-13 00:00:00
   - Washington County
   - Mcgee Medical Center
-  - Peter
+  - Peter Pena
   - 46974
 - !!python/tuple
   - CAS10059090GA01
@@ -2434,7 +2489,7 @@
   - Kim, Daniel
   - PSN10055807GA01
   - '100'
-  - '5'
+  - null
   - 2021-08-08 00:00:00
   - Middlesex County
   - Jones Medical Center
@@ -2462,17 +2517,6 @@
   - Warren Medical Center
   - Christopher Bentley
   - 10099448
-- !!python/tuple
-  - CAS10058674GA01
-  - King, Timothy
-  - PSN30035764GA01
-  - '490'
-  - '41'
-  - 2023-01-24 00:00:00
-  - Washington County
-  - Carrillo Medical Center
-  - Jacob Coffey
-  - 20035764
 - !!python/tuple
   - CAS10092004GA01
   - Kirby, Rhonda
@@ -2522,11 +2566,11 @@
   - Lane, Nancy
   - PSN20012659GA01
   - '600'
-  - null
+  - '58'
   - 2022-04-25 00:00:00
   - Middlesex County
   - Hill Medical Center
-  - Norris
+  - Hannah Norris, PhD
   - 10012659
 - !!python/tuple
   - CAS10077859GA01
@@ -2537,7 +2581,7 @@
   - 2025-10-29 00:00:00
   - Middlesex County
   - Warren Medical Center
-  - Daniel Brown
+  - Brown
   - 29103
 - !!python/tuple
   - CAS10054122GA01
@@ -2577,7 +2621,7 @@
   - Lee, Kathleen
   - PSN10049496GA01
   - '740'
-  - '46'
+  - null
   - 2025-09-12 00:00:00
   - Washington County
   - Williams Medical Center
@@ -2621,7 +2665,7 @@
   - Lewis, Gregory
   - PSN20010350GA01
   - '350'
-  - null
+  - 21 Years
   - 2022-04-14 00:00:00
   - Washington County
   - Carter Medical Center
@@ -2636,7 +2680,7 @@
   - 2023-06-18 00:00:00
   - Washington County
   - Mills Medical Center
-  - Michael Harris
+  - Michael
   - 20030330
 - !!python/tuple
   - CAS10025770GA01
@@ -2647,19 +2691,19 @@
   - 2023-09-10 00:00:00
   - Middlesex County
   - Mcintosh Medical Center
-  - Summer Grant
+  - Summer
   - 20098306
 - !!python/tuple
-  - CAS10068274GA01
-  - Lopez, Daniel
-  - PSN10063981GA01
-  - '600'
-  - null
-  - 2020-08-04 00:00:00
+  - CAS10014637GA01
+  - Lopez, James
+  - PSN30020413GA01
+  - '480'
+  - 63 Years
+  - 2021-10-05 00:00:00
   - Middlesex County
-  - Moon Medical Center
-  - Carla Wood
-  - 63981
+  - Mclaughlin Medical Center
+  - Arthur
+  - 20020413
 - !!python/tuple
   - CAS10092663GA01
   - Lopez, Keith
@@ -2680,7 +2724,7 @@
   - 2023-01-08 00:00:00
   - Middlesex County
   - Mitchell Medical Center
-  - Mary Jackson
+  - Jackson
   - 10062503
 - !!python/tuple
   - CAS10097706GA01
@@ -2691,7 +2735,7 @@
   - 2025-03-21 00:00:00
   - Washington County
   - Woods Medical Center
-  - Daniel Brown
+  - Brown
   - 10039047
 - !!python/tuple
   - CAS10060478GA01
@@ -2731,7 +2775,7 @@
   - Lynn, Laura
   - PSN20017881GA01
   - '720'
-  - null
+  - '75'
   - 2021-12-28 00:00:00
   - Washington County
   - Patton Medical Center
@@ -2746,7 +2790,7 @@
   - 2020-10-26 00:00:00
   - Washington County
   - Garcia Medical Center
-  - Mary Jackson
+  - Jackson
   - 10076178
 - !!python/tuple
   - CAS10020072GA01
@@ -2768,19 +2812,8 @@
   - 2024-03-07 00:00:00
   - Washington County
   - Mclaughlin Medical Center
-  - Anthony Cox
+  - Anthony Cox, PhD
   - 21950
-- !!python/tuple
-  - CAS10047178GA01
-  - Martin, Antonio
-  - PSN30018305GA01
-  - '100'
-  - 73 Years
-  - 2020-09-28 00:00:00
-  - Washington County
-  - Ponce Medical Center
-  - Leah Torres
-  - 20018305
 - !!python/tuple
   - CAS10066449GA01
   - Martin, Jose
@@ -2834,8 +2867,19 @@
   - 2020-05-27 00:00:00
   - Middlesex County
   - Harris Medical Center
-  - Peter
+  - Peter Pena
   - 76058
+- !!python/tuple
+  - CAS10019477GA01
+  - Mcbride, Chris
+  - PSN10093904GA01
+  - '710'
+  - 51 years
+  - 2024-10-16 00:00:00
+  - Middlesex County
+  - Snow Medical Center
+  - Jessica Bruce
+  - 93904
 - !!python/tuple
   - CAS10060785GA01
   - Mccarthy, Eric
@@ -2878,7 +2922,7 @@
   - 2025-04-25 00:00:00
   - Middlesex County
   - Snow Medical Center
-  - Monica
+  - Monica Walters
   - 20074113
 - !!python/tuple
   - CAS10084692GA01
@@ -2966,7 +3010,7 @@
   - 2021-07-10 00:00:00
   - null
   - Goodman Medical Center
-  - Brian Todd
+  - Brian
   - 16906
 - !!python/tuple
   - CAS10034625GA01
@@ -2977,7 +3021,7 @@
   - 2022-05-09 00:00:00
   - Middlesex County
   - Mcgee Medical Center
-  - Brian Todd
+  - Brian
   - 10065721
 - !!python/tuple
   - CAS10048747GA01
@@ -3035,17 +3079,6 @@
   - Don
   - 20073167
 - !!python/tuple
-  - CAS10073051GA01
-  - Miranda, Erika
-  - PSN10027240GA01
-  - '420'
-  - '36'
-  - 2022-05-10 00:00:00
-  - Middlesex County
-  - Soto Medical Center
-  - Joseph Murphy
-  - 27240
-- !!python/tuple
   - CAS10090994GA01
   - Mitchell, Katie
   - PSN30055960GA01
@@ -3065,19 +3098,8 @@
   - 2022-08-15 00:00:00
   - Middlesex County
   - Robbins Medical Center
-  - Kaufman
+  - Vanessa Kaufman
   - 20052804
-- !!python/tuple
-  - CAS10085053GA01
-  - Molina, Melissa
-  - PSN10025497GA01
-  - '490'
-  - '40'
-  - 2022-04-01 00:00:00
-  - Middlesex County
-  - Buchanan Medical Center
-  - Nicole Nguyen
-  - 25497
 - !!python/tuple
   - CAS10063419GA01
   - Montoya, Shannon
@@ -3127,7 +3149,7 @@
   - Moore, Eric
   - PSN30026932GA01
   - '410'
-  - 2 Years
+  - null
   - 2021-03-27 00:00:00
   - Washington County
   - Davis Medical Center
@@ -3142,7 +3164,7 @@
   - 2022-05-10 00:00:00
   - Washington County
   - Wilson Medical Center
-  - Michelle
+  - Michelle Gonzalez
   - 63652
 - !!python/tuple
   - CAS10058499GA01
@@ -3175,19 +3197,8 @@
   - 2020-09-30 00:00:00
   - Washington County
   - Liu Medical Center
-  - Charles
+  - Charles Young
   - 28112
-- !!python/tuple
-  - CAS10070898GA01
-  - Morris, Andrew
-  - PSN20013251GA01
-  - '470'
-  - '46'
-  - 2022-01-27 00:00:00
-  - Middlesex County
-  - Carter Medical Center
-  - Christopher Hamilton
-  - 10013251
 - !!python/tuple
   - CAS10040138GA01
   - Morris, Jessica
@@ -3237,7 +3248,7 @@
   - Morton, Cheryl
   - PSN20073733GA01
   - '900'
-  - 41 Years
+  - null
   - 2020-11-13 00:00:00
   - Middlesex County
   - Mcintosh Medical Center
@@ -3270,7 +3281,7 @@
   - Murphy, Duane
   - PSN30097690GA01
   - '410'
-  - 38 years
+  - null
   - 2024-07-29 00:00:00
   - Middlesex County
   - Mcintosh Medical Center
@@ -3285,7 +3296,7 @@
   - 2025-08-26 00:00:00
   - Washington County
   - Arnold Medical Center
-  - Jennifer Macias
+  - Macias
   - 34619
 - !!python/tuple
   - CAS10021314GA01
@@ -3303,7 +3314,7 @@
   - Nelson, Amber
   - PSN10016072GA01
   - null
-  - null
+  - '89'
   - 2020-09-04 00:00:00
   - Washington County
   - Buchanan Medical Center
@@ -3340,7 +3351,7 @@
   - 2021-06-13 00:00:00
   - Washington County
   - Wolf Medical Center
-  - Charles
+  - Charles Young
   - 78848
 - !!python/tuple
   - CAS10016174GA01
@@ -3351,7 +3362,7 @@
   - 2024-11-09 00:00:00
   - Washington County
   - Liu Medical Center
-  - Anthony Cox
+  - Anthony Cox, PhD
   - 20088235
 - !!python/tuple
   - CAS10043171GA01
@@ -3362,7 +3373,7 @@
   - 2023-06-12 00:00:00
   - Washington County
   - Carrillo Medical Center
-  - Norris
+  - Hannah Norris, PhD
   - 10045933
 - !!python/tuple
   - CAS10092143GA01
@@ -3373,7 +3384,7 @@
   - 2021-03-01 00:00:00
   - Washington County
   - Mcgee Medical Center
-  - Lauren Miller
+  - ''
   - 10091330
 - !!python/tuple
   - CAS10028223GA01
@@ -3450,7 +3461,7 @@
   - 2023-08-27 00:00:00
   - Washington County
   - Mitchell Medical Center
-  - Turner
+  - Dana Turner
   - 20059091
 - !!python/tuple
   - CAS10063554GA01
@@ -3508,6 +3519,17 @@
   - Jesse Carter
   - 21266
 - !!python/tuple
+  - CAS10037191GA01
+  - Parker, Ryan
+  - PSN20067783GA01
+  - '850'
+  - '28'
+  - 2021-02-27 00:00:00
+  - Middlesex County
+  - Merritt Medical Center
+  - Greg Montoya
+  - 10067783
+- !!python/tuple
   - CAS10061387GA01
   - Patterson, Amanda
   - PSN30032284GA01
@@ -3516,7 +3538,7 @@
   - 2023-01-17 00:00:00
   - Middlesex County
   - Padilla Medical Center
-  - Horn
+  - Erin Horn
   - 20032284
 - !!python/tuple
   - CAS10029492GA01
@@ -3527,7 +3549,7 @@
   - 2022-07-03 00:00:00
   - Middlesex County
   - Patton Medical Center
-  - Louis
+  - Louis Taylor
   - 66540
 - !!python/tuple
   - CAS10035200GA01
@@ -3552,6 +3574,17 @@
   - Cindy Jackson
   - 20065579
 - !!python/tuple
+  - CAS10094259GA01
+  - Peck, Dawn
+  - PSN30082391GA01
+  - '790'
+  - '36'
+  - 2024-04-19 00:00:00
+  - null
+  - Goodman Medical Center
+  - Cindy Jackson
+  - 20082391
+- !!python/tuple
   - CAS10088596GA01
   - Perez, Eric
   - PSN10044917GA01
@@ -3563,11 +3596,22 @@
   - Austin Harris
   - 44917
 - !!python/tuple
+  - CAS10062068GA01
+  - Perez, Joseph
+  - PSN10023085GA01
+  - null
+  - '72'
+  - 2023-08-09 00:00:00
+  - Washington County
+  - Kelley Medical Center
+  - Shannon
+  - 23085
+- !!python/tuple
   - CAS10095749GA01
   - Perez, Marcus
   - PSN10099296GA01
   - '740'
-  - '10'
+  - null
   - 2022-05-27 00:00:00
   - Washington County
   - Morris Medical Center
@@ -3637,7 +3681,7 @@
   - 2020-08-24 00:00:00
   - Middlesex County
   - Jones Medical Center
-  - Jesse
+  - Jesse Brooks
   - 94975
 - !!python/tuple
   - CAS10076406GA01
@@ -3651,22 +3695,11 @@
   - Kimberly Blackwell
   - 10080343
 - !!python/tuple
-  - CAS10072749GA01
-  - Phillips, Suzanne
-  - PSN10059768GA01
-  - '400'
-  - '52'
-  - 2021-09-24 00:00:00
-  - Middlesex County
-  - Carter Medical Center
-  - Brad Singh
-  - 59768
-- !!python/tuple
   - CAS10082431GA01
   - Phillips, Victoria
   - PSN30052004GA01
   - '740'
-  - '96'
+  - null
   - 2021-09-24 00:00:00
   - Middlesex County
   - Castillo Medical Center
@@ -3681,7 +3714,7 @@
   - 2022-12-18 00:00:00
   - Washington County
   - Williams Medical Center
-  - Michelle
+  - Michelle Gonzalez
   - 10050796
 - !!python/tuple
   - CAS10015082GA01
@@ -3695,17 +3728,6 @@
   - Scott Sandoval
   - 20026821
 - !!python/tuple
-  - CAS10010946GA01
-  - Pitts, Donald
-  - PSN30081806GA01
-  - '410'
-  - '23'
-  - 2024-04-02 00:00:00
-  - Washington County
-  - Moon Medical Center
-  - Richard Martin
-  - 20081806
-- !!python/tuple
   - CAS10076783GA01
   - Poole, Jennifer
   - PSN10056969GA01
@@ -3714,7 +3736,7 @@
   - 2022-07-07 00:00:00
   - Middlesex County
   - Snow Medical Center
-  - Shannon Winters
+  - Shannon
   - 56969
 - !!python/tuple
   - CAS10039256GA01
@@ -3739,17 +3761,6 @@
   - Rebecca Tucker
   - 78774
 - !!python/tuple
-  - CAS10081765GA01
-  - Powell, Corey
-  - PSN20013250GA01
-  - '200'
-  - '7'
-  - 2020-08-06 00:00:00
-  - Washington County
-  - Hill Medical Center
-  - James Lopez
-  - 10013250
-- !!python/tuple
   - CAS10079064GA01
   - Powell, Erika
   - PSN10072870GA01
@@ -3765,7 +3776,7 @@
   - Powers, Christopher
   - PSN10089993GA01
   - '450'
-  - null
+  - '6'
   - 2025-01-05 00:00:00
   - Washington County
   - Mason Medical Center
@@ -3804,17 +3815,6 @@
   - Mitchell Medical Center
   - Julie Aguirre
   - 20018421
-- !!python/tuple
-  - CAS10013282GA01
-  - Pratt, Melissa
-  - PSN30042348GA01
-  - '400'
-  - '14'
-  - 2020-11-28 00:00:00
-  - Middlesex County
-  - Mcgee Medical Center
-  - Elizabeth Dean
-  - 20042348
 - !!python/tuple
   - CAS10036892GA01
   - Price, Brittney
@@ -3879,7 +3879,7 @@
   - 2022-06-17 00:00:00
   - Middlesex County
   - Patton Medical Center
-  - Jesse
+  - Jesse Brooks
   - 28168
 - !!python/tuple
   - CAS10037028GA01
@@ -3897,7 +3897,7 @@
   - Ramirez, Kyle
   - PSN10015255GA01
   - '745'
-  - '85'
+  - null
   - 2025-04-25 00:00:00
   - Washington County
   - Bruce Medical Center
@@ -3919,7 +3919,7 @@
   - Ramsey, Audrey
   - PSN30051402GA01
   - '790'
-  - null
+  - '48'
   - 2025-05-22 00:00:00
   - Middlesex County
   - White Medical Center
@@ -4003,6 +4003,17 @@
   - Mckenzie Church
   - 22875
 - !!python/tuple
+  - CAS10024439GA01
+  - Rice, Brian
+  - PSN20065980GA01
+  - '350'
+  - 34 Years
+  - 2020-11-26 00:00:00
+  - Middlesex County
+  - Soto Medical Center
+  - Thomas Grant
+  - 10065980
+- !!python/tuple
   - CAS10048109GA01
   - Rice, Louis
   - PSN10040045GA01
@@ -4055,7 +4066,7 @@
   - 2021-04-05 00:00:00
   - Middlesex County
   - Jones Medical Center
-  - Lewis
+  - Michael Lewis
   - 10097433
 - !!python/tuple
   - CAS10065114GA01
@@ -4095,7 +4106,7 @@
   - Rivera, Cynthia
   - PSN20054048GA01
   - '720'
-  - null
+  - '45'
   - 2025-10-26 00:00:00
   - Washington County
   - Warren Medical Center
@@ -4110,7 +4121,7 @@
   - 2020-12-25 00:00:00
   - Middlesex County
   - Davis Medical Center
-  - Monica
+  - Monica Walters
   - 20067525
 - !!python/tuple
   - CAS10054835GA01
@@ -4150,7 +4161,7 @@
   - Robinson, Joseph
   - PSN20029711GA01
   - '410'
-  - null
+  - '13'
   - 2023-08-08 00:00:00
   - Middlesex County
   - Carrillo Medical Center
@@ -4168,27 +4179,38 @@
   - Richard Garcia
   - 20011943
 - !!python/tuple
-  - CAS10034801GA01
-  - Robles, Lisa
-  - PSN10086502GA01
-  - '200'
-  - '35'
-  - 2021-05-27 00:00:00
+  - CAS10021510GA01
+  - Rodriguez, Amanda
+  - PSN20045046GA01
+  - '300'
+  - '15'
+  - 2020-05-08 00:00:00
   - Middlesex County
-  - Padilla Medical Center
-  - Allison Ramirez
-  - 86502
+  - Liu Medical Center
+  - Joseph
+  - 10045046
 - !!python/tuple
-  - CAS10018835GA01
-  - Rocha, Brittany
-  - PSN10049526GA01
-  - '710'
-  - '13'
-  - 2023-12-05 00:00:00
+  - CAS10039861GA01
+  - Rodriguez, Jessica
+  - PSN20049514GA01
+  - '350'
+  - 84 years
+  - 2022-06-10 00:00:00
   - Middlesex County
-  - Stewart Medical Center
-  - Summer Murphy
-  - 49526
+  - Torres Medical Center
+  - Austin Harris
+  - 10049514
+- !!python/tuple
+  - CAS10053069GA01
+  - Rodriguez, Natalie
+  - PSN20015523GA01
+  - '720'
+  - '16'
+  - 2024-09-13 00:00:00
+  - Washington County
+  - Keith Medical Center
+  - Charles
+  - 10015523
 - !!python/tuple
   - CAS10082200GA01
   - Rodriguez, Russell
@@ -4198,7 +4220,7 @@
   - 2020-06-15 00:00:00
   - Washington County
   - Mccormick Medical Center
-  - Lewis
+  - Michael Lewis
   - 14447
 - !!python/tuple
   - CAS10014580GA01
@@ -4242,7 +4264,7 @@
   - 2020-03-19 00:00:00
   - Washington County
   - Soto Medical Center
-  - Jennifer Macias
+  - Macias
   - 20032522
 - !!python/tuple
   - CAS10015690GA01
@@ -4289,17 +4311,6 @@
   - Heather Oconnor
   - 59313
 - !!python/tuple
-  - CAS10044408GA01
-  - Sanders, Michele
-  - PSN30054592GA01
-  - '710'
-  - '36'
-  - 2023-01-22 00:00:00
-  - Middlesex County
-  - Garcia Medical Center
-  - James Harrison
-  - 20054592
-- !!python/tuple
   - CAS10079214GA01
   - Santos, Patricia
   - PSN30040485GA01
@@ -4308,7 +4319,7 @@
   - 2022-09-08 00:00:00
   - Middlesex County
   - Austin Medical Center
-  - Peter
+  - Peter Pena
   - 20040485
 - !!python/tuple
   - CAS10061844GA01
@@ -4377,16 +4388,16 @@
   - Christopher Dyer
   - 20028225
 - !!python/tuple
-  - CAS10062792GA01
-  - Shaffer, Jeffrey
-  - PSN30085158GA01
-  - '450'
-  - 71 years
-  - 2020-11-18 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Dustin Harris
-  - 20085158
+  - CAS10048474GA01
+  - Serrano, Rebecca
+  - PSN20095950GA01
+  - '350'
+  - '45'
+  - 2024-10-02 00:00:00
+  - Washington County
+  - Wolf Medical Center
+  - Cynthia Ruiz
+  - 10095950
 - !!python/tuple
   - CAS10020179GA01
   - Shepherd, Joanna
@@ -4414,7 +4425,7 @@
   - Silva, Lisa
   - PSN30065415GA01
   - '800'
-  - 60 Years
+  - null
   - 2025-01-23 00:00:00
   - Washington County
   - Hill Medical Center
@@ -4440,7 +4451,7 @@
   - 2021-04-01 00:00:00
   - Middlesex County
   - Mitchell Medical Center
-  - Jessica Newman, III
+  - Jessica Newman
   - 10062476
 - !!python/tuple
   - CAS10022825GA01
@@ -4458,7 +4469,7 @@
   - Skinner, Chad
   - PSN20020758GA01
   - '950'
-  - 38 Years
+  - null
   - 2021-09-04 00:00:00
   - Middlesex County
   - Gutierrez Medical Center
@@ -4495,19 +4506,8 @@
   - 2020-10-19 00:00:00
   - Washington County
   - Patton Medical Center
-  - Samantha Lopez, MD
+  - Samantha Lopez
   - 20070500
-- !!python/tuple
-  - CAS10084004GA01
-  - Smith, Christine
-  - PSN10067314GA01
-  - '470'
-  - '54'
-  - 2020-11-28 00:00:00
-  - null
-  - Mclaughlin Medical Center
-  - Sarah Mcdowell
-  - 67314
 - !!python/tuple
   - CAS10056855GA01
   - Smith, Jessica
@@ -4524,7 +4524,7 @@
   - Smith, Jimmy
   - PSN20032966GA01
   - '450'
-  - null
+  - 78 Years
   - 2024-01-04 00:00:00
   - Middlesex County
   - Jones Medical Center
@@ -4546,7 +4546,7 @@
   - Smith, Leroy
   - PSN20017807GA01
   - '400'
-  - '34'
+  - null
   - 2023-03-17 00:00:00
   - Washington County
   - Merritt Medical Center
@@ -4557,7 +4557,7 @@
   - Smith, Mike
   - PSN20047283GA01
   - '740'
-  - null
+  - 23 years
   - 2023-05-01 00:00:00
   - Middlesex County
   - Mcgee Medical Center
@@ -4574,17 +4574,6 @@
   - Torres Medical Center
   - Don
   - 20043094
-- !!python/tuple
-  - CAS10064995GA01
-  - Smith, Shawn
-  - PSN30019341GA01
-  - '480'
-  - '39'
-  - 2020-12-25 00:00:00
-  - Middlesex County
-  - Goodman Medical Center
-  - Tracy Owens
-  - 20019341
 - !!python/tuple
   - CAS10070093GA01
   - Smith, Tara
@@ -4627,18 +4616,18 @@
   - 2024-04-10 00:00:00
   - Middlesex County
   - Woods Medical Center
-  - Mary Jackson
+  - Jackson
   - 10060391
 - !!python/tuple
   - CAS10086517GA01
   - Spencer, Johnny
   - PSN20041196GA01
   - '350'
-  - null
+  - '89'
   - 2024-12-11 00:00:00
   - Washington County
   - Carter Medical Center
-  - Turner
+  - Dana Turner
   - 10041196
 - !!python/tuple
   - CAS10077412GA01
@@ -4663,16 +4652,16 @@
   - Scott Sandoval
   - 45618
 - !!python/tuple
-  - CAS10068441GA01
-  - Stein, Nicholas
-  - PSN10095953GA01
-  - '350'
-  - null
-  - 2022-03-10 00:00:00
-  - Washington County
-  - Stewart Medical Center
-  - Scott Rogers
-  - 95953
+  - CAS10033025GA01
+  - Stephens, Carolyn
+  - PSN30099524GA01
+  - '750'
+  - '54'
+  - 2025-10-09 00:00:00
+  - Middlesex County
+  - Mills Medical Center
+  - Jeffrey Nguyen
+  - 20099524
 - !!python/tuple
   - CAS10064386GA01
   - Stephens, Penny
@@ -4722,7 +4711,7 @@
   - Stevens, Linda
   - PSN10055346GA01
   - '730'
-  - null
+  - '51'
   - 2022-11-05 00:00:00
   - Middlesex County
   - Arnold Medical Center
@@ -4744,7 +4733,7 @@
   - Swanson, Kevin
   - PSN20090174GA01
   - '200'
-  - null
+  - '96'
   - 2024-09-21 00:00:00
   - Washington County
   - Moon Medical Center
@@ -4766,7 +4755,7 @@
   - Tapia, Timothy
   - PSN10044525GA01
   - null
-  - null
+  - '60'
   - 2024-10-14 00:00:00
   - Washington County
   - Davis Medical Center
@@ -4781,7 +4770,7 @@
   - 2021-02-04 00:00:00
   - Middlesex County
   - Wilson Medical Center
-  - Christina Flores
+  - Christina Flores, Sr.
   - 20011606
 - !!python/tuple
   - CAS10098736GA01
@@ -4894,6 +4883,28 @@
   - Andrea Johnson
   - 20072374
 - !!python/tuple
+  - CAS10071396GA01
+  - Trujillo, Sherry
+  - PSN20023178GA01
+  - '850'
+  - null
+  - 2023-01-17 00:00:00
+  - Middlesex County
+  - White Medical Center
+  - Donna Hopkins
+  - 10023178
+- !!python/tuple
+  - CAS10010520GA01
+  - Turner, Daniel
+  - PSN30081301GA01
+  - '710'
+  - null
+  - 2022-11-23 00:00:00
+  - Washington County
+  - Ponce Medical Center
+  - Arthur
+  - 20081301
+- !!python/tuple
   - CAS10090508GA01
   - Turner, James
   - PSN20036147GA01
@@ -4920,7 +4931,7 @@
   - Turner, Mary
   - PSN20064711GA01
   - '745'
-  - null
+  - '12'
   - 2022-12-25 00:00:00
   - Washington County
   - Patton Medical Center
@@ -4946,7 +4957,7 @@
   - 2023-02-13 00:00:00
   - Middlesex County
   - Morris Medical Center
-  - Kaufman
+  - Vanessa Kaufman
   - 10072339
 - !!python/tuple
   - CAS10024949GA01
@@ -4957,14 +4968,14 @@
   - 2021-05-07 00:00:00
   - Washington County
   - Davis Medical Center
-  - Simon
+  - Nicholas Simon
   - 20067922
 - !!python/tuple
   - CAS10055164GA01
   - Walker, Audrey
   - PSN20019068GA01
   - '100'
-  - '47'
+  - null
   - 2020-07-14 00:00:00
   - Middlesex County
   - Jones Medical Center
@@ -5074,7 +5085,7 @@
   - Washington, Eugene
   - PSN30052500GA01
   - '490'
-  - '75'
+  - null
   - 2021-04-21 00:00:00
   - Washington County
   - Mclaughlin Medical Center
@@ -5118,7 +5129,7 @@
   - Watkins, John
   - PSN10096888GA01
   - '200'
-  - null
+  - '11'
   - 2022-07-07 00:00:00
   - Middlesex County
   - Wilson Medical Center
@@ -5140,11 +5151,11 @@
   - Watson, Brad
   - PSN30029831GA01
   - '450'
-  - '28'
+  - null
   - 2021-08-27 00:00:00
   - Washington County
   - Mason Medical Center
-  - Jeffrey Reed, MD
+  - Jeffrey Reed
   - 20029831
 - !!python/tuple
   - CAS10078662GA01
@@ -5166,7 +5177,7 @@
   - 2022-12-25 00:00:00
   - Washington County
   - Hernandez Medical Center
-  - Kaufman
+  - Vanessa Kaufman
   - 41690
 - !!python/tuple
   - CAS10041063GA01
@@ -5243,7 +5254,7 @@
   - 2022-07-26 00:00:00
   - Middlesex County
   - Padilla Medical Center
-  - Jennifer Macias
+  - Macias
   - 20076743
 - !!python/tuple
   - CAS10058245GA01
@@ -5265,7 +5276,7 @@
   - 2022-10-13 00:00:00
   - Middlesex County
   - Patton Medical Center
-  - Arthur Day
+  - Arthur
   - 72901
 - !!python/tuple
   - CAS10075078GA01
@@ -5276,7 +5287,7 @@
   - 2023-03-31 00:00:00
   - Washington County
   - Merritt Medical Center
-  - Joseph Torres
+  - Joseph
   - 20034540
 - !!python/tuple
   - CAS10083066GA01
@@ -5298,7 +5309,7 @@
   - 2023-11-23 00:00:00
   - Washington County
   - Morris Medical Center
-  - Chelsey
+  - Chelsey Huff
   - 20057400
 - !!python/tuple
   - CAS10054509GA01
@@ -5327,11 +5338,11 @@
   - Williams, Gail
   - PSN10039332GA01
   - '420'
-  - '18'
+  - null
   - 2024-02-29 00:00:00
   - Washington County
   - Robbins Medical Center
-  - Chelsey
+  - Chelsey Huff
   - 39332
 - !!python/tuple
   - CAS10073470GA01
@@ -5342,7 +5353,7 @@
   - 2023-03-20 00:00:00
   - Middlesex County
   - Liu Medical Center
-  - Jacob
+  - Hubbard
   - 10087567
 - !!python/tuple
   - CAS10079771GA01
@@ -5355,17 +5366,6 @@
   - Stewart Medical Center
   - Gabriella Allison
   - 60990
-- !!python/tuple
-  - CAS10027844GA01
-  - Williamson, Jennifer
-  - PSN20090057GA01
-  - '950'
-  - '33'
-  - 2025-08-16 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Jason Ryan
-  - 10090057
 - !!python/tuple
   - CAS10052847GA01
   - Wilson, Anne
@@ -5408,7 +5408,7 @@
   - 2023-05-18 00:00:00
   - Washington County
   - Hill Medical Center
-  - Joseph Torres
+  - Joseph
   - 20024788
 - !!python/tuple
   - CAS10037730GA01
@@ -5441,7 +5441,7 @@
   - 2024-06-24 00:00:00
   - Middlesex County
   - Moreno Medical Center
-  - Horn
+  - Erin Horn
   - 10014103
 - !!python/tuple
   - CAS10038430GA01
@@ -5525,7 +5525,7 @@
   - Young, Belinda
   - PSN10021249GA01
   - '600'
-  - '49'
+  - null
   - 2022-06-19 00:00:00
   - Washington County
   - Soto Medical Center
