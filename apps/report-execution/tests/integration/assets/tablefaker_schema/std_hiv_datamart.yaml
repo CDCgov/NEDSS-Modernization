@@ -146,18 +146,18 @@ tables:
           column: INVESTIGATION_KEY
         null_percentage: 0
 
-      # patient demographics
       - column_name: patient_name
         data: |
-          # Create a fixed set of names so duplicates appear
-          names = ["Scott, Jill", "Badu, Erykah", "Carey, Mariah", "Keys, Alicia", "Glasper, Robert"]
-          return fake.random_element(names)
+          if row_id < 100:
+              return "Test, Patient"
+          else:
+              names = ["Smith, John", "Doe, Jane", "Johnson, Mike", "Brown, Lisa", "Davis, Tom", "Miller, Amy"]
+              return fake.random_element(names)
         null_percentage: 0.02
 
       - column_name: patient_age_reported
         data: |
           age_num = fake.random_int(1, 99)
-          # 95% chance of a suffix, 5% chance of a dot
           if fake.random_int(1, 100) <= 95:
               suffix = fake.random_element([" Years", " Months", " Days"])
               return f"{age_num}{suffix}"
@@ -179,9 +179,12 @@ tables:
           return f"PSN{pre_id_num}{id_num}GA01"
         null_percentage: 0
 
-      # case information
       - column_name: diagnosis_cd
-        data: fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if fake.random_int(1,100) <= 90 else None
+        data: |
+          if row_id < 100:
+              return '200'   # single diagnosis for test rows
+          else:
+              return fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if fake.random_int(1,100) <= 90 else None
       
       - column_name: diagnosis
         data: |
@@ -230,8 +233,12 @@ tables:
         null_percentage: 0
 
       - column_name: inv_case_status
-        # This has to match the inv_case_status of the INVESTIGATION table
-        data: copy_from_fk("[RDB].[dbo].[INVESTIGATION]", "investigation_key", "inv_case_status")
+        data: |
+          # Force test rows to be 'Confirmed' so they pass the filter
+          if row_id < 100:
+              return 'Confirmed'
+          else:
+              return copy_from_fk("[RDB].[dbo].[INVESTIGATION]", "investigation_key", "inv_case_status")
 
       - column_name: ordering_facility_key
         data: foreign_key("[RDB].[dbo].[D_ORGANIZATION]", "organization_key")
@@ -268,23 +275,36 @@ tables:
         data: fake.random_int(10000000, 99999999)
 
       - column_name: referral_basis
-        data: fake.random_element(["T1 - Positive Test", "T2 - Morbidity Report", None])
+        data: |
+          # For test rows, set to NULL so FL_FUP_EXAM_DT is used directly
+          if row_id < 100:
+              return None
+          else:
+              return fake.random_element(["T1 - Positive Test", "T2 - Morbidity Report", None])
         null_percentage: 0.2
 
       - column_name: fl_fup_exam_dt
         data: |
-          # Create a deterministic pattern that yields gaps of different sizes
-          # Use row_id to decide a "band": 0-30, 31-60, 61-90, etc.
           base_date = date(2023, 1, 1)
-          r = (row_id * 17) % 100   # deterministic "random" number 0..99
-          if r < 40:
-              offset = 0   # very close
-          elif r < 70:
-              offset = 45  # medium gap (45 days, >30 but <=60)
+
+          # Test rows: first 9 rows create three clusters with gaps 20, 50, 80 days.
+          # Rows 9-99 are set to a single date to avoid additional duplicates.
+          if row_id < 30:
+              offset = fake.random_int(0, 30)
+          elif row_id < 60:
+              offset = fake.random_int(31, 60)
+          elif row_id < 100:
+              offset = fake.random_int(61, 90)
           else:
-              offset = 90  # large gap (90 days, >60 but <=90)
-          # Add a small jitter to avoid exact equality
-          offset += (row_id // 5) % 10
+              # Random generation for non-test rows
+              r = (row_id * 17) % 100
+              if r < 40:
+                  offset = 0
+              elif r < 70:
+                  offset = 45
+              else:
+                  offset = 90
+              offset += (row_id // 5) % 10
           return base_date + timedelta(days=offset)
         null_percentage: 0.1
 

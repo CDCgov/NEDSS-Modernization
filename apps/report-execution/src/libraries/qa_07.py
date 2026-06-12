@@ -27,6 +27,10 @@ def execute(
     * The output is sorted by PATIENT_NAME, DIAGNOSIS, FL_FUP_EXAM_DT, and
     INVESTIGATION_KEY (the last is used only as a tie‑breaker and does not appear
     in the final output). SAS does not have a tiebreaker value.
+    * The original SAS code had an error where it would calculate DAYS and DAYS1
+    using PATIENT_ID. This always leads to values of 0 because PATIENT_ID is calculated
+    from PATIENT_LOCAL_ID which is unique to each row. This script correctly calculates
+    DAYS and DAYS1 at the PATIENT_NAME and DIAGNOSIS level.
     """
     if not isinstance(library_params, dict):
         raise ValueError(f"""
