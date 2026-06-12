@@ -102,10 +102,15 @@ public class WhereClauseService {
     boolean hasLabResultVal = hasLabResultVal(reportConfig, executionRequest.advancedFilter());
     if (hasLabResultVal) {
       String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
-      return LAB_RESULT_QUERY_VAL.formatted(
-              rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses))
-          + SQL_AND
-          + String.join(SQL_AND, buildPermissionFragment(reportConfig));
+      String labResultQueryValFragment = LAB_RESULT_QUERY_VAL.formatted(
+              rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
+
+      String permissionFragment = buildPermissionFragment(reportConfig);
+      if (!permissionFragment.isBlank()) {
+       return labResultQueryValFragment + SQL_AND + String.join(SQL_AND, buildPermissionFragment(reportConfig));
+      }
+
+      return labResultQueryValFragment;
     }
 
     String permissionFragment = buildPermissionFragment(reportConfig);
