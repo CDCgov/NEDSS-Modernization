@@ -263,6 +263,18 @@ class AdvancedQueryBuilderTest {
   }
 
   @Test
+  void build_should_throw_on_invalid_opening_close_paren() {
+    FilterValue closeParenValue1 = buildOperatorValue(1, ")");
+    FilterValue equalsClause = buildClauseValue(2, "equals", "value1");
+    FilterValue closeParenValue2 = buildOperatorValue(3, ")");
+
+    filter.setFilterValues(List.of(closeParenValue1, equalsClause, closeParenValue2));
+
+    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    assertThrows(AdvancedQueryException.class, builder::build);
+  }
+
+  @Test
   void build_should_throw_on_invalid_expression_double_close_paren() {
     FilterValue openParenValue1 = buildOperatorValue(1, "(");
     FilterValue openParenValue2 = buildOperatorValue(2, "(");
