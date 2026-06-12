@@ -389,7 +389,7 @@ class WhereClauseServiceTest {
     List<BasicFilterRequest> request =
         List.of(new BasicFilterRequest(filterUid, List.of("val"), false));
 
-    String whereFragment = mockWhereClauseService.buildBasicWhereFragment(reportConfig, request);
+    String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
 
     assertThat(whereFragment).isEmpty();
   }
@@ -424,7 +424,7 @@ class WhereClauseServiceTest {
             new BasicFilterRequest(filterUid2, List.of("condition2"), false));
 
     String whereFragment =
-        mockWhereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequest);
+        whereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequest);
 
     assertThat(whereFragment).isEqualTo("([ColumnName] IN ('condition1'))");
   }
@@ -923,10 +923,11 @@ class WhereClauseServiceTest {
   void should_combine_basic_filters_and_permission_clauses_with_and() {
     Long filterUid = 100L;
     Long columnUid = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     // Setup basic text filter configuration
     BasicFilterConfiguration config =
-        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, "BAS_TXT");
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
     ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "StateCode");
 
     // Enable facility security with a 'S' (Public)
