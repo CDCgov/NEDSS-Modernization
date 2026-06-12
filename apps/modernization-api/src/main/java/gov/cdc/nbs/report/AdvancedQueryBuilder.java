@@ -12,10 +12,10 @@ public class AdvancedQueryBuilder {
 
   private final ArrayList<FilterValue> filterValues;
 
-  private final FilterValue FIRST_OPEN_PAREN =
+  private final FilterValue firstOpenParen =
       new FilterValue(
           1L, null, 0, ReportConstants.FilterValueType.OPERATOR.toString(), null, "(", null);
-  private final FilterValue LAST_CLOSE_PAREN =
+  private final FilterValue lastCloseParen =
       new FilterValue(
           2L, null, 1000, ReportConstants.FilterValueType.OPERATOR.toString(), null, ")", null);
 
@@ -50,14 +50,17 @@ public class AdvancedQueryBuilder {
    * Recursively construct a singular nested {@code RuleGroup} from the list of {@code FilterValue}s
    * provided.
    *
+   *
    * @throws AdvancedQueryException if any of the FilterValue set is invalid
+   *
    */
+  @SuppressWarnings("java:S3776") // Suppress "cognitive complexity" warning since this is inherently complex
   public AdvancedQuery.RuleGroup build() throws AdvancedQueryException {
     LOGGER.log(System.Logger.Level.DEBUG, "Building query from: " + filterValues);
 
     // wrap the whole thing in () to make sure it's a valid rule group
-    this.filterValues.addFirst(FIRST_OPEN_PAREN);
-    this.filterValues.add(LAST_CLOSE_PAREN);
+    this.filterValues.addFirst(firstOpenParen);
+    this.filterValues.add(lastCloseParen);
 
     AdvancedQuery.RuleGroup rootRuleGroup = startRuleGroup();
 

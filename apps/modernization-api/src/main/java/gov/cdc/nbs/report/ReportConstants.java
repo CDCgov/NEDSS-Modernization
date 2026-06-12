@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 public final class ReportConstants {
+  @SuppressWarnings("java:S115")  // Intentionally lowercase, b/c the DB values are lowercase
   public enum QueryCombinators {
     or,
     and
