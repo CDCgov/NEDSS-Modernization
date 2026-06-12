@@ -117,6 +117,11 @@ def execute(
     Conversion notes:
     * Keeps the SQL intentionally narrow and performs the SAS metric math in Python.
     * Returns a long-form table instead of reproducing the SAS PDF layout.
+    * Simplifies SQL queries to only include fields that are relevant to
+    *   calculating the metrics in the summary output. This gives parity
+    *   with the SAS "Run" functionality. If we wish to reach parity with
+    *   SAS "Export" functionality, the SQL queries will need to more closely
+    *   match those in PA_03.sas
     """
     valid_referral_bases_sql = _sql_string_list(VALID_REFERRAL_BASES)
 
