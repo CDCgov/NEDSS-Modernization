@@ -22,14 +22,14 @@ public class AdvancedFilterConfigurationMapper {
           "Cannot create advanced filter from non where clause builder filter");
     }
 
+    AdvancedQueryBuilder advQueryBuilder = new AdvancedQueryBuilder(filter.getFilterValues());
+    String query = advQueryBuilder.generateQueryString();
+
     AdvancedQuery.RuleGroup value = null;
-    String query = null;
     try {
-      value = new AdvancedQueryBuilder(filter.getFilterValues()).build();
+      value = advQueryBuilder.build();
     } catch (AdvancedQueryException e) {
       LOGGER.log(System.Logger.Level.WARNING, "Error occurred while building AdvancedQuery", e);
-
-      query = e.generateQueryString();
     }
 
     return new AdvancedFilterConfiguration(filter.getId(), value, query);

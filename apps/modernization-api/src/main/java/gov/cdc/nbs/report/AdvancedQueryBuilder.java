@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +22,31 @@ public class AdvancedQueryBuilder {
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues) {
     this.filterValues = new ArrayList<>(filterValues);
+  }
+
+  public String generateQueryString() {
+    return "WHERE "
+        + String.join(
+            " ",
+            filterValues.stream()
+                .sorted(Comparator.comparing(FilterValue::getSequenceNumber))
+                .map(
+                    f -> {
+                      String part;
+
+                      if (List.of("(", ")", "and", "or").contains(f.getOperator())) {
+                        part = f.getOperator();
+                      } else {
+                        part = "COL " + f.getOperator();
+                      }
+
+                      if (f.getValueTxt() != null) {
+                        part += " " + f.getValueTxt();
+                      }
+
+                      return part;
+                    })
+                .toList());
   }
 
   /** 0-based index of the current {@code FilterValue} being processed */
@@ -62,8 +88,7 @@ public class AdvancedQueryBuilder {
     AdvancedQuery.RuleGroup rootRuleGroup = startRuleGroup();
 
     if (hasNext()) {
-      throw new AdvancedQueryException(
-          "Extra FilterValue left over after parsing: " + peek(), filterValues);
+      throw new AdvancedQueryException("Extra FilterValue left over after parsing: " + peek());
     }
 
     AdvancedQuery query = simplify(rootRuleGroup);
@@ -82,7 +107,7 @@ public class AdvancedQueryBuilder {
 
     FilterValue openParen = peek();
     if (!isOpenParen(openParen)) {
-      throw new AdvancedQueryException("Expected paren to open rule group", filterValues);
+      throw new AdvancedQueryException("Expected paren to open rule group");
     }
     advance();
 
@@ -94,9 +119,9 @@ public class AdvancedQueryBuilder {
       firstRule = buildClause(next);
       advance();
     } else if (isCloseParen(next)) { // "(" ")"
-      throw new AdvancedQueryException("Invalid empty clause `()`", filterValues);
+      throw new AdvancedQueryException("Invalid empty clause `()`");
     } else {
-      throw new AdvancedQueryException("Expected new rule or rule group", filterValues);
+      throw new AdvancedQueryException("Expected new rule or rule group");
     }
 
     FilterValue combinator = peek();
@@ -106,7 +131,7 @@ public class AdvancedQueryBuilder {
       return new AdvancedQuery.RuleGroup(
           combinator.getId().toString(), ReportConstants.QueryCombinators.and, List.of(firstRule));
     } else if (!isCombinator(combinator))
-      throw new AdvancedQueryException("Expected 'and' or 'or'", filterValues);
+      throw new AdvancedQueryException("Expected 'and' or 'or'");
     ReportConstants.QueryCombinators firstCombinator =
         ReportConstants.QueryCombinators.valueOf(combinator.getOperator());
     advance();
@@ -117,8 +142,7 @@ public class AdvancedQueryBuilder {
     if (!hasNext()) throw new AdvancedQueryException("Expected closing paren");
 
     FilterValue closingParen = peek();
-    if (!isCloseParen(closingParen))
-      throw new AdvancedQueryException("Expected closing paren", filterValues);
+    if (!isCloseParen(closingParen)) throw new AdvancedQueryException("Expected closing paren");
     advance();
 
     return ruleGroup;
@@ -126,7 +150,7 @@ public class AdvancedQueryBuilder {
 
   // ( col = 1 AND -> next token should be "(" OR CLAUSE
   @SuppressWarnings(
-          "java:S3776") // Suppress "cognitive complexity" warning since this is inherently complex
+      "java:S3776") // Suppress "cognitive complexity" warning since this is inherently complex
   private AdvancedQuery.RuleGroup buildRuleGroup(
       ReportConstants.QueryCombinators combinator, AdvancedQuery previousRule)
       throws AdvancedQueryException {
@@ -147,8 +171,7 @@ public class AdvancedQueryBuilder {
         advance();
         FilterValue next = peek();
 
-        if (!isOperator(next))
-          throw new AdvancedQueryException("OPERATOR must follow CLAUSE", filterValues);
+        if (!isOperator(next)) throw new AdvancedQueryException("OPERATOR must follow CLAUSE");
 
         if (isCombinator(next)) {
           if (combinator.equals(ReportConstants.QueryCombinators.valueOf(next.getOperator()))) {
@@ -184,7 +207,7 @@ public class AdvancedQueryBuilder {
       } else if (isOpenParen(filterValue)) {
         rules.add(startRuleGroup());
       } else {
-        throw new AdvancedQueryException("') invalid after OPERATOR", filterValues);
+        throw new AdvancedQueryException("') invalid after OPERATOR");
       }
 
       if (isCloseParen(peek())) {
