@@ -83,6 +83,27 @@
   - 20081644
   - 88
 - !!python/tuple
+  - 901
+  - Badu, Erykah
+  - PSN20010719GA01
+  - 36 Days
+  - F
+  - '730'
+  - Middlesex County
+  - null
+  - 2024-10-22
+  - N
+  - N
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 2019-02-23
+  - '14'
+  - badu, erykah
+  - 10010719
+  - 36
+- !!python/tuple
   - 178
   - Badu, Erykah
   - PSN10024148GA01
@@ -146,6 +167,27 @@
   - 45435
   - 40
 - !!python/tuple
+  - 956
+  - Carey, Mariah
+  - PSN20051155GA01
+  - 95 Years
+  - F
+  - '300'
+  - Washington County
+  - '47443158'
+  - 2022-01-14
+  - N
+  - N
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 2023-07-17
+  - '14'
+  - carey, mariah
+  - 10051155
+  - 95
+- !!python/tuple
   - 617
   - Carey, Mariah
   - PSN30038299GA01
@@ -203,7 +245,7 @@
   - null
   - null
   - 'No'
-  - 2019-07-10
+  - null
   - '14'
   - carey, mariah
   - 10085577
@@ -287,7 +329,7 @@
   - 'No'
   - 'Yes'
   - 'No'
-  - null
+  - 2024-05-10
   - '14'
   - glasper, robert
   - 20046424
@@ -384,7 +426,7 @@
   - F
   - '720'
   - Middlesex County
-  - null
+  - '23090980'
   - 2020-03-29
   - N
   - N
@@ -405,7 +447,7 @@
   - F
   - '790'
   - Middlesex County
-  - null
+  - '57083936'
   - 2024-09-03
   - N
   - N
@@ -434,7 +476,7 @@
   - 'No'
   - 'No'
   - 'Yes'
-  - 2020-08-06
+  - null
   - '14'
   - glasper, robert
   - 85146
@@ -455,7 +497,7 @@
   - 'Yes'
   - 'No'
   - 'No'
-  - null
+  - 2021-10-17
   - '14'
   - glasper, robert
   - 20082726
@@ -573,7 +615,7 @@
   - F
   - '710'
   - Washington County
-  - '73106587'
+  - null
   - 2024-05-20
   - N
   - N
@@ -581,7 +623,7 @@
   - 'Yes'
   - 'No'
   - 'No'
-  - 2020-06-07
+  - null
   - '14'
   - scott, jill
   - 20096232
