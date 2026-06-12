@@ -1,7 +1,7 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult, Table
 
-Pa03Row = tuple[str, str | None, str | None, int | None, float | None]
+Pa03Row = tuple[str, str | None, str | None, int | None, str | None]
 
 PARTNER_BASES = {
     'P1 - Partner, Sex',
@@ -100,10 +100,10 @@ def _ips_outcome_counter(rows: list[tuple], referral_bases: set[str]) -> dict[st
     return {code: len(ids) for code, ids in outcome_ids.items()}
 
 
-def _ratio(numerator: int, denominator: int) -> float | None:
+def _ratio(numerator: int, denominator: int) -> str | None:
     if denominator == 0:
         return None
-    return round(numerator / denominator, 4)
+    return f'{numerator / denominator:.2f}'
 
 
 def execute(
