@@ -29,9 +29,65 @@ Applies to both variants:
 
 #### Partners and Clusters Initiated
 
+- Total Period Partners, Int
+- Total Partners Initiated, Int
+  - From OI, Int
+  - From RI, Int
+- Contact Index, Decimal
+- Cases w/ No Partners, Int With %
+- Total Clusters Initiated, Int
+  - Cluster Index, Decimal
+  - Cases w/ No Clusters, Int With %
+
 #### Dispositions - New Partners and Clusters
 
+- New partners Examined, Int With %
+  - Preventative RX, Int With %
+  - Refused Prev. RX, Int With %
+  - Infected, RX'D, Int With %
+  - Infected, No RX, Int With %
+  - Not Infected, Int With %
+- New partners No Exam, Int With %
+  - Insufficient Info, Int With %
+  - Unable To Locate, Int With %
+  - Refused Exam, Int With %
+  - OOJ, Int With %
+  - Other, Int With %
+  - Domestic Violence Risk, Int With %
+  - Patient Deceased, Int With %
+  - Previous Prev RX, Int With %
+- Previous RX, Int With %
+- Open, Int With %
+- New Clusters Examined, Int With %
+  - Preventative RX, Int With %
+  - Refused Prev. RX, Int With %
+  - Infected, RX'D, Int With %
+  - Infected, No RX, Int With %
+  - Not Infected, Int With %
+- New Clusters No Exam, Int With %
+  - Insufficient Info, Int With %
+  - Unable To Locate, Int With %
+  - Refused Exam, Int With %
+  - OOJ, Int With %
+  - Other, Int With %
+  - Domestic Violence Risk, Int With %
+  - Patient Deceased, Int With %
+  - Previous Prev RX, Int With %
+- Previous RX, Int With %
+- Open, Int With %
+
 #### Speed of Exam - Partners and Clusters
+
+- New Partners Examined, Int
+  - Within 3 Days, Int With %
+  - Within 5 Days, Int With %
+  - Within 7 Days, Int With %
+  - Within 14 Days, Int With %
+- New Clusters Examined, Int
+  - Within 3 Days, Int With %
+  - Within 5 Days, Int With %
+  - Within 7 Days, Int With %
+  - Within 14 Days, Int With %
 
 ## Case Management - HIV
 
@@ -63,13 +119,13 @@ Applies to both variants:
 
 - Total Period Partners, Int
 - Total Partners Initiated, Int
-  - From Oi, Int
-  - From Ri, Int
+  - From OI, Int
+  - From RI, Int
 - Contact Index, Decimal
-- Cases W/No Partners, Int With %
+- Cases w/ No Partners, Int With %
 - Total Clusters Initiated, Int
-  - Cluster Index, Decimal (?)
-  - Cases W/No Clusters, Int
+  - Cluster Index, Decimal
+  - Cases w/ No Clusters, Int With %
 
 #### Dispositions - New Partners and Clusters
 
@@ -84,7 +140,7 @@ Applies to both variants:
   - Insufficient Info, Int With %
   - Unable To Locate, Int With %
   - Refused Exam, Int With %
-  - Ooj, Int With %
+  - OOJ, Int With %
   - Other, Int With %
   - Domestic Violence Risk, Int With %
   - Patient Deceased, Int With %
@@ -101,7 +157,7 @@ Applies to both variants:
   - Insufficient Info, Int With %
   - Unable To Locate, Int With %
   - Refused Exam, Int With %
-  - Ooj, Int With %
+  - OOJ, Int With %
   - Other, Int With %
   - Domestic Violence Risk, Int With %
   - Patient Deceased, Int With %
