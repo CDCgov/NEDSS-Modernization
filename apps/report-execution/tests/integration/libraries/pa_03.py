@@ -128,7 +128,7 @@ class TestIntegrationPa03Library:
 
         for row in data[4:6]:
             assert row[3] is None
-            assert row[4] is None or isinstance(row[4], str)
+            assert row[4] is None or isinstance(row[4], float)
 
         for row in data[6:10]:
             assert isinstance(row[3], int)
@@ -137,7 +137,7 @@ class TestIntegrationPa03Library:
 
         for row in data[10:12]:
             assert row[3] is None
-            assert row[4] is None or isinstance(row[4], str)
+            assert row[4] is None or isinstance(row[4], float)
 
         for row in data[12:]:
             assert isinstance(row[3], int)
