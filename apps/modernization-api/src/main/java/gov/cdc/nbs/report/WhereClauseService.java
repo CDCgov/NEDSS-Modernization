@@ -98,16 +98,20 @@ public class WhereClauseService {
       activeClauses.add(advWhereFragment);
     }
 
-    String permissionFragment = buildPermissionFragment(reportConfig);
-    if (!permissionFragment.isBlank()) {
-      activeClauses.add(permissionFragment);
-    }
-
     boolean hasLabResultVal = hasLabResultVal(reportConfig, executionRequest.advancedFilter());
     if (hasLabResultVal) {
       String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
       return LAB_RESULT_QUERY_VAL.formatted(
-          rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
+          rdbDataSource,
+          SQL_WHERE
+              + String.join(SQL_AND, activeClauses)
+              + SQL_AND
+              + String.join(SQL_AND, buildPermissionFragment(reportConfig)));
+    }
+
+    String permissionFragment = buildPermissionFragment(reportConfig);
+    if (!permissionFragment.isBlank()) {
+      activeClauses.add(permissionFragment);
     }
 
     if (activeClauses.isEmpty()) {
