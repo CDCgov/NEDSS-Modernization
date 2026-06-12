@@ -54,6 +54,13 @@ $header-height: 6rem;
 
     background-color: colors.$base-white;
 
+    .title {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        align-items: baseline;
+    }
+
     .actions {
         flex-shrink: 0;
 
