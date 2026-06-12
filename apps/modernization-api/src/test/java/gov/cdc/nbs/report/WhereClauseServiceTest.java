@@ -106,7 +106,7 @@ class WhereClauseServiceTest {
   }
 
   private AdvancedQuery.RuleGroup createRuleGroup(
-          String id, ReportConstants.QueryCombinators combinator, List<AdvancedQuery> rules) {
+      String id, ReportConstants.QueryCombinators combinator, List<AdvancedQuery> rules) {
     return new AdvancedQuery.RuleGroup(id, combinator, rules);
   }
 
@@ -644,7 +644,8 @@ class WhereClauseServiceTest {
     }
 
     AdvancedQuery.RuleGroup ruleGroup =
-        createRuleGroup(UUID.randomUUID().toString(), ReportConstants.QueryCombinators.and, selectedRules);
+        createRuleGroup(
+            UUID.randomUUID().toString(), ReportConstants.QueryCombinators.and, selectedRules);
     AdvancedFilterRequest advancedFilterRequest = createAdvancedFilterRequest(1L, ruleGroup);
 
     AdvancedFilterConfiguration filterConfiguration =
