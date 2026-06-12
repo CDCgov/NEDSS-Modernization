@@ -33,17 +33,65 @@ class TestIntegrationPa03Library:
 
         assert data[:15] == [
             ('Total Number of Cases', None, None, data[0][3], None),
-            ('Total Number of Cases', "Total No. Partners Init'd", None, data[1][3], None),
-            ('Total Number of Cases', "Total No. Social Contacts Init'd", None, data[2][3], None),
-            ('Total Number of Cases', "Total No. Associates Init'd", None, data[3][3], None),
+            (
+                'Total Number of Cases',
+                "Total No. Partners Init'd",
+                None,
+                data[1][3],
+                None,
+            ),
+            (
+                'Total Number of Cases',
+                "Total No. Social Contacts Init'd",
+                None,
+                data[2][3],
+                None,
+            ),
+            (
+                'Total Number of Cases',
+                "Total No. Associates Init'd",
+                None,
+                data[3][3],
+                None,
+            ),
             ('Total Number of Cases', 'Contact Index', None, None, data[4][4]),
             ('Total Number of Cases', 'Cluster Index', None, None, data[5][4]),
             ('No. Cases w/Internet Follow-up', None, None, data[6][3], None),
-            ('No. Cases w/Internet Follow-up', 'Total No. Partners', None, data[7][3], None),
-            ('No. Cases w/Internet Follow-up', 'Total No. Social Contacts', None, data[8][3], None),
-            ('No. Cases w/Internet Follow-up', 'Total No. Associates', None, data[9][3], None),
-            ('No. Cases w/Internet Follow-up', 'IPS Contact Index', None, None, data[10][4]),
-            ('No. Cases w/Internet Follow-up', 'IPS Cluster Index', None, None, data[11][4]),
+            (
+                'No. Cases w/Internet Follow-up',
+                'Total No. Partners',
+                None,
+                data[7][3],
+                None,
+            ),
+            (
+                'No. Cases w/Internet Follow-up',
+                'Total No. Social Contacts',
+                None,
+                data[8][3],
+                None,
+            ),
+            (
+                'No. Cases w/Internet Follow-up',
+                'Total No. Associates',
+                None,
+                data[9][3],
+                None,
+            ),
+            (
+                'No. Cases w/Internet Follow-up',
+                'IPS Contact Index',
+                None,
+                None,
+                data[10][4],
+            ),
+            (
+                'No. Cases w/Internet Follow-up',
+                'IPS Cluster Index',
+                None,
+                None,
+                data[11][4],
+            ),
             ('Total No. IPS Partners', None, None, data[12][3], None),
             ('Total No. IPS Social', None, None, data[13][3], None),
             ('Total No. IPS Associates', None, None, data[14][3], None),
@@ -98,9 +146,15 @@ class TestIntegrationPa03Library:
 
         row_map = {(row[0], row[1], row[2]): row for row in data}
 
-        total_partners = row_map[('No. Cases w/Internet Follow-up', 'Total No. Partners', None)][3]
-        total_social = row_map[('No. Cases w/Internet Follow-up', 'Total No. Social Contacts', None)][3]
-        total_associates = row_map[('No. Cases w/Internet Follow-up', 'Total No. Associates', None)][3]
+        total_partners = row_map[
+            ('No. Cases w/Internet Follow-up', 'Total No. Partners', None)
+        ][3]
+        total_social = row_map[
+            ('No. Cases w/Internet Follow-up', 'Total No. Social Contacts', None)
+        ][3]
+        total_associates = row_map[
+            ('No. Cases w/Internet Follow-up', 'Total No. Associates', None)
+        ][3]
         total_ips_partners = row_map[('Total No. IPS Partners', None, None)][3]
         total_ips_social = row_map[('Total No. IPS Social', None, None)][3]
         total_ips_associates = row_map[('Total No. IPS Associates', None, None)][3]
@@ -110,10 +164,14 @@ class TestIntegrationPa03Library:
         assert total_ips_associates <= total_associates
 
         sexual_outcome_total = sum(
-            row[3] for row in data if row[0] == 'Outcomes' and row[1] == 'Sexual Contact'
+            row[3]
+            for row in data
+            if row[0] == 'Outcomes' and row[1] == 'Sexual Contact'
         )
         social_outcome_total = sum(
-            row[3] for row in data if row[0] == 'Outcomes' and row[1] == 'Social Contact'
+            row[3]
+            for row in data
+            if row[0] == 'Outcomes' and row[1] == 'Social Contact'
         )
         associate_outcome_total = sum(
             row[3] for row in data if row[0] == 'Outcomes' and row[1] == 'Associate'
