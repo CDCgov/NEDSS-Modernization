@@ -52,8 +52,6 @@ public class AdvancedQueryBuilder {
    *
    * @throws AdvancedQueryException if any of the FilterValue set is invalid
    */
-  @SuppressWarnings(
-      "java:S3776") // Suppress "cognitive complexity" warning since this is inherently complex
   public AdvancedQuery.RuleGroup build() throws AdvancedQueryException {
     LOGGER.log(System.Logger.Level.DEBUG, "Building query from: " + filterValues);
 
@@ -127,6 +125,8 @@ public class AdvancedQueryBuilder {
   }
 
   // ( col = 1 AND -> next token should be "(" OR CLAUSE
+  @SuppressWarnings(
+          "java:S3776") // Suppress "cognitive complexity" warning since this is inherently complex
   private AdvancedQuery.RuleGroup buildRuleGroup(
       ReportConstants.QueryCombinators combinator, AdvancedQuery previousRule)
       throws AdvancedQueryException {
