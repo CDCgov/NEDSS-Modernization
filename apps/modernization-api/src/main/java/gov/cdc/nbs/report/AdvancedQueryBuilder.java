@@ -13,9 +13,11 @@ public class AdvancedQueryBuilder {
   private final ArrayList<FilterValue> filterValues;
 
   private final FilterValue FIRST_OPEN_PAREN =
-      new FilterValue(1L, null, 0, ReportConstants.FilterValueType.OPERATOR.toString(), null, "(", null);
+      new FilterValue(
+          1L, null, 0, ReportConstants.FilterValueType.OPERATOR.toString(), null, "(", null);
   private final FilterValue LAST_CLOSE_PAREN =
-      new FilterValue(2L, null, 1000, ReportConstants.FilterValueType.OPERATOR.toString(), null, ")", null);
+      new FilterValue(
+          2L, null, 1000, ReportConstants.FilterValueType.OPERATOR.toString(), null, ")", null);
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues) {
     this.filterValues = new ArrayList<>(filterValues);

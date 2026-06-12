@@ -7,8 +7,6 @@ import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.FilterType;
-import java.util.Arrays;
-import java.util.List;
 
 public class AdvancedFilterConfigurationMapper {
   private static final System.Logger LOGGER =
