@@ -1,8 +1,8 @@
 package gov.cdc.nbs.report.models;
 
-import static org.junit.Assert.assertThrows;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AdvancedFilterConfigurationTest {
   @Test
