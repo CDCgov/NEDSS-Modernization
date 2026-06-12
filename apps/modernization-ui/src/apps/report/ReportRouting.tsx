@@ -16,8 +16,7 @@ const routing: RouteObject[] = [
                 element: (
                     <Permitted
                         permission={permitsAny(permissions.reports.run, permissions.reports.export)}
-                        fallback={<RedirectHome />}
-                    >
+                        fallback={<RedirectHome />}>
                         <ReportRunPage />
                     </Permitted>
                 ),
@@ -25,7 +24,7 @@ const routing: RouteObject[] = [
             {
                 // data source and sections will be sibings to configuration in the future
                 path: 'management/configuration',
-                element: <PermittedLayout permission="REPORTADMIN-SYSTEM" />,
+                element: <PermittedLayout permission={permissions.system.report} />,
                 children: [
                     {
                         path: 'add',

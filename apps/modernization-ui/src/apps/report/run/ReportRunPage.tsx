@@ -37,6 +37,7 @@ const ReportRunPage = () => {
     const [hasResult, setHasResult] = useState<boolean>(false);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [wasExported, setWasExported] = useState<boolean>(true);
     const { openNewTab } = useNewTab();
     const config = useReportConfiguration({ reportUid, dataSourceUid, handleError: setError });
 
@@ -90,6 +91,7 @@ const ReportRunPage = () => {
             advancedFilter?: AdvancedFilterRequest,
             columnUids?: number[]
         ) => {
+            setWasExported(isExport)
             setSubmitting(true);
             setError('');
             const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
@@ -129,6 +131,7 @@ const ReportRunPage = () => {
         <ReportResultPage
             config={config}
             resultLoading={!hasResult}
+            wasExported={wasExported}
             error={error}
             handleRefineReport={() => setHasResult(false)}
         />
