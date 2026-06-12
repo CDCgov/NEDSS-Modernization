@@ -9,6 +9,11 @@ public final class ReportConstants {
     and
   }
 
+  public enum FilterValueType {
+    OPERATOR,
+    CLAUSE
+  }
+
   public static final String BASIC_FILTER_PREFIX = "BAS_";
   public static final String ADV_FILTER_TYPE = "ADV_WCB";
   public static final String BAS_DAYS = "BAS_DAYS";

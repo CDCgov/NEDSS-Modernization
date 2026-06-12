@@ -12,10 +12,7 @@ import java.util.List;
 
 public class AdvancedFilterConfigurationMapper {
   private static final System.Logger LOGGER =
-      System.getLogger(AdvancedFilterConfiguration.class.getName());
-
-  private static final List<String> KNOWN_OPERATORS =
-      Arrays.asList("GE", "LE", "GT", "LT", "BW", "CO", "SW", "EQ", "NE", "IN", "NN");
+      System.getLogger(AdvancedFilterConfigurationMapper.class.getName());
 
   private AdvancedFilterConfigurationMapper() {}
 

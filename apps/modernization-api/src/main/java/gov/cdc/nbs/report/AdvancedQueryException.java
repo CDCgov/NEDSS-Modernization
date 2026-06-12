@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Getter;
 
 public class AdvancedQueryException extends Exception {
-  @Getter private List<FilterValue> filterValues;
+  @Getter private transient List<FilterValue> filterValues;
 
   public AdvancedQueryException(String message) {
     super(message);

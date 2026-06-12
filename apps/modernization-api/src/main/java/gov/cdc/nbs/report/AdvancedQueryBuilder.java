@@ -13,9 +13,9 @@ public class AdvancedQueryBuilder {
   private final ArrayList<FilterValue> filterValues;
 
   private final FilterValue FIRST_OPEN_PAREN =
-      new FilterValue(1L, null, 0, "OPERATOR", null, "(", null);
+      new FilterValue(1L, null, 0, ReportConstants.FilterValueType.OPERATOR.toString(), null, "(", null);
   private final FilterValue LAST_CLOSE_PAREN =
-      new FilterValue(2L, null, 1000, "OPERATOR", null, ")", null);
+      new FilterValue(2L, null, 1000, ReportConstants.FilterValueType.OPERATOR.toString(), null, ")", null);
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues) {
     this.filterValues = new ArrayList<>(filterValues);
@@ -122,7 +122,7 @@ public class AdvancedQueryBuilder {
     return ruleGroup;
   }
 
-  /// ( col = 1 AND -> next token should be "(" OR CLAUSE
+  // ( col = 1 AND -> next token should be "(" OR CLAUSE
   private AdvancedQuery.RuleGroup buildRuleGroup(
       ReportConstants.QueryCombinators combinator, AdvancedQuery previousRule)
       throws AdvancedQueryException {
@@ -216,9 +216,9 @@ public class AdvancedQueryBuilder {
       AdvancedQuery firstRule = ruleGroup.rules().getFirst();
 
       // if it's a RuleGroup
-      if (firstRule instanceof AdvancedQuery.RuleGroup) {
+      if (firstRule instanceof AdvancedQuery.RuleGroup rg) {
         //  We can do away with the outer RuleGroup
-        return simplify((AdvancedQuery.RuleGroup) firstRule);
+        return simplify(rg);
       } else {
         //  Similarly if it's a Rule, except terminate the sequence
         return firstRule;
@@ -257,11 +257,11 @@ public class AdvancedQueryBuilder {
   }
 
   private boolean isClause(FilterValue fv) {
-    return fv.getValueType().equals("CLAUSE");
+    return fv.getValueType().equals(ReportConstants.FilterValueType.CLAUSE.toString());
   }
 
   private boolean isOperator(FilterValue fv) {
-    return fv.getValueType().equals("OPERATOR");
+    return fv.getValueType().equals(ReportConstants.FilterValueType.OPERATOR.toString());
   }
 
   private boolean isCombinator(FilterValue fv) {
