@@ -27,10 +27,6 @@ def execute(
     * The output is sorted by PATIENT_NAME, DIAGNOSIS, FL_FUP_EXAM_DT, and
     INVESTIGATION_KEY (the last is used only as a tie‑breaker and does not appear
     in the final output). SAS does not have a tiebreaker value.
-    * The original SAS code had an error where it would calculate DAYS and DAYS1
-    using PATIENT_ID. This always leads to values of 0 because PATIENT_ID is calculated
-    from PATIENT_LOCAL_ID which is unique to each row. This script correctly calculates
-    DAYS and DAYS1 at the PATIENT_NAME and DIAGNOSIS level.
     """
     if not isinstance(library_params, dict):
         raise ValueError(f"""
@@ -114,7 +110,7 @@ def execute(
     with_prev AS (
         SELECT *,
             LAG(FL_FUP_EXAM_DT) OVER (
-                PARTITION BY PATIENT_NAME, DIAGNOSIS
+                PARTITION BY PATIENT_LOCAL_ID, DIAGNOSIS
                 ORDER BY FL_FUP_EXAM_DT, INVESTIGATION_KEY
             ) AS prev_date
         FROM with_fup_dt
@@ -131,19 +127,26 @@ def execute(
     clustered_rows AS (
         SELECT *,
             SUM(new_cluster) OVER (
-                PARTITION BY PATIENT_NAME, DIAGNOSIS
+                PARTITION BY PATIENT_LOCAL_ID, DIAGNOSIS
                 ORDER BY FL_FUP_EXAM_DT, INVESTIGATION_KEY
             ) AS cluster_id
         FROM cluster_starts
     ),
     days_calc AS (
         SELECT *,
+            -- DAYS: difference to previous date in descending order (next newer date)
             LAG(FL_FUP_EXAM_DT) OVER (
-                PARTITION BY PATIENT_NAME, DIAGNOSIS, cluster_id
+                PARTITION BY PATIENT_LOCAL_ID, DIAGNOSIS, cluster_id
                 ORDER BY FL_FUP_EXAM_DT DESC, INVESTIGATION_KEY
             ) AS lag_desc,
+            -- DAYS1: difference to previous date in ascending order (next older date)
+            LAG(FL_FUP_EXAM_DT) OVER (
+                PARTITION BY PATIENT_LOCAL_ID, DIAGNOSIS, cluster_id
+                ORDER BY FL_FUP_EXAM_DT ASC, INVESTIGATION_KEY
+            ) AS lag_asc,
+            -- To identify endpoints (first or last row in cluster)
             LEAD(FL_FUP_EXAM_DT) OVER (
-                PARTITION BY PATIENT_NAME, DIAGNOSIS, cluster_id
+                PARTITION BY PATIENT_LOCAL_ID, DIAGNOSIS, cluster_id
                 ORDER BY FL_FUP_EXAM_DT ASC, INVESTIGATION_KEY
             ) AS lead_asc
         FROM clustered_rows
@@ -151,23 +154,23 @@ def execute(
     with_diffs AS (
         SELECT *,
             DATEDIFF(day, lag_desc, FL_FUP_EXAM_DT) AS DAYS,
-            DATEDIFF(day, FL_FUP_EXAM_DT, lead_asc) AS DAYS1,
-            COUNT(*) OVER (PARTITION BY PATIENT_NAME, DIAGNOSIS, cluster_id) AS cluster_size
+            DATEDIFF(day, lag_asc, FL_FUP_EXAM_DT) AS DAYS1
         FROM days_calc
     ),
     flagged AS (
         SELECT *,
             CASE
-                WHEN (DAYS >= -{days} OR lag_desc IS NULL)
-                 AND (DAYS1 <= {days} OR lead_asc IS NULL)
-            THEN 1 ELSE 0
+                -- Keep only rows that are not first or last in the cluster (both lag_asc and lead_asc exist)
+                WHEN lag_asc IS NOT NULL AND lead_asc IS NOT NULL
+                 AND (DAYS >= -{days}) AND (DAYS1 <= {days})
+                THEN 1 ELSE 0
             END AS meets_condition
         FROM with_diffs
     ),
     group_counts AS (
-        SELECT PATIENT_NAME, DIAGNOSIS, cluster_id, SUM(meets_condition) AS cnt
+        SELECT PATIENT_LOCAL_ID, DIAGNOSIS, cluster_id, SUM(meets_condition) AS cnt
         FROM flagged
-        GROUP BY PATIENT_NAME, DIAGNOSIS, cluster_id
+        GROUP BY PATIENT_LOCAL_ID, DIAGNOSIS, cluster_id
     )
     SELECT
         f.PATIENT_NAME,
@@ -182,7 +185,7 @@ def execute(
         g.cnt AS COUNT
     FROM flagged f
     INNER JOIN group_counts g
-        ON f.PATIENT_NAME = g.PATIENT_NAME
+        ON f.PATIENT_LOCAL_ID = g.PATIENT_LOCAL_ID
         AND f.DIAGNOSIS = g.DIAGNOSIS
         AND f.cluster_id = g.cluster_id
     WHERE f.meets_condition = 1 AND g.cnt > 1

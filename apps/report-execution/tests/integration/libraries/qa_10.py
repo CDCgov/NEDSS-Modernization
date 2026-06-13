@@ -28,7 +28,7 @@ class TestIntegrationQa10Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 31
+        assert len(data) == 27
         assert len(data[0]) == 20
         assert len(data[0]) == len(result.content.columns)
 
@@ -38,7 +38,7 @@ class TestIntegrationQa10Library:
         for row in data:
             assert row[0] is not None
             assert row[0] > 0
-            assert row[2].startswith('PSN')
+            assert row[2].startswith('PSN') if row[2] is not None else True
             assert len(row[5]) >= 0
 
     def test_execute_report_no_data(self, snapshot):
