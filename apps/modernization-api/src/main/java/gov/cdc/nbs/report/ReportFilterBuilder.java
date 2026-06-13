@@ -60,9 +60,8 @@ public class ReportFilterBuilder {
               .build();
     } else {
       filter =
-          // TODO - why aren't we finding the filter?
           report.getReportFilters().stream()
-              .filter(f -> f.getId() == filterRequest.id())
+              .filter(f -> f.getId().equals(filterRequest.id()))
               .findFirst()
               .orElseThrow(
                   () ->

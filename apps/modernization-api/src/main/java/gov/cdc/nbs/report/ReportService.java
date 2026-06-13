@@ -30,12 +30,12 @@ import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
-import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,7 +51,6 @@ public class ReportService {
   private final ReportRepository reportRepository;
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
-  private final ReportFilterRepository reportFilterRepository;
   private final ReportSectionRepository reportSectionRepository;
   private final ReportMapper reportMapper;
 
@@ -64,7 +63,6 @@ public class ReportService {
       final ReportRepository reportRepository,
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
-      final ReportFilterRepository reportFilterRepository,
       final ReportSectionRepository reportSectionRepository,
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig,
@@ -74,7 +72,6 @@ public class ReportService {
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
-    this.reportFilterRepository = reportFilterRepository;
     this.reportSectionRepository = reportSectionRepository;
     this.reportMapper = reportMapper;
 
@@ -97,23 +94,7 @@ public class ReportService {
             .findById(existingReportId)
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
 
-    Report savedReport = upsertReport(request, user, existingReport);
-
-    // List<ReportFilter> existingFilters = savedReport.getReportFilters();
-
-    // List<ReportFilter> filtersToDelete =
-    //     existingFilters.stream()
-    //         .filter(
-    //             f ->
-    //                 request.filterRequests().stream()
-    //                     .noneMatch(fr -> fr.id() != null && fr.id().equals(f.getId())))
-    //         .toList();
-
-    // if (!filtersToDelete.isEmpty()) {
-    //   reportFilterRepository.deleteAll(filtersToDelete);
-    // }
-
-    return savedReport;
+    return upsertReport(request, user, existingReport);
   }
 
   private Report upsertReport(
@@ -125,8 +106,12 @@ public class ReportService {
             request, user, metadata.reportLibrary, metadata.dataSource, existingReport);
 
     List<ReportFilter> reportFilters =
-        request.filterRequests().stream().map(f -> reportFilterBuilder.build(f, report)).toList();
-    report.setReportFilters(reportFilters);
+        request.filterRequests().stream()
+            .map(f -> reportFilterBuilder.build(f, report))
+            .collect(Collectors.toList()); // needs to be modifiable
+    // For orphan detection/removal to work, need to keep the same container
+    report.getReportFilters().clear();
+    report.getReportFilters().addAll(reportFilters);
 
     return reportRepository.save(report);
   }
