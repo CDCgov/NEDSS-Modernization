@@ -9,8 +9,7 @@ def execute(
     library_params: dict,
     **kwargs,
 ):
-    """
-    QA07: Duplicate Cases. The Report will consist of 3 reports, identical
+    """QA07: Duplicate Cases. The Report will consist of 3 reports, identical
     except for the number of days used, and will display in the NBS Report Module as:
     •	QA07 - Duplicate Cases (30 Days)
     •	QA07 - Duplicate Cases (60 Days)
@@ -80,7 +79,8 @@ def execute(
         FROM subset s
         INNER JOIN inv ON s.INVESTIGATION_KEY = inv.INVESTIGATION_KEY
         LEFT JOIN lab_max lab ON s.INVESTIGATION_KEY = lab.INVESTIGATION_KEY
-        LEFT JOIN RDB.dbo.MORBIDITY_REPORT_EVENT mre ON s.INVESTIGATION_KEY = mre.INVESTIGATION_KEY
+        LEFT JOIN RDB.dbo.MORBIDITY_REPORT_EVENT mre
+        ON s.INVESTIGATION_KEY = mre.INVESTIGATION_KEY
         LEFT JOIN RDB.dbo.MORBIDITY_REPORT mr ON mre.MORB_RPT_KEY = mr.MORB_RPT_KEY
         WHERE s.INV_LOCAL_ID IS NOT NULL
           AND s.DIAGNOSIS IS NOT NULL
@@ -98,13 +98,18 @@ def execute(
             COALESCE(
                 ORIG_FL_FUP_EXAM_DT,
                 CASE
-                    WHEN REFERRAL_BASIS = 'T1 - Positive Test' THEN SPECIMEN_COLLECTION_DT
-                    WHEN REFERRAL_BASIS = 'T2 - Morbidity Report' THEN DIAGNOSIS_DT
+                    WHEN REFERRAL_BASIS = 'T1 - Positive Test'
+                    THEN SPECIMEN_COLLECTION_DT
+                    WHEN REFERRAL_BASIS = 'T2 - Morbidity Report'
+                    THEN DIAGNOSIS_DT
                 END
             ) AS FL_FUP_EXAM_DT
         FROM derived
         WHERE ORIG_FL_FUP_EXAM_DT IS NOT NULL
-           OR (REFERRAL_BASIS = 'T1 - Positive Test' AND SPECIMEN_COLLECTION_DT IS NOT NULL)
+           OR (
+               REFERRAL_BASIS = 'T1 - Positive Test'
+               AND SPECIMEN_COLLECTION_DT IS NOT NULL
+            )
            OR (REFERRAL_BASIS = 'T2 - Morbidity Report' AND DIAGNOSIS_DT IS NOT NULL)
     ),
     days_desc AS (

@@ -45,7 +45,7 @@ class TestIntegrationQa07Library:
             'PATIENTID',
             'DAYS',
             'DAYS1',
-            'COUNT'
+            'COUNT',
         ]
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
