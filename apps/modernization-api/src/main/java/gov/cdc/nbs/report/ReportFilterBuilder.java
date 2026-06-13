@@ -29,59 +29,93 @@ public class ReportFilterBuilder {
     this.idGenerator = idGenerator;
   }
 
-  public ReportFilter build(UpsertFilterRequest filter, Report report) {
-    LocalDateTime now = LocalDateTime.now();
-
+  public ReportFilter build(UpsertFilterRequest filterRequest, Report report) {
     DataSourceColumn dataSourceColumn = null;
-    if (filter.columnUid() != null) {
+    if (filterRequest.columnUid() != null) {
       dataSourceColumn =
           dataSourceColumnRepository
-              .findById(filter.columnUid())
+              .findById(filterRequest.columnUid())
               .orElseThrow(
                   () ->
                       new IllegalArgumentException(
-                          "Data source column not found for UID: " + filter.columnUid()));
+                          "Data source column not found for UID: " + filterRequest.columnUid()));
     }
 
     FilterCode filterCode =
         filterCodeRepository
-            .findById(filter.filterCodeUid())
+            .findById(filterRequest.filterCodeUid())
             .orElseThrow(
                 () ->
                     new IllegalArgumentException(
-                        "Filter code not found for UID: " + filter.filterCodeUid()));
+                        "Filter code not found for UID: " + filterRequest.filterCodeUid()));
 
-    ReportFilter.ReportFilterBuilder filterBuilder =
-        ReportFilter.builder().report(report).filterCode(filterCode).statusCd(Status.ACTIVE_CODE);
+    ReportFilter filter = null;
+    if (filterRequest.id() == null) {
+      filter =
+          ReportFilter.builder()
+              .report(report)
+              .filterCode(filterCode)
+              .statusCd(Status.ACTIVE_CODE)
+              .id(generateReportFilterId())
+              .build();
+    } else {
+      filter =
+          report.getReportFilters().stream()
+              .filter(f -> f.getId().equals(filterRequest.id()))
+              .findFirst()
+              .orElseThrow(
+                  () ->
+                      new IllegalArgumentException(
+                          "Unknown report filter cannot be updated: %s"
+                              .formatted(filterRequest.id())));
+      if (filter.getFilterCode().getId() != filterCode.getId()) {
+        throw new IllegalArgumentException(
+            "Cannot update filter type on an existing filter. Delete the filter and create a new one to change the type");
+      }
+    }
 
     ValueCountCalculator.ReportValueCounts valueCounts =
-        ValueCountCalculator.fromFilterRequest(filter);
-    filterBuilder.minValueCnt(valueCounts.minValueCount());
-    filterBuilder.maxValueCnt(valueCounts.maxValueCount());
+        ValueCountCalculator.fromFilterRequest(filterRequest);
+    filter.setMinValueCnt(valueCounts.minValueCount());
+    filter.setMaxValueCnt(valueCounts.maxValueCount());
 
     if (dataSourceColumn != null) {
-      filterBuilder.dataSourceColumn(dataSourceColumn);
+      filter.setDataSourceColumn(dataSourceColumn);
     }
 
-    if (filter.isRequired()) {
-      filterBuilder.filterValidation(
-          ReportFilterValidation.builder()
-              .reportFilterInd('Y')
-              .statusCd(Status.ACTIVE_CODE)
-              .statusTime(now)
-              .build());
-    } else {
-      //  Delete corresponding filter validation record if it exists
-      filterBuilder.filterValidation(null);
+    handleReportFilterValidation(filter, filterRequest);
+
+    return filter;
+  }
+
+  private void handleReportFilterValidation(ReportFilter filter, UpsertFilterRequest request) {
+    // Delete corresponding filter validation record if it exists
+    if (!request.isRequired()) {
+      filter.setFilterValidation(null);
+      return;
     }
 
-    if (filter.id() == null) {
-      filterBuilder.id(generateReportFilterId());
-    } else {
-      filterBuilder.id(filter.id());
+    // no changes to make
+    ReportFilterValidation origValidation = filter.getFilterValidation();
+    if (origValidation != null) {
+      if (!Character.valueOf('Y').equals(origValidation.getReportFilterInd())) {
+        origValidation.setReportFilterInd('Y');
+      }
+      return;
     }
 
-    return filterBuilder.build();
+    // Net new validation
+    LocalDateTime now = LocalDateTime.now();
+    ReportFilterValidation validation =
+        ReportFilterValidation.builder()
+            .id(generateReportFilterId())
+            .reportFilter(filter)
+            .reportFilterInd('Y')
+            .statusCd(Status.ACTIVE_CODE)
+            .statusTime(now)
+            .build();
+    filter.setFilterValidation(validation);
+    return;
   }
 
   private Long generateReportFilterId() {

@@ -34,7 +34,11 @@ public class Report {
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibrary;
 
-  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
+  @OneToMany(
+      mappedBy = "report",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<ReportFilter> reportFilters;
 
   @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
@@ -81,7 +85,7 @@ public class Report {
   @Column(name = "category", length = 20)
   private String category;
 
-  @NonNull @Column(name = "section_cd", length = 5, nullable = false)
+  @Column(name = "section_cd", length = 5, nullable = false)
   private String sectionCd;
 
   @Column(name = "add_reason_cd", length = 20)

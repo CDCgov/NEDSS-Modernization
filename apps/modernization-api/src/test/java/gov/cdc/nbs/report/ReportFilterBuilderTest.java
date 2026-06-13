@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
@@ -81,7 +82,8 @@ class ReportFilterBuilderTest {
     when(filterCodeRepository.findById(5L)).thenReturn(Optional.of(mockFilterCode));
 
     ReportFilter result = builder.build(filter, report);
-    Mockito.verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.NBS);
+    // once for filter, once for validation
+    Mockito.verify(idGenerator, times(2)).getNextValidId(IdGeneratorService.EntityType.NBS);
 
     ReportFilterValidation validation = result.getFilterValidation();
     assertThat(validation).isNotNull();

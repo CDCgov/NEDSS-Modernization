@@ -40,7 +40,6 @@ class ReportServiceTest {
   @Mock private ReportRepository reportRepository;
   @Mock private DataSourceRepository dataSourceRepository;
   @Mock private ReportLibraryRepository reportLibraryRepository;
-  @Mock private ReportFilterRepository reportFilterRepository;
   @Mock private FilterCodeRepository filterCodeRepository;
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
   @Mock private ReportSectionRepository reportSectionRepository;
@@ -193,7 +192,6 @@ class ReportServiceTest {
       verify(reportMapper)
           .fromAdminReportRequest(request, mockUser, mockReportLibrary, mockDataSource, null);
       verify(reportRepository).save(any(Report.class));
-      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
@@ -210,7 +208,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository, never()).findById(any());
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).findById(any());
     }
 
     @Test
@@ -227,7 +224,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository).findById(libraryId);
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
@@ -241,7 +237,6 @@ class ReportServiceTest {
           .hasMessage("No report section found for code " + sectionCd);
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).saveAll(any());
     }
   }
 
@@ -341,7 +336,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository).findById(libraryId);
 
       verify(reportRepository).save(any(Report.class));
-      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
@@ -358,7 +352,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository, never()).findById(any());
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).findById(any());
     }
 
     @Test
@@ -375,7 +368,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository).findById(libraryId);
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
@@ -389,7 +381,6 @@ class ReportServiceTest {
           .hasMessage("No report section found for code " + sectionCd);
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
@@ -414,8 +405,6 @@ class ReportServiceTest {
       Report result = service.editReport(request, mockUser, reportId);
 
       assertThat(result).isEqualTo(savedReport);
-      verify(reportFilterRepository)
-          .deleteAll(List.of(existingReportFilter1, existingReportFilter2));
     }
 
     @Test
@@ -446,7 +435,6 @@ class ReportServiceTest {
 
       assertThat(result).isEqualTo(savedReport);
       verify(reportFilterBuilder).build(request.filterRequests().getFirst(), savedReport);
-      verify(reportFilterRepository).saveAll(List.of(mockReportFilter));
     }
   }
 
