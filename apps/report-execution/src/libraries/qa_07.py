@@ -56,10 +56,8 @@ def execute(
             e.ADD_USER_ID,
             up.PROVIDER_QUICK_CODE
         FROM RDB.dbo.INVESTIGATION i
-        INNER JOIN RDB.dbo.EVENT_METRIC e
-            ON i.CASE_UID = e.EVENT_UID
-        INNER JOIN RDB.dbo.USER_PROFILE up
-            ON e.ADD_USER_ID = up.NEDSS_ENTRY_ID
+        INNER JOIN RDB.dbo.EVENT_METRIC e ON i.CASE_UID = e.EVENT_UID
+        INNER JOIN RDB.dbo.USER_PROFILE up ON e.ADD_USER_ID = up.NEDSS_ENTRY_ID
     ),
     lab_max AS (
         SELECT
@@ -86,10 +84,8 @@ def execute(
         FROM subset s
         INNER JOIN inv ON s.INVESTIGATION_KEY = inv.INVESTIGATION_KEY
         LEFT JOIN lab_max lab ON s.INVESTIGATION_KEY = lab.INVESTIGATION_KEY
-        LEFT JOIN RDB.dbo.MORBIDITY_REPORT_EVENT mre
-            ON s.INVESTIGATION_KEY = mre.INVESTIGATION_KEY
-        LEFT JOIN RDB.dbo.MORBIDITY_REPORT mr
-            ON mre.MORB_RPT_KEY = mr.MORB_RPT_KEY
+        LEFT JOIN RDB.dbo.MORBIDITY_REPORT_EVENT mre ON s.INVESTIGATION_KEY = mre.INVESTIGATION_KEY
+        LEFT JOIN RDB.dbo.MORBIDITY_REPORT mr ON mre.MORB_RPT_KEY = mr.MORB_RPT_KEY
         WHERE s.INV_LOCAL_ID IS NOT NULL
           AND s.DIAGNOSIS IS NOT NULL
           AND inv.INV_CASE_STATUS IN ('Probable', 'Confirmed')
@@ -115,29 +111,25 @@ def execute(
            OR (REFERRAL_BASIS = 'T1 - Positive Test' AND SPECIMEN_COLLECTION_DT IS NOT NULL)
            OR (REFERRAL_BASIS = 'T2 - Morbidity Report' AND DIAGNOSIS_DT IS NOT NULL)
     ),
-    with_prev_asc AS (
-        SELECT
-            *,
+    with_prev AS (
+        SELECT *,
             LAG(FL_FUP_EXAM_DT) OVER (
                 PARTITION BY PATIENT_NAME, DIAGNOSIS
                 ORDER BY FL_FUP_EXAM_DT, INVESTIGATION_KEY
-            ) AS prev_date_asc
+            ) AS prev_date
         FROM with_fup_dt
     ),
     cluster_starts AS (
-        SELECT
-            *,
+        SELECT *,
             CASE
-                WHEN prev_date_asc IS NULL
-                     OR DATEDIFF(day, prev_date_asc, FL_FUP_EXAM_DT) > {days}
-                THEN 1
-                ELSE 0
+                WHEN prev_date IS NULL
+                     OR DATEDIFF(day, prev_date, FL_FUP_EXAM_DT) > {days}
+                THEN 1 ELSE 0
             END AS new_cluster
-        FROM with_prev_asc
+        FROM with_prev
     ),
     clustered_rows AS (
-        SELECT
-            *,
+        SELECT *,
             SUM(new_cluster) OVER (
                 PARTITION BY PATIENT_NAME, DIAGNOSIS
                 ORDER BY FL_FUP_EXAM_DT, INVESTIGATION_KEY
@@ -145,54 +137,37 @@ def execute(
         FROM cluster_starts
     ),
     days_calc AS (
-        SELECT
-            *,
+        SELECT *,
             LAG(FL_FUP_EXAM_DT) OVER (
                 PARTITION BY PATIENT_NAME, DIAGNOSIS, cluster_id
                 ORDER BY FL_FUP_EXAM_DT DESC, INVESTIGATION_KEY
-            ) AS lag_desc
-        FROM clustered_rows
-    ),
-    days1_calc AS (
-        SELECT
-            *,
+            ) AS lag_desc,
             LEAD(FL_FUP_EXAM_DT) OVER (
                 PARTITION BY PATIENT_NAME, DIAGNOSIS, cluster_id
                 ORDER BY FL_FUP_EXAM_DT ASC, INVESTIGATION_KEY
             ) AS lead_asc
-        FROM days_calc
+        FROM clustered_rows
     ),
     with_diffs AS (
-        SELECT
-            *,
-            ISNULL(
-                CASE WHEN lag_desc IS NOT NULL
-                     THEN DATEDIFF(day, lag_desc, FL_FUP_EXAM_DT)
-                END, 0
-            ) AS DAYS,
-            ISNULL(
-                CASE WHEN lead_asc IS NOT NULL
-                     THEN DATEDIFF(day, FL_FUP_EXAM_DT, lead_asc)
-                END, 0
-            ) AS DAYS1
-        FROM days1_calc
+        SELECT *,
+            DATEDIFF(day, lag_desc, FL_FUP_EXAM_DT) AS DAYS,
+            DATEDIFF(day, FL_FUP_EXAM_DT, lead_asc) AS DAYS1,
+            COUNT(*) OVER (PARTITION BY PATIENT_NAME, DIAGNOSIS, cluster_id) AS cluster_size
+        FROM days_calc
     ),
     flagged AS (
-        SELECT
-            *,
+        SELECT *,
             CASE
-                WHEN DAYS >= -{days} AND DAYS1 <= {days} THEN 1
-                ELSE 0
+                WHEN (DAYS >= -{days} OR lag_desc IS NULL)
+                 AND (DAYS1 <= {days} OR lead_asc IS NULL)
+            THEN 1 ELSE 0
             END AS meets_condition
         FROM with_diffs
     ),
-    counts AS (
-        SELECT
-            PATIENT_NAME,
-            DIAGNOSIS,
-            SUM(meets_condition) AS cnt
+    group_counts AS (
+        SELECT PATIENT_NAME, DIAGNOSIS, cluster_id, SUM(meets_condition) AS cnt
         FROM flagged
-        GROUP BY PATIENT_NAME, DIAGNOSIS
+        GROUP BY PATIENT_NAME, DIAGNOSIS, cluster_id
     )
     SELECT
         f.PATIENT_NAME,
@@ -204,13 +179,13 @@ def execute(
         f.PATIENTID,
         f.DAYS,
         f.DAYS1,
-        c.cnt AS COUNT
+        g.cnt AS COUNT
     FROM flagged f
-    INNER JOIN counts c
-        ON (f.PATIENT_NAME = c.PATIENT_NAME OR (f.PATIENT_NAME IS NULL AND c.PATIENT_NAME IS NULL))
-        AND (f.DIAGNOSIS = c.DIAGNOSIS OR (f.DIAGNOSIS IS NULL AND c.DIAGNOSIS IS NULL))
-    WHERE f.meets_condition = 1
-      AND c.cnt > 1
+    INNER JOIN group_counts g
+        ON f.PATIENT_NAME = g.PATIENT_NAME
+        AND f.DIAGNOSIS = g.DIAGNOSIS
+        AND f.cluster_id = g.cluster_id
+    WHERE f.meets_condition = 1 AND g.cnt > 1
     ORDER BY f.PATIENT_NAME, f.DIAGNOSIS, f.FL_FUP_EXAM_DT, f.INVESTIGATION_KEY
     """
     content = trx.query(sql)
