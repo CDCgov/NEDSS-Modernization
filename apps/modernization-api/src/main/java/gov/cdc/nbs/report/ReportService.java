@@ -154,7 +154,11 @@ public class ReportService {
             report -> {
               List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
-                      .filter(f -> f.getFilterCode().getFilterType().startsWith("BAS_"))
+                      .filter(
+                          f ->
+                              f.getFilterCode()
+                                  .getFilterType()
+                                  .startsWith(ReportConstants.BASIC_FILTER_PREFIX))
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
@@ -163,8 +167,10 @@ public class ReportService {
                       .filter(
                           f ->
                               f.getFilterCode()
-                                  .getFilterType()
-                                  .equals(ReportConstants.ADV_FILTER_TYPE))
+                                      .getFilterType()
+                                      .equals(ReportConstants.ADV_FILTER_TYPE)
+                                  && f.getFilterValues() != null
+                                  && !f.getFilterValues().isEmpty())
                       .map(AdvancedFilterConfigurationMapper::fromReportFilter)
                       .findFirst()
                       .orElse(null);

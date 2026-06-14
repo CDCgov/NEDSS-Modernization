@@ -192,7 +192,7 @@ public class WhereClauseService {
       AdvancedQuery.RuleGroup ruleGroup = (AdvancedQuery.RuleGroup) query;
       if (ruleGroup.rules().isEmpty()) return "";
 
-      String combinator = String.format(" %s ", ruleGroup.combinator().toUpperCase());
+      String combinator = String.format(" %s ", ruleGroup.combinator().toString().toUpperCase());
       StringJoiner joiner = new StringJoiner(combinator, "(", ")");
 
       for (AdvancedQuery rule : ruleGroup.rules()) {

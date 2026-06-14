@@ -4,6 +4,18 @@ import java.util.Map;
 import java.util.Set;
 
 public final class ReportConstants {
+  @SuppressWarnings("java:S115") // Intentionally lowercase, b/c the DB values are lowercase
+  public enum QueryCombinators {
+    or,
+    and
+  }
+
+  public enum FilterValueType {
+    OPERATOR,
+    CLAUSE
+  }
+
+  public static final String BASIC_FILTER_PREFIX = "BAS_";
   public static final String ADV_FILTER_TYPE = "ADV_WCB";
   public static final String BAS_DAYS = "BAS_DAYS";
 

@@ -1,12 +1,16 @@
 package gov.cdc.nbs.report.mappers;
 
 import gov.cdc.nbs.entity.odse.ReportFilter;
+import gov.cdc.nbs.report.AdvancedQueryBuilder;
+import gov.cdc.nbs.report.AdvancedQueryException;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.FilterType;
 
 public class AdvancedFilterConfigurationMapper {
+  private static final System.Logger LOGGER =
+      System.getLogger(AdvancedFilterConfigurationMapper.class.getName());
 
   private AdvancedFilterConfigurationMapper() {}
 
@@ -18,10 +22,16 @@ public class AdvancedFilterConfigurationMapper {
           "Cannot create advanced filter from non where clause builder filter");
     }
 
-    // For the future: Populate this
-    // https://cdc-nbs.atlassian.net/browse/APP-505
-    AdvancedQuery.RuleGroup defaultValue = null;
+    AdvancedQueryBuilder advQueryBuilder = new AdvancedQueryBuilder(filter.getFilterValues());
+    String query = advQueryBuilder.generateQueryString();
 
-    return new AdvancedFilterConfiguration(filter.getId(), defaultValue);
+    AdvancedQuery.RuleGroup value = null;
+    try {
+      value = advQueryBuilder.build();
+    } catch (AdvancedQueryException e) {
+      LOGGER.log(System.Logger.Level.WARNING, "Error occurred while building AdvancedQuery", e);
+    }
+
+    return new AdvancedFilterConfiguration(filter.getId(), value, query);
   }
 }

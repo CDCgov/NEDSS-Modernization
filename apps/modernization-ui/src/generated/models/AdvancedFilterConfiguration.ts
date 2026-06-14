@@ -6,5 +6,6 @@ import type { RuleGroup } from './RuleGroup';
 export type AdvancedFilterConfiguration = {
     reportFilterUid: number;
     defaultValue?: RuleGroup;
+    query?: string;
 };
 
