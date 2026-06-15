@@ -1,17 +1,20 @@
 import React from 'react';
-import { AdvancedFilterRequest, BasicFilterRequest, ReportControllerService } from 'generated';
+import { AdvancedFilterRequest, BasicFilterRequest, ReportConfiguration, ReportControllerService } from 'generated';
 import { useCallback, useState } from 'react';
-import { useParams } from 'react-router';
+import { useLoaderData, useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
 import { useNewTab } from './useNewTab';
 import { ResultDataPage } from './ResultDataPage';
 import fileDownload from 'js-file-download';
 import { ReportResultPage } from './ReportResultPage';
-import { LoadingIndicator } from 'libs/loading/indicator';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
-import { useReportConfiguration } from 'apps/report/hooks/useReportConfiguration';
+import { usePermissions } from 'libs/permission/usePermissions';
+import { PERMISSION_GROUP_MAP } from '../constants';
+import { LoadingBlock } from 'libs/loading/block';
+import { NotFoundError } from 'pages/error/NotFoundError';
+import { permitsAll } from 'libs/permission';
 
 export type ReportExecuteForm = {
     // key is the report's ID
@@ -38,7 +41,19 @@ const ReportRunPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [wasExported, setWasExported] = useState<boolean>(true);
     const { openNewTab } = useNewTab();
-    const config = useReportConfiguration({ reportUid, dataSourceUid, handleError: setError });
+    const config = useLoaderData<ReportConfiguration>();
+    const { permissions } = usePermissions();
+
+    // Make sure user can actually use this report
+    if (
+        !!config &&
+        !permitsAll(
+            PERMISSION_GROUP_MAP[config.group].selectFilterCriteria,
+            PERMISSION_GROUP_MAP[config.group].view
+        )(permissions)
+    ) {
+        throw new NotFoundError();
+    }
 
     const form = useForm<ReportExecuteForm>({
         mode: 'onSubmit',
@@ -90,7 +105,7 @@ const ReportRunPage = () => {
             advancedFilter?: AdvancedFilterRequest,
             columnUids?: number[]
         ) => {
-            setWasExported(isExport)
+            setWasExported(isExport);
             setStatus('submitting');
             setError('');
             const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
@@ -116,7 +131,7 @@ const ReportRunPage = () => {
     return !config ? (
         <>
             {error && <AlertBanner type="error">{error}</AlertBanner>}
-            <LoadingIndicator />
+            <LoadingBlock />
         </>
     ) : status === 'configuring' ? (
         <>

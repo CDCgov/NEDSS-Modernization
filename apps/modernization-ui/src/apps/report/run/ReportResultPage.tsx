@@ -10,13 +10,7 @@ import { Shown } from 'conditional-render';
 import { useUser } from 'user';
 
 import layoutStyles from '../layout/layout.module.scss';
-
-const PERMISSION_GROUP_MAP = {
-    [ReportConfiguration.group.PRIVATE]: permissions.reports.private,
-    [ReportConfiguration.group.PUBLIC]: permissions.reports.public,
-    [ReportConfiguration.group.TEMPLATE]: permissions.reports.template,
-    [ReportConfiguration.group.REPORTING_FACILITY]: permissions.reports.reportingFacility,
-};
+import { PERMISSION_GROUP_MAP } from '../constants';
 
 const ReportResultPage = ({
     config,
@@ -40,7 +34,7 @@ const ReportResultPage = ({
             title={config.title}
             actions={
                 <>
-                    <Permitted permission={permitsAny(PERMISSION_GROUP_MAP[config.group].selectFilterCriteria)}>
+                    <Permitted permission={PERMISSION_GROUP_MAP[config.group].selectFilterCriteria}>
                         <Button onClick={handleRefineReport} secondary={true} disabled={resultLoading}>
                             Refine Report
                         </Button>
@@ -50,7 +44,8 @@ const ReportResultPage = ({
                             permissions.reports.public.create,
                             permissions.reports.private.create,
                             permissions.reports.reportingFacility.create
-                        )}>
+                        )}
+                    >
                         <Button onClick={() => {}} disabled={resultLoading || !!error}>
                             Save As
                         </Button>
@@ -63,7 +58,8 @@ const ReportResultPage = ({
                         </Permitted>
                     </Shown>
                 </>
-            }>
+            }
+        >
             {error && <AlertBanner type="error">{error}</AlertBanner>}
             {resultLoading ? (
                 <TextCard loading={true}>
