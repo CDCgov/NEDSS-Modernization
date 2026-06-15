@@ -7,7 +7,7 @@ const loadReportConfiguration: LoaderFunction = async (request): Promise<ReportC
         reportUid: parseInt(reportUid ?? '0'),
         dataSourceUid: parseInt(dataSourceUid ?? '0'),
     });
-    return res;
+    return res || null;
 };
 
 export { loadReportConfiguration };

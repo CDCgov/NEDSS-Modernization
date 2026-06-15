@@ -6,12 +6,14 @@ import { permitsAny, permissions, Permitted } from 'libs/permission';
 import { PermittedLayout } from 'libs/permission/PermittedLayout';
 import { loadReportConfiguration } from './utils/loadReportConfiguration';
 import { ErrorPage } from 'pages/error';
+import { LoadingBlock } from 'libs/loading/block';
 
 const routing: RouteObject[] = [
     {
         path: 'report',
         element: <FeatureLayout guard={(features) => features?.report?.execution?.enabled} />,
         ErrorBoundary: ErrorPage,
+        HydrateFallback: LoadingBlock,
         children: [
             {
                 path: ':reportUid/:dataSourceUid/run',
