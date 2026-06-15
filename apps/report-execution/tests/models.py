@@ -53,8 +53,6 @@ class TestModels:
             assert dt == '13-04-1985 04:15'
 
     def test_number_formatting(self):
-        f = Faker()
-
         columns = [
             'example_small_float',
             'example_large_float',
