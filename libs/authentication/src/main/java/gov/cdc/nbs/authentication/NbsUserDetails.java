@@ -21,14 +21,14 @@ public class NbsUserDetails implements UserDetails {
       final String lastName,
       final Set<GrantedAuthority> authorities,
       boolean isEnabled,
-      final Long externalOrgUidl) {
+      final Long externalOrgUid) {
     this.id = id;
     this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
     this.authorities = authorities;
     this.isEnabled = isEnabled;
-    this.externalOrgUid = externalOrgUidl;
+    this.externalOrgUid = externalOrgUid;
   }
 
   public Long getId() {
