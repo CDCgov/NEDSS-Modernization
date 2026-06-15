@@ -10,4 +10,4 @@ public record AdvancedFilterConfiguration(
     //  Included for debugging purposes.
     String query,
     //  If present, indicates the (first) exception thrown that prevented RuleGroup compilation.
-    AdvancedQueryException exception) {}
+    String exceptionMessage) {}

@@ -7,5 +7,6 @@ export type AdvancedFilterConfiguration = {
     reportFilterUid: number;
     defaultValue?: RuleGroup;
     query?: string;
+    exceptionMessage?: string;
 };
 
