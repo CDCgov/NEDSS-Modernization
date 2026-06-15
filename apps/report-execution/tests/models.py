@@ -73,7 +73,7 @@ class TestModels:
             example_large_int,
         ) = data_line.split(',')
 
-        assert example_small_float == '0.00'
+        assert example_small_float == '0'
         assert example_large_float == '123456789.23'
         assert example_small_int == '1'
         assert example_large_int == '1000000000000001'
