@@ -84,7 +84,7 @@ def serialize_table(table: Table) -> str:
     csv_str = df.to_csv(
         index=False,
         # everything left of the decimal, up to 2 decimal places, no trailing 0s
-        float_format=lambda x: f"{x:.2f}".rstrip("0").rstrip("."),
+        float_format=lambda x: f'{x:.2f}'.rstrip('0').rstrip('.'),
         lineterminator='\r\n',
     )
 
