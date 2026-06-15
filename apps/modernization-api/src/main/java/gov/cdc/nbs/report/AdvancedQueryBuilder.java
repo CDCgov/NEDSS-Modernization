@@ -30,19 +30,11 @@ public class AdvancedQueryBuilder {
             filterValues.stream()
                 .map(
                     f -> {
-                      String part;
-
-                      if (List.of("(", ")", "and", "or").contains(f.getOperator())) {
-                        part = f.getOperator();
+                      if (f.getValueTxt() == null) {
+                        return f.getOperator();
                       } else {
-                        part = "COL " + f.getOperator();
+                        return String.join(" ", "COL", f.getOperator(), f.getValueTxt());
                       }
-
-                      if (f.getValueTxt() != null) {
-                        part += " " + f.getValueTxt();
-                      }
-
-                      return part;
                     })
                 .toList());
   }
