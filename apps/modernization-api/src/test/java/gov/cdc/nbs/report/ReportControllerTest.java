@@ -312,7 +312,7 @@ class ReportControllerTest {
       AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
       AdvancedQuery.RuleGroup connector =
           new AdvancedQuery.RuleGroup(
-              "125-125-125", ReportConstants.QueryCombinators.or, List.of(rule1, rule2));
+              "125-125-125", ReportConstants.QueryCombinators.OR, List.of(rule1, rule2));
       AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
       BasicFilterRequest basicFilter = new BasicFilterRequest(4L, Arrays.asList("test"), true);
@@ -436,7 +436,7 @@ class ReportControllerTest {
       AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
       AdvancedQuery.RuleGroup connector =
           new AdvancedQuery.RuleGroup(
-              "125-125-125", ReportConstants.QueryCombinators.or, List.of(rule1, rule2));
+              "125-125-125", ReportConstants.QueryCombinators.OR, List.of(rule1, rule2));
       AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
       ReportExecutionRequest request =

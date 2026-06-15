@@ -81,7 +81,7 @@ class AdvancedQueryBuilderTest {
     AdvancedQuery.RuleGroup result = tryBuild(builder);
 
     // Root 'AND' RuleGroup should be created
-    assertThat(result.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(result.combinator()).isEqualTo(ReportConstants.QueryCombinators.AND);
     assertThat(result.rules()).hasSize(1);
 
     // Single Rule on said RuleGroup should match equals clause
@@ -104,7 +104,7 @@ class AdvancedQueryBuilderTest {
     AdvancedQuery.RuleGroup result = tryBuild(builder);
 
     // Root 'OR' RuleGroup should be created, with 2 rules
-    assertThat(result.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(result.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
     assertThat(result.rules()).hasSize(2);
 
     // The first rule in the 'OR' group should match the 'contains' clause
@@ -134,14 +134,14 @@ class AdvancedQueryBuilderTest {
     AdvancedQuery.RuleGroup rootRuleGroup = tryBuild(builder);
 
     // Root 'OR' RuleGroup should be created, with 2 rules
-    assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
     assertThat(rootRuleGroup.rules()).hasSize(2);
 
     // The first rule in the root 'OR' RuleGroup is the 'AND' RuleGroup
     assertThat(rootRuleGroup.rules().getFirst()).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup andGroup = (AdvancedQuery.RuleGroup) rootRuleGroup.rules().getFirst();
 
-    assertThat(andGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(andGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.AND);
     assertThat(andGroup.rules()).hasSize(2);
 
     // The first Rule in the 'AND' group should match the 'contains' clause
@@ -185,14 +185,14 @@ class AdvancedQueryBuilderTest {
     AdvancedQuery.RuleGroup rootRuleGroup = tryBuild(builder);
 
     // Root 'OR' RuleGroup should be created, with 2 rules
-    assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
     assertThat(rootRuleGroup.rules()).hasSize(2);
 
     // The first rule in the root 'OR' RuleGroup is the 'AND' RuleGroup
     assertThat(rootRuleGroup.rules().getFirst()).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup andGroup = (AdvancedQuery.RuleGroup) rootRuleGroup.rules().getFirst();
 
-    assertThat(andGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(andGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.AND);
     assertThat(andGroup.rules()).hasSize(2);
 
     // The first Rule in the 'AND' group should match the 'contains' clause
@@ -236,7 +236,7 @@ class AdvancedQueryBuilderTest {
     AdvancedQuery.RuleGroup rootRuleGroup = tryBuild(builder);
 
     // Root 'AND' RuleGroup should be created, with 2 rules
-    assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(rootRuleGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.AND);
     assertThat(rootRuleGroup.rules()).hasSize(2);
 
     // The first Rule in the root 'AND' group should match the 'contains' clause
@@ -248,7 +248,7 @@ class AdvancedQueryBuilderTest {
     assertThat(rootRuleGroup.rules().get(1)).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup andGroup = (AdvancedQuery.RuleGroup) rootRuleGroup.rules().get(1);
 
-    assertThat(andGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(andGroup.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
     assertThat(andGroup.rules()).hasSize(2);
 
     // The first Rule in the 'AND' group should match the 'equals' clause
@@ -460,7 +460,7 @@ class AdvancedQueryBuilderTest {
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     // should simplify to an OR group with two rules (a, b)
-    assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
     assertThat(root.rules()).hasSize(2);
     assertThat(root.rules().getFirst()).isInstanceOf(AdvancedQuery.Rule.class);
     assertRuleMatchesClauseValue((AdvancedQuery.Rule) root.rules().getFirst(), equalsClause);
@@ -509,13 +509,13 @@ class AdvancedQueryBuilderTest {
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     // Root should be OR combining two AND groups
-    assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
     assertThat(root.rules()).hasSize(2);
 
     // First rule is AND group (a, b)
     assertThat(root.rules().getFirst()).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup firstAnd = (AdvancedQuery.RuleGroup) root.rules().getFirst();
-    assertThat(firstAnd.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(firstAnd.combinator()).isEqualTo(ReportConstants.QueryCombinators.AND);
     assertThat(firstAnd.rules()).hasSize(2);
     assertRuleMatchesClauseValue((AdvancedQuery.Rule) firstAnd.rules().getFirst(), equalsClause1);
     assertRuleMatchesClauseValue((AdvancedQuery.Rule) firstAnd.rules().get(1), equalsClause2);
@@ -523,7 +523,7 @@ class AdvancedQueryBuilderTest {
     // Second rule is AND group (c, (d or e))
     assertThat(root.rules().get(1)).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup secondAnd = (AdvancedQuery.RuleGroup) root.rules().get(1);
-    assertThat(secondAnd.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(secondAnd.combinator()).isEqualTo(ReportConstants.QueryCombinators.AND);
     assertThat(secondAnd.rules()).hasSize(2);
 
     // First of secondAnd should be clause c
@@ -532,7 +532,7 @@ class AdvancedQueryBuilderTest {
     // Second of secondAnd should be an OR group (d, e)
     assertThat(secondAnd.rules().get(1)).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup innerOr = (AdvancedQuery.RuleGroup) secondAnd.rules().get(1);
-    assertThat(innerOr.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(innerOr.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
     assertThat(innerOr.rules()).hasSize(2);
     assertRuleMatchesClauseValue((AdvancedQuery.Rule) innerOr.rules().getFirst(), equalsClause4);
     assertRuleMatchesClauseValue((AdvancedQuery.Rule) innerOr.rules().get(1), equalsClause5);
@@ -566,7 +566,7 @@ class AdvancedQueryBuilderTest {
     AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
-    assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
     assertThat(root.rules()).hasSize(2);
 
     // first is b, second is a
@@ -608,13 +608,13 @@ class AdvancedQueryBuilderTest {
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     // root should be OR with two rules: AND(a,b), OR(AND(c,d,e), f)
-    assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
     assertThat(root.rules()).hasSize(2);
 
     // first is AND group - (a,b)
     assertThat(root.rules().getFirst()).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup first = (AdvancedQuery.RuleGroup) root.rules().getFirst();
-    assertThat(first.combinator()).isEqualTo(ReportConstants.QueryCombinators.and);
+    assertThat(first.combinator()).isEqualTo(ReportConstants.QueryCombinators.AND);
     assertThat(first.rules()).hasSize(2);
     assertRuleMatchesClauseValue((AdvancedQuery.Rule) first.rules().getFirst(), equalsClause1);
     assertRuleMatchesClauseValue((AdvancedQuery.Rule) first.rules().get(1), equalsClause2);
@@ -622,7 +622,7 @@ class AdvancedQueryBuilderTest {
     // second is OR group - (AND(c,d,e), f)
     assertThat(root.rules().get(1)).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup second = (AdvancedQuery.RuleGroup) root.rules().get(1);
-    assertThat(second.combinator()).isEqualTo(ReportConstants.QueryCombinators.or);
+    assertThat(second.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
     assertThat(second.rules()).hasSize(2);
 
     // first of OR group is AND(c,d,e)

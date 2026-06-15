@@ -109,7 +109,7 @@ public class AdvancedQueryBuilder {
 
     if (query instanceof AdvancedQuery.Rule) {
       return new AdvancedQuery.RuleGroup(
-          UUID.randomUUID().toString(), ReportConstants.QueryCombinators.and, List.of(query));
+          UUID.randomUUID().toString(), ReportConstants.QueryCombinators.AND, List.of(query));
     } else {
       return (AdvancedQuery.RuleGroup) query;
     }
@@ -142,7 +142,7 @@ public class AdvancedQueryBuilder {
     if (isCloseParen(combinator)) {
       advance();
       return new AdvancedQuery.RuleGroup(
-          combinator.getId().toString(), ReportConstants.QueryCombinators.and, List.of(firstRule));
+          combinator.getId().toString(), ReportConstants.QueryCombinators.AND, List.of(firstRule));
     } else if (!isCombinator(combinator))
       throw new AdvancedQueryException("Expected 'and' or 'or'");
     ReportConstants.QueryCombinators firstCombinator =
@@ -193,24 +193,24 @@ public class AdvancedQueryBuilder {
           }
 
           // and => or
-          if (isOr(next) && combinator.equals(ReportConstants.QueryCombinators.and)) {
+          if (isOr(next) && combinator.equals(ReportConstants.QueryCombinators.AND)) {
             //  We terminate the current 'AND' group
             AdvancedQuery.RuleGroup andGroup =
                 new AdvancedQuery.RuleGroup(
-                    UUID.randomUUID().toString(), ReportConstants.QueryCombinators.and, rules);
+                    UUID.randomUUID().toString(), ReportConstants.QueryCombinators.AND, rules);
             advance();
 
             // And add it as a rule to the new 'OR' group, which we then build
-            ruleGroup = buildRuleGroup(ReportConstants.QueryCombinators.or, andGroup);
+            ruleGroup = buildRuleGroup(ReportConstants.QueryCombinators.OR, andGroup);
 
             // or => and
-          } else if (isAnd(next) && combinator.equals(ReportConstants.QueryCombinators.or)) {
+          } else if (isAnd(next) && combinator.equals(ReportConstants.QueryCombinators.OR)) {
             //  We build out the 'AND' group to completion, starting from the previous
             // FilterValue
             AdvancedQuery rule = rules.removeLast();
             advance();
             AdvancedQuery.RuleGroup andGroup =
-                buildRuleGroup(ReportConstants.QueryCombinators.and, rule);
+                buildRuleGroup(ReportConstants.QueryCombinators.AND, rule);
 
             // And attach it to the existing list of 'OR' group rules
             rules.add(andGroup);
@@ -289,11 +289,11 @@ public class AdvancedQueryBuilder {
   }
 
   private boolean isOr(FilterValue fv) {
-    return isOperator(fv) && fv.getOperator().equalsIgnoreCase(ReportConstants.QueryCombinators.or.toString());
+    return isOperator(fv) && fv.getOperator().equalsIgnoreCase(ReportConstants.QueryCombinators.OR.toString());
   }
 
   private boolean isAnd(FilterValue fv) {
-    return isOperator(fv) && fv.getOperator().equalsIgnoreCase(ReportConstants.QueryCombinators.and.toString());
+    return isOperator(fv) && fv.getOperator().equalsIgnoreCase(ReportConstants.QueryCombinators.AND.toString());
   }
 
   private boolean isClause(FilterValue fv) {
