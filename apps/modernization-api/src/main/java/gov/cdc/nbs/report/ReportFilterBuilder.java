@@ -115,7 +115,6 @@ public class ReportFilterBuilder {
             .statusTime(now)
             .build();
     filter.setFilterValidation(validation);
-    return;
   }
 
   private Long generateReportFilterId() {

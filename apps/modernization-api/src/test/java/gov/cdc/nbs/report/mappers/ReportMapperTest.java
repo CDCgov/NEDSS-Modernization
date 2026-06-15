@@ -113,11 +113,9 @@ class ReportMapperTest {
     AdminReportRequest request =
         buildAdminReportRequest(ReportConstants.ReportGroup.REPORTING_FACILITY);
 
-    LocalDateTime beforeCreation = LocalDateTime.now();
     Report result =
         reportMapper.fromAdminReportRequest(
             request, user, reportLibrary, dataSource, existingReport);
-    LocalDateTime afterCreation = LocalDateTime.now();
 
     assertThat(result.getId()).isEqualTo(existingReportId);
     // we update the existing report, so should be equal

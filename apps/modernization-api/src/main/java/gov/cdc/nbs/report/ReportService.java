@@ -105,9 +105,7 @@ public class ReportService {
             request, user, metadata.reportLibrary, metadata.dataSource, existingReport);
 
     List<ReportFilter> reportFilters =
-        request.filterRequests().stream()
-            .map(f -> reportFilterBuilder.build(f, report))
-            .toList();
+        request.filterRequests().stream().map(f -> reportFilterBuilder.build(f, report)).toList();
     if (report.getReportFilters() != null) {
       // For orphan detection/removal to work, need to keep the same container
       report.getReportFilters().clear();

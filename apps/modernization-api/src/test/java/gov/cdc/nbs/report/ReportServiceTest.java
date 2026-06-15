@@ -406,7 +406,7 @@ class ReportServiceTest {
 
       // updates the structure
       assertThat(result.getReportFilters()).isEqualTo(existingFilters);
-      assertThat(existingFilters.size()).isEqualTo(1);
+      assertThat(existingFilters).hasSize(1);
     }
 
     @Test
