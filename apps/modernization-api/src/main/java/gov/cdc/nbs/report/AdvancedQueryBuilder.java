@@ -220,7 +220,7 @@ public class AdvancedQueryBuilder {
       } else if (isOpenParen(filterValue)) {
         rules.add(startRuleGroup());
       } else {
-        throw new AdvancedQueryException("') invalid after OPERATOR");
+        throw new AdvancedQueryException(String.format("'%s' invalid after OPERATOR", filterValue.getOperator()));
       }
 
       if (isCloseParen(peek())) {
