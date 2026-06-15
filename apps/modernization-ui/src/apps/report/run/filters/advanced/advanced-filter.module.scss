@@ -3,10 +3,11 @@
 @use 'styles/colors';
 
 .layout {
+    max-width: 90rem;
+
     :global {
         .queryBuilder {
             padding: 1rem;
-            max-width: 90rem;
         }
 
         .trash-icon {
@@ -22,8 +23,6 @@
                 }
             }
         }
-
-
 
         .queryBuilder-dragHandle {
             margin-bottom: 0.25rem;
@@ -91,19 +90,6 @@
 
             .trash-icon {
                 grid-area: delete;
-            }
-        }
-
-        // Preview Where Clause styling
-        details {
-            div {
-                max-width: 90rem;
-            }
-        }
-
-        summary {
-            &:hover {
-                cursor: pointer;
             }
         }
     }
