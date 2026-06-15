@@ -289,11 +289,11 @@ public class AdvancedQueryBuilder {
   }
 
   private boolean isOr(FilterValue fv) {
-    return isOperator(fv) && fv.getOperator().equals("or");
+    return isOperator(fv) && fv.getOperator().equalsIgnoreCase("or");
   }
 
   private boolean isAnd(FilterValue fv) {
-    return isOperator(fv) && fv.getOperator().equals("and");
+    return isOperator(fv) && fv.getOperator().equalsIgnoreCase("and");
   }
 
   private boolean isClause(FilterValue fv) {
