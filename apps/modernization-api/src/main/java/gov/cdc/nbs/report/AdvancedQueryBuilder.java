@@ -11,7 +11,7 @@ public class AdvancedQueryBuilder {
   private static final System.Logger LOGGER =
       System.getLogger(AdvancedQueryBuilder.class.getName());
 
-  private final ArrayList<FilterValue> filterValues;
+  private final List<FilterValue> filterValues;
 
   private final FilterValue firstOpenParen =
       new FilterValue(
@@ -21,14 +21,13 @@ public class AdvancedQueryBuilder {
           2L, null, 1000, ReportConstants.FilterValueType.OPERATOR.toString(), null, ")", null);
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues) {
-    this.filterValues = new ArrayList<>(filterValues);
+    this.filterValues = filterValues.stream().sorted(Comparator.comparing(FilterValue::getSequenceNumber)).toList();
   }
 
   public String generateQueryString() {
     return String.join(
             " ",
             filterValues.stream()
-                .sorted(Comparator.comparing(FilterValue::getSequenceNumber))
                 .map(
                     f -> {
                       String part;
