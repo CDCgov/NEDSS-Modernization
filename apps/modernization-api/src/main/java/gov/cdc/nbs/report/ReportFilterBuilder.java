@@ -68,7 +68,7 @@ public class ReportFilterBuilder {
                       new IllegalArgumentException(
                           "Unknown report filter cannot be updated: %s"
                               .formatted(filterRequest.id())));
-      if (filter.getFilterCode().getId() != filterCode.getId()) {
+      if (!filter.getFilterCode().getId().equals(filterCode.getId())) {
         throw new IllegalArgumentException(
             "Cannot update filter type on an existing filter. Delete the filter and create a new one to change the type");
       }
