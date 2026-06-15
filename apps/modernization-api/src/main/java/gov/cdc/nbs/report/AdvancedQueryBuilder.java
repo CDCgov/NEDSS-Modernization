@@ -67,6 +67,8 @@ public class AdvancedQueryBuilder {
           System.Logger.Level.TRACE,
           "Advancing from FilterValue " + current + " to " + current + 1);
       current++;
+    } else {
+      LOGGER.log(System.Logger.Level.WARNING, "Attempted to advance past end of FilterValue list");
     }
   }
 
