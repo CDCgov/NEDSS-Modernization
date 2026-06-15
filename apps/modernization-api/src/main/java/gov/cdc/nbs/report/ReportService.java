@@ -109,9 +109,13 @@ public class ReportService {
         request.filterRequests().stream()
             .map(f -> reportFilterBuilder.build(f, report))
             .collect(Collectors.toList()); // needs to be modifiable
-    // For orphan detection/removal to work, need to keep the same container
-    report.getReportFilters().clear();
-    report.getReportFilters().addAll(reportFilters);
+    if (report.getReportFilters() != null) {
+        // For orphan detection/removal to work, need to keep the same container
+        report.getReportFilters().clear();
+        report.getReportFilters().addAll(reportFilters);
+    } else {
+        report.setReportFilters(reportFilters);
+    }
 
     return reportRepository.save(report);
   }

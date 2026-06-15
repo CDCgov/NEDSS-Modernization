@@ -81,7 +81,7 @@ Feature: View report configuration
 
         When I select value "Time Period" in the "Filter" field
         When I select value "event_date (Event Date)" in the "Associated column" field
-        When I toggle the "Required as basic filter" field
+        When I toggle the "Required as basic filter?" field
         When I click the "Add filter" button
         When I click the filter 3 "View" button
         Then I should see value "Yes" in the "Required as basic filter?" field
@@ -122,12 +122,12 @@ Feature: View report configuration
         # required => non
         When I click the filter 2 "Edit" button
         Then The "Filter" "combobox" should be disabled
-        When I toggle the "Required as basic filter" field
+        When I toggle the "Required as basic filter?" field
         When I click the "Update filter" button
         # non => required
         When I click the filter 0 "Edit" button
         Then The "Filter" "combobox" should be disabled
-        When I toggle the "Required as basic filter" field
+        When I toggle the "Required as basic filter?" field
         When I click the "Update filter" button
         # delete
         When I click the filter 1 "Delete" button
