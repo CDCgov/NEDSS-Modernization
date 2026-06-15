@@ -162,6 +162,12 @@ public class ReportService {
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
+              List<DataSourceColumn> dataSourceColumns =
+                  report.getDataSource().getDataSourceColumns();
+              if (dataSourceColumns == null) {
+                throw new IllegalArgumentException("Invalid data source");
+              }
+
               AdvancedFilterConfiguration advancedFilter =
                   report.getReportFilters().stream()
                       .filter(
@@ -169,15 +175,13 @@ public class ReportService {
                               f.getFilterCode()
                                   .getFilterType()
                                   .equals(ReportConstants.ADV_FILTER_TYPE))
-                      .map(AdvancedFilterConfigurationMapper::fromReportFilter)
+                      .map(
+                          f ->
+                              AdvancedFilterConfigurationMapper.fromReportFilter(
+                                  f, dataSourceColumns))
                       .findFirst()
                       .orElse(null);
 
-              List<DataSourceColumn> dataSourceColumns =
-                  report.getDataSource().getDataSourceColumns();
-              if (dataSourceColumns == null) {
-                throw new IllegalArgumentException("Invalid data source");
-              }
               List<ReportColumn> reportColumns =
                   dataSourceColumns.stream().map(ReportColumnMapper::fromDataSourceColumn).toList();
 

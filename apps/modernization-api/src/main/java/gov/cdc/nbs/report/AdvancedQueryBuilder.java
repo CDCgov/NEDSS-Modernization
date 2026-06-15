@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class AdvancedQueryBuilder {
       System.getLogger(AdvancedQueryBuilder.class.getName());
 
   private final List<FilterValue> filterValues;
+  private final List<DataSourceColumn> columns;
 
   private final FilterValue firstOpenParen =
       new FilterValue(
@@ -20,9 +22,11 @@ public class AdvancedQueryBuilder {
       new FilterValue(
           2L, null, 1000, ReportConstants.FilterValueType.OPERATOR.toString(), null, ")", null);
 
-  public AdvancedQueryBuilder(List<FilterValue> filterValues) {
+  public AdvancedQueryBuilder(List<FilterValue> filterValues, List<DataSourceColumn> columns) {
     this.filterValues =
         filterValues.stream().sorted(Comparator.comparing(FilterValue::getSequenceNumber)).toList();
+
+    this.columns = columns;
   }
 
   public String generateQueryString() {
@@ -34,7 +38,23 @@ public class AdvancedQueryBuilder {
                   if (f.getValueTxt() == null) {
                     return f.getOperator();
                   } else {
-                    return String.join(" ", "COL", f.getOperator(), f.getValueTxt());
+                    DataSourceColumn column =
+                        columns.stream()
+                            .filter(c -> c.getId().equals(f.getColumnUid()))
+                            .findFirst()
+                            .orElse(null);
+                    String columnName;
+
+                    if (column == null) {
+                      LOGGER.log(
+                          System.Logger.Level.WARNING,
+                          "Column not found for UID: " + f.getColumnUid());
+                      columnName = "UNKNOWN_COLUMN";
+                    } else {
+                      columnName = column.getColumnName();
+                    }
+
+                    return String.join(" ", columnName, f.getOperator(), f.getValueTxt());
                   }
                 })
             .toList());

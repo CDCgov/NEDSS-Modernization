@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report.mappers;
 
+import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.report.AdvancedQueryBuilder;
 import gov.cdc.nbs.report.AdvancedQueryException;
@@ -7,6 +8,7 @@ import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.FilterType;
+import java.util.List;
 
 public class AdvancedFilterConfigurationMapper {
   private static final System.Logger LOGGER =
@@ -14,7 +16,8 @@ public class AdvancedFilterConfigurationMapper {
 
   private AdvancedFilterConfigurationMapper() {}
 
-  public static AdvancedFilterConfiguration fromReportFilter(ReportFilter filter) {
+  public static AdvancedFilterConfiguration fromReportFilter(
+      ReportFilter filter, List<DataSourceColumn> columns) {
     FilterType filterType = FilterTypeMapper.fromFilterCode(filter.getFilterCode());
 
     if (!filterType.type().equals(ReportConstants.ADV_FILTER_TYPE)) {
@@ -22,7 +25,8 @@ public class AdvancedFilterConfigurationMapper {
           "Cannot create advanced filter from non where clause builder filter");
     }
 
-    AdvancedQueryBuilder advQueryBuilder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder advQueryBuilder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), columns);
     String query = advQueryBuilder.generateQueryString();
 
     AdvancedQuery.RuleGroup value = null;
