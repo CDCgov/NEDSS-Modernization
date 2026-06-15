@@ -96,7 +96,7 @@ class AdvancedQueryBuilderTest {
   @Test
   void build_should_create_rule_group_with_multiple_rules_in_single_or_group() {
     FilterValue containsClause = buildClauseValue(1, "contains", "value1");
-    FilterValue orOperator = buildOperatorValue(2, "or");
+    FilterValue orOperator = buildOperatorValue(2, "OR");
     FilterValue startsWithClause = buildClauseValue(3, "startsWith", "value2");
 
     filter.setFilterValues(List.of(containsClause, orOperator, startsWithClause));
@@ -124,9 +124,9 @@ class AdvancedQueryBuilderTest {
   @Test
   void build_should_create_rule_group_with_both_OR_AND_operators() {
     FilterValue containsClause = buildClauseValue(1, "contains", "value3");
-    FilterValue andValue = buildOperatorValue(2, "and");
+    FilterValue andValue = buildOperatorValue(2, "AND");
     FilterValue equalsClause = buildClauseValue(3, "equals", "value1");
-    FilterValue orValue = buildOperatorValue(4, "or");
+    FilterValue orValue = buildOperatorValue(4, "OR");
     FilterValue notEqualsClause = buildClauseValue(5, "notEquals", "value2");
 
     filter.setFilterValues(
@@ -168,9 +168,9 @@ class AdvancedQueryBuilderTest {
   void build_should_handle_outermost_parentheses_correctly() {
     FilterValue openParenValue = buildOperatorValue(1, "(");
     FilterValue containsClause = buildClauseValue(2, "contains", "value3");
-    FilterValue andValue = buildOperatorValue(3, "and");
+    FilterValue andValue = buildOperatorValue(3, "AND");
     FilterValue equalsClause = buildClauseValue(4, "equals", "value1");
-    FilterValue orValue = buildOperatorValue(5, "or");
+    FilterValue orValue = buildOperatorValue(5, "OR");
     FilterValue notEqualsClause = buildClauseValue(6, "notEquals", "value2");
     FilterValue closeParenValue = buildOperatorValue(7, ")");
 
@@ -219,10 +219,10 @@ class AdvancedQueryBuilderTest {
   @Test
   void build_should_handle_OR_nested_within_AND_correctly() {
     FilterValue containsClause = buildClauseValue(1, "contains", "value3");
-    FilterValue andValue = buildOperatorValue(2, "and");
+    FilterValue andValue = buildOperatorValue(2, "AND");
     FilterValue openParenValue = buildOperatorValue(3, "(");
     FilterValue equalsClause = buildClauseValue(4, "equals", "value1");
-    FilterValue orValue = buildOperatorValue(5, "or");
+    FilterValue orValue = buildOperatorValue(5, "OR");
     FilterValue notEqualsClause = buildClauseValue(6, "notEquals", "value2");
     FilterValue closeParenValue = buildOperatorValue(7, ")");
 
@@ -312,8 +312,8 @@ class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_or_and() {
-    FilterValue orOperatorValue = buildOperatorValue(1, "or");
-    FilterValue andOperatorValue = buildOperatorValue(2, "and");
+    FilterValue orOperatorValue = buildOperatorValue(1, "OR");
+    FilterValue andOperatorValue = buildOperatorValue(2, "AND");
 
     filter.setFilterValues(List.of(orOperatorValue, andOperatorValue));
 
@@ -325,8 +325,8 @@ class AdvancedQueryBuilderTest {
   @Test
   void build_should_throw_on_invalid_expression_a_or_and() {
     FilterValue equalsClause = buildClauseValue(1, "equals", "value1");
-    FilterValue orOperatorValue = buildOperatorValue(2, "or");
-    FilterValue andOperatorValue = buildOperatorValue(3, "and");
+    FilterValue orOperatorValue = buildOperatorValue(2, "OR");
+    FilterValue andOperatorValue = buildOperatorValue(3, "AND");
 
     filter.setFilterValues(List.of(equalsClause, orOperatorValue, andOperatorValue));
 
@@ -338,7 +338,7 @@ class AdvancedQueryBuilderTest {
   @Test
   void build_should_throw_on_invalid_expression_a_or_a_a() {
     FilterValue equalsClause = buildClauseValue(1, "equals", "value1");
-    FilterValue orOperatorValue = buildOperatorValue(2, "or");
+    FilterValue orOperatorValue = buildOperatorValue(2, "OR");
     FilterValue notEqualsClause = buildClauseValue(3, "notEquals", "value2");
     FilterValue notNullClause = buildClauseValue(4, "notNull", "value3");
 
@@ -351,7 +351,7 @@ class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_or_b() {
-    FilterValue orOperatorValue = buildOperatorValue(1, "or");
+    FilterValue orOperatorValue = buildOperatorValue(1, "OR");
     FilterValue notEqualsClause = buildClauseValue(2, "notEquals", "value2");
 
     filter.setFilterValues(List.of(orOperatorValue, notEqualsClause));
@@ -365,7 +365,7 @@ class AdvancedQueryBuilderTest {
   void build_should_throw_on_invalid_expression_empty_paren_or_a() {
     FilterValue openParenValue = buildOperatorValue(1, "(");
     FilterValue closeParenValue = buildOperatorValue(2, ")");
-    FilterValue orOperatorValue = buildOperatorValue(3, "or");
+    FilterValue orOperatorValue = buildOperatorValue(3, "OR");
     FilterValue notEqualsClause = buildClauseValue(4, "notEquals", "value2");
 
     filter.setFilterValues(
@@ -401,7 +401,7 @@ class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_single_or() {
-    FilterValue orOperatorValue = buildOperatorValue(1, "or");
+    FilterValue orOperatorValue = buildOperatorValue(1, "OR");
 
     filter.setFilterValues(List.of(orOperatorValue));
 
@@ -412,7 +412,7 @@ class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_throw_on_invalid_expression_single_and() {
-    FilterValue andOperatorValue = buildOperatorValue(1, "and");
+    FilterValue andOperatorValue = buildOperatorValue(1, "AND");
 
     filter.setFilterValues(List.of(andOperatorValue));
 
@@ -447,14 +447,14 @@ class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_handle_deeply_nested_or_expression() {
-    // ((((a or b))))
+    // ((((a OR b))))
     FilterValue openParen1 = buildOperatorValue(1, "(");
     FilterValue openParen2 = buildOperatorValue(2, "(");
     FilterValue openParen3 = buildOperatorValue(3, "(");
     FilterValue openParen4 = buildOperatorValue(4, "(");
 
     FilterValue equalsClause = buildClauseValue(5, "equals", "value1");
-    FilterValue orOperator = buildOperatorValue(6, "or");
+    FilterValue orOperator = buildOperatorValue(6, "OR");
     FilterValue notEqualsClause = buildClauseValue(7, "notEquals", "value2");
 
     FilterValue closeParen1 = buildOperatorValue(8, ")");
@@ -490,19 +490,19 @@ class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_handle_complex_mixed_and_or_with_inner_parens() {
-    // ((a and b or c and (d or e)))
+    // ((a AND b OR c AND (d OR e)))
     FilterValue openParen1 = buildOperatorValue(1, "(");
     FilterValue openParen2 = buildOperatorValue(2, "(");
 
     FilterValue equalsClause1 = buildClauseValue(3, "equals", "value1");
-    FilterValue andOperator1 = buildOperatorValue(4, "and");
+    FilterValue andOperator1 = buildOperatorValue(4, "AND");
     FilterValue equalsClause2 = buildClauseValue(5, "equals", "value2");
-    FilterValue orOperator1 = buildOperatorValue(6, "or");
+    FilterValue orOperator1 = buildOperatorValue(6, "OR");
     FilterValue equalsClause3 = buildClauseValue(7, "equals", "value3");
-    FilterValue andOperator2 = buildOperatorValue(8, "and");
+    FilterValue andOperator2 = buildOperatorValue(8, "AND");
     FilterValue innerOpenParen = buildOperatorValue(9, "(");
     FilterValue equalsClause4 = buildClauseValue(10, "equals", "value4");
-    FilterValue orOperator2 = buildOperatorValue(11, "or");
+    FilterValue orOperator2 = buildOperatorValue(11, "OR");
     FilterValue equalsClause5 = buildClauseValue(12, "equals", "value5");
     FilterValue innerCloseParen = buildOperatorValue(13, ")");
     FilterValue closeParen1 = buildOperatorValue(14, ")");
@@ -542,7 +542,7 @@ class AdvancedQueryBuilderTest {
     assertRuleMatchesClauseValue((AdvancedQuery.Rule) firstAnd.rules().getFirst(), equalsClause1);
     assertRuleMatchesClauseValue((AdvancedQuery.Rule) firstAnd.rules().get(1), equalsClause2);
 
-    // Second rule is AND group (c, (d or e))
+    // Second rule is AND group (c, (d OR e))
     assertThat(root.rules().get(1)).isInstanceOf(AdvancedQuery.RuleGroup.class);
     AdvancedQuery.RuleGroup secondAnd = (AdvancedQuery.RuleGroup) root.rules().get(1);
     assertThat(secondAnd.combinator()).isEqualTo(ReportConstants.QueryCombinators.AND);
@@ -562,14 +562,14 @@ class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_handle_nested_group_or_with_clause() {
-    // (((b)) or a)
+    // (((b)) OR a)
     FilterValue openParen1 = buildOperatorValue(1, "(");
     FilterValue openParen2 = buildOperatorValue(2, "(");
     FilterValue openParen3 = buildOperatorValue(3, "(");
     FilterValue equalsClause = buildClauseValue(4, "equals", "value1");
     FilterValue closeParen1 = buildOperatorValue(5, ")");
     FilterValue closeParen2 = buildOperatorValue(6, ")");
-    FilterValue orOperator = buildOperatorValue(7, "or");
+    FilterValue orOperator = buildOperatorValue(7, "OR");
     FilterValue notEquals = buildClauseValue(8, "notEquals", "value2");
     FilterValue closeParen3 = buildOperatorValue(9, ")");
 
@@ -600,17 +600,17 @@ class AdvancedQueryBuilderTest {
 
   @Test
   void build_should_handle_long_chain_of_and_or_combination() {
-    // a and b or c and d and e or f
+    // a AND b OR c AND d AND e OR f
     FilterValue equalsClause1 = buildClauseValue(1, "equals", "a");
-    FilterValue andOperator1 = buildOperatorValue(2, "and");
+    FilterValue andOperator1 = buildOperatorValue(2, "AND");
     FilterValue equalsClause2 = buildClauseValue(3, "equals", "b");
-    FilterValue orOperator1 = buildOperatorValue(4, "or");
+    FilterValue orOperator1 = buildOperatorValue(4, "OR");
     FilterValue equalsClause3 = buildClauseValue(5, "equals", "c");
-    FilterValue andOperator2 = buildOperatorValue(6, "and");
+    FilterValue andOperator2 = buildOperatorValue(6, "AND");
     FilterValue equalsClause4 = buildClauseValue(7, "equals", "d");
-    FilterValue andOperator3 = buildOperatorValue(8, "and");
+    FilterValue andOperator3 = buildOperatorValue(8, "AND");
     FilterValue equalsClause5 = buildClauseValue(9, "equals", "e");
-    FilterValue orOperator2 = buildOperatorValue(10, "or");
+    FilterValue orOperator2 = buildOperatorValue(10, "OR");
     FilterValue equalsClause6 = buildClauseValue(11, "equals", "f");
 
     filter.setFilterValues(

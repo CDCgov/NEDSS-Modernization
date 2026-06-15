@@ -238,10 +238,6 @@ public class AdvancedQueryBuilder {
       advance();
     }
 
-    if (ruleGroup == null) {
-      ruleGroup = new AdvancedQuery.RuleGroup(UUID.randomUUID().toString(), combinator, rules);
-    }
-
     return ruleGroup;
   }
 
