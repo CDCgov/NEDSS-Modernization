@@ -21,22 +21,23 @@ public class AdvancedQueryBuilder {
           2L, null, 1000, ReportConstants.FilterValueType.OPERATOR.toString(), null, ")", null);
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues) {
-    this.filterValues = filterValues.stream().sorted(Comparator.comparing(FilterValue::getSequenceNumber)).toList();
+    this.filterValues =
+        filterValues.stream().sorted(Comparator.comparing(FilterValue::getSequenceNumber)).toList();
   }
 
   public String generateQueryString() {
     return String.join(
-            " ",
-            filterValues.stream()
-                .map(
-                    f -> {
-                      if (f.getValueTxt() == null) {
-                        return f.getOperator();
-                      } else {
-                        return String.join(" ", "COL", f.getOperator(), f.getValueTxt());
-                      }
-                    })
-                .toList());
+        " ",
+        filterValues.stream()
+            .map(
+                f -> {
+                  if (f.getValueTxt() == null) {
+                    return f.getOperator();
+                  } else {
+                    return String.join(" ", "COL", f.getOperator(), f.getValueTxt());
+                  }
+                })
+            .toList());
   }
 
   /** 0-based index of the current {@code FilterValue} being processed */

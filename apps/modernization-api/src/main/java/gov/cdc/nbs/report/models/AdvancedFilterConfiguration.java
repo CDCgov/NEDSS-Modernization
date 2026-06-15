@@ -7,5 +7,4 @@ public record AdvancedFilterConfiguration(
     AdvancedQuery.RuleGroup defaultValue,
     //  The resulting SQL query portion extracted during construction of the RuleGroup.
     //  Included for debugging purposes.
-    String query) {
-}
+    String query) {}
