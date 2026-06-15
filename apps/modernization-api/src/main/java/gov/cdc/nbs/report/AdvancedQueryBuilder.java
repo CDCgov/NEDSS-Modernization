@@ -54,7 +54,7 @@ public class AdvancedQueryBuilder {
                           "Column not found for UID: " + f.getColumnUid());
                       columnName = "UNKNOWN_COLUMN";
                     } else {
-                      columnName = column.getColumnName();
+                      columnName = column.getColumnTitle();
                     }
 
                     return String.join(" ", columnName, f.getOperator(), f.getValueTxt());
