@@ -35,7 +35,6 @@ import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -108,7 +107,7 @@ public class ReportService {
     List<ReportFilter> reportFilters =
         request.filterRequests().stream()
             .map(f -> reportFilterBuilder.build(f, report))
-            .collect(Collectors.toList()); // needs to be modifiable
+            .toList();
     if (report.getReportFilters() != null) {
       // For orphan detection/removal to work, need to keep the same container
       report.getReportFilters().clear();

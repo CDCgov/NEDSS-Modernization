@@ -236,7 +236,7 @@ const FilterConfigForm = ({
                             options={SELECT_OPTIONS}
                             orientation="horizontal"
                             error={error?.message}
-                            required={needsSelectType}
+                            required
                             sizing={SIZING}
                             {...remaining}
                         />
@@ -257,7 +257,7 @@ const FilterConfigForm = ({
                             options={columnOptions}
                             orientation="horizontal"
                             error={error?.message}
-                            required={needsColumnAndRequired}
+                            required
                             sizing={SIZING}
                             {...remaining}
                         />
