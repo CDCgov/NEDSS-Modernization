@@ -97,6 +97,7 @@ public class ReportSpecBuilder {
         whereClauseService.buildWhereClause(reportConfig, reportExecRequest, dataSourceNameUtils);
     String orderByClause = buildOrderByClause(sortBy);
 
+    // filter out empty spaces prior to string joining to prevent extra spaces between clauses
     String subsetQuery =
         java.util.stream.Stream.of(selectClause, fromClause, whereClause, orderByClause)
             .filter(clause -> clause != null && !clause.isBlank())
@@ -175,7 +176,6 @@ public class ReportSpecBuilder {
       return null;
     }
 
-    // Validate using the clean, type-safe record getters
     if (requestedColumnUids == null || !requestedColumnUids.contains(sortSpec.columnUid())) {
       throw new IllegalArgumentException(
           "Selected sort column is not present in requested column list.");
