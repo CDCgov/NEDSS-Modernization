@@ -12,7 +12,7 @@ public class AdvancedQueryBuilder {
   private static final System.Logger LOGGER =
       System.getLogger(AdvancedQueryBuilder.class.getName());
 
-  private final List<FilterValue> filterValues;
+  private final ArrayList<FilterValue> filterValues;
   private final List<DataSourceColumn> columns;
 
   private final FilterValue firstOpenParen =
@@ -24,7 +24,10 @@ public class AdvancedQueryBuilder {
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues, List<DataSourceColumn> columns) {
     this.filterValues =
-        filterValues.stream().sorted(Comparator.comparing(FilterValue::getSequenceNumber)).toList();
+        new ArrayList(
+            filterValues.stream()
+                .sorted(Comparator.comparing(FilterValue::getSequenceNumber))
+                .toList());
 
     this.columns = columns;
   }
@@ -146,7 +149,7 @@ public class AdvancedQueryBuilder {
     } else if (!isCombinator(combinator))
       throw new AdvancedQueryException("Expected 'and' or 'or'");
     ReportConstants.QueryCombinators firstCombinator =
-        ReportConstants.QueryCombinators.valueOf(combinator.getOperator());
+        ReportConstants.QueryCombinators.valueOf(combinator.getOperator().toUpperCase());
     advance();
 
     // Then build the root RuleGroup from said OPERATOR and corresponding rule
@@ -187,7 +190,8 @@ public class AdvancedQueryBuilder {
         if (!isOperator(next)) throw new AdvancedQueryException("OPERATOR must follow CLAUSE");
 
         if (isCombinator(next)) {
-          if (combinator.equals(ReportConstants.QueryCombinators.valueOf(next.getOperator()))) {
+          if (combinator.equals(
+              ReportConstants.QueryCombinators.valueOf(next.getOperator().toUpperCase()))) {
             advance(); // keep on keeping on
             continue;
           }
@@ -220,7 +224,8 @@ public class AdvancedQueryBuilder {
       } else if (isOpenParen(filterValue)) {
         rules.add(startRuleGroup());
       } else {
-        throw new AdvancedQueryException(String.format("'%s' invalid after OPERATOR", filterValue.getOperator()));
+        throw new AdvancedQueryException(
+            String.format("'%s' invalid after OPERATOR", filterValue.getOperator()));
       }
 
       if (isCloseParen(peek())) {
@@ -289,11 +294,13 @@ public class AdvancedQueryBuilder {
   }
 
   private boolean isOr(FilterValue fv) {
-    return isOperator(fv) && fv.getOperator().equalsIgnoreCase(ReportConstants.QueryCombinators.OR.toString());
+    return isOperator(fv)
+        && fv.getOperator().equalsIgnoreCase(ReportConstants.QueryCombinators.OR.toString());
   }
 
   private boolean isAnd(FilterValue fv) {
-    return isOperator(fv) && fv.getOperator().equalsIgnoreCase(ReportConstants.QueryCombinators.AND.toString());
+    return isOperator(fv)
+        && fv.getOperator().equalsIgnoreCase(ReportConstants.QueryCombinators.AND.toString());
   }
 
   private boolean isClause(FilterValue fv) {

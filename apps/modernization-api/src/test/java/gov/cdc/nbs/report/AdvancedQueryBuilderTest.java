@@ -10,6 +10,7 @@ import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.report.models.AdvancedQuery;
+import java.util.Collections;
 import java.util.List;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
@@ -76,7 +77,8 @@ class AdvancedQueryBuilderTest {
     FilterValue equalsClause = buildClauseValue(1, "equals", "test value");
     filter.setFilterValues(List.of(equalsClause));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
 
     AdvancedQuery.RuleGroup result = tryBuild(builder);
 
@@ -99,7 +101,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(containsClause, orOperator, startsWithClause));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
 
     AdvancedQuery.RuleGroup result = tryBuild(builder);
 
@@ -129,7 +132,8 @@ class AdvancedQueryBuilderTest {
     filter.setFilterValues(
         List.of(containsClause, andValue, equalsClause, orValue, notEqualsClause));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
 
     AdvancedQuery.RuleGroup rootRuleGroup = tryBuild(builder);
 
@@ -180,7 +184,8 @@ class AdvancedQueryBuilderTest {
             notEqualsClause,
             closeParenValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
 
     AdvancedQuery.RuleGroup rootRuleGroup = tryBuild(builder);
 
@@ -231,7 +236,8 @@ class AdvancedQueryBuilderTest {
             notEqualsClause,
             closeParenValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
 
     AdvancedQuery.RuleGroup rootRuleGroup = tryBuild(builder);
 
@@ -270,7 +276,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(closeParenValue1, equalsClause, closeParenValue2));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -282,7 +289,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(openParenValue1, openParenValue2, closeParenValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -297,7 +305,8 @@ class AdvancedQueryBuilderTest {
     filter.setFilterValues(
         List.of(containsClause, equalsClause, notEqualsClause, notNullClause, closeParenValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -308,7 +317,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(orOperatorValue, andOperatorValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -320,7 +330,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(equalsClause, orOperatorValue, andOperatorValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -333,7 +344,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(equalsClause, orOperatorValue, notEqualsClause, notNullClause));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -344,7 +356,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(orOperatorValue, notEqualsClause));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -358,7 +371,8 @@ class AdvancedQueryBuilderTest {
     filter.setFilterValues(
         List.of(openParenValue, closeParenValue, orOperatorValue, notEqualsClause));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -369,7 +383,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(openParenValue, closeParenValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -379,7 +394,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(closeParenValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -389,7 +405,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(orOperatorValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -399,7 +416,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(andOperatorValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -409,7 +427,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(openParenValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -421,7 +440,8 @@ class AdvancedQueryBuilderTest {
 
     filter.setFilterValues(List.of(openParenValue1, openParenValue2, closeParenValue));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     assertThrows(AdvancedQueryException.class, builder::build);
   }
 
@@ -456,7 +476,8 @@ class AdvancedQueryBuilderTest {
             closeParen3,
             closeParen4));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     // should simplify to an OR group with two rules (a, b)
@@ -505,7 +526,8 @@ class AdvancedQueryBuilderTest {
             closeParen1,
             closeParen2));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     // Root should be OR combining two AND groups
@@ -563,7 +585,8 @@ class AdvancedQueryBuilderTest {
             notEquals,
             closeParen3));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     assertThat(root.combinator()).isEqualTo(ReportConstants.QueryCombinators.OR);
@@ -604,7 +627,8 @@ class AdvancedQueryBuilderTest {
             orOperator2,
             equalsClause6));
 
-    AdvancedQueryBuilder builder = new AdvancedQueryBuilder(filter.getFilterValues());
+    AdvancedQueryBuilder builder =
+        new AdvancedQueryBuilder(filter.getFilterValues(), Collections.emptyList());
     AdvancedQuery.RuleGroup root = tryBuild(builder);
 
     // root should be OR with two rules: AND(a,b), OR(AND(c,d,e), f)

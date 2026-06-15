@@ -97,7 +97,7 @@ class WhereClauseServiceTest {
 
   private AdvancedFilterConfiguration createAdvancedFilterConfiguration(
       Long id, AdvancedQuery.RuleGroup value) {
-    return new AdvancedFilterConfiguration(id, value, null);
+    return new AdvancedFilterConfiguration(id, value, null, null);
   }
 
   private AdvancedFilterRequest createAdvancedFilterRequest(
