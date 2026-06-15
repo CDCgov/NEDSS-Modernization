@@ -38,11 +38,11 @@ public class BasicFilterConfigurationMapper {
     if (filter.getFilterValues() != null) {
       defaultValues =
           filter.getFilterValues().stream()
-              .filter(v -> !v.getOperator().equals("ALLOW_NULLS"))
+              .filter(v -> !"ALLOW_NULLS".equals(v.getOperator()))
               .map(FilterValue::getValueTxt)
               .toList();
       defaultIncludeNulls =
-          filter.getFilterValues().stream().anyMatch(v -> v.getOperator().equals("ALLOW_NULLS"));
+          filter.getFilterValues().stream().anyMatch(v -> "ALLOW_NULLS".equals(v.getOperator()));
     }
     return new BasicFilterConfiguration(
         filter.getId(),
