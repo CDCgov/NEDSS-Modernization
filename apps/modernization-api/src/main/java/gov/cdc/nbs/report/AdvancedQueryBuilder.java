@@ -57,7 +57,7 @@ public class AdvancedQueryBuilder {
                       columnName = column.getColumnTitle();
                     }
 
-                    return String.join(" ", columnName, f.getOperator(), f.getValueTxt());
+                    return "([%s] %s '%s')".formatted(columnName, f.getOperator(), f.getValueTxt());
                   }
                 })
             .toList());
