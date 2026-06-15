@@ -6,8 +6,6 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-db_table = '[NBS_ODSE].[dbo].[PublicHealthCaseFact]'
-db_fk_tables = ['[NBS_ODSE].[dbo].[SubjectRaceInfo]']
 faker_schema = 'phc_demographic.yaml'
 
 
@@ -33,23 +31,17 @@ class TestIntegrationNbsSr13Library:
 
         data = result.content.data
         assert len(data) == 6  # two combinations with no data, zeros not filled
-        assert len(data[0]) == 3
         assert len(data[0]) == len(result.content.columns)
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
         # Sanity check the result's shape beyond the snapshot
-        record = None
-        for row in result.content.data:
-            if (
-                row[0] == Decimal('4877.00000')
-                and row[1] == 'Measles'
-                and row[2] == 'Confirmed'
-            ):
-                record = row
-                break
+        assert result.content.columns == ['Case Count', 'Condition', 'Case Status']
 
-        assert record is not None
+        for row in data:
+            assert isinstance(row[0], Decimal)
+            assert isinstance(row[1], str)
+            assert isinstance(row[2], str)
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
@@ -69,9 +61,8 @@ class TestIntegrationNbsSr13Library:
         result = execute_report(report_spec)
         assert result.content_type == 'table'
 
-        data = result.content.data
-        assert len(data) == 0
-        assert len(result.content.columns) == 3
+        assert len(result.content.data) == 0
+        assert result.content.columns == ['Case Count', 'Condition', 'Case Status']
 
     def test_execute_report_check_metadata(self):
         """Check the metadata and column names are correct."""
@@ -94,6 +85,4 @@ class TestIntegrationNbsSr13Library:
         assert len(result.description) > 100
         assert result.content_type == 'table'
 
-        assert result.content.columns[0] == 'Case Count'
-        assert result.content.columns[1] == 'Condition'
-        assert result.content.columns[2] == 'Case Status'
+        assert result.content.columns == ['Case Count', 'Condition', 'Case Status']
