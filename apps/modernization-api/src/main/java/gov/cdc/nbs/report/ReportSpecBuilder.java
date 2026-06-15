@@ -2,7 +2,9 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -40,6 +42,14 @@ public class ReportSpecBuilder {
         + columns.stream()
             .map(column -> "[" + column.name() + "] AS [" + column.title() + "]")
             .collect(Collectors.joining(", "));
+  }
+
+  private String buildOrderByClause(SortSpec sortBy) {
+    if (sortBy == null) {
+      return "";
+    }
+    ReportColumn sortColumn = findMatchingColumn(sortBy.columnUid());
+    return String.format("ORDER BY [%s] %s", sortColumn.name(), sortBy.direction().name());
   }
 
   private ReportColumn findMatchingColumn(Long columnUid) {
@@ -81,18 +91,18 @@ public class ReportSpecBuilder {
     if (columns != null) {
       columnMap = columns.stream().map(c -> List.of(c.name(), c.title())).toList();
     }
+    SortSpec sortBy = validateSortColumns(reportExecRequest.columnUids(), reportExecRequest.sort());
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
     String whereClause =
         whereClauseService.buildWhereClause(reportConfig, reportExecRequest, dataSourceNameUtils);
-    String orderByClause = "";
-
-    Integer daysValue = extractDaysValue();
+    String orderByClause = buildOrderByClause(sortBy);
 
     String subsetQuery =
         String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
 
+    Integer daysValue = extractDaysValue();
     String libraryParams = reportConfig.library().libraryParams();
 
     return new ReportSpec(
@@ -103,6 +113,7 @@ public class ReportSpecBuilder {
         dataSourceName,
         subsetQuery,
         columnMap,
+        (sortBy != null) ? sortBy.toMap() : null,
         daysValue,
         libraryParams);
   }
@@ -155,5 +166,19 @@ public class ReportSpecBuilder {
           String.format(
               "The '%s' filter value must be a valid integer: %s", description, rawDaysValue));
     }
+  }
+
+  private SortSpec validateSortColumns(List<Long> requestedColumnUids, SortSpec sortSpec) {
+
+    if(sortSpec == null) {
+      return null;
+    }
+
+    // Validate using the clean, type-safe record getters
+    if (!requestedColumnUids.contains(sortSpec.columnUid())) {
+      throw new IllegalArgumentException("Selected sort column is not present in requested column list.");
+    }
+
+    return sortSpec;
   }
 }
