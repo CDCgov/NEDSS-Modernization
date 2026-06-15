@@ -109,13 +109,14 @@ class ReportMapperTest {
   @Test
   void fromAdminReportRequest_should_set_all_fields_correctly_with_existing_id() {
     ReportId existingReportId = new ReportId(50L, 75L);
+    Report existingReport = new Report(existingReportId);
     AdminReportRequest request =
         buildAdminReportRequest(ReportConstants.ReportGroup.REPORTING_FACILITY);
 
     LocalDateTime beforeCreation = LocalDateTime.now();
     Report result =
         reportMapper.fromAdminReportRequest(
-            request, user, reportLibrary, dataSource, existingReportId);
+            request, user, reportLibrary, dataSource, existingReport);
     LocalDateTime afterCreation = LocalDateTime.now();
 
     assertThat(result.getId()).isEqualTo(existingReportId);

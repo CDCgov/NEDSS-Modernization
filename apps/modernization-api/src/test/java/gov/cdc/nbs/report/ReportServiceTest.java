@@ -268,7 +268,9 @@ class ReportServiceTest {
       DataSourceColumn mockColumn = mock(DataSourceColumn.class);
       Mockito.lenient().when(mockColumn.getId()).thenReturn(columnUid);
 
-      Mockito.lenient().when(reportRepository.existsById(any())).thenReturn(true);
+      Mockito.lenient()
+          .when(reportRepository.findById(reportId))
+          .thenReturn(Optional.of(savedReport));
 
       Mockito.lenient()
           .when(dataSourceRepository.findById(dataSourceUid))
@@ -308,7 +310,7 @@ class ReportServiceTest {
       AdminReportRequest request = buildAdminReportRequest(true);
 
       when(reportMapper.fromAdminReportRequest(
-              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+              request, mockUser, mockReportLibrary, mockDataSource, savedReport))
           .thenReturn(savedReport);
       when(reportRepository.save(savedReport)).thenReturn(savedReport);
 
@@ -325,7 +327,7 @@ class ReportServiceTest {
       AdminReportRequest request = buildAdminReportRequest(false);
 
       when(reportMapper.fromAdminReportRequest(
-              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+              request, mockUser, mockReportLibrary, mockDataSource, savedReport))
           .thenReturn(savedReport);
       when(reportRepository.save(savedReport)).thenReturn(savedReport);
 
@@ -398,7 +400,7 @@ class ReportServiceTest {
       AdminReportRequest request = buildAdminReportRequest(true);
 
       when(reportMapper.fromAdminReportRequest(
-              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+              request, mockUser, mockReportLibrary, mockDataSource, savedReport))
           .thenReturn(savedReport);
       when(reportRepository.save(savedReport)).thenReturn(savedReport);
 
@@ -427,7 +429,7 @@ class ReportServiceTest {
       AdminReportRequest request = buildAdminReportRequest(true);
 
       when(reportMapper.fromAdminReportRequest(
-              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+              request, mockUser, mockReportLibrary, mockDataSource, savedReport))
           .thenReturn(savedReport);
       when(reportRepository.save(savedReport)).thenReturn(savedReport);
 
