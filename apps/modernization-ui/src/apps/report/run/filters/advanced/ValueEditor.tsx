@@ -8,7 +8,7 @@ const ValueEditor = (props: ValueEditorProps<ValueSetMetadata & FullField & Full
         case 'text':
             return <ValueInput {...props} />;
         case 'multiselect':
-            return <ValueSetSelector {...props} required />;
+            return <ValueSetSelector {...props} />;
         default:
             return <DefaultValueEditor {...props} />;
     }

@@ -3,11 +3,6 @@ import { FullField, ValueEditorProps } from 'react-querybuilder';
 import { SingleSelect } from '../../../../../design-system/select';
 import { Selectable } from '../../../../../options';
 
-const getLabel = (props) => {
-    if (props.className === 'rule-operators') return 'Logic';
-    return props.title || '';
-};
-
 const getPlaceholder = (props) => {
     if (props.className === 'ruleGroup-combinators') return ''; // use no placeholder
     return undefined; // use default placeholder
@@ -50,13 +45,13 @@ const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
         <span className={props.className}>
             <SingleSelect
                 id={id}
-                label={getLabel(props)}
+                label={props.title}
                 value={currentSelection}
                 onChange={handleOnChange}
                 orientation={'vertical'}
                 required
                 placeholder={getPlaceholder(props)}
-                name={getLabel(props)}
+                name={props.title}
                 useLabel={true}
                 options={options}
             />

@@ -2,13 +2,6 @@ import React from 'react';
 import { ActionProps } from 'react-querybuilder';
 import { Button } from '../../../../../design-system/button';
 
-const getLabelName = (props: ActionProps) => {
-    if (props.className === 'ruleGroup-addGroup') {
-        return 'Add rule group';
-    } else {
-        return props.title;
-    }
-};
 const AdvancedFilterButton = (props: ActionProps) => {
     switch (props.className) {
         case 'ruleGroup-addRule':
@@ -20,7 +13,7 @@ const AdvancedFilterButton = (props: ActionProps) => {
                     secondary={props.className === 'ruleGroup-addGroup'}
                     className={props.className}
                 >
-                    {getLabelName(props)}
+                    {props.title}
                 </Button>
             );
         case 'ruleGroup-remove':
@@ -32,7 +25,7 @@ const AdvancedFilterButton = (props: ActionProps) => {
                     className={'trash-icon'}
                     tertiary
                     sizing={'small'}
-                    aria-label={getLabelName(props)}
+                    aria-label={props.title}
                     onClick={(e) => props.handleOnClick(e)}
                 />
             );

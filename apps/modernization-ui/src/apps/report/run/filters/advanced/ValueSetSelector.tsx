@@ -32,11 +32,7 @@ const CODE_DESC_CD = {
     DESCRIPTION: 'd',
 };
 
-type Required = {
-    required?: boolean;
-};
-
-const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField> & Required) => {
+const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>) => {
     const id = useId();
     const [options, setOptions] = useState<Selectable[] | null>(null);
     const { ready, properties } = useConfiguration();
@@ -112,7 +108,7 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField> 
             sizing="medium"
             options={options ?? []}
             value={value}
-            required={props.required}
+            required={true}
             onChange={handleOnChange}
         />
     );

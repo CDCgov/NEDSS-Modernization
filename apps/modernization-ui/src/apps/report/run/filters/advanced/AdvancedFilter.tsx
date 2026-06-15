@@ -349,6 +349,13 @@ const pragmaticDndAdapter = createPragmaticDndAdapter({
     combine,
 });
 
+const translationOverrides = {
+    addGroup: { title: 'Add rule group' },
+    operators: {
+        title: 'Logic',
+    },
+};
+
 // ============= Componentry ============= /
 
 const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfiguration; columns: ReportColumn[] }) => {
@@ -377,6 +384,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                         autoSelectField={false}
                         autoSelectOperator={false}
                         autoSelectValue={false}
+                        translations={translationOverrides}
                         controlElements={{
                             dragHandle: ShiftableDragHandle,
                             valueEditor: ValueEditor,
