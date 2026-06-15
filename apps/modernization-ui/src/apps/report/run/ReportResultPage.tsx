@@ -63,7 +63,7 @@ const ReportResultPage = ({
             {error && <AlertBanner type="error">{error}</AlertBanner>}
             {resultLoading ? (
                 <TextCard loading={true}>
-                    <Heading level={3}>
+                    <Heading level={2}>
                         Your report is {wasExported ? 'downloading' : 'opening in a new tab'}. Please do not leave this
                         page while your report is generating.
                     </Heading>
@@ -75,7 +75,7 @@ const ReportResultPage = ({
             ) : (
                 !error && (
                     <TextCard>
-                        <Heading level={3}>
+                        <Heading level={2}>
                             Your report has {wasExported ? 'downloaded' : 'opened in a new tab'}.
                         </Heading>
                     </TextCard>

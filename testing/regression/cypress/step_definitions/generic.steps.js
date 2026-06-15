@@ -37,3 +37,11 @@ Then('I should see a {string} labelled {string}', (role, name) => {
 Then('I should see value {string} in the {string} field', (value, label) => {
     cy.findByRole('definition', { name: label }).should('have.text', value);
 });
+
+Then('I should see {string} validation error', (errorMsg) => {
+    cy.findByRole('alert').should('have.text', errorMsg)
+})
+
+Then('I should see a loading indicator', () => {
+    cy.findByRole('status').should('have.text', 'Loading')
+})
