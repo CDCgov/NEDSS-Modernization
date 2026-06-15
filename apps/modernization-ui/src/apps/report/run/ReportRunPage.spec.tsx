@@ -2620,7 +2620,7 @@ describe('report run page', () => {
                         reportFilterUid: 1001,
                         value: {
                             id: expect.stringMatching(/[0-9-]+/),
-                            combinator: 'and',
+                            combinator: 'AND',
                             rules: [
                                 {
                                     id: expect.stringMatching(/[0-9-]+/),
@@ -2794,7 +2794,7 @@ describe('report run page', () => {
                         reportFilterUid: 1001,
                         value: {
                             id: expect.stringMatching(/[0-9-]+/),
-                            combinator: 'and',
+                            combinator: 'AND',
                             rules: [
                                 {
                                     id: expect.stringMatching(/[0-9-]+/),
@@ -2870,8 +2870,8 @@ describe('report run page', () => {
 
             const combinators = await findAllByRole('combobox', { name: 'Combinator' });
             expect(combinators).toHaveLength(2);
-            expect(combinators[0]).toHaveValue('or');
-            expect(combinators[1]).toHaveValue('and');
+            expect(combinators[0]).toHaveValue('OR');
+            expect(combinators[1]).toHaveValue('AND');
 
             const fields = await findAllByRole('combobox', { name: 'Field' });
             expect(fields).toHaveLength(4);
