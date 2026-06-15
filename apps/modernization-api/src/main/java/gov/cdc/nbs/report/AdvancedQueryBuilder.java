@@ -25,8 +25,7 @@ public class AdvancedQueryBuilder {
   }
 
   public String generateQueryString() {
-    return "WHERE "
-        + String.join(
+    return String.join(
             " ",
             filterValues.stream()
                 .sorted(Comparator.comparing(FilterValue::getSequenceNumber))
