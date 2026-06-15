@@ -704,6 +704,89 @@ class WhereClauseServiceTest {
             "WHERE root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM [RDB].[dbo].[lab_test_report] WHERE ([COLUMN_INTEGER] IN (1)) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL)) AND ((CAST([COLUMN_DATETIME] AS DATE) IN ('2026-05-28')) OR (([COLUMN_STRING] LIKE CONCAT('%', 'foo', '%')) AND (([COLUMN_INTEGER] NOT IN (1) OR [COLUMN_INTEGER] IS NULL) OR (([COLUMN_STRING] LIKE CONCAT('foo', '%')) AND ([COLUMN_STRING] IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)')) AND ([COLUMN_INTEGER] IN (1)) AND ([COLUMN_INTEGER] >= 1)) OR (CAST([COLUMN_DATETIME] AS DATE) > '2026-05-28') OR ([numeric_result_val] = 1)) AND ([COLUMN_STRING] NOT IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)') OR [COLUMN_STRING] IS NULL) AND ([RESULT_UNITS] <> '1' OR ([RESULT_UNITS] IS NULL))) OR (CAST([COLUMN_DATETIME] AS DATE) BETWEEN '2026-05-25' AND '2026-05-28') OR (CAST([COLUMN_DATETIME] AS DATE) IS NOT NULL) OR ([COLUMN_INTEGER] > 1) OR ([COLUMN_INTEGER] BETWEEN 1 AND 2))) AND ((program_jurisdiction_oid IN (50)) AND (REPORTING_FACILITY_UID = 54321))");
   }
 
+  @Test
+  void should_create_where_clause_with_all_filters_and_nested_rules_without_permission_fragment() {
+    Long filterUid = 100L;
+    Long columnUid = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
+
+    Long filterUid2 = 10L;
+    Long columnUid2 = 3L;
+    FilterType filterType2 = createFilterType("BAS_TIM_RANGE", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
+
+    BasicFilterConfiguration config2 =
+        createBasicFilterConfiguration(List.of(), filterUid2, columnUid2, true, filterType2);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
+    ReportColumn reportColumn2 = mockReportColumn(columnUid2, "DATE", "TimeRangeColumn");
+
+    AdvancedQuery.Rule labResultRule =
+        createRule(UUID.randomUUID().toString(), 15L, Operator.EQ, "1");
+    AdvancedQuery.Rule labResultRule2 =
+        createRule(UUID.randomUUID().toString(), 16L, Operator.NE, "1");
+
+    ReportColumn labResultReportColumn = mockReportColumn(15L, "INTEGER", "numeric_result_val");
+    ReportColumn labResultReportColumn2 = mockReportColumn(16L, "STRING", "RESULT_UNITS", "");
+
+    List<AdvancedQuery.Rule> rules = create_adv_query_rules();
+    List<ReportColumn> reportCols = new java.util.ArrayList<>(create_adv_query_report_cols());
+
+    AdvancedQuery.RuleGroup ruleGroup1 =
+        createRuleGroup(
+            UUID.randomUUID().toString(),
+            "and",
+            List.of(rules.get(18), rules.get(22), rules.get(0), rules.get(4)));
+    AdvancedQuery.RuleGroup ruleGroup3 =
+        createRuleGroup(
+            UUID.randomUUID().toString(),
+            "or",
+            List.of(rules.get(1), ruleGroup1, rules.get(15), labResultRule));
+    AdvancedQuery.RuleGroup ruleGroup4 =
+        createRuleGroup(
+            UUID.randomUUID().toString(),
+            "and",
+            List.of(rules.get(19), ruleGroup3, rules.get(23), labResultRule2));
+    AdvancedQuery.RuleGroup ruleGroup2 =
+        createRuleGroup(
+            UUID.randomUUID().toString(),
+            "or",
+            List.of(
+                rules.get(9),
+                ruleGroup4,
+                rules.get(13),
+                rules.get(11),
+                rules.get(2),
+                rules.get(8)));
+
+    AdvancedFilterConfiguration advFilterConfig = createAdvancedFilterConfiguration(1L, ruleGroup2);
+
+    reportCols.addAll(
+        List.of(reportColumn, reportColumn2, labResultReportColumn, labResultReportColumn2));
+    ReportConfiguration reportConfig =
+        createReportConfig(List.of(config, config2), advFilterConfig, reportCols, null);
+    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+
+    when(executionRequest.basicFilters())
+        .thenReturn(
+            List.of(
+                new BasicFilterRequest(filterUid, List.of("1"), false),
+                new BasicFilterRequest(filterUid2, List.of("01/01/2023", "01/01/2024"), true)));
+    when(executionRequest.advancedFilter()).thenReturn(new AdvancedFilterRequest(3L, ruleGroup2));
+
+    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    when(mockDataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report"))
+        .thenReturn("[RDB].[dbo].[lab_test_report]");
+
+    assertThat(
+            whereClauseService.buildWhereClause(
+                reportConfig, executionRequest, mockDataSourceNameUtils))
+        .isEqualTo(
+            "WHERE root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM [RDB].[dbo].[lab_test_report] WHERE ([COLUMN_INTEGER] IN (1)) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL)) AND ((CAST([COLUMN_DATETIME] AS DATE) IN ('2026-05-28')) OR (([COLUMN_STRING] LIKE CONCAT('%', 'foo', '%')) AND (([COLUMN_INTEGER] NOT IN (1) OR [COLUMN_INTEGER] IS NULL) OR (([COLUMN_STRING] LIKE CONCAT('foo', '%')) AND ([COLUMN_STRING] IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)')) AND ([COLUMN_INTEGER] IN (1)) AND ([COLUMN_INTEGER] >= 1)) OR (CAST([COLUMN_DATETIME] AS DATE) > '2026-05-28') OR ([numeric_result_val] = 1)) AND ([COLUMN_STRING] NOT IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)') OR [COLUMN_STRING] IS NULL) AND ([RESULT_UNITS] <> '1' OR ([RESULT_UNITS] IS NULL))) OR (CAST([COLUMN_DATETIME] AS DATE) BETWEEN '2026-05-25' AND '2026-05-28') OR (CAST([COLUMN_DATETIME] AS DATE) IS NOT NULL) OR ([COLUMN_INTEGER] > 1) OR ([COLUMN_INTEGER] BETWEEN 1 AND 2)))");
+  }
+
   @ParameterizedTest
   @MethodSource("fetchAdvancedQueryRuleParams")
   void build_advanced_query_result_should_return_query_with_value(
@@ -835,7 +918,8 @@ class WhereClauseServiceTest {
 
   @Test
   void should_append_jurisdiction_oids_when_active() {
-    ReportConfiguration reportConfig = createReportConfig(List.of(), List.of(), ReportGroup.PUBLIC);
+    ReportConfiguration reportConfig =
+        createReportConfig(List.of(), List.of(), ReportGroup.PRIVATE);
 
     when(reportConfig.dataSource().hasJurisdictionSecurity()).thenReturn(Boolean.TRUE);
     when(reportConfig.dataSource().hasFacilitySecurity()).thenReturn(Boolean.FALSE);
@@ -844,7 +928,7 @@ class WhereClauseServiceTest {
     PermissionScope mockScope = Mockito.mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(101L, 102L));
 
-    Permission expectedPermission = new Permission("REPORTING", "VIEWREPORTPUBLIC");
+    Permission expectedPermission = new Permission("REPORTING", "VIEWREPORTPRIVATE");
     when(scopeResolver.resolve(expectedPermission)).thenReturn(mockScope);
 
     String result = whereClauseService.buildPermissionFragment(reportConfig);
@@ -854,7 +938,8 @@ class WhereClauseServiceTest {
 
   @Test
   void should_combine_both_jurisdiction_and_facility_security_with_and() {
-    ReportConfiguration reportConfig = createReportConfig(List.of(), List.of(), ReportGroup.PUBLIC);
+    ReportConfiguration reportConfig =
+        createReportConfig(List.of(), List.of(), ReportGroup.TEMPLATE);
 
     when(reportConfig.dataSource().hasJurisdictionSecurity()).thenReturn(Boolean.TRUE);
     when(reportConfig.dataSource().hasFacilitySecurity()).thenReturn(Boolean.TRUE);
@@ -863,7 +948,7 @@ class WhereClauseServiceTest {
 
     PermissionScope mockScope = Mockito.mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(50L));
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTPUBLIC")))
+    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTTEMPLATE")))
         .thenReturn(mockScope);
 
     String result = whereClauseService.buildPermissionFragment(reportConfig);
@@ -889,13 +974,14 @@ class WhereClauseServiceTest {
 
   @Test
   void should_throw_illegal_arg_exception_when_user_has_no_assigned_ids() {
-    ReportConfiguration reportConfig = createReportConfig(List.of(), List.of(), ReportGroup.PUBLIC);
+    ReportConfiguration reportConfig =
+        createReportConfig(List.of(), List.of(), ReportGroup.REPORTING_FACILITY);
 
     when(reportConfig.dataSource().hasJurisdictionSecurity()).thenReturn(Boolean.TRUE);
 
     PermissionScope emptyScope = Mockito.mock(PermissionScope.class);
     when(emptyScope.any()).thenReturn(List.of()); // Empty list
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTPUBLIC")))
+    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTREPORTINGFACILITY")))
         .thenReturn(emptyScope);
 
     mockAuthenticatedUser(null);
