@@ -9,14 +9,6 @@
             max-width: 90rem;
         }
 
-        .ruleGroup-header,
-        .rule {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(1.5rem, 1fr));
-            align-items: end;
-            gap: 10px;
-        }
-
         .trash-icon {
             @include borders.bordered();
 
@@ -31,35 +23,29 @@
             }
         }
 
+
+
+        .queryBuilder-dragHandle {
+            margin-bottom: 0.25rem;
+        }
+
         .ruleGroup-header {
             padding-right: 0.5rem;
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
+            display: flex;
+            flex-direction: row;
+            align-items: end;
 
             &:not(:first-of-type) {
                 margin-top: 0.5rem;
             }
-
-            .queryBuilder-dragHandle {
-                grid-column: span 1;
-                grid-column-start: 1;
-            }
-
-            span {
-                padding-left: 0;
-                grid-column: span 3;
-            }
-
+            
             button {
-                grid-column: span 4;
-
-                &:nth-of-type(2) {
-                    grid-column: span 5;
-                }
+                margin: 0 0.5rem;
             }
 
             .trash-icon {
-                grid-column: span 1;
                 margin-bottom: 0.25rem;
             }
         }
@@ -76,39 +62,59 @@
 
             &:not(:first-of-type) {
                 margin-left: 0;
-                margin-right: 1rem;
-                padding-left: 1rem;
+                padding: 0.5rem 1rem;
             }
         }
 
         .rule {
-            padding: 0.75rem 0 0.75rem 0;
+            display: grid;
+            align-items: end;
+            grid-template-columns: max-content minmax(20ch, 3fr) minmax(max-content, 1fr) 5fr max-content;
+            grid-template-areas: "drag field operator value delete";
+            margin: 0.75rem 0;
 
             .queryBuilder-dragHandle {
-                grid-column-start: 1;
+                grid-area: drag;
             }
 
-            span {
-                padding-left: 0;
-                grid-column: span 11;
-
-                &:nth-of-type(3) {
-                    grid-column: span 5;
-                }
+            .rule-fields {
+                grid-area: field;
             }
 
-            button {
-                grid-column: span 5;
+            .rule-operators {
+                grid-area: operator;
+            }
+
+            .queryBuilder-value {
+                grid-area: value;
             }
 
             .trash-icon {
-                grid-column: span 1 / -2;
+                grid-area: delete;
             }
+
+
+            // span {
+            //     padding-left: 0;
+            //     grid-column: span 11;
+
+            //     &:nth-of-type(3) {
+            //         grid-column: span 5;
+            //     }
+            // }
+
+            // button {
+            //     grid-column: span 5;
+            // }
+
+            // .trash-icon {
+            //     grid-column: span 1 / -2;
+            // }
         }
 
-        .queryBuilder-value {
-            grid-column: span 15;
-        }
+        // .queryBuilder-value {
+        //     grid-column: span 15;
+        // }
 
         // Preview Where Clause styling
         details {

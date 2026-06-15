@@ -18,6 +18,7 @@ const AdvancedFilterButton = (props: ActionProps) => {
                     type={'button'}
                     onClick={(e) => props.handleOnClick(e)}
                     secondary={props.className === 'ruleGroup-addGroup'}
+                    className={props.className}
                 >
                     {getLabelName(props)}
                 </Button>

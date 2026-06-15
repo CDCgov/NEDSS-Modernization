@@ -47,18 +47,20 @@ const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
     }
 
     return (
-        <SingleSelect
-            id={id}
-            label={getLabel(props)}
-            value={currentSelection}
-            onChange={handleOnChange}
-            orientation={'vertical'}
-            required
-            placeholder={getPlaceholder(props)}
-            name={getLabel(props)}
-            useLabel={true}
-            options={options}
-        />
+        <span className={props.className}>
+            <SingleSelect
+                id={id}
+                label={getLabel(props)}
+                value={currentSelection}
+                onChange={handleOnChange}
+                orientation={'vertical'}
+                required
+                placeholder={getPlaceholder(props)}
+                name={getLabel(props)}
+                useLabel={true}
+                options={options}
+            />
+        </span>
     );
 };
 
