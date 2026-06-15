@@ -25,19 +25,23 @@ public class AdvancedFilterConfigurationMapper {
           "Cannot create advanced filter from non where clause builder filter");
     }
 
-    AdvancedQueryBuilder advQueryBuilder =
-        new AdvancedQueryBuilder(filter.getFilterValues(), columns);
-    String query = advQueryBuilder.generateQueryString();
-
+    AdvancedQuery.RuleGroup ruleGroup = null;
+    String query = null;
     String exceptionMsg = null;
-    AdvancedQuery.RuleGroup value = null;
-    try {
-      value = advQueryBuilder.build();
-    } catch (AdvancedQueryException e) {
-      exceptionMsg = e.getMessage();
-      LOGGER.log(System.Logger.Level.WARNING, "Error occurred while building AdvancedQuery", e);
+
+    if (filter.getFilterValues() != null && !filter.getFilterValues().isEmpty()) {
+      AdvancedQueryBuilder advQueryBuilder =
+          new AdvancedQueryBuilder(filter.getFilterValues(), columns);
+      query = advQueryBuilder.generateQueryString();
+
+      try {
+        ruleGroup = advQueryBuilder.build();
+      } catch (AdvancedQueryException e) {
+        exceptionMsg = e.getMessage();
+        LOGGER.log(System.Logger.Level.WARNING, "Error occurred while building AdvancedQuery", e);
+      }
     }
 
-    return new AdvancedFilterConfiguration(filter.getId(), value, query, exceptionMsg);
+    return new AdvancedFilterConfiguration(filter.getId(), ruleGroup, query, exceptionMsg);
   }
 }
