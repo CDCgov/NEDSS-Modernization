@@ -110,11 +110,11 @@ public class ReportService {
             .map(f -> reportFilterBuilder.build(f, report))
             .collect(Collectors.toList()); // needs to be modifiable
     if (report.getReportFilters() != null) {
-        // For orphan detection/removal to work, need to keep the same container
-        report.getReportFilters().clear();
-        report.getReportFilters().addAll(reportFilters);
+      // For orphan detection/removal to work, need to keep the same container
+      report.getReportFilters().clear();
+      report.getReportFilters().addAll(reportFilters);
     } else {
-        report.setReportFilters(reportFilters);
+      report.setReportFilters(reportFilters);
     }
 
     return reportRepository.save(report);
