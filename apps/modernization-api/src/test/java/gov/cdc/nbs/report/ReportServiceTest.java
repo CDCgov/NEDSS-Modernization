@@ -13,6 +13,7 @@ import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -387,39 +388,36 @@ class ReportServiceTest {
 
     @Test
     void editReport_should_delete_filters_not_included_in_request() {
-      ReportFilter existingReportFilter1 = mock(ReportFilter.class);
-      ReportFilter existingReportFilter2 = mock(ReportFilter.class);
-      Mockito.lenient().when(existingReportFilter1.getId()).thenReturn(100L);
-      Mockito.lenient().when(existingReportFilter2.getId()).thenReturn(101L);
+      FilterCode filterCode = mock(FilterCode.class);
+      ArrayList<ReportFilter> existingFilters = new ArrayList<>();
+      existingFilters.add(new ReportFilter(100L, filterCode));
+      existingFilters.add(new ReportFilter(101L, filterCode));
 
       Mockito.lenient().when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-      Mockito.lenient()
-          .when(savedReport.getReportFilters())
-          .thenReturn(List.of(existingReportFilter1, existingReportFilter2));
+      Mockito.lenient().when(savedReport.getReportFilters()).thenReturn(existingFilters);
 
       AdminReportRequest request = buildAdminReportRequest(true);
 
       when(reportMapper.fromAdminReportRequest(
               request, mockUser, mockReportLibrary, mockDataSource, savedReport))
           .thenReturn(savedReport);
-      when(reportRepository.save(savedReport)).thenReturn(savedReport);
 
       Report result = service.editReport(request, mockUser, reportId);
 
-      assertThat(result).isEqualTo(savedReport);
+      // updates the structure
+      assertThat(result.getReportFilters()).isEqualTo(existingFilters);
+      assertThat(existingFilters.size()).isEqualTo(1);
     }
 
     @Test
     void editReport_should_upsert_filters_included_in_request() {
-      ReportFilter existingReportFilter1 = mock(ReportFilter.class);
-      ReportFilter existingReportFilter2 = mock(ReportFilter.class);
-      Mockito.lenient().when(existingReportFilter1.getId()).thenReturn(100L);
-      Mockito.lenient().when(existingReportFilter2.getId()).thenReturn(101L);
+      FilterCode filterCode = mock(FilterCode.class);
+      ArrayList<ReportFilter> existingFilters = new ArrayList<>();
+      existingFilters.add(new ReportFilter(100L, filterCode));
+      existingFilters.add(new ReportFilter(101L, filterCode));
 
       Mockito.lenient().when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-      Mockito.lenient()
-          .when(savedReport.getReportFilters())
-          .thenReturn(List.of(existingReportFilter1, existingReportFilter2));
+      Mockito.lenient().when(savedReport.getReportFilters()).thenReturn(existingFilters);
 
       ReportFilter mockReportFilter = mock(ReportFilter.class);
       Mockito.lenient()

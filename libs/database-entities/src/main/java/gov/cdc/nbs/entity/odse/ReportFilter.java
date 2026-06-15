@@ -17,11 +17,11 @@ import lombok.Setter;
 @Entity
 @Table(name = "Report_Filter", catalog = "NBS_ODSE")
 public class ReportFilter {
-  @Id
+  @NonNull @Id
   @Column(name = "report_filter_uid", nullable = false)
   private Long id;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   // Report has a composite primary key
   @SuppressWarnings("java:S1710")
   @JoinColumns({

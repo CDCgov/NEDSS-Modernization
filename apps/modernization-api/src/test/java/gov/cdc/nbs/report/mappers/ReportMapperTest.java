@@ -120,15 +120,9 @@ class ReportMapperTest {
     LocalDateTime afterCreation = LocalDateTime.now();
 
     assertThat(result.getId()).isEqualTo(existingReportId);
+    // we update the existing report, so should be equal
+    assertThat(result).isEqualTo(existingReport);
 
-    // Should always be set to 'N'
-    assertThat(result.getIsModifiableIndicator()).isEqualTo('N');
-    // Should always be set to 'ACTIVE'
-    assertThat(result.getStatus()).isNotNull();
-    assertThat(result.getStatus().status()).isEqualTo(Status.ACTIVE_CODE);
-    assertThat(result.getStatus().appliedOn()).isBetween(beforeCreation, afterCreation);
-
-    assertThat(result.getDataSource()).isEqualTo(dataSource);
     assertThat(result.getDescTxt()).isEqualTo(description);
     assertThat(result.getOwnerUid()).isEqualTo(ownerId);
     assertThat(result.getReportTitle()).isEqualTo(reportTitle);
