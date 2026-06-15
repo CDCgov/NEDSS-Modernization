@@ -106,11 +106,10 @@ public class WhereClauseService {
           LAB_RESULT_QUERY_VAL.formatted(
               rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
 
+      // Add permission fragment to outer where
       String permissionFragment = buildPermissionFragment(reportConfig);
       if (!permissionFragment.isBlank()) {
-        return labResultQueryValFragment
-            + SQL_AND
-            + String.join(SQL_AND, buildPermissionFragment(reportConfig));
+        return labResultQueryValFragment + SQL_AND + buildPermissionFragment(reportConfig);
       }
 
       return labResultQueryValFragment;
@@ -212,14 +211,21 @@ public class WhereClauseService {
   private Permission mapSharedToPermission(ReportConstants.ReportGroup group) {
     return switch (group) {
       case TEMPLATE ->
-          new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTTEMPLATE);
+          new Permission(
+              ReportConstants.Permissions.REPORTINGOPERATION,
+              ReportConstants.Permissions.VIEWREPORTTEMPLATE);
       case PRIVATE ->
-          new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTPRIVATE);
+          new Permission(
+              ReportConstants.Permissions.REPORTINGOPERATION,
+              ReportConstants.Permissions.VIEWREPORTPRIVATE);
       case PUBLIC ->
-          new Permission(ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTPUBLIC);
+          new Permission(
+              ReportConstants.Permissions.REPORTINGOPERATION,
+              ReportConstants.Permissions.VIEWREPORTPUBLIC);
       case REPORTING_FACILITY ->
           new Permission(
-              ReportConstants.REPORTINGOPERATION, ReportConstants.VIEWREPORTREPORTINGFACILITY);
+              ReportConstants.Permissions.REPORTINGOPERATION,
+              ReportConstants.Permissions.VIEWREPORTREPORTINGFACILITY);
     };
   }
 
