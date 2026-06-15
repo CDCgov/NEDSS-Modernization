@@ -2,9 +2,7 @@ package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -100,7 +98,10 @@ public class ReportSpecBuilder {
     String orderByClause = buildOrderByClause(sortBy);
 
     String subsetQuery =
-        String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
+        java.util.stream.Stream.of(selectClause, fromClause, whereClause, orderByClause)
+            .filter(clause -> clause != null && !clause.isBlank())
+            .collect(Collectors.joining(" "))
+            .trim();
 
     Integer daysValue = extractDaysValue();
     String libraryParams = reportConfig.library().libraryParams();
@@ -170,13 +171,14 @@ public class ReportSpecBuilder {
 
   private SortSpec validateSortColumns(List<Long> requestedColumnUids, SortSpec sortSpec) {
 
-    if(sortSpec == null) {
+    if (sortSpec == null) {
       return null;
     }
 
     // Validate using the clean, type-safe record getters
-    if (!requestedColumnUids.contains(sortSpec.columnUid())) {
-      throw new IllegalArgumentException("Selected sort column is not present in requested column list.");
+    if (requestedColumnUids == null || !requestedColumnUids.contains(sortSpec.columnUid())) {
+      throw new IllegalArgumentException(
+          "Selected sort column is not present in requested column list.");
     }
 
     return sortSpec;

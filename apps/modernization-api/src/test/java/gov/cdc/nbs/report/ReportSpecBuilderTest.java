@@ -15,6 +15,7 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.report.utils.FieldFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -472,6 +473,105 @@ class ReportSpecBuilderTest {
             .build();
 
     assertThat(reportSpec.daysValue()).isNull();
+  }
+
+  @Test
+  void build_should_include_order_by_and_sort_map_when_valid_sort_present() {
+    Long columnUid = 1L;
+    ReportColumn reportColumn = mockReportColumn(columnUid, "last_name", "Last Name");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
+
+    ReportExecutionRequest request = mockReportExecutionRequest(List.of(columnUid));
+
+    SortSpec sortSpec = new SortSpec(columnUid, ReportConstants.SortDirection.ASC);
+    when(request.sort()).thenReturn(sortSpec);
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    ReportSpec reportSpec =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
+
+    assertThat(reportSpec.subsetQuery())
+        .isEqualTo(
+            "SELECT [last_name] AS [Last Name] FROM [NBS_ODSE].[dbo].[NBS_configuration] ORDER BY [last_name] ASC");
+
+    assertThat(reportSpec.sortBy())
+        .isNotNull()
+        .containsEntry("column_uid", columnUid)
+        .containsEntry("direction", "ASC");
+  }
+
+  @Test
+  void build_should_throw_exception_when_sort_column_is_not_in_requested_columns() {
+    Long requestedColumnUid = 1L;
+    Long unrequestedSortColumnUid = 99L;
+
+    ReportColumn reportColumn = mockReportColumn(requestedColumnUid, "col1", "Col 1");
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
+
+    ReportExecutionRequest request = mockReportExecutionRequest(List.of(requestedColumnUid));
+
+    SortSpec sortSpec =
+        new SortSpec(
+            unrequestedSortColumnUid, gov.cdc.nbs.report.ReportConstants.SortDirection.DESC);
+    when(request.sort()).thenReturn(sortSpec);
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    ReportSpecBuilder builder =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService);
+
+    assertThatThrownBy(builder::build)
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Selected sort column is not present in requested column list.");
+  }
+
+  @Test
+  void build_should_throw_exception_when_sorting_but_requested_columns_are_null() {
+    ReportColumn reportColumn = mockReportColumn(1L, "col1", "Col 1");
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
+
+    // Requesting NULL columns, but providing a sort option
+    ReportExecutionRequest request = mockReportExecutionRequest(null);
+    SortSpec sortSpec = new SortSpec(1L, gov.cdc.nbs.report.ReportConstants.SortDirection.ASC);
+    when(request.sort()).thenReturn(sortSpec);
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    ReportSpecBuilder builder =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService);
+
+    assertThatThrownBy(builder::build)
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Selected sort column is not present in requested column list.");
+  }
+
+  @Test
+  void build_should_omit_order_by_and_sort_map_when_sort_is_null() {
+    Long columnUid = 1L;
+    ReportColumn reportColumn = mockReportColumn(columnUid, "col1", "Col 1");
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
+
+    ReportExecutionRequest request = mockReportExecutionRequest(List.of(columnUid));
+    when(request.sort()).thenReturn(null); // Explicitly no sorting
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    ReportSpec reportSpec =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
+
+    // Verify SQL does not have a double space or a trailing space where ORDER BY should be
+    assertThat(reportSpec.subsetQuery())
+        .isEqualTo("SELECT [col1] AS [Col 1] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+
+    assertThat(reportSpec.sortBy()).isNull();
   }
 
   private static Stream<Arguments> fetchSingleColumnTestParams() {
