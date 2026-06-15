@@ -168,9 +168,7 @@ public class ReportService {
                           f ->
                               f.getFilterCode()
                                       .getFilterType()
-                                      .equals(ReportConstants.ADV_FILTER_TYPE)
-                                  && f.getFilterValues() != null
-                                  && !f.getFilterValues().isEmpty())
+                                      .equals(ReportConstants.ADV_FILTER_TYPE))
                       .map(AdvancedFilterConfigurationMapper::fromReportFilter)
                       .findFirst()
                       .orElse(null);
