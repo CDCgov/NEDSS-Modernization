@@ -29,13 +29,15 @@ public class AdvancedFilterConfigurationMapper {
         new AdvancedQueryBuilder(filter.getFilterValues(), columns);
     String query = advQueryBuilder.generateQueryString();
 
+    AdvancedQueryException exception = null;
     AdvancedQuery.RuleGroup value = null;
     try {
       value = advQueryBuilder.build();
     } catch (AdvancedQueryException e) {
+      exception = e;
       LOGGER.log(System.Logger.Level.WARNING, "Error occurred while building AdvancedQuery", e);
     }
 
-    return new AdvancedFilterConfiguration(filter.getId(), value, query);
+    return new AdvancedFilterConfiguration(filter.getId(), value, query, exception);
   }
 }
