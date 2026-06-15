@@ -24,10 +24,10 @@ public class AdvancedQueryBuilder {
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues, List<DataSourceColumn> columns) {
     this.filterValues =
-        new ArrayList(
-            filterValues.stream()
-                .sorted(Comparator.comparing(FilterValue::getSequenceNumber))
-                .toList());
+            new ArrayList<>(
+                    filterValues.stream()
+                            .sorted(Comparator.comparing(FilterValue::getSequenceNumber))
+                            .toList());
 
     this.columns = columns;
   }
