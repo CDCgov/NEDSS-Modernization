@@ -289,19 +289,19 @@ public class AdvancedQueryBuilder {
   }
 
   private boolean isOr(FilterValue fv) {
-    return isOperator(fv) && fv.getOperator().equalsIgnoreCase("or");
+    return isOperator(fv) && fv.getOperator().equalsIgnoreCase(ReportConstants.QueryCombinators.or.toString());
   }
 
   private boolean isAnd(FilterValue fv) {
-    return isOperator(fv) && fv.getOperator().equalsIgnoreCase("and");
+    return isOperator(fv) && fv.getOperator().equalsIgnoreCase(ReportConstants.QueryCombinators.and.toString());
   }
 
   private boolean isClause(FilterValue fv) {
-    return fv.getValueType().equals(ReportConstants.FilterValueType.CLAUSE.toString());
+    return fv.getValueType().equalsIgnoreCase(ReportConstants.FilterValueType.CLAUSE.toString());
   }
 
   private boolean isOperator(FilterValue fv) {
-    return fv.getValueType().equals(ReportConstants.FilterValueType.OPERATOR.toString());
+    return fv.getValueType().equalsIgnoreCase(ReportConstants.FilterValueType.OPERATOR.toString());
   }
 
   private boolean isCombinator(FilterValue fv) {
