@@ -83,7 +83,7 @@ def serialize_table(table: Table) -> str:
 
     csv_str = df.to_csv(
         index=False,
-        float_format='{:.2g}',
+        float_format='{:.2f}',
         lineterminator='\r\n',
     )
 
