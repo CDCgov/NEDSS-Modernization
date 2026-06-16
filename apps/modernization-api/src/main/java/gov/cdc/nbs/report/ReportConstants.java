@@ -29,6 +29,17 @@ public final class ReportConstants {
   public static final String SQL_AND = " AND ";
   public static final String SQL_WHERE = "WHERE ";
 
+  public static final class Permissions {
+    private Permissions() {}
+
+    public static final String REPORTINGOBJECT = "REPORTING";
+
+    public static final String VIEWREPORTTEMPLATE = "VIEWREPORTTEMPLATE";
+    public static final String VIEWREPORTPRIVATE = "VIEWREPORTPRIVATE";
+    public static final String VIEWREPORTPUBLIC = "VIEWREPORTPUBLIC";
+    public static final String VIEWREPORTREPORTINGFACILITY = "VIEWREPORTREPORTINGFACILITY";
+  }
+
   public enum SortDirection {
     ASC,
     DESC

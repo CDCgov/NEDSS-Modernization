@@ -20,8 +20,8 @@ import org.junit.jupiter.api.Test;
 class BasicFilterConfigurationMapperTest {
   // JPA creates circular references, which are tedious to construct properly and
   // we don't really care here
-  Report emptyReport = new Report(new ReportId(), "section");
-  ReportFilter emptyFilter = new ReportFilter(emptyReport, new FilterCode("NONE"));
+  Report emptyReport = new Report(new ReportId());
+  ReportFilter emptyFilter = new ReportFilter(100L, new FilterCode(1L));
   DataSource dataSource = DataSource.builder().id(100L).statusCd('A').build();
   DataSourceColumn column =
       DataSourceColumn.builder()

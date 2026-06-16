@@ -5,5 +5,7 @@
 export type ReportDataSource = {
     id: number;
     name: string;
+    hasJurisdictionSecurity: boolean;
+    hasFacilitySecurity: boolean;
 };
 
