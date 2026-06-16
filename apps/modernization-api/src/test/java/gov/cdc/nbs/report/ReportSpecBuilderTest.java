@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -33,11 +35,13 @@ class ReportSpecBuilderTest {
 
   private WhereClauseService whereClauseService;
 
+  @Mock private PermissionScopeResolver scopeResolver;
+
+  private final FieldFormatter fieldFormatter = new FieldFormatter();
+
   @BeforeEach
   void setUp() {
-    // Instantiate real dependencies
-    FieldFormatter fieldFormatter = new FieldFormatter();
-    whereClauseService = new WhereClauseService(fieldFormatter);
+    whereClauseService = new WhereClauseService(fieldFormatter, scopeResolver);
   }
 
   private DataSourceNameUtils mockDataSourceNameUtils() {
