@@ -5,7 +5,7 @@
 .layout {
     background-color: colors.$base-lightest;
 
-    .grid{
+    .grid {
         display: grid;
         max-width: 90rem;
         grid-template-columns: repeat(2, minmax(0, 1fr));

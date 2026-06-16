@@ -38,7 +38,8 @@ const SortSelector = ({ columns, defaultSort }: { columns: ReportColumn[]; defau
             label="Report data sorting"
             htmlFor={groupId}
             orientation="horizontal"
-            helperText="Sort data by a selected column">
+            helperText="Sort data by a selected column"
+        >
             <div role="group" id={groupId} className={styles.layout}>
                 <SingleSelect
                     label="Sort by"
