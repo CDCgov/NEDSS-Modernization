@@ -1,7 +1,6 @@
 import { RepeatingBlock } from 'design-system/entry/multi-value';
-import { Field, ValueField } from 'design-system/field';
+import { ValueField } from 'design-system/field';
 import { HasValueFunction, NamedColumn } from 'design-system/table/header/column';
-import { Toggle } from 'design-system/toggle/Toggle';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { useReportFilters } from 'options/report';
 import { useReportDataSourceFilterableColumnOptions } from 'options/report/useReportDataSourceColumnOptions';
@@ -13,6 +12,8 @@ import { SIZING } from './constants';
 import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { SingleSelect } from 'design-system/select';
+import { Shown } from 'conditional-render';
+import { ToggleField } from 'design-system/toggle/ToggleField';
 
 const SELECT_OPTIONS: EnumSelectable<BasicFilterConfiguration.selectType>[] = [
     { value: BasicFilterConfiguration.selectType.SINGLE, name: 'Single' },
@@ -149,8 +150,12 @@ const FilterRepeatingBlockImpl = ({
                     </ValueField>
                 ))
             }
-            formRenderer={() => (
-                <FilterConfigForm filterOptions={filterOptions ?? []} columnOptions={columnOptions ?? []} />
+            formRenderer={(entry) => (
+                <FilterConfigForm
+                    entry={entry}
+                    filterOptions={filterOptions ?? []}
+                    columnOptions={columnOptions ?? []}
+                />
             )}
         />
     );
@@ -180,9 +185,11 @@ const COLUMN_REQUIRED_FILTER_IDS = new Set([
 ]);
 
 const FilterConfigForm = ({
+    entry,
     filterOptions,
     columnOptions,
 }: {
+    entry?: FilterConfig;
     filterOptions: Selectable[];
     columnOptions: Selectable[];
 }) => {
@@ -190,6 +197,8 @@ const FilterConfigForm = ({
     // parent report config form
 
     const filterVal = useWatch<FilterConfig, 'filter'>({ name: 'filter' });
+    const needsSelectType = SELECTABLE_FILTER_IDS.has(filterVal?.value);
+    const needsColumnAndRequired = COLUMN_REQUIRED_FILTER_IDS.has(filterVal?.value);
 
     return (
         <section>
@@ -202,6 +211,7 @@ const FilterConfigForm = ({
                     <SingleSelect
                         id={`filter-${name}`}
                         label={'Filter'}
+                        disabled={!!entry?.id} // can't change filter type on edit
                         name={name}
                         options={filterOptions}
                         orientation="horizontal"
@@ -212,14 +222,13 @@ const FilterConfigForm = ({
                     />
                 )}
             />
-            {SELECTABLE_FILTER_IDS.has(filterVal?.value) && (
-                <Controller
-                    name="selectType"
-                    rules={validateRequiredRule('Type')}
-                    shouldUnregister={true}
-                    // ignoring the ref as it does not pass down well and isn't critical
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
+            <Controller
+                name="selectType"
+                rules={needsSelectType ? validateRequiredRule('Type') : undefined}
+                // ignoring the ref as it does not pass down well and isn't critical
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
+                    <Shown when={needsSelectType}>
                         <SingleSelect
                             id={`filter-${name}`}
                             label={'Type'}
@@ -231,58 +240,48 @@ const FilterConfigForm = ({
                             sizing={SIZING}
                             {...remaining}
                         />
-                    )}
-                />
-            )}
-            {COLUMN_REQUIRED_FILTER_IDS.has(filterVal?.value) && (
-                <>
-                    <Controller
-                        name="associatedColumn"
-                        rules={validateRequiredRule('Associated column')}
-                        shouldUnregister={true}
-                        // ignoring the ref as it does not pass down well and isn't critical
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                            <SingleSelect
-                                id={`filter-${name}`}
-                                label="Associated column"
-                                name={name}
-                                options={columnOptions}
-                                orientation="horizontal"
-                                error={error?.message}
-                                required
-                                sizing={SIZING}
-                                {...remaining}
-                            />
-                        )}
-                    />
-                    <Controller
-                        name="isRequired"
-                        defaultValue={false}
-                        shouldUnregister={true}
-                        // ignoring the ref as it does not pass down well and isn't critical
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                            <Field
-                                htmlFor={`filter-${name}`}
-                                orientation="horizontal"
-                                sizing={SIZING}
-                                label="Required as basic filter?"
-                                className="height-full"
-                                error={error?.message}
-                            >
-                                <Toggle
-                                    id={`filter-${name}`}
-                                    aria-label="Required as basic filter"
-                                    name={name}
-                                    required
-                                    {...remaining}
-                                />
-                            </Field>
-                        )}
-                    />
-                </>
-            )}
+                    </Shown>
+                )}
+            />
+            <Controller
+                name="associatedColumn"
+                rules={needsColumnAndRequired ? validateRequiredRule('Associated column') : undefined}
+                // ignoring the ref as it does not pass down well and isn't critical
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
+                    <Shown when={needsColumnAndRequired}>
+                        <SingleSelect
+                            id={`filter-${name}`}
+                            label="Associated column"
+                            name={name}
+                            options={columnOptions}
+                            orientation="horizontal"
+                            error={error?.message}
+                            required
+                            sizing={SIZING}
+                            {...remaining}
+                        />
+                    </Shown>
+                )}
+            />
+            <Controller
+                name="isRequired"
+                // ignoring the ref as it does not pass down well and isn't critical
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
+                    <Shown when={needsColumnAndRequired}>
+                        <ToggleField
+                            id={`filter-${name}`}
+                            orientation="horizontal"
+                            sizing={SIZING}
+                            label="Required as basic filter?"
+                            className="height-full"
+                            error={error?.message}
+                            {...remaining}
+                        />
+                    </Shown>
+                )}
+            />
         </section>
     );
 };

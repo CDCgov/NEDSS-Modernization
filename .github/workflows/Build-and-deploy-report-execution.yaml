@@ -1,0 +1,22 @@
+name: Build and Push report execution image to ECR
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/report-execution/**"
+      - ".github/workflows/Build-and-deploy-report-execution.yaml"
+
+jobs:
+  call-build-microservice-container-workflow:
+    permissions:
+      id-token: write
+      contents: read
+      security-events: write
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-other-microservice-container.yaml@main
+    with:
+      microservice_name: nbs7-report-execution
+      dockerfile_relative_path: ./apps/report-execution
+      environment_classifier: SNAPSHOT
+    secrets:
+      NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}

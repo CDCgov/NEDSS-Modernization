@@ -2,7 +2,7 @@ config:
   seed: 4
   nbs:
     fk_tables:
-      - '[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]'
+      - "[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]"
 
 tables:
   - table_name: "[RDB].[dbo].[INVESTIGATION]"
@@ -13,6 +13,7 @@ tables:
         is_primary_key: true
       - column_name: inv_case_status
         data: fake.random_element(["Confirmed", "Probable", "Suspect", "Unknown"])
+        null_percentage: 0
       - column_name: record_status_cd
         data: fake.random_element(["ACTIVE", "INACTIVE"])
         null_percentage: 0
@@ -20,6 +21,9 @@ tables:
         data: |
           id_num = fake.unique.random_int(10000, 99999)
           return f"CAS100{id_num}GA01"
+      - column_name: CASE_UID
+        data: row_id + 10000000
+        null_percentage: .05
 
   - table_name: "[RDB].[dbo].[D_PROVIDER]"
     row_count: 250
@@ -36,6 +40,7 @@ tables:
       - column_name: provider_name_suffix
         data: fake.random_element(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
         null_percentage: 0.98
+
   - table_name: "[RDB].[dbo].[D_ORGANIZATION]"
     row_count: 50
     columns:
@@ -47,80 +52,234 @@ tables:
         data: |
           return f"{fake.last_name()} Medical Center"
 
-  # Table backing PHCDemographic view
+  - table_name: "[RDB].[dbo].[LAB_TEST]"
+    row_count: 200
+    columns:
+      - column_name: lab_test_key
+        data: row_id + 10000
+        is_primary_key: true
+      - column_name: specimen_collection_dt
+        data: fake.date_between(start_date=datetime(2020, 1, 1), end_date=datetime(2025, 12, 31))
+        null_percentage: 0.1
+      - column_name: RECORD_STATUS_CD
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
+
+  - table_name: "[RDB].[dbo].[MORBIDITY_REPORT_EVENT]"
+    row_count: 500
+    columns:
+      - column_name: NURSING_HOME_KEY
+        data: 1
+        null_percentage: 0
+      - column_name: HEALTH_CARE_KEY
+        data: 1
+        null_percentage: 0
+      - column_name: MORB_RPT_CREATE_DT_KEY
+        data: fake.random_int(10000, 20000)
+        null_percentage: 0
+      - column_name: HSPTL_DISCHARGE_DT_KEY
+        data: 1
+        null_percentage: 0
+      - column_name: ILLNESS_ONSET_DT_KEY
+        data: fake.random_int(10000, 20000)
+        null_percentage: 0
+      - column_name: MORB_RPT_SRC_ORG_KEY
+        data: fake.random_element([2, 3, 4, 5])
+        null_percentage: 0
+      - column_name: PATIENT_KEY
+        data: row_id + 500
+        null_percentage: 0
+      - column_name: MORB_RPT_KEY
+        data: row_id + 20000
+        is_primary_key: true
+      - column_name: MORB_RPT_DT_KEY
+        data: fake.random_int(10000, 20000)
+        null_percentage: 0
+      - column_name: PHYSICIAN_KEY
+        data: fake.random_element([1, 2, 3, 4, 5])
+        null_percentage: 0
+      - column_name: REPORTER_KEY
+        data: fake.random_element([1, 2, 3, 4, 5, 6])
+        null_percentage: 0
+      - column_name: HSPTL_KEY
+        data: fake.random_element([1, 2, 3, 4, 5])
+        null_percentage: 0
+      - column_name: MORB_RPT_COUNT
+        data: 1
+        null_percentage: 0
+      - column_name: INVESTIGATION_KEY
+        data: row_id
+        foreign_key:
+          table: "[RDB].[dbo].[INVESTIGATION]"
+          column: INVESTIGATION_KEY
+        null_percentage: 0
+      - column_name: CONDITION_KEY
+        data: fake.random_int(20, 300)
+        null_percentage: 0
+      - column_name: LDF_GROUP_KEY
+        data: fake.random_int(1, 60)
+        null_percentage: 0
+      - column_name: RECORD_STATUS_CD
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
+        null_percentage: 0
+
+  - table_name: "[RDB].[dbo].[MORBIDITY_REPORT]"
+    row_count: 1000
+    columns:
+      - column_name: morb_rpt_key
+        data: row_id + 20000
+        foreign_key:
+          table: "[RDB].[dbo].[MORBIDITY_REPORT_EVENT]"
+          column: MORB_RPT_KEY
+      - column_name: diagnosis_dt
+        data: fake.date_between(start_date=datetime(2020, 1, 1), end_date=datetime(2025, 12, 31))
+        null_percentage: 0.1
+      - column_name: RECORD_STATUS_CD
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
+
   - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
     row_count: 1000
     columns:
-      # required columns:
       - column_name: investigation_key
         data: row_id
         foreign_key:
-          table: "[RDB].[dbo].[investigation]"
+          table: "[RDB].[dbo].[INVESTIGATION]"
           column: INVESTIGATION_KEY
+        null_percentage: 0
 
-      # patient demographics
       - column_name: patient_name
         data: |
-          return f"{fake.last_name()}, {fake.first_name()}"
-        null_percentage: 0.05
+          # Use first 50 rows for controlled duplicates (but only 6 of them are the test patient)
+          if row_id < 6:
+              return "Duplicates, Test"
+          else:
+              # Fill with realistic names for the rest of the test block
+              names = ["Smith, John", "Doe, Jane", "Johnson, Mike", "Brown, Lisa", "Davis, Tom", "Miller, Amy"]
+              return fake.random_element(names) if fake.random_int(1, 100) <= 95 else None
+
+
       - column_name: patient_age_reported
         data: |
           age_num = fake.random_int(1, 99)
-          suffix = random.choice([" years", " Years"]) if random.random() < 0.2 else ""
-          return f"{age_num}{suffix}"
-        null_percentage: 0.05
+          if fake.random_int(1, 100) <= 95:
+              suffix = fake.random_element([" Years", " Months", " Days"])
+              return f"{age_num}{suffix}"
+          else:
+              return "."
+
       - column_name: patient_sex
-        data: random.choice(["Female", "Male", ""]) if random.random() < .95 else None
+        data: fake.random_element(["Female", "Male", ""])
+        null_percentage: 0.1
+
       - column_name: patient_race
-        data: random.choice(["B", "A", "AI", "W", ""]) if random.random() < .95 else None
+        data: fake.random_element(["B", "A", "AI", "W", ""])
+        null_percentage: 0.1
+
       - column_name: patient_local_id
         data: |
-          id_num = fake.unique.random_int(10000, 99999)
-          pre_id_num = random.choice([100, 200, 300])
-          return f"PSN{pre_id_num}{id_num}GA01"
-      # case information
+              names_to_id = {
+                  "Duplicates, Test": "PSN10010099GA01",
+                  "Smith, John": "PSN10010001GA01",
+                  "Doe, Jane": "PSN10010002GA01",
+                  "Johnson, Mike": "PSN10010003GA01",
+                  "Brown, Lisa": "PSN10010004GA01",
+                  "Davis, Tom": "PSN10010005GA01",
+                  "Miller, Amy": "PSN10010006GA01",
+              }
+              return names_to_id.get(patient_name)
+
       - column_name: diagnosis_cd
-        data: random.choice(["100","200","300","350","400","410","420","450","460","470","480","490","500","600","710","720","730","740","745","750","790","800","850","900","950"]) if random.random() < .95 else None
+        data: |
+          # For the controlled test patient (first 6 rows), force diagnosis '200'
+          if row_id < 6:
+              return '200'
+          else:
+              return fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if fake.random_int(1,100) <= 90 else None
+
+      - column_name: diagnosis
+        data: |
+          '200 - Chlamydia' if diagnosis_cd == '200' else '300 - Gonorrhea' if diagnosis_cd == '300' else '710 - Syphilis, primary' if diagnosis_cd == '710' else '720 - Syphilis, secondary' if diagnosis_cd == '720' else '730 - Syphilis, Early Non-Primary, Non-Secondary' if diagnosis_cd == '730' else '790 - Syphilis, Congenital' if diagnosis_cd == '790' else '900 - HIV Infection' if diagnosis_cd == '900' else None
+
       - column_name: field_record_number
         data: fake.random_int(10000000, 99999999)
         null_percentage: 0.05
+
       - column_name: investigator_interview_qc
         data: fake.random_int(10000000, 99999999)
         null_percentage: 0.05
+
       - column_name: ca_interviewer_assign_dt
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        data: fake.date_between(start_date=datetime(2018, 5, 5), end_date=datetime(2025, 1, 5))
         null_percentage: 0.05
+
       - column_name: cc_closed_dt
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        data: fake.date_between(start_date=datetime(2018, 5, 5), end_date=datetime(2025, 1, 5))
         null_percentage: 0.05
+
       - column_name: ix_date_oi
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        data: fake.date_between(start_date=datetime(2018, 5, 5), end_date=datetime(2025, 1, 5))
         null_percentage: 0.05
+
       - column_name: ca_patient_intv_status
-        data: random.choice(["I - Interviewed"]) if random.random() < .1 else None
+        data: fake.random_element(["I - Interviewed"]) if fake.random_int(1,100) <= 10 else None
+
       - column_name: program_jurisdiction_oid
-        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
+        data: fake.random_element(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
+
       - column_name: confirmation_dt
-        data: fake.date_between(start_date=date(2020, 1, 1), end_date=date(2025, 12, 31))
+        data: fake.date_between(start_date=datetime(2020, 1, 1), end_date=datetime(2025, 12, 31))
+
       - column_name: jurisdiction_nm
         type: string
-        data: random.choice(["Washington County", "Middlesex County"]) if random.random() < .95 else None
+        data: fake.random_element(["Washington County", "Middlesex County"]) if fake.random_int(1,100) <= 95 else None
+
       - column_name: physician_key
         data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
+
       - column_name: inv_local_id
         data: |
           id_num = fake.unique.random_int(10000, 99999)
           return f"CAS100{id_num}GA01"
+        null_percentage: 0
+
+      - column_name: inv_case_status
+        data: |
+          # Force the 6 test rows to be 'Confirmed'
+          if row_id < 6:
+              return 'Confirmed'
+          else:
+              return copy_from_fk("[RDB].[dbo].[INVESTIGATION]", "investigation_key", "inv_case_status")
+
       - column_name: ordering_facility_key
         data: foreign_key("[RDB].[dbo].[D_ORGANIZATION]", "organization_key")
+
       - column_name: patient_pregnant_ind
-        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+        data: |
+          r = fake.random_int(1, 100)
+          if r <= 90: return "No"
+          elif r <= 95: return "Yes"
+          else: return None
+
       - column_name: pbi_preg_in_last_12mo_ind
-        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+        data: |
+          r = fake.random_int(1, 100)
+          if r <= 90: return "No"
+          elif r <= 95: return "Yes"
+          else: return None
+
       - column_name: pbi_preg_at_ix_ind
-        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+        data: |
+          r = fake.random_int(1, 100)
+          if r <= 90: return "No"
+          elif r <= 95: return "Yes"
+          else: return None
+
       - column_name: pbi_preg_at_exam_ind
-        data: random.choices(["No", "Yes", None], weights=[90, 5, 5])[0]
+        data: |
+          r = fake.random_int(1, 100)
+          if r <= 90: return "No"
+          elif r <= 95: return "Yes"
+          else: return None
+
       - column_name: investigator_interview_key
         data: fake.random_int(10000000, 99999999)
       # PA01
@@ -142,23 +301,57 @@ tables:
       - column_name: FL_FUP_INIT_ASSGN_DT
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         null_percentage: 0.1
-        
 
-  # Join tables needed for qa04
 
+      - column_name: referral_basis
+        data: |
+          # For test rows, set to NULL to use fl_fup_exam_dt directly
+          if row_id < 6:
+              return None
+          else:
+              return fake.random_element(["T1 - Positive Test", "T2 - Morbidity Report", None])
+        null_percentage: 0.2
+
+      - column_name: fl_fup_exam_dt
+        data: |
+          base = date(2023, 1, 1)
+
+          # Controlled test rows: first 6 rows form three clusters of 2 rows each
+          if row_id < 6:
+              cluster = row_id // 2   # 0, 1, 2
+              pos = row_id % 2        # 0 or 1
+              if cluster == 0:
+                  gap = 25
+              elif cluster == 1:
+                  gap = 55
+              else:
+                  gap = 85
+              cluster_offset = cluster * 1000   # separate clusters by 1000 days
+              return base + timedelta(days=cluster_offset + pos * gap)
+
+          # For all other rows, we want to avoid accidental duplicates within the same patient/diagnosis.
+          # Use a wide random spread (0–3650 days) and add a unique increment based on row_id.
+          else:
+              # Ensure that for the same patient_name/diagnosis, the dates are effectively unique.
+              # We'll use a large random offset plus a deterministic per-row factor.
+              offset = (row_id * 31) % 3650
+              return base + timedelta(days=offset)
+        null_percentage: 0.1
   - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
     row_count: 200
     columns:
       - column_name: LAB_TEST_KEY
         data: row_id + 10000
-        is_primary_key: true
+        foreign_key:
+          table: "[RDB].[dbo].[LAB_TEST]"
+          column: LAB_TEST_KEY
       - column_name: INVESTIGATION_KEY
         data: row_id
         foreign_key:
-          table: "[RDB].[dbo].[investigation]"
+          table: "[RDB].[dbo].[INVESTIGATION]"
           column: INVESTIGATION_KEY
       - column_name: RECORD_STATUS_CD
-        data: random.choice(["ACTIVE", "INACTIVE"])
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
       - column_name: RESULT_COMMENT_GRP_KEY
         data: row_id + 40000
       - column_name: TEST_RESULT_GRP_KEY
@@ -197,10 +390,10 @@ tables:
       - column_name: INVESTIGATION_KEY
         data: row_id if row_id <= 100 else row_id + 100
         foreign_key:
-          table: "[RDB].[dbo].[investigation]"
+          table: "[RDB].[dbo].[INVESTIGATION]"
           column: INVESTIGATION_KEY
       - column_name: RECORD_STATUS_CD
-        data: random.choice(["ACTIVE", "INACTIVE"])
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
       - column_name: TREATMENT_DT_KEY
         data: row_id + 180000
       - column_name: TREATMENT_PROVIDING_ORG_KEY
@@ -215,6 +408,42 @@ tables:
         data: row_id + 130000
       - column_name: LDF_GROUP_KEY
         data: row_id + 160000
+
+  - table_name: "[RDB].[dbo].[EVENT_METRIC]"
+    row_count: 1000
+    columns:
+      - column_name: EVENT_TYPE
+        data: fake.random_element(["CONTACT", "LabReport", "MorbReport", "Notification", "PHCInvForm", "Vaccination"])
+      - column_name: EVENT_UID
+        data: row_id + 10000000
+        is_primary_key: true
+      - column_name: ADD_USER_ID
+        data: row_id + 10000000
+        null_percentage: .05
+
+  - table_name: "[RDB].[dbo].[USER_PROFILE]"
+    row_count: 1000
+    columns:
+      - column_name: NEDSS_ENTRY_ID
+        data: row_id + 10000000
+        is_primary_key: true
+      - column_name: PROVIDER_QUICK_CODE
+        data: fake.random_element(["Lord Farquaad", "Shrek", "Fiona", "Puss in Boots", "Donkey", None])
+      - column_name: PROVIDER_KEY
+        data: |
+          if PROVIDER_QUICK_CODE == "Lord Farquaad":
+              return 1
+          elif PROVIDER_QUICK_CODE == "Shrek":
+              return 2
+          elif PROVIDER_QUICK_CODE == "Fiona":
+              return 3
+          elif PROVIDER_QUICK_CODE == "Puss in Boots":
+              return 4
+          elif PROVIDER_QUICK_CODE == "Donkey":
+              return 5
+          else:
+              return 6
+
 
   - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
     row_count: 1000
@@ -236,239 +465,3 @@ tables:
         data: random.choice(["ACTIVE", "LOG_DEL"])
       - column_name: IX_DATE
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
-
-
-
-
-# === Columns not needed for reports yet ===
-#ADI_900_STATUS varchar(44) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#ADI_900_STATUS_CD varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#ADM_REFERRAL_BASIS_OOJ varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#ADM_RPTNG_CNTY varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CA_INIT_INTVWR_ASSGN_DT datetime NULL,
-#CA_PATIENT_INTV_STATUS varchar(29) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CALC_5_YEAR_AGE_GROUP varchar(2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CASE_RPT_MMWR_WK numeric(18,0) NULL,
-#CASE_RPT_MMWR_YR numeric(18,0) NULL,
-#CLN_CARE_STATUS_CLOSE_DT varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CLN_CONDITION_RESISTANT_TO varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CLN_DT_INIT_HLTH_EXM date NULL,
-#CLN_NEUROSYPHILLIS_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CLN_PRE_EXP_PROPHY_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CLN_PRE_EXP_PROPHY_REFER varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CLN_SURV_PROVIDER_DIAG_CD varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CMP_CONJUNCTIVITIS_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CMP_PID_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#COINFECTION_ID varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CONDITION_CD varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#CONDITION_KEY bigint NULL,
-#CURR_PROCESS_STATE varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#DETECTION_METHOD_DESC_TXT varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#DIAGNOSIS varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#DIE_FRM_THIS_ILLNESS_IND varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#DISEASE_IMPORTED_IND varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#DISSEMINATED_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#EPI_CNTRY_USUAL_RESID varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#EPI_LINK_ID varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#FACILITY_FLD_FOLLOW_UP_KEY bigint NULL,
-#FL_FUP_ACTUAL_REF_TYPE varchar(15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#FL_FUP_DISPO_DT datetime NULL,
-#FL_FUP_DISPOSITION varchar(44) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#FL_FUP_EXAM_DT datetime NULL,
-#FL_FUP_EXPECTED_DT datetime NULL,
-#FL_FUP_EXPECTED_IN_IND_CD varchar(1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#FL_FUP_INIT_ASSGN_DT datetime NULL,
-#FL_FUP_INTERNET_OUTCOME_CD varchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#FL_FUP_INVESTIGATOR_ASSGN_DT datetime NULL,
-#FL_FUP_NOTIFICATION_PLAN varchar(15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#FL_FUP_OOJ_OUTCOME varchar(44) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#FL_FUP_PROV_DIAGNOSIS_CD varchar(3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#FL_FUP_PROV_EXM_REASON varchar(43) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_900_RESULT varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_900_TEST_IND varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_900_TEST_REFERRAL_DT date NULL,
-#HIV_AV_THERAPY_EVER_IND varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_AV_THERAPY_LAST_12MO_IND varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_CA_900_OTH_RSN_NOT_LO varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_CA_900_REASON_NOT_LOC varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_ENROLL_PRTNR_SRVCS_IND varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_KEEP_900_CARE_APPT_IND varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_LAST_900_TEST_DT date NULL,
-#HIV_POST_TEST_900_COUNSELING varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_PREVIOUS_900_TEST_IND varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_REFER_FOR_900_CARE_IND varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_REFER_FOR_900_TEST varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_RST_PROVIDED_900_RSLT_IND varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_SELF_REPORTED_RSLT_900 varchar(4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HIV_STATE_CASE_ID varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#HOSPITAL_KEY bigint NULL,
-#HSPTLIZD_IND varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INIT_FUP_CLINIC_CODE varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INIT_FUP_CLOSED_DT datetime NULL,
-#INIT_FUP_INITIAL_FOLL_UP varchar(22) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INIT_FUP_INTERNET_FOLL_UP varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INIT_FUP_INITIAL_FOLL_UP_CD varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INIT_FUP_INTERNET_FOLL_UP_CD varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INIT_FUP_NOTIFIABLE varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INITIATING_AGNCY varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INV_ASSIGNED_DT datetime NULL,
-#INV_CASE_STATUS varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INV_CLOSE_DT datetime NULL,
-#INV_RPT_DT datetime NULL,
-#INV_START_DT datetime NULL,
-#INVESTIGATION_DEATH_DATE datetime NULL,
-#INVESTIGATION_STATUS varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INVESTIGATOR_CLOSED_KEY bigint NULL,
-#INVESTIGATOR_CLOSED_QC varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INVESTIGATOR_CURRENT_KEY bigint NULL,
-#INVESTIGATOR_CURRENT_QC varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INVESTIGATOR_DISP_FL_FUP_KEY bigint NULL,
-#INVESTIGATOR_DISP_FL_FUP_QC varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INVESTIGATOR_FL_FUP_KEY bigint NULL,
-#INVESTIGATOR_FL_FUP_QC varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INVESTIGATOR_INIT_INTRVW_KEY bigint NULL,
-#INVESTIGATOR_INIT_INTRVW_QC varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INVESTIGATOR_INIT_FL_FUP_KEY bigint NULL,
-#INVESTIGATOR_INIT_FL_FUP_QC varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INVESTIGATOR_INITIAL_KEY bigint NULL,
-#INVESTIGATOR_INITIAL_QC varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INVESTIGATOR_INTERVIEW_KEY bigint NULL,
-#INVESTIGATOR_SUPER_CASE_KEY bigint NULL,
-#INVESTIGATOR_SUPER_CASE_QC varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INVESTIGATOR_SUPER_FL_FUP_KEY bigint NULL,
-#INVESTIGATOR_SUPER_FL_FUP_QC varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#INVESTIGATOR_SURV_KEY bigint NULL,
-#INVESTIGATOR_SURV_QC varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_CURRENTLY_IN_INSTITUTION varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_LIVING_WITH varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_NAME_OF_INSTITUTITION varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_TIME_AT_ADDRESS_NUM varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_TIME_AT_ADDRESS_UNIT varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_TIME_IN_COUNTRY_NUM varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_TIME_IN_COUNTRY_UNIT varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_TIME_IN_STATE_NUM varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_TIME_IN_STATE_UNIT varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_TYPE_OF_INSTITUTITION varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#IPO_TYPE_OF_RESIDENCE varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#JURISDICTION_CD varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#LAB_HIV_SPECIMEN_COLL_DT date NULL,
-#LAB_NONTREP_SYPH_RSLT_QNT varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#LAB_NONTREP_SYPH_RSLT_QUA varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#LAB_NONTREP_SYPH_TEST_TYP varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#LAB_SYPHILIS_TST_PS_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#LAB_SYPHILIS_TST_RSLT_PS varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#LAB_TESTS_PERFORMED varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#LAB_TREP_SYPH_RESULT_QUAL varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#LAB_TREP_SYPH_TEST_TYPE varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#MDH_PREV_STD_HIST varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#OOJ_AGENCY_SENT_TO varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#OOJ_DUE_DATE_SENT_TO datetime NULL,
-#OOJ_FR_NUMBER_SENT_TO varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#OOJ_INITG_AGNCY_OUTC_DUE_DATE datetime NULL,
-#OOJ_INITG_AGNCY_OUTC_SNT_DATE datetime NULL,
-#OOJ_INITG_AGNCY_RECD_DATE datetime NULL,
-#OUTBREAK_IND varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#OUTBREAK_NAME varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_ADDL_GENDER_INFO varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_AGE_AT_ONSET numeric(18,0) NULL,
-#PATIENT_AGE_AT_ONSET_UNIT varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_ALIAS varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_BIRTH_COUNTRY varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_BIRTH_SEX varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_CENSUS_TRACT varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_CITY varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_COUNTRY varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_COUNTY varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_CURR_SEX_UNK_RSN varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_CURRENT_SEX varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_DECEASED_DATE datetime NULL,
-#PATIENT_DECEASED_INDICATOR varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_DOB datetime NULL,
-#PATIENT_EMAIL varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_ETHNICITY varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_MARITAL_STATUS varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_PHONE_CELL varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_PHONE_HOME varchar(105) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_PHONE_WORK varchar(105) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_PREFERRED_GENDER varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_PREGNANT_IND varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_STATE varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_STREET_ADDRESS_1 varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_STREET_ADDRESS_2 varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_UNK_ETHNIC_RSN varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PATIENT_ZIP varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PBI_IN_PRENATAL_CARE_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PBI_PATIENT_PREGNANT_WKS varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PBI_PREG_AT_EXAM_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PBI_PREG_AT_EXAM_WKS varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PBI_PREG_AT_IX_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PBI_PREG_AT_IX_WKS varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PBI_PREG_IN_LAST_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PBI_PREG_OUTCOME varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PHYSICIAN_FL_FUP_KEY bigint NULL,
-#PROGRAM_AREA_CD varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#PROGRAM_JURISDICTION_OID bigint NULL,
-#REPORTING_ORG_KEY bigint NULL,
-#REPORTING_PROV_KEY bigint NULL,
-#RPT_ELICIT_INTERNET_INFO varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RPT_FIRST_NDLSHARE_EXP_DT date NULL,
-#RPT_FIRST_SEX_EXP_DT date NULL,
-#RPT_LAST_NDLSHARE_EXP_DT date NULL,
-#PROVIDER_REASON_VISIT_DT date NULL,
-#REFERRAL_BASIS varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RPT_LAST_SEX_EXP_DT date NULL,
-#RPT_MET_OP_INTERNET varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RPT_NDLSHARE_EXP_FREQ varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RPT_RELATIONSHIP_TO_OP varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RPT_SEX_EXP_FREQ varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RPT_SRC_CD_DESC varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RPT_SPOUSE_OF_OP varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_BEEN_INCARCERATD_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_COCAINE_USE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_CRACK_USE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_ED_MEDS_USE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_HEROIN_USE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_INJ_DRUG_USE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_METH_USE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_NITR_POP_USE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_NO_DRUG_USE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_OTHER_DRUG_SPEC varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_OTHER_DRUG_USE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_RISK_FACTORS_ASSESS_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_SEX_EXCH_DRGS_MNY_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_SEX_INTOXCTED_HGH_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_SEX_W_ANON_PTRNR_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_SEX_W_FEMALE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_SEX_W_KNOWN_IDU_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_SEX_W_KNWN_MSM_12M_FML_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_SEX_W_MALE_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_SEX_W_TRANSGNDR_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_SEX_WOUT_CONDOM_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_SHARED_INJ_EQUIP_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#RSK_TARGET_POPULATIONS varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_FEMALE_PRTNRS_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_FEMALE_PRTNRS_12MO_TTL varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_MALE_PRTNRS_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_MALE_PRTNRS_12MO_TOTAL varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_PLACES_TO_HAVE_SEX varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_PLACES_TO_MEET_PARTNER varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_PRTNRS_PRD_FML_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_PRTNRS_PRD_FML_TTL varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_PRTNRS_PRD_MALE_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_PRTNRS_PRD_MALE_TTL varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_PRTNRS_PRD_TRNSGNDR_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_SX_PRTNRS_INTNT_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_TRANSGNDR_PRTNRS_12MO_IND varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOC_TRANSGNDR_PRTNRS_12MO_TTL varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SOURCE_SPREAD varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#STD_PRTNRS_PRD_TRNSGNDR_TTL varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SURV_CLOSED_DT datetime NULL,
-#SURV_INVESTIGATOR_ASSGN_DT datetime NULL,
-#SURV_PATIENT_FOLL_UP varchar(22) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SURV_PROVIDER_CONTACT varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SURV_PROVIDER_EXAM_REASON varchar(43) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SYM_NEUROLOGIC_SIGN_SYM varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SYM_OCULAR_MANIFESTATIONS varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SYM_OTIC_MANIFESTATION varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#SYM_LATE_CLINICAL_MANIFES varchar(1999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-#TRT_TREATMENT_DATE date NULL

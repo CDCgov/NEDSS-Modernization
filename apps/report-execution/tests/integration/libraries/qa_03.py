@@ -48,7 +48,7 @@ class TestIntegrationNbsQa03Library:
         assert record is not None
         assert record[0].startswith('CAS')
         assert record[2].startswith('PSN')
-        assert int(record[3]) >= 100
+        assert int(record[3]) >= 100 if record[3] is not None else True
         assert type(record[5]) is datetime.datetime
         assert len(record[7]) > 0
         assert len(record[8]) > 0

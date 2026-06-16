@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import static gov.cdc.nbs.report.ReportConstants.BAS_CODES_NO_COLUMN;
 import static gov.cdc.nbs.report.ReportConstants.BAS_TIME_RANGE_TYPES;
 import static gov.cdc.nbs.report.ReportConstants.BAS_TYPES;
 import static gov.cdc.nbs.report.ReportConstants.COMPARISON_OPERATORS;
@@ -8,6 +9,10 @@ import static gov.cdc.nbs.report.ReportConstants.RDB_LAB_RESULT_VAL_COLS;
 import static gov.cdc.nbs.report.ReportConstants.SQL_AND;
 import static gov.cdc.nbs.report.ReportConstants.SQL_WHERE;
 
+import gov.cdc.nbs.authorization.permission.Permission;
+import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
+import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
+import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
@@ -26,6 +31,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +41,7 @@ import org.springframework.stereotype.Service;
 public class WhereClauseService {
 
   private final FieldFormatter fieldFormatter;
+  private final PermissionScopeResolver scopeResolver;
 
   private static final String LAB_RESULT_QUERY_VAL =
       SQL_WHERE + "root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM %s %s)";
@@ -69,7 +76,7 @@ public class WhereClauseService {
    *
    * @param reportConfig The metadata configuration for the report being executed.
    * @param executionRequest The specific filter values and columns requested by the user.
-   * @param dataSourceNameUtils
+   * @param dataSourceNameUtils Utility to standardize datasource naming
    * @return A string starting with "WHERE " followed by the filter criteria, or an empty string if
    *     no filters are applied.
    */
@@ -78,30 +85,148 @@ public class WhereClauseService {
       ReportExecutionRequest executionRequest,
       DataSourceNameUtils dataSourceNameUtils) {
 
+    List<String> activeClauses = new ArrayList<>();
+
     String basicWhereFragment =
         buildBasicWhereFragment(reportConfig, executionRequest.basicFilters());
+    if (!basicWhereFragment.isBlank()) {
+      activeClauses.add(basicWhereFragment);
+    }
 
     String advWhereFragment =
         buildAdvancedQueryResult(reportConfig, executionRequest.advancedFilter());
-
-    StringJoiner finalWhere = new StringJoiner(SQL_AND, SQL_WHERE, "");
-
-    if (basicWhereFragment != null && !basicWhereFragment.isEmpty()) {
-      finalWhere.add(basicWhereFragment);
-    }
-
-    if (advWhereFragment != null && !advWhereFragment.isEmpty()) {
-      finalWhere.add(advWhereFragment);
+    if (advWhereFragment != null && !advWhereFragment.isBlank()) {
+      activeClauses.add(advWhereFragment);
     }
 
     boolean hasLabResultVal = hasLabResultVal(reportConfig, executionRequest.advancedFilter());
     if (hasLabResultVal) {
       String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
-      return LAB_RESULT_QUERY_VAL.formatted(rdbDataSource, finalWhere.toString());
+      String labResultQueryValFragment =
+          LAB_RESULT_QUERY_VAL.formatted(
+              rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
+
+      // Add permission fragment to outer where
+      String permissionFragment = buildPermissionFragment(reportConfig);
+      if (!permissionFragment.isBlank()) {
+        return labResultQueryValFragment + SQL_AND + buildPermissionFragment(reportConfig);
+      }
+
+      return labResultQueryValFragment;
     }
 
-    // Only return the WHERE clause if it contains anything beyond the initial "WHERE " prefix
-    return finalWhere.length() > SQL_WHERE.length() ? finalWhere.toString() : "";
+    String permissionFragment = buildPermissionFragment(reportConfig);
+    if (!permissionFragment.isBlank()) {
+      activeClauses.add(permissionFragment);
+    }
+
+    if (activeClauses.isEmpty()) {
+      return "";
+    }
+
+    return SQL_WHERE + String.join(SQL_AND, activeClauses);
+  }
+
+  public String buildPermissionFragment(ReportConfiguration reportConfig) {
+    List<String> permissionClauses = new ArrayList<>();
+
+    String jpCriteria =
+        getJurisProgramRestrictionCriteria(
+            reportConfig.dataSource().hasJurisdictionSecurity(), reportConfig.group());
+    if (!jpCriteria.isBlank()) {
+      permissionClauses.add(jpCriteria);
+    }
+
+    String reportingFacilityCriteria =
+        getReportingFacilityRestrictionCriteria(reportConfig.dataSource().hasFacilitySecurity());
+    if (!reportingFacilityCriteria.isBlank()) {
+      permissionClauses.add(reportingFacilityCriteria);
+    }
+
+    if (permissionClauses.isEmpty()) {
+      return "";
+    }
+
+    return "(" + String.join(SQL_AND, permissionClauses) + ")";
+  }
+
+  /**
+   * Constructs the SQL criteria block to restrict data visibility by program area and jurisdiction.
+   *
+   * <p>If jurisdiction security is not set for the data source, this method returns an empty string
+   * indicating no juris or prog area restrictions. If security is set but the user possesses no
+   * valid scopes, an exception is thrown to prevent silent data exposure.
+   *
+   * @param hasJurisdictionSecurity Indicates if jurisdiction and program area isolation is set.
+   * @param group The report group used to derive the specific visibility permission.
+   * @return A parenthesized SQL predicate clause (e.g., {@code "(program_jurisdiction_oid IN (1,
+   *     2))"}). Returns an empty string {@code ""} if jurisdiction/program area security is not
+   *     set.
+   * @throws IllegalArgumentException If jurisdiction/progam area security is set but the user's
+   *     resolved {@link PermissionScope} contains no assigned identifiers.
+   */
+  private String getJurisProgramRestrictionCriteria(
+      boolean hasJurisdictionSecurity, ReportConstants.ReportGroup group) {
+    final String NO_JURIS_RESTRICTION = "";
+    if (!hasJurisdictionSecurity) {
+      return NO_JURIS_RESTRICTION;
+    }
+
+    PermissionScope scope = this.scopeResolver.resolve(mapSharedToPermission(group));
+    if (scope.any().isEmpty()) {
+      throw new IllegalArgumentException(
+          "No Jurisdiction or Program Area permissions found for user: %s for group: %s"
+              .formatted(SecurityUtil.getUserDetails().getUsername(), group));
+    }
+
+    String ids = scope.any().stream().map(String::valueOf).collect(Collectors.joining(", "));
+
+    return "(program_jurisdiction_oid IN (" + ids + "))";
+  }
+
+  /**
+   * Constructs the SQL criteria block to restrict data visibility by reporting facility.
+   *
+   * @param hasReportingFacilitySecurity Indicates if facility-level isolation has been set.
+   * @return A parenthesized SQL predicate clause (e.g., {@code "(REPORTING_FACILITY_UID = 123)"}).
+   *     Returns an empty string {@code ""} when no facility restrictions apply, indicating the
+   *     query should run for all facilities.
+   */
+  private String getReportingFacilityRestrictionCriteria(boolean hasReportingFacilitySecurity) {
+    final String NO_FACILITY_RESTRICTION = "";
+
+    if (!hasReportingFacilitySecurity) {
+      return NO_FACILITY_RESTRICTION;
+    }
+
+    Long externalOrgId = SecurityUtil.getUserDetails().getExternalOrgUid();
+    if (externalOrgId == null) {
+      return NO_FACILITY_RESTRICTION;
+    }
+
+    return "(REPORTING_FACILITY_UID = " + externalOrgId + ")";
+  }
+
+  /** Pure mapper utility isolating the business rules matching flags to permissions. */
+  private Permission mapSharedToPermission(ReportConstants.ReportGroup group) {
+    return switch (group) {
+      case TEMPLATE ->
+          new Permission(
+              ReportConstants.Permissions.VIEWREPORTTEMPLATE,
+              ReportConstants.Permissions.REPORTINGOBJECT);
+      case PRIVATE ->
+          new Permission(
+              ReportConstants.Permissions.VIEWREPORTPRIVATE,
+              ReportConstants.Permissions.REPORTINGOBJECT);
+      case PUBLIC ->
+          new Permission(
+              ReportConstants.Permissions.VIEWREPORTPUBLIC,
+              ReportConstants.Permissions.REPORTINGOBJECT);
+      case REPORTING_FACILITY ->
+          new Permission(
+              ReportConstants.Permissions.VIEWREPORTREPORTINGFACILITY,
+              ReportConstants.Permissions.REPORTINGOBJECT);
+    };
   }
 
   /**
@@ -128,6 +253,11 @@ public class WhereClauseService {
                       new IllegalArgumentException(
                           "No basic filter configuration found for UID: "
                               + filterRequest.reportFilterUid()));
+      // BAS_CODES_NO_COLUMN are non-column filters which are intercepted and processed
+      // independently during execution spec builds.
+      if (config.filterType() != null && BAS_CODES_NO_COLUMN.contains(config.filterType().code())) {
+        continue;
+      }
 
       // Find the associated Column
       ReportColumn column =

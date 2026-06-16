@@ -60,6 +60,26 @@ export class ReportControllerService {
      * @returns ReportId OK
      * @throws ApiError
      */
+    public static deleteReport({
+        reportUid,
+        dataSourceUid,
+    }: {
+        reportUid: number,
+        dataSourceUid: number,
+    }): CancelablePromise<ReportId> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/nbs/api/report/configuration/{reportUid}/{dataSourceUid}',
+            path: {
+                'reportUid': reportUid,
+                'dataSourceUid': dataSourceUid,
+            },
+        });
+    }
+    /**
+     * @returns ReportId OK
+     * @throws ApiError
+     */
     public static saveReport({
         reportUid,
         dataSourceUid,

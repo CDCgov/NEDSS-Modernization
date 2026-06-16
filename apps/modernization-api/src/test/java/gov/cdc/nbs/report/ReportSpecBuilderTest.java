@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -33,11 +35,13 @@ class ReportSpecBuilderTest {
 
   private WhereClauseService whereClauseService;
 
+  @Mock private PermissionScopeResolver scopeResolver;
+
+  private final FieldFormatter fieldFormatter = new FieldFormatter();
+
   @BeforeEach
   void setUp() {
-    // Instantiate real dependencies
-    FieldFormatter fieldFormatter = new FieldFormatter();
-    whereClauseService = new WhereClauseService(fieldFormatter);
+    whereClauseService = new WhereClauseService(fieldFormatter, scopeResolver);
   }
 
   private DataSourceNameUtils mockDataSourceNameUtils() {
@@ -50,9 +54,11 @@ class ReportSpecBuilderTest {
   private BasicFilterConfiguration mockBasicFilterConfiguration(
       List<String> filterDefaultValues, Long reportFilterUid, Long reportColumnUid) {
 
+    FilterType filterType = createFilterType("BAS_TXT", "");
+
     // Default to "BAS_TXT" for backwards compatibility
     return mockBasicFilterConfiguration(
-        filterDefaultValues, reportFilterUid, reportColumnUid, "BAS_TXT");
+        filterDefaultValues, reportFilterUid, reportColumnUid, filterType);
   }
 
   // For use with "BAS_DAYS" tests
@@ -60,10 +66,7 @@ class ReportSpecBuilderTest {
       List<String> filterDefaultValues,
       Long reportFilterUid,
       Long reportColumnUid,
-      String filterTypeCode) {
-
-    FilterType filterType = Mockito.mock(FilterType.class);
-    Mockito.lenient().when(filterType.type()).thenReturn(filterTypeCode);
+      FilterType filterType) {
 
     return new BasicFilterConfiguration(
         reportFilterUid, reportColumnUid, filterDefaultValues, null, null, null, filterType);
@@ -109,6 +112,14 @@ class ReportSpecBuilderTest {
     Mockito.lenient().when(request.columnUids()).thenReturn(columnUids);
 
     return request;
+  }
+
+  private FilterType createFilterType(String type, String code) {
+    FilterType filterType = Mockito.mock(FilterType.class);
+    Mockito.lenient().when(filterType.type()).thenReturn(type);
+    Mockito.lenient().when(filterType.code()).thenReturn(code);
+
+    return filterType;
   }
 
   @Test
@@ -290,9 +301,10 @@ class ReportSpecBuilderTest {
     Long filterUid = 100L;
     Long columnUid = 1L;
     List<String> filterDefaultValue = List.of("Value");
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     BasicFilterConfiguration basicFilterConfiguration =
-        mockBasicFilterConfiguration(filterDefaultValue, filterUid, columnUid);
+        mockBasicFilterConfiguration(filterDefaultValue, filterUid, columnUid, filterType);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid, "col1", "Col 1");
 
@@ -323,9 +335,10 @@ class ReportSpecBuilderTest {
     Long filterUid = 100L;
     Long columnUid = 1L;
     List<String> requestValue = List.of("11");
+    FilterType filterType = createFilterType("BAS_DAYS", "");
 
     BasicFilterConfiguration basicFilterConfiguration =
-        mockBasicFilterConfiguration(List.of(), filterUid, columnUid, "BAS_DAYS");
+        mockBasicFilterConfiguration(List.of(), filterUid, columnUid, filterType);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid, "col1", "Col 1");
     ReportConfiguration reportConfig =
@@ -352,9 +365,10 @@ class ReportSpecBuilderTest {
     Long filterUid = 100L;
     Long columnUid = 1L;
     List<String> requestValue = List.of("not_number");
+    FilterType filterType = createFilterType("BAS_DAYS", "");
 
     BasicFilterConfiguration basicFilterConfiguration =
-        mockBasicFilterConfiguration(List.of(), filterUid, columnUid, "BAS_DAYS");
+        mockBasicFilterConfiguration(List.of(), filterUid, columnUid, filterType);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid, "col1", "Col 1");
     ReportConfiguration reportConfig =
@@ -382,10 +396,11 @@ class ReportSpecBuilderTest {
     Long filterUid = 100L;
     Long columnUid = 1L;
     List<String> requestValue = List.of("11");
+    FilterType filterType = createFilterType("BAS_TXT", "");
 
     // Configured as text filter, NOT BAS_DAYS
     BasicFilterConfiguration basicFilterConfiguration =
-        mockBasicFilterConfiguration(List.of(), filterUid, columnUid, "BAS_TXT");
+        mockBasicFilterConfiguration(List.of(), filterUid, columnUid, filterType);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid, "col1", "Col 1");
     ReportConfiguration reportConfig =
@@ -411,9 +426,10 @@ class ReportSpecBuilderTest {
   @Test
   void build_should_return_null_days_value_when_basic_filters_are_null() {
     Long columnUid = 1L;
+    FilterType filterType = createFilterType("BAS_DAYS", "");
 
     BasicFilterConfiguration basicFilterConfiguration =
-        mockBasicFilterConfiguration(List.of(), 100L, columnUid, "BAS_DAYS");
+        mockBasicFilterConfiguration(List.of(), 100L, columnUid, filterType);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid, "col1", "Col 1");
     ReportConfiguration reportConfig =
@@ -436,9 +452,10 @@ class ReportSpecBuilderTest {
   void build_should_return_null_days_value_when_provided_value_is_blank() {
     Long filterUid = 100L;
     Long columnUid = 1L;
+    FilterType filterType = createFilterType("BAS_DAYS", "");
 
     BasicFilterConfiguration basicFilterConfiguration =
-        mockBasicFilterConfiguration(List.of(), filterUid, columnUid, "BAS_DAYS");
+        mockBasicFilterConfiguration(List.of(), filterUid, columnUid, filterType);
 
     ReportColumn reportColumn1 = mockReportColumn(columnUid, "col1", "Col 1");
     ReportConfiguration reportConfig =
