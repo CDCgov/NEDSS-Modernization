@@ -34,6 +34,7 @@ class TestIntegrationQa07Library:
         assert result.content_type == 'table'
 
         data = result.content.data
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
         assert len(data) == 2
         assert result.content.columns == [
             'PATIENT_NAME',
@@ -47,7 +48,6 @@ class TestIntegrationQa07Library:
             'DAYS1',
             'COUNT',
         ]
-        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = self.create_spec()
