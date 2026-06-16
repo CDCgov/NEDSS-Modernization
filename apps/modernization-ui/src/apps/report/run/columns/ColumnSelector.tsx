@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { LiveSearch } from 'components/Search/LiveSearch';
 
 import styles from './column-selector.module.scss';
+import { toSelectable } from './utils';
 
 const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; defaultColumns?: number[] }) => {
     const {
@@ -26,9 +27,7 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
 
     const [searchText, setSearchText] = useState<string>('');
 
-    const options: Selectable[] = columns
-        .filter(({ isDisplayable }) => isDisplayable)
-        .map((c) => ({ value: c.id.toString(), name: c.title }));
+    const options: Selectable[] = toSelectable(columns)
 
     const availableOptions = options.filter(
         (o) => !searchText || o.name.toLowerCase().includes(searchText.toLowerCase())
@@ -57,6 +56,7 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
         <>
             {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
             <div className={styles.layout}>
+                <div className={styles.grid}>
                 <Card id="available-columns" title="Available columns" collapsible={false}>
                     <div className={styles.card}>
                         <div className={styles.search}>
@@ -103,6 +103,7 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                         )}
                     </div>
                 </Card>
+                </div>
             </div>
         </>
     );

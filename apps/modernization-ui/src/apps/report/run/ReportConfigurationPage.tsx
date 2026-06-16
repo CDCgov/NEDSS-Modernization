@@ -13,6 +13,7 @@ import { ColumnSelector } from './columns/ColumnSelector';
 import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
 import { InPageNavigation } from 'design-system/inPageNavigation';
+import { SortSelector } from './columns/SortSelector';
 
 const BASIC_SECTIONS = [
     {
@@ -77,6 +78,7 @@ const SECTIONS = [
                 collapsible={true}
             >
                 <ColumnSelector columns={config.columns} defaultColumns={config.defaultColumnUids} />
+                <SortSelector columns={config.columns} defaultSort={config.defaultSort} />
             </Card>
         ),
     },
