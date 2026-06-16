@@ -4,7 +4,7 @@ const VALID_REPORT_LIBRARY_ID = 10000001;
 const VALID_SECTION_CODE = "1000";
 
 export let NEW_REPORT_UID;
-export const VALID_DATA_SOURCE_UID = 22; // has jurisdiction and facility security
+export const VALID_DATA_SOURCE_UID = 1;
 
 function makeCreateRequest(body) {
   return cy.request({
