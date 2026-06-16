@@ -121,7 +121,11 @@ def execute(
     *   calculating the metrics in the summary output. This gives parity
     *   with the SAS "Run" functionality. If we wish to reach parity with
     *   SAS "Export" functionality, the SQL queries will need to more closely
-    *   match those in PA_03.sas
+    *   match those in PA03.sas
+    * PA03.SAS contains a bug on line 411. The search string contains an extra ":",
+    *   which causes the value for Total No. IPS Associates in the output PDF
+    *   to always be 0, so the python library will differ from the SAS library
+    *   for that particular field.
     """
     valid_referral_bases_sql = _sql_string_list(VALID_REFERRAL_BASES)
 
