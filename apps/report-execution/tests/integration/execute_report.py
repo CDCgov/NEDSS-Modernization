@@ -27,6 +27,7 @@ class TestIntegrationExecuteReport:
                 # Filter operator is used here as it is a stable, small table
                 'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
+                'sort_by': '{"column_name": "columnName", "direction": "ASC"}'
             }
         )
         result = execute_report(report_spec)
@@ -308,3 +309,19 @@ class TestIntegrationExecuteReport:
             assert root_error.errors()[0]['type'] == 'missing'
             assert root_error.errors()[0]['loc'] == ('content', 'columns')
             assert root_error.errors()[0]['msg'] == 'Field required'
+
+    def test_execute_report_invalid_sort_json(self):
+        with pytest.raises(ValidationError) as exc_info:
+            ReportSpec.model_validate(
+                {
+                    'is_export': True,
+                    'is_builtin': True,
+                    'report_title': 'Test Report',
+                    'library_name': 'nbs_custom',
+                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
+                    'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
+                    'sort_by': '{"column_name": "missing_quote_or_bracket"'
+                }
+            )
+
+        assert "Invalid JSON" in str(exc_info.value)

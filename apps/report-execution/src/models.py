@@ -16,7 +16,7 @@ class ReportSpec(BaseModel):
     library_name: str = Field(min_length=1)
     data_source_name: str = Field(min_length=1)
     subset_query: str = Field(min_length=1)
-    sort_by: tuple[str, str] | None = None
+    sort_by: Json[Any] | None = Field(default_factory=dict)
     days_value: int | None = None  # Specific to potntl_dup_inv_sum
     column_map: list[list[str]] | None = None
     library_params: Json[Any] | None = Field(default_factory=dict)

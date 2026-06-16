@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -42,12 +43,17 @@ public class ReportSpecBuilder {
             .collect(Collectors.joining(", "));
   }
 
-  private String buildOrderByClause(SortSpec sortBy) {
-    if (sortBy == null) {
+  private String buildOrderByClause(SortSpec sortBy, ReportColumn sortColumn) {
+    if (sortBy == null || sortColumn == null) {
       return "";
     }
-    ReportColumn sortColumn = findMatchingColumn(sortBy.columnUid());
-    return String.format("ORDER BY [%s] %s", sortColumn.name(), sortBy.direction().name());
+
+    String targetColumn =
+        "STRING".equals(sortColumn.sourceTypeCode())
+            ? String.format("UPPER([%s])", sortColumn.name())
+            : String.format("[%s]", sortColumn.name());
+
+    return String.format("ORDER BY %s %s", targetColumn, sortBy.direction().name());
   }
 
   private ReportColumn findMatchingColumn(Long columnUid) {
@@ -90,12 +96,13 @@ public class ReportSpecBuilder {
       columnMap = columns.stream().map(c -> List.of(c.name(), c.title())).toList();
     }
     SortSpec sortBy = validateSortColumns(reportExecRequest.columnUids(), reportExecRequest.sort());
+    ReportColumn sortColumn = (sortBy != null) ? findMatchingColumn(sortBy.columnUid()) : null;
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
     String whereClause =
         whereClauseService.buildWhereClause(reportConfig, reportExecRequest, dataSourceNameUtils);
-    String orderByClause = buildOrderByClause(sortBy);
+    String orderByClause = buildOrderByClause(sortBy, sortColumn);
 
     // filter out empty spaces prior to string joining to prevent extra spaces between clauses
     String subsetQuery =
@@ -104,6 +111,12 @@ public class ReportSpecBuilder {
             .collect(Collectors.joining(" "))
             .trim();
 
+    Map<String, String> sortByMap =
+        (sortBy != null && sortColumn != null)
+            ? Map.of(
+                "column_name", sortColumn.name(),
+                "direction", sortBy.direction().name())
+            : null;
     Integer daysValue = extractDaysValue();
     String libraryParams = reportConfig.library().libraryParams();
 
@@ -115,7 +128,7 @@ public class ReportSpecBuilder {
         dataSourceName,
         subsetQuery,
         columnMap,
-        (sortBy != null) ? sortBy.toMap() : null,
+        sortByMap,
         daysValue,
         libraryParams);
   }

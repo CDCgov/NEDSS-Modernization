@@ -9,7 +9,7 @@ class ReportSpecTest {
 
   @Test
   void should_create_report_spec() {
-    Map<String, Object> sortBy = Map.of("column_uid", 1L, "direction", "ASC");
+    Map<String, String> sortBy = Map.of("column_name", "columnName", "direction", "ASC");
     Integer daysValue = 11;
     String libraryParams = "{\"reportDays\": \"30\"}";
 
@@ -35,7 +35,7 @@ class ReportSpecTest {
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
     assertThat(reportSpec.sortBy())
         .isNotNull()
-        .containsEntry("column_uid", 1L)
+        .containsEntry("column_name", "columnName")
         .containsEntry("direction", "ASC");
     assertThat(reportSpec.daysValue()).isEqualTo(daysValue);
     assertThat(reportSpec.libraryParams()).isEqualTo(libraryParams);

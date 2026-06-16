@@ -70,12 +70,17 @@ class ReportSpecBuilderTest {
   }
 
   private ReportColumn mockReportColumn(Long columnId, String columnName, String columnTitle) {
+    return mockReportColumn(columnId, columnName, columnTitle, "STRING");
+  }
+
+  private ReportColumn mockReportColumn(
+      Long columnId, String columnName, String columnTitle, String typeCode) {
     ReportColumn reportColumn = Mockito.mock(ReportColumn.class);
 
     Mockito.lenient().when(reportColumn.id()).thenReturn(columnId);
     Mockito.lenient().when(reportColumn.name()).thenReturn(columnName);
     Mockito.lenient().when(reportColumn.title()).thenReturn(columnTitle);
-    Mockito.lenient().when(reportColumn.sourceTypeCode()).thenReturn("STRING");
+    Mockito.lenient().when(reportColumn.sourceTypeCode()).thenReturn(typeCode);
 
     return reportColumn;
   }
@@ -478,7 +483,8 @@ class ReportSpecBuilderTest {
   @Test
   void build_should_include_order_by_and_sort_map_when_valid_sort_present() {
     Long columnUid = 1L;
-    ReportColumn reportColumn = mockReportColumn(columnUid, "last_name", "Last Name");
+    String columnName = "last_name";
+    ReportColumn reportColumn = mockReportColumn(columnUid, columnName, "Last Name");
 
     ReportConfiguration reportConfig =
         mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
@@ -496,11 +502,41 @@ class ReportSpecBuilderTest {
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
-            "SELECT [last_name] AS [Last Name] FROM [NBS_ODSE].[dbo].[NBS_configuration] ORDER BY [last_name] ASC");
+            "SELECT [last_name] AS [Last Name] FROM [NBS_ODSE].[dbo].[NBS_configuration] ORDER BY UPPER([last_name]) ASC");
 
     assertThat(reportSpec.sortBy())
         .isNotNull()
-        .containsEntry("column_uid", columnUid)
+        .containsEntry("column_name", columnName)
+        .containsEntry("direction", "ASC");
+  }
+
+  @Test
+  void build_should_include_order_by_and_sort_map_when_integer_sort_present() {
+    Long columnUid = 1L;
+    String columnName = "number";
+    ReportColumn reportColumn = mockReportColumn(columnUid, "number", "Number", "INTEGER");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
+
+    ReportExecutionRequest request = mockReportExecutionRequest(List.of(columnUid));
+
+    SortSpec sortSpec = new SortSpec(columnUid, ReportConstants.SortDirection.ASC);
+    when(request.sort()).thenReturn(sortSpec);
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    ReportSpec reportSpec =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
+
+    assertThat(reportSpec.subsetQuery())
+        .isEqualTo(
+            "SELECT [number] AS [Number] FROM [NBS_ODSE].[dbo].[NBS_configuration] ORDER BY [number] ASC");
+
+    assertThat(reportSpec.sortBy())
+        .isNotNull()
+        .containsEntry("column_name", columnName)
         .containsEntry("direction", "ASC");
   }
 
