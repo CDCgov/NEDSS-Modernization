@@ -14,7 +14,6 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
-import gov.cdc.nbs.report.ReportConstants.Operator;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
