@@ -160,7 +160,7 @@ describe('add report configuration page', () => {
         await user.selectOptions(await findByLabelText('Filter'), '1');
         await user.selectOptions(await findByLabelText('Type'), 'Single');
         await user.selectOptions(await findByLabelText('Associated column'), 'DATE_OF_BIRTH (Date of Birth)');
-        await user.click(await findByLabelText('Required as basic filter'));
+        await user.click(await findByLabelText('Required as basic filter?'));
         await user.click(await findByRole('button', { name: 'Add filter' }));
         // should add to table and form reset
         expect(await findByRole('cell', { name: 'My filter' })).toBeVisible();
