@@ -427,6 +427,9 @@ tables:
         data: foreign_key("[RDB].[dbo].[F_INTERVIEW_CASE]", "D_INTERVIEW_KEY")
       - column_name: RECORD_STATUS_CD
         data: random.choice(["ACTIVE", "LOG_DEL"])
+      - column_name: IX_DATE
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+
 
 
 
