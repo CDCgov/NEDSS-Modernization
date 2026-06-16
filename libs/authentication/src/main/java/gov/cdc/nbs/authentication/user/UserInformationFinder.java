@@ -17,7 +17,8 @@ class UserInformationFinder {
           case record_status_cd
               when 'ACTIVE' then 1
               else 0
-          end as enabled
+          end as enabled,
+          [user].[external_org_uid] as externalOrgUid
       from Auth_user [user]
       where [user].[user_id] = :username
         """;
