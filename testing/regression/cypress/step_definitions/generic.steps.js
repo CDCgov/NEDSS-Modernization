@@ -13,7 +13,7 @@ When('I select value {string} in the {string} field', (value, label) => {
 });
 
 When('I toggle the {string} field', (label) => {
-    cy.findByRole('checkbox', { name: label}).click({force: true});
+    cy.findByRole('checkbox', { name: label }).click({ force: true });
 });
 
 When('I type {string} into the {string} field', (value, label) => {

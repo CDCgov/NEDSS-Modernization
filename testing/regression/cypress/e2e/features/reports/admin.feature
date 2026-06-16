@@ -175,8 +175,23 @@ Feature: View report configuration
         Then I should see the report list
         Then I should see the "My test report" link
 
-        # TODO - delete
-        
+        # TODO - go save the report with all the types of values and return to admin page
+
+        # == Delete Report ==
+        When I click on the "My test report" link
+        Then I should see the "View" configuration page
+        When I click the "Delete" button
+        Then I should see a modal labelled "Delete report: My test report"
+        When I click the "No, cancel" button
+        # make sure page is interactive again after cancel
+        Then I click the "Edit" button
+        Then I click the "Cancel" button
+        # actually delete the report
+        When I click the "Delete" button
+        Then I should see a modal labelled "Delete report: My test report"
+        When I click the "Yes, delete" button
+        Then I should see the report list
+
     Scenario: I can cancel adding a report configuration
         When I click the "Create button" button
         Then I should see the "Add" configuration page
