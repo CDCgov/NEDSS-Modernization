@@ -16,42 +16,47 @@ public class ReportExceptionHandler {
   private static final System.Logger LOGGER =
       System.getLogger(ReportExceptionHandler.class.getName());
 
+  /**
+   * JSON-friendly wrapper around 4XX/5XX HTTP error responses.
+   */
+  public record ErrorResponse(String errorMessage) {}
+
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+  public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
     return new ResponseEntity<>(
-        ex.getBindingResult().getAllErrors().toString(), HttpStatus.UNPROCESSABLE_ENTITY);
+        new ErrorResponse(ex.getBindingResult().getAllErrors().toString()), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<String> handleNotFound(NotFoundException ex) {
-    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException ex) {
+    return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(NotImplementedException.class)
-  public ResponseEntity<String> handleNotImplemented(NotImplementedException ex) {
-    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_IMPLEMENTED);
+  public ResponseEntity<ErrorResponse> handleNotImplemented(NotImplementedException ex) {
+    return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), HttpStatus.NOT_IMPLEMENTED);
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<String> handleUnprocessableEntity(IllegalArgumentException ex) {
-    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  public ResponseEntity<ErrorResponse> handleUnprocessableEntity(IllegalArgumentException ex) {
+    return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<String> handleFailedSerialization(HttpMessageNotReadableException ex) {
-    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  public ResponseEntity<ErrorResponse> handleFailedSerialization(HttpMessageNotReadableException ex) {
+    return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(RestClientResponseException.class)
-  public ResponseEntity<String> handleRestClientFailure(RestClientResponseException ex) {
+  public ResponseEntity<ErrorResponse> handleRestClientFailure(RestClientResponseException ex) {
     String err = ex.getResponseBodyAsString();
     LOGGER.log(System.Logger.Level.ERROR, "Error received from rest client: %s".formatted(err), ex);
-    return new ResponseEntity<>(err, ex.getStatusCode());
+    return new ResponseEntity<>(new ErrorResponse(err), ex.getStatusCode());
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<String> handleUnexpectedError(Exception ex) {
+  public ResponseEntity<ErrorResponse> handleUnexpectedError(Exception ex) {
     LOGGER.log(System.Logger.Level.ERROR, ex.getMessage(), ex);
-    return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(new ErrorResponse("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
