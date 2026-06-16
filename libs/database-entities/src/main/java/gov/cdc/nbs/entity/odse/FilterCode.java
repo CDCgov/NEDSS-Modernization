@@ -22,11 +22,11 @@ import lombok.Setter;
 @Entity
 @Table(name = "Filter_code", catalog = "NBS_ODSE")
 public class FilterCode {
-  @Id
+  @NonNull @Id
   @Column(name = "filter_uid", nullable = false)
   private Long id;
 
-  @NonNull @Column(name = "code_table", length = 50)
+  @Column(name = "code_table", length = 50)
   private String codeTable;
 
   @Column(name = "desc_txt", length = 300)
