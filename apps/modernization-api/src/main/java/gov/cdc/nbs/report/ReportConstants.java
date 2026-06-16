@@ -21,7 +21,7 @@ public final class ReportConstants {
   public static final class Permissions {
     private Permissions() {}
 
-    public static final String REPORTINGOPERATION = "REPORTING";
+    public static final String REPORTINGOBJECT = "REPORTING";
 
     public static final String VIEWREPORTTEMPLATE = "VIEWREPORTTEMPLATE";
     public static final String VIEWREPORTPRIVATE = "VIEWREPORTPRIVATE";
