@@ -16,15 +16,15 @@ public class ReportExceptionHandler {
   private static final System.Logger LOGGER =
       System.getLogger(ReportExceptionHandler.class.getName());
 
-  /**
-   * JSON-friendly wrapper around 4XX/5XX HTTP error responses.
-   */
+  /** JSON-friendly wrapper around 4XX/5XX HTTP error responses. */
   public record ErrorResponse(String errorMessage) {}
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+  public ResponseEntity<ErrorResponse> handleValidationExceptions(
+      MethodArgumentNotValidException ex) {
     return new ResponseEntity<>(
-        new ErrorResponse(ex.getBindingResult().getAllErrors().toString()), HttpStatus.UNPROCESSABLE_ENTITY);
+        new ErrorResponse(ex.getBindingResult().getAllErrors().toString()),
+        HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(NotFoundException.class)
@@ -39,12 +39,15 @@ public class ReportExceptionHandler {
 
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ErrorResponse> handleUnprocessableEntity(IllegalArgumentException ex) {
-    return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+    return new ResponseEntity<>(
+        new ErrorResponse(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<ErrorResponse> handleFailedSerialization(HttpMessageNotReadableException ex) {
-    return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+  public ResponseEntity<ErrorResponse> handleFailedSerialization(
+      HttpMessageNotReadableException ex) {
+    return new ResponseEntity<>(
+        new ErrorResponse(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(RestClientResponseException.class)
@@ -57,6 +60,7 @@ public class ReportExceptionHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleUnexpectedError(Exception ex) {
     LOGGER.log(System.Logger.Level.ERROR, ex.getMessage(), ex);
-    return new ResponseEntity<>(new ErrorResponse("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(
+        new ErrorResponse("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
