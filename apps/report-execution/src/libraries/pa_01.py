@@ -8,7 +8,7 @@ def execute(
     data_source_name: str,
     **kwargs,
 ):
-    """PA01 HIV and STD: Case Management Report
+    """PA01 HIV and STD: Case Management Report.
 
     Conversion notes:
     """
@@ -46,16 +46,20 @@ def execute(
                  fb.CA_PATIENT_INTV_STATUS,
                  fb.INVESTIGATOR_INTERVIEW_KEY,
                  fb.INVESTIGATOR_INTERVIEW_QC,
-                 -- /* Should it be CA_INIT_INTVWR_ASSGN_DT or CA_INTERVIEWER_ASSIGN_DT? */ 
+                 -- /* Should it be CA_INIT_INTVWR_ASSGN_DT
+                 -- or CA_INTERVIEWER_ASSIGN_DT? */
                  DATEDIFF(DAY,fb.CA_INTERVIEWER_ASSIGN_DT,di.IX_DATE) AS Days,
                  dp.PROVIDER_QUICK_CODE
           FROM filtered_base fb
-            LEFT OUTER JOIN RDB.dbo.F_INTERVIEW_CASE fic ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+            LEFT OUTER JOIN RDB.dbo.F_INTERVIEW_CASE fic
+                         ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
             LEFT OUTER JOIN RDB.dbo.D_INTERVIEW di
                          ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
                         AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-            LEFT OUTER JOIN RDB.dbo.D_PROVIDER dp ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
-            LEFT OUTER JOIN RDB.dbo.INVESTIGATION i ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+            LEFT OUTER JOIN RDB.dbo.D_PROVIDER dp
+                         ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
+            LEFT OUTER JOIN RDB.dbo.INVESTIGATION i
+                         ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
         ),
         case_interview_dates AS
         (
@@ -79,12 +83,15 @@ def execute(
                  DATEDIFF(DAY,fb.CA_INIT_INTVWR_ASSGN_DT,di.IX_DATE) AS Days,
                  dp.PROVIDER_QUICK_CODE
           FROM filtered_base fb
-            INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+            INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
+                    ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
             INNER JOIN RDB.dbo.D_INTERVIEW di
                     ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
                    AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-            INNER JOIN RDB.dbo.D_PROVIDER dp ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
-            INNER JOIN RDB.dbo.INVESTIGATION i ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+            INNER JOIN RDB.dbo.D_PROVIDER dp
+                    ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
+            INNER JOIN RDB.dbo.INVESTIGATION i
+                    ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
           WHERE CAST(di.IX_DATE AS DATE) >= CAST(fb.CA_INIT_INTVWR_ASSGN_DT AS DATE)
         )
         SELECT *
