@@ -36,6 +36,8 @@ const MOCK_CONFIG: generated.ReportConfiguration = {
     dataSource: {
         id: 1,
         name: 'nbs_ods.data_source',
+        hasJurisdictionSecurity: true,
+        hasFacilitySecurity: false,
     },
     library: {
         id: 2,

@@ -47,6 +47,7 @@ const routing: RouteObject[] = [
                     },
                     {
                         path: ':reportUid/:dataSourceUid/edit',
+                        loader: loadReportConfiguration,
                         lazy: {
                             Component: async () => (await import('./management/configuration')).EditReportConfiguration,
                         },
