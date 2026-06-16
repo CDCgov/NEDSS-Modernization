@@ -48,7 +48,7 @@ def execute(
         ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
         INNER JOIN [RDB].[dbo].D_PROVIDER c
         ON a.INVESTIGATOR_FL_FUP_KEY = c.PROVIDER_KEY
-        WHERE a.INVESTIGATOR_FL_FUP_KEY !=1;
+        WHERE a.INVESTIGATOR_FL_FUP_KEY !=1
     ), min_max_dates AS (
         SELECT 
             MIN(FL_FUP_DISPO_DT) AS MIN_DISPO,
@@ -56,24 +56,29 @@ def execute(
             MIN(FL_FUP_INVESTIGATOR_ASSGN_DT) AS MIN_ASSGN,
             MAX(FL_FUP_INVESTIGATOR_ASSGN_DT) AS MAX_ASSGN
         FROM pa02
-    ), pa02_dispo AS (
-        SELECT
-            a.INV_LOCAL_ID,
-            a.REFERRAL_BASIS,
-            a.FL_FUP_INVESTIGATOR_ASSGN_DT,
-            a.FL_FUP_DISPO_DT,
-            a.FL_FUP_DISPOSITION,
-            a.INVESTIGATOR_FL_FUP_KEY,
-            a.INVESTIGATOR_FL_FUP_QC,
-            c.PROVIDER_QUICK_CODE,
-            c.PROVIDER_FIRST_NAME,
-            a.INVESTIGATOR_DISP_FL_FUP_KEY
-        FROM pa02
-        WHERE CAST(FL_FUP_DISPO_DT AS DATE) >= (SELECT MIN_DISPO FROM min_max_dates)
+    )
+    select 
+        a.INV_LOCAL_ID,
+        b.REFERRAL_BASIS,
+        a.FL_FUP_INVESTIGATOR_ASSGN_DT,
+        a.FL_FUP_DISPO_DT,
+        a.FL_FUP_DISPOSITION,
+        a.INVESTIGATOR_FL_FUP_KEY,
+        a.INVESTIGATOR_FL_FUP_QC,
+        c.PROVIDER_QUICK_CODE,
+        c.PROVIDER_FIRST_NAME,
+        INVESTIGATOR_DISP_FL_FUP_KEY
+    from a inner join [rdb].[dbo].investigation b on
+    a.investigation_key = b.investigation_key
+    inner join [rdb].[dbo].D_PROVIDER c
+    on a.INVESTIGATOR_DISP_FL_FUP_KEY = c.PROVIDER_KEY
+        WHERE INVESTIGATOR_DISP_FL_FUP_KEY in (select INVESTIGATOR_DISP_FL_FUP_KEY from PA02)
+        AND INVESTIGATOR_DISP_FL_FUP_KEY != 1
+        AND CAST(FL_FUP_DISPO_DT AS DATE) >= (SELECT MIN_DISPO FROM min_max_dates)
         AND CAST(FL_FUP_DISPO_DT AS DATE) <= (SELECT MAX_DISPO FROM min_max_dates)
         AND CAST(FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= (SELECT MIN_ASSGN FROM min_max_dates)
         AND CAST(FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= (SELECT MAX_ASSGN FROM min_max_dates)
-    )
+        
     '''
     content = trx.query(sql)
 

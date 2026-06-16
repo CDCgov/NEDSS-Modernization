@@ -288,19 +288,21 @@ tables:
       - column_name: fl_fup_investigator_assgn_dt
         data: fake.date_between(start_date=date(2020, 1, 1), end_date=date(2025, 12, 31))
         null_percentage: 0.05
+      - column_name: fl_fup_dispo_dt
+        data: fake.date_between(start_date=date(2020, 1, 1), end_date=date(2025, 12, 31))
+        null_percentage: 0.05
       - column_name: investigator_fl_fup_key
         data: fake.random_int(1, 300)
         null_percentage: 0.05
-      - column_name: investigtor_fl_fup_qc
-        data: fake.random_element('1', '2', '3', '4', '5', 'dekalb', 'fulton', 'local', 'pks', 'state')
+      - column_name: investigator_fl_fup_qc
+        data: fake.random_element(['1', '2', '3', '4', '5', 'dekalb', 'fulton', 'local', 'pks', 'state'])
         null_percentage: 0.05
       - column_name: investigator_disp_fl_fup_key
         data: fake.random_int(1, 10)
         null_percentage: 0.01
-      - column_name: ful_fup_disposition
+      - column_name: fl_fup_disposition
         data: |
-          fake.random_element(
-            [
+          disposition_values = [
               "1 - Prev. Pos",
               "2 - Prev. Neg, New Pos",
               "5 - No Prev Test, New Pos",
@@ -316,7 +318,7 @@ tables:
               "K - Sent Out Of Jurisdiction",
               "L - Other"
             ]
-          )
+          return fake.random_element(disposition_values)
         null_percentage: 0.1
 
       - column_name: referral_basis
