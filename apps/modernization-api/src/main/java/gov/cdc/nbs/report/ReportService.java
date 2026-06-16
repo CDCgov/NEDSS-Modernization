@@ -96,6 +96,16 @@ public class ReportService {
     return upsertReport(request, user, existingReport);
   }
 
+  @Transactional
+  public void deleteReport(ReportId existingReportId) {
+    Report existingReport =
+        reportRepository
+            .findById(existingReportId)
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
+
+    reportRepository.delete(existingReport);
+  }
+
   private Report upsertReport(
       AdminReportRequest request, NbsUserDetails user, Report existingReport) {
     ReportMetadata metadata = verifyReportMetadata(request);

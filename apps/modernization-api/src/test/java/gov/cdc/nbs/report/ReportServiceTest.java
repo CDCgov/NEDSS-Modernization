@@ -439,6 +439,43 @@ class ReportServiceTest {
   }
 
   @Nested
+  class DeleteReport {
+    private final Long reportUid = 1L;
+    private final Long dataSourceUid = 2L;
+
+    private Report savedReport;
+    private ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+    @BeforeEach
+    void setup() {
+      savedReport = mock(Report.class);
+
+      Mockito.lenient()
+          .when(reportRepository.findById(reportId))
+          .thenReturn(Optional.of(savedReport));
+    }
+
+    @Test
+    void deleteReport_should_delete_and_return_report_when_all_inputs_are_valid() {
+      service.deleteReport(reportId);
+
+      verify(reportRepository).findById(reportId);
+      verify(reportRepository).delete(any(Report.class));
+    }
+
+    @Test
+    void deleteReport_should_delete_and_throws_when_unknown_report() {
+      when(reportRepository.findById(reportId)).thenReturn(Optional.ofNullable(null));
+
+      assertThatThrownBy(() -> service.deleteReport(reportId))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessageContaining("Report not found for Report UID: 1 and Data Source UID: 2");
+
+      verify(reportRepository).findById(reportId);
+    }
+  }
+
+  @Nested
   class GetReport {
     @Test
     void getReport_should_return_configuration_when_report_exists() {

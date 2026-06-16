@@ -175,8 +175,8 @@ public class WhereClauseService {
     PermissionScope scope = this.scopeResolver.resolve(mapSharedToPermission(group));
     if (scope.any().isEmpty()) {
       throw new IllegalArgumentException(
-          "No Jurisdiction or Program Area permissions found for user: "
-              + SecurityUtil.getUserDetails().getUsername());
+          "No Jurisdiction or Program Area permissions found for user: %s for group: %s"
+              .formatted(SecurityUtil.getUserDetails().getUsername(), group));
     }
 
     String ids = scope.any().stream().map(String::valueOf).collect(Collectors.joining(", "));
@@ -212,20 +212,20 @@ public class WhereClauseService {
     return switch (group) {
       case TEMPLATE ->
           new Permission(
-              ReportConstants.Permissions.REPORTINGOPERATION,
-              ReportConstants.Permissions.VIEWREPORTTEMPLATE);
+              ReportConstants.Permissions.VIEWREPORTTEMPLATE,
+              ReportConstants.Permissions.REPORTINGOBJECT);
       case PRIVATE ->
           new Permission(
-              ReportConstants.Permissions.REPORTINGOPERATION,
-              ReportConstants.Permissions.VIEWREPORTPRIVATE);
+              ReportConstants.Permissions.VIEWREPORTPRIVATE,
+              ReportConstants.Permissions.REPORTINGOBJECT);
       case PUBLIC ->
           new Permission(
-              ReportConstants.Permissions.REPORTINGOPERATION,
-              ReportConstants.Permissions.VIEWREPORTPUBLIC);
+              ReportConstants.Permissions.VIEWREPORTPUBLIC,
+              ReportConstants.Permissions.REPORTINGOBJECT);
       case REPORTING_FACILITY ->
           new Permission(
-              ReportConstants.Permissions.REPORTINGOPERATION,
-              ReportConstants.Permissions.VIEWREPORTREPORTINGFACILITY);
+              ReportConstants.Permissions.VIEWREPORTREPORTINGFACILITY,
+              ReportConstants.Permissions.REPORTINGOBJECT);
     };
   }
 
