@@ -21,13 +21,18 @@ class AdvancedQueryBuilderTest {
   private final Report report = mock(Report.class);
   private final FilterCode filterCode =
       FilterCode.builder()
+          .id(faker.number().randomNumber())
           .codeTable("NONE")
           .filterType("ADV_WCB")
           .filterName("Where Clause Builder")
           .build();
 
   private final ReportFilter filter =
-      ReportFilter.builder().report(report).filterCode(filterCode).build();
+      ReportFilter.builder()
+          .id(faker.number().randomNumber())
+          .report(report)
+          .filterCode(filterCode)
+          .build();
 
   private FilterValue buildOperatorValue(Integer sequenceNumber, String operator) {
     return FilterValue.builder()
