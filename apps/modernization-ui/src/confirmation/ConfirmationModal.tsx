@@ -15,6 +15,7 @@ type Props = {
     cancelText?: string;
     onCancel: () => void;
     confirmBtnClassName?: string;
+    disabled?: boolean;
 };
 
 export const ConfirmationModal = ({
@@ -29,6 +30,7 @@ export const ConfirmationModal = ({
     cancelText = 'Cancel',
     onCancel,
     confirmBtnClassName,
+    disabled = false,
 }: Props) => {
     return (
         <Modal
@@ -37,8 +39,7 @@ export const ConfirmationModal = ({
             id={id}
             aria-labelledby="confirmation-heading"
             className={classNames(style.content, 'modal')}
-            aria-describedby={ariaDescribedBy}
-        >
+            aria-describedby={ariaDescribedBy}>
             <ModalHeading id="confirmation-heading" className={style.heading}>
                 {title}
             </ModalHeading>
@@ -53,15 +54,15 @@ export const ConfirmationModal = ({
             </div>
             <ModalFooter id="confirmation-footer">
                 <ButtonGroup className={classNames(style.actionButtonGroup)}>
-                    <Button type="button" onClick={onCancel} outline data-testid="cancel-btn">
+                    <Button type="button" onClick={onCancel} outline data-testid="cancel-btn" disabled={disabled}>
                         {cancelText}
                     </Button>
                     <Button
                         type="button"
                         onClick={onConfirm}
                         data-testid="confirmation-btn"
-                        className={`${classNames(style.actionButton)} ${confirmBtnClassName ? confirmBtnClassName : ''}`}
-                    >
+                        className={classNames(style.actionButton, confirmBtnClassName)}
+                        disabled={disabled}>
                         {confirmText}
                     </Button>
                 </ButtonGroup>
