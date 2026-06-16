@@ -3368,5 +3368,157 @@ describe('report run page', () => {
                 }),
             });
         });
+
+        describe('column sorting', () => {
+            it('is empty if no columns selected', async () => {
+                const mockApi = vi
+                    .mocked(generated.ReportControllerService.getReportConfiguration)
+                    .mockResolvedValue(MOCK_SELECTABLE_CONFIG);
+                const { getByRole, findByLabelText } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+            });
+
+            it('is empty if no columns selected, even with default', async () => {
+                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                    ...MOCK_SELECTABLE_CONFIG,
+                    defaultSort: { columnUid: 2003, direction: generated.SortSpec.direction.DESC },
+                });
+                const { getByRole, findByLabelText } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+                expect(await findByLabelText('Sort order')).toHaveValue(generated.SortSpec.direction.DESC);
+            });
+
+            it('resets default if not in default columns', async () => {
+                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                    ...MOCK_SELECTABLE_CONFIG,
+                    defaultColumnUids: [2001, 2002],
+                    defaultSort: { columnUid: 2003, direction: generated.SortSpec.direction.DESC },
+                });
+                const { getByRole, findByLabelText } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+            });
+
+            it('allows sort selection, but clears if column un-selected', async () => {
+                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                    ...MOCK_SELECTABLE_CONFIG,
+                    defaultColumnUids: [2001, 2002],
+                });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+
+                const user = userEvent.setup();
+
+                await user.selectOptions(await findByLabelText('Sort by'), '2001');
+
+                await user.click(await findByLabelText('Remove Full Name'));
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: undefined,
+                        basicFilters: [],
+                        columnUids: [2002],
+                        sort: undefined,
+                    }),
+                });
+            });
+
+            it('allows sort selection', async () => {
+                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                    ...MOCK_SELECTABLE_CONFIG,
+                    defaultColumnUids: [2001, 2002],
+                });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+
+                const user = userEvent.setup();
+
+                await user.selectOptions(await findByLabelText('Sort by'), '2001');
+                await user.selectOptions(await findByLabelText('Sort order'), generated.SortSpec.direction.DESC);
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: undefined,
+                        basicFilters: [],
+                        columnUids: [2001, 2002],
+                        sort: { columnUid: 2001, direction: generated.SortSpec.direction.DESC },
+                    }),
+                });
+            });
+
+            it('allows sort selection, defaults to ascending', async () => {
+                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                    ...MOCK_SELECTABLE_CONFIG,
+                    defaultColumnUids: [2001, 2002],
+                });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+
+                expect(getByRole('status')).toHaveTextContent('Loading');
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+
+                const user = userEvent.setup();
+
+                await user.selectOptions(await findByLabelText('Sort by'), '2001');
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: undefined,
+                        basicFilters: [],
+                        columnUids: [2001, 2002],
+                        sort: { columnUid: 2001, direction: generated.SortSpec.direction.ASC },
+                    }),
+                });
+            });
+        });
     });
 });
