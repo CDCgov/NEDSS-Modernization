@@ -2870,8 +2870,8 @@ describe('report run page', () => {
 
             const combinators = await findAllByRole('combobox', { name: 'Combinator' });
             expect(combinators).toHaveLength(2);
-            expect(combinators[0]).toHaveValue('OR');
-            expect(combinators[1]).toHaveValue('AND');
+            expect(combinators[0]).toHaveValue('or');
+            expect(combinators[1]).toHaveValue('and');
 
             const fields = await findAllByRole('combobox', { name: 'Field' });
             expect(fields).toHaveLength(4);
