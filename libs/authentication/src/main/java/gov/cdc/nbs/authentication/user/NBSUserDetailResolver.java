@@ -31,6 +31,7 @@ class NBSUserDetailResolver {
         information.first(),
         information.last(),
         authorities,
-        information.enabled());
+        information.enabled(),
+        information.externalOrgUid());
   }
 }
