@@ -34,6 +34,9 @@ public class Report {
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibrary;
 
+  // Report filters are updated/dete when reports save/dete, so we need to
+  // cascade all operations. When a report is no longer referenced, we want
+  // to delete it, so set `orphanRemoval` to true
   @OneToMany(
       mappedBy = "report",
       fetch = FetchType.LAZY,
