@@ -22,23 +22,24 @@ import gov.cdc.nbs.report.models.AdminReportRequest;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.Library;
+import gov.cdc.nbs.report.models.LibraryExecutionResult;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportResult;
+import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
@@ -212,7 +213,7 @@ public class ReportService {
     return reportLibrary.getRunner();
   }
 
-  public ResponseEntity<ReportResult> executeReport(ReportExecutionRequest request) {
+  public ReportExecutionResult executeReport(ReportExecutionRequest request) {
     Long reportUid = request.reportUid();
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
@@ -233,24 +234,28 @@ public class ReportService {
             request, reportConfigResponse, dataSourceNameUtils, whereClauseService);
     ReportSpec reportSpec = specBuilder.build();
 
-    return reportExecutionClient
-        .post()
-        .uri("/report/execute")
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(reportSpec)
-        .retrieve()
-        .onStatus(
-            status -> status.value() >= 400,
-            (req, resp) -> {
-              throw new RestClientResponseException(
-                  "Error response from the report-execution service",
-                  resp.getStatusCode(),
-                  resp.getStatusText(),
-                  resp.getHeaders(),
-                  resp.getBody().readAllBytes(),
-                  null);
-            })
-        .toEntity(ReportResult.class);
+    LibraryExecutionResult result =
+        reportExecutionClient
+            .post()
+            .uri("/report/execute")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(reportSpec)
+            .retrieve()
+            .onStatus(
+                status -> status.value() >= 400,
+                (req, resp) -> {
+                  throw new RestClientResponseException(
+                      "Error response from the report-execution service",
+                      resp.getStatusCode(),
+                      resp.getStatusText(),
+                      resp.getHeaders(),
+                      resp.getBody().readAllBytes(),
+                      null);
+                })
+            .toEntity(LibraryExecutionResult.class)
+            .getBody();
+
+    return new ReportExecutionResult(result, reportSpec.subsetQuery(), LocalDateTime.now());
   }
 
   private String getReportNotFoundText(ReportId reportId) {
