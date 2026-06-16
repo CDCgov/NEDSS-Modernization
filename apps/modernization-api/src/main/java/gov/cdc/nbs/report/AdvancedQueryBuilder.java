@@ -95,7 +95,7 @@ public class AdvancedQueryBuilder {
    * @throws AdvancedQueryException if any of the FilterValue set is invalid
    */
   public AdvancedQuery.RuleGroup build() throws AdvancedQueryException {
-    LOGGER.log(System.Logger.Level.DEBUG, "Building query from: " + filterValues);
+    LOGGER.log(System.Logger.Level.DEBUG, "Building query from FilterValues: " + filterValues.stream().map(FilterValue::getId).toList());
 
     // wrap the whole thing in () to make sure it's a valid rule group
     this.filterValues.addFirst(firstOpenParen);
@@ -104,7 +104,7 @@ public class AdvancedQueryBuilder {
     AdvancedQuery.RuleGroup rootRuleGroup = startRuleGroup();
 
     if (hasNext()) {
-      throw new AdvancedQueryException("Extra FilterValue left over after parsing: " + peek());
+      throw new AdvancedQueryException("Extra FilterValue left over after parsing: " + peek().getId());
     }
 
     AdvancedQuery query = simplify(rootRuleGroup);
