@@ -39,7 +39,8 @@ export const ConfirmationModal = ({
             id={id}
             aria-labelledby="confirmation-heading"
             className={classNames(style.content, 'modal')}
-            aria-describedby={ariaDescribedBy}>
+            aria-describedby={ariaDescribedBy}
+        >
             <ModalHeading id="confirmation-heading" className={style.heading}>
                 {title}
             </ModalHeading>
@@ -62,7 +63,8 @@ export const ConfirmationModal = ({
                         onClick={onConfirm}
                         data-testid="confirmation-btn"
                         className={classNames(style.actionButton, confirmBtnClassName)}
-                        disabled={disabled}>
+                        disabled={disabled}
+                    >
                         {confirmText}
                     </Button>
                 </ButtonGroup>

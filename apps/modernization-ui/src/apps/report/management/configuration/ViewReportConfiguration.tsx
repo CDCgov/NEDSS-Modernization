@@ -41,7 +41,8 @@ const ViewReportConfiguration = () => {
                         Edit
                     </LinkButton>
                 </>
-            }>
+            }
+        >
             <div className={styles.columnContent}>
                 <ReportConfigurationContent isEditable={false} config={config} />
             </div>
