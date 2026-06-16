@@ -12,6 +12,7 @@ public class NbsUserDetails implements UserDetails {
   private final String lastName;
   private final Set<GrantedAuthority> authorities;
   private final boolean isEnabled;
+  private final Long externalOrgUid;
 
   public NbsUserDetails(
       final long id,
@@ -19,13 +20,15 @@ public class NbsUserDetails implements UserDetails {
       final String firstName,
       final String lastName,
       final Set<GrantedAuthority> authorities,
-      boolean isEnabled) {
+      boolean isEnabled,
+      final Long externalOrgUid) {
     this.id = id;
     this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
     this.authorities = authorities;
     this.isEnabled = isEnabled;
+    this.externalOrgUid = externalOrgUid;
   }
 
   public Long getId() {
@@ -46,6 +49,10 @@ public class NbsUserDetails implements UserDetails {
 
   public Set<GrantedAuthority> getAuthorities() {
     return this.authorities;
+  }
+
+  public Long getExternalOrgUid() {
+    return this.externalOrgUid;
   }
 
   @Override
