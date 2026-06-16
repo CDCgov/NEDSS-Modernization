@@ -22,7 +22,7 @@ class ReportExceptionHandlerTest {
         handler.handleNotFound(exception);
 
     assertNotNull(responseEntity.getBody());
-    assertEquals("Not Found", responseEntity.getBody().errorMessage());
+    assertEquals("Not Found", responseEntity.getBody().message());
     assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
   }
 
@@ -34,7 +34,7 @@ class ReportExceptionHandlerTest {
         handler.handleNotImplemented(exception);
 
     assertNotNull(responseEntity.getBody());
-    assertEquals("Not Implemented", responseEntity.getBody().errorMessage());
+    assertEquals("Not Implemented", responseEntity.getBody().message());
     assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
   }
 
@@ -46,7 +46,7 @@ class ReportExceptionHandlerTest {
         handler.handleUnprocessableEntity(exception);
 
     assertNotNull(responseEntity.getBody());
-    assertEquals("Illegal Argument", responseEntity.getBody().errorMessage());
+    assertEquals("Illegal Argument", responseEntity.getBody().message());
     assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
   }
 
@@ -60,7 +60,7 @@ class ReportExceptionHandlerTest {
         handler.handleRestClientFailure(exception);
 
     assertNotNull(responseEntity.getBody());
-    assertEquals("it went poorly", responseEntity.getBody().errorMessage());
+    assertEquals("it went poorly", responseEntity.getBody().message());
     assertEquals(HttpStatus.SERVICE_UNAVAILABLE, responseEntity.getStatusCode());
   }
 }
