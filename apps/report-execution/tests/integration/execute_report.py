@@ -27,7 +27,7 @@ class TestIntegrationExecuteReport:
                 # Filter operator is used here as it is a stable, small table
                 'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
-                'sort_by': '{"column_name": "columnName", "direction": "ASC"}'
+                'sort_by': '{"column_name": "columnName", "direction": "ASC"}',
             }
         )
         result = execute_report(report_spec)
@@ -320,8 +320,8 @@ class TestIntegrationExecuteReport:
                     'library_name': 'nbs_custom',
                     'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
-                    'sort_by': '{"column_name": "missing_quote_or_bracket"'
+                    'sort_by': '{"column_name": "missing_quote_or_bracket"',
                 }
             )
 
-        assert "Invalid JSON" in str(exc_info.value)
+        assert 'Invalid JSON' in str(exc_info.value)
