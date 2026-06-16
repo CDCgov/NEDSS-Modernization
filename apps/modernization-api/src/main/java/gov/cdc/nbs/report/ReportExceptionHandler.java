@@ -20,7 +20,7 @@ public class ReportExceptionHandler {
 
   /** JSON-friendly wrapper for the response bodies of 4XX/5XX HTTP error responses. */
   public record ErrorResponseBody(
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String errorMessage) {}
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String message) {}
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponseBody> handleValidationExceptions(
