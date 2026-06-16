@@ -1,6 +1,8 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.exception.NotFoundException;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,8 @@ public class ReportExceptionHandler {
       System.getLogger(ReportExceptionHandler.class.getName());
 
   /** JSON-friendly wrapper around 4XX/5XX HTTP error responses. */
-  public record ErrorResponse(String errorMessage) {}
+  public record ErrorResponse(
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String errorMessage) {}
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleValidationExceptions(
