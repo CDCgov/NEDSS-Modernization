@@ -1,4 +1,5 @@
 import pytest
+import yaml
 
 from src.execute_report import execute_report
 from src.models import ReportSpec
@@ -11,7 +12,7 @@ faker_schema = 'pa03.yaml'
 class TestIntegrationPa03Library:
     """Integration tests for the pa_03 library."""
 
-    def test_execute_report_check_data(self):
+    def test_execute_report_check_data(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
                 'is_export': True,
@@ -30,6 +31,8 @@ class TestIntegrationPa03Library:
         assert len(data) == 36
         assert len(data[0]) == 5
         assert len(data[0]) == len(result.content.columns)
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
         assert data[:15] == [
             ('Total Number of Cases', None, None, data[0][3], None),
