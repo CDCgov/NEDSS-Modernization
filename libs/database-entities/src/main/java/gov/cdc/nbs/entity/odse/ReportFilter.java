@@ -17,11 +17,11 @@ import lombok.Setter;
 @Entity
 @Table(name = "Report_Filter", catalog = "NBS_ODSE")
 public class ReportFilter {
-  @Id
+  @NonNull @Id
   @Column(name = "report_filter_uid", nullable = false)
   private Long id;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   // Report has a composite primary key
   @SuppressWarnings("java:S1710")
   @JoinColumns({
@@ -41,12 +41,17 @@ public class ReportFilter {
   @JoinColumn(name = "column_uid")
   private DataSourceColumn dataSourceColumn;
 
-  @OneToMany(mappedBy = "reportFilter", fetch = FetchType.LAZY)
+  // When a filter is deleted, it's values also need to be removed
+  @OneToMany(mappedBy = "reportFilter", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private List<FilterValue> filterValues;
 
   // Setting orphanRemoval to true so we can delete a ReportFilterValidation record when
   // it's detached from its parent ReportFilter (i.e. `filterValidation` is set to null).
-  @OneToOne(mappedBy = "reportFilter", fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToOne(
+      mappedBy = "reportFilter",
+      fetch = FetchType.LAZY,
+      orphanRemoval = true,
+      cascade = CascadeType.ALL)
   private ReportFilterValidation filterValidation;
 
   @Column(name = "status_cd")
