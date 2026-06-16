@@ -10,6 +10,7 @@ import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.report.ReportConstants.Operator;
 import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
@@ -541,7 +542,7 @@ class WhereClauseServiceTest {
     // Stub the permission scope resolver for jurisdiction tracking (program_jurisdiction_oid IN
     PermissionScope mockScope = Mockito.mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(101L));
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTPUBLIC")))
+    when(scopeResolver.resolve(new Permission("VIEWREPORTPUBLIC", "REPORTING")))
         .thenReturn(mockScope);
 
     // Wrap in the execution request
@@ -683,7 +684,7 @@ class WhereClauseServiceTest {
 
     PermissionScope mockScope = Mockito.mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(50L));
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTPUBLIC")))
+    when(scopeResolver.resolve(new Permission("VIEWREPORTPUBLIC", "REPORTING")))
         .thenReturn(mockScope);
 
     when(executionRequest.basicFilters())
@@ -928,7 +929,7 @@ class WhereClauseServiceTest {
     PermissionScope mockScope = Mockito.mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(101L, 102L));
 
-    Permission expectedPermission = new Permission("REPORTING", "VIEWREPORTPRIVATE");
+    Permission expectedPermission = new Permission("VIEWREPORTPRIVATE", "REPORTING");
     when(scopeResolver.resolve(expectedPermission)).thenReturn(mockScope);
 
     String result = whereClauseService.buildPermissionFragment(reportConfig);
@@ -948,7 +949,7 @@ class WhereClauseServiceTest {
 
     PermissionScope mockScope = Mockito.mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(50L));
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTTEMPLATE")))
+    when(scopeResolver.resolve(new Permission("VIEWREPORTTEMPLATE", "REPORTING")))
         .thenReturn(mockScope);
 
     String result = whereClauseService.buildPermissionFragment(reportConfig);
@@ -981,7 +982,7 @@ class WhereClauseServiceTest {
 
     PermissionScope emptyScope = Mockito.mock(PermissionScope.class);
     when(emptyScope.any()).thenReturn(List.of()); // Empty list
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTREPORTINGFACILITY")))
+    when(scopeResolver.resolve(new Permission("VIEWREPORTREPORTINGFACILITY", "REPORTING")))
         .thenReturn(emptyScope);
 
     mockAuthenticatedUser(null);
@@ -1054,7 +1055,7 @@ class WhereClauseServiceTest {
     // Stub the permission context return mapping
     PermissionScope mockScope = Mockito.mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(77L));
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTPUBLIC")))
+    when(scopeResolver.resolve(new Permission("VIEWREPORTPUBLIC", "REPORTING")))
         .thenReturn(mockScope);
 
     // Setup user context requesting a report with no filters
