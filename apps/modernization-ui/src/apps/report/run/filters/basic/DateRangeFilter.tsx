@@ -2,6 +2,7 @@ import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 import { BasicFilterConfiguration } from 'generated';
 import { DatePickerRange } from 'design-system/date/range/DatePickerRange';
 import { validateRequiredRule } from 'validation/entry';
+import { rangeValuesMissing, validateDateRange } from '../utils/rangeValidator.ts';
 
 // Don't need `filter` for this component, but don't want to pass it down
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -29,20 +30,9 @@ const dateRangeValidator = (filter: BasicFilterConfiguration, label: string) => 
             return filter.isRequired ? validateRequiredRule(label).required.message : true;
         }
 
-        if ((!!value[0] && !value[1]) || (!value[0] && !!value[1])) return 'Both From and To dates must be populated';
+        const errorMsg = validateDateRange(value, label);
 
-        const fromDate = new Date(value[0]!); // can't be undefined because of above checks
-        const toDate = new Date(value[1]!); // can't be undefined because of above checks
-        for (const { date, ind, str } of [
-            { date: fromDate, ind: 0, str: 'From' },
-            { date: toDate, ind: 1, str: 'To' },
-        ]) {
-            if (date.toString() === 'Invalid Date') {
-                return `${str} date of "${value[ind]}" is not valid mm/dd/yyyy formatted date`;
-            }
-        }
-
-        if (fromDate > toDate) return 'From date must be before To date';
+        if (errorMsg) return errorMsg;
 
         // valid by default
         return true;

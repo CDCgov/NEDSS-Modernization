@@ -1,0 +1,81 @@
+// matches date format (e.g. 11/01/2020 1/1/2020)
+import {
+    isRuleGroupType,
+    isRuleType,
+    QueryValidator,
+    RuleGroupTypeAny,
+    RuleType,
+    ValidationResult,
+} from 'react-querybuilder';
+import { BINARY_OPERATORS } from './AdvancedFilter.tsx';
+import { getRangeValErrorMsg, isDateFormat, validateDateRange, validateNumericRange } from '../utils/rangeValidator.ts';
+
+export type ValidationResultMap = Record<string, ValidationResult>;
+
+export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: ValidationResultMap) => {
+    console.log('rule', rule);
+    const setInvalid = (id: string, reason: string) => {
+        result[id]['valid'] = false;
+        result[id]['reasons'] = [reason];
+    };
+    if (isRuleType(rule)) {
+        const id = rule['id'];
+        const field = rule['field'];
+        const operator = rule['operator'];
+        const value = rule['value'];
+
+        if (!id) return; // no key for the map, shouldn't happen in practice
+        // default valid
+        result[id] = { valid: true };
+
+        // empty rules are fine
+        if (!field || field === '~') return;
+
+        // start check for exception
+        if (operator === '~') {
+            setInvalid(id, getMissingValErrorMsg(field, true));
+            return;
+        }
+
+        if (operator === 'between') {
+            // this shouldn't happen with how we are handling the value in the UI
+            if (typeof value !== 'string') {
+                setInvalid(id, getRangeValErrorMsg(field, true));
+                return;
+            }
+
+            if (isEmptyBetweenValue(value)) {
+                setInvalid(id, getRangeValErrorMsg(field, false));
+                return;
+            }
+
+            const parts: string[] = value.split(',');
+            let rangeErrorMsg;
+            if (isDateFormat(parts[0]) || isDateFormat(parts[1])) {
+                rangeErrorMsg = validateDateRange(parts, field);
+            } else {
+                rangeErrorMsg = validateNumericRange(parts, field);
+            }
+
+            if (rangeErrorMsg) setInvalid(id, rangeErrorMsg);
+            return;
+        } else if (BINARY_OPERATORS.find((name) => name === operator)) {
+            if (value === '') {
+                setInvalid(id, getMissingValErrorMsg(field, false));
+            }
+        }
+    } else if (isRuleGroupType(rule)) {
+        const ruleGroupRules = rule['rules'];
+        ruleGroupRules.forEach((r) => validateRule(r, result));
+    }
+};
+
+const getMissingValErrorMsg = (field: string, isOperator: boolean) => {
+    const typeMsg = isOperator ? 'logic ' : '';
+    return `Enter a ${typeMsg}value for ${field}.`;
+};
+
+const isEmptyBetweenValue = (val: string) => {
+    const trimmedVal = val.trim();
+    return trimmedVal === '' || trimmedVal === ',';
+};

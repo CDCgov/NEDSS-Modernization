@@ -32,6 +32,7 @@ import { ValueSingleSelector } from './ValueSingleSelector.tsx';
 import { AdvancedFilterButton } from './AdvancedFilterButton.tsx';
 
 import styles from './advanced-filter.module.scss';
+import { validateRule } from './validator.ts';
 
 // ============= Constants ============= /
 
@@ -145,7 +146,7 @@ const ALL_OPERATORS = [
     ...STRING_OPERATORS,
     ...NUMERIC_OPERATORS,
 ];
-const BINARY_OPERATORS = ALL_OPERATORS.filter(({ arity }) => arity === 'binary').map(({ name }) => name);
+export const BINARY_OPERATORS = ALL_OPERATORS.filter(({ arity }) => arity === 'binary').map(({ name }) => name);
 
 const OPERATOR_MAP: Record<string, NbsOperator[]> = {
     STRING: [...EQ_OPERATORS, ...NULL_OPERATORS, ...STRING_OPERATORS],
@@ -271,7 +272,7 @@ const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
 
 const validateAdvancedFilter = (value?: QbRuleGroup) => {
     if (!value) return true;
-
+    console.log('value', value);
     return (
         Object.values(validator(value))
             .filter((v) => !v.valid)
@@ -286,58 +287,6 @@ const validator: QueryValidator = (q) => {
     const result: ValidationResultMap = {};
     q.rules.forEach((r) => validateRule(r, result));
     return result;
-};
-
-// matches date format (e.g. 11/01/2020 1/1/2020)
-const isDate = (val: string) => !!val.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
-
-const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: ValidationResultMap) => {
-    const setInvalid = (id: string, reason: string) => {
-        result[id].valid = false;
-        result[id].reasons = [reason];
-    };
-
-    if (isRuleType(rule)) {
-        const id = rule.id;
-        if (!id) return; // no key for the map, shouldn't happen in practice
-        // default valid
-        result[id] = { valid: true };
-
-        // empty rules are fine
-        if (!rule.field || rule.field === '~') return;
-
-        // check for exceptions
-        if (rule.operator === '~') {
-            setInvalid(id, 'Must select an operator and value.');
-        } else if (rule.operator === 'between') {
-            if (rule.value.trim() === '') {
-                setInvalid(id, 'Both low and high values required.');
-            }
-
-            const parts: string[] = rule.value.split(',');
-
-            if (parts[0] === '' || parts[1] === '') {
-                setInvalid(id, 'Both low and high values required.');
-            }
-
-            if (isDate(parts[0]) && isDate(parts[1])) {
-                const [startDt, endDt] = parts.map((v) => new Date(v));
-
-                if (startDt > endDt) {
-                    setInvalid(id, 'High value must be greater than or equal to low value.');
-                }
-            } else {
-                const [startInt, endInt] = parts.map((v) => parseInt(v));
-                if (startInt > endInt) setInvalid(id, 'High value must be greater than or equal to low value.');
-            }
-        } else if (BINARY_OPERATORS.find((name) => name === rule.operator)) {
-            if (rule.value === '') {
-                setInvalid(id, 'Value cannot be empty.');
-            }
-        }
-    } else if (isRuleGroupType(rule)) {
-        rule.rules.forEach((r) => validateRule(r, result));
-    }
 };
 
 // ============= Drag And Drop ============= /
