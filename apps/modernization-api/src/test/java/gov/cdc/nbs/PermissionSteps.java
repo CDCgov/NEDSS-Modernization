@@ -56,7 +56,8 @@ public class PermissionSteps {
       //  to always activate a user.
       long id = activeUser.maybeActive().map(ActiveUser::id).orElse(1L);
 
-      var nbsUserDetails = new NbsUserDetails(id, "MOCK-USER", "MOCK", "USER", authorities, true);
+      var nbsUserDetails =
+          new NbsUserDetails(id, "MOCK-USER", "MOCK", "USER", authorities, true, null);
       applyUserDetails(nbsUserDetails);
 
     } else {
@@ -74,7 +75,8 @@ public class PermissionSteps {
               existingUserDetails.getFirstName(),
               existingUserDetails.getLastName(),
               authorities,
-              true);
+              true,
+              null);
 
       applyUserDetails(nbsUserDetails);
     }
