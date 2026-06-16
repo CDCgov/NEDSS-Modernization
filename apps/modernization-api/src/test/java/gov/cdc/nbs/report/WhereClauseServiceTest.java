@@ -122,7 +122,7 @@ class WhereClauseServiceTest {
 
   private AdvancedFilterConfiguration createAdvancedFilterConfiguration(
       Long id, AdvancedQuery.RuleGroup value) {
-    return new AdvancedFilterConfiguration(id, value);
+    return new AdvancedFilterConfiguration(id, value, null, null);
   }
 
   private AdvancedFilterRequest createAdvancedFilterRequest(
@@ -131,7 +131,7 @@ class WhereClauseServiceTest {
   }
 
   private AdvancedQuery.RuleGroup createRuleGroup(
-      String id, String combinator, List<AdvancedQuery> rules) {
+      String id, ReportConstants.QueryCombinators combinator, List<AdvancedQuery> rules) {
     return new AdvancedQuery.RuleGroup(id, combinator, rules);
   }
 
@@ -644,22 +644,22 @@ class WhereClauseServiceTest {
     AdvancedQuery.RuleGroup ruleGroup1 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "and",
+            ReportConstants.QueryCombinators.AND,
             List.of(rules.get(18), rules.get(22), rules.get(0), rules.get(4)));
     AdvancedQuery.RuleGroup ruleGroup3 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "or",
+            ReportConstants.QueryCombinators.OR,
             List.of(rules.get(1), ruleGroup1, rules.get(15), labResultRule));
     AdvancedQuery.RuleGroup ruleGroup4 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "and",
+            ReportConstants.QueryCombinators.AND,
             List.of(rules.get(19), ruleGroup3, rules.get(23), labResultRule2));
     AdvancedQuery.RuleGroup ruleGroup2 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "or",
+            ReportConstants.QueryCombinators.OR,
             List.of(
                 rules.get(9),
                 ruleGroup4,
@@ -738,22 +738,22 @@ class WhereClauseServiceTest {
     AdvancedQuery.RuleGroup ruleGroup1 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "and",
+            ReportConstants.QueryCombinators.AND,
             List.of(rules.get(18), rules.get(22), rules.get(0), rules.get(4)));
     AdvancedQuery.RuleGroup ruleGroup3 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "or",
+            ReportConstants.QueryCombinators.OR,
             List.of(rules.get(1), ruleGroup1, rules.get(15), labResultRule));
     AdvancedQuery.RuleGroup ruleGroup4 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "and",
+            ReportConstants.QueryCombinators.AND,
             List.of(rules.get(19), ruleGroup3, rules.get(23), labResultRule2));
     AdvancedQuery.RuleGroup ruleGroup2 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "or",
+            ReportConstants.QueryCombinators.OR,
             List.of(
                 rules.get(9),
                 ruleGroup4,
@@ -801,7 +801,8 @@ class WhereClauseServiceTest {
     }
 
     AdvancedQuery.RuleGroup ruleGroup =
-        createRuleGroup(UUID.randomUUID().toString(), "and", selectedRules);
+        createRuleGroup(
+            UUID.randomUUID().toString(), ReportConstants.QueryCombinators.AND, selectedRules);
     AdvancedFilterRequest advancedFilterRequest = createAdvancedFilterRequest(1L, ruleGroup);
 
     AdvancedFilterConfiguration filterConfiguration =
