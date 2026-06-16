@@ -109,25 +109,18 @@ class ReportMapperTest {
   @Test
   void fromAdminReportRequest_should_set_all_fields_correctly_with_existing_id() {
     ReportId existingReportId = new ReportId(50L, 75L);
+    Report existingReport = new Report(existingReportId);
     AdminReportRequest request =
         buildAdminReportRequest(ReportConstants.ReportGroup.REPORTING_FACILITY);
 
-    LocalDateTime beforeCreation = LocalDateTime.now();
     Report result =
         reportMapper.fromAdminReportRequest(
-            request, user, reportLibrary, dataSource, existingReportId);
-    LocalDateTime afterCreation = LocalDateTime.now();
+            request, user, reportLibrary, dataSource, existingReport);
 
     assertThat(result.getId()).isEqualTo(existingReportId);
+    // we update the existing report, so should be equal
+    assertThat(result).isEqualTo(existingReport);
 
-    // Should always be set to 'N'
-    assertThat(result.getIsModifiableIndicator()).isEqualTo('N');
-    // Should always be set to 'ACTIVE'
-    assertThat(result.getStatus()).isNotNull();
-    assertThat(result.getStatus().status()).isEqualTo(Status.ACTIVE_CODE);
-    assertThat(result.getStatus().appliedOn()).isBetween(beforeCreation, afterCreation);
-
-    assertThat(result.getDataSource()).isEqualTo(dataSource);
     assertThat(result.getDescTxt()).isEqualTo(description);
     assertThat(result.getOwnerUid()).isEqualTo(ownerId);
     assertThat(result.getReportTitle()).isEqualTo(reportTitle);

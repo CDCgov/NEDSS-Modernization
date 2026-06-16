@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
@@ -14,6 +15,7 @@ import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.repository.FilterCodeRepository;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,7 +83,8 @@ class ReportFilterBuilderTest {
     when(filterCodeRepository.findById(5L)).thenReturn(Optional.of(mockFilterCode));
 
     ReportFilter result = builder.build(filter, report);
-    Mockito.verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.NBS);
+    // once for filter, once for validation
+    Mockito.verify(idGenerator, times(2)).getNextValidId(IdGeneratorService.EntityType.NBS);
 
     ReportFilterValidation validation = result.getFilterValidation();
     assertThat(validation).isNotNull();
@@ -201,16 +204,45 @@ class ReportFilterBuilderTest {
 
   @Test
   void build_should_edit_existing_report_when_id_is_specified() {
-    UpsertFilterRequest filter =
-        new UpsertFilterRequest(4L, 5L, null, ReportConstants.SelectType.SINGLE, false);
+    Long filterId = 4L;
+    Long filterCodeId = 5L;
+    UpsertFilterRequest filterReq =
+        new UpsertFilterRequest(
+            filterId, filterCodeId, null, ReportConstants.SelectType.SINGLE, false);
     Report report = mock(Report.class);
     FilterCode filterCode = mock(FilterCode.class);
+    ReportFilter filter =
+        ReportFilter.builder().id(filterId).filterCode(filterCode).report(report).build();
 
-    when(filterCodeRepository.findById(5L)).thenReturn(Optional.of(filterCode));
+    when(filterCodeRepository.findById(filterCodeId)).thenReturn(Optional.of(filterCode));
+    when(report.getReportFilters()).thenReturn(List.of(filter));
 
-    ReportFilter result = builder.build(filter, report);
+    ReportFilter result = builder.build(filterReq, report);
 
-    assertThat(result.getId()).isEqualTo(filter.id());
+    // We update the existing filter, so should be actually equal
+    assertThat(result).isEqualTo(filter);
+  }
+
+  @Test
+  void build_should_not_edit_existing_report_when_filter_type_changes() {
+    Long filterId = 4L;
+    Long filterCodeId = 5L;
+    UpsertFilterRequest filterReq =
+        new UpsertFilterRequest(
+            filterId, filterCodeId, null, ReportConstants.SelectType.SINGLE, false);
+    Report report = mock(Report.class);
+    FilterCode origFilterCode = new FilterCode(3L);
+    FilterCode newFilterCode = new FilterCode(filterCodeId);
+    ReportFilter filter =
+        ReportFilter.builder().id(filterId).filterCode(origFilterCode).report(report).build();
+
+    when(filterCodeRepository.findById(filterCodeId)).thenReturn(Optional.of(newFilterCode));
+    when(report.getReportFilters()).thenReturn(List.of(filter));
+
+    assertThatThrownBy(() -> builder.build(filterReq, report))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage(
+            "Cannot update filter type on an existing filter. Delete the filter and create a new one to change the type");
   }
 
   private static Stream<Arguments> fetchMinMaxTimeRangeTestParams() {
