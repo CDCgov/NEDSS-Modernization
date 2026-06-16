@@ -2,6 +2,7 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -196,6 +197,35 @@ class ReportControllerTest {
 
       assertThatThrownBy(() -> controller.editReport(user, reportUid, dataSourceUid, request))
           .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining(errorMsg);
+    }
+  }
+
+  @Nested
+  class DeleteReport {
+    @Test
+    void deleteReport_should_return_report_idresponse() {
+      Long reportUid = 1L;
+      Long dataSourceUid = 2L;
+      ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+      ResponseEntity<ReportId> response = controller.deleteReport(reportUid, dataSourceUid);
+
+      assertEquals(reportId, response.getBody());
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void deleteReport_should_return_404_status_code_when_report_not_found() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
+      ReportId reportId = new ReportId(reportUid, dataSourceUid);
+      String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
+
+      doThrow(new NotFoundException(errorMsg)).when(service).deleteReport(reportId);
+
+      assertThatThrownBy(() -> controller.deleteReport(reportUid, dataSourceUid))
+          .isInstanceOf(NotFoundException.class)
           .hasMessageContaining(errorMsg);
     }
   }
