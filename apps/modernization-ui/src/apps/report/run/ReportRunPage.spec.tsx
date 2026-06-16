@@ -2620,7 +2620,7 @@ describe('report run page', () => {
                         reportFilterUid: 1001,
                         value: {
                             id: expect.stringMatching(/[0-9-]+/),
-                            combinator: 'and',
+                            combinator: 'AND',
                             rules: [
                                 {
                                     id: expect.stringMatching(/[0-9-]+/),
@@ -2794,7 +2794,7 @@ describe('report run page', () => {
                         reportFilterUid: 1001,
                         value: {
                             id: expect.stringMatching(/[0-9-]+/),
-                            combinator: 'and',
+                            combinator: 'AND',
                             rules: [
                                 {
                                     id: expect.stringMatching(/[0-9-]+/),
