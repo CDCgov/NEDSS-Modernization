@@ -63,4 +63,13 @@ public class ValueCountCalculator {
 
     return new ReportValueCounts(minValueCount, maxValueCount);
   }
+
+  public static ReportConstants.SelectType toSelectType(ReportValueCounts counts) {
+    if ((Integer.valueOf(1)).equals(counts.minValueCount)) {
+      if (Integer.valueOf(-1).equals(counts.maxValueCount)) return ReportConstants.SelectType.MULTI;
+      if (Integer.valueOf(1).equals(counts.maxValueCount)) return ReportConstants.SelectType.SINGLE;
+    }
+
+    return null;
+  }
 }

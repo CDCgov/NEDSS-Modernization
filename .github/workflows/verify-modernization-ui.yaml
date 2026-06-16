@@ -3,6 +3,12 @@ name: Verify Modernization UI
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/modernization-ui/**"
+      - ".github/workflows/verify-modernization-ui.yaml"
   pull_request:
     paths:
       - "apps/modernization-ui/**"

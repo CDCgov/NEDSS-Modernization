@@ -1,13 +1,7 @@
 import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
 import styles from './checkbox.module.scss';
-
-type HasVisibleLabel = { label: string };
-type HasAriaLabel = { 'aria-label': string };
-
-type Labeled = HasVisibleLabel | HasAriaLabel | (HasVisibleLabel & HasAriaLabel);
-
-const isLabelVisible = (labeled: Labeled): labeled is HasVisibleLabel => 'label' in labeled;
+import { isLabelVisible, Labeled } from 'design-system/label-utils';
 
 type CheckboxProps = {
     selected?: boolean;

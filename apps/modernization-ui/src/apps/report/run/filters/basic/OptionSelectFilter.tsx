@@ -31,7 +31,7 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
         }
     }, [options]);
 
-    if (filter.maxValueCount === 1) {
+    if (filter.selectType === BasicFilterConfiguration.selectType.SINGLE) {
         return (
             <SelectInput
                 value={value?.[0] ?? undefined}

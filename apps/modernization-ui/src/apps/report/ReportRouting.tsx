@@ -28,6 +28,12 @@ const routing: RouteObject[] = [
                 element: <PermittedLayout permission="REPORTADMIN-SYSTEM" />,
                 children: [
                     {
+                        path: 'add',
+                        lazy: {
+                            Component: async () => (await import('./management/configuration')).AddReportConfiguration,
+                        },
+                    },
+                    {
                         path: ':reportUid/:dataSourceUid',
                         lazy: {
                             Component: async () => (await import('./management/configuration')).ViewReportConfiguration,
