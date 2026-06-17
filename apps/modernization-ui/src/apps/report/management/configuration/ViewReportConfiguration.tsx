@@ -1,6 +1,5 @@
 import { ReportLayout } from 'apps/report/layout/ReportLayout';
 import { Button, LinkButton } from 'design-system/button';
-import { LoadingIndicator } from 'libs/loading/indicator';
 import { useRef, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router';
 import { ReportConfigurationContent } from './ReportConfigurationContent';
@@ -11,6 +10,7 @@ import { ModalRef } from '@trussworks/react-uswds';
 import { ConfirmationModal } from 'confirmation';
 import { ReportConfiguration, ReportControllerService } from 'generated';
 import { LoadingBlock } from 'libs/loading/block';
+import { AlertMessage } from 'design-system/message';
 
 const ViewReportConfiguration = () => {
     const params = useParams();
@@ -18,6 +18,7 @@ const ViewReportConfiguration = () => {
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
     const confirmDeleteRef = useRef<ModalRef>(null);
     const [deleting, setDeleting] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
     const config = useLoaderData<ReportConfiguration>();
 
     return !config ? (
@@ -38,6 +39,7 @@ const ViewReportConfiguration = () => {
                 </>
             }
         >
+            {error && <AlertMessage type="error">{error}</AlertMessage>}
             <div className={styles.columnContent}>
                 <ReportConfigurationContent isEditable={false} config={config} />
             </div>

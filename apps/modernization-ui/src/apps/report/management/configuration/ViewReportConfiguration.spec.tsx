@@ -202,9 +202,7 @@ describe('view report configuration page', () => {
     });
 
     it('handles delete', async () => {
-        const mockApi = vi
-            .mocked(generated.ReportControllerService.getReportConfiguration)
-            .mockResolvedValue(MOCK_CONFIG);
+        const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
         const mockDeleteApi = vi
             .mocked(generated.ReportControllerService.deleteReport)
