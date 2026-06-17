@@ -34,6 +34,7 @@ import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -48,6 +49,8 @@ import org.springframework.web.client.RestClientResponseException;
 @Service
 public class ReportService {
 
+  private final Clock clock;
+
   private final ReportRepository reportRepository;
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
@@ -60,6 +63,7 @@ public class ReportService {
   private final ReportFilterBuilder reportFilterBuilder;
 
   public ReportService(
+      final Clock clock,
       final ReportRepository reportRepository,
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
@@ -69,6 +73,8 @@ public class ReportService {
       WhereClauseService whereClauseService,
       ReportFilterBuilder reportFilterBuilder,
       ReportMapper reportMapper) {
+    this.clock = clock;
+
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
@@ -263,7 +269,13 @@ public class ReportService {
             .toEntity(LibraryExecutionResult.class)
             .getBody();
 
-    return new ReportExecutionResult(result, reportSpec.subsetQuery(), LocalDateTime.now());
+    if (result == null) {
+      throw new IllegalStateException(
+          "No error response and no body parsed from report execution service");
+    }
+
+    return new ReportExecutionResult(
+        result, reportSpec.subsetQuery(), LocalDateTime.now(this.clock));
   }
 
   private String getReportNotFoundText(ReportId reportId) {

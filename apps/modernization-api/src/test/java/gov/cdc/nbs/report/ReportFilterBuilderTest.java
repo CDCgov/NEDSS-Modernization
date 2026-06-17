@@ -15,6 +15,9 @@ import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.repository.FilterCodeRepository;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -27,11 +30,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ReportFilterBuilderTest {
 
+  @Spy private Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
   @Mock private FilterCodeRepository filterCodeRepository;
   @Mock private IdGeneratorService idGenerator;

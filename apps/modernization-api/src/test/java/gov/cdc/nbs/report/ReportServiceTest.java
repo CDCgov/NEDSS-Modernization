@@ -13,7 +13,11 @@ import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +31,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,6 +43,8 @@ import org.springframework.web.client.RestClient.ResponseSpec;
 
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
+
+  @Spy private Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
 
   @Mock private ReportRepository reportRepository;
   @Mock private DataSourceRepository dataSourceRepository;
@@ -668,6 +675,6 @@ class ReportServiceTest {
             "result subheader",
             "result description"),
         "SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]",
-        LocalDateTime.of(2025, 5, 5, 12, 23));
+        LocalDateTime.of(2025, Month.MAY, 5, 12, 23));
   }
 }

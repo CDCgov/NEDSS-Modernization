@@ -28,6 +28,7 @@ import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportExecutionResult;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -517,6 +518,6 @@ class ReportControllerTest {
             "result subheader",
             "result description"),
         "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
-        LocalDateTime.of(2025, 5, 5, 12, 23));
+        LocalDateTime.of(2025, Month.MAY, 5, 12, 23));
   }
 }
