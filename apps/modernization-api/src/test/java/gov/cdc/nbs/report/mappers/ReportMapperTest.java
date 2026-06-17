@@ -28,7 +28,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ReportMapperTest {
 
-  @Spy private Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+  @Spy private Clock clock = Clock.fixed(Instant.ofEpochMilli(100000), ZoneId.systemDefault());
   @Mock private NbsUserDetails user;
   @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;

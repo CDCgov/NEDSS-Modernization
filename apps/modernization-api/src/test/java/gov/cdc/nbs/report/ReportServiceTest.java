@@ -44,7 +44,7 @@ import org.springframework.web.client.RestClient.ResponseSpec;
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
 
-  @Spy private Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+  @Spy private Clock clock = Clock.fixed(Instant.ofEpochMilli(1000000), ZoneId.systemDefault());
 
   @Mock private ReportRepository reportRepository;
   @Mock private DataSourceRepository dataSourceRepository;

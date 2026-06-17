@@ -36,7 +36,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ReportFilterBuilderTest {
 
-  @Spy private Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+  @Spy private Clock clock = Clock.fixed(Instant.ofEpochMilli(10000000), ZoneId.systemDefault());
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
   @Mock private FilterCodeRepository filterCodeRepository;
   @Mock private IdGeneratorService idGenerator;
