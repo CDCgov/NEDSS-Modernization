@@ -19,7 +19,7 @@ export const ReportHeader = ({ title, subtitle, actions, startHref, startPage }:
             <div className={styles.left}>
                 <span className={styles.title}>
                     <Heading level={1}>{title}</Heading>
-                    {subtitle && <span>{subtitle}</span>}
+                    {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
                 </span>
                 {startHref && startPage && <Nbs6Breadcrumb start={startHref}>Back to {startPage}</Nbs6Breadcrumb>}
             </div>

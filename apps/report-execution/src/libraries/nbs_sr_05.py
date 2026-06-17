@@ -165,34 +165,41 @@ def execute(
     trx.execute('DROP TABLE #base_data')
 
     subheader = gen_subheader(states=state_list)
-    description = (
-        '*<u>Report content</u>*\n'
-        '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
-        '*Output:* Report demonstrates, in table form, the total number of '
-        'Investigation(s) [both Individual and Summary] irrespective of Case Status.\n'
-        'Output:\n'
-        '* Does not include Investigation(s) that have been logically deleted\n'
-        '* Is filtered based on the state, disease(s) and advanced criteria selected '
-        'by user\n'
-        '* Will not include Investigation(s) that do not have a value for the State '
-        'selected by the user\n'
-        '* Is based on month and year of the calculated Event Date\n'
-        '*Calculations:*\n'
-        '* *Current Month Totals by disease:* Total Investigation(s) [both Individual '
-        'and Summary] where the Year and Month of the Event Date equal the current '
-        'Year and Month\n'
-        '* *Current Year Totals by disease:* Total Investigation(s) [both Individual '
-        'and Summary] where the Year of the Event Date equal the current Year\n'
-        '* *Previous Year  Totals by disease:* Total Investigation(s) [both '
-        'Individual and Summary] where the Year of the Event Date equal last Year\n'
-        '* *5-Year median:* Median number of Investigation(s) [both Individual and '
-        'Summary] for the past five years\n'
-        '* *Percentage change (current year vs. 5 year median):* Percentage change '
-        'between the Current Year Totals by disease and the 5-Year median\n'
-        ' * *Event Date:* Derived using the hierarchy of Onset Date, Diagnosis Date, '
-        'Report to County, Report to State and Date the Investigation was created in '
-        'the NBS.\n'
-    )
+    description = """
+**<u>Report content</u>**
+
+**Output:** Report demonstrates, in table form, the total number of Investigation(s) \
+[both Individual and Summary] irrespective of Case Status. Output:
+
+* Does not include Investigation(s) that have been logically deleted
+
+* Is filtered based on the state, disease(s) and advanced criteria selected by user
+
+* Will not include Investigation(s) that do not have a value for the State selected \
+by the user
+
+* Is based on month and year of the calculated Event Date
+
+**Calculations:**
+
+* **Current Month Totals by disease:** Total Investigation(s) [both Individual and \
+Summary] where the Year and Month of the Event Date equal the current Year and Month
+
+* **Current Year Totals by disease:** Total Investigation(s) [both Individual and \
+Summary] where the Year of the Event Date equal the current Year
+
+* **Previous Year  Totals by disease:** Total Investigation(s) [both Individual and \
+Summary] where the Year of the Event Date equal last Year
+
+* **5-Year median:** Median number of Investigation(s) [both Individual and Summary] \
+for the past five years
+
+* **Percentage change (current year vs. 5 year median):** Percentage change between \
+the Current Year Totals by disease and the 5-Year median
+
+* **Event Date:** Derived using the hierarchy of Onset Date, Diagnosis Date, Report to \
+County, Report to State and Date the Investigation was created in the NBS.
+"""
 
     return ReportResult(
         content_type='table',

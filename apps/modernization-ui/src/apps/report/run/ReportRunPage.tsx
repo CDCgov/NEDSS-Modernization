@@ -12,6 +12,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
 import { useReportConfiguration } from 'apps/report/hooks/useReportConfiguration';
+import { logErrorToUserConsole } from 'utils/logging';
 
 export type ReportExecuteForm = {
     // key is the report's ID
@@ -103,21 +104,24 @@ const ReportRunPage = () => {
                     } else {
                         try {
                             openNewTab(
-                                <ResultDataPage
-                                    result={res}
-                                    title={config?.title}
-                                    dataSourceName={config?.dataSource.name}
-                                />
+                                () => (
+                                    <ResultDataPage
+                                        result={res}
+                                        title={config?.title ?? ''}
+                                        dataSourceName={config?.dataSource.name ?? ''}
+                                    />
+                                ),
+                                () => `NBS Report: ${config?.title ?? ''}`
                             );
                         } catch (err) {
-                            console.error({ err });
+                            logErrorToUserConsole(err);
                         }
                     }
                 })
                 .catch((err) => setError(JSON.stringify(err)))
                 .finally(() => setSubmitting(false));
         },
-        []
+        [config]
     );
 
     return !config ? (

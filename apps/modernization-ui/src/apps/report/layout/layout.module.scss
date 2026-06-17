@@ -54,11 +54,17 @@ $header-height: 6rem;
 
     background-color: colors.$base-white;
 
-    .title {
+    .left {
         display: flex;
         flex-direction: row;
         gap: 1rem;
         align-items: baseline;
+    }
+    
+    .subtitle {
+        font-size: 1.375rem;
+        font-weight: 400;
+        margin: 0.25rem 0;
     }
 
     .actions {

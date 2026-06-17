@@ -10,12 +10,14 @@ import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 
 import layoutStyes from '../layout/layout.module.scss';
+import { NoDataRow } from 'design-system/table/NoDataRow';
 
 const SIZING = 'medium';
 const dateFormatter = Intl.DateTimeFormat('en-US', {
     dateStyle: 'short',
     timeStyle: 'short',
 });
+const formatTimestamp = (timestamp: string) => dateFormatter.format(new Date(timestamp)).replace(',', '');
 
 const ResultDataPage = ({
     result: {
@@ -33,8 +35,13 @@ const ResultDataPage = ({
     const id = useId();
     const { data, errors, meta } = Papa.parse<Record<string, string>>(content, { header: true, skipEmptyLines: true });
 
-    const formattedTime = dateFormatter.format(new Date(timestamp));
-    const descriptionHtml = description ? DOMPurify.sanitize(marked.parse(description) as string) : '';
+    const formattedTime = formatTimestamp(timestamp);
+    const descriptionHtml = description ? DOMPurify.sanitize(marked.parse(description.trim()) as string) : '';
+
+    const styledQuery = query
+        .replace(' FROM ', '\nFROM ')
+        .replace(' WHERE ', '\nWHERE ')
+        .replace(' ORDER BY ', '\nORDER BY ');
 
     return (
         <ReportLayout title={title} subtitle={subheader} noSkipLink={true}>
@@ -53,13 +60,15 @@ const ResultDataPage = ({
                         {dataSourceName}
                     </ValueField>
                     <ValueField sizing={SIZING} label="Description">
-                        <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} className="text-wrap" />
+                        {descriptionHtml && (
+                            <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} className="text-wrap" />
+                        )}
                     </ValueField>
                     <ValueField sizing={SIZING} label="Report run date">
                         {formattedTime}
                     </ValueField>
                 </Card>
-                <Card id="report-data" title={title}>
+                <Card id="report-result" title="Report result">
                     {meta.fields && (
                         <section className="overflow-auto">
                             <DataTable
@@ -71,6 +80,7 @@ const ResultDataPage = ({
                                     value: (row: Record<string, string>) => row[colName],
                                 }))}
                                 data={data}
+                                onEmpty={(columns: number) => <NoDataRow columns={columns}>No data found.</NoDataRow>}
                             />
                         </section>
                     )}
@@ -78,7 +88,10 @@ const ResultDataPage = ({
 
                 <Card id="report-criteria" title="Report criteria">
                     <ValueField sizing={SIZING} label="Base SQL query">
-                        {query}
+                        {/* The uswds text-pre-line forces a sans font instead of respecting mono */}
+                        <span style={{ whiteSpace: 'pre-line' }} className="font-mono-sm">
+                            {styledQuery}
+                        </span>
                     </ValueField>
                 </Card>
             </div>

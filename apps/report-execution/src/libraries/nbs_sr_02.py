@@ -35,22 +35,25 @@ def execute(
     state_list = content.get_unique_column('State')
     subheader = gen_subheader(states=state_list)
 
-    description = (
-        '*<u>Report content</u>*\n'
-        '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
-        '*Output:* Report demonstrates, in table form, the total number of '
-        'Investigation(s) [both Individual and Summary] by County irrespective of '
-        'Case Status.\n'
-        'Output:\n'
-        '* Does not include Investigation(s) that have been logically deleted\n'
-        '* Is filtered based on the state, county(s), disease(s), time frame and '
-        'advanced criteria selected by user\n'
-        '* Will not include Investigation(s) that do not have a value for the State '
-        'selected by the user\n'
-        '* Will not include Investigation(s) that do not have a value for the '
-        'County(s) selected by the user\n'
-        '* Is based on the calculated Event Date\n'
-    )
+    description = """
+**<u>Report content</u>**
+
+**Output:** Report demonstrates, in table form, the total number of Investigation(s) \
+[both Individual and Summary] by County irrespective of Case Status. Output:
+
+* Does not include Investigation(s) that have been logically deleted
+
+* Is filtered based on the state, county(s), disease(s), time frame and  advanced \
+criteria selected by user
+
+* Will not include Investigation(s) that do not have a value for the State selected by \
+the user
+
+* Will not include Investigation(s) that do not have a value for the County(s) \
+selected by the user
+
+* Is based on the calculated Event Date
+"""
 
     return ReportResult(
         content_type='table',
