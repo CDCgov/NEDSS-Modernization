@@ -40,6 +40,8 @@ tables:
       - column_name: provider_name_suffix
         data: fake.random_element(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
         null_percentage: 0.98
+      - column_name: provider_quick_code
+        data: random.choice(["gfreeman", "avance", "adevraj", "dbowman", "fpoole"])
 
   - table_name: "[RDB].[dbo].[D_ORGANIZATION]"
     row_count: 50
@@ -281,7 +283,7 @@ tables:
           else: return None
 
       - column_name: investigator_interview_key
-        data: fake.random_int(10000000, 99999999)
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
       # PA01
       - column_name: ADI_900_STATUS_CD
         data: random.choice(["01", "02", "03", "04", "09"])
@@ -301,7 +303,19 @@ tables:
       - column_name: FL_FUP_INIT_ASSGN_DT
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         null_percentage: 0.1
-        
+      - column_name: CA_INIT_INTVWR_ASSGN_DT
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.1
+      - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
+        data: fake.random_digit()
+        null_percentage: 0.98
+      - column_name: SOC_PRTNRS_PRD_FML_TTL
+        data: fake.random_digit()
+        null_percentage: 0.90
+      - column_name: SOC_PRTNRS_PRD_MALE_TTL
+        data: fake.random_digit()
+        null_percentage: 0.90
+
 
       - column_name: referral_basis
         data: |
@@ -408,6 +422,41 @@ tables:
         data: row_id + 130000
       - column_name: LDF_GROUP_KEY
         data: row_id + 160000
+
+  - table_name: "[RDB].[dbo].[EVENT_METRIC]"
+    row_count: 1000
+    columns:
+      - column_name: EVENT_TYPE
+        data: fake.random_element(["CONTACT", "LabReport", "MorbReport", "Notification", "PHCInvForm", "Vaccination"])
+      - column_name: EVENT_UID
+        data: row_id + 10000000
+        is_primary_key: true
+      - column_name: ADD_USER_ID
+        data: row_id + 10000000
+        null_percentage: .05
+
+  - table_name: "[RDB].[dbo].[USER_PROFILE]"
+    row_count: 1000
+    columns:
+      - column_name: NEDSS_ENTRY_ID
+        data: row_id + 10000000
+        is_primary_key: true
+      - column_name: PROVIDER_QUICK_CODE
+        data: fake.random_element(["Lord Farquaad", "Shrek", "Fiona", "Puss in Boots", "Donkey", None])
+      - column_name: PROVIDER_KEY
+        data: |
+          if PROVIDER_QUICK_CODE == "Lord Farquaad":
+              return 1
+          elif PROVIDER_QUICK_CODE == "Shrek":
+              return 2
+          elif PROVIDER_QUICK_CODE == "Fiona":
+              return 3
+          elif PROVIDER_QUICK_CODE == "Puss in Boots":
+              return 4
+          elif PROVIDER_QUICK_CODE == "Donkey":
+              return 5
+          else:
+              return 6
 
   - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
     row_count: 1000
