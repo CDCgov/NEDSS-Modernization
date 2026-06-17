@@ -1,5 +1,11 @@
 import React from 'react';
-import { AdvancedFilterRequest, BasicFilterRequest, ReportConfiguration, ReportControllerService, SortSpec } from 'generated';
+import {
+    AdvancedFilterRequest,
+    BasicFilterRequest,
+    ReportConfiguration,
+    ReportControllerService,
+    SortSpec,
+} from 'generated';
 import { useCallback, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
