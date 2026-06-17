@@ -1,0 +1,110 @@
+# INVESTIGATION
+# D_PROVIDER
+# STD_HIV_DATAMART
+#
+# F_INTERVIEW_CASE
+# D_INTERVIEW
+# F_CONTACT_RECORD_CASE
+# D_CONTACT_RECORD
+config:
+  seed: 19
+
+tables:
+  - table_name: "[RDB].[dbo].[INVESTIGATION]"
+    row_count: 1000
+    columns:
+      - column_name: INVESTIGATION_KEY
+        data: row_id
+        is_primary_key: true
+      - column_name: INV_CASE_STATUS
+        data: fake.random_element(["Confirmed", "Probable", "Suspect", "Unknown"])
+        null_percentage: 0
+      - column_name: RECORD_STATUS_CD
+        data: fake.random_element(["ACTIVE", "INACTIVE"])
+        null_percentage: 0
+      - column_name: INV_LOCAL_ID
+        data: |
+          id_num = fake.unique.random_int(10000, 99999)
+          return f"CAS100{id_num}GA01"
+      - column_name: CASE_UID
+        data: row_id + 10000000
+        null_percentage: .05
+
+  - table_name: "[RDB].[dbo].[D_PROVIDER]"
+    row_count: 250
+    columns:
+      - column_name: PROVIDER_KEY
+        data: row_id
+        is_primary_key: true
+      - column_name: PROVIDER_FIRST_NAME
+        data: fake.first_name()
+        null_percentage: 0.05
+      - column_name: PROVIDER_LAST_NAME
+        data: fake.last_name()
+        null_percentage: 0.05
+      - column_name: PROVIDER_NAME_SUFFIX
+        data: fake.random_element(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
+        null_percentage: 0.98
+      - column_name: PROVIDER_QUICK_CODE
+        data: random.choice(["gfreeman", "avance", "adevraj", "dbowman", "fpoole"])
+
+  # needed columns:
+  # INV_LOCAL_ID
+  # CC_CLOSED_DT
+  # ADI_900_STATUS_CD
+  # HIV_POST_TEST_900_COUNSELING
+  # HIV_900_RESULT
+  # ADI_900_STATUS
+  # HIV_900_TEST_IND
+  # SOURCE_SPREAD
+  # FL_FUP_INIT_ASSGN_DT
+  # CA_PATIENT_INTV_STATUS
+  # INVESTIGATOR_INTERVIEW_KEY
+  # INVESTIGATOR_INTERVIEW_QC
+  # CA_INTERVIEWER_ASSIGN_DT
+  # CA_INIT_INTVWR_ASSGN_DT
+  # INVESTIGATION_KEY
+  - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
+    row_count: 1000
+    columns:
+      # pretty sure program_jurisdiction_oid is needed for priv reasons?
+      - column_name: PROGRAM_JURISDICTION_OID
+        data: fake.random_element(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
+
+      - column_name: INV_LOCAL_ID
+
+
+
+
+      - column_name: INVESTIGATOR_INTERVIEW_KEY
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
+      - column_name: ADI_900_STATUS_CD
+        data: random.choice(["01", "02", "03", "04", "09"])
+        null_percentage: 0.1
+      - column_name: HIV_POST_TEST_900_COUNSELING
+        data: random.choice(["Yes", "No"])
+        null_percentage: 0.1
+      - column_name: HIV_900_RESULT
+        data: random.choice(["11-Negative", "12-Prelim Positive", "13-Positive/Reactive", "21-HIV-1 Pos", "22-HIV-1 Pos, Possible Acute"])
+        null_percentage: 0.1
+      - column_name: ADI_900_STATUS
+        data: random.choice(["1 - Negative", "2 - Newly Diagnosed", "3 - Prior Positive - Not Previously Known", "4 - Prior Positive - New STD or Pregnancy", "9 - Unknown"])
+        null_percentage: 0.1
+      - column_name: HIV_900_TEST_IND
+        data: random.choice(["Yes", "No"])
+        null_percentage: 0.1
+      - column_name: FL_FUP_INIT_ASSGN_DT
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.1
+      - column_name: CA_INIT_INTVWR_ASSGN_DT
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.1
+      - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
+        data: fake.random_digit()
+        null_percentage: 0.98
+      - column_name: SOC_PRTNRS_PRD_FML_TTL
+        data: fake.random_digit()
+        null_percentage: 0.90
+      - column_name: SOC_PRTNRS_PRD_MALE_TTL
+        data: fake.random_digit()
+        null_percentage: 0.90
