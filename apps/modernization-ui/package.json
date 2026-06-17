@@ -78,7 +78,7 @@
         "prettier": "^3.2.5",
         "prop-types": "^15.8.1",
         "sass": "^1.99.0",
-        "storybook": "^10.3.4",
+        "storybook": "^10.4.6",
         "typescript": "6.0.3",
         "typescript-plugin-css-modules": "^5.0.2",
         "vite-tsconfig-paths": "^6.1.1",
