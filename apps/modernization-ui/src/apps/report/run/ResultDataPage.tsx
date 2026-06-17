@@ -14,8 +14,11 @@ import { NoDataRow } from 'design-system/table/NoDataRow';
 
 const SIZING = 'medium';
 const dateFormatter = Intl.DateTimeFormat('en-US', {
-    dateStyle: 'short',
-    timeStyle: 'short',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
 });
 const formatTimestamp = (timestamp: string) => dateFormatter.format(new Date(timestamp)).replace(',', '');
 
