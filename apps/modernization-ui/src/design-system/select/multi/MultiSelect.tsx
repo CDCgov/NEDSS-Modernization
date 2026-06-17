@@ -1,6 +1,6 @@
 import { FocusEventHandler, useState } from 'react';
 import classNames from 'classnames';
-import Select, { MultiValue } from 'react-select';
+import Select, { ActionMeta, FilterOptionOption, MultiValue } from 'react-select';
 import { Selectable, asValue as asSelectableValue } from 'options';
 import { Field, FieldProps } from 'design-system/field';
 import { styles, theme } from './design';
@@ -23,6 +23,8 @@ type MultiSelectProps = {
     asDisplay?: (selectable: Selectable) => string;
 } & FieldProps;
 
+const SELECT_ALL_VALUE = '__SELECT_ALL__';
+
 export const MultiSelect = ({
     id,
     name,
@@ -40,8 +42,30 @@ export const MultiSelect = ({
 }: MultiSelectProps) => {
     const [searchText, setSearchText] = useState('');
 
-    const handleOnChange = (newValue: MultiValue<Selectable>) => {
-        if (onChange) {
+    const availableOptions = options.filter(
+        (o) => !searchText || o.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    const allSelected = availableOptions.every((v) => value.includes(v));
+    const selectWord = allSelected ? 'Deselect' : 'Select';
+
+    const selectAll: Selectable = {
+        value: SELECT_ALL_VALUE,
+        name: selectWord + (searchText ? ' search results' : ' all'),
+    };
+
+    const optionsWithSelectAll = [selectAll, ...options];
+
+    const handleOnChange = (newValue: MultiValue<Selectable>, actionMeta: ActionMeta<Selectable>) => {
+        if (actionMeta.option?.value === SELECT_ALL_VALUE) {
+            if (allSelected) {
+                onChange?.(newValue!.filter((v) => !availableOptions.includes(v)));
+            } else {
+                onChange?.([
+                    ...newValue.filter((v) => v.value !== SELECT_ALL_VALUE),
+                    ...availableOptions.filter((o) => !newValue.includes(o)),
+                ]);
+            }
+        } else if (onChange) {
             onChange(newValue as Selectable[]);
         }
     };
@@ -60,7 +84,7 @@ export const MultiSelect = ({
                 isMulti
                 inputId={id}
                 name={name}
-                options={options}
+                options={optionsWithSelectAll}
                 value={value}
                 onChange={handleOnChange}
                 onBlur={onBlur}
@@ -82,6 +106,11 @@ export const MultiSelect = ({
                 getOptionValue={asValue}
                 getOptionLabel={asDisplay}
                 components={{ Option: CheckboxOption, DropdownIndicator: DropdownIndicator }}
+                filterOption={(option: FilterOptionOption<Selectable>) =>
+                    option.value === SELECT_ALL_VALUE
+                        ? true
+                        : option.label.toLowerCase().includes(searchText.toLowerCase())
+                }
             />
         </Field>
     );
