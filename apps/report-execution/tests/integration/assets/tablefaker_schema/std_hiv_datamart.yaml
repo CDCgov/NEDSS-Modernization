@@ -40,8 +40,6 @@ tables:
       - column_name: provider_name_suffix
         data: fake.random_element(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
         null_percentage: 0.98
-      - column_name: provider_quick_code
-        data: random.choice(["gfreeman", "avance", "adevraj", "dbowman", "fpoole"])
 
   - table_name: "[RDB].[dbo].[D_ORGANIZATION]"
     row_count: 50
@@ -196,7 +194,7 @@ tables:
               return '200'
           else:
               return fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if fake.random_int(1,100) <= 90 else None
-
+      
       - column_name: diagnosis
         data: |
           '200 - Chlamydia' if diagnosis_cd == '200' else '300 - Gonorrhea' if diagnosis_cd == '300' else '710 - Syphilis, primary' if diagnosis_cd == '710' else '720 - Syphilis, secondary' if diagnosis_cd == '720' else '730 - Syphilis, Early Non-Primary, Non-Secondary' if diagnosis_cd == '730' else '790 - Syphilis, Congenital' if diagnosis_cd == '790' else '900 - HIV Infection' if diagnosis_cd == '900' else None
@@ -283,39 +281,7 @@ tables:
           else: return None
 
       - column_name: investigator_interview_key
-        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
-      # PA01
-      - column_name: ADI_900_STATUS_CD
-        data: random.choice(["01", "02", "03", "04", "09"])
-        null_percentage: 0.1
-      - column_name: HIV_POST_TEST_900_COUNSELING
-        data: random.choice(["Yes", "No"])
-        null_percentage: 0.1
-      - column_name: HIV_900_RESULT
-        data: random.choice(["11-Negative", "12-Prelim Positive", "13-Positive/Reactive", "21-HIV-1 Pos", "22-HIV-1 Pos, Possible Acute"])
-        null_percentage: 0.1
-      - column_name: ADI_900_STATUS
-        data: random.choice(["1 - Negative", "2 - Newly Diagnosed", "3 - Prior Positive - Not Previously Known", "4 - Prior Positive - New STD or Pregnancy", "9 - Unknown"])
-        null_percentage: 0.1
-      - column_name: HIV_900_TEST_IND
-        data: random.choice(["Yes", "No"])
-        null_percentage: 0.1
-      - column_name: FL_FUP_INIT_ASSGN_DT
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
-        null_percentage: 0.1
-      - column_name: CA_INIT_INTVWR_ASSGN_DT
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
-        null_percentage: 0.1
-      - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
-        data: fake.random_digit()
-        null_percentage: 0.98
-      - column_name: SOC_PRTNRS_PRD_FML_TTL
-        data: fake.random_digit()
-        null_percentage: 0.90
-      - column_name: SOC_PRTNRS_PRD_MALE_TTL
-        data: fake.random_digit()
-        null_percentage: 0.90
-
+        data: fake.random_int(10000000, 99999999)
 
       - column_name: referral_basis
         data: |
@@ -422,7 +388,7 @@ tables:
         data: row_id + 130000
       - column_name: LDF_GROUP_KEY
         data: row_id + 160000
-
+  
   - table_name: "[RDB].[dbo].[EVENT_METRIC]"
     row_count: 1000
     columns:
@@ -434,7 +400,7 @@ tables:
       - column_name: ADD_USER_ID
         data: row_id + 10000000
         null_percentage: .05
-
+  
   - table_name: "[RDB].[dbo].[USER_PROFILE]"
     row_count: 1000
     columns:
@@ -457,24 +423,3 @@ tables:
               return 5
           else:
               return 6
-
-  - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
-    row_count: 1000
-    columns:
-      - column_name: INVESTIGATION_KEY
-        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
-      - column_name: D_INTERVIEW_KEY
-        is_primary_key: true
-        data: row_id
-
-  - table_name: "[RDB].[dbo].[D_INTERVIEW]"
-    row_count: 1000
-    columns:
-      - column_name: IX_TYPE
-        data: random.choice(["CLUSTER", "Initial/Original/Cluster", "Presumptive", "Re-Interview"])
-      - column_name: D_INTERVIEW_KEY
-        data: foreign_key("[RDB].[dbo].[F_INTERVIEW_CASE]", "D_INTERVIEW_KEY")
-      - column_name: RECORD_STATUS_CD
-        data: random.choice(["ACTIVE", "LOG_DEL"])
-      - column_name: IX_DATE
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
