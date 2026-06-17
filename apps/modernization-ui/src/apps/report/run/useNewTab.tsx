@@ -7,15 +7,15 @@ import { createRoot } from 'react-dom/client';
  * The styles are copied over and the title is set.
  */
 export const useNewTab = () => {
-    const openNewTab = (content: () => ReactNode, title: () => string) => {
+    const openNewTab = (content: ReactNode, title: string) => {
         let newWindow = window.open('', '_blank', '');
 
         const div = document.createElement('div');
         const root = createRoot(div);
-        root.render(content());
+        root.render(content);
         if (newWindow) {
             newWindow.document.body.appendChild(div);
-            newWindow.document.title = title();
+            newWindow.document.title = title;
             copyStyles(document, newWindow.document);
         }
     };

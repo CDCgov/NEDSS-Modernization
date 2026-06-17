@@ -10,7 +10,6 @@ import { ReportResultPage } from './ReportResultPage';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
-import { logErrorToUserConsole } from 'utils/logging';
 import { usePermissions } from 'libs/permission/usePermissions';
 import { PERMISSION_GROUP_MAP } from '../constants';
 import { LoadingBlock } from 'libs/loading/block';
@@ -114,23 +113,21 @@ const ReportRunPage = () => {
                 .then((res) => {
                     setStatus('complete');
 
-                    if (isExport) {
-                        fileDownload(res.result.content, `${config?.title ?? 'ReportOutput'}.csv`);
-                    } else {
-                        try {
+                    try {
+                        if (isExport) {
+                            fileDownload(res.result.content, `${config?.title ?? 'ReportOutput'}.csv`);
+                        } else {
                             openNewTab(
-                                () => (
-                                    <ResultDataPage
-                                        result={res}
-                                        title={config?.title ?? ''}
-                                        dataSourceName={config?.dataSource.name ?? ''}
-                                    />
-                                ),
-                                () => `NBS Report: ${config?.title ?? ''}`
+                                <ResultDataPage
+                                    result={res}
+                                    title={config?.title ?? ''}
+                                    dataSourceName={config?.dataSource.name ?? ''}
+                                />,
+                                `NBS Report: ${config?.title ?? ''}`
                             );
-                        } catch (err) {
-                            logErrorToUserConsole(err);
                         }
+                    } catch (err) {
+                        setError(JSON.stringify(err));
                     }
                 })
                 .catch((err) => setError(JSON.stringify(err)));
