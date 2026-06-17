@@ -31,18 +31,34 @@ export const permissions = {
     reports: {
         template: {
             view: 'VIEWREPORTTEMPLATE-REPORTING',
+            selectFilterCriteria: 'SELECTFILTERCRITERIATEMPLATE-REPORTING',
+            create: '', // only done via report admin
+            edit: '', // only done via report admin
+            delete: '', // only done via report admin
         },
         public: {
             view: 'VIEWREPORTPUBLIC-REPORTING',
+            selectFilterCriteria: 'SELECTFILTERCRITERIAPUBLIC-REPORTING',
+            create: 'CREATEREPORTPUBLIC-REPORTING',
+            edit: 'EDITREPORTPUBLIC-REPORTING',
+            delete: 'DELETEREPORTPUBLIC-REPORTING',
         },
         private: {
             view: 'VIEWREPORTPRIVATE-REPORTING',
+            selectFilterCriteria: 'SELECTFILTERCRITERIAPRIVATE-REPORTING',
+            create: 'CREATEREPORTPRIVATE-REPORTING',
+            edit: 'EDITREPORTPRIVATE-REPORTING',
+            delete: 'DELETEREPORTPRIVATE-REPORTING',
         },
         reportingFacility: {
             view: 'VIEWREPORTREPORTINGFACILITY-REPORTING',
+            selectFilterCriteria: 'SELECTFILTERCRITERIAREPORTINGFACILITY-REPORTING',
+            create: 'CREATEREPORTREPORTINGFACILITY-REPORTING',
+            edit: 'EDITREPORTREPORTINGFACILITY-REPORTING',
+            delete: 'DELETEREPORTREPORTINGFACILITY-REPORTING',
         },
         run: 'RUNREPORT-REPORTING',
-        export: 'RUNREPORT-REPORTING',
+        export: 'EXPORTREPORT-REPORTING',
     },
     summaryReports: {
         view: 'VIEW-SUMMARYREPORT',
