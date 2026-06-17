@@ -506,7 +506,15 @@ class ReportServiceTest {
                       null,
                       null),
                   null,
-                  null,
+                  List.of(
+                      FilterValue.builder()
+                          .id(47L)
+                          .sequenceNumber(1)
+                          .valueType("CLAUSE")
+                          .columnUid(9L)
+                          .operator("EQUALS")
+                          .valueTxt("value1")
+                          .build()),
                   null,
                   null,
                   null,
@@ -590,6 +598,7 @@ class ReportServiceTest {
               "nbs_custom",
               "[NBS_ODSE].[dbo].[PHCDemographic]",
               "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
+              null,
               null,
               null,
               null);
