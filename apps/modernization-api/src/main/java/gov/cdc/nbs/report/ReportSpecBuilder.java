@@ -3,7 +3,7 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -43,17 +43,19 @@ public class ReportSpecBuilder {
             .collect(Collectors.joining(", "));
   }
 
-  private String buildOrderByClause(SortSpec sortBy, ReportColumn sortColumn) {
-    if (sortBy == null || sortColumn == null) {
+  private String buildOrderByCriteria(SortSpec sortBy) {
+    if (sortBy == null) {
       return "";
     }
 
+    ReportColumn sortColumn = findMatchingColumn(sortBy.columnUid());
+
     String targetColumn =
         "STRING".equals(sortColumn.sourceTypeCode())
-            ? String.format("UPPER([%s])", sortColumn.name())
-            : String.format("[%s]", sortColumn.name());
+            ? String.format("UPPER([%s])", sortColumn.title())
+            : String.format("[%s]", sortColumn.title());
 
-    return String.format("ORDER BY %s %s", targetColumn, sortBy.direction().name());
+    return String.format("%s %s", targetColumn, sortBy.direction().name());
   }
 
   private ReportColumn findMatchingColumn(Long columnUid) {
@@ -97,13 +99,14 @@ public class ReportSpecBuilder {
     }
     SortSpec sortBy = reportExecRequest.sort();
     validateSortColumns(reportExecRequest.columnUids(), sortBy);
-    ReportColumn sortColumn = (sortBy != null) ? findMatchingColumn(sortBy.columnUid()) : null;
+    String orderbyCriteria = buildOrderByCriteria(sortBy);
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
     String whereClause =
         whereClauseService.buildWhereClause(reportConfig, reportExecRequest, dataSourceNameUtils);
-    String orderByClause = buildOrderByClause(sortBy, sortColumn);
+    String orderByClause =
+        (!Objects.equals(orderbyCriteria, "")) ? "ORDER BY " + orderbyCriteria : "";
 
     // filter out empty spaces prior to string joining to prevent extra spaces between clauses
     String subsetQuery =
@@ -112,12 +115,6 @@ public class ReportSpecBuilder {
             .collect(Collectors.joining(" "))
             .trim();
 
-    Map<String, String> sortByMap =
-        (sortBy != null && sortColumn != null)
-            ? Map.of(
-                "column_title", sortColumn.title(),
-                "direction", sortBy.direction().name())
-            : null;
     Integer daysValue = extractDaysValue();
     String libraryParams = reportConfig.library().libraryParams();
 
@@ -129,7 +126,7 @@ public class ReportSpecBuilder {
         dataSourceName,
         subsetQuery,
         columnMap,
-        sortByMap,
+        orderbyCriteria,
         daysValue,
         libraryParams);
   }

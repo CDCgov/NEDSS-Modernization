@@ -506,12 +506,9 @@ class ReportSpecBuilderTest {
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
-            "SELECT [last_name] AS [Last Name] FROM [NBS_ODSE].[dbo].[NBS_configuration] ORDER BY UPPER([last_name]) ASC");
+            "SELECT [last_name] AS [Last Name] FROM [NBS_ODSE].[dbo].[NBS_configuration] ORDER BY UPPER([Last Name]) ASC");
 
-    assertThat(reportSpec.sortBy())
-        .isNotNull()
-        .containsEntry("column_title", columnTitle)
-        .containsEntry("direction", "ASC");
+    assertThat(reportSpec.sortBy()).isEqualTo("UPPER([Last Name]) ASC");
   }
 
   @Test
@@ -536,12 +533,9 @@ class ReportSpecBuilderTest {
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
-            "SELECT [number] AS [Number] FROM [NBS_ODSE].[dbo].[NBS_configuration] ORDER BY [number] ASC");
+            "SELECT [number] AS [Number] FROM [NBS_ODSE].[dbo].[NBS_configuration] ORDER BY [Number] ASC");
 
-    assertThat(reportSpec.sortBy())
-        .isNotNull()
-        .containsEntry("column_title", columnTitle)
-        .containsEntry("direction", "ASC");
+    assertThat(reportSpec.sortBy()).isEqualTo("[Number] ASC");
   }
 
   @Test
@@ -611,7 +605,7 @@ class ReportSpecBuilderTest {
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT [col1] AS [Col 1] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
 
-    assertThat(reportSpec.sortBy()).isNull();
+    assertThat(reportSpec.sortBy()).isEmpty();
   }
 
   private static Stream<Arguments> fetchSingleColumnTestParams() {

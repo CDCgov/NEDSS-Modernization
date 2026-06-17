@@ -2,7 +2,6 @@ package gov.cdc.nbs.report.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
 public record ReportSpec(
     @JsonProperty(value = "is_export", required = true) boolean isExport,
@@ -11,7 +10,7 @@ public record ReportSpec(
     @JsonProperty(value = "library_name", required = true) String libraryName,
     @JsonProperty(value = "data_source_name", required = true) String dataSourceName,
     @JsonProperty(value = "subset_query", required = true) String subsetQuery,
-    @JsonProperty(value = "column_map", required = false) List<List<String>> columnMap,
-    @JsonProperty(value = "sort_by", required = false) Map<String, String> sortBy,
+    @JsonProperty(value = "column_map") List<List<String>> columnMap,
+    @JsonProperty(value = "sort_by") String sortBy,
     @JsonProperty(value = "days_value") Integer daysValue,
     @JsonProperty(value = "library_params") String libraryParams) {}
