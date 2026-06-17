@@ -17,7 +17,7 @@ import { ReactNode, useId, useRef, useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
-import { addLabelToName, EnumSelectable } from './utils';
+import { addLabelToName, EnumSelectable } from '../../utils';
 import { SIZING } from './constants';
 
 const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [

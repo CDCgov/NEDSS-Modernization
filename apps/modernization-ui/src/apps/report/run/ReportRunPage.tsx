@@ -1,5 +1,11 @@
 import React from 'react';
-import { AdvancedFilterRequest, BasicFilterRequest, ReportConfiguration, ReportControllerService } from 'generated';
+import {
+    AdvancedFilterRequest,
+    BasicFilterRequest,
+    ReportConfiguration,
+    ReportControllerService,
+    SortSpec,
+} from 'generated';
 import { useCallback, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
@@ -21,6 +27,7 @@ export type ReportExecuteForm = {
     basicFilter?: Record<string, { value: string[] | string | null; includeNulls: boolean }>;
     advancedFilter?: QbRuleGroup;
     columns?: string[];
+    sort?: { column: string; direction: SortSpec.direction };
 };
 
 const normalizeFormValueToStringArray = (value: unknown): string[] => {
@@ -87,7 +94,12 @@ const ReportRunPage = () => {
                     ? data.columns!.map((v) => parseInt(v))
                     : undefined;
 
-                handleSubmit(isExport, basicFilters, advancedFilter, columnUids);
+                const sort: SortSpec | undefined =
+                    config?.library.allowColumnSelection && data.sort?.column
+                        ? { columnUid: parseInt(data.sort.column), direction: data.sort.direction }
+                        : undefined;
+
+                handleSubmit(isExport, basicFilters, advancedFilter, columnUids, sort);
             },
             (errors) => {
                 // TODO make this gather all errors and nicely format
@@ -103,13 +115,16 @@ const ReportRunPage = () => {
             isExport: boolean,
             basicFilters: BasicFilterRequest[],
             advancedFilter?: AdvancedFilterRequest,
-            columnUids?: number[]
+            columnUids?: number[],
+            sort?: SortSpec
         ) => {
             setWasExported(isExport);
             setStatus('submitting');
             setError('');
             const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
-            runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids } })
+            runner({
+                requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort },
+            })
                 .then((res) => {
                     setStatus('complete');
                     if (!res.content) {
