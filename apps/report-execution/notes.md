@@ -1,5 +1,23 @@
 # PA01 Conversion Notes
 
+## Tables Involved
+
+- `STD_HIV_DATAMART`: main std/hiv case datamart
+- `INVESTIGATION`: investigation table with case status and investigation metadata
+- `F_INTERVIEW_CASE`: connecting investigations to interview records
+- `D_INTERVIEW`: interview data
+- `D_PROVIDER`: provider/investigator table
+- `F_CONTACT_RECORD_CASE`: connects a subject investigation to contact/partner investigations and contact records
+- `D_CONTACT_RECORD`: contact records
+
+## Table Relationships / Explanations
+
+`STD_HIV_DATAMART` and `INVESTIGATION` together constitute the case being reported on
+`F_INTERVIEW_CASE` -> `D_INTERVIEW` represents interviews for the case
+`D_PROVIDER` represents the investigator or worker assigned to a case
+`F_CONTACT_RECORD_CASE` links the case to partners, social contacts, associates, clusters
+`D_CONTACT_RECORD` defines what kind of contact it was and how it was processed
+
 ## Findings
 
 - `PROVIDER_QUICK_CODE` in the db is the "worker" in the finished report (e.g. "WORKER: SUMMARY OF (provider quick code)")
