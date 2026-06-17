@@ -17,15 +17,16 @@ tables:
         data: row_id
         is_primary_key: true
       - column_name: INV_CASE_STATUS
-        data: fake.random_element(["Confirmed", "Probable", "Suspect", "Unknown"])
+        data: random.choice(["Confirmed", "Probable", "Suspect", "Unknown"])
         null_percentage: 0
       - column_name: RECORD_STATUS_CD
-        data: fake.random_element(["ACTIVE", "INACTIVE"])
+        data: random.choice(["ACTIVE", "INACTIVE"])
         null_percentage: 0
       - column_name: INV_LOCAL_ID
         data: |
           id_num = fake.unique.random_int(10000, 99999)
           return f"CAS100{id_num}GA01"
+        is_primary_key: true
       - column_name: CASE_UID
         data: row_id + 10000000
         null_percentage: .05
@@ -43,12 +44,13 @@ tables:
         data: fake.last_name()
         null_percentage: 0.05
       - column_name: PROVIDER_NAME_SUFFIX
-        data: fake.random_element(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
+        data: random.choice(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
         null_percentage: 0.98
       - column_name: PROVIDER_QUICK_CODE
         data: random.choice(["gfreeman", "avance", "adevraj", "dbowman", "fpoole"])
+        is_primary_key: true
 
-  # needed columns:
+  # needed SHD columns for pa1_new in PA01_HIV.sas:
   # INV_LOCAL_ID
   # CC_CLOSED_DT
   # ADI_900_STATUS_CD
@@ -69,21 +71,16 @@ tables:
     columns:
       # pretty sure program_jurisdiction_oid is needed for priv reasons?
       - column_name: PROGRAM_JURISDICTION_OID
-        data: fake.random_element(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
+        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
 
       - column_name: INV_LOCAL_ID
-
-
-
-
-      - column_name: INVESTIGATOR_INTERVIEW_KEY
-        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INV_LOCAL_ID")
+      - column_name: CC_CLOSED_DT
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
       - column_name: ADI_900_STATUS_CD
         data: random.choice(["01", "02", "03", "04", "09"])
-        null_percentage: 0.1
       - column_name: HIV_POST_TEST_900_COUNSELING
         data: random.choice(["Yes", "No"])
-        null_percentage: 0.1
       - column_name: HIV_900_RESULT
         data: random.choice(["11-Negative", "12-Prelim Positive", "13-Positive/Reactive", "21-HIV-1 Pos", "22-HIV-1 Pos, Possible Acute"])
         null_percentage: 0.1
@@ -93,11 +90,34 @@ tables:
       - column_name: HIV_900_TEST_IND
         data: random.choice(["Yes", "No"])
         null_percentage: 0.1
+      - column_name: SOURCE_SPREAD
+        data: None
       - column_name: FL_FUP_INIT_ASSGN_DT
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         null_percentage: 0.1
+      - column_name: CA_PATIENT_INTV_STATUS
+        data: random.choice(["A - Awaiting", "D - Deceased", "I - Interviewed", "L - Language Barrier", "R - Refused Interview", "U - Unable to Locate"])
+        null_percentage: 0.9
+      - column_name: INVESTIGATOR_INTERVIEW_KEY
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "PROVIDER_KEY")
+        null_percentage: 0.1
+      - column_name: INVESTIGATOR_INTERVIEW_QC
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "PROVIDER_QUICK_CODE")
+      - column_name: CA_INTERVIEWER_ASSIGN_DT
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
       - column_name: CA_INIT_INTVWR_ASSGN_DT
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        null_percentage: 0.1
+      - column_name: INVESTIGATION_KEY
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INVESTIGATION_KEY")
+        
+
+
+
+
+        # needed?
+      - column_name: HIV_POST_TEST_900_COUNSELING
+        data: random.choice(["Yes", "No"])
         null_percentage: 0.1
       - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
         data: fake.random_digit()
@@ -108,3 +128,4 @@ tables:
       - column_name: SOC_PRTNRS_PRD_MALE_TTL
         data: fake.random_digit()
         null_percentage: 0.90
+
