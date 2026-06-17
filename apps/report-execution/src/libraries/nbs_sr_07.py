@@ -44,26 +44,26 @@ def execute(
     description = """
 **<u>Report content</u>**
 
-**Output:** Report demonstrates, in table form, Investigation(s) \
+**Output:** Report demonstrates, in table form, Investigations \
 [both Individual and Summary] by year-to-date, and 5-year \
 median irrespective of Case Status. Output:
 
-* Does not include Investigation(s) that have been logically deleted
+* Does not include Investigations that have been logically deleted
 
-* Is filtered based on the state, disease(s) and advanced criteria selected \
+* Is filtered based on the state, diseases and advanced criteria selected \
 by user
 
-* Will not include Investigation(s) that do not have a value for the State \
+* Will not include Investigations that do not have a value for the State \
 selected by the user
 
 * Is based on month and year of the calculated Event Date
 
 **Calculations:**
 
-* **Current Year Totals by disease:** Total Investigation(s) [both Individual and \
+* **Current Year Totals by disease:** Total Investigations [both Individual and \
 Summary] where the Year of the Event Date equal the current Year
 
-* **5-Year median:** Median number of Investigation(s) [both Individual and \
+* **5-Year median:** Median number of Investigations [both Individual and \
 Summary] for the past five years
 
 * **Event Date:** Derived using the hierarchy of Onset Date, Diagnosis Date, \

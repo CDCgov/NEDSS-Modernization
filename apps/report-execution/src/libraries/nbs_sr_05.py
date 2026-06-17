@@ -168,30 +168,30 @@ def execute(
     description = """
 **<u>Report content</u>**
 
-**Output:** Report demonstrates, in table form, the total number of Investigation(s) \
+**Output:** Report demonstrates, in table form, the total number of Investigations \
 [both Individual and Summary] irrespective of Case Status. Output:
 
-* Does not include Investigation(s) that have been logically deleted
+* Does not include Investigations that have been logically deleted
 
-* Is filtered based on the state, disease(s) and advanced criteria selected by user
+* Is filtered based on the state, diseases and advanced criteria selected by user
 
-* Will not include Investigation(s) that do not have a value for the State selected \
+* Will not include Investigations that do not have a value for the State selected \
 by the user
 
 * Is based on month and year of the calculated Event Date
 
 **Calculations:**
 
-* **Current Month Totals by disease:** Total Investigation(s) [both Individual and \
+* **Current Month Totals by disease:** Total Investigations [both Individual and \
 Summary] where the Year and Month of the Event Date equal the current Year and Month
 
-* **Current Year Totals by disease:** Total Investigation(s) [both Individual and \
+* **Current Year Totals by disease:** Total Investigations [both Individual and \
 Summary] where the Year of the Event Date equal the current Year
 
-* **Previous Year  Totals by disease:** Total Investigation(s) [both Individual and \
+* **Previous Year  Totals by disease:** Total Investigations [both Individual and \
 Summary] where the Year of the Event Date equal last Year
 
-* **5-Year median:** Median number of Investigation(s) [both Individual and Summary] \
+* **5-Year median:** Median number of Investigations [both Individual and Summary] \
 for the past five years
 
 * **Percentage change (current year vs. 5 year median):** Percentage change between \

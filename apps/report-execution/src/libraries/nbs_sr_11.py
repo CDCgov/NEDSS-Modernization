@@ -42,15 +42,15 @@ def execute(
 **<u>Report content</u>**
 
 **Output:** Report demonstrates, in table form, the total number of \
-Investigation(s) [both Individual and Summary] by calculated MMWR Year \
+Investigations [both Individual and Summary] by calculated MMWR Year \
 irrespective of Case Status. Output:
 
-* Does not include Investigation(s) that have been logically deleted
+* Does not include Investigations that have been logically deleted
 
-* Is filtered based on the state, disease(s), time frame and \
+* Is filtered based on the state, diseases, time frame and \
 advanced criteria selected by user
 
-* Will not include Investigation(s) that do not have a value for the State \ 
+* Will not include Investigations that do not have a value for the State \ 
 selected by the user
 
 * Is based on the year of the calculated Event Date (not the MMWR Year \

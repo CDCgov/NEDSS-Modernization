@@ -38,18 +38,18 @@ def execute(
     description = """
 **<u>Report content</u>**
 
-**Output:** Report demonstrates, in table form, the total number of Investigation(s) \
+**Output:** Report demonstrates, in table form, the total number of Investigations \
 [both Individual and Summary] by County irrespective of Case Status. Output:
 
-* Does not include Investigation(s) that have been logically deleted
+* Does not include Investigations that have been logically deleted
 
-* Is filtered based on the state, county(s), disease(s), time frame and  advanced \
+* Is filtered based on the state, counties, diseases, time frame and  advanced \
 criteria selected by user
 
-* Will not include Investigation(s) that do not have a value for the State selected by \
+* Will not include Investigations that do not have a value for the State selected by \
 the user
 
-* Will not include Investigation(s) that do not have a value for the County(s) \
+* Will not include Investigations that do not have a value for the Counties \
 selected by the user
 
 * Is based on the calculated Event Date
