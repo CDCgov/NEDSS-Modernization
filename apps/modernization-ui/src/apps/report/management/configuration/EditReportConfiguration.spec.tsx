@@ -3,15 +3,17 @@ import * as generated from 'generated';
 import * as options from 'options/selectableResolver';
 import { Layout } from 'layout';
 import { ReactNode } from 'react';
-import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
+import { createMemoryRouter, RouterProvider, useLoaderData, useNavigate } from 'react-router';
 import { EditReportConfiguration } from './EditReportConfiguration';
 import userEvent from '@testing-library/user-event';
+import { LoadingBlock } from 'libs/loading/block';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
     return {
         ...actual,
         default: actual,
+        useLoaderData: vi.fn(),
         useParams: vi.fn(() => ({ reportUid: '2', dataSourceUid: '1' })), // Mock useParams to return a default value
         useNavigate: vi.fn(), // Mock useParams to return a default value
     };
@@ -59,6 +61,8 @@ const MOCK_CONFIG: generated.ReportConfiguration = {
     dataSource: {
         id: 1,
         name: 'nbs_ods.data_source',
+        hasJurisdictionSecurity: true,
+        hasFacilitySecurity: false,
     },
     library: {
         id: 2,
@@ -104,13 +108,14 @@ const MOCK_CONFIG: generated.ReportConfiguration = {
 const renderWithRouter = () => {
     const routes = [
         {
-            path: '/',
+            path: '/:reportUid/:dataSourceUid',
             element: <Layout />,
+            HydrateFallback: LoadingBlock,
             children: [{ index: true, element: <EditReportConfiguration /> }],
         },
     ];
 
-    const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+    const router = createMemoryRouter(routes, { initialEntries: ['/2/1/'] });
     return render(<RouterProvider router={router} />);
 };
 
@@ -154,9 +159,7 @@ describe('add report configuration page', () => {
     };
 
     it('renders the form and check validation', async () => {
-        const mockConfigApi = vi
-            .mocked(generated.ReportControllerService.getReportConfiguration)
-            .mockResolvedValue(MOCK_CONFIG);
+        const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
         const mockApi = vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
         vi.mocked(generated.ReportControllerService.editReport).mockResolvedValue({ reportUid: 2, dataSourceUid: 1 });
         const navigate = vi.fn();

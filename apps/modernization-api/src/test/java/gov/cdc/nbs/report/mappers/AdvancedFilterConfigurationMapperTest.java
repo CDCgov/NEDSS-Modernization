@@ -12,6 +12,7 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -58,7 +59,7 @@ class AdvancedFilterConfigurationMapperTest {
             .build();
 
     AdvancedFilterConfiguration mapped =
-        AdvancedFilterConfigurationMapper.fromReportFilter(reportFilter);
+        AdvancedFilterConfigurationMapper.fromReportFilter(reportFilter, Collections.emptyList());
 
     assertThat(mapped.reportFilterUid()).isEqualTo(reportFilter.getId());
     assertThat(mapped.defaultValue()).isNull();
@@ -85,7 +86,10 @@ class AdvancedFilterConfigurationMapperTest {
             .report(emptyReport)
             .build();
 
-    assertThatThrownBy(() -> AdvancedFilterConfigurationMapper.fromReportFilter(reportFilter))
+    assertThatThrownBy(
+            () ->
+                AdvancedFilterConfigurationMapper.fromReportFilter(
+                    reportFilter, Collections.emptyList()))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Cannot create advanced filter from non where clause builder filter");
   }

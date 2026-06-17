@@ -51,3 +51,29 @@ class TestModels:
 
             assert d == '13-04-1985'
             assert dt == '13-04-1985 04:15'
+
+    def test_number_formatting(self):
+        columns = [
+            'example_small_float',
+            'example_large_float',
+            'example_small_int',
+            'example_large_int',
+        ]
+        data = [(0.00000001, 123456789.23456789, 1, 1000000000000001)]
+
+        t = models.Table(data=data, columns=columns)
+        csv_str = models.serialize_table(t)
+
+        data_line = csv_str.split('\r\n')[1]
+
+        (
+            example_small_float,
+            example_large_float,
+            example_small_int,
+            example_large_int,
+        ) = data_line.split(',')
+
+        assert example_small_float == '0'
+        assert example_large_float == '123456789.23'
+        assert example_small_int == '1'
+        assert example_large_int == '1000000000000001'

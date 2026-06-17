@@ -3,15 +3,17 @@ import * as generated from 'generated';
 import * as options from 'options/selectableResolver';
 import { Layout } from 'layout';
 import { ReactNode } from 'react';
-import { createMemoryRouter, RouterProvider } from 'react-router';
+import { createMemoryRouter, RouterProvider, useLoaderData } from 'react-router';
 import { ViewReportConfiguration } from './ViewReportConfiguration';
 import userEvent from '@testing-library/user-event';
+import { LoadingBlock } from 'libs/loading/block';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
     return {
         ...actual,
         default: actual,
+        useLoaderData: vi.fn(),
         useParams: vi.fn(() => ({ reportUid: '2', dataSourceUid: '1' })), // Mock useParams to return a default value
     };
 });
@@ -58,6 +60,8 @@ const MOCK_CONFIG: generated.ReportConfiguration = {
     dataSource: {
         id: 1,
         name: 'nbs_ods.data_source',
+        hasJurisdictionSecurity: true,
+        hasFacilitySecurity: false,
     },
     library: {
         id: 2,
@@ -103,13 +107,14 @@ const MOCK_CONFIG: generated.ReportConfiguration = {
 const renderWithRouter = () => {
     const routes = [
         {
-            path: '/',
+            path: '/:reportUid/:dataSourceUid',
             element: <Layout />,
+            HydrateFallback: LoadingBlock,
             children: [{ index: true, element: <ViewReportConfiguration /> }],
         },
     ];
 
-    const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+    const router = createMemoryRouter(routes, { initialEntries: ['/2/1'] });
     return render(<RouterProvider router={router} />);
 };
 
@@ -151,9 +156,7 @@ describe('view report configuration page', () => {
     };
 
     it('renders the config', async () => {
-        const mockApi = vi
-            .mocked(generated.ReportControllerService.getReportConfiguration)
-            .mockResolvedValue(MOCK_CONFIG);
+        const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
         const { getByRole, findByText, findAllByText, findAllByLabelText } = renderWithRouter();
 
@@ -185,8 +188,8 @@ describe('view report configuration page', () => {
 
     it('renders no filters', async () => {
         const mockApi = vi
-            .mocked(generated.ReportControllerService.getReportConfiguration)
-            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [], advancedFilter: undefined });
+            .mocked(useLoaderData)
+            .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [], advancedFilter: undefined });
         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
         const { getByRole, findByText } = renderWithRouter();
 
