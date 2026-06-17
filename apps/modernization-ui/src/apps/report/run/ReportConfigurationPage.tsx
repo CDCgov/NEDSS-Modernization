@@ -78,7 +78,11 @@ const SECTIONS = [
                 collapsible={true}
             >
                 <ColumnSelector columns={config.columns} defaultColumns={config.defaultColumnUids} />
-                <SortSelector columns={config.columns} defaultSort={config.defaultSort} />
+                <SortSelector
+                    columns={config.columns}
+                    defaultSort={config.defaultSort}
+                    defaultColumns={config.defaultColumnUids}
+                />
             </Card>
         ),
     },

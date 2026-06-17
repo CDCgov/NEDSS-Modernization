@@ -14,7 +14,15 @@ const DIRECTION_OPTIONS: EnumSelectable<SortSpec.direction>[] = [
     { value: SortSpec.direction.DESC, name: 'Descending' },
 ];
 
-const SortSelector = ({ columns, defaultSort }: { columns: ReportColumn[]; defaultSort?: SortSpec }) => {
+const SortSelector = ({
+    columns,
+    defaultSort,
+    defaultColumns,
+}: {
+    columns: ReportColumn[];
+    defaultSort?: SortSpec;
+    defaultColumns?: number[];
+}) => {
     const groupId = useId();
     const {
         field: { onChange, value },
@@ -22,7 +30,11 @@ const SortSelector = ({ columns, defaultSort }: { columns: ReportColumn[]; defau
         name: 'sort.column',
         defaultValue: defaultSort?.columnUid.toString(),
     });
-    const selectedColumns = useWatch<ReportExecuteForm, 'columns'>({ name: 'columns', defaultValue: [] }) ?? [];
+    const selectedColumns =
+        useWatch<ReportExecuteForm, 'columns'>({
+            name: 'columns',
+            defaultValue: defaultColumns?.map((id) => id.toString()) ?? [],
+        }) ?? [];
     const columnOptions = toSelectable(columns.filter(({ id }) => selectedColumns.includes(id.toString())));
 
     // make sure the sort column data resets if column un-selected

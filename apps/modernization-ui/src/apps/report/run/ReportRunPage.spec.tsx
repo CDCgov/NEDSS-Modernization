@@ -81,6 +81,8 @@ const MOCK_CONFIG: ReportConfiguration = {
     dataSource: {
         id: 1,
         name: 'nbs_ods.data_source',
+        hasJurisdictionSecurity: false,
+        hasFacilitySecurity: false,
     },
     library: {
         id: 2,
@@ -3195,12 +3197,8 @@ describe('report run page', () => {
 
         describe('column sorting', () => {
             it('is empty if no columns selected', async () => {
-                const mockApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue(MOCK_SELECTABLE_CONFIG);
-                const { getByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_SELECTABLE_CONFIG);
+                const { findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -3208,13 +3206,11 @@ describe('report run page', () => {
             });
 
             it('is empty if no columns selected, even with default', async () => {
-                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
                     ...MOCK_SELECTABLE_CONFIG,
                     defaultSort: { columnUid: 2003, direction: generated.SortSpec.direction.DESC },
                 });
-                const { getByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -3223,14 +3219,12 @@ describe('report run page', () => {
             });
 
             it('resets default if not in default columns', async () => {
-                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
                     ...MOCK_SELECTABLE_CONFIG,
                     defaultColumnUids: [2001, 2002],
                     defaultSort: { columnUid: 2003, direction: generated.SortSpec.direction.DESC },
                 });
-                const { getByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -3238,16 +3232,14 @@ describe('report run page', () => {
             });
 
             it('allows sort selection, but clears if column un-selected', async () => {
-                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
                     ...MOCK_SELECTABLE_CONFIG,
                     defaultColumnUids: [2001, 2002],
                 });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
-                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -3276,16 +3268,14 @@ describe('report run page', () => {
             });
 
             it('allows sort selection', async () => {
-                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
                     ...MOCK_SELECTABLE_CONFIG,
                     defaultColumnUids: [2001, 2002],
                 });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
-                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -3311,16 +3301,14 @@ describe('report run page', () => {
             });
 
             it('allows sort selection, defaults to ascending', async () => {
-                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
                     ...MOCK_SELECTABLE_CONFIG,
                     defaultColumnUids: [2001, 2002],
                 });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
-                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
