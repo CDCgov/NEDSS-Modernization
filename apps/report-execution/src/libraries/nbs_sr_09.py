@@ -67,29 +67,22 @@ def execute(
     description = """
 **<u>Report content</u>**
 
-**Output:** Report provides the total number of monthly Investigations \
-[both Individual and Summary] for selected diseases and states, \
-irrespective of Case Status. Output:
+**Output:** Report provides the total number of monthly Investigations [both Individual and Summary] for selected diseases and states, irrespective of Case Status. Output:
 
 * Does not include Investigations that have been logically deleted
 
-* Is filtered based on the state, diseases, time frame and advanced \
-filter criteria selected by the user
+* Is filtered based on the state, diseases, time frame and advanced filter criteria selected by the user
 
-* Will not include Investigations that do not have a value for the \
-State selected by the user
+* Will not include Investigations that do not have a value for the State selected by the user
 
 * Is based on the calculated Event Date
 
 **Calculations:**
 
-* **Cases:** Total Investigations [both Individual and Summary] \
-by state, county, and disease for each month over the selected time frame
+* **Cases:** Total Investigations [both Individual and Summary] by state, county, and disease for each month over the selected time frame
 
-* **Event Date:** Derived using the hierarchy of Onset Date, Diagnosis \
-Date, Report to County, Report to State and Date the Investigation was \
-created in the NBS.
-"""
+* **Event Date:** Derived using the hierarchy of Onset Date, Diagnosis Date, Report to County, Report to State and Date the Investigation was created in the NBS.
+"""  # noqa: E501
 
     return ReportResult(
         content_type='table',

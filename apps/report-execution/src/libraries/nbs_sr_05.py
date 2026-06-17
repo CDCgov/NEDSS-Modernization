@@ -168,38 +168,30 @@ def execute(
     description = """
 **<u>Report content</u>**
 
-**Output:** Report demonstrates, in table form, the total number of Investigations \
-[both Individual and Summary] irrespective of Case Status. Output:
+**Output:** Report demonstrates, in table form, the total number of Investigations [both Individual and Summary] irrespective of Case Status. Output:
 
 * Does not include Investigations that have been logically deleted
 
 * Is filtered based on the state, diseases and advanced criteria selected by user
 
-* Will not include Investigations that do not have a value for the State selected \
-by the user
+* Will not include Investigations that do not have a value for the State selected by the user
 
 * Is based on month and year of the calculated Event Date
 
 **Calculations:**
 
-* **Current Month Totals by disease:** Total Investigations [both Individual and \
-Summary] where the Year and Month of the Event Date equal the current Year and Month
+* **Current Month Totals by disease:** Total Investigations [both Individual and Summary] where the Year and Month of the Event Date equal the current Year and Month
 
-* **Current Year Totals by disease:** Total Investigations [both Individual and \
-Summary] where the Year of the Event Date equal the current Year
+* **Current Year Totals by disease:** Total Investigations [both Individual and Summary] where the Year of the Event Date equal the current Year
 
-* **Previous Year  Totals by disease:** Total Investigations [both Individual and \
-Summary] where the Year of the Event Date equal last Year
+* **Previous Year  Totals by disease:** Total Investigations [both Individual and Summary] where the Year of the Event Date equal last Year
 
-* **5-Year median:** Median number of Investigations [both Individual and Summary] \
-for the past five years
+* **5-Year median:** Median number of Investigations [both Individual and Summary] for the past five years
 
-* **Percentage change (current year vs. 5 year median):** Percentage change between \
-the Current Year Totals by disease and the 5-Year median
+* **Percentage change (current year vs. 5 year median):** Percentage change between the Current Year Totals by disease and the 5-Year median
 
-* **Event Date:** Derived using the hierarchy of Onset Date, Diagnosis Date, Report to \
-County, Report to State and Date the Investigation was created in the NBS.
-"""
+* **Event Date:** Derived using the hierarchy of Onset Date, Diagnosis Date, Report to County, Report to State and Date the Investigation was created in the NBS.
+"""  # noqa: E501
 
     return ReportResult(
         content_type='table',
