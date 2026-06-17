@@ -20,7 +20,7 @@ Feature: Run reports
     Then I click on the "Run" button
     Then I see confirmation the report has run
 
-  Scenario: I can run a report for library nbs custom
+  Scenario: I can run a report for library nbs_custom
     When I navigate to report with reportUid: "10066768" and dataSourceUid: "30"
     Then I enter "04/28/2025" to the From date
     Then I enter "04/28/2026" to the To date
