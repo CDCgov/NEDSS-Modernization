@@ -178,7 +178,7 @@ class TestIntegrationNbsSr09Library:
 
         # Check description contains required sections
         assert len(result.description) > 100
-        assert 'Report Content' in result.description
+        assert 'Report content' in result.description
         assert 'Data Source:' in result.description
         assert 'Cases' in result.description
         assert 'Event Date:' in result.description
