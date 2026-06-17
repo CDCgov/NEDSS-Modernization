@@ -56,29 +56,48 @@ def execute(
             MIN(FL_FUP_INVESTIGATOR_ASSGN_DT) AS MIN_ASSGN,
             MAX(FL_FUP_INVESTIGATOR_ASSGN_DT) AS MAX_ASSGN
         FROM pa02
-    )
-    select 
-        a.INV_LOCAL_ID,
-        b.REFERRAL_BASIS,
-        a.FL_FUP_INVESTIGATOR_ASSGN_DT,
-        a.FL_FUP_DISPO_DT,
-        a.FL_FUP_DISPOSITION,
-        a.INVESTIGATOR_FL_FUP_KEY,
-        a.INVESTIGATOR_FL_FUP_QC,
-        c.PROVIDER_QUICK_CODE,
-        c.PROVIDER_FIRST_NAME,
-        INVESTIGATOR_DISP_FL_FUP_KEY
-    from a inner join [rdb].[dbo].investigation b on
-    a.investigation_key = b.investigation_key
-    inner join [rdb].[dbo].D_PROVIDER c
-    on a.INVESTIGATOR_DISP_FL_FUP_KEY = c.PROVIDER_KEY
-        WHERE INVESTIGATOR_DISP_FL_FUP_KEY in (select INVESTIGATOR_DISP_FL_FUP_KEY from PA02)
-        AND INVESTIGATOR_DISP_FL_FUP_KEY != 1
-        AND CAST(FL_FUP_DISPO_DT AS DATE) >= (SELECT MIN_DISPO FROM min_max_dates)
-        AND CAST(FL_FUP_DISPO_DT AS DATE) <= (SELECT MAX_DISPO FROM min_max_dates)
-        AND CAST(FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= (SELECT MIN_ASSGN FROM min_max_dates)
-        AND CAST(FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= (SELECT MAX_ASSGN FROM min_max_dates)
-        
+    ), pa02_dispo as (
+        select 
+            a.INV_LOCAL_ID,
+            b.REFERRAL_BASIS,
+            a.FL_FUP_INVESTIGATOR_ASSGN_DT,
+            a.FL_FUP_DISPO_DT,
+            a.FL_FUP_DISPOSITION,
+            a.INVESTIGATOR_FL_FUP_KEY,
+            a.INVESTIGATOR_FL_FUP_QC,
+            c.PROVIDER_QUICK_CODE,
+            c.PROVIDER_FIRST_NAME,
+            INVESTIGATOR_DISP_FL_FUP_KEY
+        from a inner join [rdb].[dbo].investigation b on
+        a.investigation_key = b.investigation_key
+        inner join [rdb].[dbo].D_PROVIDER c
+        on a.INVESTIGATOR_DISP_FL_FUP_KEY = c.PROVIDER_KEY
+            WHERE INVESTIGATOR_DISP_FL_FUP_KEY in (select INVESTIGATOR_DISP_FL_FUP_KEY from PA02)
+            AND INVESTIGATOR_DISP_FL_FUP_KEY != 1
+            AND CAST(FL_FUP_DISPO_DT AS DATE) >= (SELECT MIN_DISPO FROM min_max_dates)
+            AND CAST(FL_FUP_DISPO_DT AS DATE) <= (SELECT MAX_DISPO FROM min_max_dates)
+            AND CAST(FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= (SELECT MIN_ASSGN FROM min_max_dates)
+            AND CAST(FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= (SELECT MAX_ASSGN FROM min_max_dates)
+        )
+select distinct 
+    a.INV_LOCAL_ID,
+    b.REFERRAL_BASIS, 
+    CAST(FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) as assign_dt,
+    a.FL_FUP_DISPOSITION, 
+    CAST(FL_FUP_DISPO_DT AS DATE) as disp_dt,
+    DATEDIFF(day, a.FL_FUP_INVESTIGATOR_ASSGN_DT, a.FL_FUP_DISPO_DT) AS days,
+    a.INVESTIGATOR_FL_FUP_KEY,
+    a.INVESTIGATOR_FL_FUP_QC,
+    c.PROVIDER_QUICK_CODE,
+    c.PROVIDER_FIRST_NAME
+    from subset a 
+    inner join [rdb].[dbo].INVESTIGATION b on 
+    a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+    inner join [rdb].[dbo].D_PROVIDER c on
+    a.INVESTIGATOR_FL_FUP_KEY = c.PROVIDER_KEY
+    where a.INVESTIGATOR_FL_FUP_KEY ~=1 
+    and a.FL_FUP_DISPOSITION >= a.FL_FUP_INVESTIGATOR_ASSGN_DT
+    order by a.INVESTIGATOR_FL_FUP_KEY;       
     '''
     content = trx.query(sql)
 
