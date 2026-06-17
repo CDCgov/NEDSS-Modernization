@@ -7,7 +7,7 @@ import { useReportDataSourceFilterableColumnOptions } from 'options/report/useRe
 import { useEffect } from 'react';
 import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
-import { addLabelToName, EnumSelectable } from './utils';
+import { addLabelToName, EnumSelectable } from '../../utils';
 import { SIZING } from './constants';
 import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';

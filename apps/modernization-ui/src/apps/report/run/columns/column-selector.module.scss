@@ -3,67 +3,71 @@
 @use 'styles/colors';
 
 .layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    padding: 2rem;
     background-color: colors.$base-lightest;
-    isolation: isolate;
 
-    section {
-        height: clamp(15rem, 50vh, 45rem);
-    }
+    .grid {
+        display: grid;
+        max-width: 90rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+        isolation: isolate;
 
-    .search {
-        background-color: colors.$primary-lightest;
-        width: 100%;
-        padding: 1rem;
-        height: fit-content;
-        position: sticky;
-        top: 0;
-        z-index: 2;
-    }
-
-    .card {
-        overflow: auto;
-        height: 100%;
-        position: relative;
-
-        &:has(.center) {
-            display: grid;
-            place-items: center;
+        section {
+            height: clamp(15rem, 50vh, 45rem);
         }
 
-        .option {
+        .search {
+            background-color: colors.$primary-lightest;
             width: 100%;
-            box-sizing: border-box;
+            padding: 1rem;
+            height: fit-content;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
 
-            border-left-width: 4px;
-            border-left-style: solid;
-            border-left-color: colors.$clear;
+        .card {
+            overflow: auto;
+            height: 100%;
+            position: relative;
 
-            padding: 0.25rem 1.5rem;
-            gap: 2rem;
-            // keeps the checkbox and dnd options about the same height
-            min-height: 3rem;
-
-            @extend %thin-bottom;
-
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 0.5rem;
-
-            .label {
-                color: colors.$base-darkest;
-                line-height: 125%;
-                flex: 1 1 0%;
+            &:has(.center) {
+                display: grid;
+                place-items: center;
             }
 
-            button {
-                border: none;
-                box-shadow: none;
-                color: colors.$base;
+            .option {
+                width: 100%;
+                box-sizing: border-box;
+
+                border-left-width: 4px;
+                border-left-style: solid;
+                border-left-color: colors.$clear;
+
+                padding: 0.25rem 1.5rem;
+                gap: 2rem;
+                // keeps the checkbox and dnd options about the same height
+                min-height: 3rem;
+
+                @extend %thin-bottom;
+
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 0.5rem;
+
+                .label {
+                    color: colors.$base-darkest;
+                    line-height: 125%;
+                    flex: 1 1 0%;
+                }
+
+                button {
+                    border: none;
+                    box-shadow: none;
+                    color: colors.$base;
+                }
             }
         }
     }
