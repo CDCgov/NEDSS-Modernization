@@ -487,8 +487,8 @@ class ReportSpecBuilderTest {
   @Test
   void build_should_include_order_by_and_sort_map_when_valid_sort_present() {
     Long columnUid = 1L;
-    String columnName = "last_name";
-    ReportColumn reportColumn = mockReportColumn(columnUid, columnName, "Last Name");
+    String columnTitle = "Last Name";
+    ReportColumn reportColumn = mockReportColumn(columnUid, "last_name", columnTitle);
 
     ReportConfiguration reportConfig =
         mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
@@ -510,15 +510,15 @@ class ReportSpecBuilderTest {
 
     assertThat(reportSpec.sortBy())
         .isNotNull()
-        .containsEntry("column_name", columnName)
+        .containsEntry("column_title", columnTitle)
         .containsEntry("direction", "ASC");
   }
 
   @Test
   void build_should_include_order_by_and_sort_map_when_integer_sort_present() {
     Long columnUid = 1L;
-    String columnName = "number";
-    ReportColumn reportColumn = mockReportColumn(columnUid, "number", "Number", "INTEGER");
+    String columnTitle = "Number";
+    ReportColumn reportColumn = mockReportColumn(columnUid, "number", columnTitle, "INTEGER");
 
     ReportConfiguration reportConfig =
         mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
@@ -540,7 +540,7 @@ class ReportSpecBuilderTest {
 
     assertThat(reportSpec.sortBy())
         .isNotNull()
-        .containsEntry("column_name", columnName)
+        .containsEntry("column_title", columnTitle)
         .containsEntry("direction", "ASC");
   }
 

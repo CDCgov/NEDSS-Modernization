@@ -95,7 +95,8 @@ public class ReportSpecBuilder {
     if (columns != null) {
       columnMap = columns.stream().map(c -> List.of(c.name(), c.title())).toList();
     }
-    SortSpec sortBy = validateSortColumns(reportExecRequest.columnUids(), reportExecRequest.sort());
+    SortSpec sortBy = reportExecRequest.sort();
+    validateSortColumns(reportExecRequest.columnUids(), sortBy);
     ReportColumn sortColumn = (sortBy != null) ? findMatchingColumn(sortBy.columnUid()) : null;
 
     String selectClause = buildSelectClause(columns);
@@ -114,7 +115,7 @@ public class ReportSpecBuilder {
     Map<String, String> sortByMap =
         (sortBy != null && sortColumn != null)
             ? Map.of(
-                "column_name", sortColumn.name(),
+                "column_title", sortColumn.title(),
                 "direction", sortBy.direction().name())
             : null;
     Integer daysValue = extractDaysValue();
@@ -183,17 +184,15 @@ public class ReportSpecBuilder {
     }
   }
 
-  private SortSpec validateSortColumns(List<Long> requestedColumnUids, SortSpec sortSpec) {
+  private void validateSortColumns(List<Long> requestedColumnUids, SortSpec sortSpec) {
 
     if (sortSpec == null) {
-      return null;
+      return;
     }
 
     if (requestedColumnUids == null || !requestedColumnUids.contains(sortSpec.columnUid())) {
       throw new IllegalArgumentException(
           "Selected sort column is not present in requested column list.");
     }
-
-    return sortSpec;
   }
 }
