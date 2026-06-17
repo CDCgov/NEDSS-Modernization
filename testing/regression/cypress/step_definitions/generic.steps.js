@@ -13,7 +13,7 @@ When('I select value {string} in the {string} field', (value, label) => {
 });
 
 When('I toggle the {string} field', (label) => {
-    cy.findByRole('checkbox', { name: label}).click({force: true});
+    cy.findByRole('checkbox', { name: label }).click({ force: true });
 });
 
 When('I type {string} into the {string} field', (value, label) => {
@@ -40,6 +40,14 @@ Then('I should see a {string} labelled {string}', (role, name) => {
 
 Then('I should see value {string} in the {string} field', (value, label) => {
     cy.findByRole('definition', { name: label }).should('have.text', value);
+});
+
+Then('I should see {string} validation error', (errorMsg) => {
+    cy.findByRole('alert').should('have.text', errorMsg);
+});
+
+Then('I should see a loading indicator', () => {
+    cy.findByRole('status').should('have.text', 'Loading');
 });
 
 Then('I should see value {string} in the {string} {string} input field', (value, label, role) => {

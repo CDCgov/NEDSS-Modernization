@@ -4,12 +4,11 @@ import { Button, LinkButton } from 'design-system/button';
 import { useState } from 'react';
 import { ConfigForm, formToRequest, ReportConfigurationContent } from './ReportConfigurationContent';
 import { FormProvider, useForm } from 'react-hook-form';
-import { ReportControllerService } from 'generated';
-import { useNavigate, useParams } from 'react-router';
+import { ReportControllerService, ReportConfiguration } from 'generated';
+import { useLoaderData, useNavigate, useParams } from 'react-router';
 
 import styles from 'apps/report/layout/layout.module.scss';
-import { useReportConfiguration } from 'apps/report/hooks/useReportConfiguration';
-import { LoadingIndicator } from 'libs/loading/indicator';
+import { LoadingBlock } from 'libs/loading/block';
 
 const EditReportConfiguration = () => {
     const params = useParams();
@@ -18,7 +17,7 @@ const EditReportConfiguration = () => {
     const viewUrl = `/report/management/configuration/${reportUid}/${dataSourceUid}`;
     const [error, setError] = useState<string | null>(null);
     const [submitting, setSubmitting] = useState<boolean>(false);
-    const config = useReportConfiguration({ reportUid, dataSourceUid, handleError: setError });
+    const config = useLoaderData<ReportConfiguration>();
 
     const navigate = useNavigate();
 
@@ -51,10 +50,7 @@ const EditReportConfiguration = () => {
     );
 
     return !config ? (
-        <>
-            {error && <AlertBanner type="error">{error}</AlertBanner>}
-            <LoadingIndicator />
-        </>
+        <LoadingBlock />
     ) : (
         <ReportLayout
             title="Edit Report"

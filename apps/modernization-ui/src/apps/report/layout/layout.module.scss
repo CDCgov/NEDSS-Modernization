@@ -13,6 +13,7 @@ $header-height: 6rem;
 .page {
     display: flex;
     flex-direction: column;
+    min-height: calc(100vh - var(--nav-bar-height));
 
     & > header {
         position: sticky;
@@ -23,6 +24,7 @@ $header-height: 6rem;
     }
 
     & > main {
+        flex-grow: 1;
         display: grid;
         grid-template-columns: 1fr auto;
         grid-template-areas: 'main aside';
@@ -74,4 +76,13 @@ $header-height: 6rem;
             box-shadow: inset 0 0 0 2px colors.$disabled !important;
         }
     }
+}
+
+.fullPageBlock {
+    display: grid;
+    place-items: center;
+    place-content: center;
+    margin: 1rem;
+    padding: 2rem;
+    background-color: colors.$base-white;
 }
