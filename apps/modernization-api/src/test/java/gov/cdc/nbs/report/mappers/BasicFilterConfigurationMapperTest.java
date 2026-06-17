@@ -54,8 +54,7 @@ class BasicFilterConfigurationMapperTest {
   FilterValue filterValue =
       FilterValue.builder()
           .id(6L)
-          .operator("EQ")
-          .valueType("CODE")
+          .valueType("code")
           .valueTxt("value")
           .reportFilter(emptyFilter)
           .build();

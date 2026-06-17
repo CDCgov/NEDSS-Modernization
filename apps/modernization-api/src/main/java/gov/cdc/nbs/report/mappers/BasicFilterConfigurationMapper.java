@@ -2,6 +2,7 @@ package gov.cdc.nbs.report.mappers;
 
 import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.entity.odse.ReportFilter;
+import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.FilterType;
 import gov.cdc.nbs.report.utils.ValueCountCalculator;
@@ -20,11 +21,11 @@ public class BasicFilterConfigurationMapper {
 
     FilterType filterType = FilterTypeMapper.fromFilterCode(filter.getFilterCode());
 
-    if (!filterType.type().startsWith("BAS_")) {
+    if (!filterType.type().startsWith(ReportConstants.BASIC_FILTER_PREFIX)) {
       throw new IllegalArgumentException("Cannot create basic filter from advanced filter");
     }
 
-    Boolean isRequired = false;
+    boolean isRequired = false;
     if (filter.getFilterValidation() != null
         && filter.getFilterValidation().getReportFilterInd() != null) {
       isRequired = "Y".equals(filter.getFilterValidation().getReportFilterInd().toString());
@@ -33,15 +34,15 @@ public class BasicFilterConfigurationMapper {
     // For the future: A list of strings may end up being too simple for all use cases,
     // may need to evolve to be a small object with a key and value
     List<String> defaultValues = null;
-    Boolean defaultIncludeNulls = false;
+    boolean defaultIncludeNulls = false;
     if (filter.getFilterValues() != null) {
       defaultValues =
           filter.getFilterValues().stream()
-              .filter(v -> !v.getOperator().equals("ALLOW_NULLS"))
+              .filter(v -> !"ALLOW_NULLS".equals(v.getOperator()))
               .map(FilterValue::getValueTxt)
               .toList();
       defaultIncludeNulls =
-          filter.getFilterValues().stream().anyMatch(v -> v.getOperator().equals("ALLOW_NULLS"));
+          filter.getFilterValues().stream().anyMatch(v -> "ALLOW_NULLS".equals(v.getOperator()));
     }
     return new BasicFilterConfiguration(
         filter.getId(),
