@@ -28,6 +28,30 @@ vi.mock('libs/permission', async () => {
     };
 });
 
+// don't actually let the cache cache
+const localStorageMock: Storage = {
+    getItem: (): string | null => null,
+    setItem: (): void => {},
+    removeItem: (): void => {},
+    clear: (): void => {},
+    key: (): string | null => '',
+    length: 0,
+};
+
+let originalLocalStorage: Storage;
+beforeAll((): void => {
+    originalLocalStorage = window.localStorage;
+    (window as any).localStorage = localStorageMock;
+});
+
+afterAll((): void => {
+    (window as any).localStorage = originalLocalStorage;
+});
+
+afterEach(() => {
+    vi.restoreAllMocks();
+});
+
 const MOCK_CONFIG: generated.ReportConfiguration = {
     title: 'Test Report',
     ownerUid: 0,
@@ -175,5 +199,35 @@ describe('view report configuration page', () => {
 
         expect(await findByText('3. Available filters')).toBeVisible();
         expect(await findByText('No data has been added.'));
+    });
+
+    it('handles delete', async () => {
+        const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
+        vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
+        const mockDeleteApi = vi
+            .mocked(generated.ReportControllerService.deleteReport)
+            .mockResolvedValue({ reportUid: 2, dataSourceUid: 1 });
+        const { getByRole, findByRole, findByText } = renderWithRouter();
+
+        expect(getByRole('status')).toHaveTextContent('Loading');
+
+        expect(mockApi).toHaveBeenCalled();
+
+        const user = userEvent.setup();
+
+        await user.click(await findByRole('button', { name: 'Delete' }));
+
+        expect(await findByRole('dialog')).toHaveClass('is-visible');
+        expect(await findByText(/Delete report: Test Report/)).toBeVisible();
+
+        await user.click(await findByRole('button', { name: 'No, cancel' }));
+
+        expect(await findByRole('dialog')).toHaveClass('is-hidden');
+
+        await user.click(await findByRole('button', { name: 'Delete' }));
+
+        await user.click(await findByRole('button', { name: 'Yes, delete' }));
+
+        expect(mockDeleteApi).toHaveBeenCalledWith({ reportUid: 2, dataSourceUid: 1 });
     });
 });

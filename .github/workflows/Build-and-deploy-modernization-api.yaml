@@ -38,3 +38,5 @@ jobs:
       java_version: "21"
     secrets:
       NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}
+      HARBOR_ROBOT_USERNAME: ${{secrets.HARBOR_ROBOT_USERNAME}}
+      HARBOR_ROBOT_SECRET: ${{secrets.HARBOR_ROBOT_SECRET}}
