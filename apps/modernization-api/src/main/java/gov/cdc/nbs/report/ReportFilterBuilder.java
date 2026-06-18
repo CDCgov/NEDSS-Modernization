@@ -11,19 +11,23 @@ import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.report.utils.ValueCountCalculator;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.repository.FilterCodeRepository;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ReportFilterBuilder {
+  private final Clock clock;
   private final DataSourceColumnRepository dataSourceColumnRepository;
   private final FilterCodeRepository filterCodeRepository;
   private final IdGeneratorService idGenerator;
 
   public ReportFilterBuilder(
+      final Clock clock,
       DataSourceColumnRepository dataSourceColumnRepository,
       FilterCodeRepository filterCodeRepository,
       IdGeneratorService idGenerator) {
+    this.clock = clock;
     this.dataSourceColumnRepository = dataSourceColumnRepository;
     this.filterCodeRepository = filterCodeRepository;
     this.idGenerator = idGenerator;
@@ -105,7 +109,7 @@ public class ReportFilterBuilder {
     }
 
     // Net new validation
-    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime now = LocalDateTime.now(this.clock);
     ReportFilterValidation validation =
         ReportFilterValidation.builder()
             .id(generateReportFilterId())
