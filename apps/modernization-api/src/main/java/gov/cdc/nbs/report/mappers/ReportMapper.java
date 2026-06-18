@@ -9,14 +9,17 @@ import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdminReportRequest;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReportMapper {
+  private final Clock clock;
   private final IdGeneratorService idGenerator;
 
-  public ReportMapper(IdGeneratorService idGenerator) {
+  public ReportMapper(final Clock clock, IdGeneratorService idGenerator) {
+    this.clock = clock;
     this.idGenerator = idGenerator;
   }
 
@@ -26,7 +29,7 @@ public class ReportMapper {
       ReportLibrary reportLibrary,
       DataSource dataSource,
       Report existingReport) {
-    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime now = LocalDateTime.now(this.clock);
 
     Report report = existingReport;
     if (report == null) {
