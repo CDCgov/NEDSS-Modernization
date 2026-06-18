@@ -6,7 +6,7 @@ from src.models import ReportSpec
 faker_schema = 'pa_01.yaml'
 
 
-#@pytest.mark.usefixtures('setup_containers', 'fake_db_table')
+# @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationPa01Library:
     """Integration tests for the pa_01 library."""
