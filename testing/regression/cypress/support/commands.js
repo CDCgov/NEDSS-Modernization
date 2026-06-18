@@ -25,18 +25,37 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import '@testing-library/cypress/add-commands'
 
-Cypress.Commands.add('selectByLabel', (label, value) => {
-    // Find the label text, then find the element it points to
-    cy.contains('label', label).invoke('attr', 'for').then((id) => {
-        // Check if the target is a standard <select>
-        cy.get('body').then(($body) => {
-            if ($body.find(`select#${CSS.escape(id)}`).length > 0) {
-                // Standard Select
-                cy.get(`select#${CSS.escape(id)}`).select(value);
-            } else {
-                // React Select: Click the input, type, and hit Enter
-                cy.get(`input#${CSS.escape(id)}`).click({ force: true }).type(`${value}{enter}`);
-            }
+// Cypress.Commands.add('selectByLabel', (labelText, value) => {
+//     // 1. Testing Library immediately finds the correct element tied to the label text
+//     cy.findByLabelText(labelText).then(($el) => {
+//         // 2. Determine if it's a standard select dropdown or a React custom input
+//         if ($el.is('select')) {
+//             // Standard HTML Select
+//             cy.wrap($el).select(value);
+//         } else {
+//             // React Select (where the label points directly to the text input)
+//             cy.wrap($el).click({ force: true }).type(`${value}{enter}`);
+//         }
+//     });
+// });
+
+Cypress.Commands.add('selectDropdownByLabel', (labelText, value) => {
+    // Get the ID string instead of holding a live element reference
+    cy.findByLabelText(labelText)
+        .invoke('attr', 'id')
+        .then((id) => {
+            const escapedId = CSS.escape(id);
+
+            // Check the live DOM state using the ID
+            cy.get('body').then(($body) => {
+                if ($body.find(`select#${escapedId}`).length > 0) {
+                    cy.get(`select#${escapedId}`).select(value);
+                } else {
+                    // React Select / Custom Checkbox Input
+                    cy.get(`input#${escapedId}`).click({ force: true }).clear({ force: true }).type(value);
+                    cy.contains('[class*="__option"], [class*="-option"]', value).should('be.visible').click({ force: true });
+                    cy.get(`input#${escapedId}`).type('{esc}');
+                }
+            });
         });
-    });
 });
