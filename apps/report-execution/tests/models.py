@@ -81,11 +81,13 @@ class TestModels:
         assert example_large_int == '1000000000000001'
 
     def test_newline_comma_formatting(self):
-        data = [(
-            'a comment with\na new line',
-            'a comment with\r\na carriage return',
-            'a comment with " a quote',
-            'a comment with , a comma')
+        data = [
+            (
+                'a comment with\na new line',
+                'a comment with\r\na carriage return',
+                'a comment with " a quote',
+                'a comment with , a comma',
+            )
         ]
         columns = ['new line', 'carriage return', 'quote', 'comma']
 
