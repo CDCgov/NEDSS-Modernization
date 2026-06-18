@@ -58,7 +58,7 @@ export const MultiSelect = ({
     const handleOnChange = (newValue: MultiValue<Selectable>, actionMeta: ActionMeta<Selectable>) => {
         if (actionMeta.option?.value === SELECT_ALL_VALUE) {
             if (allSelected) {
-                onChange?.(newValue!.filter((v) => !availableOptions.includes(v)));
+                onChange?.(newValue!.filter((v) => !availableOptions.includes(v) && v.value !== SELECT_ALL_VALUE));
             } else {
                 onChange?.([
                     ...newValue.filter((v) => v.value !== SELECT_ALL_VALUE),

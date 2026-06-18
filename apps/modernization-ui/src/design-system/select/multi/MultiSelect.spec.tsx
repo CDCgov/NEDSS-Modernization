@@ -20,6 +20,8 @@ describe('MultiSelect', () => {
 
         await user.click(component);
 
+        expect(getByText('Select all')).toBeInTheDocument();
+
         options.forEach((option) => {
             expect(getByText(option.label)).toBeInTheDocument();
         });
@@ -44,5 +46,102 @@ describe('MultiSelect', () => {
         await user.click(component).then(() => user.click(getByText('Option One')));
 
         expect(onChange).toHaveBeenCalledWith([expect.objectContaining({ value: '1', label: 'Option One' })]);
+    });
+
+    it('should allow selecting all', async () => {
+        const onChange = vi.fn();
+        const { getByText, getByRole } = render(
+            <MultiSelect
+                id="test-multi-select"
+                name="test-multi-select"
+                label="Test Multi Select"
+                options={options}
+                onChange={onChange}
+            />
+        );
+
+        const component = getByRole('combobox');
+
+        const user = userEvent.setup();
+
+        await user.click(component).then(() => user.click(getByText('Select all')));
+
+        expect(onChange).toHaveBeenCalledWith([
+            expect.objectContaining({ value: '1', label: 'Option One' }),
+            expect.objectContaining({ value: '2', label: 'Option Two' }),
+            expect.objectContaining({ value: '3', label: 'Option Three' }),
+        ]);
+    });
+
+    it('should allow de-selecting all', async () => {
+        const onChange = vi.fn();
+        const { getByText, getByRole } = render(
+            <MultiSelect
+                id="test-multi-select"
+                name="test-multi-select"
+                label="Test Multi Select"
+                options={options}
+                value={options}
+                onChange={onChange}
+            />
+        );
+
+        const component = getByRole('combobox');
+
+        const user = userEvent.setup();
+
+        await user.click(component).then(() => user.click(getByText('Deselect all')));
+
+        expect(onChange).toHaveBeenCalledWith([]);
+    });
+
+    it('should allow selecting search results', async () => {
+        const onChange = vi.fn();
+        const { getByText, getByRole } = render(
+            <MultiSelect
+                id="test-multi-select"
+                name="test-multi-select"
+                label="Test Multi Select"
+                options={options}
+                onChange={onChange}
+            />
+        );
+
+        const component = getByRole('combobox');
+
+        const user = userEvent.setup();
+
+        await user.type(component, 'one');
+
+        await user.click(component).then(() => user.click(getByText('Select search results')));
+
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({ value: '1', label: 'Option One' })]);
+    });
+
+    it('should allow de-selecting search results', async () => {
+        const onChange = vi.fn();
+        const { getByText, getByRole } = render(
+            <MultiSelect
+                id="test-multi-select"
+                name="test-multi-select"
+                label="Test Multi Select"
+                options={options}
+                value={options}
+                onChange={onChange}
+            />
+        );
+
+        const component = getByRole('combobox');
+
+        const user = userEvent.setup();
+
+        await user.type(component, 'one');
+
+        await user.click(component).then(() => user.click(getByText('Deselect search results')));
+
+        expect(onChange).toHaveBeenCalledWith([
+            expect.objectContaining({ value: '2', label: 'Option Two' }),
+            expect.objectContaining({ value: '3', label: 'Option Three' }),
+        ]);
     });
 });

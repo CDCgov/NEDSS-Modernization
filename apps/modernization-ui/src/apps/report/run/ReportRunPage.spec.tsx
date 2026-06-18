@@ -3096,7 +3096,14 @@ describe('report run page', () => {
             const user = userEvent.setup();
 
             await user.click((await options())[0]); // select all
-            (await options()).forEach((option) => expect(option).toBeChecked());
+            (await options()).forEach((option, i) => {
+                if (i == 0) {
+                    expect(option).not.toBeChecked();
+                    expect(option).toHaveAccessibleName('Deselect all');
+                } else {
+                    expect(option).toBeChecked();
+                }
+            });
             await user.click((await options())[0]); // de-select all
             (await options()).forEach((option) => expect(option).not.toBeChecked());
 
@@ -3104,7 +3111,16 @@ describe('report run page', () => {
             await user.type(search, 'name');
             expect(await options()).toHaveLength(2); // Full Name + select all
             await user.click(await findByLabelText('Select search results'));
-            await waitFor(async () => (await options()).forEach((option) => expect(option).toBeChecked()));
+            await waitFor(async () =>
+                (await options()).forEach((option, i) => {
+                    if (i == 0) {
+                        expect(option).not.toBeChecked();
+                        expect(option).toHaveAccessibleName('Deselect search results');
+                    } else {
+                        expect(option).toBeChecked();
+                    }
+                })
+            );
             await user.clear(search);
             expect((await options()).filter((o) => (o as HTMLInputElement).checked)).toHaveLength(1);
             expect(await findByRole('checkbox', { name: 'Full Name' })).toBeChecked();
