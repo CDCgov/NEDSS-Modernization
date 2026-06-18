@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM python:3.14-alpine
 
 # Specify FastAPI application port and host, with defaults
 ENV UVICORN_PORT=8001
