@@ -13,6 +13,7 @@ import { ColumnSelector } from './columns/ColumnSelector';
 import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
 import { InPageNavigation } from 'design-system/inPageNavigation';
+import { SortSelector } from './columns/SortSelector';
 
 import styles from './report-configuration-page.module.scss';
 
@@ -88,6 +89,11 @@ const SECTIONS = [
                 collapsible={true}
             >
                 <ColumnSelector columns={config.columns} defaultColumns={config.defaultColumnUids} />
+                <SortSelector
+                    columns={config.columns}
+                    defaultSort={config.defaultSort}
+                    defaultColumns={config.defaultColumnUids}
+                />
             </Card>
         ),
     },

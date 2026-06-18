@@ -16,6 +16,7 @@ class ReportSpec(BaseModel):
     library_name: str = Field(min_length=1)
     data_source_name: str = Field(min_length=1)
     subset_query: str = Field(min_length=1)
+    sort_by: str | None = None
     days_value: int | None = None  # Specific to potntl_dup_inv_sum
     column_map: list[list[str]] | None = None
     library_params: Json[Any] | None = Field(default_factory=dict)
@@ -83,7 +84,8 @@ def serialize_table(table: Table) -> str:
 
     csv_str = df.to_csv(
         index=False,
-        float_format='{:.20g}',
+        # everything left of the decimal, up to 2 decimal places, no trailing 0s
+        float_format=lambda x: f'{x:.2f}'.rstrip('0').rstrip('.'),
         lineterminator='\r\n',
     )
 

@@ -12,16 +12,16 @@ describe('rangeValidator', () => {
             const actual0 = validateDateRange(['', ''], FIELD_NAME);
             expect(actual0).toEqual(`Enter from and to values for ${FIELD_NAME}.`);
 
-            const actual1 = validateDateRange(['', '10/13/2026'], FIELD_NAME);
+            const actual1 = validateDateRange(['', '2026'], FIELD_NAME);
             expect(actual1).toEqual(`Enter from and to values for ${FIELD_NAME}.`);
 
-            const actual2 = validateDateRange(['10/11/2024', ''], FIELD_NAME);
+            const actual2 = validateDateRange(['12/2025', ''], FIELD_NAME);
             expect(actual2).toEqual(`Enter from and to values for ${FIELD_NAME}.`);
         });
 
         it('should return an error msg for an invalid date range', () => {
-            const actual0 = validateDateRange(['1', '10/13/2026'], FIELD_NAME);
-            expect(actual0).toEqual(`From date of "1" is not valid mm/dd/yyyy formatted date for ${FIELD_NAME}.`);
+            const actual0 = validateDateRange(['14/1999', '10/13/2026'], FIELD_NAME);
+            expect(actual0).toEqual(`From date of "14/1999" is not valid mm/dd/yyyy formatted date for ${FIELD_NAME}.`);
 
             const actual1 = validateDateRange(['10/13/2022', 1], FIELD_NAME);
             expect(actual1).toEqual(`To date of "1" is not valid mm/dd/yyyy formatted date for ${FIELD_NAME}.`);

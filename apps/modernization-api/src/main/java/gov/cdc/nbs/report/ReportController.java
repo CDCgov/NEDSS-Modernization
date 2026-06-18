@@ -84,6 +84,17 @@ public class ReportController {
     return new ResponseEntity<>(runner, HttpStatus.OK);
   }
 
+  // Eventually, this will also need to support users deleting their own reports,
+  // but right now that UI flow still lives in 6
+  @DeleteMapping("/configuration/{reportUid}/{dataSourceUid}")
+  @PreAuthorize("hasAuthority('REPORTADMIN-SYSTEM')")
+  public ResponseEntity<ReportId> deleteReport(
+      @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
+    ReportId reportId = new ReportId(reportUid, dataSourceUid);
+    reportService.deleteReport(reportId);
+    return new ResponseEntity<>(reportId, HttpStatus.OK);
+  }
+
   @PostMapping("/run")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
   public ResponseEntity<ReportResult> runReport(

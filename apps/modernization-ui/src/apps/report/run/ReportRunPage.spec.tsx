@@ -4,18 +4,20 @@ import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
 import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { Layout } from 'layout';
-import { createMemoryRouter, RouterProvider } from 'react-router';
+import { createMemoryRouter, RouterProvider, useLoaderData } from 'react-router';
 import { ReactNode } from 'react';
 import fileDownload from 'js-file-download';
 import { axe } from 'jest-axe';
 import * as options from 'options/selectableResolver';
 import { ConceptOptions, useConceptOptions } from 'options/concepts';
+import { LoadingBlock } from 'libs/loading/block';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
     return {
         ...actual,
         default: actual,
+        useLoaderData: vi.fn(),
         useParams: vi.fn(() => ({ reportUid: '2', dataSourceUid: '1' })), // Mock useParams to return a default value
     };
 });
@@ -32,6 +34,7 @@ vi.mock('libs/permission', async () => {
     return {
         ...actual,
         Permitted: vi.fn(({ children }: { children: ReactNode }) => <>{children}</>),
+        permitsAll: vi.fn(() => () => true),
     };
 });
 
@@ -78,6 +81,8 @@ const MOCK_CONFIG: ReportConfiguration = {
     dataSource: {
         id: 1,
         name: 'nbs_ods.data_source',
+        hasJurisdictionSecurity: false,
+        hasFacilitySecurity: false,
     },
     library: {
         id: 2,
@@ -144,24 +149,21 @@ const MOCK_RESULT: generated.ReportResult = {
 const renderWithRouter = () => {
     const routes = [
         {
-            path: '/',
+            path: '/:reportUid/:dataSourceUid',
             element: <Layout />,
+            HydrateFallback: LoadingBlock,
             children: [{ index: true, element: <ReportRunPage /> }],
         },
     ];
 
-    const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+    const router = createMemoryRouter(routes, { initialEntries: ['/2/1'] });
     return render(<RouterProvider router={router} />);
 };
 describe('report run page', () => {
     describe('when given valid params', () => {
         it('renders the config', async () => {
-            const mockApi = vi
-                .mocked(generated.ReportControllerService.getReportConfiguration)
-                .mockResolvedValue(MOCK_CONFIG);
-            const { getByRole, findByText } = renderWithRouter();
-
-            expect(getByRole('status')).toHaveTextContent('Loading');
+            const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
+            const { findByText } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 
@@ -170,7 +172,7 @@ describe('report run page', () => {
 
         it('run button submits config and opens in new tab', async () => {
             const user = userEvent.setup();
-            vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue(MOCK_CONFIG);
+            vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
             const mockApi = vi.mocked(generated.ReportControllerService.runReport).mockResolvedValue(MOCK_RESULT);
             const windowOpen = vi.spyOn(window, 'open');
 
@@ -180,14 +182,14 @@ describe('report run page', () => {
             await user.click(runButton);
             expect(mockApi).toHaveBeenCalledWith({ requestBody: expect.objectContaining({ isExport: false }) });
 
-            expect(await findByText('Your report has run')).toBeVisible();
+            expect(await findByText(/Your report has opened in a new tab/)).toBeVisible();
             expect(windowOpen).toHaveBeenCalled();
             expect(fileDownload).not.toHaveBeenCalled();
         });
 
         it('export button submits config and downloads', async () => {
             const user = userEvent.setup();
-            vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue(MOCK_CONFIG);
+            vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
             const mockApi = vi.mocked(generated.ReportControllerService.exportReport).mockResolvedValue(MOCK_RESULT);
             const windowOpen = vi.spyOn(window, 'open');
 
@@ -197,7 +199,7 @@ describe('report run page', () => {
             await user.click(runButton);
             expect(mockApi).toHaveBeenCalledWith({ requestBody: expect.objectContaining({ isExport: true }) });
 
-            expect(await findByText('Your report has run')).toBeVisible();
+            expect(await findByText(/Your report has downloaded/)).toBeVisible();
             expect(windowOpen).not.toHaveBeenCalled();
             expect(fileDownload).toHaveBeenCalled();
         });
@@ -222,11 +224,9 @@ describe('report run page', () => {
 
             it('renders the column title when available', async () => {
                 const mockApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, reportColumnUid: 2001 }] });
-                const { getByRole, findByText, findByLabelText, queryByText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, reportColumnUid: 2001 }] });
+                const { findByText, findByLabelText, queryByText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -237,11 +237,9 @@ describe('report run page', () => {
 
             it('renders the filter name when column unavailable', async () => {
                 const mockApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, reportColumnUid: 2099 }] });
-                const { getByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, reportColumnUid: 2099 }] });
+                const { findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -250,11 +248,9 @@ describe('report run page', () => {
 
             it('renders the filter name when no column', async () => {
                 const mockApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER }] });
-                const { getByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER }] });
+                const { findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -263,11 +259,9 @@ describe('report run page', () => {
 
             it('renders the required indicator', async () => {
                 const mockApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, isRequired: true }] });
-                const { getByRole, findByText, findByRole } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, isRequired: true }] });
+                const { findByText, findByRole } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -281,18 +275,14 @@ describe('report run page', () => {
                     filterType: { ...MOCK_FILTER.filterType, code: 'J_S01_N' },
                 };
                 it('renders the include nulls checkbox when appropriate', async () => {
-                    const mockApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({
-                            ...MOCK_CONFIG,
-                            basicFilters: [NULLABLE_MOCK_FILTER],
-                        });
+                    const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                        ...MOCK_CONFIG,
+                        basicFilters: [NULLABLE_MOCK_FILTER],
+                    });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
-                    const { container, getByRole, findByLabelText, findByRole } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { container, findByLabelText, findByRole } = renderWithRouter();
 
                     expect(mockApi).toHaveBeenCalled();
 
@@ -316,18 +306,14 @@ describe('report run page', () => {
                 });
 
                 it('starts from default value', async () => {
-                    const mockApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({
-                            ...MOCK_CONFIG,
-                            basicFilters: [{ ...NULLABLE_MOCK_FILTER, defaultIncludeNulls: true }],
-                        });
+                    const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                        ...MOCK_CONFIG,
+                        basicFilters: [{ ...NULLABLE_MOCK_FILTER, defaultIncludeNulls: true }],
+                    });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
-                    const { container, getByRole, findByLabelText, findByRole } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { container, findByLabelText, findByRole } = renderWithRouter();
 
                     expect(mockApi).toHaveBeenCalled();
 
@@ -373,15 +359,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -409,15 +393,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -435,19 +417,15 @@ describe('report run page', () => {
             it('renders default value', async () => {
                 const user = userEvent.setup();
 
-                const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({
-                        ...MOCK_CONFIG,
-                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['starter text'] }],
-                    });
+                const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_CONFIG,
+                    basicFilters: [{ ...MOCK_FILTER, defaultValues: ['starter text'] }],
+                });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -490,15 +468,13 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -530,15 +506,13 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -561,19 +535,15 @@ describe('report run page', () => {
                 it('renders default value', async () => {
                     const user = userEvent.setup();
 
-                    const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({
-                            ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['01/01/2024', '01/01/2025'] }],
-                        });
+                    const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                        ...MOCK_CONFIG,
+                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['01/01/2024', '01/01/2025'] }],
+                    });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
 
-                    const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -619,15 +589,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -659,15 +627,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -698,19 +664,15 @@ describe('report run page', () => {
             it('renders default value', async () => {
                 const user = userEvent.setup();
 
-                const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({
-                        ...MOCK_CONFIG,
-                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['2024', '2025'] }],
-                    });
+                const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_CONFIG,
+                    basicFilters: [{ ...MOCK_FILTER, defaultValues: ['2024', '2025'] }],
+                });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -756,15 +718,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -802,15 +762,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -839,19 +797,15 @@ describe('report run page', () => {
             it('renders default value', async () => {
                 const user = userEvent.setup();
 
-                const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({
-                        ...MOCK_CONFIG,
-                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['01/2024', '01/2025'] }],
-                    });
+                const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_CONFIG,
+                    basicFilters: [{ ...MOCK_FILTER, defaultValues: ['01/2024', '01/2025'] }],
+                });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -903,8 +857,8 @@ describe('report run page', () => {
                         const user = userEvent.setup();
 
                         const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                            .mocked(useLoaderData)
+                            .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
@@ -913,9 +867,7 @@ describe('report run page', () => {
                             { value: '04', name: 'Arizona' },
                         ]);
 
-                        const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -947,8 +899,8 @@ describe('report run page', () => {
                         const user = userEvent.setup();
 
                         const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                            .mocked(useLoaderData)
+                            .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
@@ -957,9 +909,7 @@ describe('report run page', () => {
                             { value: '04', name: 'Arizona' },
                         ]);
 
-                        const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -982,12 +932,10 @@ describe('report run page', () => {
                     it('renders default value', async () => {
                         const user = userEvent.setup();
 
-                        const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({
-                                ...MOCK_CONFIG,
-                                basicFilters: [{ ...MOCK_FILTER, defaultValues: ['13'] }],
-                            });
+                        const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['13'] }],
+                        });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
@@ -996,9 +944,7 @@ describe('report run page', () => {
                             { value: '04', name: 'Arizona' },
                         ]);
 
-                        const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { findByRole, findByLabelText } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1045,8 +991,8 @@ describe('report run page', () => {
                         const user = userEvent.setup();
 
                         const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                            .mocked(useLoaderData)
+                            .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
@@ -1055,9 +1001,7 @@ describe('report run page', () => {
                             { value: '04', name: 'Arizona' },
                         ]);
 
-                        const { getByRole, getByText, findByRole, findByLabelText, container } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { getByText, findByRole, findByLabelText, container } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1091,8 +1035,8 @@ describe('report run page', () => {
                         const user = userEvent.setup();
 
                         const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                            .mocked(useLoaderData)
+                            .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
@@ -1101,9 +1045,7 @@ describe('report run page', () => {
                             { value: '04', name: 'Arizona' },
                         ]);
 
-                        const { getByRole, findByRole, findAllByText } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { findByRole, findAllByText } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1122,12 +1064,10 @@ describe('report run page', () => {
                     it('renders default value', async () => {
                         const user = userEvent.setup();
 
-                        const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({
-                                ...MOCK_CONFIG,
-                                basicFilters: [{ ...MOCK_FILTER, defaultValues: ['04'] }],
-                            });
+                        const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['04'] }],
+                        });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
@@ -1136,9 +1076,7 @@ describe('report run page', () => {
                             { value: '04', name: 'Arizona' },
                         ]);
 
-                        const { getByRole, getByText, findByRole, findByLabelText } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { getByText, findByRole, findByLabelText } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1223,16 +1161,14 @@ describe('report run page', () => {
                         const user = userEvent.setup();
 
                         const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
+                            .mocked(useLoaderData)
+                            .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                        const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1285,16 +1221,14 @@ describe('report run page', () => {
                         const user = userEvent.setup();
 
                         const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
+                            .mocked(useLoaderData)
+                            .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                        const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1316,20 +1250,16 @@ describe('report run page', () => {
                     it('renders default value', async () => {
                         const user = userEvent.setup();
 
-                        const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({
-                                ...MOCK_CONFIG,
-                                basicFilters: [STATE_FILTER, { ...MOCK_FILTER, defaultValues: ['13001'] }],
-                            });
+                        const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [STATE_FILTER, { ...MOCK_FILTER, defaultValues: ['13001'] }],
+                        });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                        const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { findByRole, findByLabelText } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1379,17 +1309,14 @@ describe('report run page', () => {
                         const user = userEvent.setup();
 
                         const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
+                            .mocked(useLoaderData)
+                            .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                        const { getByRole, getByText, findAllByText, findByRole, findByLabelText, container } =
-                            renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { getByText, findAllByText, findByRole, findByLabelText, container } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1445,16 +1372,14 @@ describe('report run page', () => {
                         const user = userEvent.setup();
 
                         const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
+                            .mocked(useLoaderData)
+                            .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                        const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1476,20 +1401,16 @@ describe('report run page', () => {
                     it('renders default value', async () => {
                         const user = userEvent.setup();
 
-                        const mockConfigApi = vi
-                            .mocked(generated.ReportControllerService.getReportConfiguration)
-                            .mockResolvedValue({
-                                ...MOCK_CONFIG,
-                                basicFilters: [STATE_FILTER, { ...MOCK_FILTER, defaultValues: ['13001'] }],
-                            });
+                        const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                            ...MOCK_CONFIG,
+                            basicFilters: [STATE_FILTER, { ...MOCK_FILTER, defaultValues: ['13001'] }],
+                        });
                         const mockResultApi = vi
                             .mocked(generated.ReportControllerService.exportReport)
                             .mockResolvedValue(MOCK_RESULT);
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                        const { getByRole, getByText, findByRole, findByLabelText } = renderWithRouter();
-
-                        expect(getByRole('status')).toHaveTextContent('Loading');
+                        const { getByText, findByRole, findByLabelText } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1556,16 +1477,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1596,16 +1515,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1627,20 +1544,16 @@ describe('report run page', () => {
                 it('renders default value', async () => {
                     const user = userEvent.setup();
 
-                    const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({
-                            ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['11065'] }],
-                        });
+                    const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                        ...MOCK_CONFIG,
+                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['11065'] }],
+                    });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1686,16 +1599,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, getByText, findByRole, findByLabelText, container } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { getByText, findByRole, findByLabelText, container } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1730,16 +1641,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1761,20 +1670,16 @@ describe('report run page', () => {
                 it('renders default value', async () => {
                     const user = userEvent.setup();
 
-                    const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({
-                            ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['11065'] }],
-                        });
+                    const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                        ...MOCK_CONFIG,
+                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['11065'] }],
+                    });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, getByText, findByRole, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { getByText, findByRole, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1833,16 +1738,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1875,16 +1778,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1908,20 +1809,16 @@ describe('report run page', () => {
                 it('renders default value', async () => {
                     const user = userEvent.setup();
 
-                    const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({
-                            ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['100'] }],
-                        });
+                    const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                        ...MOCK_CONFIG,
+                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['100'] }],
+                    });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1969,16 +1866,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
-                    const { getByRole, getByText, findByRole, findByLabelText, container } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { getByText, findByRole, findByLabelText, container } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2015,16 +1910,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2047,20 +1940,16 @@ describe('report run page', () => {
                 it('renders default value', async () => {
                     const user = userEvent.setup();
 
-                    const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({
-                            ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['200'] }],
-                        });
+                    const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                        ...MOCK_CONFIG,
+                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['200'] }],
+                    });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
-                    const { getByRole, getByText, findByRole, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { getByText, findByRole, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2109,15 +1998,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2145,15 +2032,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2171,15 +2056,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2199,15 +2082,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findByLabelText, container } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findByLabelText, container } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2233,15 +2114,13 @@ describe('report run page', () => {
                 const user = userEvent.setup();
 
                 const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mocked(useLoaderData)
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2260,19 +2139,15 @@ describe('report run page', () => {
             it('renders default value', async () => {
                 const user = userEvent.setup();
 
-                const mockConfigApi = vi
-                    .mocked(generated.ReportControllerService.getReportConfiguration)
-                    .mockResolvedValue({
-                        ...MOCK_CONFIG,
-                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['1'] }],
-                    });
+                const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_CONFIG,
+                    basicFilters: [{ ...MOCK_FILTER, defaultValues: ['1'] }],
+                });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findByRole, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2328,16 +2203,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2368,16 +2241,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2399,20 +2270,16 @@ describe('report run page', () => {
                 it('renders default value', async () => {
                     const user = userEvent.setup();
 
-                    const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({
-                            ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['erso'] }],
-                        });
+                    const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                        ...MOCK_CONFIG,
+                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['erso'] }],
+                    });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2458,16 +2325,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, getByText, findByRole, findByLabelText, container } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { getByText, findByRole, findByLabelText, container } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2502,16 +2367,14 @@ describe('report run page', () => {
                     const user = userEvent.setup();
 
                     const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2533,20 +2396,16 @@ describe('report run page', () => {
                 it('renders default value', async () => {
                     const user = userEvent.setup();
 
-                    const mockConfigApi = vi
-                        .mocked(generated.ReportControllerService.getReportConfiguration)
-                        .mockResolvedValue({
-                            ...MOCK_CONFIG,
-                            basicFilters: [{ ...MOCK_FILTER, defaultValues: ['andor'] }],
-                        });
+                    const mockConfigApi = vi.mocked(useLoaderData).mockReturnValue({
+                        ...MOCK_CONFIG,
+                        basicFilters: [{ ...MOCK_FILTER, defaultValues: ['andor'] }],
+                    });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { getByRole, getByText, findByRole, findByLabelText } = renderWithRouter();
-
-                    expect(getByRole('status')).toHaveTextContent('Loading');
+                    const { getByText, findByRole, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2581,16 +2440,12 @@ describe('report run page', () => {
         };
 
         it('renders the empty filter builder when no default value', async () => {
-            const mockApi = vi
-                .mocked(generated.ReportControllerService.getReportConfiguration)
-                .mockResolvedValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
+            const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
                 .mockResolvedValue(MOCK_RESULT);
-            const { getByRole, findAllByText, queryByText, findByRole, findByLabelText, getByLabelText, container } =
+            const { findAllByText, queryByText, findByRole, findByLabelText, getByLabelText, container } =
                 renderWithRouter();
-
-            expect(getByRole('status')).toHaveTextContent('Loading');
 
             expect(mockApi).toHaveBeenCalled();
 
@@ -2620,7 +2475,7 @@ describe('report run page', () => {
                         reportFilterUid: 1001,
                         value: {
                             id: expect.stringMatching(/[0-9-]+/),
-                            combinator: 'and',
+                            combinator: 'AND',
                             rules: [
                                 {
                                     id: expect.stringMatching(/[0-9-]+/),
@@ -2637,15 +2492,11 @@ describe('report run page', () => {
         });
 
         it('allows submit when empty', async () => {
-            const mockApi = vi
-                .mocked(generated.ReportControllerService.getReportConfiguration)
-                .mockResolvedValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
+            const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
                 .mockResolvedValue(MOCK_RESULT);
-            const { getByRole, findAllByText, findByRole } = renderWithRouter();
-
-            expect(getByRole('status')).toHaveTextContent('Loading');
+            const { findAllByText, findByRole } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 
@@ -2665,9 +2516,7 @@ describe('report run page', () => {
         });
 
         it('validates rule states', async () => {
-            const mockApi = vi
-                .mocked(generated.ReportControllerService.getReportConfiguration)
-                .mockResolvedValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
+            const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
                 .mockResolvedValue(MOCK_RESULT);
@@ -2676,7 +2525,6 @@ describe('report run page', () => {
                 { value: '456', name: 'Not so awful disease' },
             ]);
             const {
-                getByRole,
                 queryByText,
                 getByText,
                 findByText,
@@ -2684,13 +2532,8 @@ describe('report run page', () => {
                 getByLabelText,
                 getByTestId,
                 findByLabelText,
-                findAllByLabelText,
                 findByRole,
-                findAllByRole,
-                findByTestId,
             } = renderWithRouter();
-
-            expect(getByRole('status')).toHaveTextContent('Loading');
 
             expect(mockApi).toHaveBeenCalled();
 
@@ -2705,40 +2548,40 @@ describe('report run page', () => {
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
 
-            expect(await findByText('Must select an operator and value.')).toBeVisible();
+            expect(await findByText('Enter a logic value for FULL_NAME.')).toBeVisible();
 
             // generally filled in text value
             const opSelect = getByLabelText('Logic');
             expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, 'contains');
 
-            expect(await findByText('Value cannot be empty.')).toBeVisible();
+            expect(await findByText('Enter a value for FULL_NAME.')).toBeVisible();
 
             const valueBox = getByLabelText('Value');
             expect(valueBox).toHaveValue('');
             await user.type(valueBox, 'hi');
 
-            expect(queryByText('Value cannot be empty.')).toBeNull();
+            expect(queryByText('Enter a value for FULL_NAME.')).toBeNull();
 
             // generally filled in number value
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
             expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, '=');
 
-            expect(await findByText('Value cannot be empty.')).toBeVisible();
+            expect(await findByText('Enter a value for DAYS_OLD.')).toBeVisible();
 
             const numberBox = await findByLabelText('Value');
             expect(numberBox).toHaveValue(null);
             await user.type(numberBox, '0{tab}');
 
-            expect(queryByText('Value cannot be empty.')).toBeNull();
+            expect(queryByText('Enter a value for DAYS_OLD.')).toBeNull();
 
             // generally filled in coded list
             await user.selectOptions(fieldSelect, 'Condition Code');
             expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, 'in');
 
-            expect(await findByText('Value cannot be empty.')).toBeVisible();
+            expect(await findByText('Enter a value for CONDITION.')).toBeVisible();
 
             await waitFor(() => expect(codedValueGetter).toHaveBeenCalledWith(`/nbs/api/options/races`));
 
@@ -2747,14 +2590,14 @@ describe('report run page', () => {
             await userEvent.click(dropDown);
             await userEvent.click(getByText('Terrible disease'));
 
-            expect(queryByText('Value cannot be empty.')).toBeNull();
+            expect(queryByText('Enter a value for CONDITION.')).toBeNull();
 
             // dates between
             await user.selectOptions(fieldSelect, 'DATE_OF_BIRTH');
             expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, 'between');
 
-            expect(await findByText('Both low and high values required.')).toBeVisible();
+            expect(await findByText('Enter from and to values for DATE_OF_BIRTH.')).toBeVisible();
 
             // The date entry will likely need to change once we switch to NBS components
             const dtContainer = getByTestId('date-range-editor');
@@ -2762,33 +2605,33 @@ describe('report run page', () => {
             const dtInputTo = await within(dtContainer).findByLabelText('To');
             await user.type(dtInputFrom, '10/18/2022{tab}');
 
-            expect(await findByText('Both low and high values required.')).toBeVisible();
+            expect(await findByText('Enter from and to values for DATE_OF_BIRTH.')).toBeVisible();
 
             await user.type(dtInputTo, '10/17/2022{tab}');
 
-            expect(await findByText('High value must be greater than or equal to low value.')).toBeVisible();
+            expect(await findByText('From date must be before to date for DATE_OF_BIRTH.')).toBeVisible();
             await user.clear(dtInputTo);
             await user.type(dtInputTo, '10/20/2022{tab}');
 
-            expect(queryByText('High value must be greater than or equal to low value.')).toBeNull();
+            expect(queryByText('From date must be before to date for DATE_OF_BIRTH.')).toBeNull();
 
             // numbers between
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
             expect(opSelect).toHaveValue('');
             await user.selectOptions(opSelect, 'between');
 
-            expect(await findByText('Both low and high values required.')).toBeVisible();
+            expect(await findByText('Enter from and to values for DAYS_OLD.')).toBeVisible();
 
             const numContainer = getByTestId('number-range-editor');
             const numInputFrom = await within(numContainer).findByLabelText('From');
             const numInputTo = await within(numContainer).findByLabelText('To');
             await user.type(numInputFrom, '10');
 
-            expect(await findByText('Both low and high values required.')).toBeVisible();
+            expect(await findByText('Enter from and to values for DAYS_OLD.')).toBeVisible();
 
             await user.type(numInputTo, '0');
 
-            expect(await findByText('High value must be greater than or equal to low value.')).toBeVisible();
+            expect(await findByText('From value must be before to value for DAYS_OLD.')).toBeVisible();
 
             await user.clear(numInputTo);
             await user.type(numInputTo, '20');
@@ -2802,7 +2645,7 @@ describe('report run page', () => {
                         reportFilterUid: 1001,
                         value: {
                             id: expect.stringMatching(/[0-9-]+/),
-                            combinator: 'and',
+                            combinator: 'AND',
                             rules: [
                                 {
                                     id: expect.stringMatching(/[0-9-]+/),
@@ -2819,7 +2662,7 @@ describe('report run page', () => {
         });
 
         it('starts from default value', async () => {
-            const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+            const mockApi = vi.mocked(useLoaderData).mockReturnValue({
                 ...MOCK_CONFIG,
                 advancedFilter: {
                     ...MOCK_FILTER,
@@ -2868,10 +2711,7 @@ describe('report run page', () => {
                 { value: '123', name: 'Disease, terrible' },
                 { value: '456', name: 'Disease, not so bad' },
             ]);
-            const { getByRole, getByTestId, findAllByText, findByRole, findAllByRole, findAllByLabelText } =
-                renderWithRouter();
-
-            expect(getByRole('status')).toHaveTextContent('Loading');
+            const { getByRole, getByTestId, findAllByText, findByRole, findAllByRole, findAllByTitle, findAllByLabelText } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 
@@ -2965,7 +2805,7 @@ describe('report run page', () => {
 
         describe('keyboard drag and drop', () => {
             it('happy path', async () => {
-                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
                     ...MOCK_CONFIG,
                     advancedFilter: {
                         ...MOCK_FILTER,
@@ -3017,9 +2857,7 @@ describe('report run page', () => {
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
-                const { getByRole, findAllByText, findByRole, findByTestId, findAllByTestId } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findAllByText, findByRole, findByTestId, findAllByTestId } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -3151,7 +2989,7 @@ describe('report run page', () => {
             });
 
             it('cancels on mouse interaction', async () => {
-                const mockApi = vi.mocked(generated.ReportControllerService.getReportConfiguration).mockResolvedValue({
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
                     ...MOCK_CONFIG,
                     advancedFilter: {
                         ...MOCK_FILTER,
@@ -3200,9 +3038,7 @@ describe('report run page', () => {
                         },
                     },
                 });
-                const { getByRole, findAllByText, findAllByRole, findByTestId, findAllByTestId } = renderWithRouter();
-
-                expect(getByRole('status')).toHaveTextContent('Loading');
+                const { findAllByText, findAllByRole, findByTestId, findAllByTestId } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
 
@@ -3243,24 +3079,12 @@ describe('report run page', () => {
         };
 
         it('happy path', async () => {
-            const mockApi = vi
-                .mocked(generated.ReportControllerService.getReportConfiguration)
-                .mockResolvedValue(MOCK_SELECTABLE_CONFIG);
+            const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_SELECTABLE_CONFIG);
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
                 .mockResolvedValue(MOCK_RESULT);
-            const {
-                container,
-                getByRole,
-                findByText,
-                findAllByText,
-                queryByText,
-                findByRole,
-                findAllByRole,
-                findByLabelText,
-            } = renderWithRouter();
-
-            expect(getByRole('status')).toHaveTextContent('Loading');
+            const { container, findByText, findAllByText, queryByText, findByRole, findAllByRole, findByLabelText } =
+                renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 
@@ -3345,14 +3169,12 @@ describe('report run page', () => {
 
         it('starts from default values', async () => {
             const mockApi = vi
-                .mocked(generated.ReportControllerService.getReportConfiguration)
-                .mockResolvedValue({ ...MOCK_SELECTABLE_CONFIG, defaultColumnUids: [2003, 2002] });
+                .mocked(useLoaderData)
+                .mockReturnValue({ ...MOCK_SELECTABLE_CONFIG, defaultColumnUids: [2003, 2002] });
             const mockResultApi = vi
                 .mocked(generated.ReportControllerService.exportReport)
                 .mockResolvedValue(MOCK_RESULT);
-            const { getByRole, findByRole, findByLabelText } = renderWithRouter();
-
-            expect(getByRole('status')).toHaveTextContent('Loading');
+            const { findByRole, findByLabelText } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 
@@ -3377,6 +3199,144 @@ describe('report run page', () => {
                     basicFilters: [],
                     columnUids: [2003, 2001, 2002],
                 }),
+            });
+        });
+
+        describe('column sorting', () => {
+            it('is empty if no columns selected', async () => {
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_SELECTABLE_CONFIG);
+                const { findByLabelText } = renderWithRouter();
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+            });
+
+            it('is empty if no columns selected, even with default', async () => {
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_SELECTABLE_CONFIG,
+                    defaultSort: { columnUid: 2003, direction: generated.SortSpec.direction.DESC },
+                });
+                const { findByLabelText } = renderWithRouter();
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+                expect(await findByLabelText('Sort order')).toHaveValue(generated.SortSpec.direction.DESC);
+            });
+
+            it('resets default if not in default columns', async () => {
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_SELECTABLE_CONFIG,
+                    defaultColumnUids: [2001, 2002],
+                    defaultSort: { columnUid: 2003, direction: generated.SortSpec.direction.DESC },
+                });
+                const { findByLabelText } = renderWithRouter();
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+            });
+
+            it('allows sort selection, but clears if column un-selected', async () => {
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_SELECTABLE_CONFIG,
+                    defaultColumnUids: [2001, 2002],
+                });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+                const { findByRole, findByLabelText } = renderWithRouter();
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+
+                const user = userEvent.setup();
+
+                await user.selectOptions(await findByLabelText('Sort by'), '2001');
+
+                await user.click(await findByLabelText('Remove Full Name'));
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: undefined,
+                        basicFilters: [],
+                        columnUids: [2002],
+                        sort: undefined,
+                    }),
+                });
+            });
+
+            it('allows sort selection', async () => {
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_SELECTABLE_CONFIG,
+                    defaultColumnUids: [2001, 2002],
+                });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+                const { findByRole, findByLabelText } = renderWithRouter();
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+
+                const user = userEvent.setup();
+
+                await user.selectOptions(await findByLabelText('Sort by'), '2001');
+                await user.selectOptions(await findByLabelText('Sort order'), generated.SortSpec.direction.DESC);
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: undefined,
+                        basicFilters: [],
+                        columnUids: [2001, 2002],
+                        sort: { columnUid: 2001, direction: generated.SortSpec.direction.DESC },
+                    }),
+                });
+            });
+
+            it('allows sort selection, defaults to ascending', async () => {
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_SELECTABLE_CONFIG,
+                    defaultColumnUids: [2001, 2002],
+                });
+                const mockResultApi = vi
+                    .mocked(generated.ReportControllerService.exportReport)
+                    .mockResolvedValue(MOCK_RESULT);
+                const { findByRole, findByLabelText } = renderWithRouter();
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByLabelText('Sort by')).not.toHaveValue();
+
+                const user = userEvent.setup();
+
+                await user.selectOptions(await findByLabelText('Sort by'), '2001');
+
+                const exportButton = await findByRole('button', { name: 'Export' });
+                await user.click(exportButton);
+
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: undefined,
+                        basicFilters: [],
+                        columnUids: [2001, 2002],
+                        sort: { columnUid: 2001, direction: generated.SortSpec.direction.ASC },
+                    }),
+                });
             });
         });
     });

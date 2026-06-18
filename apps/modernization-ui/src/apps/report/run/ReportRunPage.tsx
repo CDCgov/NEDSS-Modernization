@@ -1,23 +1,33 @@
 import React from 'react';
-import { AdvancedFilterRequest, BasicFilterRequest, ReportControllerService } from 'generated';
+import {
+    AdvancedFilterRequest,
+    BasicFilterRequest,
+    ReportConfiguration,
+    ReportControllerService,
+    SortSpec,
+} from 'generated';
 import { useCallback, useState } from 'react';
-import { useParams } from 'react-router';
+import { useLoaderData, useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
 import { useNewTab } from './useNewTab';
 import { ResultDataPage } from './ResultDataPage';
 import fileDownload from 'js-file-download';
 import { ReportResultPage } from './ReportResultPage';
-import { LoadingIndicator } from 'libs/loading/indicator';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
-import { useReportConfiguration } from 'apps/report/hooks/useReportConfiguration';
+import { usePermissions } from 'libs/permission/usePermissions';
+import { PERMISSION_GROUP_MAP } from '../constants';
+import { LoadingBlock } from 'libs/loading/block';
+import { NotFoundError } from 'pages/error/NotFoundError';
+import { permitsAll } from 'libs/permission';
 
 export type ReportExecuteForm = {
     // key is the report's ID
     basicFilter?: Record<string, { value: string[] | string | null; includeNulls: boolean }>;
     advancedFilter?: QbRuleGroup;
     columns?: string[];
+    sort?: { column: string; direction: SortSpec.direction };
 };
 
 const normalizeFormValueToStringArray = (value: unknown): string[] => {
@@ -34,11 +44,23 @@ const ReportRunPage = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
-    const [hasResult, setHasResult] = useState<boolean>(false);
-    const [submitting, setSubmitting] = useState<boolean>(false);
+    const [status, setStatus] = useState<'configuring' | 'submitting' | 'complete'>('configuring');
     const [error, setError] = useState<string | null>(null);
+    const [wasExported, setWasExported] = useState<boolean>(true);
     const { openNewTab } = useNewTab();
-    const config = useReportConfiguration({ reportUid, dataSourceUid, handleError: setError });
+    const config = useLoaderData<ReportConfiguration>();
+    const { permissions } = usePermissions();
+
+    // Make sure user can actually use this report
+    if (
+        !!config &&
+        !permitsAll(
+            PERMISSION_GROUP_MAP[config.group].selectFilterCriteria,
+            PERMISSION_GROUP_MAP[config.group].view
+        )(permissions)
+    ) {
+        throw new NotFoundError();
+    }
 
     const form = useForm<ReportExecuteForm>({
         mode: 'onSubmit',
@@ -72,7 +94,12 @@ const ReportRunPage = () => {
                     ? data.columns!.map((v) => parseInt(v))
                     : undefined;
 
-                handleSubmit(isExport, basicFilters, advancedFilter, columnUids);
+                const sort: SortSpec | undefined =
+                    config?.library.allowColumnSelection && data.sort?.column
+                        ? { columnUid: parseInt(data.sort.column), direction: data.sort.direction }
+                        : undefined;
+
+                handleSubmit(isExport, basicFilters, advancedFilter, columnUids, sort);
             },
             (errors) => {
                 // TODO make this gather all errors and nicely format
@@ -88,14 +115,18 @@ const ReportRunPage = () => {
             isExport: boolean,
             basicFilters: BasicFilterRequest[],
             advancedFilter?: AdvancedFilterRequest,
-            columnUids?: number[]
+            columnUids?: number[],
+            sort?: SortSpec
         ) => {
-            setSubmitting(true);
+            setWasExported(isExport);
+            setStatus('submitting');
             setError('');
             const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
-            runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids } })
+            runner({
+                requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort },
+            })
                 .then((res) => {
-                    setHasResult(true);
+                    setStatus('complete');
                     if (!res.content) {
                         setError('No content!');
                         return;
@@ -107,8 +138,7 @@ const ReportRunPage = () => {
                         openNewTab(<ResultDataPage result={res} />);
                     }
                 })
-                .catch((err) => setError(JSON.stringify(err)))
-                .finally(() => setSubmitting(false));
+                .catch((err) => setError(JSON.stringify(err)));
         },
         []
     );
@@ -116,9 +146,9 @@ const ReportRunPage = () => {
     return !config ? (
         <>
             {error && <AlertBanner type="error">{error}</AlertBanner>}
-            <LoadingIndicator />
+            <LoadingBlock />
         </>
-    ) : !hasResult && !submitting ? (
+    ) : status === 'configuring' ? (
         <>
             {error && <AlertBanner type="error">{error}</AlertBanner>}
             <FormProvider {...form}>
@@ -128,9 +158,10 @@ const ReportRunPage = () => {
     ) : (
         <ReportResultPage
             config={config}
-            resultLoading={!hasResult}
+            resultLoading={status === 'submitting'}
+            wasExported={wasExported}
             error={error}
-            handleRefineReport={() => setHasResult(false)}
+            handleRefineReport={() => setStatus('configuring')}
         />
     );
 };
