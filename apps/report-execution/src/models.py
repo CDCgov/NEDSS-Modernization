@@ -55,7 +55,7 @@ class Table(BaseModel):
         and the values are the data values.
 
         Returns:
-            List of dicts where the column names are the keys
+            Table data in the form of dicts where the column names are the keys
         """
         def row_to_dict(row: tuple) -> dict:
             d = dict()

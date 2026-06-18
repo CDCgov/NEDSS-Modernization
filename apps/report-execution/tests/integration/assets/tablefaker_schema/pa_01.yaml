@@ -102,14 +102,11 @@ tables:
       - column_name: INVESTIGATOR_INTERVIEW_QC
         data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "PROVIDER_QUICK_CODE")
       - column_name: CA_INTERVIEWER_ASSIGN_DT
-        # data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         data: date(2024, 1, 1)
       - column_name: CA_INIT_INTVWR_ASSGN_DT
-        # data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         data: date(2024, 1, 1)
         null_percentage: 0.1
       - column_name: INVESTIGATION_KEY
-        # data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INVESTIGATION_KEY")
         data: row_id
       - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
         data: fake.random_digit()
@@ -164,17 +161,14 @@ tables:
       - column_name: IX_TYPE
         data: random.choice(["Initial/Original", "Re-Interview"])
       - column_name: IX_DATE
-        # data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
         data: date(2024, 1, min(row_id, 14))
 
   - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
     row_count: 1000
     columns:
       - column_name: INVESTIGATION_KEY
-        # data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INVESTIGATION_KEY")
         data: row_id
       - column_name: D_INTERVIEW_KEY
-        # data: foreign_key("[RDB].[dbo].[D_INTERVIEW]", "D_INTERVIEW_KEY")
         data: row_id
 
   - table_name: "[RDB].[dbo].[D_CONTACT_RECORD]"
@@ -206,13 +200,10 @@ tables:
     row_count: 40
     columns:
       - column_name: D_CONTACT_RECORD_KEY
-        # data: foreign_key("[RDB].[dbo].[D_CONTACT_RECORD]", "D_CONTACT_RECORD_KEY")
         data: row_id
       - column_name: SUBJECT_INVESTIGATION_KEY
-        # data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INVESTIGATION_KEY")
         data: row_id
       - column_name: CONTACT_INVESTIGATION_KEY
-        # data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INVESTIGATION_KEY")
         data: row_id + 100
       - column_name: THIRD_PARTY_ENTITY_KEY
         data: 1
@@ -225,7 +216,6 @@ tables:
       - column_name: THIRD_PARTY_INVESTIGATION_KEY
         data: 1
       - column_name: CONTACT_INTERVIEW_KEY
-        # data: foreign_key("[RDB].[dbo].[D_INTERVIEW]", "D_INTERVIEW_KEY")
         data: row_id
       - column_name: DISPOSITIONED_BY_KEY
         data: 1
