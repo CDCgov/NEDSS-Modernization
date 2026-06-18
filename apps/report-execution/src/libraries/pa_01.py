@@ -9,6 +9,7 @@ from src.models import ReportResult, Table
     - once all stats for ALL WORKERS are done, need to re-tool to calculate grouped
       by workers
     - loosen up and/or simplify report_title regex
+    - tests with no data and edge cases
 """
 
 Pa01Row = tuple[
@@ -291,7 +292,7 @@ def _calc_interview_day_buckets(
     return results
 
 
-def _calc_cases_reinterviewed(table: Table, cases_assigned: int) -> tuple[int, str]:
+def _calc_cases_reinterviewed(table: Table, cases_ixd: int) -> tuple[int, str]:
     case_ids = {
         d['INV_LOCAL_ID']
         for d in table.data_as_dicts()
@@ -299,7 +300,7 @@ def _calc_cases_reinterviewed(table: Table, cases_assigned: int) -> tuple[int, s
     }
 
     count = len(case_ids)
-    percent = round((count / cases_assigned) * 100, 1) if cases_assigned else 0
+    percent = round((count / cases_ixd) * 100, 1) if cases_ixd else 0
 
     return count, f'{percent}%'
 
