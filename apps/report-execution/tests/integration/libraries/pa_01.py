@@ -26,3 +26,5 @@ class TestIntegrationPa01Library:
         )
 
         result = execute_report(report_spec)
+
+        assert result is not None
