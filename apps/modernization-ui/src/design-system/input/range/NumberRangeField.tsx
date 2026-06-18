@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Sizing } from 'design-system/field';
 import { NumericInput } from '../numeric';
 
@@ -40,17 +40,8 @@ const NumberRangeField = ({ id, value, sizing, onChange, onBlur, label, required
         }
     };
 
-    const numberRangePickerRef = useRef<HTMLDivElement>(null);
-
     return (
-        <div
-            id={id}
-            data-testid="number-range-editor"
-            role="group"
-            ref={numberRangePickerRef}
-            className={styles.layout}
-            aria-label={label}
-        >
+        <div id={id} data-testid="number-range-editor" role="group" className={styles.layout} aria-label={label}>
             <div className={classNames(styles['range-wrapper'], 'from')}>
                 <NumericInput
                     id={`${id}-from`}

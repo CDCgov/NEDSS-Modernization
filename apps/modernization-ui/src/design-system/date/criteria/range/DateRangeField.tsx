@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import classNames from 'classnames';
 import { DatePicker } from 'design-system/date/picker';
 import { Sizing } from 'design-system/field';
@@ -27,14 +26,11 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }
         }
     };
 
-    const dateRangePickerRef = useRef<HTMLDivElement>(null);
-
     return (
         <div
             id={id}
             data-testid="date-range-editor"
             role="group"
-            ref={dateRangePickerRef}
             className={classNames('usa-date-range-picker', styles['date-range-entry'])}
             aria-label={label}
         >

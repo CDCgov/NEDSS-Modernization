@@ -59,7 +59,7 @@ export const isDateFormat = (val) => {
     const month = '(?:0?[1-9]|1[0-2])';
     const day = '(?:0?[1-9]|[12]\\d|3[01])';
     const year = '\\d{4}';
-    const pattern = `^(?:${month}\\/(?:${day}\\/)?)?${year}$`
+    const pattern = `^(?:${month}\\/(?:${day}\\/)?)?${year}$`;
     // matches MM/YYYY, MM/DD/YYYY, YYYY
     return typeof val === 'string' ? !!val.match(pattern) : false;
 };
