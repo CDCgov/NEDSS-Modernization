@@ -6,7 +6,6 @@ import { getRangeValErrorMsg, isDateFormat, validateDateRange, validateNumericRa
 export type ValidationResultMap = Record<string, ValidationResult>;
 
 export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: ValidationResultMap) => {
-    console.log('rule', rule);
     const setInvalid = (id: string, reason: string) => {
         result[id]['valid'] = false;
         result[id]['reasons'] = [reason];
@@ -16,6 +15,7 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
         const field = rule['field'];
         const operator = rule['operator'];
         const value = rule['value'];
+        const label = rule['label'];
 
         if (!id) return; // no key for the map, shouldn't happen in practice
         // default valid
@@ -26,35 +26,35 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
 
         // start check for exception
         if (operator === '~') {
-            setInvalid(id, getMissingValErrorMsg(field, true));
+            setInvalid(id, getMissingValErrorMsg(label, true));
             return;
         }
 
         if (operator === 'between') {
             // this shouldn't happen with how we are handling the value in the UI
             if (typeof value !== 'string') {
-                setInvalid(id, getRangeValErrorMsg(field, true));
+                setInvalid(id, getRangeValErrorMsg(label, true));
                 return;
             }
 
             if (isEmptyBetweenValue(value)) {
-                setInvalid(id, getRangeValErrorMsg(field, false));
+                setInvalid(id, getRangeValErrorMsg(label, false));
                 return;
             }
 
             const parts: string[] = value.split(',');
             let rangeErrorMsg;
             if (isDateFormat(parts[0]) || isDateFormat(parts[1])) {
-                rangeErrorMsg = validateDateRange(parts, field);
+                rangeErrorMsg = validateDateRange(parts, label);
             } else {
-                rangeErrorMsg = validateNumericRange(parts, field);
+                rangeErrorMsg = validateNumericRange(parts, label);
             }
 
             if (rangeErrorMsg) setInvalid(id, rangeErrorMsg);
             return;
         } else if (BINARY_OPERATORS.find((name) => name === operator)) {
             if (value === '') {
-                setInvalid(id, getMissingValErrorMsg(field, false));
+                setInvalid(id, getMissingValErrorMsg(label, false));
             }
         }
     } else if (isRuleGroupType(rule)) {

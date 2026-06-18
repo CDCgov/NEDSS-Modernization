@@ -10,14 +10,13 @@ const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
 
     const handleOnChange = (value: Selectable | null) => {
         if (value === null) return;
-        props.handleOnChange(value.value ?? '');
+        props.handleOnChange(value['value'] ?? '');
     };
 
     let currentSelection: Selectable | null;
 
     currentSelection = options.find((opt) => opt.value === props.value) || '';
 
-    console.log('options', options);
     if (props.className === 'rule-operators') {
         let availableOperators = props['fieldData']['operators'];
         options = options.filter(

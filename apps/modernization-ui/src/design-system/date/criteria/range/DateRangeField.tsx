@@ -18,11 +18,11 @@ export type DateRangeFieldProps = {
 const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }: DateRangeFieldProps) => {
     const handleFieldOnChange = (v, type) => {
         if (type === 'to') {
-            onChange({ between: { to: v, from: value?.between.from || undefined } });
+            onChange({ between: { to: v, from: value?.between.from } });
         }
 
         if (type === 'from') {
-            onChange({ between: { to: value?.between.to || undefined, from: v } });
+            onChange({ between: { to: value?.between.to, from: v } });
         }
     };
 

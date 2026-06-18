@@ -56,6 +56,7 @@ describe('validateRule', () => {
                         field: 'public_health_case_uid',
                         operator: '~',
                         value: '',
+                        label: 'Investigation ID',
                     },
                 ],
                 combinator: 'and',
@@ -65,7 +66,7 @@ describe('validateRule', () => {
         );
 
         expect(mockResult['rule-1']['valid']).toBe(false);
-        expect(mockResult['rule-1']['reasons']).toContain('Enter a logic value for public_health_case_uid.');
+        expect(mockResult['rule-1']['reasons']).toContain('Enter a logic value for Investigation ID.');
     });
 
     it('should be invalid when the between value is not a string', () => {
@@ -78,6 +79,7 @@ describe('validateRule', () => {
                         field: 'public_health_case_uid',
                         operator: 'between',
                         value: 10,
+                        label: 'Investigation ID',
                     },
                 ],
                 combinator: 'and',
@@ -87,7 +89,7 @@ describe('validateRule', () => {
         );
 
         expect(mockResult['rule-1']['valid']).toBe(false);
-        expect(mockResult['rule-1']['reasons']).toContain('Enter valid from and to values for public_health_case_uid.');
+        expect(mockResult['rule-1']['reasons']).toContain('Enter valid from and to values for Investigation ID.');
     });
 
     it('should be invalid when the between value is empty', () => {
@@ -100,12 +102,14 @@ describe('validateRule', () => {
                         field: 'public_health_case_uid',
                         operator: 'between',
                         value: '',
+                        label: 'Investigation ID',
                     },
                     {
                         id: 'rule-2',
                         field: 'public_health_case_uid',
                         operator: 'between',
                         value: ' , ',
+                        label: 'Investigation ID',
                     },
                 ],
                 combinator: 'and',
@@ -115,8 +119,8 @@ describe('validateRule', () => {
         );
 
         expect(mockResult['rule-1']['valid']).toBe(false);
-        expect(mockResult['rule-1']['reasons']).toContain('Enter from and to values for public_health_case_uid.');
+        expect(mockResult['rule-1']['reasons']).toContain('Enter from and to values for Investigation ID.');
         expect(mockResult['rule-2']['valid']).toBe(false);
-        expect(mockResult['rule-2']['reasons']).toContain('Enter from and to values for public_health_case_uid.');
+        expect(mockResult['rule-2']['reasons']).toContain('Enter from and to values for Investigation ID.');
     });
 });

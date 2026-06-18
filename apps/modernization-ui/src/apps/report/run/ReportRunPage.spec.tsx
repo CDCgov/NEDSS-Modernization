@@ -2548,40 +2548,40 @@ describe('report run page', () => {
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
 
-            expect(await findByText('Enter a logic value for FULL_NAME.')).toBeVisible();
+            expect(await findByText('Enter a logic value for Full Name.')).toBeVisible();
 
             // generally filled in text value
             const opSelect = getByLabelText('Logic');
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'contains');
 
-            expect(await findByText('Enter a value for FULL_NAME.')).toBeVisible();
+            expect(await findByText('Enter a value for Full Name.')).toBeVisible();
 
             const valueBox = getByLabelText('Value');
             expect(valueBox).toHaveValue('');
             await user.type(valueBox, 'hi');
 
-            expect(queryByText('Enter a value for FULL_NAME.')).toBeNull();
+            expect(queryByText('Enter a value for Full Name.')).toBeNull();
 
             // generally filled in number value
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, '=');
 
-            expect(await findByText('Enter a value for DAYS_OLD.')).toBeVisible();
+            expect(await findByText('Enter a value for Days Old.')).toBeVisible();
 
             const numberBox = await findByLabelText('Value');
             expect(numberBox).toHaveValue(null);
             await user.type(numberBox, '0{tab}');
 
-            expect(queryByText('Enter a value for DAYS_OLD.')).toBeNull();
+            expect(queryByText('Enter a value for Days Old.')).toBeNull();
 
             // generally filled in coded list
             await user.selectOptions(fieldSelect, 'Condition Code');
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'in');
 
-            expect(await findByText('Enter a value for CONDITION.')).toBeVisible();
+            expect(await findByText('Enter a value for Condition Code.')).toBeVisible();
 
             await waitFor(() => expect(codedValueGetter).toHaveBeenCalledWith(`/nbs/api/options/races`));
 
@@ -2590,14 +2590,14 @@ describe('report run page', () => {
             await userEvent.click(dropDown);
             await userEvent.click(getByText('Terrible disease'));
 
-            expect(queryByText('Enter a value for CONDITION.')).toBeNull();
+            expect(queryByText('Enter a value for Condition Code.')).toBeNull();
 
             // dates between
             await user.selectOptions(fieldSelect, 'DATE_OF_BIRTH');
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'between');
 
-            expect(await findByText('Enter from and to values for DATE_OF_BIRTH.')).toBeVisible();
+            expect(await findByText('Enter from and to values for Date of Birth.')).toBeVisible();
 
             // The date entry will likely need to change once we switch to NBS components
             const dtContainer = getByTestId('date-range-editor');
@@ -2605,33 +2605,33 @@ describe('report run page', () => {
             const dtInputTo = await within(dtContainer).findByLabelText('To');
             await user.type(dtInputFrom, '10/18/2022{tab}');
 
-            expect(await findByText('Enter from and to values for DATE_OF_BIRTH.')).toBeVisible();
+            expect(await findByText('Enter from and to values for Date of Birth.')).toBeVisible();
 
             await user.type(dtInputTo, '10/17/2022{tab}');
 
-            expect(await findByText('From date must be before to date for DATE_OF_BIRTH.')).toBeVisible();
+            expect(await findByText('From date must be before to date for Date of Birth.')).toBeVisible();
             await user.clear(dtInputTo);
             await user.type(dtInputTo, '10/20/2022{tab}');
 
-            expect(queryByText('From date must be before to date for DATE_OF_BIRTH.')).toBeNull();
+            expect(queryByText('From date must be before to date for Date of Birth.')).toBeNull();
 
             // numbers between
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'between');
 
-            expect(await findByText('Enter from and to values for DAYS_OLD.')).toBeVisible();
+            expect(await findByText('Enter from and to values for Days Old.')).toBeVisible();
 
             const numContainer = getByTestId('number-range-editor');
             const numInputFrom = await within(numContainer).findByLabelText('From');
             const numInputTo = await within(numContainer).findByLabelText('To');
             await user.type(numInputFrom, '10');
 
-            expect(await findByText('Enter from and to values for DAYS_OLD.')).toBeVisible();
+            expect(await findByText('Enter from and to values for Days Old.')).toBeVisible();
 
             await user.type(numInputTo, '0');
 
-            expect(await findByText('From value must be before to value for DAYS_OLD.')).toBeVisible();
+            expect(await findByText('From value must be before to value for Days Old.')).toBeVisible();
 
             await user.clear(numInputTo);
             await user.type(numInputTo, '20');

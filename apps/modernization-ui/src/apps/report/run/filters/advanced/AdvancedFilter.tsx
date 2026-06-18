@@ -220,7 +220,6 @@ const queryToAdvancedFilterRequest = (query: QbRuleGroup, columns: ReportColumn[
     const nonEmptyQuery = filterQbRules(query, (rule) => !!rule.field && rule.field !== '~') as QbRuleGroup;
     // no non-empty rules means there is functionally no filter
     if (nonEmptyQuery.rules.length === 0) return undefined;
-
     return mapQbRules(nonEmptyQuery, ({ id, operator, field, value }) => {
         return {
             id,
@@ -267,11 +266,30 @@ const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
 
 // ============= Validation ============= /
 
-const validateAdvancedFilter = (value?: QbRuleGroup) => {
+// Add another key 'label' to the RuleType object to display in error msg
+const addColNameToRules = (columns: ReportColumn[], value: QbRuleGroup) => {
+    const rules = value['rules'];
+    const updatedRuleValue = rules.map((rule) => {
+        const matchedColumn = columns.find((col) => col.name === rule.field);
+
+        return {
+            ...rule,
+            label: matchedColumn ? matchedColumn['title'] : rule.field,
+        };
+    });
+
+    return {
+        ...value,
+        rules: updatedRuleValue,
+    };
+};
+
+const validateAdvancedFilter = (columns: ReportColumn[], value?: QbRuleGroup) => {
     if (!value) return true;
-    console.log('value', value);
+    const updatedRuleGroup = addColNameToRules(columns, value);
+
     return (
-        Object.values(validator(value))
+        Object.values(validator(updatedRuleGroup))
             .filter((v) => !v.valid)
             .reduce((acc, cur) => `${acc}\n${cur.reasons[0]}`, '') || true
     );
@@ -313,7 +331,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     } = useController<ReportExecuteForm, 'advancedFilter'>({
         name: 'advancedFilter',
         defaultValue: filter.defaultValue ? advancedFilterConfigToQuery(filter.defaultValue, columns) : EMPTY_QUERY,
-        rules: { validate: validateAdvancedFilter },
+        rules: { validate: (values) => validateAdvancedFilter(columns, values) },
     });
 
     const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
