@@ -10,7 +10,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 WORKDIR /usr/report-execution
 
 # Install mssql driver deps
-RUN apt-get update && apt-get install -y libltdl7 libkrb5-3 libgssapi-krb5-2
+RUN apk update && apk add curl gcc g++ gnupg unixodbc-dev
 
 # Copy relevant application code
 COPY pyproject.toml pyproject.toml
