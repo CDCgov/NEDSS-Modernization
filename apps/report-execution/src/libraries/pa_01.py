@@ -26,11 +26,13 @@ CSV_COLUMNS = [
     'Index',
 ]
 
+# The date field differs in SAS for HIV vs. STD
 PA1_NEW_DATE_COL = {
     'HIV': 'CA_INTERVIEWER_ASSIGN_DT',
     'STD': 'CA_INIT_INTVWR_ASSGN_DT',
 }
 
+# The date field differs in SAS for HIV vs. STD
 PA1_DTE_DATE_COL = {
     'HIV': 'CA_INIT_INTVWR_ASSGN_DT',
     'STD': 'CA_INTERVIEWER_ASSIGN_DT',
@@ -83,7 +85,7 @@ def execute(
       )
       SELECT DISTINCT fb.INV_LOCAL_ID,
              di.IX_TYPE,
-             DATEDIFF(DAY,fb.CA_INIT_INTVWR_ASSGN_DT,di.IX_DATE) AS Days
+             DATEDIFF(DAY,fb.{PA1_DTE_DATE_COL[disease_type]},di.IX_DATE) AS Days
       FROM filtered_base fb
         INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
                 ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
@@ -94,7 +96,7 @@ def execute(
                 ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
         INNER JOIN RDB.dbo.INVESTIGATION i
                 ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-      WHERE CAST(di.IX_DATE AS DATE) >= CAST(fb.CA_INIT_INTVWR_ASSGN_DT AS DATE);
+      WHERE CAST(di.IX_DATE AS DATE) >= CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE);
     """
 
     base = trx.query(base_query)
@@ -106,8 +108,6 @@ def execute(
     cases_closed, cases_closed_percent = _calc_cases_closed(base, cases_assigned)
     cases_ixd, cases_ixd_percent = _calc_cases_ixd(base, cases_assigned)
     cases_ixd_buckets = _calc_interview_day_buckets(days, cases_ixd)
-
-    breakpoint()
 
     rows: list[Pa01Row] = [
         (
@@ -137,7 +137,45 @@ def execute(
             cases_ixd_percent,
             None,
         ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            "Cases IX'D",
+            "Within 3 days",
+            cases_ixd_buckets[3][0],
+            cases_ixd_buckets[3][1],
+            None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            "Cases IX'D",
+            "Within 5 days",
+            cases_ixd_buckets[5][0],
+            cases_ixd_buckets[5][1],
+            None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            "Cases IX'D",
+            "Within 7 days",
+            cases_ixd_buckets[7][0],
+            cases_ixd_buckets[7][1],
+            None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            "Cases IX'D",
+            "Within 14 days",
+            cases_ixd_buckets[14][0],
+            cases_ixd_buckets[14][1],
+            None,
+        ),
     ]
+
+    breakpoint()
 
     content = Table(
         columns=CSV_COLUMNS,

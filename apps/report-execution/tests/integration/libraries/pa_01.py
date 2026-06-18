@@ -17,7 +17,7 @@ class TestIntegrationPa01Library:
                 'is_export': True,
                 'is_builtin': True,
                 'report_title': (
-                    'PA01 Case Management Report (Interview Assign Date) - STD'
+                    'PA01 Case Management Report (Interview Assign Date) - HIV'
                 ),
                 'library_name': 'pa_01',
                 'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
