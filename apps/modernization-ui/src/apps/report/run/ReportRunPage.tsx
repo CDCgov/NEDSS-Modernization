@@ -127,20 +127,27 @@ const ReportRunPage = () => {
             })
                 .then((res) => {
                     setStatus('complete');
-                    if (!res.content) {
-                        setError('No content!');
-                        return;
-                    }
 
-                    if (isExport) {
-                        fileDownload(res.content, `${res.header ?? 'ReportOutput'}.csv`);
-                    } else {
-                        openNewTab(<ResultDataPage result={res} />);
+                    try {
+                        if (isExport) {
+                            fileDownload(res.result.content, `${config?.title ?? 'ReportOutput'}.csv`);
+                        } else {
+                            openNewTab(
+                                <ResultDataPage
+                                    result={res}
+                                    title={config?.title ?? ''}
+                                    dataSourceName={config?.dataSource.name ?? ''}
+                                />,
+                                `NBS Report: ${config?.title ?? ''}`
+                            );
+                        }
+                    } catch (err) {
+                        setError(JSON.stringify(err));
                     }
                 })
                 .catch((err) => setError(JSON.stringify(err)));
         },
-        []
+        [config]
     );
 
     return !config ? (
