@@ -140,10 +140,14 @@ const MOCK_CONFIG: ReportConfiguration = {
     advancedFilter: undefined,
 };
 
-const MOCK_RESULT: generated.ReportResult = {
-    content_type: generated.ReportResult.content_type.TABLE,
-    header: 'Title',
-    content: 'I am the result',
+const MOCK_RESULT: generated.ReportExecutionResult = {
+    result: {
+        content_type: generated.LibraryExecutionResult.content_type.TABLE,
+        header: 'Title',
+        content: 'I am the result',
+    },
+    query: 'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]',
+    timestamp: '2026-06-17T19:11:35.595501658',
 };
 
 const renderWithRouter = () => {
