@@ -24,3 +24,19 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import '@testing-library/cypress/add-commands'
+
+Cypress.Commands.add('selectByLabel', (label, value) => {
+    // Find the label text, then find the element it points to
+    cy.contains('label', label).invoke('attr', 'for').then((id) => {
+        // Check if the target is a standard <select>
+        cy.get('body').then(($body) => {
+            if ($body.find(`select#${CSS.escape(id)}`).length > 0) {
+                // Standard Select
+                cy.get(`select#${CSS.escape(id)}`).select(value);
+            } else {
+                // React Select: Click the input, type, and hit Enter
+                cy.get(`input#${CSS.escape(id)}`).click({ force: true }).type(`${value}{enter}`);
+            }
+        });
+    });
+});

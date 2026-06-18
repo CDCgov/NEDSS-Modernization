@@ -16,11 +16,11 @@ When('I navigate to report with reportUid: {string} and dataSourceUid: {string}'
     });
 
     // Target the form attributes to match the app's signature, then submit
-    cy.get('form[name="frm"]').then(($form) => {
-        $form.attr('action', '/nbs/nfc');
-        $form.attr('method', 'post');
-        $form.attr('target', '_self');
-    }).submit();
+    cy.get('form[name="frm"]')
+        .invoke('attr', 'action', '/nbs/nfc')
+        .invoke('attr', 'method', 'post')
+        .invoke('attr', 'target', '_self')
+        .submit();
 });
 
 // Component input steps
