@@ -13,6 +13,11 @@ import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +31,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,6 +43,8 @@ import org.springframework.web.client.RestClient.ResponseSpec;
 
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
+
+  @Spy private Clock clock = Clock.fixed(Instant.ofEpochMilli(1000000), ZoneId.systemDefault());
 
   @Mock private ReportRepository reportRepository;
   @Mock private DataSourceRepository dataSourceRepository;
@@ -600,6 +608,7 @@ class ReportServiceTest {
               "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
               null,
               null,
+              null,
               null);
       try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
           mockConstruction(
@@ -612,16 +621,16 @@ class ReportServiceTest {
         when(requestBodySpec.retrieve()).thenReturn(responseSpec);
         when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
 
-        ResponseEntity<ReportResult> expectedResponse =
-            new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK);
-        when(responseSpec.toEntity(ReportResult.class)).thenReturn(expectedResponse);
+        ResponseEntity<LibraryExecutionResult> expectedResponse =
+            new ResponseEntity<>(getReportExecutionResponse().result(), HttpStatus.OK);
+        when(responseSpec.toEntity(LibraryExecutionResult.class)).thenReturn(expectedResponse);
 
         ReportExecutionRequest request =
             new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
-        ResponseEntity<ReportResult> response = service.executeReport(request);
+        ReportExecutionResult response = service.executeReport(request);
 
-        assertThat(response).isEqualTo(expectedResponse);
+        assertThat(response.result()).isEqualTo(expectedResponse.getBody());
         ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
         verify(specBuilder).build();
       }
@@ -657,12 +666,15 @@ class ReportServiceTest {
     }
   }
 
-  private ReportResult getReportExecutionResponse() {
-    return new ReportResult(
-        "table",
-        "report_uid,data_source _uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time",
-        "result header",
-        "result subheader",
-        "result description");
+  private ReportExecutionResult getReportExecutionResponse() {
+    return new ReportExecutionResult(
+        new LibraryExecutionResult(
+            "table",
+            "report_uid,data_source _uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time",
+            "result header",
+            "result subheader",
+            "result description"),
+        "SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]",
+        LocalDateTime.of(2025, Month.MAY, 5, 12, 23));
   }
 }
