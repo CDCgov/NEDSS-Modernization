@@ -41,12 +41,15 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
         }
     };
 
-    const handleSelectAll = (checked: boolean) => {
-        if (checked) {
-            onChange([...value!, ...availableOptions.filter((o) => !value?.includes(o.value)).map((o) => o.value)]);
-        } else {
+    const allSelected = availableOptions.every((o) => value?.includes(o.value));
+    const selectWord = allSelected ? 'Deselect' : 'Select';
+
+    const handleSelectAll = () => {
+        if (allSelected) {
             const optionValues = availableOptions.map((o) => o.value);
             onChange(value!.filter((v) => !optionValues.includes(v)));
+        } else {
+            onChange([...value!, ...availableOptions.filter((o) => !value?.includes(o.value)).map((o) => o.value)]);
         }
     };
 
@@ -70,8 +73,8 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                             <Checkbox
                                 key="select-all"
                                 className={styles.option}
-                                label={searchText ? 'Select search results' : 'Select all'}
-                                selected={availableOptions.every((o) => value?.includes(o.value))}
+                                label={selectWord + (searchText ? ' search results' : ' all')}
+                                selected={false}
                                 onChange={handleSelectAll}
                             />
                             {availableOptions.map((o) => (
@@ -93,8 +96,7 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                             <Button disabled={noneSelected} onClick={() => onChange([])}>
                                 Clear selections
                             </Button>
-                        }
-                    >
+                        }>
                         <div className={styles.card}>
                             {noneSelected ? (
                                 <p className={styles.center}>Select a column from "Available columns"</p>
@@ -141,13 +143,11 @@ const SelectedColumnsList = ({
                                         <div
                                             className={styles.option}
                                             ref={draggable.innerRef}
-                                            {...draggable.draggableProps}
-                                        >
+                                            {...draggable.draggableProps}>
                                             <span
                                                 className={styles.handle}
                                                 aria-label={`Drag handle for ${optionName}`}
-                                                {...draggable.dragHandleProps}
-                                            >
+                                                {...draggable.dragHandleProps}>
                                                 <Icon name="drag" />
                                             </span>
                                             <span className={styles.label}>{optionName}</span>
