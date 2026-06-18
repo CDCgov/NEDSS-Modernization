@@ -51,6 +51,23 @@ class Table(BaseModel):
         # Sort with None first (False < True, so None comes before non-None)
         return sorted(values, key=lambda x: (x is not None, x))
 
+    def data_as_dicts(self) -> list[dict]:
+        """Return data as a list of dicts where the keys are the column names
+        and the values are the data values.
+
+        Returns:
+            List of dicts where the column names are the keys
+        """
+        def row_to_dict(row: tuple) -> dict:
+            d = dict()
+
+            for i, col in enumerate(self.columns):
+                d[col] = row[i]
+
+            return d
+
+        return list(map(row_to_dict, self.data))
+
 
 def serialize_table(table: Table) -> str:
     """Turn a Table into a CSV for returning to the user.
