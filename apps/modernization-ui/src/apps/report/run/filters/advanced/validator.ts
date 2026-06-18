@@ -1,12 +1,5 @@
 // matches date format (e.g. 11/01/2020 1/1/2020)
-import {
-    isRuleGroupType,
-    isRuleType,
-    QueryValidator,
-    RuleGroupTypeAny,
-    RuleType,
-    ValidationResult,
-} from 'react-querybuilder';
+import { isRuleGroupType, isRuleType, RuleGroupTypeAny, RuleType, ValidationResult } from 'react-querybuilder';
 import { BINARY_OPERATORS } from './AdvancedFilter.tsx';
 import { getRangeValErrorMsg, isDateFormat, validateDateRange, validateNumericRange } from '../utils/rangeValidator.ts';
 

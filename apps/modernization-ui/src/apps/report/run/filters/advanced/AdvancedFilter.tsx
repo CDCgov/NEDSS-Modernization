@@ -3,14 +3,11 @@ import { useController } from 'react-hook-form';
 import QueryBuilder, {
     Field,
     formatQuery,
-    isRuleGroupType,
     isRuleType,
     joinWith,
     Operator,
     QueryValidator,
     RuleGroupType,
-    RuleGroupTypeAny,
-    RuleType,
     splitBy,
     ValidationResult,
 } from 'react-querybuilder';
@@ -299,10 +296,12 @@ const pragmaticDndAdapter = createPragmaticDndAdapter({
 });
 
 const translationOverrides = {
-    addGroup: { title: 'Add rule group' },
+    fields: { placeholderLabel: '- Select -' },
     operators: {
+        placeholderLabel: '- Select -',
         title: 'Logic',
     },
+    addGroup: { title: 'Add rule group' },
 };
 
 // ============= Componentry ============= /

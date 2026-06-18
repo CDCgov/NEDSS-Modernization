@@ -9,7 +9,7 @@ const ValueEditor = (props: ValueEditorProps<ValueSetMetadata & FullField & Full
             return <ValueInput {...props} />;
         case 'multiselect':
             return <ValueSetSelector {...props} />;
-        default:
+        default: // we should never reach this default
             return <DefaultValueEditor {...props} />;
     }
 };

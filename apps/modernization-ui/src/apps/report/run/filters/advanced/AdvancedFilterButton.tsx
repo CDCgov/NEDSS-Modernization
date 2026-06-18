@@ -24,6 +24,7 @@ const AdvancedFilterButton = (props: ActionProps) => {
                     type={'button'}
                     className={'trash-icon'}
                     tertiary
+                    destructive
                     sizing={'small'}
                     aria-label={props.title}
                     onClick={(e) => props.handleOnClick(e)}

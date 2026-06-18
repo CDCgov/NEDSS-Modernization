@@ -2453,11 +2453,11 @@ describe('report run page', () => {
             expect(queryByText('Basic filters')).toBeNull();
 
             const fieldSelect = getByLabelText('Field');
-            expect(fieldSelect).toHaveValue('');
+            expect(fieldSelect).toHaveValue('~');
             const user = userEvent.setup();
             await user.selectOptions(fieldSelect, 'Full Name');
             const opSelect = await findByLabelText('Logic');
-            expect(opSelect).toHaveValue('');
+            expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'contains');
             const valueBox = await findByLabelText('Value');
             expect(valueBox).toHaveValue('');
@@ -2540,7 +2540,7 @@ describe('report run page', () => {
             expect(await findAllByText('Advanced filter')).toHaveLength(2);
 
             const fieldSelect = getByLabelText('Field');
-            expect(fieldSelect).toHaveValue('');
+            expect(fieldSelect).toHaveValue('~');
             const user = userEvent.setup();
             await user.selectOptions(fieldSelect, 'Full Name');
 
@@ -2552,7 +2552,7 @@ describe('report run page', () => {
 
             // generally filled in text value
             const opSelect = getByLabelText('Logic');
-            expect(opSelect).toHaveValue('');
+            expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'contains');
 
             expect(await findByText('Enter a value for FULL_NAME.')).toBeVisible();
@@ -2565,7 +2565,7 @@ describe('report run page', () => {
 
             // generally filled in number value
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
-            expect(opSelect).toHaveValue('');
+            expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, '=');
 
             expect(await findByText('Enter a value for DAYS_OLD.')).toBeVisible();
@@ -2578,7 +2578,7 @@ describe('report run page', () => {
 
             // generally filled in coded list
             await user.selectOptions(fieldSelect, 'Condition Code');
-            expect(opSelect).toHaveValue('');
+            expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'in');
 
             expect(await findByText('Enter a value for CONDITION.')).toBeVisible();
@@ -2594,7 +2594,7 @@ describe('report run page', () => {
 
             // dates between
             await user.selectOptions(fieldSelect, 'DATE_OF_BIRTH');
-            expect(opSelect).toHaveValue('');
+            expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'between');
 
             expect(await findByText('Enter from and to values for DATE_OF_BIRTH.')).toBeVisible();
@@ -2617,7 +2617,7 @@ describe('report run page', () => {
 
             // numbers between
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
-            expect(opSelect).toHaveValue('');
+            expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'between');
 
             expect(await findByText('Enter from and to values for DAYS_OLD.')).toBeVisible();

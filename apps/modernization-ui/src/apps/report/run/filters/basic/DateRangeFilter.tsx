@@ -2,7 +2,7 @@ import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 import { BasicFilterConfiguration } from 'generated';
 import { DatePickerRange } from 'design-system/date/range/DatePickerRange';
 import { validateRequiredRule } from 'validation/entry';
-import { rangeValuesMissing, validateDateRange } from '../utils/rangeValidator.ts';
+import { validateDateRange } from '../utils/rangeValidator.ts';
 
 // Don't need `filter` for this component, but don't want to pass it down
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

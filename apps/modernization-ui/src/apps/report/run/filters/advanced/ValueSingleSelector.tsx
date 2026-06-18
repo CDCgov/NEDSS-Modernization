@@ -3,13 +3,10 @@ import { FullField, ValueEditorProps } from 'react-querybuilder';
 import { SingleSelect } from '../../../../../design-system/select';
 import { Selectable } from '../../../../../options';
 
-const getPlaceholder = (props) => {
-    if (props.className === 'ruleGroup-combinators') return ''; // use no placeholder
-    return undefined; // use default placeholder
-};
-
 const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
     const id = useId();
+    const title = props['title'] ?? '';
+    let options = props['options'] ?? [];
 
     const handleOnChange = (value: Selectable | null) => {
         if (value === null) return;
@@ -18,41 +15,33 @@ const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
 
     let currentSelection: Selectable | null;
 
-    if (typeof props.value === 'string') {
-        currentSelection = props.options.find((opt) => opt.value === props.value) || null;
-    } else {
-        currentSelection = props.value;
+    currentSelection = options.find((opt) => opt.value === props.value) || '';
+
+    console.log('options', options);
+    if (props.className === 'rule-operators') {
+        let availableOperators = props['fieldData']['operators'];
+        options = options.filter(
+            // retain placeholder and operator options available on field selection
+            (opt) => !!availableOperators.find((operator) => operator.name == opt.name || opt.name === '~')
+        );
     }
 
-    let options;
-    switch (props.className) {
-        case 'rule-operators':
-            options = props.fieldData.operators
-                .map((operator) => {
-                    return props.options.find((opt) => opt.name === operator.name);
-                })
-                .filter(Boolean);
-            break;
-        case 'rule-fields':
-            options = props.options.filter((option) => option.name !== '~');
-            break;
-        default:
-            options = props.options;
-            break;
-    }
+    options = options.map((opt) => ({
+        ...opt,
+        name: opt.label,
+    }));
 
     return (
         <span className={props.className}>
             <SingleSelect
                 id={id}
-                label={props.title}
+                label={title}
                 value={currentSelection}
                 onChange={handleOnChange}
                 orientation={'vertical'}
                 required
-                placeholder={getPlaceholder(props)}
-                name={props.title}
-                useLabel={true}
+                placeholder={''}
+                name={title}
                 options={options}
             />
         </span>
