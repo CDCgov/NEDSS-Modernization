@@ -1,4 +1,4 @@
-FROM python:3.14-alpine
+FROM registry.access.redhat.com/ubi10/ubi:latest
 
 # Specify FastAPI application port and host, with defaults
 ENV UVICORN_PORT=8001
@@ -10,7 +10,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 WORKDIR /usr/report-execution
 
 # Install mssql driver deps
-RUN apk update && apk add curl gcc g++ gnupg unixodbc-dev
+RUN dnf update && dnf install -y libtool-ltdl krb5-libs
 
 # Copy relevant application code
 COPY pyproject.toml pyproject.toml
@@ -20,7 +20,7 @@ COPY uv.lock uv.lock
 COPY src src
 
 # Install dependencies
-RUN uv sync --frozen
+RUN uv sync --frozen --no-dev
 
 # Run the FastAPI application using uvicorn
 CMD ["uv", "run", "uvicorn", "src.main:app"]
