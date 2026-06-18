@@ -3,6 +3,14 @@ import re
 from src.db_transaction import Transaction
 from src.models import ReportResult, Table
 
+"""
+    Go backs:
+    - do I need pa1_new?  If so name it "case_interviews"
+    - once all stats for ALL WORKERS are done, need to re-tool to calculate grouped
+      by workers
+    - loosen up and/or simplify report_title regex
+"""
+
 Pa01Row = tuple[
     str,  # Worker
     str,  # Category 1
@@ -52,7 +60,6 @@ def execute(
     * `report_title` matters here as we're parsing specific report variables from it.
     """
     title_parts = _get_report_title_parts(kwargs['report_title'])
-    # date_type = title_parts['date_type']
     disease_type = title_parts['disease_type']
 
     # STD_HIV_DATAMART1 in SAS
@@ -68,8 +75,6 @@ def execute(
                AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
                AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL;
     """
-
-    # TODO: do I need pat1_new?  If so, name it "case_interviews"
 
     # pa1_dte in SAS
     timed_interviews_query = f"""
@@ -115,24 +120,24 @@ def execute(
                 ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
         INNER JOIN RDB.dbo.INVESTIGATION i
                 ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-      WHERE CAST(di.IX_DATE AS DATE) >= CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE);
+      WHERE CAST(di.IX_DATE AS DATE) >=
+                CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE);
     """
 
+    # tables
     base = trx.query(base_query)
     timed_interviews = trx.query(timed_interviews_query)
 
-    # TODO: once all stats for ALL WORKERS are done, need to re-tool to calculate
-    #       grouped by workers
+    # calculations
     cases_assigned = _calc_cases_assigned(base)
     cases_closed, cases_closed_percent = _calc_cases_closed(base, cases_assigned)
     cases_ixd, cases_ixd_percent = _calc_cases_ixd(base, cases_assigned)
-    cases_ixd_buckets = _calc_interview_day_buckets(
-        timed_interviews, cases_ixd
-    )
+    cases_ixd_buckets = _calc_interview_day_buckets(timed_interviews, cases_ixd)
     cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
         timed_interviews, cases_ixd
     )
 
+    # output CSV data
     rows: list[Pa01Row] = [
         (
             ALL,
@@ -389,5 +394,6 @@ def _calc_cases_reinterviewed(table: Table, cases_assigned: int) -> tuple[int, s
 #                 ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
 #         INNER JOIN RDB.dbo.INVESTIGATION i
 #                 ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-#       WHERE CAST(di.IX_DATE AS DATE) >= CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE)
+#       WHERE CAST(di.IX_DATE AS DATE) >=
+#                CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE)
 #     """
