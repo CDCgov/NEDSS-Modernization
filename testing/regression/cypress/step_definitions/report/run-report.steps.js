@@ -3,7 +3,24 @@ import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 // Navigation steps
 
 When('I navigate to report with reportUid: {string} and dataSourceUid: {string}', (reportUid, dataSourceUid) => {
-    cy.visit(`report/${reportUid}/${dataSourceUid}/run`);
+
+    cy.visit('/nbs/ManageReports.do');
+
+    // Fill out the hidden fields on the page's master form
+    cy.get('form[name="frm"]').within(() => {
+        cy.get('input[name="mode"]').invoke('val', 'edit');
+        cy.get('input[name="ObjectType"]').invoke('val', '7');
+        cy.get('input[name="OperationType"]').invoke('val', '117');
+        cy.get('input[name="DataSourceUID"]').invoke('val', dataSourceUid);
+        cy.get('input[name="ReportUID"]').invoke('val', reportUid);
+    });
+
+    // Target the form attributes to match the app's signature, then submit
+    cy.get('form[name="frm"]').then(($form) => {
+        $form.attr('action', '/nbs/nfc');
+        $form.attr('method', 'post');
+        $form.attr('target', '_self');
+    }).submit();
 });
 
 // Component input steps
@@ -36,5 +53,5 @@ When('I click on the {string} button', (buttonText) => {
 // Confirmation steps
 
 Then('I see confirmation the report has run', () => {
-    cy.contains('main', 'Your report has run').should('be.visible');
+    cy.contains('main', 'Your report is opening in a new tab').should('be.visible');
 });
