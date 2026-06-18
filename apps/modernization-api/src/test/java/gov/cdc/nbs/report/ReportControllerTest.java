@@ -21,11 +21,14 @@ import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.Library;
+import gov.cdc.nbs.report.models.LibraryExecutionResult;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportResult;
+import gov.cdc.nbs.report.models.ReportExecutionResult;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -357,10 +360,9 @@ class ReportControllerTest {
               List.of(basicFilter),
               advancedFilter);
 
-      when(service.executeReport(request))
-          .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
+      when(service.executeReport(request)).thenReturn(getReportExecutionResponse());
 
-      ResponseEntity<ReportResult> response = controller.exportReport(request);
+      ResponseEntity<ReportExecutionResult> response = controller.exportReport(request);
       assertEquals(getReportExecutionResponse(), response.getBody());
       assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -479,10 +481,9 @@ class ReportControllerTest {
               List.of(),
               advancedFilter);
 
-      when(service.executeReport(request))
-          .thenReturn(new ResponseEntity<>(getReportExecutionResponse(), HttpStatus.OK));
+      when(service.executeReport(request)).thenReturn(getReportExecutionResponse());
 
-      ResponseEntity<ReportResult> response = controller.runReport(request);
+      ResponseEntity<ReportExecutionResult> response = controller.runReport(request);
       assertEquals(getReportExecutionResponse(), response.getBody());
       assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -508,12 +509,15 @@ class ReportControllerTest {
     }
   }
 
-  private ReportResult getReportExecutionResponse() {
-    return new ReportResult(
-        "table",
-        "report_uid,data_source_uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time",
-        "result header",
-        "result subheader",
-        "result description");
+  private ReportExecutionResult getReportExecutionResponse() {
+    return new ReportExecutionResult(
+        new LibraryExecutionResult(
+            "table",
+            "report_uid,data_source_uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time",
+            "result header",
+            "result subheader",
+            "result description"),
+        "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
+        LocalDateTime.of(2025, Month.MAY, 5, 12, 23));
   }
 }
