@@ -36,4 +36,4 @@ Feature: User Options REST API
     When I am retrieving all the users
     Then there are 11 options included
     And the option named "PKS PKS" is included
-    And the option named "Ariela Kent" is not included
+    And the option named "Ariella Kent" is not included
