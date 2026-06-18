@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi10/ubi:latest
+FROM registry.access.redhat.com/ubi10/ubi-minimal:latest
 
 # Specify FastAPI application port and host, with defaults
 ENV UVICORN_PORT=8001
@@ -10,7 +10,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 WORKDIR /usr/report-execution
 
 # Install mssql driver deps
-RUN dnf update && dnf install -y libtool-ltdl krb5-libs
+RUN microdnf update && microdnf install -y libtool-ltdl krb5-libs
 
 # Copy relevant application code
 COPY pyproject.toml pyproject.toml
