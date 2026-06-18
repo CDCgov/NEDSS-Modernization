@@ -91,7 +91,7 @@ export const MultiSelect = ({
                 placeholder={placeholder}
                 isDisabled={disabled}
                 required={required}
-                // menuIsOpen={true}
+                menuIsOpen={true}
                 className={classNames(
                     'multi-select',
                     { 'multi-select__medium': sizing === 'medium' },
