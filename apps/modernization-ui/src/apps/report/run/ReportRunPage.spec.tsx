@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ReportRunPage } from './ReportRunPage';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
@@ -1012,8 +1012,8 @@ describe('report run page', () => {
                         const dropDown = await findByLabelText('Full Name');
                         expect(dropDown).toBeVisible();
                         expect(await findByRole('button', { name: 'Remove Georgia' })).toBeVisible();
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Arizona'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Arizona'));
 
                         expect(await findByRole('button', { name: 'Remove Georgia' })).toBeVisible();
                         expect(await findByRole('button', { name: 'Remove Arizona' })).toBeVisible();
@@ -1086,8 +1086,8 @@ describe('report run page', () => {
                         // component refreshes when options populates, so can't do this earlier
                         const dropDown = await findByLabelText('Full Name');
                         expect(dropDown).toBeVisible();
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Georgia'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Georgia'));
 
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
@@ -1326,10 +1326,10 @@ describe('report run page', () => {
                         // component refreshes when options populates, so can't do this earlier
                         let dropDown = await findByLabelText('Full Name');
                         expect(dropDown).toBeVisible();
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Dekalb County'));
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Clayton County'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Dekalb County'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Clayton County'));
 
                         expect(await findByRole('button', { name: 'Remove Dekalb County' })).toBeVisible();
                         expect(await findByRole('button', { name: 'Remove Clayton County' })).toBeVisible();
@@ -1350,8 +1350,8 @@ describe('report run page', () => {
                         expect(await findAllByText('The Full Name is required.')).toHaveLength(2); // county is required
 
                         dropDown = await findByLabelText('Full Name');
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Yuma County'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Yuma County'));
 
                         expect(await findByRole('button', { name: 'Remove Yuma County' })).toBeVisible();
 
@@ -1422,8 +1422,8 @@ describe('report run page', () => {
                         expect(dropDown).toBeVisible();
                         expect(await findByRole('button', { name: 'Remove Dekalb County' })).toBeVisible();
 
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Clayton County'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Clayton County'));
 
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
@@ -1616,10 +1616,10 @@ describe('report run page', () => {
                     // component refreshes when options populates, so can't do this earlier
                     let dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('2019 Novel Coronavirus'));
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('AIDS'));
+                    await user.click(dropDown);
+                    await user.click(getByText('2019 Novel Coronavirus'));
+                    await user.click(dropDown);
+                    await user.click(getByText('AIDS'));
 
                     expect(await findByRole('button', { name: 'Remove 2019 Novel Coronavirus' })).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove AIDS' })).toBeVisible();
@@ -1691,8 +1691,8 @@ describe('report run page', () => {
                     expect(dropDown).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove 2019 Novel Coronavirus' })).toBeVisible();
 
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('AIDS'));
+                    await user.click(dropDown);
+                    await user.click(getByText('AIDS'));
 
                     const exportButton = await findByRole('button', { name: 'Export' });
                     await user.click(exportButton);
@@ -1885,10 +1885,10 @@ describe('report run page', () => {
                     // component refreshes when options populates, so can't do this earlier
                     let dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('100 - Chancroid'));
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('200 - Chlamydia'));
+                    await user.click(dropDown);
+                    await user.click(getByText('100 - Chancroid'));
+                    await user.click(dropDown);
+                    await user.click(getByText('200 - Chlamydia'));
 
                     expect(await findByRole('button', { name: 'Remove 100 - Chancroid' })).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove 200 - Chlamydia' })).toBeVisible();
@@ -1963,8 +1963,8 @@ describe('report run page', () => {
                     expect(dropDown).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove 200 - Chlamydia' })).toBeVisible();
 
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('100 - Chancroid'));
+                    await user.click(dropDown);
+                    await user.click(getByText('100 - Chancroid'));
 
                     const exportButton = await findByRole('button', { name: 'Export' });
                     await user.click(exportButton);
@@ -2342,10 +2342,10 @@ describe('report run page', () => {
                     // component refreshes when options populates, so can't do this earlier
                     let dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('Jyn Erso'));
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('Cassian Andor'));
+                    await user.click(dropDown);
+                    await user.click(getByText('Jyn Erso'));
+                    await user.click(dropDown);
+                    await user.click(getByText('Cassian Andor'));
 
                     expect(await findByRole('button', { name: 'Remove Jyn Erso' })).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove Cassian Andor' })).toBeVisible();
@@ -2417,8 +2417,8 @@ describe('report run page', () => {
                     expect(dropDown).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove Cassian Andor' })).toBeVisible();
 
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('Jyn Erso'));
+                    await user.click(dropDown);
+                    await user.click(getByText('Jyn Erso'));
 
                     const exportButton = await findByRole('button', { name: 'Export' });
                     await user.click(exportButton);
@@ -2587,8 +2587,8 @@ describe('report run page', () => {
 
             const dropDown = await findByLabelText('Value');
             expect(dropDown).toBeVisible();
-            await userEvent.click(dropDown);
-            await userEvent.click(getByText('Terrible disease'));
+            await user.click(dropDown);
+            await user.click(getByText('Terrible disease'));
 
             expect(queryByText('Value cannot be empty')).toBeNull();
 
