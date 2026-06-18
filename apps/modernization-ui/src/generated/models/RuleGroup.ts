@@ -10,8 +10,8 @@ export type RuleGroup = {
 };
 export namespace RuleGroup {
     export enum combinator {
-        OR = 'OR',
-        AND = 'AND',
+        OR = 'or',
+        AND = 'and',
     }
 }
 
