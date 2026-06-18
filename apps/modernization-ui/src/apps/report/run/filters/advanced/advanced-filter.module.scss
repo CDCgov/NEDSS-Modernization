@@ -12,16 +12,6 @@
 
         .trash-icon {
             @include borders.bordered();
-
-            svg {
-                fill: colors.$error;
-            }
-
-            &:hover {
-                svg {
-                    fill: colors.$error-dark;
-                }
-            }
         }
 
         .queryBuilder-dragHandle {

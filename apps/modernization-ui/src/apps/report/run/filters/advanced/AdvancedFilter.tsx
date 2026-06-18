@@ -26,10 +26,11 @@ import { KeyboardDnDProvider } from './useKeyboardDnd';
 import { ShiftableDragHandle } from './ShiftableDragHandle';
 import { ValueEditor } from './ValueEditor';
 import { ValueSingleSelector } from './ValueSingleSelector.tsx';
-import { AdvancedFilterButton } from './AdvancedFilterButton.tsx';
+import { RemoveButton } from '././RemoveButton.tsx';
 
 import styles from './advanced-filter.module.scss';
 import { validateRule } from './validator.ts';
+import { AddButton } from './AddButton.tsx';
 
 // ============= Constants ============= /
 
@@ -358,10 +359,12 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                         controlElements={{
                             dragHandle: ShiftableDragHandle,
                             valueEditor: ValueEditor,
-                            fieldSelector: ValueSingleSelector,
-                            operatorSelector: ValueSingleSelector,
-                            combinatorSelector: ValueSingleSelector,
-                            actionElement: AdvancedFilterButton,
+                            valueSelector: ValueSingleSelector,
+                            // actionElement: RemoveButton,
+                            addGroupAction: AddButton,
+                            addRuleAction: AddButton,
+                            removeGroupAction: RemoveButton,
+                            removeRuleAction: RemoveButton,
                         }}
                     />
                 </QueryBuilderDnD>

@@ -1,4 +1,4 @@
-import { ValueEditor as DefaultValueEditor, FullField, FullOperator, ValueEditorProps } from 'react-querybuilder';
+import { FullField, FullOperator, ValueEditorProps } from 'react-querybuilder';
 import { ValueSetSelector } from './ValueSetSelector';
 import { ValueSetMetadata } from './AdvancedFilter';
 import { ValueInput } from './ValueInput.tsx';
