@@ -24,6 +24,13 @@ tables:
       - column_name: CASE_UID
         data: row_id + 10000000
         null_percentage: .05
+      - column_name: referral_basis
+        data: |
+          # For test rows, set to NULL to use fl_fup_exam_dt directly
+          if row_id < 6 or fake.random_int(1, 100) >= 95:
+              return None
+          else:
+              return fake.random_element(['P1 - Partner, Sex', 'P2 - Partner, Needle-Sharing','P3 - Partner, Both', "T1 - Positive Test", "T2 - Morbidity Report"])
 
   - table_name: "[RDB].[dbo].[D_PROVIDER]"
     row_count: 250
@@ -40,6 +47,8 @@ tables:
       - column_name: provider_name_suffix
         data: fake.random_element(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
         null_percentage: 0.98
+      - column_name: provider_quick_code
+        data: fake.lexify('test_???????')
 
   - table_name: "[RDB].[dbo].[D_ORGANIZATION]"
     row_count: 50
@@ -193,11 +202,11 @@ tables:
           if row_id < 6:
               return '200'
           else:
-              return fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if fake.random_int(1,100) <= 90 else None
+              return fake.random_element(['200', '300', '710', '720', '730', '790', '900', '950']) if fake.random_int(1,100) <= 90 else None
       
       - column_name: diagnosis
         data: |
-          '200 - Chlamydia' if diagnosis_cd == '200' else '300 - Gonorrhea' if diagnosis_cd == '300' else '710 - Syphilis, primary' if diagnosis_cd == '710' else '720 - Syphilis, secondary' if diagnosis_cd == '720' else '730 - Syphilis, Early Non-Primary, Non-Secondary' if diagnosis_cd == '730' else '790 - Syphilis, Congenital' if diagnosis_cd == '790' else '900 - HIV Infection' if diagnosis_cd == '900' else None
+          '200 - Chlamydia' if diagnosis_cd == '200' else '300 - Gonorrhea' if diagnosis_cd == '300' else '710 - Syphilis, primary' if diagnosis_cd == '710' else '720 - Syphilis, secondary' if diagnosis_cd == '720' else '730 - Syphilis, Early Non-Primary, Non-Secondary' if diagnosis_cd == '730' else '790 - Syphilis, Congenital' if diagnosis_cd == '790' else '900 - HIV Infection' if diagnosis_cd == '900' else '950 - AIDS' if diagnosis_cd == '950' else None
 
       - column_name: field_record_number
         data: fake.random_int(10000000, 99999999)
@@ -282,16 +291,49 @@ tables:
 
       - column_name: investigator_interview_key
         data: fake.random_int(10000000, 99999999)
+      - column_name: investigator_interview_qc
+        data: fake.random_int(10000000, 99999999)
+        null_percentage: 0.05
+      - column_name: fl_fup_investigator_assgn_dt
+        data: fake.date_between(start_date=date(2020, 1, 1), end_date=date(2025, 12, 31))
+        null_percentage: 0.05
+      - column_name: fl_fup_dispo_dt
+        data: fake.date_between(start_date=date(2020, 1, 1), end_date=date(2025, 12, 31))
+        null_percentage: 0.05
+      - column_name: investigator_fl_fup_key
+        data: fake.random_int(1, 300)
+        null_percentage: 0.05
+      - column_name: investigator_fl_fup_qc
+        data: fake.random_element(['1', '2', '3', '4', '5', 'dekalb', 'fulton', 'local', 'pks', 'state'])
+        null_percentage: 0.05
+      - column_name: investigator_disp_fl_fup_key
+        data: fake.random_int(1, 10)
+        null_percentage: 0.01
+      - column_name: fl_fup_disposition
+        data: |
+          disposition_values = [
+              "1 - Prev. Pos",
+              "2 - Prev. Neg, New Pos",
+              "5 - No Prev Test, New Pos",
+              "A - Preventative Treatment",
+              "B - Refused Preventative Treatment",
+              "C - Infected, Brought to Treatment",
+              "D - Infected, Not Treated",
+              "E - Previously Treated for This Infection",
+              "F - Not Infected",
+              "G - Insufficient Info to Begin Investigation",
+              "H - Unable to Locate",
+              "J - Located, Not Examined and/or Interviewed",
+              "K - Sent Out Of Jurisdiction",
+              "L - Other"
+            ]
+          return fake.random_element(disposition_values)
+        null_percentage: 0.1
 
       - column_name: referral_basis
-        data: |
-          # For test rows, set to NULL to use fl_fup_exam_dt directly
-          if row_id < 6:
-              return None
-          else:
-              return fake.random_element(["T1 - Positive Test", "T2 - Morbidity Report", None])
-        null_percentage: 0.2
+        data: copy_from_fk("[RDB].[dbo].[INVESTIGATION]", "investigation_key", "referral_basis")
 
+          
       - column_name: fl_fup_exam_dt
         data: |
           base = date(2023, 1, 1)
