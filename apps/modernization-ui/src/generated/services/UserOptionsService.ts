@@ -41,4 +41,16 @@ export class UserOptionsService {
             },
         });
     }
+    /**
+     * NBS User Profile List
+     * Provides all user profiles in NBS.
+     * @returns Option OK
+     * @throws ApiError
+     */
+    public static userProfileList(): CancelablePromise<Array<Option>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/api/options/users/profiles',
+        });
+    }
 }
