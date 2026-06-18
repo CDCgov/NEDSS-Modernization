@@ -47,6 +47,8 @@ tables:
       - column_name: provider_name_suffix
         data: fake.random_element(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
         null_percentage: 0.98
+      - column_name: provider_quick_code
+        data: fake.lexify('test_???????')
 
   - table_name: "[RDB].[dbo].[D_ORGANIZATION]"
     row_count: 50
@@ -200,11 +202,11 @@ tables:
           if row_id < 6:
               return '200'
           else:
-              return fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if fake.random_int(1,100) <= 90 else None
+              return fake.random_element(['200', '300', '710', '720', '730', '790', '900', '950']) if fake.random_int(1,100) <= 90 else None
       
       - column_name: diagnosis
         data: |
-          '200 - Chlamydia' if diagnosis_cd == '200' else '300 - Gonorrhea' if diagnosis_cd == '300' else '710 - Syphilis, primary' if diagnosis_cd == '710' else '720 - Syphilis, secondary' if diagnosis_cd == '720' else '730 - Syphilis, Early Non-Primary, Non-Secondary' if diagnosis_cd == '730' else '790 - Syphilis, Congenital' if diagnosis_cd == '790' else '900 - HIV Infection' if diagnosis_cd == '900' else None
+          '200 - Chlamydia' if diagnosis_cd == '200' else '300 - Gonorrhea' if diagnosis_cd == '300' else '710 - Syphilis, primary' if diagnosis_cd == '710' else '720 - Syphilis, secondary' if diagnosis_cd == '720' else '730 - Syphilis, Early Non-Primary, Non-Secondary' if diagnosis_cd == '730' else '790 - Syphilis, Congenital' if diagnosis_cd == '790' else '900 - HIV Infection' if diagnosis_cd == '900' else '950 - AIDS' if diagnosis_cd == '950' else None
 
       - column_name: field_record_number
         data: fake.random_int(10000000, 99999999)

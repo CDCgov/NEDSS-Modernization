@@ -19,8 +19,8 @@ class TestIntegrationPa02Library:
             'version': 1,
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'QA07',
-            'library_name': 'qa_07',
+            'report_title': 'PA02',
+            'library_name': 'pa_02',
             'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             'library_params': '{"report_type": "STD"}',
@@ -72,5 +72,5 @@ class TestIntegrationPa02Library:
     def test_execute_report_invalid_report_type_format(self):
         """Test that invalid report type raises an error."""
         spec = self.create_spec(library_params='{"report_type": "random"}')
-        with pytest.raises(ProgrammingError):
+        with pytest.raises(ValueError, match="must contain 'report_type'"):
             execute_report(spec)

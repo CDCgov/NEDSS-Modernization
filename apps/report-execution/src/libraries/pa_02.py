@@ -27,8 +27,11 @@ def execute(
             {type(report_type)}
             '''
         )
+    
+    referral_basis_values = "('P1 - Partner, Sex', 'P2 - Partner, Needle-Sharing','P3 - Partner, Both')"
+
     # Define disposition sets based on report_type
-    if report_type.upper() == 'STD':
+    if report_type == 'STD':
         examd_dispos = ["'A - Preventative Treatment'",
                         "'B - Refused Preventative Treatment'",
                         "'C - Infected, Brought to Treatment'",
@@ -153,10 +156,22 @@ def execute(
             where a.INVESTIGATOR_FL_FUP_KEY != 1 
             and a.FL_FUP_DISPOSITION >= a.FL_FUP_INVESTIGATOR_ASSGN_DT
             order by a.INVESTIGATOR_FL_FUP_KEY
+    ), partners as (
+        select distinct * 
+            from pa02  
+            where REFERRAL_BASIS in ({referral_basis_values})
+    ), partners_dispo as (
+        select distinct * from pa02_dispo
+        where REFERRAL_BASIS in ({referral_basis_values})
     )
-    select distinct * 
-from pa02  
-where REFERRAL_BASIS in ('P1 - Partner, Sex', 'P2 - Partner, Needle-Sharing','P3 - Partner, Both') ; 
+    select
+        INVESTIGATOR_FL_FUP_KEY,
+        days,
+        count(*) as days_count_A
+    from pa02_dt
+    where REFERRAL_BASIS in ({referral_basis_values})
+    and FL_FUP_DISPOSITION in ({dispo_labels})
+    and days <= 14;
     '''
     content = trx.query(sql)
 
