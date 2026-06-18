@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM redhat/ubi10-micro:latest
 
 # Specify FastAPI application port and host, with defaults
 ENV UVICORN_PORT=8001
