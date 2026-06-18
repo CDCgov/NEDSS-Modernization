@@ -53,7 +53,7 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
             if (rangeErrorMsg) setInvalid(id, rangeErrorMsg);
             return;
         } else if (BINARY_OPERATORS.find((name) => name === operator)) {
-            if (value === '') {
+            if (value === '' || value.includes(',')) {
                 setInvalid(id, getMissingValErrorMsg(label, false));
             }
         }

@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React, { useId, useRef, useLayoutEffect } from 'react';
 import { FullField, ValueEditorProps } from 'react-querybuilder';
 import { NumericInput, TextInputField } from '../../../../../design-system/input';
 import { DatePickerInput } from '../../../../../design-system/date';
@@ -19,9 +19,11 @@ const SINGLE_COMPONENTS = {
 } as const;
 
 const getConvertedRange = (props): DateBetweenCriteria | NumberBetweenCriteria => {
-    if (props.operator === 'between' && props.value) {
-        const [from = '', to = ''] = props.value.split(',');
-        return { between: { from, to } };
+    if (props.operator === 'between' && typeof props.value === 'string' && props.value) {
+        if (props.operator === 'between' && props.value) {
+            const [from = '', to = ''] = props.value.split(',');
+            return { between: { from, to } };
+        }
     }
     return { between: { from: '', to: '' } };
 };
@@ -32,13 +34,28 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
     const isBetween = props.operator === 'between';
     const InputComponent = isBetween ? RANGE_COMPONENTS[props.inputType] : SINGLE_COMPONENTS[props.inputType];
 
-    const value = isBetween ? getConvertedRange(props) : (props.value ?? '');
+    let value = isBetween ? getConvertedRange(props) : (props.value ?? '');
 
-    const handleSingleOnChange = (newValue: number | string | undefined) => {
-        props.handleOnChange(newValue);
+    const onChangeRef = useRef(props.handleOnChange);
+
+    useLayoutEffect(() => {
+        onChangeRef.current = props.handleOnChange;
+    }, [props.handleOnChange]);
+
+    // clean up value when value input is removed from DOM
+    useLayoutEffect(() => {
+        return () => {
+            if (!props.value) {
+                onChangeRef.current('');
+            }
+        };
+    }, []);
+
+    const handleSingleOnChange = (newValue: number | string) => {
+        props.handleOnChange(newValue.toString());
     };
 
-    const handleBetweenOnChange = (incoming: DateBetweenCriteria | NumberBetweenCriteria | undefined) => {
+    const handleBetweenOnChange = (incoming: DateBetweenCriteria | NumberBetweenCriteria) => {
         if (!incoming) {
             props.handleOnChange('');
             return;

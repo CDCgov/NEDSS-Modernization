@@ -269,18 +269,22 @@ const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
 // Add another key 'label' to the RuleType object to display in error msg
 const addColNameToRules = (columns: ReportColumn[], value: QbRuleGroup) => {
     const rules = value['rules'];
-    const updatedRuleValue = rules.map((rule) => {
+    const updatedRules = rules.map((rule) => {
+        if ('rules' in rule && Array.isArray(rule.rules)) {
+            return addColNameToRules(columns, rule as QbRuleGroup);
+        }
+
         const matchedColumn = columns.find((col) => col.name === rule.field);
 
         return {
             ...rule,
-            label: matchedColumn ? matchedColumn['title'] : rule.field,
+            label: matchedColumn ? matchedColumn.title : rule.field,
         };
     });
 
     return {
         ...value,
-        rules: updatedRuleValue,
+        rules: updatedRules,
     };
 };
 
