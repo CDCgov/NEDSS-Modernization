@@ -1,0 +1,8 @@
+@use 'styles/borders';
+@use 'styles/buttons';
+@use 'styles/colors';
+
+.layout {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}

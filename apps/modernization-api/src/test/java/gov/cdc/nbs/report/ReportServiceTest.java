@@ -13,6 +13,7 @@ import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,6 @@ class ReportServiceTest {
   @Mock private ReportRepository reportRepository;
   @Mock private DataSourceRepository dataSourceRepository;
   @Mock private ReportLibraryRepository reportLibraryRepository;
-  @Mock private ReportFilterRepository reportFilterRepository;
   @Mock private FilterCodeRepository filterCodeRepository;
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
   @Mock private ReportSectionRepository reportSectionRepository;
@@ -193,7 +193,6 @@ class ReportServiceTest {
       verify(reportMapper)
           .fromAdminReportRequest(request, mockUser, mockReportLibrary, mockDataSource, null);
       verify(reportRepository).save(any(Report.class));
-      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
@@ -210,7 +209,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository, never()).findById(any());
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).findById(any());
     }
 
     @Test
@@ -227,7 +225,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository).findById(libraryId);
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
@@ -241,7 +238,6 @@ class ReportServiceTest {
           .hasMessage("No report section found for code " + sectionCd);
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).saveAll(any());
     }
   }
 
@@ -273,7 +269,9 @@ class ReportServiceTest {
       DataSourceColumn mockColumn = mock(DataSourceColumn.class);
       Mockito.lenient().when(mockColumn.getId()).thenReturn(columnUid);
 
-      Mockito.lenient().when(reportRepository.existsById(any())).thenReturn(true);
+      Mockito.lenient()
+          .when(reportRepository.findById(reportId))
+          .thenReturn(Optional.of(savedReport));
 
       Mockito.lenient()
           .when(dataSourceRepository.findById(dataSourceUid))
@@ -313,7 +311,7 @@ class ReportServiceTest {
       AdminReportRequest request = buildAdminReportRequest(true);
 
       when(reportMapper.fromAdminReportRequest(
-              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+              request, mockUser, mockReportLibrary, mockDataSource, savedReport))
           .thenReturn(savedReport);
       when(reportRepository.save(savedReport)).thenReturn(savedReport);
 
@@ -330,7 +328,7 @@ class ReportServiceTest {
       AdminReportRequest request = buildAdminReportRequest(false);
 
       when(reportMapper.fromAdminReportRequest(
-              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+              request, mockUser, mockReportLibrary, mockDataSource, savedReport))
           .thenReturn(savedReport);
       when(reportRepository.save(savedReport)).thenReturn(savedReport);
 
@@ -341,7 +339,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository).findById(libraryId);
 
       verify(reportRepository).save(any(Report.class));
-      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
@@ -358,7 +355,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository, never()).findById(any());
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).findById(any());
     }
 
     @Test
@@ -375,7 +371,6 @@ class ReportServiceTest {
       verify(reportLibraryRepository).findById(libraryId);
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
@@ -389,46 +384,40 @@ class ReportServiceTest {
           .hasMessage("No report section found for code " + sectionCd);
 
       verify(reportRepository, never()).save(any());
-      verify(reportFilterRepository, never()).saveAll(any());
     }
 
     @Test
     void editReport_should_delete_filters_not_included_in_request() {
-      ReportFilter existingReportFilter1 = mock(ReportFilter.class);
-      ReportFilter existingReportFilter2 = mock(ReportFilter.class);
-      Mockito.lenient().when(existingReportFilter1.getId()).thenReturn(100L);
-      Mockito.lenient().when(existingReportFilter2.getId()).thenReturn(101L);
+      FilterCode filterCode = mock(FilterCode.class);
+      ArrayList<ReportFilter> existingFilters = new ArrayList<>();
+      existingFilters.add(new ReportFilter(100L, filterCode));
+      existingFilters.add(new ReportFilter(101L, filterCode));
 
       Mockito.lenient().when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-      Mockito.lenient()
-          .when(savedReport.getReportFilters())
-          .thenReturn(List.of(existingReportFilter1, existingReportFilter2));
+      Mockito.lenient().when(savedReport.getReportFilters()).thenReturn(existingFilters);
 
       AdminReportRequest request = buildAdminReportRequest(true);
 
       when(reportMapper.fromAdminReportRequest(
-              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+              request, mockUser, mockReportLibrary, mockDataSource, savedReport))
           .thenReturn(savedReport);
-      when(reportRepository.save(savedReport)).thenReturn(savedReport);
 
       Report result = service.editReport(request, mockUser, reportId);
 
-      assertThat(result).isEqualTo(savedReport);
-      verify(reportFilterRepository)
-          .deleteAll(List.of(existingReportFilter1, existingReportFilter2));
+      // updates the structure
+      assertThat(result.getReportFilters()).isEqualTo(existingFilters);
+      assertThat(existingFilters).hasSize(1);
     }
 
     @Test
     void editReport_should_upsert_filters_included_in_request() {
-      ReportFilter existingReportFilter1 = mock(ReportFilter.class);
-      ReportFilter existingReportFilter2 = mock(ReportFilter.class);
-      Mockito.lenient().when(existingReportFilter1.getId()).thenReturn(100L);
-      Mockito.lenient().when(existingReportFilter2.getId()).thenReturn(101L);
+      FilterCode filterCode = mock(FilterCode.class);
+      ArrayList<ReportFilter> existingFilters = new ArrayList<>();
+      existingFilters.add(new ReportFilter(100L, filterCode));
+      existingFilters.add(new ReportFilter(101L, filterCode));
 
       Mockito.lenient().when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
-      Mockito.lenient()
-          .when(savedReport.getReportFilters())
-          .thenReturn(List.of(existingReportFilter1, existingReportFilter2));
+      Mockito.lenient().when(savedReport.getReportFilters()).thenReturn(existingFilters);
 
       ReportFilter mockReportFilter = mock(ReportFilter.class);
       Mockito.lenient()
@@ -438,7 +427,7 @@ class ReportServiceTest {
       AdminReportRequest request = buildAdminReportRequest(true);
 
       when(reportMapper.fromAdminReportRequest(
-              request, mockUser, mockReportLibrary, mockDataSource, reportId))
+              request, mockUser, mockReportLibrary, mockDataSource, savedReport))
           .thenReturn(savedReport);
       when(reportRepository.save(savedReport)).thenReturn(savedReport);
 
@@ -446,7 +435,43 @@ class ReportServiceTest {
 
       assertThat(result).isEqualTo(savedReport);
       verify(reportFilterBuilder).build(request.filterRequests().getFirst(), savedReport);
-      verify(reportFilterRepository).saveAll(List.of(mockReportFilter));
+    }
+  }
+
+  @Nested
+  class DeleteReport {
+    private final Long reportUid = 1L;
+    private final Long dataSourceUid = 2L;
+
+    private Report savedReport;
+    private ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+    @BeforeEach
+    void setup() {
+      savedReport = mock(Report.class);
+
+      Mockito.lenient()
+          .when(reportRepository.findById(reportId))
+          .thenReturn(Optional.of(savedReport));
+    }
+
+    @Test
+    void deleteReport_should_delete_and_return_report_when_all_inputs_are_valid() {
+      service.deleteReport(reportId);
+
+      verify(reportRepository).findById(reportId);
+      verify(reportRepository).delete(any(Report.class));
+    }
+
+    @Test
+    void deleteReport_should_delete_and_throws_when_unknown_report() {
+      when(reportRepository.findById(reportId)).thenReturn(Optional.ofNullable(null));
+
+      assertThatThrownBy(() -> service.deleteReport(reportId))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessageContaining("Report not found for Report UID: 1 and Data Source UID: 2");
+
+      verify(reportRepository).findById(reportId);
     }
   }
 
@@ -481,7 +506,15 @@ class ReportServiceTest {
                       null,
                       null),
                   null,
-                  null,
+                  List.of(
+                      FilterValue.builder()
+                          .id(47L)
+                          .sequenceNumber(1)
+                          .valueType("CLAUSE")
+                          .columnUid(9L)
+                          .operator("EQUALS")
+                          .valueTxt("value1")
+                          .build()),
                   null,
                   null,
                   null,
@@ -565,6 +598,7 @@ class ReportServiceTest {
               "nbs_custom",
               "[NBS_ODSE].[dbo].[PHCDemographic]",
               "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
+              null,
               null,
               null,
               null);

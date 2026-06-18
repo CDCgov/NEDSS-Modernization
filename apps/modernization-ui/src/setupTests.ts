@@ -28,9 +28,13 @@ type MockRequestInit = {
 class MockRequest {
     url: string;
     options: MockRequestInit;
+    method: string;
+    signal: object;
     constructor(url: string, options?: MockRequestInit) {
         this.url = url;
         this.options = options || {};
+        this.method = 'GET';
+        this.signal = { removeEventListener: vi.fn(), addEventListener: vi.fn() };
     }
 }
 

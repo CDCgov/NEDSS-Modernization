@@ -30,7 +30,6 @@ import gov.cdc.nbs.report.models.ReportResult;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
-import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
@@ -51,7 +50,6 @@ public class ReportService {
   private final ReportRepository reportRepository;
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
-  private final ReportFilterRepository reportFilterRepository;
   private final ReportSectionRepository reportSectionRepository;
   private final ReportMapper reportMapper;
 
@@ -64,7 +62,6 @@ public class ReportService {
       final ReportRepository reportRepository,
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
-      final ReportFilterRepository reportFilterRepository,
       final ReportSectionRepository reportSectionRepository,
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig,
@@ -74,7 +71,6 @@ public class ReportService {
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
-    this.reportFilterRepository = reportFilterRepository;
     this.reportSectionRepository = reportSectionRepository;
     this.reportMapper = reportMapper;
 
@@ -86,63 +82,49 @@ public class ReportService {
 
   @Transactional
   public Report createReport(AdminReportRequest request, NbsUserDetails user) {
-    ReportMetadata metadata = verifyReportMetadata(request);
-
-    Report savedReport =
-        reportRepository.save(
-            reportMapper.fromAdminReportRequest(
-                request, user, metadata.reportLibrary, metadata.dataSource, null));
-
-    if (!request.filterRequests().isEmpty()) {
-      List<ReportFilter> reportFilters =
-          request.filterRequests().stream()
-              .map(f -> reportFilterBuilder.build(f, savedReport))
-              .toList();
-
-      reportFilterRepository.saveAll(reportFilters);
-    }
-
-    return savedReport;
+    return upsertReport(request, user, null);
   }
 
   @Transactional
   public Report editReport(
       AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
-    if (existingReportId != null && !reportRepository.existsById(existingReportId)) {
-      throw new NotFoundException(getReportNotFoundText(existingReportId));
-    }
+    Report existingReport =
+        reportRepository
+            .findById(existingReportId)
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
 
+    return upsertReport(request, user, existingReport);
+  }
+
+  @Transactional
+  public void deleteReport(ReportId existingReportId) {
+    Report existingReport =
+        reportRepository
+            .findById(existingReportId)
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
+
+    reportRepository.delete(existingReport);
+  }
+
+  private Report upsertReport(
+      AdminReportRequest request, NbsUserDetails user, Report existingReport) {
     ReportMetadata metadata = verifyReportMetadata(request);
 
-    Report savedReport =
-        reportRepository.save(
-            reportMapper.fromAdminReportRequest(
-                request, user, metadata.reportLibrary, metadata.dataSource, existingReportId));
+    Report report =
+        reportMapper.fromAdminReportRequest(
+            request, user, metadata.reportLibrary, metadata.dataSource, existingReport);
 
-    List<ReportFilter> existingFilters = savedReport.getReportFilters();
-
-    List<ReportFilter> filtersToDelete =
-        existingFilters.stream()
-            .filter(
-                f ->
-                    request.filterRequests().stream()
-                        .noneMatch(fr -> fr.id() != null && fr.id().equals(f.getId())))
-            .toList();
-
-    List<ReportFilter> filtersToUpsert =
-        request.filterRequests().stream()
-            .map(f -> reportFilterBuilder.build(f, savedReport))
-            .toList();
-
-    if (!filtersToDelete.isEmpty()) {
-      reportFilterRepository.deleteAll(filtersToDelete);
+    List<ReportFilter> reportFilters =
+        request.filterRequests().stream().map(f -> reportFilterBuilder.build(f, report)).toList();
+    if (report.getReportFilters() != null) {
+      // For orphan detection/removal to work, need to keep the same container
+      report.getReportFilters().clear();
+      report.getReportFilters().addAll(reportFilters);
+    } else {
+      report.setReportFilters(reportFilters);
     }
 
-    if (!filtersToUpsert.isEmpty()) {
-      reportFilterRepository.saveAll(filtersToUpsert);
-    }
-
-    return savedReport;
+    return reportRepository.save(report);
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
@@ -154,9 +136,19 @@ public class ReportService {
             report -> {
               List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
-                      .filter(f -> f.getFilterCode().getFilterType().startsWith("BAS_"))
+                      .filter(
+                          f ->
+                              f.getFilterCode()
+                                  .getFilterType()
+                                  .startsWith(ReportConstants.BASIC_FILTER_PREFIX))
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
+
+              List<DataSourceColumn> dataSourceColumns =
+                  report.getDataSource().getDataSourceColumns();
+              if (dataSourceColumns == null) {
+                throw new IllegalArgumentException("Invalid data source");
+              }
 
               AdvancedFilterConfiguration advancedFilter =
                   report.getReportFilters().stream()
@@ -165,15 +157,13 @@ public class ReportService {
                               f.getFilterCode()
                                   .getFilterType()
                                   .equals(ReportConstants.ADV_FILTER_TYPE))
-                      .map(AdvancedFilterConfigurationMapper::fromReportFilter)
+                      .map(
+                          f ->
+                              AdvancedFilterConfigurationMapper.fromReportFilter(
+                                  f, dataSourceColumns))
                       .findFirst()
                       .orElse(null);
 
-              List<DataSourceColumn> dataSourceColumns =
-                  report.getDataSource().getDataSourceColumns();
-              if (dataSourceColumns == null) {
-                throw new IllegalArgumentException("Invalid data source");
-              }
               List<ReportColumn> reportColumns =
                   dataSourceColumns.stream().map(ReportColumnMapper::fromDataSourceColumn).toList();
 

@@ -4,6 +4,17 @@ import java.util.Map;
 import java.util.Set;
 
 public final class ReportConstants {
+  public enum QueryCombinators {
+    OR,
+    AND
+  }
+
+  public enum FilterValueType {
+    OPERATOR,
+    CLAUSE
+  }
+
+  public static final String BASIC_FILTER_PREFIX = "BAS_";
   public static final String ADV_FILTER_TYPE = "ADV_WCB";
   public static final String BAS_DAYS = "BAS_DAYS";
 
@@ -13,12 +24,25 @@ public final class ReportConstants {
   public static final Set<String> BAS_TYPES =
       Set.of("BAS_CON_LIST", "BAS_JUR_LIST", "BAS_CVG_LIST", "BAS_TXT", "BAS_STD_HIV_WRKR");
 
+  public static final Set<String> BAS_CODES_NO_COLUMN = Set.of("D_01", "J_R01", "J_R01_N");
+
   public static final String SQL_AND = " AND ";
   public static final String SQL_WHERE = "WHERE ";
 
+  public static final class Permissions {
+    private Permissions() {}
+
+    public static final String REPORTINGOBJECT = "REPORTING";
+
+    public static final String VIEWREPORTTEMPLATE = "VIEWREPORTTEMPLATE";
+    public static final String VIEWREPORTPRIVATE = "VIEWREPORTPRIVATE";
+    public static final String VIEWREPORTPUBLIC = "VIEWREPORTPUBLIC";
+    public static final String VIEWREPORTREPORTINGFACILITY = "VIEWREPORTREPORTINGFACILITY";
+  }
+
   public enum SortDirection {
     ASC,
-    DESC;
+    DESC
   }
 
   public enum SelectType {
@@ -30,7 +54,7 @@ public final class ReportConstants {
     PRIVATE,
     REPORTING_FACILITY,
     PUBLIC,
-    TEMPLATE;
+    TEMPLATE
   }
 
   public static Character reportGroupToDbChar(ReportConstants.ReportGroup group) {

@@ -2,6 +2,7 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -201,6 +202,35 @@ class ReportControllerTest {
   }
 
   @Nested
+  class DeleteReport {
+    @Test
+    void deleteReport_should_return_report_idresponse() {
+      Long reportUid = 1L;
+      Long dataSourceUid = 2L;
+      ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+      ResponseEntity<ReportId> response = controller.deleteReport(reportUid, dataSourceUid);
+
+      assertEquals(reportId, response.getBody());
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void deleteReport_should_return_404_status_code_when_report_not_found() {
+      long reportUid = 1L;
+      long dataSourceUid = 2L;
+      ReportId reportId = new ReportId(reportUid, dataSourceUid);
+      String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
+
+      doThrow(new NotFoundException(errorMsg)).when(service).deleteReport(reportId);
+
+      assertThatThrownBy(() -> controller.deleteReport(reportUid, dataSourceUid))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessageContaining(errorMsg);
+    }
+  }
+
+  @Nested
   class GetReport {
     @Test
     void getReport_should_return_report_configuration_response() {
@@ -311,7 +341,8 @@ class ReportControllerTest {
       AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
       AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
       AdvancedQuery.RuleGroup connector =
-          new AdvancedQuery.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
+          new AdvancedQuery.RuleGroup(
+              "125-125-125", ReportConstants.QueryCombinators.OR, List.of(rule1, rule2));
       AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
       BasicFilterRequest basicFilter = new BasicFilterRequest(4L, Arrays.asList("test"), true);
@@ -434,7 +465,8 @@ class ReportControllerTest {
       AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
       AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
       AdvancedQuery.RuleGroup connector =
-          new AdvancedQuery.RuleGroup("125-125-125", "OR", List.of(rule1, rule2));
+          new AdvancedQuery.RuleGroup(
+              "125-125-125", ReportConstants.QueryCombinators.OR, List.of(rule1, rule2));
       AdvancedFilterRequest advancedFilter = new AdvancedFilterRequest(3L, connector);
 
       ReportExecutionRequest request =

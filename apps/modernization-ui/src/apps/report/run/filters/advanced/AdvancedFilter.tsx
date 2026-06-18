@@ -172,7 +172,7 @@ type QbQuery = QbRuleGroup | QbRule;
 function mapNbsRules(rule: NbsQuery, mapper: (r: Rule) => QbRule): QbQuery {
     if ('rules' in rule) {
         const { id, combinator, rules } = rule;
-        return { id, combinator, rules: rules.map((r) => mapNbsRules(r, mapper)) };
+        return { id, combinator: combinator.toLowerCase(), rules: rules.map((r) => mapNbsRules(r, mapper)) };
     }
 
     return mapper(rule);
@@ -182,7 +182,7 @@ function mapQbRules(rule: QbQuery, mapper: (r: QbRule) => Rule): NbsQuery {
     if ('rules' in rule) {
         const { id, combinator, rules } = rule;
         // @ts-expect-error the rule group types overlap, but can't convince ts
-        return { id, combinator, rules: rules.map((r) => mapQbRules(r, mapper)) };
+        return { id, combinator: combinator.toUpperCase(), rules: rules.map((r) => mapQbRules(r, mapper)) };
     }
 
     return mapper(rule);

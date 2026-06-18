@@ -15,6 +15,7 @@ import { Login } from 'pages/login';
 import { Expired } from 'apps/landing/Expired/Expired';
 import { routing as patientFileRouting } from 'apps/patient/file/PatientFileRouting';
 import { PageProvider } from 'page';
+import { LoadingBlock } from 'libs/loading/block';
 
 const routing = [
     welcomeRouting,
@@ -31,6 +32,7 @@ const routing = [
         path: '/',
         element: <ProtectedLayout />,
         loader: initializationLoader,
+        HydrateFallback: LoadingBlock,
         children: [
             { index: true, element: <RedirectHome /> },
             ...searchRouting,

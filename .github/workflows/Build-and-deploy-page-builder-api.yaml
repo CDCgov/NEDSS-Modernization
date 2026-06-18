@@ -42,3 +42,5 @@ jobs:
       environment_classifier: SNAPSHOT
     secrets:
       NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}
+      HARBOR_ROBOT_USERNAME: ${{secrets.HARBOR_ROBOT_USERNAME}}
+      HARBOR_ROBOT_SECRET: ${{secrets.HARBOR_ROBOT_SECRET}}
