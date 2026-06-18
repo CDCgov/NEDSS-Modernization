@@ -4,13 +4,13 @@ from src.db_transaction import Transaction
 from src.models import ReportResult, Table
 
 Pa01Row = tuple[
-    str, # Worker
-    str, # Category 1
-    str, # Category 2
-    str | None, # Category 3
-    int | None, # Count
-    float | None, # Percentage
-    float | None, # Index
+    str,  # Worker
+    str,  # Category 1
+    str,  # Category 2
+    str | None,  # Category 3
+    int | None,  # Count
+    float | None,  # Percentage
+    float | None,  # Index
 ]
 
 ALL = 'ALL'
@@ -49,10 +49,10 @@ def execute(
     * This report is the combination of both `PA01_HIV.sas` and `PA01_STD.sas`
     * `report_title` matters here as we're parsing specific report variables from it.
     """
-
-    title_parts = _get_report_title_parts(kwargs['report_title'])
+    # title_parts = _get_report_title_parts(kwargs['report_title'])
     # date_type = title_parts['date_type']
-    disease_type = title_parts['disease_type']
+    # disease_type = title_parts['disease_type']
+
     base_query = f"""
       WITH base AS
       (
@@ -71,12 +71,38 @@ def execute(
 
     # TODO: once all stats for ALL WORKERS are done, need to re-tool to calculate
     #       grouped by workers
-    cases_assigned = _get_cases_assigned(base)
-    cases_closed, cases_closed_percent = _get_cases_closed(base, cases_assigned)
+    cases_assigned = _calc_cases_assigned(base)
+    cases_closed, cases_closed_percent = _calc_cases_closed(base, cases_assigned)
+    cases_ixd, cases_ixd_percent = _calc_cases_ixd(base, cases_assigned)
 
     rows: list[Pa01Row] = [
-        (ALL, CASE_ASSIGNMENTS_AND_OUTCOMES, 'Cases Assigned', None, cases_assigned, None, None),
-        (ALL, CASE_ASSIGNMENTS_AND_OUTCOMES, 'Cases Closed', None, cases_closed, cases_closed_percent, None),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Cases Assigned',
+            None,
+            cases_assigned,
+            None,
+            None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Cases Closed',
+            None,
+            cases_closed,
+            cases_closed_percent,
+            None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            "Cases IX'D",
+            None,
+            cases_ixd,
+            cases_ixd_percent,
+            None,
+        ),
     ]
 
     breakpoint()
@@ -102,20 +128,37 @@ def _get_report_title_parts(report_title: str) -> dict:
 
     return {'date_type': groups[0], 'disease_type': groups[1]}
 
-def _get_cases_assigned(table: Table) -> int:
+
+def _calc_cases_assigned(table: Table) -> int:
     return len(table.get_unique_column('INV_LOCAL_ID'))
 
-def _get_cases_closed(table: Table, cases_assigned: int) -> (int, str):
+
+def _calc_cases_closed(table: Table, cases_assigned: int) -> tuple[int, str]:
     data = table.data_as_dicts()
     data = [d for d in data if d['CA_INTERVIEWER_ASSIGN_DT'] is not None]
     data = [d for d in data if d['CC_CLOSED_DT'] is not None]
     data = {d['INV_LOCAL_ID'] for d in data}
 
     cases_closed = len(data)
-    cases_closed_percent = round((cases_closed / cases_assigned) * 100, 1)
+    cases_closed_percent = (
+        round((cases_closed / cases_assigned) * 100, 1) if cases_assigned else 0
+    )
 
-    return cases_closed, f"{cases_closed_percent}%"
+    return cases_closed, f'{cases_closed_percent}%'
 
+
+def _calc_cases_ixd(table: Table, cases_assigned: int) -> tuple[int, str]:
+    data = table.data_as_dicts()
+    case_ids = {
+        d['INV_LOCAL_ID']
+        for d in data
+        if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+    }
+
+    count = len(case_ids)
+    percent = round((count / cases_assigned) * 100, 1) if cases_assigned else 0
+
+    return count, f'{percent}%'
 
 
 # cases_query = f"""
@@ -163,7 +206,7 @@ def _get_cases_closed(table: Table, cases_assigned: int) -> (int, str):
 #         LEFT OUTER JOIN RDB.dbo.INVESTIGATION i
 #                      ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
 #     """
-# 
+#
 #     interview_dates_query = f"""
 #       WITH base AS
 #       (
