@@ -49,9 +49,9 @@ def execute(
     * This report is the combination of both `PA01_HIV.sas` and `PA01_STD.sas`
     * `report_title` matters here as we're parsing specific report variables from it.
     """
-    # title_parts = _get_report_title_parts(kwargs['report_title'])
+    title_parts = _get_report_title_parts(kwargs['report_title'])
     # date_type = title_parts['date_type']
-    # disease_type = title_parts['disease_type']
+    disease_type = title_parts['disease_type']
 
     base_query = f"""
       WITH base AS
@@ -67,13 +67,47 @@ def execute(
                AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
     """
 
+    days_query = f"""
+      -- roughly equivalent to pa1_dte from SAS
+      WITH base AS (
+        {subset_query}
+      ),
+      filtered_base AS
+      (
+        SELECT b.*
+        FROM base b
+          INNER JOIN RDB.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT DISTINCT fb.INV_LOCAL_ID,
+             di.IX_TYPE,
+             DATEDIFF(DAY,fb.CA_INIT_INTVWR_ASSGN_DT,di.IX_DATE) AS Days
+      FROM filtered_base fb
+        INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
+                ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.D_INTERVIEW di
+                ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
+               AND di.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN RDB.dbo.D_PROVIDER dp
+                ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
+        INNER JOIN RDB.dbo.INVESTIGATION i
+                ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+      WHERE CAST(di.IX_DATE AS DATE) >= CAST(fb.CA_INIT_INTVWR_ASSGN_DT AS DATE);
+    """
+
     base = trx.query(base_query)
+    days = trx.query(days_query)
 
     # TODO: once all stats for ALL WORKERS are done, need to re-tool to calculate
     #       grouped by workers
     cases_assigned = _calc_cases_assigned(base)
     cases_closed, cases_closed_percent = _calc_cases_closed(base, cases_assigned)
     cases_ixd, cases_ixd_percent = _calc_cases_ixd(base, cases_assigned)
+    cases_ixd_buckets = _calc_interview_day_buckets(days, cases_ixd)
+
+    breakpoint()
 
     rows: list[Pa01Row] = [
         (
@@ -105,8 +139,6 @@ def execute(
         ),
     ]
 
-    breakpoint()
-
     content = Table(
         columns=CSV_COLUMNS,
         data=rows,
@@ -134,10 +166,11 @@ def _calc_cases_assigned(table: Table) -> int:
 
 
 def _calc_cases_closed(table: Table, cases_assigned: int) -> tuple[int, str]:
-    data = table.data_as_dicts()
-    data = [d for d in data if d['CA_INTERVIEWER_ASSIGN_DT'] is not None]
-    data = [d for d in data if d['CC_CLOSED_DT'] is not None]
-    data = {d['INV_LOCAL_ID'] for d in data}
+    data = {
+        d['INV_LOCAL_ID']
+        for d in table.data_as_dicts()
+        if d['CA_INTERVIEWER_ASSIGN_DT'] is not None and d['CC_CLOSED_DT'] is not None
+    }
 
     cases_closed = len(data)
     cases_closed_percent = (
@@ -159,6 +192,27 @@ def _calc_cases_ixd(table: Table, cases_assigned: int) -> tuple[int, str]:
     percent = round((count / cases_assigned) * 100, 1) if cases_assigned else 0
 
     return count, f'{percent}%'
+
+
+def _calc_interview_day_buckets(
+    table: Table, cases_ixd: int
+) -> dict[int, tuple[int, str]]:
+    rows = [
+        d
+        for d in table.data_as_dicts()
+        if d['IX_TYPE'] == 'Initial/Original'
+        and d['Days'] is not None
+        and d['Days'] <= 14
+    ]
+
+    results = dict()
+    for threshold in (3, 5, 7, 14):
+        count = sum(1 for d in rows if d['Days'] <= threshold)
+        percent = round((count / cases_ixd) * 100, 1) if cases_ixd else 0
+
+        results[threshold] = (count, f'{percent}%')
+
+    return results
 
 
 # cases_query = f"""
