@@ -33,7 +33,7 @@ Feature: User Options REST API
     And the option named "Nope Nope" is not included
     
   Scenario: I can find all user profiles
-    When I am retrieving all the users
+    When I am retrieving all the user profiles
     Then there are 11 options included
     And the option named "PKS PKS" is included
     And the option named "Ariella Kent" is not included
