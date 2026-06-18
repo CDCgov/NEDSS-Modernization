@@ -55,21 +55,24 @@ def execute(
     # date_type = title_parts['date_type']
     disease_type = title_parts['disease_type']
 
+    # STD_HIV_DATAMART1 in SAS
     base_query = f"""
       WITH base AS
       (
         {subset_query}
       )
-      -- STD_HIV_DATAMART1 in PA01_HIV.sas
       SELECT b.*
       FROM base b
         INNER JOIN RDB.dbo.INVESTIGATION i
                 ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
                AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-               AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+               AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL;
     """
 
-    days_query = f"""
+    # TODO: do I need pat1_new?  If so, name it "case_interviews"
+
+    # pa1_dte in SAS
+    timed_interviews_query = f"""
       WITH base AS
       (
         {subset_query}
@@ -84,7 +87,6 @@ def execute(
                  AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
                  AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
       )
-      -- pa1_dte in PA01_HIV.sas
       SELECT DISTINCT fb.INV_LOCAL_ID,
              di.IX_TYPE,
              i.INV_CASE_STATUS,
@@ -113,18 +115,23 @@ def execute(
                 ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
         INNER JOIN RDB.dbo.INVESTIGATION i
                 ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-      WHERE CAST(di.IX_DATE AS DATE) >= CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE)
+      WHERE CAST(di.IX_DATE AS DATE) >= CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE);
     """
 
     base = trx.query(base_query)
-    days = trx.query(days_query)
+    timed_interviews = trx.query(timed_interviews_query)
 
     # TODO: once all stats for ALL WORKERS are done, need to re-tool to calculate
     #       grouped by workers
     cases_assigned = _calc_cases_assigned(base)
     cases_closed, cases_closed_percent = _calc_cases_closed(base, cases_assigned)
     cases_ixd, cases_ixd_percent = _calc_cases_ixd(base, cases_assigned)
-    cases_ixd_buckets = _calc_interview_day_buckets(days, cases_ixd)
+    cases_ixd_buckets = _calc_interview_day_buckets(
+        timed_interviews, cases_ixd
+    )
+    cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
+        timed_interviews, cases_ixd
+    )
 
     rows: list[Pa01Row] = [
         (
@@ -158,7 +165,7 @@ def execute(
             ALL,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             "Cases IX'D",
-            "Within 3 days",
+            'Within 3 days',
             cases_ixd_buckets[3][0],
             cases_ixd_buckets[3][1],
             None,
@@ -167,7 +174,7 @@ def execute(
             ALL,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             "Cases IX'D",
-            "Within 5 days",
+            'Within 5 days',
             cases_ixd_buckets[5][0],
             cases_ixd_buckets[5][1],
             None,
@@ -176,7 +183,7 @@ def execute(
             ALL,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             "Cases IX'D",
-            "Within 7 days",
+            'Within 7 days',
             cases_ixd_buckets[7][0],
             cases_ixd_buckets[7][1],
             None,
@@ -185,9 +192,18 @@ def execute(
             ALL,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             "Cases IX'D",
-            "Within 14 days",
+            'Within 14 days',
             cases_ixd_buckets[14][0],
             cases_ixd_buckets[14][1],
+            None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Cases Reinterviewed',
+            None,
+            cases_reinterviewed,
+            cases_reinterviewed_percent,
             None,
         ),
     ]
@@ -268,6 +284,19 @@ def _calc_interview_day_buckets(
         results[threshold] = (count, f'{percent}%')
 
     return results
+
+
+def _calc_cases_reinterviewed(table: Table, cases_assigned: int) -> tuple[int, str]:
+    case_ids = {
+        d['INV_LOCAL_ID']
+        for d in table.data_as_dicts()
+        if d['IX_TYPE'] == 'Re-Interview'
+    }
+
+    count = len(case_ids)
+    percent = round((count / cases_assigned) * 100, 1) if cases_assigned else 0
+
+    return count, f'{percent}%'
 
 
 # cases_query = f"""
