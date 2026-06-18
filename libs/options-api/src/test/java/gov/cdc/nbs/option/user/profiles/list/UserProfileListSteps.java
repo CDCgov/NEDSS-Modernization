@@ -16,7 +16,7 @@ public class UserProfileListSteps {
   }
 
   @When("I am retrieving all the user profiles")
-  public void i_am_retrieving_all_the_users() throws Exception {
+  public void i_am_retrieving_all_the_user_profiles() throws Exception {
     response.active(request.complete());
   }
 }
