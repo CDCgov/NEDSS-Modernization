@@ -6,11 +6,11 @@ const RemoveButton = (props: ActionProps) => {
     return (
         <Button
             icon="delete"
-            type={'button'}
-            className={'trash-icon'}
+            type="button"
+            className="trash-icon"
             tertiary
             destructive
-            sizing={'small'}
+            sizing="small"
             aria-label={props.title}
             onClick={(e) => props.handleOnClick(e)}
         />

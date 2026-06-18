@@ -11,11 +11,7 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
         result[id]['reasons'] = [reason];
     };
     if (isRuleType(rule)) {
-        const id = rule['id'];
-        const field = rule['field'];
-        const operator = rule['operator'];
-        const value = rule['value'];
-        const label = rule['label'];
+        const {id, field, operator, value, label} = rule;
 
         if (!id) return; // no key for the map, shouldn't happen in practice
         // default valid
@@ -58,8 +54,7 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
             }
         }
     } else if (isRuleGroupType(rule)) {
-        const ruleGroupRules = rule['rules'];
-        ruleGroupRules.forEach((r) => validateRule(r, result));
+        rule.rules.forEach((r) => validateRule(r, result));
     }
 };
 
