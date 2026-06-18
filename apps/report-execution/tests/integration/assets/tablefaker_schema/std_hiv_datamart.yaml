@@ -24,6 +24,13 @@ tables:
       - column_name: CASE_UID
         data: row_id + 10000000
         null_percentage: .05
+      - column_name: referral_basis
+        data: |
+          # For test rows, set to NULL to use fl_fup_exam_dt directly
+          if row_id < 6 or fake.random_int(1, 100) >= 95:
+              return None
+          else:
+              return fake.random_element(['P1 - Partner, Sex', 'P2 - Partner, Needle-Sharing','P3 - Partner, Both', "T1 - Positive Test", "T2 - Morbidity Report"])
 
   - table_name: "[RDB].[dbo].[D_PROVIDER]"
     row_count: 250
@@ -322,14 +329,9 @@ tables:
         null_percentage: 0.1
 
       - column_name: referral_basis
-        data: |
-          # For test rows, set to NULL to use fl_fup_exam_dt directly
-          if row_id < 6:
-              return None
-          else:
-              return fake.random_element(["T1 - Positive Test", "T2 - Morbidity Report", None])
-        null_percentage: 0.2
+        data: copy_from_fk("[RDB].[dbo].[INVESTIGATION]", "investigation_key", "referral_basis")
 
+          
       - column_name: fl_fup_exam_dt
         data: |
           base = date(2023, 1, 1)
