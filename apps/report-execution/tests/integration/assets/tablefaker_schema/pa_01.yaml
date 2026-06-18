@@ -18,10 +18,10 @@ tables:
         is_primary_key: true
       - column_name: INV_CASE_STATUS
         data: random.choice(["Confirmed", "Probable", "Suspect", "Unknown"])
-        null_percentage: 0
+        # null_percentage: 0
       - column_name: RECORD_STATUS_CD
         data: random.choice(["ACTIVE", "INACTIVE"])
-        null_percentage: 0
+        # null_percentage: 0
       - column_name: INV_LOCAL_ID
         data: |
           id_num = fake.unique.random_int(10000, 99999)
@@ -29,7 +29,7 @@ tables:
         is_primary_key: true
       - column_name: CASE_UID
         data: row_id + 10000000
-        null_percentage: .05
+        # null_percentage: .05
 
   - table_name: "[RDB].[dbo].[D_PROVIDER]"
     row_count: 250
@@ -39,13 +39,13 @@ tables:
         is_primary_key: true
       - column_name: PROVIDER_FIRST_NAME
         data: fake.first_name()
-        null_percentage: 0.05
+        # null_percentage: 0.05
       - column_name: PROVIDER_LAST_NAME
         data: fake.last_name()
-        null_percentage: 0.05
+        # null_percentage: 0.05
       - column_name: PROVIDER_NAME_SUFFIX
         data: random.choice(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
-        null_percentage: 0.98
+        # null_percentage: 0.98
       - column_name: PROVIDER_QUICK_CODE
         data: random.choice(["gfreeman", "avance", "adevraj", "dbowman", "fpoole"])
         is_primary_key: true
@@ -83,18 +83,17 @@ tables:
         data: random.choice(["Yes", "No"])
       - column_name: HIV_900_RESULT
         data: random.choice(["11-Negative", "12-Prelim Positive", "13-Positive/Reactive", "21-HIV-1 Pos", "22-HIV-1 Pos, Possible Acute"])
-        null_percentage: 0.1
+        # null_percentage: 0.1
       - column_name: ADI_900_STATUS
         data: random.choice(["1 - Negative", "2 - Newly Diagnosed", "3 - Prior Positive - Not Previously Known", "4 - Prior Positive - New STD or Pregnancy", "9 - Unknown"])
-        null_percentage: 0.1
+        # null_percentage: 0.1
       - column_name: HIV_900_TEST_IND
         data: random.choice(["Yes", "No"])
-        null_percentage: 0.1
+        # null_percentage: 0.1
       - column_name: SOURCE_SPREAD
         data: random.choice(["1 - Spread", "2 - Source"])
       - column_name: FL_FUP_INIT_ASSGN_DT
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
-        null_percentage: 0.1
       - column_name: CA_PATIENT_INTV_STATUS
         data: r"I - Interviewed"
       - column_name: INVESTIGATOR_INTERVIEW_KEY
@@ -105,18 +104,17 @@ tables:
         data: date(2024, 1, 1)
       - column_name: CA_INIT_INTVWR_ASSGN_DT
         data: date(2024, 1, 1)
-        null_percentage: 0.1
       - column_name: INVESTIGATION_KEY
         data: row_id
       - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
         data: fake.random_digit()
-        null_percentage: 0.98
+        # null_percentage: 0.98
       - column_name: SOC_PRTNRS_PRD_FML_TTL
         data: fake.random_digit()
-        null_percentage: 0.90
+        # null_percentage: 0.90
       - column_name: SOC_PRTNRS_PRD_MALE_TTL
         data: fake.random_digit()
-        null_percentage: 0.90
+        # null_percentage: 0.90
       - column_name: FL_FUP_DISPOSITION
         data: |
           return random.choice([

@@ -70,12 +70,13 @@ def execute(
     """
 
     days_query = f"""
-      -- roughly equivalent to pa1_dte from SAS
-      WITH base AS (
+      WITH base AS
+      (
         {subset_query}
       ),
       filtered_base AS
       (
+        -- STD_HIV_DATAMART1 in PA01_HIV.sas
         SELECT b.*
         FROM base b
           INNER JOIN RDB.dbo.INVESTIGATION i
@@ -83,9 +84,25 @@ def execute(
                  AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
                  AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
       )
+      -- pa1_dte in PA01_HIV.sas
       SELECT DISTINCT fb.INV_LOCAL_ID,
              di.IX_TYPE,
-             DATEDIFF(DAY,fb.{PA1_DTE_DATE_COL[disease_type]},di.IX_DATE) AS Days
+             i.INV_CASE_STATUS,
+             i.RECORD_STATUS_CD,
+             fb.CC_CLOSED_DT,
+             fb.ADI_900_STATUS_CD,
+             fb.HIV_POST_TEST_900_COUNSELING,
+             fb.HIV_900_RESULT,
+             fb.ADI_900_STATUS,
+             fb.HIV_900_TEST_IND,
+             fb.SOURCE_SPREAD,
+             fb.FL_FUP_INIT_ASSGN_DT,
+             i.CURR_PROCESS_STATE,
+             fb.CA_PATIENT_INTV_STATUS,
+             fb.INVESTIGATOR_INTERVIEW_KEY,
+             fb.INVESTIGATOR_INTERVIEW_QC,
+             DATEDIFF(DAY,fb.{PA1_DTE_DATE_COL[disease_type]},di.IX_DATE) AS Days,
+             dp.PROVIDER_QUICK_CODE
       FROM filtered_base fb
         INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
                 ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
@@ -96,7 +113,7 @@ def execute(
                 ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
         INNER JOIN RDB.dbo.INVESTIGATION i
                 ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-      WHERE CAST(di.IX_DATE AS DATE) >= CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE);
+      WHERE CAST(di.IX_DATE AS DATE) >= CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE)
     """
 
     base = trx.query(base_query)
