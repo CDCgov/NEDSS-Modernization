@@ -1,9 +1,9 @@
 import React from 'react';
-import { Sizing } from 'design-system/field';
-import { NumericInput } from '../numeric';
+import { Field, Orientation, Sizing } from 'design-system/field';
 
 import styles from './number-range-field.module.scss';
 import classNames from 'classnames';
+import { Numeric } from '../numeric/Numeric.tsx';
 
 type NumberRange = {
     from?: number;
@@ -20,16 +20,29 @@ export type NumberRangeFieldProps = {
     sizing?: Sizing;
     onChange: (value?: NumberBetweenCriteria) => void;
     onBlur?: () => void;
-    label?: string;
     required?: boolean;
+    orientation?: Orientation;
+    helperText?: string;
+    error?: string;
 };
 
 const parseValue = (value: number | undefined | null) => {
-    if (value === undefined || value === null) return undefined;
+    if (value === undefined || value === null) return '';
     return value;
 };
 
-const NumberRangeField = ({ id, value, sizing, onChange, onBlur, label, required }: NumberRangeFieldProps) => {
+const NumberRangeField = ({
+    id,
+    value,
+    onChange,
+    onBlur,
+    label,
+    required,
+    sizing,
+    orientation,
+    helperText,
+    error,
+}: NumberRangeFieldProps) => {
     const handleFieldOnChange = (v, type) => {
         if (type === 'to') {
             onChange({ between: { from: parseValue(value?.between.from), to: parseValue(v) } });
@@ -43,27 +56,43 @@ const NumberRangeField = ({ id, value, sizing, onChange, onBlur, label, required
     return (
         <div id={id} data-testid="number-range-editor" role="group" className={styles.layout} aria-label={label}>
             <div className={classNames(styles['range-wrapper'], 'from')}>
-                <NumericInput
-                    id={`${id}-from`}
-                    label={'From'}
-                    value={parseValue(value?.between?.from)}
-                    onChange={(v) => handleFieldOnChange(v, 'from')}
-                    onBlur={onBlur}
+                <Field
+                    orientation={orientation}
                     sizing={sizing}
+                    label={'From'}
+                    htmlFor={`${id}-from`}
                     required={required}
-                />
+                    error={error}
+                    helperText={helperText}
+                >
+                    <Numeric
+                        id={`${id}-from`}
+                        value={parseValue(value?.between?.from)}
+                        onChange={(v) => handleFieldOnChange(v, 'from')}
+                        onBlur={onBlur}
+                        required={required}
+                    />
+                </Field>
             </div>
             <div className={classNames(styles['range-wrapper'], 'to')}>
-                <NumericInput
-                    id={`${id}-to`}
-                    label={'To'}
-                    min={parseValue(value?.between?.from)}
-                    value={parseValue(value?.between?.to)}
-                    onChange={(v) => handleFieldOnChange(v, 'to')}
-                    onBlur={onBlur}
-                    required={required}
+                <Field
+                    orientation={orientation}
                     sizing={sizing}
-                />
+                    label={'To'}
+                    htmlFor={`${id}-to`}
+                    required={required}
+                    error={error}
+                    helperText={helperText}
+                >
+                    <Numeric
+                        id={`${id}-to`}
+                        min={parseValue(value?.between?.from)}
+                        value={parseValue(value?.between?.to)}
+                        onChange={(v) => handleFieldOnChange(v, 'to')}
+                        onBlur={onBlur}
+                        required={required}
+                    />
+                </Field>
             </div>
         </div>
     );

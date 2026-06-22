@@ -4,13 +4,12 @@ import { NumericInput, TextInputField } from '../../../../../design-system/input
 import { DatePickerInput } from '../../../../../design-system/date';
 import { DatePickerRange } from '../../../../../design-system/date/range/DatePickerRange.tsx';
 import { DateBetweenCriteria } from '../../../../../design-system/date/criteria';
-import { NumberInputRange } from '../../../../../design-system/input/range/NumberInputRange.tsx';
 import { NumberBetweenCriteria } from '../../../../../design-system/input/range/NumberRangeField.tsx';
 import { BETWEEN_OPERATOR } from './operators.ts';
 
 const RANGE_COMPONENTS = {
     date: DatePickerRange,
-    number: NumberInputRange,
+    number: NumericInput,
 } as const;
 
 const SINGLE_COMPONENTS = {
@@ -48,7 +47,9 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
     }, [handleOnChange, operator, value]);
 
     const handleSingleOnChange = (newValue: number | string) => {
-        props.handleOnChange(newValue.toString());
+        if (newValue) {
+            props.handleOnChange(newValue.toString());
+        }
     };
 
     const handleBetweenOnChange = (incoming: DateBetweenCriteria | NumberBetweenCriteria) => {
@@ -70,6 +71,7 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
                 value={convertedValue}
                 name={labelName}
                 onChange={isBetween ? handleBetweenOnChange : handleSingleOnChange}
+                isRange={isBetween && InputComponent === RANGE_COMPONENTS.number}
                 required
             />
         </div>

@@ -1,7 +1,8 @@
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { Numeric, NumericProps } from './Numeric';
+import { NumberBetweenCriteria, NumberRangeField } from '../range/NumberRangeField.tsx';
 
-type NumericInputProps = {
+type BaseNumericInputProps = {
     id: string;
     label: string;
     orientation?: Orientation;
@@ -10,6 +11,18 @@ type NumericInputProps = {
     required?: boolean;
     helperText?: string;
 } & NumericProps;
+
+type RangeInputProps = BaseNumericInputProps & {
+    isRange: true;
+    value: NumberBetweenCriteria;
+};
+
+type SingleInputProps = BaseNumericInputProps & {
+    isRange?: false;
+    value: number;
+};
+
+type NumericInputProps = RangeInputProps | SingleInputProps;
 
 const NumericInput = ({
     id,
@@ -20,6 +33,8 @@ const NumericInput = ({
     required,
     placeholder,
     helperText,
+    value,
+    isRange,
     ...remaining
 }: NumericInputProps) => {
     return (
@@ -32,7 +47,18 @@ const NumericInput = ({
             error={error}
             helperText={helperText}
         >
-            <Numeric id={id} placeholder={placeholder} {...remaining} />
+            {isRange ? (
+                <NumberRangeField
+                    id={id}
+                    label={label}
+                    value={value}
+                    sizing={sizing}
+                    required={required}
+                    {...remaining}
+                />
+            ) : (
+                <Numeric id={id} placeholder={placeholder} {...remaining} />
+            )}
         </EntryWrapper>
     );
 };
