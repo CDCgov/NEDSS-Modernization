@@ -25,8 +25,8 @@ Pa01Row = tuple[
     str,  # Category 2
     str | None,  # Category 3
     int | None,  # Count
-    float | None,  # Percentage
-    float | None,  # Index
+    str | None,  # Percentage
+    str | None,  # Index
 ]
 
 # CSV columns
@@ -582,9 +582,13 @@ def _get_report_title_parts(report_title: str) -> dict:
     - STD/HIV
     - Interview Assign Date/Closed Date
     """
-    match = re.match(
+    match: re.Match[str] | None = re.match(
         r'^PA01 Case Management Report \((.+)\) - (STD|HIV)$', report_title
     )
+
+    if not match:
+        raise ValueError('Report Title analysis regex did not match input string')
+
     groups = match.groups()
 
     return {'date_type': groups[0], 'disease_type': groups[1]}
