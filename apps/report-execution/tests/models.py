@@ -87,9 +87,10 @@ class TestModels:
                 'a comment with\r\na carriage return',
                 'a comment with " a quote',
                 'a comment with , a comma',
+                'a comment with\r\nall, the " things',
             )
         ]
-        columns = ['new line', 'carriage return', 'quote', 'comma']
+        columns = ['new line', 'carriage return', 'quote', 'comma', 'all the things']
 
         t = models.Table(data=data, columns=columns)
         csv_str = models.serialize_table(t)
@@ -100,3 +101,4 @@ class TestModels:
         assert df['carriage return'][0] == 'a comment with\r\na carriage return'
         assert df['quote'][0] == 'a comment with " a quote'
         assert df['comma'][0] == 'a comment with , a comma'
+        assert df['all the things'][0] == 'a comment with\r\nall, the " things'
