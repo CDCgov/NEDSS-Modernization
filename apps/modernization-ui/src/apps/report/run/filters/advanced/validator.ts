@@ -1,4 +1,3 @@
-// matches date format (e.g. 11/01/2020 1/1/2020)
 import { isRuleGroupType, isRuleType, RuleGroupTypeAny, RuleType, ValidationResult } from 'react-querybuilder';
 import { getRangeValErrorMsg, isDateFormat, validateDateRange, validateNumericRange } from '../utils/rangeValidator.ts';
 import { BINARY_OPERATORS } from './operators.ts';
@@ -49,7 +48,7 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
             if (rangeErrorMsg) setInvalid(id, rangeErrorMsg);
             return;
         } else if (BINARY_OPERATORS.find((name) => name === operator)) {
-            if (value === '' || value.includes(',')) {
+            if (value === '') {
                 setInvalid(id, getMissingValErrorMsg(label, false));
             }
         }

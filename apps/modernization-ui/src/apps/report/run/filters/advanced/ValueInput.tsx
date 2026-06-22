@@ -23,10 +23,8 @@ const BETWEEN_OPERATOR_NAME = BETWEEN_OPERATOR.name;
 
 const getConvertedRange = (props): DateBetweenCriteria | NumberBetweenCriteria => {
     if (props.operator === BETWEEN_OPERATOR_NAME && typeof props.value === 'string' && props.value) {
-        if (props.operator === BETWEEN_OPERATOR_NAME && props.value) {
-            const [from = '', to = ''] = props.value.split(',');
-            return { between: { from, to } };
-        }
+        const [from = '', to = ''] = props.value.split(',');
+        return { between: { from, to } };
     }
     return { between: { from: '', to: '' } };
 };
