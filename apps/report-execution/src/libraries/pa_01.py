@@ -10,6 +10,7 @@ from src.models import ReportResult, Table
       by workers
     - loosen up and/or simplify report_title regex
     - tests with no data and edge cases
+    - remove notes file from git
 """
 
 Pa01Row = tuple[
@@ -64,7 +65,7 @@ def execute(
     disease_type = title_parts['disease_type']
 
     # STD_HIV_DATAMART1 in SAS
-    base_query = f"""
+    case_interviews_query = f"""
       WITH base AS
       (
         {subset_query}
@@ -125,14 +126,41 @@ def execute(
                 CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE);
     """
 
-    # tables
-    base = trx.query(base_query)
+    # query result tables
+    case_interviews = trx.query(case_interviews_query)
     timed_interviews = trx.query(timed_interviews_query)
 
-    # calculations
-    cases_assigned = _calc_cases_assigned(base)
-    cases_closed, cases_closed_percent = _calc_cases_closed(base, cases_assigned)
-    cases_ixd, cases_ixd_percent = _calc_cases_ixd(base, cases_assigned)
+    # output CSV data
+    rows = _build_output_for_worker(case_interviews, timed_interviews)
+
+    content = Table(
+        columns=CSV_COLUMNS,
+        data=rows,
+    )
+
+    return ReportResult(content_type='table', content=content)
+
+
+def _build_output_for_worker(
+    case_interviews: Table, timed_interviews: Table, worker=None
+) -> list[Pa01Row]:
+    """Perform all needed calculations for a given worker, output data for
+    the final CSV.
+
+    Args:
+        case_interviews: Result Table from the case_interviews query
+        timed_interviews: Result Table from the timed_interviews query
+        worker: The worker the data is being calculated for (None means "ALL")
+
+    Returns:
+        List of calculated data for a given worker, meant for the final CSV of 
+        PA01
+    """
+    cases_assigned = _calc_cases_assigned(case_interviews)
+    cases_closed, cases_closed_percent = _calc_cases_closed(
+        case_interviews, cases_assigned
+    )
+    cases_ixd, cases_ixd_percent = _calc_cases_ixd(case_interviews, cases_assigned)
     cases_ixd_buckets = _calc_interview_day_buckets(timed_interviews, cases_ixd)
     cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
         timed_interviews, cases_ixd
@@ -214,14 +242,7 @@ def execute(
         ),
     ]
 
-    breakpoint()
-
-    content = Table(
-        columns=CSV_COLUMNS,
-        data=rows,
-    )
-
-    return ReportResult(content_type='table', content=content)
+    return rows
 
 
 def _get_report_title_parts(report_title: str) -> dict:
