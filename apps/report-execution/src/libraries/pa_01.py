@@ -14,13 +14,13 @@ from src.models import ReportResult, Table
 """
 
 Pa01Row = tuple[
-    str,          # Worker
-    str,          # Category 1
-    str,          # Category 2
-    str | None,   # Category 3
-    int | None,   # Count
-    float | None, # Percentage
-    float | None, # Index
+    str,  # Worker
+    str,  # Category 1
+    str,  # Category 2
+    str | None,  # Category 3
+    int | None,  # Count
+    float | None,  # Percentage
+    float | None,  # Index
 ]
 
 ALL = 'ALL'
@@ -293,25 +293,13 @@ def _build_output_for_worker(
     return rows
 
 
-def _get_report_title_parts(report_title: str) -> dict:
-    """Get the needed parts from the report title to differentiate between types.
-
-    - STD/HIV
-    - Interview Assign Date/Closed Date
-    """
-    match = re.match(
-        r'^PA01 Case Management Report \((.+)\) - (STD|HIV)$', report_title
-    )
-    groups = match.groups()
-
-    return {'date_type': groups[0], 'disease_type': groups[1]}
-
-
 def _calc_cases_assigned(table: Table) -> int:
+    """Calculate 'Cases Assigned' count."""
     return len(table.get_unique_column('INV_LOCAL_ID'))
 
 
 def _calc_cases_closed(table: Table, cases_assigned: int) -> tuple[int, str]:
+    """Calculate 'Cases Closed' count and percentage."""
     data = {
         d['INV_LOCAL_ID']
         for d in table.data_as_dicts()
@@ -327,6 +315,7 @@ def _calc_cases_closed(table: Table, cases_assigned: int) -> tuple[int, str]:
 
 
 def _calc_cases_ixd(table: Table, cases_assigned: int) -> tuple[int, str]:
+    """Calculate "Cases IX'D" count and percentage."""
     data = table.data_as_dicts()
     case_ids = {
         d['INV_LOCAL_ID']
@@ -343,6 +332,7 @@ def _calc_cases_ixd(table: Table, cases_assigned: int) -> tuple[int, str]:
 def _calc_interview_day_buckets(
     table: Table, cases_ixd: int
 ) -> dict[int, tuple[int, str]]:
+    """Calculate "Cases IX'D" count and percentage for within 3, 5, 7, and 14 days."""
     rows = [
         d
         for d in table.data_as_dicts()
@@ -362,6 +352,7 @@ def _calc_interview_day_buckets(
 
 
 def _calc_cases_reinterviewed(table: Table, cases_ixd: int) -> tuple[int, str]:
+    """Calculate 'Cases Reinterviewed' count and percentage."""
     case_ids = {
         d['INV_LOCAL_ID']
         for d in table.data_as_dicts()
@@ -377,6 +368,7 @@ def _calc_cases_reinterviewed(table: Table, cases_ixd: int) -> tuple[int, str]:
 def _calc_hiv_previous_positive(
     case_interviews: Table, cases_assigned: int
 ) -> tuple[int, str]:
+    """Calculate 'HIV Previous Positive' count and percentage."""
     case_ids = {
         d['INV_LOCAL_ID']
         for d in case_interviews.data_as_dicts()
@@ -391,6 +383,7 @@ def _calc_hiv_previous_positive(
 
 
 def _calc_hiv_tested(case_interviews: Table, cases_assigned: int) -> tuple[int, str]:
+    """Calculate 'HIV Tested' count and percentage."""
     case_ids = {
         d['INV_LOCAL_ID']
         for d in case_interviews.data_as_dicts()
@@ -405,6 +398,7 @@ def _calc_hiv_tested(case_interviews: Table, cases_assigned: int) -> tuple[int, 
 
 
 def _calc_hiv_new_positive(case_interviews: Table, hiv_tested: int) -> tuple[int, str]:
+    """Calculate 'HIV New Positive' count and percentage."""
     positive_results = {
         '13-Positive/Reactive',
         '21-HIV-1 Pos',
@@ -429,6 +423,7 @@ def _calc_hiv_new_positive(case_interviews: Table, hiv_tested: int) -> tuple[int
 def _calc_hiv_posttest_counsel(
     case_interviews: Table, hiv_tested: int
 ) -> tuple[int, str]:
+    """Calculate 'HIV Posttest Counsel' count and percentage."""
     case_ids = {
         d['INV_LOCAL_ID']
         for d in case_interviews.data_as_dicts()
@@ -441,7 +436,16 @@ def _calc_hiv_posttest_counsel(
 
     return count, f'{percent}%'
 
-# partner notification index
-# %let PER_N = %sysevalf(%eval(&Val_N) / %eval(&Val_C)) ;
-# select sum(var_n) into :Val_N
-# from pix ;
+
+def _get_report_title_parts(report_title: str) -> dict:
+    """Get the needed parts from the report title to differentiate between types.
+
+    - STD/HIV
+    - Interview Assign Date/Closed Date
+    """
+    match = re.match(
+        r'^PA01 Case Management Report \((.+)\) - (STD|HIV)$', report_title
+    )
+    groups = match.groups()
+
+    return {'date_type': groups[0], 'disease_type': groups[1]}
