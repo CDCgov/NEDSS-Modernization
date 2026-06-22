@@ -13,6 +13,12 @@ from src.models import ReportResult, Table
     - remove notes file from git
 """
 
+# Constants
+ALL = 'ALL'
+CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
+CASES_IXD = "Cases IX'D"
+
+# CSV row data shape
 Pa01Row = tuple[
     str,  # Worker
     str,  # Category 1
@@ -23,10 +29,7 @@ Pa01Row = tuple[
     float | None,  # Index
 ]
 
-ALL = 'ALL'
-CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
-CASES_IXD = "Cases IX'D"
-
+# CSV columns
 CSV_COLUMNS = [
     'Worker',
     'Category 1',
@@ -127,12 +130,106 @@ def execute(
                 CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE);
     """
 
+    partner_notification_query = f"""
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_base AS
+      (
+        SELECT b.*
+        FROM base b
+          JOIN RDB.dbo.INVESTIGATION i
+            ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+           AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+           AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT COUNT(DISTINCT fb.INV_LOCAL_ID) AS partner_notification_count
+      FROM filtered_base fb
+             JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
+               ON fcrc.SUBJECT_INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+             JOIN RDB.dbo.STD_HIV_DATAMART contact_dm
+               ON contact_dm.INVESTIGATION_KEY = fcrc.CONTACT_INVESTIGATION_KEY
+             JOIN RDB.dbo.D_CONTACT_RECORD dcr
+               ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
+              AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
+        LEFT JOIN RDB.dbo.D_PROVIDER dp
+               ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
+      WHERE dcr.CTT_REFERRAL_BASIS IN (
+        'P1 - Partner, Sex',
+        'P2 - Partner, Needle-Sharing',
+        'P3 - Partner, Both'
+      )
+      AND contact_dm.FL_FUP_DISPOSITION IN (
+        '2 - Prev. Neg, New Pos',
+        '3 - Prev. Neg, Still Neg',
+        '5 - No Prev Test, New Pos',
+        '6 - No Prev Test, New Neg'
+      );
+    """
+
+    testing_index_query = f"""
+     WITH base AS
+     (
+       {subset_query}
+     ),
+     filtered_base AS
+     (
+       -- STD_HIV_DATAMART1 in PA01_HIV.sas
+       SELECT b.*
+       FROM base b
+         INNER JOIN RDB.dbo.INVESTIGATION i
+                 ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+     )
+     SELECT COUNT(DISTINCT dcr.LOCAL_ID) AS testing_index_count
+     FROM filtered_base fb
+       INNER JOIN RDB.dbo.INVESTIGATION i 
+               ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+       INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
+               ON fcrc.SUBJECT_INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+       INNER JOIN RDB.dbo.STD_HIV_DATAMART contact_dm
+               ON contact_dm.INVESTIGATION_KEY = fcrc.CONTACT_INVESTIGATION_KEY
+       INNER JOIN RDB.dbo.D_CONTACT_RECORD dcr
+               ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
+              AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
+        LEFT JOIN RDB.dbo.F_INTERVIEW_CASE fic
+               ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+        LEFT JOIN RDB.dbo.D_INTERVIEW di
+               ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
+              AND di.RECORD_STATUS_CD <> 'LOG_DEL'
+        LEFT JOIN RDB.dbo.D_PROVIDER dp
+               ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
+     WHERE dcr.CTT_REFERRAL_BASIS IN (
+        'P1 - Partner, Sex',
+        'P2 - Partner, Needle-Sharing',
+        'P3 - Partner, Both'
+     )
+     AND contact_dm.FL_FUP_DISPOSITION IN (
+        '2 - Prev. Neg, New Pos',
+        '3 - Prev. Neg, Still Neg',
+        '5 - No Prev Test, New Pos',
+        '6 - No Prev Test, New Neg'
+     );
+
+    """
+
     # query result tables
     case_interviews = trx.query(case_interviews_query)
     timed_interviews = trx.query(timed_interviews_query)
+    partner_notification = trx.query(partner_notification_query)
+    testing_index = trx.query(testing_index_query)
+
+    tables = {
+        'case_interviews': case_interviews,
+        'timed_interviews': timed_interviews,
+        'partner_notification': partner_notification,
+        'testing_index': testing_index,
+    }
 
     # output CSV data
-    rows = _build_output_for_worker(case_interviews, timed_interviews)
+    rows = _build_output_for_worker(tables)
 
     content = Table(
         columns=CSV_COLUMNS,
@@ -142,41 +239,47 @@ def execute(
     return ReportResult(content_type='table', content=content)
 
 
-def _build_output_for_worker(
-    case_interviews: Table, timed_interviews: Table, worker=None
-) -> list[Pa01Row]:
+def _build_output_for_worker(tables: dict, worker=None) -> list[Pa01Row]:
     """Perform all needed calculations for a given worker, output data for
     the final CSV.
 
     Args:
-        case_interviews: Result Table from the case_interviews query
-        timed_interviews: Result Table from the timed_interviews query
+        tables: Dict of Tables, which are query results indexed by their name
         worker: The worker the data is being calculated for (None means "ALL")
 
     Returns:
-        List of calculated data for a given worker, meant for the final CSV of
-        PA01
+        List of calculated data for a given worker, meant for the final CSV of PA01
     """
     # "Case Assignments & Outcomes" section
-    cases_assigned = _calc_cases_assigned(case_interviews)
+    cases_assigned = _calc_cases_assigned(tables['case_interviews'])
     cases_closed, cases_closed_percent = _calc_cases_closed(
-        case_interviews, cases_assigned
+        tables['case_interviews'], cases_assigned
     )
-    cases_ixd, cases_ixd_percent = _calc_cases_ixd(case_interviews, cases_assigned)
-    cases_ixd_buckets = _calc_interview_day_buckets(timed_interviews, cases_ixd)
+    cases_ixd, cases_ixd_percent = _calc_cases_ixd(
+        tables['case_interviews'], cases_assigned
+    )
+    cases_ixd_buckets = _calc_interview_day_buckets(
+        tables['timed_interviews'], cases_ixd
+    )
     cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
-        timed_interviews, cases_ixd
+        tables['timed_interviews'], cases_ixd
     )
     hiv_previous_positive, hiv_previous_positive_percent = _calc_hiv_previous_positive(
-        case_interviews, cases_assigned
+        tables['case_interviews'], cases_assigned
     )
-    hiv_tested, hiv_tested_percent = _calc_hiv_tested(case_interviews, cases_assigned)
+    hiv_tested, hiv_tested_percent = _calc_hiv_tested(
+        tables['case_interviews'], cases_assigned
+    )
     hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
-        case_interviews, hiv_tested
+        tables['case_interviews'], hiv_tested
     )
     hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
-        case_interviews, hiv_tested
+        tables['case_interviews'], hiv_tested
     )
+    partner_notification_index = _calc_partner_notification_index(
+        tables['partner_notification'], cases_ixd
+    )
+    testing_index = _calc_testing_index(tables['testing_index'], cases_ixd)
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -287,6 +390,24 @@ def _build_output_for_worker(
             hiv_posttest_counsel,
             hiv_posttest_counsel_percent,
             None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Partner Notification Index',
+            None,
+            None,
+            None,
+            partner_notification_index,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Testing Index',
+            None,
+            None,
+            None,
+            testing_index,
         ),
     ]
 
@@ -435,6 +556,24 @@ def _calc_hiv_posttest_counsel(
     percent = round((count / hiv_tested) * 100, 1) if hiv_tested else 0
 
     return count, f'{percent}%'
+
+
+def _calc_partner_notification_index(
+    partner_notification: Table, cases_ixd: int
+) -> str:
+    """Calculate 'Partner Notification Index'."""
+    partner_notification_count = len(partner_notification.data)
+    index = round(partner_notification_count / cases_ixd, 2) if cases_ixd else 0
+
+    return f'{index:0.2f}'
+
+
+def _calc_testing_index(testing_index: Table, cases_ixd: int) -> str:
+    """Calculate 'Testing Index'."""
+    testing_index_count = len(testing_index.data)
+    index = round(testing_index_count / cases_ixd, 2) if cases_ixd else 0
+
+    return f'{index:0.2f}'
 
 
 def _get_report_title_parts(report_title: str) -> dict:
