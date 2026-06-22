@@ -5,20 +5,18 @@ import { Selectable } from '../../../../../options';
 
 const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
     const id = useId();
-    const title = props['title'] ?? '';
-    let options = props['options'] ?? [];
+    const title = props.title ?? '';
+    const options = props.options ?? [];
 
     const handleOnChange = (value: Selectable | null) => {
         if (value === null) return;
-        props.handleOnChange(value['value'] ?? '');
+        props.handleOnChange(value.value ?? '');
     };
 
-    let currentSelection: Selectable | null;
-
-    currentSelection = options.find((opt) => opt.value === props.value) || '';
+    const currentSelection: Selectable | null = options.find((opt) => opt.value === props.value) || null;
 
     if (props.className === 'rule-operators') {
-        let availableOperators = props['fieldData']['operators'];
+        const availableOperators = props.fieldData.operators;
         options = options.filter(
             // retain placeholder and operator options available on field selection
             (opt) => !!availableOperators.find((operator) => operator.name == opt.name || opt.name === '~')

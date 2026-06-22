@@ -246,7 +246,6 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                             dragHandle: ShiftableDragHandle,
                             valueEditor: ValueEditor,
                             valueSelector: ValueSingleSelector,
-                            // actionElement: RemoveButton,
                             addGroupAction: AddButton,
                             addRuleAction: AddButton,
                             removeGroupAction: RemoveButton,
