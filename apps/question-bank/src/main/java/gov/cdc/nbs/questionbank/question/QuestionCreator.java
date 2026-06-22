@@ -17,7 +17,6 @@ import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
-import gov.cdc.nbs.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
@@ -25,6 +24,7 @@ import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionReques
 import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
+import gov.cdc.nbs.repository.NbsConfigurationRepository;
 import java.time.Instant;
 import org.springframework.stereotype.Component;
 
