@@ -48,8 +48,10 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
             if (rangeErrorMsg) setInvalid(id, rangeErrorMsg);
             return;
         } else if (BINARY_OPERATORS.find((name) => name === operator)) {
-            if (rule.value.trim() === '') {
-                setInvalid(id, getMissingValErrorMsg(label, false));
+            if (typeof value === 'string') {
+                if ((value as string).trim() === '') {
+                    setInvalid(id, getMissingValErrorMsg(label, false));
+                }
             }
         }
     } else if (isRuleGroupType(rule)) {
