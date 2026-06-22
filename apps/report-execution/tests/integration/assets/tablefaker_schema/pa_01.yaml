@@ -8,6 +8,9 @@
 # D_CONTACT_RECORD
 config:
   seed: 19
+  nbs:
+    fk_tables:
+      - "[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]"
 
 tables:
   - table_name: "[RDB].[dbo].[INVESTIGATION]"
