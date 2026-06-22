@@ -70,6 +70,7 @@ const SECTIONS = [
                 Use AND to require all connected rules or groups to match, or OR to require
                 only one to match. Your advanced filter combines with your basic filters
                 using AND logic. The WHERE clause preview shows your advanced filter as you build it."
+                contentWidth="widescreen"
             >
                 <AdvancedFilter filter={config.advancedFilter!} columns={config.columns} />
             </Card>

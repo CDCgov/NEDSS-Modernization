@@ -2,6 +2,10 @@
 @use 'styles/borders';
 @use 'styles/components';
 
+$content-width: (
+    'widescreen': 90rem,
+);
+
 section.card {
     &.disabled {
         background-color: colors.$base-lightest;
@@ -32,5 +36,14 @@ section.card {
 
     .required {
         @include components.required();
+    }
+
+    @each $name, $value in $content-width {
+        &--#{$name} {
+            // target the content div
+            header + div {
+                width: $value;
+            }
+        }
     }
 }

@@ -5,7 +5,6 @@ import QueryBuilder, {
     formatQuery,
     isRuleType,
     joinWith,
-    Operator,
     QueryValidator,
     RuleGroupType,
     splitBy,
@@ -31,6 +30,7 @@ import { RemoveButton } from '././RemoveButton.tsx';
 import styles from './advanced-filter.module.scss';
 import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
+import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
 
 // ============= Constants ============= /
 
@@ -38,120 +38,6 @@ const EMPTY_QUERY: QbRuleGroup = {
     id: crypto.randomUUID(),
     combinator: RuleGroup.combinator.AND,
     rules: [{ id: crypto.randomUUID(), field: '~', operator: '~', value: '' }],
-};
-
-type NbsOperator = Operator & { nbsCd: string };
-
-const EQ_OPERATORS: NbsOperator[] = [
-    {
-        name: '=',
-        nbsCd: 'EQ',
-        label: 'Equals',
-        arity: 'binary',
-    },
-    {
-        name: '!=',
-        nbsCd: 'NE',
-        label: 'Not Equals',
-        arity: 'binary',
-    },
-];
-
-const LIST_OPERATORS: NbsOperator[] = [
-    {
-        name: 'in',
-        nbsCd: 'EQ',
-        label: 'Equals',
-        arity: 'binary',
-    },
-    {
-        name: 'notIn',
-        nbsCd: 'NE',
-        label: 'Not Equals',
-        arity: 'binary',
-    },
-];
-
-const NULL_OPERATORS: NbsOperator[] = [
-    {
-        name: 'null',
-        nbsCd: 'IN',
-        label: 'Is Null',
-        arity: 'unary',
-    },
-    {
-        name: 'notNull',
-        nbsCd: 'NN',
-        label: 'Is Not Null',
-        arity: 'unary',
-    },
-];
-
-const STRING_OPERATORS: NbsOperator[] = [
-    {
-        name: 'contains',
-        nbsCd: 'CO',
-        label: 'Contains',
-        arity: 'binary',
-    },
-    {
-        name: 'beginswith',
-        nbsCd: 'SW',
-        label: 'Starts With',
-        arity: 'binary',
-    },
-];
-
-const NUMERIC_OPERATORS: NbsOperator[] = [
-    {
-        name: 'between',
-        nbsCd: 'BW',
-        label: 'Between',
-        arity: 'ternary',
-    },
-    {
-        name: '<',
-        nbsCd: 'LT',
-        label: 'Less Than',
-        arity: 'binary',
-    },
-    {
-        name: '>',
-        nbsCd: 'GT',
-        label: 'Greater Than',
-        arity: 'binary',
-    },
-
-    {
-        name: '<=',
-        nbsCd: 'LE',
-        label: 'Less Or Equal',
-        arity: 'binary',
-    },
-
-    {
-        name: '>=',
-        nbsCd: 'GE',
-        label: 'Greater Or Equal',
-        arity: 'binary',
-    },
-];
-
-const ALL_OPERATORS = [
-    ...EQ_OPERATORS,
-    ...NULL_OPERATORS,
-    ...LIST_OPERATORS,
-    ...STRING_OPERATORS,
-    ...NUMERIC_OPERATORS,
-];
-export const BINARY_OPERATORS = ALL_OPERATORS.filter(({ arity }) => arity === 'binary').map(({ name }) => name);
-
-const OPERATOR_MAP: Record<string, NbsOperator[]> = {
-    STRING: [...EQ_OPERATORS, ...NULL_OPERATORS, ...STRING_OPERATORS],
-    INTEGER: [...EQ_OPERATORS, ...NULL_OPERATORS, ...NUMERIC_OPERATORS],
-    NUMBER: [...EQ_OPERATORS, ...NULL_OPERATORS, ...NUMERIC_OPERATORS],
-    DATETIME: [...EQ_OPERATORS, ...NULL_OPERATORS, ...NUMERIC_OPERATORS],
-    CODED: [...LIST_OPERATORS, ...NULL_OPERATORS],
 };
 
 const INPUT_TYPE_MAP: Record<string, string> = {

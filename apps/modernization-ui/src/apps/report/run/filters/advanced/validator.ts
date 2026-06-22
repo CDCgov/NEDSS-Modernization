@@ -1,7 +1,7 @@
 // matches date format (e.g. 11/01/2020 1/1/2020)
 import { isRuleGroupType, isRuleType, RuleGroupTypeAny, RuleType, ValidationResult } from 'react-querybuilder';
-import { BINARY_OPERATORS } from './AdvancedFilter.tsx';
 import { getRangeValErrorMsg, isDateFormat, validateDateRange, validateNumericRange } from '../utils/rangeValidator.ts';
+import { BINARY_OPERATORS } from './operators.ts';
 
 export type ValidationResultMap = Record<string, ValidationResult>;
 
@@ -11,7 +11,7 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
         result[id]['reasons'] = [reason];
     };
     if (isRuleType(rule)) {
-        const {id, field, operator, value, label} = rule;
+        const { id, field, operator, value, label } = rule;
 
         if (!id) return; // no key for the map, shouldn't happen in practice
         // default valid
