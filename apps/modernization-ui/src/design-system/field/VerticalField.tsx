@@ -17,14 +17,9 @@ type Props = {
     children: ReactNode;
 };
 
-const displayLabel = (label, required) => {
-    if (label) return Boolean(label);
-    return required && Boolean(label);
-};
-
 const VerticalField = ({ className, htmlFor, label, helperText, required, error, warning, children }: Props) => (
     <span className={classNames(styles.entry, className)}>
-        {displayLabel(label, required) && (
+        {!!label && (
             <span className={styles.labels}>
                 <label className={classNames({ [styles.required]: required })} htmlFor={htmlFor}>
                     {label}

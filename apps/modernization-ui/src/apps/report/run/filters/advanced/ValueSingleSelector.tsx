@@ -7,6 +7,7 @@ const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
     const id = useId();
     const title = props.title ?? '';
     const options = props.options ?? [];
+    let availableOptions;
 
     const handleOnChange = (value: Selectable | null) => {
         if (value === null) return;
@@ -17,13 +18,15 @@ const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
 
     if (props.className === 'rule-operators') {
         const availableOperators = props.fieldData.operators;
-        options = options.filter(
+        availableOptions = options.filter(
             // retain placeholder and operator options available on field selection
             (opt) => !!availableOperators.find((operator) => operator.name == opt.name || opt.name === '~')
         );
     }
 
-    options = options.map((opt) => ({
+    // adjust the name to the label so it displays the easy-to-read name
+    // (e.g. "Investigation ID" instead of "public_health_case_uid" in dropdown)
+    availableOptions = options.map((opt) => ({
         ...opt,
         name: opt.label,
     }));
@@ -39,7 +42,7 @@ const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
                 required
                 placeholder={''}
                 name={title}
-                options={options}
+                options={availableOptions}
             />
         </span>
     );
