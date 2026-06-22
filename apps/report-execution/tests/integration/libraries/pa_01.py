@@ -3,14 +3,14 @@ import logging
 import pytest
 
 from src.execute_report import execute_report
-from src.models import ReportSpec
+from src.models import ReportSpec, serialize_table
 
 faker_schema = 'pa_01.yaml'
 
 logging.basicConfig(level='INFO')
 
 
-#@pytest.mark.usefixtures('setup_containers', 'fake_db_table')
+# @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationPa01Library:
     """Integration tests for the pa_01 library."""
@@ -33,5 +33,10 @@ class TestIntegrationPa01Library:
 
         assert result is not None
 
+        csv_str = serialize_table(result.content)
+        with open('/tmp/out.csv', 'w') as fd:
+            fd.write(csv_str)
+
+        logging.info(result.content.columns)
         for row in result.content.data:
             logging.info(row)
