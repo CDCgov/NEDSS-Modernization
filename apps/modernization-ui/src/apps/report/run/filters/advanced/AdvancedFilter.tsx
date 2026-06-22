@@ -31,6 +31,7 @@ import styles from './advanced-filter.module.scss';
 import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
 import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
+import { Heading } from '../../../../../components/heading';
 
 // ============= Constants ============= /
 
@@ -229,7 +230,22 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
 
     return (
         <div className={styles.layout}>
-            {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
+            {error?.message && (
+                <AlertBanner type="error">
+                    <Heading level={2}>Fix the following errors:</Heading>
+                    <ul className={'margin-bottom-0'}>
+                        {error.message
+                            .split('.')
+                            .map((str) => str.trim())
+                            .filter(Boolean)
+                            .map((msg, index) => (
+                                <li key={`adv-filter-error-${index}`} className={'margin-bottom-1'}>
+                                    {msg}.
+                                </li>
+                            ))}
+                    </ul>
+                </AlertBanner>
+            )}
             <KeyboardDnDProvider>
                 <QueryBuilderDnD dnd={pragmaticDndAdapter} updateWhileDragging={false}>
                     <QueryBuilder

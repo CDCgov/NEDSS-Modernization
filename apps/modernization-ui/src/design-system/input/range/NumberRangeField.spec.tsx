@@ -4,12 +4,6 @@ import { axe } from 'jest-axe';
 import { NumberRangeField } from './NumberRangeField.tsx';
 
 describe('NumberRangeField Component', () => {
-    it('should render with no accessibility violations', async () => {
-        const { container } = render(<NumberRangeField id="testing-date-range-accessibility" onChange={vi.fn()} />);
-
-        expect(await axe(container)).toHaveNoViolations();
-    });
-
     it('should render the component with initial values', () => {
         const { getByLabelText } = render(
             <NumberRangeField

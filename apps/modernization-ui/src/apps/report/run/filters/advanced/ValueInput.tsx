@@ -46,9 +46,11 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
         }
     }, [handleOnChange, operator, value]);
 
-    const handleSingleOnChange = (newValue: number | string) => {
-        if (newValue) {
+    const handleSingleOnChange = (newValue: number | string | undefined) => {
+        if (newValue !== undefined) {
             props.handleOnChange(newValue.toString());
+        } else {
+            props.handleOnChange('');
         }
     };
 
@@ -71,7 +73,7 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
                 value={convertedValue}
                 name={labelName}
                 onChange={isBetween ? handleBetweenOnChange : handleSingleOnChange}
-                isRange={isBetween && InputComponent === RANGE_COMPONENTS.number}
+                {...(isBetween && inputType === 'number' ? { isRange: true } : {})}
                 required
             />
         </div>

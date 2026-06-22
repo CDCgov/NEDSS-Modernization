@@ -4,6 +4,12 @@
 
 .layout {
     :global {
+        .alert-banner__right {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
         .queryBuilder {
             padding: 1rem;
         }

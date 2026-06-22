@@ -18,7 +18,6 @@ type RangeInputProps = BaseNumericInputProps & {
 };
 
 type SingleInputProps = BaseNumericInputProps & {
-    isRange?: false;
     value: number;
 };
 
@@ -33,8 +32,7 @@ const NumericInput = ({
     required,
     placeholder,
     helperText,
-    value,
-    isRange,
+    isRange = false,
     ...remaining
 }: NumericInputProps) => {
     return (
@@ -48,14 +46,7 @@ const NumericInput = ({
             helperText={helperText}
         >
             {isRange ? (
-                <NumberRangeField
-                    id={id}
-                    label={label}
-                    value={value}
-                    sizing={sizing}
-                    required={required}
-                    {...remaining}
-                />
+                <NumberRangeField id={id} sizing={sizing} required={required} {...remaining} />
             ) : (
                 <Numeric id={id} placeholder={placeholder} {...remaining} />
             )}
