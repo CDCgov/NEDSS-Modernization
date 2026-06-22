@@ -25,6 +25,7 @@ Pa01Row = tuple[
 
 ALL = 'ALL'
 CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
+CASES_IXD = "Cases IX'D"
 
 CSV_COLUMNS = [
     'Worker',
@@ -153,9 +154,10 @@ def _build_output_for_worker(
         worker: The worker the data is being calculated for (None means "ALL")
 
     Returns:
-        List of calculated data for a given worker, meant for the final CSV of 
+        List of calculated data for a given worker, meant for the final CSV of
         PA01
     """
+    # "Case Assignments & Outcomes" section
     cases_assigned = _calc_cases_assigned(case_interviews)
     cases_closed, cases_closed_percent = _calc_cases_closed(
         case_interviews, cases_assigned
@@ -164,6 +166,13 @@ def _build_output_for_worker(
     cases_ixd_buckets = _calc_interview_day_buckets(timed_interviews, cases_ixd)
     cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
         timed_interviews, cases_ixd
+    )
+    hiv_previous_positive, hiv_previous_positive_percent = _calc_hiv_previous_positive(
+        case_interviews, cases_assigned
+    )
+    hiv_tested, hiv_tested_percent = _calc_hiv_tested(case_interviews, cases_assigned)
+    hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
+        case_interviews, hiv_tested
     )
 
     # output CSV data
@@ -189,7 +198,7 @@ def _build_output_for_worker(
         (
             ALL,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
-            "Cases IX'D",
+            CASES_IXD,
             None,
             cases_ixd,
             cases_ixd_percent,
@@ -198,7 +207,7 @@ def _build_output_for_worker(
         (
             ALL,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
-            "Cases IX'D",
+            CASES_IXD,
             'Within 3 days',
             cases_ixd_buckets[3][0],
             cases_ixd_buckets[3][1],
@@ -207,7 +216,7 @@ def _build_output_for_worker(
         (
             ALL,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
-            "Cases IX'D",
+            CASES_IXD,
             'Within 5 days',
             cases_ixd_buckets[5][0],
             cases_ixd_buckets[5][1],
@@ -216,7 +225,7 @@ def _build_output_for_worker(
         (
             ALL,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
-            "Cases IX'D",
+            CASES_IXD,
             'Within 7 days',
             cases_ixd_buckets[7][0],
             cases_ixd_buckets[7][1],
@@ -225,7 +234,7 @@ def _build_output_for_worker(
         (
             ALL,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
-            "Cases IX'D",
+            CASES_IXD,
             'Within 14 days',
             cases_ixd_buckets[14][0],
             cases_ixd_buckets[14][1],
@@ -238,6 +247,33 @@ def _build_output_for_worker(
             None,
             cases_reinterviewed,
             cases_reinterviewed_percent,
+            None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'HIV Previous Positive',
+            None,
+            hiv_previous_positive,
+            hiv_previous_positive_percent,
+            None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'HIV Tested',
+            None,
+            hiv_tested,
+            hiv_tested_percent,
+            None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'HIV New Positive',
+            None,
+            hiv_new_positive,
+            hiv_new_positive_percent,
             None,
         ),
     ]
@@ -326,96 +362,53 @@ def _calc_cases_reinterviewed(table: Table, cases_ixd: int) -> tuple[int, str]:
     return count, f'{percent}%'
 
 
-# cases_query = f"""
-#       WITH base AS
-#       (
-#         {subset_query}
-#       ),
-#       filtered_base AS
-#       (
-#         -- STD_HIV_DATAMART1 in PA01_HIV.sas
-#         SELECT b.*
-#         FROM base b
-#           INNER JOIN RDB.dbo.INVESTIGATION i
-#                   ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-#                  AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-#                  AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
-#       )
-#       -- pa1_new in PA01_HIV.sas
-#       SELECT DISTINCT fb.INV_LOCAL_ID,
-#              di.IX_TYPE,
-#              i.INV_CASE_STATUS,
-#              i.RECORD_STATUS_CD,
-#              fb.CC_CLOSED_DT,
-#              fb.ADI_900_STATUS_CD,
-#              fb.HIV_POST_TEST_900_COUNSELING,
-#              fb.HIV_900_RESULT,
-#              fb.ADI_900_STATUS,
-#              fb.HIV_900_TEST_IND,
-#              fb.SOURCE_SPREAD,
-#              fb.FL_FUP_INIT_ASSGN_DT,
-#              i.CURR_PROCESS_STATE,
-#              fb.CA_PATIENT_INTV_STATUS,
-#              fb.INVESTIGATOR_INTERVIEW_KEY,
-#              fb.INVESTIGATOR_INTERVIEW_QC,
-#              DATEDIFF(DAY,fb.{PA1_NEW_DATE_COL[disease_type]},di.IX_DATE) AS Days,
-#              dp.PROVIDER_QUICK_CODE
-#       FROM filtered_base fb
-#         LEFT OUTER JOIN RDB.dbo.F_INTERVIEW_CASE fic
-#                      ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-#         LEFT OUTER JOIN RDB.dbo.D_INTERVIEW di
-#                      ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
-#                     AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-#         LEFT OUTER JOIN RDB.dbo.D_PROVIDER dp
-#                      ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
-#         LEFT OUTER JOIN RDB.dbo.INVESTIGATION i
-#                      ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-#     """
-#
-#     interview_dates_query = f"""
-#       WITH base AS
-#       (
-#         {subset_query}
-#       ),
-#       filtered_base AS
-#       (
-#         -- STD_HIV_DATAMART1 in PA01_HIV.sas
-#         SELECT b.*
-#         FROM base b
-#           INNER JOIN RDB.dbo.INVESTIGATION i
-#                   ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-#                  AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-#                  AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
-#       )
-#       -- pa1_dte in PA01_HIV.sas
-#       SELECT DISTINCT fb.INV_LOCAL_ID,
-#              di.IX_TYPE,
-#              i.INV_CASE_STATUS,
-#              i.RECORD_STATUS_CD,
-#              fb.CC_CLOSED_DT,
-#              fb.ADI_900_STATUS_CD,
-#              fb.HIV_POST_TEST_900_COUNSELING,
-#              fb.HIV_900_RESULT,
-#              fb.ADI_900_STATUS,
-#              fb.HIV_900_TEST_IND,
-#              fb.SOURCE_SPREAD,
-#              fb.FL_FUP_INIT_ASSGN_DT,
-#              i.CURR_PROCESS_STATE,
-#              fb.CA_PATIENT_INTV_STATUS,
-#              fb.INVESTIGATOR_INTERVIEW_KEY,
-#              fb.INVESTIGATOR_INTERVIEW_QC,
-#              DATEDIFF(DAY,fb.{PA1_DTE_DATE_COL[disease_type]},di.IX_DATE) AS Days,
-#              dp.PROVIDER_QUICK_CODE
-#       FROM filtered_base fb
-#         INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
-#                 ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-#         INNER JOIN RDB.dbo.D_INTERVIEW di
-#                 ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
-#                AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-#         INNER JOIN RDB.dbo.D_PROVIDER dp
-#                 ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
-#         INNER JOIN RDB.dbo.INVESTIGATION i
-#                 ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-#       WHERE CAST(di.IX_DATE AS DATE) >=
-#                CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE)
-#     """
+def _calc_hiv_previous_positive(
+    case_interviews: Table, cases_assigned: int
+) -> tuple[int, str]:
+    case_ids = {
+        d['INV_LOCAL_ID']
+        for d in case_interviews.data_as_dicts()
+        if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+        and d['ADI_900_STATUS_CD'] in ('03', '04', '05')
+    }
+
+    count = len(case_ids)
+    percent = round((count / cases_assigned) * 100, 1) if cases_assigned else 0
+
+    return count, f'{percent}%'
+
+
+def _calc_hiv_tested(case_interviews: Table, cases_assigned: int) -> tuple[int, str]:
+    case_ids = {
+        d['INV_LOCAL_ID']
+        for d in case_interviews.data_as_dicts()
+        if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+        and d['HIV_900_TEST_IND'] == 'Yes'
+    }
+
+    count = len(case_ids)
+    percent = round((count / cases_assigned) * 100, 1) if cases_assigned else 0
+
+    return count, f'{percent}%'
+
+
+def _calc_hiv_new_positive(case_interviews: Table, hiv_tested: int) -> tuple[int, str]:
+    positive_results = {
+        '13-Positive/Reactive',
+        '21-HIV-1 Pos',
+        '22-HIV-1 Pos, Possible Acute',
+        '23-HIV-2 Pos',
+        '24-HIV-Undifferentiated',
+        '12-Prelim Positive',
+    }
+
+    case_ids = {
+        d['INV_LOCAL_ID']
+        for d in case_interviews.data_as_dicts()
+        if d['HIV_900_RESULT'] in positive_results
+    }
+
+    count = len(case_ids)
+    percent = round((count / hiv_tested) * 100, 1) if hiv_tested else 0
+
+    return count, f'{percent}%'
