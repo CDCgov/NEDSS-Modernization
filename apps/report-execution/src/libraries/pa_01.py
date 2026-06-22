@@ -5,7 +5,7 @@ from src.models import ReportResult, Table
 
 """
     Go backs:
-    - do I need pa1_new?  If so name it "case_interviews"
+    - do I need an equivalent query for pa1_new?
     - once all stats for ALL WORKERS are done, need to re-tool to calculate grouped
       by workers
     - loosen up and/or simplify report_title regex
@@ -14,13 +14,13 @@ from src.models import ReportResult, Table
 """
 
 Pa01Row = tuple[
-    str,  # Worker
-    str,  # Category 1
-    str,  # Category 2
-    str | None,  # Category 3
-    int | None,  # Count
-    float | None,  # Percentage
-    float | None,  # Index
+    str,          # Worker
+    str,          # Category 1
+    str,          # Category 2
+    str | None,   # Category 3
+    int | None,   # Count
+    float | None, # Percentage
+    float | None, # Index
 ]
 
 ALL = 'ALL'
@@ -174,6 +174,9 @@ def _build_output_for_worker(
     hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
         case_interviews, hiv_tested
     )
+    hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
+        case_interviews, hiv_tested
+    )
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -274,6 +277,15 @@ def _build_output_for_worker(
             None,
             hiv_new_positive,
             hiv_new_positive_percent,
+            None,
+        ),
+        (
+            ALL,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'HIV Posttest Counsel',
+            None,
+            hiv_posttest_counsel,
+            hiv_posttest_counsel_percent,
             None,
         ),
     ]
@@ -412,3 +424,24 @@ def _calc_hiv_new_positive(case_interviews: Table, hiv_tested: int) -> tuple[int
     percent = round((count / hiv_tested) * 100, 1) if hiv_tested else 0
 
     return count, f'{percent}%'
+
+
+def _calc_hiv_posttest_counsel(
+    case_interviews: Table, hiv_tested: int
+) -> tuple[int, str]:
+    case_ids = {
+        d['INV_LOCAL_ID']
+        for d in case_interviews.data_as_dicts()
+        if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+        and d['HIV_POST_TEST_900_COUNSELING'] == 'Yes'
+    }
+
+    count = len(case_ids)
+    percent = round((count / hiv_tested) * 100, 1) if hiv_tested else 0
+
+    return count, f'{percent}%'
+
+# partner notification index
+# %let PER_N = %sysevalf(%eval(&Val_N) / %eval(&Val_C)) ;
+# select sum(var_n) into :Val_N
+# from pix ;
