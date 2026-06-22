@@ -70,7 +70,7 @@ export const BETWEEN_OPERATOR: NbsOperator = {
 };
 
 export const NUMERIC_OPERATORS: NbsOperator[] = [
-    ...BETWEEN_OPERATOR,
+    BETWEEN_OPERATOR,
     {
         name: '<',
         nbsCd: 'LT',

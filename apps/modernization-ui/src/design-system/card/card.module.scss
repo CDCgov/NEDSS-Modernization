@@ -40,9 +40,17 @@ section.card {
 
     @each $name, $value in $content-width {
         &--#{$name} {
-            // target the content div
-            header + div {
-                width: $value;
+            header {
+                div {
+                    span:first-of-type {
+                        padding-bottom: 1rem;
+                    }
+                }
+
+                // target the content div
+                + div {
+                    width: $value;
+                }
             }
         }
     }
