@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 
 from src.execute_report import execute_report
@@ -5,8 +7,10 @@ from src.models import ReportSpec
 
 faker_schema = 'pa_01.yaml'
 
+logging.basicConfig(level='INFO')
 
-# @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
+
+#@pytest.mark.usefixtures('setup_containers', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationPa01Library:
     """Integration tests for the pa_01 library."""
@@ -28,3 +32,6 @@ class TestIntegrationPa01Library:
         result = execute_report(report_spec)
 
         assert result is not None
+
+        for row in result.content.data:
+            logging.info(row)
