@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.page.content;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.EntityType;
 import gov.cdc.nbs.questionbank.page.exception.PageContentIdGenerationException;
-import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
+import gov.cdc.nbs.repository.NbsConfigurationRepository;
 import org.springframework.stereotype.Component;
 
 @Component

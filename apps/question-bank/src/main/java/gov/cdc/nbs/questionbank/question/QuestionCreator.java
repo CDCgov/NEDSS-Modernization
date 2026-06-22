@@ -17,7 +17,7 @@ import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
-import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
+import gov.cdc.nbs.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
