@@ -6,7 +6,7 @@ config:
 
 tables:
   - table_name: "[RDB].[dbo].[INVESTIGATION]"
-    row_count: 1000
+    row_count: 500
     columns:
       - column_name: INVESTIGATION_KEY
         data: row_id
@@ -24,7 +24,7 @@ tables:
         data: row_id + 10000000
 
   - table_name: "[RDB].[dbo].[D_PROVIDER]"
-    row_count: 250
+    row_count: 5
     columns:
       - column_name: PROVIDER_KEY
         data: row_id
@@ -36,7 +36,17 @@ tables:
       - column_name: PROVIDER_NAME_SUFFIX
         data: random.choice(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
       - column_name: PROVIDER_QUICK_CODE
-        data: random.choice(["gfreeman", "avance", "adevraj", "dbowman", "fpoole"])
+        data: |
+          if row_id == 1:
+            return "gfreeman"
+          elif row_id == 2:
+            return "avance"
+          elif row_id == 3:
+            return "adevraj"
+          elif row_id == 4:
+            return "dbowman"
+          else:
+            return "fpoole"
         is_primary_key: true
 
   - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
@@ -116,7 +126,7 @@ tables:
 
 
   - table_name: "[RDB].[dbo].[D_INTERVIEW]"
-    row_count: 1000
+    row_count: 500
     columns:
       - column_name: D_INTERVIEW_KEY
         data: row_id
@@ -129,7 +139,7 @@ tables:
         data: date(2024, 1, min(row_id, 14))
 
   - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
-    row_count: 1000
+    row_count: 500
     columns:
       - column_name: INVESTIGATION_KEY
         data: row_id
@@ -137,7 +147,7 @@ tables:
         data: row_id
 
   - table_name: "[RDB].[dbo].[D_CONTACT_RECORD]"
-    row_count: 40
+    row_count: 50
     columns:
       - column_name: D_CONTACT_RECORD_KEY
         data: row_id
