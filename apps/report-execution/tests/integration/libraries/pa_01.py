@@ -1,9 +1,8 @@
+import pytest
 import yaml
 
-import pytest
-
 from src.execute_report import execute_report
-from src.models import ReportSpec, serialize_table
+from src.models import ReportSpec
 
 faker_schema = 'pa_01.yaml'
 
