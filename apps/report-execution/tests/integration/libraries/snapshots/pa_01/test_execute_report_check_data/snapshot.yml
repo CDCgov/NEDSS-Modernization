@@ -3,7 +3,7 @@
   - Case Assignments & Outcomes
   - Cases Assigned
   - null
-  - 395
+  - 185
   - null
   - null
 - !!python/tuple
@@ -11,7 +11,7 @@
   - Case Assignments & Outcomes
   - Cases Closed
   - null
-  - 395
+  - 185
   - 100.0%
   - null
 - !!python/tuple
@@ -19,7 +19,7 @@
   - Case Assignments & Outcomes
   - Cases IX'D
   - null
-  - 395
+  - 185
   - 100.0%
   - null
 - !!python/tuple
@@ -35,8 +35,8 @@
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 5 days
-  - 0
-  - 0.0%
+  - 1
+  - 0.5%
   - null
 - !!python/tuple
   - ALL
@@ -44,55 +44,55 @@
   - Cases IX'D
   - Within 7 days
   - 1
-  - 0.3%
+  - 0.5%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 14 days
-  - 239
-  - 60.5%
+  - 116
+  - 62.7%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - Cases Reinterviewed
   - null
-  - 220
-  - 55.7%
+  - 97
+  - 52.4%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 173
-  - 43.8%
+  - 86
+  - 46.5%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 226
-  - 57.2%
+  - 112
+  - 60.5%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV New Positive
   - null
-  - 323
-  - 142.9%
+  - 150
+  - 133.9%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 236
-  - 104.4%
+  - 99
+  - 88.4%
   - null
 - !!python/tuple
   - ALL

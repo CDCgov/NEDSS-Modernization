@@ -1,4 +1,5 @@
 import re
+from dataclasses import dataclass
 
 from src.db_transaction import Transaction
 from src.models import ReportResult, Table
@@ -46,11 +47,22 @@ PA1_NEW_DATE_COL = {
     'STD': 'CA_INIT_INTVWR_ASSGN_DT',
 }
 
-# The date field differs in SAS for HIV vs. STD
+# The date field for "days" differs in SAS for HIV vs. STD
 PA1_DTE_DATE_COL = {
     'HIV': 'CA_INIT_INTVWR_ASSGN_DT',
     'STD': 'CA_INTERVIEWER_ASSIGN_DT',
 }
+
+
+@dataclass(frozen=True)
+class Pa01Tables:
+    """Query result Tables for the report."""
+
+    filtered_cases: Table
+    case_interview_rows: Table
+    timed_interviews: Table
+    partner_notification: Table
+    testing_index: Table
 
 
 def execute(
@@ -78,8 +90,37 @@ def execute(
 
         return ReportResult(content_type='table', content=content)
 
-    # STD_HIV_DATAMART1 in SAS
-    case_interviews_query = f"""
+    # query result tables
+    filtered_cases = trx.query(_filtered_cases_query(subset_query))
+    case_interview_rows = trx.query(
+        _case_interview_rows_query(subset_query, disease_type)
+    )
+    timed_interviews = trx.query(_timed_interviews_query(subset_query, disease_type))
+    partner_notification = trx.query(_partner_notification_query(subset_query))
+    testing_index = trx.query(_testing_index_query(subset_query))
+
+    pa01_tables = Pa01Tables(
+        filtered_cases,
+        case_interview_rows,
+        timed_interviews,
+        partner_notification,
+        testing_index,
+    )
+
+    # output CSV data
+    rows = _build_output_for_worker(pa01_tables)
+
+    content = Table(
+        columns=CSV_COLUMNS,
+        data=rows,
+    )
+
+    return ReportResult(content_type='table', content=content)
+
+
+def _filtered_cases_query(subset_query: str) -> str:
+    # equivalent of STD_HIV_DATAMART1 in SAS
+    return f"""
       WITH base AS
       (
         {subset_query}
@@ -92,8 +133,63 @@ def execute(
                AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL;
     """
 
-    # pa1_dte in SAS
-    timed_interviews_query = f"""
+
+def _case_interview_rows_query(subset_query: str, disease_type: str) -> str:
+    # equivalent of pa1_new in SAS
+    return f"""
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_cases AS
+      (
+        -- STD_HIV_DATAMART1 in SAS
+        SELECT b.*
+        FROM base b
+          INNER JOIN RDB.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT DISTINCT
+             fc.INV_LOCAL_ID,
+             di.IX_TYPE,
+             i.INV_CASE_STATUS,
+             i.RECORD_STATUS_CD,
+             fc.CC_CLOSED_DT,
+             fc.ADI_900_STATUS_CD,
+             fc.HIV_POST_TEST_900_COUNSELING,
+             fc.HIV_900_RESULT,
+             fc.ADI_900_STATUS,
+             fc.HIV_900_TEST_IND,
+             fc.SOURCE_SPREAD,
+             fc.FL_FUP_INIT_ASSGN_DT,
+             i.CURR_PROCESS_STATE,
+             fc.CA_PATIENT_INTV_STATUS,
+             fc.INVESTIGATOR_INTERVIEW_KEY,
+             fc.INVESTIGATOR_INTERVIEW_QC,
+             DATEDIFF(
+               DAY,
+               CAST(fc.{PA1_NEW_DATE_COL[disease_type]} AS DATE),
+               CAST(di.IX_DATE AS DATE)
+             ) AS Days,
+             dp.PROVIDER_QUICK_CODE
+      FROM filtered_cases fc
+        LEFT JOIN RDB.dbo.F_INTERVIEW_CASE fic
+               ON fic.INVESTIGATION_KEY = fc.INVESTIGATION_KEY
+        LEFT JOIN RDB.dbo.D_INTERVIEW di
+               ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
+              AND di.RECORD_STATUS_CD <> 'LOG_DEL'
+        LEFT JOIN RDB.dbo.D_PROVIDER dp
+               ON dp.PROVIDER_KEY = fc.INVESTIGATOR_INTERVIEW_KEY
+        LEFT JOIN RDB.dbo.INVESTIGATION i
+               ON i.INVESTIGATION_KEY = fc.INVESTIGATION_KEY;
+    """
+
+
+def _timed_interviews_query(subset_query: str, disease_type: str) -> str:
+    # equivalent of pa1_dte in SAS
+    return f"""
       WITH base AS
       (
         {subset_query}
@@ -137,10 +233,12 @@ def execute(
         INNER JOIN RDB.dbo.INVESTIGATION i
                 ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
       WHERE CAST(di.IX_DATE AS DATE) >=
-                CAST(fb.{PA1_DTE_DATE_COL[disease_type]} AS DATE);
+                CAST(fb.CA_INIT_INTVWR_ASSGN_DT AS DATE);
     """
 
-    partner_notification_query = f"""
+
+def _partner_notification_query(subset_query: str) -> str:
+    return f"""
       WITH base AS
       (
         {subset_query}
@@ -178,7 +276,9 @@ def execute(
       );
     """
 
-    testing_index_query = f"""
+
+def _testing_index_query(subset_query: str) -> str:
+    return f"""
       WITH base AS
       (
         {subset_query}
@@ -224,76 +324,46 @@ def execute(
       );
     """
 
-    # query result tables
-    case_interviews = trx.query(case_interviews_query)
-    timed_interviews = trx.query(timed_interviews_query)
-    partner_notification = trx.query(partner_notification_query)
-    testing_index = trx.query(testing_index_query)
 
-    tables = {
-        'case_interviews': case_interviews,
-        'timed_interviews': timed_interviews,
-        'partner_notification': partner_notification,
-        'testing_index': testing_index,
-    }
-
-    # output CSV data
-    rows = _build_output_for_worker(tables)
-
-    content = Table(
-        columns=CSV_COLUMNS,
-        data=rows,
-    )
-
-    # mismatches
-    # - HIV TESTED (250 vs. 226)
-    # - HIV NEW POSITIVE (percentage wrong)
-    # - HIV POSTTEST COUNSEL (261 vs. 236)
-
-    return ReportResult(content_type='table', content=content)
-
-
-def _build_output_for_worker(tables: dict, worker=None) -> list[Pa01Row]:
+def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     """Perform all needed calculations for a given worker, output data for
     the final CSV.
 
     Args:
-        tables: Dict of Tables, which are query results indexed by their name
+        tables: Query results within a Pa01Tables instance
         worker: The worker the data is being calculated for (None means "ALL")
 
     Returns:
         List of calculated data for a given worker, meant for the final CSV of PA01
     """
     # "Case Assignments & Outcomes" section
-    cases_assigned = _calc_cases_assigned(tables['case_interviews'])
+    cases_assigned = _calc_cases_assigned(tables.filtered_cases)
     cases_closed, cases_closed_percent = _calc_cases_closed(
-        tables['case_interviews'], cases_assigned
+        tables.filtered_cases, cases_assigned
     )
     cases_ixd, cases_ixd_percent = _calc_cases_ixd(
-        tables['case_interviews'], cases_assigned
+        tables.filtered_cases, cases_assigned
     )
-    cases_ixd_buckets = _calc_interview_day_buckets(
-        tables['timed_interviews'], cases_ixd
-    )
+    cases_ixd_buckets = _calc_interview_day_buckets(tables.timed_interviews, cases_ixd)
     cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
-        tables['timed_interviews'], cases_ixd
+        tables.case_interview_rows, cases_ixd
     )
     hiv_previous_positive, hiv_previous_positive_percent = _calc_hiv_previous_positive(
-        tables['case_interviews'], cases_assigned
+        tables.filtered_cases, cases_assigned
     )
     hiv_tested, hiv_tested_percent = _calc_hiv_tested(
-        tables['case_interviews'], cases_assigned
+        tables.filtered_cases, cases_assigned
     )
     hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
-        tables['case_interviews'], hiv_tested
+        tables.filtered_cases, hiv_tested
     )
     hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
-        tables['case_interviews'], hiv_tested
+        tables.filtered_cases, hiv_tested
     )
     partner_notification_index = _calc_partner_notification_index(
-        tables['partner_notification'], cases_ixd
+        tables.partner_notification, cases_ixd
     )
-    testing_index = _calc_testing_index(tables['testing_index'], cases_ixd)
+    testing_index = _calc_testing_index(tables.testing_index, cases_ixd)
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -486,12 +556,15 @@ def _calc_interview_day_buckets(
     return results
 
 
-def _calc_cases_reinterviewed(table: Table, cases_ixd: int) -> tuple[int, str]:
+def _calc_cases_reinterviewed(
+    case_interview_rows: Table, cases_ixd: int
+) -> tuple[int, str]:
     """Calculate 'Cases Reinterviewed' count and percentage."""
     case_ids = {
         d['INV_LOCAL_ID']
-        for d in table.data_as_dicts()
+        for d in case_interview_rows.data_as_dicts()
         if d['IX_TYPE'] == 'Re-Interview'
+        and d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
     }
 
     count = len(case_ids)
@@ -501,12 +574,12 @@ def _calc_cases_reinterviewed(table: Table, cases_ixd: int) -> tuple[int, str]:
 
 
 def _calc_hiv_previous_positive(
-    case_interviews: Table, cases_assigned: int
+    filtered_cases: Table, cases_assigned: int
 ) -> tuple[int, str]:
     """Calculate 'HIV Previous Positive' count and percentage."""
     case_ids = {
         d['INV_LOCAL_ID']
-        for d in case_interviews.data_as_dicts()
+        for d in filtered_cases.data_as_dicts()
         if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
         and d['ADI_900_STATUS_CD'] in ('03', '04', '05')
     }
@@ -517,11 +590,11 @@ def _calc_hiv_previous_positive(
     return count, f'{percent}%'
 
 
-def _calc_hiv_tested(case_interviews: Table, cases_assigned: int) -> tuple[int, str]:
+def _calc_hiv_tested(filtered_cases: Table, cases_assigned: int) -> tuple[int, str]:
     """Calculate 'HIV Tested' count and percentage."""
     case_ids = {
         d['INV_LOCAL_ID']
-        for d in case_interviews.data_as_dicts()
+        for d in filtered_cases.data_as_dicts()
         if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
         and d['HIV_900_TEST_IND'] == 'Yes'
     }
@@ -532,7 +605,7 @@ def _calc_hiv_tested(case_interviews: Table, cases_assigned: int) -> tuple[int, 
     return count, f'{percent}%'
 
 
-def _calc_hiv_new_positive(case_interviews: Table, hiv_tested: int) -> tuple[int, str]:
+def _calc_hiv_new_positive(filtered_cases: Table, hiv_tested: int) -> tuple[int, str]:
     """Calculate 'HIV New Positive' count and percentage."""
     positive_results = {
         '13-Positive/Reactive',
@@ -545,7 +618,7 @@ def _calc_hiv_new_positive(case_interviews: Table, hiv_tested: int) -> tuple[int
 
     case_ids = {
         d['INV_LOCAL_ID']
-        for d in case_interviews.data_as_dicts()
+        for d in filtered_cases.data_as_dicts()
         if d['HIV_900_RESULT'] in positive_results
     }
 
@@ -556,12 +629,12 @@ def _calc_hiv_new_positive(case_interviews: Table, hiv_tested: int) -> tuple[int
 
 
 def _calc_hiv_posttest_counsel(
-    case_interviews: Table, hiv_tested: int
+    filtered_cases: Table, hiv_tested: int
 ) -> tuple[int, str]:
     """Calculate 'HIV Posttest Counsel' count and percentage."""
     case_ids = {
         d['INV_LOCAL_ID']
-        for d in case_interviews.data_as_dicts()
+        for d in filtered_cases.data_as_dicts()
         if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
         and d['HIV_POST_TEST_900_COUNSELING'] == 'Yes'
     }
