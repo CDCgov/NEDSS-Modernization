@@ -29,6 +29,20 @@ vi.mock('options/concepts/useConceptOptions', () => ({
     useConceptOptions: vi.fn(),
 }));
 
+// mock identifier to display "Save" button
+vi.mock('user', () => ({
+    useUser: () => ({
+        state: {
+            user: {
+                identifier: 0,
+                name: {
+                    display: 'User Name',
+                },
+            },
+        },
+    }),
+}));
+
 vi.mock('libs/permission', async () => {
     const actual = await vi.importActual<typeof import('libs/permission')>('libs/permission');
     return {
@@ -59,14 +73,23 @@ const localStorageMock: Storage = {
     length: 0,
 };
 
+// mock location to see if redirect works
+const locationMock = {
+    href: '',
+} as Location;
+
 let originalLocalStorage: Storage;
+let originalWindow: Location;
 beforeAll((): void => {
     originalLocalStorage = window.localStorage;
+    originalWindow = window.location;
     (window as any).localStorage = localStorageMock;
+    (window as any).location = locationMock;
 });
 
 afterAll((): void => {
     (window as any).localStorage = originalLocalStorage;
+    (window as any).location = originalWindow;
 });
 
 afterEach(() => {
@@ -150,6 +173,11 @@ const MOCK_RESULT: generated.ReportExecutionResult = {
     timestamp: '2026-06-17T19:11:35.595501658',
 };
 
+const MOCK_SAVE_RESULT: generated.ReportId = {
+    reportUid: 1,
+    dataSourceUid: 2,
+};
+
 const renderWithRouter = () => {
     const routes = [
         {
@@ -206,6 +234,43 @@ describe('report run page', () => {
             expect(await findByText(/Your report has downloaded/)).toBeVisible();
             expect(windowOpen).not.toHaveBeenCalled();
             expect(fileDownload).toHaveBeenCalled();
+        });
+
+        it('save button saves report execution request', async () => {
+            const user = userEvent.setup();
+            vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
+            const mockApi = vi.mocked(generated.ReportControllerService.runReport).mockResolvedValue(MOCK_RESULT);
+            const mockSaveApi = vi
+                .mocked(generated.ReportControllerService.saveReport)
+                .mockResolvedValue(MOCK_SAVE_RESULT);
+
+            const { findByRole, findByText, getAllByRole } = renderWithRouter();
+
+            const runButton = await findByRole('button', { name: 'Run' });
+            await user.click(runButton);
+            expect(mockApi).toHaveBeenCalledWith({ requestBody: expect.objectContaining({ isExport: false }) });
+
+            expect(await findByText(/Your report has opened in a new tab/)).toBeVisible();
+            const saveButtons = await getAllByRole('button', { name: 'Save' });
+            await user.click(saveButtons[0]);
+
+            expect(await findByText(/Overwrite saved report?/)).toBeVisible();
+            await user.click(saveButtons[1]);
+
+            expect(mockSaveApi).toHaveBeenCalledWith({
+                dataSourceUid: 1,
+                reportUid: 2,
+                requestBody: expect.objectContaining({
+                    advancedFilter: undefined,
+                    basicFilters: [],
+                    columnUids: undefined,
+                    dataSourceUid: 1,
+                    isExport: false,
+                    reportUid: 2,
+                    sort: undefined,
+                }),
+            });
+            expect(window.location.href).toBe('/nbs/nfc?ObjectType=7&OperationType=116');
         });
     });
 

@@ -4,6 +4,7 @@ import {
     BasicFilterRequest,
     ReportConfiguration,
     ReportControllerService,
+    ReportExecutionRequest,
     SortSpec,
 } from 'generated';
 import { useCallback, useState } from 'react';
@@ -44,9 +45,14 @@ const ReportRunPage = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
-    const [status, setStatus] = useState<'configuring' | 'submitting' | 'complete'>('configuring');
+    const [status, setStatus] = useState<'configuring' | 'submitting' | 'saving' | 'complete' | 'redirecting'>(
+        'configuring'
+    );
     const [error, setError] = useState<string | null>(null);
     const [wasExported, setWasExported] = useState<boolean>(true);
+    const [lastReportExecutionRequest, setLastReportExecutionRequest] = useState<ReportExecutionRequest | undefined>(
+        undefined
+    );
     const { openNewTab } = useNewTab();
     const config = useLoaderData<ReportConfiguration>();
     const { permissions } = usePermissions();
@@ -122,9 +128,9 @@ const ReportRunPage = () => {
             setStatus('submitting');
             setError('');
             const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
-            runner({
-                requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort },
-            })
+            const requestBody = { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort };
+            setLastReportExecutionRequest(requestBody);
+            runner({ requestBody })
                 .then((res) => {
                     setStatus('complete');
 
@@ -150,6 +156,33 @@ const ReportRunPage = () => {
         [config]
     );
 
+    const redirectToManageReport = () => {
+        window.location.href = '/nbs/nfc?ObjectType=7&OperationType=116';
+    };
+
+    const handleSaveReport = () => {
+        const runner = ReportControllerService.saveReport;
+        setStatus('saving');
+        setError('');
+
+        if (!lastReportExecutionRequest) {
+            setError('No changes to report to save.');
+            return;
+        }
+        runner({
+            reportUid: lastReportExecutionRequest.reportUid,
+            dataSourceUid: lastReportExecutionRequest.dataSourceUid,
+            requestBody: lastReportExecutionRequest,
+        })
+            .then(() => {
+                setStatus('redirecting');
+                redirectToManageReport();
+            })
+            .catch((err) => {
+                setError(JSON.stringify(err));
+            });
+    };
+
     return !config ? (
         <>
             {error && <AlertBanner type="error">{error}</AlertBanner>}
@@ -166,9 +199,12 @@ const ReportRunPage = () => {
         <ReportResultPage
             config={config}
             resultLoading={status === 'submitting'}
+            resultSaving={status === 'saving'}
+            isRedirecting={status === 'redirecting'}
             wasExported={wasExported}
             error={error}
             handleRefineReport={() => setStatus('configuring')}
+            handleSaveReport={handleSaveReport}
         />
     );
 };
