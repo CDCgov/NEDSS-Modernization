@@ -582,7 +582,7 @@ def _get_report_title_parts(report_title: str) -> dict:
     - STD/HIV
     - Interview Assign Date/Closed Date
     """
-    match: re.Match[str] | None = re.match(
+    match: re.Match | None = re.match(
         r'^PA01 Case Management Report \((.+)\) - (STD|HIV)$', report_title
     )
 
