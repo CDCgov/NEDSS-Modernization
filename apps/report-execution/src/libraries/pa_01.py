@@ -245,6 +245,11 @@ def execute(
         data=rows,
     )
 
+    # mismatches
+    # - HIV TESTED (250 vs. 226)
+    # - HIV NEW POSITIVE (percentage wrong)
+    # - HIV POSTTEST COUNSEL (261 vs. 236)
+
     return ReportResult(content_type='table', content=content)
 
 
@@ -571,7 +576,10 @@ def _calc_partner_notification_index(
     partner_notification: Table, cases_ixd: int
 ) -> str:
     """Calculate 'Partner Notification Index'."""
-    partner_notification_count = len(partner_notification.data)
+    if len(partner_notification.data) != 1 or len(partner_notification.data[0]) != 1:
+        raise ValueError('Query data for "Partner Notification Index" is malformed')
+
+    partner_notification_count = partner_notification.data[0][0]
     index = round(partner_notification_count / cases_ixd, 2) if cases_ixd else 0
 
     return f'{index:0.2f}'
@@ -579,7 +587,10 @@ def _calc_partner_notification_index(
 
 def _calc_testing_index(testing_index: Table, cases_ixd: int) -> str:
     """Calculate 'Testing Index'."""
-    testing_index_count = len(testing_index.data)
+    if len(testing_index.data) != 1 or len(testing_index.data[0]) != 1:
+        raise ValueError('Query data for "Testing Index" is malformed')
+
+    testing_index_count = testing_index.data[0][0]
     index = round(testing_index_count / cases_ixd, 2) if cases_ixd else 0
 
     return f'{index:0.2f}'
