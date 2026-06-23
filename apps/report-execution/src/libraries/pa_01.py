@@ -68,6 +68,16 @@ def execute(
     title_parts = _get_report_title_parts(kwargs['report_title'])
     disease_type = title_parts['disease_type']
 
+    # short circuit if there's no data from subset_query
+    data_check = trx.query(subset_query)
+    if len(data_check.data) == 0:
+        content = Table(
+            columns=CSV_COLUMNS,
+            data=[],
+        )
+
+        return ReportResult(content_type='table', content=content)
+
     # STD_HIV_DATAMART1 in SAS
     case_interviews_query = f"""
       WITH base AS
@@ -169,50 +179,49 @@ def execute(
     """
 
     testing_index_query = f"""
-     WITH base AS
-     (
-       {subset_query}
-     ),
-     filtered_base AS
-     (
-       -- STD_HIV_DATAMART1 in PA01_HIV.sas
-       SELECT b.*
-       FROM base b
-         INNER JOIN RDB.dbo.INVESTIGATION i
-                 ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-                AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-                AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
-     )
-     SELECT COUNT(DISTINCT dcr.LOCAL_ID) AS testing_index_count
-     FROM filtered_base fb
-       INNER JOIN RDB.dbo.INVESTIGATION i 
-               ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-       INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
-               ON fcrc.SUBJECT_INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-       INNER JOIN RDB.dbo.STD_HIV_DATAMART contact_dm
-               ON contact_dm.INVESTIGATION_KEY = fcrc.CONTACT_INVESTIGATION_KEY
-       INNER JOIN RDB.dbo.D_CONTACT_RECORD dcr
-               ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
-              AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
-        LEFT JOIN RDB.dbo.F_INTERVIEW_CASE fic
-               ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-        LEFT JOIN RDB.dbo.D_INTERVIEW di
-               ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
-              AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-        LEFT JOIN RDB.dbo.D_PROVIDER dp
-               ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
-     WHERE dcr.CTT_REFERRAL_BASIS IN (
-        'P1 - Partner, Sex',
-        'P2 - Partner, Needle-Sharing',
-        'P3 - Partner, Both'
-     )
-     AND contact_dm.FL_FUP_DISPOSITION IN (
-        '2 - Prev. Neg, New Pos',
-        '3 - Prev. Neg, Still Neg',
-        '5 - No Prev Test, New Pos',
-        '6 - No Prev Test, New Neg'
-     );
-
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_base AS
+      (
+        -- STD_HIV_DATAMART1 in PA01_HIV.sas
+        SELECT b.*
+        FROM base b
+          INNER JOIN RDB.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT COUNT(DISTINCT dcr.LOCAL_ID) AS testing_index_count
+      FROM filtered_base fb
+        INNER JOIN RDB.dbo.INVESTIGATION i 
+                ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
+                ON fcrc.SUBJECT_INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.STD_HIV_DATAMART contact_dm
+                ON contact_dm.INVESTIGATION_KEY = fcrc.CONTACT_INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.D_CONTACT_RECORD dcr
+                ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
+               AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
+         LEFT JOIN RDB.dbo.F_INTERVIEW_CASE fic
+                ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
+         LEFT JOIN RDB.dbo.D_INTERVIEW di
+                ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
+               AND di.RECORD_STATUS_CD <> 'LOG_DEL'
+         LEFT JOIN RDB.dbo.D_PROVIDER dp
+                ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
+      WHERE dcr.CTT_REFERRAL_BASIS IN (
+         'P1 - Partner, Sex',
+         'P2 - Partner, Needle-Sharing',
+         'P3 - Partner, Both'
+      )
+      AND contact_dm.FL_FUP_DISPOSITION IN (
+         '2 - Prev. Neg, New Pos',
+         '3 - Prev. Neg, Still Neg',
+         '5 - No Prev Test, New Pos',
+         '6 - No Prev Test, New Neg'
+      );
     """
 
     # query result tables
