@@ -6,12 +6,9 @@ from src.models import ReportResult, Table
 
 """
     Go backs:
-    - do I need an equivalent query for pa1_new?
     - once all stats for ALL WORKERS are done, need to re-tool to calculate grouped
       by workers
     - loosen up and/or simplify report_title regex
-    - tests with no data and edge cases
-    - remove notes file from git
 """
 
 # Constants
@@ -352,18 +349,21 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
         tables.filtered_cases, cases_assigned
     )
     hiv_tested, hiv_tested_percent = _calc_hiv_tested(
-        tables.filtered_cases, cases_assigned
+        tables.case_interview_rows, cases_assigned
     )
     hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
-        tables.filtered_cases, hiv_tested
+        tables.case_interview_rows, hiv_tested
     )
     hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
-        tables.filtered_cases, hiv_tested
+        tables.case_interview_rows, hiv_tested
     )
     partner_notification_index = _calc_partner_notification_index(
         tables.partner_notification, cases_ixd
     )
     testing_index = _calc_testing_index(tables.testing_index, cases_ixd)
+
+    # HIV POSTTEST COUNSEL (108 vs. 99)
+    # var_m and per_m
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -582,16 +582,27 @@ def _calc_hiv_previous_positive(
     return count, _percent_for_csv(count, cases_assigned)
 
 
-def _calc_hiv_tested(filtered_cases: Table, cases_assigned: int) -> tuple[int, str]:
+def _calc_hiv_tested(
+    case_interview_rows: Table, cases_assigned: int
+) -> tuple[int, str]:
     """Calculate 'HIV Tested' count and percentage."""
-    case_ids = {
-        d['INV_LOCAL_ID']
-        for d in filtered_cases.data_as_dicts()
-        if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
-        and d['HIV_900_TEST_IND'] == 'Yes'
-    }
+    groups: dict[tuple, set] = {}
 
-    count = len(case_ids)
+    # mirrors creation of "hiv_tested" table in SAS
+    for row in case_interview_rows.data_as_dicts():
+        if (
+            row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+            and row['HIV_900_TEST_IND'] == 'Yes'
+        ):
+            worker_key = (
+                row['INVESTIGATOR_INTERVIEW_KEY'],
+                row['PROVIDER_QUICK_CODE'],
+            )
+
+            groups.setdefault(worker_key, set()).add(row['INV_LOCAL_ID'])
+
+    # this will need to be updated for worker specific calculations
+    count = sum(len(case_ids) for case_ids in groups.values())
 
     return count, _percent_for_csv(count, cases_assigned)
 
@@ -619,17 +630,26 @@ def _calc_hiv_new_positive(filtered_cases: Table, hiv_tested: int) -> tuple[int,
 
 
 def _calc_hiv_posttest_counsel(
-    filtered_cases: Table, hiv_tested: int
+    case_interview_rows: Table, hiv_tested: int
 ) -> tuple[int, str]:
     """Calculate 'HIV Posttest Counsel' count and percentage."""
-    case_ids = {
-        d['INV_LOCAL_ID']
-        for d in filtered_cases.data_as_dicts()
-        if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
-        and d['HIV_POST_TEST_900_COUNSELING'] == 'Yes'
-    }
+    groups: dict[tuple, set] = {}
 
-    count = len(case_ids)
+    # mirrors creation of "hiv_post_test" table in SAS
+    for row in case_interview_rows.data_as_dicts():
+        if (
+            row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+            and row['HIV_POST_TEST_900_COUNSELING'] == 'Yes'
+        ):
+            worker_key = (
+                row['PROVIDER_QUICK_CODE'],
+                row['INVESTIGATOR_INTERVIEW_KEY'],
+            )
+
+            groups.setdefault(worker_key, set()).add(row['INV_LOCAL_ID'])
+
+    # this will need to be updated for worker specific calculations
+    count = sum(len(case_ids) for case_ids in groups.values())
 
     return count, _percent_for_csv(count, hiv_tested)
 
