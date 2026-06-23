@@ -12,7 +12,7 @@ faker_schema = 'pa_01.yaml'
 class TestIntegrationPa01Library:
     """Integration tests for the pa_01 library."""
 
-    def test_execute_report_check_data(self, snapshot):
+    def test_execute_report_check_data_hiv(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
                 'is_export': True,
@@ -55,7 +55,7 @@ class TestIntegrationPa01Library:
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
-    def test_execute_report_no_data(self):
+    def test_execute_report_no_data_hiv(self):
         report_spec = ReportSpec.model_validate(
             {
                 'is_export': True,
