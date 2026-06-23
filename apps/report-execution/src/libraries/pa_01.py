@@ -362,9 +362,6 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     )
     testing_index = _calc_testing_index(tables.testing_index, cases_ixd)
 
-    # HIV POSTTEST COUNSEL (108 vs. 99)
-    # var_m and per_m
-
     # output CSV data
     rows: list[Pa01Row] = [
         (
