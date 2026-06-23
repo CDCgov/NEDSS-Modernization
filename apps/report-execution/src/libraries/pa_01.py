@@ -512,11 +512,8 @@ def _calc_cases_closed(table: Table, cases_assigned: int) -> tuple[int, str]:
     }
 
     cases_closed = len(data)
-    cases_closed_percent = (
-        round((cases_closed / cases_assigned) * 100, 1) if cases_assigned else 0
-    )
 
-    return cases_closed, f'{cases_closed_percent}%'
+    return cases_closed, _percent_for_csv(cases_closed, cases_assigned)
 
 
 def _calc_cases_ixd(table: Table, cases_assigned: int) -> tuple[int, str]:
@@ -529,9 +526,8 @@ def _calc_cases_ixd(table: Table, cases_assigned: int) -> tuple[int, str]:
     }
 
     count = len(case_ids)
-    percent = round((count / cases_assigned) * 100, 1) if cases_assigned else 0
 
-    return count, f'{percent}%'
+    return count, _percent_for_csv(count, cases_assigned)
 
 
 def _calc_interview_day_buckets(
@@ -549,9 +545,7 @@ def _calc_interview_day_buckets(
     results = dict()
     for threshold in (3, 5, 7, 14):
         count = sum(1 for d in rows if d['Days'] <= threshold)
-        percent = round((count / cases_ixd) * 100, 1) if cases_ixd else 0
-
-        results[threshold] = (count, f'{percent}%')
+        results[threshold] = (count, _percent_for_csv(count, cases_ixd))
 
     return results
 
@@ -568,9 +562,8 @@ def _calc_cases_reinterviewed(
     }
 
     count = len(case_ids)
-    percent = round((count / cases_ixd) * 100, 1) if cases_ixd else 0
 
-    return count, f'{percent}%'
+    return count, _percent_for_csv(count, cases_ixd)
 
 
 def _calc_hiv_previous_positive(
@@ -585,9 +578,8 @@ def _calc_hiv_previous_positive(
     }
 
     count = len(case_ids)
-    percent = round((count / cases_assigned) * 100, 1) if cases_assigned else 0
 
-    return count, f'{percent}%'
+    return count, _percent_for_csv(count, cases_assigned)
 
 
 def _calc_hiv_tested(filtered_cases: Table, cases_assigned: int) -> tuple[int, str]:
@@ -600,9 +592,8 @@ def _calc_hiv_tested(filtered_cases: Table, cases_assigned: int) -> tuple[int, s
     }
 
     count = len(case_ids)
-    percent = round((count / cases_assigned) * 100, 1) if cases_assigned else 0
 
-    return count, f'{percent}%'
+    return count, _percent_for_csv(count, cases_assigned)
 
 
 def _calc_hiv_new_positive(filtered_cases: Table, hiv_tested: int) -> tuple[int, str]:
@@ -623,9 +614,8 @@ def _calc_hiv_new_positive(filtered_cases: Table, hiv_tested: int) -> tuple[int,
     }
 
     count = len(case_ids)
-    percent = round((count / hiv_tested) * 100, 1) if hiv_tested else 0
 
-    return count, f'{percent}%'
+    return count, _percent_for_csv(count, hiv_tested)
 
 
 def _calc_hiv_posttest_counsel(
@@ -640,9 +630,8 @@ def _calc_hiv_posttest_counsel(
     }
 
     count = len(case_ids)
-    percent = round((count / hiv_tested) * 100, 1) if hiv_tested else 0
 
-    return count, f'{percent}%'
+    return count, _percent_for_csv(count, hiv_tested)
 
 
 def _calc_partner_notification_index(
@@ -653,9 +642,8 @@ def _calc_partner_notification_index(
         raise ValueError('Query data for "Partner Notification Index" is malformed')
 
     partner_notification_count = partner_notification.data[0][0]
-    index = round(partner_notification_count / cases_ixd, 2) if cases_ixd else 0
 
-    return f'{index:0.2f}'
+    return _index_for_csv(partner_notification_count, cases_ixd)
 
 
 def _calc_testing_index(testing_index: Table, cases_ixd: int) -> str:
@@ -664,9 +652,8 @@ def _calc_testing_index(testing_index: Table, cases_ixd: int) -> str:
         raise ValueError('Query data for "Testing Index" is malformed')
 
     testing_index_count = testing_index.data[0][0]
-    index = round(testing_index_count / cases_ixd, 2) if cases_ixd else 0
 
-    return f'{index:0.2f}'
+    return _index_for_csv(testing_index_count, cases_ixd)
 
 
 def _get_report_title_parts(report_title: str) -> dict:
@@ -685,3 +672,13 @@ def _get_report_title_parts(report_title: str) -> dict:
     groups = match.groups()
 
     return {'date_type': groups[0], 'disease_type': groups[1]}
+
+
+def _percent_for_csv(numerator: int, denominator: int) -> str:
+    """Format a percent that matches the PDF format for output in the CSV."""
+    return f'{round((numerator / denominator) * 100, 1) if denominator else 0}%'
+
+
+def _index_for_csv(numerator: int, denominator: int) -> str:
+    """Format an index that matches the PDF format for output in the CSV."""
+    return f'{round(numerator / denominator, 2) if denominator else 0:0.2f}'
