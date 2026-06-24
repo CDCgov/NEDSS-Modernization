@@ -1,35 +1,137 @@
 package gov.cdc.nbs.report.mappers;
 
-import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.FilterValue;
+import gov.cdc.nbs.entity.odse.ReportFilter;
+import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
+import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
-import gov.cdc.nbs.report.models.FilterType;
-
+import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FilterValueMapper {
-    private FilterValueMapper() {}
+  private final IdGeneratorService idGenerator;
 
-    public static List<FilterValue> fromAdvancedFilterRequest(AdvancedFilterRequest request) {
-        return new FilterType(
-                filterCode.getId(),
-                filterCode.getCodeTable(),
-                filterCode.getDescTxt(),
-                filterCode.getCode(),
-                filterCode.getFilterCodeSetName(),
-                filterCode.getFilterType(),
-                filterCode.getFilterName());
+  private int sequenceNumber = 1;
+
+  public FilterValueMapper(IdGeneratorService idGenerator) {
+    this.idGenerator = idGenerator;
+  }
+
+  public List<FilterValue> fromBasicFilterRequest(
+      ReportFilter basicFilter, BasicFilterRequest request) {
+    return request.values().stream()
+        .map(
+            value ->
+                FilterValue.builder()
+                    .id(generateFilterValueId())
+                    .reportFilter(basicFilter)
+                    .valueType("code") // idk, that's just how it is in the database?
+                    .valueTxt(value)
+                    .build())
+        .toList();
+  }
+
+  public List<FilterValue> fromAdvancedFilterRequest(
+      ReportFilter advancedFilter, AdvancedFilterRequest request) {
+    List<FilterValue> filterValues = new ArrayList<>();
+
+    AdvancedQuery.RuleGroup root = request.value();
+
+    FilterValue openParen = buildOpenParenFilterValue(advancedFilter);
+    filterValues.add(openParen);
+
+    for (int i = 0; i < root.rules().size(); i++) {
+      AdvancedQuery rule = root.rules().get(i);
+
+      if (rule instanceof AdvancedQuery.Rule r) {
+        FilterValue clause = buildClauseFilterValue(advancedFilter, r);
+        filterValues.add(clause);
+
+        if (i < root.rules().size() - 1) {
+          FilterValue operator = buildOperatorFilterValue(advancedFilter, r);
+          filterValues.add(operator);
+
+          sequenceNumber++;
+        }
+      } else if (rule instanceof AdvancedQuery.RuleGroup r) {
+        List<FilterValue> ruleGroupValues =
+            fromAdvancedFilterRequest(
+                advancedFilter, new AdvancedFilterRequest(request.reportFilterUid(), r));
+        filterValues.addAll(ruleGroupValues);
+      } else {
+        throw new IllegalArgumentException("Unknown rule type: " + rule.getClass());
+      }
     }
 
-    public static List<FilterValue> fromBasicFilterRequest(BasicFilterRequest request) {
-        return new FilterType(
-                filterCode.getId(),
-                filterCode.getCodeTable(),
-                filterCode.getDescTxt(),
-                filterCode.getCode(),
-                filterCode.getFilterCodeSetName(),
-                filterCode.getFilterType(),
-                filterCode.getFilterName());
-    }
+    FilterValue closeParen = buildCloseParenFilterValue(advancedFilter);
+    filterValues.add(closeParen);
+
+    return filterValues;
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+
+  private FilterValue buildClauseFilterValue(ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
+    FilterValue clause =
+        FilterValue.builder()
+            .id(generateFilterValueId())
+            .valueType("CLAUSE")
+            .reportFilter(advancedFilter)
+            .columnUid(rule.columnId())
+            .operator(rule.operator())
+            .valueTxt(rule.value())
+            .sequenceNumber(sequenceNumber)
+            .build();
+
+    sequenceNumber++;
+
+    return clause;
+  }
+
+  private FilterValue buildOperatorFilterValue(
+      ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
+    FilterValue operator =
+        FilterValue.builder()
+            .id(generateFilterValueId())
+            .reportFilter(advancedFilter)
+            .valueType("OPERATOR")
+            .operator(rule.operator())
+            .sequenceNumber(sequenceNumber)
+            .build();
+
+    sequenceNumber++;
+
+    return operator;
+  }
+
+  private FilterValue buildOpenParenFilterValue(ReportFilter advancedFilter) {
+    return buildParenFilterValue(advancedFilter, "(");
+  }
+
+  private FilterValue buildCloseParenFilterValue(ReportFilter advancedFilter) {
+    return buildParenFilterValue(advancedFilter, ")");
+  }
+
+  private FilterValue buildParenFilterValue(ReportFilter advancedFilter, String paren) {
+    FilterValue parenValue =
+        FilterValue.builder()
+            .id(generateFilterValueId())
+            .reportFilter(advancedFilter)
+            .valueTxt("OPERATOR")
+            .operator(paren)
+            .sequenceNumber(sequenceNumber)
+            .build();
+
+    sequenceNumber++;
+
+    return parenValue;
+  }
+
+  private Long generateFilterValueId() {
+    var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
+    return generatedId.getId();
+  }
 }

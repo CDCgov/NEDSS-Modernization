@@ -49,12 +49,11 @@ public class ReportController {
   @PutMapping("/configuration/{reportUid}/{dataSourceUid}/save")
   //  TODO: Figure out how to handle permissions more granularly NOSONAR
   public ResponseEntity<ReportId> saveReport(
-      @AuthenticationPrincipal NbsUserDetails user,
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody ReportExecutionRequest request) {
-    //  @TODO: Finish implementation NOSONAR
-    return null;
+    Report report = reportService.saveReport(request, new ReportId(reportUid, dataSourceUid));
+    return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 
   @PostMapping("/configuration/{reportUid}/{dataSourceUid}/save-as")

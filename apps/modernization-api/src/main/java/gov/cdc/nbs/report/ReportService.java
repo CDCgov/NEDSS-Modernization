@@ -64,6 +64,7 @@ public class ReportService {
   private final ReportFilterRepository reportFilterRepository;
   private final ReportMapper reportMapper;
   private final ReportSortColumnMapper reportSortColumnMapper;
+  private final FilterValueMapper filterValueMapper;
 
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils;
@@ -82,7 +83,8 @@ public class ReportService {
       WhereClauseService whereClauseService,
       ReportFilterBuilder reportFilterBuilder,
       ReportMapper reportMapper,
-      ReportSortColumnMapper reportSortColumnMapper) {
+      ReportSortColumnMapper reportSortColumnMapper,
+      FilterValueMapper filterValueMapper) {
     this.clock = clock;
 
     this.reportRepository = reportRepository;
@@ -92,6 +94,7 @@ public class ReportService {
     this.reportFilterRepository = reportFilterRepository;
     this.reportMapper = reportMapper;
     this.reportSortColumnMapper = reportSortColumnMapper;
+    this.filterValueMapper = filterValueMapper;
 
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
@@ -147,25 +150,31 @@ public class ReportService {
   }
 
   @Transactional
-  public Report saveReport(Long reportUid, Long dataSourceUid, ReportExecutionRequest request) {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-
+  public Report saveReport(ReportExecutionRequest request, ReportId reportId) {
     Report existingReport =
-            reportRepository
-                    .findById(id)
-                    .orElseThrow(() -> new NotFoundException(getReportNotFoundText(id)));
+        reportRepository
+            .findById(reportId)
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     // TODO: Maybe save columns?? idk
 
     List<BasicFilterRequest> basicFilterReqs = request.basicFilters();
     AdvancedFilterRequest advFilterReq = request.advancedFilter();
 
-    ReportFilter advancedFilter = existingReport.getReportFilters().stream().filter(f -> isAdvancedFilter(f) && f.getId().equals(advFilterReq.reportFilterUid())).findFirst().orElseThrow(() -> new NotFoundException("No report filter found for UID: " + advFilterReq.reportFilterUid()));
+    ReportFilter advancedFilter =
+        existingReport.getReportFilters().stream()
+            .filter(f -> isAdvancedFilter(f) && f.getId().equals(advFilterReq.reportFilterUid()))
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        "No report filter found for UID: " + advFilterReq.reportFilterUid()));
 
     if (advFilterReq != null) {
       advancedFilter.getFilterValues().clear();
 
-      List<FilterValue> advFilterValues = FilterValueMapper.fromAdvancedFilterRequest(advFilterReq);
+      List<FilterValue> advFilterValues =
+          filterValueMapper.fromAdvancedFilterRequest(advancedFilter, advFilterReq);
       advancedFilter.getFilterValues().addAll(advFilterValues);
     } else {
       advancedFilter.setFilterValues(null);
@@ -173,19 +182,32 @@ public class ReportService {
 
     reportFilterRepository.save(advancedFilter);
 
-    List<ReportFilter> basicFilters = existingReport.getReportFilters().stream().filter(f -> isBasicFilter(f) && basicFilterReqs.stream().anyMatch(r -> r.reportFilterUid().equals(f.getId()))).toList();
+    List<ReportFilter> basicFilters =
+        existingReport.getReportFilters().stream()
+            .filter(
+                f ->
+                    isBasicFilter(f)
+                        && basicFilterReqs.stream()
+                            .anyMatch(r -> r.reportFilterUid().equals(f.getId())))
+            .toList();
 
-    basicFilters.forEach(basicFilter -> {
-      BasicFilterRequest matchingReq = basicFilterReqs.stream().filter(r -> r.reportFilterUid().equals(basicFilter.getId())).findFirst().orElseThrow(() -> new NotFoundException("No basic filter found matching ID"));
-      if (!matchingReq.values().isEmpty()) {
-        basicFilter.getFilterValues().clear();
+    basicFilters.forEach(
+        basicFilter -> {
+          BasicFilterRequest matchingReq =
+              basicFilterReqs.stream()
+                  .filter(r -> r.reportFilterUid().equals(basicFilter.getId()))
+                  .findFirst()
+                  .orElseThrow(() -> new NotFoundException("No basic filter found matching ID"));
+          if (!matchingReq.values().isEmpty()) {
+            basicFilter.getFilterValues().clear();
 
-        List<FilterValue> basicFilterValues = FilterValueMapper.fromBasicFilterRequest(matchingReq);
-        basicFilter.getFilterValues().addAll(basicFilterValues);
-      } else {
-        basicFilter.setFilterValues(null);
-      }
-    });
+            List<FilterValue> basicFilterValues =
+                filterValueMapper.fromBasicFilterRequest(basicFilter, matchingReq);
+            basicFilter.getFilterValues().addAll(basicFilterValues);
+          } else {
+            basicFilter.setFilterValues(null);
+          }
+        });
 
     reportFilterRepository.saveAll(basicFilters);
 
