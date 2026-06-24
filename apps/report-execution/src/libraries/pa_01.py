@@ -124,7 +124,7 @@ def execute(
         testing_index,
     )
 
-    output_rows = []
+    output_rows: list[Pa01Row] = []
     # nb. None treated as "ALL WORKERS"
     workers: list[Pa01Worker | None] = [None]
     workers.extend(_get_workers(case_interview_rows))
