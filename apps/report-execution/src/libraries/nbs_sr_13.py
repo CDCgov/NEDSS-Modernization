@@ -1,6 +1,6 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult
-
+from src.config import retrieve_config_value
 
 def execute(
     trx: Transaction,
@@ -18,13 +18,16 @@ def execute(
     * Changed file name from NBSSR000017.sas to nbr_sr_13.py since 17 was
       associated with label for 13
     """
+    # Dynamically look up the correct name for the SRTE database
+    nbs_srte = retrieve_config_value(trx, "nbs_srte")
+
     sql_query = f"""
     SELECT 
         SUM(group_case_cnt) as "Case Count",
         phc_code_short_desc as "Condition",
         cvg.code_short_desc_txt as "Case Status"
     FROM ({subset_query}) phc
-    LEFT JOIN nbs_srte.dbo.code_value_general cvg 
+    LEFT JOIN ({nbs_srte}).dbo.code_value_general cvg 
         ON phc.case_class_cd = cvg.code 
         AND cvg.code_set_nm = 'PHC_CLASS'
     WHERE cvg.code_short_desc_txt IS NOT NULL

@@ -31,19 +31,19 @@ public class ConfigurationValueFinder {
     } catch (EmptyResultDataAccessException e) {
       LOGGER.log(
               System.Logger.Level.ERROR,
-              "Database anomaly: Zero configuration rows found for key: {0}", key);
+              "Zero rows found in NBS_Configuration for unique key: {0}", key);
       return "";
     } catch (IncorrectResultSizeDataAccessException e) {
       // Critical anomaly: Multiple records exist for a single primary/unique config key
       LOGGER.log(
               System.Logger.Level.ERROR,
-              "Database anomaly: Multiple configuration rows found for key: {0}", key);
+              "Multiple rows found in NBS_Configuration for unique key: {0}", key);
       return "";
     } catch (TypeMismatchDataAccessException e) {
       // Anomaly: The row exists, but both config_value and default_value columns resolved to null
       LOGGER.log(
               System.Logger.Level.WARNING,
-              "Configuration key ({0}) exists, but both config_value and default_value are null", key);
+              "Configuration key ({0}) exists in NBS_Configuration, but both config_value and default_value are null", key);
       return "";
     }
   }
