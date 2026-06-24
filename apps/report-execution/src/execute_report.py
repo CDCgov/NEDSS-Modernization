@@ -26,7 +26,6 @@ def execute_report(report_spec: models.ReportSpec):
             days_value=report_spec.days_value,
             column_map=report_spec.column_map,
             library_params=report_spec.library_params,
-            report_title=report_spec.report_title,
         )
 
     check_valid_result(result, report_spec)
