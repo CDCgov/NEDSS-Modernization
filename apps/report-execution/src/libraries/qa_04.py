@@ -19,7 +19,7 @@ def execute(
     * Matches original report format
     """
     # Dynamically look up the correct name for the rdb database
-    rdb = retrieve_config_value(trx, "rdb")
+    rdb = retrieve_config_value(trx, 'rdb')
     full_query = f"""
     WITH subset AS ({subset_query})
     SELECT DISTINCT

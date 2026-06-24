@@ -15,8 +15,8 @@ def execute(
     * Matched "export format"
     """
     # Dynamically look up the correct DB names
-    rdb = retrieve_config_value(trx, "rdb")
-    nbs_srte = retrieve_config_value(trx, "nbs_srte")
+    rdb = retrieve_config_value(trx, 'rdb')
+    nbs_srte = retrieve_config_value(trx, 'nbs_srte')
     content = trx.query(
         f"""
         WITH v_event_metric as ({subset_query}),

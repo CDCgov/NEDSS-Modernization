@@ -23,7 +23,7 @@ def execute(
       actual sorting beyond that will differ between SAS and SQL Server.
     """
     # Dynamically look up the correct DB names
-    rdb = retrieve_config_value(trx, "rdb")
+    rdb = retrieve_config_value(trx, 'rdb')
     query = f"""
         WITH STD_HIV_DATAMART AS ({subset_query}),
 

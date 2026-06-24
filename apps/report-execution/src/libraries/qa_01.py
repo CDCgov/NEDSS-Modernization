@@ -15,7 +15,7 @@ def execute(
     * Did not include logging of run time
     * Hardcode i to "13" instead of the count of the columns
     """
-    rdb = retrieve_config_value(trx, "rdb")
+    rdb = retrieve_config_value(trx, 'rdb')
 
     sql_query = f"""
     WITH Shd_Filtered AS (
