@@ -10,9 +10,14 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
         result[id]['reasons'] = [reason];
     };
     if (isRuleType(rule)) {
-        const { id, field, operator, value, label } = rule;
+        const { id, field, operator, value, label, type } = rule;
 
-        if (!id) return; // no key for the map, shouldn't happen in practice
+        if (!id) {
+            // no key for the map, shouldn't happen in practice
+            console.warn('Advanced query filter rule id is empty.');
+            return;
+        }
+
         // default valid
         result[id] = { valid: true };
 
@@ -39,7 +44,7 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
 
             const parts: string[] = value.split(',');
             let rangeErrorMsg;
-            if (isDateFormat(parts[0]) || isDateFormat(parts[1])) {
+            if (type === 'DATETIME') {
                 rangeErrorMsg = validateDateRange(parts, label);
             } else {
                 rangeErrorMsg = validateNumericRange(parts, label);
@@ -51,6 +56,10 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
             if (typeof value === 'string') {
                 if ((value as string).trim() === '') {
                     setInvalid(id, getMissingValErrorMsg(label, false));
+                }
+
+                if (type === 'DATETIME') {
+                    if (!isDateFormat(value)) setInvalid(id, getMissingValErrorMsg(label, false));
                 }
             }
         }

@@ -23,7 +23,7 @@ import {
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { KeyboardDnDProvider } from './useKeyboardDnd';
 import { ShiftableDragHandle } from './ShiftableDragHandle';
-import { ValueEditor } from './ValueEditor';
+import { ValueEditorSwitch } from './ValueEditorSwitch.tsx';
 import { ValueSingleSelector } from './ValueSingleSelector.tsx';
 import { RemoveButton } from '././RemoveButton.tsx';
 
@@ -154,18 +154,20 @@ const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
 
 // ============= Validation ============= /
 
-// Add another key 'label' to the RuleType object to display in error msg
-const addColNameToRules = (columns: ReportColumn[], value: QbRuleGroup) => {
+// Add another key 'label' to display in error msg
+// Add another key 'type' to support validation
+const addColNameAndTypeToRules = (columns: ReportColumn[], value: QbRuleGroup) => {
     const rules = value.rules;
     const updatedRules = rules.map((rule) => {
         if ('rules' in rule && Array.isArray(rule.rules)) {
-            return addColNameToRules(columns, rule as QbRuleGroup);
+            return addColNameAndTypeToRules(columns, rule as QbRuleGroup);
         }
 
         const matchedColumn = columns.find((col) => col.name === rule.field);
 
         return {
             ...rule,
+            type: matchedColumn ? matchedColumn.sourceTypeCode : null,
             label: matchedColumn ? matchedColumn.title : rule.field,
         };
     });
@@ -178,7 +180,7 @@ const addColNameToRules = (columns: ReportColumn[], value: QbRuleGroup) => {
 
 const validateAdvancedFilter = (columns: ReportColumn[], value?: QbRuleGroup) => {
     if (!value) return true;
-    const updatedRuleGroup = addColNameToRules(columns, value);
+    const updatedRuleGroup = addColNameAndTypeToRules(columns, value);
 
     return (
         Object.values(validator(updatedRuleGroup))
@@ -260,7 +262,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                         translations={translationOverrides}
                         controlElements={{
                             dragHandle: ShiftableDragHandle,
-                            valueEditor: ValueEditor,
+                            valueEditor: ValueEditorSwitch,
                             valueSelector: ValueSingleSelector,
                             addGroupAction: AddButton,
                             addRuleAction: AddButton,

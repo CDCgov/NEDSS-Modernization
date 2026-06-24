@@ -1,14 +1,17 @@
+import { getYear, isValid, parse } from 'date-fns';
+
 export const validateDateRange = (value, field) => {
     if (rangeValuesMissing(value)) return getRangeValErrorMsg(field, false);
 
     const fromDate = new Date(value[0]!); // can't be undefined because of above checks
     const toDate = new Date(value[1]!); // can't be undefined because of above checks
-    for (const { date, ind, str } of [
-        { date: fromDate, ind: 0, str: 'From' },
-        { date: toDate, ind: 1, str: 'To' },
+
+    for (const { date, val, str } of [
+        { date: fromDate, val: value[0], str: 'From' },
+        { date: toDate, val: value[1], str: 'To' },
     ]) {
-        if (date.toString() === 'Invalid Date' || !isDateFormat(value[ind])) {
-            return `${str} date of "${value[ind]}" is not valid mm/dd/yyyy formatted date for ${field}.`;
+        if (date.toString() === 'Invalid Date' || !isDateFormat(val)) {
+            return `${str} date of "${val}" is not valid mm/dd/yyyy formatted date for ${field}.`;
         }
     }
 
@@ -21,12 +24,12 @@ export const validateNumericRange = (value, field) => {
 
     const fromNum = parseInt(value[0]); // can't be undefined because of above checks
     const toNum = parseInt(value[1]); // can't be undefined because of above checks
-    for (const { number, ind, str } of [
-        { number: fromNum, ind: 0, str: 'From' },
-        { number: toNum, ind: 1, str: 'To' },
+    for (const { number, val, str } of [
+        { number: fromNum, val: value[0], str: 'From' },
+        { number: toNum, val: value[1], str: 'To' },
     ]) {
-        if (number.toString() === 'NaN' || !isNumberFormat(value[ind])) {
-            return `${str} value of "${value[ind]}" is not a valid number for ${field}.`;
+        if (number.toString() === 'NaN' || !isNumberFormat(val)) {
+            return `${str} value of "${val}" is not a valid number for ${field}.`;
         }
     }
 
@@ -55,11 +58,31 @@ const isNumberFormat = (val) => {
     return typeof val === 'number';
 };
 
-export const isDateFormat = (val) => {
-    const month = '(?:0?[1-9]|1[0-2])';
-    const day = '(?:0?[1-9]|[12]\\d|3[01])';
-    const year = '\\d{4}';
-    const pattern = `^(?:${month}\\/(?:${day}\\/)?)?${year}$`;
-    // matches MM/YYYY, MM/DD/YYYY, YYYY
-    return typeof val === 'string' ? !!val.match(pattern) : false;
+export const isDateFormat = (val: string): boolean => {
+    const formats = ['MM/dd/yyyy', 'MM/yyyy', 'yyyy'];
+    const allowedLengths = formats.map((f) => f.length);
+    if (!allowedLengths.includes(val.length)) {
+        return false;
+    }
+
+    for (const format of formats) {
+        if (val.length !== format.length) {
+            continue;
+        }
+
+        if (format.includes('/') !== val.includes('/')) {
+            continue;
+        }
+
+        const parsedDate = parse(val, format, new Date());
+
+        if (isValid(parsedDate)) {
+            const year = getYear(parsedDate as Date);
+
+            if (year >= 1000 && year <= 9999) {
+                return true;
+            }
+        }
+    }
+    return false;
 };

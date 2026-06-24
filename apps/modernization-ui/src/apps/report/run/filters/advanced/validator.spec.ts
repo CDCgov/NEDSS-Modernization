@@ -135,6 +135,7 @@ describe('validateRule', () => {
                         operator: 'between',
                         value: '1,foobar',
                         label: 'Investigation ID',
+                        type: 'INTEGER'
                     },
                     {
                         id: 'rule-2',
@@ -142,6 +143,7 @@ describe('validateRule', () => {
                         operator: 'between',
                         value: '10/3/,29',
                         label: 'Diagnosis Date',
+                        type: 'DATETIME'
                     },
                 ],
                 combinator: 'and',
@@ -156,7 +158,7 @@ describe('validateRule', () => {
         );
         expect(mockResult['rule-2']['valid']).toBe(false);
         expect(mockResult['rule-2']['reasons']).toContain(
-            'From value of "10/3/" is not a valid number for Diagnosis Date.'
+            'From date of "10/3/" is not valid mm/dd/yyyy formatted date for Diagnosis Date.'
         );
     });
 
@@ -171,6 +173,7 @@ describe('validateRule', () => {
                         operator: '=',
                         value: '',
                         label: 'Investigation ID',
+                        type: 'INTEGER'
                     },
                     {
                         id: 'rule-2',
@@ -178,6 +181,7 @@ describe('validateRule', () => {
                         operator: '<=',
                         value: ' ',
                         label: 'Diagnosis Date',
+                        type: 'DATETIME'
                     },
                 ],
                 combinator: 'and',

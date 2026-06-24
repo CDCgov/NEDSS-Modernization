@@ -1,9 +1,9 @@
 import { FullField, FullOperator, ValueEditorProps } from 'react-querybuilder';
 import { ValueSetSelector } from './ValueSetSelector';
 import { ValueSetMetadata } from './AdvancedFilter';
-import { ValueInput } from './ValueInput.tsx';
+import { ValueInput } from './ValueInput';
 
-const ValueEditor = (props: ValueEditorProps<ValueSetMetadata & FullField & FullOperator>) => {
+const ValueEditorSwitch = (props: ValueEditorProps<ValueSetMetadata & FullField & FullOperator>) => {
     switch (props.type) {
         case 'multiselect':
             return <ValueSetSelector {...props} />;
@@ -12,4 +12,4 @@ const ValueEditor = (props: ValueEditorProps<ValueSetMetadata & FullField & Full
     }
 };
 
-export { ValueEditor };
+export { ValueEditorSwitch };
