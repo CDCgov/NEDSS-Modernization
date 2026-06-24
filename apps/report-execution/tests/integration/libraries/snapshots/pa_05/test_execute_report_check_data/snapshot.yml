@@ -1,0 +1,1035 @@
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - NUM. CASES ASSIGNED
+  - 29
+  - null
+  - null
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - NUM. CASES OPEN
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - NUM. CASES CLOSED
+  - 29
+  - 1.0
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - NUM. CASES PENDING
+  - 1
+  - 0.034
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - NUM. CASES IX'D
+  - 24
+  - 0.828
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - CLINIC IX'S
+  - 7
+  - 0.292
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - FIELD IX'S
+  - 1
+  - 0.042
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - IX'D W/IN 3 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - IX'D W/IN 5 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - IX'D W/IN 7 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - IX'D W/IN 14 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - NUM. CASES NOT IX'D
+  - 4
+  - 0.138
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - REFUSED
+  - 2
+  - 0.5
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - NO LOCATE
+  - 1
+  - 0.25
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Case Activity
+  - OTHER
+  - 1
+  - 0.25
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Interview Activity
+  - NUM. OF OI'S
+  - 26
+  - null
+  - null
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Interview Activity
+  - OI'S THAT WERE NCI
+  - 16
+  - 0.615
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Interview Activity
+  - PERIOD PARTNERS
+  - 55
+  - 2.1
+  - ratio
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Interview Activity
+  - PARTNERS INITIATED (OI)
+  - 7
+  - 0.3
+  - ratio
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Interview Activity
+  - NUM. OF RI'S
+  - 15
+  - null
+  - null
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Interview Activity
+  - RI'S THAT WERE NCI
+  - 6
+  - 0.4
+  - percent
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Interview Activity
+  - PARTNERS INITIATED (RI)
+  - 3
+  - 0.2
+  - ratio
+- !!python/tuple
+  - Overall
+  - null
+  - null
+  - Interview Activity
+  - CLUSTERS INIT (OI & RI)
+  - 12
+  - 0.5
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - NUM. CASES ASSIGNED
+  - 8
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - NUM. CASES OPEN
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - NUM. CASES CLOSED
+  - 8
+  - 1.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - NUM. CASES PENDING
+  - 1
+  - 0.125
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - NUM. CASES IX'D
+  - 5
+  - 0.625
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - CLINIC IX'S
+  - 2
+  - 0.4
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - FIELD IX'S
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - IX'D W/IN 3 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - IX'D W/IN 5 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - IX'D W/IN 7 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - IX'D W/IN 14 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - NUM. CASES NOT IX'D
+  - 2
+  - 0.25
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - REFUSED
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - NO LOCATE
+  - 1
+  - 0.5
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Case Activity
+  - OTHER
+  - 1
+  - 0.5
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Interview Activity
+  - NUM. OF OI'S
+  - 6
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Interview Activity
+  - OI'S THAT WERE NCI
+  - 4
+  - 0.667
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Interview Activity
+  - PERIOD PARTNERS
+  - 7
+  - 1.2
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Interview Activity
+  - PARTNERS INITIATED (OI)
+  - 1
+  - 0.2
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Interview Activity
+  - NUM. OF RI'S
+  - 4
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Interview Activity
+  - RI'S THAT WERE NCI
+  - 2
+  - 0.5
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Interview Activity
+  - PARTNERS INITIATED (RI)
+  - 0
+  - 0.0
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 2
+  - Interview Activity
+  - CLUSTERS INIT (OI & RI)
+  - 4
+  - 0.7
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - NUM. CASES ASSIGNED
+  - 4
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - NUM. CASES OPEN
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - NUM. CASES CLOSED
+  - 4
+  - 1.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - NUM. CASES PENDING
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - NUM. CASES IX'D
+  - 4
+  - 1.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - CLINIC IX'S
+  - 1
+  - 0.25
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - FIELD IX'S
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - IX'D W/IN 3 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - IX'D W/IN 5 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - IX'D W/IN 7 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - IX'D W/IN 14 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - NUM. CASES NOT IX'D
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - REFUSED
+  - 0
+  - null
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - NO LOCATE
+  - 0
+  - null
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Case Activity
+  - OTHER
+  - 0
+  - null
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Interview Activity
+  - NUM. OF OI'S
+  - 6
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Interview Activity
+  - OI'S THAT WERE NCI
+  - 3
+  - 0.5
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Interview Activity
+  - PERIOD PARTNERS
+  - 8
+  - 1.3
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Interview Activity
+  - PARTNERS INITIATED (OI)
+  - 2
+  - 0.3
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Interview Activity
+  - NUM. OF RI'S
+  - 1
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Interview Activity
+  - RI'S THAT WERE NCI
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Interview Activity
+  - PARTNERS INITIATED (RI)
+  - 1
+  - 1.0
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 3
+  - Interview Activity
+  - CLUSTERS INIT (OI & RI)
+  - 1
+  - 0.2
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - NUM. CASES ASSIGNED
+  - 7
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - NUM. CASES OPEN
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - NUM. CASES CLOSED
+  - 7
+  - 1.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - NUM. CASES PENDING
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - NUM. CASES IX'D
+  - 7
+  - 1.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - CLINIC IX'S
+  - 1
+  - 0.143
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - FIELD IX'S
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - IX'D W/IN 3 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - IX'D W/IN 5 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - IX'D W/IN 7 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - IX'D W/IN 14 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - NUM. CASES NOT IX'D
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - REFUSED
+  - 0
+  - null
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - NO LOCATE
+  - 0
+  - null
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Case Activity
+  - OTHER
+  - 0
+  - null
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Interview Activity
+  - NUM. OF OI'S
+  - 5
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Interview Activity
+  - OI'S THAT WERE NCI
+  - 3
+  - 0.6
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Interview Activity
+  - PERIOD PARTNERS
+  - 8
+  - 1.6
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Interview Activity
+  - PARTNERS INITIATED (OI)
+  - 1
+  - 0.2
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Interview Activity
+  - NUM. OF RI'S
+  - 6
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Interview Activity
+  - RI'S THAT WERE NCI
+  - 3
+  - 0.5
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Interview Activity
+  - PARTNERS INITIATED (RI)
+  - 1
+  - 0.2
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 4
+  - Interview Activity
+  - CLUSTERS INIT (OI & RI)
+  - 4
+  - 0.8
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - NUM. CASES ASSIGNED
+  - 10
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - NUM. CASES OPEN
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - NUM. CASES CLOSED
+  - 10
+  - 1.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - NUM. CASES PENDING
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - NUM. CASES IX'D
+  - 8
+  - 0.8
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - CLINIC IX'S
+  - 3
+  - 0.375
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - FIELD IX'S
+  - 1
+  - 0.125
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - IX'D W/IN 3 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - IX'D W/IN 5 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - IX'D W/IN 7 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - IX'D W/IN 14 DAYS
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - NUM. CASES NOT IX'D
+  - 2
+  - 0.2
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - REFUSED
+  - 2
+  - 1.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - NO LOCATE
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Case Activity
+  - OTHER
+  - 0
+  - 0.0
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Interview Activity
+  - NUM. OF OI'S
+  - 9
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Interview Activity
+  - OI'S THAT WERE NCI
+  - 6
+  - 0.667
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Interview Activity
+  - PERIOD PARTNERS
+  - 32
+  - 3.6
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Interview Activity
+  - PARTNERS INITIATED (OI)
+  - 3
+  - 0.3
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Interview Activity
+  - NUM. OF RI'S
+  - 4
+  - null
+  - null
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Interview Activity
+  - RI'S THAT WERE NCI
+  - 1
+  - 0.25
+  - percent
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Interview Activity
+  - PARTNERS INITIATED (RI)
+  - 1
+  - 0.2
+  - ratio
+- !!python/tuple
+  - Worker
+  - fulton
+  - 5
+  - Interview Activity
+  - CLUSTERS INIT (OI & RI)
+  - 3
+  - 0.3
+  - ratio
