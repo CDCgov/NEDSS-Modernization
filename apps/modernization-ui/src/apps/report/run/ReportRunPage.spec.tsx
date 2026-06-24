@@ -1016,8 +1016,8 @@ describe('report run page', () => {
                         const dropDown = await findByLabelText('Full Name');
                         expect(dropDown).toBeVisible();
                         expect(await findByRole('button', { name: 'Remove Georgia' })).toBeVisible();
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Arizona'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Arizona'));
 
                         expect(await findByRole('button', { name: 'Remove Georgia' })).toBeVisible();
                         expect(await findByRole('button', { name: 'Remove Arizona' })).toBeVisible();
@@ -1090,8 +1090,8 @@ describe('report run page', () => {
                         // component refreshes when options populates, so can't do this earlier
                         const dropDown = await findByLabelText('Full Name');
                         expect(dropDown).toBeVisible();
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Georgia'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Georgia'));
 
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
@@ -1330,10 +1330,10 @@ describe('report run page', () => {
                         // component refreshes when options populates, so can't do this earlier
                         let dropDown = await findByLabelText('Full Name');
                         expect(dropDown).toBeVisible();
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Dekalb County'));
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Clayton County'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Dekalb County'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Clayton County'));
 
                         expect(await findByRole('button', { name: 'Remove Dekalb County' })).toBeVisible();
                         expect(await findByRole('button', { name: 'Remove Clayton County' })).toBeVisible();
@@ -1354,8 +1354,8 @@ describe('report run page', () => {
                         expect(await findAllByText('The Full Name is required.')).toHaveLength(2); // county is required
 
                         dropDown = await findByLabelText('Full Name');
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Yuma County'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Yuma County'));
 
                         expect(await findByRole('button', { name: 'Remove Yuma County' })).toBeVisible();
 
@@ -1426,8 +1426,8 @@ describe('report run page', () => {
                         expect(dropDown).toBeVisible();
                         expect(await findByRole('button', { name: 'Remove Dekalb County' })).toBeVisible();
 
-                        await userEvent.click(dropDown);
-                        await userEvent.click(getByText('Clayton County'));
+                        await user.click(dropDown);
+                        await user.click(getByText('Clayton County'));
 
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
@@ -1620,10 +1620,10 @@ describe('report run page', () => {
                     // component refreshes when options populates, so can't do this earlier
                     let dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('2019 Novel Coronavirus'));
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('AIDS'));
+                    await user.click(dropDown);
+                    await user.click(getByText('2019 Novel Coronavirus'));
+                    await user.click(dropDown);
+                    await user.click(getByText('AIDS'));
 
                     expect(await findByRole('button', { name: 'Remove 2019 Novel Coronavirus' })).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove AIDS' })).toBeVisible();
@@ -1695,8 +1695,8 @@ describe('report run page', () => {
                     expect(dropDown).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove 2019 Novel Coronavirus' })).toBeVisible();
 
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('AIDS'));
+                    await user.click(dropDown);
+                    await user.click(getByText('AIDS'));
 
                     const exportButton = await findByRole('button', { name: 'Export' });
                     await user.click(exportButton);
@@ -1889,10 +1889,10 @@ describe('report run page', () => {
                     // component refreshes when options populates, so can't do this earlier
                     let dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('100 - Chancroid'));
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('200 - Chlamydia'));
+                    await user.click(dropDown);
+                    await user.click(getByText('100 - Chancroid'));
+                    await user.click(dropDown);
+                    await user.click(getByText('200 - Chlamydia'));
 
                     expect(await findByRole('button', { name: 'Remove 100 - Chancroid' })).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove 200 - Chlamydia' })).toBeVisible();
@@ -1967,8 +1967,8 @@ describe('report run page', () => {
                     expect(dropDown).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove 200 - Chlamydia' })).toBeVisible();
 
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('100 - Chancroid'));
+                    await user.click(dropDown);
+                    await user.click(getByText('100 - Chancroid'));
 
                     const exportButton = await findByRole('button', { name: 'Export' });
                     await user.click(exportButton);
@@ -2346,10 +2346,10 @@ describe('report run page', () => {
                     // component refreshes when options populates, so can't do this earlier
                     let dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('Jyn Erso'));
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('Cassian Andor'));
+                    await user.click(dropDown);
+                    await user.click(getByText('Jyn Erso'));
+                    await user.click(dropDown);
+                    await user.click(getByText('Cassian Andor'));
 
                     expect(await findByRole('button', { name: 'Remove Jyn Erso' })).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove Cassian Andor' })).toBeVisible();
@@ -2421,8 +2421,8 @@ describe('report run page', () => {
                     expect(dropDown).toBeVisible();
                     expect(await findByRole('button', { name: 'Remove Cassian Andor' })).toBeVisible();
 
-                    await userEvent.click(dropDown);
-                    await userEvent.click(getByText('Jyn Erso'));
+                    await user.click(dropDown);
+                    await user.click(getByText('Jyn Erso'));
 
                     const exportButton = await findByRole('button', { name: 'Export' });
                     await user.click(exportButton);
@@ -2591,8 +2591,8 @@ describe('report run page', () => {
 
             const dropDown = await findByLabelText('Value');
             expect(dropDown).toBeVisible();
-            await userEvent.click(dropDown);
-            await userEvent.click(getByText('Terrible disease'));
+            await user.click(dropDown);
+            await user.click(getByText('Terrible disease'));
 
             expect(queryByText('Enter a value for Condition Code.')).toBeNull();
 
@@ -2688,7 +2688,7 @@ describe('report run page', () => {
                                         id: '126-126-126',
                                         columnId: 2002,
                                         operator: 'GT',
-                                        value: '2020-01-01', // format should be mm/dd/yyyy when we switch components
+                                        value: '01/01/2020',
                                     },
                                     {
                                         id: '127-127-127',
@@ -2716,12 +2716,10 @@ describe('report run page', () => {
                 { value: '456', name: 'Disease, not so bad' },
             ]);
             const {
-                getByRole,
                 getByTestId,
                 findAllByText,
                 findByRole,
                 findAllByRole,
-                findAllByTitle,
                 findAllByLabelText,
             } = renderWithRouter();
 
@@ -2729,19 +2727,19 @@ describe('report run page', () => {
 
             expect(await findAllByText('Advanced filter')).toHaveLength(2);
 
-            const combinators = await findAllByRole('combobox', { name: 'Combinator' });
+            const combinators = await findAllByLabelText('Combinator');
             expect(combinators).toHaveLength(2);
             expect(combinators[0]).toHaveValue('or');
             expect(combinators[1]).toHaveValue('and');
 
-            const fields = await findAllByRole('combobox', { name: 'Field' });
+            const fields = await findAllByLabelText('Field');
             expect(fields).toHaveLength(4);
             expect(fields[0]).toHaveValue('FULL_NAME');
             expect(fields[1]).toHaveValue('DATE_OF_BIRTH');
             expect(fields[2]).toHaveValue('DAYS_OLD');
             expect(fields[3]).toHaveValue('CONDITION');
 
-            const operators = await findAllByRole('combobox', { name: 'Logic' });
+            const operators = await findAllByLabelText('Logic');
             expect(operators).toHaveLength(4);
             expect(operators[0]).toHaveValue('beginswith');
             expect(operators[1]).toHaveValue('>');
@@ -2751,7 +2749,7 @@ describe('report run page', () => {
             const values = await findAllByLabelText('Value');
             expect(values).toHaveLength(3);
             expect(values[0]).toHaveValue('prefix');
-            expect(values[1]).toHaveValue('2020-01-01');
+            expect(values[1]).toHaveValue('01/01/2020');
             const numContainer = getByTestId('number-range-editor');
             const numLow = await within(numContainer).findByLabelText('From');
             const numHigh = await within(numContainer).findByLabelText('To');
@@ -2791,7 +2789,7 @@ describe('report run page', () => {
                                             columnId: 2002,
                                             operator: 'GT',
                                             // format should be mm/dd/yyyy when we switch components
-                                            value: '2020-01-01',
+                                            value: '01/01/2020',
                                         },
                                         {
                                             id: '127-127-127',
@@ -2851,8 +2849,7 @@ describe('report run page', () => {
                                             id: '129-129-129',
                                             columnId: 2002,
                                             operator: 'GT',
-                                            // format should be mm/dd/yyyy when we switch components
-                                            value: '2020-01-01',
+                                            value: '01/01/2020',
                                         },
                                         {
                                             id: '130-130-130',
@@ -2974,7 +2971,7 @@ describe('report run page', () => {
                                                         columnId: 2002,
                                                         operator: 'GT',
                                                         // format should be mm/dd/yyyy when we switch components
-                                                        value: '2020-01-01',
+                                                        value: '01/01/2020',
                                                     },
                                                     {
                                                         id: '130-130-130',
@@ -3115,7 +3112,14 @@ describe('report run page', () => {
             const user = userEvent.setup();
 
             await user.click((await options())[0]); // select all
-            (await options()).forEach((option) => expect(option).toBeChecked());
+            (await options()).forEach((option, i) => {
+                if (i == 0) {
+                    expect(option).not.toBeChecked();
+                    expect(option).toHaveAccessibleName('Deselect all');
+                } else {
+                    expect(option).toBeChecked();
+                }
+            });
             await user.click((await options())[0]); // de-select all
             (await options()).forEach((option) => expect(option).not.toBeChecked());
 
@@ -3123,7 +3127,16 @@ describe('report run page', () => {
             await user.type(search, 'name');
             expect(await options()).toHaveLength(2); // Full Name + select all
             await user.click(await findByLabelText('Select search results'));
-            await waitFor(async () => (await options()).forEach((option) => expect(option).toBeChecked()));
+            await waitFor(async () =>
+                (await options()).forEach((option, i) => {
+                    if (i == 0) {
+                        expect(option).not.toBeChecked();
+                        expect(option).toHaveAccessibleName('Deselect search results');
+                    } else {
+                        expect(option).toBeChecked();
+                    }
+                })
+            );
             await user.clear(search);
             expect((await options()).filter((o) => (o as HTMLInputElement).checked)).toHaveLength(1);
             expect(await findByRole('checkbox', { name: 'Full Name' })).toBeChecked();
