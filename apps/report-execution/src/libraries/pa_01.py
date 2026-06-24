@@ -84,6 +84,9 @@ def execute(
     * This report is the combination of both `PA01_HIV.sas` and `PA01_STD.sas`
     * The variant (STD or HIV) is determined by `library_params['report_variant']`
       which is defined in the Report_Library db table.
+    * For the data point "HIV Tested", the SAS PDF output does not include
+      percentages for individual workers, only "ALL WORKERS".  This report
+      includes percentages for every worker.
     """
     if not isinstance(library_params, dict):
         raise ValueError(
@@ -376,9 +379,9 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     hiv_previous_positive, hiv_previous_positive_percent = _calc_hiv_previous_positive(
         tables.case_interview_rows, cases_assigned, worker
     )
-    # hiv_tested, hiv_tested_percent = _calc_hiv_tested(
-    #     tables.case_interview_rows, cases_assigned
-    # )
+    hiv_tested, hiv_tested_percent = _calc_hiv_tested(
+        tables.case_interview_rows, cases_assigned, worker
+    )
     # hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
     #     tables.case_interview_rows, hiv_tested
     # )
@@ -473,15 +476,15 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             hiv_previous_positive_percent,
             None,
         ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     'HIV Tested',
-        #     None,
-        #     hiv_tested,
-        #     hiv_tested_percent,
-        #     None,
-        # ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'HIV Tested',
+            None,
+            hiv_tested,
+            hiv_tested_percent,
+            None,
+        ),
         # (
         #     ALL,
         #     CASE_ASSIGNMENTS_AND_OUTCOMES,
@@ -650,13 +653,19 @@ def _calc_hiv_previous_positive(
 
 
 def _calc_hiv_tested(
-    case_interview_rows: Table, cases_assigned: int
+    case_interview_rows: Table, cases_assigned: int, worker: Pa01Worker | None = None
 ) -> tuple[int, str]:
-    """Calculate 'HIV Tested' count and percentage."""
-    groups: dict[tuple, set] = {}
+    """Calculate 'HIV Tested' count and percentage.  Calculates for all workers if
+    passed in worker is None.
+    """
+    rows = case_interview_rows.data_as_dicts()
 
-    # mirrors creation of "hiv_tested" table in SAS
-    for row in case_interview_rows.data_as_dicts():
+    if worker is not None:
+        rows = _filter_rows_for_worker(rows, worker)
+
+    # nb. mirrors creation of "hiv_tested" table in SAS
+    groups: dict[tuple, set] = {}
+    for row in rows:
         if (
             row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
             and row['HIV_900_TEST_IND'] == 'Yes'
@@ -668,7 +677,6 @@ def _calc_hiv_tested(
 
             groups.setdefault(worker_key, set()).add(row['INV_LOCAL_ID'])
 
-    # this will need to be updated for worker specific calculations
     count = sum(len(case_ids) for case_ids in groups.values())
 
     return count, _percent_for_csv(count, cases_assigned)
