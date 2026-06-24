@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { SaveReportModal } from './saveReportModal';
+import { SaveReportModal } from './SaveReportModal.tsx';
 import { axe } from 'jest-axe';
 
 const mockSave = vi.fn();
