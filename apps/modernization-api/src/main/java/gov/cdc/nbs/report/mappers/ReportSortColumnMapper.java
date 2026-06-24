@@ -30,6 +30,18 @@ public class ReportSortColumnMapper {
         .build();
   }
 
+  public ReportSortColumn duplicate(ReportSortColumn column) {
+    return ReportSortColumn.builder()
+            .id(generateReportId())
+            .reportSortOrderCode(column.getReportSortOrderCode())
+            .reportSortSequenceNum(column.getReportSortSequenceNum())
+            .report(column.getReport())
+            .dataSourceColumnUid(column.getDataSourceColumnUid())
+            .statusCd(column.getStatusCd())
+            .statusTime(column.getStatusTime())
+            .build();
+  }
+
   private Long generateReportId() {
     var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();

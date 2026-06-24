@@ -35,6 +35,7 @@ import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.SaveAsReportRequest;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportFilterRepository;
@@ -229,6 +230,27 @@ public class ReportService {
     }
 
     return reportRepository.save(report);
+  }
+
+  @Transactional
+  public Report saveAs(SaveAsReportRequest request, NbsUserDetails user, ReportId reportId) {
+    Report report =
+            reportRepository
+                    .findById(reportId)
+                    .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
+
+    Report duplicate = reportMapper.duplicate(report);
+
+    duplicate.setReportTitle(request.reportTitle());
+    duplicate.setSectionCd(request.sectionCode());
+    duplicate.setShared(ReportConstants.reportGroupToDbChar(request.group()));
+    duplicate.setOwnerUid(user.getId());
+
+    if (request.description() != null) {
+      duplicate.setDescTxt(request.description());
+    }
+
+    return saveReport(request.executionRequest(), user, reportId);
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {

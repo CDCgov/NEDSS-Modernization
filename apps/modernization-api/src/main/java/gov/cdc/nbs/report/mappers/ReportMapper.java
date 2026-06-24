@@ -6,8 +6,10 @@ import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.ReportConstants;
+import gov.cdc.nbs.report.ReportFilterBuilder;
 import gov.cdc.nbs.report.models.AdminReportRequest;
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -17,10 +19,50 @@ import org.springframework.stereotype.Service;
 public class ReportMapper {
   private final Clock clock;
   private final IdGeneratorService idGenerator;
+  private final ReportSortColumnMapper reportSortColumnMapper;
+  private final ReportFilterBuilder reportFilterBuilder;
 
-  public ReportMapper(final Clock clock, IdGeneratorService idGenerator) {
+  public ReportMapper(final Clock clock, IdGeneratorService idGenerator, ReportSortColumnMapper reportSortColumnMapper, ReportFilterBuilder reportFilterBuilder) {
     this.clock = clock;
     this.idGenerator = idGenerator;
+    this.reportSortColumnMapper = reportSortColumnMapper;
+    this.reportFilterBuilder = reportFilterBuilder;
+  }
+
+  public Report duplicate(Report report) {
+    Report newReport = Report.builder()
+            .id(new ReportId(generateReportId(), report.getDataSource().getId()))
+            .dataSource(report.getDataSource())
+                    .reportLibrary(report.getReportLibrary())
+            .displayColumns()
+            .descTxt(report.getDescTxt())
+            .effectiveTime(report.getEffectiveTime())
+            .filterMode(report.getFilterMode())
+            .isModifiableIndicator(report.getIsModifiableIndicator())
+            .location(report.getLocation())
+            .ownerUid(report.getOwnerUid())
+            .orgAccessPermission(report.getOrgAccessPermission())
+            .progAreaAccessPermission(report.getProgAreaAccessPermission())
+            .reportTitle(report.getReportTitle())
+            .reportTypeCode(report.getReportTypeCode())
+            .shared(report.getShared())
+            .category(report.getCategory())
+            .sectionCd(report.getSectionCd())
+            .addReasonCd(report.getSectionCd())
+            .addTime(report.getAddTime())
+            .addUserUid(report.getAddUserUid())
+            .status(report.getStatus())
+            .build();
+
+    if (report.getReportSortColumns() != null) {
+      newReport.setReportSortColumns(report.getReportSortColumns().stream().map(reportSortColumnMapper::duplicate).toList());
+    }
+
+    if (report.getReportFilters() != null) {
+      newReport.setReportFilters(report.getReportFilters().stream().map(reportFilterBuilder::duplicate).toList());
+    }
+
+    return newReport;
   }
 
   public Report fromAdminReportRequest(
