@@ -135,7 +135,7 @@ describe('validateRule', () => {
                         operator: 'between',
                         value: '1,foobar',
                         label: 'Investigation ID',
-                        type: 'INTEGER'
+                        type: 'INTEGER',
                     },
                     {
                         id: 'rule-2',
@@ -143,7 +143,7 @@ describe('validateRule', () => {
                         operator: 'between',
                         value: '10/3/,29',
                         label: 'Diagnosis Date',
-                        type: 'DATETIME'
+                        type: 'DATETIME',
                     },
                 ],
                 combinator: 'and',
@@ -173,7 +173,7 @@ describe('validateRule', () => {
                         operator: '=',
                         value: '',
                         label: 'Investigation ID',
-                        type: 'INTEGER'
+                        type: 'INTEGER',
                     },
                     {
                         id: 'rule-2',
@@ -181,7 +181,7 @@ describe('validateRule', () => {
                         operator: '<=',
                         value: ' ',
                         label: 'Diagnosis Date',
-                        type: 'DATETIME'
+                        type: 'DATETIME',
                     },
                 ],
                 combinator: 'and',
