@@ -12,19 +12,41 @@ faker_schema = 'pa_01.yaml'
 class TestIntegrationPa01Library:
     """Integration tests for the pa_01 library."""
 
+    def create_spec(self, **overrides):
+        base = {
+            'is_export': True,
+            'is_builtin': True,
+            'report_title': (
+                'PA01 Case Management Report (Interview Assign Date) - HIV'
+            ),
+            'library_name': 'pa_01',
+            'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
+            'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
+            'library_params': '{"report_variant": "HIV"}',
+        }
+
+        base.update(overrides)
+
+        return ReportSpec.model_validate(base)
+
+    def test_execute_report_bad_input(self):
+        report_spec = self.create_spec(library_params=None)
+
+        with pytest.raises(ValueError, match=r'.*is not a dict.*'):
+            execute_report(report_spec)
+
+        report_spec = self.create_spec(library_params='19')
+
+        with pytest.raises(ValueError, match=r'.*is not a dict.*'):
+            execute_report(report_spec)
+
+        report_spec = self.create_spec(library_params='{"foo": 19}')
+
+        with pytest.raises(ValueError, match=r'.*missing key.*'):
+            execute_report(report_spec)
+
     def test_execute_report_check_data_hiv(self, snapshot):
-        report_spec = ReportSpec.model_validate(
-            {
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': (
-                    'PA01 Case Management Report (Interview Assign Date) - HIV'
-                ),
-                'library_name': 'pa_01',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
-                'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
-            }
-        )
+        report_spec = self.create_spec()
 
         result = execute_report(report_spec)
 
@@ -56,19 +78,8 @@ class TestIntegrationPa01Library:
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
     def test_execute_report_no_data_hiv(self):
-        report_spec = ReportSpec.model_validate(
-            {
-                'is_export': True,
-                'is_builtin': True,
-                'report_title': (
-                    'PA01 Case Management Report (Interview Assign Date) - HIV'
-                ),
-                'library_name': 'pa_01',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
-                'subset_query': (
-                    'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2'
-                ),
-            }
+        report_spec = self.create_spec(
+            subset_query='SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2'
         )
 
         result = execute_report(report_spec)

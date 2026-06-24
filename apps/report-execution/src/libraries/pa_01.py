@@ -1,4 +1,3 @@
-import re
 from dataclasses import dataclass
 
 from src.db_transaction import Transaction
@@ -8,7 +7,6 @@ from src.models import ReportResult, Table
     Go backs:
     - once all stats for ALL WORKERS are done, need to re-tool to calculate grouped
       by workers
-    - loosen up and/or simplify report_title regex
 """
 
 # Constants
@@ -66,16 +64,27 @@ def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
+    library_params: dict,
     **kwargs,
 ):
     """PA01 HIV and STD: Case Management Report.
 
     Conversion notes:
     * This report is the combination of both `PA01_HIV.sas` and `PA01_STD.sas`
-    * `report_title` matters here as we're parsing specific report variables from it.
+    * The variant (STD or HIV) is determined by `library_params['report_variant']`
+      which is defined in the Report_Library db table.
     """
-    title_parts = _get_report_title_parts(kwargs['report_title'])
-    disease_type = title_parts['disease_type']
+    if not isinstance(library_params, dict):
+        raise ValueError(
+            f"Parameter 'library_params' is not a dict (is {type(library_params)})"
+        )
+
+    report_variant = library_params.get('report_variant')
+
+    if report_variant is None:
+        raise ValueError(
+            f"Parameter 'library_params' missing key 'report_variant': {library_params}"
+        )
 
     # short circuit if there's no data from subset_query
     data_check = trx.query(subset_query)
@@ -90,9 +99,9 @@ def execute(
     # query result tables
     filtered_cases = trx.query(_filtered_cases_query(subset_query))
     case_interview_rows = trx.query(
-        _case_interview_rows_query(subset_query, disease_type)
+        _case_interview_rows_query(subset_query, report_variant)
     )
-    timed_interviews = trx.query(_timed_interviews_query(subset_query, disease_type))
+    timed_interviews = trx.query(_timed_interviews_query(subset_query, report_variant))
     partner_notification = trx.query(_partner_notification_query(subset_query))
     testing_index = trx.query(_testing_index_query(subset_query))
 
@@ -131,7 +140,7 @@ def _filtered_cases_query(subset_query: str) -> str:
     """
 
 
-def _case_interview_rows_query(subset_query: str, disease_type: str) -> str:
+def _case_interview_rows_query(subset_query: str, report_variant: str) -> str:
     # equivalent of pa1_new in SAS
     return f"""
       WITH base AS
@@ -167,7 +176,7 @@ def _case_interview_rows_query(subset_query: str, disease_type: str) -> str:
              fc.INVESTIGATOR_INTERVIEW_QC,
              DATEDIFF(
                DAY,
-               CAST(fc.{PA1_NEW_DATE_COL[disease_type]} AS DATE),
+               CAST(fc.{PA1_NEW_DATE_COL[report_variant]} AS DATE),
                CAST(di.IX_DATE AS DATE)
              ) AS Days,
              dp.PROVIDER_QUICK_CODE
@@ -184,7 +193,7 @@ def _case_interview_rows_query(subset_query: str, disease_type: str) -> str:
     """
 
 
-def _timed_interviews_query(subset_query: str, disease_type: str) -> str:
+def _timed_interviews_query(subset_query: str, report_variant: str) -> str:
     # equivalent of pa1_dte in SAS
     return f"""
       WITH base AS
@@ -217,7 +226,7 @@ def _timed_interviews_query(subset_query: str, disease_type: str) -> str:
              fb.CA_PATIENT_INTV_STATUS,
              fb.INVESTIGATOR_INTERVIEW_KEY,
              fb.INVESTIGATOR_INTERVIEW_QC,
-             DATEDIFF(DAY,fb.{PA1_DTE_DATE_COL[disease_type]},di.IX_DATE) AS Days,
+             DATEDIFF(DAY,fb.{PA1_DTE_DATE_COL[report_variant]},di.IX_DATE) AS Days,
              dp.PROVIDER_QUICK_CODE
       FROM filtered_base fb
         INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
@@ -671,24 +680,6 @@ def _calc_testing_index(testing_index: Table, cases_ixd: int) -> str:
     testing_index_count = testing_index.data[0][0]
 
     return _index_for_csv(testing_index_count, cases_ixd)
-
-
-def _get_report_title_parts(report_title: str) -> dict:
-    """Get the needed parts from the report title to differentiate between types.
-
-    - STD/HIV
-    - Interview Assign Date/Closed Date
-    """
-    match: re.Match | None = re.match(
-        r'^PA01 Case Management Report \((.+)\) - (STD|HIV)$', report_title
-    )
-
-    if not match:
-        raise ValueError('Report Title analysis regex did not match input string')
-
-    groups = match.groups()
-
-    return {'date_type': groups[0], 'disease_type': groups[1]}
 
 
 def _percent_for_csv(numerator: int, denominator: int) -> str:
