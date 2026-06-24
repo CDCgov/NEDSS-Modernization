@@ -44,7 +44,7 @@
 
         .multi-select__multi-value {
             background-color: colors.$primary-lighter !important;
-            margin: 0;
+            margin: 0.1rem;
         }
 
         .multi-select_multi-value_label {
@@ -69,6 +69,12 @@
         .multi-select__input {
             margin: 0;
             padding-left: 0.25rem;
+        }
+
+        .multi-select__value-container {
+            min-height: var(--component-height);
+            max-height: 10rem;
+            overflow-y: auto;
         }
     }
 }
