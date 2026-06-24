@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
-import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
+import gov.cdc.nbs.datasource.utils.ConfigurationValueFinder;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
@@ -93,8 +93,8 @@ class ReportSpecBuilderTest {
       List<BasicFilterConfiguration> filters, List<ReportColumn> columns, String title) {
     ReportConfiguration reportConfiguration = Mockito.mock(ReportConfiguration.class);
 
-    DataSourceNameConfiguration dataSourceNameConfiguration =
-        Mockito.mock(DataSourceNameConfiguration.class);
+    ConfigurationValueFinder dataSourceNameConfiguration =
+        Mockito.mock(ConfigurationValueFinder.class);
     Mockito.lenient().when(dataSourceNameConfiguration.getMappings()).thenReturn(new HashMap<>());
 
     Library library = Mockito.mock(Library.class);
