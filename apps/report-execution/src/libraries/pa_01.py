@@ -382,9 +382,9 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     hiv_tested, hiv_tested_percent = _calc_hiv_tested(
         tables.case_interview_rows, cases_assigned, worker
     )
-    # hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
-    #     tables.case_interview_rows, hiv_tested
-    # )
+    hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
+        tables.case_interview_rows, hiv_tested, worker
+    )
     # hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
     #     tables.case_interview_rows, hiv_tested
     # )
@@ -485,15 +485,15 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             hiv_tested_percent,
             None,
         ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     'HIV New Positive',
-        #     None,
-        #     hiv_new_positive,
-        #     hiv_new_positive_percent,
-        #     None,
-        # ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'HIV New Positive',
+            None,
+            hiv_new_positive,
+            hiv_new_positive_percent,
+            None,
+        ),
         # (
         #     ALL,
         #     CASE_ASSIGNMENTS_AND_OUTCOMES,
@@ -682,8 +682,17 @@ def _calc_hiv_tested(
     return count, _percent_for_csv(count, cases_assigned)
 
 
-def _calc_hiv_new_positive(filtered_cases: Table, hiv_tested: int) -> tuple[int, str]:
-    """Calculate 'HIV New Positive' count and percentage."""
+def _calc_hiv_new_positive(
+    case_interview_rows: Table, hiv_tested: int, worker: Pa01Worker | None = None
+) -> tuple[int, str]:
+    """Calculate 'HIV New Positive' count and percentage.  Calculates for all workers
+    if passed in worker is None.
+    """
+    rows = case_interview_rows.data_as_dicts()
+
+    if worker is not None:
+        rows = _filter_rows_for_worker(rows, worker)
+
     positive_results = {
         '13-Positive/Reactive',
         '21-HIV-1 Pos',
@@ -694,9 +703,7 @@ def _calc_hiv_new_positive(filtered_cases: Table, hiv_tested: int) -> tuple[int,
     }
 
     case_ids = {
-        d['INV_LOCAL_ID']
-        for d in filtered_cases.data_as_dicts()
-        if d['HIV_900_RESULT'] in positive_results
+        row['INV_LOCAL_ID'] for row in rows if row['HIV_900_RESULT'] in positive_results
     }
 
     count = len(case_ids)
