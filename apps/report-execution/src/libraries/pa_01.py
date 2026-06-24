@@ -367,7 +367,9 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     cases_ixd, cases_ixd_percent = _calc_cases_ixd(
         tables.case_interview_rows, cases_assigned, worker
     )
-    # cases_ixd_buckets = _calc_interview_day_buckets(tables.timed_interviews, cases_ixd)
+    cases_ixd_buckets = _calc_interview_day_buckets(
+        tables.timed_interviews, cases_ixd, worker
+    )
     # cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
     #     tables.case_interview_rows, cases_ixd
     # )
@@ -417,42 +419,42 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             cases_ixd_percent,
             None,
         ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     CASES_IXD,
-        #     'Within 3 days',
-        #     cases_ixd_buckets[3][0],
-        #     cases_ixd_buckets[3][1],
-        #     None,
-        # ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     CASES_IXD,
-        #     'Within 5 days',
-        #     cases_ixd_buckets[5][0],
-        #     cases_ixd_buckets[5][1],
-        #     None,
-        # ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     CASES_IXD,
-        #     'Within 7 days',
-        #     cases_ixd_buckets[7][0],
-        #     cases_ixd_buckets[7][1],
-        #     None,
-        # ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     CASES_IXD,
-        #     'Within 14 days',
-        #     cases_ixd_buckets[14][0],
-        #     cases_ixd_buckets[14][1],
-        #     None,
-        # ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            CASES_IXD,
+            'Within 3 days',
+            cases_ixd_buckets[3][0],
+            cases_ixd_buckets[3][1],
+            None,
+        ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            CASES_IXD,
+            'Within 5 days',
+            cases_ixd_buckets[5][0],
+            cases_ixd_buckets[5][1],
+            None,
+        ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            CASES_IXD,
+            'Within 7 days',
+            cases_ixd_buckets[7][0],
+            cases_ixd_buckets[7][1],
+            None,
+        ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            CASES_IXD,
+            'Within 14 days',
+            cases_ixd_buckets[14][0],
+            cases_ixd_buckets[14][1],
+            None,
+        ),
         # (
         #     ALL,
         #     CASE_ASSIGNMENTS_AND_OUTCOMES,
@@ -529,17 +531,10 @@ def _calc_cases_assigned(
     """
     rows = case_interview_rows.data_as_dicts()
 
-    if worker is None:
-        return len({row['INV_LOCAL_ID'] for row in rows})
+    if worker is not None:
+        rows = _filter_rows_for_worker(rows, worker)
 
-    return len(
-        {
-            row['INV_LOCAL_ID']
-            for row in rows
-            if row['INVESTIGATOR_INTERVIEW_KEY'] == worker.investigator_interview_key
-            and row['PROVIDER_QUICK_CODE'] == worker.provider_quick_code
-        }
-    )
+    return len({row['INV_LOCAL_ID'] for row in rows})
 
 
 def _calc_cases_closed(
@@ -551,12 +546,7 @@ def _calc_cases_closed(
     rows = case_interview_rows.data_as_dicts()
 
     if worker is not None:
-        rows = [
-            row
-            for row in rows
-            if row['INVESTIGATOR_INTERVIEW_KEY'] == worker.investigator_interview_key
-            and row['PROVIDER_QUICK_CODE'] == worker.provider_quick_code
-        ]
+        rows = _filter_rows_for_worker(rows, worker)
 
     case_ids = {row['INV_LOCAL_ID'] for row in rows if row['CC_CLOSED_DT'] is not None}
 
@@ -573,12 +563,7 @@ def _calc_cases_ixd(
     rows = case_interview_rows.data_as_dicts()
 
     if worker is not None:
-        rows = [
-            row
-            for row in rows
-            if row['INVESTIGATOR_INTERVIEW_KEY'] == worker.investigator_interview_key
-            and row['PROVIDER_QUICK_CODE'] == worker.provider_quick_code
-        ]
+        rows = _filter_rows_for_worker(rows, worker)
 
     case_ids = {
         row['INV_LOCAL_ID']
@@ -592,15 +577,22 @@ def _calc_cases_ixd(
 
 
 def _calc_interview_day_buckets(
-    table: Table, cases_ixd: int
+    timed_interviews: Table, cases_ixd: int, worker: Pa01Worker | None = None
 ) -> dict[int, tuple[int, str]]:
-    """Calculate "Cases IX'D" count and percentage for within 3, 5, 7, and 14 days."""
+    """Calculate "Cases IX'D" count and percentage for within 3, 5, 7, and 14 days.
+    Calculates for all workers if passed in worker is None.
+    """
+    rows = timed_interviews.data_as_dicts()
+
+    if worker is not None:
+        rows = _filter_rows_for_worker(rows, worker)
+
     rows = [
-        d
-        for d in table.data_as_dicts()
-        if d['IX_TYPE'] == 'Initial/Original'
-        and d['Days'] is not None
-        and d['Days'] <= 14
+        row
+        for row in rows
+        if row['IX_TYPE'] == 'Initial/Original'
+        and row['Days'] is not None
+        and row['Days'] <= 14
     ]
 
     results = dict()
@@ -765,3 +757,16 @@ def _percent_for_csv(numerator: int, denominator: int) -> str:
 def _index_for_csv(numerator: int, denominator: int) -> str:
     """Format an index that matches the PDF format for output in the CSV."""
     return f'{round(numerator / denominator, 2) if denominator else 0:0.2f}'
+
+
+def _filter_rows_for_worker(rows: list[dict], worker: Pa01Worker) -> list[dict]:
+    """Given rows from a table (via table.data_as_dicts()), filter them so they only
+    represent rows associated with the given worker.  Assumes necessary columns are
+    available.
+    """
+    return [
+        row
+        for row in rows
+        if row['INVESTIGATOR_INTERVIEW_KEY'] == worker.investigator_interview_key
+        and row['PROVIDER_QUICK_CODE'] == worker.provider_quick_code
+    ]
