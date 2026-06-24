@@ -124,12 +124,12 @@ def execute(
         testing_index,
     )
 
-    output_rows: list[Pa01Row] = []
     # nb. None treated as "ALL WORKERS"
     workers: list[Pa01Worker | None] = [None]
     workers.extend(_get_workers(case_interview_rows))
 
     # build output CSV data for each worker
+    output_rows: list[Pa01Row] = []
     for worker in workers:
         output_rows.extend(_build_output_for_worker(pa01_tables, worker))
 
@@ -373,9 +373,9 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
         tables.case_interview_rows, cases_ixd, worker
     )
-    # hiv_previous_positive, hiv_previous_positive_percent = _calc_hiv_previous_positive(
-    #     tables.filtered_cases, cases_assigned
-    # )
+    hiv_previous_positive, hiv_previous_positive_percent = _calc_hiv_previous_positive(
+        tables.case_interview_rows, cases_assigned, worker
+    )
     # hiv_tested, hiv_tested_percent = _calc_hiv_tested(
     #     tables.case_interview_rows, cases_assigned
     # )
@@ -464,15 +464,15 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             cases_reinterviewed_percent,
             None,
         ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     'HIV Previous Positive',
-        #     None,
-        #     hiv_previous_positive,
-        #     hiv_previous_positive_percent,
-        #     None,
-        # ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'HIV Previous Positive',
+            None,
+            hiv_previous_positive,
+            hiv_previous_positive_percent,
+            None,
+        ),
         # (
         #     ALL,
         #     CASE_ASSIGNMENTS_AND_OUTCOMES,
@@ -626,14 +626,21 @@ def _calc_cases_reinterviewed(
 
 
 def _calc_hiv_previous_positive(
-    filtered_cases: Table, cases_assigned: int
+    case_interview_rows: Table, cases_assigned: int, worker: Pa01Worker | None = None
 ) -> tuple[int, str]:
-    """Calculate 'HIV Previous Positive' count and percentage."""
+    """Calculate 'HIV Previous Positive' count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
+    rows = case_interview_rows.data_as_dicts()
+
+    if worker is not None:
+        rows = _filter_rows_for_worker(rows, worker)
+
     case_ids = {
-        d['INV_LOCAL_ID']
-        for d in filtered_cases.data_as_dicts()
-        if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
-        and d['ADI_900_STATUS_CD'] in ('03', '04', '05')
+        row['INV_LOCAL_ID']
+        for row in rows
+        if row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+        and row['ADI_900_STATUS_CD'] in ('03', '04', '05')
     }
 
     count = len(case_ids)
