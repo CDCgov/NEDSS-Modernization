@@ -370,9 +370,9 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     cases_ixd_buckets = _calc_interview_day_buckets(
         tables.timed_interviews, cases_ixd, worker
     )
-    # cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
-    #     tables.case_interview_rows, cases_ixd
-    # )
+    cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
+        tables.case_interview_rows, cases_ixd, worker
+    )
     # hiv_previous_positive, hiv_previous_positive_percent = _calc_hiv_previous_positive(
     #     tables.filtered_cases, cases_assigned
     # )
@@ -455,15 +455,15 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             cases_ixd_buckets[14][1],
             None,
         ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     'Cases Reinterviewed',
-        #     None,
-        #     cases_reinterviewed,
-        #     cases_reinterviewed_percent,
-        #     None,
-        # ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Cases Reinterviewed',
+            None,
+            cases_reinterviewed,
+            cases_reinterviewed_percent,
+            None,
+        ),
         # (
         #     ALL,
         #     CASE_ASSIGNMENTS_AND_OUTCOMES,
@@ -604,14 +604,20 @@ def _calc_interview_day_buckets(
 
 
 def _calc_cases_reinterviewed(
-    case_interview_rows: Table, cases_ixd: int
+    case_interview_rows: Table, cases_ixd: int, worker: Pa01Worker | None = None
 ) -> tuple[int, str]:
-    """Calculate 'Cases Reinterviewed' count and percentage."""
+    """Calculate 'Cases Reinterviewed' count and percentage.  Calculates for all
+    workers if passed in worker is None."""
+    rows = case_interview_rows.data_as_dicts()
+
+    if worker is not None:
+        rows = _filter_rows_for_worker(rows, worker)
+
     case_ids = {
-        d['INV_LOCAL_ID']
-        for d in case_interview_rows.data_as_dicts()
-        if d['IX_TYPE'] == 'Re-Interview'
-        and d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+        row['INV_LOCAL_ID']
+        for row in rows
+        if row['IX_TYPE'] == 'Re-Interview'
+        and row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
     }
 
     count = len(case_ids)
