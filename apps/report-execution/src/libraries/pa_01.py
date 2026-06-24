@@ -125,6 +125,7 @@ def execute(
     )
 
     output_rows = []
+    # nb. None treated as "ALL WORKERS"
     workers = [None]
     workers.extend(_get_workers(case_interview_rows))
 
@@ -132,7 +133,6 @@ def execute(
     for worker in workers:
         output_rows.extend(_build_output_for_worker(pa01_tables, worker))
 
-    breakpoint()
     content = Table(
         columns=CSV_COLUMNS,
         data=output_rows,
@@ -364,9 +364,9 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     cases_closed, cases_closed_percent = _calc_cases_closed(
         tables.case_interview_rows, cases_assigned, worker
     )
-    # cases_ixd, cases_ixd_percent = _calc_cases_ixd(
-    #     tables.filtered_cases, cases_assigned
-    # )
+    cases_ixd, cases_ixd_percent = _calc_cases_ixd(
+        tables.case_interview_rows, cases_assigned, worker
+    )
     # cases_ixd_buckets = _calc_interview_day_buckets(tables.timed_interviews, cases_ixd)
     # cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
     #     tables.case_interview_rows, cases_ixd
@@ -408,15 +408,15 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             cases_closed_percent,
             None,
         ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     CASES_IXD,
-        #     None,
-        #     cases_ixd,
-        #     cases_ixd_percent,
-        #     None,
-        # ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            CASES_IXD,
+            None,
+            cases_ixd,
+            cases_ixd_percent,
+            None,
+        ),
         # (
         #     ALL,
         #     CASE_ASSIGNMENTS_AND_OUTCOMES,
@@ -558,23 +558,32 @@ def _calc_cases_closed(
             and row['PROVIDER_QUICK_CODE'] == worker.provider_quick_code
         ]
 
-    case_ids = {
-        row['INV_LOCAL_ID']
-        for row in rows
-        if row['CC_CLOSED_DT'] is not None
-    }
+    case_ids = {row['INV_LOCAL_ID'] for row in rows if row['CC_CLOSED_DT'] is not None}
 
     count = len(case_ids)
     return count, _percent_for_csv(count, cases_assigned)
 
 
-def _calc_cases_ixd(table: Table, cases_assigned: int) -> tuple[int, str]:
-    """Calculate "Cases IX'D" count and percentage."""
-    data = table.data_as_dicts()
+def _calc_cases_ixd(
+    case_interview_rows: Table, cases_assigned: int, worker: Pa01Worker | None = None
+) -> tuple[int, str]:
+    """Calculate "Cases IX'D" count and percentage.  Calculates for all workers if
+    passed in worker is None.
+    """
+    rows = case_interview_rows.data_as_dicts()
+
+    if worker is not None:
+        rows = [
+            row
+            for row in rows
+            if row['INVESTIGATOR_INTERVIEW_KEY'] == worker.investigator_interview_key
+            and row['PROVIDER_QUICK_CODE'] == worker.provider_quick_code
+        ]
+
     case_ids = {
-        d['INV_LOCAL_ID']
-        for d in data
-        if d['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+        row['INV_LOCAL_ID']
+        for row in rows
+        if row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
     }
 
     count = len(case_ids)
@@ -742,7 +751,7 @@ def _get_workers(case_interview_rows: Table) -> list[Pa01Worker]:
         and row['PROVIDER_QUICK_CODE'] is not None
     }
 
-    # sorting should mimic the ordering of workers found in the PDF output
+    # nb. sorting should mimic the ordering of workers found in the PDF output
     return sorted(
         workers, key=lambda w: (w.provider_quick_code, w.investigator_interview_key)
     )
