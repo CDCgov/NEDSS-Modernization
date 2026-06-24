@@ -7,6 +7,9 @@ from src.models import ReportResult, Table
     Go backs:
     - once all stats for ALL WORKERS are done, need to re-tool to calculate grouped
       by workers
+    - loosen up and/or simplify report_title regex
+    - do we need 'data_type' when analyzing the report_title?  I don't think we do bc
+      it's a distinction for filtration at the UI level.
 """
 
 # Constants
@@ -58,6 +61,14 @@ class Pa01Tables:
     timed_interviews: Table
     partner_notification: Table
     testing_index: Table
+
+
+@dataclass(frozen=True)
+class Pa01Worker:
+    """Individual worker within the context of this report."""
+
+    investigator_interview_key: int
+    provider_quick_code: str
 
 
 def execute(
@@ -113,12 +124,18 @@ def execute(
         testing_index,
     )
 
-    # output CSV data
-    rows = _build_output_for_worker(pa01_tables)
+    output_rows = []
+    workers = [None]
+    workers.extend(_get_workers(case_interview_rows))
 
+    # build output CSV data for each worker
+    for worker in workers:
+        output_rows.extend(_build_output_for_worker(pa01_tables, worker))
+
+    breakpoint()
     content = Table(
         columns=CSV_COLUMNS,
-        data=rows,
+        data=output_rows,
     )
 
     return ReportResult(content_type='table', content=content)
@@ -343,38 +360,38 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
         List of calculated data for a given worker, meant for the final CSV of PA01
     """
     # "Case Assignments & Outcomes" section
-    cases_assigned = _calc_cases_assigned(tables.filtered_cases)
+    cases_assigned = _calc_cases_assigned(tables.case_interview_rows, worker)
     cases_closed, cases_closed_percent = _calc_cases_closed(
-        tables.filtered_cases, cases_assigned
+        tables.case_interview_rows, cases_assigned, worker
     )
-    cases_ixd, cases_ixd_percent = _calc_cases_ixd(
-        tables.filtered_cases, cases_assigned
-    )
-    cases_ixd_buckets = _calc_interview_day_buckets(tables.timed_interviews, cases_ixd)
-    cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
-        tables.case_interview_rows, cases_ixd
-    )
-    hiv_previous_positive, hiv_previous_positive_percent = _calc_hiv_previous_positive(
-        tables.filtered_cases, cases_assigned
-    )
-    hiv_tested, hiv_tested_percent = _calc_hiv_tested(
-        tables.case_interview_rows, cases_assigned
-    )
-    hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
-        tables.case_interview_rows, hiv_tested
-    )
-    hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
-        tables.case_interview_rows, hiv_tested
-    )
-    partner_notification_index = _calc_partner_notification_index(
-        tables.partner_notification, cases_ixd
-    )
-    testing_index = _calc_testing_index(tables.testing_index, cases_ixd)
+    # cases_ixd, cases_ixd_percent = _calc_cases_ixd(
+    #     tables.filtered_cases, cases_assigned
+    # )
+    # cases_ixd_buckets = _calc_interview_day_buckets(tables.timed_interviews, cases_ixd)
+    # cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
+    #     tables.case_interview_rows, cases_ixd
+    # )
+    # hiv_previous_positive, hiv_previous_positive_percent = _calc_hiv_previous_positive(
+    #     tables.filtered_cases, cases_assigned
+    # )
+    # hiv_tested, hiv_tested_percent = _calc_hiv_tested(
+    #     tables.case_interview_rows, cases_assigned
+    # )
+    # hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
+    #     tables.case_interview_rows, hiv_tested
+    # )
+    # hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
+    #     tables.case_interview_rows, hiv_tested
+    # )
+    # partner_notification_index = _calc_partner_notification_index(
+    #     tables.partner_notification, cases_ixd
+    # )
+    # testing_index = _calc_testing_index(tables.testing_index, cases_ixd)
 
     # output CSV data
     rows: list[Pa01Row] = [
         (
-            ALL,
+            ALL if worker is None else worker.provider_quick_code,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'Cases Assigned',
             None,
@@ -383,7 +400,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL,
+            ALL if worker is None else worker.provider_quick_code,
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'Cases Closed',
             None,
@@ -391,135 +408,164 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             cases_closed_percent,
             None,
         ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            CASES_IXD,
-            None,
-            cases_ixd,
-            cases_ixd_percent,
-            None,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            CASES_IXD,
-            'Within 3 days',
-            cases_ixd_buckets[3][0],
-            cases_ixd_buckets[3][1],
-            None,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            CASES_IXD,
-            'Within 5 days',
-            cases_ixd_buckets[5][0],
-            cases_ixd_buckets[5][1],
-            None,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            CASES_IXD,
-            'Within 7 days',
-            cases_ixd_buckets[7][0],
-            cases_ixd_buckets[7][1],
-            None,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            CASES_IXD,
-            'Within 14 days',
-            cases_ixd_buckets[14][0],
-            cases_ixd_buckets[14][1],
-            None,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            'Cases Reinterviewed',
-            None,
-            cases_reinterviewed,
-            cases_reinterviewed_percent,
-            None,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            'HIV Previous Positive',
-            None,
-            hiv_previous_positive,
-            hiv_previous_positive_percent,
-            None,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            'HIV Tested',
-            None,
-            hiv_tested,
-            hiv_tested_percent,
-            None,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            'HIV New Positive',
-            None,
-            hiv_new_positive,
-            hiv_new_positive_percent,
-            None,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            'HIV Posttest Counsel',
-            None,
-            hiv_posttest_counsel,
-            hiv_posttest_counsel_percent,
-            None,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            'Partner Notification Index',
-            None,
-            None,
-            None,
-            partner_notification_index,
-        ),
-        (
-            ALL,
-            CASE_ASSIGNMENTS_AND_OUTCOMES,
-            'Testing Index',
-            None,
-            None,
-            None,
-            testing_index,
-        ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     CASES_IXD,
+        #     None,
+        #     cases_ixd,
+        #     cases_ixd_percent,
+        #     None,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     CASES_IXD,
+        #     'Within 3 days',
+        #     cases_ixd_buckets[3][0],
+        #     cases_ixd_buckets[3][1],
+        #     None,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     CASES_IXD,
+        #     'Within 5 days',
+        #     cases_ixd_buckets[5][0],
+        #     cases_ixd_buckets[5][1],
+        #     None,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     CASES_IXD,
+        #     'Within 7 days',
+        #     cases_ixd_buckets[7][0],
+        #     cases_ixd_buckets[7][1],
+        #     None,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     CASES_IXD,
+        #     'Within 14 days',
+        #     cases_ixd_buckets[14][0],
+        #     cases_ixd_buckets[14][1],
+        #     None,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     'Cases Reinterviewed',
+        #     None,
+        #     cases_reinterviewed,
+        #     cases_reinterviewed_percent,
+        #     None,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     'HIV Previous Positive',
+        #     None,
+        #     hiv_previous_positive,
+        #     hiv_previous_positive_percent,
+        #     None,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     'HIV Tested',
+        #     None,
+        #     hiv_tested,
+        #     hiv_tested_percent,
+        #     None,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     'HIV New Positive',
+        #     None,
+        #     hiv_new_positive,
+        #     hiv_new_positive_percent,
+        #     None,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     'HIV Posttest Counsel',
+        #     None,
+        #     hiv_posttest_counsel,
+        #     hiv_posttest_counsel_percent,
+        #     None,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     'Partner Notification Index',
+        #     None,
+        #     None,
+        #     None,
+        #     partner_notification_index,
+        # ),
+        # (
+        #     ALL,
+        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
+        #     'Testing Index',
+        #     None,
+        #     None,
+        #     None,
+        #     testing_index,
+        # ),
     ]
 
     return rows
 
 
-def _calc_cases_assigned(table: Table) -> int:
-    """Calculate 'Cases Assigned' count."""
-    return len(table.get_unique_column('INV_LOCAL_ID'))
+def _calc_cases_assigned(
+    case_interview_rows: Table, worker: Pa01Worker | None = None
+) -> int:
+    """Calculate 'Cases Assigned' count for a given worker.  Calculates for all workers
+    if passed in worker is None.
+    """
+    rows = case_interview_rows.data_as_dicts()
+
+    if worker is None:
+        return len({row['INV_LOCAL_ID'] for row in rows})
+
+    return len(
+        {
+            row['INV_LOCAL_ID']
+            for row in rows
+            if row['INVESTIGATOR_INTERVIEW_KEY'] == worker.investigator_interview_key
+            and row['PROVIDER_QUICK_CODE'] == worker.provider_quick_code
+        }
+    )
 
 
-def _calc_cases_closed(table: Table, cases_assigned: int) -> tuple[int, str]:
-    """Calculate 'Cases Closed' count and percentage."""
-    data = {
-        d['INV_LOCAL_ID']
-        for d in table.data_as_dicts()
-        if d['CA_INTERVIEWER_ASSIGN_DT'] is not None and d['CC_CLOSED_DT'] is not None
+def _calc_cases_closed(
+    case_interview_rows: Table, cases_assigned: int, worker: Pa01Worker | None = None
+) -> tuple[int, str]:
+    """Calculate 'Cases Closed' count and percentage for a given worker.  Calculates
+    for all workers if passed in worker is None.
+    """
+    rows = case_interview_rows.data_as_dicts()
+
+    if worker is not None:
+        rows = [
+            row
+            for row in rows
+            if row['INVESTIGATOR_INTERVIEW_KEY'] == worker.investigator_interview_key
+            and row['PROVIDER_QUICK_CODE'] == worker.provider_quick_code
+        ]
+
+    case_ids = {
+        row['INV_LOCAL_ID']
+        for row in rows
+        if row['CC_CLOSED_DT'] is not None
     }
 
-    cases_closed = len(data)
-
-    return cases_closed, _percent_for_csv(cases_closed, cases_assigned)
+    count = len(case_ids)
+    return count, _percent_for_csv(count, cases_assigned)
 
 
 def _calc_cases_ixd(table: Table, cases_assigned: int) -> tuple[int, str]:
@@ -680,6 +726,26 @@ def _calc_testing_index(testing_index: Table, cases_ixd: int) -> str:
     testing_index_count = testing_index.data[0][0]
 
     return _index_for_csv(testing_index_count, cases_ixd)
+
+
+def _get_workers(case_interview_rows: Table) -> list[Pa01Worker]:
+    """Get all unique workers within the report's data.  A worker is defined as the
+    combination of 'investigator_interview_key' and 'provider_quick_code'.
+    """
+    workers = {
+        Pa01Worker(
+            row['INVESTIGATOR_INTERVIEW_KEY'],
+            row['PROVIDER_QUICK_CODE'],
+        )
+        for row in case_interview_rows.data_as_dicts()
+        if row['INVESTIGATOR_INTERVIEW_KEY'] is not None
+        and row['PROVIDER_QUICK_CODE'] is not None
+    }
+
+    # sorting should mimic the ordering of workers found in the PDF output
+    return sorted(
+        workers, key=lambda w: (w.provider_quick_code, w.investigator_interview_key)
+    )
 
 
 def _percent_for_csv(numerator: int, denominator: int) -> str:
