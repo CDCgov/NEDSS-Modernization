@@ -278,7 +278,9 @@ def _partner_notification_query(subset_query: str) -> str:
            AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
            AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
       )
-      SELECT COUNT(DISTINCT fb.INV_LOCAL_ID) AS partner_notification_count
+      SELECT dp.PROVIDER_QUICK_CODE,
+             fb.INVESTIGATOR_INTERVIEW_KEY,
+             COUNT(DISTINCT fb.INV_LOCAL_ID) AS partner_notification_count
       FROM filtered_base fb
              JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
                ON fcrc.SUBJECT_INVESTIGATION_KEY = fb.INVESTIGATION_KEY
@@ -299,7 +301,9 @@ def _partner_notification_query(subset_query: str) -> str:
         '3 - Prev. Neg, Still Neg',
         '5 - No Prev Test, New Pos',
         '6 - No Prev Test, New Neg'
-      );
+      )
+      GROUP BY dp.PROVIDER_QUICK_CODE,
+               fb.INVESTIGATOR_INTERVIEW_KEY;
     """
 
 
@@ -385,12 +389,12 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
         tables.case_interview_rows, hiv_tested, worker
     )
-    # hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
-    #     tables.case_interview_rows, hiv_tested
-    # )
-    # partner_notification_index = _calc_partner_notification_index(
-    #     tables.partner_notification, cases_ixd
-    # )
+    hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
+        tables.case_interview_rows, hiv_tested, worker
+    )
+    partner_notification_index = _calc_partner_notification_index(
+        tables.partner_notification, cases_ixd, worker
+    )
     # testing_index = _calc_testing_index(tables.testing_index, cases_ixd)
 
     # output CSV data
@@ -494,24 +498,24 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             hiv_new_positive_percent,
             None,
         ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     'HIV Posttest Counsel',
-        #     None,
-        #     hiv_posttest_counsel,
-        #     hiv_posttest_counsel_percent,
-        #     None,
-        # ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     'Partner Notification Index',
-        #     None,
-        #     None,
-        #     None,
-        #     partner_notification_index,
-        # ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'HIV Posttest Counsel',
+            None,
+            hiv_posttest_counsel,
+            hiv_posttest_counsel_percent,
+            None,
+        ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Partner Notification Index',
+            None,
+            None,
+            None,
+            partner_notification_index,
+        ),
         # (
         #     ALL,
         #     CASE_ASSIGNMENTS_AND_OUTCOMES,
@@ -712,13 +716,19 @@ def _calc_hiv_new_positive(
 
 
 def _calc_hiv_posttest_counsel(
-    case_interview_rows: Table, hiv_tested: int
+    case_interview_rows: Table, hiv_tested: int, worker: Pa01Worker | None = None
 ) -> tuple[int, str]:
-    """Calculate 'HIV Posttest Counsel' count and percentage."""
-    groups: dict[tuple, set] = {}
+    """Calculate 'HIV Posttest Counsel' count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
+    rows = case_interview_rows.data_as_dicts()
+
+    if worker is not None:
+        rows = _filter_rows_for_worker(rows, worker)
 
     # mirrors creation of "hiv_post_test" table in SAS
-    for row in case_interview_rows.data_as_dicts():
+    groups: dict[tuple, set] = {}
+    for row in rows:
         if (
             row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
             and row['HIV_POST_TEST_900_COUNSELING'] == 'Yes'
@@ -730,22 +740,25 @@ def _calc_hiv_posttest_counsel(
 
             groups.setdefault(worker_key, set()).add(row['INV_LOCAL_ID'])
 
-    # this will need to be updated for worker specific calculations
     count = sum(len(case_ids) for case_ids in groups.values())
 
     return count, _percent_for_csv(count, hiv_tested)
 
 
 def _calc_partner_notification_index(
-    partner_notification: Table, cases_ixd: int
+    partner_notification: Table, cases_ixd: int, worker: Pa01Worker | None = None
 ) -> str:
-    """Calculate 'Partner Notification Index'."""
-    if len(partner_notification.data) != 1 or len(partner_notification.data[0]) != 1:
-        raise ValueError('Query data for "Partner Notification Index" is malformed')
+    """Calculate 'Partner Notification Index'.  Calculates for all workers if passed
+    in worker is None.
+    """
+    rows = partner_notification.data_as_dicts()
 
-    partner_notification_count = partner_notification.data[0][0]
+    if worker is not None:
+        rows = _filter_rows_for_worker(rows, worker)
 
-    return _index_for_csv(partner_notification_count, cases_ixd)
+    count = sum(row['partner_notification_count'] for row in rows)
+
+    return _index_for_csv(count, cases_ixd)
 
 
 def _calc_testing_index(testing_index: Table, cases_ixd: int) -> str:
