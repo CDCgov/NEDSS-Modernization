@@ -126,7 +126,7 @@ def execute(
 
     output_rows = []
     # nb. None treated as "ALL WORKERS"
-    workers = [None]
+    workers: list[Pa01Worker | None] = [None]
     workers.extend(_get_workers(case_interview_rows))
 
     # build output CSV data for each worker
