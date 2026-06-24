@@ -323,7 +323,9 @@ def _testing_index_query(subset_query: str) -> str:
                  AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
                  AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
       )
-      SELECT COUNT(DISTINCT dcr.LOCAL_ID) AS testing_index_count
+      SELECT dp.PROVIDER_QUICK_CODE,
+             fb.INVESTIGATOR_INTERVIEW_KEY,
+             COUNT(DISTINCT dcr.LOCAL_ID) AS testing_index_count
       FROM filtered_base fb
         INNER JOIN RDB.dbo.INVESTIGATION i 
                 ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
@@ -351,7 +353,9 @@ def _testing_index_query(subset_query: str) -> str:
          '3 - Prev. Neg, Still Neg',
          '5 - No Prev Test, New Pos',
          '6 - No Prev Test, New Neg'
-      );
+      )
+      GROUP BY dp.PROVIDER_QUICK_CODE,
+               fb.INVESTIGATOR_INTERVIEW_KEY;
     """
 
 
@@ -395,7 +399,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     partner_notification_index = _calc_partner_notification_index(
         tables.partner_notification, cases_ixd, worker
     )
-    # testing_index = _calc_testing_index(tables.testing_index, cases_ixd)
+    testing_index = _calc_testing_index(tables.testing_index, cases_ixd, worker)
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -516,15 +520,15 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
             partner_notification_index,
         ),
-        # (
-        #     ALL,
-        #     CASE_ASSIGNMENTS_AND_OUTCOMES,
-        #     'Testing Index',
-        #     None,
-        #     None,
-        #     None,
-        #     testing_index,
-        # ),
+        (
+            ALL if worker is None else worker.provider_quick_code,
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Testing Index',
+            None,
+            None,
+            None,
+            testing_index,
+        ),
     ]
 
     return rows
@@ -761,14 +765,20 @@ def _calc_partner_notification_index(
     return _index_for_csv(count, cases_ixd)
 
 
-def _calc_testing_index(testing_index: Table, cases_ixd: int) -> str:
-    """Calculate 'Testing Index'."""
-    if len(testing_index.data) != 1 or len(testing_index.data[0]) != 1:
-        raise ValueError('Query data for "Testing Index" is malformed')
+def _calc_testing_index(
+    testing_index: Table, cases_ixd: int, worker: Pa01Worker | None = None
+) -> str:
+    """Calculate 'Testing Index'.  Calculates for all workers if passed in
+    worker is None.
+    """
+    rows = testing_index.data_as_dicts()
 
-    testing_index_count = testing_index.data[0][0]
+    if worker is not None:
+        rows = _filter_rows_for_worker(rows, worker)
 
-    return _index_for_csv(testing_index_count, cases_ixd)
+    count = sum(row['testing_index_count'] for row in rows)
+
+    return _index_for_csv(count, cases_ixd)
 
 
 def _get_workers(case_interview_rows: Table) -> list[Pa01Worker]:
