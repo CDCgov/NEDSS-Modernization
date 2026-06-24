@@ -607,7 +607,8 @@ def _calc_cases_reinterviewed(
     case_interview_rows: Table, cases_ixd: int, worker: Pa01Worker | None = None
 ) -> tuple[int, str]:
     """Calculate 'Cases Reinterviewed' count and percentage.  Calculates for all
-    workers if passed in worker is None."""
+    workers if passed in worker is None.
+    """
     rows = case_interview_rows.data_as_dicts()
 
     if worker is not None:
