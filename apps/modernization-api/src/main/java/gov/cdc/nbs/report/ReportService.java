@@ -12,6 +12,7 @@ import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.ReportConstants.SortDirection;
@@ -150,11 +151,17 @@ public class ReportService {
   }
 
   @Transactional
-  public Report saveReport(ReportExecutionRequest request, ReportId reportId) {
-    Report existingReport =
+  public Report saveReport(ReportExecutionRequest request, NbsUserDetails user, ReportId reportId) {
+    Report report =
         reportRepository
             .findById(reportId)
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
+
+    //  TODO: Figure out how to bake this into a custom pre-authorizer, as time allows  NOSONAR
+    //  TODO: It will require first fetching the report before anything   NOSONAR
+    if (!report.getOwnerUid().equals(user.getId())) {
+      throw new ForbiddenException("You do not have permission to save this report");
+    }
 
     // TODO: Maybe save columns?? idk
 
@@ -162,7 +169,7 @@ public class ReportService {
     AdvancedFilterRequest advFilterReq = request.advancedFilter();
 
     ReportFilter advancedFilter =
-        existingReport.getReportFilters().stream()
+        report.getReportFilters().stream()
             .filter(f -> isAdvancedFilter(f) && f.getId().equals(advFilterReq.reportFilterUid()))
             .findFirst()
             .orElseThrow(
@@ -183,7 +190,7 @@ public class ReportService {
     reportFilterRepository.save(advancedFilter);
 
     List<ReportFilter> basicFilters =
-        existingReport.getReportFilters().stream()
+        report.getReportFilters().stream()
             .filter(
                 f ->
                     isBasicFilter(f)
@@ -213,15 +220,15 @@ public class ReportService {
 
     SortSpec sort = request.sort();
     if (sort != null) {
-      existingReport.getReportSortColumns().clear();
+      report.getReportSortColumns().clear();
 
-      ReportSortColumn sortColumn = reportSortColumnMapper.fromSortSpec(existingReport, sort);
-      existingReport.getReportSortColumns().add(sortColumn);
+      ReportSortColumn sortColumn = reportSortColumnMapper.fromSortSpec(report, sort);
+      report.getReportSortColumns().add(sortColumn);
     } else {
-      existingReport.setReportSortColumns(null);
+      report.setReportSortColumns(null);
     }
 
-    return reportRepository.save(existingReport);
+    return reportRepository.save(report);
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
