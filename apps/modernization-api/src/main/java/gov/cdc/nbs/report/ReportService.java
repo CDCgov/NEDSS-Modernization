@@ -6,6 +6,7 @@ import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.DisplayColumn;
+import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
@@ -16,11 +17,15 @@ import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.ReportConstants.SortDirection;
 import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
+import gov.cdc.nbs.report.mappers.FilterValueMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
 import gov.cdc.nbs.report.mappers.ReportMapper;
+import gov.cdc.nbs.report.mappers.ReportSortColumnMapper;
 import gov.cdc.nbs.report.models.AdminReportRequest;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
+import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
+import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.LibraryExecutionResult;
 import gov.cdc.nbs.report.models.ReportColumn;
@@ -31,6 +36,7 @@ import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
+import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
@@ -55,7 +61,9 @@ public class ReportService {
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
   private final ReportSectionRepository reportSectionRepository;
+  private final ReportFilterRepository reportFilterRepository;
   private final ReportMapper reportMapper;
+  private final ReportSortColumnMapper reportSortColumnMapper;
 
   private final RestClient reportExecutionClient;
   private final DataSourceNameUtils dataSourceNameUtils;
@@ -68,18 +76,22 @@ public class ReportService {
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
       final ReportSectionRepository reportSectionRepository,
+      final ReportFilterRepository reportFilterRepository,
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig,
       WhereClauseService whereClauseService,
       ReportFilterBuilder reportFilterBuilder,
-      ReportMapper reportMapper) {
+      ReportMapper reportMapper,
+      ReportSortColumnMapper reportSortColumnMapper) {
     this.clock = clock;
 
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
     this.reportSectionRepository = reportSectionRepository;
+    this.reportFilterRepository = reportFilterRepository;
     this.reportMapper = reportMapper;
+    this.reportSortColumnMapper = reportSortColumnMapper;
 
     this.reportExecutionClient = reportExecutionClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
@@ -134,6 +146,62 @@ public class ReportService {
     return reportRepository.save(report);
   }
 
+  @Transactional
+  public Report saveReport(Long reportUid, Long dataSourceUid, ReportExecutionRequest request) {
+    ReportId id = new ReportId(reportUid, dataSourceUid);
+
+    Report existingReport =
+            reportRepository
+                    .findById(id)
+                    .orElseThrow(() -> new NotFoundException(getReportNotFoundText(id)));
+
+    // TODO: Maybe save columns?? idk
+
+    List<BasicFilterRequest> basicFilterReqs = request.basicFilters();
+    AdvancedFilterRequest advFilterReq = request.advancedFilter();
+
+    ReportFilter advancedFilter = existingReport.getReportFilters().stream().filter(f -> isAdvancedFilter(f) && f.getId().equals(advFilterReq.reportFilterUid())).findFirst().orElseThrow(() -> new NotFoundException("No report filter found for UID: " + advFilterReq.reportFilterUid()));
+
+    if (advFilterReq != null) {
+      advancedFilter.getFilterValues().clear();
+
+      List<FilterValue> advFilterValues = FilterValueMapper.fromAdvancedFilterRequest(advFilterReq);
+      advancedFilter.getFilterValues().addAll(advFilterValues);
+    } else {
+      advancedFilter.setFilterValues(null);
+    }
+
+    reportFilterRepository.save(advancedFilter);
+
+    List<ReportFilter> basicFilters = existingReport.getReportFilters().stream().filter(f -> isBasicFilter(f) && basicFilterReqs.stream().anyMatch(r -> r.reportFilterUid().equals(f.getId()))).toList();
+
+    basicFilters.forEach(basicFilter -> {
+      BasicFilterRequest matchingReq = basicFilterReqs.stream().filter(r -> r.reportFilterUid().equals(basicFilter.getId())).findFirst().orElseThrow(() -> new NotFoundException("No basic filter found matching ID"));
+      if (!matchingReq.values().isEmpty()) {
+        basicFilter.getFilterValues().clear();
+
+        List<FilterValue> basicFilterValues = FilterValueMapper.fromBasicFilterRequest(matchingReq);
+        basicFilter.getFilterValues().addAll(basicFilterValues);
+      } else {
+        basicFilter.setFilterValues(null);
+      }
+    });
+
+    reportFilterRepository.saveAll(basicFilters);
+
+    SortSpec sort = request.sort();
+    if (sort != null) {
+      existingReport.getReportSortColumns().clear();
+
+      ReportSortColumn sortColumn = reportSortColumnMapper.fromSortSpec(existingReport, sort);
+      existingReport.getReportSortColumns().add(sortColumn);
+    } else {
+      existingReport.setReportSortColumns(null);
+    }
+
+    return reportRepository.save(existingReport);
+  }
+
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
     ReportId id = new ReportId(reportUid, dataSourceUid);
 
@@ -143,11 +211,7 @@ public class ReportService {
             report -> {
               List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
-                      .filter(
-                          f ->
-                              f.getFilterCode()
-                                  .getFilterType()
-                                  .startsWith(ReportConstants.BASIC_FILTER_PREFIX))
+                      .filter(this::isBasicFilter)
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
@@ -159,11 +223,7 @@ public class ReportService {
 
               AdvancedFilterConfiguration advancedFilter =
                   report.getReportFilters().stream()
-                      .filter(
-                          f ->
-                              f.getFilterCode()
-                                  .getFilterType()
-                                  .equals(ReportConstants.ADV_FILTER_TYPE))
+                      .filter(this::isAdvancedFilter)
                       .map(
                           f ->
                               AdvancedFilterConfigurationMapper.fromReportFilter(
@@ -276,6 +336,14 @@ public class ReportService {
 
     return new ReportExecutionResult(
         result, reportSpec.subsetQuery(), LocalDateTime.now(this.clock));
+  }
+
+  private boolean isAdvancedFilter(ReportFilter filter) {
+    return filter.getFilterCode().getFilterType().equals(ReportConstants.ADV_FILTER_TYPE);
+  }
+
+  private boolean isBasicFilter(ReportFilter filter) {
+    return filter.getFilterCode().getFilterType().startsWith(ReportConstants.BASIC_FILTER_PREFIX);
   }
 
   private String getReportNotFoundText(ReportId reportId) {
