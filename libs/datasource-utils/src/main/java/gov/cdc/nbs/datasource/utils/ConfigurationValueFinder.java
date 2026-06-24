@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 public class ConfigurationValueFinder {
 
   private static final System.Logger LOGGER =
-          System.getLogger(ConfigurationValueFinder.class.getName());
+      System.getLogger(ConfigurationValueFinder.class.getName());
 
   private final JdbcClient client;
 
   private static final String CONFIG_QUERY =
-          """
+      """
           SELECT COALESCE(config_value, default_value)
           FROM NBS_ODSE..NBS_configuration
           WHERE config_key = ?
@@ -30,20 +30,23 @@ public class ConfigurationValueFinder {
       return this.client.sql(CONFIG_QUERY).param(key).query(String.class).single();
     } catch (EmptyResultDataAccessException e) {
       LOGGER.log(
-              System.Logger.Level.ERROR,
-              "Zero rows found in NBS_Configuration for unique key: {0}", key);
+          System.Logger.Level.ERROR,
+          "Zero rows found in NBS_Configuration for unique key: {0}",
+          key);
       return "";
     } catch (IncorrectResultSizeDataAccessException e) {
       // Critical anomaly: Multiple records exist for a single primary/unique config key
       LOGGER.log(
-              System.Logger.Level.ERROR,
-              "Multiple rows found in NBS_Configuration for unique key: {0}", key);
+          System.Logger.Level.ERROR,
+          "Multiple rows found in NBS_Configuration for unique key: {0}",
+          key);
       return "";
     } catch (TypeMismatchDataAccessException e) {
       // Anomaly: The row exists, but both config_value and default_value columns resolved to null
       LOGGER.log(
-              System.Logger.Level.WARNING,
-              "Configuration key ({0}) exists in NBS_Configuration, but both config_value and default_value are null", key);
+          System.Logger.Level.WARNING,
+          "Configuration key ({0}) exists in NBS_Configuration, but both config_value and default_value are null",
+          key);
       return "";
     }
   }
