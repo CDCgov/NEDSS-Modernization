@@ -4,7 +4,7 @@ describe('rangeValidator', () => {
     const FIELD_NAME = 'patient_birth_date';
     describe('validateDateRange', () => {
         it('should not return an error msg for a valid date range', () => {
-            const actual = validateDateRange(['10/11/2024', '9/04/2026'], FIELD_NAME);
+            const actual = validateDateRange(['10/11/2024', '09/04/2026'], FIELD_NAME);
             expect(actual).toBeUndefined();
         });
 
