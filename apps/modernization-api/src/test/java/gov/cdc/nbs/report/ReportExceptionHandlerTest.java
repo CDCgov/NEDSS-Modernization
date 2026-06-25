@@ -1,6 +1,7 @@
 package gov.cdc.nbs.report;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import gov.cdc.nbs.exception.NotFoundException;
 import org.apache.commons.lang3.NotImplementedException;
@@ -17,9 +18,11 @@ class ReportExceptionHandlerTest {
   void should_return_error_msg_and_status_code_for_not_found() {
     NotFoundException exception = new NotFoundException("Not Found");
 
-    ResponseEntity<String> responseEntity = handler.handleNotFound(exception);
+    ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
+        handler.handleNotFound(exception);
 
-    assertEquals("Not Found", responseEntity.getBody());
+    assertNotNull(responseEntity.getBody());
+    assertEquals("Not Found", responseEntity.getBody().message());
     assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
   }
 
@@ -27,9 +30,11 @@ class ReportExceptionHandlerTest {
   void should_return_error_msg_and_status_code_for_not_implemented() {
     NotImplementedException exception = new NotImplementedException("Not Implemented");
 
-    ResponseEntity<String> responseEntity = handler.handleNotImplemented(exception);
+    ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
+        handler.handleNotImplemented(exception);
 
-    assertEquals("Not Implemented", responseEntity.getBody());
+    assertNotNull(responseEntity.getBody());
+    assertEquals("Not Implemented", responseEntity.getBody().message());
     assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
   }
 
@@ -37,21 +42,25 @@ class ReportExceptionHandlerTest {
   void should_return_error_msg_and_status_code_for_illegal_argument() {
     IllegalArgumentException exception = new IllegalArgumentException("Illegal Argument");
 
-    ResponseEntity<String> responseEntity = handler.handleUnprocessableEntity(exception);
+    ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
+        handler.handleUnprocessableEntity(exception);
 
-    assertEquals("Illegal Argument", responseEntity.getBody());
+    assertNotNull(responseEntity.getBody());
+    assertEquals("Illegal Argument", responseEntity.getBody().message());
     assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
   }
 
   @Test
-  void should_return_error_msg_and_status_code_for_rest_client_exceptiont() {
+  void should_return_error_msg_and_status_code_for_rest_client_exception() {
     RestClientResponseException exception =
         new RestClientResponseException(
             "I failed", 503, "uh oh", null, "it went poorly".getBytes(), null);
 
-    ResponseEntity<String> responseEntity = handler.handleRestClientFailure(exception);
+    ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
+        handler.handleRestClientFailure(exception);
 
-    assertEquals("it went poorly", responseEntity.getBody());
+    assertNotNull(responseEntity.getBody());
+    assertEquals("it went poorly", responseEntity.getBody().message());
     assertEquals(HttpStatus.SERVICE_UNAVAILABLE, responseEntity.getStatusCode());
   }
 }

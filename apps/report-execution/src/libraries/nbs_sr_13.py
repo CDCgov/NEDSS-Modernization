@@ -34,16 +34,17 @@ def execute(
 
     content = trx.query(sql_query)
 
-    description = (
-        '*<u>Report content</u>*\n'
-        '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
-        '*Output:* Report demonstrates, in table form, the total number of '
-        'Investigation(s) [both Individual and Summary]. \n'
-        'Output:\n'
-        '* Does not include Investigation(s) that have been logically deleted\n'
-        '* Is filtered based on the disease(s) and advanced criteria selected by user\n'
-        '* Will not include Investigation(s) that do not have a value for Case Status\n'
-    )
+    description = """
+**<u>Report content</u>**
+
+**Output:** Report demonstrates, in table form, the total number of Investigations [both Individual and Summary]. Output:
+
+* Does not include Investigations that have been logically deleted
+
+* Is filtered based on the diseases and advanced criteria selected by user
+
+* Will not include Investigations that do not have a value for Case Status
+"""  # noqa: E501
 
     return ReportResult(
         content_type='table',

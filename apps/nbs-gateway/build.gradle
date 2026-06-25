@@ -39,7 +39,7 @@ dependencies {
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux:4.3.4'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux:4.3.5'
     implementation libs.bundles.security
     implementation libs.bundles.oidc
     implementation 'org.springframework.security:spring-security-oauth2-client'
@@ -65,6 +65,9 @@ dependencies {
         }
         implementation("io.netty:netty-resolver-dns:4.2.13.Final") {
             because("CVE-2026-42579")
+        }
+        implementation("org.bouncycastle:bcprov-jdk18on:1.84") {
+            because("CVE-2026-5598")
         }
     }
 }

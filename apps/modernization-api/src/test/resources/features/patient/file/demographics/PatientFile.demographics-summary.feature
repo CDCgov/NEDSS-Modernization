@@ -73,3 +73,10 @@ Feature: Summarizing the demographics of a patient
     Then the 1st race in the demographics summary of the patient is "Asian"
     And the 2nd race in the demographics summary of the patient is "Other"
     And the 3rd race in the demographics summary of the patient is "Unknown"
+
+  Scenario: Race categories without a matching code are not shown in the summarized demographics
+    Given the patient's race is Asian as of 11/05/2022
+    And the patient has a race with the unmapped category code "ZTEST" as of 07/24/1974
+    When I view the demographics summary of the patient
+    Then the 1st race in the demographics summary of the patient is "Asian"
+    And the demographics summary of the patient does not include the race "ZTEST"

@@ -44,10 +44,13 @@ const HorizontalField = ({
         </div>
         <div className={styles.right}>
             <div className={styles.children}>{children}</div>
-            <div className={styles.message}>
-                {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
-                {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
-            </div>
+            {warning ||
+                (error && (
+                    <div className={styles.message}>
+                        {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
+                        {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
+                    </div>
+                ))}
         </div>
     </div>
 );

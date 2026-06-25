@@ -16,7 +16,7 @@ $border-size: 2px;
 
         position: relative;
 
-        height: var(--checkbox-size);
+        min-height: var(--checkbox-size);
         line-height: 125%;
 
         display: inline-block;

@@ -138,6 +138,9 @@ dependencies {
 
     constraints {
         implementation 'org.apache.commons:commons-compress:1.28.0'
+        implementation('org.apache.tomcat.embed:tomcat-embed-core:10.1.55') {
+            because('CVE-2026-43515')
+        }
     }
 
 }

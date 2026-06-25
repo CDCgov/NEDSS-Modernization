@@ -11,7 +11,10 @@ import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdminReportRequest;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,11 +22,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ReportMapperTest {
 
+  @Spy private Clock clock = Clock.fixed(Instant.ofEpochMilli(100000), ZoneId.systemDefault());
   @Mock private NbsUserDetails user;
   @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;
@@ -70,8 +75,6 @@ class ReportMapperTest {
     AdminReportRequest request =
         buildAdminReportRequest(ReportConstants.ReportGroup.REPORTING_FACILITY);
 
-    LocalDateTime beforeCreation = LocalDateTime.now();
-
     Long nextReportId = 100L;
     Mockito.lenient()
         .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
@@ -79,7 +82,6 @@ class ReportMapperTest {
 
     Report result =
         reportMapper.fromAdminReportRequest(request, user, reportLibrary, dataSource, null);
-    LocalDateTime afterCreation = LocalDateTime.now();
 
     assertThat(result.getId()).isNotNull();
     assertThat(result.getId().getDataSourceUid()).isEqualTo(request.dataSourceId());
@@ -91,10 +93,10 @@ class ReportMapperTest {
     // Should always be set to 'ACTIVE'
     assertThat(result.getStatus()).isNotNull();
     assertThat(result.getStatus().status()).isEqualTo(Status.ACTIVE_CODE);
-    assertThat(result.getStatus().appliedOn()).isBetween(beforeCreation, afterCreation);
+    assertThat(result.getStatus().appliedOn()).isEqualTo(LocalDateTime.now(clock));
 
     assertThat(result.getDataSource()).isEqualTo(dataSource);
-    assertThat(result.getAddTime()).isNotNull().isBetween(beforeCreation, afterCreation);
+    assertThat(result.getAddTime()).isNotNull().isEqualTo(LocalDateTime.now(clock));
     assertThat(result.getAddUserUid()).isEqualTo(userId);
     assertThat(result.getDescTxt()).isEqualTo(description);
     assertThat(result.getOwnerUid()).isEqualTo(ownerId);
@@ -109,25 +111,18 @@ class ReportMapperTest {
   @Test
   void fromAdminReportRequest_should_set_all_fields_correctly_with_existing_id() {
     ReportId existingReportId = new ReportId(50L, 75L);
+    Report existingReport = new Report(existingReportId);
     AdminReportRequest request =
         buildAdminReportRequest(ReportConstants.ReportGroup.REPORTING_FACILITY);
 
-    LocalDateTime beforeCreation = LocalDateTime.now();
     Report result =
         reportMapper.fromAdminReportRequest(
-            request, user, reportLibrary, dataSource, existingReportId);
-    LocalDateTime afterCreation = LocalDateTime.now();
+            request, user, reportLibrary, dataSource, existingReport);
 
     assertThat(result.getId()).isEqualTo(existingReportId);
+    // we update the existing report, so should be equal
+    assertThat(result).isEqualTo(existingReport);
 
-    // Should always be set to 'N'
-    assertThat(result.getIsModifiableIndicator()).isEqualTo('N');
-    // Should always be set to 'ACTIVE'
-    assertThat(result.getStatus()).isNotNull();
-    assertThat(result.getStatus().status()).isEqualTo(Status.ACTIVE_CODE);
-    assertThat(result.getStatus().appliedOn()).isBetween(beforeCreation, afterCreation);
-
-    assertThat(result.getDataSource()).isEqualTo(dataSource);
     assertThat(result.getDescTxt()).isEqualTo(description);
     assertThat(result.getOwnerUid()).isEqualTo(ownerId);
     assertThat(result.getReportTitle()).isEqualTo(reportTitle);

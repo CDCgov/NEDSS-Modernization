@@ -9,14 +9,17 @@ import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdminReportRequest;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReportMapper {
+  private final Clock clock;
   private final IdGeneratorService idGenerator;
 
-  public ReportMapper(IdGeneratorService idGenerator) {
+  public ReportMapper(final Clock clock, IdGeneratorService idGenerator) {
+    this.clock = clock;
     this.idGenerator = idGenerator;
   }
 
@@ -25,39 +28,40 @@ public class ReportMapper {
       NbsUserDetails user,
       ReportLibrary reportLibrary,
       DataSource dataSource,
-      ReportId existingReportId) {
-    LocalDateTime now = LocalDateTime.now();
+      Report existingReport) {
+    LocalDateTime now = LocalDateTime.now(this.clock);
 
-    Report.ReportBuilder builder = Report.builder();
-
-    if (existingReportId != null) {
-      builder.id(existingReportId);
-    } else {
-      builder.id(new ReportId(generateReportId(), dataSource.getId()));
-      builder.addTime(now).addUserUid(user.getId());
+    Report report = existingReport;
+    if (report == null) {
+      report =
+          Report.builder()
+              .id(new ReportId(generateReportId(), dataSource.getId()))
+              .addTime(now)
+              .addUserUid((user.getId()))
+              .dataSource(dataSource)
+              .isModifiableIndicator('N') // consistently "N" in DB, so just continuing that pattern
+              .filterMode('B') // consistently "B" in DB, so just continuing that pattern"
+              .build();
     }
 
     // adding a SAS library - need to make sure the location and type are set for NBS 6 to use
     if (reportLibrary.getLibraryName().toUpperCase().endsWith(".SAS")) {
-      builder.location(reportLibrary.getLibraryName());
-      builder.reportTypeCode(
+      report.setLocation(reportLibrary.getLibraryName());
+      report.setReportTypeCode(
           reportLibrary.getColumnSelectInd().toString().equals("Y")
               ? "SAS_CUSTOM"
               : "SAS_ODS_HTML");
     }
 
-    return builder
-        .dataSource(dataSource)
-        .descTxt(request.description())
-        .isModifiableIndicator('N') // consistently "N" in DB, so just continuing that pattern
-        .filterMode('B') // consistently "B" in DB, so just continuing that pattern"
-        .ownerUid(request.ownerId())
-        .reportTitle(request.reportTitle())
-        .shared(ReportConstants.reportGroupToDbChar(request.group()))
-        .status(new Status(Status.ACTIVE_CODE, now))
-        .sectionCd(request.sectionCode())
-        .reportLibrary(reportLibrary)
-        .build();
+    report.setDescTxt(request.description());
+    report.setOwnerUid(request.ownerId());
+    report.setReportTitle(request.reportTitle());
+    report.setShared(ReportConstants.reportGroupToDbChar(request.group()));
+    report.setStatus(new Status(Status.ACTIVE_CODE, now));
+    report.setSectionCd(request.sectionCode());
+    report.setReportLibrary(reportLibrary);
+
+    return report;
   }
 
   private Long generateReportId() {

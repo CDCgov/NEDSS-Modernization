@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -40,6 +41,21 @@ public class ReportSpecBuilder {
         + columns.stream()
             .map(column -> "[" + column.name() + "] AS [" + column.title() + "]")
             .collect(Collectors.joining(", "));
+  }
+
+  private String buildOrderByCriteria(SortSpec sortBy) {
+    if (sortBy == null) {
+      return "";
+    }
+
+    ReportColumn sortColumn = findMatchingColumn(sortBy.columnUid());
+
+    String targetColumn =
+        "STRING".equals(sortColumn.sourceTypeCode())
+            ? String.format("UPPER([%s])", sortColumn.title())
+            : String.format("[%s]", sortColumn.title());
+
+    return String.format("%s %s", targetColumn, sortBy.direction().name());
   }
 
   private ReportColumn findMatchingColumn(Long columnUid) {
@@ -81,18 +97,25 @@ public class ReportSpecBuilder {
     if (columns != null) {
       columnMap = columns.stream().map(c -> List.of(c.name(), c.title())).toList();
     }
+    SortSpec sortBy = reportExecRequest.sort();
+    validateSortColumns(reportExecRequest.columnUids(), sortBy);
+    String orderbyCriteria = buildOrderByCriteria(sortBy);
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
     String whereClause =
         whereClauseService.buildWhereClause(reportConfig, reportExecRequest, dataSourceNameUtils);
-    String orderByClause = "";
+    String orderByClause =
+        (!Objects.equals(orderbyCriteria, "")) ? "ORDER BY " + orderbyCriteria : "";
+
+    // filter out empty spaces prior to string joining to prevent extra spaces between clauses
+    String subsetQuery =
+        java.util.stream.Stream.of(selectClause, fromClause, whereClause, orderByClause)
+            .filter(clause -> clause != null && !clause.isBlank())
+            .collect(Collectors.joining(" "))
+            .trim();
 
     Integer daysValue = extractDaysValue();
-
-    String subsetQuery =
-        String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
-
     String libraryParams = reportConfig.library().libraryParams();
 
     return new ReportSpec(
@@ -103,6 +126,7 @@ public class ReportSpecBuilder {
         dataSourceName,
         subsetQuery,
         columnMap,
+        orderbyCriteria,
         daysValue,
         libraryParams);
   }
@@ -154,6 +178,18 @@ public class ReportSpecBuilder {
       throw new IllegalArgumentException(
           String.format(
               "The '%s' filter value must be a valid integer: %s", description, rawDaysValue));
+    }
+  }
+
+  private void validateSortColumns(List<Long> requestedColumnUids, SortSpec sortSpec) {
+
+    if (sortSpec == null) {
+      return;
+    }
+
+    if (requestedColumnUids == null || !requestedColumnUids.contains(sortSpec.columnUid())) {
+      throw new IllegalArgumentException(
+          "Selected sort column is not present in requested column list.");
     }
   }
 }

@@ -22,24 +22,25 @@ import gov.cdc.nbs.report.models.AdminReportRequest;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.Library;
+import gov.cdc.nbs.report.models.LibraryExecutionResult;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportResult;
+import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
-import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
@@ -48,10 +49,11 @@ import org.springframework.web.client.RestClientResponseException;
 @Service
 public class ReportService {
 
+  private final Clock clock;
+
   private final ReportRepository reportRepository;
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
-  private final ReportFilterRepository reportFilterRepository;
   private final ReportSectionRepository reportSectionRepository;
   private final ReportMapper reportMapper;
 
@@ -61,20 +63,21 @@ public class ReportService {
   private final ReportFilterBuilder reportFilterBuilder;
 
   public ReportService(
+      final Clock clock,
       final ReportRepository reportRepository,
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
-      final ReportFilterRepository reportFilterRepository,
       final ReportSectionRepository reportSectionRepository,
       RestClient reportExecutionClient,
       final DataSourceNameConfiguration dataSourceNameConfig,
       WhereClauseService whereClauseService,
       ReportFilterBuilder reportFilterBuilder,
       ReportMapper reportMapper) {
+    this.clock = clock;
+
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
-    this.reportFilterRepository = reportFilterRepository;
     this.reportSectionRepository = reportSectionRepository;
     this.reportMapper = reportMapper;
 
@@ -86,63 +89,49 @@ public class ReportService {
 
   @Transactional
   public Report createReport(AdminReportRequest request, NbsUserDetails user) {
-    ReportMetadata metadata = verifyReportMetadata(request);
-
-    Report savedReport =
-        reportRepository.save(
-            reportMapper.fromAdminReportRequest(
-                request, user, metadata.reportLibrary, metadata.dataSource, null));
-
-    if (!request.filterRequests().isEmpty()) {
-      List<ReportFilter> reportFilters =
-          request.filterRequests().stream()
-              .map(f -> reportFilterBuilder.build(f, savedReport))
-              .toList();
-
-      reportFilterRepository.saveAll(reportFilters);
-    }
-
-    return savedReport;
+    return upsertReport(request, user, null);
   }
 
   @Transactional
   public Report editReport(
       AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
-    if (existingReportId != null && !reportRepository.existsById(existingReportId)) {
-      throw new NotFoundException(getReportNotFoundText(existingReportId));
-    }
+    Report existingReport =
+        reportRepository
+            .findById(existingReportId)
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
 
+    return upsertReport(request, user, existingReport);
+  }
+
+  @Transactional
+  public void deleteReport(ReportId existingReportId) {
+    Report existingReport =
+        reportRepository
+            .findById(existingReportId)
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
+
+    reportRepository.delete(existingReport);
+  }
+
+  private Report upsertReport(
+      AdminReportRequest request, NbsUserDetails user, Report existingReport) {
     ReportMetadata metadata = verifyReportMetadata(request);
 
-    Report savedReport =
-        reportRepository.save(
-            reportMapper.fromAdminReportRequest(
-                request, user, metadata.reportLibrary, metadata.dataSource, existingReportId));
+    Report report =
+        reportMapper.fromAdminReportRequest(
+            request, user, metadata.reportLibrary, metadata.dataSource, existingReport);
 
-    List<ReportFilter> existingFilters = savedReport.getReportFilters();
-
-    List<ReportFilter> filtersToDelete =
-        existingFilters.stream()
-            .filter(
-                f ->
-                    request.filterRequests().stream()
-                        .noneMatch(fr -> fr.id() != null && fr.id().equals(f.getId())))
-            .toList();
-
-    List<ReportFilter> filtersToUpsert =
-        request.filterRequests().stream()
-            .map(f -> reportFilterBuilder.build(f, savedReport))
-            .toList();
-
-    if (!filtersToDelete.isEmpty()) {
-      reportFilterRepository.deleteAll(filtersToDelete);
+    List<ReportFilter> reportFilters =
+        request.filterRequests().stream().map(f -> reportFilterBuilder.build(f, report)).toList();
+    if (report.getReportFilters() != null) {
+      // For orphan detection/removal to work, need to keep the same container
+      report.getReportFilters().clear();
+      report.getReportFilters().addAll(reportFilters);
+    } else {
+      report.setReportFilters(reportFilters);
     }
 
-    if (!filtersToUpsert.isEmpty()) {
-      reportFilterRepository.saveAll(filtersToUpsert);
-    }
-
-    return savedReport;
+    return reportRepository.save(report);
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
@@ -154,9 +143,19 @@ public class ReportService {
             report -> {
               List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
-                      .filter(f -> f.getFilterCode().getFilterType().startsWith("BAS_"))
+                      .filter(
+                          f ->
+                              f.getFilterCode()
+                                  .getFilterType()
+                                  .startsWith(ReportConstants.BASIC_FILTER_PREFIX))
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
+
+              List<DataSourceColumn> dataSourceColumns =
+                  report.getDataSource().getDataSourceColumns();
+              if (dataSourceColumns == null) {
+                throw new IllegalArgumentException("Invalid data source");
+              }
 
               AdvancedFilterConfiguration advancedFilter =
                   report.getReportFilters().stream()
@@ -165,15 +164,13 @@ public class ReportService {
                               f.getFilterCode()
                                   .getFilterType()
                                   .equals(ReportConstants.ADV_FILTER_TYPE))
-                      .map(AdvancedFilterConfigurationMapper::fromReportFilter)
+                      .map(
+                          f ->
+                              AdvancedFilterConfigurationMapper.fromReportFilter(
+                                  f, dataSourceColumns))
                       .findFirst()
                       .orElse(null);
 
-              List<DataSourceColumn> dataSourceColumns =
-                  report.getDataSource().getDataSourceColumns();
-              if (dataSourceColumns == null) {
-                throw new IllegalArgumentException("Invalid data source");
-              }
               List<ReportColumn> reportColumns =
                   dataSourceColumns.stream().map(ReportColumnMapper::fromDataSourceColumn).toList();
 
@@ -230,7 +227,7 @@ public class ReportService {
     return reportLibrary.getRunner();
   }
 
-  public ResponseEntity<ReportResult> executeReport(ReportExecutionRequest request) {
+  public ReportExecutionResult executeReport(ReportExecutionRequest request) {
     Long reportUid = request.reportUid();
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
@@ -251,24 +248,34 @@ public class ReportService {
             request, reportConfigResponse, dataSourceNameUtils, whereClauseService);
     ReportSpec reportSpec = specBuilder.build();
 
-    return reportExecutionClient
-        .post()
-        .uri("/report/execute")
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(reportSpec)
-        .retrieve()
-        .onStatus(
-            status -> status.value() >= 400,
-            (req, resp) -> {
-              throw new RestClientResponseException(
-                  "Error response from the report-execution service",
-                  resp.getStatusCode(),
-                  resp.getStatusText(),
-                  resp.getHeaders(),
-                  resp.getBody().readAllBytes(),
-                  null);
-            })
-        .toEntity(ReportResult.class);
+    LibraryExecutionResult result =
+        reportExecutionClient
+            .post()
+            .uri("/report/execute")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(reportSpec)
+            .retrieve()
+            .onStatus(
+                status -> status.value() >= 400,
+                (req, resp) -> {
+                  throw new RestClientResponseException(
+                      "Error response from the report-execution service",
+                      resp.getStatusCode(),
+                      resp.getStatusText(),
+                      resp.getHeaders(),
+                      resp.getBody().readAllBytes(),
+                      null);
+                })
+            .toEntity(LibraryExecutionResult.class)
+            .getBody();
+
+    if (result == null) {
+      throw new IllegalStateException(
+          "No error response and no body parsed from report execution service");
+    }
+
+    return new ReportExecutionResult(
+        result, reportSpec.subsetQuery(), LocalDateTime.now(this.clock));
   }
 
   private String getReportNotFoundText(ReportId reportId) {
