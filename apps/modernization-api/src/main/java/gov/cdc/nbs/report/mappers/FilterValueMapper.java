@@ -54,8 +54,6 @@ public class FilterValueMapper {
         if (i < root.rules().size() - 1) {
           FilterValue operator = buildOperatorFilterValue(advancedFilter, r);
           filterValues.add(operator);
-
-          sequenceNumber++;
         }
       } else if (rule instanceof AdvancedQuery.RuleGroup r) {
         List<FilterValue> ruleGroupValues =
