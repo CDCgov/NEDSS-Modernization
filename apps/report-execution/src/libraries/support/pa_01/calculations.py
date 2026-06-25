@@ -188,6 +188,9 @@ def build_partners_and_clusters_initiated_output(
     total_period_partners, total_period_partners_index = _calc_total_period_partners(
         tables.period_partners, cases_ixd, worker
     )
+    total_partners_initiated = _calc_total_partners_initiated(
+        tables.period_partners, worker
+    )
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -199,6 +202,15 @@ def build_partners_and_clusters_initiated_output(
             total_period_partners,
             None,
             total_period_partners_index,
+        ),
+        (
+            _worker_for_csv(worker),
+            PARTNERS_AND_CLUSTERS_INITIATED,
+            'Total Partners Initiated',
+            None,
+            total_partners_initiated,
+            None,
+            None,
         ),
     ]
 
@@ -413,6 +425,17 @@ def _calc_total_period_partners(
     count = sum(row['count_Q'] for row in rows)
 
     return count, _index_for_csv(count, cases_ixd, 1)
+
+
+def _calc_total_partners_initiated(
+    period_partners: Table, worker: Pa01Worker | None = None
+) -> int:
+    """Calculate 'Total Partners Initiated' count.  Calculates for all workers
+    if passed in worker is None.
+    """
+    rows = _rows_for_worker(period_partners, worker)
+
+    return _count_distinct_case_ids(rows)
 
 
 # helpers
