@@ -194,7 +194,7 @@ public class ReportService {
       duplicate.setDescTxt(request.description());
     }
 
-    return saveReport(request.executionRequest(), user, reportId);
+    return saveReport(request.executionRequest(), reportId);
   }
 
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
