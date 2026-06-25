@@ -45,7 +45,11 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -316,35 +320,39 @@ public class ReportService {
   }
 
   private void updateBasicFilterValues(Report report, List<BasicFilterRequest> basicFilterReqs) {
-    List<ReportFilter> basicFilters =
+    Map<Long, ReportFilter> basicFiltersById =
         report.getReportFilters().stream()
-            .filter(
-                f ->
-                    isBasicFilter(f)
-                        && basicFilterReqs.stream()
-                            .anyMatch(r -> r.reportFilterUid().equals(f.getId())))
-            .toList();
+            .filter(this::isBasicFilter)
+            .collect(Collectors.toMap(ReportFilter::getId, Function.identity()));
 
-    basicFilters.forEach(
-        basicFilter -> {
-          BasicFilterRequest matchingReq =
-              basicFilterReqs.stream()
-                  .filter(r -> r.reportFilterUid().equals(basicFilter.getId()))
-                  .findFirst()
-                  .orElseThrow(() -> new NotFoundException("No basic filter found matching ID"));
+    //  If no basic filter requests are provided, delete all filter values for all existing basic filters
+    if (basicFilterReqs == null || basicFilterReqs.isEmpty()) {
+      basicFiltersById.values().forEach(basicFilter -> basicFilter.setFilterValues(null));
+    } else if (basicFilterReqs.stream().anyMatch(req -> !basicFiltersById.containsKey(req.reportFilterUid()))) {
+        throw new IllegalArgumentException("BasicFilterRequest.reportFilterUid does not match existing basic filter ID");
+    } else {
+      Map<Long, BasicFilterRequest> basicFilterReqsById = basicFilterReqs.stream().collect(Collectors.toMap(BasicFilterRequest::reportFilterUid, Function.identity()));
 
-          if (!matchingReq.values().isEmpty()) {
-            basicFilter.getFilterValues().clear();
+      basicFiltersById.values().forEach(
+              basicFilter -> {
+                BasicFilterRequest matchingReq = basicFilterReqsById.get(basicFilter.getId());
+                //  If a basic filter request isn't present for a given basic filter,
+                //  OR if it is present but has no values, then delete all filter values
+                //  for that particular basic filter
+                if (matchingReq == null || matchingReq.values().isEmpty()) {
+                  basicFilter.setFilterValues(null);
+                } else {
+                  //  Otherwise, reset the filter values to the new values provided
+                  basicFilter.getFilterValues().clear();
 
-            List<FilterValue> basicFilterValues =
-                filterValueMapper.fromBasicFilterRequest(basicFilter, matchingReq);
-            basicFilter.getFilterValues().addAll(basicFilterValues);
-          } else {
-            basicFilter.setFilterValues(null);
-          }
-        });
+                  List<FilterValue> basicFilterValues =
+                          filterValueMapper.fromBasicFilterRequest(basicFilter, matchingReq);
+                  basicFilter.getFilterValues().addAll(basicFilterValues);
+                }
+              });
+    }
 
-    reportFilterRepository.saveAll(basicFilters);
+    reportFilterRepository.saveAll(basicFiltersById.values());
   }
 
   private void updateAdvancedFilterValues(Report report, AdvancedFilterRequest advFilterReq) {
