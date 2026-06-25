@@ -9,10 +9,12 @@ public final class ReportConstants {
     AND
   }
 
-  public enum FilterValueType {
+  public enum AdvancedFilterValueType {
     OPERATOR,
-    CLAUSE
+    CLAUSE,
   }
+
+  public static final String BASIC_FILTER_VALUE_TYPE = "code";
 
   public static final String BASIC_FILTER_PREFIX = "BAS_";
   public static final String ADV_FILTER_TYPE = "ADV_WCB";

@@ -3,14 +3,15 @@ package gov.cdc.nbs.report.mappers;
 import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.id.IdGeneratorService;
+import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class FilterValueMapper {
   private final IdGeneratorService idGenerator;
 
@@ -28,7 +29,7 @@ public class FilterValueMapper {
                 FilterValue.builder()
                     .id(generateFilterValueId())
                     .reportFilter(basicFilter)
-                    .valueType("code") // idk, that's just how it is in the database?
+                    .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
                     .valueTxt(value)
                     .build())
         .toList();
@@ -61,8 +62,6 @@ public class FilterValueMapper {
             fromAdvancedFilterRequest(
                 advancedFilter, new AdvancedFilterRequest(request.reportFilterUid(), r));
         filterValues.addAll(ruleGroupValues);
-      } else {
-        throw new IllegalArgumentException("Unknown rule type: " + rule.getClass());
       }
     }
 
@@ -78,7 +77,7 @@ public class FilterValueMapper {
     FilterValue clause =
         FilterValue.builder()
             .id(generateFilterValueId())
-            .valueType("CLAUSE")
+            .valueType(ReportConstants.AdvancedFilterValueType.CLAUSE.toString())
             .reportFilter(advancedFilter)
             .columnUid(rule.columnId())
             .operator(rule.operator())
@@ -97,7 +96,7 @@ public class FilterValueMapper {
         FilterValue.builder()
             .id(generateFilterValueId())
             .reportFilter(advancedFilter)
-            .valueType("OPERATOR")
+            .valueType(ReportConstants.AdvancedFilterValueType.OPERATOR.toString())
             .operator(rule.operator())
             .sequenceNumber(sequenceNumber)
             .build();
@@ -120,7 +119,7 @@ public class FilterValueMapper {
         FilterValue.builder()
             .id(generateFilterValueId())
             .reportFilter(advancedFilter)
-            .valueTxt("OPERATOR")
+            .valueType(ReportConstants.AdvancedFilterValueType.OPERATOR.toString())
             .operator(paren)
             .sequenceNumber(sequenceNumber)
             .build();
