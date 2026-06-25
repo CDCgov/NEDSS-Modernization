@@ -110,3 +110,659 @@
   - null
   - null
   - '0.01'
+- !!python/tuple
+  - ALL
+  - Partners & Clusters Initiated
+  - Total Period Partners
+  - null
+  - 76
+  - null
+  - '0.4'
+- !!python/tuple
+  - ALL
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - null
+  - 5
+  - null
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases Assigned
+  - null
+  - 34
+  - null
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases Closed
+  - null
+  - 34
+  - 100.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - null
+  - 34
+  - 100.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 3 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 5 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 7 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 14 days
+  - 18
+  - 52.9%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases Reinterviewed
+  - null
+  - 17
+  - 50.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - HIV Previous Positive
+  - null
+  - 17
+  - 50.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - HIV Tested
+  - null
+  - 24
+  - 70.6%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - HIV New Positive
+  - null
+  - 31
+  - 129.2%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - HIV Posttest Counsel
+  - null
+  - 15
+  - 62.5%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Partner Notification Index
+  - null
+  - null
+  - null
+  - '0.0'
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Testing Index
+  - null
+  - null
+  - null
+  - '0.0'
+- !!python/tuple
+  - adevraj
+  - Partners & Clusters Initiated
+  - Total Period Partners
+  - null
+  - 10
+  - null
+  - '0.3'
+- !!python/tuple
+  - adevraj
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - null
+  - 1
+  - null
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Cases Assigned
+  - null
+  - 49
+  - null
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Cases Closed
+  - null
+  - 49
+  - 100.0%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - null
+  - 49
+  - 100.0%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 3 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 5 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 7 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 14 days
+  - 27
+  - 55.1%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Cases Reinterviewed
+  - null
+  - 22
+  - 44.9%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - HIV Previous Positive
+  - null
+  - 18
+  - 36.7%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - HIV Tested
+  - null
+  - 24
+  - 49.0%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - HIV New Positive
+  - null
+  - 40
+  - 166.7%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - HIV Posttest Counsel
+  - null
+  - 23
+  - 95.8%
+  - null
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Partner Notification Index
+  - null
+  - null
+  - null
+  - '0.0'
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Testing Index
+  - null
+  - null
+  - null
+  - '0.0'
+- !!python/tuple
+  - avance
+  - Partners & Clusters Initiated
+  - Total Period Partners
+  - null
+  - 19
+  - null
+  - '0.4'
+- !!python/tuple
+  - avance
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - null
+  - 1
+  - null
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Cases Assigned
+  - null
+  - 48
+  - null
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Cases Closed
+  - null
+  - 48
+  - 100.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - null
+  - 48
+  - 100.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 3 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 5 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 7 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 14 days
+  - 29
+  - 60.4%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Cases Reinterviewed
+  - null
+  - 20
+  - 41.7%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - HIV Previous Positive
+  - null
+  - 24
+  - 50.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - HIV Tested
+  - null
+  - 26
+  - 54.2%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - HIV New Positive
+  - null
+  - 38
+  - 146.2%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - HIV Posttest Counsel
+  - null
+  - 30
+  - 115.4%
+  - null
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Partner Notification Index
+  - null
+  - null
+  - null
+  - '0.02'
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Testing Index
+  - null
+  - null
+  - null
+  - '0.02'
+- !!python/tuple
+  - dbowman
+  - Partners & Clusters Initiated
+  - Total Period Partners
+  - null
+  - 28
+  - null
+  - '0.6'
+- !!python/tuple
+  - dbowman
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - null
+  - 2
+  - null
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Cases Assigned
+  - null
+  - 41
+  - null
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Cases Closed
+  - null
+  - 41
+  - 100.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - null
+  - 41
+  - 100.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 3 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 5 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 7 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 14 days
+  - 20
+  - 48.8%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Cases Reinterviewed
+  - null
+  - 23
+  - 56.1%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - HIV Previous Positive
+  - null
+  - 13
+  - 31.7%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - HIV Tested
+  - null
+  - 20
+  - 48.8%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - HIV New Positive
+  - null
+  - 31
+  - 155.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - HIV Posttest Counsel
+  - null
+  - 19
+  - 95.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Partner Notification Index
+  - null
+  - null
+  - null
+  - '0.0'
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Testing Index
+  - null
+  - null
+  - null
+  - '0.0'
+- !!python/tuple
+  - fpoole
+  - Partners & Clusters Initiated
+  - Total Period Partners
+  - null
+  - 0
+  - null
+  - '0.0'
+- !!python/tuple
+  - fpoole
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - null
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Cases Assigned
+  - null
+  - 40
+  - null
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Cases Closed
+  - null
+  - 40
+  - 100.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - null
+  - 40
+  - 100.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 3 days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 5 days
+  - 1
+  - 2.5%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 7 days
+  - 1
+  - 2.5%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 14 days
+  - 22
+  - 55.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Cases Reinterviewed
+  - null
+  - 19
+  - 47.5%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - HIV Previous Positive
+  - null
+  - 21
+  - 52.5%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - HIV Tested
+  - null
+  - 23
+  - 57.5%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - HIV New Positive
+  - null
+  - 31
+  - 134.8%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - HIV Posttest Counsel
+  - null
+  - 21
+  - 91.3%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Partner Notification Index
+  - null
+  - null
+  - null
+  - '0.0'
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Testing Index
+  - null
+  - null
+  - null
+  - '0.0'
+- !!python/tuple
+  - gfreeman
+  - Partners & Clusters Initiated
+  - Total Period Partners
+  - null
+  - 19
+  - null
+  - '0.5'
+- !!python/tuple
+  - gfreeman
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - null
+  - 1
+  - null
+  - null
