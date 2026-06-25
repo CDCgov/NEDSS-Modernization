@@ -25,7 +25,7 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
             # need all of the branches to do the diff
             fetch-depth: 0
