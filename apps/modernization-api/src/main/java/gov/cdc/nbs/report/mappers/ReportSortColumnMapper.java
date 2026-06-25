@@ -21,7 +21,7 @@ public class ReportSortColumnMapper {
 
   public ReportSortColumn fromSortSpec(Report report, SortSpec sortSpec) {
     return ReportSortColumn.builder()
-        .id(generateReportId())
+        .id(generateSortColumnId())
         .report(report)
         .reportSortOrderCode(sortSpec.direction().toString())
         .dataSourceColumnUid(sortSpec.columnUid())
@@ -30,7 +30,7 @@ public class ReportSortColumnMapper {
         .build();
   }
 
-  private Long generateReportId() {
+  private Long generateSortColumnId() {
     var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
   }
