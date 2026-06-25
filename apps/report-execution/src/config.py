@@ -1,4 +1,5 @@
 import logging
+
 from src.db_transaction import Transaction
 
 
@@ -10,7 +11,8 @@ def retrieve_config_value(trx: Transaction, config_key: str) -> str:
 
     if not mapped_config_value:
         raise ValueError(
-            f"No qualified mapping found in NBS_Configuration for config key: '{config_key}'"
+            f"No qualified mapping found in NBS_Configuration for "
+            f"config key: '{config_key}'"
         )
 
     return f'[{mapped_config_value}]'
@@ -42,7 +44,8 @@ def get_config_value(trx: Transaction, key: str) -> str:
     # Handle Completely Null Payload
     if val is None:
         logging.error(
-            f'Config key {key} exists in NBS_Configuration, but both config_value and default_value are null'
+            f'Config key {key} exists in NBS_Configuration, but both config_value and '
+            f'default_value are null'
         )
         return ''
 

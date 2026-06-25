@@ -1,10 +1,17 @@
 import unittest
 from unittest.mock import MagicMock
-from src.models import Table
+
 from src.config import get_config_value, retrieve_config_value
+from src.models import Table
 
 
 class TestConfigurationFinder(unittest.TestCase):
+    """Test suite for validating configuration retrieval and formatting logic.
+
+    Uses `unittest.mock.MagicMock` to simulate database queries returning custom
+    `Table` instances without needing an active database connection.
+    """
+
     def setUp(self):
         # Create a mock transaction object before every test
         self.mock_trx = MagicMock()
@@ -33,7 +40,8 @@ class TestConfigurationFinder(unittest.TestCase):
 
         self.assertEqual(
             str(context.exception),
-            "No qualified mapping found in NBS_Configuration for config key: 'missing_alias'",
+            "No qualified mapping found in NBS_Configuration for "
+            + "config key: 'missing_alias'",
         )
 
     # ==========================================

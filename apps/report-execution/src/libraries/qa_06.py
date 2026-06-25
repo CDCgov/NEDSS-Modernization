@@ -34,10 +34,10 @@ def execute(
                  INVESTIGATION.REFERRAL_BASIS,
                  EVENT_METRIC.ADD_USER_ID,
                  USER_PROFILE.PROVIDER_QUICK_CODE
-          FROM ({rdb}).[dbo].[INVESTIGATION]
-            JOIN ({rdb}).[dbo].[EVENT_METRIC]
+          FROM {rdb}.[dbo].[INVESTIGATION]
+            JOIN {rdb}.[dbo].[EVENT_METRIC]
                 ON INVESTIGATION.CASE_UID = EVENT_METRIC.EVENT_UID
-            JOIN ({rdb}).[dbo].[USER_PROFILE]
+            JOIN {rdb}.[dbo].[USER_PROFILE]
                 ON EVENT_METRIC.ADD_USER_ID = USER_PROFILE.NEDSS_ENTRY_ID
         ),
 
@@ -45,8 +45,8 @@ def execute(
         LAB AS (
           SELECT ltr.INVESTIGATION_KEY,
                  MAX(lt.SPECIMEN_COLLECTION_DT) AS SPECIMEN_COLLECTION_DT
-          FROM ({rdb}).[dbo].[LAB_TEST_RESULT] ltr
-            INNER JOIN ({rdb}).[dbo].[lab_test] lt ON ltr.lab_test_key = lt.lab_test_key
+          FROM {rdb}.[dbo].[LAB_TEST_RESULT] ltr
+            INNER JOIN {rdb}.[dbo].[lab_test] lt ON ltr.lab_test_key = lt.lab_test_key
           GROUP BY ltr.INVESTIGATION_KEY
         ),
 
@@ -67,9 +67,9 @@ def execute(
           FROM STD_HIV_DATAMART SHD
             INNER JOIN INV ON SHD.INVESTIGATION_KEY = INV.INVESTIGATION_KEY
             LEFT OUTER JOIN LAB ON SHD.INVESTIGATION_KEY = LAB.INVESTIGATION_KEY
-            LEFT OUTER JOIN ({rdb}).[dbo].[MORBIDITY_REPORT_EVENT] MRE
+            LEFT OUTER JOIN {rdb}.[dbo].[MORBIDITY_REPORT_EVENT] MRE
               ON SHD.INVESTIGATION_KEY = MRE.INVESTIGATION_KEY
-            LEFT OUTER JOIN ({rdb}).[dbo].[MORBIDITY_REPORT] MR
+            LEFT OUTER JOIN {rdb}.[dbo].[MORBIDITY_REPORT] MR
               ON MR.MORB_RPT_KEY = MRE.MORB_RPT_KEY
           WHERE SHD.INV_LOCAL_ID IS NOT NULL
             AND SHD.DIAGNOSIS IS NOT NULL

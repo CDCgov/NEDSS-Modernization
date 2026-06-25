@@ -141,6 +141,40 @@ def setup_containers(request):
 
     request.addfinalizer(teardown)
 
+# Seeds global settings once setup_containers finishes booting
+@pytest.fixture(scope='session', autouse=True)
+def seed_global_nbs_configuration(setup_containers):
+    """Globally initializes and seeds the NBS_configuration table for all
+        integration tests.
+
+    Runs exactly ONCE per test session using the active connection string boundaries.
+    """
+    conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+
+    with db_transaction(conn_string) as trx:
+
+        # Baseline mappings required across the testing landscape
+        baseline_configs = [
+            ('rdb', 'RDB', 'RDB'),
+            ('nbs_ods', 'NBS_ODSE', 'NBS_ODSE'),
+            ('nbs_srte', 'NBS_SRTE', 'NBS_SRTE'),
+        ]
+
+        for key, val, default in baseline_configs:
+            trx.execute(
+                'DELETE FROM NBS_ODSE..NBS_configuration WHERE config_key = ?', (key,)
+            )
+            trx.execute("""
+                        INSERT INTO NBS_ODSE..NBS_configuration (
+                            config_key, config_value, default_value,
+                            version_ctrl_nbr, add_user_id, add_time,
+                            last_chg_user_id, last_chg_time, status_cd, status_time
+                        )
+                        VALUES (?, ?, ?, 1, 1, GETDATE(), 1, GETDATE(), 'A', GETDATE())
+                        """, (key, val, default)
+            )
+
+    logging.info('Global NBS_configuration entries seeded successfully.')
 
 def get_faker_sql(schema_name: str) -> list[str]:
     """Process a tablefaker schema and return sql statements as a list of strings."""

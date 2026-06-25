@@ -1,6 +1,6 @@
+from src.config import retrieve_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
-from src.config import retrieve_config_value
 
 
 def execute(
@@ -28,7 +28,7 @@ def execute(
         phc_code_short_desc as "Condition",
         cvg.code_short_desc_txt as "Case Status"
     FROM ({subset_query}) phc
-    LEFT JOIN ({nbs_srte}).dbo.code_value_general cvg 
+    LEFT JOIN {nbs_srte}.dbo.code_value_general cvg 
         ON phc.case_class_cd = cvg.code 
         AND cvg.code_set_nm = 'PHC_CLASS'
     WHERE cvg.code_short_desc_txt IS NOT NULL

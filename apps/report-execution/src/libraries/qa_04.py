@@ -39,11 +39,11 @@ def execute(
         END AS ERROR_TXT,
         SUBSTRING(a.PATIENT_LOCAL_ID, 4, 8) - 10000000 AS PATIENTID
     FROM subset a
-    INNER JOIN ({rdb}).dbo.investigation e
+    INNER JOIN {rdb}.dbo.investigation e
         ON a.INVESTIGATION_KEY = e.INVESTIGATION_KEY
-    LEFT JOIN ({rdb}).dbo.LAB_TEST_RESULT b
+    LEFT JOIN {rdb}.dbo.LAB_TEST_RESULT b
         ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-    LEFT JOIN ({rdb}).dbo.TREATMENT_EVENT c
+    LEFT JOIN {rdb}.dbo.TREATMENT_EVENT c
         ON a.INVESTIGATION_KEY = c.INVESTIGATION_KEY
     WHERE a.INV_LOCAL_ID IS NOT NULL
         AND e.INV_CASE_STATUS IN ('Probable', 'Confirmed')

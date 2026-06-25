@@ -41,11 +41,14 @@ def execute(
        CAST(SUBSTRING(PATIENT_LOCAL_ID, 4, 8) AS INT) - 10000000 AS PATIENTID
     FROM shd
     INNER JOIN 
-        ({rdb}).[dbo].[INVESTIGATION] i ON shd.INVESTIGATION_KEY = i.INVESTIGATION_KEY
+        {rdb}.[dbo].[INVESTIGATION] i 
+            ON shd.INVESTIGATION_KEY = i.INVESTIGATION_KEY
     LEFT OUTER JOIN 
-        ({rdb}).[dbo].[D_PROVIDER] dp ON shd.PHYSICIAN_KEY = dp.PROVIDER_KEY
+        {rdb}.[dbo].[D_PROVIDER] dp 
+            ON shd.PHYSICIAN_KEY = dp.PROVIDER_KEY
     LEFT OUTER JOIN 
-        ({rdb}).[dbo].[D_ORGANIZATION] o ON shd.ORDERING_FACILITY_KEY = o.ORGANIZATION_KEY
+        {rdb}.[dbo].[D_ORGANIZATION] o 
+            ON shd.ORDERING_FACILITY_KEY = o.ORGANIZATION_KEY
     WHERE
         shd.INV_LOCAL_ID IS NOT NULL
         AND i.INV_CASE_STATUS in ('Probable','Confirmed')
