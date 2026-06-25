@@ -327,7 +327,7 @@ def _testing_index_query(subset_query: str) -> str:
              fb.INVESTIGATOR_INTERVIEW_KEY,
              COUNT(DISTINCT dcr.LOCAL_ID) AS testing_index_count
       FROM filtered_base fb
-        INNER JOIN RDB.dbo.INVESTIGATION i 
+        INNER JOIN RDB.dbo.INVESTIGATION i
                 ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
         INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
                 ON fcrc.SUBJECT_INVESTIGATION_KEY = fb.INVESTIGATION_KEY
@@ -359,7 +359,9 @@ def _testing_index_query(subset_query: str) -> str:
     """
 
 
-def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
+def _build_output_for_worker(
+    tables: Pa01Tables, worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
     """Perform all needed calculations for a given worker, output data for
     the final CSV.
 
@@ -370,7 +372,20 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     Returns:
         List of calculated data for a given worker, meant for the final CSV of PA01
     """
-    # "Case Assignments & Outcomes" section
+    rows: list[Pa01Row] = []
+
+    rows.extend(_build_case_assignments_and_outcomes_output(tables, worker))
+    rows.extend(_build_partners_and_clusters_initiated_output(tables, worker))
+
+    return rows
+
+
+def _build_case_assignments_and_outcomes_output(
+    tables: Pa01Tables, worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Perform all needed calculations for the "Case Assignments and Outcomes" section
+    for a given worker, output data for the final CSV.
+    """
     cases_assigned = _calc_cases_assigned(tables.case_interview_rows, worker)
     cases_closed, cases_closed_percent = _calc_cases_closed(
         tables.case_interview_rows, cases_assigned, worker
@@ -404,7 +419,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
     # output CSV data
     rows: list[Pa01Row] = [
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'Cases Assigned',
             None,
@@ -413,7 +428,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'Cases Closed',
             None,
@@ -422,7 +437,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             CASES_IXD,
             None,
@@ -431,7 +446,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             CASES_IXD,
             'Within 3 days',
@@ -440,7 +455,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             CASES_IXD,
             'Within 5 days',
@@ -449,7 +464,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             CASES_IXD,
             'Within 7 days',
@@ -458,7 +473,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             CASES_IXD,
             'Within 14 days',
@@ -467,7 +482,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'Cases Reinterviewed',
             None,
@@ -476,7 +491,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'HIV Previous Positive',
             None,
@@ -485,7 +500,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'HIV Tested',
             None,
@@ -494,7 +509,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'HIV New Positive',
             None,
@@ -503,7 +518,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'HIV Posttest Counsel',
             None,
@@ -512,7 +527,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             None,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'Partner Notification Index',
             None,
@@ -521,7 +536,7 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
             partner_notification_index,
         ),
         (
-            ALL if worker is None else worker.provider_quick_code,
+            _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
             'Testing Index',
             None,
@@ -531,6 +546,16 @@ def _build_output_for_worker(tables: Pa01Tables, worker=None) -> list[Pa01Row]:
         ),
     ]
 
+    return rows
+
+
+def _build_partners_and_clusters_initiated_output(
+    tables: Pa01Tables, worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Perform all needed calculations for the "Partners and Clusters Initiated"
+    section for a given worker, output data for the final CSV.
+    """
+    rows: list[Pa01Row] = []
     return rows
 
 
@@ -809,6 +834,13 @@ def _percent_for_csv(numerator: int, denominator: int) -> str:
 def _index_for_csv(numerator: int, denominator: int) -> str:
     """Format an index that matches the PDF format for output in the CSV."""
     return f'{round(numerator / denominator, 2) if denominator else 0:0.2f}'
+
+
+def _worker_for_csv(worker: Pa01Worker | None = None) -> str:
+    """Return the str value for the worker column for output in the CSV.  If worker
+    is None then ALL is returned.
+    """
+    return ALL if worker is None else worker.provider_quick_code
 
 
 def _filter_rows_for_worker(rows: list[dict], worker: Pa01Worker) -> list[dict]:
