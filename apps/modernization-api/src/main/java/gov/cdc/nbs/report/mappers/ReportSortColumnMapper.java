@@ -32,7 +32,7 @@ public class ReportSortColumnMapper {
 
   public ReportSortColumn duplicate(ReportSortColumn column) {
     return ReportSortColumn.builder()
-            .id(generateReportId())
+            .id(generateSortColumnId())
             .reportSortOrderCode(column.getReportSortOrderCode())
             .reportSortSequenceNum(column.getReportSortSequenceNum())
             .report(column.getReport())
