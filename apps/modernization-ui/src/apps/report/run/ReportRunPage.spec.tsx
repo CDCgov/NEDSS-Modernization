@@ -270,7 +270,7 @@ describe('report run page', () => {
                     sort: undefined,
                 }),
             });
-            expect(window.location.href).toBe('/nbs/nfc?ObjectType=7&OperationType=116');
+            expect(window.location.href).toBe('/nbs/ManageReports.do');
         });
     });
 

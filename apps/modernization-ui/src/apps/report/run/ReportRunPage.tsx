@@ -23,6 +23,8 @@ import { LoadingBlock } from 'libs/loading/block';
 import { NotFoundError } from 'pages/error/NotFoundError';
 import { permitsAll } from 'libs/permission';
 
+const NBS_MANAGE_REPORT_PAGE = '/nbs/ManageReports.do';
+
 export type ReportExecuteForm = {
     // key is the report's ID
     basicFilter?: Record<string, { value: string[] | string | null; includeNulls: boolean }>;
@@ -156,10 +158,6 @@ const ReportRunPage = () => {
         [config]
     );
 
-    const redirectToManageReport = () => {
-        window.location.href = '/nbs/nfc?ObjectType=7&OperationType=116';
-    };
-
     const handleSaveReport = () => {
         const runner = ReportControllerService.saveReport;
         setStatus('saving');
@@ -176,7 +174,7 @@ const ReportRunPage = () => {
         })
             .then(() => {
                 setStatus('redirecting');
-                redirectToManageReport();
+                window.location.href = NBS_MANAGE_REPORT_PAGE;
             })
             .catch((err) => {
                 setError(JSON.stringify(err));

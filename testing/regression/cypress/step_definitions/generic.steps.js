@@ -29,8 +29,11 @@ When('I click the {string} button', (name) => {
 });
 
 Then('I should see a modal labelled {string}', (name) => {
+    // some modals have a close button in header that needs to be removed
+    const escapedName = name.replace(/<[^>]*>/g, "");
+    const cleanedName = new RegExp(`^${escapedName}`);
     // some modals are 0x0, so not exactly "visible", but it's there
-    cy.findByRole('dialog', { name }).should('have.class', 'is-visible');
+    cy.findByRole('dialog', { name: cleanedName }).should('have.class', 'is-visible');
 });
 
 Then('I should see a {string} labelled {string}', (role, name) => {
@@ -57,3 +60,11 @@ Then('I should see value {string} in the {string} {string} input field', (value,
 Then('I should see option {string} in the {string} combobox input field', (value, label) => {
     cy.findByRole('combobox', { name: label }).find('option:selected').should('have.text', value);
 });
+
+Then('I am redirected to {string}', (pathname) => {
+    cy.location('pathname').should('eq', pathname);
+})
+
+Then('I should not see the {string} {string}', (label, role) => {
+    cy.findByRole({role}, { name: label }).should('not.exist');
+})
