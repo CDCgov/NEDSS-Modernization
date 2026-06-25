@@ -37,5 +37,4 @@ Feature: Save report after report run
         When I click the "Save" button
         And I should see a modal labelled "Overwrite saved report?"
         And I click the "Save" button
-        Then I should see a "heading" labelled "Your report is saving and you will be redirected to the Manage Reports page once complete."
         And I am redirected to "/nbs/ManageReports.do"

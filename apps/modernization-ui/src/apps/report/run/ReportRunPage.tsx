@@ -177,7 +177,7 @@ const ReportRunPage = () => {
                 window.location.href = NBS_MANAGE_REPORT_PAGE;
             })
             .catch((err) => {
-                setError(JSON.stringify(err));
+                setError(err.message);
             });
     };
 
