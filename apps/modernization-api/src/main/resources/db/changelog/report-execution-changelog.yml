@@ -84,3 +84,9 @@ databaseChangeLog:
         - sqlFile:
             path: db/report/execution/libraries/pa_03.sql
             splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_01_hiv.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_01_std.sql
+            splitStatements: false
