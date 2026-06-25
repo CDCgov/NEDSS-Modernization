@@ -7,7 +7,7 @@ from src.models import ReportSpec
 faker_schema = 'event_metric_hiv_std.yaml'
 
 
-@pytest.mark.usefixtures('setup_containers', 'fake_db_table')
+@pytest.mark.usefixtures('seed_global_nbs_configuration', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationQa05Library:
     """Integration tests for the qa_05 library."""

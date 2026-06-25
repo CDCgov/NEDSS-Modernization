@@ -1,3 +1,4 @@
+from src.config import retrieve_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -14,6 +15,7 @@ def execute(
     * Did not include logging of run time
     * Hardcode i to "14" instead of the count of the columns
     """
+    rdb = retrieve_config_value(trx, 'rdb')
     sql_query = f"""
     WITH shd AS ({subset_query})
     SELECT
@@ -43,7 +45,7 @@ def execute(
         ) AS [age]
     FROM
         shd 
-            INNER JOIN RDB.DBO.INVESTIGATION inv
+            INNER JOIN {rdb}.DBO.INVESTIGATION inv
                        ON shd.INVESTIGATION_KEY = inv.INVESTIGATION_KEY
     WHERE shd.DIAGNOSIS_CD IS NOT NULL
       AND shd.INVESTIGATOR_INTERVIEW_KEY IS NOT NULL

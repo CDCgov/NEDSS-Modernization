@@ -10,7 +10,7 @@ from src.models import ReportSpec
 faker_schema = 'qa_06.yaml'
 
 
-@pytest.mark.usefixtures('setup_containers', 'fake_db_table')
+@pytest.mark.usefixtures('seed_global_nbs_configuration', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationQa06Library:
     """Integration tests for the qa_06 library."""
